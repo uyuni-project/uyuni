@@ -50,5 +50,10 @@
     </c:if>
 </rhn:toolbar>
 
+<rhn:require acl="formula_value_equals(system-lock, minion_blackout, true);not has_ssh_push_contact_method()">
+<div class="alert alert-warning">
+<p>System is locked. Some operations are not allowed.</p>
+</div>
+</rhn:require>
 
 <rhn:dialogmenu mindepth="0" maxdepth="3" definition="/WEB-INF/nav/system_detail.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />

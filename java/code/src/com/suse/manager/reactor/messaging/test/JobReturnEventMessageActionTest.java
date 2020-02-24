@@ -572,6 +572,35 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    /**
+     * Test the processing of packages.profileupdate job return event in the case where the system has installed CaaSP
+     * and it should be locked via Salt formula
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPackagesProfileUpdateWithCaaSPSystemLocked() throws Exception {
+        // Prepare test objects: minion server, products and action
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+        HibernateFactory.getSession().flush();
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("packages.profileupdate.caasp.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        assertTrue(minion.getInstalledProducts().stream().anyMatch(
+                p -> p.getName().equalsIgnoreCase(SaltUtils.CAASP_PRODUCT_IDENTIFIER)));
+        assertTrue(action.getServerActions().stream()
+                .filter(serverAction -> serverAction.getServer().equals(minion))
+                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
+    }
 
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.nodmi.x86.json", (server) -> {

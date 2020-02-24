@@ -15,17 +15,24 @@
 
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.domain.formula.FormulaFactory;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
@@ -130,5 +137,46 @@ public enum ViewHelper {
         DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(date);
+    }
+
+    /**
+     * Checks if a value of a formula is equal to the given argument.
+     * @param server the server to check
+     * @param formulaName the name of the formula to check
+     * @param valueName the name of the value to check for equality
+     * @param valueToCheck the value to check
+     * @return true if the value is equal to the given argument
+     */
+    public boolean formulaValueEquals(Server server, String formulaName, String valueName, String valueToCheck) {
+        if (server == null) {
+            return false;
+        }
+        if (!server.asMinionServer().isPresent()) {
+            return false;
+        }
+        List<String> enabledFormulas = FormulaFactory
+                .getFormulasByMinionId(MinionServerFactory.getMinionId(server.getId()));
+        if (!enabledFormulas.contains(formulaName)) {
+            return false;
+        }
+
+        Map<String, Object> systemData = FormulaFactory.
+                getFormulaValuesByNameAndMinionId(formulaName, server.asMinionServer().get().getMinionId())
+                .orElseGet(Collections::emptyMap);
+        Map<String, Object> groupData = FormulaFactory
+                .getGroupFormulaValuesByNameAndServerId(formulaName, server.getId())
+                .orElseGet(Collections::emptyMap);
+        return Objects.toString(systemData.get(valueName), "")
+                .equals(valueToCheck) ||
+                Objects.toString(groupData.get(valueName), "")
+                        .equals(valueToCheck);
+    }
+
+    /**
+     * @param server the server to check
+     * @return true if the server has either ssh-push or ssh-push-tunnel contact methods
+     */
+    public boolean hasSshPushContactMethod(Server server) {
+        return ContactMethodUtil.isSSHPushContactMethod(server.getContactMethod());
     }
 }

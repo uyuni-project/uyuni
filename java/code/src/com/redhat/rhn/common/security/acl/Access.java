@@ -34,6 +34,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.utils.ViewHelper;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -498,5 +500,39 @@ public class Access extends BaseHandler {
         Long eid = getAsLong(map.get("eid"));
         Errata e = ErrataFactory.lookupById(eid);
         return e != null && e.getOrg() != null;
+    }
+
+    /**
+     * Checks a value from a formula for equality with the given argument.
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return whether the formula values is equal to the given arg
+     */
+    public boolean aclFormulaValueEquals(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        if (params == null || params.length < 3) {
+            return false;
+        }
+        String formulaName = params[0];
+        String valueName = params[1];
+        String valueToCheck = params[2];
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        return ViewHelper.getInstance().formulaValueEquals(server, formulaName, valueName, valueToCheck);
+    }
+
+    /**
+     * Checks if a server uses ssh-push or ssh-push-tunnel contact methods
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return true if the server uses ssh-push or ssh-push-tunnel
+     */
+    public boolean aclHasSshPushContactMethod(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
+        return ContactMethodUtil.isSSHPushContactMethod(lookedUp.getContactMethod());
     }
 }
