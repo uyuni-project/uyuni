@@ -42,7 +42,7 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "target_type")
 public abstract class RecurringAction {
 
-    private long id;
+    private Long id;
     private boolean testMode;
     private boolean active;
 
@@ -84,7 +84,7 @@ public abstract class RecurringAction {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_action_seq")
     @SequenceGenerator(name = "recurring_action_seq", sequenceName = "suse_recurring_action_id_seq", allocationSize = 1)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
