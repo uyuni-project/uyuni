@@ -4302,7 +4302,7 @@ del rol de Administrador de la organización.</target>
         <target>Habilitar las etapas del contenido</target>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp">
-        <source>Enable Errata E-mail Notifications (for users belonging to this organization)</source>
+        <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
