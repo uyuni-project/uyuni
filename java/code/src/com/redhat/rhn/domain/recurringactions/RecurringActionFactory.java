@@ -20,6 +20,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * ServerFactory - the class used to fetch and store
@@ -68,6 +69,30 @@ public class RecurringActionFactory extends HibernateFactory {
                 "WHERE action.org.id = :oid")
                 .setParameter("oid", id)
                 .list();
+    }
+
+    /**
+     * Lookup recurring action with given id.
+     *
+     * @param id - id of the recurring action
+     * @return optional of matching recurring action
+     */
+    public static Optional<RecurringAction> lookupById(long id) {
+        return getSession().createQuery("SELECT action FROM RecurringAction action " +
+                "WHERE action.id = :id")
+                .setParameter("id", id)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Lookup recurring action with given taskomatic schedule name
+     *
+     * @param scheduleName the name of recurring action taskomatic schedule
+     * @return optional of matching recurring action
+     */
+    public static Optional<RecurringAction> lookupByJobName(String scheduleName) {
+        long id = Long.parseLong(scheduleName.replace(RecurringAction.RECURRING_ACTION_PREFIX, ""));
+        return lookupById(id);
     }
 
     /**

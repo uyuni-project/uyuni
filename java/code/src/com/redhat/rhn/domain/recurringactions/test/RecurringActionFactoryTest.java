@@ -12,6 +12,9 @@ import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
 
+/**
+ * Tests for {@link RecurringActionFactory}
+ */
 public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
 
     public void testListMinionRecurringActions() throws Exception {
@@ -80,5 +83,20 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action.setOrg(user.getOrg());
         RecurringActionFactory.save(action);
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
+    }
+
+    public void testLookupRecurringActionByScheduleNameNoMatch() throws Exception {
+        assertTrue(RecurringActionFactory.lookupByJobName("recurring-action-987654321").isEmpty());
+    }
+
+    public void testLookupRecurringActionByScheduleName() throws Exception {
+        var action = new MinionRecurringAction();
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setMinion(minion);
+        RecurringActionFactory.save(action);
+
+        assertEquals(
+                action,
+                RecurringActionFactory.lookupByJobName("recurring-action-" + action.getId()).orElseThrow());
     }
 }

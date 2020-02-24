@@ -14,20 +14,15 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.manager.action.ActionChainManager;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.suse.manager.webui.controllers.StatesAPI;
-import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,49 +33,48 @@ import java.util.stream.Collectors;
 public class RecurringStateApplyJob extends RhnJavaJob {
 
     /**
+     * Schedule highstate application.
+     *
+     * If the {@link RecurringAction} data is not found, clean the schedule.
+     *
      * {@inheritDoc}
      */
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        JobDataMap data = context.getJobDetail().getJobDataMap();
-        if (Boolean.parseBoolean(data.get("active").toString())) {
-            User user = Optional.ofNullable(data.get("user_id"))
-                    .map(id -> Long.parseLong(id.toString()))
-                    .map(userId -> UserFactory.lookupById(userId))
-                    .orElse(null);
-            if (user == null) {
-                throw new NullPointerException("User not found");
-            }
-            List<Long> minionIds = new ArrayList<>();
+        String scheduleName = context.getJobDetail().getKey().getName();
+        Optional<RecurringAction> recurringAction = RecurringActionFactory.lookupByJobName(scheduleName);
 
-            /* TODO: This needs some rework */
-            StatesAPI.getMinionNamesAndIds(data.get("targetType").toString(),
-                    Long.parseLong(data.get("targetId").toString()), user).ifPresentOrElse(
-                    m -> minionIds.addAll(Arrays.stream(m.get("minionIds")
-                            .replaceAll("([\\[\\] ])", "")
-                            .split(",")).map(Long::parseLong).collect(Collectors.toList())),
-                    () -> { throw new NullPointerException("No minion Ids provided"); }
-            );
+        recurringAction.ifPresentOrElse(
+                action ->  {
+                    if (action.isActive()) {
+                        scheduleAction(context, action);
+                    }
+                    else {
+                        log.info(String.format("Action %s not active, skipping", action));
+                    }
+                },
+                () -> cleanSchedule(scheduleName)
+        );
+    }
 
-            List<Long> sids = MinionServerFactory.lookupByIds(minionIds).map(server -> {
-                if (!SystemManager.isAvailableToUser(user, server.getId())) {
-                    log.error("System " + server.getName() + " not available to user with uid: " + user.getId());
-                }
-                return server.getId();
-            }).collect(Collectors.toList());
-            boolean test = Boolean.parseBoolean((String) data.get("test"));
-            Date timeNow = context.getFireTime();
-
-            try {
-                ActionChainManager.scheduleApplyStates(user, sids, Optional.of(test), timeNow, null);
-            }
-            catch (Exception e) {
-                log.error(e.getMessage(), e);
-                throw new JobExecutionException(e);
-            }
+    private void scheduleAction(JobExecutionContext context, RecurringAction action) {
+        List<Long> minionIds = action.computeMinions().stream()
+                .map(m -> m.getId())
+                .collect(Collectors.toList());
+        try {
+            ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
+                    Optional.of(action.isTestMode()), context.getFireTime(), null);
         }
-        else {
-            String scheduleName = context.getJobDetail().getKey().getName();
-            log.info("Schedule" + scheduleName + "not active - skipping execution");
+        catch (TaskomaticApiException e) {
+            log.error("Error scheduling states application for recurring action " + action, e);
+        }
+    }
+
+    private void cleanSchedule(String scheduleName) {
+        log.warn(String.format("Can't find a recurring action data for schedule '%s'. " +
+                "Cleaning the schedule!", scheduleName));
+        int result = new TaskoXmlRpcHandler().unscheduleBunch(null, scheduleName);
+        if (result != 1) {
+            log.error(String.format("Error cleaning schedule '%s'", scheduleName));
         }
     }
 }

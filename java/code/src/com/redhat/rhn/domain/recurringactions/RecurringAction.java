@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
 
 import java.util.List;
@@ -50,6 +51,8 @@ public abstract class RecurringAction {
     private boolean testMode;
     private boolean active;
     private User creator;
+
+    public static final String RECURRING_ACTION_PREFIX = "recurring-action-";
 
     /**
      * Standard constructor
@@ -86,7 +89,7 @@ public abstract class RecurringAction {
         if (getId() == null) {
             throw new IllegalArgumentException("ID attribute must not be null");
         }
-        return "recurring-action-" + getId();
+        return RECURRING_ACTION_PREFIX + getId();
     }
 
     /**
@@ -168,5 +171,12 @@ public abstract class RecurringAction {
      */
     public void setCreator(User creatorIn) {
         creator = creatorIn;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .toString();
     }
 }
