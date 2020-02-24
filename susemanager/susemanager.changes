@@ -1,3 +1,6 @@
+- Fix salt bootstrapping on SLE15 (require python3-pycrypto or 
+  python3-M2Crypto to support all variants) (bsc#1164563)
+
 -------------------------------------------------------------------
 Fri Feb 28 12:06:44 CET 2020 - jgonzalez@suse.com
 
