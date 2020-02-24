@@ -30,7 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * Recurring Action group implementation
+ * Recurring Action for server group implementation
  */
 
 @Entity

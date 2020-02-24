@@ -25,7 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * Recurring Action minion implementation
+ * Recurring Action for minion server implementation
  */
 
 @Entity
