@@ -63,17 +63,6 @@ public class MinionRecurringAction extends RecurringAction {
     }
 
     /**
-     * Gets the name of the TaskoSchedule entry
-     *
-     * @return the TaskoSchedule name
-     */
-    @Override
-    public String computeTaskoScheduleName() {
-        // TODO: Refactor for minion/group/org
-        return "recurring-action-minion-" + minion.getId();
-    }
-
-    /**
      * Gets the minion
      *
      * @return the minion server

@@ -70,11 +70,17 @@ public abstract class RecurringAction {
     public abstract List<MinionServer> computeMinions();
 
     /**
-     * Gets the name of the TaskoSchedule entry
+     * Gets the name of the TaskoSchedule entry based on the entity id.
+     * For this to work, the entity must have an ID (e.g. hibernate 'save' has been done)!
      *
      * @return the TaskoSchedule name
      */
-    public abstract String computeTaskoScheduleName();
+    public String computeTaskoScheduleName() {
+        if (getId() == null) {
+            throw new IllegalArgumentException("ID attribute must not be null");
+        }
+        return "recurring-action-" + getId();
+    }
 
     /**
      * Gets the id.

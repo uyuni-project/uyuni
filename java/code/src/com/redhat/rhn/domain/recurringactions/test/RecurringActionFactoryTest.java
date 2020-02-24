@@ -23,6 +23,19 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
     }
 
+    public void testListMultipleMinionRecurringActions() throws Exception {
+        var action = new MinionRecurringAction();
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setMinion(minion);
+        RecurringActionFactory.save(action);
+
+        var action2 = new MinionRecurringAction();
+        action2.setMinion(minion);
+        RecurringActionFactory.save(action2);
+
+        assertEquals(List.of(action, action2), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+    }
+
     public void testListGroupRecurringActions() {
         var action = new GroupRecurringAction();
         var group = ServerGroupTestUtils.createManaged(user);
@@ -44,5 +57,28 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         RecurringActionFactory.save(action);
 
         assertEquals(List.of(action), RecurringActionFactory.listOrgRecurringActions(org.getId()));
+    }
+
+    public void testMinionActionTaskomaticPrefixComputation() throws Exception {
+        var action = new MinionRecurringAction();
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setMinion(minion);
+        RecurringActionFactory.save(action);
+        assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
+    }
+
+    public void testGroupActionTaskomaticPrefixComputation() throws Exception {
+        var action = new GroupRecurringAction();
+        var group = ServerGroupTestUtils.createManaged(user);
+        action.setGroup(group);
+        RecurringActionFactory.save(action);
+        assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
+    }
+
+    public void testOrgActionTaskomaticPrefixComputation() throws Exception {
+        var action = new OrgRecurringAction();
+        action.setOrg(user.getOrg());
+        RecurringActionFactory.save(action);
+        assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
     }
 }
