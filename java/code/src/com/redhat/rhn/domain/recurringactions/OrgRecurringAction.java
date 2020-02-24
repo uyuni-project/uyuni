@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.recurringactions;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MinionServerUtils;
 
@@ -51,9 +52,10 @@ public class OrgRecurringAction extends RecurringAction {
      * @param testMode if action is in test mode
      * @param active if action is active
      * @param org organization affiliated with the action
+     * @param creator the creator User
      */
-    public OrgRecurringAction(boolean testMode, boolean active, Org org) {
-        super(testMode, active);
+    public OrgRecurringAction(boolean testMode, boolean active, Org org, User creator) {
+        super(testMode, active, creator);
         this.organization = org;
     }
 

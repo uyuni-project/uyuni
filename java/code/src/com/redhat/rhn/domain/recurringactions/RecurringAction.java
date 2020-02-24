@@ -16,6 +16,8 @@
 package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.hibernate.annotations.Type;
 
@@ -29,6 +31,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -45,6 +49,7 @@ public abstract class RecurringAction {
     private Long id;
     private boolean testMode;
     private boolean active;
+    private User creator;
 
     /**
      * Standard constructor
@@ -56,10 +61,12 @@ public abstract class RecurringAction {
      *
      * @param test if action is in testMode
      * @param isActive if action is active
+     * @param creatorIn the creator User
      */
-    public RecurringAction(boolean test, boolean isActive) {
+    public RecurringAction(boolean test, boolean isActive, User creatorIn) {
         this.testMode = test;
         this.active = isActive;
+        this.creator = creatorIn;
     }
 
     /**
@@ -141,5 +148,25 @@ public abstract class RecurringAction {
      */
     public void setActive(boolean isActive) {
         this.active = isActive;
+    }
+
+    /**
+     * Gets the creator.
+     *
+     * @return creator
+     */
+    @ManyToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "creator_id")
+    public User getCreator() {
+        return creator;
+    }
+
+    /**
+     * Sets the creator.
+     *
+     * @param creatorIn the creator
+     */
+    public void setCreator(User creatorIn) {
+        creator = creatorIn;
     }
 }

@@ -80,7 +80,7 @@ public class RecurringActionManager {
         }
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
-        MinionRecurringAction action = new MinionRecurringAction(testMode, active, minion);
+        MinionRecurringAction action = new MinionRecurringAction(testMode, active, minion, user);
         RecurringActionFactory.save(action);
 
         taskomaticApi.scheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch", cron);

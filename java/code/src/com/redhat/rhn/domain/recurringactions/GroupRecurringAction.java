@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.recurringactions;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MinionServerUtils;
 
@@ -51,9 +52,10 @@ public class GroupRecurringAction extends RecurringAction {
      * @param testMode if action is in test mode
      * @param active if action is active
      * @param serverGroup group affiliated with the action
+     * @param creator the creator User
      */
-    public GroupRecurringAction(boolean testMode, boolean active, ServerGroup serverGroup) {
-        super(testMode, active);
+    public GroupRecurringAction(boolean testMode, boolean active, ServerGroup serverGroup, User creator) {
+        super(testMode, active, creator);
         this.group = serverGroup;
     }
 
