@@ -328,7 +328,7 @@ PKGLIST15_SALT = [
     "python3-msgpack",
     "python3-psutil",
     "python3-py",
-    "python3-pycrypto",
+    "python3-pycrypto|python3-M2Crypto",
     "python3-pytz",
     "python3-PyYAML",
     "python3-pyzmq",
