@@ -4298,7 +4298,7 @@ abaixo e &lt;b&gt;não poderá mais se autenticar&lt;/b&gt;.</target>
         <target>Conteúdos de Estágio Ativo</target>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp">
-        <source>Enable Errata E-mail Notifications (for users belonging to this organization)</source>
+        <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
