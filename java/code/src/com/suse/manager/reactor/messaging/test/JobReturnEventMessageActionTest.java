@@ -572,36 +572,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
-    /**
-     * Test the processing of packages.profileupdate job return event in the case where the system has installed CaaSP
-     * and it should be locked via Salt formula
-     *
-     * @throws Exception in case of an error
-     */
-    public void testPackagesProfileUpdateWithCaaSPSystemLocked() throws Exception {
-        // Prepare test objects: minion server, products and action
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
-        SUSEProductTestUtils.createVendorSUSEProducts();
-        Action action = ActionFactoryTest.createAction(
-                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
-        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
-        HibernateFactory.getSession().flush();
-        // Setup an event message from file contents
-        Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("packages.profileupdate.caasp.json", action.getId()));
-        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-
-        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
-        messageAction.execute(message);
-
-        assertTrue(minion.getInstalledProducts().stream().anyMatch(
-                p -> p.getName().equalsIgnoreCase(SaltUtils.CAASP_PRODUCT_IDENTIFIER)));
-        assertTrue(action.getServerActions().stream()
-                .filter(serverAction -> serverAction.getServer().equals(minion))
-                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-    }
-
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.nodmi.x86.json", (server) -> {
             assertNotNull(server);
@@ -1097,6 +1067,21 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Path path = new File(TestUtils.findTestData(
                 "/com/suse/manager/reactor/messaging/test/" + filename).getPath()).toPath();
         String eventString = Files.lines(path)
+                .collect(Collectors.joining("\n"))
+                .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
+        if (placeholders != null) {
+            for (Map.Entry<String, String> entries : placeholders.entrySet()) {
+                String placeholder = entries.getKey();
+                String value = entries.getValue();
+                eventString = StringUtils.replace(eventString, placeholder, value);
+            }
+        }
+        return EVENTS.parse(eventString);
+    }
+
+    public static Event getJobReturnEventFromClasspath(String jsonFilePath, long actionId, Map<String, String> placeholders) throws Exception {
+        Path filePath = new File(TestUtils.findTestData(jsonFilePath).getPath()).toPath();
+        String eventString = Files.lines(filePath)
                 .collect(Collectors.joining("\n"))
                 .replaceAll("\"suma-action-id\": \\d+", "\"suma-action-id\": " + actionId);
         if (placeholders != null) {

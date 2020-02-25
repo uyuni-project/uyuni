@@ -39,38 +39,4 @@ public class CaaspPlugin extends Plugin {
         super(wrapper);
     }
 
-    @Extension
-    public static class CaaspPackageProfileUpdate implements PackageProfileUpdateExtensionPoint {
-        @Override
-        public void onProfileUpdate(Server server) {
-            LOG.info("CaaspPackageProfileUpdate!!!!!!");
-        }
-    }
-
-    @Extension
-    public static class CaaspMainMenu implements MenuExtensionPoint {
-
-        @Override
-        public Map<String, List<MenuItem>> getMenuItems(Map<String, Boolean> adminRoles, boolean authenticated) {
-
-            if (authenticated) {
-                Map<String, List<MenuItem>> items = new HashMap<>();
-                items.put("Clusters", Arrays.asList(
-                        new MenuItem("caasp").withPrimaryUrl("/rhn/manager/cluster/caasp")));
-                return items;
-            }
-
-            return Collections.emptyMap();
-        }
-    }
-
-    @Extension
-    public static class CaaspMessageBundle extends LocalizationProvider {
-
-        @Override
-        protected String getBundleName() {
-            return "com.suse.manager.caasp.l10n.Messages";
-        }
-    }
-
 }

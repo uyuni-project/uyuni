@@ -153,12 +153,12 @@
            classpathref="pluginclasspath"
     >
       <src>
-        <path location="${src.dir}/plugins/caasp/java" />
+        <path location="${src.dir}/plugins/caasp/src/main/java" />
       </src>
     </javac>
 
     <copy toDir="${build.dir}/plugins/caasp/classes/" includeEmptyDirs="false">
-      <fileset dir="${src.dir}/plugins/caasp/java">
+      <fileset dir="${src.dir}/plugins/caasp/src/main/java">
         <exclude name="**/*.java" />
         <exclude name="**/package.html" />
       </fileset>
