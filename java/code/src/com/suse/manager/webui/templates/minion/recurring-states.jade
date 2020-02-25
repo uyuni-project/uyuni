@@ -1,14 +1,13 @@
 include ./minion-header.jade
 
-#highstate
+#recurring-states
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.minions = [{id: #{server.id}, name: "#{server.name}"}];
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
-    window.actionChains = !{actionChains};
 
 script(type='text/javascript').
-    spaImportReactPage('state/highstate')
-        .then(function (module) { module.renderer('highstate') });
+    spaImportReactPage('state/recurring-states')
+        .then(function (module) { module.renderer('recurring-states') });

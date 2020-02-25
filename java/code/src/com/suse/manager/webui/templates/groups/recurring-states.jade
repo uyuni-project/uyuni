@@ -12,16 +12,16 @@
     | #{" " + groupName + " "}
 
 !{h.renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml")}
-#highstate
+#recurring-states
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
-    window.minions = !{minions};
     window.groupName = "#{groupName}";
+    window.groupId = "#{groupId}";
+    window.minions = !{minions};
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
-    window.actionChains = !{actionChains};
 
 script(type='text/javascript').
-    spaImportReactPage('state/highstate')
-        .then(function(module) { module.renderer('highstate') });
+    spaImportReactPage('state/recurring-states')
+        .then(function(module) { module.renderer('recurring-states') });

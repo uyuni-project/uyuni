@@ -6,15 +6,14 @@
       i.fa.fa-question-circle.spacewalk-help-link
 
 !{h.renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml")}
-#highstate
+#recurring-states
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.minions = !{minions};
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
-    window.actionChains = !{actionChains};
 
 script(type='text/javascript').
-    spaImportReactPage('state/highstate')
-        .then(function(module) { module.renderer('highstate') });
+    spaImportReactPage('state/recurring-states')
+        .then(function(module) { module.renderer('recurring-states') });
