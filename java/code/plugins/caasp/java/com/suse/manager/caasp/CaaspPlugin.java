@@ -15,11 +15,21 @@
 package com.suse.manager.caasp;
 
 import com.redhat.rhn.domain.server.Server;
-import com.suse.manager.extensions.PackageProfileUpdateListener;
+import com.suse.manager.extensions.LocalizationExtensionPoint;
+import com.suse.manager.extensions.LocalizationProvider;
+import com.suse.manager.extensions.MenuExtensionPoint;
+import com.suse.manager.extensions.PackageProfileUpdateExtensionPoint;
+import com.suse.manager.webui.menu.MenuItem;
 import org.apache.log4j.Logger;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CaaspPlugin extends Plugin {
 
@@ -30,10 +40,36 @@ public class CaaspPlugin extends Plugin {
     }
 
     @Extension
-    public static class CaaspPackageProfileUpdate implements PackageProfileUpdateListener {
+    public static class CaaspPackageProfileUpdate implements PackageProfileUpdateExtensionPoint {
         @Override
         public void onProfileUpdate(Server server) {
             LOG.info("CaaspPackageProfileUpdate!!!!!!");
+        }
+    }
+
+    @Extension
+    public static class CaaspMainMenu implements MenuExtensionPoint {
+
+        @Override
+        public Map<String, List<MenuItem>> getMenuItems(Map<String, Boolean> adminRoles, boolean authenticated) {
+
+            if (authenticated) {
+                Map<String, List<MenuItem>> items = new HashMap<>();
+                items.put("Clusters", Arrays.asList(
+                        new MenuItem("caasp").withPrimaryUrl("/rhn/manager/cluster/caasp")));
+                return items;
+            }
+
+            return Collections.emptyMap();
+        }
+    }
+
+    @Extension
+    public static class CaaspMessageBundle extends LocalizationProvider {
+
+        @Override
+        protected String getBundleName() {
+            return "com.suse.manager.caasp.l10n.Messages";
         }
     }
 

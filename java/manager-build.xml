@@ -8,7 +8,7 @@
 
  https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="SUSE Manager" default="deploy-all" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant" >
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
@@ -61,7 +61,11 @@
   <!-- Tasks -->
   <target name="clean" description="Cleans up all generated files">
     <delete includeemptydirs="true" quiet="true">
-      <fileset dir="${build.dir}" includes="**/*"/>
+      <fileset dir="${build.dir}">
+        <include name="**/*"/>
+        <exclude name="classes/**/*" if="precompiled" />
+        <exclude name="**/classes/**/*" if="precompiled" />
+      </fileset>
     </delete>
     <delete dir="${test.results.dir}" />
   </target>

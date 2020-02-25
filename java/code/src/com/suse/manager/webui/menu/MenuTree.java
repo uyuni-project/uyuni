@@ -25,6 +25,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.google.gson.GsonBuilder;
+import com.suse.manager.extensions.MenuExtensionPoint;
+import com.suse.manager.extensions.Plugins;
+import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -36,6 +39,9 @@ import java.util.Optional;
  * The UI Menu Tree.
  */
 public class MenuTree {
+
+    private static final Logger LOG = Logger.getLogger(MenuTree.class);
+
     /**
      * Generate a List of {@link MenuItem}.
      *
@@ -167,6 +173,11 @@ public class MenuTree {
                 .addChild(new MenuItem("Virtual Host Managers").withPrimaryUrl("/rhn/manager/vhms")
                     .withDir("/rhn/manager/vhms")
                     .withVisibility(adminRoles.get("org"))));
+
+            // Clusters
+            // TODO add this only if there are cluster plugins enabled ?
+            nodes.add(new MenuItem("clusters").withIcon("fa-desktop")
+                    .withVisibility(adminRoles.get("org")));
 
             // Salt
             nodes.add(new MenuItem("Salt").withIcon("spacewalk-icon-salt")
@@ -399,6 +410,7 @@ public class MenuTree {
                             : "https://documentation.suse.com/suma/")
                     .withTarget("_blank"))
                 );
+            addExtensionMenus(true, adminRoles, nodes);
         }
         else {
             // Create First User
@@ -447,6 +459,38 @@ public class MenuTree {
             getBestActiveDirs(nodes, url);
         }
         return nodes;
+    }
+
+    private static void addExtensionMenus(boolean authenticated, Map<String, Boolean> adminRoles, MenuItemList nodes) {
+        List<MenuExtensionPoint> webExtensions = Plugins.instance().getExtensions(MenuExtensionPoint.class);
+        webExtensions.forEach(extension -> {
+            Map<String, List<MenuItem>> items = extension.getMenuItems(adminRoles, authenticated);
+            items.entrySet().forEach(entry -> {
+                String key = entry.getKey();
+                String[] parents = key != null && !key.isEmpty() ? key.split("/") : new String[0];
+
+                List<MenuItem> loopedNodes = nodes;
+                MenuItem parentNode = null;
+                for (String parent : parents) {
+                    MenuItem node = loopedNodes.stream()
+                            .filter(child -> child.getLabel().equals(parent))
+                            .findFirst()
+                            .orElse(null);
+                    if (node == null) {
+                        LOG.error("Failed to add extension menu entries to " + entry.getKey());
+                        break;
+                    } else {
+                        loopedNodes = node.getSubmenu();
+                        parentNode = node;
+                    }
+                }
+                if (parentNode != null) {
+                    for (MenuItem item : entry.getValue()) {
+                        parentNode.addChild(item);
+                    }
+                }
+            });
+        });
     }
 
     /**

@@ -74,7 +74,7 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.suse.manager.extensions.PackageProfileUpdateListener;
+import com.suse.manager.extensions.PackageProfileUpdateExtensionPoint;
 import com.suse.manager.extensions.Plugins;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
@@ -1228,7 +1228,7 @@ public class SaltUtils {
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
 
-        Plugins.instance().getExtensions(PackageProfileUpdateListener.class)
+        Plugins.instance().getExtensions(PackageProfileUpdateExtensionPoint.class)
                 .forEach(listener -> listener.onProfileUpdate(server));
 
         // For special nodes: enable minion blackout (= locking) via pillar

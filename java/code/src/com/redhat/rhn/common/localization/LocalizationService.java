@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Optional;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.StringTokenizer;
@@ -36,6 +37,8 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.suse.manager.extensions.LocalizationExtensionPoint;
+import com.suse.manager.extensions.Plugins;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
@@ -104,6 +107,17 @@ public class LocalizationService {
         for (int i = 0; i < packages.length; i++) {
             addKeysToMap(packages[i]);
         }
+
+        // Loop over extensions to add the keys
+        List<LocalizationExtensionPoint> extensions = Plugins.instance().getExtensions(LocalizationExtensionPoint.class);
+        extensions.forEach(extension -> {
+            String extensionName = extension.getClass().getCanonicalName();
+            Enumeration<String> keys = extension.getKeys();
+            while (keys.hasMoreElements()) {
+                keyToBundleMap.put(keys.nextElement(), extensionName);
+            }
+        });
+
         if (supportedLocales.size() > 0) {
             supportedLocales.clear();
         }
@@ -304,6 +318,17 @@ public class LocalizationService {
             }
         }
         catch (ClassNotFoundException ce) {
+            // TODO find a better way
+            // If it's not a class, then try with extensions
+            List<LocalizationExtensionPoint> extensions = Plugins.instance().getExtensions(LocalizationExtensionPoint.class);
+            Optional<String> localized = extensions.stream()
+                    .filter(extension -> extension.getClass().getCanonicalName().equals(keyToBundleMap.get(messageId)))
+                    .findFirst()
+                    .map(extension -> extension.getMessage(messageId, locale, args));
+            if (localized.isPresent()) {
+                return getDebugVersionOfString(localized.get());
+            }
+
             String message = "Class not found when trying to fetch a message: " +
                     ce.toString();
             log.error(message, ce);
