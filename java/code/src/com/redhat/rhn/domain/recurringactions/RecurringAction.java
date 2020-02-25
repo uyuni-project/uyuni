@@ -48,6 +48,7 @@ import javax.persistence.Table;
 public abstract class RecurringAction {
 
     private Long id;
+    private String name;
     private boolean testMode;
     private boolean active;
     private User creator;
@@ -111,6 +112,25 @@ public abstract class RecurringAction {
      */
     public void setId(long actionId) {
         this.id = actionId;
+    }
+
+    /**
+     * Gets the name.
+     *
+     * @return name
+     */
+    @Column
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name.
+     *
+     * @param nameIn the name
+     */
+    public void setName(String nameIn) {
+        name = nameIn;
     }
 
     /**

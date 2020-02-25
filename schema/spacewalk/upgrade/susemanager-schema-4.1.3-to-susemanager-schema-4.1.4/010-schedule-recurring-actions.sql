@@ -15,6 +15,7 @@ CREATE TABLE suseRecurringAction
   id                NUMERIC NOT NULL
                     CONSTRAINT suse_recurring_action_id_pk PRIMARY KEY,
   target_type       VARCHAR(32) NOT NULL,
+  name              VARCHAR(256),
   minion_id         NUMERIC
                     CONSTRAINT suse_rec_action_minion_fk
                       REFERENCES suseMinionInfo(server_id)
