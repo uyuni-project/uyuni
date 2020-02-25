@@ -48,8 +48,16 @@ import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.WheelCall;
 import com.suse.salt.netapi.calls.WheelResult;
-import com.suse.salt.netapi.calls.modules.*;
+import com.suse.salt.netapi.calls.modules.Cmd;
+import com.suse.salt.netapi.calls.modules.Config;
+import com.suse.salt.netapi.calls.modules.Event;
+import com.suse.salt.netapi.calls.modules.Grains;
+import com.suse.salt.netapi.calls.modules.Match;
+import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
+import com.suse.salt.netapi.calls.modules.Status;
+import com.suse.salt.netapi.calls.modules.Test;
+import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -89,15 +97,23 @@ import java.nio.file.attribute.PosixFileAttributeView;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -157,7 +173,9 @@ public class SaltService implements SystemQuery {
         ACCEPTED, DENIED, UNACCEPTED, REJECTED
     }
 
-    // Prevent instantiation
+    /**
+     * Default constructor
+     */
     public SaltService() {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(0)
@@ -245,6 +263,9 @@ public class SaltService implements SystemQuery {
                 .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName) {
         Map<String, JsonObject> infos = getPools(minionId);
@@ -275,8 +296,11 @@ public class SaltService implements SystemQuery {
         return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Optional<Boolean> ping (String minionId) {
+    public Optional<Boolean> ping(String minionId) {
         return callSync(Test.ping(), minionId);
     }
 
@@ -350,9 +374,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Get the minion keys from salt with their respective status.
-     *
-     * @return the keys with their respective status as returned from salt
+     * {@inheritDoc}
      */
     public Key.Names getKeys() {
         return callSync(Key.listAll())
@@ -428,12 +450,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * For a given minion id check if there is a key in any of the given status. If no status is given as parameter,
-     * all the available status are considered.
-     *
-     * @param id the id to check for
-     * @param statusIn array of key status to consider
-     * @return true if there is a key with the given id, false otherwise
+     * {@inheritDoc}
      */
     public boolean keyExists(String id, KeyStatus... statusIn) {
         final Set<KeyStatus> status = new HashSet<>(Arrays.asList(statusIn));
@@ -449,9 +466,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Get the minion keys from salt with their respective status and fingerprint.
-     *
-     * @return the keys with their respective status and fingerprint as returned from salt
+     * {@inheritDoc}
      */
     public Key.Fingerprints getFingerprints() {
         return callSync(Key.finger("*"))
@@ -459,11 +474,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Generate a key pair for the given id and accept the public key.
-     *
-     * @param id the id to use
-     * @param force set true to overwrite an already existing key
-     * @return the generated key pair
+     * {@inheritDoc}
      */
     public Key.Pair generateKeysAndAccept(String id,
             boolean force) {
@@ -472,32 +483,21 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Get the specified grains for a given minion.
-     * @param minionId id of the target minion
-     * @param type  class type, result should be parsed into
-     * @param grainNames list of grains names
-     * @param <T> Type result should be parsed into
-     * @return Optional containing the grains parsed into specified type
+     * {@inheritDoc}
      */
     public <T> Optional<T> getGrains(String minionId, TypeToken<T> type, String... grainNames) {
        return callSync(com.suse.manager.webui.utils.salt.Grains.item(false, type, grainNames), minionId);
     }
 
     /**
-     * Get the grains for a given minion.
-     *
-     * @param minionId id of the target minion
-     * @return map containing the grains
+     * {@inheritDoc}
      */
     public Optional<Map<String, Object>> getGrains(String minionId) {
         return callSync(Grains.items(false), minionId);
     }
 
     /**
-     * Get the machine id for a given minion.
-     *
-     * @param minionId id of the target minion
-     * @return the machine id as a string
+     * {@inheritDoc}
      */
     public Optional<String> getMachineId(String minionId) {
         return getGrain(minionId, "machine_id").flatMap(grain -> {
@@ -513,9 +513,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Accept all keys matching the given pattern
-     *
-     * @param match a pattern for minion ids
+     * {@inheritDoc}
      */
     public void acceptKey(String match) {
         callSync(Key.accept(match))
@@ -523,9 +521,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Delete a given minion's key.
-     *
-     * @param minionId id of the minion
+     * {@inheritDoc}
      */
     public void deleteKey(String minionId) {
         callSync(Key.delete(minionId))
@@ -533,9 +529,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Reject a given minion's key.
-     *
-     * @param minionId id of the minion
+     * {@inheritDoc}
      */
     public void rejectKey(String minionId) {
         callSync(Key.reject(minionId))
@@ -543,10 +537,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Return the stream of events happening in salt.
-     *
-     * @return the event stream
-     * @throws SaltException exception occured during connection (if any)
+     * {@inheritDoc}
      */
     public EventStream getEventStream() throws SaltException {
         if (ConfigDefaults.get().isPostgresql()) {
@@ -570,11 +561,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Run a remote command on a given minion.
-     *
-     * @param target the target
-     * @param cmd the command
-     * @return the output of the command
+     * {@inheritDoc}
      */
     public Map<String, Result<String>> runRemoteCommand(MinionList target, String cmd) {
         try {
@@ -593,11 +580,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Run a remote command on a given minion asynchronously.
-     * @param target the target
-     * @param cmd the command to execute
-     * @param cancel a future used to cancel waiting on return events
-     * @return a map holding a {@link CompletionStage}s for each minion
+     * {@inheritDoc}
      */
     public Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(
             MinionList target, String cmd, CompletableFuture<GenericError> cancel) {
@@ -634,21 +617,8 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Create a {@link CompletableFuture} that completes exceptionally after
-     * the given number of seconds.
-     * @param seconds the seconds after which it completes exceptionally
-     * @return a {@link CompletableFuture}
+     * {@inheritDoc}
      */
-    public CompletableFuture failAfter(int seconds) {
-        final CompletableFuture promise = new CompletableFuture();
-        scheduledExecutorService.schedule(() -> {
-            final TimeoutException ex = new TimeoutException("Timeout after " + seconds);
-            return promise.completeExceptionally(ex);
-        }, seconds, TimeUnit.SECONDS);
-
-        return promise;
-    }
-
     @Override
     public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
         LocalCall<PoolCapabilitiesJson> call =
@@ -686,10 +656,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Returns the currently running jobs on the target
-     *
-     * @param target the target
-     * @return list of running jobs
+     * {@inheritDoc}
      */
     public Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target) {
         try {
@@ -714,22 +681,14 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Return the jobcache filtered by metadata
-     *
-     * @param metadata search metadata
-     * @return list of running jobs
+     * {@inheritDoc}
      */
     public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata) {
         return callSync(Jobs.listJobs(metadata));
     }
 
     /**
-     * Return the jobcache filtered by metadata and start and end time.
-     *
-     * @param metadata search metadata
-     * @param startTime jobs start time
-     * @param endTime jobs end time
-     * @return list of running jobs
+     * {@inheritDoc}
      */
     public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata,
                                                                     LocalDateTime startTime, LocalDateTime endTime) {
@@ -737,20 +696,14 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Return the result for a jobId
-     *
-     * @param jid the job id
-     * @return map from minion to result
+     * {@inheritDoc}
      */
     public Optional<Jobs.Info> listJob(String jid) {
         return callSync(Jobs.listJob(jid));
     }
 
     /**
-     * Match the given target expression asynchronously.
-     * @param target the target expression
-     * @param cancel  a future used to cancel waiting on return events
-     * @return a map holding a {@link CompletionStage}s for each minion
+     * {@inheritDoc}
      */
     public Map<String, CompletionStage<Result<Boolean>>> matchAsync(
             String target, CompletableFuture<GenericError> cancel) {
@@ -764,10 +717,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Executes match.glob in another thread and returns a {@link CompletionStage}.
-     * @param target the target to pass to match.glob
-     * @param cancel a future used to cancel waiting
-     * @return a future or Optional.empty if there's no ssh-push minion in the db
+     * {@inheritDoc}
      */
     public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
             String target, CompletableFuture<GenericError> cancel) {
@@ -792,8 +742,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Call 'saltutil.refresh_pillar' to sync the grains to the target minion(s).
-     * @param minionList minion list
+     * {@inheritDoc}
      */
     public void refreshPillar(MinionList minionList) {
         try {
@@ -807,8 +756,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
-     * @param minionList minion list
+     * {@inheritDoc}
      */
     public void syncGrains(MinionList minionList) {
         try {
@@ -822,8 +770,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Call 'saltutil.sync_modules' to sync the grains to the target minion(s).
-     * @param minionList minion list
+     * {@inheritDoc}
      */
     public void syncModules(MinionList minionList) {
         try {
@@ -842,8 +789,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Call 'saltutil.sync_all' to sync everything to the target minion(s).
-     * @param minionList minion list
+     * {@inheritDoc}
      */
     public void syncAll(MinionList minionList) {
         try {
@@ -952,14 +898,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Execute a LocalCall asynchronously on the default Salt client.
-     *
-     * @param <T> the return type of the call
-     * @param callIn the call to execute
-     * @param target minions targeted by the call
-     * @param metadataIn the metadata to be passed in the call
-     * @return the LocalAsyncResult of the call
-     * @throws SaltException in case of an error executing the job with Salt
+     * {@inheritDoc}
      */
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
@@ -969,6 +908,9 @@ public class SaltService implements SystemQuery {
         return adaptException(callIn.withMetadata(metadata).callAsync(SALT_CLIENT, target, PW_AUTH, defaultBatch));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void deployChannels(List<String> minionIds) throws SaltException {
         callSync(
@@ -977,10 +919,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Performs an test.echo on a target set of minions for checkIn purpose.
-     * @param targetIn the target
-     * @return the LocalAsyncResult of the test.echo call
-     * @throws SaltException if we get a failure from Salt
+     * {@inheritDoc}
      */
     public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
         try {
@@ -1041,8 +980,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Apply util.systeminfo state on the specified minion list
-     * @param minionTarget minion list
+     * {@inheritDoc}
      */
     public void updateSystemInfo(MinionList minionTarget) {
         try {
@@ -1055,20 +993,14 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Gets a minion's master hostname.
-     *
-     * @param minionId the minion id
-     * @return the master hostname
+     * {@inheritDoc}
      */
     public Optional<String> getMasterHostname(String minionId) {
         return callSync(Config.get(Config.MASTER), minionId);
     }
 
     /**
-     * Apply a state synchronously.
-     * @param minionId the minion id
-     * @param state the state to apply
-     * @return the result of applying the state
+     * {@inheritDoc}
      */
     public Optional<Map<String, ApplyResult>> applyState(
             String minionId, String state) {
@@ -1076,14 +1008,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Bootstrap a system using salt-ssh.
-     *
-     * @param parameters - bootstrap parameters
-     * @param bootstrapMods - state modules to be applied during the bootstrap
-     * @param pillarData - pillar data used salt-ssh call
-     * @throws SaltException if something goes wrong during command execution or
-     * during manipulation the salt-ssh roster
-     * @return the result of the underlying ssh call for given host
+     * {@inheritDoc}
      */
     public Result<SSHResult<Map<String, ApplyResult>>> bootstrapMinion(
             BootstrapParameters parameters, List<String> bootstrapMods,
@@ -1092,13 +1017,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Store the files uploaded by a minion to the SCAP storage directory.
-     * @param minion the minion
-     * @param uploadDir the uploadDir
-     * @param actionId the action id
-     * @return a map with one element: @{code true} -> scap store path,
-     * {@code false} -> err message
-     *
+     * {@inheritDoc}
      */
     public Map<Boolean, String> storeMinionScapFiles(
             MinionServer minion, String uploadDir, Long actionId) {
@@ -1196,10 +1115,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Call the custom mgrutil.ssh_keygen runner if the key files are not present.
-     *
-     * @param path of the key files
-     * @return the result of the runner call as a map
+     * {@inheritDoc}
      */
     public Optional<MgrUtilRunner.ExecResult> generateSSHKey(String path) {
         File pubKey = new File(path + ".pub");
@@ -1211,10 +1127,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Delete a Salt key from the "Rejected Keys" category using the mgrutil runner.
-     *
-     * @param minionId the minionId to look for in "Rejected Keys"
-     * @return the result of the runner call as a map
+     * {@inheritDoc}
      */
     public Optional<MgrUtilRunner.ExecResult> deleteRejectedKey(String minionId) {
         RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.deleteRejectedKey(minionId);
@@ -1222,18 +1135,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Chain ssh calls over one or more hops to run a command on the last host in the chain.
-     * This calls the mgrutil.chain_ssh_command runner.
-     *
-     * @param hosts a list of hosts, where the last one is where
-     *              the command will be executed
-     * @param clientKey the ssh key to use to connect to the first host
-     * @param proxyKey the ssh key path to use for the rest of the hosts
-     * @param user the user
-     * @param options ssh options
-     * @param command the command to execute
-     * @param outputfile the file to which to dump the command stdout
-     * @return the execution result
+     * {@inheritDoc}
      */
     public Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts,
                                                     String clientKey,
@@ -1249,10 +1151,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Get information about all containers running in a Kubernetes cluster.
-     * @param kubeconfig path to the kubeconfig file
-     * @param context kubeconfig context to use
-     * @return a list of containers
+     * {@inheritDoc}
      */
     public Optional<List<MgrK8sRunner.Container>> getAllContainers(String kubeconfig,
                                                         String context) {
@@ -1300,11 +1199,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Remove SUSE Manager specific configuration from a Salt minion.
-     *
-     * @param minion the minion.
-     * @param timeout operation timeout
-     * @return list of error messages or empty if no error
+     * {@inheritDoc}
      */
     public Optional<List<String>> cleanupMinion(MinionServer minion,
                                                    int timeout) {
@@ -1340,18 +1235,14 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * @return saltSSHService to get
+     * {@inheritDoc}
      */
     public SaltSSHService getSaltSSHService() {
         return saltSSHService;
     }
+
     /**
-     * Upload built Kiwi image to SUSE Manager
-     *
-     * @param minion     the minion
-     * @param filepath   the filepath of the image to upload, in the build host
-     * @param imageStore the image store location
-     * @return the execution result
+     * {@inheritDoc}
      */
     public Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
             String imageStore) {

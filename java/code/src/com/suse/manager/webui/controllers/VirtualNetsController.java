@@ -42,8 +42,12 @@ public class VirtualNetsController {
 
     private VirtManager virtManager;
 
-    public VirtualNetsController(VirtManager virtManager) {
-        this.virtManager = virtManager;
+    /**
+     * Controller class providing backend for Virtual networks UI
+     * @param virtManagerIn instance to manage virtualization
+     */
+    public VirtualNetsController(VirtManager virtManagerIn) {
+        this.virtManager = virtManagerIn;
     }
 
     /**

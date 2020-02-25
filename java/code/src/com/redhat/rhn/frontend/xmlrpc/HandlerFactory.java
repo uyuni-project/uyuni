@@ -15,6 +15,60 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
+import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
+import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
+import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
+import com.redhat.rhn.frontend.xmlrpc.audit.CVEAuditHandler;
+import com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler;
+import com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler;
+import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
+import com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler;
+import com.redhat.rhn.frontend.xmlrpc.channel.org.ChannelOrgHandler;
+import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
+import com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler;
+import com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler;
+import com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler;
+import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
+import com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler;
+import com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler;
+import com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler;
+import com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.keys.CryptoKeysHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.ProfileHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys.KeysHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.system.SystemDetailsHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler;
+import com.redhat.rhn.frontend.xmlrpc.kickstart.tree.KickstartTreeHandler;
+import com.redhat.rhn.frontend.xmlrpc.org.OrgHandler;
+import com.redhat.rhn.frontend.xmlrpc.org.trusts.OrgTrustHandler;
+import com.redhat.rhn.frontend.xmlrpc.packages.PackagesHandler;
+import com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler;
+import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
+import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
+import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
+import com.redhat.rhn.frontend.xmlrpc.satellite.SatelliteHandler;
+import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
+import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
+import com.redhat.rhn.frontend.xmlrpc.sync.master.MasterHandler;
+import com.redhat.rhn.frontend.xmlrpc.sync.slave.SlaveHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.crash.CrashHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.SnapshotHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler;
+import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
+import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticHandler;
+import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler;
+import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
+import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
+import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -30,14 +84,25 @@ import java.util.Set;
 public class HandlerFactory {
     private final Map<String, BaseHandler> handlers;
 
+    /**
+     *  Creates an empty HandlerFactory.
+     */
     public HandlerFactory() {
         this.handlers = new HashMap<>();
     }
 
-    public HandlerFactory(Map<String, BaseHandler> handlers) {
-        this.handlers = handlers;
+    /**
+     * Creates a HandlerFactory prepopulated with handlers.
+     * @param handlersIn to add to the handler factory.
+     */
+    public HandlerFactory(Map<String, BaseHandler> handlersIn) {
+        this.handlers = handlersIn;
     }
 
+    /**
+     * HandlerFactory prepopulated with unit test handlers.
+     * @return HandlerFactory for unit tests.
+     */
     public static HandlerFactory mockHandlers() {
         HandlerFactory factory = new HandlerFactory();
         factory.addHandler("registration", new com.redhat.rhn.frontend.xmlrpc.test.RegistrationHandler());
@@ -45,65 +110,74 @@ public class HandlerFactory {
         return factory;
     }
 
+    /**
+     * Add a handler to this HandlerFactory.
+     * @param namespace the xmlrpc namespace of this handler.
+     * @param handler xml rpc handler.
+     */
     public void addHandler(String namespace, BaseHandler handler) {
        handlers.put(namespace, handler);
     }
 
+    /**
+     * HandlerFactory prepopulated with the handlers used in production.
+     * @return HandlerFactory used in production.
+     */
     public static HandlerFactory  defaultHandlers() {
         HandlerFactory factory = new HandlerFactory();
-        factory.addHandler("actionchain", new com.redhat.rhn.frontend.xmlrpc.chain.ActionChainHandler());
-        factory.addHandler("activationkey", new com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler());
-        factory.addHandler("admin.monitoring", new com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler());
-        factory.addHandler("api", new com.redhat.rhn.frontend.xmlrpc.api.ApiHandler(factory));
-        factory.addHandler("audit", new com.redhat.rhn.frontend.xmlrpc.audit.CVEAuditHandler());
-        factory.addHandler("auth", new com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler());
-        factory.addHandler("channel", new com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler());
-        factory.addHandler("channel.access", new com.redhat.rhn.frontend.xmlrpc.channel.access.ChannelAccessHandler());
-        factory.addHandler("channel.org", new com.redhat.rhn.frontend.xmlrpc.channel.org.ChannelOrgHandler());
-        factory.addHandler("channel.software", new com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler());
-        factory.addHandler("configchannel", new com.redhat.rhn.frontend.xmlrpc.configchannel.ConfigChannelHandler());
-        factory.addHandler("contentmanagement", new com.redhat.rhn.frontend.xmlrpc.contentmgmt.ContentManagementHandler());
-        factory.addHandler("distchannel", new com.redhat.rhn.frontend.xmlrpc.distchannel.DistChannelHandler());
-        factory.addHandler("errata", new com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler());
-        factory.addHandler("formula", new com.redhat.rhn.frontend.xmlrpc.formula.FormulaHandler());
-        factory.addHandler("image.store", new com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler());
-        factory.addHandler("image.profile", new com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler());
-        factory.addHandler("image", new com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler());
-        factory.addHandler("kickstart", new com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler());
-        factory.addHandler("kickstart.filepreservation", new com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation.FilePreservationListHandler());
-        factory.addHandler("kickstart.keys", new com.redhat.rhn.frontend.xmlrpc.kickstart.keys.CryptoKeysHandler());
-        factory.addHandler("kickstart.profile", new com.redhat.rhn.frontend.xmlrpc.kickstart.profile.ProfileHandler());
-        factory.addHandler("kickstart.profile.keys", new com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys.KeysHandler());
-        factory.addHandler("kickstart.profile.software", new com.redhat.rhn.frontend.xmlrpc.kickstart.profile.software.SoftwareHandler());
-        factory.addHandler("kickstart.profile.system", new com.redhat.rhn.frontend.xmlrpc.kickstart.profile.system.SystemDetailsHandler());
-        factory.addHandler("kickstart.snippet", new com.redhat.rhn.frontend.xmlrpc.kickstart.snippet.SnippetHandler());
-        factory.addHandler("kickstart.tree", new com.redhat.rhn.frontend.xmlrpc.kickstart.tree.KickstartTreeHandler());
-        factory.addHandler("org", new com.redhat.rhn.frontend.xmlrpc.org.OrgHandler());
-        factory.addHandler("org.trusts", new com.redhat.rhn.frontend.xmlrpc.org.trusts.OrgTrustHandler());
-        factory.addHandler("packages", new com.redhat.rhn.frontend.xmlrpc.packages.PackagesHandler());
-        factory.addHandler("packages.provider", new com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler());
-        factory.addHandler("packages.search", new com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler());
-        factory.addHandler("preferences.locale", new com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler());
-        factory.addHandler("proxy", new com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler());
-        factory.addHandler("satellite", new com.redhat.rhn.frontend.xmlrpc.satellite.SatelliteHandler());
-        factory.addHandler("schedule", new com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler());
-        factory.addHandler("subscriptionmatching.pinnedsubscription", new com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler());
-        factory.addHandler("sync.master", new com.redhat.rhn.frontend.xmlrpc.sync.master.MasterHandler());
-        factory.addHandler("sync.slave", new com.redhat.rhn.frontend.xmlrpc.sync.slave.SlaveHandler());
-        factory.addHandler("sync.content", new com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler());
-        factory.addHandler("system", new com.redhat.rhn.frontend.xmlrpc.system.SystemHandler());
-        factory.addHandler("system.config", new com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler());
-        factory.addHandler("system.crash", new com.redhat.rhn.frontend.xmlrpc.system.crash.CrashHandler());
-        factory.addHandler("system.custominfo", new com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler());
-        factory.addHandler("system.provisioning.snapshot", new com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.SnapshotHandler());
-        factory.addHandler("system.scap", new com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler());
-        factory.addHandler("system.search", new com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler());
-        factory.addHandler("virtualhostmanager", new com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler());
-        factory.addHandler("systemgroup", new com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler());
-        factory.addHandler("taskomatic", new com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticHandler());
-        factory.addHandler("taskomatic.org", new com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler());
-        factory.addHandler("user", new com.redhat.rhn.frontend.xmlrpc.user.UserHandler());
-        factory.addHandler("user.external", new com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler());
+        factory.addHandler("actionchain", new ActionChainHandler());
+        factory.addHandler("activationkey", new ActivationKeyHandler());
+        factory.addHandler("admin.monitoring", new AdminMonitoringHandler());
+        factory.addHandler("api", new ApiHandler(factory));
+        factory.addHandler("audit", new CVEAuditHandler());
+        factory.addHandler("auth", new AuthHandler());
+        factory.addHandler("channel", new ChannelHandler());
+        factory.addHandler("channel.access", new ChannelAccessHandler());
+        factory.addHandler("channel.org", new ChannelOrgHandler());
+        factory.addHandler("channel.software", new ChannelSoftwareHandler());
+        factory.addHandler("configchannel", new ConfigChannelHandler());
+        factory.addHandler("contentmanagement", new ContentManagementHandler());
+        factory.addHandler("distchannel", new DistChannelHandler());
+        factory.addHandler("errata", new ErrataHandler());
+        factory.addHandler("formula", new FormulaHandler());
+        factory.addHandler("image.store", new ImageStoreHandler());
+        factory.addHandler("image.profile", new ImageProfileHandler());
+        factory.addHandler("image", new ImageInfoHandler());
+        factory.addHandler("kickstart", new KickstartHandler());
+        factory.addHandler("kickstart.filepreservation", new FilePreservationListHandler());
+        factory.addHandler("kickstart.keys", new CryptoKeysHandler());
+        factory.addHandler("kickstart.profile", new ProfileHandler());
+        factory.addHandler("kickstart.profile.keys", new KeysHandler());
+        factory.addHandler("kickstart.profile.software", new SoftwareHandler());
+        factory.addHandler("kickstart.profile.system", new SystemDetailsHandler());
+        factory.addHandler("kickstart.snippet", new SnippetHandler());
+        factory.addHandler("kickstart.tree", new KickstartTreeHandler());
+        factory.addHandler("org", new OrgHandler());
+        factory.addHandler("org.trusts", new OrgTrustHandler());
+        factory.addHandler("packages", new PackagesHandler());
+        factory.addHandler("packages.provider", new PackagesProviderHandler());
+        factory.addHandler("packages.search", new PackagesSearchHandler());
+        factory.addHandler("preferences.locale", new PreferencesLocaleHandler());
+        factory.addHandler("proxy", new ProxyHandler());
+        factory.addHandler("satellite", new SatelliteHandler());
+        factory.addHandler("schedule", new ScheduleHandler());
+        factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
+        factory.addHandler("sync.master", new MasterHandler());
+        factory.addHandler("sync.slave", new SlaveHandler());
+        factory.addHandler("sync.content", new ContentSyncHandler());
+        factory.addHandler("system", new SystemHandler());
+        factory.addHandler("system.config", new ServerConfigHandler());
+        factory.addHandler("system.crash", new CrashHandler());
+        factory.addHandler("system.custominfo", new CustomInfoHandler());
+        factory.addHandler("system.provisioning.snapshot", new SnapshotHandler());
+        factory.addHandler("system.scap", new SystemScapHandler());
+        factory.addHandler("system.search", new SystemSearchHandler());
+        factory.addHandler("virtualhostmanager", new VirtualHostManagerHandler());
+        factory.addHandler("systemgroup", new ServerGroupHandler());
+        factory.addHandler("taskomatic", new TaskomaticHandler());
+        factory.addHandler("taskomatic.org", new TaskomaticOrgHandler());
+        factory.addHandler("user", new UserHandler());
+        factory.addHandler("user.external", new UserExternalHandler());
         return factory;
     }
 

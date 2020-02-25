@@ -45,11 +45,13 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
@@ -84,10 +86,12 @@ public class RegistrationUtils {
 
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
-    private static SystemEntitlementManager systemEntitlementManager;
+    private static SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(),
+            new SystemEntitler(SaltService.INSTANCE)
+    );
 
-    public RegistrationUtils(SystemEntitlementManager systemEntitlementManager) {
-       this.systemEntitlementManager = systemEntitlementManager;
+    private RegistrationUtils() {
     }
 
     /**
@@ -222,7 +226,7 @@ public class RegistrationUtils {
      * @param activationKeyLabel the activation key label
      */
     public static void subscribeMinionToChannels(SystemQuery saltService, MinionServer server,
-                                                 ValueMap grains, Optional<ActivationKey> activationKey, Optional<String> activationKeyLabel) {
+            ValueMap grains, Optional<ActivationKey> activationKey, Optional<String> activationKeyLabel) {
         String minionId = server.getMinionId();
 
         if (!activationKey.isPresent() && activationKeyLabel.isPresent()) {

@@ -99,8 +99,11 @@ public class VirtualGuestsController {
 
     private final VirtManager virtManager;
 
-    public VirtualGuestsController(VirtManager virtManager) {
-        this.virtManager = virtManager;
+    /**
+     * @param virtManagerIn instance to manage virtualization
+     */
+    public VirtualGuestsController(VirtManager virtManagerIn) {
+        this.virtManager = virtManagerIn;
     }
 
     /**

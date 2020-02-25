@@ -55,8 +55,12 @@ public class VirtualPoolsController {
 
     private final VirtManager virtManager;
 
-    public VirtualPoolsController(VirtManager virtManager) {
-        this.virtManager = virtManager;
+    /**
+     * Controller class providing backend for Virtual storage pools UI
+     * @param virtManagerIn instance to manage virtualization
+     */
+    public VirtualPoolsController(VirtManager virtManagerIn) {
+        this.virtManager = virtManagerIn;
     }
 
     /**

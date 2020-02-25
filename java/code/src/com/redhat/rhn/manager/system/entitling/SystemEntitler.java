@@ -42,14 +42,11 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SystemQuery;
-import com.suse.manager.webui.utils.salt.State;
 
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,8 +61,11 @@ public class SystemEntitler {
 
     private SystemQuery systemQuery;
 
-    public SystemEntitler(SystemQuery systemQuery) {
-        this.systemQuery = systemQuery;
+    /**
+     * @param systemQueryIn instance for gathering data from a system.
+     */
+    public SystemEntitler(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**

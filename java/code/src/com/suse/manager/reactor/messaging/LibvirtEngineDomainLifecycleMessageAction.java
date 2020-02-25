@@ -42,8 +42,11 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
 
     private final VirtManager virtManager;
 
-    public LibvirtEngineDomainLifecycleMessageAction(VirtManager virtManager) {
-        this.virtManager = virtManager;
+    /**
+     * @param virtManagerIn instance to manage virtualization
+     */
+    public LibvirtEngineDomainLifecycleMessageAction(VirtManager virtManagerIn) {
+        this.virtManager = virtManagerIn;
     }
 
     @Override
