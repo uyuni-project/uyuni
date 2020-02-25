@@ -56,6 +56,7 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -269,7 +270,7 @@ public class MessageQueue {
      * This method should be called directly after <code>startMessaging</code>.
      *
      */
-    public static void configureDefaultActions() {
+    public static void configureDefaultActions(SystemQuery systemQuery) {
         // Register the Actions for the Events
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
