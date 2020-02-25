@@ -89,4 +89,11 @@ public class GroupRecurringAction extends RecurringAction {
     public void setGroup(ServerGroup serverGroup) {
         this.group = serverGroup;
     }
+
+    @Override
+    public String toString() {
+        return super.toStringBuilder()
+                .append("group", group)
+                .toString();
+    }
 }

@@ -89,4 +89,11 @@ public class OrgRecurringAction extends RecurringAction {
     public void setOrg(Org org) {
         this.organization = org;
     }
+
+    @Override
+    public String toString() {
+        return super.toStringBuilder()
+                .append("org", organization)
+                .toString();
+    }
 }

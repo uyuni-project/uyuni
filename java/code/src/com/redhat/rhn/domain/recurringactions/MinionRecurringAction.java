@@ -83,4 +83,11 @@ public class MinionRecurringAction extends RecurringAction {
     public void setMinion(MinionServer minionServer) {
         this.minion = minionServer;
     }
+
+    @Override
+    public String toString() {
+        return super.toStringBuilder()
+                .append("minion", minion == null ? null : minion.getId())
+                .toString();
+    }
 }
