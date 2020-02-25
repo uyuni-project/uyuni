@@ -19,18 +19,8 @@ import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.common.client.ClientCertificate;
-
-
-import java.util.Map;
-import java.util.HashMap;
-
 import com.suse.salt.netapi.exception.SaltException;
-import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.calls.modules.Event;
-import com.suse.manager.webui.services.impl.SaltService;
 
 
 /**
@@ -43,10 +33,13 @@ public class SystemIdGenerateEventMessageAction implements MessageAction {
 
     private static final String EVENT_TAG = "suse/systemid/generated";
 
-    public final SystemQuery systemQuery;
+    private final SystemQuery systemQuery;
 
-    public SystemIdGenerateEventMessageAction(SystemQuery systemQuery) {
-        this.systemQuery = systemQuery;
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public SystemIdGenerateEventMessageAction(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**

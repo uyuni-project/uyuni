@@ -17,7 +17,6 @@ package com.suse.manager.webui.controllers;
 import static spark.Spark.halt;
 
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
@@ -43,8 +42,11 @@ public class SaltSSHController {
 
     private final SystemQuery systemQuery;
 
-    public SaltSSHController(SystemQuery systemQuery) {
-        this.systemQuery = systemQuery;
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public SaltSSHController(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**

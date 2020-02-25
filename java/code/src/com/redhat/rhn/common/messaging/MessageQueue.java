@@ -268,7 +268,7 @@ public class MessageQueue {
     /**
      * Configures defaut messaging actions needed by RHN
      * This method should be called directly after <code>startMessaging</code>.
-     *
+     * @param systemQuery instance for gathering data from a system.
      */
     public static void configureDefaultActions(SystemQuery systemQuery) {
         // Register the Actions for the Events

@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;

@@ -75,7 +75,6 @@ import com.suse.manager.webui.utils.gson.ServerApplyStatesJson;
 import com.suse.manager.webui.utils.gson.ServerConfigChannelsJson;
 import com.suse.manager.webui.utils.gson.ServerPackageStatesJson;
 import com.suse.manager.webui.utils.gson.StateTargetType;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;

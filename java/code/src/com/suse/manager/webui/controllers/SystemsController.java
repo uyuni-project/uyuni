@@ -80,8 +80,11 @@ public class SystemsController {
 
     private final SystemQuery systemQuery;
 
-    public SystemsController(SystemQuery systemQuery) {
-        this.systemQuery = systemQuery;
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public SystemsController(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     // Logger for this class
@@ -95,6 +98,7 @@ public class SystemsController {
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
+     * @param systemsController instance to register.
      */
     public static void initRoutes(SystemsController systemsController) {
         post("/manager/api/systems/:sid/delete", withUser(systemsController::delete));

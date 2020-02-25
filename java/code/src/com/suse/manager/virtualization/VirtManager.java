@@ -16,18 +16,10 @@ package com.suse.manager.virtualization;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SystemQuery;
-import com.suse.salt.netapi.calls.LocalCall;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service providing utility functions to handle virtual machines.
@@ -36,6 +28,10 @@ public class VirtManager {
 
     private final SystemQuery saltService;
 
+    /**
+     * Service providing utility functions to handle virtual machines.
+     * @param systemQuery instance for getting information from a system.
+     */
     public VirtManager(SystemQuery systemQuery) {
         this.saltService = systemQuery;
     }
