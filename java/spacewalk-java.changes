@@ -1,3 +1,4 @@
+- Handle the non-existent requested grains gracefully
 - Get the machineid grain from the minion startup event
 - use term 'patch' instead of 'errata' (bsc#1164649)
 - enable provisioning API with salt and bootstrap entitled systems
