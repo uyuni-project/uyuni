@@ -1,5 +1,6 @@
 package com.redhat.rhn.domain.recurringactions.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
@@ -11,6 +12,8 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
+
+import javax.persistence.PersistenceException;
 
 /**
  * Tests for {@link RecurringActionFactory}
@@ -98,5 +101,33 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(
                 action,
                 RecurringActionFactory.lookupByJobName("recurring-action-" + action.getId()).orElseThrow());
+    }
+
+    public void testMultipleActionsWithSameName() throws Exception {
+        try {
+            var orgAction = new OrgRecurringAction();
+            orgAction.setOrg(user.getOrg());
+            orgAction.setName("already-existing-action");
+            RecurringActionFactory.save(orgAction);
+
+            var minAction1 = new MinionRecurringAction();
+            var minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+            minAction1.setMinion(minion1);
+            minAction1.setName("already-existing-action");
+            RecurringActionFactory.save(minAction1);
+
+            var minAction2 = new MinionRecurringAction();
+            var minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+            minAction2.setMinion(minion2);
+            minAction2.setName("already-existing-action");
+            RecurringActionFactory.save(minAction2);
+
+            // we want to make sure multiple actions with the name can co-exist and can be persisted
+            // as long they reference different target entity (e.g. 2 different minions)
+            HibernateFactory.getSession().flush();
+        }
+        catch (PersistenceException e) {
+            fail("No persistence exception should have occured");
+        }
     }
 }

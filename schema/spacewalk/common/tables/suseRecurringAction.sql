@@ -26,3 +26,12 @@ CREATE TABLE suseRecurringAction
 
 CREATE SEQUENCE suse_recurring_action_id_seq;
 
+CREATE UNIQUE INDEX suse_rec_action_name_minion_uq
+    ON suseRecurringAction(name, minion_id);
+
+CREATE UNIQUE INDEX suse_rec_action_name_grp_uq
+    ON suseRecurringAction(name, group_id);
+
+CREATE UNIQUE INDEX suse_rec_action_name_org_uq
+    ON suseRecurringAction(name, org_id);
+
