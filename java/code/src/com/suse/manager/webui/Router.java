@@ -34,6 +34,7 @@ import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.SsmController;
@@ -120,6 +121,9 @@ public class Router implements SparkApplication {
 
         // States API
         StatesAPI.initRoutes();
+
+        // Recurring Action
+        RecurringActionController.initRoutes();
 
         // Subscription Matching
         SubscriptionMatchingController.initRoutes(jade);
