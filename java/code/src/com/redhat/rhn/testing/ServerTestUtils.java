@@ -145,10 +145,12 @@ public class ServerTestUtils {
      *
      * @param user to own system
      * @param numberOfGuests number of guests to create
+     * @param systemEntitlementManager to manage entitlements
      * @return Server with guest.
      * @throws Exception if error
      */
-    public static Server createVirtHostWithGuests(User user, int numberOfGuests, SystemEntitlementManager systemEntitlementManager)
+    public static Server createVirtHostWithGuests(User user, int numberOfGuests,
+                                                  SystemEntitlementManager systemEntitlementManager)
         throws Exception {
         return createVirtHostWithGuests(user, numberOfGuests, false, systemEntitlementManager);
     }
@@ -159,10 +161,12 @@ public class ServerTestUtils {
      * @param user to own system
      * @param numberOfGuests number of guests to create
      * @param salt true to create a salt-managed systems
+     * @param systemEntitlementManager to manage entitlements
      * @return Server with guest.
      * @throws Exception if error
      */
-    public static Server createVirtHostWithGuests(User user, int numberOfGuests, boolean salt, SystemEntitlementManager systemEntitlementManager)
+    public static Server createVirtHostWithGuests(User user, int numberOfGuests, boolean salt,
+                                                  SystemEntitlementManager systemEntitlementManager)
         throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(user);
@@ -217,6 +221,7 @@ public class ServerTestUtils {
 
     /**
      * Create virthostwithguest
+     * @param systemEntitlementManager to manage entitlements
      * @return Server with a guest
      * @throws Exception if error
      */
@@ -227,10 +232,12 @@ public class ServerTestUtils {
     /**
      * Create virt host with guests.
      * @param numberOfGuests Number of guests to create on this host.
+     * @param systemEntitlementManager to manage entitlements
      * @return Server with a guest
      * @throws Exception if error
      */
-    public static Server createVirtHostWithGuests(int numberOfGuests, SystemEntitlementManager systemEntitlementManager) throws Exception {
+    public static Server createVirtHostWithGuests(int numberOfGuests, SystemEntitlementManager systemEntitlementManager)
+            throws Exception {
         return createVirtHostWithGuests(UserTestUtils.findNewUser(), numberOfGuests, systemEntitlementManager);
     }
 

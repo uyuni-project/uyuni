@@ -100,13 +100,18 @@ public class ImageBuildController {
 
     private final KubernetesManager kubernetesManager;
 
-    public ImageBuildController(KubernetesManager kubernetesManager) {
-        this.kubernetesManager = kubernetesManager;
+    /**
+     * Spark controller class for image building and listing.
+     * @param kubernetesManagerIn instance for getting information from a kubernetes cluster.
+     */
+    public ImageBuildController(KubernetesManager kubernetesManagerIn) {
+        this.kubernetesManager = kubernetesManagerIn;
     }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      *
+     * @param imageBuildController instance to register
      * @param jade the Jade engine to use to render the pages
      */
     public static void initRoutes(JadeTemplateEngine jade, ImageBuildController imageBuildController) {

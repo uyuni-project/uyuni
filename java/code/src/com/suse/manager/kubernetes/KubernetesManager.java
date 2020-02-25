@@ -54,6 +54,7 @@ public class KubernetesManager {
     /**
      * No arg constructor.
      * Configures this with the default {@link SaltService} instance.
+     * @param systemQuery instance for getting information from a system.
      */
     public KubernetesManager(SystemQuery systemQuery) {
         this.saltService = systemQuery;

@@ -19,11 +19,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

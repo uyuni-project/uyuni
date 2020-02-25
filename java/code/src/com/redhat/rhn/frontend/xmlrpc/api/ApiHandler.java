@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,8 +44,12 @@ public class ApiHandler extends BaseHandler {
 
     private final HandlerFactory handlers;
 
-    public ApiHandler(HandlerFactory handlers) {
-        this.handlers = handlers;
+    /**
+     * ApiHandler provides information about the xmlrpc api.
+     * @param handlersIn HandlerFactory to introspect the xmlrpc api.
+     */
+    public ApiHandler(HandlerFactory handlersIn) {
+        this.handlers = handlersIn;
     }
 
     /**

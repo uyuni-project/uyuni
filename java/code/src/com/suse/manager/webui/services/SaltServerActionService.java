@@ -97,7 +97,6 @@ import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -207,8 +206,11 @@ public class SaltServerActionService {
     private SaltUtils saltUtils = SaltUtils.INSTANCE;
     private boolean skipCommandScriptPerms;
 
-    public SaltServerActionService(SystemQuery systemQuery) {
-        this.saltService = systemQuery;
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public SaltServerActionService(SystemQuery systemQueryIn) {
+        this.saltService = systemQueryIn;
     }
 
     private Action unproxy(Action entity) {

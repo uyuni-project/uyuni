@@ -30,7 +30,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.gson.NotificationMessageJson;
 import com.suse.manager.webui.websocket.Notification;
@@ -64,16 +63,21 @@ public class NotificationMessageController {
 
     private final SystemQuery systemQuery;
 
-    public NotificationMessageController(SystemQuery systemQuery) {
-        this.systemQuery = systemQuery;
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public NotificationMessageController(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      *
+     * @param notificationMessageController instance to register.
      * @param jade the Jade engine to use to render the pages
      */
-    public static void initRoutes(JadeTemplateEngine jade, NotificationMessageController notificationMessageController) {
+    public static void initRoutes(JadeTemplateEngine jade,
+                                  NotificationMessageController notificationMessageController) {
         get("/manager/notification-messages",
                 withUserPreferences(withCsrfToken(withUser(notificationMessageController::getList))), jade);
         get("/manager/notification-messages/data-unread", withUser(notificationMessageController::dataUnread));
