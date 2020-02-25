@@ -1,3 +1,4 @@
+- Add mgr_start_event_grains.sls to update minion config
 - Add 'product' custom state module to handle installation of
   SUSE products at client side (bsc#1157447)
 - Support reading of pillar data for minions from multiple files (bsc#1158754)

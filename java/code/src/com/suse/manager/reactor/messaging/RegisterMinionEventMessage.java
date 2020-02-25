@@ -15,24 +15,29 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 
+import java.util.Optional;
 /**
  * Event for triggering creation of system records for salt minions.
  */
 public class RegisterMinionEventMessage implements EventMessage {
 
     private String minionId;
+    private Optional<MinionStartupGrains> minionStartupGrains;
 
     /**
      * Create a new event to trigger system registration.
      *
      * @param minionIdIn minion to register
+     * @param minionStartupGrainsIn grains to be passed
      */
-    public RegisterMinionEventMessage(String minionIdIn) {
+    public RegisterMinionEventMessage(String minionIdIn, Optional<MinionStartupGrains> minionStartupGrainsIn) {
         if (minionIdIn == null) {
             throw new IllegalArgumentException("minionId cannot be null");
         }
         this.minionId = minionIdIn;
+        this.minionStartupGrains = minionStartupGrainsIn;
     }
 
     /**
@@ -52,6 +57,15 @@ public class RegisterMinionEventMessage implements EventMessage {
      */
     public String getMinionId() {
         return minionId;
+    }
+
+    /**
+     * Return the Optional of MinionStartupGrains object
+     *
+     * @return minionStartupGrains
+     */
+    public Optional<MinionStartupGrains> getMinionStartupGrains() {
+        return minionStartupGrains;
     }
 
     /**

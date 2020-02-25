@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -414,6 +415,18 @@ public class SaltService {
             boolean force) {
         return callSync(Key.genAccept(id, Optional.of(force)))
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
+    }
+
+    /**
+     * Get the specified grains for a given minion.
+     * @param minionId id of the target minion
+     * @param type  class type, result should be parsed into
+     * @param grainNames list of grains names
+     * @param <T> Type result should be parsed into
+     * @return Optional containing the grains parsed into specified type
+     */
+    public <T> Optional<T> getGrains(String minionId, TypeToken<T> type, String... grainNames) {
+       return callSync(com.suse.manager.webui.utils.salt.Grains.item(false, type, grainNames), minionId);
     }
 
     /**
