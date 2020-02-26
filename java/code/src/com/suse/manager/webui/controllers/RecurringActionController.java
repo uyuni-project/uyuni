@@ -72,11 +72,11 @@ public class RecurringActionController {
      * Invoked from Router. Initialize routes for Systems Views.
      */
     public static void initRoutes() {
-        get("/manager/api/states/schedules", withUser(RecurringActionController::schedules));
-        get("/manager/api/states/schedules/:scheduleId", withUser(RecurringActionController::singleSchedule));
-        post("/manager/api/states/schedules/save", withUser(RecurringActionController::createSchedule));
-        post("/manager/api/states/schedules/:scheduleId/update", withUser(RecurringActionController::updateSchedule));
-        delete("/manager/api/states/schedules/:scheduleId/delete", withUser(RecurringActionController::deleteSchedule));
+        get("/manager/api/recurringactions", withUser(RecurringActionController::schedules));
+        get("/manager/api/recurringactions/:scheduleId", withUser(RecurringActionController::singleSchedule));
+        post("/manager/api/recurringactions/save", withUser(RecurringActionController::createSchedule));
+        post("/manager/api/recurringactions/:scheduleId/update", withUser(RecurringActionController::updateSchedule));
+        delete("/manager/api/recurringactions/:scheduleId/delete", withUser(RecurringActionController::deleteSchedule));
     }
 
     /**

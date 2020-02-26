@@ -80,7 +80,7 @@ class RecurringStates extends React.Component {
     };
 
     getRecurringScheduleList = () => {
-        return Network.get("/rhn/manager/api/states/schedules", "application/json").promise
+        return Network.get("/rhn/manager/api/recurringactions", "application/json").promise
             .then(schedules => {
                 schedules.data.map(schedule => schedule.minionIds = this.toArray(schedule.minionIds));
                 schedules.data.map(schedule => schedule.minionNames = this.toArray(schedule.minionNames));
@@ -93,7 +93,7 @@ class RecurringStates extends React.Component {
     };
 
     getScheduleDetails(id, action) {
-        return Network.get("/rhn/manager/api/states/schedules/" + id, "application/json").promise
+        return Network.get("/rhn/manager/api/recurringactions/" + id, "application/json").promise
             .then(schedule => {
                 schedule.data.minionIds = this.toArray(schedule.data.minionIds);
                 schedule.data.minionNames = this.toArray(schedule.data.minionNames);
@@ -142,7 +142,7 @@ class RecurringStates extends React.Component {
 
     createSchedule(schedule) {
         return Network.post(
-            "/rhn/manager/api/states/schedules/save",
+            "/rhn/manager/api/recurringactions/save",
             JSON.stringify(schedule),
             "application/json"
         ).promise.then(() => {
@@ -165,7 +165,7 @@ class RecurringStates extends React.Component {
 
     updateSchedule(schedule) {
         return Network.post(
-            "/rhn/manager/api/states/schedules/" + schedule.scheduleId + "/update",
+            "/rhn/manager/api/recurringactions/" + schedule.scheduleId + "/update",
             JSON.stringify(schedule),
             "application/json"
         ).promise.then(() => {
@@ -188,7 +188,7 @@ class RecurringStates extends React.Component {
 
     deleteSchedule(item) {
         if (!item) return false;
-        return Network.del("/rhn/manager/api/states/schedules/" + item.scheduleId + "/delete")
+        return Network.del("/rhn/manager/api/recurringactions/" + item.scheduleId + "/delete")
             .promise.then(data => {
                 this.handleForwardAction();
                 this.setState({
