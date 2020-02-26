@@ -1,3 +1,5 @@
+- Disable modularity failsafe mechanism for RHEL 8 repos (bsc#1164875)
+
 -------------------------------------------------------------------
 Fri Feb 28 12:08:31 CET 2020 - jgonzalez@suse.com
 

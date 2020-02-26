@@ -346,6 +346,12 @@ keeppackages=0
 gpgcheck=0
 EOF
   fi
+
+  # Avoid modularity failsafe mechanism in dnf 4.2.7 or greater
+  if [ -n "$Y_CLIENT_CODE_VERSION" ] && [ $Y_CLIENT_CODE_VERSION -ge 8 ]; then
+    echo " adding 'module_hotfixes' flag to the repository config"
+    echo "module_hotfixes=1" >> "$repopath"
+  fi
 }}
 
 function remove_bootstrap_repo() {{
