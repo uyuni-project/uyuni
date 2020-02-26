@@ -40,7 +40,6 @@ import java.util.List;
 public class RecurringActionManager {
 
     private static  TaskomaticApi taskomaticApi = new TaskomaticApi();
-    private static final RecurringActionManager INSTANCE = new RecurringActionManager();
 
     /**
      * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
@@ -48,13 +47,6 @@ public class RecurringActionManager {
      */
     public static void setTaskomaticApi(TaskomaticApi taskomaticApiIn) {
         taskomaticApi = taskomaticApiIn;
-    }
-    /**
-     * Singleton Instance to get manager object
-     * @return an instance of the manager
-     */
-    public static RecurringActionManager getInstance() {
-        return INSTANCE;
     }
 
     /**
