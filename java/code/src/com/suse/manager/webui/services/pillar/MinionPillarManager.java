@@ -72,12 +72,20 @@ public class MinionPillarManager {
         this.pillarFileManagers.stream().forEach(m -> m.generatePillarFile(minion));
     }
 
+    public void generatePillar(MinionServer minion, MinionPillarGenerator generator) {
+        new MinionPillarFileManager(generator).generatePillarFile(minion);
+    }
+
     /**
      * Removes the corresponding pillar files for the passed minion
      * @param minionId the minion Id
      */
     public void removePillar(String minionId) {
         this.pillarFileManagers.stream().forEach(m -> m.removePillarFile(minionId));
+    }
+
+    public void removePillar(MinionServer minion, MinionPillarGenerator generator) {
+        new MinionPillarFileManager(generator).removePillarFile(minion.getMinionId());
     }
 
 }

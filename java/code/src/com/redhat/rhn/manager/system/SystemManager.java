@@ -31,6 +31,8 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -89,6 +91,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -2131,6 +2134,12 @@ public class SystemManager extends BaseManager {
         }
         HibernateFactory.getSession().delete(server.getLock());
         server.setLock(null);
+
+        server.asMinionServer().ifPresent(minion -> {
+            SaltStateGeneratorService.INSTANCE.removeBlackoutPillar(minion);
+
+        });
+
     }
 
     /**
@@ -2140,6 +2149,7 @@ public class SystemManager extends BaseManager {
     public static void unlockServer(Server server) {
         HibernateFactory.getSession().delete(server.getLock());
         server.setLock(null);
+        // TODO remove pillar and refresh
     }
 
     /**
@@ -2164,6 +2174,23 @@ public class SystemManager extends BaseManager {
                 reason);
 
         server.setLock(sl);
+        lockSaltMinion(server);
+    }
+
+    public static void lockServer(Server server, String reason) {
+        ServerLock sl = new ServerLock(null, server, reason);
+        server.setLock(sl);
+        lockSaltMinion(server);
+    }
+
+    private static void lockSaltMinion(Server server) {
+        server.asMinionServer().ifPresent(minion -> {
+            // for Salt minions, generate blackout pillar
+            // TODO plugins
+            List<ActionType> actionTypes = ActionFactory.getActionTypes();
+            List<String> actionTypeLabels = actionTypes.stream().map(type -> type.getLabel()).collect(Collectors.toList());
+            SaltStateGeneratorService.INSTANCE.generateBlackoutPillar(minion, actionTypeLabels);
+        });
     }
 
     /**

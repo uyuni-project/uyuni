@@ -1760,7 +1760,7 @@ public class SaltServerActionService {
             Map<Boolean, List<MinionSummary>> result = new HashMap<>();
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
-                    isStagingJob, forcePackageListRefresh, actionIn.getId());
+                    isStagingJob, forcePackageListRefresh, actionIn);
             List<String> results = SaltService.INSTANCE
                     .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
                     .get().getMinions();

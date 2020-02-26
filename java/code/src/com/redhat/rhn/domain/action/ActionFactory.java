@@ -565,6 +565,15 @@ public class ActionFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method to get all ActionTypes.
+     * @return Returns a list with all ActionTypes.
+     */
+    public static List<ActionType> getActionTypes() {
+        return singleton.listObjectsByNamedQuery("ActionType.loadAll",
+                Collections.emptyMap(), true);
+    }
+
+    /**
      * Helper method to get a ActionStatus by Name
      * @param name the name of the status we want to lookup.
      * @return Returns the ActionStatus corresponding to name

@@ -14,18 +14,12 @@
  */
 package com.suse.manager.caasp;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.formula.FormulaFactory;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.frontend.events.RefreshPillarEvent;
-import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.extensions.PackageProfileUpdateExtensionPoint;
-import com.suse.manager.utils.SaltUtils;
 import org.apache.log4j.Logger;
 import org.pf4j.Extension;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,14 +45,7 @@ public class CaaspPackageProfileUpdate implements PackageProfileUpdateExtensionP
                     "grains.item",
                     "grains.items"
             ));
-            try {
-                FormulaManager.getInstance().enableFormula(server.getMinionId(), SaltUtils.SYSTEM_LOCK_FORMULA);
-                FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SaltUtils.SYSTEM_LOCK_FORMULA);
-                MessageQueue.publish(new RefreshPillarEvent());
-            }
-            catch (IOException e) {
-                LOG.error("Could not enable blackout formula", e);
-            }
+            SystemManager.lockServer(server, "CaaSP plugin");
         }
     }
 

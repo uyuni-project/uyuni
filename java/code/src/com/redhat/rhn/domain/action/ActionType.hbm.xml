@@ -23,4 +23,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="ActionType.findByName">
         <![CDATA[from com.redhat.rhn.domain.action.ActionType as t where t.name = :name]]>
     </query>
+    <query name="ActionType.loadAll">
+        <![CDATA[from com.redhat.rhn.domain.action.ActionType as t]]>
+    </query>
 </hibernate-mapping>

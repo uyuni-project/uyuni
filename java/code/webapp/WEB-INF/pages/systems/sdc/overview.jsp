@@ -184,7 +184,7 @@
               </c:choose>
             </td>
           </tr>
-          <rhn:require acl="system_has_management_entitlement()">
+          <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
             <tr>
               <td><bean:message key="sdc.details.overview.lockstatus"/></td>
               <td>

@@ -15,6 +15,7 @@
 package com.suse.manager.webui.services;
 
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_EXT;
+import static com.suse.manager.webui.services.SaltConstants.PILLAR_DATA_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_EXT;
 import static com.suse.manager.webui.services.SaltConstants.PILLAR_IMAGE_DATA_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
@@ -24,6 +25,7 @@ import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROO
 import static com.suse.manager.webui.utils.SaltFileUtils.defaultExtension;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
@@ -36,7 +38,9 @@ import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.events.RefreshPillarEvent;
 import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.services.pillar.MinionPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.SaltConfigChannelState;
 import com.suse.manager.webui.utils.SaltPillar;
@@ -50,6 +54,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +74,30 @@ public enum SaltStateGeneratorService {
     private static final Logger LOG = Logger.getLogger(SaltStateGeneratorService.class);
 
     private Path suseManagerStatesFilesRoot;
+
+
+    public static class BlackoutPillarGenerator implements MinionPillarGenerator {
+
+        private List<String> allowedMetadata;
+
+        public BlackoutPillarGenerator(List<String> allowedMetadata) {
+            this.allowedMetadata = allowedMetadata;
+        }
+
+        @Override
+        public SaltPillar generatePillarData(MinionServer minion) {
+            SaltPillar pillar = new SaltPillar();
+            pillar.add("minion_blackout", true);
+            pillar.add("minion_blackout_whitelist", Arrays.asList("test.ping", "grains.item", "grains.items"));
+            pillar.add("minion_blackout_metadata_whitelist", allowedMetadata);
+            return pillar;
+        }
+
+        @Override
+        public String getFilename(String minionId) {
+            return PILLAR_DATA_FILE_PREFIX + "_" + minionId + "_blackout." + PILLAR_DATA_FILE_EXT;
+        }
+    };
 
     SaltStateGeneratorService() {
         suseManagerStatesFilesRoot = Paths.get(SUMA_STATE_FILES_ROOT_PATH);
@@ -188,6 +217,16 @@ public enum SaltStateGeneratorService {
     private String getImagePillarFileName(OSImageInspectSlsResult.Bundle bundle) {
         return PILLAR_IMAGE_DATA_FILE_PREFIX + "-" + bundle.getBasename() + "-" +
                 bundle.getId().replace('.', '-') + "." + PILLAR_IMAGE_DATA_FILE_EXT;
+    }
+
+    public void generateBlackoutPillar(MinionServer minion, List<String> allowedMetadata) {
+        MinionPillarManager.INSTANCE.generatePillar(minion, new BlackoutPillarGenerator(allowedMetadata));
+        MessageQueue.publish(new RefreshPillarEvent());
+    }
+
+    public void removeBlackoutPillar(MinionServer minion) {
+        MinionPillarManager.INSTANCE.removePillar(minion, new BlackoutPillarGenerator(Collections.emptyList()));
+        MessageQueue.publish(new RefreshPillarEvent());
     }
 
     /**

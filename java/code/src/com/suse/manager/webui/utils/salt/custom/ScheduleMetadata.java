@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils.salt.custom;
 
 import com.google.gson.annotations.SerializedName;
+import com.redhat.rhn.domain.action.Action;
 
 /**
  * Object representation of SUSE Manager metadata to be added to Salt jobs.
@@ -25,6 +26,7 @@ public class ScheduleMetadata {
     public static final String SUMA_FORCE_PGK_LIST_REFRESH = "suma-force-pkg-list-refresh";
     public static final String SUMA_ACTION_CHAIN = "suma-action-chain";
     public static final String SUMA_MINION_STARTUP = "suma-minion-startup";
+    public static final String SUMA_ACTION_TYPE = "suma-action-type";
     public static final String BATCH_MODE = "batch-mode";
 
     @SerializedName(SUMA_ACTION_ID)
@@ -39,6 +41,9 @@ public class ScheduleMetadata {
     @SerializedName(BATCH_MODE)
     private final boolean batchMode;
 
+    @SerializedName(SUMA_ACTION_TYPE)
+    private String actionType;
+
     @SerializedName(SUMA_MINION_STARTUP)
     private boolean minionStartup;
 
@@ -51,13 +56,14 @@ public class ScheduleMetadata {
      * @param minionStartupIn whether the schedule action corresponds to a minion start up
      */
     public ScheduleMetadata(Long sumaActionIdIn, boolean forcePackageListRefreshIn, boolean actionChainIn,
-            boolean batchModeIn, boolean minionStartupIn) {
+            boolean batchModeIn, boolean minionStartupIn, String actionTypeIn) {
         super();
         this.sumaActionId = sumaActionIdIn;
         this.forcePackageListRefresh = forcePackageListRefreshIn;
         this.actionChain = actionChainIn;
         this.batchMode = batchModeIn;
         this.minionStartup = minionStartupIn;
+        this.actionType = actionTypeIn;
     }
 
     /**
@@ -68,12 +74,13 @@ public class ScheduleMetadata {
      * @param minionStartupIn whether the schedule action corresponds to a minion start up
      */
     public ScheduleMetadata(boolean forcePackageListRefreshIn, boolean actionChainIn,
-            boolean batchModeIn, boolean minionStartupIn) {
+            boolean batchModeIn, boolean minionStartupIn, String actionTypeIn) {
         super();
         this.forcePackageListRefresh = forcePackageListRefreshIn;
         this.actionChain = actionChainIn;
         this.batchMode = batchModeIn;
         this.minionStartup = minionStartupIn;
+        this.actionType = actionTypeIn;
     }
 
     /**
@@ -81,7 +88,7 @@ public class ScheduleMetadata {
      * @return the new instance of ScheduleMetadata
      */
     public static ScheduleMetadata getDefaultMetadata() {
-        return new ScheduleMetadata(false, false, false, false);
+        return new ScheduleMetadata(false, false, false, false, null);
     }
 
     /**
@@ -92,11 +99,11 @@ public class ScheduleMetadata {
      * @return the new instance of ScheduleMetadata
      */
     public static ScheduleMetadata getMetadataForRegularMinionActions(boolean isStagingJob,
-            boolean forcePackageListRefresh, long actionId) {
+            boolean forcePackageListRefresh, Action action) {
         if (!isStagingJob) {
-            return new ScheduleMetadata(actionId, forcePackageListRefresh, false, false, false);
+            return new ScheduleMetadata(action.getId(), forcePackageListRefresh, false, false, false, action.getActionType().getLabel());
         }
-        return new ScheduleMetadata(forcePackageListRefresh, false, false, false);
+        return new ScheduleMetadata(forcePackageListRefresh, false, false, false, action.getActionType().getLabel());
     }
 
     /**
@@ -104,7 +111,7 @@ public class ScheduleMetadata {
      * @return an instance of ScheduleMetadata with batchMode flag set in true
      */
     public ScheduleMetadata withBatchMode() {
-        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, true, minionStartup);
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, true, minionStartup, null);
     }
 
     /**
@@ -112,7 +119,7 @@ public class ScheduleMetadata {
      * @return an instance of ScheduleMetadata with the actionChain flag set in true
      */
     public ScheduleMetadata withActionChain() {
-        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, true, batchMode, minionStartup);
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, true, batchMode, minionStartup, null);
     }
 
     /**
@@ -120,7 +127,7 @@ public class ScheduleMetadata {
      * @return an instance of ScheduleMetadata with the minionStartup flag set in true
      */
     public ScheduleMetadata withMinionStartup() {
-        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, batchMode, true);
+        return new ScheduleMetadata(sumaActionId, forcePackageListRefresh, actionChain, batchMode, true, null);
     }
 
     /**
@@ -156,5 +163,12 @@ public class ScheduleMetadata {
      */
     public boolean isBatchMode() {
         return batchMode;
+    }
+
+    /**
+     * @return actionType to get
+     */
+    public String getActionType() {
+        return actionType;
     }
 }
