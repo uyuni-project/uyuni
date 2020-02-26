@@ -111,19 +111,14 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
-import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -165,10 +160,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);
         tmpSaltRoot = Files.createTempDirectory("salt");
-        metadataDirOfficial = Files.createTempDirectory("meta");
-        createMetadataFiles();
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
-        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
         SystemManager.mockSaltService(saltServiceMock);
         context().checking(new Expectations() {
             {
@@ -176,22 +168,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleActionExecution(with(any(Action.class)));
             }
         });
-    }
-
-    private void createMetadataFiles() {
-        try {
-            Path prometheusDir = metadataDirOfficial.resolve("prometheus-exporters");
-            Files.createDirectories(prometheusDir);
-            try (InputStream src = this.getClass().getResourceAsStream("prometheus/pillar.example");
-                 OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
-            ) {
-                IOUtils.copy(src, dst);
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
     }
 
     public void testSnapshotServer() throws Exception {
@@ -1560,32 +1536,32 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return SystemManager.createSystemProfile(user, hostName.orElse("test system"), data);
     }
 
+    /**
+     * Test for handling the monitoring entitlement via addServerToGroup() and removeServerFromGroup().
+     * @throws Exception in case of an error
+     */
     public void testAddServerToServerGroupWithMonitoring() throws Exception {
+        // A new test server, no monitoring entitlement
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        ServerGroup group = ServerGroupTest
-                .createTestServerGroup(user.getOrg(), null);
+        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
+        // Create a group and enable monitoring
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
         Map<String, Object> formulaData = new HashMap<>();
         formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
+        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
-
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
-        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
+        // Server should have a monitoring entitlement after being added to the group
         SystemManager.addServerToServerGroup(server, group);
-        ServerFactory.save(server);
+        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
-        List<String> formulas = FormulaFactory.getFormulasByMinionId(server.getMinionId());
-        assertFalse(formulas.contains(PROMETHEUS_EXPORTERS));
-        Optional<Map<String, Object>> data =
-                FormulaFactory.getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, server.getMinionId());
-        assertFalse(data.isPresent());
-//        assertFalse((boolean)((Map<String, Object>)data.get().get("node_exporter")).get("enabled"));
-//        assertFalse((boolean)((Map<String, Object>)data.get().get("postgres_exporter")).get("enabled"));
-        // TODO fix assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+        // Remove server from group, entitlement should be removed
+        SystemManager.removeServerFromServerGroup(server, group);
+        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
     }
 }
