@@ -17,9 +17,11 @@ package com.redhat.rhn.manager.recurringactions;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -56,26 +58,33 @@ public class RecurringActionManager {
     }
 
     /**
-     * Create a new minion recurring action
+     * Create a minimal {@link RecurringAction} of given type. // todo better comment?
      *
-     * @param minionId id of the minion
-     * @param cron the cron expression
-     * @param testMode if test mode
-     * @param active is is active
-     * @param user the user
-     * @throws TaskomaticApiException if TaskoSchedule creation fails
+     * @param type the Recurring Action type
+     * @param entityId the ID of the target entity
+     * @param user the creator
+     * @return the newly created {@link RecurringAction}
      */
-    public static void createMinionRecurringAction(long minionId, String cron, boolean testMode,
-                                                   boolean active, User user) throws TaskomaticApiException {
-        if (!SystemManager.isAvailableToUser(user, minionId)) {
-            throw new PermissionException("Minion not accessible to user");
+    public static RecurringAction createRecurringAction(RecurringAction.TYPE type, long entityId, User user) {
+        switch (type) {
+            case MINION:
+                return createMinionRecurringAction(entityId, user);
         }
+
+        throw new UnsupportedOperationException("type not supported");
+    }
+
+    /**
+     * Create a minimal minion recurring action
+     *  @param minionId id of the minion
+     * @param user the user
+     * @return
+     */
+    private static MinionRecurringAction createMinionRecurringAction(long minionId, User user) {
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
-        MinionRecurringAction action = new MinionRecurringAction(testMode, active, minion, user);
-        RecurringActionFactory.save(action);
-
-        taskomaticApi.scheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch", cron);
+        MinionRecurringAction action = new MinionRecurringAction(false, true, minion, user);
+        return action;
     }
 
     /**
@@ -129,5 +138,34 @@ public class RecurringActionManager {
             throw new PermissionException("Org not accessible to user");
         }
         return RecurringActionFactory.listOrgRecurringActions(orgId);
+    }
+
+    // checks perms & saves & schedules
+    // all create/update operations must go through this!
+
+    /**
+     * Checks permissions on given {@link RecurringAction}, saves it and schedules corresponding taskomatic job.
+     *
+     * @param action the action
+     * @param cron the cron string
+     * @param user the user performing the operation
+     * @throws PermissionException if the user does not have permission to save the action
+     * @throws TaskomaticApiException when there is a problem with taskomatic during scheduling
+     */
+    public static void saveAndSchedule(RecurringAction action, String cron, User user) throws TaskomaticApiException {
+        if (action instanceof MinionRecurringAction) {
+            MinionRecurringAction minionAction = (MinionRecurringAction) action;
+            if (!SystemManager.isAvailableToUser(user, minionAction.getMinion().getId())) {
+                throw new PermissionException("Minion not accessible to user");
+            }
+        }
+        // todo extend for other types
+        // todo rewrite using inheritance (e.g. RecurringAction.canUserModify(user), or canAccess(user)?)
+        // todo check for dupe names
+
+        RecurringActionFactory.save(action);
+
+        // todo test this codepath (when tasko throws an exception)
+        taskomaticApi.scheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch", cron);
     }
 }

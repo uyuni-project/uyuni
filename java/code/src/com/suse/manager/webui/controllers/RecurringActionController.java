@@ -17,17 +17,22 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static java.util.Optional.of;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.RecurringEventPicker;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
+import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
@@ -74,8 +79,7 @@ public class RecurringActionController {
     public static void initRoutes() {
         get("/manager/api/recurringactions", withUser(RecurringActionController::schedules));
         get("/manager/api/recurringactions/:scheduleId", withUser(RecurringActionController::singleSchedule));
-        post("/manager/api/recurringactions/save", withUser(RecurringActionController::createSchedule));
-        post("/manager/api/recurringactions/:scheduleId/update", withUser(RecurringActionController::updateSchedule));
+        post("/manager/api/recurringactions/save", withUser(RecurringActionController::save));
         delete("/manager/api/recurringactions/:scheduleId/delete", withUser(RecurringActionController::deleteSchedule));
     }
 
@@ -238,30 +242,44 @@ public class RecurringActionController {
      * @param user the user
      * @return string containing the json response
      */
-    public static String createSchedule(Request request, Response response, User user) {
+    public static String save(Request request, Response response, User user) {
         response.type("application/json");
 
         List<String> errors = new LinkedList<>();
 
-        RecurringStateScheduleJson json = GSON.fromJson(request.body(),
-                RecurringStateScheduleJson.class);
+        RecurringStateScheduleJson json = GSON.fromJson(request.body(), RecurringStateScheduleJson.class);
+
+        RecurringAction action;
+        if (json.getRecurringActionId() == null) {
+            action = RecurringActionManager.createRecurringAction(
+                    RecurringAction.TYPE.valueOf(json.getTargetType().toUpperCase()),
+                    json.getTargetId(),
+                    user);
+        }
+        else {
+            action = RecurringActionFactory.lookupById(json.getRecurringActionId()).orElseThrow();
+        }
+
+        mapJsonToAction(json, action);
+
         try {
-            String scheduleName = json.getScheduleName();
-            if (scheduleName != null && TASKOMATIC_API.satScheduleActive(scheduleName, user)) {
-                errors.add("Schedule Label already in use.");
-            }
-            else {
-                errors.addAll(saveSchedule(json, user));
-            }
+            RecurringActionManager.saveAndSchedule(action, json.getCron(), user);
         }
         catch (TaskomaticApiException e) {
-            errors.add(e.getMessage());
+            errors.add("Error when scheduling the action.");
         }
 
         if (errors.isEmpty()) {
             return json(response, ResultJson.success());
         }
+
         return json(response, ResultJson.error(errors));
+    }
+
+    private static void mapJsonToAction(RecurringStateScheduleJson json, RecurringAction action) {
+        action.setName(json.getScheduleName());
+        action.setActive(json.isActive());
+        action.setTestMode(json.isTest());
     }
 
     /**

@@ -56,6 +56,12 @@ public abstract class RecurringAction {
 
     public static final String RECURRING_ACTION_PREFIX = "recurring-action-";
 
+    public enum TYPE {
+        MINION,
+        GROUP,
+        ORG
+    }
+
     /**
      * Standard constructor
      */

@@ -32,10 +32,12 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
     public void testListMultipleMinionRecurringActions() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setName("action name 1");
         action.setMinion(minion);
         RecurringActionFactory.save(action);
 
         var action2 = new MinionRecurringAction();
+        action.setName("action name 2");
         action2.setMinion(minion);
         RecurringActionFactory.save(action2);
 

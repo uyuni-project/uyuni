@@ -21,6 +21,8 @@ import java.util.Map;
  */
 public class RecurringStateScheduleJson {
 
+    private Long recurringActionId;
+
     /** Target ID */
     private Long targetId;
 
@@ -46,6 +48,24 @@ public class RecurringStateScheduleJson {
 
     /** Is test run */
     private boolean test;
+
+    /**
+     * Gets the recurringActionId.
+     *
+     * @return recurringActionId
+     */
+    public Long getRecurringActionId() {
+        return recurringActionId;
+    }
+
+    /**
+     * Sets the recurringActionId.
+     *
+     * @param recurringActionIdIn the recurringActionId
+     */
+    public void setRecurringActionId(Long recurringActionIdIn) {
+        recurringActionId = recurringActionIdIn;
+    }
 
     /**
      * @return the minion ids
@@ -101,5 +121,77 @@ public class RecurringStateScheduleJson {
      */
     public boolean isTest() {
         return test;
+    }
+
+    /**
+     * Sets the targetId.
+     *
+     * @param targetIdIn the targetId
+     */
+    public void setTargetId(Long targetIdIn) {
+        targetId = targetIdIn;
+    }
+
+    /**
+     * Sets the scheduleName.
+     *
+     * @param scheduleNameIn the scheduleName
+     */
+    public void setScheduleName(String scheduleNameIn) {
+        scheduleName = scheduleNameIn;
+    }
+
+    /**
+     * Sets the active.
+     *
+     * @param activeIn the active
+     */
+    public void setActive(boolean activeIn) {
+        active = activeIn;
+    }
+
+    /**
+     * Sets the type.
+     *
+     * @param typeIn the type
+     */
+    public void setType(String typeIn) {
+        type = typeIn;
+    }
+
+    /**
+     * Sets the targetType.
+     *
+     * @param targetTypeIn the targetType
+     */
+    public void setTargetType(String targetTypeIn) {
+        targetType = targetTypeIn;
+    }
+
+    /**
+     * Sets the cronTimes.
+     *
+     * @param cronTimesIn the cronTimes
+     */
+    public void setCronTimes(Map<String, String> cronTimesIn) {
+        cronTimes = cronTimesIn;
+    }
+
+    /**
+     * Sets the cron.
+     *
+     * @param cronIn the cron
+     */
+    public void setCron(String cronIn) {
+        cron = cronIn;
+    }
+
+    /**
+     * Sets the test.
+     *
+     * @param testIn the test
+     */
+    public void setTest(boolean testIn) {
+        test = testIn;
     }
 }

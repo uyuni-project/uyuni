@@ -53,19 +53,19 @@ class RecurringStatesEdit extends React.Component {
         const search = window.location.search;
         if (search.match("\\?sid")) {
             Object.assign(this.state, {
-                targetType: "Minion",
+                targetType: "MINION", // todo create a human readable representations
                 targetId: minions[0].id
             });
         } else if (search.match("\\?sgid")) {
             Object.assign(this.state, {
-                targetType: "Group",
+                targetType: "GROUP",
                 targetId: groupId
             });
         } else if (window.location.pathname.match("/ssm") && !search) {
             Object.assign(this.state, {targetType: "System Set Manager"});
         } else {
             Object.assign(this.state, {
-                targetType: "Organization",
+                targetType: "ORG",
                 targetId: orgId
             });
         }

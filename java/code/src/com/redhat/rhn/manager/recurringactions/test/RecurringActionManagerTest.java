@@ -1,5 +1,8 @@
 package com.redhat.rhn.manager.recurringactions.test;
 
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.TYPE.MINION;
+
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
@@ -33,6 +36,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     private Org anotherOrg;
     private User anotherUser;
+    private static final String CRON_EXPR = "0 * * * * ?";
 
     public void setUp() throws Exception {
         super.setUp();
@@ -53,14 +57,16 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         } });
 
         try {
-            RecurringActionManager.createMinionRecurringAction(minion.getId(), "", false, false, anotherUser);
+            var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), anotherUser);
+            RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, anotherUser);
             fail("User shouldn't have access");
         }
         catch (PermissionException e) {
             // no-op
         }
 
-        RecurringActionManager.createMinionRecurringAction(minion.getId(), "", false, false, user);
+        var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
         assertNotEmpty(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
     }
 
@@ -116,4 +122,31 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             // no-op
         }
     }
+
+    // todo make this complete
+//    public void testUpdateAction() throws Exception {
+//        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+//        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
+//        RecurringActionManager.setTaskomaticApi(taskomaticMock);
+//
+//        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+//
+//        CONTEXT.checking(new Expectations() { {
+//            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
+//        } });
+//
+//        var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+//        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
+//
+//        HibernateFactory.getSession().flush();
+//
+//        var other = RecurringActionFactory.lookupById(recurringAction.getId());
+//        other.get().setName("testname");
+//        RecurringActionManager.saveAndSchedule(recurringAction, "", user);
+//        HibernateFactory.getSession().flush();
+//        var other2 = RecurringActionFactory.lookupById(recurringAction.getId());
+//
+//        System.out.println(other2);
+//        System.out.println(RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
+//    }
 }
