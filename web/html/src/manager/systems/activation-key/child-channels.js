@@ -113,14 +113,14 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
           const mandatoryChannelsForBaseId: ?Set<number> = this.props.base && this.props.requiredChannelsResult.requiredChannels.get(this.props.base.id);
 
           const isMandatory = mandatoryChannelsForBaseId && mandatoryChannelsForBaseId.has(c.id);
-          const isDisabled = isMandatory && this.props.selectedChannelsIds.includes(c.id);
+          const isDisabled = isMandatory;
           return (
             <div key={c.id} className='checkbox'>
               <input type='checkbox'
                      value={c.id}
                      id={'child_' + c.id}
                      name='childChannels'
-                     checked={this.props.selectedChannelsIds.includes(c.id)}
+                     checked={isMandatory || this.props.selectedChannelsIds.includes(c.id)}
                      disabled={isDisabled}
                      onChange={(event) => this.handleChannelChange(event)}
               />
@@ -128,7 +128,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
                 // add an hidden carbon-copy of the disabled input since the disabled one will not be included in the form submit
                 isDisabled ?
                   <input type='checkbox' value={c.id} name='childChannels'
-                         hidden='hidden' checked={this.props.selectedChannelsIds.includes(c.id)} readOnly={true}/>
+                         hidden='hidden' checked={isMandatory || this.props.selectedChannelsIds.includes(c.id)} readOnly={true}/>
                   : null
               }
               <label title={toolTip} htmlFor={"child_" + c.id}>{c.name}</label>
