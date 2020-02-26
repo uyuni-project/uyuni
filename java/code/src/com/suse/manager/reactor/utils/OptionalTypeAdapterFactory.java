@@ -16,6 +16,7 @@ package com.suse.manager.reactor.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.TypeAdapters;
@@ -64,7 +65,7 @@ public class OptionalTypeAdapterFactory implements TypeAdapterFactory {
                         A value = innerAdapter.fromJsonTree(json);
                         return Optional.of(value);
                     }
-                    catch (Throwable e) {
+                    catch (JsonSyntaxException e) {
                         /**
                          * Note : This is a workaround and it only exists because salt doesn't differentiate between a
                          * non-existent grain and a grain which exists but has value set to empty String.
