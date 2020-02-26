@@ -1561,7 +1561,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
         // Remove server from group, entitlement should be removed
-        SystemManager.removeServerFromServerGroup(server, group);
+        SystemManager.removeServersFromServerGroup(Arrays.asList(server), group);
         assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
     }
 }
