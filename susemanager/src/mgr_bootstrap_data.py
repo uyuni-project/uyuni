@@ -313,6 +313,12 @@ RES8 = [
     "openpgm",
     "zeromq",
     "dmidecode",
+    "python3-urllib3",
+    "python3-idna",
+    "python3-chardet",
+    "python3-pysocks",
+    "python3-pytz",
+    "python3-setuptools"
 ]
 
 PKGLIST15_SALT = [
