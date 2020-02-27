@@ -49,6 +49,7 @@ public abstract class RecurringAction {
 
     private Long id;
     private String name;
+    private String cronExpr;
     private boolean testMode;
     private boolean active;
     private User creator;
@@ -148,6 +149,25 @@ public abstract class RecurringAction {
      */
     public void setName(String nameIn) {
         name = nameIn;
+    }
+
+    /**
+     * Gets the cronExpr.
+     *
+     * @return cronExpr
+     */
+    @Column(name = "cron_expr")
+    public String getCronExpr() {
+        return cronExpr;
+    }
+
+    /**
+     * Sets the cronExpr.
+     *
+     * @param cronExprIn the cronExpr
+     */
+    public void setCronExpr(String cronExprIn) {
+        cronExpr = cronExprIn;
     }
 
     /**

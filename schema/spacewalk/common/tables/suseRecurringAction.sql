@@ -4,6 +4,7 @@ CREATE TABLE suseRecurringAction
                     CONSTRAINT suse_recurring_action_id_pk PRIMARY KEY,
   target_type       VARCHAR(32) NOT NULL,
   name              VARCHAR(256),
+  cron_expr         VARCHAR(32) NOT NULL,
   minion_id         NUMERIC
                     CONSTRAINT suse_rec_action_minion_fk
                       REFERENCES suseMinionInfo(server_id)

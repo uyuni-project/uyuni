@@ -190,6 +190,9 @@ public class RecurringActionManager {
     /**
      * Checks permissions on given {@link RecurringAction}, saves it and schedules corresponding taskomatic job.
      *
+     * All save/update operations on {@link RecurringAction} must use this method
+     * (to make sure the taskomatic schedule is updated as well).
+     *
      * @param action the action
      * @param cron the cron string
      * @param user the user performing the operation
