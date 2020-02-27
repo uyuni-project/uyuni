@@ -105,7 +105,8 @@ public class RecurringActionController {
         RecurringStateScheduleJson json = new RecurringStateScheduleJson();
         json.setRecurringActionId(a.getId());
         json.setScheduleName(a.getName());
-        String cronExpr = "0 0 * * * ?"; // todo fetch from backend
+
+        String cronExpr = a.getCronExpr();
         json.setCron(cronExpr);
         RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cronExpr);
         Map<String, String> cronTimes = new HashMap<>();
@@ -113,6 +114,7 @@ public class RecurringActionController {
         cronTimes.put("hour", picker.getHour());
         cronTimes.put("dayOfMonth", picker.getDayOfMonth());
         cronTimes.put("dayOfWeek", picker.getDayOfWeek());
+
         json.setType(picker.getStatus());
         json.setCronTimes(cronTimes);
         json.setActive(a.isActive());
@@ -283,13 +285,7 @@ public class RecurringActionController {
         mapJsonToAction(json, action);
 
         try {
-            String cron = json.getCron();
-            if (StringUtils.isBlank(cron)) {
-                cron = RecurringEventPicker
-                        .prepopulatePicker("date", json.getType(), json.getCronTimes(), null)
-                        .getCronEntry();
-            }
-            RecurringActionManager.saveAndSchedule(action, cron, user);
+            RecurringActionManager.saveAndSchedule(action, user);
         }
         catch (TaskomaticApiException e) {
             errors.add("Error when scheduling the action.");
@@ -306,6 +302,14 @@ public class RecurringActionController {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
         action.setTestMode(json.isTest());
+
+        String cron = json.getCron();
+        if (StringUtils.isBlank(cron)) {
+            cron = RecurringEventPicker
+                    .prepopulatePicker("date", json.getType(), json.getCronTimes(), null)
+                    .getCronEntry();
+        }
+        action.setCronExpr(cron);
     }
 
     /**

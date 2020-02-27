@@ -63,7 +63,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         try {
             var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), anotherUser);
-            RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, anotherUser);
+            recurringAction.setCronExpr(CRON_EXPR); // todo maybe put to create?
+            RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
         catch (PermissionException e) {
@@ -71,7 +72,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
 
         var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
-        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
+        recurringAction.setCronExpr(CRON_EXPR);
+        RecurringActionManager.saveAndSchedule(recurringAction, user);
         assertNotEmpty(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
     }
 
@@ -85,7 +87,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             /* Restrict anotherUser from accessing the minion */
             anotherUser.removePermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
             var recurringAction = RecurringActionManager.createRecurringAction(GROUP, group.getId(), anotherUser);
-            RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, anotherUser);
+            recurringAction.setCronExpr(CRON_EXPR);
+            RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
         catch (PermissionException e) {
@@ -94,7 +97,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         var group = ServerGroupTestUtils.createManaged(user);
         var recurringAction = RecurringActionManager.createRecurringAction(GROUP, group.getId(), user);
-        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
+        recurringAction.setCronExpr(CRON_EXPR);
+        RecurringActionManager.saveAndSchedule(recurringAction, user);
         assertNotEmpty(RecurringActionFactory.listGroupRecurringActions(group.getId()));
     }
 
@@ -107,7 +111,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         try {
             var recurringAction = RecurringActionManager.createRecurringAction(ORG, org.getId(), anotherUser);
-            RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, anotherUser);
+            recurringAction.setCronExpr(CRON_EXPR);
+            RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
         catch (PermissionException e) {
@@ -115,7 +120,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
 
         var recurringAction = RecurringActionManager.createRecurringAction(ORG, org.getId(), user);
-        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
+        recurringAction.setCronExpr(CRON_EXPR);
+        RecurringActionManager.saveAndSchedule(recurringAction, user);
         assertNotEmpty(RecurringActionFactory.listOrgRecurringActions(org.getId()));
     }
 
@@ -181,13 +187,14 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         } });
 
         var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
-        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
+        recurringAction.setCronExpr(CRON_EXPR);
+        RecurringActionManager.saveAndSchedule(recurringAction, user);
 
         HibernateFactory.getSession().flush();
 
         var other = RecurringActionFactory.lookupById(recurringAction.getId());
         other.get().setName("testname");
-        RecurringActionManager.saveAndSchedule(recurringAction, "", user);
+        RecurringActionManager.saveAndSchedule(recurringAction, user);
         HibernateFactory.getSession().flush();
         var other2 = RecurringActionFactory.lookupById(recurringAction.getId());
 

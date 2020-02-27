@@ -194,12 +194,11 @@ public class RecurringActionManager {
      * (to make sure the taskomatic schedule is updated as well).
      *
      * @param action the action
-     * @param cron the cron string
      * @param user the user performing the operation
      * @throws PermissionException if the user does not have permission to save the action
      * @throws TaskomaticApiException when there is a problem with taskomatic during scheduling
      */
-    public static void saveAndSchedule(RecurringAction action, String cron, User user) throws TaskomaticApiException {
+    public static void saveAndSchedule(RecurringAction action, User user) throws TaskomaticApiException {
         if (!action.canAccess(user)) {
             throw new PermissionException(action.getClass() + "not accessible to user");
         }
@@ -208,6 +207,7 @@ public class RecurringActionManager {
         RecurringActionFactory.save(action);
 
         // todo test this codepath (when tasko throws an exception)
-        taskomaticApi.scheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch", cron);
+        taskomaticApi.scheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch",
+                action.getCronExpr());
     }
 }
