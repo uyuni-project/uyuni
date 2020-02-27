@@ -2135,11 +2135,7 @@ public class SystemManager extends BaseManager {
         HibernateFactory.getSession().delete(server.getLock());
         server.setLock(null);
 
-        server.asMinionServer().ifPresent(minion -> {
-            SaltStateGeneratorService.INSTANCE.removeBlackoutPillar(minion);
-
-        });
-
+        onUnlockServer(server);
     }
 
     /**
@@ -2149,7 +2145,14 @@ public class SystemManager extends BaseManager {
     public static void unlockServer(Server server) {
         HibernateFactory.getSession().delete(server.getLock());
         server.setLock(null);
-        // TODO remove pillar and refresh
+
+        onUnlockServer(server);
+    }
+
+    private static void onUnlockServer(Server server) {
+        server.asMinionServer().ifPresent(minion ->
+            SaltStateGeneratorService.INSTANCE.removeBlackoutPillar(minion)
+        );
     }
 
     /**

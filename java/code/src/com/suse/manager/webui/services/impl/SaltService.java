@@ -696,7 +696,7 @@ public class SaltService {
         try {
             LocalCall<Boolean> call = SaltUtil.refreshPillar(Optional.empty(),
                     Optional.empty());
-            callAsync(call, minionList);
+            callAsync(call, minionList); // TODO wtf? why doesn't this work ?
         }
         catch (SaltException e) {
             throw new RuntimeException(e);

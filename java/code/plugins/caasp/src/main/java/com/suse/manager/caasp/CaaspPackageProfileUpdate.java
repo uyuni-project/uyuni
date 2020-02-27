@@ -37,14 +37,6 @@ public class CaaspPackageProfileUpdate implements PackageProfileUpdateExtensionP
         if (server.asMinionServer().isPresent() && server.getInstalledProducts().stream()
                 .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PRODUCT_IDENTIFIER))) {
             // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
-            Map<String, Object> data = new HashMap<>();
-            data.put("minion_blackout", true);
-            // List of Salt `module.function` that are allowed in blackout mode
-            data.put("minion_blackout_whitelist", Arrays.asList(
-                    "test.ping",
-                    "grains.item",
-                    "grains.items"
-            ));
             SystemManager.lockServer(server, "CaaSP plugin");
         }
     }

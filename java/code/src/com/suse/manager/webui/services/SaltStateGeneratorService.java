@@ -88,7 +88,13 @@ public enum SaltStateGeneratorService {
         public SaltPillar generatePillarData(MinionServer minion) {
             SaltPillar pillar = new SaltPillar();
             pillar.add("minion_blackout", true);
-            pillar.add("minion_blackout_whitelist", Arrays.asList("test.ping", "grains.item", "grains.items"));
+            pillar.add("minion_blackout_whitelist",
+                    Arrays.asList(
+                            "test.ping",
+                            "test.echo",
+                            "grains.item",
+                            "grains.items"
+                    ));
             pillar.add("minion_blackout_metadata_whitelist", allowedMetadata);
             return pillar;
         }
