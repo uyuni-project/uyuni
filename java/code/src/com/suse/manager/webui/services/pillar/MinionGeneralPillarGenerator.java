@@ -143,6 +143,9 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
             chanProps.put("repo_gpgcheck", "0");
             chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
         }
+
+        // Flag to override dnf modularity failsafe mechanism (module_hotfixes)
+        chanProps.put("cloned_nonmodular", chan.isCloned() && !chan.isModular());
         return chanProps;
     }
 

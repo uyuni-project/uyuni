@@ -1,3 +1,4 @@
+- Disable modularity failsafe mechanism for RHEL 8 repos (bsc#1164875)
 - install dmidecode before HW profile update when missing
 - Add mgr_start_event_grains.sls to update minion config
 - Add 'product' custom state module to handle installation of
