@@ -70,7 +70,7 @@ public class RecurringActionManager {
      * @param user the creator
      * @return the newly created {@link RecurringAction}
      */
-    public static RecurringAction createRecurringAction(RecurringAction.TYPE type, long entityId, User user) {
+    public static RecurringAction createRecurringAction(RecurringAction.Type type, long entityId, User user) {
         switch (type) {
             case MINION:
                 return createMinionRecurringAction(entityId, user);

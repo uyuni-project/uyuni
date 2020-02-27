@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.Type;
 
 import java.util.List;
 
@@ -59,7 +58,7 @@ public abstract class RecurringAction {
     /**
      * Recurring action types
      */
-    public enum TYPE {
+    public enum Type {
         MINION,
         GROUP,
         ORG
@@ -157,7 +156,7 @@ public abstract class RecurringAction {
      * @return testMode - if action is testMode
      */
     @Column(name = "test_mode")
-    @Type(type = "yes_no")
+    @org.hibernate.annotations.Type(type = "yes_no")
     public boolean isTestMode() {
         return testMode;
     }
@@ -177,7 +176,7 @@ public abstract class RecurringAction {
      * @return active - if action is active
      */
     @Column
-    @Type(type = "yes_no")
+    @org.hibernate.annotations.Type(type = "yes_no")
     public boolean isActive() { // TODO: Set schema type to boolean
         return active;
     }

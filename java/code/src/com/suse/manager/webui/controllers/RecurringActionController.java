@@ -250,7 +250,7 @@ public class RecurringActionController {
         RecurringAction action;
         if (json.getRecurringActionId() == null) {
             action = RecurringActionManager.createRecurringAction(
-                    RecurringAction.TYPE.valueOf(json.getTargetType().toUpperCase()),
+                    RecurringAction.Type.valueOf(json.getTargetType().toUpperCase()),
                     json.getTargetId(),
                     user);
         }

@@ -1,8 +1,8 @@
 package com.redhat.rhn.manager.recurringactions.test;
 
-import static com.redhat.rhn.domain.recurringactions.RecurringAction.TYPE.GROUP;
-import static com.redhat.rhn.domain.recurringactions.RecurringAction.TYPE.MINION;
-import static com.redhat.rhn.domain.recurringactions.RecurringAction.TYPE.ORG;
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.GROUP;
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION;
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.ORG;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
