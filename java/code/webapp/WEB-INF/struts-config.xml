@@ -887,6 +887,12 @@
                              <form-property name="primaryInterface" type="java.lang.String"/>
     </form-bean>
 
+    <form-bean name="systemOverviewForm"
+               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+        <form-property name="submitted" type="java.lang.Boolean"/>
+        <form-property name="lock" type="java.lang.String"/>
+    </form-bean>
+
     <form-bean name="systemDetailsForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="system_name" type="java.lang.String"/>
@@ -3518,9 +3524,13 @@
       </action>
 
      <action path="/systems/details/Overview"
+             name="systemOverviewForm"
              scope="request"
              input="/WEB-INF/pages/systems/sdc/overview.jsp"
-             type="com.redhat.rhn.frontend.action.systems.sdc.SystemOverviewAction">
+             parameter="dispatch"
+             type="com.redhat.rhn.frontend.action.systems.sdc.SystemOverviewAction"
+             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+             <set-property property="postRequiredIfSubmitted" value="true" />
              <forward name="default"
                       path="/WEB-INF/pages/systems/sdc/overview.jsp" />
      </action>

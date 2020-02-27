@@ -188,20 +188,32 @@
             <tr>
               <td><bean:message key="sdc.details.overview.lockstatus"/></td>
               <td>
+                <html:form method="post"
+                           styleClass="form-horizontal"
+                           action="/systems/details/Overview.do?sid=${system.id}">
+                <rhn:csrf />
+                <html:hidden property="submitted" value="true"/>
                 <c:choose>
                   <c:when test="${serverLock != null}">
                       <rhn:icon type="system-locked" />
                     <bean:message key="sdc.details.overview.locked"
                             arg0="${serverLock.locker.login}"
                             arg1="${serverLock.reason}" /><br/>
-                    <bean:message key="sdc.details.overview.unlock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=0"/>
+                    <html:hidden property="lock" value="0"/>
+                    <html:submit property="unlock_button" styleClass="btn btn-link">
+                        <bean:message key="sdc.details.overview.unlock"/>
+                    </html:submit>
                   </c:when>
                   <c:otherwise>
                     <rhn:icon type="system-physical" />
                     <bean:message key="sdc.details.overview.unlocked"/><br/>
-                    <bean:message key="sdc.details.overview.lock" arg0="/rhn/systems/details/Overview.do?sid=${system.id}&amp;lock=1"/>
+                    <html:hidden property="lock" value="1"/>
+                    <html:submit property="lock_button" styleClass="btn btn-link">
+                        <bean:message key="sdc.details.overview.lock"/>
+                    </html:submit>
                   </c:otherwise>
                 </c:choose>
+              </html:form>
               </td>
             </tr>
           </rhn:require>

@@ -46,6 +46,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
+import org.apache.struts.action.DynaActionForm;
 
 /**
  * SystemOverviewAction
@@ -66,6 +67,7 @@ public class SystemOverviewAction extends RhnAction {
         Long sid = rctx.getRequiredParam("sid");
         User user = rctx.getCurrentUser();
         Server s  = SystemManager.lookupByIdAndUser(sid, user);
+        DynaActionForm daForm = (DynaActionForm)form;
 
         /* Here we htmlify the description stored in the database such that end line's
          * are represented correctly
@@ -110,10 +112,6 @@ public class SystemOverviewAction extends RhnAction {
         // Reboot needed after certain types of updates
         boolean rebootRequired = SystemManager.requiresReboot(user, sid);
 
-        if (!processLock(user, s, rctx)) {
-            request.setAttribute("serverLock", s.getLock());
-        }
-
         processPing(user, s, rctx);
         proccessSatApplet(user, s, rctx);
 
@@ -147,6 +145,11 @@ public class SystemOverviewAction extends RhnAction {
         request.setAttribute("kernelLiveVersion",
                 s.asMinionServer().map(MinionServer::getKernelLiveVersion).orElse(null));
 
+        if (isSubmitted(daForm)) {
+            processLock(user, s, rctx, daForm);
+        }
+        request.setAttribute("serverLock", s.getLock());
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
@@ -176,13 +179,13 @@ public class SystemOverviewAction extends RhnAction {
      * @param rctx The request context
      * @return true if the server was unlocked, false otherwise
      */
-    protected boolean processLock(User user, Server s, RequestContext rctx) {
-        Long lockValue = rctx.getParamAsLong("lock");
+    protected boolean processLock(User user, Server s, RequestContext rctx, DynaActionForm daForm) {
+        String lockValue = daForm.getString("lock");
         LocalizationService ls = LocalizationService.getInstance();
 
         if (lockValue != null) {
 
-            if (lockValue.longValue() == 1) {
+            if ("1".equals(lockValue)) {
                 if (s.getLock() == null) {
                     SystemManager.lockServer(user,
                                              s,
@@ -194,7 +197,7 @@ public class SystemOverviewAction extends RhnAction {
                                          s.getName());
                 }
             }
-            else if (lockValue.longValue() == 0) {
+            else if ("0".equals(lockValue)) {
                 if (s.getLock() != null) {
 
                     SystemManager.unlockServer(user, s);

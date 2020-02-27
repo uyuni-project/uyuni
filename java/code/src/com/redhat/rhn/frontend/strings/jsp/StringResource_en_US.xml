@@ -17105,7 +17105,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.unlock">
-        <source>(&lt;a href="{0}"&gt;Unlock system&lt;/a&gt;)</source>
+        <source>(Unlock system)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -17117,7 +17117,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.lock">
-        <source>(&lt;a href="{0}"&gt;Lock system&lt;/a&gt;)</source>
+        <source>(Lock system)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
