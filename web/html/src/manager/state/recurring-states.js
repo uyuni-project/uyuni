@@ -28,6 +28,16 @@ function getHashAction() {
     return match ? match[1] : undefined;
 }
 
+// HACK: infer entity type and id based on the globals set
+function inferEntityTypeAndId() {
+    if (window.groupId !== undefined) {
+        return ["GROUP", window.groupId];
+    } else if (window.orgId !== undefined) {
+        return ["ORG", window.orgId];
+    }
+    return ["MINION", minions[0].id];
+}
+
 class RecurringStates extends React.Component {
 
     constructor(props) {
@@ -83,7 +93,8 @@ class RecurringStates extends React.Component {
 
     getRecurringScheduleList = () => {
         // todo create different endpoints for each use case ("/rhn/manager/api/recurringactions/group/id")
-        const endpoint = "/rhn/manager/api/recurringactions/minion/" + minions[0].id;
+        const [type, entityId] = inferEntityTypeAndId();
+        const endpoint = "/rhn/manager/api/recurringactions/" + type + "/" + entityId;
         return Network.get(endpoint, "application/json").promise
             .then(schedules => {
                 schedules.data.map(schedule => schedule.minionIds = minions.map(minion => minion.id));

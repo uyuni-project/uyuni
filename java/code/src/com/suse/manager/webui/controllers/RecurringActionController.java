@@ -22,8 +22,11 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.util.RecurringEventPicker;
+import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
+import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringAction.Type;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -76,7 +79,7 @@ public class RecurringActionController {
      * Invoked from Router. Initialize routes for Systems Views.
      */
     public static void initRoutes() {
-        get("/manager/api/recurringactions/minion/:mid", withUser(RecurringActionController::minionSchedules));
+        get("/manager/api/recurringactions/:type/:id", withUser(RecurringActionController::list));
         get("/manager/api/recurringactions/:scheduleId", withUser(RecurringActionController::singleSchedule));
         post("/manager/api/recurringactions/save", withUser(RecurringActionController::save));
         delete("/manager/api/recurringactions/:scheduleId/delete", withUser(RecurringActionController::deleteSchedule));
@@ -90,18 +93,48 @@ public class RecurringActionController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static String minionSchedules(Request request, Response response, User user) {
-        long mid = Long.parseLong(request.params("mid"));
-        List<RecurringStateScheduleJson> schedules = RecurringActionManager.listMinionRecurringActions(mid, user)
-                .stream()
-                .map(a -> actionToJson(a, RecurringAction.Type.MINION, a.getMinion().getId()))
-                .collect(Collectors.toList());
+    public static String list(Request request, Response response, User user) {
+        Type type = Type.valueOf(request.params("type"));
+        long id = Long.parseLong(request.params("id"));
+
+        List<RecurringStateScheduleJson> schedules;
+        switch (type) {
+            case MINION:
+                schedules = actionsToJson(listMinionSchedules(id, user), Type.MINION);
+                break;
+            case GROUP:
+                schedules = actionsToJson(listGroupSchedules(id, user), Type.GROUP);
+                break;
+            case ORG:
+                schedules = actionsToJson(listOrgSchedules(id, user), Type.ORG);
+                break;
+            default:
+                throw new IllegalStateException("Unsupported type " + type);
+        }
 
         return json(response, ResultJson.success(schedules));
     }
 
-    private static RecurringStateScheduleJson actionToJson(MinionRecurringAction a, RecurringAction.Type targetType,
-            Long tartgetId) {
+    private static List<MinionRecurringAction> listMinionSchedules(long id, User user) {
+        return RecurringActionManager.listMinionRecurringActions(id, user);
+    }
+
+    private static List<GroupRecurringAction> listGroupSchedules(long id, User user) {
+        return RecurringActionManager.listGroupRecurringActions(id, user);
+    }
+
+    private static List<OrgRecurringAction> listOrgSchedules(long id, User user) {
+        return RecurringActionManager.listOrgRecurringActions(id, user);
+    }
+
+    private static List<RecurringStateScheduleJson> actionsToJson(List<? extends RecurringAction> actions, Type type) {
+        return actions
+                .stream()
+                .map(a -> actionToJson(a, type))
+                .collect(Collectors.toList());
+    }
+
+    private static RecurringStateScheduleJson actionToJson(RecurringAction a, Type targetType) {
         RecurringStateScheduleJson json = new RecurringStateScheduleJson();
         json.setRecurringActionId(a.getId());
         json.setScheduleName(a.getName());
@@ -120,7 +153,7 @@ public class RecurringActionController {
         json.setActive(a.isActive());
         json.setTest(a.isTestMode());
         json.setTargetType(targetType.toString());
-        json.setTargetId(tartgetId);
+        json.setTargetId(a.getEntityId()); // todo question: do we need that at all?
         return json;
     }
 
@@ -274,7 +307,7 @@ public class RecurringActionController {
         RecurringAction action;
         if (json.getRecurringActionId() == null) {
             action = RecurringActionManager.createRecurringAction(
-                    RecurringAction.Type.valueOf(json.getTargetType().toUpperCase()),
+                    Type.valueOf(json.getTargetType().toUpperCase()),
                     json.getTargetId(),
                     user);
         }
