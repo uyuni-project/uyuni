@@ -25,6 +25,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * Recurring Action for minion server implementation
@@ -71,6 +72,12 @@ public class MinionRecurringAction extends RecurringAction {
     @Override
     public boolean canAccess(User user) {
         return SystemManager.isAvailableToUser(user, minion.getId());
+    }
+
+    @Override
+    @Transient // todo why is this not inherited from the RecurringAction?
+    public Long getEntityId() {
+        return getMinion().getId();
     }
 
     /**

@@ -30,6 +30,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * Recurring Action for organization implementation
@@ -77,6 +78,12 @@ public class OrgRecurringAction extends RecurringAction {
     @Override
     public boolean canAccess(User user) {
         return user.hasRole(RoleFactory.ORG_ADMIN);
+    }
+
+    @Override
+    @Transient
+    public Long getEntityId() {
+        return getOrg().getId();
     }
 
     /**

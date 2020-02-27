@@ -37,6 +37,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Recurring Action base class
@@ -98,6 +99,14 @@ public abstract class RecurringAction extends BaseDomainHelper {
      * @return boolean indicating access
      */
     public abstract boolean canAccess(User user);
+
+    /**
+     * Gets the ID of underlying entity.
+     *
+     * @return the ID
+     */
+    @Transient
+    public abstract Long getEntityId();
 
     /**
      * Gets the name of the TaskoSchedule entry based on the entity id.

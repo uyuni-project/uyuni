@@ -32,6 +32,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 /**
  * Recurring Action for server group implementation
@@ -90,6 +91,12 @@ public class GroupRecurringAction extends RecurringAction {
             return false;
         }
         return true;
+    }
+
+    @Override
+    @Transient
+    public Long getEntityId() {
+        return getGroup().getId();
     }
 
     /**
