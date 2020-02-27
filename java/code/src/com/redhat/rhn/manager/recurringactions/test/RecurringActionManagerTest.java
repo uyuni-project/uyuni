@@ -1,6 +1,8 @@
 package com.redhat.rhn.manager.recurringactions.test;
 
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.TYPE.GROUP;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.TYPE.MINION;
+import static com.redhat.rhn.domain.recurringactions.RecurringAction.TYPE.ORG;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -36,7 +38,14 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     private Org anotherOrg;
     private User anotherUser;
+    private static TaskomaticApi taskomaticMock;
     private static final String CRON_EXPR = "0 * * * * ?";
+
+    static {
+        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
+        taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
+        RecurringActionManager.setTaskomaticApi(taskomaticMock);
+    }
 
     public void setUp() throws Exception {
         super.setUp();
@@ -46,10 +55,6 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testCreateMinionRecurringActions() throws Exception {
-        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
-        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
-        RecurringActionManager.setTaskomaticApi(taskomaticMock);
-
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         CONTEXT.checking(new Expectations() { {
@@ -68,6 +73,50 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
         RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
         assertNotEmpty(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+    }
+
+    public void testCreateGroupRecurringActions() throws Exception {
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
+        } });
+
+        try {
+            var group = ServerGroupTestUtils.createManaged(anotherUser);
+            /* Restrict anotherUser from accessing the minion */
+            anotherUser.removePermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
+            var recurringAction = RecurringActionManager.createRecurringAction(GROUP, group.getId(), anotherUser);
+            RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, anotherUser);
+            fail("User shouldn't have access");
+        }
+        catch (PermissionException e) {
+            // no-op
+        }
+
+        var group = ServerGroupTestUtils.createManaged(user);
+        var recurringAction = RecurringActionManager.createRecurringAction(GROUP, group.getId(), user);
+        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
+        assertNotEmpty(RecurringActionFactory.listGroupRecurringActions(group.getId()));
+    }
+
+    public void testCreateOrgRecurringActions() throws Exception {
+        var org = user.getOrg();
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
+        } });
+
+        try {
+            var recurringAction = RecurringActionManager.createRecurringAction(ORG, org.getId(), anotherUser);
+            RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, anotherUser);
+            fail("User shouldn't have access");
+        }
+        catch (PermissionException e) {
+            // no-op
+        }
+
+        var recurringAction = RecurringActionManager.createRecurringAction(ORG, org.getId(), user);
+        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
+        assertNotEmpty(RecurringActionFactory.listOrgRecurringActions(org.getId()));
     }
 
     public void testListMinionRecurringActions() throws Exception {
@@ -124,29 +173,25 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     }
 
     // todo make this complete
-//    public void testUpdateAction() throws Exception {
-//        CONTEXT.setImposteriser(ClassImposteriser.INSTANCE);
-//        TaskomaticApi taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
-//        RecurringActionManager.setTaskomaticApi(taskomaticMock);
-//
-//        var minion = MinionServerFactoryTest.createTestMinionServer(user);
-//
-//        CONTEXT.checking(new Expectations() { {
-//            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
-//        } });
-//
-//        var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
-//        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
-//
-//        HibernateFactory.getSession().flush();
-//
-//        var other = RecurringActionFactory.lookupById(recurringAction.getId());
-//        other.get().setName("testname");
-//        RecurringActionManager.saveAndSchedule(recurringAction, "", user);
-//        HibernateFactory.getSession().flush();
-//        var other2 = RecurringActionFactory.lookupById(recurringAction.getId());
-//
-//        System.out.println(other2);
-//        System.out.println(RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
-//    }
+    public void testUpdateAction() throws Exception {
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
+        } });
+
+        var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        RecurringActionManager.saveAndSchedule(recurringAction, CRON_EXPR, user);
+
+        HibernateFactory.getSession().flush();
+
+        var other = RecurringActionFactory.lookupById(recurringAction.getId());
+        other.get().setName("testname");
+        RecurringActionManager.saveAndSchedule(recurringAction, "", user);
+        HibernateFactory.getSession().flush();
+        var other2 = RecurringActionFactory.lookupById(recurringAction.getId());
+
+        System.out.println(other2);
+        System.out.println(RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
+    }
 }

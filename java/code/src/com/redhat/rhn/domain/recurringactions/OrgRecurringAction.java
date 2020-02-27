@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -68,6 +69,14 @@ public class OrgRecurringAction extends RecurringAction {
     public List<MinionServer> computeMinions() {
         return MinionServerUtils.filterSaltMinions(ServerFactory.listOrgSystems(organization.getId()))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canAccess(User user) {
+        return user.hasRole(RoleFactory.ORG_ADMIN);
     }
 
     /**

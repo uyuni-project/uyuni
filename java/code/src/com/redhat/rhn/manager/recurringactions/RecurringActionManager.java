@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.recurringactions;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
@@ -26,12 +27,16 @@ import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import org.hibernate.HibernateException;
 
 import java.util.List;
 
@@ -69,14 +74,19 @@ public class RecurringActionManager {
         switch (type) {
             case MINION:
                 return createMinionRecurringAction(entityId, user);
+            case GROUP:
+                return createGroupRecurringAction(entityId, user);
+            case ORG:
+                return createOrgRecurringAction(entityId, user);
+            default:
+                throw new UnsupportedOperationException("type not supported");
         }
-
-        throw new UnsupportedOperationException("type not supported");
     }
 
     /**
      * Create a minimal minion recurring action
-     *  @param minionId id of the minion
+     *
+     * @param minionId id of the minion
      * @param user the user
      * @return
      */
@@ -85,6 +95,40 @@ public class RecurringActionManager {
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
         MinionRecurringAction action = new MinionRecurringAction(false, true, minion, user);
         return action;
+    }
+
+    /**
+     * Create a minimal group recurring action
+     *
+     * @param groupId id of the group
+     * @param user the user
+     * @return
+     */
+    private static GroupRecurringAction createGroupRecurringAction(long groupId, User user) {
+        ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
+        if (group == null) {
+            throw new EntityNotExistsException(ServerGroup.class, groupId);
+        }
+        GroupRecurringAction action = new GroupRecurringAction(false, true, group, user);
+        return action;
+    }
+
+    /**
+     * Create a minimal org recurring action
+     *
+     * @param orgId id of the organization
+     * @param user the user
+     * @return
+     */
+    private static OrgRecurringAction createOrgRecurringAction(long orgId, User user) {
+        try {
+            Org org = OrgFactory.lookupById(orgId);
+            OrgRecurringAction action = new OrgRecurringAction(false, true, org, user);
+            return action;
+        }
+        catch (HibernateException e) {
+            throw new EntityNotExistsException(Org.class, orgId);
+        }
     }
 
     /**
@@ -153,14 +197,9 @@ public class RecurringActionManager {
      * @throws TaskomaticApiException when there is a problem with taskomatic during scheduling
      */
     public static void saveAndSchedule(RecurringAction action, String cron, User user) throws TaskomaticApiException {
-        if (action instanceof MinionRecurringAction) {
-            MinionRecurringAction minionAction = (MinionRecurringAction) action;
-            if (!SystemManager.isAvailableToUser(user, minionAction.getMinion().getId())) {
-                throw new PermissionException("Minion not accessible to user");
-            }
+        if (!action.canAccess(user)) {
+            throw new PermissionException(action.getClass() + "not accessible to user");
         }
-        // todo extend for other types
-        // todo rewrite using inheritance (e.g. RecurringAction.canUserModify(user), or canAccess(user)?)
         // todo check for dupe names
 
         RecurringActionFactory.save(action);

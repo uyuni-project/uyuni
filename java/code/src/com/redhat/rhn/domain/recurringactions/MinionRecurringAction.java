@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.List;
 
@@ -62,6 +63,14 @@ public class MinionRecurringAction extends RecurringAction {
     @Override
     public List<MinionServer> computeMinions() {
         return List.of(minion);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canAccess(User user) {
+        return SystemManager.isAvailableToUser(user, minion.getId());
     }
 
     /**

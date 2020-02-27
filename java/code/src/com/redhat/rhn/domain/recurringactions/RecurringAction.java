@@ -56,6 +56,9 @@ public abstract class RecurringAction {
 
     public static final String RECURRING_ACTION_PREFIX = "recurring-action-";
 
+    /**
+     * Recurring action types
+     */
     public enum TYPE {
         MINION,
         GROUP,
@@ -86,6 +89,14 @@ public abstract class RecurringAction {
      * @return list of minion servers
      */
     public abstract List<MinionServer> computeMinions();
+
+    /**
+     * Checks if the user can access the recurring action
+     *
+     * @param user the user to check
+     * @return boolean indicating access
+     */
+    public abstract boolean canAccess(User user);
 
     /**
      * Gets the name of the TaskoSchedule entry based on the entity id.

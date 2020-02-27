@@ -15,10 +15,13 @@
 
 package com.redhat.rhn.domain.recurringactions;
 
+import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import com.suse.manager.utils.MinionServerUtils;
 
@@ -68,6 +71,25 @@ public class GroupRecurringAction extends RecurringAction {
     public List<MinionServer> computeMinions() {
         return MinionServerUtils.filterSaltMinions(ServerGroupFactory.listServers(group))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canAccess(User user) {
+        ServerGroupManager groupManager = ServerGroupManager.getInstance();
+        if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
+            return false;
+        }
+        try {
+            /* Check if user has permission to access the group */
+            groupManager.lookup(group.getId(), user);
+        }
+        catch (LookupException e) {
+            return false;
+        }
+        return true;
     }
 
     /**

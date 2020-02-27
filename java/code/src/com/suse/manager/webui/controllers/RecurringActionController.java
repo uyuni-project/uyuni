@@ -17,12 +17,10 @@ package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static java.util.Optional.of;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
