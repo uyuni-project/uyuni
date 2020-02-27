@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.kickstart.tree.test;
 
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
 
 /**
@@ -64,6 +65,16 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
         cmd.setKernelOptions("");
         cmd.store();
         assertNull(cmd.getKernelOptions());
+    }
+
+    public void testPopulateKernelOptsForRhel8() throws Exception {
+        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        setTestTreeParams(cmd);
+        cmd.setInstallType(KickstartFactory.
+                lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_8));
+        cmd.setKernelOptions("");
+        cmd.store();
+        assertContains(cmd.getKernelOptions(), "inst.repo=");
     }
 
 }
