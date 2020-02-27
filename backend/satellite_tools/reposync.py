@@ -18,6 +18,7 @@ import os
 import re
 import shutil
 import socket
+import subprocess
 import sys
 import time
 import traceback
@@ -655,6 +656,7 @@ class RepoSync(object):
             taskomatic.add_to_erratacache_queue(self.channel_label)
         self.update_date()
         rhnSQL.commit()
+        subprocess.call(["/usr/sbin/mgr-create-bootstrap-repo", "--auto"])
 
         # update permissions
         fileutils.createPath(os.path.join(CFG.MOUNT_POINT, 'rhn'))  # if the directory exists update ownership only
