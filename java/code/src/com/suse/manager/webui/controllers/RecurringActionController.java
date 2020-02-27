@@ -22,6 +22,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.util.RecurringEventPicker;
+import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -75,7 +76,7 @@ public class RecurringActionController {
      * Invoked from Router. Initialize routes for Systems Views.
      */
     public static void initRoutes() {
-        get("/manager/api/recurringactions", withUser(RecurringActionController::schedules));
+        get("/manager/api/recurringactions/minion/:mid", withUser(RecurringActionController::minionSchedules));
         get("/manager/api/recurringactions/:scheduleId", withUser(RecurringActionController::singleSchedule));
         post("/manager/api/recurringactions/save", withUser(RecurringActionController::save));
         delete("/manager/api/recurringactions/:scheduleId/delete", withUser(RecurringActionController::deleteSchedule));
@@ -89,15 +90,36 @@ public class RecurringActionController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static String schedules(Request request, Response response, User user) {
-        try {
-            List<Map<String, String>> schedules = getSchedules(user);
-            return json(response,
-                    ResultJson.success(schedules));
-        }
-        catch (TaskomaticApiException e) {
-            return json(response, ResultJson.error(e.getMessage()));
-        }
+    public static String minionSchedules(Request request, Response response, User user) {
+        long mid = Long.parseLong(request.params("mid"));
+        List<RecurringStateScheduleJson> schedules = RecurringActionManager.listMinionRecurringActions(mid, user)
+                .stream()
+                .map(a -> actionToJson(a, RecurringAction.Type.MINION, a.getMinion().getId()))
+                .collect(Collectors.toList());
+
+        return json(response, ResultJson.success(schedules));
+    }
+
+    private static RecurringStateScheduleJson actionToJson(MinionRecurringAction a, RecurringAction.Type targetType,
+            Long tartgetId) {
+        RecurringStateScheduleJson json = new RecurringStateScheduleJson();
+        json.setRecurringActionId(a.getId());
+        json.setScheduleName(a.getName());
+        String cronExpr = "0 0 * * * ?"; // todo fetch from backend
+        json.setCron(cronExpr);
+        RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", null, null, cronExpr);
+        Map<String, String> cronTimes = new HashMap<>();
+        cronTimes.put("minute", picker.getMinute());
+        cronTimes.put("hour", picker.getHour());
+        cronTimes.put("dayOfMonth", picker.getDayOfMonth());
+        cronTimes.put("dayOfWeek", picker.getDayOfWeek());
+        json.setType(picker.getStatus());
+        json.setCronTimes(cronTimes);
+        json.setActive(a.isActive());
+        json.setTest(a.isTestMode());
+        json.setTargetType(targetType.toString());
+        json.setTargetId(tartgetId);
+        return json;
     }
 
     /**
@@ -261,7 +283,13 @@ public class RecurringActionController {
         mapJsonToAction(json, action);
 
         try {
-            RecurringActionManager.saveAndSchedule(action, json.getCron(), user);
+            String cron = json.getCron();
+            if (StringUtils.isBlank(cron)) {
+                cron = RecurringEventPicker
+                        .prepopulatePicker("date", json.getType(), json.getCronTimes(), null)
+                        .getCronEntry();
+            }
+            RecurringActionManager.saveAndSchedule(action, cron, user);
         }
         catch (TaskomaticApiException e) {
             errors.add("Error when scheduling the action.");

@@ -31,26 +31,26 @@ class RecurringStatesDetails extends React.Component {
                     {data.type === "daily" ?
                         <td>
                             {"Every day at "}
-                            <b>{data.hour + ":" + data.minute}</b>
+                            <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
                         </td>
                         : data.type === "weekly" ?
                             <td>
                                 {"Every "}
-                                <b>{this.weekDays[data.dayOfWeek - 1]}</b>
+                                <b>{this.weekDays[data.cronTimes.dayOfWeek - 1]}</b>
                                 {" at "}
-                                <b>{data.hour + ":" + data.minute}</b>
+                                <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
                             </td> :
                             <td>
                                 {"Every "}
                                 <b>
-                                    {data.dayOfMonth + (
-                                        data.dayOfMonth === "1" ? "st "
-                                            : data.dayOfMonth === "2" ? "nd "
-                                            : data.dayOfMonth === "3" ? "rd "
+                                    {data.cronTimes.dayOfMonth + (
+                                        data.cronTimes.dayOfMonth === "1" ? "st "
+                                            : data.cronTimes.dayOfMonth === "2" ? "nd "
+                                            : data.cronTimes.dayOfMonth === "3" ? "rd "
                                                 : "th ")}
                                 </b>
                                 {"of the month at "}
-                                <b>{data.hour + ":" + data.minute}</b>
+                                <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
                             </td>
                     }
                 </tr>
@@ -68,8 +68,8 @@ class RecurringStatesDetails extends React.Component {
     }
 
     showScheduleDetails(data) {
-        data.hour = data.hour.padStart(2, "0");
-        data.minute = data.minute.padStart(2, "0");
+        data.cronTimes.hour = data.cronTimes.hour.padStart(2, "0");
+        data.cronTimes.minute = data.cronTimes.minute.padStart(2, "0");
         return (
             <BootstrapPanel title={t("Schedule Details")}>
                 <div className="table-responsive">
@@ -101,10 +101,10 @@ class RecurringStatesDetails extends React.Component {
                             <td>{data.minionNames.join(", ")}</td>
                         </tr>
                         }
-                        <tr>
+                        {/*<tr>
                             <td>{t("Created at")}:</td>
                             <td>{data.createdAt + " " + timezone}</td>
-                        </tr>
+                        </tr> */}
                         {this.getExecutionText(data)}
                         <tr>
                             <td>{t("Quartz format string")}:</td>

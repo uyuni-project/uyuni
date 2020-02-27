@@ -16,6 +16,8 @@ const Utils = require("utils/functions").Utils;
 const messagesCounterLimit = 1;
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
+//todo rename scheduleId in json usages to recurringActionId
+
 function getHashId() {
     const match = window.location.hash.match(hashUrlRegex);
     return match ? match[2] : undefined;
@@ -80,10 +82,12 @@ class RecurringStates extends React.Component {
     };
 
     getRecurringScheduleList = () => {
-        return Network.get("/rhn/manager/api/recurringactions", "application/json").promise
+        // todo create different endpoints for each use case ("/rhn/manager/api/recurringactions/group/id")
+        const endpoint = "/rhn/manager/api/recurringactions/minion/" + minions[0].id;
+        return Network.get(endpoint, "application/json").promise
             .then(schedules => {
-                schedules.data.map(schedule => schedule.minionIds = this.toArray(schedule.minionIds));
-                schedules.data.map(schedule => schedule.minionNames = this.toArray(schedule.minionNames));
+                schedules.data.map(schedule => schedule.minionIds = minions.map(minion => minion.id));
+                schedules.data.map(schedule => schedule.minionNames = minions.map(minion => minion.name));
                 this.setState({
                     action: undefined,
                     selected: undefined,
@@ -92,47 +96,25 @@ class RecurringStates extends React.Component {
             }).catch(this.handleResponseError);
     };
 
-    getScheduleDetails(id, action) {
-        return Network.get("/rhn/manager/api/recurringactions/" + id, "application/json").promise
-            .then(schedule => {
-                schedule.data.minionIds = this.toArray(schedule.data.minionIds);
-                schedule.data.minionNames = this.toArray(schedule.data.minionNames);
-                schedule.data.minions = schedule.data.minionIds.reduce((minions, minion, i) => {
-                    minions[i] = {id: minion, name: schedule.data.minionNames[i]};
-                    return minions;
-                }, []);
-                this.setState({selected: schedule.data, action: action});
-            }).catch(this.handleResponseError);
+    getScheduleDetails(row, action) {
+        this.setState({selected: row, action: action});
     }
 
     handleDetailsAction(row) {
-        this.getScheduleDetails(row.scheduleId, "details").then(() => {
-            history.pushState(null, null, "#/details/" + row.scheduleId);
-        });
+        this.getScheduleDetails(row, "details");
+        history.pushState(null, null, "#/details/" + row.recurringActionId);
     }
 
     handleEditAction(row) {
-        this.getScheduleDetails(row.scheduleId, "edit").then(() => {
-            history.pushState(null, null, "#/edit/" + row.scheduleId);
-        });
+        this.getScheduleDetails(row, "edit");
+        history.pushState(null, null, "#/edit/" + row.recurringActionId);
     }
 
     toggleActive(schedule) {
         Object.assign(schedule, {
-            cronTimes: {
-                minute: schedule.minute,
-                hour: schedule.hour,
-                dayOfMonth: schedule.dayOfMonth,
-                dayOfWeek: schedule.dayOfWeek
-            },
-            active: !(schedule.active === "true")
+            active: !(schedule.active)
         });
-        schedule.minions = schedule.minionIds.reduce((minions, minion, i) => {
-            minions[i] = {id: minion, name: schedule.minionNames[i]};
-            return minions;
-        }, []);
         this.updateSchedule(schedule);
-        console.log(schedule);
     }
 
     skipNext(item) {
@@ -165,7 +147,7 @@ class RecurringStates extends React.Component {
 
     updateSchedule(schedule) {
         return Network.post(
-            "/rhn/manager/api/recurringactions/" + schedule.scheduleId + "/update",
+            "/rhn/manager/api/recurringactions/save",
             JSON.stringify(schedule),
             "application/json"
         ).promise.then(() => {
@@ -188,7 +170,7 @@ class RecurringStates extends React.Component {
 
     deleteSchedule(item) {
         if (!item) return false;
-        return Network.del("/rhn/manager/api/recurringactions/" + item.scheduleId + "/delete")
+        return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
             .promise.then(data => {
                 this.handleForwardAction();
                 this.setState({

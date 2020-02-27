@@ -29,22 +29,18 @@ class RecurringStatesEdit extends React.Component {
         Object.assign(
             this.state,
             {
-                scheduleId: schedule.scheduleId,
+                // todo looks like we can pass the data as-is
+                recurringActionId: schedule.recurringActionId,
                 scheduleName: schedule.scheduleName,
                 type: schedule.type,
                 minions: schedule.minions,
-                active: schedule.active === "true",
+                active: schedule.active,
                 targetId: schedule.targetId,
                 targetType: schedule.targetType,
-                groupName: schedule.groupName,
-                cronTimes: {
-                    minute: schedule.minute,
-                    hour: schedule.hour,
-                    dayOfWeek: schedule.dayOfWeek,
-                    dayOfMonth: schedule.dayOfMonth
-                },
+                groupName: schedule.groupName, // todo remove
+                cronTimes: schedule.cronTimes,
                 cron: schedule.cron,
-                test: schedule.test === "true"
+                test: schedule.test
             }
         );
     };
@@ -81,7 +77,7 @@ class RecurringStatesEdit extends React.Component {
         }
         this.props.onCreate({
             targetId: this.state.targetId,
-            minionNames: this.state.minions.map(minion => minion.name),
+            //minionNames: this.state.minions.map(minion => minion.name), // todo
             scheduleName: this.state.scheduleName,
             active: true,
             type: this.state.type,
@@ -98,8 +94,8 @@ class RecurringStatesEdit extends React.Component {
         }
         this.props.onEdit({
             targetId: this.state.targetId,
-            minionNames: this.state.minions.map(minion => minion.name),
-            scheduleId: this.state.scheduleId,
+            //minionNames: this.state.minions.map(minion => minion.name), // todo
+            recurringActionId: this.state.recurringActionId,
             scheduleName: this.state.scheduleName,
             active: this.state.active,
             type: this.state.type,
