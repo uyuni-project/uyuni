@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.recurringactions;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
@@ -45,7 +46,7 @@ import javax.persistence.Table;
 @Table(name = "suseRecurringAction") // TODO: Drop the suse prefix?
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "target_type")
-public abstract class RecurringAction {
+public abstract class RecurringAction extends BaseDomainHelper {
 
     private Long id;
     private String name;

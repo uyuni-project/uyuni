@@ -22,7 +22,13 @@ CREATE TABLE suseRecurringAction
                       REFERENCES web_contact(id)
                       ON DELETE CASCADE,
   active            CHAR(1) DEFAULT ('Y') NOT NULL,
-  test_mode         CHAR(1) DEFAULT ('Y') NOT NULL
+  test_mode         CHAR(1) DEFAULT ('Y') NOT NULL,
+  created           TIMESTAMP WITH TIME ZONE
+                      DEFAULT (current_timestamp)
+                      NOT NULL,
+  modified          TIMESTAMP WITH TIME ZONE
+                      DEFAULT (current_timestamp)
+                      NOT NULL
 );
 
 CREATE SEQUENCE suse_recurring_action_id_seq;
