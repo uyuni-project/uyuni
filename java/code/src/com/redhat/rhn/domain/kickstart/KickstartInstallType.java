@@ -53,6 +53,13 @@ public class KickstartInstallType extends BaseDomainHelper {
     private String name;
 
     /**
+     * @return if this installer type is rhel 8 or greater
+     */
+    public boolean isRhel8OrGreater() {
+        return (isRhel7OrGreater() && !isRhel7());
+    }
+
+    /**
      * @return if this installer type is rhel 7 or greater (for rhel8)
      */
     public boolean isRhel7OrGreater() {
