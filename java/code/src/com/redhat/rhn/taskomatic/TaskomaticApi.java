@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.taskomatic;
 
-import static java.util.Collections.singletonList;
-
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -53,6 +51,8 @@ import java.util.stream.Stream;
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
+
+import static java.util.Collections.singletonList;
 
 /**
  * TaskomaticApi
@@ -260,35 +260,18 @@ public class TaskomaticApi {
      * @param jobLabel name of the schedule
      * @param bunchName bunch name
      * @param cron cron expression
-     * @param params parameters
-     * @return date of the first schedule
-     * @throws TaskomaticApiException if there was an error
-     */
-    public Date scheduleSatBunch(User user, String jobLabel, String bunchName, String cron, Map<String, String> params)
-            throws TaskomaticApiException {
-        ensureSatAdminRole(user);
-        if (params == null) {
-            params = new HashMap<>();
-        }
-        Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
-        if (task != null) {
-            unscheduleSatTask(jobLabel, user);
-        }
-        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, params);
-    }
-
-    /**
-     * Creates a new schedule, unschedules, if en existing is defined
-     * @param user shall be sat admin
-     * @param jobLabel name of the schedule
-     * @param bunchName bunch name
-     * @param cron cron expression
      * @return date of the first schedule
      * @throws TaskomaticApiException if there was an error
      */
     public Date scheduleSatBunch(User user, String jobLabel, String bunchName, String cron)
-            throws TaskomaticApiException {
-        return scheduleSatBunch(user, jobLabel, bunchName, cron, null);
+    throws TaskomaticApiException {
+        ensureSatAdminRole(user);
+        Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
+        if (task != null) {
+            unscheduleSatTask(jobLabel, user);
+        }
+        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron,
+                new HashMap());
     }
 
     /**
@@ -331,19 +314,6 @@ public class TaskomaticApi {
      */
     public List findActiveSchedules(User user) throws TaskomaticApiException {
         List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedules");
-        return schedules;
-    }
-
-    /**
-     * Return list of active schedules by bunch
-     * @param user shall be sat admin
-     * @param bunchName name of the bunch
-     * @return list of schedules
-     * @throws TaskomaticApiException if there was an error
-     */
-    public List<Map> findActiveSchedulesByBunch(User user, String bunchName)
-            throws TaskomaticApiException {
-        List<Map> schedules = (List<Map>) invoke("tasko.listActiveSatSchedulesByBunch", bunchName);
         return schedules;
     }
 
