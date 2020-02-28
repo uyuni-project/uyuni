@@ -154,6 +154,7 @@ public class RecurringActionController {
         json.setTest(a.isTestMode());
         json.setTargetType(targetType.toString());
         json.setTargetId(a.getEntityId()); // todo question: do we need that at all?
+        json.setCreated(a.getCreated());
         return json;
     }
 

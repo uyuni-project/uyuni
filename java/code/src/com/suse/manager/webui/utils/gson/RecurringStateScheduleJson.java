@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -48,6 +49,9 @@ public class RecurringStateScheduleJson {
 
     /** Is test run */
     private boolean test;
+
+    /** Schedule creation date **/
+    private Date createdAt;
 
     /**
      * Gets the recurringActionId.
@@ -193,5 +197,23 @@ public class RecurringStateScheduleJson {
      */
     public void setTest(boolean testIn) {
         test = testIn;
+    }
+
+    /**
+     * Gets the creation date
+     *
+     * @return createdAt
+     */
+    public Date getCreated() {
+        return createdAt;
+    }
+
+    /**
+     *  Sets the creation date
+     *
+     * @param createdAtIn schedule creation date
+     */
+    public void setCreated(Date createdAtIn) {
+        this.createdAt = createdAtIn;
     }
 }

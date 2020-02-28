@@ -101,10 +101,10 @@ class RecurringStatesDetails extends React.Component {
                             <td>{data.minionNames.join(", ")}</td>
                         </tr>
                         }
-                        {/*<tr>
+                        {<tr>
                             <td>{t("Created at")}:</td>
                             <td>{data.createdAt + " " + timezone}</td>
-                        </tr> */}
+                        </tr> }
                         {this.getExecutionText(data)}
                         <tr>
                             <td>{t("Quartz format string")}:</td>
