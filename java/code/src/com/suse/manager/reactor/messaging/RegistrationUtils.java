@@ -84,12 +84,11 @@ public class RegistrationUtils {
 
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private static SystemEntitlementManager systemEntitlementManager;
 
-    /**
-     * Prevent instantiation.
-     */
-    private RegistrationUtils() {  }
+    public RegistrationUtils(SystemEntitlementManager systemEntitlementManager) {
+       this.systemEntitlementManager = systemEntitlementManager;
+    }
 
     /**
      * Perform the final registration steps for the minion.
@@ -201,7 +200,7 @@ public class RegistrationUtils {
             Entitlement e = sg.getAssociatedEntitlement();
             if (validEntits.contains(e) &&
                     e.isAllowedOnServer(server, grains) &&
-                    SystemEntitler.INSTANCE.canEntitleServer(server, e)) {
+                    systemEntitlementManager.canEntitleServer(server, e)) {
                 ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, e);
                 if (vr.getWarnings().size() > 0) {
                     LOG.warn(vr.getWarnings().toString());

@@ -20,10 +20,15 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -41,6 +46,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private VirtualInstanceFactory virtualInstanceDAO;
     private User user;
     private GuestBuilder builder;
+    SystemEntitlementManager systemEntitlementManager;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -49,6 +55,10 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         builder = new GuestBuilder(user);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(SaltService.INSTANCE)
+        );
     }
 
     private void assertGuestDeleted(VirtualInstance guest) {
@@ -241,7 +251,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     }
 
     public void testSetState() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest();
+        Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualInstance vi = host.getGuests().iterator().next();
         vi.setState(VirtualInstanceFactory.getInstance().getRunningState());
         TestUtils.saveAndFlush(vi);
@@ -249,7 +259,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     }
 
     public void testLookupGuestByUuid() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest();
+        Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualInstance guest = host.getGuests().iterator().next();
 
         List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
@@ -261,7 +271,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     }
 
     public void testLookupHostVirtualInstanceByHostId() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest();
+        Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
 
         VirtualInstance fromDb = (VirtualInstance) HibernateFactory.getSession()
                 .createCriteria(VirtualInstance.class)
@@ -276,7 +286,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     }
 
     public void testLookupGuestByHostIdAndUuid() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest();
+        Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualInstance guest = host.getGuests().iterator().next();
 
         VirtualInstance fromDb = VirtualInstanceFactory.getInstance()

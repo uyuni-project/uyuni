@@ -169,9 +169,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(getGrains(MINION_ID, null, key)));
                 allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                 allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
-                allowing(saltServiceMock).callSync(
-                        with(any(LocalCall.class)),
-                        with(any(String.class)));
+                allowing(saltServiceMock).getProducts(with(any(String.class)));
                 will(returnValue(Optional.empty()));
             }};
 
@@ -497,9 +495,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 "test", "repo", "shortname", "summary", "vendor",
                                 product.getVersion());
                     pil.add(pi);
-                    allowing(saltServiceMock).callSync(
-                             with(any(LocalCall.class)),
-                             with(any(String.class)));
+                    allowing(saltServiceMock).getProducts(with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
                 (contactMethod) -> {
@@ -544,9 +540,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 "test", "repo", "shortname", "summary", "vendor",
                                 product.getVersion());
                     pil.add(pi);
-                    allowing(saltServiceMock).callSync(
-                             with(any(LocalCall.class)),
-                             with(any(String.class)));
+                    allowing(saltServiceMock).getProducts(with(any(String.class)));
                     will(returnValue(Optional.of(pil)));
                 }},
                 (contactMethod) -> {
@@ -785,8 +779,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         true, true, "productline", Optional.of("registerrelease"), "test",
                         "repo", "shortname", "summary", "vendor", product.getVersion());
                 pil.add(pi);
-                allowing(saltServiceMock).callSync(with(any(LocalCall.class)),
-                        with(any(String.class)));
+                allowing(saltServiceMock).getProducts(with(any(String.class)));
                 will(returnValue(Optional.of(pil)));
             }
         }, (contactMethod) -> {

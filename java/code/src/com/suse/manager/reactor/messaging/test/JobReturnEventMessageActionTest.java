@@ -55,6 +55,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
@@ -124,7 +125,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager;
     private Path metadataDirOfficial;
 
     @Override
@@ -134,7 +135,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
 
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setDataDir(tmpSaltRoot.toString());

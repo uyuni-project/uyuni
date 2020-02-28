@@ -62,9 +62,11 @@ public class SystemEntitler {
 
     private static final Logger LOG = Logger.getLogger(SystemEntitler.class);
 
-    public static final SystemEntitler INSTANCE = new SystemEntitler();
+    private SystemQuery systemQuery;
 
-    private SystemQuery saltService = SaltService.INSTANCE;
+    public SystemEntitler(SystemQuery systemQuery) {
+        this.systemQuery = systemQuery;
+    }
 
     /**
      * Checks whether or not a given server can be entitled with a specific entitlement
@@ -110,7 +112,7 @@ public class SystemEntitler {
             }
         }
         else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
-            saltService.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+            systemQuery.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
 
         entitleServer(server, ent);
@@ -205,7 +207,7 @@ public class SystemEntitler {
     }
 
     private void updateLibvirtEngine(MinionServer minion) {
-        saltService.updateLibvirtEngine(minion);
+        systemQuery.updateLibvirtEngine(minion);
     }
 
     // Need to do some extra logic here
@@ -328,6 +330,6 @@ public class SystemEntitler {
      * @param saltServiceIn The SaltService
      */
     public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
+        this.systemQuery = saltServiceIn;
     }
 }

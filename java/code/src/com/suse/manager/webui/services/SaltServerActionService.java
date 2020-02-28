@@ -173,7 +173,7 @@ import static java.util.stream.Collectors.toList;
 public class SaltServerActionService {
 
     /* Singleton instance of this class */
-    public static final SaltServerActionService INSTANCE = new SaltServerActionService();
+    public static final SaltServerActionService INSTANCE = new SaltServerActionService(SaltService.INSTANCE);
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
@@ -202,10 +202,14 @@ public class SaltServerActionService {
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
-    private SystemQuery saltService = SaltService.INSTANCE;
+    private SystemQuery saltService;
     private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
     private SaltUtils saltUtils = SaltUtils.INSTANCE;
     private boolean skipCommandScriptPerms;
+
+    public SaltServerActionService(SystemQuery systemQuery) {
+        this.saltService = systemQuery;
+    }
 
     private Action unproxy(Action entity) {
         Hibernate.initialize(entity);

@@ -95,6 +95,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
@@ -148,6 +149,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
     protected Path metadataDirOfficial;
+    private SystemEntitlementManager systemEntitlementManager;
 
     @Override
     public void setUp() throws Exception {
@@ -168,6 +170,10 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleActionExecution(with(any(Action.class)));
             }
         });
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(SaltService.INSTANCE)
+        );
     }
 
     public void testSnapshotServer() throws Exception {
@@ -272,7 +278,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1);
+        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = (host.getGuests().iterator().next()).
             getGuestSystem();
         Long sid = guest.getId();
@@ -296,7 +302,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1);
+        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = (host.getGuests().iterator().next()).
             getGuestSystem();
         Long sid = guest.getId();
@@ -743,7 +749,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     private Server setupHostWithGuests(int numGuests) throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuests(numGuests);
+        Server host = ServerTestUtils.createVirtHostWithGuests(numGuests, systemEntitlementManager);
         host.setRam(HOST_RAM_MB);
         addCpuToServer(host);
         User user = host.getCreator();

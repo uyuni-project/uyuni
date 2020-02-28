@@ -55,6 +55,7 @@ import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
@@ -156,13 +157,15 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     public final void testScheduleOSImageBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         SaltService saltServiceMock = CONTEXT.mock(SaltService.class);
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         CONTEXT.checking(new Expectations() {{
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
                 will(returnValue(Optional.of(mockResult)));
         }});
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));

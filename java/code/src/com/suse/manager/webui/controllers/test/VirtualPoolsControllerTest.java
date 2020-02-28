@@ -16,11 +16,15 @@ package com.suse.manager.webui.controllers.test;
 
 import static org.hamcrest.Matchers.containsString;
 
+import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
@@ -34,12 +38,14 @@ import com.suse.manager.virtualization.PoolCapabilitiesJson.PoolType;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 
 import org.jmock.Expectations;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class VirtualPoolsControllerTest extends BaseControllerTestCase {
@@ -49,6 +55,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
     private Server host;
     private static final Gson GSON = new GsonBuilder().create();
     private VirtManager virtManager;
+    private SystemEntitlementManager systemEntitlementManager;
 
     /**
      * {@inheritDoc}
@@ -64,37 +71,47 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        saltServiceMock = context().mock(SaltService.class);
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("state", "apply")),
-                    with(containsString("serverfactorytest")));
-        }});
+        saltServiceMock = new SaltService() {
+
+            @Override
+            public void updateLibvirtEngine(MinionServer minion) {
+            }
+
+            @Override
+            public Map<String, JsonObject> getPools(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/test/virt.pool.info.json",
+                        null,
+                        new TypeToken<Map<String, JsonObject>>() { }).get();
+            }
+
+            @Override
+            public Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/test/virt.volume.info.json",
+                        null,
+                        new TypeToken<Map<String, Map<String, JsonObject>>>() { }).get();
+            }
+
+            @Override
+            public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/test/virt.pool.caps.json",
+                        null,
+                        new TypeToken<PoolCapabilitiesJson>() { });
+            }
+        };
 
         virtManager = new VirtManager(saltServiceMock);
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
 
-        host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
+        host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
     }
 
-    public void testData() throws Exception {
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("virt", "pool_info")),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(SaltTestUtils.getSaltResponse(
-                    "/com/suse/manager/webui/controllers/test/virt.pool.info.json",
-                    null,
-                    new TypeToken<Map<String, JsonElement>>() { }.getType())));
-            oneOf(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("virt", "volume_infos")),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(SaltTestUtils.getSaltResponse(
-                    "/com/suse/manager/webui/controllers/test/virt.volume.info.json",
-                    null,
-                    new TypeToken<Map<String, Map<String, JsonElement>>>() { }.getType())));
-        }});
-
+    public void testData() {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/pools/:sid/data", host.getId()), response, user);
@@ -114,18 +131,9 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertEquals(Long.valueOf(6591508480L), pool1.getFree());
     }
 
-    public void testGetCapabilities() throws Exception {
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("virt", "pool_capabilities")),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(SaltTestUtils.getSaltResponse(
-                    "/com/suse/manager/webui/controllers/test/virt.pool.caps.json",
-                    null,
-                    new TypeToken<PoolCapabilitiesJson>() { }.getType())));
-        }});
-
-        String json = VirtualPoolsController.getCapabilities(getRequestWithCsrf(
+    public void testGetCapabilities() {
+        VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
+        String json = virtualPoolsController.getCapabilities(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/pools/:sid/capabilities", host.getId()), response, user);
         PoolCapabilitiesJson caps = GSON.fromJson(json, new TypeToken<PoolCapabilitiesJson>() { }.getType());
         assertTrue(caps.isComputed());
