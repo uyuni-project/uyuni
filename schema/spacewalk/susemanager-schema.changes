@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Feb 28 12:08:06 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.18-1
 - Add new 'payg' attribute to rhnServer table
 - enable re-activation keys for salt managed systems (bsc#1159012)
 - generate metadata with empty vendor (bsc#1158480)
