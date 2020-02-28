@@ -10,6 +10,7 @@ import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -18,7 +19,9 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -65,19 +68,22 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private static final String AMD64_ARCH = "amd64";
     private static final String S390_ARCH = "s390";
     private static final String PPC64LE_ARCH = "ppc64le";
+    private SystemEntitlementManager systemEntitlementManager;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
 
-        SaltService saltServiceMock = context().mock(SaltService.class);
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(any(String.class)));
-        }});
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        SaltService saltServiceMock = new SaltService() {
+            @Override
+            public void updateLibvirtEngine(MinionServer minion) {
+            }
+        };
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
     }
 
     public void testSystemsToJson() throws Exception {
@@ -235,7 +241,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
 
-        Server hostServer = ServerTestUtils.createVirtHostWithGuests(1);
+        Server hostServer = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         // let's set some base product to our systems (otherwise lifecycle subscriptions aren't reported)
         InstalledProduct instProd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
         Set<InstalledProduct> installedProducts = singleton(instProd);
@@ -269,7 +275,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
 
-        Server hostServer = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
+        Server hostServer = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         // monitoring is only compatible with certain architectures. make sure we use one of them:
         hostServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         // let's set some base product to our systems (otherwise lifecycle subscriptions aren't reported)
@@ -443,8 +449,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testVirtualHostManagersToJson() throws Exception {
-        Server virtualHost1 = ServerTestUtils.createVirtHostWithGuests(2);
-        Server virtualHost2 = ServerTestUtils.createVirtHostWithGuest();
+        Server virtualHost1 = ServerTestUtils.createVirtHostWithGuests(2, systemEntitlementManager);
+        Server virtualHost2 = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualHostManager vhm = VirtualHostManagerFactory.getInstance()
                 .createVirtualHostManager("ESXi", user.getOrg(), "file", new HashMap<>());
         vhm.addServer(virtualHost1);

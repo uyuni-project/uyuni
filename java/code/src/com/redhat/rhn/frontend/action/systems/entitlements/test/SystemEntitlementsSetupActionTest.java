@@ -32,6 +32,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -57,7 +58,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
     private Mockery context = new Mockery();
     private SaltService saltServiceMock;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager;
 
     @Override
     public void setUp() throws Exception {
@@ -65,7 +66,10 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());
         UserTestUtils.addVirtualization(user.getOrg());

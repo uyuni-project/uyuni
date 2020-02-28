@@ -252,7 +252,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(saltServiceMock).getAllContainers(with(kubeconfig), with(context));
             will(returnValue(Optional.of(new JsonParser<>(MgrK8sRunner.getAllContainers("", "").getReturnType()).parse(
-                    TestUtils.readRelativeFile(this, file)))));
+                    TestUtils.readRelativeFile(this, file)).getContainers())));
         } });
     }
 

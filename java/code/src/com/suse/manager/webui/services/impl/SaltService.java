@@ -158,7 +158,7 @@ public class SaltService implements SystemQuery {
     }
 
     // Prevent instantiation
-    SaltService() {
+    public SaltService() {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(0)
                 .setSocketTimeout(0)

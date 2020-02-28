@@ -28,8 +28,8 @@ import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
-import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -57,6 +57,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
 
     // Mocks
     private SaltService saltMock;
+    SystemQuery systemQuery;
     private TaskomaticApi taskomaticMock;
 
     @Override
@@ -77,25 +78,24 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         ChannelFamily channelFamily = ErrataTestUtils.createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
+        systemQuery = new SaltService() {
+            @Override
+            public Optional<List<Zypper.ProductInfo>> getProducts(String minionId) {
+                List<Zypper.ProductInfo> pil = new ArrayList<>();
+                Zypper.ProductInfo pi = new Zypper.ProductInfo(
+                        product.getName(),
+                        product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
+                        true, true, "productline", Optional.of("registerrelease"),
+                        "test", "repo", "shortname", "summary", "vendor",
+                        product.getVersion());
+                pil.add(pi);
+                return Optional.of(pil);
+            }
+        };
+
 
         context().checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
-
-            allowing(saltMock).getGrains(testMinion.getMinionId());
-            will(returnValue(grains));
-
-            List<Zypper.ProductInfo> pil = new ArrayList<>();
-            Zypper.ProductInfo pi = new Zypper.ProductInfo(
-                    product.getName(),
-                    product.getArch().getLabel(), "descr", "eol", "epoch", "flavor",
-                    true, true, "productline", Optional.of("registerrelease"),
-                    "test", "repo", "shortname", "summary", "vendor",
-                    product.getVersion());
-            pil.add(pi);
-            allowing(saltMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(any(String.class)));
-            will(returnValue(Optional.of(pil)));
         }});
     }
 
@@ -104,11 +104,13 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
      * In this case we test that at the end of the Action, the minion has correct channels
      * (based on its product) assigned.
      */
-    public void testChannelsAssigned() {
+    public void testChannelsAssigned() throws Exception {
         grains.put("machine_id", testMinion.getMachineId());
 
+        // setup channels & product
+
         ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
-        ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);
+        ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(systemQuery);
         EventMessage message = new ImageDeployedEventMessage(event);
         action.execute(message);
 
@@ -132,7 +134,7 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
         System.out.println(testMinion.getChannels());
 
         ImageDeployedEvent event = new ImageDeployedEvent(new ValueMap(grains));
-        ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(saltMock);
+        ImageDeployedEventMessageAction action = new ImageDeployedEventMessageAction(systemQuery);
         EventMessage message = new ImageDeployedEventMessage(event);
         action.execute(message);
 

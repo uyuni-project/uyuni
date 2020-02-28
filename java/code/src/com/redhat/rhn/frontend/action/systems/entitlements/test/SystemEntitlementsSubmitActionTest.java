@@ -33,6 +33,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.Iterator;
 
@@ -156,7 +157,11 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             ServerGroupType groupType
                                             )  throws Exception {
 
-        Server server = ServerTestUtils.createVirtHostWithGuests(user, 1);
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(SaltService.INSTANCE)
+        );
+        Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
 
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
         ServerGroupTest.createTestServerGroup(user.getOrg(),

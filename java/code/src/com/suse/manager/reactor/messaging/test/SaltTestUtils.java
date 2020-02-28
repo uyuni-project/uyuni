@@ -2,6 +2,7 @@ package com.suse.manager.reactor.messaging.test;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,24 +54,27 @@ public class SaltTestUtils {
      *
      * @return the mocked up salt response
      *
-     * @throws Exception if anything bad happens.
      */
     @SuppressWarnings("unchecked")
-    public static <T> Optional<T> getSaltResponse(String filename, Map<String, String> placeholders, Type type) throws Exception {
-        Path path = new File(TestUtils.findTestData(filename).getPath()).toPath();
-        String content = Files.lines(path).collect(Collectors.joining("\n"));
+    public static <T> Optional<T> getSaltResponse(String filename, Map<String, String> placeholders, TypeToken<T> type) {
+        try {
+            Path path = new File(TestUtils.findTestData(filename).getPath()).toPath();
+            String content = Files.lines(path).collect(Collectors.joining("\n"));
 
-        if (placeholders != null) {
-            for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-                content = StringUtils.replace(content, entry.getKey(), entry.getValue());
+            if (placeholders != null) {
+                for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+                    content = StringUtils.replace(content, entry.getKey(), entry.getValue());
+                }
             }
-        }
 
-        T target = (T)content;
-        if (type != null) {
-            target = GSON.fromJson(content, type);
+            T target = (T) content;
+            if (type != null) {
+                target = GSON.fromJson(content, type.getType());
+            }
+            return Optional.of(target);
+        } catch (IOException | ClassNotFoundException e) {
+           throw new RuntimeException(e);
         }
-        return Optional.of(target);
     }
 
     /**

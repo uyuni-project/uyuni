@@ -83,7 +83,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param saltServerActionServiceIn the {@link SaltServerActionService} to work with
      */
     public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn,
-            SaltService saltServiceIn, SaltSSHService saltSSHServiceIn,
+            SystemQuery saltServiceIn, SaltSSHService saltSSHServiceIn,
             SaltServerActionService saltServerActionServiceIn) {
         log = logger;
         system = systemIn;
