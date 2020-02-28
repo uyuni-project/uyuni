@@ -21,6 +21,8 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * ServerFactory - the class used to fetch and store
@@ -82,6 +84,37 @@ public class RecurringActionFactory extends HibernateFactory {
                 "WHERE action.id = :id")
                 .setParameter("id", id)
                 .uniqueResultOptional();
+    }
+
+    /**
+     * Look up {@link RecurringAction} id based on name, type and referenced entity of given object
+     *
+     * @param action the {@link RecurringAction} object (can even be a Hibernate entity in transient state)
+     * @return optional ID of matching {@link RecurringAction}
+     */
+    public static Optional<Long> lookupEqualEntityId(RecurringAction action) {
+        // 1. we create a stream of entities with given name and entity id
+        Stream<RecurringAction> stream = getSession().createQuery("SELECT dbAction FROM RecurringAction dbAction " +
+                "WHERE dbAction.name = :name " +
+                "AND :entityId IN (dbAction.minion.id, dbAction.group.id, dbAction.org.id)")
+                .setParameter("name", action.getName())
+                .setParameter("entityId", action.getEntityId())
+                .stream();
+
+        // 2. then we filter out the entity of given type
+        List<RecurringAction> matches = stream
+                .filter(entity -> entity.getType() == action.getType())
+                .collect(Collectors.toList());
+
+        // we can only have either 0 or 1 matches
+        switch (matches.size()) {
+            case 0:
+                return Optional.empty();
+            case 1:
+                return Optional.of(matches.get(0).getId());
+            default:
+                throw new IllegalStateException("More than 1 match returned");
+        }
     }
 
     /**

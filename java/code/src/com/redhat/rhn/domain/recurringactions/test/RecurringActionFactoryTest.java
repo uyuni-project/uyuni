@@ -12,6 +12,7 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.PersistenceException;
 
@@ -167,5 +168,58 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         RecurringActionFactory.delete(action);
 
         assertTrue(RecurringActionFactory.listMinionRecurringActions(minion.getId()).isEmpty());
+    }
+
+    public void testLookupEqualEntity() throws Exception {
+        String name = "already-existing-action";
+        var action = new MinionRecurringAction();
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setMinion(minion);
+        action.setName(name);
+        action.setCronExpr(CRON_EXPR);
+        RecurringActionFactory.save(action);
+
+        var orgAction = new OrgRecurringAction();
+        orgAction.setOrg(user.getOrg());
+        orgAction.setName(name);
+        orgAction.setCronExpr(CRON_EXPR);
+        RecurringActionFactory.save(orgAction);
+
+        assertEquals(action.getId(), RecurringActionFactory.lookupEqualEntityId(action).get());
+        assertEquals(orgAction.getId(), RecurringActionFactory.lookupEqualEntityId(orgAction).get());
+    }
+
+    public void testLookupEqualActionObject() throws Exception {
+        var action = new MinionRecurringAction();
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setMinion(minion);
+        action.setName("already-existing-action");
+        action.setCronExpr(CRON_EXPR);
+        RecurringActionFactory.save(action);
+
+        // we don't save the 2nd object -> it's just an object, no entity, but it has same properties as the 1st object
+        var action2 = new MinionRecurringAction();
+        action2.setMinion(minion);
+        action2.setName("already-existing-action");
+        action2.setCronExpr(CRON_EXPR);
+
+        assertEquals(action.getId(), RecurringActionFactory.lookupEqualEntityId(action2).get());
+    }
+
+    public void testLookupNotEqualActionObject() throws Exception {
+        var action = new MinionRecurringAction();
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setMinion(minion);
+        action.setName("already-existing-action");
+        action.setCronExpr(CRON_EXPR);
+        RecurringActionFactory.save(action);
+
+        // we don't save the 2nd object -> it's just an object, no entity
+        var action2 = new MinionRecurringAction();
+        action2.setMinion(minion);
+        action2.setName("already-existing-action2");
+        action2.setCronExpr(CRON_EXPR);
+
+        assertFalse(RecurringActionFactory.lookupEqualEntityId(action2).isPresent());
     }
 }

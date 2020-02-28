@@ -204,12 +204,18 @@ public class RecurringActionManager {
         }
         // todo check for dupe names
 
+        validateAction(action);
+
         RecurringActionFactory.save(action);
 
         // todo test this codepath (when tasko throws an exception)
+        // mainly the possible need for revert
         taskomaticApi.scheduleRecurringAction(action, user);
     }
 
+    private static void validateAction(RecurringAction action) {
+        // todo
+    }
 
     /**
      * Checks permission on given {@link RecurringAction}, deletes it and unschedules corresponding taskomatic job.
