@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Feb 28 12:08:31 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.24-1
 - install dmidecode before HW profile update when missing
 - Add mgr_start_event_grains.sls to update minion config
 - Add 'product' custom state module to handle installation of
