@@ -10,6 +10,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
+import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -58,12 +59,13 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         CONTEXT.checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
         try {
             var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), anotherUser);
             recurringAction.setCronExpr(CRON_EXPR); // todo maybe put to create?
+            recurringAction.setName("test-recurring-action-1");
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
@@ -73,13 +75,14 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
+        recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
         assertNotEmpty(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
     }
 
     public void testCreateGroupRecurringActions() throws Exception {
         CONTEXT.checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
         try {
@@ -88,6 +91,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             anotherUser.removePermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
             var recurringAction = RecurringActionManager.createRecurringAction(GROUP, group.getId(), anotherUser);
             recurringAction.setCronExpr(CRON_EXPR);
+            recurringAction.setName("recurringaction1");
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
@@ -98,6 +102,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var group = ServerGroupTestUtils.createManaged(user);
         var recurringAction = RecurringActionManager.createRecurringAction(GROUP, group.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
+        recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
         assertNotEmpty(RecurringActionFactory.listGroupRecurringActions(group.getId()));
     }
@@ -106,12 +111,13 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var org = user.getOrg();
 
         CONTEXT.checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
         try {
             var recurringAction = RecurringActionManager.createRecurringAction(ORG, org.getId(), anotherUser);
             recurringAction.setCronExpr(CRON_EXPR);
+            recurringAction.setName("test-recurring-action-1");
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
@@ -121,6 +127,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         var recurringAction = RecurringActionManager.createRecurringAction(ORG, org.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
+        recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
         assertNotEmpty(RecurringActionFactory.listOrgRecurringActions(org.getId()));
     }
@@ -129,6 +136,9 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
         var action = new MinionRecurringAction();
         action.setMinion(minion);
+        action.setName("test-recurring-action-1");
+        action.setCronExpr(CRON_EXPR);
+        action.setName("test-recurring-action");
         RecurringActionFactory.save(action);
 
         assertEquals(List.of(action), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
@@ -148,6 +158,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         var action = new GroupRecurringAction();
         action.setGroup(group);
+        action.setCronExpr(CRON_EXPR);
+        action.setName("test-recurring-action-1");
         RecurringActionFactory.save(action);
 
         assertTrue(manager.canAccess(user, group));
@@ -165,6 +177,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     public void testListOrgRecurringAction() {
         var action = new OrgRecurringAction();
         action.setOrg(user.getOrg());
+        action.setCronExpr(CRON_EXPR);
+        action.setName("test-recurring-action-1");
         RecurringActionFactory.save(action);
 
         assertEquals(List.of(action), RecurringActionManager.listOrgRecurringActions(user.getOrg().getId(), user));
@@ -183,11 +197,12 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         CONTEXT.checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleSatBunch(with(any(User.class)), with(any(String.class)), with(any(String.class)), with(any(String.class)));
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
         var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
+        recurringAction.setName("test-recurring-action-1");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
 
         HibernateFactory.getSession().flush();

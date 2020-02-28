@@ -20,10 +20,14 @@ import javax.persistence.PersistenceException;
  */
 public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
 
+    private static final String CRON_EXPR = "0 * * * * ?";
+
     public void testListMinionRecurringActions() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
         action.setMinion(minion);
+        action.setName("test-recurring-action-1");
+        action.setCronExpr(CRON_EXPR);
         RecurringActionFactory.save(action);
 
         assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
@@ -33,11 +37,13 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
         action.setName("action name 1");
+        action.setCronExpr(CRON_EXPR);
         action.setMinion(minion);
         RecurringActionFactory.save(action);
 
         var action2 = new MinionRecurringAction();
-        action.setName("action name 2");
+        action2.setName("action name 2");
+        action2.setCronExpr(CRON_EXPR);
         action2.setMinion(minion);
         RecurringActionFactory.save(action2);
 
@@ -49,6 +55,8 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         var group = ServerGroupTestUtils.createManaged(user);
 
         action.setGroup(group);
+        action.setName("action name 1");
+        action.setCronExpr(CRON_EXPR);
         RecurringActionFactory.save(action);
 
         assertEquals(List.of(action), RecurringActionFactory.listGroupRecurringActions(group.getId()));
@@ -61,6 +69,8 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         org = OrgFactory.save(org);
         assertTrue(org.getId().longValue() > 0);
 
+        action.setName("action name 1");
+        action.setCronExpr(CRON_EXPR);
         action.setOrg(org);
         RecurringActionFactory.save(action);
 
@@ -70,6 +80,8 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
     public void testMinionActionTaskomaticPrefixComputation() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setName("action name 1");
+        action.setCronExpr(CRON_EXPR);
         action.setMinion(minion);
         RecurringActionFactory.save(action);
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
@@ -78,6 +90,8 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
     public void testGroupActionTaskomaticPrefixComputation() throws Exception {
         var action = new GroupRecurringAction();
         var group = ServerGroupTestUtils.createManaged(user);
+        action.setName("action name 1");
+        action.setCronExpr(CRON_EXPR);
         action.setGroup(group);
         RecurringActionFactory.save(action);
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
@@ -85,6 +99,8 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
 
     public void testOrgActionTaskomaticPrefixComputation() throws Exception {
         var action = new OrgRecurringAction();
+        action.setName("action name 1");
+        action.setCronExpr(CRON_EXPR);
         action.setOrg(user.getOrg());
         RecurringActionFactory.save(action);
         assertEquals("recurring-action-" + action.getId(), action.computeTaskoScheduleName());
@@ -97,6 +113,8 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
     public void testLookupRecurringActionByScheduleName() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setName("action name 1");
+        action.setCronExpr(CRON_EXPR);
         action.setMinion(minion);
         RecurringActionFactory.save(action);
 
@@ -110,18 +128,21 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
             var orgAction = new OrgRecurringAction();
             orgAction.setOrg(user.getOrg());
             orgAction.setName("already-existing-action");
+            orgAction.setCronExpr(CRON_EXPR);
             RecurringActionFactory.save(orgAction);
 
             var minAction1 = new MinionRecurringAction();
             var minion1 = MinionServerFactoryTest.createTestMinionServer(user);
             minAction1.setMinion(minion1);
             minAction1.setName("already-existing-action");
+            minAction1.setCronExpr(CRON_EXPR);
             RecurringActionFactory.save(minAction1);
 
             var minAction2 = new MinionRecurringAction();
             var minion2 = MinionServerFactoryTest.createTestMinionServer(user);
             minAction2.setMinion(minion2);
             minAction2.setName("already-existing-action");
+            minAction2.setCronExpr(CRON_EXPR);
             RecurringActionFactory.save(minAction2);
 
             // we want to make sure multiple actions with the name can co-exist and can be persisted
