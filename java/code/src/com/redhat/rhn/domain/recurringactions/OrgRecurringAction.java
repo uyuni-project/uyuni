@@ -23,6 +23,9 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.utils.MinionServerUtils;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,5 +114,31 @@ public class OrgRecurringAction extends RecurringAction {
         return super.toStringBuilder()
                 .append("org", organization)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        OrgRecurringAction that = (OrgRecurringAction) o;
+
+        return new EqualsBuilder()
+                .append(getName(), that.getName())
+                .append(organization, that.organization)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getName())
+                .append(organization)
+                .toHashCode();
     }
 }

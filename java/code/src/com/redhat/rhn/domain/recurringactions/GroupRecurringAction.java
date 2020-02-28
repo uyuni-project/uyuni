@@ -25,6 +25,9 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import com.suse.manager.utils.MinionServerUtils;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,5 +127,31 @@ public class GroupRecurringAction extends RecurringAction {
         return super.toStringBuilder()
                 .append("group", group)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        GroupRecurringAction that = (GroupRecurringAction) o;
+
+        return new EqualsBuilder()
+                .append(getName(), that.getName())
+                .append(group, that.group)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getName())
+                .append(group)
+                .toHashCode();
     }
 }

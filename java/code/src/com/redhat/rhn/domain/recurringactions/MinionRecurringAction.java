@@ -19,6 +19,9 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -105,5 +108,31 @@ public class MinionRecurringAction extends RecurringAction {
         return super.toStringBuilder()
                 .append("minion", minion == null ? null : minion.getId())
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        MinionRecurringAction that = (MinionRecurringAction) o;
+
+        return new EqualsBuilder()
+                .append(getName(), that.getName())
+                .append(minion, that.minion)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(getName())
+                .append(minion)
+                .toHashCode();
     }
 }
