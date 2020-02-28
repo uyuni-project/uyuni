@@ -16,11 +16,15 @@ package com.suse.manager.webui.controllers.test;
 
 import static org.hamcrest.Matchers.containsString;
 
+import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
@@ -29,6 +33,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
+import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualNetsController;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -36,8 +41,7 @@ import com.suse.manager.webui.utils.gson.VirtualNetworkInfoJson;
 
 import org.jmock.Expectations;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
@@ -45,7 +49,6 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
     private SaltService saltServiceMock;
     private Server host;
     private static final Gson GSON = new GsonBuilder().create();
-    private VirtManager virtManager;
 
     /**
      * {@inheritDoc}
@@ -61,30 +64,33 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        saltServiceMock = context().mock(SaltService.class);
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("state", "apply")),
-                    with(containsString("serverfactorytest")));
-        }});
+        saltServiceMock = new SaltService() {
+            @Override
+            public void updateLibvirtEngine(MinionServer minion) {
+            }
 
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
-        virtManager = new VirtManager(saltServiceMock);
+            @Override
+            public Map<String, JsonObject> getNetworks(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/test/virt.net.info.json",
+                        null,
+                        new TypeToken<Map<String, JsonObject>>() { })
+                        .orElse(Collections.emptyMap());
+            }
+        };
 
-        host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
+
+        host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         host.asMinionServer().get().setMinionId("testminion.local");
     }
 
     public void testData() throws Exception {
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("virt", "network_info")),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(SaltTestUtils.getSaltResponse(
-                    "/com/suse/manager/webui/controllers/test/virt.net.info.json",
-                    null,
-                    new TypeToken<Map<String, JsonElement>>() { }.getType())));
-        }});
+
+        VirtManager virtManager =  new VirtManager(saltServiceMock);
 
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.data(getRequestWithCsrf(

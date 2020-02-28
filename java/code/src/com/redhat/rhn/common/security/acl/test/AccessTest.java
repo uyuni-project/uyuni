@@ -30,10 +30,12 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -319,7 +321,11 @@ public class AccessTest extends BaseTestCaseWithUser {
     }
 
     public void testIsVirtual() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1);
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(SaltService.INSTANCE)
+        );
+        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
 
         Access a = new Access();

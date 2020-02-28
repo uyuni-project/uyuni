@@ -84,7 +84,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
         // Create a virtual host with guests and a server with provisioning entitlements
         // and associate the first org's admins with them both
         server = ServerTestUtils.createVirtHostWithGuests(
-                origOrgAdmins.iterator().next(), 2);
+                origOrgAdmins.iterator().next(), 2, systemEntitlementManager);
         server2 = ServerFactoryTest.createTestServer(origOrgAdmins.iterator().next(), true);
 
         ServerFactory.save(server);

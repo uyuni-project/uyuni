@@ -35,11 +35,13 @@ import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
+import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
@@ -72,9 +74,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
 
     private Logger logger = Logger.getLogger(SSHMinionBootstrapperTest.class);
 
-    private SSHPushWorkerSalt worker;
     private MinionServer minion;
-    private SaltService saltServiceMock;
     private SystemSummary sshPushSystemMock;
     private SaltSSHService saltSSHServiceMock;
     private SystemInfo sampleSystemInfo;
@@ -84,11 +84,8 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
-        saltServiceMock = mock(SaltService.class);
         sshPushSystemMock = mock(SystemSummary.class);
         saltSSHServiceMock = mock(SaltSSHService.class);
-        worker = new SSHPushWorkerSalt(logger, sshPushSystemMock, saltServiceMock,
-                saltSSHServiceMock, SaltServerActionService.INSTANCE);
         minion = MinionServerFactoryTest.createTestMinionServer(user);
         // Create script action directory
         File scriptDir = new File(SUMA_STATE_FILES_ROOT_PATH + "/" + SCRIPTS_DIR);
@@ -113,10 +110,15 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         ServerAction serverAction = createChildServerAction(action,
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(action);
+        SystemQuery systemQuery = new SaltService() {
+            @Override
+            public Optional<Boolean> ping(String minionId) {
+                return Optional.of(true);
+            }
+        };
 
-        worker = successWorker();
-        mockSyncCallResult();
-       
+        SSHPushWorkerSalt worker = successWorker(systemQuery);
+
         context().checking(new Expectations() {{
            
             oneOf(sshPushSystemMock).getId();
@@ -179,8 +181,13 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(upcomingAction);
 
-        worker = successWorker();
-        mockSyncCallResult();
+        SystemQuery systemQuery = new SaltService() {
+            @Override
+            public Optional<Boolean> ping(String minionId) {
+                return Optional.of(true);
+            }
+        };
+        SSHPushWorkerSalt worker = successWorker(systemQuery);
 
         context().checking(new Expectations() {{
 
@@ -222,24 +229,27 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(upcomingAction);
 
-        worker = successWorker();
+        SystemQuery systemQuery = new SaltService() {
+            @Override
+            public Optional<Boolean> ping(String minionId) {
+                return Optional.of(true);
+            }
+
+            @Override
+            public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException {
+                Map<String, Result<Map<String, String>>> result = new HashMap<>();
+                Map<String, String> values = new HashMap<>();
+                values.put("ssh_extra_filerefs", "salt://foobar");
+                values.put("next_action_id", "123");
+                values.put("next_chunk", "actionchain_2.sls");
+                result.put(minion.getMinionId(), Result.success(values));
+                return result;
+            }
+        };
+
+        SSHPushWorkerSalt worker = successWorker(systemQuery);
 
         context().checking(new Expectations() {{
-            oneOf(saltServiceMock).getPendingResume(with(any(List.class)));
-
-            Map<String, Result<Map<String, String>>> result = new HashMap<>();
-            Map<String, String> values = new HashMap<>();
-            values.put("ssh_extra_filerefs", "salt://foobar");
-            values.put("next_action_id", "123");
-            values.put("next_chunk", "actionchain_2.sls");
-            result.put(minion.getMinionId(), Result.success(values));
-            will(returnValue(result));
-
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(any(String.class)));
-            will(returnValue(Optional.of(true)));
-
             oneOf(saltSSHServiceMock).cleanPendingActionChainAsync(with(any(MinionServer.class)));
 
             oneOf(sshPushSystemMock).getId();
@@ -290,15 +300,6 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         return serverAction;
     }
 
-    private void mockSyncCallResult() {
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(any(String.class)));
-            will(returnValue(Optional.of(Boolean.TRUE)));
-        }});
-    }
-
     private TaskQueue mockQueue() {
         TaskQueue mockQueue = mock(TaskQueue.class);
         context().checking(new Expectations() {{
@@ -308,20 +309,13 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         return mockQueue;
     }
 
-    private SSHPushWorkerSalt successWorker() {
-        SaltUtils saltUtils = new SaltUtils() {
-            @Override
-            public boolean shouldRefreshPackageList(String function,
-                    Optional<JsonElement> callResult) {
-                return false;
-            }
-
-            @Override
-            public void updateServerAction(ServerAction serverAction, long retcode,
-                    boolean success, String jid, JsonElement jsonResult, String function) {
-                serverAction.setStatus(STATUS_COMPLETED);
-            }
-        };
-        return new SSHPushWorkerSalt(logger, sshPushSystemMock, saltServiceMock, saltSSHServiceMock, SaltServerActionService.INSTANCE);
+    private SSHPushWorkerSalt successWorker(SystemQuery saltServiceMock) {
+        return new SSHPushWorkerSalt(
+                logger,
+                sshPushSystemMock,
+                saltServiceMock,
+                saltSSHServiceMock,
+                SaltServerActionService.INSTANCE
+        );
     }
 }

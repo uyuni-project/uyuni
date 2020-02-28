@@ -20,9 +20,12 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +44,11 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
 
     @Override
     public void testIsAllowedOnServer() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuests(1);
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(SaltService.INSTANCE)
+        );
+        Server host = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
         SystemEntitlementManager.INSTANCE.setBaseEntitlement(guest, EntitlementManager.MANAGEMENT);
 

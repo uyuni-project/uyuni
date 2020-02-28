@@ -58,7 +58,6 @@ public class ServerTestUtils {
 
     private static final String REDHAT_RELEASE = "redhat-release";
     private static final Long I386_PACKAGE_ARCH_ID = 101L;
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     private ServerTestUtils() {
     }
@@ -149,9 +148,9 @@ public class ServerTestUtils {
      * @return Server with guest.
      * @throws Exception if error
      */
-    public static Server createVirtHostWithGuests(User user, int numberOfGuests)
+    public static Server createVirtHostWithGuests(User user, int numberOfGuests, SystemEntitlementManager systemEntitlementManager)
         throws Exception {
-        return createVirtHostWithGuests(user, numberOfGuests, false);
+        return createVirtHostWithGuests(user, numberOfGuests, false, systemEntitlementManager);
     }
 
     /**
@@ -163,7 +162,7 @@ public class ServerTestUtils {
      * @return Server with guest.
      * @throws Exception if error
      */
-    public static Server createVirtHostWithGuests(User user, int numberOfGuests, boolean salt)
+    public static Server createVirtHostWithGuests(User user, int numberOfGuests, boolean salt, SystemEntitlementManager systemEntitlementManager)
         throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(user);
@@ -221,8 +220,8 @@ public class ServerTestUtils {
      * @return Server with a guest
      * @throws Exception if error
      */
-    public static Server createVirtHostWithGuest() throws Exception {
-        return createVirtHostWithGuests(UserTestUtils.findNewUser(), 1);
+    public static Server createVirtHostWithGuest(SystemEntitlementManager systemEntitlementManager) throws Exception {
+        return createVirtHostWithGuests(UserTestUtils.findNewUser(), 1, systemEntitlementManager);
     }
 
     /**
@@ -231,8 +230,8 @@ public class ServerTestUtils {
      * @return Server with a guest
      * @throws Exception if error
      */
-    public static Server createVirtHostWithGuests(int numberOfGuests) throws Exception {
-        return createVirtHostWithGuests(UserTestUtils.findNewUser(), numberOfGuests);
+    public static Server createVirtHostWithGuests(int numberOfGuests, SystemEntitlementManager systemEntitlementManager) throws Exception {
+        return createVirtHostWithGuests(UserTestUtils.findNewUser(), numberOfGuests, systemEntitlementManager);
     }
 
     /**

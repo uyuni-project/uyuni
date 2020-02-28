@@ -18,8 +18,12 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 
+import com.suse.manager.webui.services.impl.SaltService;
 import org.hibernate.Session;
 
 import java.util.Iterator;
@@ -85,7 +89,11 @@ public class HostBuilder {
      * @throws Exception if an error occurs
      */
     public HostBuilder createVirtHost() throws Exception {
-        host = ServerTestUtils.createVirtHostWithGuests(owner, 0);
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(SaltService.INSTANCE)
+        );
+        host = ServerTestUtils.createVirtHostWithGuests(owner, 0, systemEntitlementManager);
         return this;
     }
 
