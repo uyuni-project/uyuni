@@ -153,4 +153,19 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
             fail("No persistence exception should have occured");
         }
     }
+
+    public void testDeleteRecurringAction() throws Exception {
+        var action = new MinionRecurringAction();
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        action.setMinion(minion);
+        action.setName("already-existing-action");
+        action.setCronExpr(CRON_EXPR);
+
+        RecurringActionFactory.save(action);
+        assertEquals(List.of(action), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+
+        RecurringActionFactory.delete(action);
+
+        assertTrue(RecurringActionFactory.listMinionRecurringActions(minion.getId()).isEmpty());
+    }
 }

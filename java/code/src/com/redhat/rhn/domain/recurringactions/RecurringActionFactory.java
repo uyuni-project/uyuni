@@ -105,6 +105,15 @@ public class RecurringActionFactory extends HibernateFactory {
     }
 
     /**
+     * Delete a recurring action
+     *
+     * @param action the action to delete
+     */
+    public static void delete(RecurringAction action) {
+        INSTANCE.removeObject(action);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
