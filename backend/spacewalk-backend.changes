@@ -1,6 +1,9 @@
+-------------------------------------------------------------------
+Fri Feb 28 11:41:37 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.30-1
 - fix mgrcfg-client python3 breakage (bsc#1164309)
 - update doc link to point to new documentation server
-
 - Prevent timestamp format exception on mgr-inter-sync while processing comps (bsc#1157346)
 - When downloading repo metadata, don't add "/" to the repo url if it already ends with one (bsc#1158899)
 - Use HTTP proxy settings when fetching the mirrorlist on spacewalk-repo-sync (bsc#1159076)
