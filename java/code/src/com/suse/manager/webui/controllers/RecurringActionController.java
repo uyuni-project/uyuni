@@ -82,7 +82,7 @@ public class RecurringActionController {
         get("/manager/api/recurringactions/:type/:id", withUser(RecurringActionController::list));
         get("/manager/api/recurringactions/:scheduleId", withUser(RecurringActionController::singleSchedule));
         post("/manager/api/recurringactions/save", withUser(RecurringActionController::save));
-        delete("/manager/api/recurringactions/:scheduleId/delete", withUser(RecurringActionController::deleteSchedule));
+        delete("/manager/api/recurringactions/:id/delete", withUser(RecurringActionController::deleteSchedule));
     }
 
     /**
@@ -330,6 +330,29 @@ public class RecurringActionController {
         return json(response, ResultJson.error(errors));
     }
 
+    /**
+     * Deletes a recurring action
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static String deleteSchedule(Request request, Response response, User user) {
+        long id = Long.parseLong(request.params("id"));
+        Optional<RecurringAction> action = RecurringActionFactory.lookupById(id);
+        if (action.isEmpty()) {
+            return json(response, ResultJson.error("Schedule with id: " + id + " does not exists"));
+        }
+        try {
+            RecurringActionManager.deleteAndUnschedule(action.get(), user);
+        }
+        catch (TaskomaticApiException e) {
+            return json(response, ResultJson.error("Error when deleting the action"));
+        }
+        return json(response, ResultJson.success());
+    }
+
     private static void mapJsonToAction(RecurringStateScheduleJson json, RecurringAction action) {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
@@ -427,29 +450,5 @@ public class RecurringActionController {
             }
         }
         return errors;
-    }
-
-    /**
-     * Processes a DELETE request to delete a Recurring State Schedule
-     *
-     * @param request the request object
-     * @param response the response object
-     * @param user the authorized user
-     * @return the result JSON object
-     */
-    public static String deleteSchedule(Request request, Response response, User user) {
-        String scheduleId = request.params("scheduleId");
-        try {
-            Optional<Map<String, String>> schedule = getSingleSchedule(scheduleId, user);
-            if (schedule.isEmpty()) {
-                return json(response, ResultJson.error("Schedule not found."));
-            }
-            String scheduleName = schedule.get().get("scheduleName");
-            TASKOMATIC_API.unscheduleSatTask(scheduleName, user);
-        }
-        catch (TaskomaticApiException e) {
-            return json(response, ResultJson.error(e.getMessage()));
-        }
-        return json(response, ResultJson.success());
     }
 }
