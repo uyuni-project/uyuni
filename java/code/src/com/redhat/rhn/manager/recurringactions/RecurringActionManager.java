@@ -207,7 +207,6 @@ public class RecurringActionManager {
         RecurringActionFactory.save(action);
 
         // todo test this codepath (when tasko throws an exception)
-        taskomaticApi.scheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch",
-                action.getCronExpr());
+        taskomaticApi.scheduleRecurringAction(action, user);
     }
 }

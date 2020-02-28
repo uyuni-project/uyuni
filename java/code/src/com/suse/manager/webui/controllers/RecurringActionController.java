@@ -188,8 +188,7 @@ public class RecurringActionController {
      */
     private static List<Map<String, String>> getSchedules(User user) throws TaskomaticApiException {
         /* TODO: Check user accessability */
-        List<Map> taskoSchedules = TASKOMATIC_API.findActiveSchedulesByBunch(user,
-                "recurring-state-apply-bunch");
+        List<Map> taskoSchedules = null; // todo this whole method will be removed anyway
         return taskoSchedules.stream().map(taskoSchedule -> {
             Map<String, String> schedule = getScheduleDetails(taskoSchedule, user);
             return schedule;
@@ -410,7 +409,8 @@ public class RecurringActionController {
                     RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker("date", type, cronTimes, null);
                     cron = picker.getCronEntry();
                 }
-                TASKOMATIC_API.scheduleSatBunch(user, scheduleName, "recurring-state-apply-bunch", cron, params);
+                // this whole method will be removed anyway
+                TASKOMATIC_API.scheduleSatBunch(user, scheduleName, "recurring-state-apply-bunch", cron);
             }
             catch (TaskomaticApiException e) {
                 if (e.getMessage().contains("InvalidParamException")) {
