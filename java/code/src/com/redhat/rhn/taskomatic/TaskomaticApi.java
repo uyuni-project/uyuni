@@ -292,9 +292,38 @@ public class TaskomaticApi {
             throws TaskomaticApiException {
         Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
         if (task != null) {
-            unscheduleSatTask(jobLabel, user);
+            doUnscheduleSatTask(jobLabel);
         }
         return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, new HashMap());
+    }
+
+    /**
+     * Unschedule a recurring action
+     *
+     * @param action the {@link RecurringAction}
+     * @param user the unscheduler user
+     * @throws PermissionException when given user does not have permissions for unscheduling given action
+     * @throws TaskomaticApiException on Taskomatic error
+     */
+    public void unscheduleRecurringAction(RecurringAction action, User user) throws TaskomaticApiException {
+        if (!action.canAccess(user)) {
+            throw new PermissionException(String.format("User '%s' can't unschedule action '$s'", user, action));
+        }
+
+        doUnscheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-state-apply-bunch");
+    }
+
+    //helper method for unscheduling bunch without permission checking
+    private void doUnscheduleSatBunch(User user, String jobLabel, String bunchName)
+            throws TaskomaticApiException {
+        Map task = findSatScheduleByBunchAndLabel(bunchName, jobLabel, user);
+        if (task != null) {
+            doUnscheduleSatTask(jobLabel);
+        }
+    }
+
+    private void doUnscheduleSatTask(String jobLabel) throws TaskomaticApiException {
+        invoke("tasko.unscheduleSatBunches", singletonList(jobLabel));
     }
 
     /**
