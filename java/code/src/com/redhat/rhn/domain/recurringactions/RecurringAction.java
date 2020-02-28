@@ -109,6 +109,14 @@ public abstract class RecurringAction extends BaseDomainHelper {
     public abstract Long getEntityId();
 
     /**
+     * Returns the type of the entity
+     *
+     * @return the type of the entitiy
+     */
+    @Transient
+    public abstract Type getType();
+
+    /**
      * Gets the name of the TaskoSchedule entry based on the entity id.
      * For this to work, the entity must have an ID (e.g. hibernate 'save' has been done)!
      *

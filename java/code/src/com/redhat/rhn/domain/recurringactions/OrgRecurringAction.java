@@ -89,6 +89,12 @@ public class OrgRecurringAction extends RecurringAction {
         return getOrg().getId();
     }
 
+    @Override
+    @Transient
+    public Type getType() {
+        return Type.ORG;
+    }
+
     /**
      * Gets the organization
      *

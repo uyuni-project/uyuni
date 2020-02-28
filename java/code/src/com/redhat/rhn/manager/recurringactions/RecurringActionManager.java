@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -39,6 +40,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import org.hibernate.HibernateException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * RecurringActionManager
@@ -196,13 +198,13 @@ public class RecurringActionManager {
      * @param action the action
      * @param user the user performing the operation
      * @throws PermissionException if the user does not have permission to save the action
+     * @throws EntityExistsException if equal entity (with different id) already exists
      * @throws TaskomaticApiException when there is a problem with taskomatic during scheduling
      */
     public static void saveAndSchedule(RecurringAction action, User user) throws TaskomaticApiException {
         if (!action.canAccess(user)) {
             throw new PermissionException(action.getClass() + "not accessible to user");
         }
-        // todo check for dupe names
 
         validateAction(action);
 
@@ -214,7 +216,17 @@ public class RecurringActionManager {
     }
 
     private static void validateAction(RecurringAction action) {
-        // todo
+        Optional<Long> existingIdOpt = RecurringActionFactory.lookupEqualEntityId(action);
+        Long actionId = action.getId();
+
+        existingIdOpt.ifPresent(existingId -> {
+            // Equal entity already exists. Throw an exception if:
+            // - either given action is null (create scenario),
+            // - or the ID of given action is different from the existing entity (update scenario).
+            if (actionId == null || !actionId.equals(existingId)) {
+                throw new EntityExistsException(String.format("Equal entity already exists: ID %d", existingId));
+            }
+        });
     }
 
     /**

@@ -83,6 +83,12 @@ public class MinionRecurringAction extends RecurringAction {
         return getMinion().getId();
     }
 
+    @Override
+    @Transient
+    public Type getType() {
+        return Type.MINION;
+    }
+
     /**
      * Gets the minion
      *

@@ -12,7 +12,6 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.PersistenceException;
 

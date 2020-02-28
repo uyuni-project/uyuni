@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
+import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -319,6 +320,9 @@ public class RecurringActionController {
 
         try {
             RecurringActionManager.saveAndSchedule(action, user);
+        }
+        catch (EntityExistsException e) {
+            errors.add("Action with given name already exists.");
         }
         catch (TaskomaticApiException e) {
             errors.add("Error when scheduling the action.");

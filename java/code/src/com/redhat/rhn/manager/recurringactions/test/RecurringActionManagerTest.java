@@ -16,6 +16,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -242,5 +243,53 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         RecurringActionManager.deleteAndUnschedule(recurringAction, user);
         assertTrue(RecurringActionFactory.listMinionRecurringActions(recurringAction.getId()).isEmpty());
+    }
+
+    public void testCreateActionsWithSameName() throws Exception {
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+        } });
+
+        var action = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        action.setCronExpr(CRON_EXPR);
+        action.setName("test-recurring-action");
+        RecurringActionManager.saveAndSchedule(action, user);
+
+        var sameAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        sameAction.setCronExpr(CRON_EXPR);
+        sameAction.setName("test-recurring-action");
+        try {
+            RecurringActionManager.saveAndSchedule(sameAction, user);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityExistsException e) {
+            // no-op
+        }
+    }
+
+    public void testCreateActionsWithSameNameDifferentEntity() throws Exception {
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+        } });
+
+        var action = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        action.setCronExpr(CRON_EXPR);
+        action.setName("test-recurring-action");
+        RecurringActionManager.saveAndSchedule(action, user);
+
+        var otherAction = RecurringActionManager.createRecurringAction(MINION, minion2.getId(), user);
+        otherAction.setCronExpr(CRON_EXPR);
+        otherAction.setName("test-recurring-action");
+        try {
+            RecurringActionManager.saveAndSchedule(otherAction, user);
+        }
+        catch (EntityExistsException e) {
+            fail("An exception shouldn't have been thrown");
+        }
     }
 }

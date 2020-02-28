@@ -102,6 +102,12 @@ public class GroupRecurringAction extends RecurringAction {
         return getGroup().getId();
     }
 
+    @Override
+    @Transient
+    public Type getType() {
+        return Type.GROUP;
+    }
+
     /**
      * Gets the server group
      *
