@@ -209,4 +209,24 @@ public class RecurringActionManager {
         // todo test this codepath (when tasko throws an exception)
         taskomaticApi.scheduleRecurringAction(action, user);
     }
+
+
+    /**
+     * Checks permission on given {@link RecurringAction}, deletes it and unschedules corresponding taskomatic job.
+     *
+     * @param action the action
+     * @param user the user performing the action
+     * @throws PermissionException if the user does not have permission to delete the action
+     * @throws TaskomaticApiException when there is a problem with taskomatic during unscheduling
+     */
+    public static void deleteAndUnschedule(RecurringAction action, User user)  throws TaskomaticApiException {
+        if (!action.canAccess(user)) {
+            throw new PermissionException(action.getClass() + "not accessible to user");
+        }
+        RecurringActionFactory.delete(action);
+
+        // todo test this codepath (when tasko throws an exception)
+        taskomaticApi.unscheduleRecurringAction(action, user);
+    }
+
 }

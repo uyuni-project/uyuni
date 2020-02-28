@@ -216,4 +216,31 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         System.out.println(other2);
         System.out.println(RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
     }
+
+    public void testDeleteAction() throws Exception {
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+            allowing(taskomaticMock).unscheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+        } });
+
+        var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        recurringAction.setCronExpr(CRON_EXPR);
+        recurringAction.setName("test-recurring-action-1");
+        RecurringActionManager.saveAndSchedule(recurringAction, user);
+
+        assertEquals(List.of(recurringAction), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
+
+        try {
+            RecurringActionManager.deleteAndUnschedule(recurringAction, anotherUser);
+            fail("User shouldn't have permission");
+        }
+        catch(PermissionException e) {
+            // no-op
+        }
+
+        RecurringActionManager.deleteAndUnschedule(recurringAction, user);
+        assertTrue(RecurringActionFactory.listMinionRecurringActions(recurringAction.getId()).isEmpty());
+    }
 }
