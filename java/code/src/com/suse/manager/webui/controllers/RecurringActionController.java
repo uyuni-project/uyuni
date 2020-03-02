@@ -159,18 +159,7 @@ public class RecurringActionController {
         List<String> errors = new LinkedList<>();
 
         RecurringStateScheduleJson json = GSON.fromJson(request.body(), RecurringStateScheduleJson.class);
-
-        RecurringAction action;
-        if (json.getRecurringActionId() == null) {
-            action = RecurringActionManager.createRecurringAction(
-                    Type.valueOf(json.getTargetType().toUpperCase()),
-                    json.getTargetId(),
-                    user);
-        }
-        else {
-            action = RecurringActionFactory.lookupById(json.getRecurringActionId()).orElseThrow();
-        }
-
+        RecurringAction action = createOrGetAction(user, json);
         mapJsonToAction(json, action);
 
         try {
@@ -188,6 +177,18 @@ public class RecurringActionController {
         }
 
         return json(response, ResultJson.error(errors));
+    }
+
+    private static RecurringAction createOrGetAction(User user, RecurringStateScheduleJson json) {
+        if (json.getRecurringActionId() == null) {
+            return RecurringActionManager.createRecurringAction(
+                    Type.valueOf(json.getTargetType().toUpperCase()),
+                    json.getTargetId(),
+                    user);
+        }
+        else {
+            return RecurringActionFactory.lookupById(json.getRecurringActionId()).orElseThrow();
+        }
     }
 
     /**
