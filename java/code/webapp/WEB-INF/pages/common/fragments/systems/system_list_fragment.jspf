@@ -16,7 +16,7 @@
 </c:choose>
 
 <c:if test="${current.rhnProxy}">
-  <rhn:icon type="header-proxy" title="is proxy" />
+  <rhn:icon type="header-proxy" title="systemlist.jsp.isproxy" />
 </c:if>
 
 <c:choose>
