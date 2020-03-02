@@ -130,8 +130,6 @@ public class MinionController {
     private static void initSSMRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/ssm/highstate",
                 withCsrfToken(withUser(MinionController::ssmHighstate)), jade);
-        get("/manager/systems/ssm/states/schedules",
-                withCsrfToken(withUser(MinionController::ssmRecurringStates)), jade);
     }
 
     /**
@@ -342,24 +340,6 @@ public class MinionController {
         data.put("minions", Json.GSON.toJson(minions));
         addActionChains(user, data);
         return new ModelAndView(data, "templates/groups/highstate.jade");
-    }
-
-    /**
-     * Handler for the SSM recurring-states page.
-     *
-     * @param request the request object
-     * @param response the response object
-     * @param user the current user
-     * @return the ModelAndView object to render the page
-     */
-    public static ModelAndView ssmRecurringStates(Request request, Response response, User user) {
-        List<SimpleMinionJson> minions = MinionServerFactory
-                .lookupByIds(SsmManager.listServerIds(user))
-                .map(SimpleMinionJson::fromMinionServer).collect(Collectors.toList());
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("minions", Json.GSON.toJson(minions));
-        return new ModelAndView(data, "templates/ssm/recurring-states.jade");
     }
 
     /**

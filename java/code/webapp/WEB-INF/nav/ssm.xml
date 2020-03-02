@@ -104,9 +104,6 @@
 
     <rhn-tab name="States" acl="any_system_with_salt_entitlement()">
         <rhn-tab-url>/rhn/manager/systems/ssm/highstate</rhn-tab-url>
-        <rhn-tab name="Recurring States">
-          <rhn-tab-url>/rhn/manager/systems/ssm/states/schedules</rhn-tab-url>
-        </rhn-tab>
         <rhn-tab name="Highstate">
             <rhn-tab-url>/rhn/manager/systems/ssm/highstate</rhn-tab-url>
         </rhn-tab>

@@ -42,8 +42,6 @@ class RecurringStatesEdit extends React.Component {
                 targetType: "GROUP",
                 targetId: groupId
             });
-        } else if (window.location.pathname.match("/ssm") && !search) {
-            Object.assign(this.state, {targetType: "System Set Manager"});
         } else {
             Object.assign(this.state, {
                 targetType: "ORG",
