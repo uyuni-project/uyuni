@@ -186,6 +186,7 @@ def log(msg, level=0):
         sys.stdout.write("{0}\n".format(msg))
 
 def isBeta():
+    global BETA
     if BETA is None:
         initCFG('java')
         BETA = CFG.PRODUCT_TREE_TAG == 'Beta'
@@ -298,6 +299,15 @@ def list_labels(mgr_bootstrap_data, do_print=True):
             label_index += 1
     return label_map
 
+def cleanup_dir(path):
+    if os.path.exists(path):
+        try:
+            shutil.rmtree(path)
+        except OSError as err:
+            log_error('Error while deleting {0}: {1}'.format(path, err))
+            return False
+    return True
+
 
 def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     pdids = None
@@ -310,7 +320,10 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         options.usecustomchannels = True
         options.parentchannel = mgr_bootstrap_data.DATA[label]['BASECHANNEL']
 
-    destdir = mgr_bootstrap_data.DATA[label]['DEST']
+    destdir = os.path.normpath(mgr_bootstrap_data.DATA[label]['DEST'])
+    dirprefix, lastdir = os.path.split(destdir)
+    destdirtmp = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "tmp"))
+    destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
     errors = 0
     messages = []
     suggestions = {
@@ -340,18 +353,18 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     else:
         options.parentchannel = ""
 
-    if options.flush:
-        log("Removing directory:", destdir)
-        try:
-            shutil.rmtree(destdir)
-        except OSError as err:
-            log_error('Error while deleting {0}: {1}'.format(destdir, err))
+    if not cleanup_dir(destdirtmp):
+        return 1
+    if not cleanup_dir(destdirold):
+        return 1
 
-    if not os.path.exists(destdir):
-        if options.dryrun:
-            log("Create directory:", destdir)
+    if options.dryrun:
+        log("Create directory:", destdirtmp)
+    else:
+        if options.flush:
+            os.makedirs(destdirtmp)
         else:
-            os.makedirs(destdir)
+            shutil.copytree(destdir, destdirtmp)
 
     if label.startswith('RES') or label.startswith('RHEL'):
         log("Creating bootstrap repo for latest Service Pack of {0}".format(label))
@@ -368,7 +381,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     packagelist.extend(additional)
     log("The bootstrap repo should contain the following packages: {0}".format(packagelist), 2)
 
-    debs_dir = os.path.join(destdir, 'debs')
+    debs_dir = os.path.join(destdirtmp, 'debs')
     for pkgaltstr in packagelist:
         alt = pkgaltstr.split("|")
         altpretty =  ', '.join("'%s'" %(e) for e in alt)
@@ -395,7 +408,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 continue
             for p in pkgs:
                 log(p, 2)
-                rpmdir = os.path.join(destdir, p['arch']) if repotype != 'deb' else debs_dir
+                rpmdir = os.path.join(destdirtmp, p['arch']) if repotype != 'deb' else debs_dir
                 if not os.path.exists(rpmdir):
                     os.makedirs(rpmdir)
                 log("copy '%s'" % p['nvrea'])
@@ -406,9 +419,9 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     if options.dryrun:
         if repotype == 'deb':
             debs = " ".join([os.path.join(debs_dir, f) for f in os.listdir(debs_dir)])
-            log("/usr/bin/reprepro -b {0} includedeb {1} {2}".format(destdir, "bootstrap", debs))
+            log("/usr/bin/reprepro -b {0} includedeb {1} {2}".format(destdirtmp, "bootstrap", debs))
         else:
-            log("createrepo -s sha %s" % destdir)
+            log("createrepo -s sha %s" % destdirtmp)
     else:
         if repotype == 'deb':
             reprepro_conf_tmpl = Template("Origin: $origin\n" \
@@ -420,15 +433,15 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             codename="bootstrap"
             reprepro_conf = reprepro_conf_tmpl.substitute(origin="mgr",
                     label="mgr", codename=codename, arches="amd64 i386", comps="main", desc="Bootstrap repo")
-            reprepro_conf_dir = os.path.join(destdir, "conf")
+            reprepro_conf_dir = os.path.join(destdirtmp, "conf")
             if not os.path.exists(reprepro_conf_dir):
                 os.makedirs(reprepro_conf_dir)
             with open(os.path.join(reprepro_conf_dir, "distributions"), "w") as conf_file:
                 conf_file.write(reprepro_conf)
-            log("Created reprepro config file in {0}".format(os.path.join(destdir, "distributions")), 2)
+            log("Created reprepro config file in {0}".format(os.path.join(destdirtmp, "distributions")), 2)
             debs = [os.path.join(debs_dir, f) for f in os.listdir(debs_dir)]
             try:
-                subprocess.run(["/usr/bin/reprepro", "-b", destdir, "includedeb", codename] + debs, check=True)
+                subprocess.run(["/usr/bin/reprepro", "-b", destdirtmp, "includedeb", codename] + debs, check=True)
                 log("Removing directory {0}".format(debs_dir), 2)
                 shutil.rmtree(debs_dir, ignore_errors=True)
             except subprocess.CalledProcessError as err:
@@ -436,7 +449,12 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 log(err, 2)
                 return 1
         else:
-            os.system("createrepo -s sha %s" % destdir)
+            os.system("createrepo -s sha %s" % destdirtmp)
+        # move tmp dir to final location
+        os.rename(destdir, destdirold)
+        os.rename(destdirtmp, destdir)
+        cleanup_dir(destdirold)
+
     if errors:
         for m in messages:
             log_error(m)
@@ -483,6 +501,7 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
             continue
         regen = True
         oneNewerTimestamp = 0
+        #import pdb; pdb.set_trace()
         for channelinfo in res:
             if channelinfo['newer'] == 1:
                 log("{0} modified after last bootstrap generation".format(channelinfo['label']), 2)
@@ -520,6 +539,7 @@ def main():
                          "mgr-create-bootstrap-repo Exiting.\n")
         sys.exit(1)
 
+    global BETA
 
     opts, args, mgr_bootstrap_data = cli()
     r = 0
