@@ -26,7 +26,7 @@ Thu Oct 17 13:05:59 CEST 2019 - jgonzalez@suse.com
 Thu Oct 17 12:41:30 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.12-1
-- common-channels: Fix repo type assignment for type YUM
+- common-channels: Fix repo type assignment for type YUM (bsc#1151683)
 
 -------------------------------------------------------------------
 Tue Jul 30 14:49:01 CEST 2019 - jgonzalez@suse.com
