@@ -138,11 +138,17 @@ class RecurringStates extends React.Component {
             "/rhn/manager/api/recurringactions/save",
             JSON.stringify(schedule),
             "application/json"
-        ).promise.then(() => {
-            const msg = MessagesUtils.info(
-                <span>{t("Schedule successfully created.")}</span>);
+        ).promise.then((data) => {
+            // HACK: propagate the errors from messages to the UI
+            let newMsgs = [];
+            if (data.messages === undefined || data.messages.length === 0) { // no errors from the server
+                newMsgs = MessagesUtils.info(<span>{t("Schedule successully created.")}</span>);
+            } else {
+                const decorator = data.success ? MessagesUtils.info : MessagesUtils.error;
+                newMsgs = decorator.apply(null, data.messages);
+            }
 
-            const msgs = this.state.messages.concat(msg);
+            const msgs = this.state.messages.concat(newMsgs);
 
             while (msgs.length > messagesCounterLimit) {
                 msgs.shift();
@@ -152,7 +158,13 @@ class RecurringStates extends React.Component {
             this.setState({
                 messages: msgs
             });
-            this.handleForwardAction();
+
+            if (data.success) {
+                this.handleForwardAction();
+            } else {
+                this.handleResponseError();
+            }
+
         }).catch(this.handleResponseError);
     }
 
