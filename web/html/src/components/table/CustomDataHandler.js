@@ -28,6 +28,8 @@ type Props = {
   loadingText?: string,
   /** Children node in the table */
   children: React.Node,
+  /** Other filter fields */
+  additionalFilters?: Array<React.Node>,
 };
 
 export function CustomDataHandler(props: Props): React.Node {

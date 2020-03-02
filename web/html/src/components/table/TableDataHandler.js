@@ -46,6 +46,8 @@ type Props = {
   loadingText?: string,
   /** Children node in the table */
   children: (args: ChildrenArgsProps) => React.Node,
+  /** Other filter fields */
+  additionalFilters?: Array<React.Node>,
 };
 
 type State = {
@@ -261,6 +263,9 @@ export class TableDataHandler extends React.Component<Props, State> {
               selectedCount={this.state.selectedItems.length}
               selectable={this.state.selectable}
             >{this.props.searchField}
+              {
+                this.props.additionalFilters && this.props.additionalFilters.map((filter, i) => <span key={'additional-filter-' + i}>{filter}&nbsp;</span>)
+              }
             </SearchPanel>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                 <ItemsPerPageSelector key="itemsPerPageSelector"
