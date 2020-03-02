@@ -44,7 +44,7 @@ class RecurringStates extends React.Component {
         super(props);
 
         ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError",
-        "onMessageChanged", "updateSchedule", "createSchedule", "toggleActive"]
+        "onMessageChanged", "updateSchedule", "toggleActive"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
@@ -74,35 +74,16 @@ class RecurringStates extends React.Component {
         return !!this.state.minionIds;
     };
 
-    toArray = (string: String) => {
-        return string
-            .slice(1, -1).split(",")
-            .map(element => {
-                const num = Number(element.trim());
-                return isNaN(num) ? element.trim() : num;
-            });
-    };
-
-    filterSchedules = (schedules) => {
-        return schedules.data = schedules.data.filter(
-            schedule => {return this.state.minionIds.every(
-                minion => schedule.minionIds.includes(minion));
-            }
-        );
-    };
-
     getRecurringScheduleList = () => {
         // todo create different endpoints for each use case ("/rhn/manager/api/recurringactions/group/id")
         const [type, entityId] = inferEntityTypeAndId();
         const endpoint = "/rhn/manager/api/recurringactions/" + type + "/" + entityId;
         return Network.get(endpoint, "application/json").promise
             .then(schedules => {
-                schedules.data.map(schedule => schedule.minionIds = minions.map(minion => minion.id));
-                schedules.data.map(schedule => schedule.minionNames = minions.map(minion => minion.name));
                 this.setState({
                     action: undefined,
                     selected: undefined,
-                    schedules: this.isFiltered() ? this.filterSchedules(schedules) : schedules.data
+                    schedules: schedules.data
                 });
             }).catch(this.handleResponseError);
     };
@@ -133,7 +114,7 @@ class RecurringStates extends React.Component {
         this.handleForwardAction();
     }
 
-    createSchedule(schedule) {
+    updateSchedule(schedule) {
         return Network.post(
             "/rhn/manager/api/recurringactions/save",
             JSON.stringify(schedule),
@@ -165,29 +146,6 @@ class RecurringStates extends React.Component {
                 this.handleResponseError();
             }
 
-        }).catch(this.handleResponseError);
-    }
-
-    updateSchedule(schedule) {
-        return Network.post(
-            "/rhn/manager/api/recurringactions/save",
-            JSON.stringify(schedule),
-            "application/json"
-        ).promise.then(() => {
-            const msg = MessagesUtils.info(
-                <span>{t("Schedule '") + schedule.scheduleName + t("' successfully updated.")}</span>);
-
-            const msgs = this.state.messages.concat(msg);
-
-            while (msgs.length > messagesCounterLimit) {
-                msgs.shift();
-            }
-
-            this.onMessageChanged(msgs);
-            this.setState({
-                messages: msgs
-            });
-            this.handleForwardAction();
         }).catch(this.handleResponseError);
     }
 
@@ -245,13 +203,8 @@ class RecurringStates extends React.Component {
                                             onEdit={this.handleEditAction}
                                             onDelete={this.deleteSchedule}
                     />
-                    :
-                    (this.state.action === 'create' && this.isFiltered()) ?
-                        <RecurringStatesEdit onCreate={this.createSchedule}
-                                             onActionChanged={this.handleForwardAction}
-                        />
-                        :
-                        (this.state.action === 'edit' && this.state.selected) ?
+                    : (this.state.action === 'edit' && this.state.selected) ||
+                           (this.state.action === 'create' && this.isFiltered()) ?
                             <RecurringStatesEdit schedule={this.state.selected}
                                                  onEdit={this.updateSchedule}
                                                  onActionChanged={this.handleForwardAction}

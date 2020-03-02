@@ -15,7 +15,8 @@ class RecurringStatesEdit extends React.Component {
         super(props);
 
         this.state = {
-            minions: minions
+            minions: minions,
+            active: true
         };
 
         if(this.isEdit()) {
@@ -26,23 +27,7 @@ class RecurringStatesEdit extends React.Component {
     }
 
     setSchedule = (schedule) => {
-        Object.assign(
-            this.state,
-            {
-                // todo looks like we can pass the data as-is
-                recurringActionId: schedule.recurringActionId,
-                scheduleName: schedule.scheduleName,
-                type: schedule.type,
-                minions: schedule.minions,
-                active: schedule.active,
-                targetId: schedule.targetId,
-                targetType: schedule.targetType,
-                groupName: schedule.groupName, // todo remove
-                cronTimes: schedule.cronTimes,
-                cron: schedule.cron,
-                test: schedule.test
-            }
-        );
+        Object.assign(this.state, schedule);
     };
 
     getTargetType = () => {
@@ -71,31 +56,11 @@ class RecurringStatesEdit extends React.Component {
         return !!this.props.schedule;
     };
 
-    onCreate = () => {
-        if (this.isEdit()) {
-            return false;
-        }
-        this.props.onCreate({
-            targetId: this.state.targetId,
-            //minionNames: this.state.minions.map(minion => minion.name), // todo
-            scheduleName: this.state.scheduleName,
-            active: true,
-            type: this.state.type,
-            targetType: this.state.targetType,
-            cronTimes: this.state.cronTimes,
-            cron: this.state.cron,
-            test: this.state.test
-        });
-    };
-
     onEdit = () => {
-        if (!this.isEdit()) {
-            return false;
-        }
         this.props.onEdit({
             targetId: this.state.targetId,
-            //minionNames: this.state.minions.map(minion => minion.name), // todo
             recurringActionId: this.state.recurringActionId,
+            //minionNames: this.state.minions.map(minion => minion.name), // todo
             scheduleName: this.state.scheduleName,
             active: this.state.active,
             type: this.state.type,
@@ -138,7 +103,7 @@ class RecurringStatesEdit extends React.Component {
         const buttons = [
                 <div className="btn-group pull-right">
                     <Toggler text={t('Test mode')} value={this.state.test} className="btn" handler={this.toggleTestState.bind(this)} />
-                    <AsyncButton action={this.isEdit() ? this.onEdit : this.onCreate} defaultType="btn-success" text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")} disabled={minions.length === 0} />
+                    <AsyncButton action={this.onEdit} defaultType="btn-success" text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")} disabled={minions.length === 0} />
                 </div>
                 ];
         const buttonsLeft = [

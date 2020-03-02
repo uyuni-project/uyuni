@@ -95,12 +95,12 @@ class RecurringStatesDetails extends React.Component {
                             <td>{data.groupName}</td>
                         </tr>
                         }
-                        { data.minionNames.length < 20 &&
+                        { /* data.minionNames.length < 20 &&
                         <tr>
                             <td>{"System name" + (data.minionNames.length > 1 ? "s" : "")}:</td>
                             <td>{data.minionNames.join(", ")}</td>
                         </tr>
-                        }
+                        */ }
                         {<tr>
                             <td>{t("Created at")}:</td>
                             <td>{data.createdAt + " " + timezone}</td>
