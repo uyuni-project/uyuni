@@ -66,7 +66,7 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
    * "minxen": feature testing Xen host SLES minions
    * "ubuntu": feature testing Ubuntu
    * "centos": feature testing CentOS (should become "rhes" in the future when we start using Extended Support images)
-   * "trad": feature testing tradional client
+   * "trad": feature testing traditional client
    * "allcli: feature testing all clients
  * `<topic>` must contain "salt" or "docker" for features related to salt or docker, and is then specific to the feature.
  * Inside `init_clients` features we'll see the features in charge of the bootstrap process for each client. They will follow the format:
