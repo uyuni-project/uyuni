@@ -1,3 +1,4 @@
+- Validate the suseproductchannel table and update missing date when running mgr-sync refresh (bsc#1163538)
 - Read the subscriptions from the output instead of input (bsc#1140332)
 - Show additional headers and dependencies for deb packages
 - use channel name from product tree instead of constructing it (bsc#1157317)
