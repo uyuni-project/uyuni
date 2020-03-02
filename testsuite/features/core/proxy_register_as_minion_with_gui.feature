@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -42,7 +42,8 @@ Feature: Setup SUSE Manager proxy
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" short hostname
-    And I wait until I see "SUSE Manager Proxy" text, refreshing the page
+    When I wait until I see "SUSE Manager Proxy" text, refreshing the page
+    Then I should see a "Proxy" link in the content area
 
 @proxy
   Scenario: Check events history for failures on the proxy
