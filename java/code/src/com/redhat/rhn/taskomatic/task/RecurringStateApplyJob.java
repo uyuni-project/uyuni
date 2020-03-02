@@ -49,7 +49,7 @@ public class RecurringStateApplyJob extends RhnJavaJob {
                         scheduleAction(context, action);
                     }
                     else {
-                        log.info(String.format("Action %s not active, skipping", action));
+                        log.debug(String.format("Action %s not active, skipping", action));
                     }
                 },
                 () -> cleanSchedule(scheduleName)
