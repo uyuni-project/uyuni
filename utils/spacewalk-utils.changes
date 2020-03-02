@@ -56,7 +56,7 @@ Thu Aug 01 19:00:44 CEST 2019 - jgonzalez@suse.com
 Wed Jul 31 17:37:23 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.11-1
-- common-channels: Fix repo type assignment for type YUM
+- common-channels: Fix repo type assignment for type YUM (bsc#1151683)
 - Use the same client tools for openSUSE Leap 15.0 for all openSUSE Leap
   15.X releases.
 - Fixes SSL hostname matching (bsc#1141663)
