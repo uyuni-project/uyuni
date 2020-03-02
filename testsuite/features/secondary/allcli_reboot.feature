@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC.
+# Copyright (c) 2017-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 #
 # Idempotency note:
@@ -28,7 +28,7 @@ Feature: Reboot systems managed by SUSE Manager
     When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
     And I should see a "Reboot completed." text
 
-  Scenario: Reboot a SLES tradional client
+  Scenario: Reboot a SLES traditional client
     Given I am on the Systems overview page of this "sle_client"
     When I follow first "Schedule System Reboot"
     Then I should see a "System Reboot Confirmation" text
