@@ -464,6 +464,7 @@ class Products extends React.Component {
               <SearchField filter={searchCriteriaInExtension}
                   criteria={''}
                   placeholder={t('Filter by product Description')}
+                  name='product-description-filter'
               />
           }>
           <CheckList data={d => d}
