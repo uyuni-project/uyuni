@@ -16,12 +16,13 @@ from uyuni.common import usix, rhnLib
 
 sys.path.append("/usr/share/susemanager")
 
-initCFG('java')
+initCFG('server.susemanager')
 rhnSQL.initDB()
 
 basepath = CFG.MOUNT_POINT or '/var/spacewalk'
 logfile = '/var/log/rhn/mgr-create-bootstrap-repo.log'
 LOCK = None
+BETA = None
 
 _sql_synced_proucts = rhnSQL.Statement("""
    SELECT sp.product_id id, spsr.root_product_id
@@ -185,7 +186,11 @@ def log(msg, level=0):
         sys.stdout.write("{0}\n".format(msg))
 
 def isBeta():
-    return CFG.PRODUCT_TREE_TAG == 'Beta'
+    if BETA is None:
+        initCFG('java')
+        BETA = CFG.PRODUCT_TREE_TAG == 'Beta'
+        initCFG('server.susemanager')
+    return BETA
 
 def cli():
 
@@ -220,11 +225,14 @@ def cli():
         initLOG(logfile, level=5)
     else:
         initLOG(logfile, CFG.DEBUG or 1)
+    if not options.flush:
+        options.flush = CFG.BOOTSTRAP_REPO_FLUSH
+
     log(sys.argv, 1)
     if isBeta():
         log("Is a Beta installation", 1)
 
-    modulename = options.datamodule or "mgr_bootstrap_data"
+    modulename = options.datamodule or CFG.BOOTSTRAP_REPO_DATAMODULE
     try:
         bootstrap_data = __import__(modulename)
         for label in bootstrap_data.DATA:
@@ -293,7 +301,6 @@ def list_labels(mgr_bootstrap_data, do_print=True):
 
 def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     pdids = None
-    flush = options.flush
 
     if 'PDID' in mgr_bootstrap_data.DATA[label]:
         pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
@@ -333,7 +340,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     else:
         options.parentchannel = ""
 
-    if flush:
+    if options.flush:
         log("Removing directory:", destdir)
         try:
             shutil.rmtree(destdir)
