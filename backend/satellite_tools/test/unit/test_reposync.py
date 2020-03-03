@@ -706,6 +706,7 @@ class RepoSyncTest(unittest.TestCase):
         self.reposync.CFG.PREPENDED_DIR = ''
         self.reposync.fileutils.createPath = Mock()
         self.reposync.os.walk = Mock(return_value=[])
+        self.reposync.subprocess.call = Mock()
         return rs
 
 
