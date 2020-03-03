@@ -1,4 +1,4 @@
-- Enable support for bootstrapping Debian 9 and 10 (debian 10 yet to be fully tested) (gnuninu) - nicola.dimarzo@suse.com
+- Enable support for bootstrapping Debian 9 and 10 - nicola.dimarzo@suse.com
 - mgr-sync: add option '--no-sync' to add commands and implement new
   'sync' sub command
 - remove support for SuSEfirewall2
