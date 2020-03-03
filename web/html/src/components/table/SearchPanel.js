@@ -29,8 +29,11 @@ export function SearchPanel(props: SearchPanelProps) {
   return (
     <div className="spacewalk-list-filter table-search-wrapper">
       {
-        React.Children.map(props.children,
-          (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }))
+        React.Children.toArray(props.children)
+          .filter(child => child != null)
+          .map(
+            (child) => React.cloneElement(child, { criteria: props.criteria, onSearch: props.onSearch }
+          ))
       }
       <div className="d-inline-block">
         <span>{t("Items {0} - {1} of {2}", props.fromItem, props.toItem, props.itemCount)}&nbsp;&nbsp;</span>
