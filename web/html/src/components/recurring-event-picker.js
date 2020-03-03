@@ -8,7 +8,8 @@ const ReactDOM = require("react-dom");
 const {DateTimePicker} = require("./datetimepicker");
 const {Combobox} = require("./combobox");
 import type {ComboboxItem} from "./combobox";
-const {Toggler} = require("components/toggler");
+const { Form } = require('components/input/Form');
+const { Text } = require('components/input/Text');
 const Functions = require("../utils/functions");
 
 type RecurringEventPickerProps = {
@@ -90,8 +91,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
             });
     };
 
-    setScheduleName = (scheduleName) => {
-        scheduleName = scheduleName.target.value;
+    setScheduleName = (model) => {
+        const scheduleName = model.scheduleName;
         this.setState({
             scheduleName: scheduleName
         });
@@ -298,12 +299,9 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     render() {
         return (
             <div className="form-horizontal">
-                <div className="form-group">
-                    <label className="col-sm-3 control-label">Schedule Name:</label>
-                    <div className="col-sm-6">
-                        <input name="schedule-name" className="form-control" type="text" value={this.state.scheduleName} onChange={this.setScheduleName} readOnly={this.state.readOnly}/>
-                    </div>
-                </div>
+                <Form onChange={this.setScheduleName} model={{scheduleName: this.state.scheduleName}}>
+                    <Text name="scheduleName" required type="text" label={t("Schedule Name")} labelClass="col-sm-3" divClass="col-sm-6" />
+                </Form>
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <h3>{t("Select a Schedule")}</h3>
