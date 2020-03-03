@@ -49,7 +49,7 @@ import static java.util.stream.Collectors.toList;
  * current module selection. In return, all module filters are translated into a collection of package filters by the
  * following rules:
  *
- * 1. All modular packages are denied (deny by nevra)
+ * 1. All modular packages are denied (deny by existence of 'modularitylabel' rpm header)
  * 2. For each package publicly provided by a module, all the packages from other sources with the same package name
  *    are denied. As a result, a specific package is only provided exclusively by the module to prevent any conflicts
  *    (deny by name).
@@ -130,9 +130,10 @@ public class DependencyResolver {
             throw new DependencyResolutionException("Failed to resolve modular dependencies.", e);
         }
 
+        List<PackageFilter> outFilters = new ArrayList<>();
+
         // 1. Modular packages to be denied
-        Stream<PackageFilter> pkgDenyFilters = modulemdApi.getAllPackages(sources).stream()
-                .map((String nevra) -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.DENY));
+        outFilters.add(initFilter(FilterCriteria.Matcher.EXISTS, ContentFilter.Rule.DENY, "module_stream", null));
 
         // 2. Non-modular packages to be denied by name
         Stream<PackageFilter> providedRpmApiFilters = modPkgList.getRpmApis().stream().map(
@@ -140,25 +141,28 @@ public class DependencyResolver {
 
         // 3. Modular packages to be allowed
         Stream<PackageFilter> pkgAllowFilters = modPkgList.getRpmPackages().stream()
-                .map((String nevra) -> initFilterFromPackageNevra(nevra, ContentFilter.Rule.ALLOW));
+                .map(DependencyResolver::initFilterFromPackageNevra);
 
-        // Concatenate filter streams into a list
-        return Stream.of(pkgDenyFilters, providedRpmApiFilters, pkgAllowFilters).flatMap(s -> s).collect(toList());
+        // Concatenate filter streams into the list
+        outFilters.addAll(Stream.of(providedRpmApiFilters, pkgAllowFilters).flatMap(s -> s)
+                .collect(toList()));
+
+        return outFilters;
     }
 
-
-    private static PackageFilter initFilterFromPackageNevra(String nevra, ContentFilter.Rule rule) {
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "nevra", nevra);
-        PackageFilter filter = new PackageFilter();
-        filter.setRule(rule);
-        filter.setCriteria(criteria);
-        return filter;
+    private static PackageFilter initFilterFromPackageNevra(String nevra) {
+        return initFilter(FilterCriteria.Matcher.EQUALS, ContentFilter.Rule.ALLOW, "nevra", nevra);
     }
 
     private static PackageFilter initFilterFromPackageName(String name) {
-        FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.MATCHES, "name", name);
+        return initFilter(FilterCriteria.Matcher.MATCHES, ContentFilter.Rule.DENY, "name", name);
+    }
+
+    private static PackageFilter initFilter(FilterCriteria.Matcher matcher, ContentFilter.Rule rule, String field,
+            String value) {
+        FilterCriteria criteria = new FilterCriteria(matcher, field, value);
         PackageFilter filter = new PackageFilter();
-        filter.setRule(ContentFilter.Rule.DENY);
+        filter.setRule(rule);
         filter.setCriteria(criteria);
         return filter;
     }

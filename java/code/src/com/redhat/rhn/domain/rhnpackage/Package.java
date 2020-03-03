@@ -786,6 +786,18 @@ public class Package extends BaseDomainHelper {
     }
 
     /**
+     * Get an rpm tag value for a specific key
+     *
+     * @param key the rpm tag key
+     * @return the rpm tag value
+     */
+    public String getExtraTag(String key) {
+        PackageExtraTagsKeys headerKey = new PackageExtraTagsKeys();
+        headerKey.setName(key);
+        return this.extraTags.get(headerKey);
+    }
+
+    /**
      * @param extraTagsIn to set
      */
     public void setExtraTags(Map<PackageExtraTagsKeys, String> extraTagsIn) {
