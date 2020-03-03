@@ -122,9 +122,6 @@ public class MinionController {
         get("/manager/groups/details/states/schedules",
                 withCsrfToken(withUser(MinionController::serverGroupRecurringStates)),
                 jade);
-        get("/manager/schedule/recurring-actions",
-                withUserPreferences(withCsrfToken(withUser(MinionController::recurringActions))),
-                jade);
     }
 
     private static void initSSMRoutes(JadeTemplateEngine jade) {
@@ -374,20 +371,6 @@ public class MinionController {
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
         return new ModelAndView(data, "templates/minion/custom.jade");
-    }
-
-    /**
-     * Handler for the Recurring Actions schedule page.
-     *
-     * @param request the request object
-     * @param response the response object
-     * @param user the current user
-     * @return the ModelAndView object to render the page
-     */
-    public static ModelAndView recurringActions(Request request, Response response, User user) {
-        /* TODO: Create an own Schedule Controller */
-        Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "templates/schedule/recurring-actions.jade");
     }
 
     /**

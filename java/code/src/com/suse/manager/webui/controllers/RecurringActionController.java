@@ -16,7 +16,9 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -48,8 +50,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing the backend for API calls to work with recurring actions.
@@ -65,11 +69,29 @@ public class RecurringActionController {
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the template engine
      */
-    public static void initRoutes() {
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/schedule/recurring-actions",
+                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringActions))),
+                jade);
+
         get("/manager/api/recurringactions/:type/:id", withUser(RecurringActionController::list));
         post("/manager/api/recurringactions/save", withUser(RecurringActionController::save));
         delete("/manager/api/recurringactions/:id/delete", withUser(RecurringActionController::deleteSchedule));
+    }
+
+    /**
+     * Handler for the Recurring Actions schedule page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView recurringActions(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
     }
 
     /**
@@ -140,7 +162,7 @@ public class RecurringActionController {
         json.setActive(a.isActive());
         json.setTest(a.isTestMode());
         json.setTargetType(targetType.toString());
-        json.setTargetId(a.getEntityId()); // todo question: do we need that at all?
+        json.setTargetId(a.getEntityId());
         json.setCreated(a.getCreated());
         return json;
     }

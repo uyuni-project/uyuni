@@ -78,7 +78,7 @@ public class MinionRecurringAction extends RecurringAction {
     }
 
     @Override
-    @Transient // todo why is this not inherited from the RecurringAction?
+    @Transient
     public Long getEntityId() {
         return getMinion().getId();
     }

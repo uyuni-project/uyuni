@@ -123,7 +123,7 @@ public class Router implements SparkApplication {
         StatesAPI.initRoutes();
 
         // Recurring Action
-        RecurringActionController.initRoutes();
+        RecurringActionController.initRoutes(jade);
 
         // Subscription Matching
         SubscriptionMatchingController.initRoutes(jade);

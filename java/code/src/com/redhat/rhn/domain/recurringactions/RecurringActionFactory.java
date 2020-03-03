@@ -40,7 +40,7 @@ public class RecurringActionFactory extends HibernateFactory {
      * @param id - id of the minion
      * @return list of minion recurring actions
      */
-    public static List<MinionRecurringAction> listMinionRecurringActions(Long id) { // TODO: Do we need user here?
+    public static List<MinionRecurringAction> listMinionRecurringActions(Long id) {
        return getSession().createQuery("SELECT action FROM MinionRecurringAction action " +
                "WHERE action.minion.id = :mid")
                .setParameter("mid", id)
@@ -53,7 +53,7 @@ public class RecurringActionFactory extends HibernateFactory {
      * @param id - id of the group
      * @return list of group recurring actions
      */
-    public static List<GroupRecurringAction> listGroupRecurringActions(Long id) { // TODO: Do we need user here?
+    public static List<GroupRecurringAction> listGroupRecurringActions(Long id) {
         return getSession().createQuery("SELECT action FROM GroupRecurringAction action " +
                 "WHERE action.group.id = :gid")
                 .setParameter("gid", id)
@@ -66,7 +66,7 @@ public class RecurringActionFactory extends HibernateFactory {
      * @param id - id of the organization
      * @return list of org recurring actions
      */
-    public static List<OrgRecurringAction> listOrgRecurringActions(Long id) { // TODO: Do we need user here?
+    public static List<OrgRecurringAction> listOrgRecurringActions(Long id) {
         return getSession().createQuery("SELECT action FROM OrgRecurringAction action " +
                 "WHERE action.org.id = :oid")
                 .setParameter("oid", id)

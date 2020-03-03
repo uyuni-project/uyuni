@@ -65,7 +65,7 @@ public class RecurringActionManager {
     }
 
     /**
-     * Create a minimal {@link RecurringAction} of given type. // todo better comment?
+     * Create a minimal {@link RecurringAction} of given type.
      *
      * @param type the Recurring Action type
      * @param entityId the ID of the target entity
@@ -210,7 +210,6 @@ public class RecurringActionManager {
 
         RecurringActionFactory.save(action);
 
-        // todo test this codepath (when tasko throws an exception)
         // mainly the possible need for revert
         taskomaticApi.scheduleRecurringAction(action, user);
     }
@@ -243,7 +242,6 @@ public class RecurringActionManager {
         }
         RecurringActionFactory.delete(action);
 
-        // todo test this codepath (when tasko throws an exception)
         taskomaticApi.unscheduleRecurringAction(action, user);
     }
 

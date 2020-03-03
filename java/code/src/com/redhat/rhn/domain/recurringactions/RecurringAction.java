@@ -44,7 +44,7 @@ import javax.persistence.Transient;
  */
 
 @Entity
-@Table(name = "suseRecurringAction") // TODO: Drop the suse prefix?
+@Table(name = "suseRecurringAction")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "target_type")
 public abstract class RecurringAction extends BaseDomainHelper {
@@ -215,7 +215,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      */
     @Column
     @org.hibernate.annotations.Type(type = "yes_no")
-    public boolean isActive() { // TODO: Set schema type to boolean
+    public boolean isActive() {
         return active;
     }
 

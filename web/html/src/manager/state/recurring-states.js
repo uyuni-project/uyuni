@@ -16,7 +16,6 @@ const Utils = require("utils/functions").Utils;
 const messagesCounterLimit = 1;
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
 
-//todo rename scheduleId in json usages to recurringActionId
 
 function getHashId() {
     const match = window.location.hash.match(hashUrlRegex);

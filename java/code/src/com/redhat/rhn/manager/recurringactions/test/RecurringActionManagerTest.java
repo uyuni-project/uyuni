@@ -4,7 +4,6 @@ import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.GROUP;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.ORG;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
@@ -193,7 +192,6 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
     }
 
-    // todo make this complete
     public void testUpdateAction() throws Exception {
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -206,16 +204,17 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         recurringAction.setName("test-recurring-action-1");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
 
-        HibernateFactory.getSession().flush();
-
-        var other = RecurringActionFactory.lookupById(recurringAction.getId());
-        other.get().setName("testname");
+        var sameAction = RecurringActionFactory.lookupById(recurringAction.getId()).get();
+        var newName = "testname";
+        var newCronExpr = "1 * * * * ?";
+        sameAction.setName(newName);
+        sameAction.setCronExpr(newCronExpr);
         RecurringActionManager.saveAndSchedule(recurringAction, user);
-        HibernateFactory.getSession().flush();
-        var other2 = RecurringActionFactory.lookupById(recurringAction.getId());
 
-        System.out.println(other2);
-        System.out.println(RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
+        var sameAction2 = RecurringActionFactory.lookupById(recurringAction.getId()).get();
+        // the action with the original id has changed name and cron expr
+        assertEquals(newName, sameAction2.getName());
+        assertEquals(newCronExpr, sameAction2.getCronExpr());
     }
 
     public void testDeleteAction() throws Exception {
