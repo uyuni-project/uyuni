@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Mar 03 13:07:14 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.30-1
 - Feat: enable Salt system lock when CaaSP node is onboarded and add
   depedency to 'system-lock-formula' (bsc#1165541)
 
