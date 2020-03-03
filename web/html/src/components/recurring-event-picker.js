@@ -14,12 +14,10 @@ const Functions = require("../utils/functions");
 type RecurringEventPickerProps = {
     timezone: string,
     scheduleName: string,
-    active: boolean,
     type: string,
     cron: string,
     cronTimes: Hash<string, string>,
     onScheduleNameChanged: (scheduleName: string) => void,
-    onToggleActive: (active: boolean) => void,
     onTypeChanged: (type: string) => void,
     onCronTimesChanged: (cronTimes: Hash<string, string>) => void,
     onCronChanged: (cron: string) => void
@@ -54,7 +52,6 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
         this.state = {
             time: Functions.Utils.dateWithTimezone(localTime),
             scheduleName: props.scheduleName || "",
-            active: props.active || true,
             type: props.type || "weekly",
             cronTimes: props.cronTimes || {minute: "", hour: "", dayOfMonth: "", dayOfWeek: ""},
             cron: props.cron || "",
@@ -86,7 +83,6 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
             this.state, {
                 time: time,
                 cron: this.state.cron,
-                active: this.props.active,
                 minutes: this.minutes[(Number(this.state.cronTimes.minute) || 0)],
                 weekDay: this.weekDays[(Number(this.state.cronTimes.dayOfWeek) || 1) - 1],
                 monthDay: this.monthDays[(Number(this.state.cronTimes.dayOfMonth) || 1) - 1],
@@ -110,11 +106,6 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
         this.props.onCronChanged("");
     };
 
-    toggleActive = () => {
-        this.setState({active: !this.state.active});
-        this.props.onToggleActive(!this.state.active);
-    };
-
     onSelectHourly = () => {
         this.props.onCronTimesChanged({
             minute: this.state.minutes.text,
@@ -125,15 +116,11 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
         this.selectType("hourly");
     };
 
-    onSelectMinutes = (selectedItem: ComboboxItem) => {
+    onSelectMinutes = (event) => {
         this.onMinutesChanged({
-            id: selectedItem.id,
-            text: selectedItem.text
+            id: isNaN(event.target.valueAsNumber) ? "" : event.target.valueAsNumber,
+            text: event.target.value
         });
-    };
-
-    onFocusMinutes = () => {
-        this.onMinutesChanged(this.state.minutes);
     };
 
     onMinutesChanged = (selectedItem: ComboboxItem) => {
@@ -296,8 +283,8 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     };
 
     onSelectCustom = () => {
-       this.props.onCronChanged(this.state.cron);
-       this.selectCustom();
+        this.props.onCronChanged(this.state.cron);
+        this.selectCustom();
     };
 
     onCronChanged = (cron) => {
@@ -310,94 +297,82 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
 
     render() {
         return (
-        <div className="form-horizontal">
-            <div className="form-group">
-                <label className="col-sm-3 control-label">Schedule Name:</label>
-                <div className="col-sm-6">
-                    <input name="schedule-name" className="form-control" type="text" value={this.state.scheduleName} onChange={this.setScheduleName} readOnly={this.state.readOnly}/>
+            <div className="form-horizontal">
+                <div className="form-group">
+                    <label className="col-sm-3 control-label">Schedule Name:</label>
+                    <div className="col-sm-6">
+                        <input name="schedule-name" className="form-control" type="text" value={this.state.scheduleName} onChange={this.setScheduleName} readOnly={this.state.readOnly}/>
+                    </div>
                 </div>
-            </div>
-            <div className="panel panel-default">
-                <div className="panel-heading">
-                    <h3>{t("Select a Schedule")}</h3>
-                </div>
-                <div className="form-horizontal">
-                    {this.props.active !== undefined ?
-                        <div className="form-group">
-                            <div className="col-sm-6 control-label">
-                                <b>{this.state.active ? t("Active") : t("Disabled")}</b>
+                <div className="panel panel-default">
+                    <div className="panel-heading">
+                        <h3>{t("Select a Schedule")}</h3>
+                    </div>
+                    <div className="panel-body">
+                        <div className="form-horizontal">
+                            <div className="form-group">
+                                <div className="col-sm-3 control-label">
+                                    <input type="radio" name="minutes" value="false" checked={this.state.type === "hourly"} id="schedule-hourly" onChange={this.onSelectHourly}/>
+                                    <label htmlFor="schedule-hourly">{t("Hourly:")}</label>
+                                </div>
+                                <div className="col-sm-3">
+                                    <input className="form-control" name="minutes" type="number" value={this.state.minutes.id} min="0" max="59" onChange={this.onSelectMinutes} />
+                                </div>
                             </div>
-                            <div className="col-sm-3">
-                                <Toggler value={this.state.active} className="btn" handler={this.toggleActive.bind(this)} />
+                            <div className="form-group">
+                                <div className="col-sm-3 control-label">
+                                    <input type="radio" name="date_daily" value="false" checked={this.state.type === "daily"} id="schedule-daily" onChange={this.onSelectDaily}/>
+                                    <label htmlFor="schedule-daily">{t("Daily:")}</label>
+                                </div>
+                                <div className="col-sm-3">
+                                    <DateTimePicker onChange={this.onDailyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
+                                </div>
                             </div>
-                        </div> : null
-                    }
-                    <div className="form-group">
-                        <div className="col-sm-3 control-label">
-                            <input type="radio" name="minutes" value="false" checked={this.state.type === "hourly"} id="schedule-hourly" onChange={this.onSelectHourly}/>
-                            <label htmlFor="schedule-hourly">{t("Hourly:")}</label>
-                        </div>
-                        <div className="col-sm-6">
-                            <Combobox id="minute-picker" name="minutes" selectedId={this.state.minutes.id}
-                                      data={this.minutes}
-                                      onSelect={this.onSelectMinutes}
-                                      onFocus={this.onFocusMinutes}
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="col-sm-3 control-label">
-                            <input type="radio" name="date_daily" value="false" checked={this.state.type === "daily"} id="schedule-daily" onChange={this.onSelectDaily}/>
-                            <label htmlFor="schedule-daily">{t("Daily:")}</label>
-                        </div>
-                        <div className="col-sm-6">
-                            <DateTimePicker onChange={this.onDailyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="col-sm-3 control-label">
-                            <input type="radio" name="date_weekly" value="false" checked={this.state.type === "weekly"} id="schedule-weekly" onChange={this.onSelectWeekly}/>
-                            <label htmlFor="schedule-weekly">{t("Weekly:")}</label>
-                        </div>
-                        <div className="col-sm-3">
-                            <Combobox id="weekly-day-picker" name="date_weekly" selectedId={this.state.weekDay.id}
-                                      data={this.weekDays}
-                                      onSelect={this.onSelectWeekDay}
-                                      onFocus={this.onFocusWeekDay}
-                            />
-                        </div>
-                        <div className="col-sm-3">
-                            <DateTimePicker onChange={this.onWeeklyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="col-sm-3 control-label">
-                            <input type="radio" name="date_monthly" value="false" checked={this.state.type === "monthly"} id="schedule-monthly" onChange={this.onSelectMonthly}/>
-                            <label htmlFor="schedule-monthly">{t("Monthly:")}</label>
-                        </div>
-                        <div className="col-sm-3">
-                            <Combobox id="monthly-day-picker" name="date_monthly" selectedId={this.state.monthDay.id}
-                                      data={this.monthDays}
-                                      onSelect={this.onSelectMonthDay}
-                                      onFocus={this.onFocusMonthDay}
-                            />
-                        </div>
-                        <div className="col-sm-3">
-                            <DateTimePicker onChange={this.onMonthlyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="col-sm-3 control-label">
-                            <input type="radio" name="date_cron" value="false" checked={this.state.type === "cron"} id="schedule-cron" onChange={this.onSelectCustom}/>
-                            <label htmlFor="schedule-cron">{t("Custom Quartz format:")}</label>
-                        </div>
-                        <div className="col-sm-6">
-                            <input className="form-control" type="text" name="cron" value={this.state.cron} id="custom-cron" onChange={this.onCronChanged}/>
+                            <div className="form-group">
+                                <div className="col-sm-3 control-label">
+                                    <input type="radio" name="date_weekly" value="false" checked={this.state.type === "weekly"} id="schedule-weekly" onChange={this.onSelectWeekly}/>
+                                    <label htmlFor="schedule-weekly">{t("Weekly:")}</label>
+                                </div>
+                                <div className="col-sm-3">
+                                    <Combobox id="weekly-day-picker" name="date_weekly" selectedId={this.state.weekDay.id}
+                                              data={this.weekDays}
+                                              onSelect={this.onSelectWeekDay}
+                                              onFocus={this.onFocusWeekDay}
+                                    />
+                                </div>
+                                <div className="col-sm-3">
+                                    <DateTimePicker onChange={this.onWeeklyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <div className="col-sm-3 control-label">
+                                    <input type="radio" name="date_monthly" value="false" checked={this.state.type === "monthly"} id="schedule-monthly" onChange={this.onSelectMonthly}/>
+                                    <label htmlFor="schedule-monthly">{t("Monthly:")}</label>
+                                </div>
+                                <div className="col-sm-3">
+                                    <Combobox id="monthly-day-picker" name="date_monthly" selectedId={this.state.monthDay.id}
+                                              data={this.monthDays}
+                                              onSelect={this.onSelectMonthDay}
+                                              onFocus={this.onFocusMonthDay}
+                                    />
+                                </div>
+                                <div className="col-sm-3">
+                                    <DateTimePicker onChange={this.onMonthlyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <div className="col-sm-3 control-label">
+                                    <input type="radio" name="date_cron" value="false" checked={this.state.type === "cron"} id="schedule-cron" onChange={this.onSelectCustom}/>
+                                    <label htmlFor="schedule-cron">{t("Custom Quartz format:")}</label>
+                                </div>
+                                <div className="col-sm-3">
+                                    <input className="form-control" type="text" name="cron" value={this.state.cron} placeholder={t("e.g. \"0 15 2 ? * 7\"")} id="custom-cron" onChange={this.onCronChanged}/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         );
     }
 }
