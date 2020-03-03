@@ -1,3 +1,5 @@
+- Filter out AppStream packages by 'modularitylabel' rpm tag
+
 -------------------------------------------------------------------
 Wed Mar 11 10:54:21 CET 2020 - jgonzalez@suse.com
 

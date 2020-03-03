@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.contentmgmt;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -48,6 +49,8 @@ public class PackageFilter extends ContentFilter<Package> {
                     pattern = Pattern.compile(value);
                 }
                 return pattern.matcher(getField(pack, field, String.class)).matches();
+            case EXISTS:
+                return StringUtils.isNotEmpty(getField(pack, field, String.class));
             default:
                 throw new UnsupportedOperationException("Matcher " + matcher + " not supported");
         }
@@ -63,6 +66,8 @@ public class PackageFilter extends ContentFilter<Package> {
                 //Case for null epoch: Module metadata reports epoch as '0' even if there's none. We need to match it.
                 // pack.getNameEvra() omits the epoch if null so instead, pack.getNevraWithEpoch() is used here.
                 return type.cast(pack.getNevraWithEpoch());
+            case "module_stream":
+                return type.cast(pack.getExtraTag("modularitylabel"));
             default:
                 throw new UnsupportedOperationException("Field " + field + " not supported");
         }

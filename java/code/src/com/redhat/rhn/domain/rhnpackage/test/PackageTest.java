@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.domain.rpm.test.SourceRpmTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -255,5 +256,13 @@ public class PackageTest extends BaseTestCaseWithUser {
 
     public void testIsInChannel() {
         // TODO make this work on sate
+    }
+
+    public void testGetExtraTag() throws Exception {
+        Package pkg = createTestPackage(user.getOrg());
+        pkg.getExtraTags().put(PackageManagerTest.createExtraTagKey("mytag"), "myvalue");
+
+        assertEquals("myvalue", pkg.getExtraTag("mytag"));
+        assertNull(pkg.getExtraTag("doesnotexist"));
     }
 }

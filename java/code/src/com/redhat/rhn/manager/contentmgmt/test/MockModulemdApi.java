@@ -24,18 +24,21 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
-import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.modulemd.RepositoryNotModularException;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageExtraTagsKeys;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +71,13 @@ public class MockModulemdApi extends ModulemdApi {
         ).collect(Collectors.groupingBy(Module::getName));
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated this endpoint is not currently used by the
+     * {@link com.redhat.rhn.manager.contentmgmt.DependencyResolver} logic.
+     */
+    @Deprecated
     @Override
     public List<String> getAllPackages(List<Channel> sources) {
         // Dummy call to trigger RepositoryNotModular exception:
@@ -129,16 +139,25 @@ public class MockModulemdApi extends ModulemdApi {
         List<String> nevras = doGetAllPackages();
         // perl 5.26 is a special package which is included in the module definition even though it's not served as a
         // modular package. We need it in the channel to be able to test this case.
-        nevras.add("perl-5.26.3-416.el8:4.x86_64");
+        String perlNevra = "perl-5.26.3-416.el8:4.x86_64";
+        nevras.add(perlNevra);
+
+        // 'modularitylabel' rpm tag determines that a package belongs to a module
+        PackageExtraTagsKeys modularityHeader = PackageManagerTest.createExtraTagKey("MODULARITYLABEL");
 
         Pattern nevraPattern = Pattern.compile("^(.*)-(\\d+):(.*)-(.*)\\.(.*)$");
-        for (String nevra : doGetAllPackages()) {
+        for (String nevra : nevras) {
             Matcher m = nevraPattern.matcher(nevra);
             if (m.matches()) {
                 Package pkg = PackageTest.createTestPackage(user.getOrg());
                 PackageTest.populateTestPackage(pkg, user.getOrg(), PackageNameTest.createTestPackageName(m.group(1)),
                         PackageEvrFactoryTest.createTestPackageEvr(m.group(2), m.group(3), m.group(4)),
                         PackageFactory.lookupPackageArchByLabel(m.group(5)));
+
+                if (!perlNevra.equals(nevra)) {
+                    // Exclude non-modular Perl package mentioned above
+                    pkg.setExtraTags(Collections.singletonMap(modularityHeader, "my:nsvc"));
+                }
 
                 channel.addPackage(pkg);
             }
