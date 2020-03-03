@@ -102,21 +102,12 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
         this.props.onScheduleNameChanged(scheduleName);
     };
 
-    setCron = (cron: string) => {
-        if (cron) {
-            this.setState({
-                cron: cron
-            });
-        }
-        this.props.onCronChanged(cron);
-    };
-
     selectType = (type: string) => {
         this.setState({
             type: type
         });
         this.props.onTypeChanged(type);
-        this.setCron("");
+        this.props.onCronChanged("");
     };
 
     toggleActive = () => {
@@ -310,7 +301,10 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
     };
 
     onCronChanged = (cron) => {
-        this.setCron(cron.target.value);
+        this.setState({
+            cron: cron.target.value
+        });
+        this.props.onCronChanged(cron.target.value);
         this.selectCustom();
     };
 
