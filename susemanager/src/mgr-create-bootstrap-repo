@@ -196,7 +196,11 @@ def isBeta():
 def cli():
 
     usage = "usage: %prog [options] [additional_pkg1 additional_pkg2 ...]"
-    parser = OptionParser(usage=usage)
+    parser = OptionParser(usage=usage, description=""
+            "Tool to generate repositories containing the required software to "
+            "register at SUSE Manager Server. Logs are written to "
+            "/var/log/rhn/mgr-create-bootstrap-repo.log .")
+
     parser.add_option('-n', '--dryrun', action='store_true', dest='dryrun',
                       help='Dry run. Show only changes - do not execute them')
     parser.add_option('-i', '--interactive', action='store_true', dest='interactive',
