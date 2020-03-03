@@ -16,6 +16,8 @@
 package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.user.User;
 
 import org.apache.log4j.Logger;
 
@@ -74,6 +76,39 @@ public class RecurringActionFactory extends HibernateFactory {
                 "ORDER BY action.id DESC")
                 .setParameter("oid", id)
                 .list();
+    }
+
+    /**
+     * List all {@link RecurringAction}s that are associated with entities
+     * belonging to the {@link Org} of given {@link User}.
+     *
+     * @param user the user
+     * @return the list of {@link RecurringAction}s
+     */
+    public static List<? extends RecurringAction> listAllRecurringActions(User user) {
+        Org org = user.getOrg();
+        Stream<? extends RecurringAction> orgActions = getSession().createQuery(
+                "SELECT orgAction FROM OrgRecurringAction orgAction " +
+                        "WHERE orgAction.org = :org " +
+                        "ORDER by orgAction.id DESC")
+                .setParameter("org", org)
+                .stream();
+
+        Stream<? extends RecurringAction> groupActions = getSession().createQuery(
+                "SELECT groupAction FROM GroupRecurringAction groupAction " +
+                        "WHERE groupAction.group.org = :org " +
+                        "ORDER by groupAction.id DESC")
+                .setParameter("org", org)
+                .stream();
+
+        Stream<? extends RecurringAction> minionActions = getSession().createQuery(
+                "SELECT minionAction FROM MinionRecurringAction minionAction " +
+                        "WHERE minionAction.minion.org = :org " +
+                        "ORDER by minionAction.id DESC")
+                .setParameter("org", org)
+                .stream();
+
+        return Stream.concat(orgActions, Stream.concat(groupActions, minionActions)).collect(Collectors.toList());
     }
 
     /**

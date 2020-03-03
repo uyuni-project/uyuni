@@ -28,13 +28,15 @@ function getHashAction() {
 }
 
 // HACK: infer entity type and id based on the globals set
-function inferEntityTypeAndId() {
+function inferEntityParams() {
     if (window.groupId !== undefined) {
-        return ["GROUP", window.groupId];
+        return "/GROUP/" + window.groupId;
     } else if (window.orgId !== undefined) {
-        return ["ORG", window.orgId];
+        return "/ORG/" + window.orgId;
+    } else if (minions.length > 0) {
+        return "/MINION/" + minions[0].id;
     }
-    return ["MINION", minions[0].id];
+    return "";
 }
 
 class RecurringStates extends React.Component {
@@ -47,7 +49,7 @@ class RecurringStates extends React.Component {
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
-            minionIds: minions[0].id ? minions.map(minion => minion.id) : undefined,
+            minionIds: minions.length > 0 && minions[0].id ? minions.map(minion => minion.id) : undefined,
         };
     }
 
@@ -75,8 +77,8 @@ class RecurringStates extends React.Component {
 
     getRecurringScheduleList = () => {
         // todo create different endpoints for each use case ("/rhn/manager/api/recurringactions/group/id")
-        const [type, entityId] = inferEntityTypeAndId();
-        const endpoint = "/rhn/manager/api/recurringactions/" + type + "/" + entityId;
+        const entityParams = inferEntityParams();
+        const endpoint = "/rhn/manager/api/recurringactions" + entityParams;
         return Network.get(endpoint, "application/json").promise
             .then(schedules => {
                 this.setState({

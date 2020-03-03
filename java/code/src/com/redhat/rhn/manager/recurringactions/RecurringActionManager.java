@@ -186,6 +186,16 @@ public class RecurringActionManager {
         return RecurringActionFactory.listOrgRecurringActions(orgId);
     }
 
+    /**
+     * List all {@link RecurringAction}s visible to the given user
+     *
+     * @param user the user
+     * @return the actions visible to the user
+     */
+    public static List<? extends RecurringAction> listAllRecurringActions(User user) {
+        return RecurringActionFactory.listAllRecurringActions(user);
+    }
+
     // checks perms & saves & schedules
     // all create/update operations must go through this!
 

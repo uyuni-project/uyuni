@@ -24,22 +24,20 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.util.RecurringEventPicker;
-import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
-import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
-import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.Type;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.suse.manager.webui.utils.gson.RecurringStateScheduleJson;
+import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.manager.webui.utils.gson.RecurringStateScheduleJson;
-import com.suse.manager.webui.utils.gson.ResultJson;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -60,9 +58,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class RecurringActionController {
 
-    /** Logger */
     private static final Logger LOG = Logger.getLogger(RecurringActionController.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
     private static final Gson GSON = new GsonBuilder().create();
 
     private RecurringActionController() { }
@@ -77,7 +73,8 @@ public class RecurringActionController {
                 withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringActions))),
                 jade);
 
-        get("/manager/api/recurringactions/:type/:id", withUser(RecurringActionController::list));
+        get("/manager/api/recurringactions", withUser(RecurringActionController::listAll));
+        get("/manager/api/recurringactions/:type/:id", withUser(RecurringActionController::listByEntity));
         post("/manager/api/recurringactions/save", withUser(RecurringActionController::save));
         delete("/manager/api/recurringactions/:id/delete", withUser(RecurringActionController::deleteSchedule));
     }
@@ -95,51 +92,54 @@ public class RecurringActionController {
     }
 
     /**
-     * Processes a GET request to get a list of all Recurring Schedules
+     * Processes a GET request to get a list of all Recurring Schedules visible to given user
      *
      * @param request the request object
      * @param response the response object
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static String list(Request request, Response response, User user) {
+    public static String listAll(Request request, Response response, User user) {
+        List<RecurringStateScheduleJson> schedules =
+                actionsToJson(RecurringActionManager.listAllRecurringActions(user));
+
+        return json(response, ResultJson.success(schedules));
+    }
+
+    /**
+     * Processes a GET request to get a list of all Recurring Schedules corresponding to given entity
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static String listByEntity(Request request, Response response, User user) {
         Type type = Type.valueOf(request.params("type"));
         long id = Long.parseLong(request.params("id"));
 
-        List<RecurringStateScheduleJson> schedules;
+        List<? extends RecurringAction> schedules;
         switch (type) {
             case MINION:
-                schedules = actionsToJson(listMinionSchedules(id, user), Type.MINION);
+                schedules = RecurringActionManager.listMinionRecurringActions(id, user);
                 break;
             case GROUP:
-                schedules = actionsToJson(listGroupSchedules(id, user), Type.GROUP);
+                schedules = RecurringActionManager.listGroupRecurringActions(id, user);
                 break;
             case ORG:
-                schedules = actionsToJson(listOrgSchedules(id, user), Type.ORG);
+                schedules = RecurringActionManager.listOrgRecurringActions(id, user);
                 break;
             default:
                 throw new IllegalStateException("Unsupported type " + type);
         }
 
-        return json(response, ResultJson.success(schedules));
+        return json(response, ResultJson.success(actionsToJson(schedules)));
     }
 
-    private static List<MinionRecurringAction> listMinionSchedules(long id, User user) {
-        return RecurringActionManager.listMinionRecurringActions(id, user);
-    }
-
-    private static List<GroupRecurringAction> listGroupSchedules(long id, User user) {
-        return RecurringActionManager.listGroupRecurringActions(id, user);
-    }
-
-    private static List<OrgRecurringAction> listOrgSchedules(long id, User user) {
-        return RecurringActionManager.listOrgRecurringActions(id, user);
-    }
-
-    private static List<RecurringStateScheduleJson> actionsToJson(List<? extends RecurringAction> actions, Type type) {
+    private static List<RecurringStateScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
         return actions
                 .stream()
-                .map(a -> actionToJson(a, type))
+                .map(a -> actionToJson(a, a.getType()))
                 .collect(Collectors.toList());
     }
 

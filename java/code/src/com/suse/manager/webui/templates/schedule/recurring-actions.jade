@@ -4,7 +4,7 @@ include /templates/common.jade
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
-    window.minions = [{id: undefined, name: ""}];
+    window.minions = [];
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
 

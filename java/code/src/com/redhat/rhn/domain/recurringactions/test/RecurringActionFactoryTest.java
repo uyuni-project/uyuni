@@ -80,6 +80,41 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         assertEquals(List.of(action), RecurringActionFactory.listOrgRecurringActions(org.getId()));
     }
 
+    public void testListAllActions() throws Exception {
+        var minionAction = new MinionRecurringAction();
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minionAction.setName("action name 1");
+        minionAction.setCronExpr(CRON_EXPR);
+        minionAction.setMinion(minion);
+        RecurringActionFactory.save(minionAction);
+
+        var org = OrgFactory.createOrg();
+        org.setName("org created by OrgFactory test: " + TestUtils.randomString());
+        org = OrgFactory.save(org);
+        var otherOrgAction = new OrgRecurringAction();
+        otherOrgAction.setName("action name 1");
+        otherOrgAction.setCronExpr(CRON_EXPR);
+        otherOrgAction.setOrg(org);
+        RecurringActionFactory.save(otherOrgAction);
+
+        var userOrgAction = new OrgRecurringAction();
+        userOrgAction.setName("action name 1");
+        userOrgAction.setCronExpr(CRON_EXPR);
+        userOrgAction.setOrg(user.getOrg());
+        RecurringActionFactory.save(userOrgAction);
+
+        var group = ServerGroupTestUtils.createManaged(user);
+        var groupAction = new GroupRecurringAction();
+        groupAction.setName("action name 1");
+        groupAction.setCronExpr(CRON_EXPR);
+        groupAction.setGroup(group);
+        RecurringActionFactory.save(groupAction);
+
+        var expectedActions = Set.of(minionAction, userOrgAction, groupAction);
+        var actualActions = new HashSet<>(RecurringActionFactory.listAllRecurringActions(user));
+        assertEquals(expectedActions, actualActions);
+    }
+
     public void testMinionActionTaskomaticPrefixComputation() throws Exception {
         var action = new MinionRecurringAction();
         var minion = MinionServerFactoryTest.createTestMinionServer(user);
