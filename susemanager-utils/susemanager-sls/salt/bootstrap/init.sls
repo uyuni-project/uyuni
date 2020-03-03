@@ -116,6 +116,10 @@ trust_res_gpg_key:
 
 {%- elif grains['os_family'] == 'Debian' %}
 {%- include 'channels/debiankeyring.sls' %}
+install_gnupg_debian:
+  pkg.latest:
+    - pkgs:
+      - gnupg
 trust_suse_manager_tools_deb_gpg_key:
   module.run:
     - name: pkg.add_repo_key
