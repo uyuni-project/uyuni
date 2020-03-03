@@ -42,7 +42,8 @@ public class RecurringActionFactory extends HibernateFactory {
      */
     public static List<MinionRecurringAction> listMinionRecurringActions(Long id) {
        return getSession().createQuery("SELECT action FROM MinionRecurringAction action " +
-               "WHERE action.minion.id = :mid")
+               "WHERE action.minion.id = :mid " +
+               "ORDER BY action.id DESC")
                .setParameter("mid", id)
                .list();
     }
@@ -55,7 +56,8 @@ public class RecurringActionFactory extends HibernateFactory {
      */
     public static List<GroupRecurringAction> listGroupRecurringActions(Long id) {
         return getSession().createQuery("SELECT action FROM GroupRecurringAction action " +
-                "WHERE action.group.id = :gid")
+                "WHERE action.group.id = :gid " +
+                "ORDER BY action.id DESC")
                 .setParameter("gid", id)
                 .list();
     }
@@ -68,7 +70,8 @@ public class RecurringActionFactory extends HibernateFactory {
      */
     public static List<OrgRecurringAction> listOrgRecurringActions(Long id) {
         return getSession().createQuery("SELECT action FROM OrgRecurringAction action " +
-                "WHERE action.org.id = :oid")
+                "WHERE action.org.id = :oid " +
+                "ORDER BY action.id DESC")
                 .setParameter("oid", id)
                 .list();
     }
