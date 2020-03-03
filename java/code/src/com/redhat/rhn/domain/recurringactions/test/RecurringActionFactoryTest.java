@@ -11,7 +11,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.PersistenceException;
 
@@ -47,7 +49,8 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         action2.setMinion(minion);
         RecurringActionFactory.save(action2);
 
-        assertEquals(List.of(action, action2), RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+        var actualSet = new HashSet<>(RecurringActionFactory.listMinionRecurringActions(minion.getId()));
+        assertEquals(Set.of(action, action2), actualSet);
     }
 
     public void testListGroupRecurringActions() {
