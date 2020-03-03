@@ -274,7 +274,7 @@ public class ServerGroupFactory extends HibernateFactory {
     }
 
     /**
-     * Returns the a list of simple representations of the minions that belong to the passed serverGroup
+     * Returns the list of simple representations of the minions that belong to the passed serverGroup
      * @param serverGroup the serverGroup
      * @return the list of minion representations
      */
