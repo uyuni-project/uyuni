@@ -1,4 +1,5 @@
-- Feat: enable Salt system lock when CaaSP node is onboarded
+- Feat: enable Salt system lock when CaaSP node is onboarded and add
+  depedency to 'system-lock-formula' (bsc#1165541)
 
 -------------------------------------------------------------------
 Fri Feb 28 11:43:13 CET 2020 - jgonzalez@suse.com

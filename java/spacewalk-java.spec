@@ -94,6 +94,7 @@ Requires:       java-saml
 Requires:       joda-time
 Requires:       woodstox
 Requires:       xmlsec
+Requires:       system-lock-formula
 BuildRequires:  apache-commons-lang
 BuildRequires:  apache-commons-lang3
 BuildRequires:  classmate
