@@ -192,7 +192,10 @@ class RecurringStates extends React.Component {
 
     render() {
         const messages = this.state.messages ? <Messages items={this.state.messages}/> : null;
-
+        const notification = <Messages items={[{
+            severity: "warning",
+            text: "The timezone displayed is the server timezone. Picked execution time is server execution time"
+        }]}/>;
         return (
             <div>
                 {messages}
@@ -203,21 +206,22 @@ class RecurringStates extends React.Component {
                                             onDelete={this.deleteSchedule}
                     />
                     : (this.state.action === 'edit' && this.state.selected) ||
-                           (this.state.action === 'create' && this.isFiltered()) ?
+                    (this.state.action === 'create' && this.isFiltered()) ? [
+                            notification,
                             <RecurringStatesEdit schedule={this.state.selected}
                                                  onEdit={this.updateSchedule}
                                                  onActionChanged={this.handleForwardAction}
-                            />
-                            :
-                            <RecurringStatesList data={this.state.schedules}
-                                                 disableCreate={!this.isFiltered()}
-                                                 onActionChanged={this.handleForwardAction}
-                                                 onToggleActive={this.toggleActive}
-                                                 onSkip={this.skipNext}
-                                                 onSelect={this.handleDetailsAction}
-                                                 onEdit={this.handleEditAction}
-                                                 onDelete={this.deleteSchedule}
-                            />
+                            /> ]
+                        :
+                        <RecurringStatesList data={this.state.schedules}
+                                             disableCreate={!this.isFiltered()}
+                                             onActionChanged={this.handleForwardAction}
+                                             onToggleActive={this.toggleActive}
+                                             onSkip={this.skipNext}
+                                             onSelect={this.handleDetailsAction}
+                                             onEdit={this.handleEditAction}
+                                             onDelete={this.deleteSchedule}
+                        />
                 }
             </div>
         );
