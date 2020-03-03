@@ -31,6 +31,9 @@ import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.List;
 
+/**
+ * Tests for {@link RecurringActionManager}
+ */
 public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     private static final Mockery CONTEXT = new JUnit3Mockery() {{
@@ -143,7 +146,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(List.of(action), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
 
-        try{
+        try {
             RecurringActionManager.listMinionRecurringActions(minion.getId(), anotherUser);
             fail("User shouldn't have access");
         }
@@ -165,7 +168,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         assertTrue(manager.canAccess(user, group));
         assertEquals(List.of(action), RecurringActionManager.listGroupRecurringActions(group.getId(), user));
 
-        try{
+        try {
             RecurringActionManager.listGroupRecurringActions(group.getId(), anotherUser);
             fail("User shouldn't have access");
         }
@@ -183,7 +186,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(List.of(action), RecurringActionManager.listOrgRecurringActions(user.getOrg().getId(), user));
 
-        try{
+        try {
             RecurringActionManager.listOrgRecurringActions(user.getOrg().getId(), anotherUser);
             fail("User shouldn't have access");
         }
@@ -236,7 +239,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.deleteAndUnschedule(recurringAction, anotherUser);
             fail("User shouldn't have permission");
         }
-        catch(PermissionException e) {
+        catch (PermissionException e) {
             // no-op
         }
 
