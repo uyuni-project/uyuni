@@ -74,6 +74,7 @@ public class MenuTree {
                     .addChild(new MenuItem("Organization Trusts").withPrimaryUrl("/rhn/multiorg/Organizations.do")
                         .withAltUrl("/rhn/multiorg/OrgTrustDetails.do").withAltUrl("/rhn/multiorg/channels/Consumed.do")
                         .withAltUrl("/rhn/multiorg/channels/Provided.do").withVisibility(adminRoles.get("org")))
+                     .addChild(new MenuItem("Recurring States").withPrimaryUrl("/rhn/manager/yourorg/recurring-states").withVisibility(adminRoles.get("org")))
                     .addChild(new MenuItem("Configuration Channels").withPrimaryUrl("/rhn/manager/yourorg/custom").withVisibility(adminRoles.get("org")))
                     .withVisibility(adminRoles.get("org"))));
 
@@ -281,6 +282,7 @@ public class MenuTree {
             // Schedule
             nodes.add(new MenuItem("Schedule").withIcon("fa-clock-o").withDir("/rhn/schedule")
                 .addChild(new MenuItem("Pending Actions").withPrimaryUrl("/rhn/schedule/PendingActions.do"))
+                .addChild(new MenuItem("Recurring Actions").withPrimaryUrl("/rhn/manager/schedule/recurring-actions"))
                 .addChild(new MenuItem("Failed Actions").withPrimaryUrl("/rhn/schedule/FailedActions.do"))
                 .addChild(new MenuItem("Completed Actions").withPrimaryUrl("/rhn/schedule/CompletedActions.do"))
                 .addChild(new MenuItem("Archived Actions").withPrimaryUrl("/rhn/schedule/ArchivedActions.do"))
@@ -326,6 +328,7 @@ public class MenuTree {
                     .withAltUrl("/rhn/admin/multiorg/DeleteOrg.do")
                     .withAltUrl("/rhn/admin/multiorg/OrgCreate.do")
                     .withAltUrl("/rhn/manager/multiorg/details/custom")
+                    .withAltUrl("/rhn/manager/multiorg/details/recurring-states")
                     .withVisibility(adminRoles.get("satellite")))
                 .addChild(new MenuItem("Users")
                     .withPrimaryUrl("/rhn/admin/multiorg/Users.do")

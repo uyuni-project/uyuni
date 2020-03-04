@@ -17,6 +17,9 @@
 
   <rhn-tab name="States" acl="user_role(system_group_admin)" >
     <rhn-tab-url>/rhn/manager/groups/details/highstate</rhn-tab-url>
+    <rhn-tab name="Recurring States">
+      <rhn-tab-url>/rhn/manager/groups/details/states/schedules</rhn-tab-url>
+    </rhn-tab>
     <rhn-tab name="Highstate">
       <rhn-tab-url>/rhn/manager/groups/details/highstate</rhn-tab-url>
     </rhn-tab>
