@@ -10,7 +10,7 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
 SELECT sequence_nextval('rhn_tasko_template_id_seq'), ( SELECT id FROM rhnTaskoBunch WHERE name = 'recurring-state-apply-bunch' ), ( SELECT id FROM rhnTaskoTask WHERE name = 'recurring-state-apply' ), 0, null
 WHERE NOT EXISTS ( SELECT 1 FROM rhnTaskoTemplate WHERE bunch_id = ( SELECT id FROM rhnTaskoBunch WHERE name = 'recurring-state-apply-bunch' ) );
 
-CREATE TABLE suseRecurringAction
+CREATE TABLE IF NOT EXISTS suseRecurringAction
 (
   id                NUMERIC NOT NULL
                     CONSTRAINT suse_recurring_action_id_pk PRIMARY KEY,
@@ -43,20 +43,20 @@ CREATE TABLE suseRecurringAction
                       NOT NULL
 );
 
-CREATE SEQUENCE suse_recurring_action_id_seq;
+CREATE SEQUENCE IF NOT EXISTS suse_recurring_action_id_seq;
 
-CREATE INDEX suse_rec_action_type
+CREATE INDEX IF NOT EXISTS suse_rec_action_type
     ON suseRecurringAction(target_type);
 
-CREATE UNIQUE INDEX suse_rec_action_name_minion_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_rec_action_name_minion_uq
     ON suseRecurringAction(name, minion_id)
     WHERE group_id IS NULL AND org_id IS NULL;
 
-CREATE UNIQUE INDEX suse_rec_action_name_grp_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_rec_action_name_grp_uq
     ON suseRecurringAction(name, group_id)
     WHERE minion_id IS NULL AND org_id IS NULL;
 
-CREATE UNIQUE INDEX suse_rec_action_name_org_uq
+CREATE UNIQUE INDEX IF NOT EXISTS suse_rec_action_name_org_uq
     ON suseRecurringAction(name, org_id)
     WHERE minion_id IS NULL AND group_id IS NULL;
 
