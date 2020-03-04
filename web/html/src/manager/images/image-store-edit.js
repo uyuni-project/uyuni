@@ -189,7 +189,7 @@ class CreateImageStore extends React.Component {
             }
           </Select>
           <Text name="label" label={t("Label")} required validators={this.isLabelUnique} invalidHint={t("Label is required and must be unique.")} labelClass="col-md-3" divClass="col-md-6"/>
-          <Text name="uri" label={t("Store URI")} required hint={<span>The URI to the store's API endpoint</span>} labelClass="col-md-3" divClass="col-md-6"/>
+          <Text name="uri" label={t("Store URI")} required hint={<span>The URI to the store's API endpoint (without scheme - use 'registry.suse.com' instead of 'https://registry.suse.com')</span>} labelClass="col-md-3" divClass="col-md-6"/>
           { this.renderTypeInputs(this.state.model.storeType) }
           <div className="form-group">
             <div className="col-md-offset-3 col-md-6">
