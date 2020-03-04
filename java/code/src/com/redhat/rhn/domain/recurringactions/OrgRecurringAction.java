@@ -80,7 +80,7 @@ public class OrgRecurringAction extends RecurringAction {
      */
     @Override
     public boolean canAccess(User user) {
-        return user.hasRole(RoleFactory.ORG_ADMIN);
+        return user.hasRole(RoleFactory.ORG_ADMIN) && user.getOrg().equals(getOrg());
     }
 
     @Override
