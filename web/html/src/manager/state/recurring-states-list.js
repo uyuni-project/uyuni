@@ -80,7 +80,7 @@ class RecurringStatesList extends React.Component {
             {elements.length > 0 ? elements :
                 <tr>
                     <td colSpan="4">
-                        <div>{t("No schedules created. Use Create to add a schedule.")}</div>
+                        <div>{t("No schedules created." + (this.props.disableCreate ? "" : " Use Create to add a schedule."))}</div>
                     </td>
                 </tr>
             }
