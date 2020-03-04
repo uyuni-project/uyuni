@@ -47,8 +47,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 /**
- * Interface containing methods for directly interacting and getting information from
- * a system.
+ * Interface containing methods for directly interacting and getting information from a system.
  * Note: This interface should be split up further at some point.
  */
 public interface SystemQuery {
@@ -301,8 +300,7 @@ public interface SystemQuery {
      * {@code false} -> err message
      *
      */
-    Map<Boolean, String> storeMinionScapFiles(
-            MinionServer minion, String uploadDir, Long actionId);
+    Map<Boolean, String> storeMinionScapFiles(MinionServer minion, String uploadDir, Long actionId);
 
     /**
      * Call the custom mgrutil.ssh_keygen runner if the key files are not present.
@@ -326,13 +324,8 @@ public interface SystemQuery {
      * @param outputfile the file to which to dump the command stdout
      * @return the execution result
      */
-    Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts,
-        String clientKey,
-        String proxyKey,
-        String user,
-        Map<String, String> options,
-        String command,
-        String outputfile);
+    Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts, String clientKey, String proxyKey,
+            String user, Map<String, String> options, String command, String outputfile);
 
     /**
      * Get information about all containers running in a Kubernetes cluster.
@@ -395,7 +388,7 @@ public interface SystemQuery {
      */
     @Deprecated
     <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
-                                                       Optional<ScheduleMetadata> metadataIn) throws SaltException;
+            Optional<ScheduleMetadata> metadataIn) throws SaltException;
 
     /**
      * Sync the channels of a list of minions
@@ -413,7 +406,7 @@ public interface SystemQuery {
      * @return the execution result
      */
     Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
-                                                               String imageStore);
+            String imageStore);
 
     /**
      * Update libvirt engine on a given minion.
@@ -445,9 +438,7 @@ public interface SystemQuery {
      * @param endTime jobs end time
      * @return list of running jobs
      */
-    Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(
-            Object metadata,
-            LocalDateTime startTime,
+    Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata, LocalDateTime startTime,
             LocalDateTime endTime);
 
     /**
