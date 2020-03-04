@@ -157,7 +157,7 @@ class SCCDialog extends React.Component {
           <Button
               id='scc-refresh-button'
               className='btn btn-default'
-              disabled={this.isSyncRunning() ? 'disabled' : ''}
+              disabled={this.isSyncRunning()}
               handler={this.startSync}
               icon={'fa-refresh ' + (this.isSyncRunning() ? 'fa-spin' : '')}
               text={t('Refresh')}

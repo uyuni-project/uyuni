@@ -64,7 +64,7 @@ const _CHANNEL_STATUS = {
 const _COLS = {
   selector: { width: 2, um: 'em' },
   showSubList: { width: 2, um: 'em'},
-  description: { width: undefined, um: 'px'},
+  description: { width: 'auto', um: ''},
   arch: { width: 6, um: 'em' },
   channels: { width: 5, um: 'em' },
   mix: { width: 13, um: 'em'}
@@ -454,7 +454,7 @@ class Products extends React.Component {
     const archFilter =
       <div className='multiple-select-wrapper'>
         <select id='product-arch-filter' name='product-arch-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
-          { this.getDistinctArchsFromData(this.props.data).map(a => <option key={a} value={a}>{a}</option>) }
+          { this.getDistinctArchsFromData(this.props.data).map((a, i) => <option key={a + i} value={a}>{a}</option>) }
         </select>
       </div>;
     return (
@@ -518,7 +518,7 @@ class CheckList extends React.Component {
               <li className='list-header'>
                 <CustomDiv className='col text-center' width={this.props.bypassProps.cols.selector.width} um={this.props.bypassProps.cols.selector.um}></CustomDiv>
                 <CustomDiv className='col text-center' width={this.props.bypassProps.cols.showSubList.width} um={this.props.bypassProps.cols.showSubList.um}></CustomDiv>
-                <CustomDiv className='col col-class-calc-width'>{t('Product Description')}</CustomDiv>
+                <CustomDiv className='col col-class-calc-width' width={this.props.bypassProps.cols.description.width} um={this.props.bypassProps.cols.description.um}>{t('Product Description')}</CustomDiv>
                 <CustomDiv className='col' width={this.props.bypassProps.cols.arch.width} um={this.props.bypassProps.cols.arch.um} title={t('Architecture')}>{t('Arch')}</CustomDiv>
                 <CustomDiv className='col text-center' width={this.props.bypassProps.cols.channels.width} um={this.props.bypassProps.cols.channels.um}>{t('Channels')}</CustomDiv>
                 <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um}></CustomDiv>
@@ -791,7 +791,7 @@ class CheckListItem extends React.Component {
           <CustomDiv className='col text-center' width={this.props.bypassProps.cols.showSubList.width} um={this.props.bypassProps.cols.showSubList.um}>
             {showNestedDataIconContent}
           </CustomDiv>
-          <CustomDiv className='col col-class-calc-width'>
+          <CustomDiv className='col col-class-calc-width' width={this.props.bypassProps.cols.description.width} um={this.props.bypassProps.cols.description.um}>
             {productDescriptionContent}
           </CustomDiv>
           <CustomDiv className='col' width={this.props.bypassProps.cols.arch.width} um={this.props.bypassProps.cols.arch.um} title={t('Architecture')}>
