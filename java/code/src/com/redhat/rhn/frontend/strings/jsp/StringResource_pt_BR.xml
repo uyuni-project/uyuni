@@ -25674,6 +25674,9 @@ Serão exibidos somente pacotes de uma arquitetura compatível.</target>
       <trans-unit id="Highstate">
         <source>Highstate</source>
       </trans-unit>
+      <trans-unit id="Recurring States">
+        <source>Recurring States</source>
+      </trans-unit>
       <trans-unit id="Configuration Channels">
         <source>Configuration Channels</source>
       </trans-unit>
