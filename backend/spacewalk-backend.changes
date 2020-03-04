@@ -1,3 +1,6 @@
+- Always use the same RPM database when running "spacewalk-repo-sync"
+  from the command line or via taskomatic (bsc#1163468)
+
 -------------------------------------------------------------------
 Fri Feb 28 11:41:37 CET 2020 - jgonzalez@suse.com
 
