@@ -50,10 +50,10 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use
      * getInstance.
-     * @param saltService salt service to use
+     * @param systemQueryIn systemQuery to use
      */
-    public SSHMinionBootstrapper(SystemQuery saltService) {
-        super(saltService);
+    public SSHMinionBootstrapper(SystemQuery systemQueryIn) {
+        super(systemQueryIn);
     }
 
     /**
@@ -124,7 +124,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
     // we want to override this in tests
     protected RegisterMinionEventMessageAction getRegisterAction() {
-        return new RegisterMinionEventMessageAction(saltService);
+        return new RegisterMinionEventMessageAction(systemQuery);
     }
 
     /**

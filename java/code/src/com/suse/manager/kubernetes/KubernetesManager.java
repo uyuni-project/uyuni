@@ -49,15 +49,15 @@ public class KubernetesManager {
     private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
     private static final String DOCKER_PULLABLE = "docker-pullable://";
 
-    private final SystemQuery saltService;
+    private final SystemQuery systemQuery;
 
     /**
      * No arg constructor.
      * Configures this with the default {@link SaltService} instance.
-     * @param systemQuery instance for getting information from a system.
+     * @param systemQueryIn instance for getting information from a system.
      */
-    public KubernetesManager(SystemQuery systemQuery) {
-        this.saltService = systemQuery;
+    public KubernetesManager(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**
@@ -103,7 +103,7 @@ public class KubernetesManager {
 
                 if (kubeconfig.isPresent() && context.isPresent()) {
                     Optional<List<MgrK8sRunner.Container>> containers =
-                            saltService.getAllContainers(kubeconfig.get(), context.get());
+                            systemQuery.getAllContainers(kubeconfig.get(), context.get());
 
                     if (!containers.isPresent()) {
                         LOG.error("No container info returned by runner call " +

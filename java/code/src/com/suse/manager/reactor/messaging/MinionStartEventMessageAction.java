@@ -18,7 +18,6 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.log4j.Logger;
@@ -36,12 +35,12 @@ public class MinionStartEventMessageAction implements MessageAction {
     private final SystemQuery systemQuery;
 
     /**
-     * Constructor taking a {@link SaltService} instance.
+     * Constructor taking a {@link SystemQuery} instance.
      *
-     * @param saltService the salt service to use
+     * @param systemQueryIn the system to use
      */
-    public MinionStartEventMessageAction(SystemQuery saltService) {
-        systemQuery = saltService;
+    public MinionStartEventMessageAction(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     @Override

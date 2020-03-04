@@ -55,7 +55,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private SystemSummary system;
     private TaskQueue parentQueue;
 
-    private SystemQuery saltService;
+    private SystemQuery systemQuery;
     private SaltSSHService saltSSHService;
     private SaltServerActionService saltServerActionService;
 
@@ -67,7 +67,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn) {
         log = logger;
         system = systemIn;
-        saltService = SaltService.INSTANCE;
+        systemQuery = SaltService.INSTANCE;
         saltSSHService = SaltService.INSTANCE.getSaltSSHService();
         saltServerActionService = SaltServerActionService.INSTANCE;
     }
@@ -85,7 +85,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
             SaltServerActionService saltServerActionServiceIn) {
         log = logger;
         system = systemIn;
-        saltService = saltServiceIn;
+        systemQuery = saltServiceIn;
         saltSSHService = saltSSHServiceIn;
         saltServerActionService = saltServerActionServiceIn;
     }
@@ -149,7 +149,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         try {
             // first check if there's any pending action chain execution on the minion
             // fetch the extra_filerefs and next_action_id
-            pendingResume = saltService.getPendingResume(Collections.singletonList(minion.getMinionId()));
+            pendingResume = systemQuery.getPendingResume(Collections.singletonList(minion.getMinionId()));
         }
         catch (SaltException e) {
             log.error("Could not retrive pending action chain executions for minion", e);
@@ -334,7 +334,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private void performCheckin(MinionServer minion) {
         // Ping minion and perform check-in on success
         log.info("Performing a check-in for: " + minion.getMinionId());
-        Optional<Boolean> result = saltService.ping(minion.getMinionId());
+        Optional<Boolean> result = systemQuery.ping(minion.getMinionId());
 
         result.ifPresent(res -> minion.updateServerInfo());
     }
