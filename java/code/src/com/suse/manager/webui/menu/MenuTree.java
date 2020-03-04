@@ -14,10 +14,6 @@
  */
 package com.suse.manager.webui.menu;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
-
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
@@ -332,6 +328,7 @@ public class MenuTree {
                     .withAltUrl("/rhn/admin/multiorg/DeleteOrg.do")
                     .withAltUrl("/rhn/admin/multiorg/OrgCreate.do")
                     .withAltUrl("/rhn/manager/multiorg/details/custom")
+                    .withAltUrl("/rhn/manager/multiorg/details/recurring-states")
                     .withVisibility(adminRoles.get("satellite")))
                 .addChild(new MenuItem("Users")
                     .withPrimaryUrl("/rhn/admin/multiorg/Users.do")
