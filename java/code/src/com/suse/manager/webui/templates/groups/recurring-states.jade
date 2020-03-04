@@ -1,0 +1,27 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/groups/Delete.do?sgid=#{groupId}")
+        i.fa.fa-trash-o(title='Delete Group')
+        | #{l.t("Delete Group")}
+    a(href="/rhn/systems/WorkWithGroup.do?sgid=#{groupId}")
+        i.fa.spacewalk-icon-system-groups(title='Work With Group')
+        | #{l.t("Work With Group")}
+
+  h1
+    i.fa.spacewalk-icon-system-groups
+    | #{" " + groupName + " "}
+
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml")}
+#recurring-states
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.groupName = "#{groupName}";
+    window.groupId = "#{groupId}";
+    window.minions = !{minions};
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+
+script(type='text/javascript').
+    spaImportReactPage('state/recurring-states')
+        .then(function(module) { module.renderer('recurring-states') });

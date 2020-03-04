@@ -1,0 +1,13 @@
+include ./minion-header.jade
+
+#recurring-states
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.minions = [{id: #{server.id}, name: "#{server.name}"}];
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+
+script(type='text/javascript').
+    spaImportReactPage('state/recurring-states')
+        .then(function (module) { module.renderer('recurring-states') });
