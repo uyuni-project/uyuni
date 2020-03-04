@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ceos7_client
@@ -6,13 +6,12 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
 
   Scenario: Prepare a CentOS 7 traditional client
     Given I am authorized
-    And I enable repository "SLE-Manager-Tools-RES-7-x86_64" on this "ceos7_client"
-    And I enable repository "CentOS-Base" on this "ceos7_client"
     And I install package "hwdata m2crypto wget" on this "ceos7_client"
     And I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos7_client"
     And I install package "spacewalk-oscap scap-security-guide" on this "ceos7_client"
-    And I register "ceos7_client" as traditional client with activation key "ceos7_client_key"
+    And I register "ceos7_client" as traditional client with activation key "1-ceos7_client_key"
     And I run "mgr-actions-control --enable-all" on "ceos7_client"
+    And I wait until onboarding is completed for "ceos7_client"
 
   @proxy
   Scenario: Check connection from CentOS 7 traditional to proxy
@@ -27,19 +26,6 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos7_client" hostname
-
-  Scenario: Re-subscribe the CentOS 7 traditional client to a base channel
-    Given I am on the Systems overview page of this "ceos_client"
-    When I follow "Software" in the content area
-    And I follow "Software Channels" in the content area
-    And I wait until I do not see "Loading..." text
-    And I check radio button "Test Base Channel"
-    And I wait until I do not see "Loading..." text
-    And I click on "Next"
-    Then I should see a "Confirm Software Channel Change" text
-    When I click on "Confirm"
-    Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
 
   Scenario: Schedule an OpenSCAP audit job for the CentOS 7 traditional client
     Given I am on the Systems overview page of this "ceos7_client"
