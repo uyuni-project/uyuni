@@ -1,3 +1,5 @@
+- scheme is not allowed for URI of image store's API endpoint (bsc#1165571)
+
 -------------------------------------------------------------------
 Fri Feb 28 11:48:29 CET 2020 - jgonzalez@suse.com
 
