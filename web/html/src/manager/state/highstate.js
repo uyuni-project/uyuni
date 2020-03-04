@@ -104,6 +104,10 @@ class Highstate extends React.Component {
         this.setState({test: !this.state.test})
     };
 
+    isSSM = () => {
+        return !!window.location.pathname.match("/ssm/");
+    };
+
     render() {
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
         const buttons = [
@@ -124,7 +128,7 @@ class Highstate extends React.Component {
             />
         ];
         const showHighstate = [
-            <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} buttonsLeft={buttonsLeft}>
+            <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} buttonsLeft={this.isSSM() ? undefined : buttonsLeft}>
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <div>
