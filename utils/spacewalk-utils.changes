@@ -1,3 +1,5 @@
+- check for delimiter as well when detecting current phase (bsc#1164771)
+
 -------------------------------------------------------------------
 Fri Feb 28 11:48:03 CET 2020 - jgonzalez@suse.com
 
