@@ -145,7 +145,7 @@ public class RecurringActionManager {
             SystemManager.ensureAvailableToUser(user, minionId);
         }
         catch (LookupException e) {
-            throw new PermissionException("Minion not accessible to user", e);
+            throw new PermissionException(String.format("Minion id %d not accessible to user ", minionId), e);
         }
         return RecurringActionFactory.listMinionRecurringActions(minionId);
     }
@@ -160,7 +160,7 @@ public class RecurringActionManager {
     public static List<GroupRecurringAction> listGroupRecurringActions(long groupId, User user) {
         ServerGroupManager groupManager = ServerGroupManager.getInstance();
         if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
-            throw new PermissionException("User does not have access to group");
+            throw new PermissionException(String.format("User does not have access to group id %d", groupId));
         }
         try {
             /* Check if user has permission to access the group */
@@ -168,7 +168,7 @@ public class RecurringActionManager {
             return RecurringActionFactory.listGroupRecurringActions(groupId);
         }
         catch (LookupException e) {
-            throw new PermissionException("User does not have access to group", e);
+            throw new PermissionException(String.format("User does not have access to group id %d", groupId), e);
         }
     }
 
@@ -213,7 +213,7 @@ public class RecurringActionManager {
      */
     public static void saveAndSchedule(RecurringAction action, User user) throws TaskomaticApiException {
         if (!action.canAccess(user)) {
-            throw new PermissionException(action.getClass() + "not accessible to user");
+            throw new PermissionException(String.format("%s not accessible to user %s", action, user));
         }
 
         validateAction(action);
@@ -248,7 +248,7 @@ public class RecurringActionManager {
      */
     public static void deleteAndUnschedule(RecurringAction action, User user)  throws TaskomaticApiException {
         if (!action.canAccess(user)) {
-            throw new PermissionException(action.getClass() + "not accessible to user");
+            throw new PermissionException(String.format("%s not accessible to user %s", action, user));
         }
         RecurringActionFactory.delete(action);
 
