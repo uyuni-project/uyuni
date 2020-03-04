@@ -19,6 +19,7 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -133,6 +134,31 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         recurringAction.setName("test-recurring-action-2");
         RecurringActionManager.saveAndSchedule(recurringAction, user);
         assertNotEmpty(RecurringActionFactory.listOrgRecurringActions(org.getId()));
+    }
+
+    public void testCreateOrgActionCrossOrg() throws Exception {
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+        } });
+
+        // let's make 'anotherUser' admin of 'anotherOrg'
+        anotherUser.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        // user 'user' creates an action
+        var action = RecurringActionManager.createRecurringAction(ORG, user.getOrg().getId(), user);
+        action.setCronExpr(CRON_EXPR);
+        action.setName("test-recurring-action-2");
+        RecurringActionManager.saveAndSchedule(action, user);
+
+        // 'anotherUser' tries to update that action, which should fail
+        action.setName("hack the planet!");
+        try {
+            RecurringActionManager.saveAndSchedule(action, anotherUser);
+            fail("PermissionException should have been thrown");
+        }
+        catch (PermissionException e) {
+            // no-op
+        }
     }
 
     public void testListMinionRecurringActions() throws Exception {
