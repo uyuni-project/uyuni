@@ -7,7 +7,7 @@ type Props = {
   title: string,
   icon: string,
   buttons: React.Node,
-  buttonsLeft: React.Node,
+  buttonsLeft?: React.Node,
   children: React.Node,
 }
 
