@@ -50,13 +50,13 @@ CREATE INDEX IF NOT EXISTS suse_rec_action_type
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_rec_action_name_minion_uq
     ON suseRecurringAction(name, minion_id)
-    WHERE group_id IS NULL AND org_id IS NULL;
+    WHERE group_id IS NULL AND org_id IS NULL AND minion_id IS NOT NULL;
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_rec_action_name_grp_uq
     ON suseRecurringAction(name, group_id)
-    WHERE minion_id IS NULL AND org_id IS NULL;
+    WHERE minion_id IS NULL AND org_id IS NULL AND group_id IS NOT NULL;
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_rec_action_name_org_uq
     ON suseRecurringAction(name, org_id)
-    WHERE minion_id IS NULL AND group_id IS NULL;
+    WHERE minion_id IS NULL AND group_id IS NULL AND org_id IS NOT NULL;
 
