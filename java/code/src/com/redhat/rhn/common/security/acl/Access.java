@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Access is a concrete implementation of an AclHandler.
@@ -534,5 +535,52 @@ public class Access extends BaseHandler {
         User user = (User) map.get("user");
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
         return ContactMethodUtil.isSSHPushContactMethod(lookedUp.getContactMethod());
+    }
+
+    public boolean aclSystemLocked(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
+        if (lookedUp != null) {
+            return lookedUp.getLock() != null;
+        }
+        return false;
+    }
+
+    public boolean aclActionTypeAllowedOnSystem(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        if (params == null || params.length < 1) {
+            return false;
+        }
+        String actionType = params[0];
+        Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
+        if (lookedUp != null) {
+            return SystemManager.isActionTypeAllowed(lookedUp, actionType);
+        }
+        return true;
+    }
+
+    public boolean aclHasProductInstalled(Object ctx, String[] params) {
+        if (params == null || params.length < 1) {
+            return false;
+        }
+        String productName = params[0];
+
+        Optional<Server> server = getServer(ctx);
+        if (server.isPresent()) {
+            return server.get().getInstalledProducts().stream()
+                    .anyMatch(p -> p.getName().equalsIgnoreCase(productName));
+        }
+        return false;
+    }
+
+    private Optional<Server> getServer(Object ctx) {
+        Map map = (Map) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        return Optional.ofNullable(SystemManager.lookupByIdAndUser(sid, user));
     }
 }

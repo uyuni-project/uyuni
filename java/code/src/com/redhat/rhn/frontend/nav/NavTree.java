@@ -35,6 +35,7 @@ public class NavTree {
     private List<NavNode> nodes;
     private String aclMixins;
     private AclGuard guard;
+    private String extensionPoint;
 
     /** default constructor
      */
@@ -164,5 +165,16 @@ public class NavTree {
      */
     public void setGuard(AclGuard guardIn) {
         this.guard = guardIn;
+    }
+
+    /**
+     * @return extensionPoint to get
+     */
+    public String getExtensionPoint() {
+        return extensionPoint;
+    }
+
+    public void setExtensionPoint(String extensionPoint) {
+        this.extensionPoint = extensionPoint;
     }
 }

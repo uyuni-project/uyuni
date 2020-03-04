@@ -94,6 +94,10 @@ public class ActionType implements Serializable {
         return unlockedonly;
     }
 
+    public boolean isAllowedWhenLocked() {
+        return "N".equals(unlockedonly);
+    }
+
     /**
      * @param u The unlockedonly to set.
      */

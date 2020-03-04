@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.nav;
 import com.redhat.rhn.common.localization.LocalizationService;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -374,6 +375,12 @@ public class NavNode {
      */
     public String getTarget() {
         return target;
+    }
+
+    public void addAcl(String aclIn) {
+        String prevAcl = StringUtils.isNotBlank(getAcl()) ? getAcl() : "";
+        String separator = StringUtils.isNotBlank(getAcl()) ? ";" : "";
+        this.setAcl(prevAcl + separator + aclIn);
     }
 }
 

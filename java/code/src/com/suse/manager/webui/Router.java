@@ -21,6 +21,8 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 import static spark.Spark.post;
 
+import com.suse.manager.extensions.Plugins;
+import com.suse.manager.extensions.RouterExtensionPoint;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
@@ -57,6 +59,7 @@ import com.suse.manager.webui.errors.NotFoundException;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import spark.ModelAndView;
@@ -152,6 +155,13 @@ public class Router implements SparkApplication {
 
         // Single Sign-On (SSO) via SAML
         SSOController.initRoutes();
+
+        // Process extensions
+        List<RouterExtensionPoint> routerExtensions = Plugins.instance().getExtensions(RouterExtensionPoint.class);
+        routerExtensions.forEach(ext -> {
+            var templateEngine = ext.setupTemplateEngine(jade.configuration().getTemplateLoader());
+            ext.addRoutes(templateEngine);
+        });
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

@@ -91,7 +91,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -2189,11 +2188,25 @@ public class SystemManager extends BaseManager {
     private static void lockSaltMinion(Server server) {
         server.asMinionServer().ifPresent(minion -> {
             // for Salt minions, generate blackout pillar
-            // TODO plugins
-            List<ActionType> actionTypes = ActionFactory.getActionTypes();
-            List<String> actionTypeLabels = actionTypes.stream().map(type -> type.getLabel()).collect(Collectors.toList());
-            SaltStateGeneratorService.INSTANCE.generateBlackoutPillar(minion, actionTypeLabels);
+            List<String> allowedActionTypes = getAllowedActionTypesWhenLocked();
+            SaltStateGeneratorService.INSTANCE.generateBlackoutPillar(minion, allowedActionTypes);
         });
+    }
+
+    public static List<String> getAllowedActionTypesWhenLocked() {
+        // TODO plugins
+        List<ActionType> actionTypes = ActionFactory.getActionTypes();
+        return actionTypes.stream()
+                .filter(type -> type.isAllowedWhenLocked())
+                .map(type -> type.getLabel()).collect(Collectors.toList());
+    }
+
+    public static boolean isActionTypeAllowed(Server server, String actionTypeLabel) {
+        if (server.getLock() != null) {
+            // system lock, check if action type is allowed
+            return getAllowedActionTypesWhenLocked().contains(actionTypeLabel);
+        }
+        return true;
     }
 
     /**

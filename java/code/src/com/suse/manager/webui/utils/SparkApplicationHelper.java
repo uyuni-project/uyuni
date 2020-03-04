@@ -42,6 +42,7 @@ import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.jade.JadeTemplateEngine;
+import spark.template.jade.loader.SparkClasspathTemplateLoader;
 
 /**
  * Utility methods to integrate Spark with SUSE Manager's infrastructure.
@@ -260,11 +261,17 @@ public class SparkApplicationHelper {
         };
     }
 
+    public static JadeTemplateEngine setup() {
+        var configuration = new JadeConfiguration();
+        configuration.setTemplateLoader(new SparkClasspathTemplateLoader(TEMPLATE_ROOT));
+        return setup(configuration);
+    }
+
     /**
      * Sets up this application and the Jade engine.
      * @return the jade template engine
      */
-    public static JadeTemplateEngine setup() {
+    public static JadeTemplateEngine setup(JadeConfiguration jadeConfiguration) {
         // set up shared variables
         Map<String, Object> sharedVariables = new HashMap<>();
 
@@ -279,7 +286,7 @@ public class SparkApplicationHelper {
         });
 
         // set up template engine
-        JadeTemplateEngine jade = new JadeTemplateEngine(TEMPLATE_ROOT);
+        JadeTemplateEngine jade = new JadeTemplateEngine(jadeConfiguration);
 
         // set up i10n engine and other default template variables
         sharedVariables.put("l", Languages.getInstance());

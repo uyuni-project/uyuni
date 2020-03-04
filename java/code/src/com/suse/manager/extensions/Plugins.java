@@ -15,13 +15,20 @@
 package com.suse.manager.extensions;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import org.apache.log4j.Logger;
 import org.pf4j.DefaultPluginManager;
+import org.pf4j.Extension;
+import org.pf4j.ExtensionPoint;
 import org.pf4j.PluginManager;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 
 public class Plugins {
+
+    private static Logger log = Logger.getLogger(Plugins.class);
 
     private static Plugins instance;
 
@@ -46,6 +53,29 @@ public class Plugins {
 
     public <T> List<T> getExtensions(Class<T> extensionInterface) {
         return pluginManager.getExtensions(extensionInterface);
+    }
+
+    public <T> List<T> getExtensions(String interfaceName, Class<T> baseExtensionInterface) {
+        try {
+            Class extensionInterface = Class.forName(interfaceName);
+            if (!extensionInterface.isInterface()) {
+                log.error("Type " + interfaceName + " is not an interface");
+                return Collections.emptyList();
+
+            }
+//            if () { // TODO check if interface extends ExtensionPoint
+//                log.error("Interface " + interfaceName + " is expected to inherit " + ExtensionPoint.class.getName());
+//                return Collections.emptyList();
+//            }
+//            if () { // TODO check if interface extends baseExtensionInterface
+//                log.error("Interface " + interfaceName + " is expected to inherit " + baseExtensionInterface.getName());
+//                return Collections.emptyList();
+//            }
+            return getExtensions(extensionInterface);
+        } catch (ClassNotFoundException e) {
+            log.error("Error finding plugin interface " + interfaceName, e);
+        }
+        return Collections.emptyList();
     }
 
 }

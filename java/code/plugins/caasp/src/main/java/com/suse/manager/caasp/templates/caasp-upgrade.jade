@@ -1,0 +1,17 @@
+include templates/minion/minion-header.jade
+
+#upgrades
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('extensions/caasp/upgrade')
+        .then(function(module) {
+             module.renderer(
+              'upgrades',
+              {
+                serverId: "#{server.id}"
+              }
+            )
+        });

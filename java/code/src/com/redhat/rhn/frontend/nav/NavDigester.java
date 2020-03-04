@@ -15,9 +15,13 @@
 
 package com.redhat.rhn.frontend.nav;
 
+import com.suse.manager.extensions.NavTreeExtensionPoint;
+import com.suse.manager.extensions.Plugins;
 import org.apache.commons.digester.Digester;
+import org.apache.commons.lang3.StringUtils;
 
 import java.net.URL;
+import java.util.List;
 
 /**
  * Helper class to parse a sitenav.xml file, returning the tree
@@ -47,6 +51,9 @@ public class NavDigester {
         digester.addSetProperties("rhn-navi-tree",
                                   "acl_mixins",
                                   "aclMixins");
+        digester.addSetProperties("rhn-navi-tree",
+                "extension-point",
+                "extensionPoint");
 
         digester.addObjectCreate("*/rhn-tab", NavNode.class);
         digester.addSetProperties("*/rhn-tab",
@@ -71,7 +78,14 @@ public class NavDigester {
                                0);
 
         digester.addSetNext("*/rhn-tab", "addNode");
-        return (NavTree)digester.parse(url.openStream());
+        NavTree tree = (NavTree)digester.parse(url.openStream());
+        if (StringUtils.isNoneBlank(tree.getExtensionPoint())) {
+            List<NavTreeExtensionPoint> extensions = Plugins.instance().getExtensions(tree.getExtensionPoint(), NavTreeExtensionPoint.class);
+            extensions.forEach(extension -> {
+                extension.addNodes(tree);
+            });
+        }
+        return tree;
     }
 }
 
