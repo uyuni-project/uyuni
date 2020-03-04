@@ -1,3 +1,4 @@
+- Implement recurring highstate scheduling
 - Notify VMs creation actions
 - Validate the suseproductchannel table and update missing date when running mgr-sync refresh (bsc#1163538)
 - Add 'inst.repo' kernel option to RHEL 8 kickstart tree (bsc#1163884)
