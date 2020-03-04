@@ -101,7 +101,7 @@ class RecurringStatesEdit extends React.Component {
         const buttons = [
                 <div className="btn-group pull-right">
                     <Toggler text={t('Test mode')} value={this.state.test} className="btn" handler={this.toggleTestState.bind(this)} />
-                    <AsyncButton action={this.onEdit} defaultType="btn-success" text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")} disabled={minions.length === 0} />
+                    <AsyncButton action={this.onEdit} defaultType="btn-success" text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")} />
                 </div>
                 ];
         const buttonsLeft = [
