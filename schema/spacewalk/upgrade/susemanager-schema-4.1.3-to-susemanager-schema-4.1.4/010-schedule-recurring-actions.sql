@@ -49,11 +49,14 @@ CREATE INDEX suse_rec_action_type
     ON suseRecurringAction(target_type);
 
 CREATE UNIQUE INDEX suse_rec_action_name_minion_uq
-    ON suseRecurringAction(name, minion_id);
+    ON suseRecurringAction(name, minion_id)
+    WHERE group_id IS NULL AND org_id IS NULL;
 
 CREATE UNIQUE INDEX suse_rec_action_name_grp_uq
-    ON suseRecurringAction(name, group_id);
+    ON suseRecurringAction(name, group_id)
+    WHERE minion_id IS NULL AND org_id IS NULL;
 
 CREATE UNIQUE INDEX suse_rec_action_name_org_uq
-    ON suseRecurringAction(name, org_id);
+    ON suseRecurringAction(name, org_id)
+    WHERE minion_id IS NULL AND group_id IS NULL;
 
