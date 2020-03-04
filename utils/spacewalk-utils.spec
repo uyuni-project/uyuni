@@ -39,66 +39,35 @@ BuildRequires:  spacewalk-python3-pylint
 %endif
 BuildRequires:  uyuni-base-common
 
-%if 0%{?suse_version}
-Requires:       perl = %{perl_version}
-%else
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
-# Required by debsolver.py
-Requires:       python3-PyYAML
-# Required by debsolver.py, cloneByDate.py
-Requires:       python3-uyuni-common-libs
-# Required by spacewalk-clone-by-date, spacewalk-sync-setup
-Requires:       python3-salt
-# Required by cloneByDate.py, spacewalk-clone-by-date
-Requires:       spacewalk-backend
-# Required by cloneByDate.py
-Requires:       spacewalk-backend-sql
-# Required by cloneByDate.py, depsolver.py
-Requires:       spacewalk-backend-tools >= 2.2.27
-# Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
-Requires(pre):  uyuni-base-common
-
-%description
-Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
-
-%package extras
-Summary:        Extra utilities that may run against a SUSE Manager/Uyuni server
-# Required by spacewalk-dump-schema, spacewalk-host-rename (provides /usr/bin/spacewalk-sql)
-Requires:       susemanager-schema
-# Required by spacewalk-hostname-rename, spacewalk-watch-channel-sync.sh
+# Required by spacewalk-hostname-rename
 Requires:       bash
 # Required by spacewalk-hostname-rename
 Requires:       cobbler
 # Required by spacewalk-hostname-rename
 Requires:       iproute
 # Required by spacewalk-hostname-rename
-Requires:       perl-Satcon
-# Required by spacewalk-dump-schema, spacewalk-hostname-rename
 %if 0%{?suse_version}
 Requires:       perl = %{perl_version}
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
-# Required by taskotop
-Requires:       python3-curses
-# Required by sw-ldap-user-sync
-Requires:       python3-ldap
-# Required by sw-ldap-user-sync
+# Required by spacewalk-hostname-rename
+Requires:       perl-Satcon
+# Required by debsolver.py
 Requires:       python3-PyYAML
-# Required by migrate-system-profile
-Requires:       python3-rhnlib >= 2.5.20
-# Required by migrateSystemProfile.py, spacewalk-common-channels, systemSnapshot.py
+# Required by debsolver.py, cloneByDate.py, spacewalk-common-channels
 Requires:       python3-uyuni-common-libs
-# spacewalk-dump-schema, spacewalk-hostname-rename
+# Required by spacewalk-clone-by-date, spacewalk-sync-setup
+Requires:       python3-salt
+# Required by spacewalk-hostname-rename
 Requires:       rpm
 # Required by spacewalk-hostname-rename
 Requires:       spacewalk-admin
-# Required by spacewalk-common-channels, spacewalk-manage-snapshots, systemSnapshot.py
+# Required by cloneByDate.py, spacewalk-clone-by-date, spacewalk-common-channels
 Requires:       spacewalk-backend
-# Required by taskotop
+# Required by cloneByDate.py
 Requires:       spacewalk-backend-sql
-# Required by spacewalk-final-archive, spacewalk-watch-channel-sync.sh
+# Required by cloneByDate.py, depsolver.py
 Requires:       spacewalk-backend-tools >= 2.2.27
 # Required by spacewalk-hostname-rename
 Requires:       spacewalk-certs-tools
@@ -108,6 +77,35 @@ Requires:       spacewalk-config
 Requires:       spacewalk-reports
 # Required by spacewalk-hostname-rename
 Requires:       spacewalk-setup
+# Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
+Requires:       susemanager-schema
+# Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
+Requires(pre):  uyuni-base-common
+
+
+%description
+Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
+
+%package extras
+Summary:        Extra utilities that may run against a SUSE Manager/Uyuni server
+# Required by spacewalk-watch-channel-sync.sh
+Requires:       bash
+# Required by taskotop
+Requires:       python3-curses
+# Required by sw-ldap-user-sync
+Requires:       python3-ldap
+# Required by sw-ldap-user-sync
+Requires:       python3-PyYAML
+# Required by migrate-system-profile
+Requires:       python3-rhnlib >= 2.5.20
+# Required by migrateSystemProfile.py, systemSnapshot.py
+Requires:       python3-uyuni-common-libs
+# Required by spacewalk-manage-snapshots, systemSnapshot.py
+Requires:       spacewalk-backend
+# Required by taskotop
+Requires:       spacewalk-backend-sql
+# Required by spacewalk-final-archive, spacewalk-watch-channel-sync.sh
+Requires:       spacewalk-backend-tools >= 2.2.27
 # As spacewalk-utils owns {python3_sitelib}/utils
 Requires:       spacewalk-utils
 # Required by migrate-system-profile, migrateSystemProfile.py, spacewalk-export-channels, spacewalk-manage-snapshots, sw-system-snapshot, systemSnapshot.py
@@ -120,11 +118,11 @@ Extra utilities that may be run against a SUSE Manager server (unsupported) or a
 %setup -q
 
 %build
-make all %{?pod2man}
+make all
 
 %install
 make install PREFIX=$RPM_BUILD_ROOT ROOT=%{python3_sitelib} \
-    MANDIR=%{_mandir} %{?pod2man}
+    MANDIR=%{_mandir}
 pushd %{buildroot}
 %py3_compile -O %{buildroot}%{python3_sitelib}
 %fdupes %{buildroot}%{python3_sitelib}
@@ -139,9 +137,12 @@ spacewalk-python3-pylint $RPM_BUILD_ROOT%{python3_sitelib}
 %files
 %defattr(-,root,root)
 %license COPYING.GPLv2 COPYING.GPLv3
+%attr(755,root,root) %{_bindir}/spacewalk-common-channels
 %attr(755,root,root) %{_bindir}/spacewalk-clone-by-date
+%attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %attr(755,root,root) %{_bindir}/spacewalk-manage-channel-lifecycle
 %attr(755,root,root) %{_bindir}/spacewalk-sync-setup
+%config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
 %dir %{python3_sitelib}/utils
 %{python3_sitelib}/utils/__init__.py*
 %{python3_sitelib}/utils/systemSnapshot.py*
@@ -153,6 +154,7 @@ spacewalk-python3-pylint $RPM_BUILD_ROOT%{python3_sitelib}
 %{python3_sitelib}/utils/__pycache__/cloneByDate.*
 %{python3_sitelib}/utils/__pycache__/depsolver.*
 %{_mandir}/man8/spacewalk-clone-by-date.8.gz
+%{_mandir}/man8/spacewalk-hostname-rename.8.gz
 %{_mandir}/man8/spacewalk-sync-setup.8.gz
 
 %files extras
@@ -162,12 +164,9 @@ spacewalk-python3-pylint $RPM_BUILD_ROOT%{python3_sitelib}
 %attr(755,root,root) %{_bindir}/delete-old-systems-interactive
 %attr(755,root,root) %{_bindir}/migrate-system-profile
 %attr(755,root,root) %{_bindir}/spacewalk-api
-%attr(755,root,root) %{_bindir}/spacewalk-common-channels
-%attr(755,root,root) %{_bindir}/spacewalk-dump-schema
 %attr(755,root,root) %{_bindir}/spacewalk-export
 %attr(755,root,root) %{_bindir}/spacewalk-export-channels
 %attr(755,root,root) %{_bindir}/spacewalk-final-archive
-%attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %attr(755,root,root) %{_bindir}/spacewalk-manage-snapshots
 %attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %attr(755,root,root) %{_bindir}/sw-ldap-user-sync
@@ -175,16 +174,13 @@ spacewalk-python3-pylint $RPM_BUILD_ROOT%{python3_sitelib}
 %attr(755,root,root) %{_bindir}/taskotop
 %{python3_sitelib}/utils/migrateSystemProfile.py*
 %{python3_sitelib}/utils/__pycache__/migrateSystemProfile.*
-%config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
 %config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
 %{_mandir}/man8/delete-old-systems-interactive.8.gz
 %{_mandir}/man8/migrate-system-profile.8.gz
 %{_mandir}/man8/spacewalk-api.8.gz
-%{_mandir}/man8/spacewalk-dump-schema.8.gz
 %{_mandir}/man8/spacewalk-export-channels.8.gz
 %{_mandir}/man8/spacewalk-export.8.gz
 %{_mandir}/man8/spacewalk-final-archive.8.gz
-%{_mandir}/man8/spacewalk-hostname-rename.8.gz
 %{_mandir}/man8/spacewalk-manage-snapshots.8.gz
 %{_mandir}/man8/sw-system-snapshot.8.gz
 %{_mandir}/man8/taskotop.8.gz
