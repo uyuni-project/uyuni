@@ -1,3 +1,5 @@
+- add automatic mode to mgr-create-bootstrap-repo
+- during beta testing use also beta tools channels (bsc#1164563, bsc#1164863)
 - Add missing python libraries to RES8/RHEL8/CentOS 8 boostrap repos (bsc#1164875)
 - add bootstrap-repo data for OES 2018 SP2 (bsc#1161862)
 - remove oracle backend support and tooling
