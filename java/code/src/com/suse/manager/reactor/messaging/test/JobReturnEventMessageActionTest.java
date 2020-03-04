@@ -598,7 +598,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
@@ -1240,7 +1240,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         }});
 
         SaltUtils.INSTANCE.setXccdfResumeXsl(resumeXsl);
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
         messageAction.execute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
@@ -1530,7 +1530,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
         }});
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
@@ -1561,7 +1561,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
         }});
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 

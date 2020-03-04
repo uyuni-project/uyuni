@@ -36,6 +36,9 @@ import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
+import com.suse.utils.Json;
+
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;

@@ -179,7 +179,7 @@ public class SaltUtils {
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
-    private SystemQuery saltService = SaltService.INSTANCE;
+    private SystemQuery systemQuery = SaltService.INSTANCE;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -624,7 +624,7 @@ public class SaltUtils {
                 // Make sure grains are updated after dist upgrade
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     MinionList minionTarget = new MinionList(minionServer.getMinionId());
-                    saltService.syncGrains(minionTarget);
+                    systemQuery.syncGrains(minionTarget);
                 });
             }
 
@@ -863,7 +863,7 @@ public class SaltUtils {
             serverAction.getServer().asMinionServer().ifPresent(
                     minion -> {
                         try {
-                            Map<Boolean, String> moveRes = saltService.storeMinionScapFiles(
+                            Map<Boolean, String> moveRes = systemQuery.storeMinionScapFiles(
                                     minion, openscapResult.getUploadDir(), action.getId());
                             moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
                                 if (moved.getKey()) {
@@ -936,7 +936,7 @@ public class SaltUtils {
                                     .getKiwiBuildInfo().getChanges().getRet().getBundle();
                     infoOpt.ifPresent(info -> info.setChecksum(
                             ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
-                    MgrUtilRunner.ExecResult collectResult = saltService
+                    MgrUtilRunner.ExecResult collectResult = systemQuery
                             .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
                                     OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
                             .orElseThrow(() -> new RuntimeException("Failed to download image."));
@@ -1245,7 +1245,7 @@ public class SaltUtils {
             try {
                 FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
-                saltService.refreshPillar(new MinionList(server.getMinionId()));
+                systemQuery.refreshPillar(new MinionList(server.getMinionId()));
             }
             catch (IOException e) {
                 LOG.error("Could not enable blackout formula", e);
@@ -1692,10 +1692,10 @@ public class SaltUtils {
 
     /**
      * For unit testing only.
-     * @param saltServiceIn the {@link SaltService} to set
+     * @param systemQueryIn the {@link SaltService} to set
      */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
+    public void setSystemQuery(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**

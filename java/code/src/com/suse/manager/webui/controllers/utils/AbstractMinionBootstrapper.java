@@ -52,16 +52,16 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_SSH_DIR_PATH;
  */
 public abstract class AbstractMinionBootstrapper {
 
-    protected final SystemQuery saltService;
+    protected final SystemQuery systemQuery;
 
     private static final Logger LOG = Logger.getLogger(AbstractMinionBootstrapper.class);
 
     /**
      * Constructor
-     * @param saltServiceIn salt service
+     * @param systemQueryIn salt service
      */
-    protected AbstractMinionBootstrapper(SystemQuery saltServiceIn) {
-        this.saltService = saltServiceIn;
+    protected AbstractMinionBootstrapper(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class AbstractMinionBootstrapper {
 
         try {
             Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
-            return saltService.bootstrapMinion(params, bootstrapMods, pillarData)
+            return systemQuery.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
                         String responseMessage = SaltUtils.decodeSaltErr(error);
                         LOG.error("Error during bootstrap: " + responseMessage);
@@ -264,7 +264,7 @@ public abstract class AbstractMinionBootstrapper {
             return Collections.singletonList(activationKeyErrorMessage.get());
         }
 
-        if (saltService.keyExists(input.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
+        if (systemQuery.keyExists(input.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
             return Collections.singletonList("A salt key for this" +
                     " host (" + input.getHost() +
                     ") seems to already exist, please check!");

@@ -201,7 +201,7 @@ public class SaltServerActionService {
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
-    private SystemQuery saltService;
+    private SystemQuery systemQuery;
     private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
     private SaltUtils saltUtils = SaltUtils.INSTANCE;
     private boolean skipCommandScriptPerms;
@@ -210,7 +210,7 @@ public class SaltServerActionService {
      * @param systemQueryIn instance for getting information from a system.
      */
     public SaltServerActionService(SystemQuery systemQueryIn) {
-        this.saltService = systemQueryIn;
+        this.systemQuery = systemQueryIn;
     }
 
     private Action unproxy(Action entity) {
@@ -491,7 +491,7 @@ public class SaltServerActionService {
         // start the action chain synchronously
         try {
             // first check if there's an action chain with a reboot already executing
-            Map<String, Result<Map<String, String>>> pendingResumeConf = saltService.getPendingResume(
+            Map<String, Result<Map<String, String>>> pendingResumeConf = systemQuery.getPendingResume(
                     sshMinions.stream().map(minion -> minion.getMinionId())
                             .collect(Collectors.toList())
             );
@@ -1860,7 +1860,7 @@ public class SaltServerActionService {
                 Optional<JsonElement> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
-                    result = saltService.rawJsonCall(call, minion.getMinionId());
+                    result = systemQuery.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: " + action.getName() +
@@ -1972,10 +1972,10 @@ public class SaltServerActionService {
 
     /**
      * Only used in unit tests.
-     * @param saltServiceIn to set
+     * @param systemQueryIn to set
      */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
+    public void setSystemQuery(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**
