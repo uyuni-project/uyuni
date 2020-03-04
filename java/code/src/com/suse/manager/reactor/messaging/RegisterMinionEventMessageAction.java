@@ -55,7 +55,6 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.webui.services.impl.SystemQuery;
@@ -100,12 +99,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     private static final String TERMINALS_GROUP_NAME = "TERMINALS";
 
     /**
-     * Constructor taking a {@link SaltService} instance.
+     * Constructor taking a {@link SystemQuery} instance.
      *
-     * @param saltService the salt service to use
+     * @param systemQueryIn the salt service to use
      */
-    public RegisterMinionEventMessageAction(SystemQuery saltService) {
-        systemQuery = saltService;
+    public RegisterMinionEventMessageAction(SystemQuery systemQueryIn) {
+        systemQuery = systemQueryIn;
     }
 
     /**

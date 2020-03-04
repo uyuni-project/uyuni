@@ -219,13 +219,13 @@ public class RegistrationUtils {
     /**
      * Subscribes minion to channels
      *
-     * @param saltService the Salt service instance
+     * @param systemQuery the systemQuery instance
      * @param server the minion
      * @param grains the grains
      * @param activationKey the activation key
      * @param activationKeyLabel the activation key label
      */
-    public static void subscribeMinionToChannels(SystemQuery saltService, MinionServer server,
+    public static void subscribeMinionToChannels(SystemQuery systemQuery, MinionServer server,
             ValueMap grains, Optional<ActivationKey> activationKey, Optional<String> activationKeyLabel) {
         String minionId = server.getMinionId();
 
@@ -246,14 +246,14 @@ public class RegistrationUtils {
                     if (server.getBaseChannel() != null) {
                         return server.getChannels();
                     }
-                    Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
+                    Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
                     return findChannelsForProducts(suseProducts, minionId);
                 },
                 ak -> Opt.<Channel, Set<Channel>>fold(
                         ofNullable(ak.getBaseChannel()),
                         // ActivationKey without base channel (SUSE Manager Default)
                         () -> {
-                            Set<SUSEProduct> suseProducts = identifyProduct(saltService, server, grains);
+                            Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
                             return findChannelsForProducts(suseProducts, minionId);
                         },
                         baseChannel -> Opt.fold(
@@ -318,10 +318,10 @@ public class RegistrationUtils {
         );
     }
 
-    private static Set<SUSEProduct> identifyProduct(SystemQuery saltService, MinionServer server, ValueMap grains) {
+    private static Set<SUSEProduct> identifyProduct(SystemQuery systemQuery, MinionServer server, ValueMap grains) {
         if ("suse".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<List<Zypper.ProductInfo>> productList =
-                    saltService.getProducts(server.getMinionId());
+                    systemQuery.getProducts(server.getMinionId());
             return Opt.stream(productList).flatMap(pl -> pl.stream()
                     .flatMap(pi -> {
                         String osName = pi.getName().toLowerCase();
@@ -340,7 +340,7 @@ public class RegistrationUtils {
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                 "centos".equalsIgnoreCase(grains.getValueAsString(OS))) {
-            Optional<Map<String, State.ApplyResult>> applyResultMap = saltService
+            Optional<Map<String, State.ApplyResult>> applyResultMap = systemQuery
                     .applyState(server.getMinionId(), "packages.redhatproductinfo");
             Optional<String> centosReleaseContent = applyResultMap.map(
                     map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
