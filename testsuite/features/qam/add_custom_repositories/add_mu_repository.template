@@ -1,24 +1,22 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @<client>
 Feature: Adding a Maintenance Update custom channel and repository for <client>
 
-  Background:
-    Given I am authorized as "admin" with password "admin"
-
   Scenario: Add a child channel for <client>
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     When I enter "Custom Channel for <client>" as "Channel Name"
     And I enter "custom_channel_<client>" as "Channel Label"
-    And I select the parent channel for "<client>" from "Parent Channel"
-    And I select "x86_64" from "Architecture:"
+    And I select the parent channel for the "<client>" from "Parent Channel"
     And I enter "Custom channel" as "Channel Summary"
     And I click on "Create Channel"
-    Then I should see a "Channel Test Child Channel created." text
+    Then I should see a "Channel Custom Channel for <client> created" text
 
   Scenario: Add the Maintenance update repository for <client>
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "custom_repo_<client>" as "label"
@@ -28,15 +26,16 @@ Feature: Adding a Maintenance Update custom channel and repository for <client>
     And I should see "metadataSigned" as checked
 
   Scenario: Add the repository to the Custom Channel for <client>
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for <client>"
     And I follow "Repositories" in the content area
-    And I select the "custom_repo_salt_<client>" repo
-    And I select the "custom_repo_traditional_<client>" repo
+    And I select the "custom_repo_<client>" repo
     And I click on "Update Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the Custom Channel for <client>
+    Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for <client>"
     And I follow "Repositories" in the content area

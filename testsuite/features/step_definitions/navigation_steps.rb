@@ -106,11 +106,11 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
   select(arg1, from: arg2, exact: false)
 end
 
-When(/^I select the maximum amount of items per page"$/) do
+When(/^I select the maximum amount of items per page$/) do
   find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
 end
 
-When(/^I select the (base|parent) channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+When(/^I select the (base|parent) channel for the "([^"]*)" from "([^"]*)"$/) do |_channel_type, client, from|
   select(CHANNEL_BY_CLIENT[client], from: from, exact: false)
 end
 
@@ -130,6 +130,14 @@ end
 When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio, channel|
   label = find(:xpath, "//dt[contains(.//div, '#{channel}')]//label[text()='#{radio}']")
   choose(label[:for])
+end
+
+When(/^I include the (mandatory|recommended) child channels$/) do |type|
+  has_no_content?('Loading')
+  checkboxes = all(:xpath, "//span[@class='#{type}-tag-base']/..//input", wait: DEFAULT_TIMEOUT)
+  checkboxes.each do |checkbox|
+    checkbox.set(true)
+  end
 end
 
 When(/^I choose "([^"]*)"$/) do |arg1|
@@ -308,6 +316,13 @@ When(/^I am on the Organizations page$/) do
     )
 end
 
+Given(/^I am on the SUSE Products page$/) do
+  steps %(
+    When I navigate to "rhn/manager/admin/setup/products" page
+    And I wait until I see "Product Description" text
+  )
+end
+
 # access the multi-clients/minions
 Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
@@ -446,8 +461,16 @@ When(/^I check test channel$/) do
 end
 
 When(/^I check the child channel "([^"]*)"$/) do |channel|
+  raise 'Timeout: Waiting loading child channels' unless has_no_text?('Loading child channels', wait: 5)
   checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first)
   checkbox.set(true)
+end
+
+When(/^I check the custom channel for "([^"]*)"$/) do |client|
+  # Both minion and ssh_minion uses the same repositories, so the custom channels
+  client.sub! 'ssh_minion', 'minion'
+  channel = "Custom Channel for #{client}"
+  step %(I check the child channel "#{channel}")
 end
 
 When(/^I check "([^"]*)" patch$/) do |arg1|
@@ -663,16 +686,21 @@ Then(/^I check the row with the "([^"]*)" hostname$/) do |host|
   step %(I check "#{system_name}" in the list)
 end
 
-Then(/^I check (a|the) "([^"]*)" patch in the list$/) do |client|
+When(/^I check the first patch in the list$/) do
+  step %(I check the first row in the list)
+end
+
+Then(/^I check (a|the) "([^"]*)" patch in the list$/) do |_article, client|
   steps %(
     When I select the maximum amount of items per page
     And I check "#{PATCH_BY_CLIENT[client]}" in the list
   )
 end
 
-Then(/^I check (a|the) "([^"]*)" package in the list$/) do |client|
+Then(/^I check (a|the) "([^"]*)" package in the list$/) do |_article, client|
   steps %(
-    When I list packages with "#{PACKAGE_BY_CLIENT[client]}"
+    When I enter "#{PACKAGE_BY_CLIENT[client]}" as the filtered package name
+    And I click on the filter button
     And I check "#{PACKAGE_BY_CLIENT[client]}" in the list
   )
 end
@@ -701,6 +729,13 @@ When(/^I uncheck row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
   row.set(false)
+end
+
+When(/^I check the first row in the list$/) do
+  within(:xpath, '//section') do
+    row = find(:xpath, "//div[@class='table-responsive']/table/tbody/tr[.//td]", match: :first)
+    row.find(:xpath, ".//input[@type='checkbox']", match: :first).set(true)
+  end
 end
 
 When(/^I check "([^"]*)" in the list$/) do |text|
