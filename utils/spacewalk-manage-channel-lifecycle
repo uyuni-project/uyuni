@@ -378,7 +378,7 @@ def get_current_phase(source):
     """
     out = None
     for phase in phases:
-        if source.startswith(phase):
+        if source.startswith("{phase}{dlm}".format(phase=phase, dlm=options.delimiter)):
             out = phase
             break
     return out
