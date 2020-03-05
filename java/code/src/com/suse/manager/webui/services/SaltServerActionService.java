@@ -56,6 +56,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInt
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
@@ -372,6 +373,11 @@ public class SaltServerActionService {
             VirtualizationPoolStartAction startAction =
                     (VirtualizationPoolStartAction)actionIn;
             return virtPoolStateChangeAction(minions, startAction.getPoolName(), "start");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_STOP.equals(actionType)) {
+            VirtualizationPoolStopAction stopAction =
+                    (VirtualizationPoolStopAction)actionIn;
+            return virtPoolStateChangeAction(minions, stopAction.getPoolName(), "stop");
         }
         else {
             if (LOG.isDebugEnabled()) {
