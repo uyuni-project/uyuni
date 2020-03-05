@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
@@ -204,6 +205,29 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
 
         Action action = ActionManager.lookupAction(user, actions.get(0).getId());
         VirtualizationPoolStartAction virtAction = (VirtualizationPoolStartAction)action;
+        assertEquals("pool0", virtAction.getPoolName());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testStop() throws Exception {
+        VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
+        String json = virtualPoolsController.poolStop(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/pools/:sid/stop",
+                                              "{poolNames: [\"pool0\"]}",
+                                              host.getId()),
+                response, user);
+
+        // Ensure the start action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_POOL_STOP.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationPoolStopAction virtAction = (VirtualizationPoolStopAction)action;
         assertEquals("pool0", virtAction.getPoolName());
 
         // Check the returned message
