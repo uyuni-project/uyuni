@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSchedulePollerAction;
@@ -441,6 +442,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_START)) {
             retval = new VirtualizationPoolStartAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_STOP)) {
+            retval = new VirtualizationPoolStopAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -920,7 +924,8 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_START) ||
                 actionType.equals(TYPE_VIRTUALIZATION_SUSPEND) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_START);
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_START) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP);
     }
 
     /**
@@ -1281,5 +1286,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_POOL_START =
             lookupActionTypeByLabel("virt.pool_start");
+
+    /**
+     * The constant representing "Stops a virtual storage pool." [ID:511]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_STOP =
+            lookupActionTypeByLabel("virt.pool_stop");
 }
 
