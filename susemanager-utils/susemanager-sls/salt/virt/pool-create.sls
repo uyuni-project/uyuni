@@ -1,5 +1,8 @@
-pool_running:
-  virt.pool_running:
+{% set pool_state = salt.virt.pool_info(pillar['pool_name']).get(pillar['pool_name'], {}).get('state') %}
+{% set state = 'running' if pool_state == 'running' else pillar['action_type'] %}
+
+pool_{{ state }}:
+  virt.pool_{{ state }}:
     - name: {{ pillar['pool_name'] }}
     - ptype: {{ pillar['pool_type'] }}
     {% if pillar['target']|default(none) %}
