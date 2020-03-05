@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -91,8 +92,15 @@ public class VirtNotifications {
             },
             BaseVirtualizationPoolAction.class,
             (action) -> {
+                String id = "new-" + action.getId();
                 BaseVirtualizationPoolAction virtAction = (BaseVirtualizationPoolAction)action;
-                return String.format("pool-%s", virtAction.getPoolName());
+
+                if (action instanceof VirtualizationPoolCreateAction &&
+                        ((VirtualizationPoolCreateAction)action).getUuid() != null ||
+                        !(action instanceof VirtualizationPoolCreateAction)) {
+                    id = String.format("pool-%s", virtAction.getPoolName());
+                }
+                return id;
             }
         );
 
