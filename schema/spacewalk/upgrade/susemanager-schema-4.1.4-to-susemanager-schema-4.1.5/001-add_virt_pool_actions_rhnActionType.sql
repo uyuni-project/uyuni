@@ -35,3 +35,9 @@ insert into rhnActionType (id, label, name, trigger_snapshot, unlocked_only) (
     from dual
     where not exists (select 1 from rhnActionType where id = 512)
 );
+
+insert into rhnActionType (id, label, name, trigger_snapshot, unlocked_only) (
+    select 513, 'virt.pool_create', 'Creates a virtual storage pool', 'N', 'N'
+    from dual
+    where not exists (select 1 from rhnActionType where id = 513)
+);

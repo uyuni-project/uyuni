@@ -49,6 +49,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
@@ -449,6 +450,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_DELETE)) {
             retval = new VirtualizationPoolDeleteAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_CREATE)) {
+            retval = new VirtualizationPoolCreateAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -927,6 +931,7 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_SHUTDOWN) ||
                 actionType.equals(TYPE_VIRTUALIZATION_START) ||
                 actionType.equals(TYPE_VIRTUALIZATION_SUSPEND) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_CREATE) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_DELETE) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_START) ||
@@ -1303,5 +1308,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_POOL_DELETE =
             lookupActionTypeByLabel("virt.pool_delete");
+
+    /**
+     * The constant representing "Creates a virtual storage pool." [ID:513]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_CREATE =
+            lookupActionTypeByLabel("virt.pool_create");
 }
 
