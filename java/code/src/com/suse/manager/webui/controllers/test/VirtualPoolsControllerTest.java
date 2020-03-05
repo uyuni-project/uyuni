@@ -19,6 +19,7 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
@@ -229,6 +230,30 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         Action action = ActionManager.lookupAction(user, actions.get(0).getId());
         VirtualizationPoolStopAction virtAction = (VirtualizationPoolStopAction)action;
         assertEquals("pool0", virtAction.getPoolName());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testDelete() throws Exception {
+        VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
+        String json = virtualPoolsController.poolDelete(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/pools/:sid/delete",
+                                              "{poolNames: [\"pool0\"], purge: true}",
+                                              host.getId()),
+                response, user);
+
+        // Ensure the start action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_POOL_DELETE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationPoolDeleteAction virtAction = (VirtualizationPoolDeleteAction)action;
+        assertEquals("pool0", virtAction.getPoolName());
+        assertTrue(virtAction.isPurge());
 
         // Check the returned message
         Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
