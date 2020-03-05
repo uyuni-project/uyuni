@@ -445,6 +445,7 @@ The check box can be identified by name, id or label text.
   Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should exist on server
   Then file "/srv/susemanager/salt/manager_org_1/s-mgr/config/init.sls" should not exist on server
   Then file "/var/lib/libvirt/images/test-pool0" should not exist on "kvm_server"
+  Then file "/var/lib/libvirt/images/test-pool1" should have 755 permissions on "kvm_server"
 ```
 
 * File contents

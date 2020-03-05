@@ -591,6 +591,11 @@ Then(/^file "([^"]*)" should exist on "([^"]*)"$/) do |filename, host|
   node.run("test -f #{filename}", true)
 end
 
+Then(/^file "([^"]*)" should have ([0-9]+) permissions on "([^"]*)"$/) do |filename, permissions, host|
+  node = get_target(host)
+  node.run("test \"`stat -c '%a' #{filename}`\" = \"#{permissions}\"", true)
+end
+
 Then(/^file "([^"]*)" should not exist on server$/) do |filename|
   $server.run("test ! -f #{filename}")
 end
