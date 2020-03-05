@@ -22,6 +22,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -125,6 +126,8 @@ public class VirtualPoolsController {
                 withUser(this::poolDelete));
         post("/manager/api/systems/details/virtualization/pools/:sid/create",
                 withUser(this::poolCreate));
+        post("/manager/api/systems/details/virtualization/pools/:sid/edit",
+                withUser(this::poolEdit));
     }
 
     /**
@@ -367,6 +370,20 @@ public class VirtualPoolsController {
 
             return action;
         }, VirtualPoolCreateActionJson.class);
+    }
+
+
+    /**
+     * Executes the POST query to edit a virtual pool.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String poolEdit(Request request, Response response, User user) {
+        String actionName = LocalizationService.getInstance().getMessage("virt.pool_update");
+        return poolCreateOrUpdate(request, response, user, actionName);
     }
 
     /**
