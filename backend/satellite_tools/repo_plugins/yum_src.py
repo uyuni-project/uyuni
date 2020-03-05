@@ -413,6 +413,7 @@ class ContentSource:
         self.sslclientkey = client_key_file
         self.http_headers = {}
 
+        comp = CFG.getComponent()
         # read the proxy configuration in /etc/rhn/rhn.conf
         initCFG('server.satellite')
 
@@ -469,6 +470,8 @@ class ContentSource:
         self.num_excluded = 0
         self.gpgkey_autotrust = None
         self.groupsfile = None
+        # set config component back to original
+        initCFG(comp)
 
     def _get_mirror_list(self, repo, url):
         mirrorlist_path = os.path.join(repo.root, 'mirrorlist.txt')
