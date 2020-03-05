@@ -216,6 +216,16 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until the tree item "test-pool0" contains "running" text
 
 @virthost_kvm
+  Scenario: Delete a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Delete" in tree item "test-pool0"
+    And I check "purge"
+    And I click on "Delete" in "Delete Virtual Storage Pool" modal
+    Then I wait until I do not see "test-pool0" text
+    And file "/var/lib/libvirt/images/test-pool0" should not exist on "kvm_server"
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
