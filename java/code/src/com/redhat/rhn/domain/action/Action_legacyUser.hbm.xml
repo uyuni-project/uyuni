@@ -386,6 +386,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction"
+          discriminator-value="510" lazy="true">
+          <join table="rhnActionVirtPoolStart">
+            <key column="action_id"/>
+            <property name="poolName" type="string" column="pool_name"/>
+          </join>
+        </subclass>
+
 
         <!-- PackageActions: 1, 3, 4, 8, 13, 14, 33 -->
         <!-- PackageAction is abstract - the subclasses only get instantiated -->
@@ -511,7 +519,8 @@ select {ra.*}
             NULL as graphics_type,
             NULL as remove_disks,
             NULL as remove_interfaces from dual) ra_11_,
-    (select NULL as pool_name from dual) ra_12_
+    (select NULL as pool_name from dual) ra_12_,
+    (select NULL as pool_name from dual) ra_13_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -623,7 +632,8 @@ select sa.server_id
                              NULL as graphics_type,
                              NULL as remove_disks,
                              NULL as remove_interfaces from dual) ra_11_,
-                     (select NULL as pool_name from dual) ra_12_
+                     (select NULL as pool_name from dual) ra_12_,
+                     (select NULL as pool_name from dual) ra_13_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id

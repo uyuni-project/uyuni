@@ -80,6 +80,7 @@ insert into rhnActionType values (506, 'channels.subscribe', 'Subscribe to chann
 insert into rhnActionType values (507, 'virt.delete', 'Deletes a virtual domain.', 'N', 'N');
 insert into rhnActionType values (508, 'virt.create', 'Creates a virtual domain.', 'N', 'N');
 insert into rhnActionType values (509, 'virt.pool_refresh', 'Refresh a virtual storage pool', 'N', 'N');
+insert into rhnActionType values (510, 'virt.pool_start', 'Starts a virtual storage pool', 'N', 'N');
 --
 --
 -- Revision 1.25  2004/10/29 05:07:52  pjones

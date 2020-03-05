@@ -1,3 +1,4 @@
+--
 -- Copyright (c) 2020 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -12,14 +13,17 @@
 -- in this software or its documentation.
 --
 
-insert into rhnActionType (id, label, name, trigger_snapshot, unlocked_only) (
-    select 509, 'virt.pool_refresh', 'Refresh a virtual storage pool', 'N', 'N'
-    from dual
-    where not exists (select 1 from rhnActionType where id = 509)
-);
+CREATE TABLE rhnActionVirtPoolStart
+(
+    action_id            NUMERIC NOT NULL
+                             CONSTRAINT rhn_action_virt_pool_start_aid_fk
+                                 REFERENCES rhnAction (id)
+                                 ON DELETE CASCADE
+                             CONSTRAINT rhn_action_virt_pool_start_aid_pk
+                                 PRIMARY KEY,
+    pool_name            VARCHAR(256)
+)
+;
 
-insert into rhnActionType (id, label, name, trigger_snapshot, unlocked_only) (
-    select 510, 'virt.pool_start', 'Starts a virtual storage pool', 'N', 'N'
-    from dual
-    where not exists (select 1 from rhnActionType where id = 510)
-);
+CREATE UNIQUE INDEX rhn_action_virt_pool_start_aid_uq
+    ON rhnActionVirtPoolStart (action_id);

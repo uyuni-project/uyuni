@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSchedulePollerAction;
@@ -437,6 +438,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_REFRESH)) {
             retval = new VirtualizationPoolRefreshAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_START)) {
+            retval = new VirtualizationPoolStartAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -915,7 +919,8 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_SHUTDOWN) ||
                 actionType.equals(TYPE_VIRTUALIZATION_START) ||
                 actionType.equals(TYPE_VIRTUALIZATION_SUSPEND) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH);
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_START);
     }
 
     /**
@@ -1270,5 +1275,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_POOL_REFRESH =
             lookupActionTypeByLabel("virt.pool_refresh");
+
+    /**
+     * The constant representing "Start a virtual storage pool." [ID:510]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_START =
+            lookupActionTypeByLabel("virt.pool_start");
 }
 
