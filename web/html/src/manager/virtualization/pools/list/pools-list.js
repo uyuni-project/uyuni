@@ -10,6 +10,8 @@ import { AsyncButton } from 'components/buttons';
 import { Messages } from 'components/messages';
 import { Utils as MessagesUtils } from 'components/messages';
 import { ActionStatus } from 'components/action/ActionStatus';
+import { ModalButton } from 'components/dialog/ModalButton';
+import { ActionConfirm } from 'components/dialog/ActionConfirm';
 import { VirtualizationPoolsListRefreshApi } from '../virtualization-pools-list-refresh-api';
 import { VirtualizationPoolsActionApi } from '../virtualization-pools-action-api';
 import { useVirtNotification } from '../../useVirtNotification.js';
@@ -96,7 +98,39 @@ function FilteredTree(props: FilteredTreeProps) {
       .map(item => React.cloneElement(item, {data: filteredTreeData}));
 }
 
+const PoolDeleteActionConfirm = (props) => {
+  const [purge, setPurge] = React.useState(false);
+
+  return (
+    <ActionConfirm
+      id={props.id}
+      key={props.id}
+      type="delete"
+      name={t('Delete')}
+      itemName={t('Virtual Storage Pool')}
+      icon="fa-trash"
+      selected={props.selected}
+      fn={(type, pools, parameters) => {
+        props.onAction(type, pools.map(pool => pool.name), Object.assign({}, parameters, {purge}))
+      }}
+      canForce={false}
+      onClose={props.onClose}
+    >
+      <p>
+        <input
+          type="checkbox"
+          id="purge"
+          checked={purge}
+          onChange={event => setPurge(event.target.checked)}
+        />
+        <label htmlFor="purge">{t('Delete the pool, including the contained volumes. ')}<strong>{t('Cannot be undone')}</strong></label>
+      </p>
+    </ActionConfirm>
+  );
+};
+
 export function PoolsList(props: Props) {
+  const [selectedPool, setSelectedPool] = React.useState({});
   const [errors, setErrors] = React.useState([]);
 
   const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
@@ -212,6 +246,14 @@ export function PoolsList(props: Props) {
                           />
                         )
                       }
+                      <ModalButton
+                        className="btn-default btn-sm"
+                        title={t("Delete")}
+                        icon="fa-trash"
+                        target='pool-delete-modal'
+                        item={pool}
+                        onClick={setSelectedPool}
+                      />
                     </div>
                   </CustomDiv>,
                 ];
@@ -298,6 +340,12 @@ export function PoolsList(props: Props) {
                     </FilteredTree>
                   }
                   </CustomDataHandler>
+                  <PoolDeleteActionConfirm
+                    id="pool-delete-modal"
+                    selected={[selectedPool].filter(item => item)}
+                    onClose={() => setSelectedPool({})}
+                    onAction={onAction}
+                  />
                 </>
               );
             }
