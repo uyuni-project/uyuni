@@ -19,7 +19,7 @@
 
 %define release_name Smile
 %if 0%{?suse_version}
-%global postgresql postgresql >= 8.4
+%global postgresql postgresql >= 10
 %else
 %global postgresql /usr/bin/psql
 %endif
@@ -125,15 +125,16 @@ Requires:       %{postgresql}
 Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
-%if 0%{?rhel} == 5
-Requires:       postgresql84-contrib
+%if 0%{?suse_version}
+Requires:       postgresql10
+Requires:       postgresql10-contrib
 %else
-Requires:       postgresql-contrib >= 8.4
-%endif
-Requires:       postgresql >= 9.6
+Requires:       postgresql >= 10
+Requires:       postgresql-contrib >= 10
 # we do not support postgresql versions > 10.x yet
 Conflicts:      postgresql >= 11
 Conflicts:      postgresql-contrib >= 11
+%endif
 
 %description postgresql
 Spacewalk is a systems management application that will 
