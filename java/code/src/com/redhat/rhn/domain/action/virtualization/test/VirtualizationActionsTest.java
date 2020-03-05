@@ -25,6 +25,8 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInt
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationGuestPackageInstall;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationHostPackageInstall;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateActionSource;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
@@ -33,6 +35,9 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import com.suse.manager.virtualization.PoolSourceAuthentication;
+import com.suse.manager.virtualization.PoolSourceDevice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -189,5 +194,41 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         assertEquals(2, actual.getInterfaces().size());
         assertEquals("net0", actual.getInterfaces().get(0).getSource());
         assertEquals("net1", actual.getInterfaces().get(1).getSource());
+    }
+
+    public void testPoolCreate() throws Exception {
+        VirtualizationPoolCreateAction a1 = (VirtualizationPoolCreateAction)ActionFactoryTest
+                .createAction(user, ActionFactory.TYPE_VIRTUALIZATION_POOL_CREATE);
+        a1.setName("pool0");
+        a1.setType("iscsi");
+        a1.setTarget("/dev/disk/by-path");
+        VirtualizationPoolCreateActionSource src = new VirtualizationPoolCreateActionSource();
+        src.setAuth(new PoolSourceAuthentication("myuser", "mysecret"));
+        src.setHosts(Arrays.asList("iscsi.example.com"));
+        src.setDevices(Arrays.asList(new PoolSourceDevice("iqn.2013-06.com.example:iscsi-pool")));
+        a1.setSource(src);
+        a1.setMode("0744");
+        a1.setOwner("107");
+        a1.setGroup("108");
+        a1.setSeclabel("virt_image_t");
+
+        flushAndEvict(a1);
+
+        Action a = ActionFactory.lookupById(a1.getId());
+
+        assertNotNull(a);
+        assertTrue(a instanceof VirtualizationPoolCreateAction);
+        VirtualizationPoolCreateAction actual = (VirtualizationPoolCreateAction)a;
+        assertEquals("pool0", actual.getName());
+        assertEquals("iscsi", actual.getType());
+        assertEquals("/dev/disk/by-path", actual.getTarget());
+        assertEquals("0744", actual.getMode());
+        assertEquals("107", actual.getOwner());
+        assertEquals("108", actual.getGroup());
+        assertEquals("virt_image_t", actual.getSeclabel());
+        assertEquals("myuser", actual.getSource().getAuth().getUsername());
+        assertEquals("mysecret", actual.getSource().getAuth().getPassword());
+        assertEquals("iscsi.example.com", actual.getSource().getHosts().get(0));
+        assertEquals("iqn.2013-06.com.example:iscsi-pool", actual.getSource().getDevices().get(0).getPath());
     }
 }
