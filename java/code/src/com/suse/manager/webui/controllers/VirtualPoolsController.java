@@ -107,6 +107,8 @@ public class VirtualPoolsController {
     public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/systems/details/virtualization/storage/:sid",
                 withUserPreferences(withCsrfToken(withUser(this::show))), jade);
+        get("/manager/systems/details/virtualization/storage/:sid/new",
+                withUserPreferences(withCsrfToken(withUser(this::createDialog))), jade);
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
                 withUser(this::data));
         get("/manager/api/systems/details/virtualization/pools/:sid/capabilities",
@@ -135,6 +137,19 @@ public class VirtualPoolsController {
      */
     public ModelAndView show(Request request, Response response, User user) {
         return renderPage(request, response, user, "show", null);
+    }
+
+
+    /**
+     * Displays the virtual storage pool creation page.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public ModelAndView createDialog(Request request, Response response, User user) {
+        return renderWithActionChains(request, response, user, "create", null);
     }
 
 
@@ -396,6 +411,31 @@ public class VirtualPoolsController {
         /* For the rest of the template */
 
         return new ModelAndView(data, String.format("templates/virtualization/pools/%s.jade", template));
+    }
+
+
+    /**
+     * Displays a virtual storage pool-relate page with actionChains in the model.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @param template the name to the Jade template of the page
+     * @param modelExtender provides additional properties to pass to the Jade template
+     * @return the ModelAndView object to render the page
+     */
+    private ModelAndView renderWithActionChains(Request request, Response response, User user,
+            String template, Supplier<Map<String, Object>> modelExtender) {
+        return renderPage(request, response, user, template,
+            () -> {
+                Map<String, Object> data = new HashMap<>();
+                MinionController.addActionChains(user, data);
+                if (modelExtender != null) {
+                    data.putAll(modelExtender.get());
+                }
+                return data;
+            }
+        );
     }
 
     private String poolAction(Request request, Response response, User user,

@@ -6,6 +6,7 @@ import { CustomDiv } from 'components/custom-objects';
 import { ProgressBar } from 'components/progressbar';
 import { CustomDataHandler } from 'components/table/CustomDataHandler';
 import { SearchField } from 'components/table/SearchField';
+import { LinkButton } from 'components/buttons';
 import { AsyncButton } from 'components/buttons';
 import { Messages } from 'components/messages';
 import { Utils as MessagesUtils } from 'components/messages';
@@ -313,6 +314,15 @@ export function PoolsList(props: Props) {
 
               return (
                 <>
+                  <div className="pull-right btn-group">
+                    <LinkButton
+                      text={t('Create Pool')}
+                      title={t('Create Pool')}
+                      className="btn-default"
+                      icon="fa-plus"
+                      href={`/rhn/manager/systems/details/virtualization/storage/${props.serverId}/new`}
+                    />
+                  </div>
                   <h2>{t('Virtual Storage Pools and Volumes')}</h2>
                   <p>{t('This is the list of storage pools defined on this host containing virtual guests disks.')}</p>
                   <Messages items={[].concat(messages, refreshError || [], getCreationActionMessages())}/>
