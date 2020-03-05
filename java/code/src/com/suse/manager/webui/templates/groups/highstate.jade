@@ -17,10 +17,11 @@
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.minions = !{minions};
+    window.groupName = "#{groupName}";
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
     window.actionChains = !{actionChains};
 
 script(type='text/javascript').
-    spaImportReactPage('highstate/highstate')
+    spaImportReactPage('state/highstate')
         .then(function(module) { module.renderer('highstate') });
