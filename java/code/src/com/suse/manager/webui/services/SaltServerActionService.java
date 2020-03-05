@@ -54,6 +54,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
@@ -378,6 +379,12 @@ public class SaltServerActionService {
             VirtualizationPoolStopAction stopAction =
                     (VirtualizationPoolStopAction)actionIn;
             return virtPoolStateChangeAction(minions, stopAction.getPoolName(), "stop");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_DELETE.equals(actionType)) {
+            VirtualizationPoolDeleteAction deleteAction =
+                    (VirtualizationPoolDeleteAction)actionIn;
+            return virtPoolDeleteAction(minions, deleteAction.getPoolName(),
+                    deleteAction.isPurge());
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1754,6 +1761,27 @@ public class SaltServerActionService {
 
                     return State.apply(
                             Collections.singletonList("virt.pool-statechange"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtPoolDeleteAction(
+            List<MinionSummary> minionSummaries, String poolName, boolean purge) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_name", poolName);
+                    pillar.put("pool_purge", purge);
+
+                    return State.apply(
+                            Collections.singletonList("virt.pool-deleted"),
                             Optional.of(pillar));
                 },
                 Collections::singletonList
