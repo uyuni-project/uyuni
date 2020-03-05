@@ -95,9 +95,6 @@ Requires:       spacewalk-selinux
 Obsoletes:      spacewalk-monitoring-selinux < 2.3
 %endif
 
-%if 0%{?rhel} == 5
-Requires:       jabberd-selinux
-%endif
 %if 0%{?rhel} == 6
 Requires:       selinux-policy-base >= 3.7.19-93
 %endif
