@@ -192,7 +192,7 @@ class RecurringStates extends React.Component {
         const messages = this.state.messages ? <Messages items={this.state.messages}/> : null;
         const notification = <Messages items={[{
             severity: "warning",
-            text: "The timezone displayed is the server timezone. Picked execution time is server execution time"
+            text: "The timezone displayed is the server timezone. The scheduled time will be the server time."
         }]}/>;
         return (
             <div>
