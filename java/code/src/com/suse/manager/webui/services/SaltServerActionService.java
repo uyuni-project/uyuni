@@ -14,10 +14,16 @@
  */
 package com.suse.manager.webui.services;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -54,6 +60,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
@@ -92,6 +99,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
@@ -116,6 +128,21 @@ import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.Logger;
+import org.cobbler.CobblerConnection;
+import org.cobbler.Distro;
+import org.cobbler.Profile;
+import org.cobbler.SystemRecord;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
+import org.jose4j.lang.JoseException;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -146,29 +173,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
-import org.cobbler.CobblerConnection;
-import org.cobbler.Distro;
-import org.cobbler.Profile;
-import org.cobbler.SystemRecord;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
-import org.jose4j.lang.JoseException;
-
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -385,6 +389,11 @@ public class SaltServerActionService {
                     (VirtualizationPoolDeleteAction)actionIn;
             return virtPoolDeleteAction(minions, deleteAction.getPoolName(),
                     deleteAction.isPurge());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_CREATE.equals(actionType)) {
+            VirtualizationPoolCreateAction createAction =
+                    (VirtualizationPoolCreateAction)actionIn;
+            return virtPoolCreateAction(minions, createAction);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1782,6 +1791,86 @@ public class SaltServerActionService {
 
                     return State.apply(
                             Collections.singletonList("virt.pool-deleted"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtPoolCreateAction(
+            List<MinionSummary> minionSummaries, VirtualizationPoolCreateAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_name", action.getPoolName());
+                    pillar.put("pool_type", action.getType());
+                    pillar.put("autostart", action.isAutostart());
+                    pillar.put("target", action.getTarget());
+
+                    Map<String, Object> permissions = new HashMap<>();
+                    permissions.put("mode", action.getMode());
+                    permissions.put("owner", action.getOwner());
+                    permissions.put("group", action.getGroup());
+                    permissions.put("label", action.getSeclabel());
+                    pillar.put("permissions", permissions);
+                    pillar.put("autostart", action.isAutostart());
+
+                    if (action.getSource() != null) {
+                        Map<String, Object> source = new HashMap<>();
+                        source.put("dir", action.getSource().getDir());
+                        source.put("name", action.getSource().getName());
+                        source.put("format", action.getSource().getFormat());
+                        source.put("initiator", action.getSource().getInitiator());
+                        source.put("hosts", action.getSource().getHosts());
+                        if (action.getSource().getAuth() != null) {
+                            Map<String, Object> auth = new HashMap<>();
+                            auth.put("username", action.getSource().getAuth().getUsername());
+                            // TODO We surely need this one encrypted
+                            auth.put("password", action.getSource().getAuth().getPassword());
+                            source.put("auth", auth);
+                        }
+                        if (action.getSource().getAdapter() != null) {
+                            Map<String, Object> adapter = new HashMap<>();
+                            adapter.put("type", action.getSource().getAdapter().getType());
+                            adapter.put("name", action.getSource().getAdapter().getName());
+                            adapter.put("parent", action.getSource().getAdapter().getParent());
+                            adapter.put("managed", action.getSource().getAdapter().isManaged());
+                            adapter.put("parent_wwnn", action.getSource().getAdapter().getParentWwnn());
+                            adapter.put("parent_wwpn", action.getSource().getAdapter().getParentWwpn());
+                            adapter.put("parent_fabric_wwn", action.getSource().getAdapter().getParentWwnn());
+                            adapter.put("wwnn", action.getSource().getAdapter().getWwnn());
+                            adapter.put("wwpn", action.getSource().getAdapter().getWwpn());
+
+                            Map<String, Object> parentAddress = new HashMap<>();
+                            if (action.getSource().getAdapter().getParentAddressUid() != null) {
+                                parentAddress.put("unique_id", action.getSource().getAdapter().getParentAddressUid());
+                            }
+                            if (action.getSource().getAdapter().getParentAddress() != null) {
+                                parentAddress.put("address", action.getSource().getAdapter().getParentAddressParsed());
+                            }
+                            if (!parentAddress.isEmpty()) {
+                                adapter.put("parent_address", parentAddress);
+                            }
+
+                            source.put("adapter", adapter);
+                        }
+                        if (action.getSource().getDevices() != null) {
+                            source.put("devices", action.getSource().getDevices().stream().map(device -> {
+                                Map<String, Object> deviceParam = new HashMap<>();
+                                deviceParam.put("path", device.getPath());
+                                device.isSeparator().ifPresent(sep -> deviceParam.put("part_separator", sep));
+                                return deviceParam;
+                            }));
+                        }
+                        pillar.put("source", source);
+                    }
+
+                    return State.apply(
+                            Collections.singletonList("virt.pool-create"),
                             Optional.of(pillar));
                 },
                 Collections::singletonList
