@@ -192,6 +192,16 @@ export function PoolsList(props: Props) {
                           action={() => onAction('refresh', [pool.name], {})}
                         />
                       }
+                      { pool.state !== 'running'
+                        && (
+                          <AsyncButton
+                              defaultType="btn-default btn-sm"
+                              title={t("Start")}
+                              icon="fa-play"
+                              action={() => onAction('start', [pool.name], {})}
+                          />
+                        )
+                      }
                     </div>
                   </CustomDiv>,
                 ];
