@@ -56,7 +56,7 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

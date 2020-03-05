@@ -14,14 +14,11 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import static org.hamcrest.Matchers.containsString;
-
 import com.google.gson.JsonElement;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -38,14 +35,12 @@ import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
-import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.parser.JsonParser;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;

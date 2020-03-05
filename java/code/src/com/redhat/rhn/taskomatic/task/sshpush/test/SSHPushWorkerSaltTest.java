@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task.sshpush.test;
 
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -29,18 +27,14 @@ import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-import com.suse.manager.reactor.messaging.test.JobReturnEventMessageActionTest;
-import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
-import com.suse.manager.webui.utils.salt.custom.FilesDiffResult;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
@@ -50,7 +44,6 @@ import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;

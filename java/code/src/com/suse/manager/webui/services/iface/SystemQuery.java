@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.services.impl;
+package com.suse.manager.webui.services.iface;
 
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -20,6 +20,8 @@ import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.webui.services.impl.SaltSSHService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;

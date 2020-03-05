@@ -28,7 +28,7 @@ import com.suse.manager.reactor.messaging.ImageDeployedEventMessage;
 import com.suse.manager.reactor.messaging.ImageDeployedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Zypper;

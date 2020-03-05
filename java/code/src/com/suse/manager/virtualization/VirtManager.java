@@ -16,7 +16,7 @@ package com.suse.manager.virtualization;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 
 import java.util.Map;
 import java.util.Optional;

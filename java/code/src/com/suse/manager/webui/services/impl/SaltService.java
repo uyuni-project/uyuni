@@ -32,6 +32,7 @@ import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
