@@ -479,7 +479,7 @@ When(/^I wait until the tree item "([^"]+)" contains "([^"]+)" text$/) do |item,
   end
 end
 
-And(/^I open the sub-list of the product "(.*?)"$/) do |product|
+When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
   #   raise unless find('i.fa-angle-down').click
@@ -593,6 +593,11 @@ end
 
 Then(/^file "([^"]*)" should not exist on server$/) do |filename|
   $server.run("test ! -f #{filename}")
+end
+
+Then(/^file "([^"]*)" should not exist on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  node.run("test ! -f #{filename}")
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filename, host|
