@@ -29,3 +29,9 @@ insert into rhnActionType (id, label, name, trigger_snapshot, unlocked_only) (
     from dual
     where not exists (select 1 from rhnActionType where id = 511)
 );
+
+insert into rhnActionType (id, label, name, trigger_snapshot, unlocked_only) (
+    select 512, 'virt.pool_delete', 'Deletes a virtual storage pool', 'N', 'N'
+    from dual
+    where not exists (select 1 from rhnActionType where id = 512)
+);
