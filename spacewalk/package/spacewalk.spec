@@ -102,12 +102,8 @@ Requires:       jabberd-selinux
 Requires:       selinux-policy-base >= 3.7.19-93
 %endif
 
-%if 0%{?suse_version}
-Requires:       cobbler
+Requires:       cobbler >= 3
 Requires:       susemanager-jsp_en
-%else
-Requires:       cobbler20
-%endif
 
 %description common
 Spacewalk is a systems management application that will
