@@ -57,7 +57,7 @@ import com.suse.manager.webui.controllers.contentmanagement.ContentManagementVie
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;

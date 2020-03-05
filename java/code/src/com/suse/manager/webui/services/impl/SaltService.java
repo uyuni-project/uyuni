@@ -34,6 +34,7 @@ import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;

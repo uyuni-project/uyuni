@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 

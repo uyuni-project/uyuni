@@ -14,7 +14,7 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import org.apache.log4j.Logger;
 
 import com.redhat.rhn.common.messaging.EventMessage;

@@ -30,7 +30,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.NotificationMessageJson;
 import com.suse.manager.webui.websocket.Notification;
 import com.suse.utils.Json;

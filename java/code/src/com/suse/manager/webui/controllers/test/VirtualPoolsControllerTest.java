@@ -38,7 +38,6 @@ import com.suse.manager.virtualization.PoolCapabilitiesJson.PoolType;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 
 import org.jmock.Expectations;

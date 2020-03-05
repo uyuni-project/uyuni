@@ -41,7 +41,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.log4j.Logger;
 
