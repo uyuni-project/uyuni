@@ -1,0 +1,23 @@
+include ../../system-common.jade
+#virtualpools-edit
+
+script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+script(src='/javascript/validator/validator.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
++userPreferences
+
+script(type='text/javascript').
+    spaImportReactPage('virtualization/pools/edit/pools-edit')
+        .then(function(module) {
+            module.renderer(
+              'virtualpools-edit',
+              {
+                  serverId: "#{server.id}",
+                  actionChains: !{actionChains},
+                  timezone: "#{h.renderTimezone()}",
+                  localTime: "#{h.renderLocalTime()}",
+                  poolName: "#{poolName}",
+              }
+        )});

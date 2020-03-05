@@ -110,6 +110,8 @@ public class VirtualPoolsController {
                 withUserPreferences(withCsrfToken(withUser(this::show))), jade);
         get("/manager/systems/details/virtualization/storage/:sid/new",
                 withUserPreferences(withCsrfToken(withUser(this::createDialog))), jade);
+        get("/manager/systems/details/virtualization/storage/:sid/edit/:name",
+                withUserPreferences(withCsrfToken(withUser(this::editDialog))), jade);
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
                 withUser(this::data));
         get("/manager/api/systems/details/virtualization/pools/:sid/capabilities",
@@ -153,6 +155,25 @@ public class VirtualPoolsController {
      */
     public ModelAndView createDialog(Request request, Response response, User user) {
         return renderWithActionChains(request, response, user, "create", null);
+    }
+
+
+    /**
+     * Displays the virtual storage pool edit page.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public ModelAndView editDialog(Request request, Response response, User user) {
+        return renderWithActionChains(request, response, user, "edit",
+            () -> {
+                Map<String, Object> data = new HashMap<>();
+                data.put("poolName", request.params("name"));
+                return data;
+            }
+        );
     }
 
 
