@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -659,6 +660,12 @@ public class SaltUtils {
             JsonObject result = jsonResult.getAsJsonObject();
             String key = result.keySet().iterator().next();
             serverAction.setResultMsg(result.get(key).getAsJsonObject().get("comment").getAsString());
+        }
+        else if (action instanceof BaseVirtualizationPoolAction) {
+            // Tell VirtNotifications that we got a pool action change, passing action
+            VirtNotifications.spreadActionUpdate(action);
+            // Intentionally don't get only the comment since the changes value could be interesting
+            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
