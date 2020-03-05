@@ -195,6 +195,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
 @virthost_kvm
+  Scenario: Refresh a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Refresh" in tree item "test-pool0"
+    And I wait until the tree item "test-pool0" has no sub-list
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
