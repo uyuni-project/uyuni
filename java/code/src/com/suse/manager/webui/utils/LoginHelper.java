@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2019--2020 SUSE LLC
  * Copyright (c) 2014--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -65,8 +66,13 @@ public class LoginHelper {
 
     private static Logger log = Logger.getLogger(LoginHelper.class);
     private static final String DEFAULT_KERB_USER_PASSWORD = "0";
-    private static final Long MIN_PG_DB_VERSION = 90600L;
-    private static final String MIN_PG_DB_VERSION_STRING = "9.6";
+    private static final Long MIN_PG_DB_VERSION = 100001L;
+    private static final Long MAX_PG_DB_VERSION = 130000L;
+    private static final String MIN_PG_DB_VERSION_STRING = "10";
+    private static final String MAX_PG_DB_VERSION_STRING = "12";
+    private static final Double OS_VERSION_CHECK = 15.2;
+    private static final Long OS_VERSION_MIN_DB_VERSION = 120000L;
+    private static final String OS_VERSION_WANTED_DB_VERSION = "12";
     public static final String DEFAULT_URL_BOUNCE = "/rhn/YourRhn.do";
 
     /**
@@ -356,21 +362,27 @@ public class LoginHelper {
                     }
                 }
                 else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
-                    osName = resultKV[1];
+                    osName = resultKV[1].replaceAll("\"", "'");
                 }
             }
             if (log.isDebugEnabled()) {
                 log.debug("PG DB version is: " + serverVersion);
-                log.debug("OS Version is: " + osVersion);
+                log.debug("OS Version is: " + osVersion + " " + osVersion);
             }
             LocalizationService ls = LocalizationService.getInstance();
             if (serverVersion < MIN_PG_DB_VERSION) {
-                validationErrors.add(ls.getMessage("error.unsupported_db", pgVersion, MIN_PG_DB_VERSION_STRING));
-                log.error(ls.getMessage("error.unsupported_db", pgVersion, MIN_PG_DB_VERSION_STRING));
+                validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
+                log.error(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
             }
-            else if (!ConfigDefaults.get().isUyuni() && serverVersion < 100001 && osVersion >= 12.4) {
-                validationErrors.add(ls.getMessage("error.unsupported_db_on_os", pgVersion, osName, "10"));
-                log.error(ls.getMessage("error.unsupported_db_on_os", pgVersion, osName, "10"));
+            else if (serverVersion > MAX_PG_DB_VERSION) {
+                validationErrors.add(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
+                log.error(ls.getMessage("error.unsupported_db_max", pgVersion, MAX_PG_DB_VERSION_STRING));
+            }
+            else if (osVersion >= OS_VERSION_CHECK && serverVersion < OS_VERSION_MIN_DB_VERSION) {
+                validationErrors.add(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
+                        OS_VERSION_WANTED_DB_VERSION));
+                log.error(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
+                        OS_VERSION_WANTED_DB_VERSION));
             }
         }
         return validationErrors;

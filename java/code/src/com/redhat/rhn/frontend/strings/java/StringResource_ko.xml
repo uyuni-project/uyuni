@@ -1435,12 +1435,6 @@
         </context-group>
         <target>암호 확인</target>
       </trans-unit>
-      <trans-unit id="error.unsupported_db">
-        <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
-      </trans-unit>
-      <trans-unit id="error.unsupported_db_on_os">
-        <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
-      </trans-unit>
       <trans-unit id="error.invalid_login">
         <source>Either the password or username is incorrect.</source>
         <context-group name="ctx">
