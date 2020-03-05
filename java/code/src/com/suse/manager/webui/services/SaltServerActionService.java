@@ -54,6 +54,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
@@ -360,6 +361,11 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
             KickstartInitiateAction autoInitAction = (KickstartInitiateAction)actionIn;
             return autoinstallInitAction(minions, autoInitAction);
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_REFRESH.equals(actionType)) {
+            VirtualizationPoolRefreshAction refreshAction =
+                    (VirtualizationPoolRefreshAction)actionIn;
+            return virtPoolRefreshAction(minions, refreshAction.getPoolName());
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1642,6 +1648,26 @@ public class SaltServerActionService {
             ksActionDetails.setUpgrade(true);
         }
         ret.put(State.apply(Arrays.asList(KICKSTART_INITIATE), Optional.of(pillar)), minions);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtPoolRefreshAction(
+            List<MinionSummary> minionSummaries, String poolName) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_name", poolName);
+
+                    return State.apply(
+                            Collections.singletonList("virt.pool-refreshed"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
 
         return ret;
     }
