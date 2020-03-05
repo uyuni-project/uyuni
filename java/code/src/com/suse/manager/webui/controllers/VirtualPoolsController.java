@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
@@ -49,6 +50,7 @@ import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.VirtualPoolBaseActionJson;
+import com.suse.manager.webui.utils.gson.VirtualPoolCreateActionJson;
 import com.suse.manager.webui.utils.gson.VirtualPoolDeleteActionJson;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
@@ -119,6 +121,8 @@ public class VirtualPoolsController {
                 withUser(this::poolStop));
         post("/manager/api/systems/details/virtualization/pools/:sid/delete",
                 withUser(this::poolDelete));
+        post("/manager/api/systems/details/virtualization/pools/:sid/create",
+                withUser(this::poolCreate));
     }
 
     /**
@@ -298,6 +302,56 @@ public class VirtualPoolsController {
             }
             return action;
         }, VirtualPoolDeleteActionJson.class);
+    }
+
+    /**
+     * Executes the POST query to create a virtual pool.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String poolCreate(Request request, Response response, User user) {
+        return poolCreateOrUpdate(request, response, user, null);
+    }
+
+    /**
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @param actionName the display name of the action. If null, default to the one from the ActionType
+     * @return JSON list of created action IDs
+     */
+    public String poolCreateOrUpdate(Request request, Response response, User user, String actionName) {
+        return poolAction(request, response, user, (data) -> {
+            VirtualizationPoolCreateAction action = (VirtualizationPoolCreateAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_CREATE);
+            String displayName = actionName != null ? actionName : action.getActionType().getName();
+            action.setName(displayName + ": " + String.join(",", data.getPoolNames()));
+
+            VirtualPoolCreateActionJson createData = (VirtualPoolCreateActionJson)data;
+
+            if (createData.getPoolNames().isEmpty()) {
+                throw new IllegalArgumentException("pool names needs to contain an element");
+            }
+
+            action.setUuid(createData.getUuid());
+            action.setPoolName(createData.getPoolNames().get(0));
+            action.setType(createData.getType());
+            action.setAutostart(createData.isAutostart());
+            if (createData.getTarget() != null) {
+                action.setTarget(createData.getTarget().getPath());
+                action.setOwner(createData.getTarget().getOwner());
+                action.setGroup(createData.getTarget().getGroup());
+                action.setMode(createData.getTarget().getMode());
+                action.setSeclabel(createData.getTarget().getSeclabel());
+            }
+            action.setSource(createData.getSource());
+
+            return action;
+        }, VirtualPoolCreateActionJson.class);
     }
 
     /**
