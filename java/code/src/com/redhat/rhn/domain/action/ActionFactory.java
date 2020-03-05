@@ -49,6 +49,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
@@ -445,6 +446,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_STOP)) {
             retval = new VirtualizationPoolStopAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_DELETE)) {
+            retval = new VirtualizationPoolDeleteAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -923,6 +927,7 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_SHUTDOWN) ||
                 actionType.equals(TYPE_VIRTUALIZATION_START) ||
                 actionType.equals(TYPE_VIRTUALIZATION_SUSPEND) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_DELETE) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_START) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP);
@@ -1292,5 +1297,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_POOL_STOP =
             lookupActionTypeByLabel("virt.pool_stop");
+
+    /**
+     * The constant representing "Deletes a virtual storage pool." [ID:512]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_DELETE =
+            lookupActionTypeByLabel("virt.pool_delete");
 }
 
