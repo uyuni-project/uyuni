@@ -202,6 +202,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until the tree item "test-pool0" has no sub-list
 
 @virthost_kvm
+  Scenario: Stop a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Stop" in tree item "test-pool0"
+    And I wait until the tree item "test-pool0" contains "inactive" text
+
+@virthost_kvm
   Scenario: Start a virtual storage pool for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
