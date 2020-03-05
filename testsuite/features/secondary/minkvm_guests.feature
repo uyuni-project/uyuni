@@ -242,6 +242,19 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And file "/var/lib/libvirt/images/test-pool1" should have 755 permissions on "kvm_server"
 
 @virthost_kvm
+  Scenario: Edit a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Edit Pool" in tree item "test-pool1"
+    And I wait until I see "General" text
+    And I enter "0711" as "target_mode"
+    And I check "autostart"
+    And I click on "Update"
+    Then I should see a "Virtual Storage Pools and Volumes" text
+    And I wait until the tree item "test-pool1" contains "test-pool1 is started automatically" button
+    And file "/var/lib/libvirt/images/test-pool1" should have 711 permissions on "kvm_server"
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
