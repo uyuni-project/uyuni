@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -47,6 +49,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSchedulePollerAction;
@@ -68,10 +71,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -85,8 +89,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -432,6 +434,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_CREATE)) {
             retval = new VirtualizationCreateAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_REFRESH)) {
+            retval = new VirtualizationPoolRefreshAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -909,7 +914,8 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_SET_VCPUS) ||
                 actionType.equals(TYPE_VIRTUALIZATION_SHUTDOWN) ||
                 actionType.equals(TYPE_VIRTUALIZATION_START) ||
-                actionType.equals(TYPE_VIRTUALIZATION_SUSPEND);
+                actionType.equals(TYPE_VIRTUALIZATION_SUSPEND) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH);
     }
 
     /**
@@ -1258,5 +1264,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_CREATE =
             lookupActionTypeByLabel("virt.create");
+
+    /**
+     * The constant representing "Refresh a virtual storage pool." [ID:509]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_REFRESH =
+            lookupActionTypeByLabel("virt.pool_refresh");
 }
 
