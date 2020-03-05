@@ -1,6 +1,8 @@
 /* eslint-disable */
 'use strict';
 
+import {Button} from "components/buttons";
+
 const React = require("react");
 const ReactDOM = require("react-dom");
 const {DisplayHighstate} = require("./display-highstate");
@@ -11,6 +13,7 @@ const AsyncButton = require("components/buttons").AsyncButton;
 const {Toggler} = require("components/toggler");
 const Network = require("utils/network");
 const { InnerPanel } = require('components/panels/InnerPanel');
+const {RecurringStatesEdit} =  require("./recurring-states-edit");
 const Functions = require("utils/functions");
 const Formats = Functions.Formats;
 const {ActionLink, ActionChainLink} = require("components/links");
@@ -77,20 +80,50 @@ class Highstate extends React.Component {
         this.setState({actionChain: actionChain})
     };
 
+    onMessageChanged = (message) => {
+        this.setState({messages: message});
+    };
+
+    handleForwardAction = (action) => {
+        const loc = window.location;
+        if(action === "back") {
+            history.pushState(null, null, loc.pathname + loc.search);
+            this.setState({
+               action: undefined
+            });
+        } else {
+            const pathname = loc.pathname.replace("highstate", "states/schedules");
+            Functions.Utils.urlBounce(pathname + loc.search);
+        }
+    };
+
     toggleTestState = () => {
         this.setState({test: !this.state.test})
     };
 
+    isSSM = () => {
+        return !!window.location.pathname.match("/ssm/");
     };
 
     render() {
         const messages = this.state.messages.length > 0 ? <Messages items={this.state.messages}/> : null;
         const buttons = [
             <div className="btn-group pull-right">
-              <Toggler text={t('Test mode')} value={this.state.test} className="btn" handler={this.toggleTestState.bind(this)} />
-              <AsyncButton action={this.applyHighstate} defaultType="btn-success" text={t("Apply Highstate")} disabled={minions.length === 0} />
+                <Toggler text={t('Test mode')} value={this.state.test} className="btn" handler={this.toggleTestState.bind(this)} />
+                <AsyncButton action={this.applyHighstate} defaultType="btn-success" text={t("Apply Highstate")} disabled={minions.length === 0} />
             </div>
-            ];
+        ];
+        const buttonsLeft = [
+            <Button
+                className="btn-default"
+                icon="fa-plus"
+                text={t("Create Recurring")}
+                title="Schedule a new Recurring Highstate"
+                handler={() => {
+                    history.pushState(null, null, "#/create");
+                    this.setState({action: "create"});}}
+            />
+        ];
         const showHighstate = [
             <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} buttonsLeft={this.isSSM() ? undefined : buttonsLeft}>
                 <div className="panel panel-default">
@@ -114,18 +147,11 @@ class Highstate extends React.Component {
         return (
             <div>
                 {messages}
-                <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} >
-
-                <ActionSchedule timezone={timezone} localTime={localTime}
-                   earliest={this.state.earliest}
-                   actionChains={actionChains}
-                   actionChain={this.state.actionChain}
-                   onActionChainChanged={this.onActionChainChanged}
-                   onDateTimeChanged={this.onDateTimeChanged}/>
-
+                { this.state.action === "create" ?
+                    <RecurringStatesEdit onActionChanged={this.handleForwardAction}
+                                         onMessageChanged={this.onMessageChanged}/> :
                     showHighstate
                 }
-              </InnerPanel>
             </div>
         );
     }
