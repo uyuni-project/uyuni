@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
@@ -48,6 +49,7 @@ import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.VirtualPoolBaseActionJson;
+import com.suse.manager.webui.utils.gson.VirtualPoolDeleteActionJson;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
 
@@ -115,6 +117,8 @@ public class VirtualPoolsController {
                 withUser(this::poolStart));
         post("/manager/api/systems/details/virtualization/pools/:sid/stop",
                 withUser(this::poolStop));
+        post("/manager/api/systems/details/virtualization/pools/:sid/delete",
+                withUser(this::poolDelete));
     }
 
     /**
@@ -272,6 +276,28 @@ public class VirtualPoolsController {
             action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
             return action;
         });
+    }
+
+    /**
+     * Executes the POST query to delete a set of virtual pools.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String poolDelete(Request request, Response response, User user) {
+        return poolAction(request, response, user, (data) -> {
+            VirtualizationPoolDeleteAction action = (VirtualizationPoolDeleteAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_DELETE);
+            action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
+
+            VirtualPoolDeleteActionJson deleteData = (VirtualPoolDeleteActionJson)data;
+            if (deleteData.getPurge() != null) {
+                action.setPurge(deleteData.getPurge());
+            }
+            return action;
+        }, VirtualPoolDeleteActionJson.class);
     }
 
     /**
