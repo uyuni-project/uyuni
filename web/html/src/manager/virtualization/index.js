@@ -5,5 +5,6 @@ export default {
   'virtualization/guests/console/guests-console': () => import('./guests/console/guests-console.renderer'),
   'virtualization/pools/list/pools-list': () => import('./pools/list/pools-list.renderer'),
   'virtualization/pools/create/pools-create': () => import('./pools/create/pools-create.renderer'),
+  'virtualization/pools/edit/pools-edit': () => import('./pools/edit/pools-edit.renderer'),
 }
 

@@ -247,6 +247,12 @@ export function PoolsList(props: Props) {
                           />
                         )
                       }
+                      <LinkButton
+                        title={t('Edit Pool')}
+                        className="btn-default btn-sm"
+                        icon="fa-edit"
+                        href={`/rhn/manager/systems/details/virtualization/storage/${props.serverId}/edit/${pool.name}`}
+                      />
                       <ModalButton
                         className="btn-default btn-sm"
                         title={t("Delete")}
