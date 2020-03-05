@@ -93,10 +93,6 @@ class RecurringStatesEdit extends React.Component {
         this.setState({test: !this.state.test});
     };
 
-    resetFields = () => {
-        /* TODO: Write implementation */
-    };
-
     render() {
         const buttons = [
                 <div className="btn-group pull-right">
@@ -107,7 +103,6 @@ class RecurringStatesEdit extends React.Component {
         const buttonsLeft = [
                 <div className="btn-group pull-left">
                     <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back")}  handler={() => {this.props.onActionChanged("back")}}/>
-                    <Button id="reset-btn" className="btn-default" icon="fa-eraser" text={t("Reset fields")} handler={this.resetFields}/>
                 </div>
                 ];
 
