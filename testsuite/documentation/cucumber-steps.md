@@ -352,6 +352,7 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I wait until table row for "test-vm" contains button "Resume"
+  When I wait until the tree item "test-pool1" contains "test-pool1 is started automatically" button
 ```
 
 

@@ -479,6 +479,12 @@ When(/^I wait until the tree item "([^"]+)" contains "([^"]+)" text$/) do |item,
   end
 end
 
+When(/^I wait until the tree item "([^"]+)" contains "([^"]+)" button$/) do |item, button|
+  xpath_query = "//span[contains(text(), '#{item}')]/"\
+      "ancestor::div[contains(@class, 'product-details-wrapper')]/descendant::*[@title='#{button}']"
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
+end
+
 When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
