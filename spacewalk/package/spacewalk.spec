@@ -158,6 +158,8 @@ Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
 Requires:       postgresql10
 Requires:       postgresql10-contrib
+Conflicts:      postgresql12
+Conflicts:      postgresql12-contrib
 %else
 Requires:       postgresql >= 10
 Requires:       postgresql-contrib >= 10
