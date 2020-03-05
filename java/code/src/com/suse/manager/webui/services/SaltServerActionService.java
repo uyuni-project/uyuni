@@ -1868,6 +1868,7 @@ public class SaltServerActionService {
                         }
                         pillar.put("source", source);
                     }
+                    pillar.put("action_type", action.getUuid() != null ? "defined" : "running");
 
                     return State.apply(
                             Collections.singletonList("virt.pool-create"),
