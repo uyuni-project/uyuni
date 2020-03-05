@@ -202,6 +202,16 @@ export function PoolsList(props: Props) {
                           />
                         )
                       }
+                      { pool.state === 'running'
+                        && (
+                          <AsyncButton
+                              defaultType="btn-default btn-sm"
+                              title={t("Stop")}
+                              icon="fa-stop"
+                              action={() => onAction('stop', [pool.name], {})}
+                          />
+                        )
+                      }
                     </div>
                   </CustomDiv>,
                 ];
