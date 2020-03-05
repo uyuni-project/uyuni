@@ -138,11 +138,6 @@ Before('@skip_for_minion') do |scenario|
   skip_this_scenario if scenario.feature.location.file.include? 'minion'
 end
 
-# do some tests only if we have SCC credentials
-Before('@scc_credentials') do
-  skip_this_scenario unless $scc_credentials
-end
-
 # do some tests only if there is a private network
 Before('@private_net') do
   skip_this_scenario unless $private_net
