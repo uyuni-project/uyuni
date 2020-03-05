@@ -39,7 +39,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;

@@ -27,7 +27,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;

@@ -69,7 +69,7 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;

@@ -17,7 +17,7 @@ package com.suse.manager.webui.controllers;
 import static spark.Spark.halt;
 
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 import org.apache.commons.io.IOUtils;

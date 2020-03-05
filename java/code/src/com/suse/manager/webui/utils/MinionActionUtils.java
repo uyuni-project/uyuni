@@ -33,7 +33,7 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;

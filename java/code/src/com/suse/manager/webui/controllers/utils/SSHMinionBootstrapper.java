@@ -23,7 +23,7 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;

@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;

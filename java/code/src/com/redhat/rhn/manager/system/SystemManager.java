@@ -89,7 +89,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.RandomStringUtils;

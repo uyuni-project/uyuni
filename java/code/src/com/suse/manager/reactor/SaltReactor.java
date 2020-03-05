@@ -52,7 +52,7 @@ import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.impl.SystemQuery;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.MinionStartEvent;
 import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
