@@ -61,10 +61,8 @@ class RecurringStates extends React.Component {
     }
 
     updateView(action, id) {
-        if ((action === "edit" || action === "details") && id) {
-            this.getScheduleDetails(id, action);
-        } else if (!action) {
-            this.getRecurringScheduleList();
+        if (id || !action) {
+            this.handleForwardAction();
         } else {
             this.setState({action: action});
         }
