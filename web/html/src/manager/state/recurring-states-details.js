@@ -87,6 +87,7 @@ class RecurringStatesDetails extends React.Component {
     showScheduleDetails(data) {
         data.cronTimes.hour = data.cronTimes.hour.padStart(2, "0");
         data.cronTimes.minute = data.cronTimes.minute.padStart(2, "0");
+
         return (
             <BootstrapPanel title={t("Schedule Details")}>
                 <div className="table-responsive">
@@ -94,7 +95,7 @@ class RecurringStatesDetails extends React.Component {
                         <tbody>
                         <tr>
                             <td>{t("State:")}</td>
-                            <td>{data.active === "true" ? t("active") : <b>{t("disabled")}</b>}</td>
+                            <td>{ (data.active) ? t("Active") : <b>{t("Inactive")}</b>}</td>
                         </tr>
                         { data.test === "true" &&
                         <tr>
