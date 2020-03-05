@@ -44,7 +44,7 @@ Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
 BuildRequires:  python
-Requires:       python >= 2.3
+Requires:       python >= 3
 Requires:       spacewalk-setup
 
 # Java
