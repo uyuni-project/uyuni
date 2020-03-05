@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -109,6 +110,8 @@ public class VirtualPoolsController {
                 withUser(this::getPool));
         post("/manager/api/systems/details/virtualization/pools/:sid/refresh",
                 withUser(this::poolRefresh));
+        post("/manager/api/systems/details/virtualization/pools/:sid/start",
+                withUser(this::poolStart));
     }
 
     /**
@@ -229,6 +232,23 @@ public class VirtualPoolsController {
         return poolAction(request, response, user, (data) -> {
             VirtualizationPoolRefreshAction action = (VirtualizationPoolRefreshAction)
                     ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_REFRESH);
+            action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
+            return action;
+        });
+    }
+
+    /**
+     * Executes the POST query to start a set of virtual pools.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String poolStart(Request request, Response response, User user) {
+        return poolAction(request, response, user, (data) -> {
+            VirtualizationPoolStartAction action = (VirtualizationPoolStartAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_START);
             action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
             return action;
         });
