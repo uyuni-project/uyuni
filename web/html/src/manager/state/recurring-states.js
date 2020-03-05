@@ -69,8 +69,8 @@ class RecurringStates extends React.Component {
         this.clearMessages();
     }
 
-    isFiltered = () => {
-        return !!this.state.minionIds;
+    isFilteredList = () => {
+        return !!inferEntityParams();
     };
 
     getRecurringScheduleList = () => {
@@ -206,7 +206,7 @@ class RecurringStates extends React.Component {
                                             onDelete={this.deleteSchedule}
                     />
                     : (this.state.action === 'edit' && this.state.selected) ||
-                    (this.state.action === 'create' && this.isFiltered()) ? [
+                    (this.state.action === 'create' && this.isFilteredList()) ? [
                             notification,
                             <RecurringStatesEdit schedule={this.state.selected}
                                                  onEdit={this.updateSchedule}
@@ -214,7 +214,7 @@ class RecurringStates extends React.Component {
                             /> ]
                         :
                         <RecurringStatesList data={this.state.schedules}
-                                             disableCreate={!this.isFiltered()}
+                                             disableCreate={!this.isFilteredList()}
                                              onActionChanged={this.handleForwardAction}
                                              onToggleActive={this.toggleActive}
                                              onSkip={this.skipNext}
