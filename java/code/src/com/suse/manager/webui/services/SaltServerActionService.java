@@ -55,6 +55,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDis
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
@@ -366,6 +367,11 @@ public class SaltServerActionService {
             VirtualizationPoolRefreshAction refreshAction =
                     (VirtualizationPoolRefreshAction)actionIn;
             return virtPoolRefreshAction(minions, refreshAction.getPoolName());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_START.equals(actionType)) {
+            VirtualizationPoolStartAction startAction =
+                    (VirtualizationPoolStartAction)actionIn;
+            return virtPoolStateChangeAction(minions, startAction.getPoolName(), "start");
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1729,6 +1735,27 @@ public class SaltServerActionService {
             }
         }
         return string.toString();
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtPoolStateChangeAction(
+            List<MinionSummary> minionSummaries, String poolName, String state) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_state", state);
+                    pillar.put("pool_name", poolName);
+
+                    return State.apply(
+                            Collections.singletonList("virt.pool-statechange"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
     }
 
     /**
