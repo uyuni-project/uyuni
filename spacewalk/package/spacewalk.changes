@@ -1,3 +1,4 @@
+- explicitly require postgresql10 package
 - drop unused oracle subpackage
 
 -------------------------------------------------------------------
