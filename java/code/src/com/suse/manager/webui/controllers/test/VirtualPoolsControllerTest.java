@@ -14,12 +14,16 @@
  */
 package com.suse.manager.webui.controllers.test;
 
-import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 
-import com.google.gson.JsonObject;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -30,7 +34,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
@@ -40,11 +44,14 @@ import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 
+import org.hamcrest.collection.IsMapContaining;
 import org.jmock.Expectations;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 
 public class VirtualPoolsControllerTest extends BaseControllerTestCase {
@@ -108,6 +115,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
+        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Paris"));
     }
 
     public void testData() {
@@ -142,5 +150,40 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(pType.getOptions().getPool().getSourceFormatType().contains("iso9660"));
         assertEquals("raw", pType.getOptions().getVolume().getDefaultFormat());
         assertTrue(pType.getOptions().getVolume().getTargetFormatType().contains("cloop"));
+    }
+
+    @SuppressWarnings("unchecked")
+    public void testRefresh() throws Exception {
+        VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
+        String json = virtualPoolsController.poolRefresh(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/pools/:sid/refresh",
+                                              "{poolNames: [\"pool0\", \"pool1\"]}",
+                                              host.getId()),
+                response, user);
+
+        // Ensure the two refresh actions are queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(2, actions.size());
+        assertTrue(actions.stream().allMatch(action -> action.getTypeName().equals(
+                ActionFactory.TYPE_VIRTUALIZATION_POOL_REFRESH.getName())));
+
+        List<String> actionsPools = actions.stream().map(scheduled -> {
+            Action action = ActionManager.lookupAction(user, scheduled.getId());
+            VirtualizationPoolRefreshAction virtAction = (VirtualizationPoolRefreshAction)action;
+            return virtAction.getPoolName();
+        }).collect(Collectors.toList());
+        assertTrue(containsInAnyOrder("pool0", "pool1").matches(actionsPools));
+
+        // Check the returned message
+        Map<String, Long> actionsIds = actions.stream().collect(Collectors.toMap(
+                scheduled -> {
+                    Action action = ActionManager.lookupAction(user, scheduled.getId());
+                    VirtualizationPoolRefreshAction virtAction = (VirtualizationPoolRefreshAction)action;
+                    return virtAction.getPoolName();
+                },
+                scheduled -> scheduled.getId()));
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("pool0", actionsIds.get("pool0")).matches(model));
+        assertTrue(IsMapContaining.hasEntry("pool1", actionsIds.get("pool1")).matches(model));
     }
 }

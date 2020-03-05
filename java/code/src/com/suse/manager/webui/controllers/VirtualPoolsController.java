@@ -19,26 +19,47 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
+import com.google.gson.JsonParseException;
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.utils.MinionActionUtils;
+import com.suse.manager.webui.utils.gson.VirtualPoolBaseActionJson;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -54,6 +75,15 @@ import spark.template.jade.JadeTemplateEngine;
 public class VirtualPoolsController {
 
     private final VirtManager virtManager;
+
+    private static final Logger LOG = Logger.getLogger(VirtualPoolsController.class);
+
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .serializeNulls()
+            .create();
 
     /**
      * Controller class providing backend for Virtual storage pools UI
@@ -77,6 +107,8 @@ public class VirtualPoolsController {
                 withUser(this::getCapabilities));
         get("/manager/api/systems/details/virtualization/pools/:sid/pool/:name",
                 withUser(this::getPool));
+        post("/manager/api/systems/details/virtualization/pools/:sid/refresh",
+                withUser(this::poolRefresh));
     }
 
     /**
@@ -157,7 +189,7 @@ public class VirtualPoolsController {
         return json(response, caps);
     }
 
-/**
+    /**
      * Executes the GET query to extract the pool definition
      *
      * @param request the request
@@ -186,6 +218,23 @@ public class VirtualPoolsController {
     }
 
     /**
+     * Executes the POST query to refresh a set of virtual pools.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String poolRefresh(Request request, Response response, User user) {
+        return poolAction(request, response, user, (data) -> {
+            VirtualizationPoolRefreshAction action = (VirtualizationPoolRefreshAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_POOL_REFRESH);
+            action.setName(action.getActionType().getName() + ": " + String.join(",", data.getPoolNames()));
+            return action;
+        });
+    }
+
+    /**
      * Displays a page server-related virtual page
      *
      * @param request the request
@@ -195,7 +244,7 @@ public class VirtualPoolsController {
      * @param modelExtender provides additional properties to pass to the Jade template
      * @return the ModelAndView object to render the page
      */
-    private static ModelAndView renderPage(Request request, Response response, User user,
+    private ModelAndView renderPage(Request request, Response response, User user,
                                           String template,
                                           Supplier<Map<String, Object>> modelExtender) {
         Map<String, Object> data = new HashMap<>();
@@ -227,5 +276,69 @@ public class VirtualPoolsController {
         /* For the rest of the template */
 
         return new ModelAndView(data, String.format("templates/virtualization/pools/%s.jade", template));
+    }
+
+    private String poolAction(Request request, Response response, User user,
+            Function<VirtualPoolBaseActionJson, BaseVirtualizationPoolAction> actionCreator) {
+        return poolAction(request, response, user, actionCreator, VirtualPoolBaseActionJson.class);
+    }
+
+    private String poolAction(Request request, Response response, User user,
+            Function<VirtualPoolBaseActionJson, BaseVirtualizationPoolAction> actionCreator,
+            Class<? extends VirtualPoolBaseActionJson> jsonClass) {
+        Long serverId;
+
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+
+        VirtualPoolBaseActionJson data;
+        try {
+            data = GSON.fromJson(request.body(), jsonClass);
+        }
+        catch (JsonParseException e) {
+            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+
+        if (!data.getPoolNames().isEmpty()) {
+            Map<String, String> actionsResults = data.getPoolNames().stream().collect(
+                    Collectors.toMap(Function.identity(),
+                poolName -> {
+                    return scheduleAction(poolName, user, host, actionCreator, data);
+                }
+            ));
+            return json(response, actionsResults);
+        }
+
+        String result = scheduleAction(null, user, host, actionCreator, data);
+        return json(response, result);
+    }
+
+    private String scheduleAction(String poolName, User user, Server host,
+            Function<VirtualPoolBaseActionJson, BaseVirtualizationPoolAction> actionCreator,
+            VirtualPoolBaseActionJson data) {
+        BaseVirtualizationPoolAction action = actionCreator.apply(data);
+        action.setOrg(user.getOrg());
+        action.setSchedulerUser(user);
+        action.setEarliestAction(MinionActionUtils.getScheduleDate(data.getEarliest()));
+        action.setPoolName(poolName);
+
+        Optional<ActionChain> actionChain = data.getActionChain()
+                .filter(StringUtils::isNotEmpty)
+                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user));
+
+        String status = "Failed";
+        try {
+            VirtualizationActionCommand.schedule(action, host, actionChain);
+            status = action.getId().toString();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Could not schedule virtualization action:", e);
+        }
+        return status;
     }
 }
