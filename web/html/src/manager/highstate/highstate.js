@@ -3,6 +3,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
+const {DisplayHighstate} = require("./display-highstate");
 const Messages = require("components/messages").Messages;
 const MessagesUtils = require("components/messages").Utils;
 const {ActionSchedule} = require("components/action-schedule");
@@ -19,94 +20,6 @@ const messagesCounterLimit = 3;
 
 function msg(severityIn, textIn) {
     return {severity: severityIn, text: textIn};
-}
-
-function requestHighstate(id) {
-    return Network.get("/rhn/manager/api/states/highstate?sid=" + id).promise;
-}
-
-class MinionHighstateSingle extends React.Component {
-    state = {};
-
-    getHighstate = () => {
-        requestHighstate(this.props.data.id).then(data => {
-            this.setState({highstate: data});
-        });
-    };
-
-    UNSAFE_componentWillMount() {
-        this.getHighstate();
-    }
-
-    render() {
-        return (
-            <div className="panel panel-default">
-                <div className="panel-heading">
-                    <h4>{t("Highstate for {0}", this.props.data.name)}</h4>
-                </div>
-                <div className="panel-body">
-                    { this.state.highstate ?
-                        <pre>
-                            {this.state.highstate}
-                        </pre>
-                        : <span>Retrieving highstate data...</span>
-                    }
-                </div>
-            </div>
-        );
-    }
-}
-
-class MinionHighstate extends React.Component {
-    state = {show: false};
-
-    getHighstate = () => {
-        if(this.state.loading) return;
-        this.setState({loading: true});
-
-        requestHighstate(this.props.data.id).then(data => {
-            this.setState({highstate: data});
-        });
-    };
-
-    componentDidMount() {
-        if(this.state.show) {
-            this.getHighstate();
-        }
-    }
-
-    expand = () => {
-        this.getHighstate();
-        this.setState({show: !this.state.show});
-    };
-
-    render() {
-        return (
-            <div className="panel panel-default">
-                <div className="panel-heading" onClick={this.expand} style={{cursor: "pointer"}}>
-                    <span>
-                        {this.props.data.name}
-                    </span>
-                    <div className="pull-right">
-                        {this.state.show
-                            ? <i className="fa fa-right fa-chevron-up fa-1-5x"/>
-                            : <i className="fa fa-right fa-chevron-down fa-1-5x"/>
-                        }
-                    </div>
-                </div>
-                { this.state.show &&
-                <div className="panel-body">
-                    { this.state.highstate ?
-                        <pre>
-                            {this.state.highstate}
-                        </pre>
-                        : <span>Retrieving highstate data...</span>
-                    }
-                </div>
-                }
-            </div>
-        );
-    }
 }
 
 class Highstate extends React.Component {
@@ -168,12 +81,6 @@ class Highstate extends React.Component {
         this.setState({test: !this.state.test})
     };
 
-    renderMinions = () => {
-        const minionList = [];
-        for(var system of minions) {
-            minionList.push(<MinionHighstate data={system}/>);
-        }
-        return minionList;
     };
 
     render() {
@@ -184,6 +91,26 @@ class Highstate extends React.Component {
               <AsyncButton action={this.applyHighstate} defaultType="btn-success" text={t("Apply Highstate")} disabled={minions.length === 0} />
             </div>
             ];
+        const showHighstate = [
+            <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} buttonsLeft={this.isSSM() ? undefined : buttonsLeft}>
+                <div className="panel panel-default">
+                    <div className="panel-heading">
+                        <div>
+                            <h3>Apply Highstate</h3>
+                        </div>
+                    </div>
+                    <div className="panel-body">
+                        <ActionSchedule timezone={timezone} localTime={localTime}
+                                        earliest={this.state.earliest}
+                                        actionChains={actionChains}
+                                        actionChain={this.state.actionChain}
+                                        onActionChainChanged={this.onActionChainChanged}
+                                        onDateTimeChanged={this.onDateTimeChanged}/>
+                    </div>
+                </div>
+                <DisplayHighstate />
+            </InnerPanel>
+        ];
         return (
             <div>
                 {messages}
@@ -196,22 +123,7 @@ class Highstate extends React.Component {
                    onActionChainChanged={this.onActionChainChanged}
                    onDateTimeChanged={this.onDateTimeChanged}/>
 
-                { minions.length === 1 ?
-                    <MinionHighstateSingle data={minions[0]}/>
-                    : <div className="panel panel-default">
-                        <div className="panel-heading">
-                            <h4>Target Systems ({minions.length})</h4>
-                        </div>
-                        { minions.length === 0 ?
-                        <div className="panel-body">
-                            {t("There are no applicable systems.")}
-                        </div>
-                        :
-                        <div className="panel-body" style={{paddingBottom: 0}}>
-                            {this.renderMinions()}
-                        </div>
-                        }
-                    </div>
+                    showHighstate
                 }
               </InnerPanel>
             </div>
