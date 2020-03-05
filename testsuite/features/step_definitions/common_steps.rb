@@ -473,6 +473,12 @@ When(/I wait until the tree item "([^"]+)" has no sub-list/) do |item|
   end
 end
 
+When(/^I wait until the tree item "([^"]+)" contains "([^"]+)" text$/) do |item, text|
+  within(:xpath, "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]") do
+    raise "could not find text #{text} for tree item #{item}" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+  end
+end
+
 And(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
