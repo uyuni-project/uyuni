@@ -226,6 +226,22 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And file "/var/lib/libvirt/images/test-pool0" should not exist on "kvm_server"
 
 @virthost_kvm
+  Scenario: Create a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I follow "Create Pool"
+    And I wait until I see "General" text
+    And I select "dir" from "type"
+    And I enter "test-pool1" as "name"
+    And I uncheck "autostart"
+    And I enter "/var/lib/libvirt/images/test-pool1" as "target_path"
+    And I enter "0755" as "target_mode"
+    And I click on "Create"
+    Then I should see a "Virtual Storage Pools and Volumes" text
+    And I wait until the tree item "test-pool1" contains "running" text
+    And file "/var/lib/libvirt/images/test-pool1" should have 755 permissions on "kvm_server"
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
@@ -248,6 +264,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete test-net0 virtual network on "kvm_server" without error control
     And I delete test-net1 virtual network on "kvm_server" without error control
     And I delete test-pool0 virtual storage pool on "kvm_server" without error control
+    And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
     # Remove the virtpoller cache to avoid problems
     And I run "rm /var/cache/virt_state.cache" on "kvm_server" without error control
