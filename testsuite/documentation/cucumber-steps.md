@@ -231,6 +231,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I wait until I see "Successfully bootstrapped host!" text
   When I wait until I do not see "Loading..." text
   When I wait at most 360 seconds until I see "Product Description" text
+  When I wait until the tree item "test-pool0" contains "inactive" text
 ```
 
 * Same, but re-issue HTTP requests to refresh the page
