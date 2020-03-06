@@ -9,6 +9,19 @@ const {Toggler} = require("components/toggler");
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
 const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
 
+// todo extract to utils
+const targetTypeToString = (targetType) => {
+    switch(targetType) {
+        case "MINION":
+            return "Minion";
+        case "GROUP":
+            return "Group";
+        case "ORG":
+            return "Organization";
+    }
+    return null;
+}
+
 class RecurringStatesList extends React.Component {
 
     constructor(props) {
@@ -37,7 +50,7 @@ class RecurringStatesList extends React.Component {
                         </td>
                         <td className="text-center">{row.scheduleName}</td>
                         <td className="text-center">{row.cron}</td>
-                        {this.props.disableCreate ? <td className="text-center">{row.targetType}</td> : null}
+                        {this.props.disableCreate ? <td className="text-center">{t(targetTypeToString(row.targetType))}</td> : null}
                         <td className="text-right">
                             <div className="btn-group">
                                 <Button

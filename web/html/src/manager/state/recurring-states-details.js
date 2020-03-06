@@ -10,6 +10,19 @@ const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 const {Messages} = require("components/messages");
 const {DisplayHighstate} = require("./display-highstate");
 
+// todo extract to utils
+const targetTypeToString = (targetType) => {
+    switch(targetType) {
+        case "MINION":
+            return "Minion";
+        case "GROUP":
+            return "Group";
+        case "ORG":
+            return "Organization";
+    }
+    return null;
+}
+
 class RecurringStatesDetails extends React.Component {
 
     weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -91,7 +104,7 @@ class RecurringStatesDetails extends React.Component {
                         }
                         <tr>
                             <td>{t("Target type")}:</td>
-                            <td>{data.targetType}</td>
+                            <td>{t(targetTypeToString(data.targetType))}</td>
                         </tr>
                         {<tr>
                             <td>{t("Created at")}:</td>
