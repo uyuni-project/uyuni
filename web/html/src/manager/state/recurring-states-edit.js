@@ -45,7 +45,7 @@ class RecurringStatesEdit extends React.Component {
         }
         else if (window.entityType === "MINION") {
             Object.assign(this.state, {
-                targetType: entityType, // todo create a human readable representations
+                targetType: entityType,
                 targetId: minions[0].id
             });
         }
