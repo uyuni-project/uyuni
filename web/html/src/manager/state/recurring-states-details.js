@@ -28,30 +28,35 @@ class RecurringStatesDetails extends React.Component {
             return (
                 <tr>
                     <td>{t("Execution time")}:</td>
-                    {data.type === "daily" ?
+                    {data.type === "hourly" ?
                         <td>
-                            {"Every day at "}
-                            <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
+                            {"Every hour at minute "}
+                            <b>{data.cronTimes.minute}</b>
                         </td>
-                        : data.type === "weekly" ?
+                        : data.type === "daily" ?
                             <td>
-                                {"Every "}
-                                <b>{this.weekDays[data.cronTimes.dayOfWeek - 1]}</b>
-                                {" at "}
-                                <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
-                            </td> :
-                            <td>
-                                {"Every "}
-                                <b>
-                                    {data.cronTimes.dayOfMonth + (
-                                        data.cronTimes.dayOfMonth === "1" ? "st "
-                                            : data.cronTimes.dayOfMonth === "2" ? "nd "
-                                            : data.cronTimes.dayOfMonth === "3" ? "rd "
-                                                : "th ")}
-                                </b>
-                                {"of the month at "}
+                                {"Every day at "}
                                 <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
                             </td>
+                            : data.type === "weekly" ?
+                                <td>
+                                    {"Every "}
+                                    <b>{this.weekDays[data.cronTimes.dayOfWeek - 1]}</b>
+                                    {" at "}
+                                    <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
+                                </td> :
+                                <td>
+                                    {"Every "}
+                                    <b>
+                                        {data.cronTimes.dayOfMonth + (
+                                            data.cronTimes.dayOfMonth === "1" ? "st "
+                                                : data.cronTimes.dayOfMonth === "2" ? "nd "
+                                                : data.cronTimes.dayOfMonth === "3" ? "rd "
+                                                    : "th ")}
+                                    </b>
+                                    {"of the month at "}
+                                    <b>{data.cronTimes.hour + ":" + data.cronTimes.minute}</b>
+                                </td>
                     }
                 </tr>
             );
