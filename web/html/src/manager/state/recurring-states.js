@@ -73,7 +73,6 @@ class RecurringStates extends React.Component {
     };
 
     getRecurringScheduleList = () => {
-        // todo create different endpoints for each use case ("/rhn/manager/api/recurringactions/group/id")
         const entityParams = inferEntityParams();
         const endpoint = "/rhn/manager/api/recurringactions" + entityParams;
         return Network.get(endpoint, "application/json").promise
