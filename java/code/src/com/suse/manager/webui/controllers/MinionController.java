@@ -57,9 +57,6 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class MinionController {
 
-    // Reference to the SaltService instance
-    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
-
     private MinionController() { }
 
     /**
