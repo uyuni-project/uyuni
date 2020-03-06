@@ -46,7 +46,7 @@ class RecurringStatesList extends React.Component {
                 elements.push(
                     <tr>
                         <td>
-                            <Toggler value={row.active} className="btn" handler={() => {this.props.onToggleActive(row)}} />
+                            <Toggler value={row.active} className="btn" handler={() => this.props.onToggleActive(row)} />
                         </td>
                         <td className="text-center">{row.scheduleName}</td>
                         <td className="text-center">{row.cron}</td>
@@ -57,17 +57,13 @@ class RecurringStatesList extends React.Component {
                                     className="btn-default btn-sm"
                                     title={t("Details")}
                                     icon="fa-list"
-                                    handler={() => {
-                                        this.props.onSelect(row)
-                                    }}
+                                    handler={() =>  this.props.onSelect(row)}
                                 />
                                 <Button
                                     className="btn-default btn-sm"
                                     title={t("Edit")}
                                     icon="fa-edit"
-                                    handler={() => {
-                                        this.props.onEdit(row)
-                                    }}
+                                    handler={() => this.props.onEdit(row)}
                                 />
                                 <ModalButton
                                     className="btn-default btn-sm"
