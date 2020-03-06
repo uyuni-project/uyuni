@@ -43,7 +43,7 @@ Summary:        Spacewalk Systems Management Application with postgresql databas
 Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
-BuildRequires:  python
+BuildRequires:  python >= 3
 Requires:       python >= 3
 Requires:       spacewalk-setup
 
