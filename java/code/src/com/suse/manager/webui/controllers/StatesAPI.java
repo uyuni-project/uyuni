@@ -306,7 +306,9 @@ public class StatesAPI {
     }
 
     /**
-     * Checks if the given {@link Optional<T>} has value and unwraps it, otherwise halts Spark with a 404 status.
+     * Checks if the given {@link Optional Optional&lt;T&gt;} has value and unwraps it,
+     * otherwise halts Spark with a 404 status.
+     *
      * @param entity entity to check
      * @param <T> type of the entity
      * @return unwrapped entity of type T

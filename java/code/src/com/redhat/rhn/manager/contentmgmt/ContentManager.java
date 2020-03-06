@@ -214,7 +214,9 @@ public class ContentManager {
     public ContentEnvironment createEnvironment(String projectLabel, Optional<String> predecessorLabel,
             String label, String name, String description, boolean async, User user) {
         ensureOrgAdmin(user);
-        lookupEnvironment(label, projectLabel, user).ifPresent(e -> { throw new EntityExistsException(e); });
+        lookupEnvironment(label, projectLabel, user).ifPresent(e -> {
+            throw new EntityExistsException(e);
+        });
         return lookupProject(projectLabel, user)
                 .map(cp -> {
                     ContentEnvironment newEnv = new ContentEnvironment(label, name, description, cp);

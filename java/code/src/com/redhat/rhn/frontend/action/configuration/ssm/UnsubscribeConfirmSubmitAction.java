@@ -97,7 +97,8 @@ public class UnsubscribeConfirmSubmitAction extends RhnListDispatchAction {
                 try {
                     configChannelList.add(cm.lookupConfigChannel(user, ch.getElement()));
                 }
-                catch (LookupException ignored) { }
+                catch (LookupException ignored) {
+                }
             }
 
             server.unsubscribeConfigChannels(configChannelList, user);

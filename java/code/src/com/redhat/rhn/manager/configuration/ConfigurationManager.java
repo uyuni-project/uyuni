@@ -2383,7 +2383,7 @@ public class ConfigurationManager extends BaseManager {
     /**
      * From file id, get file.fileName and map to file-id
      * @param fileIds set of file-ids of interest
-     * @return Map<Long,Long> of file-id to cfn-id
+     * @return Map&lt;Long,Long&gt; of file-id to cfn-id
      */
     private Map mapFileToName(Set fileIds) {
         Map m = new HashMap();
@@ -2400,7 +2400,7 @@ public class ConfigurationManager extends BaseManager {
     /**
      * From file id, get file.latest-rev and map to file-id
      * @param fileIds set of file-ids of interest
-     * @return Map<Long,Long> of file-id to cr-id
+     * @return Map&lt;Long,Long&gt; of file-id to cr-id
      */
     private Map mapFileToRevId(Set fileIds) {
         Map m = new HashMap();

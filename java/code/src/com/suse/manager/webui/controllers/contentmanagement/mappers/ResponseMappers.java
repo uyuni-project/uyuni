@@ -82,7 +82,7 @@ public class ResponseMappers {
      * Map a list of db sources entities to a list of view response beans
      *
      * @param sourcesDB the list of db envs
-     * @return the List<EnvironmentResponse> view beans
+     * @return the List&lt;EnvironmentResponse&gt; view beans
      */
     public static List<ProjectSoftwareSourceResponse> mapSourcesFromDB(List<SoftwareProjectSource> sourcesDB) {
         return sourcesDB
@@ -103,7 +103,7 @@ public class ResponseMappers {
      * Map a list of db envs entities to a list of view response beans
      *
      * @param envsDB the list of db envs
-     * @return the List<EnvironmentResponse> view beans
+     * @return the List&lt;EnvironmentResponse&gt; view beans
      */
     public static List<EnvironmentResponse> mapEnvironmentsFromDB(List<ContentEnvironment> envsDB) {
         return envsDB
