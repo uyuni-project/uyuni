@@ -52,7 +52,7 @@ class RecurringStatesEdit extends React.Component {
     };
 
     isEdit = () => {
-        return !!this.props.schedule;
+        return this.props.schedule ? true : false;
     };
 
     onEdit = () => {

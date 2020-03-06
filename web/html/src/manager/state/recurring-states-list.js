@@ -92,7 +92,7 @@ class RecurringStatesList extends React.Component {
                     icon="fa-plus"
                     text={t("Create")}
                     title="Schedule a new Recurring States Action"
-                    handler={() => {this.props.onActionChanged("create")}}
+                    handler={() => this.props.onActionChanged("create")}
                 />
             </div>
         ];
