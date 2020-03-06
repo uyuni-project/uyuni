@@ -146,7 +146,6 @@ class RecurringStates extends React.Component {
     }
 
     deleteSchedule(item) {
-        if (!item) return false;
         return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
             .promise.then(data => {
                 this.handleForwardAction();
