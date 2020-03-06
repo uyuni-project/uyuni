@@ -46,6 +46,7 @@ zypper --non-interactive in  \
 # Packages required to run the Java unit tests
 zypper --non-interactive in ant \
              ant-junit \
+             xerces-j2 \
              obs-to-maven \
              apache-ivy \
              java-11-openjdk-devel \
@@ -53,5 +54,5 @@ zypper --non-interactive in ant \
              sudo \
              tar \
              system-user-wwwrun \
-             system-user-mail
+             system-user-mail \
 
