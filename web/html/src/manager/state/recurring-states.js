@@ -27,13 +27,12 @@ function getHashAction() {
     return match ? match[1] : undefined;
 }
 
-// HACK: infer entity type and id based on the globals set
 function inferEntityParams() {
-    if (window.groupId !== undefined) {
+    if (window.entityType === "GROUP") {
         return "/GROUP/" + window.groupId;
-    } else if (window.orgId !== undefined) {
+    } else if (window.entityType === "ORG") {
         return "/ORG/" + window.orgId;
-    } else if (minions.length > 0) {
+    } else if (window.entityType === "MINION") {
         return "/MINION/" + minions[0].id;
     }
     return "";

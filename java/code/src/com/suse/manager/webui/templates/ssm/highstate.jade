@@ -11,6 +11,7 @@
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.minions = !{minions};
+    window.entityType = "#{entityType}";
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
     window.actionChains = !{actionChains};

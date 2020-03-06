@@ -205,6 +205,7 @@ public class MinionController {
         data.put("minions", Json.GSON.toJson(minions));
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
+        data.put("entityType", "ORG");
         return new ModelAndView(data, "templates/org/recurring-states.jade");
     }
 
@@ -245,6 +246,7 @@ public class MinionController {
         data.put("minions", Json.GSON.toJson(minions));
         data.put("orgId", user.getOrg().getId());
         data.put("orgName", user.getOrg().getName());
+        data.put("entityType", "ORG");
         return new ModelAndView(data, "templates/yourorg/recurring-states.jade");
     }
 
@@ -307,6 +309,7 @@ public class MinionController {
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(grpId),
                 user.getOrg()).getName());
         data.put("minions", Json.GSON.toJson(minions));
+        data.put("entityType", "GROUP");
         return new ModelAndView(data, "templates/groups/recurring-states.jade");
     }
 
@@ -334,6 +337,7 @@ public class MinionController {
         data.put("groupId", grpId);
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(grpId),
                 user.getOrg()).getName());
+        data.put("entityType", "GROUP");
         data.put("minions", Json.GSON.toJson(minions));
         addActionChains(user, data);
         return new ModelAndView(data, "templates/groups/highstate.jade");
@@ -354,6 +358,7 @@ public class MinionController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
+        data.put("entityType", "SSM");
         addActionChains(user, data);
         return new ModelAndView(data, "templates/ssm/highstate.jade");
     }
@@ -388,6 +393,7 @@ public class MinionController {
         if (MinionServerUtils.isMinionServer(server)) {
             data.put("server", server);
         }
+        data.put("entityType", "MINION");
         return new ModelAndView(data, "templates/minion/recurring-states.jade");
     }
 
@@ -404,6 +410,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
+        data.put("entityType", "MINION");
         addActionChains(user, data);
         return new ModelAndView(data, "templates/minion/highstate.jade");
     }

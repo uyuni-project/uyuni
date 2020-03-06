@@ -31,21 +31,22 @@ class RecurringStatesEdit extends React.Component {
     };
 
     getTargetType = () => {
-        const search = window.location.search;
-        if (search.match("\\?sid")) {
+        console.log(window.entityType);
+        if (window.entityType === "GROUP") {
             Object.assign(this.state, {
-                targetType: "MINION", // todo create a human readable representations
-                targetId: minions[0].id
-            });
-        } else if (search.match("\\?sgid")) {
-            Object.assign(this.state, {
-                targetType: "GROUP",
+                targetType: entityType,
                 targetId: groupId
             });
-        } else {
+        } else if (window.entityType === "ORG") {
             Object.assign(this.state, {
-                targetType: "ORG",
+                targetType: entityType,
                 targetId: orgId
+            });
+        }
+        else if (window.entityType === "MINION") {
+            Object.assign(this.state, {
+                targetType: entityType, // todo create a human readable representations
+                targetId: minions[0].id
             });
         }
     };

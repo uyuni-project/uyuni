@@ -102,7 +102,7 @@ class Highstate extends React.Component {
     };
 
     isSSM = () => {
-        return !!window.location.pathname.match("/ssm/");
+        return window.entityType === "SSM" ? true : false;
     };
 
     updateSchedule =(schedule) => {
