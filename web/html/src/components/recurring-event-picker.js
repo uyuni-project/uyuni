@@ -345,7 +345,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                             <div className="form-group">
                                 <div className="col-sm-3 control-label">
                                     <input type="radio" name="date_monthly" value="false" checked={this.state.type === "monthly"} id="schedule-monthly" onChange={this.onSelectMonthly}/>
-                                    <label htmlFor="schedule-monthly">{t("Monthly:")}</label>
+                                    <label title="Days are limited to 28 to have a recurring schedule available for all the months" htmlFor="schedule-monthly">{t("Monthly:*")}</label>
                                 </div>
                                 <div className="col-sm-3">
                                     <Combobox id="monthly-day-picker" name="date_monthly" selectedId={this.state.monthDay.id}
