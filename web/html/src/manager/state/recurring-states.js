@@ -118,7 +118,7 @@ class RecurringStates extends React.Component {
             if (data.messages === undefined || data.messages.length === 0) {
                 // no explicit messages from the server -> let's display a generic one
                 const defaultMsg = data.success
-                      ? <span>{t("Schedule successully created.")}</span>
+                      ? <span>{t("Schedule successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
                       : <span>{t("Error on saving schedule.")}</span>;
                 newMsgs = decorator(defaultMsg);
             }
