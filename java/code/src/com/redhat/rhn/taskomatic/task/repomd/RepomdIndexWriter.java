@@ -50,7 +50,6 @@ public class RepomdIndexWriter {
      * @param groupIn group data
      * @param modulesIn modules data
      * @param productsIn products data
-     * @param productsData
      */
     public RepomdIndexWriter(Writer writerIn, RepomdIndexData primaryIn,
             RepomdIndexData filelistsIn, RepomdIndexData otherIn,

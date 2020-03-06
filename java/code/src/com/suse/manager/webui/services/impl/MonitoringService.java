@@ -394,7 +394,8 @@ public class MonitoringService {
                     }
 
                     return Optional.of(exporters);
-                } catch (JsonParseException e) {
+                }
+                catch (JsonParseException e) {
                     LOG.error("Error parsing JSON: " + e.getMessage());
                     return Optional.empty();
                 }

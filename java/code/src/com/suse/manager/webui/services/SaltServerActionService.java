@@ -1335,8 +1335,7 @@ public class SaltServerActionService {
                         pillar.put("cert", certificate);
                         String repocontent = "";
                         if (profile.getToken() != null) {
-                            repocontent = profile.getToken().getChannels().stream().map(s ->
-                            {
+                            repocontent = profile.getToken().getChannels().stream().map(s -> {
                                 return "[susemanager:" + s.getLabel() + "]\n\n" +
                                         "name=" + s.getName() + "\n\n" +
                                         "enabled=1\n\n" +

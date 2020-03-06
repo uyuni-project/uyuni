@@ -377,7 +377,8 @@ public class SaltActionChainGeneratorService {
                     stream.forEach(slsFile -> {
                         deleteSlsAndRefs(targetDir,  slsFile);
                     });
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     LOG.warn("Error deleting action chain files", e);
                 }
             }

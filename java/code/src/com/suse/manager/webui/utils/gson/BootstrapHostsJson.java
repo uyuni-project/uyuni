@@ -122,9 +122,9 @@ public class BootstrapHostsJson {
     }
 
     /**
-     * Helper method to return the port as an Optional<Integer>.
+     * Helper method to return the port as an Optional&lt;Integer&gt;.
      *
-     * @return port as an Optional<Integer>
+     * @return port as an Optional&lt;Integer&gt;
      */
     public Optional<Integer> getPortInteger() {
         Optional<Integer> ret = Optional.empty();
@@ -135,7 +135,7 @@ public class BootstrapHostsJson {
     }
 
     /**
-     * Helper method to return the password as an Optional<String>.
+     * Helper method to return the password as an Optional&lt;String&gt;.
      *
      * @return password wrapped in Optional, or empty Optional if password is empty.
      */

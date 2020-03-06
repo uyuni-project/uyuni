@@ -22,7 +22,6 @@ import java.util.List;
 
 /**
  * DTO for bare-metal systems.
- * @author Silvio Moioli <smoioli@suse.de>
  */
 public class BootstrapSystemOverview extends SystemOverview {
 
