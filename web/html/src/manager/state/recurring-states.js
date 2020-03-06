@@ -108,11 +108,6 @@ class RecurringStates extends React.Component {
         this.updateSchedule(schedule);
     }
 
-    skipNext(item) {
-        /* Write implementation to skip next run */
-        this.handleForwardAction();
-    }
-
     updateSchedule(schedule) {
         return Network.post(
             "/rhn/manager/api/recurringactions/save",
@@ -217,7 +212,6 @@ class RecurringStates extends React.Component {
                                              disableCreate={!this.isFilteredList()}
                                              onActionChanged={this.handleForwardAction}
                                              onToggleActive={this.toggleActive}
-                                             onSkip={this.skipNext}
                                              onSelect={this.handleDetailsAction}
                                              onEdit={this.handleEditAction}
                                              onDelete={this.deleteSchedule}

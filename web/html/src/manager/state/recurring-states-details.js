@@ -61,7 +61,6 @@ class RecurringStatesDetails extends React.Component {
                 </tr>
             );
         } else {
-            /* TODO: Get execution text from custom cron string */
             return (
                 <tr>
                     <td>{"Type"}:</td>
@@ -94,18 +93,6 @@ class RecurringStatesDetails extends React.Component {
                             <td>{t("Target type")}:</td>
                             <td>{data.targetType}</td>
                         </tr>
-                        { data.targetType === "Group" &&
-                        <tr>
-                            <td>{t("Group name")}:</td>
-                            <td>{data.groupName}</td>
-                        </tr>
-                        }
-                        { /* data.minionNames.length < 20 &&
-                        <tr>
-                            <td>{"System name" + (data.minionNames.length > 1 ? "s" : "")}:</td>
-                            <td>{data.minionNames.join(", ")}</td>
-                        </tr>
-                        */ }
                         {<tr>
                             <td>{t("Created at")}:</td>
                             <td>{data.createdAt + " " + timezone}</td>

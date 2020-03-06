@@ -58,7 +58,6 @@ class RecurringStatesEdit extends React.Component {
         this.props.onEdit({
             targetId: this.state.targetId,
             recurringActionId: this.state.recurringActionId,
-            //minionNames: this.state.minions.map(minion => minion.name), // todo
             scheduleName: this.state.scheduleName,
             active: this.state.active,
             type: this.state.type,

@@ -37,11 +37,7 @@ class RecurringStatesList extends React.Component {
                         </td>
                         <td className="text-center">{row.scheduleName}</td>
                         <td className="text-center">{row.cron}</td>
-                        {/*<td className="text-center">{row.createdAt + " " + timezone}</td>*/}
                         {this.props.disableCreate ? <td className="text-center">{row.targetType}</td> : null}
-                        {/*<td className="text-center">
-                         <input type="checkbox" className="checkbox btn-group" checked={row.skipNext === "true"} onChange={() => {this.props.onSkip(row)}}/>
-                         </td> } */ }
                         <td className="text-right">
                             <div className="btn-group">
                                 <Button
@@ -118,9 +114,7 @@ class RecurringStatesList extends React.Component {
                                     <th>{t("Active")}</th>
                                     <th className="text-center">{t("Schedule Name")}</th>
                                     <th className="text-center">{t("Frequency")}</th>
-                                    { /* <th className="text-center">{t("Created at")}</th> */}
                                     {targetType}
-                                    { /* <th className="text-center">{t("Skip Next")}</th> */ }
                                     <th className="text-right">{t("Actions")}</th>
                                 </tr>
                                 </thead>
