@@ -1,4 +1,4 @@
-- explicitly require postgresql10 package
+- explicitly require postgresql10 package (bsc#1165926)
 - drop unused oracle subpackage
 
 -------------------------------------------------------------------
