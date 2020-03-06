@@ -1,3 +1,4 @@
+- Update schema and add migration script for 'Recurring Actions'
 - Show proxy icon in system list
 - drop oracle artefacts
 - drop tables and data used for forwarding registrations to NCC
