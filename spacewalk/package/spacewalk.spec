@@ -19,7 +19,7 @@
 
 %define release_name Smile
 %if 0%{?suse_version}
-%global postgresql postgresql >= 8.4
+%global postgresql postgresql >= 10
 %else
 %global postgresql /usr/bin/psql
 %endif
@@ -43,8 +43,8 @@ Summary:        Spacewalk Systems Management Application with postgresql databas
 Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
-BuildRequires:  python
-Requires:       python >= 2.3
+BuildRequires:  python >= 3
+Requires:       python >= 3
 Requires:       spacewalk-setup
 
 # Java
@@ -95,19 +95,12 @@ Requires:       spacewalk-selinux
 Obsoletes:      spacewalk-monitoring-selinux < 2.3
 %endif
 
-%if 0%{?rhel} == 5
-Requires:       jabberd-selinux
-%endif
 %if 0%{?rhel} == 6
 Requires:       selinux-policy-base >= 3.7.19-93
 %endif
 
-%if 0%{?suse_version}
-Requires:       cobbler
+Requires:       cobbler >= 3
 Requires:       susemanager-jsp_en
-%else
-Requires:       cobbler20
-%endif
 
 %description common
 Spacewalk is a systems management application that will
@@ -125,15 +118,18 @@ Requires:       %{postgresql}
 Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
-%if 0%{?rhel} == 5
-Requires:       postgresql84-contrib
+%if 0%{?suse_version}
+Requires:       postgresql10
+Requires:       postgresql10-contrib
+Conflicts:      postgresql12
+Conflicts:      postgresql12-contrib
 %else
-Requires:       postgresql-contrib >= 8.4
-%endif
-Requires:       postgresql >= 9.6
+Requires:       postgresql >= 10
+Requires:       postgresql-contrib >= 10
 # we do not support postgresql versions > 10.x yet
 Conflicts:      postgresql >= 11
 Conflicts:      postgresql-contrib >= 11
+%endif
 
 %description postgresql
 Spacewalk is a systems management application that will 
