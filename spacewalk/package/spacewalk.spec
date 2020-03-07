@@ -147,7 +147,7 @@ Version for PostgreSQL database backend.
 RDBMS="postgresql"
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}
 SW_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
-echo "Spacewalk release $SW_REL (%{release_name})" > $RPM_BUILD_ROOT/%{_sysconfdir}/spacewalk-release
+echo "Uyuni release $SW_REL (%{release_name})" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
 install -d $RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d
 for i in ${RDBMS} ; do
         cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
@@ -157,7 +157,7 @@ EOF
 done
 
 %files common
-%{_sysconfdir}/spacewalk-release
+%{_sysconfdir}/uyuni-release
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup
