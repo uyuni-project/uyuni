@@ -19,7 +19,7 @@
 
 %define release_name Smile
 %if 0%{?suse_version}
-%global postgresql postgresql >= 10
+%global postgresql postgresql >= 12
 %else
 %global postgresql /usr/bin/psql
 %endif
@@ -43,8 +43,8 @@ Summary:        Spacewalk Systems Management Application with postgresql databas
 Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
-BuildRequires:  python >= 3
-Requires:       python >= 3
+BuildRequires:  python3
+Requires:       python3
 Requires:       spacewalk-setup
 
 # Java
@@ -119,16 +119,17 @@ Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
-Requires:       postgresql10
-Requires:       postgresql10-contrib
-Conflicts:      postgresql12
-Conflicts:      postgresql12-contrib
+Requires:       postgresql12
+Requires:       postgresql12-contrib
+# we do not support postgresql versions > 12.x yet
+Conflicts:      postgresql-implementation >= 13
+Conflicts:      postgresql-contrib-implementation >= 13
 %else
-Requires:       postgresql >= 10
-Requires:       postgresql-contrib >= 10
-# we do not support postgresql versions > 10.x yet
-Conflicts:      postgresql >= 11
-Conflicts:      postgresql-contrib >= 11
+Requires:       postgresql >= 12
+Requires:       postgresql-contrib >= 12
+# we do not support postgresql versions > 12.x yet
+Conflicts:      postgresql >= 13
+Conflicts:      postgresql-contrib >= 13
 %endif
 
 %description postgresql
