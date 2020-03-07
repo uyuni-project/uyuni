@@ -81,6 +81,7 @@ class ProductsPageWrapper extends React.Component {
     issMaster: issMaster_flag_from_backend,
     refreshNeeded: refreshNeeded_flag_from_backend,
     refreshRunning: refreshRunning_flag_from_backend || scc_refresh_file_locked_status,
+    noToolsChannelSubscription: noToolsChannelSubscription_flag_from_backend,
     serverData: {_DATA_ROOT_ID : []},
     errors: [],
     loading: true,
@@ -105,11 +106,15 @@ class ProductsPageWrapper extends React.Component {
   refreshServerData = (dataUrlTag) => {
     this.setState({loading: true});
     var currentObject = this;
+    let resultMessages = [];
+    if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
+        resultMessages = MessagesUtils.warning(t("No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."));
+    }
     reloadData()
       .then(data => {
         currentObject.setState({
           serverData: data[_DATA_ROOT_ID],
-          errors: [],
+          errors: resultMessages,
           loading: false,
           selectedItems: [],
           scheduleResyncItems: [],
