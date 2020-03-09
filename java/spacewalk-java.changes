@@ -1,3 +1,4 @@
+- Show warning on products page when no SUSE Manager Server Subscription is available
 - Implement recurring highstate scheduling
 - Notify VMs creation actions
 - Validate the suseproductchannel table and update missing date when running mgr-sync refresh (bsc#1163538)
