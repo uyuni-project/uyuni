@@ -21,6 +21,7 @@ import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROO
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -1267,7 +1268,7 @@ public class SaltUtils {
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 systemQuery.refreshPillar(new MinionList(server.getMinionId()));
             }
-            catch (IOException e) {
+            catch (IOException | ValidatorException e) {
                 LOG.error("Could not enable blackout formula", e);
             }
         }
