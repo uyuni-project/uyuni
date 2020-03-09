@@ -9,7 +9,6 @@
   <condition property="java.lib.dir" value="${JAVA_LIBDIR}" else="/usr/share/java">
     <isset property="JAVA_LIBDIR"/>
   </condition>
-  <property name="ivy.14.compatible" value="true"/>
   <available file="${java.lib.dir}/tomcat6" type="dir" property="tomcat" value="tomcat6" />
   <available file="${java.lib.dir}/tomcat" type="dir" property="tomcat" value="tomcat" />
   <available file="/usr/share/java/tomcat/tomcat-servlet-3.1-api.jar" type="file" property="tomcat" value="tomcat8" />
@@ -124,7 +123,7 @@
   <target name="all" depends="init,compile,pack"
           description="Compile and pack - no code generation in this step" />
 
-  <target name="init-cc" depends="set-cc-config-dir,boot-deps,init-ivy">
+  <target name="init-cc" depends="set-cc-config-dir,boot-deps">
     <property name="ccbuild" value="true" />
   </target>
 
@@ -155,15 +154,6 @@
             <path refid="alljars"/>
           </classpath>
     </java>
-  </target>
-
-  <target name="create-local-repo" description="Create a local Ivy repo">
-     <mkdir dir="${user.home}/.ivy/rhn/local/" />
-  </target>
-
-  <target name="clean-cache" description="Removes the Ivy jar cache">
-     <delete dir="${lib.dir}" quiet="true" />
-     <delete dir="${user.home}/.ivy/rhn/cache/" quiet="true" />
   </target>
 
   <target name="clean" description="Remove all build artifacts">
@@ -732,7 +722,7 @@
       <echo message="in the head for some comic relief." />
   </target>
 
-  <target name="resolve" depends="resolve-ivy,resolve-local" />
+  <target name="resolve" depends="resolve-local" />
 
   <target name="resolve-local" if="installbuild">
     <mkdir dir="${build.lib.dir}" />
@@ -743,24 +733,4 @@
     <jpackage-deps jars="${install.run.jar.dependencies}"
                    dir="${run-external.lib.dir}"/>
   </target>
-
-  <target name="resolve-ivy" description="retrieve dependencies with ivy"
-          depends="boot-deps,init-ivy" unless="installbuild">
-
-    <!-- properties set here to show we are overriding default ivy values -->
-
-    <!-- local directory -->
-    <property name="ivy.default.ivy.user.dir" value="${user.home}/.ivy/rhn"/>
-    <property name="ivy.local.default.artifact.pattern"
-              value="[artifact]-[revision].[ext]" />
-    <!-- public directory -->
-    <property name="ivy.ivyrep.default.ivy.root" value="${ivyserver}/ivy/" />
-    <property name="ivy.ivyrep.default.artifact.root"
-              value="${ivyserver}/ivy/" />
-    <property name="ivy.ivyrep.default.artifact.pattern"
-              value="[artifact]-[revision].[ext]" />
-
-    <ivy-retrieve sync="true" />
-  </target>
-
 </project>
