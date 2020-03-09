@@ -33,7 +33,7 @@ public class DocBookDoclet extends ApiDoclet {
     }
 
     @Override
-    public DocWriter getWriter(String outputFolder, String templateFolder) {
-        return new DocBookWriter(outputFolder, templateFolder);
+    public DocWriter getWriter(String outputFolder, String templateFolder, boolean debug) {
+        return new DocBookWriter(outputFolder, templateFolder, debug);
     }
 }

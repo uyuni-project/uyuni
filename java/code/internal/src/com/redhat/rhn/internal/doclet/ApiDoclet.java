@@ -126,8 +126,9 @@ public abstract class ApiDoclet implements Doclet {
      *
      * @param output the folder where the result needs to be written
      * @param template the folder where the templates are located
+     * @param debugIn whether to show debug infos
      */
-    public abstract DocWriter getWriter(String output, String template);
+    public abstract DocWriter getWriter(String output, String template, boolean debugIn);
 
     @Override
     public Set<? extends Option> getSupportedOptions() {
@@ -271,7 +272,7 @@ public abstract class ApiDoclet implements Doclet {
             handlerList.add(handler);
         }
         Collections.sort(handlerList);
-        DocWriter writer = getWriter(outputFolder, templateFolder);
+        DocWriter writer = getWriter(outputFolder, templateFolder, debug);
         try {
             writer.write(handlerList, serialMap);
         }

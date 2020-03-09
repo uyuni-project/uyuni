@@ -33,8 +33,8 @@ public class SinglePageDoclet extends ApiDoclet {
     }
 
     @Override
-    public DocWriter getWriter(String outputFolder, String templateFolder) {
-        return new SinglePageWriter(outputFolder, templateFolder);
+    public DocWriter getWriter(String outputFolder, String templateFolder, boolean debug) {
+        return new SinglePageWriter(outputFolder, templateFolder, debug);
     }
 
 }
