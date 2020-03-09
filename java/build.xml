@@ -254,7 +254,6 @@
         <exclude name="**/testing/*TestUtils.java" />
         <exclude name="**/testing/*Test.java" />
         <exclude name="**/internal/**" />
-        <exclude name="**/playpen/**" />
       </fileset>
       <fileset dir="${build.dir}/src" >
         <include name="**/*.java" />
@@ -293,7 +292,6 @@
       <fileset dir="code" >
         <include name="**/src/**/*.java" />
         <exclude name="**/test/*.java" />
-        <exclude name="**/playpen/*.java" />
       </fileset>
       <classpath>
           <path refid="buildjars" />
@@ -310,7 +308,6 @@
       <property key="checkstyle.cache.file" value="${checkstyle.cache.test}" />
       <fileset dir="code" >
         <include name="**/test/*.java" />
-        <exclude name="**/playpen/*.java" />
       </fileset>
       <formatter type="plain" />
       <formatter type="xml" toFile="${report.dir}/checkstyle_report_test.xml" />
@@ -325,7 +322,7 @@
           description="Create jars and copy descriptors" />
 
   <target name="pack-all"
-          depends="init,init-pack,pack-megajar,pack-playpen,pack-webapp"
+          depends="init,init-pack,pack-megajar,pack-webapp"
           description="Create jars and copy descriptors" />
 
   <target name="instrument" depends="init-taskdefs" if="ccbuild">
@@ -359,29 +356,6 @@
   <!-- ============== Compile tasks ================== -->
   <target name="compile" depends="init, compile-main, compile-all"
           description="Compile source" />
-
-  <target name="compile-playpen" depends="init,compile-main"
-          description="Compile playpen source">
-    <mkdir dir="${build.dir}/playpen/classes" />
-    <javac destdir="${build.dir}/playpen/classes"
-           optimize="off"
-           debug="on"
-           nowarn="on">
-      <classpath>
-          <path refid="buildjars" />
-          <pathelement path="${build.dir}/classes" />
-      </classpath>
-      <src>
-        <path location="code/playpen/src" />
-      </src>
-      <exclude name="**/test/*.java" />
-    </javac>
-    <copy toDir="${build.dir}/playpen/classes">
-      <fileset dir="${src.dir}/playpen/src">
-        <exclude name="**/*.java" />
-      </fileset>
-    </copy>
-  </target>
 
   <target name="compile-internal" depends="link-jars"
           description="Compile build helpers">
@@ -574,9 +548,6 @@
     </jar>
   </target>
 
-
-  <target name="pack-playpen" depends="compile-playpen" />
-
   <target name="pack-webapp" depends="compile">
     <war destfile="${rhn.war}" webxml="${src.dir}/webapp/WEB-INF/web.xml">
       <fileset dir="${src.dir}/webapp">
@@ -614,75 +585,6 @@
           <arg value="${rhn.checkout.dir}" />
           <arg value="${report.dir}/explainplan/explain.txt" />
     </java>
-  </target>
-
-  <target name="init-playpen-tests" depends="init">
-    <property name="playpen.build.dir" value="${build.dir}/playpen" />
-    <property name="playpen.testclasses.dir" value="${playpen.build.dir}/classes" />
-    <property name="playpen.testresults.dir" value="${report.dir}/playpen/tests" />
-
-    <path id="playpen.tests.buildpath" >
-      <path location="${playpen.build.dir}/classes" />
-      <path refid="alljars" />
-      <path location="${playpen.testclasses.dir}" />
-    </path>
-
-    <path id="playpen.tests.runpath" >
-      <path location="${playpen.build.dir}/classes" />
-      <path location="${playpen.testclasses.dir}" />
-      <path location="${build.dir}/classes" />
-      <path refid="testjars" />
-      <path refid="alljars" />
-    </path>
-
-    <mkdir dir="${playpen.testclasses.dir}" />
-    <mkdir dir="${playpen.testresults.dir}" />
-  </target>
-
-  <target name="compile-playpen-tests" depends="init-playpen-tests,compile-playpen"
-          description="Compile playpen tests">
-    <javac destdir="${playpen.testclasses.dir}"
-           optimize="off"
-           debug="on"
-           nowarn="on"
-           classpathref="playpen.tests.buildpath" >
-      <src>
-        <path location="code/playpen/src" />
-      </src>
-      <include name="**/test/*.java" />
-    </javac>
-    <copy toDir="${playpen.testclasses.dir}">
-      <fileset dir="${src.dir}/playpen/src">
-        <exclude name="**/*.java" />
-      </fileset>
-    </copy>
-  </target>
-
-  <target name="test-playpen"
-          description="Run the tests (use -Dtestsubsystem=&lt;subsystem&gt; or -Dtestcase=&lt;testcase&gt;)"
-          depends="compile-playpen,compile-playpen-tests,init-playpen-tests,invoke-playpen-testcase,invoke-playpen-subsystem,invoke-playpen-all" >
-    <fail if="junit_test_failure" message="One or more tests failed" />
-  </target>
-
-  <!-- ================= Invoke tests ==================== -->
-  <target name="invoke-playpen-testcase" depends="check-testcase" if="testcase">
-    <property name="testcaseorsubsystem" value="true" />
-    <run-junit include="**/test/${testcase}.class" banner="${testcase}"
-       testbuilddir="${build.dir}/playpen/classes"
-       classpathid="playpen.tests.runpath" reportdir="${playpen.testresults.dir}"/>
-  </target>
-
-  <target name="invoke-playpen-subsystem" if="testsubsystem">
-    <property name="testcaseorsubsystem" value="true" />
-    <run-junit include="**/${testsubsystem}/**/test/*Test.class" banner="all tests in ${testsubsystem} subsystem"
-       testbuilddir="${build.dir}/playpen/classes"
-       classpathid="playpen.tests.runpath" reportdir="${playpen.testresults.dir}"/>
-  </target>
-
-  <target name="invoke-playpen-all" unless="testcaseorsubsystem" >
-    <run-junit include="**/test/*Test.class" banner="all tests"
-       testbuilddir="${build.dir}/playpen/classes"
-       classpathid="playpen.tests.runpath" reportdir="${playpen.testresults.dir}"/>
   </target>
 
   <target name="install-tomcat5">

@@ -412,7 +412,7 @@ export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=public \
 -Dcheckstyle.cache.file=build/checkstyle.cache.src \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
-find . -name *.java | grep -vE '(/test/|/jsp/|/playpen/)' | \
+find . -name *.java | grep -vE '(/test/|/jsp/)' | \
 xargs checkstyle -c buildconf/checkstyle.xml
 
 echo "Running checkstyle on java test sources"
@@ -422,7 +422,7 @@ export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=nothing \
 -Dcheckstyle.cache.file=build/checkstyle.cache.test \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
-find . -name *.java | grep -E '/test/' | grep -vE '(/jsp/|/playpen/)' | \
+find . -name *.java | grep -E '/test/' | grep -vE '/jsp/' | \
 xargs checkstyle -c buildconf/checkstyle.xml
 %endif
 

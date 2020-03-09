@@ -16,7 +16,6 @@
 
 from rhn import rpclib
 
-#systemid_file = '/home/devel/misa/playpen/systemid-devel'
 systemid_file = '/home/devel/misa/cvs/rhn/test/backend/checks/systemid-farm06'
 server = "coyote.devel.redhat.com"
 #server = "rhnxml.back-webdev.redhat.com"

@@ -4,7 +4,6 @@
   <fileset name="all code" enabled="true" check-config-name="Uyuni" local="false">
     <file-match-pattern match-pattern=".*/src/.*/.*\.java" include-pattern="true"/>
     <file-match-pattern match-pattern=".*/test/.*\.java" include-pattern="false"/>
-    <file-match-pattern match-pattern=".*/playpen/.*\.java" include-pattern="false"/>
     <file-match-pattern match-pattern=".*/MenuTree\.java" include-pattern="false"/>
   </fileset>
 </fileset-config>
