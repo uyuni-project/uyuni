@@ -343,6 +343,10 @@ public class ContentSyncManager {
      * @return list of all available products
      */
     public List<MgrSyncProductDto> listProducts() {
+        if (!(ConfigDefaults.get().isUyuni() || hasToolsChannelSubscription())) {
+            log.warn("No SUSE Manager Server Subscription available. " +
+                     "Products requiring Client Tools Channel will not be shown.");
+        }
         return HibernateFactory.doWithoutAutoFlushing(() -> listProductsImpl());
     }
 
