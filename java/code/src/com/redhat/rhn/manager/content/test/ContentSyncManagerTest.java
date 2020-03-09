@@ -88,6 +88,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
     private static final String ORDERS_JSON = "organizations_orders.json";
+    private static final String SUBSCRIPTIONS2_JSON = "organizations_subscriptions2.json";
+    private static final String ORDERS2_JSON = "organizations_orders2.json";
 
     private static final String PRODUCTS_JSON = "productsUnscoped.json";
     private static final String TREE_JSON = "product_tree.json";
@@ -172,6 +174,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 new File(JARPATH,  "sccdata/" + SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
         File orderJson = new File(TestUtils.findTestData(
                 new File(JARPATH, "sccdata/" + ORDERS_JSON).getAbsolutePath()).getPath());
+        File subJson2 = new File(TestUtils.findTestData(
+                new File(JARPATH,  "sccdata/" + SUBSCRIPTIONS2_JSON).getAbsolutePath()).getPath());
+        File orderJson2 = new File(TestUtils.findTestData(
+                new File(JARPATH, "sccdata/" + ORDERS2_JSON).getAbsolutePath()).getPath());
         Path fromdir = Files.createTempDirectory("sumatest");
         File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
         File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
@@ -187,6 +193,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             ContentSyncManager cm = new ContentSyncManager();
             Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
             assertNotNull(s);
+            assertFalse("Should no find a SUSE Manager Server Subscription", cm.hasToolsChannelSubscription());
 
             for (com.redhat.rhn.domain.scc.SCCSubscription dbs : SCCCachingFactory.lookupSubscriptions()) {
                 assertEquals("55REGCODE180", dbs.getRegcode());
@@ -220,11 +227,23 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     fail();
                 }
             }
+            SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test", false);
+            HibernateFactory.getSession().flush();
+            HibernateFactory.getSession().clear();
+            subtempFile.delete();
+            ordertempFile.delete();
+            Files.copy(subJson2.toPath(), subtempFile.toPath());
+            Files.copy(orderJson2.toPath(), ordertempFile.toPath());
+            s = cm.updateSubscriptions();
+            HibernateFactory.getSession().flush();
+            assertTrue("Should have a SUSE Manager Server Subscription", cm.hasToolsChannelSubscription());
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
             SUSEProductTestUtils.deleteIfTempFile(subJson);
             SUSEProductTestUtils.deleteIfTempFile(orderJson);
+            SUSEProductTestUtils.deleteIfTempFile(subJson2);
+            SUSEProductTestUtils.deleteIfTempFile(orderJson2);
             subtempFile.delete();
             ordertempFile.delete();
             fromdir.toFile().delete();

@@ -1,3 +1,4 @@
+- Show warning on products page when no SUSE Manager Server Subscription is available
 - Add WebUI for recurring highstate scheduling
 - Show message for VMs pending creation in Guests list
 - Cleanup and document the Table component

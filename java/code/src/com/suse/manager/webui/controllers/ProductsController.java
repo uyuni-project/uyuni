@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.reflect.TypeToken;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.SCCRefreshLock;
 import com.redhat.rhn.common.util.TimeUtils;
@@ -69,6 +70,7 @@ public class ProductsController {
     private static final String REFRESH_NEEDED = "refreshNeeded";
     private static final String REFRESH_RUNNING = "refreshRunning";
     private static final String REFRESH_FILE_LOCKED = "refreshFileLocked";
+    private static final String NO_TOOLS_CHANNEL_SUBSCRIPTION = "noToolsChannelSubscription";
 
     private static Logger log = Logger.getLogger(ProductsController.class);
 
@@ -113,6 +115,8 @@ public class ProductsController {
         data.put(REFRESH_NEEDED, String.valueOf(csm.isRefreshNeeded(null)));
         data.put(REFRESH_RUNNING, String.valueOf(latestRun != null && latestRun.getEndTime() == null));
         data.put(REFRESH_FILE_LOCKED, String.valueOf(SCCRefreshLock.isAlreadyLocked()));
+        data.put(NO_TOOLS_CHANNEL_SUBSCRIPTION,
+                String.valueOf(!(ConfigDefaults.get().isUyuni() || csm.hasToolsChannelSubscription())));
 
         return new ModelAndView(data, "templates/products/show.jade");
     }
