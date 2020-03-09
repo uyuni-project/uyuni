@@ -43,6 +43,7 @@ from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
 from uyuni.common import fileutils
 from spacewalk.common import rhnLog, rhnCache, rhnMail, suseLib
 from spacewalk.common.rhnTB import fetchTraceback
+from spacewalk.common import repo
 from uyuni.common.rhnLib import isSUSE, utc
 from uyuni.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -56,7 +57,6 @@ from spacewalk.satellite_tools.repo_plugins import CACHE_DIR
 from spacewalk.satellite_tools.repo_plugins import yum_src
 from spacewalk.server import taskomatic, rhnPackageUpload
 from spacewalk.satellite_tools.satCerts import verify_certificate_dates
-
 from spacewalk.satellite_tools.syncLib import log, log2, log2disk, dumpEMAIL_LOG, log2background
 
 translation = gettext.translation('spacewalk-backend-server', fallback=True)
@@ -523,7 +523,8 @@ class RepoSync(object):
                         relative_url = '_'.join(url.split('://')[1].split('/')[1:])
                         repo_name = relative_url.replace("?", "_").replace("&", "_").replace("=", "_")
 
-                    (ca_cert_file, client_cert_file, client_key_file) = (None, None, None)
+                    ca_cert_file = client_cert_file = client_key_file = repo_id = None
+
                     if data['id'] is not None:
                         h = rhnSQL.execute("""
                         select k1.description as ca_cert_name, k1.key as ca_cert, k1.org_id as ca_cert_org,
@@ -554,16 +555,23 @@ class RepoSync(object):
                             else:
                                 raise ValueError("No valid SSL certificates were found for repository.")
 
-                    plugin = self.repo_plugin(url, repo_name, insecure, self.interactive,
-                                              org=str(self.org_id or ''),
-                                              channel_label=self.channel_label,
-                                              ca_cert_file=ca_cert_file,
-                                              client_cert_file=client_cert_file,
-                                              client_key_file=client_key_file)
+                    try:
+                        plugin = self.repo_plugin(url, repo_name, insecure, self.interactive,
+                                                  org=str(self.org_id or ''),
+                                                  channel_label=self.channel_label,
+                                                  ca_cert_file=ca_cert_file,
+                                                  client_cert_file=client_cert_file,
+                                                  client_key_file=client_key_file)
+                    except repo.GeneralRepoException as exc:
+                        log(0, "Plugin error: {}".format(exc))
+                        sync_error = -1
+                    except Exception as exc:
+                        log(0, "Unhandled error occurred: {}".format(exc))
+                        raise
 
                     if self.show_packages_only:
                         self.show_packages(plugin, repo_id)
-                    else:
+                    elif plugin is not None:
                         if update_repodata:
                             plugin.clear_cache()
 
@@ -935,7 +943,14 @@ class RepoSync(object):
         if saveurl.password:
             saveurl.password = "*******"
 
-        packages = plug.list_packages(filters, self.latest)
+        packages = []
+        try:
+            packages = plug.list_packages(filters, self.latest)
+        except repo.GeneralRepoException as exc:
+            log(0, "Repository failure: {}".format(exc))
+        except Exception as exc:
+            log(0, "Unhandled failure occurred while listing repository packages: {}".format(exc))
+
         to_disassociate = {}
         to_process = []
         num_passed = len(packages)
