@@ -594,7 +594,7 @@ public class FormulaFactory {
     /**
      * Checks if a formula given is actually present.
      * @param formulasList the new pending formulas to check
-     * @throws ValidatorException if an formula is not present
+     * @throws ValidatorException if a formula is not present
      */
     private static void validateFormulaPresence(List<String> formulasList) throws ValidatorException {
         // check if the passed formulas are actual formulas.
@@ -603,9 +603,9 @@ public class FormulaFactory {
         if (!incorrectFormulas.isEmpty()) {
             throw new ValidatorException("\"" + String.join(", ", incorrectFormulas) + "\"" +
                     (incorrectFormulas.size() > 1 ? " are" : " is") +
-                     " not found. Please make sure " +
-                     (incorrectFormulas.size() > 1 ? "they are" : "it is") +
-                      " spelled correctly or installed.");
+                    " not found. Please make sure " +
+                    (incorrectFormulas.size() > 1 ? "they are" : "it is") +
+                    " spelled correctly or installed.");
         }
     }
 

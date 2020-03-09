@@ -1,3 +1,4 @@
+- Add check for non-existing formulas when assigning formulas to a system/group
 - Add check for non-existing formulas in xmlrpc calls
 - Use salt for registration for selected install types (bsc#1164836)
 - Added a new API end point to manage package state (bsc#1169520)
