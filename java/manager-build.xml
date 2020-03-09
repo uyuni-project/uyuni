@@ -338,7 +338,6 @@
       <fileset dir="code">
         <include name="**/src/**/*.java" />
         <exclude name="**/test/*.java" />
-        <exclude name="**/playpen/*.java" />
         <exclude name="**/MenuTree.java" />
       </fileset>
       <property key="checkstyle.cache.file" file="${checkstyle.cache.src}" />
