@@ -1,3 +1,5 @@
+- add workaround for uptime overflow to spacewalk-update-status as well (bsc#1165921)
+
 -------------------------------------------------------------------
 Mon Feb 17 12:49:18 CET 2020 - jgonzalez@suse.com
 
