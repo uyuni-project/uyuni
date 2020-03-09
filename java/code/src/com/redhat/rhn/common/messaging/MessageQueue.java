@@ -22,7 +22,6 @@ import com.redhat.rhn.frontend.events.NewCloneErrataAction;
 import com.redhat.rhn.frontend.events.NewCloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
-import com.redhat.rhn.frontend.events.RefreshPillarEvent;
 import com.redhat.rhn.frontend.events.RestartSatelliteAction;
 import com.redhat.rhn.frontend.events.RestartSatelliteEvent;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncAction;
@@ -57,7 +56,6 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
-import com.suse.manager.reactor.messaging.RefreshPillarEventAction;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -338,10 +336,6 @@ public class MessageQueue {
         // Handle changes of channel assignments on minions
         MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
                 ChannelsChangedEventMessage.class);
-
-        // Refresh pillar on minions
-        MessageQueue.registerAction(new RefreshPillarEventAction(),
-                RefreshPillarEvent.class);
     }
 }
 
