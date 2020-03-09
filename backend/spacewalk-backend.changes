@@ -1,3 +1,5 @@
+- Always use the same RPM database when running "spacewalk-repo-sync"
+  from the command line or via taskomatic (bsc#1163468)
 - call mgr-create-bootstrap-repo after repo sync
 - fix mgrcfg-client python3 breakage (bsc#1164309
 - Remove oracle backend support and tests
