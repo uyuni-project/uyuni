@@ -1,3 +1,5 @@
+- Use alternative method for deprecated 'Request.get_data' (bsc#1164111)
+
 -------------------------------------------------------------------
 Wed May 15 15:36:43 CEST 2019 - jgonzalez@suse.com
 
