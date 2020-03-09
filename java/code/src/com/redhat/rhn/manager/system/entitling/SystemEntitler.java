@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.system.entitling;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.Channel;
@@ -140,7 +141,7 @@ public class SystemEntitler {
                         }
                     }
                 }
-                catch (UnsupportedOperationException | IOException e) {
+                catch (UnsupportedOperationException | ValidatorException | IOException e) {
                     LOG.error("Error assigning formula: " + e.getMessage(), e);
                     result.addError(new ValidatorError("system.entitle.formula_error"));
                 }
