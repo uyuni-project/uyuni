@@ -63,7 +63,10 @@ class MultipartPostHandler(BaseHandler):
     handler_order = HTTPHandler.handler_order - 10 # needs to run first
 
     def http_request(self, request):
-        data = request.get_data()
+        try:
+            data = request.get_data()
+        except:
+            data = request.data
         if data is not None and type(data) != str:
             v_files = []
             v_vars = []
