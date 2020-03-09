@@ -343,6 +343,10 @@ public class ContentSyncManager {
      * @return list of all available products
      */
     public List<MgrSyncProductDto> listProducts() {
+        if (!(ConfigDefaults.get().isUyuni() || hasToolsChannelSubscription())) {
+            log.warn("No SUSE Manager Server Subscription available. " +
+                     "Products requiring Client Tools Channel will not be shown.");
+        }
         return HibernateFactory.doWithoutAutoFlushing(() -> listProductsImpl());
     }
 
@@ -2215,5 +2219,22 @@ public class ContentSyncManager {
      */
     public static boolean isChannelNameReserved(String name) {
         return !SUSEProductFactory.lookupByChannelName(name).isEmpty();
+    }
+
+    /**
+     * Returns true when a valid Subscription for the SUSE Manager Tools Channel
+     * is available
+     *
+     * @return true if we have a Tools Subscription, otherwise false
+     */
+    public boolean hasToolsChannelSubscription() {
+        return SCCCachingFactory.lookupSubscriptions()
+               .stream()
+               .filter(s -> s.getStatus().equals("ACTIVE") &&
+                            s.getExpiresAt().after(new Date()) &&
+                            (s.getStartsAt() == null || s.getStartsAt().before(new Date())))
+               .map(s -> s.getProducts())
+               .flatMap(Set::stream)
+               .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
     }
 }

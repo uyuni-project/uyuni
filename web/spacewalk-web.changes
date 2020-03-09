@@ -1,3 +1,4 @@
+- Show warning on products page when no SUSE Manager Server Subscription is available
 - scheme is not allowed for URI of image store's API endpoint (bsc#1165571)
 
 -------------------------------------------------------------------
