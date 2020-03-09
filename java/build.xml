@@ -133,11 +133,9 @@
   </target>
 
   <target name="cctarget"
-          depends="init-cc,all,cc-test,test-report,coverage-report,comment-ratio-report,apidoc-jsp,jspcompile,javadoc"
+          depends="init-cc,all,coverage-report,comment-ratio-report,apidoc-jsp,jspcompile,javadoc"
           description="Target called by cruisecontrol process">
   </target>
-
-  <target name="cc-test" depends ="set-cc-config-dir, test"/>
 
   <target name="set-default-config-dir">
     <property name="rhn.config.dir" value="/etc/rhn" />
@@ -146,24 +144,6 @@
   <target name="set-cc-config-dir">
     <property name="rhn.config.dir"
               value="${rhn-home}/buildconf/builder/config/satellite" />
-  </target>
-
-  <target name="testdebug">
-    <property name="debug"
-              value="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"/>
-    <antcall target="dotest" />
-  </target>
-
-  <target name="test">
-    <property name="debug" value=""/>
-    <antcall target="dotest"/>
-  </target>
-
-  <target name="dotest"
-          description="Run the tests (use -Dtestsubsystem=&lt;subsystem&gt; or -Dtestcase=&lt;testcase&gt;)"
-          depends="set-default-config-dir,compile-main,init-tests,invoke-tests-testcase,invoke-tests-subsystem,invoke-tests-all,cleanup-tests" >
-
-    <fail if="junit_test_failure" message="One or more tests failed" />
   </target>
 
   <target name="run" description="runs a class with a main method" depends="compile">
@@ -175,17 +155,6 @@
             <path refid="alljars"/>
           </classpath>
     </java>
-  </target>
-
-  <target name="test-report" depends="init-tests"
-          description="Pretty-print the results of a previous test run.">
-    <junitreport todir="${testresults.dir}">
-      <fileset dir="${testresults.dir}">
-        <include name="TEST-*.xml"/>
-        <exclude name="${testresults.exclude}"/>
-      </fileset>
-      <report format="frames" todir="${report.dir}/test-report"/>
-    </junitreport>
   </target>
 
   <target name="create-local-repo" description="Create a local Ivy repo">
@@ -499,93 +468,6 @@
         <exclude name="**/package.html" />
       </fileset>
     </copy>
-  </target>
-
-  <!-- =================== Testing ======================= -->
-  <target name="setup-tests-cc" if="ccbuild">
-    <property name="test.bin.dir" value="${build.instrument.dir}/classes" />
-  </target>
-
-  <target name="setup-tests" unless="ccbuild">
-    <property name="test.bin.dir" value="${build.dir}/classes" />
-  </target>
-
-  <target name="init-tests" depends="instrument,setup-tests-cc,setup-tests">
-    <property name="testresults.dir" value="${report.dir}/tests" />
-
-    <path id="tests.buildpath" >
-      <path location="${build.dir}/classes" />
-      <path refid="alljars" />
-    </path>
-
-    <path id="tests.runpath" >
-      <path location="${test.bin.dir}" />
-      <path refid="testjars" />
-      <path refid="alljars" />
-      <path location="${src.dir}/webapp/" />
-    </path>
-
-    <mkdir dir="${testresults.dir}" />
-  </target>
-
-  <target name="check-testcase-name" if="testcase">
-    <propertyregex property="valid.testcase"
-                   input="${testcase}"
-                   regexp="(.*)Test$"
-                   select="\1"
-                   casesensitive="true" />
-  </target>
-
-  <target name="check-testcase" depends="check-testcase-name" if="testcase"
-      unless="valid.testcase">
-    <fail message="Invalid testcase name: ${testcase}. Class name must look like .*Test"/>
-  </target>
-
-  <!-- ================= Invoke tests ==================== -->
-  <target name="invoke-tests-testcase" depends="check-testcase" if="testcase">
-    <property name="testcaseorsubsystem" value="true" />
-    <run-junit include="**/test/${testcase}.class" banner="${testcase}"
-        testbuilddir="${build.dir}/classes"
-        classpathid="tests.runpath" reportdir="${testresults.dir}"
-        debug="${debug}"/>
-  </target>
-
-  <target name="invoke-tests-subsystem" if="testsubsystem">
-    <property name="testcaseorsubsystem" value="true" />
-    <run-junit include="**/${testsubsystem}/**/test/*Test.class"
-                banner="all tests in ${testsubsystem} subsystem"
-                testbuilddir="${build.dir}/classes"
-                classpathid="tests.runpath" reportdir="${testresults.dir}"
-                debug="${debug}" />
-  </target>
-
-  <target name="invoke-tests-all" unless="testcaseorsubsystem">
-    <antcall target="checkstyle" />
-    <run-junit include="**/test/*Test.class"
-               banner="all tests"
-               testbuilddir="${build.dir}/classes"
-               exclude="**/AuthenticationServiceTest.class"
-               classpathid="tests.runpath"
-               reportdir="${testresults.dir}"/>
-  </target>
-
-  <target name="cleanup-tests">
-      <property file="${rhn.config.dir}/rhn.conf" prefix="rhn.db"/>
-      <property file="/usr/share/rhn/config-defaults/rhn_hibernate.conf" prefix="rhn.db"/>
-      <sql
-        driver="${rhn.db.hibernate.connection.driver_class}"
-        url="${rhn.db.hibernate.connection.url}"
-        userid="${rhn.db.hibernate.connection.username}"
-        password="${rhn.db.hibernate.connection.password}"
-        classpathref="tests.runpath"
-        ><![CDATA[
-delete from rhnKickstartDefaults where KICKSTART_ID in (select id from rhnKsData where label like 'KS Data: %');
-delete from rhnKsData where label like 'KS Data: %';
-delete from rhnKickstartableTree where label like 'ks-ChannelLabel%';
-delete from rhnServerProfile sc where exists (select 1 from rhnChannel where id = sc.base_channel and label like 'ChannelLabel%');
-delete from rhnServerChannel sc where exists (select 1 from rhnChannel where id = sc.channel_id and label like 'ChannelLabel%');
-delete from rhnChannel where label like 'ChannelLabel%';
-]]></sql>
   </target>
 
   <target name="unwar-webapp" depends="pack" >
