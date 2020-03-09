@@ -1,3 +1,6 @@
+- Fix for pillar not being refreshed when CaaSP pattern is detected upon software profile update (bsc#1166061)
+- Adapt/clarify terms for minion system locking
+- Add dependency on system-lock formula
 - Prevent build/promote on content projects which have build/promote in progress
 - Clean stale Content Lifecycle targets on Tomcat startup (bsc#1164121)
 - Show warning on products page when no SUSE Manager Server Subscription is available
