@@ -1011,13 +1011,23 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
         'TYPE' : 'deb'
     },
+    'debian9-amd64' : {
+        'BASECHANNEL' : 'debian-9-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN9,
+        'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'debian10-amd64' : {
+        'BASECHANNEL' : 'debian-10-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN10,
+        'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
+        'TYPE' : 'deb'
+    },
     'debian9-amd64-uyuni' : {
-         'BASECHANNEL' : 'debian-9-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN9,
+         'BASECHANNEL' : 'debian-9-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN9,
          'DEST' : '/srv/www/htdocs/pub/repositories/debian/9/bootstrap/',
          'TYPE' : 'deb'
      },
      'debian10-amd64-uyuni' : {
-         'BASECHANNEL' : 'debian-10-pool-amd64', 'PKGLIST' : PKGLISTDEBIAN10,
+         'BASECHANNEL' : 'debian-10-pool-amd64-uyuni', 'PKGLIST' : PKGLISTDEBIAN10,
          'DEST' : '/srv/www/htdocs/pub/repositories/debian/10/bootstrap/',
          'TYPE' : 'deb'
      }
