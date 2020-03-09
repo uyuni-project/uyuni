@@ -428,6 +428,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction"
+          discriminator-value="514" lazy="true">
+          <join table="rhnActionVirtVolDelete">
+            <key column="action_id"/>
+            <property name="poolName" type="string" column="pool_name"/>
+            <property name="volumeName" type="string" column="volume_name"/>
+          </join>
+        </subclass>
+
         <!-- PackageActions: 1, 3, 4, 8, 13, 14, 33 -->
         <!-- PackageAction is abstract - the subclasses only get instantiated -->
         <subclass
@@ -566,7 +575,9 @@ select {ra.*}
             NULL as permission_owner,
             NULL as permission_group,
             NULL as permission_seclabel,
-            NULL as source from dual) ra_16_
+            NULL as source from dual) ra_16_,
+    (select NULL as pool_name,
+            NULL as volume_name from dual) ra_17_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -692,7 +703,9 @@ select sa.server_id
                              NULL as permission_owner,
                              NULL as permission_group,
                              NULL as permission_seclabel,
-                             NULL as source from dual) ra_16_
+                             NULL as source from dual) ra_16_,
+                     (select NULL as pool_name,
+                             NULL as volume_name from dual) ra_17_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id

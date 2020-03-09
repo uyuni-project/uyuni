@@ -62,6 +62,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -453,6 +454,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_CREATE)) {
             retval = new VirtualizationPoolCreateAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_VOLUME_DELETE)) {
+            retval = new BaseVirtualizationVolumeAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -1314,5 +1318,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_POOL_CREATE =
             lookupActionTypeByLabel("virt.pool_create");
+
+    /**
+     * The constant representing "Deletes a virtual storage volume" [ID:514]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_VOLUME_DELETE =
+            lookupActionTypeByLabel("virt.volume_delete");
 }
 

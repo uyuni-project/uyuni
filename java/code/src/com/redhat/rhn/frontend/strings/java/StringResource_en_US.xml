@@ -7100,6 +7100,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.volume_delete">
+        <source>Virtual storage volume deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channels.subscribers.updated">
         <source>{0} channel subscriber(s) successfully updated.</source>
         <context-group name="ctx">
