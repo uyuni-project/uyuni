@@ -194,6 +194,7 @@ Requires:       snakeyaml
 Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
+Requires:       system-lock-formula
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       tomcat-taglibs-standard
