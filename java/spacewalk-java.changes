@@ -1,3 +1,6 @@
+- Fix for pillar not being refreshed when CaaSP pattern is detected
+  upon software profile update (bsc#1166061)
+
 -------------------------------------------------------------------
 Tue Mar 03 13:07:14 CET 2020 - jgonzalez@suse.com
 

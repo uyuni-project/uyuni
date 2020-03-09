@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -59,10 +60,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
@@ -76,6 +73,7 @@ import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.Event;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Change;
@@ -84,6 +82,9 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -124,6 +125,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private Path metadataDirOfficial;
 
     @Override
     public void setUp() throws Exception {
@@ -133,6 +135,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
         SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+
+        metadataDirOfficial = Files.createTempDirectory("meta");
+        FormulaFactory.setDataDir(tmpSaltRoot.toString());
+        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
     }
 
     /**
@@ -584,6 +590,12 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("minionsles12-suma3pg.vagrant.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
         action.addServerAction(ActionFactoryTest.createServerAction(minion, action));

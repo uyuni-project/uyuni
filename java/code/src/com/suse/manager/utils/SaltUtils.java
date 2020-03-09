@@ -66,7 +66,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
-import com.redhat.rhn.frontend.events.RefreshPillarEvent;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -1143,7 +1142,7 @@ public class SaltUtils {
      * @param server the minion server
      * @param result the result of the call as parsed from event data
      */
-    private static void handlePackageProfileUpdate(MinionServer server,
+    private void handlePackageProfileUpdate(MinionServer server,
             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
@@ -1230,7 +1229,7 @@ public class SaltUtils {
         enableMinionSystemLockForSpecialNodes(server);
     }
 
-    private static void enableMinionSystemLockForSpecialNodes(MinionServer server) {
+    private void enableMinionSystemLockForSpecialNodes(MinionServer server) {
         if (server.getInstalledProducts().stream()
                 .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PRODUCT_IDENTIFIER))) {
             // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
@@ -1245,7 +1244,7 @@ public class SaltUtils {
             try {
                 FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
-                MessageQueue.publish(new RefreshPillarEvent());
+                saltService.refreshPillar(new MinionList(server.getMinionId()));
             }
             catch (IOException e) {
                 LOG.error("Could not enable blackout formula", e);
