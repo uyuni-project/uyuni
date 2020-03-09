@@ -36,8 +36,10 @@ public class ListWriter extends DocWriter {
      *
      * @param docEnvIn doclet environement
      * @param outputFolderIn folder where the apilist.txt file will be written
+     * @param debugIn whether to show debugging messages
      */
-    public ListWriter(DocletEnvironment docEnvIn, String outputFolderIn) {
+    public ListWriter(DocletEnvironment docEnvIn, String outputFolderIn, boolean debugIn) {
+        super(debugIn);
         docEnv = docEnvIn;
         output = outputFolderIn;
     }

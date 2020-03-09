@@ -33,7 +33,7 @@ public class JSPDoclet extends ApiDoclet {
     }
 
     @Override
-    public DocWriter getWriter(String outputFolder, String templateFolder) {
-        return new JSPWriter(outputFolder, templateFolder);
+    public DocWriter getWriter(String outputFolder, String templateFolder, boolean debug) {
+        return new JSPWriter(outputFolder, templateFolder, debug);
     }
 }

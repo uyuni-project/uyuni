@@ -31,8 +31,11 @@ public class DocBookWriter extends DocWriter {
     /**
      * @param outputIn path to the output folder
      * @param templatesIn path to the DocBook templates folder
+     * @param debugIn whether to show debugging messages
+     *
      */
-    public DocBookWriter(String outputIn, String templatesIn) {
+    public DocBookWriter(String outputIn, String templatesIn, boolean debugIn) {
+        super(debugIn);
         output = outputIn;
         templates = templatesIn;
     }
