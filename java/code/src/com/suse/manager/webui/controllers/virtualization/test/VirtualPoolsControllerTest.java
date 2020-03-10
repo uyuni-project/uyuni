@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.test;
+package com.suse.manager.webui.controllers.virtualization.test;
 
 
 import com.redhat.rhn.domain.action.Action;
@@ -31,10 +31,11 @@ import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolCapabilitiesJson.PoolType;
 import com.suse.manager.virtualization.test.TestVirtManager;
-import com.suse.manager.webui.controllers.VirtualPoolsController;
+import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
+import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -79,7 +80,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
             @Override
             public Map<String, JsonObject> getPools(String minionId) {
                 return SaltTestUtils.getSaltResponse(
-                        "/com/suse/manager/webui/controllers/test/virt.pool.info.json",
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt.pool.info.json",
                         null,
                         new TypeToken<Map<String, JsonObject>>() { }).get();
             }
@@ -87,7 +88,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
             @Override
             public Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
                 return SaltTestUtils.getSaltResponse(
-                        "/com/suse/manager/webui/controllers/test/virt.volume.info.json",
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt.volume.info.json",
                         null,
                         new TypeToken<Map<String, Map<String, JsonObject>>>() { }).get();
             }
@@ -95,7 +96,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
             @Override
             public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
                 return SaltTestUtils.getSaltResponse(
-                        "/com/suse/manager/webui/controllers/test/virt.pool.caps.json",
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt.pool.caps.json",
                         null,
                         new TypeToken<PoolCapabilitiesJson>() { });
             }

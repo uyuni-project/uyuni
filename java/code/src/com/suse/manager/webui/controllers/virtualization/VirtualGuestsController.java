@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
@@ -48,13 +48,15 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.HostCapabilitiesJson;
+import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.MinionController;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
-import com.suse.manager.webui.utils.gson.VirtualGuestSetterActionJson;
-import com.suse.manager.webui.utils.gson.VirtualGuestsBaseActionJson;
-import com.suse.manager.webui.utils.gson.VirtualGuestsUpdateActionJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

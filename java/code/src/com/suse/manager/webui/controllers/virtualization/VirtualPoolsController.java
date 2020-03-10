@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -23,9 +23,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 
 import com.google.gson.JsonObject;
 

@@ -13,9 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers.test;
-
-import static junit.framework.Assert.assertEquals;
+package com.suse.manager.webui.controllers.virtualization.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -36,22 +34,29 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
+import com.suse.manager.reactor.messaging.test.SaltTestUtils;
+import com.suse.manager.virtualization.DomainCapabilitiesJson;
+import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
+import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
+import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.impl.SaltService;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.suse.manager.reactor.messaging.test.SaltTestUtils;
-import com.suse.manager.virtualization.DomainCapabilitiesJson;
-import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.controllers.VirtualGuestsController;
-import com.suse.manager.virtualization.test.TestVirtManager;
-import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 
 import org.jmock.Expectations;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import spark.HaltException;
 
@@ -88,7 +93,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
             @Override
             public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
                 return SaltTestUtils.getSaltResponse(
-                        "/com/suse/manager/webui/controllers/test/virt.guest.allcaps.json", null,
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt.guest.allcaps.json", null,
                         new TypeToken<Map<String, JsonElement>>() { });
             }
 
@@ -158,7 +163,6 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
-    @SuppressWarnings("unchecked")
     public void testStateChangeAction() throws Exception {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
@@ -189,7 +193,6 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
-    @SuppressWarnings("unchecked")
     public void testSetVcpuAction() throws Exception {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
@@ -243,7 +246,6 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
-    @SuppressWarnings("unchecked")
     public void testSetMemMultiAction() throws Exception {
 
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[host.getGuests().size()]);
@@ -289,7 +291,6 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      *
      * @throws Exception if anything unexpected happens during the test
      */
-    @SuppressWarnings("unchecked")
     public void testGetGuest() throws Exception {
         String json = virtualGuestsController.getGuest(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
