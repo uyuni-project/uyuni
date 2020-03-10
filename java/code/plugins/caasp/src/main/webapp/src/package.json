@@ -1,0 +1,10 @@
+{
+  "name": "caasp",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node build",
+    "dev": "webpack -d --config build/webpack.config.js --mode development"
+  },
+  "dependencies": {
+  }
+}

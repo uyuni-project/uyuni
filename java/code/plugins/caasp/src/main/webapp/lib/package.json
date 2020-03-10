@@ -1,0 +1,7 @@
+{
+  "name": "caasp-lib",
+  "version": "1.0.0",
+  "dependencies": {
+    "uuid": "^7.0.2"
+  }
+}
