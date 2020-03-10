@@ -8,9 +8,11 @@ const ReactDOM = require("react-dom");
 const {DateTimePicker} = require("../datetimepicker");
 const {Combobox} = require("../combobox");
 import type {ComboboxItem} from "../combobox";
+const { HelpLink } = require('components/utils/HelpLink');
 const { Form } = require('components/input/Form');
 const { Text } = require('components/input/Text');
 const Functions = require("utils/functions");
+const styles = require("./recurring-event-picker.css");
 
 type RecurringEventPickerProps = {
     timezone: string,
@@ -316,6 +318,9 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                                 <div className="col-sm-3">
                                     <input className="form-control" name="minutes" type="number" value={this.state.minutes.id} min="0" max="59" onChange={this.onSelectMinutes} />
                                 </div>
+                                <div className={`col-sm-1 ${styles.helpIcon}`}>
+                                    <HelpLink text={t("The action will be executed every hour at the specified minute")}/>
+                                </div>
                             </div>
                             <div className="form-group">
                                 <div className="col-sm-3 control-label">
@@ -345,7 +350,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                             <div className="form-group">
                                 <div className="col-sm-3 control-label">
                                     <input type="radio" name="date_monthly" value="false" checked={this.state.type === "monthly"} id="schedule-monthly" onChange={this.onSelectMonthly}/>
-                                    <label title={t("Days are limited to 28 to have a recurring schedule available for all the months")} htmlFor="schedule-monthly">{t("Monthly:*")}</label>
+                                    <label className={styles.radio} htmlFor="schedule-monthly">{t("Monthly:")}</label>
                                 </div>
                                 <div className="col-sm-3">
                                     <Combobox id="monthly-day-picker" name="date_monthly" selectedId={this.state.monthDay.id}
@@ -356,6 +361,9 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                                 </div>
                                 <div className="col-sm-3">
                                     <DateTimePicker onChange={this.onMonthlyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
+                                </div>
+                                <div className={`col-sm-1 ${styles.helpIcon}`}>
+                                    <HelpLink text={t("Days are limited to 28 to have a recurring schedule available for all the months")}/>
                                 </div>
                             </div>
                             <div className="form-group">
