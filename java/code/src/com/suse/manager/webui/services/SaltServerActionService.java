@@ -402,12 +402,6 @@ public class SaltServerActionService {
         }
     }
 
-    private Optional<ServerAction> serverActionFor(Action actionIn, MinionSummary minion) {
-        return actionIn.getServerActions().stream()
-                .filter(sa -> sa.getServerId().equals(minion.getServerId()))
-                .findFirst();
-    }
-
     /**
      * Execute a given {@link Action} via salt.
      *
