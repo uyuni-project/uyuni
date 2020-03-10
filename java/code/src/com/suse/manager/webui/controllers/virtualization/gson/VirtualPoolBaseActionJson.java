@@ -12,27 +12,31 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.gson;
+package com.suse.manager.webui.controllers.virtualization.gson;
+
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
+
+import java.util.List;
 
 /**
-*
-* represents the pool delete action request body structure.
-*/
-public class VirtualPoolDeleteActionJson extends VirtualPoolBaseActionJson {
-
-    private Boolean purge;
+ *
+ * VirtualPoolBaseAction represents the generic pool action request body structure.
+ */
+public class VirtualPoolBaseActionJson extends ScheduledRequestJson {
+    private List<String> poolNames;
 
     /**
-     * @return Returns whether to remove all volumes or not.
+     * @return the names of the pools to action on
      */
-    public Boolean getPurge() {
-        return purge;
+    public List<String> getPoolNames() {
+        return poolNames;
     }
 
     /**
-     * @param purgeIn whether to remove all volumes or not.
+     * @param poolNamesIn The poolNames to set.
      */
-    public void setPurge(Boolean purgeIn) {
-        purge = purgeIn;
+    public void setPoolNames(List<String> poolNamesIn) {
+        poolNames = poolNamesIn;
     }
+
 }

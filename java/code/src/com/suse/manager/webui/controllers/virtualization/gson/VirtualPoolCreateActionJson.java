@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.gson;
+package com.suse.manager.webui.controllers.virtualization.gson;
 
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateActionSource;
 

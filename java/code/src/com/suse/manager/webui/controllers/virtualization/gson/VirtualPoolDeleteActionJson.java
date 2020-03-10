@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,27 +12,27 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.gson;
+package com.suse.manager.webui.controllers.virtualization.gson;
 
 /**
- * VirtualGuestsBaseAction represents most of the virtual guests actions
- * requests Json data.
- */
-public class VirtualGuestSetterActionJson extends VirtualGuestsBaseActionJson {
+*
+* represents the pool delete action request body structure.
+*/
+public class VirtualPoolDeleteActionJson extends VirtualPoolBaseActionJson {
 
-    private Long value;
+    private Boolean purge;
 
     /**
-     * @return the value to set.
+     * @return Returns whether to remove all volumes or not.
      */
-    public Long getValue() {
-        return value;
+    public Boolean getPurge() {
+        return purge;
     }
 
     /**
-     * @param settingValue the value to set. Only needed for setMemory and setVcpu actions.
+     * @param purgeIn whether to remove all volumes or not.
      */
-    public void setValue(Long settingValue) {
-        this.value = settingValue;
+    public void setPurge(Boolean purgeIn) {
+        purge = purgeIn;
     }
 }
