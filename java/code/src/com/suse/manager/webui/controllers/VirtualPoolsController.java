@@ -42,14 +42,15 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.suse.manager.virtualization.PoolCapabilitiesJson;
-import com.suse.manager.virtualization.PoolDefinition;
 import com.google.gson.JsonParseException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.virtualization.PoolCapabilitiesJson;
+import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.MinionActionUtils;
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.VirtualPoolBaseActionJson;
 import com.suse.manager.webui.utils.gson.VirtualPoolCreateActionJson;
 import com.suse.manager.webui.utils.gson.VirtualPoolDeleteActionJson;
@@ -66,6 +67,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -484,6 +486,21 @@ public class VirtualPoolsController {
     private String poolAction(Request request, Response response, User user,
             Function<VirtualPoolBaseActionJson, BaseVirtualizationPoolAction> actionCreator,
             Class<? extends VirtualPoolBaseActionJson> jsonClass) {
+        return action(request, response, user,
+               (data, key) -> {
+                   VirtualPoolBaseActionJson poolData = (VirtualPoolBaseActionJson)data;
+                   BaseVirtualizationPoolAction action = actionCreator.apply(poolData);
+                   action.setPoolName(key);
+                   return action;
+               },
+               (data) -> ((VirtualPoolBaseActionJson)data).getPoolNames(),
+               jsonClass);
+    }
+
+    private String action(Request request, Response response, User user,
+            BiFunction<ScheduledRequestJson, String, BaseVirtualizationPoolAction> actionCreator,
+            Function<ScheduledRequestJson, List<String>> actionKeysGetter,
+            Class<? extends ScheduledRequestJson> jsonClass) {
         Long serverId;
 
         try {
@@ -494,7 +511,7 @@ public class VirtualPoolsController {
         }
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
 
-        VirtualPoolBaseActionJson data;
+        ScheduledRequestJson data;
         try {
             data = GSON.fromJson(request.body(), jsonClass);
         }
@@ -502,11 +519,12 @@ public class VirtualPoolsController {
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 
-        if (!data.getPoolNames().isEmpty()) {
-            Map<String, String> actionsResults = data.getPoolNames().stream().collect(
+        List<String> actionKeys = actionKeysGetter.apply(data);
+        if (!actionKeys.isEmpty()) {
+            Map<String, String> actionsResults = actionKeys.stream().collect(
                     Collectors.toMap(Function.identity(),
-                poolName -> {
-                    return scheduleAction(poolName, user, host, actionCreator, data);
+                key -> {
+                    return scheduleAction(key, user, host, actionCreator, data);
                 }
             ));
             return json(response, actionsResults);
@@ -516,14 +534,13 @@ public class VirtualPoolsController {
         return json(response, result);
     }
 
-    private String scheduleAction(String poolName, User user, Server host,
-            Function<VirtualPoolBaseActionJson, BaseVirtualizationPoolAction> actionCreator,
-            VirtualPoolBaseActionJson data) {
-        BaseVirtualizationPoolAction action = actionCreator.apply(data);
+    private String scheduleAction(String key, User user, Server host,
+            BiFunction<ScheduledRequestJson, String, BaseVirtualizationPoolAction> actionCreator,
+            ScheduledRequestJson data) {
+        BaseVirtualizationPoolAction action = actionCreator.apply(data, key);
         action.setOrg(user.getOrg());
         action.setSchedulerUser(user);
         action.setEarliestAction(MinionActionUtils.getScheduleDate(data.getEarliest()));
-        action.setPoolName(poolName);
 
         Optional<ActionChain> actionChain = data.getActionChain()
                 .filter(StringUtils::isNotEmpty)
