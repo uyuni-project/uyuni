@@ -18,6 +18,6 @@
 if h.formulaValueEquals(server, "system-lock", "minion_blackout", "true") and not h.hasSshPushContactMethod(server)
   .alert.alert-warning
     p.
-      System is locked. Some actions are not allowed.
+      System is locked. No actions are not allowed.
 
 !{h.renderNavigationMenu(request, "/WEB-INF/nav/system_detail.xml")}
