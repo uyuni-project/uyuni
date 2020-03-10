@@ -15,10 +15,16 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
+import com.google.common.collect.Streams;
 import com.redhat.rhn.common.util.manifestfactory.ClassBuilder;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactory;
-
+import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryBuilder;
+import com.suse.manager.extensions.Plugins;
+import com.suse.manager.extensions.XmlRpcHandlerFactoryExtensionPoint;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * HandlerFactory, simple factory class that uses ManifestFactory to
@@ -37,7 +43,12 @@ public class HandlerFactory {
     }
 
     protected HandlerFactory(ClassBuilder builder) {
-        factory = new ManifestFactory(builder);
+        List<XmlRpcHandlerFactoryExtensionPoint> handlerFactories = Plugins.instance().getExtensions(XmlRpcHandlerFactoryExtensionPoint.class);
+        List<ManifestFactoryBuilder> builders =
+                Streams.concat(Stream.of(builder), handlerFactories.stream().map(handlerFactory -> handlerFactory.getBuilder()))
+                        .collect(Collectors.toList());
+
+        factory = new ManifestFactory(builders);
     }
 
     /**

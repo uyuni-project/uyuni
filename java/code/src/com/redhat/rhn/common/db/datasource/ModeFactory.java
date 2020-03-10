@@ -26,6 +26,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -43,7 +44,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
 
     private static final String POSTGRES_QUERY_SUFFIX = "_pg";
 
-    private static ManifestFactory factory = new ManifestFactory(new ModeFactory());
+    private static ManifestFactory factory = new ManifestFactory(Collections.singletonList(new ModeFactory()));
 
     private static XMLReader parser = null;
 

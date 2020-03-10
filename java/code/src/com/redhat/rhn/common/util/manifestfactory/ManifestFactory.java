@@ -17,11 +17,14 @@ package com.redhat.rhn.common.util.manifestfactory;
 
 import com.redhat.rhn.common.util.AttributeCopyRule;
 
+import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import org.apache.commons.digester.Digester;
+import org.apache.log4j.Logger;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,14 +35,17 @@ import java.util.Map;
  */
 
 public class ManifestFactory {
+
+    private static final Logger LOG = Logger.getLogger(ManifestFactory.class);
+
     private Map objects;
-    private ManifestFactoryBuilder builder;
+    private List<ManifestFactoryBuilder> builders;
 
     /** public constructor, requires a builder
     * @param builderIn the ManifestFactoryBuilder used to create this Factory
     */
-    public ManifestFactory(ManifestFactoryBuilder builderIn) {
-        builder = builderIn;
+    public ManifestFactory(List<ManifestFactoryBuilder> builderIn) {
+        builders = builderIn;
         synchronized (this) {
             loadObjects();
         }
@@ -54,8 +60,7 @@ public class ManifestFactory {
     public Object getObject(String key) {
         Object ret = objects.get(key);
         if (ret == null) {
-            throw new ManifestFactoryLookupException("No object for " +
-                                                    builder + " of name " +
+            throw new ManifestFactoryLookupException("No object for name " +
                                                     key);
         }
 
@@ -71,18 +76,19 @@ public class ManifestFactory {
     }
 
     private void loadObjects() {
-        String filename = builder.getManifestFilename();
-        URL u = builder.getClass().getResource(filename);
-
         objects = new HashMap();
-        parseURL(u);
+        for (var builder: builders) {
+            String filename = builder.getManifestFilename();
+            URL u = builder.getResource(filename);
+            parseURL(builder, u);
+        }
     }
 
-    private void parseURL(URL u) {
+    private void parseURL(ManifestFactoryBuilder builder, URL u) {
         Digester d = new Digester();
         d.setValidating(false);
 
-        d.push(this);
+        d.push(new Helper(builder));
         d.addObjectCreate("factory/template", HashMap.class);
         d.addRule("factory/template", new AttributeCopyRule());
         d.addSetNext("factory/template", "addFactoryTemplate");
@@ -91,22 +97,33 @@ public class ManifestFactory {
             d.parse(u.openStream());
         }
         catch (Exception e) {
+            LOG.error("Could not parse URL " + u, e);
             throw new ManifestFactoryParseException("Unable to parse " +
                                                     builder.getManifestFilename(), e);
         }
     }
 
-    /** helper function for when Digesting an xml file.  sadly, must
-     * be public or Digester freaks out, otherwise it would be private.
-     * @param m used by Digester to build template
-     */
-    public void addFactoryTemplate(Map m) {
-        String name = (String)m.get("name");
-        if (name == null) {
-            throw new NullPointerException("factory/template must have name attribute");
-        }
-        m.remove("name");
+    public class Helper {
 
-        objects.put(name, builder.createObject(m));
+        private ManifestFactoryBuilder builder;
+
+        public Helper(ManifestFactoryBuilder builderIn) {
+            this.builder = builderIn;
+        }
+
+        /** helper function for when Digesting an xml file.  sadly, must
+         * be public or Digester freaks out, otherwise it would be private.
+         * @param m used by Digester to build template
+         */
+        public void addFactoryTemplate(Map m) {
+            String name = (String)m.get("name");
+            if (name == null) {
+                throw new NullPointerException("factory/template must have name attribute");
+            }
+            m.remove("name");
+
+            objects.put(name, builder.createObject(m));
+        }
     }
+
 }

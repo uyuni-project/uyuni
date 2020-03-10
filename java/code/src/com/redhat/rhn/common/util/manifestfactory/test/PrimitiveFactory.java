@@ -18,6 +18,7 @@ package com.redhat.rhn.common.util.manifestfactory.test;
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactory;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * PrimitiveFactory, a ManifestFactory based fatory for creating
@@ -51,6 +52,6 @@ public class PrimitiveFactory {
     /** So we can test re-parsing the manifest */
     public static void initFactory() {
         builder = new PrimitiveBuilder();
-        factory = new ManifestFactory(builder);
+        factory = new ManifestFactory(Collections.singletonList(builder));
     }
 }

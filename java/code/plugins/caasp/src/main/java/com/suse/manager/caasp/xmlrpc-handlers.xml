@@ -1,0 +1,3 @@
+<factory>
+    <template name="caasp" classname="com.suse.manager.caasp.xmlrpc.CaaspHandler" />
+</factory>

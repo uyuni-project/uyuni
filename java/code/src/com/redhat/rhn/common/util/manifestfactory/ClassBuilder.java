@@ -16,6 +16,7 @@ package com.redhat.rhn.common.util.manifestfactory;
 
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -25,6 +26,11 @@ import java.util.Map;
 public final class ClassBuilder implements ManifestFactoryBuilder {
 
     private String filename;
+    private Object resourceFinder;
+
+    public ClassBuilder(String pkg, String fname) {
+        this(null, pkg, fname);
+    }
 
     /**
      * Instantiates objects by name for use by the ManifestFactory. Takes in
@@ -33,11 +39,12 @@ public final class ClassBuilder implements ManifestFactoryBuilder {
      * @param pkg Package name of Factory using this builder
      * @param fname manifest filename
      */
-    public ClassBuilder(String pkg, String fname) {
+    public ClassBuilder(Object resourceFinderIn, String pkg, String fname) {
         if (!fname.startsWith("/")) {
             fname = "/" + fname;
         }
         filename = packageAsPath(pkg) + fname;
+        this.resourceFinder = resourceFinderIn;
     }
 
     /** {@inheritDoc} */
@@ -48,6 +55,10 @@ public final class ClassBuilder implements ManifestFactoryBuilder {
         }
 
         try {
+            if (resourceFinder != null) {
+                return Class.forName(className, true, resourceFinder.getClass().getClassLoader())
+                        .getDeclaredConstructor().newInstance();
+            }
             return Class.forName(className).newInstance();
         }
         catch (Exception e) {
@@ -72,5 +83,12 @@ public final class ClassBuilder implements ManifestFactoryBuilder {
             name = "/" + name;
         }
         return name.replace('.', '/');
+    }
+
+    @Override
+    public URL getResource(String filename) {
+        return resourceFinder != null ?
+                resourceFinder.getClass().getResource(filename) :
+                this.getClass().getResource(filename);
     }
 }

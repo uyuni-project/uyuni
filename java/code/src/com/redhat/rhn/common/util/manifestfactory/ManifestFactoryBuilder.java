@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.common.util.manifestfactory;
 
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -37,4 +38,10 @@ public interface ManifestFactoryBuilder {
      * @return String filename used by manifest
     */
     String getManifestFilename();
+
+    default URL getResource(String filename) {
+        return this.getClass().getResource(filename);
+    }
+
+
 }
