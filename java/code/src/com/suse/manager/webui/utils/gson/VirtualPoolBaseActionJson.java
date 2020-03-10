@@ -14,18 +14,14 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  *
  * VirtualPoolBaseAction represents the generic pool action request body structure.
  */
-public class VirtualPoolBaseActionJson {
+public class VirtualPoolBaseActionJson extends ScheduledRequestJson {
     private List<String> poolNames;
-    private LocalDateTime earliest;
-    private Optional<String> actionChain = Optional.empty();
 
     /**
      * @return the names of the pools to action on
@@ -41,31 +37,4 @@ public class VirtualPoolBaseActionJson {
         poolNames = poolNamesIn;
     }
 
-    /**
-     * @return the earliest
-     */
-    public LocalDateTime getEarliest() {
-        return earliest;
-    }
-
-    /**
-     * @param earliestIn The earliest to set.
-     */
-    public void setEarliest(LocalDateTime earliestIn) {
-        earliest = earliestIn;
-    }
-
-    /**
-     * @return actionChain to get
-     */
-    public Optional<String> getActionChain() {
-        return actionChain;
-    }
-
-    /**
-     * @param actionChainIn The actionChain to set.
-     */
-    public void setActionChain(Optional<String> actionChainIn) {
-        actionChain = actionChainIn;
-    }
 }

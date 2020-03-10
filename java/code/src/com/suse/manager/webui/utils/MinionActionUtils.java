@@ -353,9 +353,9 @@ public class MinionActionUtils {
      * @param earliest the earliest locat date time to execute the action, may be <code>null</code>
      * @return the date to run the action
      */
-    public static Date getScheduleDate(LocalDateTime earliest) {
+    public static Date getScheduleDate(Optional<LocalDateTime> earliest) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-        return Date.from(Optional.ofNullable(earliest)
+        return Date.from(earliest
                 .orElseGet(() -> LocalDateTime.now())
                 .atZone(zoneId).toInstant());
     }

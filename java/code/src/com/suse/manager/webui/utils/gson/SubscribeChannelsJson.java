@@ -15,19 +15,16 @@
 
 package com.suse.manager.webui.utils.gson;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Subscribe to Channels JSON class
  */
-public class SubscribeChannelsJson {
+public class SubscribeChannelsJson extends ScheduledRequestJson {
 
     private Optional<ChannelsJson.ChannelJson> base;
     private List<ChannelsJson.ChannelJson> children;
-    private Optional<LocalDateTime> earliest = Optional.empty();
-    private Optional<String> actionChain = Optional.empty();
 
     /**
      * @return the base channel to set
@@ -41,19 +38,5 @@ public class SubscribeChannelsJson {
      */
     public List<ChannelsJson.ChannelJson> getChildren() {
         return children;
-    }
-
-    /**
-     * @return The earliest execution date
-     */
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
-    }
-
-    /**
-     * @return Teh action chain to which to add the action
-     */
-    public Optional<String> getActionChain() {
-        return actionChain;
     }
 }
