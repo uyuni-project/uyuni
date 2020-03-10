@@ -17,6 +17,7 @@ type Props = {
   projectId: string,
   environmentPromote: ProjectEnvironmentType,
   environmentTarget: ProjectEnvironmentType,
+  environmentNextTarget: ProjectEnvironmentType,
   versionToPromote: number,
   historyEntries: Array<ProjectHistoryEntry>,
   onChange: Function
@@ -37,13 +38,17 @@ const Promote = (props: Props) => {
   }, [open]);
 
   const modalNameId = `${props.environmentPromote.label}-cm-promote-env-modal`;
+
   const disabled =
     !hasEditingPermissions
     || !props.environmentPromote.version
-    || props.environmentPromote.version <= props.environmentTarget.version;
+    || props.environmentPromote.status === "building" // the source env is already building
+    || props.environmentTarget.status === "building" // the target environment is already building
+    || (props.environmentNextTarget || {}).status === "building"; // the "target+1" environment is already building - we can't promote as it would affect this build
+
   return (
     <div
-      {...(disabled ? {title: t("No version to promote")} : {})}
+      {...(disabled ? {title: t("No version to promote or colliding environment build in progress")} : {})}
     >
       <DownArrow/>
       <div className="text-center">
