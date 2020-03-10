@@ -76,8 +76,8 @@ const Project = (props: Props) => {
   const isBuildDisabled = !hasEditingPermissions
         || _isEmpty(project.environments)
         || _isEmpty(project.softwareSources)
-        || project.environments[0].status === "building"
-        || (project.environments[1] || {}).status === "building";
+        || project.environments[0].status === "building" // already building
+        || (project.environments[1] || {}).status === "building"; // promoting 1st env to 2nd: we can't build as it would affect this promotion
 
   return (
     <TopPanel
