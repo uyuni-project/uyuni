@@ -576,7 +576,7 @@ public class ContentManager {
     }
 
     // helper method to determine if given environment is BUILDING
-    private Boolean isEnvironmentBuilding(Optional<ContentEnvironment> env) {
+    private static Boolean isEnvironmentBuilding(Optional<ContentEnvironment> env) {
         return env.flatMap(e -> e.computeStatus().map(status -> status.equals(EnvironmentTarget.Status.BUILDING)))
                 .orElse(false);
     }

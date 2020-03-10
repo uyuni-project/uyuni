@@ -62,7 +62,6 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Arrays.asList;
-import static java.util.Arrays.spliterator;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -1136,16 +1135,16 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testBuildAlreadyBuildingProject() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var env = contentManager.createEnvironment(project.getLabel(), empty(), "fst", "first env", "desc", false, user);
+        var env = ContentManager.createEnvironment(project.getLabel(), empty(), "fst", "first env", "desc", false, user);
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
         env.getTargets().iterator().next().setStatus(Status.BUILDING);
         HibernateFactory.getSession().flush();
 
         try {
-            contentManager.buildProject("cplabel", empty(), false, user);
+            ContentManager.buildProject("cplabel", empty(), false, user);
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -1161,22 +1160,22 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testPromotingBuildingProject() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var fstEnv = contentManager.createEnvironment(project.getLabel(), empty(), "fst", "first env", "fst", false, user);
-        var sndEnv = contentManager.createEnvironment(project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
+        var fstEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "fst", "first env", "fst", false, user);
+        var sndEnv = ContentManager.createEnvironment(project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
 
         // 1st promote runs ok
-        contentManager.promoteProject("cplabel", "fst", false, user);
+        ContentManager.promoteProject("cplabel", "fst", false, user);
 
         // now we change the target from the 1st environment to BUILDING
         fstEnv.getTargets().iterator().next().setStatus(Status.BUILDING);
 
         // now the promote must fail
         try {
-            contentManager.promoteProject("cplabel", "fst", false, user);
+            ContentManager.promoteProject("cplabel", "fst", false, user);
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -1192,22 +1191,22 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testPromotingPromotingProject() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var fstEnv = contentManager.createEnvironment(project.getLabel(), empty(), "fst", "first env", "fst", false, user);
-        var sndEnv = contentManager.createEnvironment(project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
+        var fstEnv = ContentManager.createEnvironment(project.getLabel(), empty(), "fst", "first env", "fst", false, user);
+        var sndEnv = ContentManager.createEnvironment(project.getLabel(), of("fst"), "snd", "second env", "snd", false, user);
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
 
         // 1st promote runs ok
-        contentManager.promoteProject("cplabel", "fst", false, user);
+        ContentManager.promoteProject("cplabel", "fst", false, user);
 
         // now we change the target from the 2nd environment to BUILDING
         sndEnv.getTargets().iterator().next().setStatus(Status.BUILDING);
 
         // now the promote must fail
         try {
-            contentManager.promoteProject("cplabel", "fst", false, user);
+            ContentManager.promoteProject("cplabel", "fst", false, user);
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -1223,18 +1222,18 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
     public void testBuildPromoteInProgress() throws Exception {
         var project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
         ContentProjectFactory.save(project);
-        var env1 = contentManager.createEnvironment(project.getLabel(), empty(), "env1", "env 1", "1", false, user);
-        var env2 = contentManager.createEnvironment(project.getLabel(), of("env1"), "env2", "env 2", "2", false, user);
-        var env3 = contentManager.createEnvironment(project.getLabel(), of("env2"), "env3", "env 3", "3", false, user);
-        var env4 = contentManager.createEnvironment(project.getLabel(), of("env3"), "env4", "env 4", "4", false, user);
-        var env5 = contentManager.createEnvironment(project.getLabel(), of("env4"), "env5", "env 5", "5", false, user);
+        var env1 = ContentManager.createEnvironment(project.getLabel(), empty(), "env1", "env 1", "1", false, user);
+        var env2 = ContentManager.createEnvironment(project.getLabel(), of("env1"), "env2", "env 2", "2", false, user);
+        var env3 = ContentManager.createEnvironment(project.getLabel(), of("env2"), "env3", "env 3", "3", false, user);
+        var env4 = ContentManager.createEnvironment(project.getLabel(), of("env3"), "env4", "env 4", "4", false, user);
+        var env5 = ContentManager.createEnvironment(project.getLabel(), of("env4"), "env5", "env 5", "5", false, user);
         var channel = createPopulatedChannel();
-        contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        ContentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
         // build & promote everything possible
-        contentManager.buildProject("cplabel", empty(), false, user);
+        ContentManager.buildProject("cplabel", empty(), false, user);
         List.of(1, 2, 3, 4).forEach(i ->
-                contentManager.promoteProject("cplabel", "env" + i, false, user));
+                ContentManager.promoteProject("cplabel", "env" + i, false, user));
 
         // PHASE 1: Test building
         // 1st target BUILDING -> requested build should fail
@@ -1250,7 +1249,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // 3rd target BUILDING -> build passes
         getFirstTarget(env3).setStatus(Status.BUILDING);
         try {
-            contentManager.buildProject("cplabel", empty(), false, user);
+            ContentManager.buildProject("cplabel", empty(), false, user);
         }
         catch (ContentManagementException e) {
             fail("No ContentManagementException expected");
@@ -1260,7 +1259,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // PHASE 2: Test promoting of environment env2
         // 1st promote is OK
         try {
-            contentManager.promoteProject("cplabel", "env2", false, user);
+            ContentManager.promoteProject("cplabel", "env2", false, user);
         }
         catch (ContentManagementException e) {
             fail("No ContentManagementException expected");
@@ -1284,7 +1283,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
         // env5 is building -> requested promote should be ok
         getFirstTarget(env5).setStatus(Status.BUILDING);
         try {
-            contentManager.promoteProject("cplabel", "env2", false, user);
+            ContentManager.promoteProject("cplabel", "env2", false, user);
         }
         catch (ContentManagementException e) {
             fail("No ContentManagementException expected");
@@ -1294,7 +1293,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
     private void assertBuildFails(String projectLabel) {
         try {
-            contentManager.buildProject(projectLabel, empty(), false, user);
+            ContentManager.buildProject(projectLabel, empty(), false, user);
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
@@ -1304,7 +1303,7 @@ public class ContentManagerTest extends BaseTestCaseWithUser {
 
     private void assertPromoteFails(String projectLabel, String envLabel) {
         try {
-            contentManager.promoteProject(projectLabel, envLabel, false, user);
+            ContentManager.promoteProject(projectLabel, envLabel, false, user);
             fail("An exception should have been thrown");
         }
         catch (ContentManagementException e) {
