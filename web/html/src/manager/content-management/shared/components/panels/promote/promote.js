@@ -42,9 +42,9 @@ const Promote = (props: Props) => {
   const disabled =
     !hasEditingPermissions
     || !props.environmentPromote.version
-    || props.environmentPromote.status === "building"
-    || props.environmentTarget.status === "building"
-    || (props.environmentNextTarget || {}).status === "building";
+    || props.environmentPromote.status === "building" // the source env is already building
+    || props.environmentTarget.status === "building" // the target environment is already building
+    || (props.environmentNextTarget || {}).status === "building"; // the "target+1" environment is already building - we can't promote as it would affect this build
 
   return (
     <div
