@@ -17,38 +17,20 @@ package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.manager.ssm.ChannelChangeDto;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Object holding info about SSM channel changes.
  */
-public class SsmScheduleChannelChangesJson {
+public class SsmScheduleChannelChangesJson extends ScheduledRequestJson {
 
-    private Optional<LocalDateTime> earliest = Optional.empty();
     private List<ChannelChangeDto> changes = new ArrayList<>();
-    private Optional<String> actionChain = Optional.empty();
-
-    /**
-     * @return earliest date/time to execute
-     */
-    public Optional<LocalDateTime> getEarliest() {
-        return earliest;
-    }
 
     /**
      * @return list of changes to be applied
      */
     public List<ChannelChangeDto> getChanges() {
         return changes;
-    }
-
-    /**
-     * @return actionChain to get
-     */
-    public Optional<String> getActionChain() {
-        return actionChain;
     }
 }

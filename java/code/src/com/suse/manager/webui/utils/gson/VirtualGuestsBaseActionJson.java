@@ -20,7 +20,7 @@ import java.util.List;
  * VirtualGuestsBaseAction represents the common properties for all the virtualization guests
  * action requests JSON data.
  */
-public class VirtualGuestsBaseActionJson {
+public class VirtualGuestsBaseActionJson extends ScheduledRequestJson {
 
     private List<String> uuids;
     private Boolean force;
