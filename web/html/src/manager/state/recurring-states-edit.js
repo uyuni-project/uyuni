@@ -3,7 +3,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {RecurringEventPicker} = require("components/recurring-event-picker");
+const {RecurringEventPicker} = require("components/picker/recurring-event-picker");
 const {DisplayHighstate} = require("./display-highstate");
 const Button = require("components/buttons").Button;
 const AsyncButton = require("components/buttons").AsyncButton;

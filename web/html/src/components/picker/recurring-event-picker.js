@@ -5,12 +5,12 @@
 const React = require("react");
 const ReactDOM = require("react-dom");
 
-const {DateTimePicker} = require("./datetimepicker");
-const {Combobox} = require("./combobox");
-import type {ComboboxItem} from "./combobox";
+const {DateTimePicker} = require("../datetimepicker");
+const {Combobox} = require("../combobox");
+import type {ComboboxItem} from "../combobox";
 const { Form } = require('components/input/Form');
 const { Text } = require('components/input/Text');
-const Functions = require("../utils/functions");
+const Functions = require("utils/functions");
 
 type RecurringEventPickerProps = {
     timezone: string,
