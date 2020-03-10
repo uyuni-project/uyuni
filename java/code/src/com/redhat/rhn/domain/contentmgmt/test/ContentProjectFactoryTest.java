@@ -38,8 +38,11 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.lookupByLabel;
@@ -576,5 +579,33 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(cp, ContentProjectFactory.listFilterProjects(filter).get(0));
         cp.detachFilter(filter);
         assertTrue(ContentProjectFactory.listFilterProjects(filter).isEmpty());
+    }
+
+    public void testFailStaleTargets() {
+        // let's test all possible statuses
+        Map<EnvironmentTarget.Status, EnvironmentTarget> tgtsByStatus = Arrays.stream(EnvironmentTarget.Status.values())
+                .collect(Collectors.toMap(s -> s, s -> {
+                    EnvironmentTarget tgt = new SoftwareEnvironmentTarget();
+                    tgt.setStatus(s);
+                    ContentProjectFactory.save(tgt);
+                    return tgt;
+                }));
+
+        // this flips all BUILDING targets to FAILED
+        int numOfUpgradedTgts = ContentProjectFactory.failStaleTargets();
+
+        assertEquals(1, numOfUpgradedTgts);
+
+        tgtsByStatus.forEach((oldStatus, tgt) -> {
+            tgt = (EnvironmentTarget) HibernateFactory.reload(tgt);
+            if (oldStatus.equals(EnvironmentTarget.Status.BUILDING)) {
+                // we expect the building targets to be set to FAILED
+                assertEquals(EnvironmentTarget.Status.FAILED, tgt.getStatus());
+            }
+            else {
+                // other targets should remain untouched
+                assertEquals(oldStatus, tgt.getStatus());
+            }
+        });
     }
 }

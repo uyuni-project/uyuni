@@ -1,3 +1,5 @@
+- Prevent build/promote on content projects which have build/promote in progress
+- Clean stale Content Lifecycle targets on Tomcat startup (bsc#1164121)
 - Show warning on products page when no SUSE Manager Server Subscription is available
 - Implement recurring highstate scheduling
 - Notify VMs creation actions
