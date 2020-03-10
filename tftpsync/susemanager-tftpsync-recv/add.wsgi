@@ -18,7 +18,10 @@ import logging
 import logging.handlers
 import cgi
 import tempfile
-from cStringIO import OutputType
+try:
+    from cStringIO import OutputType
+except:
+    from io import StringIO as OutputType
 from spacewalk.common.rhnConfig import CFG, initCFG
 
 initCFG("tftpsync")
@@ -48,8 +51,7 @@ class TftpFieldStorage(cgi.FieldStorage):
         if not os.path.exists(tmpdir):
                 os.makedirs(tmpdir)
 
-        return tempfile.NamedTemporaryFile(mode="w+b", bufsize=-1,
-                                           suffix='', prefix='tmp',
+        return tempfile.NamedTemporaryFile(mode="w+b", suffix='', prefix='tmp',
                                            dir=tmpdir, delete=False)
 
 def application(environ, start_response):
@@ -93,21 +95,21 @@ def application(environ, start_response):
             rfname = os.path.join(path, file_name)
             tfname = "%s.tmp" % (rfname)
             if file_type == 'pxe' or file_type == 'grub':
-                tf = open(tfname, 'w')
+                tf = open(tfname, 'wb')
                 file_content = form.getvalue('file')
-                file_content = file_content.replace(CFG.SERVER_IP, CFG.PROXY_IP)
-                file_content = file_content.replace(CFG.SERVER_FQDN, CFG.PROXY_FQDN)
+                file_content = file_content.replace(CFG.SERVER_IP.encode(), CFG.PROXY_IP.encode())
+                file_content = file_content.replace(CFG.SERVER_FQDN.encode(), CFG.PROXY_FQDN.encode())
                 tf.write(file_content)
                 tf.close()
                 os.rename(tfname, rfname)
             elif isinstance(tfpointer, OutputType):
-                tf = open(tfname, 'w')
+                tf = open(tfname, 'wb')
                 tf.write(form.getvalue('file'))
                 tf.close()
                 os.rename(tfname, rfname)
             else:
                 if (tfpointer and os.path.exists(tfpointer.name)):
-                    os.chmod(tfpointer.name, 0644)
+                    os.chmod(tfpointer.name, 0o644)
                     os.rename(tfpointer.name, rfname)
                 else:
                     raise IOError("Source file not found");
@@ -115,12 +117,12 @@ def application(environ, start_response):
             status = "200 OK"
             content = "setting file '%s' (%s), status: %s" % (rfname, file_type, status)
             logger.info(content)
-        except Exception, e:
+        except Exception as e:
             # remove tmp file if exists
             if tfname and os.path.exists(tfname):
                 os.unlink(tfname)
-            logger.error("Witing file failed: %s" % e)
-            content = "Witing file failed"
+            logger.error("Writing file failed: %s" % e)
+            content = "Writing file failed"
 
     # remove tmp file if exists
     if (tfpointer and not isinstance(tfpointer, OutputType) and
@@ -131,6 +133,6 @@ def application(environ, start_response):
                         ('Content-Length', str(len(content)))]
     start_response(status, response_headers)
 
-    return [content]
+    return [content.encode()]
 
 
