@@ -70,6 +70,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
 import com.redhat.rhn.manager.BaseManager;
@@ -825,7 +826,8 @@ public class ActionManager extends BaseManager {
      * @param pc The details of which results to return
      * @return A list containing the pending actions for the user
      */
-    public static DataResult pendingActions(User user, PageControl pc) {
+    @SuppressWarnings("unchecked")
+    public static DataResult<ScheduledAction> pendingActions(User user, PageControl pc) {
         return getActions(user, pc, "pending_action_list");
     }
 

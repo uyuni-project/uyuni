@@ -68,6 +68,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionIsChildException;
@@ -80,7 +81,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -149,7 +149,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         pc.setIndexData(false);
         pc.setFilterColumn("earliest");
         pc.setStart(1);
-        DataResult dr = ActionManager.pendingActions(user, pc);
+        DataResult<ScheduledAction> dr = ActionManager.pendingActions(user, pc);
         assertNotNull(dr);
         assertTrue(dr.size() > 0);
     }
@@ -240,7 +240,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionFactory.save(parent);
         UserFactory.save(user);
 
-        DataResult dr = ActionManager.pendingActions(user, null);
+        DataResult<ScheduledAction> dr = ActionManager.pendingActions(user, null);
 
         Long actionid = parent.getId().longValue();
         TestUtils.arraySearch(dr.toArray(), "getId", actionid);
