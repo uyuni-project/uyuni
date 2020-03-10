@@ -118,6 +118,8 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-eve
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
 %{_unitdir}/mgr-events-config.service
 %{_unitdir}/mgr-websockify.service
+%{_unitdir}/uyuni-check-database.service
+%{_unitdir}/*.service.d
 %endif
 
 %changelog

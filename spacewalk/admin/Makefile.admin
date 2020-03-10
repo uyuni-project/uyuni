@@ -45,7 +45,11 @@ GPGKEY_FILES = RHN-GPG-KEY
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
 		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service mgr-events-config.service \
-		mgr-websockify.service
+		mgr-websockify.service uyuni-check-database.service
+
+SYSTEMD_OVERRIDE_SERVICES = tomcat.service apache2.service salt-master.service salt-api.service rhn-search.service \
+			    taskomatic.service mgr-events-config.service
+
 
 BIN_INSTALL    = install -m 755
 CONF_INSTALL   = install -m 644
@@ -64,6 +68,10 @@ install: $(SCRIPTS) $(PERL_DEST) $(CONF_FILES) $(CONF_DEST) $(GPGKEY_FILES) $(GP
 
 install_systemd: $(SYSTEMD_DEST) $(SYSTEMD_FILES)
 	$(SYSTEMD_INSTALL) $(SYSTEMD_FILES) $(SYSTEMD_DEST)
+	for service in $(SYSTEMD_OVERRIDE_SERVICES); do \
+	  $(DIR_INSTALL) $(SYSTEMD_DEST)/$$service.d; \
+	  $(SYSTEMD_INSTALL) uyuni-service-override.conf $(SYSTEMD_DEST)/$$service.d/override.conf; \
+	done
 
 $(PERL_DEST):
 	$(DIR_INSTALL) $@

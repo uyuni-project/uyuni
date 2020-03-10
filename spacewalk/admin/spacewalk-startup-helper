@@ -5,13 +5,17 @@ if [ -x "/usr/bin/lsof" ]; then
     LSOF="/usr/bin/lsof"
 fi
 
-wait_for_database() {
+check_database() {
     RETRIES=10;
     while [ $RETRIES -gt 0 ]; do
 
-        echo "select 0 from dual;" | spacewalk-sql --select-mode - &> /dev/null
+        IFS="." read -ra VARR <<< $(echo "show server_version;" | spacewalk-sql --select-mode - | sed -n 3p | xargs)
 
         if [ $? -eq 0 ]; then
+            if [ "${VARR[0]}" != "12" ]; then
+                echo "Database version '${VARR[0]}' is not supported for SUSE Manager. Perform database migration."
+                exit 1
+            fi
             exit 0 # db is running
         fi
 
@@ -102,6 +106,7 @@ case $1 in
         ensure-httpd-down) ensure_httpd_down;;
         wait-for-jabberd) wait_for_jabberd;;
         wait-for-tomcat) wait_for_tomcat;;
-        wait-for-database) wait_for_database;;
+        wait-for-database) check_database;;
+        check-database) check_database;;
         wait-for-taskomatic) wait_for_taskomatic;;
 esac
