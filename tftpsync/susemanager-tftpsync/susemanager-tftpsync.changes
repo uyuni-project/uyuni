@@ -1,3 +1,4 @@
+- Fix few compat issues with Python3 at MultipartPostHandler
 - Use alternative method for deprecated 'Request.get_data' (bsc#1164111)
 
 -------------------------------------------------------------------
