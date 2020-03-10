@@ -597,6 +597,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, numOfUpgradedTgts);
 
         tgtsByStatus.forEach((oldStatus, tgt) -> {
+            tgt = (EnvironmentTarget) HibernateFactory.reload(tgt);
             if (oldStatus.equals(EnvironmentTarget.Status.BUILDING)) {
                 // we expect the building targets to be set to FAILED
                 assertEquals(EnvironmentTarget.Status.FAILED, tgt.getStatus());
