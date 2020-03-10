@@ -12,9 +12,8 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers.test;
+package com.suse.manager.webui.controllers.virtualization.test;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -28,17 +27,21 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
-import com.suse.manager.webui.controllers.VirtualNetsController;
 import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
+import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.gson.VirtualNetworkInfoJson;
 
 import org.jmock.Expectations;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
@@ -69,7 +72,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             @Override
             public Map<String, JsonObject> getNetworks(String minionId) {
                 return SaltTestUtils.getSaltResponse(
-                        "/com/suse/manager/webui/controllers/test/virt.net.info.json",
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt.net.info.json",
                         null,
                         new TypeToken<Map<String, JsonObject>>() { })
                         .orElse(Collections.emptyMap());

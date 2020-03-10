@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,29 +12,27 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.gson;
-
-import java.util.List;
+package com.suse.manager.webui.controllers.virtualization.gson;
 
 /**
- *
- * VirtualPoolBaseAction represents the generic pool action request body structure.
+ * VirtualGuestsBaseAction represents most of the virtual guests actions
+ * requests Json data.
  */
-public class VirtualPoolBaseActionJson extends ScheduledRequestJson {
-    private List<String> poolNames;
+public class VirtualGuestSetterActionJson extends VirtualGuestsBaseActionJson {
+
+    private Long value;
 
     /**
-     * @return the names of the pools to action on
+     * @return the value to set.
      */
-    public List<String> getPoolNames() {
-        return poolNames;
+    public Long getValue() {
+        return value;
     }
 
     /**
-     * @param poolNamesIn The poolNames to set.
+     * @param settingValue the value to set. Only needed for setMemory and setVcpu actions.
      */
-    public void setPoolNames(List<String> poolNamesIn) {
-        poolNames = poolNamesIn;
+    public void setValue(Long settingValue) {
+        this.value = settingValue;
     }
-
 }

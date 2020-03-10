@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
@@ -48,16 +48,18 @@ import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
+import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.MinionController;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualPoolBaseActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualPoolCreateActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualPoolDeleteActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualStoragePoolInfoJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualStorageVolumeInfoJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualVolumeBaseActionJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
-import com.suse.manager.webui.utils.gson.VirtualPoolBaseActionJson;
-import com.suse.manager.webui.utils.gson.VirtualPoolCreateActionJson;
-import com.suse.manager.webui.utils.gson.VirtualPoolDeleteActionJson;
-import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
-import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
-import com.suse.manager.webui.utils.gson.VirtualVolumeBaseActionJson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
