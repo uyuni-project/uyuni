@@ -20,7 +20,8 @@ SPACEWALK_FILES	=   __init__ \
             rhnTB \
             rhnTranslate \
             RPC_Base \
-            suseLib
+            suseLib \
+            repo
 
 SCRIPTS = spacewalk-cfg-get
 
