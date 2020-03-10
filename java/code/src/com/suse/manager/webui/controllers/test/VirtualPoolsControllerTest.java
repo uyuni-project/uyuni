@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshActi
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
@@ -252,5 +253,40 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         // Check the returned message
         Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
+    }
+
+    public void testVolumeDelete() throws Exception {
+        VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
+        String json = virtualPoolsController.volumeDelete(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/volumes/:sid/delete",
+                                              "{volumes: {\"pool0\": [\"vol0\", \"vol1\"], \"pool1\": [\"vol2\"]}}",
+                                              host.getId()),
+                response, user);
+
+        // Ensure the start action is queued
+        List<BaseVirtualizationVolumeAction> actions = ActionManager.pendingActions(user, null).stream()
+            .filter(action -> ActionFactory.TYPE_VIRTUALIZATION_VOLUME_DELETE.getName().equals(action.getTypeName()))
+            .map(action -> (BaseVirtualizationVolumeAction)ActionManager.lookupAction(user, action.getId()))
+            .collect(Collectors.toList());
+
+        assertEquals(3, actions.size());
+        Optional<BaseVirtualizationVolumeAction> vol0 = actions.stream()
+            .filter(action -> "pool0".equals(action.getPoolName()) && "vol0".equals(action.getVolumeName()))
+            .findFirst();
+        assertTrue(vol0.isPresent());
+
+        Optional<BaseVirtualizationVolumeAction> vol1 = actions.stream()
+                .filter(action -> "pool0".equals(action.getPoolName()) && "vol1".equals(action.getVolumeName()))
+                .findFirst();
+        assertTrue(vol1.isPresent());
+
+        Optional<BaseVirtualizationVolumeAction> vol2 = actions.stream()
+                .filter(action -> "pool1".equals(action.getPoolName()) && "vol2".equals(action.getVolumeName()))
+                .findFirst();
+        assertTrue(vol2.isPresent());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("pool0/vol1", vol1.get().getId()).matches(model));
     }
 }

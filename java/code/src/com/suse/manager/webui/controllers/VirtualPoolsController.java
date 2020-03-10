@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
@@ -56,6 +57,7 @@ import com.suse.manager.webui.utils.gson.VirtualPoolCreateActionJson;
 import com.suse.manager.webui.utils.gson.VirtualPoolDeleteActionJson;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
+import com.suse.manager.webui.utils.gson.VirtualVolumeBaseActionJson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -70,6 +72,8 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -132,6 +136,8 @@ public class VirtualPoolsController {
                 withUser(this::poolCreate));
         post("/manager/api/systems/details/virtualization/pools/:sid/edit",
                 withUser(this::poolEdit));
+        post("/manager/api/systems/details/virtualization/volumes/:sid/delete",
+                withUser(this::volumeDelete));
     }
 
     /**
@@ -410,6 +416,22 @@ public class VirtualPoolsController {
     }
 
     /**
+     * Executes the POST query to delete a set of virtual volumes.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String volumeDelete(Request request, Response response, User user) {
+        return volumeAction(request, response, user,
+                (data) -> (BaseVirtualizationVolumeAction)ActionFactory.createAction(
+                        ActionFactory.TYPE_VIRTUALIZATION_VOLUME_DELETE),
+                VirtualVolumeBaseActionJson.class);
+    }
+
+
+    /**
      * Displays a page server-related virtual page
      *
      * @param request the request
@@ -495,6 +517,25 @@ public class VirtualPoolsController {
                },
                (data) -> ((VirtualPoolBaseActionJson)data).getPoolNames(),
                jsonClass);
+    }
+
+    private String volumeAction(Request request, Response response, User user,
+            Function<VirtualVolumeBaseActionJson, BaseVirtualizationVolumeAction> actionCreator,
+            Class<? extends VirtualVolumeBaseActionJson> jsonClass) {
+        return action(request, response, user,
+                (data, key) -> {
+                    BaseVirtualizationVolumeAction action = actionCreator.apply((VirtualVolumeBaseActionJson)data);
+                    action.setName(action.getActionType().getName() + ": " + key);
+                    Matcher m = Pattern.compile("^([^/]+)/(.*)$").matcher(key);
+                    if (m.matches()) {
+                        action.setPoolName(m.group(1));
+                        action.setVolumeName(m.group(2));
+                    }
+                    return action;
+                },
+                (data) -> ((VirtualVolumeBaseActionJson)data).getVolumesPath(),
+                jsonClass
+         );
     }
 
     private String action(Request request, Response response, User user,
