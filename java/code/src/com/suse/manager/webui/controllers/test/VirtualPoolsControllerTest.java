@@ -155,7 +155,6 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(pType.getOptions().getVolume().getTargetFormatType().contains("cloop"));
     }
 
-    @SuppressWarnings("unchecked")
     public void testRefresh() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.poolRefresh(
@@ -190,7 +189,6 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("pool1", actionsIds.get("pool1")).matches(model));
     }
 
-    @SuppressWarnings("unchecked")
     public void testStart() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.poolStart(
@@ -213,7 +211,6 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
     }
 
-    @SuppressWarnings("unchecked")
     public void testStop() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.poolStop(
@@ -236,7 +233,6 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertTrue(IsMapContaining.hasEntry("pool0", action.getId()).matches(model));
     }
 
-    @SuppressWarnings("unchecked")
     public void testDelete() throws Exception {
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
         String json = virtualPoolsController.poolDelete(

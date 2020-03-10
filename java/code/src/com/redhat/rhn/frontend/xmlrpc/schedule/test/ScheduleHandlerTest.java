@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -143,7 +144,7 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
 
     public void testListInProgressActions() throws Exception {
         //obtain number of actions from action manager
-        DataResult actions = ActionManager.pendingActions(admin, null);
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(admin, null);
         int numActions = actions.size();
 
         //compare against number retrieved from api... should be the same

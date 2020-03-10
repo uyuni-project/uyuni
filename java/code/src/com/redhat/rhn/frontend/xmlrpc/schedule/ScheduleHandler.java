@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.manager.action.ActionIsChildException;
@@ -176,7 +177,7 @@ public class ScheduleHandler extends BaseHandler {
     public Object[] listInProgressActions(User loggedInUser) {
         // the second argument is "PageControl". This is not needed for the api usage;
         // therefore, null will be used.
-        DataResult dr = ActionManager.pendingActions(loggedInUser, null);
+        DataResult<ScheduledAction> dr = ActionManager.pendingActions(loggedInUser, null);
         return dr.toArray();
     }
 
