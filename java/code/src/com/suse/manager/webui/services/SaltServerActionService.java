@@ -72,6 +72,7 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -391,6 +392,12 @@ public class SaltServerActionService {
             VirtualizationPoolCreateAction createAction =
                     (VirtualizationPoolCreateAction)actionIn;
             return virtPoolCreateAction(minions, createAction);
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_VOLUME_DELETE.equals(actionType)) {
+            BaseVirtualizationVolumeAction deleteAction =
+                    (BaseVirtualizationVolumeAction)actionIn;
+            return virtVolumeDeleteAction(minions,
+                    deleteAction.getPoolName(), deleteAction.getVolumeName());
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1863,6 +1870,27 @@ public class SaltServerActionService {
 
                     return State.apply(
                             Collections.singletonList("virt.pool-create"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtVolumeDeleteAction(
+            List<MinionSummary> minionSummaries, String poolName, String volumeName) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_name", poolName);
+                    pillar.put("volume_name", volumeName);
+
+                    return State.apply(
+                            Collections.singletonList("virt.volume-deleted"),
                             Optional.of(pillar));
                 },
                 Collections::singletonList
