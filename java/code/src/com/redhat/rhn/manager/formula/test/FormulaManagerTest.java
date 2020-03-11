@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.formula.test;
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -31,6 +32,8 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.testing.httpservermock.EngineMock;
+
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Json;
@@ -47,6 +50,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -81,7 +85,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
         manager.setSystemQuery(saltServiceMock);
     }
-
 
     /**
      * Validate the input data(valid) with the definition of formula
@@ -152,7 +155,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
+        FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
@@ -210,8 +213,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      */
     public void testIsMonitoringCleanupNeeded() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        FormulaFactory.setMetadataDirOfficial(metadataDir.toString() + File.separator);
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());FormulaFactory.setMetadataDirOfficial(metadataDir.toString() + File.separator);
 
         // No group or system level assignment of the `prometheus-exporters` Formula
         assertFalse(manager.isMonitoringCleanupNeeded(minion));
@@ -246,7 +248,13 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     private void createMetadataFiles() {
         try {
             Path prometheusDir = metadataDir.resolve("prometheus-exporters");
+            Path prometheusFile = Paths.get(prometheusDir.toString(),  "form.yml");
             Files.createDirectories(prometheusDir);
+            Files.createFile(prometheusFile);
+            Path testFormulaDir = metadataDir.resolve("dhcpd");
+            Files.createDirectories(testFormulaDir);
+            Path testFormulaFile = Paths.get(testFormulaDir.toString(), "form.yml");
+            Files.createFile(testFormulaFile);
             try (
                 InputStream src = this.getClass().getResourceAsStream("prometheus-exporters-pillar.example");
                 OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
