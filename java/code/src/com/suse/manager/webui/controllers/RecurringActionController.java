@@ -24,6 +24,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
@@ -191,13 +192,10 @@ public class RecurringActionController {
             RecurringActionManager.saveAndSchedule(action, user);
         }
         catch (ValidatorException e) {
-            errors.add(e.getMessage()); // todo localize!
-        }
-        catch (EntityExistsException e) {
-            errors.add("Action with given name already exists.");
+            errors.add(e.getMessage()); // we assume the messages are already localized
         }
         catch (TaskomaticApiException e) {
-            errors.add("Error when scheduling the action.");
+            errors.add(LocalizationService.getInstance().getMessage("recurring_actions.taskomatic_error"));
             LOG.error("Rolling back transaction because of Taskomatic exception", e);
             HibernateFactory.rollbackTransaction();
         }
