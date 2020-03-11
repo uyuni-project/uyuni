@@ -12,7 +12,7 @@ type Props = {
 export function VirtualizationGuestActionApi(props: Props) {
   return (
     <ActionApi
-      urlTemplate={ `/rhn/manager/api/systems/details/virtualization/guests/${props.hostid}/@ACTION@`}
+      urlTemplate={ `/rhn/manager/api/systems/details/virtualization/guests/${props.hostid}/`}
       bounce={props.bounce}
       callback={props.callback}
     >
@@ -23,7 +23,7 @@ export function VirtualizationGuestActionApi(props: Props) {
       }) => {
         const onAction = (action: string, uuids: Array<string>, parameters: Object) => {
           const messageData = Object.assign({ }, parameters, { uuids });
-          apiAction(action, messageData);
+          apiAction((urlTemplate) => `${urlTemplate}${action}`, action, messageData);
         }
         return props.children({onAction, messages});
       }

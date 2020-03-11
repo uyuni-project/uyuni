@@ -23,7 +23,7 @@ export function VirtualizationPoolsActionApi(props: Props) {
       }) => {
         const onAction = (action: string, poolNames: Array<string>, parameters: Object) => {
           const messageData = Object.assign({ }, parameters, { poolNames });
-          apiAction(action, messageData);
+          apiAction((urlTemplate) => `${urlTemplate}${action}`, action, messageData);
         }
         return props.children({onAction, messages});
       }

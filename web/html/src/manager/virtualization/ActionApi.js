@@ -11,7 +11,7 @@ type Props = {
    * Function rendering the children taking an object parameter with
    * an onAction and a messages property
    */
-  children: ({onAction: (action: string, parameters: Object) => void, messages: Array<React.Node>}) => React.Node,
+  children: ({onAction: (urlModifier: (string) => string, action: string, parameters: Object) => void, messages: Array<React.Node>}) => React.Node,
   /**
    * URL of the page to show after the action has been successfully performed.
    * If undefined, the page is not redirected at all.
@@ -25,8 +25,8 @@ type Props = {
 export function ActionApi(props: Props) {
   const [messages, setMessages] = React.useState([]);
 
-  const onAction = (action: string, parameters: Object) => {
-    Network.post(props.urlTemplate.replace('@ACTION@', action),
+  const onAction = (urlModifier: (string) => string, action: string, parameters: Object) => {
+    Network.post(urlModifier(props.urlTemplate),
       JSON.stringify(parameters), 'application/json').promise
       .then((response) => {
         if (Object.values(response).includes('Failed')) {
