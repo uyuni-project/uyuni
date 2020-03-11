@@ -21,7 +21,6 @@ import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
 import com.suse.manager.reactor.SaltReactor;
 
-import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -59,7 +58,7 @@ public class RhnServletListener implements ServletContextListener {
         // Start the MessageQueue thread listening for
         // Events
         MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions(SaltService.INSTANCE);
+        MessageQueue.configureDefaultActions();
     }
 
     private void stopMessaging() {
