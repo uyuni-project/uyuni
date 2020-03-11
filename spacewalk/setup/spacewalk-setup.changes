@@ -1,4 +1,3 @@
-- create AJP connector for tomcat if it does not exist (bsc#1165927)
 - spell correctly "successful" and "successfully"
 
 -------------------------------------------------------------------
