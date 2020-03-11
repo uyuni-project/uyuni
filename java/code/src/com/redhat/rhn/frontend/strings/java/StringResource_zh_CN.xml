@@ -599,6 +599,12 @@
         </context-group>
         <target>例外</target>
       </trans-unit>
+      <trans-unit id="Recurring Actions">
+        <source>Recurring Actions</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Failed Actions">
         <source>Failed Actions</source>
         <context-group name="ctx">
@@ -8185,6 +8191,12 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.update">
+        <source>Updates a virtual domain</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.manager.system.VirtualizationActionCommand</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="virt.setMemory">
         <source>Set Memory ({0} MB)</source>
         <context-group name="ctx">
@@ -10175,6 +10187,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Build">
         <source>Build</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.no_permissions">
+        <source>User has no permissions to do the action</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_name">
+        <source>Recurring Action name must be provided</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.action_name_exists">
+        <source>Recurring Action with given name already exists</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.taskomatic_error">
+        <source>Error when scheduling the action. Check if Taskomatic is running.</source>
       </trans-unit>
     </body>
   </file>
