@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Mar 11 10:57:45 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.6-1
 - Split spacewalk-utils into two packages:
   * spacewalk-utils with tools supported on SUSE Manager
   * spacewalk-utils-extras with tools unsupported on SUSE Manager
