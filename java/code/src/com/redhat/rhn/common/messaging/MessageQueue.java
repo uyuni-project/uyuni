@@ -266,7 +266,7 @@ public class MessageQueue {
 
 
     /**
-     * Configures defaut messaging actions needed by RHN
+     * Configures default messaging actions needed by RHN
      * This method should be called directly after <code>startMessaging</code>.
      * @param systemQuery instance for gathering data from a system.
      */
@@ -339,4 +339,3 @@ public class MessageQueue {
                 ChannelsChangedEventMessage.class);
     }
 }
-
