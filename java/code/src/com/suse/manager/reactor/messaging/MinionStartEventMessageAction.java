@@ -37,7 +37,7 @@ public class MinionStartEventMessageAction implements MessageAction {
     /**
      * Constructor taking a {@link SystemQuery} instance.
      *
-     * @param systemQueryIn the system to use
+     * @param systemQueryIn systemQuery instance for gathering data from a system.
      */
     public MinionStartEventMessageAction(SystemQuery systemQueryIn) {
         this.systemQuery = systemQueryIn;
