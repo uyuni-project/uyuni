@@ -101,7 +101,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     /**
      * Constructor taking a {@link SystemQuery} instance.
      *
-     * @param systemQueryIn the salt service to use
+     * @param systemQueryIn systemQuery instance for gathering data from a system.
      */
     public RegisterMinionEventMessageAction(SystemQuery systemQueryIn) {
         systemQuery = systemQueryIn;
