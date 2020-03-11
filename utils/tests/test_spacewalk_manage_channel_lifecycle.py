@@ -24,7 +24,12 @@ class TestSMCL:
         :return:
         """
         smcl.phases = ["dev", "test", "prod"]
-        assert smcl.get_current_phase("develop") == "dev"
+        class DummyOptions:
+            delimiter = '-'
+
+        smcl.options = DummyOptions
+        assert smcl.get_current_phase("develop") is None
+        assert smcl.get_current_phase("dev-develop") == "dev"
 
     @pytest.mark.skip(reason="TBD")
     def test_argparse_port(self):
