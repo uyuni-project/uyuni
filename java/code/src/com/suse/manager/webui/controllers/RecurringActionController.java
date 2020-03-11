@@ -218,10 +218,8 @@ public class RecurringActionController {
      */
     private static void validate(RecurringStateScheduleJson json, User user) {
         // we create a transient RecurringAction just for the validation purpose!
-        RecurringAction action = RecurringActionManager.createRecurringAction(
-                Type.valueOf(json.getTargetType().toUpperCase()),
-                json.getTargetId(),
-                user);
+        Type type = Type.valueOf(json.getTargetType().toUpperCase());
+        RecurringAction action = RecurringActionManager.createRecurringAction(type, json.getTargetId(), user);
 
         mapJsonToAction(json, action);
         action.setId(json.getRecurringActionId());
@@ -231,10 +229,8 @@ public class RecurringActionController {
 
     private static RecurringAction createOrGetAction(User user, RecurringStateScheduleJson json) {
         if (json.getRecurringActionId() == null) {
-            return RecurringActionManager.createRecurringAction(
-                    Type.valueOf(json.getTargetType().toUpperCase()),
-                    json.getTargetId(),
-                    user);
+            Type type = Type.valueOf(json.getTargetType().toUpperCase());
+            return RecurringActionManager.createRecurringAction(type, json.getTargetId(), user);
         }
         else {
             return RecurringActionFactory.lookupById(json.getRecurringActionId()).orElseThrow();
