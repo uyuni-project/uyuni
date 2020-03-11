@@ -36,6 +36,7 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -230,6 +231,10 @@ public class RecurringActionManager {
             throw new ValidatorException(
                     getLocalization().getMessage("recurring_action.no_permissions"),
                     new PermissionException(String.format("%s not accessible to user %s", action, user)));
+        }
+
+        if (!TaskoQuartzHelper.isValidCronExpression(action.getCronExpr())) {
+            throw new ValidatorException(getLocalization().getMessage("recurring_action.invalid_cron"));
         }
 
         if (StringUtils.isBlank(action.getName())) {

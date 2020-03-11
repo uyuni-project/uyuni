@@ -31,7 +31,6 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.Type;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
