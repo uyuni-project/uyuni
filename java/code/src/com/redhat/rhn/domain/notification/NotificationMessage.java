@@ -115,8 +115,8 @@ public class NotificationMessage implements Serializable {
         switch (getType()) {
             case OnboardingFailed: return new Gson().fromJson(getData(), OnboardingFailed.class);
             case ChannelSyncFailed: return new Gson().fromJson(getData(), ChannelSyncFailed.class);
-        case ChannelSyncFinished:
-            return new Gson().fromJson(getData(), ChannelSyncFinished.class);
+            case ChannelSyncFinished:
+                return new Gson().fromJson(getData(), ChannelSyncFinished.class);
             default: throw new RuntimeException("should not happen!");
         }
     }
