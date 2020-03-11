@@ -39,8 +39,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   }
 
   componentDidMount = () => {
-    !this.state.collapsed
-        && this.props.fetchMandatoryChannelsByChannelIds({base: this.props.base, channels: this.props.channels})
+    this.props.fetchMandatoryChannelsByChannelIds({base: this.props.base, channels: this.props.channels});
   };
 
   handleChannelChange = (event: SyntheticInputEvent<*>) => {
@@ -79,16 +78,8 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
     }
   };
 
-  toggleChannelVisibility = ({onShow}: {onShow: Function})  => {
-    const prevState = this.state;
-    this.setState(
-      {collapsed: !this.state.collapsed},
-      () => {
-        if (prevState.collapsed != this.state.collapsed && !this.state.collapsed) {
-          onShow();
-        }
-      }
-    );
+  toggleChannelVisibility = () => {
+    this.setState({collapsed: !this.state.collapsed});
   };
 
   areRecommendedChildrenSelected = () : boolean => {
@@ -161,10 +152,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
 
     return (
       <div className='child-channels-block'>
-        <h4 className='pointer'
-            onClick={() => this.toggleChannelVisibility({
-                onShow: () => this.props.fetchMandatoryChannelsByChannelIds({base: this.props.base, channels: this.props.channels})
-              })} >
+        <h4 className='pointer' onClick={() => this.toggleChannelVisibility()}>
           <i className={'fa ' + (this.state.collapsed ? 'fa-angle-right' : 'fa-angle-down')} />
           {this.props.base.name}
         </h4>
