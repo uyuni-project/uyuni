@@ -38,6 +38,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 
 import java.util.List;
@@ -230,6 +231,9 @@ public class RecurringActionManager {
                     new PermissionException(String.format("%s not accessible to user %s", action, user)));
         }
 
+        if (StringUtils.isBlank(action.getName())) {
+            throw new ValidatorException("Name must be non-empty");
+        }
 
         RecurringActionFactory.lookupEqualEntityId(action)
                 .ifPresent(existingId -> validateExistingEntityName(action, existingId));
