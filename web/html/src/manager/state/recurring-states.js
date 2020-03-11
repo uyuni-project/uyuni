@@ -122,6 +122,7 @@ class RecurringStates extends React.Component {
                 newMsgs = decorator(defaultMsg);
             }
             else {
+                // messages from the recurringactions are already localized
                 newMsgs = decorator.apply(null, data.messages);
             }
 

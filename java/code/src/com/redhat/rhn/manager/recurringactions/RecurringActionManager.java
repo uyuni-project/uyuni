@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.recurringactions;
 
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
@@ -49,7 +50,7 @@ import java.util.List;
  */
 public class RecurringActionManager {
 
-    private static  TaskomaticApi taskomaticApi = new TaskomaticApi();
+    private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     /**
      * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
@@ -227,12 +228,12 @@ public class RecurringActionManager {
     public static void validateAction(RecurringAction action, User user) {
         if (!action.canAccess(user)) {
             throw new ValidatorException(
-                    "User does not have access", // todo localize?
+                    getLocalization().getMessage("recurring_action.no_permissions"),
                     new PermissionException(String.format("%s not accessible to user %s", action, user)));
         }
 
         if (StringUtils.isBlank(action.getName())) {
-            throw new ValidatorException("Name must be non-empty");
+            throw new ValidatorException(getLocalization().getMessage("recurring_action.empty_name"));
         }
 
         RecurringActionFactory.lookupEqualEntityId(action)
@@ -246,7 +247,7 @@ public class RecurringActionManager {
         Long actionId = action.getId();
         if (actionId == null || !actionId.equals(existingId)) {
             throw new ValidatorException(
-                    "Entity already exists",
+                    getLocalization().getMessage("recurring_action.action_name_exists"),
                     new EntityExistsException(String.format("Equal entity already exists: ID %d", existingId)));
         }
     }
@@ -266,6 +267,10 @@ public class RecurringActionManager {
         RecurringActionFactory.delete(action);
 
         taskomaticApi.unscheduleRecurringAction(action, user);
+    }
+
+    private static LocalizationService getLocalization() {
+        return LocalizationService.getInstance();
     }
 
 }

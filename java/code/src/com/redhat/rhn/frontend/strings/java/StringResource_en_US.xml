@@ -8780,6 +8780,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="Build">
         <source>Build</source>
       </trans-unit>
+      <trans-unit id="recurring_action.no_permissions">
+        <source>User has no permissions to do the action</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_name">
+        <source>Recurring Action name must be provided</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.action_name_exists">
+        <source>Recurring Action with given name already exists</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.taskomatic_error">
+        <source>Error when scheduling the action. Check if Taskomatic is running.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
