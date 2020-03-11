@@ -92,14 +92,6 @@ public class HandlerFactory {
     }
 
     /**
-     * Creates a HandlerFactory prepopulated with handlers.
-     * @param handlersIn to add to the handler factory.
-     */
-    public HandlerFactory(Map<String, BaseHandler> handlersIn) {
-        this.handlers = handlersIn;
-    }
-
-    /**
      * HandlerFactory prepopulated with unit test handlers.
      * @return HandlerFactory for unit tests.
      */
