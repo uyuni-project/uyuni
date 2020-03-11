@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 11 17:00:45 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.13-1
+- create AJP connector for tomcat if it does not exist
+  (bsc#1165927, bsc#1166388)
+
+-------------------------------------------------------------------
 Fri Feb 28 11:45:38 CET 2020 - jgonzalez@suse.com
 
 - version 4.0.12-1
