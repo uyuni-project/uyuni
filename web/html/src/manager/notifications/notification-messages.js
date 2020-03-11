@@ -13,6 +13,7 @@ const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 const {AsyncButton, Button} = require("components/buttons");
 const { TopPanel } = require('components/panels/TopPanel');
+const escapeHtml = require('html-react-parser');
 
 function reloadData(dataUrlSlice) {
   return Network.get('/rhn/manager/notification-messages/' + dataUrlSlice, "application/json").promise;
@@ -190,20 +191,7 @@ class NotificationMessages extends React.Component {
   };
 
   buildTextDescription = (row) => {
-    let description = null;
-    switch(row['type']) {
-      case 'OnboardingFailed':
-        description = 'Error registering minion id: ' + row['data']['minionId'];
-      break;
-      case 'ChannelSyncFailed':
-        description = 'Error syncing the channel: ' + row['data']['channelName'];
-      break;
-      case 'ChannelSyncFinished':
-        description = 'Channel ' + row['data']['channelName'] + ' sync completed';
-      break;
-      default: description = JSON.stringify(row['data']);
-    }
-    return description;
+    return escapeHtml(row['textSummary'])
   };
 
   sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
@@ -223,20 +211,7 @@ class NotificationMessages extends React.Component {
   };
 
   buildDescription = (row) => {
-    let description = null;
-    switch(row['type']) {
-      case 'OnboardingFailed':
-        description = 'Error registering minion id: ' + row['data']['minionId'];
-      break;
-      case 'ChannelSyncFailed':
-        description = <span>Error syncing the channel: <a href={"/rhn/channels/ChannelDetail.do?cid=" + row['data']['channelId']}>{row['data']['channelName']}</a></span>;
-      break;
-      case 'ChannelSyncFinished':
-        description = <span>Channel <a href={"/rhn/channels/ChannelDetail.do?cid=" + row['data']['channelId']}>{row['data']['channelName']}</a> sync completed</span>;
-      break;
-      default: description = JSON.stringify(row['data']);
-    }
-    return description;
+    return escapeHtml(row['summary'])
   };
 
   retryOnboarding = (minionId) => {

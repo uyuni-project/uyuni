@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 
 /**
@@ -62,5 +63,31 @@ public class ChannelSyncFinished implements NotificationData {
     @Override
     public NotificationType getType() {
         return NotificationType.ChannelSyncFinished;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTextSummary() {
+        return LocalizationService.getInstance().
+                getMessage("notification.text.channelsyncfinished", getChannelName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSummary() {
+        return LocalizationService.getInstance().
+                getMessage("notification.channelsyncfinished", getChannelId(), getChannelName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDescription() {
+        return "";
     }
 }

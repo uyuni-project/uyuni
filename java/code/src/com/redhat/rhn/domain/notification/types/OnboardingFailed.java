@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
+
+import java.util.Optional;
 
 /**
  * Notification data for minion onboarding failure.
@@ -22,13 +25,24 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 public class OnboardingFailed implements NotificationData {
 
     private String minionId;
+    private String description;
 
     /**
      * Constructor
-     * @param minionIdId minion id of the failed minion
+     * @param minionIdIn minion id of the failed minion
      */
-    public OnboardingFailed(String minionIdId) {
-        this.minionId = minionIdId;
+    public OnboardingFailed(String minionIdIn) {
+        this.minionId = minionIdIn;
+    }
+
+    /**
+     * Constructor
+     * @param minionIdIn minion id of the failed minion
+     * @param descriptionIn the description
+     */
+    public OnboardingFailed(String minionIdIn, String descriptionIn) {
+        this.minionId = minionIdIn;
+        this.description = descriptionIn;
     }
 
     /**
@@ -52,5 +66,31 @@ public class OnboardingFailed implements NotificationData {
     @Override
     public NotificationType getType() {
         return NotificationType.OnboardingFailed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTextSummary() {
+        return LocalizationService.getInstance().
+                getMessage("notification.text.onboardingfailed", getMinionId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSummary() {
+        return LocalizationService.getInstance().
+                getMessage("notification.onboardingfailed", getMinionId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDescription() {
+        return Optional.ofNullable(description).orElse("");
     }
 }

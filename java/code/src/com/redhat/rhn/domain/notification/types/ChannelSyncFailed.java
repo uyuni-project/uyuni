@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 
 /**
@@ -48,13 +49,45 @@ public class ChannelSyncFailed implements NotificationData {
         return channelName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
         return NotificationMessage.NotificationMessageSeverity.error;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationType getType() {
         return NotificationType.ChannelSyncFailed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getTextSummary() {
+        return LocalizationService.getInstance().
+                getMessage("notification.text.channelsyncfailed", getChannelName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSummary() {
+        return LocalizationService.getInstance().
+                getMessage("notification.channelsyncfailed", getChannelId(), getChannelName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDescription() {
+        return "";
     }
 }
