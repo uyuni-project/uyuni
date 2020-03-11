@@ -256,6 +256,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
     // to be used in subclasses
     protected ToStringBuilder toStringBuilder() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id);
+                .append("id", id)
+                .append("name", name);
     }
 }
