@@ -26,7 +26,7 @@ type Props = {
   submitText: string,
   submit: (Object) => void,
   initialModel: ?Object,
-  messages: Array<String>,
+  messages: Array<React.Node>,
   localTime: string,
   timezone: string,
   actionChains: Array<ActionChain>,
