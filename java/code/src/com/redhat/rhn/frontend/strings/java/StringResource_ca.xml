@@ -590,12 +590,6 @@
         </context-group>
         <target>Excepció</target>
       </trans-unit>
-      <trans-unit id="Recurring Actions">
-        <source>Recurring Actions</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="Failed Actions">
         <source>Failed Actions</source>
         <context-group name="ctx">
