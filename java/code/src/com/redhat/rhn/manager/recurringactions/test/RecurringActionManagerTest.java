@@ -5,6 +5,7 @@ import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.ORG;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
@@ -19,7 +20,6 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -73,7 +73,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
-        catch (PermissionException e) {
+        catch (ValidatorException e) {
             // no-op
         }
 
@@ -99,7 +99,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
-        catch (PermissionException e) {
+        catch (ValidatorException e) {
             // no-op
         }
 
@@ -125,7 +125,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
-        catch (PermissionException e) {
+        catch (ValidatorException e) {
             // no-op
         }
 
@@ -154,9 +154,9 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         action.setName("hack the planet!");
         try {
             RecurringActionManager.saveAndSchedule(action, anotherUser);
-            fail("PermissionException should have been thrown");
+            fail("ValidatorException should have been thrown");
         }
-        catch (PermissionException e) {
+        catch (ValidatorException e) {
             // no-op
         }
     }
@@ -292,7 +292,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.saveAndSchedule(sameAction, user);
             fail("An exception should have been thrown");
         }
-        catch (EntityExistsException e) {
+        catch (ValidatorException e) {
             // no-op
         }
     }

@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.recurringactions;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
@@ -40,7 +41,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import org.hibernate.HibernateException;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * RecurringActionManager
@@ -207,35 +207,44 @@ public class RecurringActionManager {
      *
      * @param action the action
      * @param user the user performing the operation
-     * @throws PermissionException if the user does not have permission to save the action
-     * @throws EntityExistsException if equal entity (with different id) already exists
+     * @throws ValidatorException if an entity validation fails
      * @throws TaskomaticApiException when there is a problem with taskomatic during scheduling
      */
     public static void saveAndSchedule(RecurringAction action, User user) throws TaskomaticApiException {
-        if (!action.canAccess(user)) {
-            throw new PermissionException(String.format("%s not accessible to user %s", action, user));
-        }
-
-        validateAction(action);
-
+        validateAction(action, user);
         RecurringActionFactory.save(action);
-
-        // mainly the possible need for revert
         taskomaticApi.scheduleRecurringAction(action, user);
     }
 
-    private static void validateAction(RecurringAction action) {
-        Optional<Long> existingIdOpt = RecurringActionFactory.lookupEqualEntityId(action);
-        Long actionId = action.getId();
+    /**
+     * Validate given {@link RecurringAction} parameters and user access
+     *
+     * @param action the {@link RecurringAction} to validate
+     * @param user the user for access check
+     * @throws ValidatorException if an entity validation fails
+     */
+    public static void validateAction(RecurringAction action, User user) {
+        if (!action.canAccess(user)) {
+            throw new ValidatorException(
+                    "User does not have access", // todo localize?
+                    new PermissionException(String.format("%s not accessible to user %s", action, user)));
+        }
 
-        existingIdOpt.ifPresent(existingId -> {
-            // Equal entity already exists. Throw an exception if:
-            // - either given action is null (create scenario),
-            // - or the ID of given action is different from the existing entity (update scenario).
-            if (actionId == null || !actionId.equals(existingId)) {
-                throw new EntityExistsException(String.format("Equal entity already exists: ID %d", existingId));
-            }
-        });
+
+        RecurringActionFactory.lookupEqualEntityId(action)
+                .ifPresent(existingId -> validateExistingEntityName(action, existingId));
+    }
+
+    private static void validateExistingEntityName(RecurringAction action, Long existingId) {
+        // Equal entity already exists. Throw an exception if:
+        // - either given action is null (create scenario),
+        // - or the ID of given action is different from the existing entity (update scenario).
+        Long actionId = action.getId();
+        if (actionId == null || !actionId.equals(existingId)) {
+            throw new ValidatorException(
+                    "Entity already exists",
+                    new EntityExistsException(String.format("Equal entity already exists: ID %d", existingId)));
+        }
     }
 
     /**
