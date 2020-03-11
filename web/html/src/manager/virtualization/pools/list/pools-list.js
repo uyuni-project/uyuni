@@ -31,7 +31,7 @@ function poolsInfoToTree(pools: Object) {
   const children = pools.reduce((result, pool) => {
     const volumes = pool.volumes.map((volume, idx) => ({
       id: `${pool.uuid}/${idx}`,
-      data: Object.assign({}, volume, { itemType: 'volume' }),
+      data: Object.assign({}, volume, { itemType: 'volume', pool: pool.name }),
       children: [],
     }));
 
@@ -99,39 +99,51 @@ function FilteredTree(props: FilteredTreeProps) {
       .map(item => React.cloneElement(item, {data: filteredTreeData}));
 }
 
-const PoolDeleteActionConfirm = (props) => {
+const DeleteActionConfirm = (props) => {
   const [purge, setPurge] = React.useState(false);
 
+  const isPool = props.selected.every(item => item.itemType === 'pool');
   return (
     <ActionConfirm
       id={props.id}
       key={props.id}
       type="delete"
       name={t('Delete')}
-      itemName={t('Virtual Storage Pool')}
+      itemName={isPool ? t('Virtual Storage Pool') : t('Virtual Storage Volume')}
       icon="fa-trash"
       selected={props.selected}
-      fn={(type, pools, parameters) => {
-        props.onAction(type, pools.map(pool => pool.name), Object.assign({}, parameters, {purge}))
+      fn={(type, items, parameters) => {
+        if (isPool) {
+          props.onAction(type, items.map(pool => pool.name), Object.assign({}, parameters, {purge}));
+        } else {
+          const volumes = items.reduce((res, volume) => {
+            const pool = volume.pool;
+            return Object.assign({}, res, { [pool]: (res[pool] || []).concat([volume.name]) });
+          }, {});
+          props.onAction(type, undefined, {}, volumes);
+        }
       }}
       canForce={false}
       onClose={props.onClose}
     >
-      <p>
-        <input
-          type="checkbox"
-          id="purge"
-          checked={purge}
-          onChange={event => setPurge(event.target.checked)}
-        />
-        <label htmlFor="purge">{t('Delete the pool, including the contained volumes. ')}<strong>{t('Cannot be undone')}</strong></label>
-      </p>
+      { isPool && (
+        <p>
+          <input
+            type="checkbox"
+            id="purge"
+            checked={purge}
+            onChange={event => setPurge(event.target.checked)}
+          />
+          <label htmlFor="purge">{t('Delete the pool, including the contained volumes. ')}<strong>{t('Cannot be undone')}</strong></label>
+        </p>
+      )
+     }
     </ActionConfirm>
   );
 };
 
 export function PoolsList(props: Props) {
-  const [selectedPool, setSelectedPool] = React.useState({});
+  const [selected, setSelected] = React.useState({});
   const [errors, setErrors] = React.useState([]);
 
   const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
@@ -257,9 +269,9 @@ export function PoolsList(props: Props) {
                         className="btn-default btn-sm"
                         title={t("Delete")}
                         icon="fa-trash"
-                        target='pool-delete-modal'
+                        target='delete-modal'
                         item={pool}
-                        onClick={setSelectedPool}
+                        onClick={setSelected}
                       />
                     </div>
                   </CustomDiv>,
@@ -284,10 +296,18 @@ export function PoolsList(props: Props) {
                     }
                   </CustomDiv>,
                   <CustomDiv key="actionStatus" className="col" width="calc(100% + 3em) * 0.05" um="">
-                    {renderActionStatus('volume', volume.name)}
+                    {renderActionStatus('volume', `${volume.pool}/${volume.name}`)}
                   </CustomDiv>,
                   <CustomDiv key="actions" className="col text-right" width="calc((100% + 3em) * 0.1)" um="">
                     <div className="btn-group">
+                      <ModalButton
+                        className="btn-default btn-sm"
+                        title={t("Delete")}
+                        icon="fa-trash"
+                        target='delete-modal'
+                        item={volume}
+                        onClick={setSelected}
+                      />
                     </div>
                   </CustomDiv>,
                 ];
@@ -356,10 +376,10 @@ export function PoolsList(props: Props) {
                     </FilteredTree>
                   }
                   </CustomDataHandler>
-                  <PoolDeleteActionConfirm
-                    id="pool-delete-modal"
-                    selected={[selectedPool].filter(item => item)}
-                    onClose={() => setSelectedPool({})}
+                  <DeleteActionConfirm
+                    id="delete-modal"
+                    selected={[selected].filter(item => item)}
+                    onClose={() => setSelected({})}
                     onAction={onAction}
                   />
                 </>
