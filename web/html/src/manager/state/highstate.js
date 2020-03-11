@@ -80,70 +80,12 @@ class Highstate extends React.Component {
         this.setState({actionChain: actionChain})
     };
 
-    onMessageChanged = (message) => {
-        this.setState({messages: message});
-    };
-
-    handleForwardAction = (action) => {
-        const loc = window.location;
-        if(action === "back") {
-            history.pushState(null, null, loc.pathname + loc.search);
-            this.setState({
-               action: undefined
-            });
-        } else {
-            const pathname = loc.pathname.replace("highstate", "states/schedules");
-            Functions.Utils.urlBounce(pathname + loc.search);
-        }
-    };
-
     toggleTestState = () => {
         this.setState({test: !this.state.test})
     };
 
     isSSM = () => {
         return window.entityType === "SSM" ? true : false;
-    };
-
-    updateSchedule =(schedule) => {
-        return Network.post(
-            "/rhn/manager/api/recurringactions/save",
-            JSON.stringify(schedule),
-            "application/json"
-        ).promise.then((data) => {
-            // HACK: propagate the errors from messages to the UI
-            let newMsgs = [];
-            const decorator = data.success ? MessagesUtils.info : MessagesUtils.error;
-            if (data.messages === undefined || data.messages.length === 0) {
-                // no explicit messages from the server -> let's display a generic one
-                const defaultMsg = data.success
-                      ? <span>{t("Schedule successully created.")}</span>
-                      : <span>{t("Error on saving schedule.")}</span>;
-                newMsgs = decorator(defaultMsg);
-            }
-            else {
-                // messages from the recurringactions are already localized
-                newMsgs = decorator.apply(null, data.messages);
-            }
-
-            const msgs = this.state.messages.concat(newMsgs);
-
-            while (msgs.length > messagesCounterLimit) {
-                msgs.shift();
-            }
-
-            this.onMessageChanged(msgs);
-            this.setState({
-                messages: msgs
-            });
-
-            if (data.success) {
-                this.handleForwardAction();
-            } else {
-                this.handleResponseError();
-            }
-
-        }).catch(this.handleResponseError);
     };
 
     render() {
