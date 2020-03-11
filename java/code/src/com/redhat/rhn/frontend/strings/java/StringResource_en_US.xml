@@ -8837,6 +8837,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="notification.text.onboardingfailed">
         <source>Error registering minion id: {0}</source>
       </trans-unit>
+      <trans-unit id="notification.text.bootstraprepofailed">
+        <source>Error generating bootstrap repo for: {0}</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
