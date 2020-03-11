@@ -102,9 +102,7 @@ make -f Makefile.common-libs install PREFIX=$RPM_BUILD_ROOT \
 install -d $RPM_BUILD_ROOT%{python2root}/common
 cp $RPM_BUILD_ROOT%{python3root}/__init__.py \
     $RPM_BUILD_ROOT%{python2root}/
-cp $RPM_BUILD_ROOT%{python3root}/common/__init__.py \
-    $RPM_BUILD_ROOT%{python2root}/common
-cp $RPM_BUILD_ROOT%{python3root}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.py,rhn_pkg.py,rhn_rpm.py,stringutils.py,fileutils.py,rhnLib.py,timezone_utils.py,usix.py} \
+cp $RPM_BUILD_ROOT%{python3root}/common/*.py \
     $RPM_BUILD_ROOT%{python2root}/common
 %endif
 
