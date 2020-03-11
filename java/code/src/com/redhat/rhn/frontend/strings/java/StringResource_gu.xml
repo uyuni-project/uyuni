@@ -9816,6 +9816,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="recurring_action.taskomatic_error">
         <source>Error when scheduling the action. Check if Taskomatic is running.</source>
       </trans-unit>
+      <trans-unit id="recurring_action.invalid_cron">
+        <source>Invalid Quartz expression provided.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

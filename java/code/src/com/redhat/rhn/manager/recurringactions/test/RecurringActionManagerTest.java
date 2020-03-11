@@ -320,4 +320,25 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             fail("An exception shouldn't have been thrown");
         }
     }
+
+    public void testCreateActionWithInvalidCron() throws Exception {
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var invalidCron = "SOMETHING INVALID";
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+        } });
+
+        var action = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        action.setCronExpr(invalidCron);
+        action.setName("test-recurring-action");
+
+        try {
+            RecurringActionManager.saveAndSchedule(action, user);
+            fail("An exception should have been thrown");
+        }
+        catch (ValidatorException e) {
+            // no-op
+        }
+    }
 }
