@@ -91,7 +91,7 @@ public class ApiHandler extends BaseHandler {
         return handlers.getKeys().stream().collect(Collectors.toMap(
            namespace -> namespace,
            namespace -> StringUtil.getClassNameNoPackage(
-                       handlers.getHandler(namespace).getClass())
+                       handlers.getHandler(namespace).get().getClass())
         ));
     }
 
