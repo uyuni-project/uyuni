@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Mar 11 11:03:06 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
 - cleanup key grains after usage
 - Disable modularity failsafe mechanism for RHEL 8 repos (bsc#1164875)
 - install dmidecode before HW profile update when missing
