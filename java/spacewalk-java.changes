@@ -6,6 +6,13 @@
 - Add 'init.repo' kernel option to RHEL 8 kickstart tree (bsc#1163884)
 
 -------------------------------------------------------------------
+Tue Mar 10 10:36:55 CET 2020 - jgonzalez@suse.com
+
+- version 4.0.31-1
+- Fix for pillar not being refreshed when CaaSP pattern is detected
+  upon software profile update (bsc#1166061)
+
+-------------------------------------------------------------------
 Tue Mar 03 13:07:14 CET 2020 - jgonzalez@suse.com
 
 - version 4.0.30-1
