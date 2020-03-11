@@ -94,7 +94,7 @@ public class MinionController {
         get("/manager/systems/details/highstate",
                 withCsrfToken(withUser(MinionController::highstate)),
                 jade);
-        get("/manager/systems/details/states/schedules",
+        get("/manager/systems/details/recurring-states",
                 withCsrfToken(withUser(MinionController::recurringStates)),
                 jade);
         get("/manager/multiorg/details/custom",
@@ -114,7 +114,7 @@ public class MinionController {
                 jade);
         get("/manager/groups/details/highstate",
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
-        get("/manager/groups/details/states/schedules",
+        get("/manager/groups/details/recurring-states",
                 withCsrfToken(withUser(MinionController::serverGroupRecurringStates)),
                 jade);
     }

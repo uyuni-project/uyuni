@@ -69,8 +69,8 @@ public class RecurringActionController {
      * @param jade the template engine
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/schedule/recurring-actions",
-                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringActions))),
+        get("/manager/schedule/recurring-states",
+                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringStates))),
                 jade);
 
         get("/manager/api/recurringactions", withUser(RecurringActionController::listAll));
@@ -80,15 +80,15 @@ public class RecurringActionController {
     }
 
     /**
-     * Handler for the Recurring Actions schedule page.
+     * Handler for the Recurring States schedule page.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView recurringActions(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
+    public static ModelAndView recurringStates(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-states.jade");
     }
 
     /**
