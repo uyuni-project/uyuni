@@ -197,9 +197,10 @@ public class MinionController {
                 .collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
+        String orgId = request.queryParams("oid");
         data.put("minions", Json.GSON.toJson(minions));
-        data.put("orgId", user.getOrg().getId());
-        data.put("orgName", user.getOrg().getName());
+        data.put("orgId", orgId);
+        data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         data.put("entityType", "ORG");
         return new ModelAndView(data, "templates/org/recurring-states.jade");
     }
