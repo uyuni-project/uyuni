@@ -146,7 +146,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @param actionId - the id of the action
      */
-    public void setId(long actionId) {
+    public void setId(Long actionId) {
         this.id = actionId;
     }
 

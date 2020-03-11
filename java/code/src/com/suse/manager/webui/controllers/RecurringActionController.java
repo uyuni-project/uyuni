@@ -23,7 +23,9 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RecurringEventPicker;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.Type;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
@@ -181,17 +183,23 @@ public class RecurringActionController {
         List<String> errors = new LinkedList<>();
 
         RecurringStateScheduleJson json = GSON.fromJson(request.body(), RecurringStateScheduleJson.class);
-        RecurringAction action = createOrGetAction(user, json);
-        mapJsonToAction(json, action);
 
         try {
+            validate(json, user);
+            RecurringAction action = createOrGetAction(user, json);
+            mapJsonToAction(json, action);
             RecurringActionManager.saveAndSchedule(action, user);
+        }
+        catch (ValidatorException e) {
+            errors.add(e.getMessage()); // todo localize!
         }
         catch (EntityExistsException e) {
             errors.add("Action with given name already exists.");
         }
         catch (TaskomaticApiException e) {
             errors.add("Error when scheduling the action.");
+            LOG.error("Rolling back transaction because of Taskomatic exception", e);
+            HibernateFactory.rollbackTransaction();
         }
 
         if (errors.isEmpty()) {
@@ -199,6 +207,26 @@ public class RecurringActionController {
         }
 
         return json(response, ResultJson.error(errors));
+    }
+
+    /**
+     * Check if saving/updating {@link RecurringAction} is valid
+     * given the data in the {@link RecurringStateScheduleJson}.
+     *
+     * @param json the action data
+     * @param user the user performing the save/update
+     */
+    private static void validate(RecurringStateScheduleJson json, User user) {
+        // we create a transient RecurringAction just for the validation purpose!
+        RecurringAction action = RecurringActionManager.createRecurringAction(
+                Type.valueOf(json.getTargetType().toUpperCase()),
+                json.getTargetId(),
+                user);
+
+        mapJsonToAction(json, action);
+        action.setId(json.getRecurringActionId());
+
+        RecurringActionManager.validateAction(action, user);
     }
 
     private static RecurringAction createOrGetAction(User user, RecurringStateScheduleJson json) {
