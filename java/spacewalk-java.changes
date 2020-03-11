@@ -1,3 +1,4 @@
+- improve performance of cleanup-data-bunch
 - Show separate info for syncing product channels and children
 - add XMLRPC API method: proxy.listProxyClients (bsc#1166408)
 - Enable monitoring for RHEL 8 Salt clients
