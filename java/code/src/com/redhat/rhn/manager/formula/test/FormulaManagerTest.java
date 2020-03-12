@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.formula.test;
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -32,7 +31,6 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-import com.redhat.rhn.testing.httpservermock.EngineMock;
 
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -213,7 +211,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
      */
     public void testIsMonitoringCleanupNeeded() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());FormulaFactory.setMetadataDirOfficial(metadataDir.toString() + File.separator);
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
+        FormulaFactory.setMetadataDirOfficial(metadataDir.toString() + File.separator);
 
         // No group or system level assignment of the `prometheus-exporters` Formula
         assertFalse(manager.isMonitoringCleanupNeeded(minion));
