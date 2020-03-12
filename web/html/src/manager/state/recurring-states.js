@@ -43,8 +43,7 @@ class RecurringStates extends React.Component {
     constructor(props) {
         super(props);
 
-        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError",
-        "onMessageChanged", "updateSchedule", "toggleActive"]
+        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError", "updateSchedule", "toggleActive"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
@@ -120,7 +119,6 @@ class RecurringStates extends React.Component {
                 msgs.shift();
             }
 
-            this.onMessageChanged(msgs); // todo remove - unneeded
             this.setState({
                 messages: msgs
             });
@@ -170,10 +168,6 @@ class RecurringStates extends React.Component {
             messages: []
         });
     }
-
-    onMessageChanged = (message) => {
-        this.setState({messages: message});
-    };
 
     handleResponseError = (jqXHR) => {
         this.setState({
