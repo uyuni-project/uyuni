@@ -1,3 +1,5 @@
+- Make wsgi scripts compatible with Python3 (bsc#1164111)
+
 -------------------------------------------------------------------
 Wed May 15 15:37:30 CEST 2019 - jgonzalez@suse.com
 

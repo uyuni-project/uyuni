@@ -41,9 +41,12 @@ Further Example:
 try:
     from urllib.parse import urlencode
     from urllib.request import build_opener, HTTPHandler, BaseHandler
+    from io import IOBase as file
+    from io import BytesIO as StringIO
 except ImportError:
     from urllib import urlencode
     from urllib2 import build_opener, HTTPHandler, BaseHandler
+    from cStringIO import StringIO
 
 import re
 import random
@@ -53,7 +56,10 @@ import sys
 
 class Callable:
     def __init__(self, anycallable):
-        self.__call__ = anycallable
+        self.call = anycallable
+
+    def __call__(self, *args, **kwargs):
+        return self.call(*args, **kwargs)
 
 # Controls how sequences are uncoded. If true, elements may be given multiple values by
 #  assigning a sequence.
@@ -63,13 +69,16 @@ class MultipartPostHandler(BaseHandler):
     handler_order = HTTPHandler.handler_order - 10 # needs to run first
 
     def http_request(self, request):
-        data = request.get_data()
+        try:
+            data = request.get_data()
+        except:
+            data = request.data
         if data is not None and type(data) != str:
             v_files = []
             v_vars = []
             try:
                 for(key, value) in list(data.items()):
-                    if type(value) == file:
+                    if isinstance(value, file):
                         v_files.append((key, value))
                     else:
                         v_vars.append((key, value))
@@ -88,29 +97,32 @@ class MultipartPostHandler(BaseHandler):
                     print("Replacing %s with %s" % (request.get_header('content-type'), 'multipart/form-data'))
                 request.add_unredirected_header('Content-Type', contenttype)
 
-            request.add_data(data)
+            try:
+                request.add_data(data)
+            except:
+                request.data = data
         return request
 
     def multipart_encode(vars, files, boundary=None, buffer=None):
         if boundary is None:
             boundary = _make_boundary()
         if buffer is None:
-            buffer = ''
+            buffer = b''
         for(key, value) in vars:
-            buffer += '--%s\r\n' % boundary
-            buffer += 'Content-Disposition: form-data; name="%s"' % key
-            buffer += '\r\n\r\n' + value + '\r\n'
+            buffer += ('--%s\r\n' % boundary).encode()
+            buffer += ('Content-Disposition: form-data; name="%s"' % key).encode()
+            buffer += ('\r\n\r\n' + value + '\r\n').encode()
         for(key, fd) in files:
             file_size = os.fstat(fd.fileno())[stat.ST_SIZE]
             filename = fd.name.split('/')[-1]
             contenttype = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
-            buffer += '--%s\r\n' % boundary
-            buffer += 'Content-Disposition: form-data; name="%s"; filename="%s"\r\n' % (key, filename)
-            buffer += 'Content-Type: %s\r\n' % contenttype
+            buffer += ('--%s\r\n' % boundary).encode()
+            buffer += ('Content-Disposition: form-data; name="%s"; filename="%s"\r\n' % (key, filename)).encode()
+            buffer += ('Content-Type: %s\r\n' % contenttype).encode()
             # buffer += 'Content-Length: %s\r\n' % file_size
             fd.seek(0)
-            buffer += '\r\n' + fd.read() + '\r\n'
-        buffer += '--%s--\r\n\r\n' % boundary
+            buffer += ('\r\n').encode() + fd.read() + ('\r\n').encode()
+        buffer += ('--%s--\r\n\r\n' % boundary).encode()
         return boundary, buffer
     multipart_encode = Callable(multipart_encode)
 

@@ -16,7 +16,10 @@ import os
 import re
 import logging
 import logging.handlers
-import urlparse
+try:
+    import urlparse
+except:
+    from urllib import parse as urlparse
 from spacewalk.common.rhnConfig import CFG, initCFG
 
 initCFG("tftpsync")
@@ -81,7 +84,7 @@ def application(environ, start_response):
                 os.remove(path)
                 status = '200 OK'
                 content = "removing file '%s', status: %s" % (path, status)
-            except Exception, e:
+            except Exception as e:
                 logger.debug("os.remove(%s) failed: %s" % (path, e))
                 content = "removing %s failed" % path
         else:
@@ -93,6 +96,6 @@ def application(environ, start_response):
                         ('Content-Length', str(len(content)))]
     start_response(status, response_headers)
 
-    return [content]
+    return [content.encode()]
 
 
