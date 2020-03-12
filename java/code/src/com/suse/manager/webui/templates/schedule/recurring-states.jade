@@ -9,6 +9,8 @@ script(type='text/javascript').
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
 
++userPreferences
+
 script(type='text/javascript').
     spaImportReactPage('state/recurring-states')
         .then(function (module) { module.renderer('recurring-states') });

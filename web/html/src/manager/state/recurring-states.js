@@ -48,6 +48,7 @@ class RecurringStates extends React.Component {
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
+            schedules: [],
             minionIds: minions.length > 0 && minions[0].id ? minions.map(minion => minion.id) : undefined,
         };
     }
