@@ -33,7 +33,7 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {% endif %}
 {%- elif grains['os_family'] == 'Debian' %}
-#{%- set osrelease = grains['osrelease'].split('.') %}
+{%- set osrelease = grains['osrelease'].split('.') %}
 {%- if grains['os'] == 'Ubuntu' %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
 {%- else %}
