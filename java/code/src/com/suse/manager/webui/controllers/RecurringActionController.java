@@ -41,6 +41,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -53,6 +54,7 @@ import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -105,7 +107,7 @@ public class RecurringActionController {
         List<RecurringStateScheduleJson> schedules =
                 actionsToJson(RecurringActionManager.listAllRecurringActions(user));
 
-        return json(response, ResultJson.success(schedules));
+        return json(response, schedules);
     }
 
     /**
@@ -135,7 +137,7 @@ public class RecurringActionController {
                 throw new IllegalStateException("Unsupported type " + type);
         }
 
-        return json(response, ResultJson.success(actionsToJson(schedules)));
+        return json(response, actionsToJson(schedules));
     }
 
     private static List<RecurringStateScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
@@ -193,18 +195,16 @@ public class RecurringActionController {
         }
         catch (ValidatorException e) {
             errors.add(e.getMessage()); // we assume the messages are already localized
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
         }
         catch (TaskomaticApiException e) {
-            errors.add(LocalizationService.getInstance().getMessage("recurring_actions.taskomatic_error"));
             LOG.error("Rolling back transaction because of Taskomatic exception", e);
             HibernateFactory.rollbackTransaction();
+            String errMsg = LocalizationService.getInstance().getMessage("recurring_action.taskomatic_error");
+            Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE, GSON.toJson(ResultJson.error(errMsg)));
         }
 
-        if (errors.isEmpty()) {
-            return json(response, ResultJson.success());
-        }
-
-        return json(response, ResultJson.error(errors));
+        return json(response, ResultJson.success());
     }
 
     /**
@@ -247,13 +247,16 @@ public class RecurringActionController {
         long id = Long.parseLong(request.params("id"));
         Optional<RecurringAction> action = RecurringActionFactory.lookupById(id);
         if (action.isEmpty()) {
-            return json(response, ResultJson.error("Schedule with id: " + id + " does not exists"));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Schedule with id: " + id + " does not exists");
         }
         try {
             RecurringActionManager.deleteAndUnschedule(action.get(), user);
         }
         catch (TaskomaticApiException e) {
-            return json(response, ResultJson.error("Error when deleting the action"));
+            LOG.error("Rolling back transaction because of Taskomatic exception", e);
+            HibernateFactory.rollbackTransaction();
+            // Report just code. It seems that body in the DELETE response is not sent correctly
+            Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
         }
         return json(response, ResultJson.success());
     }
