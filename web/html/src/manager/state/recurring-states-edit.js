@@ -56,7 +56,7 @@ class RecurringStatesEdit extends React.Component {
     };
 
     onEdit = () => {
-        this.props.onEdit({
+        return this.props.onEdit({
             targetId: this.state.targetId,
             recurringActionId: this.state.recurringActionId,
             scheduleName: this.state.scheduleName,
