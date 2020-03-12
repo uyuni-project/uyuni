@@ -166,6 +166,7 @@ public class RecurringActionController {
         json.setTargetType(targetType.toString());
         json.setTargetId(a.getEntityId());
         json.setCreated(a.getCreated());
+        json.setCreatorLogin(a.getCreator().getLogin());
         return json;
     }
 

@@ -107,6 +107,10 @@ class RecurringStatesDetails extends React.Component {
                             <td>{t("Target type")}:</td>
                             <td>{t(targetTypeToString(data.targetType))}</td>
                         </tr>
+                        <tr>
+                            <td>{t("Created by")}:</td>
+                            <td>{t(data.creatorLogin)}</td>
+                        </tr>
                         {<tr>
                             <td>{t("Created at")}:</td>
                             <td>{data.createdAt + " " + timezone}</td>
