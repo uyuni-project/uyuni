@@ -1,3 +1,5 @@
+- Adapt 'mgractionchains' module to work with Salt 3000
+
 -------------------------------------------------------------------
 Wed Mar 11 11:03:06 CET 2020 - jgonzalez@suse.com
 
