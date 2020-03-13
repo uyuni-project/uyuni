@@ -10,8 +10,13 @@ import os
 import sys
 import salt.config
 import salt.syspaths
-import salt.utils
 import yaml
+
+# Prevent issues due 'salt.utils.fopen' deprecation
+try:
+    from salt.utils import fopen
+except:
+    from salt.utils.files import fopen
 
 from salt.exceptions import CommandExecutionError
 
@@ -61,7 +66,7 @@ def _read_next_ac_chunk(clear=True):
         return None
     ret = None
     try:
-        with salt.utils.fopen(f_storage_filename, "r") as f_storage:
+        with fopen(f_storage_filename, "r") as f_storage:
             ret = yaml.load(f_storage.read())
         if clear:
             os.remove(f_storage_filename)
@@ -88,7 +93,7 @@ def _persist_next_ac_chunk(next_chunk):
         f_storage_dir = os.path.dirname(f_storage_filename);
         if not os.path.exists(f_storage_dir):
             os.makedirs(f_storage_dir)
-        with salt.utils.fopen(f_storage_filename, "w") as f_storage:
+        with fopen(f_storage_filename, "w") as f_storage:
             f_storage.write(yaml.dump(next_chunk))
     except (IOError, yaml.scanner.ScannerError) as exc:
         err_str = "Error writing YAML from '{0}': {1}".format(f_storage_filename, exc)
