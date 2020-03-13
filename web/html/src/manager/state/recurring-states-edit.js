@@ -102,7 +102,7 @@ class RecurringStatesEdit extends React.Component {
                 ];
         const buttonsLeft = [
                 <div className="btn-group pull-left">
-                    <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back")}  handler={() => this.props.onActionChanged("back")}/>
+                    <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back to list")}  handler={() => this.props.onActionChanged("back")}/>
                 </div>
                 ];
 
