@@ -66,80 +66,75 @@ class RecurringStatesList extends React.Component {
                             <Table
                                 data={this.props.data}
                                 identifier={action => action.recurringActionId}
-                                //initialSortColumnKey="scheduleName"
+                                /* Using 0 to hide table header/footer */
                                 initialItemsPerPage={this.props.disableCreate ? userPrefPageSize : 0}
                                 emptyText={t("No schedules created." + (this.props.disableCreate ? "" : " Use Create to add a schedule."))}
                             >
                                 <Column
                                     columnKey="active"
                                     header={t('Active')}
-                                    cell={(row, criteria) => {return (
+                                    cell={(row) =>
                                         <Toggler
                                             value={row.active}
                                             className="btn"
                                             handler={() => this.props.onToggleActive(row)}
                                         />
-                                    );
-                                    }}
+                                    }
                                 />
                                 <Column
                                     columnClass="text-center"
                                     headerClass="text-center"
                                     columnKey="scheduleName"
                                     header={t('Schedule Name')}
-                                    cell={(row, criteria) => row.scheduleName}
+                                    cell={(row) => row.scheduleName}
                                 />
                                 <Column
                                     columnClass="text-center"
                                     headerClass="text-center"
                                     columnKey="frequency"
                                     header={t('Frequency')}
-                                    cell={(row, criteria) => row.cron}
+                                    cell={(row) => row.cron}
                                 />
-                                { this.props.disableCreate ?
-                                    <Column
-                                        columnClass="text-center"
-                                        headerClass="text-center"
-                                        columnKey="targetType"
-                                        header={t('Target Type')}
-                                        cell={(row, criteria) => targetTypeToString(row.targetType)}
-                                    />
-                                    : null }
+                                <Column
+                                    columnClass="text-center"
+                                    headerClass="text-center"
+                                    columnKey="targetType"
+                                    header={t('Target Type')}
+                                    cell={(row) => targetTypeToString(row.targetType)}
+                                />
                                 <Column
                                     columnClass="text-right"
                                     headerClass="text-right"
                                     header={t('Actions')}
-                                    cell={(row, criteria) => {
-                                        return (
-                                            <div className="btn-group">
-                                                <Button
-                                                    className="btn-default btn-sm"
-                                                    title={t("Details")}
-                                                    icon="fa-list"
-                                                    handler={() => {this.props.onSelect(row)}}
-                                                />
-                                                <Button
-                                                    className="btn-default btn-sm"
-                                                    title={t("Edit")}
-                                                    icon="fa-edit"
-                                                    handler={() => {this.props.onEdit(row)}}
-                                                />
-                                                <ModalButton
-                                                    className="btn-default btn-sm"
-                                                    title={t("Delete")}
-                                                    icon="fa-trash"
-                                                    target="delete-modal"
-                                                    item={row}
-                                                    onClick={i => this.selectToDelete(i)}
-                                                />
-                                            </div>
-                                        );
-                                    }}
+                                    cell={(row) =>
+                                        <div className="btn-group">
+                                            <Button
+                                                className="btn-default btn-sm"
+                                                title={t("Details")}
+                                                icon="fa-list"
+                                                handler={() => {this.props.onSelect(row)}}
+                                            />
+                                            <Button
+                                                className="btn-default btn-sm"
+                                                title={t("Edit")}
+                                                icon="fa-edit"
+                                                handler={() => {this.props.onEdit(row)}}
+                                            />
+                                            <ModalButton
+                                                className="btn-default btn-sm"
+                                                title={t("Delete")}
+                                                icon="fa-trash"
+                                                target="delete-modal"
+                                                item={row}
+                                                onClick={i => this.selectToDelete(i)}
+                                            />
+                                        </div>
+                                    }
                                 />
                             </Table>
                             <DeleteDialog id="delete-modal"
                                           title={t("Delete Recurring State Schedule")}
-                                          content={<span>{t("Are you sure you want to delete the selected item?")}</span>}
+                                          content={t("Are you sure you want to delete the selected item?")}
                                           onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
                                           onClosePopUp={() => this.selectToDelete(null)}
                             />

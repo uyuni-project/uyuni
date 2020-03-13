@@ -30,7 +30,7 @@ type Props = {
   cssClassFunction?: Function,
   /** the React Object that contains the filter search field */
   searchField?: React.Element<typeof SearchField>,
-  /** the initial number of how many row-per-page to show */
+  /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
   initialItemsPerPage?: number,
   /** enables item selection */
   selectable: boolean,
