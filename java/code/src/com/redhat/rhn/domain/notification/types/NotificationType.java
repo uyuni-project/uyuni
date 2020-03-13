@@ -21,5 +21,6 @@ public enum NotificationType {
     OnboardingFailed,
     ChannelSyncFailed,
     ChannelSyncFinished,
-    CreateBootstrapRepoFailed
+    CreateBootstrapRepoFailed,
+    StateApplyFailed
 }

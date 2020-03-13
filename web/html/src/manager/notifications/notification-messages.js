@@ -155,6 +155,7 @@ class NotificationMessages extends React.Component {
       case 'ChannelSyncFailed': typeText = t('Channel sync failed'); break;
       case 'ChannelSyncFinished': typeText = t('Channel sync finished'); break;
       case 'CreateBootstrapRepoFailed': typeText = t('Creating Bootstrap Repository failed'); break;
+      case 'StateApplyFailed': typeText = t('State apply failed'); break;
     }
     return typeText;
   };
