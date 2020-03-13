@@ -120,7 +120,9 @@ class RecurringStatesEdit extends React.Component {
                                           onTypeChanged={this.onTypeChanged}
                                           onCronTimesChanged={this.onCronTimesChanged}
                                           onCronChanged={this.onCustomCronChanged} />
-                    <DisplayHighstate minions={this.state.minions}/>
+                    {entityType === "NONE" ? null :
+                        <DisplayHighstate minions={this.state.minions}/>
+                    }
                 </InnerPanel>
             </div>
         );

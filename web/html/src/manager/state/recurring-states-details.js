@@ -175,7 +175,9 @@ class RecurringStatesDetails extends React.Component {
                               content={<span>{t("Are you sure you want to delete this schedule?")}</span>}
                               onConfirm={() => this.props.onDelete(this.props.data)}
                 />
-                <DisplayHighstate minions={this.state.minions}/>
+                {entityType === "NONE" ? null :
+                    <DisplayHighstate minions={this.state.minions}/>
+                }
             </TopPanel>
         );
     }
