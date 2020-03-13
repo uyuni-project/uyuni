@@ -255,6 +255,15 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And file "/var/lib/libvirt/images/test-pool1" should have 711 permissions on "kvm_server"
 
 @virthost_kvm
+  Scenario: Delete a virtual volume
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I open the sub-list of the product "tmp"
+    And I click on "Delete" in tree item "test-net0.xml"
+    And I click on "Delete" in "Delete Virtual Storage Volume" modal
+    Then I wait until I do not see "test-net0.xml" text
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
