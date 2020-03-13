@@ -137,11 +137,10 @@ class RecurringStates extends React.Component {
             })
             .catch(data => {
                 const taskoErrorMsg = MessagesUtils.error(
-                    t("Error when scheduling the action. Check if Taskomatic is running"));
+                    t("Error when deleting the action. Check if Taskomatic is running"));
                 let messages = (data && data.status === 503)
                     ? taskoErrorMsg
                     : Network.responseErrorMessage(jqXHR);
-                console.log(messages);
                 this.setState({
                     messages: messages
                 });
