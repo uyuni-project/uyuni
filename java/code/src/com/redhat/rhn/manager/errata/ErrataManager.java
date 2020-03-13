@@ -2279,21 +2279,23 @@ public class ErrataManager extends BaseManager {
         ChannelFactory.lock(channel);
 
         for (Long eid : list) {
-            Errata errata = ErrataFactory.lookupById(eid);
+            Errata erratum = ErrataFactory.lookupById(eid);
             // we merge custom errata directly (non Redhat and cloned)
-            if (errata.getOrg() != null) {
-                errata.addChannel(channel);
-                ErrataCacheManager.insertCacheForChannelErrata(cids, errata);
-                errata.addChannelNotification(channel, new Date());
+            if (erratum.getOrg() != null) {
+                erratum.addChannel(channel);
+                ErrataCacheManager.insertCacheForChannelErrata(cids, erratum);
+                erratum.addChannelNotification(channel, new Date());
             }
             else {
                 Set<Channel> channelSet = new HashSet<>();
                 channelSet.add(channel);
 
-                List<Errata> clones = lookupPublishedByOriginal(user, errata);
+                List<Errata> clones = lookupPublishedByOriginal(user, erratum);
                 if (clones.size() == 0) { // todo this path should be also optimized i guess
                     log.debug("Cloning errata");
-                    Errata published = PublishErrataHelper.cloneErrataFast(errata, user.getOrg());
+                    Long publishedId = PublishErrataHelper.cloneErrataFaster(eid, user.getOrg());
+                    Errata published = (Errata) HibernateFactory.reload(publishedId);
+//                    Errata published = PublishErrataHelper.cloneErrataFast(erratum, user.getOrg());
                     published.setChannels(channelSet);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, published);
                     published.addChannelNotification(channel, new Date());
