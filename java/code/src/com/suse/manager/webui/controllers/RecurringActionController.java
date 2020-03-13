@@ -27,6 +27,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.Type;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
@@ -169,6 +171,9 @@ public class RecurringActionController {
         json.setTargetId(a.getEntityId());
         json.setCreated(a.getCreated());
         json.setCreatorLogin(a.getCreator().getLogin());
+        if (a instanceof OrgRecurringAction) {
+            json.setOrgName(OrgFactory.lookupById(a.getEntityId()).getName());
+        }
         return json;
     }
 
