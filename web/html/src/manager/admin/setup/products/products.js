@@ -66,7 +66,7 @@ const _COLS = {
   showSubList: { width: 2, um: 'em'},
   description: { width: 'auto', um: ''},
   arch: { width: 6, um: 'em' },
-  channels: { width: 5, um: 'em' },
+  channels: { width: 7, um: 'em' },
   mix: { width: 13, um: 'em'}
 }
 
@@ -494,7 +494,7 @@ class CheckList extends React.Component {
                 <CustomDiv className='col text-center' width={this.props.bypassProps.cols.showSubList.width} um={this.props.bypassProps.cols.showSubList.um}></CustomDiv>
                 <CustomDiv className='col col-class-calc-width' width={this.props.bypassProps.cols.description.width} um={this.props.bypassProps.cols.description.um}>{t('Product Description')}</CustomDiv>
                 <CustomDiv className='col' width={this.props.bypassProps.cols.arch.width} um={this.props.bypassProps.cols.arch.um} title={t('Architecture')}>{t('Arch')}</CustomDiv>
-                <CustomDiv className='col text-center' width={this.props.bypassProps.cols.channels.width} um={this.props.bypassProps.cols.channels.um}>{t('Channels')}</CustomDiv>
+                <CustomDiv className='col text-right' width={this.props.bypassProps.cols.channels.width} um={this.props.bypassProps.cols.channels.um}>{t('Channels')}</CustomDiv>
                 <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um}></CustomDiv>
               </li>
               : null
@@ -706,6 +706,78 @@ class CheckListItem extends React.Component {
     }
     /*****/
 
+    /** generate channel sync status **/
+    let channelSyncContent;
+    if (this.isInstalled()) {
+      let currentProductChannels = currentItem.channels.filter(c => c.status != _CHANNEL_STATUS.notSynced);
+
+      // if the product sync has just been scheduled
+      if (this.props.bypassProps.scheduledItems.includes(currentItem.identifier)) {
+        channelSyncContent =
+          <span className="text-info" title={t('Product Channels sync scheduled')}>
+            <i className="fa fa-clock-o fa-1-5x"></i>
+          </span>;
+      }
+      else if (currentProductChannels.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
+        channelSyncContent =
+          <span className="text-danger" title={t('Product channels sync failed')}>
+            <i className="fa fa-exclamation-circle fa-1-5x"></i>
+          </span>;
+      }
+      else if (currentProductChannels.filter(c => c.status == _CHANNEL_STATUS.syncing).length > 0) {
+        channelSyncContent =
+          <span className="text-info" title={t('Product channels sync in progress')}>
+            <i className="fa fa-spinner fa-spin fa-1-5x"></i>
+          </span>;
+      }
+      else if (currentProductChannels.filter(c => c.status == _CHANNEL_STATUS.synced).length > 0) {
+        channelSyncContent =
+          <span className="text-success" title={t('Product channels synced')}>
+            <i className="fa fa-check-circle fa-1-5x"></i>
+          </span>;
+      }
+    }
+
+    let childProductChannelSyncContent;
+    if (this.isInstalled()) {
+      // add all channels of the subtree
+      let childProductChannels = [];
+
+      this.getChildrenTree(currentItem)
+        .filter(product => product.status == _PRODUCT_STATUS.installed)
+        .forEach(prod => {
+          prod.channels.filter(channel => channel.status != _CHANNEL_STATUS.notSynced)
+            .forEach(chan => { childProductChannels.push(chan) })
+        });
+
+      // if the product sync has just been scheduled
+      if (this.props.bypassProps.scheduledItems.includes(currentItem.identifier)) {
+        childProductChannelSyncContent =
+          <span className="text-info" title={t('Child products channels sync scheduled')}>
+           (<i className="fa fa-clock-o"></i>)
+          </span>;
+      }
+      else if (childProductChannels.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
+        childProductChannelSyncContent =
+          <span className="text-danger" title={t('Child products channels sync failed')}>
+            (<i className="fa fa-exclamation-circle"></i>)
+          </span>;
+      }
+      else if (childProductChannels.filter(c => c.status == _CHANNEL_STATUS.syncing).length > 0) {
+        childProductChannelSyncContent =
+          <span className="text-info" title={t('Child products channels in progress')}>
+            (<i className="fa fa-spinner fa-spin"></i>)
+          </span>;
+      }
+      else if (childProductChannels.filter(c => c.status == _CHANNEL_STATUS.synced).length > 0) {
+        childProductChannelSyncContent =
+          <span className="text-success" title={t('Child products channels synced')}>
+            (<i className="fa fa-check-circle"></i>)
+          </span>;
+      }
+    }
+    /*****/
+
     const evenOddClass = (this.props.index % 2) === 0 ? "list-row-even" : "list-row-odd";
     const productStatus = this.isInstalled() ? 'product-installed' : '';
     return (
@@ -723,7 +795,9 @@ class CheckListItem extends React.Component {
           <CustomDiv className='col' width={this.props.bypassProps.cols.arch.width} um={this.props.bypassProps.cols.arch.um} title={t('Architecture')}>
             {this.isRootLevel(this.props.treeLevel) ? currentItem.arch : ''}
           </CustomDiv>
-          <CustomDiv className='col text-center' width={this.props.bypassProps.cols.channels.width} um={this.props.bypassProps.cols.channels.um}>
+          <CustomDiv className='col text-right' width={this.props.bypassProps.cols.channels.width} um={this.props.bypassProps.cols.channels.um}>
+            {channelSyncContent}
+            {childProductChannelSyncContent}
             <ModalLink
                 id={'showChannelsFor-' + currentItem.identifier}
                 className='showChannels'
@@ -780,6 +854,21 @@ const ChannelsPopUp = (props) => {
   );
 }
 
+const decodeChannelStatus = (status) => {
+  let decoded = '';
+  switch(status) {
+    case _CHANNEL_STATUS.notSynced:
+      decoded = <span className='text-muted'>{t('not synced')}</span>; break;
+    case _CHANNEL_STATUS.syncing:
+      decoded = <span className='text-info'>{t('sync in progress')}</span>; break;
+    case _CHANNEL_STATUS.synced:
+      decoded = <span className='text-success'>{t('synced')}</span>; break;
+    case _CHANNEL_STATUS.failed:
+      decoded = <span className='text-danger'>{t('sync failed')}</span>; break;
+  }
+  return decoded;
+};
+
 const ChannelList = (props) => {
   return (
     props.items.length > 0 ?
@@ -791,6 +880,7 @@ const ChannelList = (props) => {
             .map(c =>
               <li key={c.label}>
                 <strong>{c.name}</strong>
+                &nbsp;{decodeChannelStatus(c.status)}
                 <br/>
                 {c.label}
               </li>
