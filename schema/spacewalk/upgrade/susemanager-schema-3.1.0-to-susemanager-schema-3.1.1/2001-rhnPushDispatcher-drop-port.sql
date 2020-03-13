@@ -1,2 +1,0 @@
--- This file is intentionally left empty.
--- already applied in Manager-3.0

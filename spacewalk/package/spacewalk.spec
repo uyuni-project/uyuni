@@ -19,13 +19,13 @@
 
 %define release_name Smile
 %if 0%{?suse_version}
-%global postgresql postgresql >= 8.4
+%global postgresql postgresql >= 10
 %else
 %global postgresql /usr/bin/psql
 %endif
 
 Name:           spacewalk
-Version:        4.1.1
+Version:        4.1.2
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 License:        GPL-2.0-only
@@ -43,8 +43,8 @@ Summary:        Spacewalk Systems Management Application with postgresql databas
 Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
-BuildRequires:  python
-Requires:       python >= 2.3
+BuildRequires:  python >= 3
+Requires:       python >= 3
 Requires:       spacewalk-setup
 
 # Java
@@ -95,50 +95,16 @@ Requires:       spacewalk-selinux
 Obsoletes:      spacewalk-monitoring-selinux < 2.3
 %endif
 
-%if 0%{?rhel} == 5
-Requires:       jabberd-selinux
-%endif
 %if 0%{?rhel} == 6
 Requires:       selinux-policy-base >= 3.7.19-93
 %endif
 
-%if 0%{?suse_version}
-Requires:       cobbler
+Requires:       cobbler >= 3
 Requires:       susemanager-jsp_en
-%else
-Requires:       cobbler20
-%endif
 
 %description common
 Spacewalk is a systems management application that will
 inventory, provision, update and control your Linux machines.
-
-%if 0%{?with_oracle}
-%package oracle
-Summary:        Spacewalk Systems Management Application with Oracle database backend
-Group:          Applications/Internet
-Obsoletes:      spacewalk < 0.7.0
-Requires:       spacewalk-common = %{version}-%{release}
-Conflicts:      spacewalk-postgresql
-Provides:       spacewalk-db-virtual = %{version}-%{release}
-
-Requires:       cx_Oracle
-Requires:       oracle-lib-compat
-Requires:       spacewalk-backend-sql-oracle
-Requires:       spacewalk-java-oracle
-Requires:       perl(DBD::Oracle)
-%if 0%{?rhel} || 0%{?fedora}
-Requires:       oracle-instantclient-selinux
-Requires:       oracle-instantclient-sqlplus-selinux
-%endif
-
-Obsoletes:      spacewalk-dobby < 2.7.0
-
-%description oracle
-Spacewalk is a systems management application that will
-inventory, provision, update and control your Linux machines.
-Version for Oracle database backend.
-%endif
 
 %package postgresql
 Summary:        Spacewalk Systems Management Application with PostgreSQL database backend
@@ -152,15 +118,18 @@ Requires:       %{postgresql}
 Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
-%if 0%{?rhel} == 5
-Requires:       postgresql84-contrib
+%if 0%{?suse_version}
+Requires:       postgresql10
+Requires:       postgresql10-contrib
+Conflicts:      postgresql12
+Conflicts:      postgresql12-contrib
 %else
-Requires:       postgresql-contrib >= 8.4
-%endif
-Requires:       postgresql >= 9.6
+Requires:       postgresql >= 10
+Requires:       postgresql-contrib >= 10
 # we do not support postgresql versions > 10.x yet
 Conflicts:      postgresql >= 11
 Conflicts:      postgresql-contrib >= 11
+%endif
 
 %description postgresql
 Spacewalk is a systems management application that will 
@@ -174,11 +143,7 @@ Version for PostgreSQL database backend.
 #nothing to do here
 
 %install
-%if 0%{?with_oracle}
-RDBMS="oracle postgresql"
-%else
 RDBMS="postgresql"
-%endif
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}
 SW_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
 echo "Spacewalk release $SW_REL (%{release_name})" > $RPM_BUILD_ROOT/%{_sysconfdir}/spacewalk-release
@@ -196,11 +161,6 @@ done
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup
 %dir %{_datadir}/spacewalk/setup/defaults.d
-%endif
-
-%if 0%{?with_oracle}
-%files oracle
-%{_datadir}/spacewalk/setup/defaults.d/oracle-backend.conf
 %endif
 
 %files postgresql

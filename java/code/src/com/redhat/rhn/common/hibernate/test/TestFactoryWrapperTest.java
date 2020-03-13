@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.common.hibernate.test;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -172,29 +171,6 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
                 forceQuery(connection, "drop sequence persist_sequence");
 
                 // Couldn't select 1, so the table didn't exist, create it
-                if (ConfigDefaults.get().isOracle()) {
-                    statement.execute("create sequence persist_sequence");
-                    statement.execute("create table persist_test " +
-                            "( " +
-                            "  foobar VarChar2(32)," +
-                            "  test_column VarChar2(5)," +
-                            "  pin    number, " +
-                            "  hidden VarChar(32), " +
-                            "  id     number" +
-                            "         constraint persist_test_pk primary key," +
-                            "  created timestamp with local time zone" +
-                            ")"
-                    );
-                    statement.execute("insert into persist_test (foobar, id) " +
-                            "values ('Blarg', persist_sequence.nextval)");
-                    statement.execute("insert into persist_test (foobar, id) " +
-                            "values ('duplicate', persist_sequence.nextval)");
-                    statement.execute("insert into persist_test (foobar, id) " +
-                            "values ('duplicate', persist_sequence.nextval)");
-                    statement.execute("insert into persist_test (foobar, hidden, id) " +
-                            "values ('duplicate', 'xxxxx', persist_sequence.nextval)");
-            }
-            else {
                 connection.rollback();
                 statement.execute("create sequence persist_sequence");
                 statement.execute("create table persist_test " +
@@ -207,7 +183,7 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
                         "         constraint persist_test_pk primary key," +
                         "  created timestamp with time zone" +
                         ")"
-                );
+                        );
                 statement.execute("insert into persist_test (foobar, id) " +
                         "values ('Blarg', nextval('persist_sequence'))");
                 statement.execute("insert into persist_test (foobar, id) " +
@@ -216,7 +192,6 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
                         "values ('duplicate', nextval('persist_sequence'))");
                 statement.execute("insert into persist_test (foobar, hidden, id) " +
                         "values ('duplicate', 'xxxxx', nextval('persist_sequence'))");
-                }
 
                 connection.commit();
             }

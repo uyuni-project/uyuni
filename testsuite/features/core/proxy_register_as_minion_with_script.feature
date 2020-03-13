@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -23,8 +23,8 @@ Feature: Setup SUSE Manager proxy
   Scenario: Accept the key for the proxy
     Given I am authorized as "testing" with password "testing"
     When I go to the minion onboarding page
-    Then I should see a "pending" text
-    When I accept "proxy" key
+    And I wait until I see "pending" text, refreshing the page
+    And I accept "proxy" key
 
 @proxy
   Scenario: Wait until the proxy appears
@@ -45,7 +45,9 @@ Feature: Setup SUSE Manager proxy
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
     Then I should see "proxy" hostname
-    And I wait until I see "$PRODUCT Proxy" text, refreshing the page
+    # TODO: uncomment when SCC product becomes available
+    # When I wait until I see "$PRODUCT Proxy" text, refreshing the page
+    Then I should see a "Proxy" link in the content area
 
 @proxy
   Scenario: Cleanup: remove proxy bootstrap scripts

@@ -15,6 +15,7 @@ const { TopPanel } = require('components/panels/TopPanel');
 const MessagesUtils = require("components/messages").Utils;
 const Network = require("utils/network");
 const SpaRenderer  = require("core/spa/spa-renderer").default;
+const { StatePersistedContext } = require("components/utils/StatePersistedContext");
 
 class SubscriptionMatching extends React.Component {
   state = {
@@ -125,39 +126,59 @@ class SubscriptionMatchingTabContainer extends React.Component {
     const messageLabelIcon = data.messages.length > 0 ?
       <WarningIcon iconOnRight={true} /> : null;
 
+    const subscriptionContextValues = [
+      'subscriptionTableState',
+      'unmatchedProductTableState',
+      'pinnedMatchesState',
+      'messageTableState'
+    ].reduce((res, stateName) => {
+      return Object.assign({}, res, {[stateName]: {
+        loadState: () => this.state[stateName],
+        saveState: (state) => {this.state[stateName] = state},
+      }});
+    }, {});
+
     return (
       <TabContainer
         labels={[t("Subscriptions"), t("Unmatched Products"), <span>{t("Pins ")}{pinLabelIcon}</span>, <span>{t("Messages ")}{messageLabelIcon}</span>]}
         hashes={["#subscriptions", "#unmatched-products", "#pins", "#messages"]}
         tabs={[
-          <Subscriptions
-            subscriptions={data.subscriptions}
-            saveState={(state) => {this.state["subscriptionTableState"] = state;}}
-            loadState={() => this.state["subscriptionTableState"]}
-          />,
-          <UnmatchedProducts
-            products={data.products}
-            unmatchedProductIds={data.unmatchedProductIds}
-            systems={data.systems}
-            saveState={(state) => {this.state["unmatchedProductTableState"] = state;}}
-            loadState={() => this.state["unmatchedProductTableState"]}
-          />,
-          <Pins
-            pinnedMatches={data.pinnedMatches}
-            products={data.products}
-            systems={data.systems}
-            subscriptions={data.subscriptions}
-            onPinChanged={this.props.onPinChanged}
-            saveState={(state) => {this.state["pinnedMatchesState"] = state;}}
-            loadState={() => this.state["pinnedMatchesState"]}
-          />,
-          <Messages
-            messages={data.messages}
-            systems={data.systems}
-            subscriptions={data.subscriptions}
-            saveState={(state) => {this.state["messageTableState"] = state;}}
-            loadState={() => this.state["messageTableState"]}
-          />
+          <StatePersistedContext.Provider value={subscriptionContextValues['subscriptionTableState']}>
+            <Subscriptions
+              subscriptions={data.subscriptions}
+              saveState={(state) => {this.state["subscriptionTableState"] = state;}}
+              loadState={() => this.state["subscriptionTableState"]}
+            />
+          </StatePersistedContext.Provider>,
+          <StatePersistedContext.Provider value={subscriptionContextValues['unmatchedProductTableState']}>
+            <UnmatchedProducts
+              products={data.products}
+              unmatchedProductIds={data.unmatchedProductIds}
+              systems={data.systems}
+              saveState={(state) => {this.state["unmatchedProductTableState"] = state;}}
+              loadState={() => this.state["unmatchedProductTableState"]}
+            />
+          </StatePersistedContext.Provider>,
+          <StatePersistedContext.Provider value={subscriptionContextValues['pinnedMatchesState']}>
+            <Pins
+              pinnedMatches={data.pinnedMatches}
+              products={data.products}
+              systems={data.systems}
+              subscriptions={data.subscriptions}
+              onPinChanged={this.props.onPinChanged}
+              saveState={(state) => {this.state["pinnedMatchesState"] = state;}}
+              loadState={() => this.state["pinnedMatchesState"]}
+            />
+          </StatePersistedContext.Provider>,
+          <StatePersistedContext.Provider value={subscriptionContextValues['messageTableState']}>
+            <Messages
+              messages={data.messages}
+              systems={data.systems}
+              subscriptions={data.subscriptions}
+              saveState={(state) => {this.state["messageTableState"] = state;}}
+              loadState={() => this.state["messageTableState"]}
+            />
+          </StatePersistedContext.Provider>
         ]}
         initialActiveTabHash={this.state.activeTabHash}
         onTabHashChange={this.onTabHashChange}

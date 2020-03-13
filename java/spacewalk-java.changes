@@ -1,3 +1,33 @@
+-------------------------------------------------------------------
+Wed Mar 11 10:54:21 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.5-1
+- Fix for pillar not being refreshed when CaaSP pattern is detected upon software profile update (bsc#1166061)
+- Adapt/clarify terms for minion system locking
+- Add dependency on system-lock formula
+- Prevent build/promote on content projects which have build/promote in progress
+- Clean stale Content Lifecycle targets on Tomcat startup (bsc#1164121)
+- Show warning on products page when no SUSE Manager Server Subscription is available
+- Implement recurring highstate scheduling
+- Notify VMs creation actions
+- Validate the suseproductchannel table and update missing date when running mgr-sync refresh (bsc#1163538)
+- Add 'inst.repo' kernel option to RHEL 8 kickstart tree (bsc#1163884)
+- Show proxy icon in system list
+- Disable modularity failsafe mechanism for RHEL 8 channels (bsc#1164875)
+- Handle the non-existent requested grains gracefully
+- Get the machineid grain from the minion startup event
+- Feat: enable Salt system lock when CaaSP node is onboarded
+- use term 'patch' instead of 'errata' (bsc#1164649)
+- enable provisioning API with salt and bootstrap entitled systems
+- remove oracle DB support
+- improve performance when adding systems to system groups (bsc#1158754)
+- remove NccRegister Task
+
+-------------------------------------------------------------------
+Mon Feb 17 12:50:13 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
+- Fix a problem with removing the monitoring entitlement from a system
 - Introduce CLM AppStream filters for RHEL 8 support
 - kickstart --nobase option was removed in version F22. Do not use it
   for RHEL8
@@ -12,6 +42,7 @@ Thu Jan 30 14:48:34 CET 2020 - jgonzalez@suse.com
 
 - version 4.1.3-1
 - overload the system.scheduleChangeChannels API method to accept multiple system IDs
+- support non discoverable fqdns via custom grain (bsc#1155281)
 
 -------------------------------------------------------------------
 Wed Jan 22 12:12:18 CET 2020 - jgonzalez@suse.com

@@ -20,13 +20,25 @@ import java.util.Map;
 
 /**
  * DocBookWriter
- * @version $Rev$
  */
 public class DocBookWriter extends DocWriter {
 
-    private static final String DOCBOOK_OUTPUT = "./build/reports/apidocs/docbook/";
-    private static final String DOCBOOK_TEMPLATES = "./buildconf/apidoc/docbook/";
     private static final String[] OTHER_FILES = {"faqs", "scripts"};
+
+    private String output;
+    private String templates;
+
+    /**
+     * @param outputIn path to the output folder
+     * @param templatesIn path to the DocBook templates folder
+     * @param debugIn whether to show debugging messages
+     *
+     */
+    public DocBookWriter(String outputIn, String templatesIn, boolean debugIn) {
+        super(debugIn);
+        output = outputIn;
+        templates = templatesIn;
+    }
 
     /**
      * {@inheritDoc}
@@ -35,18 +47,18 @@ public class DocBookWriter extends DocWriter {
             Map<String, String> serializers) throws Exception {
 
         // First macro-tize the serializer's docs
-        renderSerializers(DOCBOOK_TEMPLATES, serializers);
+        renderSerializers(templates, serializers);
 
         // Lets do the index first
-        writeFile(DOCBOOK_OUTPUT + "book.xml", generateIndex(handlers, DOCBOOK_TEMPLATES));
+        writeFile(output + "book.xml", generateIndex(handlers, templates));
         for (Handler handler : handlers) {
-            writeFile(DOCBOOK_OUTPUT + handler.getClassName() + ".xml",
-                    generateHandler(handler, DOCBOOK_TEMPLATES));
+            writeFile(output + handler.getClassName() + ".xml",
+                    generateHandler(handler, templates));
         }
 
         for (String file : OTHER_FILES) {
-            writeFile(DOCBOOK_OUTPUT + file + ".xml",
-                    readFile(DOCBOOK_TEMPLATES + file + ".txt"));
+            writeFile(output + file + ".xml",
+                    readFile(templates + file + ".txt"));
         }
     }
 

@@ -30,21 +30,25 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
-
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
-import com.suse.manager.webui.services.impl.SaltService;
 
+import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.gson.SimpleMinionJson;
+import com.suse.utils.Json;
+
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.suse.manager.utils.MinionServerUtils;
-import com.suse.manager.webui.utils.gson.SimpleMinionJson;
-import com.suse.utils.Json;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -95,17 +99,29 @@ public class MinionController {
         get("/manager/systems/details/highstate",
                 withCsrfToken(withUser(MinionController::highstate)),
                 jade);
+        get("/manager/systems/details/states/schedules",
+                withCsrfToken(withUser(MinionController::recurringStates)),
+                jade);
         get("/manager/multiorg/details/custom",
                 withCsrfToken(MinionController::orgCustomStates),
                 jade);
+        get("/manager/multiorg/details/recurring-states",
+                withCsrfToken(withUser(MinionController::orgRecurringStates)),
+                jade);
         get("/manager/yourorg/custom",
                 withCsrfToken(withUser(MinionController::yourOrgConfigChannels)),
+                jade);
+        get("/manager/yourorg/recurring-states",
+                withCsrfToken(withUser(MinionController::yourOrgRecurringStates)),
                 jade);
         get("/manager/groups/details/custom",
                 withCsrfToken(withUser(MinionController::serverGroupConfigChannels)),
                 jade);
         get("/manager/groups/details/highstate",
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
+        get("/manager/groups/details/states/schedules",
+                withCsrfToken(withUser(MinionController::serverGroupRecurringStates)),
+                jade);
     }
 
     private static void initSSMRoutes(JadeTemplateEngine jade) {
@@ -169,6 +185,31 @@ public class MinionController {
     }
 
     /**
+     * Handler for the org recurring-states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView orgRecurringStates(Request request, Response response, User user) {
+        Set<Long> systems = Arrays.stream(new SystemHandler().listSystems(user))
+                .map(system -> ((SystemOverview) system).getId()).
+                        collect(Collectors.toSet());
+        List<Server> servers = ServerFactory.lookupByIdsAndOrg(systems, user.getOrg());
+        List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(servers)
+                .map(SimpleMinionJson::fromMinionServer)
+                .collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("minions", Json.GSON.toJson(minions));
+        data.put("orgId", user.getOrg().getId());
+        data.put("orgName", user.getOrg().getName());
+        data.put("entityType", "ORG");
+        return new ModelAndView(data, "templates/org/recurring-states.jade");
+    }
+
+    /**
      * Handler for the org states page.
      *
      * @param request the request object
@@ -181,6 +222,32 @@ public class MinionController {
         data.put("orgId", orgId);
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         return new ModelAndView(data, "templates/org/custom.jade");
+    }
+
+    /**
+     * Handler for the org recurring-states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView yourOrgRecurringStates(Request request, Response response,
+                                                     User user) {
+        Set<Long> systems = Arrays.stream(new SystemHandler().listSystems(user))
+                .map(system -> ((SystemOverview) system).getId()).
+                collect(Collectors.toSet());
+        List<Server> servers = ServerFactory.lookupByIdsAndOrg(systems, user.getOrg());
+        List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(servers)
+                .map(SimpleMinionJson::fromMinionServer)
+                .collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("minions", Json.GSON.toJson(minions));
+        data.put("orgId", user.getOrg().getId());
+        data.put("orgName", user.getOrg().getName());
+        data.put("entityType", "ORG");
+        return new ModelAndView(data, "templates/yourorg/recurring-states.jade");
     }
 
     /**
@@ -218,6 +285,35 @@ public class MinionController {
     }
 
     /**
+     * Handler for the server group recurring-states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView serverGroupRecurringStates(Request request, Response response,
+                                                    User user) {
+        String grpId = request.queryParams("sgid");
+
+        ServerGroup group =
+                ServerGroupFactory.lookupByIdAndOrg(Long.parseLong(grpId), user.getOrg());
+
+        List<Server> groupServers = ServerGroupFactory.listServers(group);
+        List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(groupServers)
+                .map(SimpleMinionJson::fromMinionServer)
+                .collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("groupId", grpId);
+        data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(grpId),
+                user.getOrg()).getName());
+        data.put("minions", Json.GSON.toJson(minions));
+        data.put("entityType", "GROUP");
+        return new ModelAndView(data, "templates/groups/recurring-states.jade");
+    }
+
+    /**
      * Handler for the server group highstate page.
      *
      * @param request the request object
@@ -241,6 +337,7 @@ public class MinionController {
         data.put("groupId", grpId);
         data.put("groupName", ServerGroupFactory.lookupByIdAndOrg(Long.valueOf(grpId),
                 user.getOrg()).getName());
+        data.put("entityType", "GROUP");
         data.put("minions", Json.GSON.toJson(minions));
         addActionChains(user, data);
         return new ModelAndView(data, "templates/groups/highstate.jade");
@@ -261,6 +358,7 @@ public class MinionController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
+        data.put("entityType", "SSM");
         addActionChains(user, data);
         return new ModelAndView(data, "templates/ssm/highstate.jade");
     }
@@ -281,6 +379,25 @@ public class MinionController {
     }
 
     /**
+     * Handler for the recurring-states page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView recurringStates(Request request, Response response, User user) {
+        String serverId = request.queryParams("sid");
+        Map<String, Object> data = new HashMap<>();
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+        if (MinionServerUtils.isMinionServer(server)) {
+            data.put("server", server);
+        }
+        data.put("entityType", "MINION");
+        return new ModelAndView(data, "templates/minion/recurring-states.jade");
+    }
+
+    /**
      * Handler for the highstate page.
      *
      * @param request the request object
@@ -293,6 +410,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         data.put("server", server);
+        data.put("entityType", "MINION");
         addActionChains(user, data);
         return new ModelAndView(data, "templates/minion/highstate.jade");
     }

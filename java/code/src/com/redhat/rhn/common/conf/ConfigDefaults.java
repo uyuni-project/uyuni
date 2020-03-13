@@ -152,7 +152,6 @@ public class ConfigDefaults {
     public static final String CONFIG_MACRO_ARGUMENT_REGEX = "config_macro_argument_regex";
 
     private static final String DB_BACKEND = "db_backend";
-    private static final String DB_BACKEND_ORACLE = "oracle";
     private static final String DB_BACKEND_POSTGRESQL = "postgresql";
     public static final String DB_USER = "db_user";
     public static final String DB_PASSWORD = "db_password";
@@ -203,7 +202,7 @@ public class ConfigDefaults {
      * SUSE Manager defaults
      */
     public static final String SCC_URL = "server.susemanager.scc_url";
-    public static final String PRODUCT_TREE_TAG = "java.product_tree.tag";
+    public static final String PRODUCT_TREE_TAG = "java.product_tree_tag";
 
     public static final String MESSAGE_QUEUE_THREAD_POOL_SIZE = "java.message_queue_thread_pool_size";
 
@@ -703,15 +702,7 @@ public class ConfigDefaults {
     }
 
     /**
-     * is the server configured to use oracle
-     * @return true if so
-     */
-    public boolean isOracle() {
-        return DB_BACKEND_ORACLE.equals(Config.get().getString(DB_BACKEND));
-    }
-
-    /**
-     * is the server configured to use oracle
+     * is the server configured to use postgresql
      * @return true if so
      */
     public boolean isPostgresql() {
@@ -743,19 +734,7 @@ public class ConfigDefaults {
 
         String connectionUrl;
 
-        if (isOracle()) {
-            connectionUrl = dbProto + ":@";
-            if (dbProto.contains("thin")) {
-                connectionUrl += dbHost + ":" + dbPort + ":";
-            }
-            connectionUrl += dbName;
-
-            if (dbSslEnabled) {
-                throw new ConfigException(
-                    "SSL is not supported for Oracle database backend");
-            }
-        }
-        else if (isPostgresql()) {
+        if (isPostgresql()) {
             connectionUrl = dbProto + ":";
             if (dbHost != null && dbHost.length() > 0) {
                 connectionUrl += "//" + dbHost;
@@ -773,7 +752,7 @@ public class ConfigDefaults {
         }
         else {
             throw new ConfigException(
-                "Unknown db backend set, expecting oracle or postgresql");
+                "Unknown db backend set, expecting postgresql");
         }
         return connectionUrl;
     }

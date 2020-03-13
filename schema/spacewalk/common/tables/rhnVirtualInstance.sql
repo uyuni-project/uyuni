@@ -16,37 +16,37 @@
 
 CREATE TABLE rhnVirtualInstance
 (
-    id                 NUMBER NOT NULL
+    id                 NUMERIC NOT NULL
                            CONSTRAINT rhn_vi_id_pk PRIMARY KEY
-                           USING INDEX TABLESPACE [[64k_tbs]],
-    host_system_id     NUMBER
+                           ,
+    host_system_id     NUMERIC
                            CONSTRAINT rhn_vi_hsi_fk
                                REFERENCES rhnServer (id),
-    virtual_system_id  NUMBER
+    virtual_system_id  NUMERIC
                            CONSTRAINT rhn_vi_vsi_fk
                                REFERENCES rhnServer (id),
-    uuid               VARCHAR2(128),
-    confirmed          NUMBER(1)
+    uuid               VARCHAR(128),
+    confirmed          NUMERIC(1)
                            DEFAULT (1) NOT NULL,
-    created            timestamp with local time zone
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_vi_hsid_vsid_idx
     ON rhnVirtualInstance (host_system_id, virtual_system_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_vi_vsid_idx
     ON rhnVirtualInstance (virtual_system_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_vi_uuid_idx
     ON rhnVirtualInstance (uuid)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_vi_id_seq;
 

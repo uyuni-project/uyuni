@@ -658,6 +658,7 @@ class PackageItem(IncompletePackageItem):
         'rhn-package-changelog': 'changelog',
         'suse-product-file': 'product_files',
         'suse-eula': 'eulas',
+        'pkg-extratag': 'extra_tags',
     }
     tagMap.update(IncompletePackageItem.tagMap)
 
@@ -734,6 +735,15 @@ class EulaItem(BaseItem):
         'suse-eula-entry-checksum' : 'checksum',
     }
 addItem(EulaItem)
+
+class ExtraTagItem(BaseItem):
+    item_name = 'pkg-extratag-entry'
+    item_class = importLib.ExtraTag
+    tagMap = {
+        'pkg-extratag-entry-name'     : 'name',
+        'pkg-extratag-entry-value'    : 'value',
+    }
+addItem(ExtraTagItem)
 
 class DependencyItem(BaseItem):
 

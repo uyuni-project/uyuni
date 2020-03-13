@@ -15,7 +15,7 @@
 
 CREATE TABLE suseManagerInfo
 (
-    last_mgr_sync_refresh   TIMESTAMP WITH LOCAL TIME ZONE
+    last_mgr_sync_refresh   TIMESTAMPTZ
 )
-ENABLE ROW MOVEMENT
+
 ;

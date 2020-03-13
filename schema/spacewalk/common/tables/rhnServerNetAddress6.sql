@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnServerNetAddress6
 (
-    interface_id  NUMBER NOT NULL
+    interface_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_srv_net_iaddress6_iid_fk
                        REFERENCES rhnServerNetInterface (id)
                        ON DELETE CASCADE,
-    address    VARCHAR2(45),
-    netmask    VARCHAR2(49),
-    scope      VARCHAR2(64),
-    created    timestamp with local time zone
+    address    VARCHAR(45),
+    netmask    VARCHAR(49),
+    scope      VARCHAR(64),
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_srv_net_ad6_iid_sc_ad_idx
     ON rhnServerNetAddress6 (interface_id, scope, address)
-    TABLESPACE [[64_tbs]];
+    ;
 
 ALTER TABLE rhnServerNetAddress6
     ADD CONSTRAINT rhn_srv_net_ad6_iid_sc_ad_uq UNIQUE (interface_id, scope, address);

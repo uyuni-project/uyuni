@@ -14,19 +14,19 @@
 --
 
 CREATE TABLE suseContentFilterProject(
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT suse_ct_f_p_id_pk PRIMARY KEY,
-    filter_id  NUMBER NOT NULL
+    filter_id  NUMERIC NOT NULL
                    CONSTRAINT suse_ct_filter_fid_fk
                        REFERENCES suseContentFilter(id)
                        ON DELETE CASCADE,
-    project_id NUMBER NOT NULL
+    project_id NUMERIC NOT NULL
                    CONSTRAINT suse_ct_filter_pid_fk
                        REFERENCES suseContentProject(id)
                        ON DELETE CASCADE,
-    state      VARCHAR2(16)
+    state      VARCHAR(16)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_ct_f_p_seq;

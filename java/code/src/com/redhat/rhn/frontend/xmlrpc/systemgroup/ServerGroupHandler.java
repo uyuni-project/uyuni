@@ -19,7 +19,6 @@ import static java.util.stream.Collectors.toList;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -31,7 +30,6 @@ import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.LookupServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.ServerGroupAccessChangeException;
-import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -40,8 +38,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -192,25 +188,17 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public int addOrRemoveSystems(User loggedInUser, String systemGroupName,
             List serverIds, Boolean add) {
+
         ServerGroupManager manager = ServerGroupManager.getInstance();
         ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
 
-        List servers = new LinkedList();
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        for (Iterator itr = serverIds.iterator(); itr.hasNext();) {
-            Number sid = (Number) itr.next();
-            servers.add(helper.lookupServer(loggedInUser, sid));
-        }
+        List servers = XmlRpcSystemHelper.getInstance().lookupServers(loggedInUser, serverIds);
+
         if (add.booleanValue()) {
             manager.addServers(group, servers, loggedInUser);
         }
         else {
-            try {
-                manager.removeServers(group, servers, loggedInUser);
-            }
-            catch (WrappedSQLException e) {
-                throw new ServerNotInGroupException();
-            }
+            manager.removeServers(group, servers, loggedInUser);
         }
         return 1;
     }

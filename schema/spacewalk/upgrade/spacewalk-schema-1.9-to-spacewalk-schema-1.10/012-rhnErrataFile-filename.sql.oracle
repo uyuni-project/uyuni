@@ -1,1 +1,0 @@
-ALTER TABLE rhnErrataFile MODIFY filename VARCHAR2(4000);

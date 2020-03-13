@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnSystemMigrations
 (
-    org_id_to    NUMBER
+    org_id_to    NUMERIC
                      CONSTRAINT rhn_sys_mig_oidto_fk
                          REFERENCES web_customer (id)
                          ON DELETE SET NULL,
-    org_id_from  NUMBER
+    org_id_from  NUMERIC
                      CONSTRAINT rhn_sys_mig_oidfrm_fk
                          REFERENCES web_customer (id)
                          ON DELETE SET NULL,
-    server_id    NUMBER NOT NULL
+    server_id    NUMERIC NOT NULL
                      CONSTRAINT rhn_sys_mig_sid_fk
                          REFERENCES rhnServer (id)
                          ON DELETE CASCADE,
-    migrated     timestamp with local time zone
+    migrated     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rsm_org_id_to_idx

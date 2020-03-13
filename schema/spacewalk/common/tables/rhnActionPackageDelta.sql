@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnActionPackageDelta
 (
-    action_id         NUMBER NOT NULL
+    action_id         NUMERIC NOT NULL
                           CONSTRAINT rhn_act_pd_aid_fk
                               REFERENCES rhnAction (id)
                               ON DELETE CASCADE,
-    package_delta_id  NUMBER NOT NULL
+    package_delta_id  NUMERIC NOT NULL
                           CONSTRAINT rhn_act_pd_pdid_fk
                               REFERENCES rhnPackageDelta (id)
                               ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_act_pd_aid_pdid_idx
     ON rhnActionPackageDelta (action_id, package_delta_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 

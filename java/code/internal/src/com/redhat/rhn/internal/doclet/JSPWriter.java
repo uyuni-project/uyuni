@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.internal.doclet;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +25,22 @@ import java.util.Map;
  */
 public class JSPWriter extends DocWriter {
 
-
-    private static final String JSP_OUTPUT = "./build/reports/apidocs/jsp/";
-    private static final String JSP_TEMPLATES = "./buildconf/apidoc/jsp/";
-
-
     private static final String[] OTHER_FILES = {"faqs", "scripts"};
+
+    private String output;
+    private String templates;
+
+
+    /**
+     * @param outputIn path to the output folder
+     * @param templatesIn path to the JSP templates folder
+     * @param debugIn whether to show debugging messages
+     */
+    public JSPWriter(String outputIn, String templatesIn, boolean debugIn) {
+        super(debugIn);
+        output = outputIn;
+        templates = templatesIn;
+    }
 
     /**
      *
@@ -38,30 +49,26 @@ public class JSPWriter extends DocWriter {
     public void write(List<Handler> handlers,
             Map<String, String> serializers) throws Exception {
 
-
+        // Create the handlers folder
+        String handlersDir = output + "/handlers/";
+        File folder = new File(handlersDir);
+        folder.mkdirs();
 
         //First macro-tize the serializer's docs
-        renderSerializers(JSP_TEMPLATES, serializers);
-
-
-
-
+        renderSerializers(templates, serializers);
 
         //Lets do the index first
-        writeFile(JSP_OUTPUT + "index.jsp", generateIndex(handlers, JSP_TEMPLATES));
+        writeFile(output + "index.jsp", generateIndex(handlers, templates));
 
         for (Handler handler : handlers) {
 
-
-            writeFile(JSP_OUTPUT + "handlers/" + handler.getClassName() + ".jsp",
-                    generateHandler(handler, JSP_TEMPLATES));
+            writeFile(handlersDir + handler.getClassName() + ".jsp",
+                    generateHandler(handler, templates));
         }
 
         for (String file : OTHER_FILES) {
-            writeFile(JSP_OUTPUT + file + ".jsp", readFile(JSP_TEMPLATES + file + ".txt"));
+            writeFile(output + file + ".jsp", readFile(templates + file + ".txt"));
         }
 
     }
-
-
 }

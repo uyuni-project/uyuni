@@ -1,0 +1,2 @@
+
+ALTER TABLE suseImageInfo ALTER COLUMN version DROP NOT NULL;

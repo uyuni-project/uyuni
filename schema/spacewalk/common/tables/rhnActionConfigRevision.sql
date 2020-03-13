@@ -16,42 +16,42 @@
 
 CREATE TABLE rhnActionConfigRevision
 (
-    id                  NUMBER NOT NULL
+    id                  NUMERIC NOT NULL
                             CONSTRAINT rhn_actioncr_id_pk PRIMARY KEY
-                            USING INDEX TABLESPACE [[2m_tbs]],
-    action_id           NUMBER NOT NULL
+                            ,
+    action_id           NUMERIC NOT NULL
                             CONSTRAINT rhn_actioncr_aid_fk
                                 REFERENCES rhnAction (id)
                                 ON DELETE CASCADE,
-    server_id           NUMBER NOT NULL
+    server_id           NUMERIC NOT NULL
                             CONSTRAINT rhn_actioncr_sid_fk
                                 REFERENCES rhnServer (id),
-    config_revision_id  NUMBER NOT NULL
+    config_revision_id  NUMERIC NOT NULL
                             CONSTRAINT rhn_actioncr_crid_fk
                                 REFERENCES rhnConfigRevision (id)
                                 ON DELETE CASCADE,
-    failure_id          NUMBER
+    failure_id          NUMERIC
                             CONSTRAINT rhn_actioncr_failid_fk
                                 REFERENCES rhnConfigFileFailure (id),
-    created             timestamp with local time zone
+    created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
-    modified            timestamp with local time zone
+    modified            TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_actioncr_aid_sid_crid_uq
     ON rhnActionConfigRevision (action_id, server_id, config_revision_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_actioncr_sid_idx
     ON rhnActionConfigRevision (server_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_act_cr_crid_idx
     ON rhnActionConfigRevision (config_revision_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_actioncr_id_seq;
 

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  *
@@ -40,6 +41,7 @@ public class ServerGroupFactory extends HibernateFactory {
     private static final ServerGroupFactory SINGLETON = new ServerGroupFactory();
     private static Logger log = Logger.getLogger(ServerGroupFactory.class);
 
+    @Override
     protected Logger getLogger() {
         return log;
     }
@@ -54,6 +56,47 @@ public class ServerGroupFactory extends HibernateFactory {
         params.put("uid", user.getId());
         return SINGLETON.listObjectsByNamedQuery(
                 "ServerGroup.lookupAdministeredServerGroups", params);
+    }
+
+    /**
+     * Returns the ServerGroup that matches a given base entitlement and is
+     * compatible to a given server.
+     * @param serverId the Id of the server
+     * @param baseEnt the base entitlement
+     * @return the serverGroup
+     */
+    public static Optional<ServerGroup> findCompatibleServerGroupForBaseEntitlement(
+            Long serverId, Entitlement baseEnt) {
+        Session session = HibernateFactory.getSession();
+        ServerGroup serverGroup = (ServerGroup) session
+                .getNamedQuery("ServerGroup.findCompatibleServerGroupForBaseEntitlement")
+                .setParameter("sid", serverId)
+                .setParameter("entitlement_label", baseEnt.getLabel()).uniqueResult();
+
+        return Optional.ofNullable(serverGroup);
+    }
+
+    /**
+     * Returns the ServerGroup that matches a given addOn entitlement and is
+     * compatible to a given base entitlement and a given server.
+     * @param serverId the Id of the server
+     * @param addOnEnt the addOn entitlement
+     * @param baseEntId the Id of the base entitlement
+     * @return the serverGroup
+     */
+    public static Optional<ServerGroup> findCompatibleServerGroupForAddonEntitlement(
+            Long serverId, Entitlement addOnEnt, Long baseEntId) {
+        Session session = HibernateFactory.getSession();
+        ServerGroup serverGroup = (ServerGroup) session
+                .getNamedQuery("ServerGroup.findCompatibleServerGroupForAddOnEntitlement")
+                .setParameter("sid", serverId)
+                .setParameter("addon_entitlement_label", addOnEnt.getLabel())
+                .setParameter("base_ent_id", baseEntId).uniqueResult();
+
+        if (serverGroup != null) {
+            return Optional.of(serverGroup);
+        }
+        return Optional.empty();
     }
 
     /**
@@ -245,27 +288,6 @@ public class ServerGroupFactory extends HibernateFactory {
            return 0L;
         }
         return members.longValue();
-    }
-
-    /**
-     * Returns the list of Entitlement ServerGroups  associated to a server.
-     * @param s the server to find the server groups of
-     * @return list of EntitlementServerGroup objects that are associated to
-     *                      the server.
-     */
-    public static List<EntitlementServerGroup> listEntitlementGroups(Server s) {
-        return listServerGroups(s, "ServerGroup.lookupEntitlementGroupsByServer");
-    }
-
-    /**
-     * Returns the list of Managed ServerGroups  associated to a server.
-     * @param s the server to find the server groups of
-     * @return list of ManagedServerGroup objects that are associated to
-     *                      the server.
-     */
-    public static List<ManagedServerGroup> listManagedGroups(Server s) {
-        return listServerGroups(s,
-                "ServerGroup.lookupManagedGroupsByServer");
     }
 
     private static List listServerGroups(Server s, String queryName) {

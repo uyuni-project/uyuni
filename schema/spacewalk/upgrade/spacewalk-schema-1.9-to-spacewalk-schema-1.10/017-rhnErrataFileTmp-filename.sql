@@ -1,0 +1,2 @@
+
+ALTER TABLE rhnErrataFileTmp ALTER filename TYPE VARCHAR(4000);

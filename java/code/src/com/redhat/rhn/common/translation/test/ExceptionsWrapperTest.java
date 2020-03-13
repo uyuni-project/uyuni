@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.common.translation.test;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.ConstraintViolationException;
 import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -53,9 +52,7 @@ public class ExceptionsWrapperTest extends TestCase {
                     "values ('tooBigAString', 1)");
             }
             catch (SQLException e) {
-                if (!ConfigDefaults.get().isOracle()) {
-                    connection.rollback();
-                }
+                connection.rollback();
                 try {
                     throw SqlExceptionTranslator.sqlException(e);
                 }
@@ -86,9 +83,7 @@ public class ExceptionsWrapperTest extends TestCase {
                     "values ('ano', 1)");
             }
             catch (SQLException e) {
-                if (!ConfigDefaults.get().isOracle()) {
-                    connection.rollback();
-                }
+                connection.rollback();
                 try {
                     throw SqlExceptionTranslator.sqlException(e);
                 }
@@ -119,9 +114,7 @@ public class ExceptionsWrapperTest extends TestCase {
                     "values ('ano', 1)");
             }
             catch (SQLException e) {
-                if (!ConfigDefaults.get().isOracle()) {
-                    connection.rollback();
-                }
+                connection.rollback();
                 try {
                     throw SqlExceptionTranslator.sqlException(e);
                 }
@@ -149,9 +142,7 @@ public class ExceptionsWrapperTest extends TestCase {
                     "values ('ano', 1)");
             }
             catch (SQLException e) {
-                if (!ConfigDefaults.get().isOracle()) {
-                    connection.rollback();
-                }
+                connection.rollback();
                 try {
                     throw SqlExceptionTranslator.sqlException(e);
                 }
@@ -194,21 +185,12 @@ public class ExceptionsWrapperTest extends TestCase {
             }
             catch (SQLException e) {
                 // Couldn't select 1, so the table didn't exist, create it
-                if (ConfigDefaults.get().isOracle()) {
-                    statement.execute("create table exceptions_test ( " +
-                        "small_column VarChar2(5), " +
-                        "id number " +
-                        "constraint exceptions_test_pk primary key" +
-                    ")");
-                }
-                else {
-                    connection.rollback();
-                    statement.execute("create table exceptions_test ( " +
+                connection.rollback();
+                statement.execute("create table exceptions_test ( " +
                         "small_column VarChar(5), " +
                         "id numeric " +
                         "constraint exceptions_test_pk primary key" +
-                     ")");
-                }
+                        ")");
 
                 connection.commit();
             }

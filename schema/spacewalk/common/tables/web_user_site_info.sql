@@ -16,27 +16,27 @@
 
 CREATE TABLE web_user_site_info
 (
-    id                  NUMBER NOT NULL
+    id                  NUMERIC NOT NULL
                             CONSTRAINT wusi_id_pk PRIMARY KEY,
-    web_user_id         NUMBER
+    web_user_id         NUMERIC
                             CONSTRAINT wusi_wuid_fk
                                 REFERENCES web_contact (id)
                                 ON DELETE CASCADE,
-    email               VARCHAR2(128),
-    email_uc            VARCHAR2(128),
-    alt_first_names     VARCHAR2(128),
-    alt_last_name       VARCHAR2(128),
-    address1            VARCHAR2(128) NOT NULL,
-    address2            VARCHAR2(128),
-    address3            VARCHAR2(128),
-    address4            VARCHAR2(128),
-    city                VARCHAR2(128) NOT NULL,
-    state               VARCHAR2(64),
-    zip                 VARCHAR2(64),
+    email               VARCHAR(128),
+    email_uc            VARCHAR(128),
+    alt_first_names     VARCHAR(128),
+    alt_last_name       VARCHAR(128),
+    address1            VARCHAR(128) NOT NULL,
+    address2            VARCHAR(128),
+    address3            VARCHAR(128),
+    address4            VARCHAR(128),
+    city                VARCHAR(128) NOT NULL,
+    state               VARCHAR(64),
+    zip                 VARCHAR(64),
     country             CHAR(2) NOT NULL,
-    phone               VARCHAR2(32),
-    fax                 VARCHAR2(32),
-    url                 VARCHAR2(128),
+    phone               VARCHAR(32),
+    fax                 VARCHAR(32),
+    url                 VARCHAR(128),
     is_po_box           CHAR(1)
                             DEFAULT ('0')
                             CONSTRAINT wusi_ipb_ck
@@ -44,22 +44,22 @@ CREATE TABLE web_user_site_info
     type                CHAR(1)
                             CONSTRAINT wusi_type_fk
                                 REFERENCES web_user_site_type (type),
-    oracle_site_id      VARCHAR2(32),
-    notes               VARCHAR2(2000),
-    created             timestamp with local time zone
+    oracle_site_id      VARCHAR(32),
+    notes               VARCHAR(2000),
+    created             TIMESTAMPTZ
                             DEFAULT (current_timestamp),
-    modified            timestamp with local time zone
+    modified            TIMESTAMPTZ
                             DEFAULT (current_timestamp),
-    alt_first_names_ol  VARCHAR2(128),
-    alt_last_name_ol    VARCHAR2(128),
-    address1_ol         VARCHAR2(128),
-    address2_ol         VARCHAR2(128),
-    address3_ol         VARCHAR2(128),
-    city_ol             VARCHAR2(128),
-    state_ol            VARCHAR2(32),
-    zip_ol              VARCHAR2(32)
+    alt_first_names_ol  VARCHAR(128),
+    alt_last_name_ol    VARCHAR(128),
+    address1_ol         VARCHAR(128),
+    address2_ol         VARCHAR(128),
+    address3_ol         VARCHAR(128),
+    city_ol             VARCHAR(128),
+    state_ol            VARCHAR(32),
+    zip_ol              VARCHAR(32)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX web_user_site_info_wuid

@@ -3,7 +3,7 @@ import React from 'react';
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import EnvironmentView from "./environment-view";
 import EnvironmentForm from "./environment-form";
-import {Loading} from "components/loading/loading";
+import {Loading} from "components/utils/Loading";
 import Promote from "../promote/promote";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import {mapAddEnvironmentRequest, mapUpdateEnvironmentRequest} from './environment.utils';
@@ -144,6 +144,7 @@ const EnvironmentLifecycle = (props: Props) => {
                       projectId={props.projectId}
                       environmentPromote={environment}
                       environmentTarget={props.environments[i + 1]}
+                      environmentNextTarget={props.environments[i + 2]}
                       historyEntries={props.historyEntries}
                       versionToPromote={environment.version}
                       onChange={props.onChange}

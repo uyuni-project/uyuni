@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 59d54050ceffbcb4476a248028d90e73ec853aa1
 
 
 create or replace function rhn_packagedelta_mod_trig_fun() returns trigger as

@@ -16,19 +16,19 @@
 
 CREATE TABLE rhnRegTokenGroups
 (
-    token_id         NUMBER NOT NULL
+    token_id         NUMERIC NOT NULL
                          CONSTRAINT rhn_reg_tok_grp_id_fk
                              REFERENCES rhnRegToken (id)
                              ON DELETE CASCADE,
-    server_group_id  NUMBER NOT NULL
+    server_group_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_reg_tok_grp_sgs_fk
                              REFERENCES rhnServerGroup (id)
                              ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_reg_tok_grp_uq
     ON rhnRegTokenGroups (token_id, server_group_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

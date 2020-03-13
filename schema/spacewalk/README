@@ -9,20 +9,6 @@ DIRECTORIES
 /schema/spacewalk/common/data           - Common SQL: INSERTs
 /schema/spacewalk/common/views          - Generic view DDL
 
-ORACLE:
-
-/schema/spacewalk/oracle                - Oracle specific DDL
-/schema/spacewalk/oracle/class          - Oracle specific class DDL
-/schema/spacewalk/oracle/tables         - Oracle specific table DDL
-/schema/spacewalk/oracle/tables/common  - Generated from common/tables
-/schema/spacewalk/oracle/views          - Oracle specific view DDL
-/schema/spacewalk/oracle/views/common   - Copied from common/views
-/schema/spacewalk/oracle/data           - Oracle specific INSERTs
-/schema/spacewalk/oracle/data/common    - Generated from common/data
-/schema/spacewalk/oracle/triggers       - Oracle specific trigger DDL
-/schema/spacewalk/oracle/procs          - PL/SQL procedures/functions DDL.
-/schema/spacewalk/oracle/packages       - PL/SQL packages DDL.
-
 POSTGRES:
 
 /schema/spacewalk/postgres                - Postgres specific DDL

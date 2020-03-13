@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnPushClientState
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_pclient_state_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[4m_tbs]],
-    label     VARCHAR2(64) NOT NULL,
-    name      VARCHAR2(256) NOT NULL,
-    created   timestamp with local time zone
+                  ,
+    label     VARCHAR(64) NOT NULL,
+    name      VARCHAR(256) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_pclient_state_label_uq
     ON rhnPushClientState (label)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE UNIQUE INDEX rhn_pclient_state_name_uq
     ON rhnPushClientState (name)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_pclient_state_id_seq;
 

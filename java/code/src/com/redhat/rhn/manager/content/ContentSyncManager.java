@@ -343,7 +343,31 @@ public class ContentSyncManager {
      * @return list of all available products
      */
     public List<MgrSyncProductDto> listProducts() {
+        if (!(ConfigDefaults.get().isUyuni() || hasToolsChannelSubscription())) {
+            log.warn("No SUSE Manager Server Subscription available. " +
+                     "Products requiring Client Tools Channel will not be shown.");
+        }
         return HibernateFactory.doWithoutAutoFlushing(() -> listProductsImpl());
+    }
+
+    /**
+     * Verify suseProductChannel is present for all synced channels, if not re-add it.
+     */
+    public void ensureSUSEProductChannelData() {
+        List<Channel> syncedChannels = ChannelFactory.listVendorChannels();
+        for (Channel sc : syncedChannels) {
+            List<SUSEProductChannel> spcList = SUSEProductFactory.lookupSyncedProductChannelsByLabel(sc.getLabel());
+            if (spcList.isEmpty()) {
+                List<SUSEProductSCCRepository> missingData = SUSEProductFactory.lookupByChannelLabel(sc.getLabel());
+                missingData.forEach(md -> {
+                        SUSEProductChannel correctedData = new SUSEProductChannel();
+                        correctedData.setProduct(md.getProduct());
+                        correctedData.setChannel(sc);
+                        correctedData.setMandatory(md.isMandatory());
+                        SUSEProductFactory.save(correctedData);
+                });
+            }
+        }
     }
 
     /**
@@ -516,6 +540,7 @@ public class ContentSyncManager {
                 throw new ContentSyncException(e);
             }
         }
+        ensureSUSEProductChannelData();
         linkAndRefreshContentSource(mirrorUrl);
         ManagerInfoFactory.setLastMgrSyncRefresh();
     }
@@ -2194,5 +2219,22 @@ public class ContentSyncManager {
      */
     public static boolean isChannelNameReserved(String name) {
         return !SUSEProductFactory.lookupByChannelName(name).isEmpty();
+    }
+
+    /**
+     * Returns true when a valid Subscription for the SUSE Manager Tools Channel
+     * is available
+     *
+     * @return true if we have a Tools Subscription, otherwise false
+     */
+    public boolean hasToolsChannelSubscription() {
+        return SCCCachingFactory.lookupSubscriptions()
+               .stream()
+               .filter(s -> s.getStatus().equals("ACTIVE") &&
+                            s.getExpiresAt().after(new Date()) &&
+                            (s.getStartsAt() == null || s.getStartsAt().before(new Date())))
+               .map(s -> s.getProducts())
+               .flatMap(Set::stream)
+               .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
     }
 }

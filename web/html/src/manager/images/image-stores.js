@@ -8,7 +8,9 @@ const { TopPanel } = require('components/panels/TopPanel');
 const Network = require("utils/network");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
-const {Table, Column, SearchField} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
 const Messages = require("components/messages").Messages;
 const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
 const ModalButton = require("components/dialog/ModalButton").ModalButton;
@@ -38,6 +40,9 @@ class ImageStores extends React.Component {
       imagestores: [],
       selectedItems: []
     };
+  }
+
+  componentDidMount() {
     this.reloadData();
   }
 

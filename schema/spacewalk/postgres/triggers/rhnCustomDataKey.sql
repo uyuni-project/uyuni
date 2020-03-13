@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 0fb3a28bcbe1cfd49adcc39588f4f44c5169417c
 
 
 create or replace function rhn_cdatakey_mod_trig_fun() returns trigger as

@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Feb 17 12:47:29 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
 - spell correctly "successful" and "successfully"
 - Remove auditlog-keeper
 

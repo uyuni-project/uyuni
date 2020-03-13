@@ -16,25 +16,25 @@
 
 CREATE TABLE rhnCryptoKey
 (
-    id                  NUMBER NOT NULL
+    id                  NUMERIC NOT NULL
                             CONSTRAINT rhn_cryptokey_id_pk PRIMARY KEY
-                            USING INDEX TABLESPACE [[2m_tbs]],
-    org_id              NUMBER
+                            ,
+    org_id              NUMERIC
                             CONSTRAINT rhn_cryptokey_oid_fk
                                 REFERENCES web_customer (id)
                                 ON DELETE CASCADE,
-    description         VARCHAR2(1024) NOT NULL,
-    crypto_key_type_id  NUMBER NOT NULL
+    description         VARCHAR(1024) NOT NULL,
+    crypto_key_type_id  NUMERIC NOT NULL
                             CONSTRAINT rhn_cryptokey_cktid_fk
                                 REFERENCES rhnCryptoKeyType (id),
-    key                 BLOB
+    key                 BYTEA
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_cryptokey_oid_desc_uq
     ON rhnCryptoKey (org_id, description)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_cryptokey_id_seq;
 

@@ -1,3 +1,20 @@
+-------------------------------------------------------------------
+Wed Mar 11 10:49:22 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.5-1
+- Add Ubuntu repository checksum index checking for flat and default repository formats
+- Always use the same RPM database when running "spacewalk-repo-sync"
+  from the command line or via taskomatic (bsc#1163468)
+- call mgr-create-bootstrap-repo after repo sync
+- fix mgrcfg-client python3 breakage (bsc#1164309
+- Remove oracle backend support and tests
+- remove code to handle tables used for forwarding registrations
+  to NCC.
+
+-------------------------------------------------------------------
+Mon Feb 17 12:47:56 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
 - Remove auditlog-keeper
 - update doc link to point to new documentation server
 

@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnPackageRepodata
 (
-    package_id  NUMBER NOT NULL
+    package_id  NUMERIC NOT NULL
                     CONSTRAINT rhnPackageRepodata_pk
                         PRIMARY KEY
                     CONSTRAINT rhn_pkey_rd_pid_fk
                         REFERENCES rhnPackage (id)
                         ON DELETE CASCADE,
-    primary_xml     BLOB, -- primary is a reserved word :{
-    filelist    BLOB, 
-    other       BLOB,
-    created     timestamp with local time zone
+    primary_xml     BYTEA, -- primary is a reserved word :{
+    filelist    BYTEA, 
+    other       BYTEA,
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
 ;

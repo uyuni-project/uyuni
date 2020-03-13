@@ -16,13 +16,13 @@
 
 CREATE TABLE rhnClientCapabilityName
 (
-    id    NUMBER NOT NULL
+    id    NUMERIC NOT NULL
               CONSTRAINT rhn_clientcapnam_id_pk PRIMARY KEY
-              USING INDEX TABLESPACE [[8m_tbs]],
-    name  VARCHAR2(32) NOT NULL
+              ,
+    name  VARCHAR(32) NOT NULL
               CONSTRAINT rhn_clientcapnam_name_unq UNIQUE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_client_capname_id_seq;

@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnKickstartSessionState
 (
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_ks_session_state_id_pk PRIMARY KEY
-                     USING INDEX TABLESPACE [[64k_tbs]],
-    label        VARCHAR2(64) NOT NULL,
-    name         VARCHAR2(128) NOT NULL,
-    description  VARCHAR2(1024) NOT NULL,
-    created      timestamp with local time zone
+                     ,
+    label        VARCHAR(64) NOT NULL,
+    name         VARCHAR(128) NOT NULL,
+    description  VARCHAR(1024) NOT NULL,
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ks_session_state_label_uq
     ON rhnKickstartSessionState (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_ks_session_state_id_seq;
 

@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnServerActionVerifyResult
 (
-    server_id              NUMBER NOT NULL
+    server_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvr_sid_fk
                                    REFERENCES rhnServer (id),
-    action_id              NUMBER NOT NULL
+    action_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvr_aid_fk
                                    REFERENCES rhnAction (id)
                                    ON DELETE CASCADE,
-    package_name_id        NUMBER NOT NULL
+    package_name_id        NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvr_pnid_fk
                                    REFERENCES rhnPackageName (id),
-    package_evr_id         NUMBER NOT NULL
+    package_evr_id         NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvr_peid_fk
                                    REFERENCES rhnPackageEVR (id),
-    package_arch_id        NUMBER NOT NULL
+    package_arch_id        NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvr_paid_fk
                                    REFERENCES rhnPackageArch (id),
-    package_capability_id  NUMBER NOT NULL
+    package_capability_id  NUMERIC NOT NULL
                                CONSTRAINT rhn_sactionvr_pcid_fk
                                    REFERENCES rhnPackageCapability (id),
     attribute              CHAR(1)
@@ -62,15 +62,15 @@ CREATE TABLE rhnServerActionVerifyResult
     mtime_differs          CHAR(1) NOT NULL
                                CONSTRAINT rhn_sactionvr_mtime_ck
                                    CHECK (mtime_differs in ('Y','N','?')),
-    created                timestamp with local time zone
+    created                TIMESTAMPTZ
                                DEFAULT (current_timestamp) NOT NULL,
-    modified               timestamp with local time zone
+    modified               TIMESTAMPTZ
                                DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_sactionvr_sanec_uq
     ON rhnServerActionVerifyResult (server_id, action_id, package_name_id, package_evr_id, package_arch_id, package_capability_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

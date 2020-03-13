@@ -4298,7 +4298,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <target>Staging-Inhalte aktivieren</target>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp">
-        <source>Enable Errata E-mail Notifications (for users belonging to this organization)</source>
+        <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -25669,6 +25669,9 @@ für einen angegebenen Channel aufgelistet wird.</target>
       </trans-unit>
       <trans-unit id="Highstate">
         <source>Highstate</source>
+      </trans-unit>
+      <trans-unit id="Recurring States">
+        <source>Recurring States</source>
       </trans-unit>
       <trans-unit id="Configuration Channels">
         <source>Configuration Channels</source>

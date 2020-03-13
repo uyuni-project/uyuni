@@ -15,29 +15,29 @@
 
 CREATE TABLE suseCVEImageChannel
 (
-    image_info_id    NUMBER NOT NULL
+    image_info_id    NUMERIC NOT NULL
                      CONSTRAINT suse_cveimg_iid_fk
                          REFERENCES suseImageInfo (id)
                          ON DELETE CASCADE,
-    channel_id   NUMBER NOT NULL
+    channel_id   NUMERIC NOT NULL
                      CONSTRAINT suse_cveimg_cid_fk
                          REFERENCES rhnChannel (id)
                          ON DELETE CASCADE,
-    channel_rank NUMBER NOT NULL,
-    created   timestamp with local time zone
+    channel_rank NUMERIC NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_cveimg_iid_cid_uq
     ON suseCVEImageChannel (image_info_id, channel_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX suse_cveimg_cid_idx
     ON suseCVEImageChannel (channel_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 

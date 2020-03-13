@@ -19,24 +19,24 @@
 create table
 rhnContentSource
 (
-        id		number NOT NULL
+        id		NUMERIC NOT NULL
 			constraint rhn_cs_id_pk primary key,
-        org_id		number
+        org_id		NUMERIC
 			constraint rhn_cs_org_fk
                                 references web_customer (id),
-        type_id         number NOT NULL
+        type_id         NUMERIC NOT NULL
                         constraint rhn_cs_type_fk
                                 references rhnContentSourceType(id),
-        source_url      varchar2(2048) NOT NULL,
-        label           varchar2(128) NOT NULL,
+        source_url      VARCHAR(2048) NOT NULL,
+        label           VARCHAR(128) NOT NULL,
         metadata_signed CHAR(1)
                             DEFAULT ('Y') NOT NULL
                             CONSTRAINT rhn_cs_ms_ck
                                 CHECK (metadata_signed in ( 'Y' , 'N' )),
-        created         timestamp with local time zone default(current_timestamp) NOT NULL,
-        modified        timestamp with local time zone default(current_timestamp) NOT NULL
+        created         TIMESTAMPTZ default(current_timestamp) NOT NULL,
+        modified        TIMESTAMPTZ default(current_timestamp) NOT NULL
 )
-	enable row movement
+
   ;
 
 
@@ -44,9 +44,9 @@ create sequence rhn_chan_content_src_id_seq start with 500;
 
 CREATE UNIQUE INDEX rhn_cs_label_uq
     ON rhnContentSource(COALESCE(org_id, 0), label)
-    tablespace [[64k_tbs]];
+    ;
 CREATE UNIQUE INDEX rhn_cs_repo_uq
     ON rhnContentSource(COALESCE(org_id, 0), type_id, source_url,
                         (case when label like 'manifest_%' then 1 else 0 end))
-    tablespace [[64k_tbs]];
+    ;
 

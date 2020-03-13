@@ -137,8 +137,7 @@ public class NotificationMessageController {
     public static String delete(Request request, Response response, User user) {
         List<Long> messageIds = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
 
-        messageIds.forEach(messageId ->
-                {
+        messageIds.forEach(messageId -> {
                     Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
                     if (un.isPresent()) {
                         UserNotificationFactory.remove(un.get());
@@ -174,8 +173,7 @@ public class NotificationMessageController {
                 new TypeToken<List<Long>>() { }.getType());
         boolean flagAsRead = (boolean) map.get("flagAsRead");
 
-        messageIds.forEach(messageId ->
-        {
+        messageIds.forEach(messageId -> {
             Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
             if (un.isPresent()) {
                 UserNotificationFactory.updateStatus(un.get(), flagAsRead);
@@ -211,7 +209,7 @@ public class NotificationMessageController {
         String resultMessage = "Onboarding restarted of the minioniId '%s'";
 
         RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(SaltService.INSTANCE);
-        action.execute(new RegisterMinionEventMessage(minionId));
+        action.execute(new RegisterMinionEventMessage(minionId, Optional.empty()));
 
         Map<String, String> data = new HashMap<>();
         data.put("severity", severity);

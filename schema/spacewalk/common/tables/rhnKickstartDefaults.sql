@@ -16,16 +16,16 @@
 
 CREATE TABLE rhnKickstartDefaults
 (
-    kickstart_id         NUMBER NOT NULL
+    kickstart_id         NUMERIC NOT NULL
                              CONSTRAINT rhn_ksd_ksid_uq UNIQUE
                              CONSTRAINT rhn_ksd_ksid_fk
                                  REFERENCES rhnKSData (id)
                                  ON DELETE CASCADE,
-    kstree_id            NUMBER NOT NULL
+    kstree_id            NUMERIC NOT NULL
                              CONSTRAINT rhn_ksd_kstid_fk
                                  REFERENCES rhnKickstartableTree (id)
                                  ON DELETE CASCADE,
-    server_profile_id    NUMBER
+    server_profile_id    NUMERIC
                              CONSTRAINT rhn_ksd_spid_fk
                                  REFERENCES rhnServerProfile (id)
                                  ON DELETE SET NULL,
@@ -37,19 +37,19 @@ CREATE TABLE rhnKickstartDefaults
                              DEFAULT ('N') NOT NULL
                              CONSTRAINT rhn_ksd_rmf_ck
                                  CHECK (remote_command_flag in ('Y','N')),
-    virtualization_type  NUMBER NOT NULL
+    virtualization_type  NUMERIC NOT NULL
                              CONSTRAINT rhn_ksd_kvt_fk
                                  REFERENCES rhnKickstartVirtualizationType (id)
                                  ON DELETE SET NULL,
-    created              timestamp with local time zone
+    created              TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL,
-    modified             timestamp with local time zone
+    modified             TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ksd_kstid_idx
     ON rhnKickstartDefaults (kstree_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 

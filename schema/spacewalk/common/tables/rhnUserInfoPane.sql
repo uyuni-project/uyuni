@@ -16,19 +16,19 @@
 
 CREATE TABLE rhnUserInfoPane
 (
-    user_id  NUMBER NOT NULL
+    user_id  NUMERIC NOT NULL
                  CONSTRAINT rhn_usr_info_pane_uid_fk
                      REFERENCES web_contact (id)
                      ON DELETE CASCADE,
-    pane_id  NUMBER NOT NULL
+    pane_id  NUMERIC NOT NULL
                  CONSTRAINT rhn_usr_info_pane_pid_fk
                      REFERENCES rhnInfoPane (id)
                      ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhnusrinfopane_uid_pid_uq
     ON rhnUserInfoPane (user_id, pane_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

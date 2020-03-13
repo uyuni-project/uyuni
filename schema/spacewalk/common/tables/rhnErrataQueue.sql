@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnErrataQueue
 (
-    errata_id    NUMBER NOT NULL
+    errata_id    NUMERIC NOT NULL
                      CONSTRAINT rhn_equeue_eid_fk
                          REFERENCES rhnErrata (id)
                          ON DELETE CASCADE,
-    channel_id   NUMBER NOT NULL
+    channel_id   NUMERIC NOT NULL
                      CONSTRAINT rhn_equeue_cid_fk
                          REFERENCES rhnChannel(id)
                          ON DELETE CASCADE,
-    next_action  timestamp with local time zone,
-    created      timestamp with local time zone
+    next_action  TIMESTAMPTZ,
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_equeue_eid_idx
     ON rhnErrataQueue (errata_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_equeue_na_eid_idx
     ON rhnErrataQueue (next_action, errata_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 

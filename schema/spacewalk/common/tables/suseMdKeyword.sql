@@ -13,14 +13,14 @@
 create table
 suseMdKeyword
 (
-    id                number PRIMARY KEY,
+    id                NUMERIC PRIMARY KEY,
     label             varchar(128) NOT NULL,
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_mdkeyword_id_seq;

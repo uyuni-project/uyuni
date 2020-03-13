@@ -37,7 +37,7 @@ public class VirtualizationCreateAction extends BaseVirtualizationAction {
 
     private Long id;
     private String type;
-    private String name;
+    private String guestName;
     private String osType;
     private Long memory;
     private Long vcpus;
@@ -81,17 +81,15 @@ public class VirtualizationCreateAction extends BaseVirtualizationAction {
     /**
      * @return the virtual machine name
      */
-    @Override
-    public String getName() {
-        return name;
+    public String getGuestName() {
+        return guestName;
     }
 
     /**
      * @param vmNameIn the virtual machine name
      */
-    @Override
-    public void setName(String vmNameIn) {
-        this.name = vmNameIn;
+    public void setGuestName(String vmNameIn) {
+        this.guestName = vmNameIn;
     }
 
     /**
@@ -236,7 +234,7 @@ public class VirtualizationCreateAction extends BaseVirtualizationAction {
         setType((String)context.get(TYPE));
         // So far the salt virt.update function doesn't allow renaming a guest,
         // and that is only possible for the KVM driver.
-        setName((String)context.get(NAME));
+        setGuestName((String)context.get(NAME));
         setOsType((String) context.get(OS_TYPE));
         setMemory((Long) context.get(MEMORY));
         setVcpus((Long) context.get(VCPUS));
@@ -266,7 +264,7 @@ public class VirtualizationCreateAction extends BaseVirtualizationAction {
         if (other instanceof VirtualizationCreateAction) {
             VirtualizationCreateAction otherAction = (VirtualizationCreateAction)other;
             result = Objects.equals(getType(), otherAction.getType()) &&
-                    Objects.equals(getName(), otherAction.getName()) &&
+                    Objects.equals(getGuestName(), otherAction.getGuestName()) &&
                     Objects.equals(getOsType(), otherAction.getOsType()) &&
                     getMemory().longValue() == otherAction.getMemory().longValue() &&
                     getVcpus().longValue() == otherAction.getVcpus().longValue() &&
@@ -281,6 +279,7 @@ public class VirtualizationCreateAction extends BaseVirtualizationAction {
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, name, osType, memory, vcpus, arch, removeDisks, disks, removeInterfaces, interfaces);
+        return Objects.hash(type, guestName, osType, memory, vcpus, arch, removeDisks, disks, removeInterfaces,
+                interfaces);
     }
 }

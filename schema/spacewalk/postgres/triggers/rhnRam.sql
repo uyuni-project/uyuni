@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 12c956a1bb831a306aac5b039557b66b832cfd3a
 
 create or replace function rhn_ram_mod_trig_fun() returns trigger as
 $$

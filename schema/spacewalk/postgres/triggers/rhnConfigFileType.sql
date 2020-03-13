@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 885cb40eeda98dd09649016105731adae2dbcc34
 
 create or replace function rhn_conffiletype_mod_trig_fun() returns trigger as
 $$

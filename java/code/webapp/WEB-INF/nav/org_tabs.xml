@@ -7,7 +7,10 @@
   <rhn-tab name="Trusts" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/OrgTrusts.do"/>
   <rhn-tab name="Configuration" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/OrgConfigDetails.do"/>
   <rhn-tab name="States" acl="user_role(satellite_admin)" >
-     <rhn-tab-url>/rhn/manager/multiorg/details/custom</rhn-tab-url>
+     <rhn-tab-url>/rhn/manager/multiorg/details/recurring-states</rhn-tab-url>
+     <rhn-tab name="Recurring States">
+        <rhn-tab-url>/rhn/manager/multiorg/details/recurring-states</rhn-tab-url>
+     </rhn-tab>
      <rhn-tab name="Configuration Channels">
         <rhn-tab-url>/rhn/manager/multiorg/details/custom</rhn-tab-url>
      </rhn-tab>

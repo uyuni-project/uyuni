@@ -154,6 +154,7 @@ import com.redhat.rhn.manager.system.SystemsExistException;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
@@ -196,6 +197,8 @@ public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
     private final TaskomaticApi taskomaticApi;
+
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * Default constructor.
@@ -307,11 +310,11 @@ public class SystemHandler extends BaseHandler {
 
         // Make sure we got a valid entitlement and the server can be entitled to it
         validateEntitlements(new ArrayList<Entitlement>() { { add(entitlement); } });
-        if (!SystemManager.canEntitleServer(server, entitlement)) {
+        if (!this.systemEntitlementManager.canEntitleServer(server, entitlement)) {
             throw new PermissionCheckFailureException();
         }
 
-        SystemManager.entitleServer(server, entitlement);
+        this.systemEntitlementManager.addEntitlementToServer(server, entitlement);
         SystemManager.snapshotServer(server, LocalizationService.getInstance()
                 .getMessage("snapshots.entitlements"));
 
@@ -2575,19 +2578,19 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Provision a system using the specified kickstart profile.
+     * Provision a system using the specified kickstart/autoinstallation profile.
      *
      * @param loggedInUser The current user
      * @param serverId of the system to be provisioned
-     * @param profileName of Kickstart Profile to be used.
+     * @param profileName of Profile to be used.
      * @return Returns 1 if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
-     * id cannot be found or kickstart profile is not found.
+     * id cannot be found or profile is not found.
      *
-     * @xmlrpc.doc Provision a system using the specified kickstart profile.
+     * @xmlrpc.doc Provision a system using the specified kickstart/autoinstallation profile.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of the system to be provisioned.")
-     * @xmlrpc.param #param_desc("string", "profileName", "Kickstart profile to use.")
+     * @xmlrpc.param #param_desc("string", "profileName", "Profile to use.")
      * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
      * on error
      */
@@ -2597,9 +2600,9 @@ public class SystemHandler extends BaseHandler {
 
         // Lookup the server so we can validate it exists and throw error if not.
         Server server = lookupServer(loggedInUser, serverId);
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System does not have management entitlement");
+                    "System does not have required entitlement");
         }
 
         KickstartData ksdata = KickstartFactory.
@@ -2625,20 +2628,20 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Provision a system using the specified kickstart profile at specified time.
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
      *
      * @param loggedInUser The current user
      * @param serverId of the system to be provisioned
-     * @param profileName of Kickstart Profile to be used.
-     * @param earliestDate when the kickstart needs to be scheduled
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
      * @return Returns 1 if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
-     * id cannot be found or kickstart profile is not found.
+     * id cannot be found or profile is not found.
      *
-     * @xmlrpc.doc Provision a system using the specified kickstart profile.
+     * @xmlrpc.doc Provision a system using the specified kickstart/autoinstallation profile.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of the system to be provisioned.")
-     * @xmlrpc.param #param_desc("string", "profileName", "Kickstart profile to use.")
+     * @xmlrpc.param #param_desc("string", "profileName", "Profile to use.")
      * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
      * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
      * on error
@@ -2650,9 +2653,9 @@ public class SystemHandler extends BaseHandler {
 
         // Lookup the server so we can validate it exists and throw error if not.
         Server server = lookupServer(loggedInUser, serverId);
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not have required entitlement");
         }
 
         KickstartData ksdata = KickstartFactory.
@@ -4686,10 +4689,10 @@ public class SystemHandler extends BaseHandler {
             String selectedEnt = (String)details.get("base_entitlement");
             Entitlement base = EntitlementManager.getByName(selectedEnt);
             if (base != null) {
-                server.setBaseEntitlement(base);
+                SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, base);
             }
             else if (selectedEnt.equals("unentitle")) {
-                SystemManager.removeAllServerEntitlements(server.getId());
+                systemEntitlementManager.removeAllServerEntitlements(server);
             }
         }
 
@@ -4864,7 +4867,7 @@ public class SystemHandler extends BaseHandler {
         for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
             if (addOnEnts.contains(en.getLabel())) {
                 addOnEnts.remove(en.getLabel());
-                server.setBaseEntitlement(en);
+                SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, en);
             }
         }
 
@@ -4884,8 +4887,8 @@ public class SystemHandler extends BaseHandler {
                 continue;
             }
 
-            if (SystemManager.canEntitleServer(server, ent)) {
-                ValidatorResult vr = SystemManager.entitleServer(server, ent);
+            if (this.systemEntitlementManager.canEntitleServer(server, ent)) {
+                ValidatorResult vr = this.systemEntitlementManager.addEntitlementToServer(server, ent);
                 needsSnapshot = true;
                 if (vr.getErrors().size() > 0) {
                     throw new InvalidEntitlementException();
@@ -4948,14 +4951,14 @@ public class SystemHandler extends BaseHandler {
                 baseEnts.add(ent);
                 continue;
             }
-            SystemManager.removeServerEntitlement(server.getId(), ent);
+            systemEntitlementManager.removeServerEntitlement(server, ent);
             needsSnapshot = true;
         }
 
         // process base entitlements at the end
         if (!baseEnts.isEmpty()) {
             // means unentile the whole system
-            SystemManager.removeAllServerEntitlements(server.getId());
+            systemEntitlementManager.removeAllServerEntitlements(server);
             needsSnapshot = true;
         }
 
@@ -4982,7 +4985,7 @@ public class SystemHandler extends BaseHandler {
             // a permanent entitlement is not changeable by API
             throw new InvalidEntitlementException();
         }
-        SystemManager.removeAllServerEntitlements(server.getId());
+        systemEntitlementManager.removeAllServerEntitlements(server);
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.entitlements"));
         return 1;
@@ -5578,6 +5581,7 @@ public class SystemHandler extends BaseHandler {
                 ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
                 vi.getHostSystem(),
                 vi.getUuid(),
+                vi.getName(),
                 context);
         try {
             cmd.store();
@@ -5619,6 +5623,7 @@ public class SystemHandler extends BaseHandler {
                 ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
                 vi.getHostSystem(),
                 vi.getUuid(),
+                vi.getName(),
                 context);
         try {
             cmd.store();
@@ -5678,6 +5683,7 @@ public class SystemHandler extends BaseHandler {
                         action,
                         vi.getHostSystem(),
                         vi.getUuid(),
+                        vi.getName(),
                         new HashMap<String, String>());
         try {
             cmd.store();
@@ -5900,9 +5906,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not have required entitlement");
         }
 
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
@@ -6063,9 +6069,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not have required entitlement");
         }
 
         SystemRecord rec = SystemRecord.lookupById(
@@ -6124,9 +6130,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
+        if (server.hasEntitlement(EntitlementManager.FOREIGN)) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not have required entitlement");
         }
 
         SystemRecord rec = SystemRecord.lookupById(
@@ -6328,7 +6334,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, serverId);
         if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
             throw new FaultException(-2, "provisionError",
-                    "System cannot be provisioned");
+                    "System does not support snapshots");
         }
         List<ServerSnapshot> snps = ServerFactory.listSnapshots(loggedInUser.getOrg(),
                 server, null, null);
@@ -7055,6 +7061,7 @@ public class SystemHandler extends BaseHandler {
     /**
      * Only needed for unit tests.
      * @return the {@link TaskomaticApi} instance used by this class
+     * @xmlrpc.ignore
      */
     public TaskomaticApi getTaskomaticApi() {
         return taskomaticApi;

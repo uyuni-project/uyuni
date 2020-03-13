@@ -9,7 +9,9 @@ const ReactDOM = require('react-dom');
 const Network = require('utils/network');
 const Messages = require('components/messages').Messages;
 const MessagesUtils = require("components/messages").Utils;
-const {DataHandler, DataItem, SearchField, Highlight} = require('components/data-handler');
+const {CustomDataHandler} = require('components/table/CustomDataHandler');
+const {SearchField} = require('components/table/SearchField');
+const {Highlight} = require('components/table/Highlight');
 const Functions = require('utils/functions');
 const Utils = Functions.Utils;
 const {ModalButton} = require("components/dialog/ModalButton");
@@ -20,6 +22,7 @@ const PopUp = require("components/popup").PopUp;
 const ProgressBar = require("components/progressbar").ProgressBar;
 const CustomDiv = require("components/custom-objects").CustomDiv;
 const {Toggler} = require("components/toggler");
+const {HelpLink} = require('components/utils/HelpLink');
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const _DATA_ROOT_ID = 'baseProducts';
@@ -81,6 +84,7 @@ class ProductsPageWrapper extends React.Component {
     issMaster: issMaster_flag_from_backend,
     refreshNeeded: refreshNeeded_flag_from_backend,
     refreshRunning: refreshRunning_flag_from_backend || scc_refresh_file_locked_status,
+    noToolsChannelSubscription: noToolsChannelSubscription_flag_from_backend,
     serverData: {_DATA_ROOT_ID : []},
     errors: [],
     loading: true,
@@ -105,11 +109,15 @@ class ProductsPageWrapper extends React.Component {
   refreshServerData = (dataUrlTag) => {
     this.setState({loading: true});
     var currentObject = this;
+    let resultMessages = [];
+    if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
+        resultMessages = MessagesUtils.warning(t("No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."));
+    }
     reloadData()
       .then(data => {
         currentObject.setState({
           serverData: data[_DATA_ROOT_ID],
-          errors: [],
+          errors: resultMessages,
           loading: false,
           selectedItems: [],
           scheduleResyncItems: [],
@@ -217,9 +225,7 @@ class ProductsPageWrapper extends React.Component {
           &nbsp;
           {t('Setup Wizard')}
           &nbsp;
-          <a href='/docs/reference/admin/setup-wizard.html'
-              target='_blank'><i className='fa fa-question-circle spacewalk-help-link'></i>
-          </a>
+          <HelpLink url='/docs/reference/admin/setup-wizard.html'/>
         </h1>
       </div>
     ;
@@ -453,7 +459,7 @@ class Products extends React.Component {
       </div>;
     return (
       <div>
-        <DataHandler
+        <CustomDataHandler
           data={this.buildRows(this.filterDataByArch(this.props.data))}
           identifier={(raw) => raw.identifier}
           initialItemsPerPage={userPrefPageSize}
@@ -488,7 +494,7 @@ class Products extends React.Component {
               treeLevel={1}
               childrenDisabled={false}
           />
-        </DataHandler>
+        </CustomDataHandler>
         <ChannelsPopUp item={this.state.popupItem} />
       </div>
     )

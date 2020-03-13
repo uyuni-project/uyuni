@@ -16,17 +16,17 @@
 
 CREATE TABLE rhnSsmOperation
 (
-    id           NUMBER NOT NULL
+    id           NUMERIC NOT NULL
                      CONSTRAINT rhn_ssmop_id_pk PRIMARY KEY
-                     USING INDEX TABLESPACE [[4m_tbs]],
-    user_id      NUMBER NOT NULL
+                     ,
+    user_id      NUMERIC NOT NULL
                      CONSTRAINT rhn_ssmop_user_fk
                          REFERENCES web_contact (id)
                          ON DELETE CASCADE,
-    description  VARCHAR2(256) NOT NULL,
-    status       VARCHAR2(32) NOT NULL,
-    started      timestamp with local time zone NOT NULL,
-    modified     timestamp with local time zone
+    description  VARCHAR(256) NOT NULL,
+    status       VARCHAR(32) NOT NULL,
+    started      TIMESTAMPTZ NOT NULL,
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
 ;

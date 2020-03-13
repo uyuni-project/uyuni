@@ -14,27 +14,27 @@
  */
 package com.redhat.rhn.internal.doclet;
 
-import com.sun.javadoc.RootDoc;
+import jdk.javadoc.doclet.DocletEnvironment;
 
 /**
  *
  * HtmlDoclet
- * @version $Rev$
  */
-public class SinglePageDoclet {
+public class SinglePageDoclet extends ApiDoclet {
 
-    private SinglePageDoclet() {
+    @Override
+    public boolean run(DocletEnvironment docEnv) {
+        return run(docEnv, "singlepage");
     }
 
-    /**
-     * Starts the wiki doclet
-     * @param root document root
-     * @return true if success
-     * @throws Exception e
-     */
-    public static boolean start(RootDoc root) throws Exception {
+    @Override
+    public String getName() {
+        return "Single Page Doclet";
+    }
 
-        return ApiDoclet.start(root, "singlepage");
+    @Override
+    public DocWriter getWriter(String outputFolder, String templateFolder, boolean debug) {
+        return new SinglePageWriter(outputFolder, templateFolder, debug);
     }
 
 }

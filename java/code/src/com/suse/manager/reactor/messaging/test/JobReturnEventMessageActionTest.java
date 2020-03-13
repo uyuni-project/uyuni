@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
 import com.redhat.rhn.domain.image.ImageProfile;
@@ -42,6 +43,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -51,6 +53,8 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
@@ -69,6 +73,7 @@ import com.suse.manager.webui.utils.salt.custom.Openscap;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.datatypes.Event;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.JobReturnEvent;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Change;
@@ -119,6 +124,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private Path metadataDirOfficial;
 
     @Override
     public void setUp() throws Exception {
@@ -127,7 +134,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
-        SystemManager.mockSaltService(saltServiceMock);
+        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+
+        metadataDirOfficial = Files.createTempDirectory("meta");
+        FormulaFactory.setDataDir(tmpSaltRoot.toString());
+        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
     }
 
     /**
@@ -568,6 +579,41 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
     }
 
+    /**
+     * Test the processing of packages.profileupdate job return event in the case where the system has installed CaaSP
+     * and it should be locked via Salt formula
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPackagesProfileUpdateWithCaaSPSystemLocked() throws Exception {
+        // Prepare test objects: minion server, products and action
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+        SUSEProductTestUtils.createVendorSUSEProducts();
+
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+        HibernateFactory.getSession().flush();
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("packages.profileupdate.caasp.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        assertTrue(minion.getInstalledProducts().stream().anyMatch(
+                p -> p.getName().equalsIgnoreCase(SaltUtils.CAASP_PRODUCT_IDENTIFIER)));
+        assertTrue(action.getServerActions().stream()
+                .filter(serverAction -> serverAction.getServer().equals(minion))
+                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
+    }
 
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
         testHardwareProfileUpdate("hardware.profileupdate.nodmi.x86.json", (server) -> {
@@ -676,6 +722,17 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         testHardwareProfileUpdate("hardware.profileupdate.ppc64.json", (server) -> {
             assertNotNull(server);
             assertEquals(2, server.getFqdns().size());
+        });
+    }
+
+    public void testHardwareProfileUpdateCustomFqdns() throws Exception {
+        testHardwareProfileUpdate("hardware.profileupdate.x86.custom.fqdns.json", (server) -> {
+            assertNotNull(server);
+            assertEquals(5, server.getFqdns().size());
+            List<String> collect = server.getFqdns().stream().map(ServerFQDN::getName).collect(Collectors.toList());
+            assertTrue(collect.contains("custom.fqdns.name.one"));
+            assertTrue(collect.contains("custom.fqdns.name.two"));
+            assertTrue(collect.contains("custom.fqdns.name.three"));
         });
     }
 
@@ -1197,7 +1254,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
         String imageName = "matei-apache-python" + TestUtils.randomString(5);
         String imageVersion = "latest";
@@ -1276,7 +1333,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
         String imageName = "meaksh-apache-python" + TestUtils.randomString(5);
         String imageVersion1 = "latest";
@@ -1345,7 +1402,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minionsles12-suma3pg.vagrant.local");
-        SystemManager.entitleServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.CONTAINER_BUILD_HOST);
 
         String imageName = "mbologna-apache-python" + TestUtils.randomString(5);
         String imageVersion = "latest";
@@ -1459,6 +1516,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
@@ -1470,7 +1528,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         }});
         SaltUtils.INSTANCE.setSaltService(saltServiceMock);
 
-        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         ActivationKey key = ImageTestUtils.createActivationKey(user);
         ImageProfile profile = ImageTestUtils.createKiwiImageProfile("my-kiwi-image", key, user);
@@ -1489,6 +1547,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setMinionId("minion.local");
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
 
         MgrUtilRunner.ExecResult mockResult = new MgrUtilRunner.ExecResult();
         context().checking(new Expectations() {{
@@ -1500,7 +1559,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         }});
         SaltUtils.INSTANCE.setSaltService(saltServiceMock);
 
-        SystemManager.entitleServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
         new File("/srv/susemanager/pillar_data/images").mkdirs();
 
@@ -1875,7 +1934,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("${minion-id}", minion.getMinionId());
         placeholders.put("${action1-id}", applyHighstate.getId() + "");
-        
+
         Optional<JobReturnEvent> event = JobReturnEvent.parse(getJobReturnEvent("action.chain.refresh.needed.json", applyHighstate.getId(),
                         placeholders));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());

@@ -29,6 +29,9 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -43,10 +46,12 @@ import java.util.Date;
 public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
 
     protected Server s;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/Overview");
@@ -99,7 +104,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     }
 
     public void testSystemUnentitled() throws Exception {
-       SystemManager.removeAllServerEntitlements(s.getId());
+       systemEntitlementManager.removeAllServerEntitlements(s);
        actionPerform();
        assertEquals(request.getAttribute("unentitled"), Boolean.TRUE);
     }

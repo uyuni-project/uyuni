@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 fffbd29c6cbe1460d56017b4db9175f7a983b5c6
 
 create or replace function rhn_sactionvm_mod_trig_fun() returns trigger as
 $$

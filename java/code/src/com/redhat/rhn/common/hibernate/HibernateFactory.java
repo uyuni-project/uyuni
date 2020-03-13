@@ -850,7 +850,11 @@ public abstract class HibernateFactory {
         List<List<E>> batches = IntStream.iterate(0, i -> i < size, i -> i + LIST_BATCH_MAX_SIZE)
                 .mapToObj(i -> list.subList(i, Math.min(i + LIST_BATCH_MAX_SIZE, size)))
                 .collect(Collectors.toList());
-        return batches.stream().map(b -> { query.setParameterList(parameterName, b); return queryFunction.get(); })
+        return batches.stream()
+                .map(b -> {
+                    query.setParameterList(parameterName, b);
+                    return queryFunction.get();
+                })
                 .reduce(identity, accumulator::apply);
     }
 

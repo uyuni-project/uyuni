@@ -15,28 +15,28 @@
 
 CREATE TABLE susePackageState
 (
-    id                    NUMBER NOT NULL
+    id                    NUMERIC NOT NULL
                               CONSTRAINT suse_pkg_state_id_pk PRIMARY KEY,
-    name_id               NUMBER NOT NULL
+    name_id               NUMERIC NOT NULL
                               CONSTRAINT suse_pkg_state_nid_fk
                                   REFERENCES rhnPackageName (id),
-    evr_id                NUMBER
+    evr_id                NUMERIC
                               CONSTRAINT suse_pkg_state_eid_fk
                                   REFERENCES rhnPackageEVR (id),
-    package_arch_id       NUMBER
+    package_arch_id       NUMERIC
                               CONSTRAINT suse_pkg_state_paid_fk
                                   REFERENCES rhnPackageArch (id),
-    state_revision_id     NUMBER NOT NULL
+    state_revision_id     NUMERIC NOT NULL
                               CONSTRAINT suse_pkg_state_srid_fk
                                   REFERENCES suseStateRevision (id),
-    package_state_type_id NUMBER NOT NULL
+    package_state_type_id NUMERIC NOT NULL
                               CONSTRAINT suse_pkg_state_pstid_fk
                                   REFERENCES susePackageStateType (id),
-    version_constraint_id NUMBER NOT NULL
+    version_constraint_id NUMERIC NOT NULL
                               CONSTRAINT suse_pkg_state_vcid_fk
                                   REFERENCES suseVersionConstraintType (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_pkg_state_id_seq;

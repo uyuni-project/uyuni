@@ -1366,8 +1366,8 @@ class Registration(rhnHandler):
     def suse_update_products(self, system_id, guid, secret, target, products):
         log_debug(5, system_id, guid, target, products)
         server = self.auth_system(system_id)
-        log_debug(1, server.getid(), guid)
-        server.update_suse_products(guid, secret, target, products)
+        log_debug(1, server.getid())
+        server.update_suse_products(products)
         return 0
 
 def _faultValueString(value, name):

@@ -1,0 +1,16 @@
+# This file describes the order of features in a QAM test-suite run.
+#
+# This test-suite is prepared to run a Maintenance Update test passing by parameter (env. variable) a JSON type
+# containing a dictionary with clients and their salt & traditional repositories
+# We might also need an upgrade of packages in server side, on that case, sumaform will handle the update on deployment stage.
+# It will run in a clean environment, not in a long-running server, so we don't need to take care of cleaning.
+
+
+## Post run QAM features BEGIN ##
+
+# IMMUTABLE ORDER
+
+# this feature is needed for gathering log/debug infos
+- features/finishing/srv_susemanager_debug.feature
+
+## Post run features END ##

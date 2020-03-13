@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 df57c4f935e14b21658120deb0c9cd6bfd7ee5dd
 
 create or replace function rhn_filelist_mod_trig_fun() returns trigger as
 $$

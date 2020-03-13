@@ -34,6 +34,7 @@ import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.RecurringActionController;
 import com.suse.manager.webui.controllers.SSOController;
 import com.suse.manager.webui.controllers.SaltSSHController;
 import com.suse.manager.webui.controllers.SsmController;
@@ -53,7 +54,6 @@ import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApi
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.errors.NotFoundException;
-
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -111,7 +111,6 @@ public class Router implements SparkApplication {
         // Minions API
         MinionsAPI.initRoutes();
 
-
         // Systems API
         SystemsController.initRoutes();
 
@@ -122,6 +121,9 @@ public class Router implements SparkApplication {
 
         // States API
         StatesAPI.initRoutes();
+
+        // Recurring Action
+        RecurringActionController.initRoutes(jade);
 
         // Subscription Matching
         SubscriptionMatchingController.initRoutes(jade);

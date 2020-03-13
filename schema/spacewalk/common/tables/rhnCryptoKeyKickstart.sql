@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnCryptoKeyKickstart
 (
-    crypto_key_id  NUMBER NOT NULL
+    crypto_key_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_ckey_ks_ckid_fk
                            REFERENCES rhnCryptoKey (id)
                            ON DELETE CASCADE,
-    ksdata_id      NUMBER NOT NULL
+    ksdata_id      NUMERIC NOT NULL
                        CONSTRAINT rhn_ckey_ks_ksd_fk
                            REFERENCES rhnKSData (id)
                            ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ckey_ks_uq
     ON rhnCryptoKeyKickstart (crypto_key_id, ksdata_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_ckey_ks_idx
     ON rhnCryptoKeyKickstart (ksdata_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

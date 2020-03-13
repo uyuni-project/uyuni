@@ -1,19 +1,4 @@
 <datasource_modes>
-<mode name="user_tables_for_user_or">
-  <query params="username">
-      SELECT u.username as USERNAME, u.user_id as USER_ID, u.created as CREATED
-        FROM all_users u
-       WHERE LOWER(u.username) = :username
-  </query>
-  <elaborator name="table_elaborator_or" column="username" params="user_name">
-      SELECT c.owner as USERNAME, COUNT(c.table_name) as TABLE_COUNT
-        FROM all_catalog c
-       WHERE owner=:user_name
-         AND table_type='TABLE'
-       GROUP BY owner
-  </elaborator>
-</mode>
-
 <mode name="user_tables_for_user_pg">
   <query params="username">
       SELECT u.usename as USERNAME, u.usesysid as USER_ID
@@ -28,21 +13,6 @@
   </elaborator>
 </mode>
 
-<mode name="user_tables_or">
-  <query params="">
-      SELECT u.username as USERNAME, u.user_id as USER_ID, u.created as CREATED
-        FROM all_users u
-  </query>
-  <elaborator name="table_elaborator_or" column="username" params="user_name">
-      SELECT c.owner as USERNAME, COUNT(c.table_name) as TABLE_COUNT
-        FROM all_catalog c
-       WHERE LOWER(owner) = :user_name
-         AND owner IN (%s)
-         AND table_type='TABLE'
-       GROUP BY owner
-  </elaborator>
-</mode>
-
 <mode name="user_tables_pg">
   <query params="">
       SELECT u.usename as USERNAME, u.usesysid as USER_ID
@@ -54,20 +24,6 @@
        WHERE tableowner=:user_name
          AND tableowner IN (%s)
        GROUP BY tableowner
-  </elaborator>
-</mode>
-
-<mode name="all_tables_or">
-  <query params="">
-      SELECT t.table_name
-        FROM all_tables t
-       WHERE t.table_name LIKE 'RHN%'
-       ORDER BY table_name
-  </query>
-  <elaborator params="" column="table_name" multiple="t">
-      SELECT table_name, column_name, column_id
-        FROM all_tab_cols
-       WHERE table_name in (%s)
   </elaborator>
 </mode>
 
@@ -88,20 +44,6 @@
 
 <!-- This query is broken, because the ID column doesn't exist in the
      driving query, but that is what should be used to map the two results -->
-<mode name="broken_driving_or">
-  <query params="">
-      SELECT t.table_name
-        FROM all_tables t
-       WHERE t.table_name LIKE 'RHN%'
-       ORDER BY table_name
-  </query>
-  <elaborator params="" multiple="t">
-      SELECT table_name, table_name ID, column_name, column_id
-        FROM all_tab_cols
-       WHERE table_name in (%s)
-  </elaborator>
-</mode>
-
 <mode name="broken_driving_pg">
   <query params="">
       SELECT t.tablename
@@ -118,20 +60,6 @@
 
 <!-- This query is broken, because the ID column doesn't exist in the
      elaborator, but that is what should be used to map the two results -->
-<mode name="broken_elaborator_or">
-  <query params="">
-      SELECT t.table_name, t.table_name ID
-        FROM all_tables t
-       WHERE t.table_name LIKE 'RHN%'
-       ORDER BY table_name
-  </query>
-  <elaborator params="" multiple="t">
-      SELECT table_name, column_name, column_id
-        FROM all_tab_cols
-       WHERE table_name in (%s)
-  </elaborator>
-</mode>
-
 <mode name="broken_elaborator_pg">
   <query params="">
       SELECT t.tablename, t.tablename ID
@@ -149,20 +77,6 @@
 
 <!-- Keep the columns named ID here, because it provides an easy way to test
      that the default column of ID still works.  -->
-<mode name="all_tables_with_alias_or">
-  <query params="">
-      SELECT t.table_name, t.table_name ID
-        FROM all_tables t
-       WHERE t.table_name LIKE 'RHN%'
-       ORDER BY table_name
-  </query>
-  <elaborator params="" multiple="t" alias="details_or">
-      SELECT table_name, table_name ID, column_name, column_id
-        FROM all_tab_cols
-       WHERE table_name in (%s)
-  </elaborator>
-</mode>
-
 <mode name="all_tables_with_alias_pg">
   <query params="">
       SELECT t.tablename as table_name, t.tablename ID
@@ -255,30 +169,8 @@ update rhnServerGroup set group_type = :type_id where id = :sgid
   </query>
 </callable-mode>
 
-<mode name="date_dto_test" class="com.redhat.rhn.common.db.datasource.test.TestDateDto">
-  <query>
-SELECT u.created as CREATED
-  FROM all_users u
- WHERE u.username='SYS'
-  </query>
-</mode>
-
 
 <!-- Test to benchmark datasource vs hibernate -->
-<mode name="withClass_or" class="com.redhat.rhn.common.db.datasource.test.TableData">
-  <query params="">
-      SELECT t.table_name
-        FROM all_tables t
-       WHERE t.table_name LIKE 'RHN%'
-       ORDER BY table_name
-  </query>
-  <elaborator params="" column="table_name" multiple="t">
-      SELECT table_name, column_name, column_id
-        FROM all_tab_cols
-       WHERE table_name in (%s)
-  </elaborator>
-</mode>
-
 <mode name="withClass_pg" class="com.redhat.rhn.common.db.datasource.test.TableData">
   <query params="">
       SELECT t.tablename as table_name
@@ -295,21 +187,6 @@ SELECT u.created as CREATED
 </mode>
 
 
-<mode name="user_class_or" class="com.redhat.rhn.common.db.datasource.test.UserData">
-  <query params="username">
-      SELECT u.username as USERNAME, u.user_id as USER_ID, u.created as CREATED
-        FROM all_users u
-       WHERE LOWER(u.username) = :username
-  </query>
-  <elaborator name="table_elaborator_or" column="username" params="username">
-      SELECT c.owner as USERNAME, COUNT(c.table_name) as TABLE_COUNT
-        FROM all_catalog c
-       WHERE LOWER(owner) = :username
-         AND table_type='TABLE'
-       GROUP BY owner
-  </elaborator>
-</mode>
-
 <mode name="user_class_pg" class="com.redhat.rhn.common.db.datasource.test.UserData">
   <query params="username">
       SELECT u.usename as USERNAME, u.usesysid as USER_ID
@@ -323,22 +200,6 @@ SELECT u.created as CREATED
        GROUP BY tableowner
   </elaborator>
 </mode>
-
-<mode name="user_tables_external_elaborator_or">
-  <query params="">
-      SELECT u.username as USERNAME, u.user_id as USER_ID, u.created as CREATED
-        FROM all_users u
-  </query>
-  <elaborator name="external_elaborator_or" params="user_name" />
-</mode>
-
-<query name="external_elaborator_or" column="username" params="user_name">
-          SELECT c.owner as USERNAME, COUNT(c.table_name) as TABLE_COUNT
-        FROM all_catalog c
-       WHERE LOWER(owner) = :user_name
-         AND table_type='TABLE'
-       GROUP BY owner
-</query>
 
 <mode name="user_tables_external_elaborator_pg">
   <query params="">

@@ -14,68 +14,68 @@
 --
 CREATE TABLE suseImageInfo
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                      CONSTRAINT suse_imginfo_imgid_pk PRIMARY KEY,
-    name           VARCHAR2(128) NOT NULL,
-    version        VARCHAR2(128) NOT NULL,
-    checksum       VARCHAR2(128),
-    image_arch_id  NUMBER NOT NULL
+    name           VARCHAR(128) NOT NULL,
+    version        VARCHAR(128) NOT NULL,
+    checksum       VARCHAR(128),
+    image_arch_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_imginfo_said_fk
                            REFERENCES rhnServerArch (id),
-    org_id         NUMBER NOT NULL
+    org_id         NUMERIC NOT NULL
                      CONSTRAINT suse_imginfo_oid_fk
                        REFERENCES web_customer (id)
                        ON DELETE CASCADE,
-    action_id      NUMBER,
-    profile_id     NUMBER
+    action_id      NUMERIC,
+    profile_id     NUMERIC
                      CONSTRAINT suse_imginfo_pid_fk
                        REFERENCES suseImageProfile (profile_id)
                        ON DELETE CASCADE,
-    store_id       NUMBER NOT NULL
+    store_id       NUMERIC NOT NULL
                       CONSTRAINT suse_imginfo_sid_fk
                          REFERENCES suseImageStore (id)
                          ON DELETE CASCADE,
-    build_server_id  NUMBER
+    build_server_id  NUMERIC
                       CONSTRAINT suse_imginfo_bsid_fk
                          REFERENCES suseMinionInfo (server_id)
                          ON DELETE CASCADE,
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
     CONSTRAINT suse_imginfo_aid_fk FOREIGN KEY (action_id, build_server_id)
         REFERENCES rhnServerAction (action_id, server_id) ON DELETE SET NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_imginfo_imgid_seq;
 
 CREATE TABLE suseImageCustomDataValue
 (
-    id                NUMBER NOT NULL
+    id                NUMERIC NOT NULL
                           CONSTRAINT suse_icdv_id_pk PRIMARY KEY,
-    image_info_id     NUMBER NOT NULL
+    image_info_id     NUMERIC NOT NULL
                           CONSTRAINT suse_icdv_prid_fk
                               REFERENCES suseImageInfo (id),
-    key_id            NUMBER NOT NULL
+    key_id            NUMERIC NOT NULL
                           CONSTRAINT suse_icdv_kid_fk
                               REFERENCES rhnCustomDataKey (id),
-    value             VARCHAR2(4000),
-    created_by        NUMBER
+    value             VARCHAR(4000),
+    created_by        NUMERIC
                           CONSTRAINT suse_icdv_cb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    last_modified_by  NUMBER
+    last_modified_by  NUMERIC
                           CONSTRAINT suse_icdv_lmb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    created           timestamp with local time zone
+    created           TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    modified          timestamp with local time zone
+    modified          TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_icdv_imgid_kid_uq
@@ -87,11 +87,11 @@ CREATE INDEX suse_icdv_kid_idx
 CREATE SEQUENCE suse_icdv_id_seq;
 
 CREATE TABlE suseImageInfoChannel (
-    channel_id      NUMBER NOT NULL
+    channel_id      NUMERIC NOT NULL
                         CONSTRAINT suse_imginfoc_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE,
-    image_info_id   NUMBER NOT NULL
+    image_info_id   NUMERIC NOT NULL
                         CONSTRAINT suse_imginfoc_iiid_fk
                         REFERENCES suseImageInfo (id)
                         ON DELETE CASCADE
@@ -99,26 +99,26 @@ CREATE TABlE suseImageInfoChannel (
 
 CREATE TABLE suseImageInfoPackage
 (
-    image_info_id    NUMBER NOT NULL
+    image_info_id    NUMERIC NOT NULL
                          REFERENCES suseImageInfo (id)
                              ON DELETE CASCADE,
-    name_id          NUMBER NOT NULL
+    name_id          NUMERIC NOT NULL
                          REFERENCES rhnPackageName (id),
-    evr_id           NUMBER NOT NULL
+    evr_id           NUMERIC NOT NULL
                          REFERENCES rhnPackageEVR (id),
-    package_arch_id  NUMBER
+    package_arch_id  NUMERIC
                          REFERENCES rhnPackageArch (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    installtime      timestamp with local time zone
+    installtime      TIMESTAMPTZ
 )
-TABLESPACE [[server_package_tablespace]]
-ENABLE ROW MOVEMENT
+
+
 ;
 
 CREATE UNIQUE INDEX suse_ip_inep_uq
     ON suseImageInfoPackage (image_info_id, name_id, evr_id, package_arch_id)
-    TABLESPACE [[128m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE suse_image_package_id_seq;

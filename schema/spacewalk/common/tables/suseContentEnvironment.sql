@@ -14,26 +14,26 @@
 --
 
 CREATE TABLE suseContentEnvironment(
-    id          NUMBER NOT NULL
+    id          NUMERIC NOT NULL
                     CONSTRAINT suse_ct_env_id_pk PRIMARY KEY,
-    project_id  NUMBER
+    project_id  NUMERIC
                     CONSTRAINT suse_ct_env_pid_fk
                         REFERENCES suseContentProject(id)
                         ON DELETE CASCADE,
-    label       VARCHAR2(16) NOT NULL,
-    name        VARCHAR2(128) NOT NULL,
-    description CLOB,
-    version     NUMBER,
-    next_env_id NUMBER
+    label       VARCHAR(16) NOT NULL,
+    name        VARCHAR(128) NOT NULL,
+    description TEXT,
+    version     NUMERIC,
+    next_env_id NUMERIC
                     CONSTRAINT suse_ct_env_nid_fk
                         REFERENCES suseContentEnvironment(id),
-    created     TIMESTAMP WITH LOCAL TIME ZONE
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    TIMESTAMP WITH LOCAL TIME ZONE
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_ct_env_seq;

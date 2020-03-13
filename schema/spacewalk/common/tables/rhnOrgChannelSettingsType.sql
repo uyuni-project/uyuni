@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnOrgChannelSettingsType
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_ocstngs_type_id_pk PRIMARY KEY,
-    label     VARCHAR2(32) NOT NULL,
-    created   timestamp with local time zone
+    label     VARCHAR(32) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ocstngs_type_l_id_idx
     ON rhnOrgChannelSettingsType (label, id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_ocstngs_type_id_seq;
 

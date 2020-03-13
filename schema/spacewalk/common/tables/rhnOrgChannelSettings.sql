@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnOrgChannelSettings
 (
-    org_id      NUMBER NOT NULL
+    org_id      NUMERIC NOT NULL
                     CONSTRAINT rhn_orgcsettings_oid_fk
                         REFERENCES web_customer (id)
                         ON DELETE CASCADE,
-    channel_id  NUMBER NOT NULL
+    channel_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_orgcsettings_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE,
-    setting_id  NUMBER NOT NULL
+    setting_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_orgcsettings_sid_fk
                         REFERENCES rhnOrgChannelSettingsType (id),
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_orgcsettings_oid_cid_uq
     ON rhnOrgChannelSettings (org_id, channel_id, setting_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 

@@ -4,7 +4,7 @@ CREATE TABLE log
     stamp TIMESTAMP WITH TIME ZONE,
     user_id INTEGER REFERENCES web_contact_all(id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE log_seq;

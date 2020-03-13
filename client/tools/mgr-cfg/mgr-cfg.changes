@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Mar 11 10:47:21 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- Remove commented code in test files
+
+-------------------------------------------------------------------
 Wed Nov 27 16:55:00 CET 2019 - jgonzalez@suse.com
 
 - version 4.1.1-1

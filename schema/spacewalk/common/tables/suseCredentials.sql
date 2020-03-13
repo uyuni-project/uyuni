@@ -15,22 +15,22 @@
 
 CREATE TABLE suseCredentials
 (
-    id       NUMBER NOT NULL
+    id       NUMERIC NOT NULL
                  CONSTRAINT suse_credentials_pk PRIMARY KEY,
-    user_id  NUMBER NULL
+    user_id  NUMERIC NULL
                  CONSTRAINT suse_credentials_user_fk
                  REFERENCES web_contact (id)
                  ON DELETE CASCADE,
-    type_id  NUMBER NOT NULL
+    type_id  NUMERIC NOT NULL
                  CONSTRAINT suse_credentials_type_fk
                  REFERENCES suseCredentialsType (id),
-    url      VARCHAR2(256),
-    username VARCHAR2(64) NOT NULL,
-    password VARCHAR2(64) NOT NULL,
-    created  timestamp with local time zone DEFAULT (current_timestamp) NOT NULL,
-    modified timestamp with local time zone DEFAULT (current_timestamp) NOT NULL
+    url      VARCHAR(256),
+    username VARCHAR(64) NOT NULL,
+    password VARCHAR(64) NOT NULL,
+    created  TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
+    modified TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_credentials_id_seq;

@@ -247,6 +247,7 @@ public class ServerSnapshot extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public int hashCode() {
         return new HashCodeBuilder().append(reason.hashCode())
                                     .append(channels.hashCode())
@@ -261,6 +262,7 @@ public class ServerSnapshot extends BaseDomainHelper {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
         ServerSnapshot other = (ServerSnapshot) obj;
         return new EqualsBuilder().append(reason.hashCode(), other.reason.hashCode())
@@ -366,9 +368,9 @@ public class ServerSnapshot extends BaseDomainHelper {
     public void rollbackGroups() {
         // remove from all groups
         Long sid = this.server.getId();
-        DataResult<Map<String, Object>> grps = SystemManager.listSystemGroups(sid);
-        for (Map<String, Object> grp : grps) {
-            ServerFactory.removeServerFromGroup(sid, (Long) grp.get("id"));
+        Set<ServerGroup> grps = this.server.getGroups();
+        for (ServerGroup grp : grps) {
+            ServerFactory.removeServerFromGroup(server, grp);
         }
         // add to appropriate groups
         for (ServerGroup grp : getGroups()) {

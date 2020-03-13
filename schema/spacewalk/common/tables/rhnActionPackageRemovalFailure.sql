@@ -16,36 +16,36 @@
 
 CREATE TABLE rhnActionPackageRemovalFailure
 (
-    server_id      NUMBER NOT NULL
+    server_id      NUMERIC NOT NULL
                        CONSTRAINT rhn_apr_failure_sid_fk
                            REFERENCES rhnServer (id),
-    action_id      NUMBER NOT NULL
+    action_id      NUMERIC NOT NULL
                        CONSTRAINT rhn_apr_failure_aid_fk
                            REFERENCES rhnAction (id)
                            ON DELETE CASCADE,
-    name_id        NUMBER NOT NULL
+    name_id        NUMERIC NOT NULL
                        CONSTRAINT rhn_apr_failure_nid_fk
                            REFERENCES rhnPackageName (id),
-    evr_id         NUMBER NOT NULL
+    evr_id         NUMERIC NOT NULL
                        CONSTRAINT rhn_apr_failure_eid_fk
                            REFERENCES rhnPackageEVR (id),
-    capability_id  NUMBER NOT NULL
+    capability_id  NUMERIC NOT NULL
                        CONSTRAINT rhn_apr_failure_capid_fk
                            REFERENCES rhnPackageCapability (id),
-    flags          NUMBER NOT NULL,
-    suggested      NUMBER
+    flags          NUMERIC NOT NULL,
+    suggested      NUMERIC
                        CONSTRAINT rhn_apr_failure_suggested_fk
                            REFERENCES rhnPackageName (id),
-    sense          NUMBER NOT NULL
+    sense          NUMERIC NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_apr_failure_aid_sid_idx
     ON rhnActionPackageRemovalFailure (action_id, server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_apr_failure_sid_idx
     ON rhnActionPackageRemovalFailure (server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnDailySummaryQueue
 (
-    org_id    NUMBER NOT NULL
+    org_id    NUMERIC NOT NULL
                   CONSTRAINT rhn_dsqueue_oid_fk
                       REFERENCES web_customer (id),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_dsqueue_oid_idx
     ON rhnDailySummaryQueue (org_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 ALTER TABLE rhnDailySummaryQueue
     ADD CONSTRAINT rhn_dsqueue_oid_uq UNIQUE (org_id);

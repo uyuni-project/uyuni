@@ -16,7 +16,7 @@
 
 CREATE TABLE web_user_contact_permission
 (
-    web_user_id  NUMBER NOT NULL
+    web_user_id  NUMERIC NOT NULL
                      CONSTRAINT contperm_wbuserid_fk
                          REFERENCES web_contact (id)
                          ON DELETE CASCADE,
@@ -36,11 +36,11 @@ CREATE TABLE web_user_contact_permission
                      DEFAULT ('N')
                      CONSTRAINT wucp_fax_ck
                          CHECK (fax in ('Y','N')),
-    created      timestamp with local time zone
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 

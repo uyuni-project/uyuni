@@ -16,28 +16,28 @@
 
 CREATE TABLE rhnTransactionPackage
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_transpack_id_pk PRIMARY KEY
-                         USING INDEX TABLESPACE [[8m_tbs]],
-    operation        NUMBER NOT NULL
+                         ,
+    operation        NUMERIC NOT NULL
                          CONSTRAINT rhn_transpack_op_fk
                              REFERENCES rhnTransactionOperation (id),
-    name_id          NUMBER NOT NULL
+    name_id          NUMERIC NOT NULL
                          CONSTRAINT rhn_transpack_nid_fk
                              REFERENCES rhnPackageName (id),
-    evr_id           NUMBER NOT NULL
+    evr_id           NUMERIC NOT NULL
                          CONSTRAINT rhn_transpack_eid_fk
                              REFERENCES rhnPackageEVR (id),
-    package_arch_id  NUMBER
+    package_arch_id  NUMERIC
                          CONSTRAINT rhn_transpack_paid_fk
                              REFERENCES rhnPackageArch (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_transpack_onea_uq
     ON rhnTransactionPackage (operation, name_id, evr_id, package_arch_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_transpack_id_seq;
 

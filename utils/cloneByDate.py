@@ -1,4 +1,3 @@
-#!/usr/bin/python
 #
 # Clonse channels by a particular date
 #

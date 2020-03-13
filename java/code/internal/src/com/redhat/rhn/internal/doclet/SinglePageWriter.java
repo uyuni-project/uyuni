@@ -20,13 +20,22 @@ import java.util.Map;
 /**
  *
  * JSPWriter
- * @version $Rev$
  */
 public class SinglePageWriter extends DocWriter {
 
+    private String output;
+    private String templates;
 
-    private static final String JSP_OUTPUT = "./build/reports/apidocs/singlepage/";
-    private static final String JSP_TEMPLATES = "./buildconf/apidoc/singlepage/";
+    /**
+     * @param outputIn path to the output folder
+     * @param templatesIn path to the single page templates folder
+     * @param debugIn whether to show debugging messages
+     */
+    public SinglePageWriter(String outputIn, String templatesIn, boolean debugIn) {
+        super(debugIn);
+        output = outputIn;
+        templates = templatesIn;
+    }
 
     /**
      *
@@ -38,7 +47,7 @@ public class SinglePageWriter extends DocWriter {
 
 
         //First macro-tize the serializer's docs
-        renderSerializers(JSP_TEMPLATES, serializers);
+        renderSerializers(templates, serializers);
 
 
         //Lets do the index first
@@ -46,17 +55,17 @@ public class SinglePageWriter extends DocWriter {
         StringBuffer buffer = new StringBuffer();
 
 
-        buffer.append(generateIndex(handlers, JSP_TEMPLATES));
+        buffer.append(generateIndex(handlers, templates));
 
         for (Handler handler : handlers) {
-            //writeFile(JSP_OUTPUT + "handlers/" + handler.getClassName() + ".html",
-                    buffer.append(generateHandler(handler, JSP_TEMPLATES));
+            //writeFile(output + "handlers/" + handler.getClassName() + ".html",
+                    buffer.append(generateHandler(handler, templates));
         }
 
-        writeFile(JSP_OUTPUT + "handlers/apilist.html", buffer.toString());
+        writeFile(output + "handlers/apilist.html", buffer.toString());
 
         /*for (String file : OTHER_FILES) {
-            writeFile(JSP_OUTPUT + file + ".html", readFile(JSP_TEMPLATES + file + ".txt"));
+            writeFile(output + file + ".html", readFile(templates + file + ".txt"));
         }*/
 
     }
@@ -72,13 +81,13 @@ public class SinglePageWriter extends DocWriter {
     public  String generateIndex(List<Handler> handlers, String templateDir)
                 throws Exception {
 
-        String output = "";
+        String out = "";
         VelocityHelper vh = new VelocityHelper(templateDir);
         vh.addMatch("handlers", handlers);
 
-        output += vh.renderTemplateFile(ApiDoclet.API_INDEX_FILE);
+        out += vh.renderTemplateFile(ApiDoclet.API_INDEX_FILE);
 
-        return output;
+        return out;
     }
 
 

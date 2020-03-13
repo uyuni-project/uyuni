@@ -59,6 +59,7 @@ public class VirtualizationActionCommandTest extends BaseTestCaseWithUser {
                                               "stopped", "start"),
                                             server,
                                             "AAAAAAAAAAAAAAAA",
+                                            "GuestName",
                                             null);
 
         testCommand.store();

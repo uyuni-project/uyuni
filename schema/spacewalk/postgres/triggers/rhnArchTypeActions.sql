@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 5fc51e6b921ba05aadec06bc90ce293e10a8f71d
 
 create or replace function rhn_archtypeacts_mod_trig_fun() returns trigger as
 $$

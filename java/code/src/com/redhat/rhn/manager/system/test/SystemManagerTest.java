@@ -62,6 +62,7 @@ import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Server;
@@ -94,6 +95,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -108,19 +111,14 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
-import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -162,10 +160,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);
         tmpSaltRoot = Files.createTempDirectory("salt");
-        metadataDirOfficial = Files.createTempDirectory("meta");
-        createMetadataFiles();
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
-        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
         SystemManager.mockSaltService(saltServiceMock);
         context().checking(new Expectations() {
             {
@@ -173,22 +168,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleActionExecution(with(any(Action.class)));
             }
         });
-    }
-
-    private void createMetadataFiles() {
-        try {
-            Path prometheusDir = metadataDirOfficial.resolve("prometheus-exporters");
-            Files.createDirectories(prometheusDir);
-            try (InputStream src = this.getClass().getResourceAsStream("prometheus/pillar.example");
-                 OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
-            ) {
-                IOUtils.copy(src, dst);
-            }
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
     }
 
     public void testSnapshotServer() throws Exception {
@@ -199,8 +178,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Long id = server.getId();
 
         assertTrue(SystemManager.serverHasFeature(id, "ftr_snapshotting"));
-        assertEquals(Integer.valueOf(0), numberOfSnapshots(id));
-        SystemManager.snapshotServer(null, "test");
         assertEquals(Integer.valueOf(0), numberOfSnapshots(id));
         SystemManager.snapshotServer(server, "Testing snapshots");
         assertEquals(Integer.valueOf(1), numberOfSnapshots(id));
@@ -522,133 +499,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(SystemManager.hasUnscheduledErrata(user, server.getId()));
     }
 
-
-    /**
-     * Tests adding and removing entitlement on a server
-     * @throws Exception if something goes wrong
-     */
-    public void testEntitleServer() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerTestUtils.createTestSystem(user);
-        ChannelTestUtils.setupBaseChannelForVirtualization(user,
-                server.getBaseChannel());
-        UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
-
-        //Test Virtualization Host
-        assertTrue(SystemManager.canEntitleServer(server,
-                EntitlementManager.VIRTUALIZATION));
-        boolean hasErrors = SystemManager.entitleServer(server,
-                EntitlementManager.VIRTUALIZATION).hasErrors();
-        assertFalse(hasErrors);
-        assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-
-        // Removal
-        SystemManager.removeServerEntitlement(server.getId(),
-                EntitlementManager.VIRTUALIZATION);
-        server = reload(server);
-        assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-
-        //Test Container Build Host
-        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
-        assertTrue(SystemManager.canEntitleServer(minion,
-                EntitlementManager.CONTAINER_BUILD_HOST));
-        hasErrors = SystemManager.entitleServer(minion,
-                EntitlementManager.CONTAINER_BUILD_HOST).hasErrors();
-        assertFalse(hasErrors);
-        assertTrue(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
-
-        // Removal
-        SystemManager.removeServerEntitlement(minion.getId(),
-                EntitlementManager.CONTAINER_BUILD_HOST);
-        minion = reload(minion);
-        assertFalse(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
-
-        //Test OS Image Build Host
-
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
-        }});
-
-        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        assertTrue(SystemManager.canEntitleServer(minion,
-                EntitlementManager.OSIMAGE_BUILD_HOST));
-        hasErrors = SystemManager.entitleServer(minion,
-                EntitlementManager.OSIMAGE_BUILD_HOST).hasErrors();
-        assertFalse(hasErrors);
-        assertTrue(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
-
-        // Removal
-        SystemManager.removeServerEntitlement(minion.getId(),
-                EntitlementManager.OSIMAGE_BUILD_HOST);
-        minion = reload(minion);
-        assertFalse(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
-    }
-
-    public void testEntitleVirtForGuest() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest();
-        User user = host.getCreator();
-        UserTestUtils.addVirtualization(user.getOrg());
-
-        Server guest =
-            (host.getGuests().iterator().next()).getGuestSystem();
-        guest.addChannel(ChannelTestUtils.createBaseChannel(user));
-        ServerTestUtils.addVirtualization(user, guest);
-
-        assertTrue(SystemManager.entitleServer(guest,
-                EntitlementManager.VIRTUALIZATION).hasErrors());
-        assertFalse(guest.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-    }
-
-    public void testVirtualEntitleServer() throws Exception {
-        // User and server
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerTestUtils.createTestSystem(user);
-        Channel[] children = ChannelTestUtils.setupBaseChannelForVirtualization(user,
-                server.getBaseChannel());
-
-        Channel rhnTools = children[0];
-        Channel rhelVirt = children[1];
-
-        // Entitlements
-        UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
-
-        assertTrue(SystemManager.canEntitleServer(server,
-                EntitlementManager.VIRTUALIZATION));
-
-        ValidatorResult retval = SystemManager.entitleServer(server,
-                EntitlementManager.VIRTUALIZATION);
-
-        server = reload(server);
-
-        String key = null;
-        if (retval.getErrors().size() > 0) {
-            key = retval.getErrors().get(0).getKey();
-        }
-        assertFalse("Got back: " + key, retval.hasErrors());
-
-        // Test stuff!
-        assertTrue(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-        assertTrue(server.getChannels().contains(rhnTools));
-        if (!ConfigDefaults.get().isSpacewalk()) {
-            // this is actually Satellite-specific
-            // assertTrue(server.getChannels().contains(rhelVirt));
-        }
-
-
-        // Test removal
-        SystemManager.removeServerEntitlement(server.getId(),
-                EntitlementManager.VIRTUALIZATION);
-
-        server = reload(server);
-        assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
-
-    }
 
     public void testGetServerEntitlement() throws Exception {
         // create a new server
@@ -1686,32 +1536,32 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return SystemManager.createSystemProfile(user, hostName.orElse("test system"), data);
     }
 
+    /**
+     * Test for handling the monitoring entitlement via addServerToGroup() and removeServerFromGroup().
+     * @throws Exception in case of an error
+     */
     public void testAddServerToServerGroupWithMonitoring() throws Exception {
+        // A new test server, no monitoring entitlement
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        ServerGroup group = ServerGroupTest
-                .createTestServerGroup(user.getOrg(), null);
+        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
+        // Create a group and enable monitoring
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
         Map<String, Object> formulaData = new HashMap<>();
         formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
+        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
-
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
-        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
+        // Server should have a monitoring entitlement after being added to the group
         SystemManager.addServerToServerGroup(server, group);
-        ServerFactory.save(server);
+        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
 
-        List<String> formulas = FormulaFactory.getFormulasByMinionId(server.getMinionId());
-        assertFalse(formulas.contains(PROMETHEUS_EXPORTERS));
-        Optional<Map<String, Object>> data =
-                FormulaFactory.getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, server.getMinionId());
-        assertFalse(data.isPresent());
-//        assertFalse((boolean)((Map<String, Object>)data.get().get("node_exporter")).get("enabled"));
-//        assertFalse((boolean)((Map<String, Object>)data.get().get("postgres_exporter")).get("enabled"));
-        // TODO fix assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+        // Remove server from group, entitlement should be removed
+        SystemManager.removeServersFromServerGroup(Arrays.asList(server), group);
+        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
     }
 }

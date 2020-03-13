@@ -87,10 +87,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <one-to-many class="com.redhat.rhn.domain.server.VirtualInstance"/>
         </set>
 
-                <set name="groups" table="rhnServerGroupMembers" inverse="true" lazy="true">
-                        <key column="server_id"/>
-                        <many-to-many column="server_group_id" class="com.redhat.rhn.domain.server.ServerGroup"/>
-                </set>
+        <set name="groups" table="rhnServerGroupMembers" inverse="true" lazy="true">
+            <key column="server_id"/>
+            <many-to-many column="server_group_id" class="com.redhat.rhn.domain.server.ServerGroup"/>
+        </set>
 
         <set name="capabilities" lazy="true" inverse="true" table="rhnClientCapability" cascade="all-delete-orphan">
             <key column="server_id"/>
@@ -224,6 +224,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[ select s.id
                                         from com.redhat.rhn.domain.server.Server as s
                                         where s.id in (:sids) and s.serverArch.archType.label != 'sysv-solaris']]>
+    </query>
+
+    <query name="Server.listOrgSystems">
+        <![CDATA[from com.redhat.rhn.domain.server.Server as s where ORG_ID = :orgId]]>
     </query>
 
      <query name="Server.listConfigEnabledSystems">

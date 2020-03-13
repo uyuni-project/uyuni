@@ -16,42 +16,42 @@
 
 CREATE TABLE rhnConfigRevision
 (
-    id                   NUMBER NOT NULL
+    id                   NUMERIC NOT NULL
                              CONSTRAINT rhn_confrevision_id_pk PRIMARY KEY
-                             USING INDEX TABLESPACE [[4m_tbs]],
-    revision             NUMBER NOT NULL,
-    config_file_id       NUMBER NOT NULL
+                             ,
+    revision             NUMERIC NOT NULL,
+    config_file_id       NUMERIC NOT NULL
                              CONSTRAINT rhn_confrevision_cfid_fk
                                  REFERENCES rhnConfigFile (id),
-    config_content_id    NUMBER 
+    config_content_id    NUMERIC 
                              CONSTRAINT rhn_confrevision_ccid_fk
                                  REFERENCES rhnConfigContent (id),
-    config_info_id       NUMBER NOT NULL
+    config_info_id       NUMERIC NOT NULL
                              CONSTRAINT rhn_confrevision_ciid_fk
                                  REFERENCES rhnConfigInfo (id),
-    created              timestamp with local time zone
+    created              TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL,
-    modified             timestamp with local time zone
+    modified             TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL,
-    config_file_type_id  NUMBER
+    config_file_type_id  NUMERIC
                              DEFAULT (1) NOT NULL
                              CONSTRAINT rhn_conf_rev_cfti_fk
                                  REFERENCES rhnConfigFileType (id),
-    changed_by_id        NUMBER
+    changed_by_id        NUMERIC
                              DEFAULT (null)
                              CONSTRAINT rhn_confrevision_cid_fk
                                  REFERENCES web_contact (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_confrevision_cfid_rev_uq
     ON rhnConfigRevision (config_file_id, revision)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_confrevision_ccid_idx
     ON rhnConfigRevision (config_content_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_confrevision_id_seq;
 

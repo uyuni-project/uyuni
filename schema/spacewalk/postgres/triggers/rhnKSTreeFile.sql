@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 0ab6c27431d4412d9215196baa379cbd4662e2c2
 
 create or replace function rhn_kstreefile_mod_trig_fun() returns trigger as
 $$

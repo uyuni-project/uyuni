@@ -13,22 +13,22 @@
 create table
 suseProductChannel
 (
-    id NUMBER NOT NULL
+    id NUMERIC NOT NULL
         CONSTRAINT suse_product_channel_id_pk PRIMARY KEY,
-    product_id number        not null
+    product_id NUMERIC        not null
                              CONSTRAINT spc_pid_fk
                              REFERENCES suseProducts (id)
                              ON DELETE CASCADE,
-    channel_id number        not null
+    channel_id NUMERIC        not null
                              CONSTRAINT spc_rhn_cid_fk
                              REFERENCES rhnChannel (id)
                              ON DELETE CASCADE,
     mandatory  CHAR(1)       DEFAULT ('N') NOT NULL
                              CONSTRAINT spc_mand_ck
                              CHECK (mandatory in ('Y', 'N')),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 );
 

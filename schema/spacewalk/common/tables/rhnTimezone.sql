@@ -16,16 +16,16 @@
 
 CREATE TABLE rhnTimezone
 (
-    id            NUMBER NOT NULL,
-    olson_name    VARCHAR2(128) NOT NULL,
-    display_name  VARCHAR2(128) NOT NULL
+    id            NUMERIC NOT NULL,
+    olson_name    VARCHAR(128) NOT NULL,
+    display_name  VARCHAR(128) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_timezone_id_idx
     ON rhnTimezone (id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE UNIQUE INDEX rhn_timezone_olson_uq
     ON rhnTimezone (olson_name);
@@ -33,7 +33,7 @@ CREATE UNIQUE INDEX rhn_timezone_olson_uq
 CREATE UNIQUE INDEX rhn_timezone_display_uq
     ON rhnTimezone (display_name);
 
-CREATE SEQUENCE rhn_timezone_id_seq START WITH 7000 ORDER;
+CREATE SEQUENCE rhn_timezone_id_seq START WITH 7000;
 
 ALTER TABLE rhnTimezone
     ADD CONSTRAINT rhn_timezone_id_pk PRIMARY KEY (id);

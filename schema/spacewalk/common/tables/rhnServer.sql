@@ -16,24 +16,24 @@
 
 CREATE TABLE rhnServer
 (
-    id                  NUMBER NOT NULL
+    id                  NUMERIC NOT NULL
                             CONSTRAINT rhn_server_id_pk PRIMARY KEY
-                            USING INDEX TABLESPACE [[4m_tbs]],
-    org_id              NUMBER NOT NULL
+                            ,
+    org_id              NUMERIC NOT NULL
                             CONSTRAINT rhn_server_oid_fk
                                 REFERENCES web_customer (id)
                                 ON DELETE CASCADE,
-    digital_server_id   VARCHAR2(1024) NOT NULL,
-    server_arch_id      NUMBER NOT NULL
+    digital_server_id   VARCHAR(1024) NOT NULL,
+    server_arch_id      NUMERIC NOT NULL
                             CONSTRAINT rhn_server_said_fk
                                 REFERENCES rhnServerArch (id),
-    os                  VARCHAR2(64) NOT NULL,
-    release             VARCHAR2(64) NOT NULL,
-    name                VARCHAR2(128),
-    description         VARCHAR2(256),
-    info                VARCHAR2(128),
-    secret              VARCHAR2(64) NOT NULL,
-    creator_id          NUMBER
+    os                  VARCHAR(64) NOT NULL,
+    release             VARCHAR(64) NOT NULL,
+    name                VARCHAR(128),
+    description         VARCHAR(256),
+    info                VARCHAR(128),
+    secret              VARCHAR(64) NOT NULL,
+    creator_id          NUMERIC
                             CONSTRAINT rhn_server_creator_fk
                                 REFERENCES web_contact (id)
                                 ON DELETE SET NULL,
@@ -41,51 +41,51 @@ CREATE TABLE rhnServer
                             DEFAULT ('N') NOT NULL
                             CONSTRAINT rhn_server_update_ck
                                 CHECK (auto_update in ('Y', 'N')),
-    contact_method_id   NUMBER
+    contact_method_id   NUMERIC
                             DEFAULT (0) NOT NULL
                             CONSTRAINT rhn_server_cmid_fk
                                 REFERENCES suseServerContactMethod (id),
-    running_kernel      VARCHAR2(64),
-    last_boot           NUMBER
+    running_kernel      VARCHAR(64),
+    last_boot           NUMERIC
                             DEFAULT (0) NOT NULL,
-    provision_state_id  NUMBER
+    provision_state_id  NUMERIC
                             CONSTRAINT rhn_server_psid_fk
                                 REFERENCES rhnProvisionState (id),
-    channels_changed    timestamp with local time zone,
-    cobbler_id          VARCHAR2(64),
-    machine_id          VARCHAR2(256),
-    hostname            VARCHAR2(128),
+    channels_changed    TIMESTAMPTZ,
+    cobbler_id          VARCHAR(64),
+    machine_id          VARCHAR(256),
+    hostname            VARCHAR(128),
     payg                CHAR(1) DEFAULT ('N') NOT NULL,
-    created             timestamp with local time zone
+    created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
-    modified            timestamp with local time zone
+    modified            TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_server_dsid_uq
     ON rhnServer (digital_server_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_server_oid_id_idx
     ON rhnServer (org_id, id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_server_created_id_idx
     ON rhnServer (created, id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_server_creator_idx
     ON rhnServer (creator_id)
-    TABLESPACE [[2m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_server_hostname_idx
     ON rhnServer (hostname)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
-CREATE SEQUENCE rhn_server_id_seq START WITH 1000010000 ORDER;
+CREATE SEQUENCE rhn_server_id_seq START WITH 1000010000;

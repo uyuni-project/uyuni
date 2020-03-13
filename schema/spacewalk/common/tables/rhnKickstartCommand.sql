@@ -16,29 +16,29 @@
 
 CREATE TABLE rhnKickstartCommand
 (
-    id                  NUMBER
+    id                  NUMERIC
                             CONSTRAINT rhn_kscommand_id_pk PRIMARY KEY
-                            USING INDEX TABLESPACE [[4m_tbs]],
-    kickstart_id        NUMBER NOT NULL
+                            ,
+    kickstart_id        NUMERIC NOT NULL
                             CONSTRAINT rhn_kscommand_ksid_fk
                                 REFERENCES rhnKSData (id)
                                 ON DELETE CASCADE,
-    ks_command_name_id  NUMBER NOT NULL
+    ks_command_name_id  NUMERIC NOT NULL
                             CONSTRAINT rhn_kscommand_kcnid_fk
                                 REFERENCES rhnKickstartCommandName (id),
-    arguments           VARCHAR2(2048),
-    created             timestamp with local time zone
+    arguments           VARCHAR(2048),
+    created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
-    modified            timestamp with local time zone
+    modified            TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
-    custom_position     NUMBER
+    custom_position     NUMERIC
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_kscommand_ksid_idx
     ON rhnKickstartCommand (kickstart_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_kscommand_id_seq;
 

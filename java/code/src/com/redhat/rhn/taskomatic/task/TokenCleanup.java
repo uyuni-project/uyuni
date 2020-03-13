@@ -20,8 +20,8 @@ import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.quartz.JobExecutionContext;
@@ -42,6 +42,7 @@ public class TokenCleanup extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void execute(JobExecutionContext arg0In)
         throws JobExecutionException {
         if (log.isDebugEnabled()) {
@@ -52,8 +53,7 @@ public class TokenCleanup extends RhnJavaJob {
                 try {
                     if (AccessTokenFactory.refreshTokens(minionServer, Collections.emptySet())) {
                         // TODO schedule state.apply channels to refresh channels on minion ?
-                        SaltStateGeneratorService.INSTANCE.generatePillar(
-                                minionServer, false, Collections.emptySet());
+                        MinionPillarManager.INSTANCE.generatePillar(minionServer, false, Collections.emptySet());
                         return Stream.of(minionServer);
                     }
                     else {

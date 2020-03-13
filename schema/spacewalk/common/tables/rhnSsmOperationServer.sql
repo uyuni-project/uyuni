@@ -15,15 +15,15 @@
 
 CREATE TABLE rhnSsmOperationServer
 (
-    operation_id  NUMBER
+    operation_id  NUMERIC
                       CONSTRAINT rhn_ssmops_ssmop_fk
                           REFERENCES rhnSsmOperation (id)
                           ON DELETE CASCADE,
-    server_id     NUMBER
+    server_id     NUMERIC
                       CONSTRAINT rhn_ssmops_ser_fk
                           REFERENCES rhnServer (id)
                           ON DELETE CASCADE,
-    note          VARCHAR2(256)
+    note          VARCHAR(256)
                       DEFAULT NULL
 )
 ;

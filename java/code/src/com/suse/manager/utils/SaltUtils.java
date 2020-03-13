@@ -45,6 +45,7 @@ import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.image.ImageBuildHistory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageInfoFactory;
@@ -68,6 +69,7 @@ import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -126,6 +128,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -169,6 +172,9 @@ public class SaltUtils {
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
     public static final SaltUtils INSTANCE = new SaltUtils();
+
+    public static final String CAASP_PRODUCT_IDENTIFIER = "caasp";
+    public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
@@ -470,6 +476,12 @@ public class SaltUtils {
         // Determine the final status of the action
         if (actionFailed(function, jsonResult, success, retcode)) {
             serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            // check if the minion is locked (blackout mode)
+            String output = getJsonResultWithPrettyPrint(jsonResult);
+            if (output.startsWith("\"ERROR") && output.contains("Minion in blackout mode")) {
+                serverAction.setResultMsg(output);
+                return;
+            }
         }
         else {
             serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
@@ -668,7 +680,7 @@ public class SaltUtils {
      */
     private String  getJsonResultWithPrettyPrint(JsonElement jsonResult) {
         Object returnObject = Json.GSON.fromJson(jsonResult, Object.class);
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         return gson.toJson(returnObject);
     }
 
@@ -1130,7 +1142,7 @@ public class SaltUtils {
      * @param server the minion server
      * @param result the result of the call as parsed from event data
      */
-    private static void handlePackageProfileUpdate(MinionServer server,
+    private void handlePackageProfileUpdate(MinionServer server,
             PkgProfileUpdateSlsResult result) {
         Instant start = Instant.now();
 
@@ -1212,6 +1224,32 @@ public class SaltUtils {
 
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
+
+        // For special nodes: enable minion blackout (= locking) via pillar
+        enableMinionSystemLockForSpecialNodes(server);
+    }
+
+    private void enableMinionSystemLockForSpecialNodes(MinionServer server) {
+        if (server.getInstalledProducts().stream()
+                .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PRODUCT_IDENTIFIER))) {
+            // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
+            Map<String, Object> data = new HashMap<>();
+            data.put("minion_blackout", true);
+            // List of Salt `module.function` that are allowed in blackout mode
+            data.put("minion_blackout_whitelist", Arrays.asList(
+                    "test.ping",
+                    "grains.item",
+                    "grains.items"
+            ));
+            try {
+                FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
+                FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
+                saltService.refreshPillar(new MinionList(server.getMinionId()));
+            }
+            catch (IOException e) {
+                LOG.error("Could not enable blackout formula", e);
+            }
+        }
     }
 
     /**
@@ -1347,7 +1385,12 @@ public class SaltUtils {
         }
         hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
         hwMapper.mapNetworkInfo(result.getNetworkInterfaces(), Optional.of(result.getNetworkIPs()),
-                result.getNetworkModules(), result.getFqdns());
+                result.getNetworkModules(),
+                Stream.concat(
+                        result.getFqdns().stream(),
+                        result.getCustomFqdns().stream()
+                ).distinct().collect(Collectors.toList())
+        );
         hwMapper.mapPaygInfo();
 
         // Let the action fail in case there is error messages

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 678fe04d944e64ed956cb0157eb1e893a73f7e79
 
 create or replace function rhn_erratatmp_mod_trig_fun() returns trigger as
 $$

@@ -16,36 +16,36 @@
 
 CREATE TABLE rhnServerGroup
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_servergroup_id_pk PRIMARY KEY
-                         USING INDEX TABLESPACE [[4m_tbs]],
-    name             VARCHAR2(64) NOT NULL,
-    description      VARCHAR2(1024) NOT NULL,
-    current_members  NUMBER
+                         ,
+    name             VARCHAR(64) NOT NULL,
+    description      VARCHAR(1024) NOT NULL,
+    current_members  NUMERIC
                          DEFAULT (0) NOT NULL,
-    group_type       NUMBER
+    group_type       NUMERIC
                          CONSTRAINT rhn_servergroup_type_fk
                              REFERENCES rhnServerGroupType (id),
-    org_id           NUMBER NOT NULL
+    org_id           NUMERIC NOT NULL
                          CONSTRAINT rhn_servergroup_oid_fk
                              REFERENCES web_customer (id)
                              ON DELETE CASCADE,
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_servergroup_oid_name_uq
     ON rhnServerGroup (org_id, name)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_sg_type_id_idx
     ON rhnServerGroup (group_type, id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_server_group_id_seq;
 

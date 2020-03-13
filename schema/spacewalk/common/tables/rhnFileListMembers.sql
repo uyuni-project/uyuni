@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnFileListMembers
 (
-    file_list_id         NUMBER NOT NULL
+    file_list_id         NUMERIC NOT NULL
                              CONSTRAINT rhn_flmembers_flid_fk
                                  REFERENCES rhnFileList (id)
                                  ON DELETE CASCADE,
-    config_file_name_id  NUMBER NOT NULL
+    config_file_name_id  NUMERIC NOT NULL
                              CONSTRAINT rhn_flmembers_cfnid_fk
                                  REFERENCES rhnConfigFileName (id),
-    created              timestamp with local time zone
+    created              TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL,
-    modified             timestamp with local time zone
+    modified             TIMESTAMPTZ
                              DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_flmembers_flid_cfnid_uq
     ON rhnFileListMembers (file_list_id, config_file_name_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

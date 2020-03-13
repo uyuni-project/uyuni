@@ -285,6 +285,11 @@ artifacts:
     repository: Leap
   - artifact: xmlsec
     repository: Uyuni_Other
+  - artifact: commons-lang
+    package: apache-commons-lang
+    repository: Leap
+  - artifact: velocity
+    repository: Uyuni_Other
 
   - artifact: jasper
     package: tomcat

@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnFeature
 (
-    id        NUMBER
+    id        NUMERIC
                   CONSTRAINT rhn_feature_id PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    label     VARCHAR2(32) NOT NULL,
-    name      VARCHAR2(64) NOT NULL,
-    created   timestamp with local time zone
+                  ,
+    label     VARCHAR(32) NOT NULL,
+    name      VARCHAR(64) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_feature_label_uq_idx
     ON rhnFeature (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_feature_seq;
 

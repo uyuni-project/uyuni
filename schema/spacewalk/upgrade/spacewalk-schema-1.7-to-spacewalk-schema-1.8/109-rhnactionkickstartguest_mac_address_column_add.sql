@@ -1,1 +1,1 @@
-alter table rhnactionkickstartguest add mac_address varchar2(17);
+alter table rhnactionkickstartguest add mac_address VARCHAR(17);

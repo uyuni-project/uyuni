@@ -25,7 +25,6 @@ type Props = {
 type State = {
   model: Object,
   isInvalid: boolean,
-  messages: Array<Object>,
   actionChain: ?ActionChain,
 };
 
@@ -39,7 +38,6 @@ class GuestPropertiesForm extends React.Component<Props, State> {
     this.state = {
       model: Object.assign({}, props.initialModel, { earliest: Functions.Utils.dateWithTimezone(props.localTime) }),
       isInvalid: false,
-      messages: [],
       actionChain: null,
     };
   }
@@ -53,9 +51,6 @@ class GuestPropertiesForm extends React.Component<Props, State> {
   onValidate = (isValid: boolean) => {
     this.setState(prevState => ({
       isInvalid: !isValid,
-      messages: this.props.validationChecks
-        .filter(item => item.check(prevState.model))
-        .map(item => item.message),
     }));
   }
 
@@ -85,6 +80,9 @@ class GuestPropertiesForm extends React.Component<Props, State> {
   }
 
   render() {
+    const checksMessages = this.props.validationChecks
+        .filter(item => item.check(this.state.model))
+        .flatMap(item => item.message);
     return (
       <div>
         <Form
@@ -94,7 +92,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
           onChange={this.onChange}
           onSubmit={this.onSubmit}
         >
-          <Messages items={[].concat(this.state.messages, this.props.messages)} />
+          <Messages items={[].concat(checksMessages, this.props.messages)} />
           {
             this.props.children({
               model: this.state.model,

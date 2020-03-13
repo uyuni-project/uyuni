@@ -1,0 +1,3 @@
+
+ALTER TABLE suseContentFilter ADD COLUMN IF NOT EXISTS rule VARCHAR(16);
+

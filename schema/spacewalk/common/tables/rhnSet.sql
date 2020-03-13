@@ -16,16 +16,16 @@
 
 CREATE TABLE rhnSet
 (
-    user_id        NUMBER NOT NULL
+    user_id        NUMERIC NOT NULL
                        CONSTRAINT rhn_set_user_fk
                            REFERENCES web_contact (id)
                            ON DELETE CASCADE,
-    label          VARCHAR2(32) NOT NULL,
-    element        NUMBER NOT NULL,
-    element_two    NUMBER,
-    element_three  NUMBER
+    label          VARCHAR(32) NOT NULL,
+    element        NUMERIC NOT NULL,
+    element_two    NUMERIC,
+    element_three  NUMERIC
 )
-ENABLE ROW MOVEMENT
-NOLOGGING
+
+
 ;
 

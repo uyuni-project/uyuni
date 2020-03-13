@@ -15,27 +15,27 @@
 
 CREATE TABLE suseSCCSubscription
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                      CONSTRAINT suse_sccsub_id_pk
                      PRIMARY KEY,
-    scc_id         NUMBER NOT NULL,
-    credentials_id NUMBER
+    scc_id         NUMERIC NOT NULL,
+    credentials_id NUMERIC
                        CONSTRAINT suse_sccsub_credsid_fk
                        REFERENCES suseCredentials (id)
                        ON DELETE CASCADE,
-    name           VARCHAR2(256),
-    starts_at      timestamp with local time zone,
-    expires_at     timestamp with local time zone,
+    name           VARCHAR(256),
+    starts_at      TIMESTAMPTZ,
+    expires_at     TIMESTAMPTZ,
     status         VARCHAR(20),
     regcode        VARCHAR(256) NOT NULL,
     subtype        VARCHAR(20) NOT NULL,
-    system_limit   NUMBER DEFAULT(0) NOT NULL,
-    created        timestamp with local time zone
+    system_limit   NUMERIC DEFAULT(0) NOT NULL,
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_sccsub_sccid_uq

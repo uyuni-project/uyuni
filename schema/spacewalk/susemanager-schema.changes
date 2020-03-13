@@ -1,3 +1,16 @@
+-------------------------------------------------------------------
+Wed Mar 11 11:02:33 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
+- Update schema and add migration script for 'Recurring Actions'
+- Show proxy icon in system list
+- drop oracle artefacts
+- drop tables and data used for forwarding registrations to NCC
+
+-------------------------------------------------------------------
+Mon Feb 17 12:56:07 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
 - Add new 'payg' attribute to rhnServer table
 
 -------------------------------------------------------------------

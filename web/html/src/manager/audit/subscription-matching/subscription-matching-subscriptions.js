@@ -3,19 +3,20 @@
 
 const React = require("react");
 const createReactClass = require('create-react-class');
-const StatePersistedMixin = require("components/util").StatePersistedMixin;
 const UtilComponent = require("./subscription-matching-util");
 const ToolTip = UtilComponent.ToolTip;
 const CsvLink = UtilComponent.CsvLink;
 const humanReadablePolicy = UtilComponent.humanReadablePolicy;
 const WarningIcon =  require("./subscription-matching-util").WarningIcon;
-const {Table, Column, SearchField, Highlight} = require("components/table");
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
+const {SearchField} = require("components/table/SearchField");
+const {Highlight} = require("components/table/Highlight");
 const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 
 const Subscriptions = createReactClass({
   displayName: 'Subscriptions',
-  mixins: [StatePersistedMixin],
 
   sortByPolicy: function(aRaw, bRaw, columnKey, sortDirection) {
     var result = 0;
@@ -57,8 +58,6 @@ const Subscriptions = createReactClass({
             data={this.buildRows(this.props.subscriptions)}
             identifier={(row) => row.id}
             cssClassFunction={(row) => moment(row.endDate).isBefore(moment()) || moment(row.startDate).isAfter(moment()) ? "text-muted" : null }
-            loadState={this.props.loadState}
-            saveState={this.props.saveState}
             initialSortColumnKey="partNumber"
             initialItemsPerPage={userPrefPageSize}
             searchField={

@@ -15,29 +15,29 @@
 
 CREATE TABLE rhnActionImageInspect
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_inspect_id_pk PRIMARY KEY,
-    action_id        NUMBER NOT NULL
+    action_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_inspect_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    image_store_id NUMBER NOT NULL
+    image_store_id NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_inspect_is_fk
                              REFERENCES suseImageStore (id)
                              ON DELETE CASCADE,
-    build_action_id	NUMBER,
-    version          VARCHAR2(128),
-    name             VARCHAR2(128),
-    created          timestamp with local time zone
+    build_action_id	NUMERIC,
+    version          VARCHAR(128),
+    name             VARCHAR(128),
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_act_image_inspect_aid_idx
     ON rhnActionImageInspect (action_id)
-    NOLOGGING;
+    ;
 
 CREATE SEQUENCE rhn_act_image_inspect_id_seq;

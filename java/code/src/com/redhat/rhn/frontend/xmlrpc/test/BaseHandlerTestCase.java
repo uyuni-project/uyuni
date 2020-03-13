@@ -22,6 +22,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import java.nio.file.Files;
@@ -44,7 +48,12 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected String satAdminKey;
     protected Path tmpPillarRoot;
     protected Path tmpSaltRoot;
+    protected MinionPillarFileManager minionGroupMembershipPillarFileManager =
+            new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
+    protected MinionPillarFileManager minionGeneralPillarFileManager =
+            new MinionPillarFileManager(new MinionGeneralPillarGenerator());
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         admin = UserTestUtils.createUserInOrgOne();
@@ -75,8 +84,8 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
 
         tmpPillarRoot = Files.createTempDirectory("pillar");
         tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setPillarDataPath(tmpPillarRoot
-                .toAbsolutePath());
+        minionGroupMembershipPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
+        minionGeneralPillarFileManager.setPillarDataPath(tmpPillarRoot.toAbsolutePath());
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));

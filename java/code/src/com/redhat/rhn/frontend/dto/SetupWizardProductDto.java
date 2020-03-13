@@ -501,7 +501,7 @@ public class SetupWizardProductDto implements Selectable,
     /**
      * Convenience method to query the sync status
      * @return true if the product status is not mirrored
-     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
+     * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public boolean isStatusNotMirrored() {
         return getSyncStatus().equals(SyncStatus.SyncStage.NOT_MIRRORED);
@@ -509,7 +509,7 @@ public class SetupWizardProductDto implements Selectable,
 
     /**
      * Convenience method to set the sync status to not mirrored
-     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
+     * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public void setStatusNotMirrored() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED));
@@ -518,7 +518,7 @@ public class SetupWizardProductDto implements Selectable,
     /**
      * Convenience method to query the sync status
      * @return true if the product status is in progress
-     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
+     * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public boolean isStatusInProgress() {
         return getSyncStatus().equals(SyncStatus.SyncStage.IN_PROGRESS);
@@ -526,7 +526,7 @@ public class SetupWizardProductDto implements Selectable,
 
     /**
      * Convenience method to set the sync status to in progress
-     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
+     * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public void setStatusInProgress() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS));
@@ -535,7 +535,7 @@ public class SetupWizardProductDto implements Selectable,
     /**
      * Convenience method to query the sync status
      * @return true if the product status is finished
-     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
+     * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public boolean isStatusFinished() {
         return getSyncStatus().equals(SyncStatus.SyncStage.FINISHED);
@@ -543,7 +543,7 @@ public class SetupWizardProductDto implements Selectable,
 
     /**
      * Convenience method to set the sync status to finished
-     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
+     * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public void setStatusFinished() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.FINISHED));
@@ -552,7 +552,7 @@ public class SetupWizardProductDto implements Selectable,
     /**
      * Convenience method to query the sync status
      * @return true if the product status is failed
-     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
+     * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public boolean isStatusFailed() {
         return getSyncStatus().equals(SyncStatus.SyncStage.FAILED);
@@ -560,7 +560,7 @@ public class SetupWizardProductDto implements Selectable,
 
     /**
      * Convenience method to set the sync status to failed
-     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
+     * @see com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage
      */
     public void setStatusFailed() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.FAILED));

@@ -16,27 +16,27 @@
 
 CREATE TABLE rhnChannelPackage
 (
-    channel_id  NUMBER NOT NULL
+    channel_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_cp_cid_fk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE,
-    package_id  NUMBER NOT NULL
+    package_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_cp_pid_fk
                         REFERENCES rhnPackage (id),
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_cp_cp_uq
     ON rhnChannelPackage (channel_id, package_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_cp_pid_idx
     ON rhnChannelPackage (package_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

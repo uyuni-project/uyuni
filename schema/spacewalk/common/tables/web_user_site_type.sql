@@ -18,8 +18,8 @@ CREATE TABLE web_user_site_type
 (
     type         CHAR(1) NOT NULL
                      CONSTRAINT wust_type_pk PRIMARY KEY,
-    description  VARCHAR2(64) NOT NULL
+    description  VARCHAR(64) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 

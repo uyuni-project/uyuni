@@ -14,25 +14,25 @@
 --
 
 CREATE TABLE suseContentFilter(
-    id       NUMBER NOT NULL
+    id       NUMERIC NOT NULL
                  CONSTRAINT suse_ct_filter_id_pk PRIMARY KEY,
-    org_id   NUMBER NOT NULL
+    org_id   NUMERIC NOT NULL
                  CONSTRAINT suse_ct_project_oid_fk
                      REFERENCES web_customer(id)
                      ON DELETE CASCADE,
-    type     VARCHAR2(16) NOT NULL,
-    rule     VARCHAR2(16) NOT NULL,
-    name     VARCHAR2(128) NOT NULL,
-    matcher  VARCHAR2(32) NOT NULL,
-    field    VARCHAR2(32) NOT NULL,
-    value    VARCHAR2(128) NOT NULL,
-    created  TIMESTAMP WITH LOCAL TIME ZONE
+    type     VARCHAR(16) NOT NULL,
+    rule     VARCHAR(16) NOT NULL,
+    name     VARCHAR(128) NOT NULL,
+    matcher  VARCHAR(32) NOT NULL,
+    field    VARCHAR(32) NOT NULL,
+    value    VARCHAR(128) NOT NULL,
+    created  TIMESTAMPTZ
                  DEFAULT (current_timestamp) NOT NULL,
-    modified TIMESTAMP WITH LOCAL TIME ZONE
+    modified TIMESTAMPTZ
                  DEFAULT (current_timestamp) NOT NULL
 
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE suse_ct_filter_seq;

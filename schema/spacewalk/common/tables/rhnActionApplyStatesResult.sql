@@ -15,18 +15,18 @@
 
 CREATE TABLE rhnActionApplyStatesResult
 (
-    server_id              NUMBER NOT NULL
+    server_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_apply_states_result_sid_fk
                                    REFERENCES rhnServer (id)
                                    ON DELETE CASCADE,
-    action_apply_states_id NUMBER NOT NULL
+    action_apply_states_id NUMERIC NOT NULL
                                CONSTRAINT rhn_apply_states_result_aid_fk
                                    REFERENCES rhnActionApplyStates (id)
                                    ON DELETE CASCADE,
-    output                 BLOB,
-    return_code            NUMBER NOT NULL
+    output                 BYTEA,
+    return_code            NUMERIC NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_apply_states_result_sa_uq
@@ -34,5 +34,5 @@ CREATE UNIQUE INDEX rhn_apply_states_result_sa_uq
 
 CREATE INDEX rhn_apply_states_result_ad_idx
     ON rhnActionApplyStatesResult (action_apply_states_id)
-    NOLOGGING;
+    ;
 

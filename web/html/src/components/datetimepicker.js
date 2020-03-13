@@ -131,16 +131,22 @@ class TimePicker extends React.Component {
     }
 }
 
-export class DateTimePicker extends React.Component {
+type DateTimePickerProps = {
+    hideDatePicker: boolean,
+    hideTimePicker: boolean
+}
+
+export class DateTimePicker extends React.Component<DateTimePickerProps> {
 
     constructor(props) {
         super();
         this.state = {
             dateOpen: false,
-            timeOpen: false
+            timeOpen: false,
+            hideDate: props.hideDatePicker || false,
+            hideTime: props.hideTimePicker || false
         };
     }
-
 
     onDateChanged(date) {
         const value = this.props.value;
@@ -183,17 +189,21 @@ export class DateTimePicker extends React.Component {
     render() {
         return (
             <div className="input-group">
+            {!this.state.hideDate && [
                 <span className="input-group-addon" data-picker-type="date" onClick={this.toggleDatepicker.bind(this)}>
                     &nbsp;<i className="fa fa-calendar"></i>
-                </span>
+                </span>,
                 <DatePicker id={this.props.id ? this.props.id + "_date" : null} key="date" onDateChanged={date => this.onDateChanged(date)} onToggle={this.onToggleDate.bind(this)} open={this.state.dateOpen} value={this.props.value} />
+            ]}
+            {!this.state.hideTime && [
                 <span className="input-group-addon" data-picker-type="time" onClick={this.toggleTimepicker.bind(this)}>
                     &nbsp;<i className="fa fa-clock-o"></i>
-                </span>
-                <TimePicker id={this.props.id ? this.props.id + "_time" : null} key="time" onTimeChanged={date => this.onTimeChanged(date)} onToggle={this.onToggleTime.bind(this)} open={this.state.timeOpen} value={this.props.value} />
+                </span>,
+                <TimePicker id={this.props.id ? this.props.id + "_time" : null} key="time" onTimeChanged={date => this.onTimeChanged(date)} onToggle={this.onToggleTime.bind(this)} open={this.state.timeOpen} value={this.props.value} />,
                 <span className="input-group-addon">
                     {this.props.timezone}
                 </span>
+            ]}
             </div>
         );
     }

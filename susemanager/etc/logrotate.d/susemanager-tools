@@ -1,6 +1,6 @@
 # logrotation file for susemanager
 
-/var/log/rhn/mgr-sync.log /var/log/rhn/mgr-register.log {
+/var/log/rhn/mgr-sync.log /var/log/rhn/mgr-create-bootstrap-repo.log {
     compress
     dateext
     maxage 365

@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnPackageNEVRA
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_pkgnevra_id_pk PRIMARY KEY
-                         USING INDEX TABLESPACE [[8m_tbs]],
-    name_id          NUMBER NOT NULL
+                         ,
+    name_id          NUMERIC NOT NULL
                          CONSTRAINT rhn_pkgnevra_nid_fk
                              REFERENCES rhnPackageName (id),
-    evr_id           NUMBER NOT NULL
+    evr_id           NUMERIC NOT NULL
                          CONSTRAINT rhn_pkgnevra_eid_fk
                              REFERENCES rhnPackageEVR (id),
-    package_arch_id  NUMBER
+    package_arch_id  NUMERIC
                          CONSTRAINT rhn_pkgnevra_paid_fk
                              REFERENCES rhnPackageArch (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_pkgnevra_id_seq;

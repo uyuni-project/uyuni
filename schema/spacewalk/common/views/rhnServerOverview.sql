@@ -40,7 +40,8 @@ rhnServerOverview
     os,
     release,
     server_arch_name,
-    locked
+    locked,
+    proxy_id
 )
 as
 select
@@ -109,7 +110,8 @@ select
     os,
     release,
     ( select name from rhnServerArch where id = s.server_arch_id),
-    coalesce((select 1 from rhnServerLock SL WHERE SL.server_id = S.id), 0)
+    coalesce((select 1 from rhnServerLock SL WHERE SL.server_id = S.id), 0),
+    ( select pxy.server_Id from rhnProxyInfo pxy where pxy.server_id = S.id)
 from
     rhnServer S
 ;

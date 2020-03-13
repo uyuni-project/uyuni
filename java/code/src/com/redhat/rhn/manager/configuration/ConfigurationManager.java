@@ -1130,11 +1130,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("num", results);
         SelectMode m;
-        if (ConfigDefaults.get().isOracle()) {
-            m = ModeFactory.getMode("config_queries",
-                    "recent_modified_config_files_for_user_oracle");
-        }
-        else if (ConfigDefaults.get().isPostgresql()) {
+        if (ConfigDefaults.get().isPostgresql()) {
             m = ModeFactory.getMode("config_queries",
                     "recent_modified_config_files_for_user_postgres");
         }
@@ -1167,11 +1163,7 @@ public class ConfigurationManager extends BaseManager {
         params.put("date", format.format(cal.getTime()));
 
         SelectMode m;
-        if (ConfigDefaults.get().isOracle()) {
-            m = ModeFactory.getMode("config_queries",
-                    "recent_config_deploy_actions_for_user_oracle");
-        }
-        else if (ConfigDefaults.get().isPostgresql()) {
+        if (ConfigDefaults.get().isPostgresql()) {
             m = ModeFactory.getMode("config_queries",
                     "recent_config_deploy_actions_for_user_postgres");
         }
@@ -2391,7 +2383,7 @@ public class ConfigurationManager extends BaseManager {
     /**
      * From file id, get file.fileName and map to file-id
      * @param fileIds set of file-ids of interest
-     * @return Map<Long,Long> of file-id to cfn-id
+     * @return Map&lt;Long,Long&gt; of file-id to cfn-id
      */
     private Map mapFileToName(Set fileIds) {
         Map m = new HashMap();
@@ -2408,7 +2400,7 @@ public class ConfigurationManager extends BaseManager {
     /**
      * From file id, get file.latest-rev and map to file-id
      * @param fileIds set of file-ids of interest
-     * @return Map<Long,Long> of file-id to cr-id
+     * @return Map&lt;Long,Long&gt; of file-id to cr-id
      */
     private Map mapFileToRevId(Set fileIds) {
         Map m = new HashMap();

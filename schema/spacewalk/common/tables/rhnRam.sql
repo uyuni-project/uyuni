@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnRam
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_ram_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[4m_tbs]],
-    server_id  NUMBER NOT NULL
+                   ,
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_ram_server_fk
                        REFERENCES rhnServer (id),
-    ram        NUMBER NOT NULL,
-    swap       NUMBER NOT NULL,
-    created    timestamp with local time zone
+    ram        NUMERIC NOT NULL,
+    swap       NUMERIC NOT NULL,
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ram_sid_uq
     ON rhnRam (server_id)
-    TABLESPACE [[4m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_ram_id_seq;
 

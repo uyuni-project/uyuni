@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.formula;
 
+import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
+
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -25,12 +27,14 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 /**
  * Singleton class, validates and save formulas' data.
  */
@@ -51,13 +55,13 @@ public class FormulaManager {
      *
      * @return instance
      */
-
     public static synchronized FormulaManager getInstance() {
         if (instance == null) {
             instance = new FormulaManager();
         }
         return instance;
     }
+
     /**
      * This method is only for testing purpose.
      * @param saltServiceIn to set
@@ -286,15 +290,13 @@ public class FormulaManager {
     }
 
     /**
-     * Check if the given formula is assigned to the specified system
+     * Check if the given formula is assigned to the specified server considering group assignments as well.
      * @param formulaName formulaName
      * @param systemId systemId
      * @return True/False based upon if all of the systems has formulas assigned to them
      */
-    public boolean hasSystemFormulaAssigned(String formulaName, Integer systemId) {
-        return FormulaFactory
-                        .getCombinedFormulasByServerId(systemId.longValue())
-                        .contains(formulaName);
+    public boolean hasSystemFormulaAssignedCombined(String formulaName, Integer systemId) {
+        return FormulaFactory.getCombinedFormulasByServerId(systemId.longValue()).contains(formulaName);
     }
 
     /**
@@ -305,7 +307,16 @@ public class FormulaManager {
      */
     public boolean hasGroupFormulaAssigned(String formulaName, Long groupId) {
         return FormulaFactory.getFormulasByGroupId(groupId).contains(formulaName);
+    }
 
+    /**
+     * Check for a given server if cleanup is needed on removal of the monitoring entitlement.
+     * @param server the given server
+     * @return true if cleanup is needed, false otherwise
+     */
+    public boolean isMonitoringCleanupNeeded(MinionServer server) {
+        return FormulaFactory.getFormulasByMinionId(server.getMinionId()).contains(PROMETHEUS_EXPORTERS) ||
+                FormulaFactory.isMemberOfGroupHavingMonitoring(server);
     }
 
     /**
@@ -315,5 +326,19 @@ public class FormulaManager {
      */
     private Map<String, Object> getFormulaLayout(String formulaName) {
         return FormulaFactory.getFormulaLayoutByName(formulaName).orElseGet(Collections::emptyMap);
+    }
+
+    /**
+     * Enable formula on the given minion
+     * @param minionId minion id
+     * @param formulaName formula name
+     * @throws IOException if saving the formula encountered an error
+     */
+    public void enableFormula(String minionId, String formulaName) throws IOException {
+        List<String> enabledFormulas = new ArrayList<>(FormulaFactory.getFormulasByMinionId(minionId));
+        if (!enabledFormulas.contains(formulaName)) {
+            enabledFormulas.add(formulaName);
+            FormulaFactory.saveServerFormulas(minionId, enabledFormulas);
+        }
     }
 }

@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -66,11 +67,14 @@ import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.UndefinedCustomDataKeyException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -107,6 +111,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final int TYPE_SERVER_MINION = 4;
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
     public static final String HOSTNAME = "foo.bar.com";
+
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     @Override
     public void setUp() throws Exception {
@@ -252,7 +258,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         manager.addServers(sg1, servers, user);
 
         server = reload(server);
-        assertTrue(server.getEntitledGroups().size() == 1);
+        assertTrue(server.getEntitledGroupTypes().size() == 1);
         assertTrue(server.getManagedGroups().size() == 1);
 
 
@@ -272,6 +278,97 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(changedName, sg1.getName());
 
+    }
+
+    public void testAddOrRemoveServersToOrFromGroup() throws Exception {
+        User user1 = UserTestUtils.findNewUser("userForAddingServers1", "orgForAddingServers1" +
+                this.getClass().getSimpleName());
+
+        Server testServer1 = createTestServer(user1);
+        Server testServer2 = createTestServer(user1);
+
+        ManagedServerGroup serverGroup = ServerGroupTestUtils.createManaged(user1);
+        Long serverGroupId = serverGroup.getId();
+        TestUtils.flushAndEvict(serverGroup);
+
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertEquals(serverGroup.getId(), serverGroupId);
+        assertTrue(serverGroup.getServers().isEmpty());
+        assertEquals(serverGroup.getCurrentMembers().longValue(), 0L);
+
+        //add 2 servers in empty group
+        TestUtils.flushAndEvict(serverGroup);
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+
+        List<Server> serversToAdd = Arrays.asList(testServer1, testServer2);
+        ServerFactory.addServersToGroup(serversToAdd, serverGroup);
+
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertEquals(serverGroup.getServers().size(), 2);
+        assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
+
+        //try to add one of the servers again, nothing should happen
+        TestUtils.flushAndEvict(serverGroup);
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+
+        ServerFactory.addServersToGroup(Arrays.asList(testServer1), serverGroup);
+
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertEquals(serverGroup.getServers().size(), 2);
+        assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
+
+        //try to add a server from a different Org, should not be added
+        TestUtils.flushAndEvict(serverGroup);
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+
+        User user2 = UserTestUtils.findNewUser("userForAddingServers2", "orgForAddingServers2" +
+                this.getClass().getSimpleName());
+
+        Server testServerDifferentOrg = createTestServer(user2);
+        ServerFactory.addServersToGroup(Arrays.asList(testServerDifferentOrg), serverGroup);
+
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertEquals(serverGroup.getServers().size(), 2);
+        assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
+
+        //try to add an empty server collection
+        ServerFactory.addServersToGroup(new ArrayList<>(), serverGroup);
+
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertTrue(serverGroup.getServers().stream().allMatch(s -> serversToAdd.contains(s)));
+        assertEquals(serverGroup.getServers().size(), 2);
+        assertEquals(serverGroup.getCurrentMembers().longValue(), 2L);
+
+        //remove 1 server that is a member of the group
+        TestUtils.flushAndEvict(serverGroup);
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+
+        ServerFactory.removeServersFromGroup(Arrays.asList(testServer1), serverGroup);
+
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+        assertFalse(serverGroup.getServers().contains(testServer1));
+        assertEquals(serverGroup.getServers().size(), 1);
+        assertEquals(serverGroup.getCurrentMembers().longValue(), 1L);
+
+        //remove 1 server that is NOT a member of the group
+        Server testNonMemberServer = createTestServer(user1);
+
+        TestUtils.flushAndEvict(serverGroup);
+        serverGroup = ServerGroupFactory.lookupByIdAndOrg(serverGroup.getId(), user1.getOrg());
+
+        try {
+            ServerFactory.removeServersFromGroup(Arrays.asList(testNonMemberServer), serverGroup);
+            fail();
+        }
+        catch (ServerNotInGroupException e) {
+        }
+
+        assertFalse(serverGroup.getServers().contains(testServer1));
+        assertEquals(serverGroup.getServers().size(), 1);
+        assertEquals(serverGroup.getCurrentMembers().longValue(), 1L);
     }
 
     public void testAddRemove() throws Exception {
@@ -294,7 +391,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         assertTrue(membersBefore.intValue() < membersAfter.intValue());
 
-        ServerFactory.removeServerFromGroup(testServer.getId(), group.getId());
+        ServerFactory.removeServerFromGroup(testServer, group);
         group = reload(group);
 
         Long membersFinally = group.getCurrentMembers();
@@ -434,7 +531,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     public void aTestServerHasSpecificEntitlement() throws Exception {
         Server s = createTestServer(user);
-        SystemManager.entitleServer(s, EntitlementManager.VIRTUALIZATION);
+        systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.VIRTUALIZATION);
         assertTrue(s.hasEntitlement(EntitlementManager.VIRTUALIZATION));
     }
 
@@ -491,15 +588,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             }
             assertNotNull(mgmt);
             assertNotNull(mgmt.getGroupType().getAssociatedEntitlement());
-            SystemManager.entitleServer(newS,
-                    mgmt.getGroupType().getAssociatedEntitlement());
+            systemEntitlementManager.addEntitlementToServer(newS, mgmt.getGroupType().getAssociatedEntitlement());
         }
 
 
         EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(),
                                                                         type);
 
-        SystemManager.entitleServer(newS, sg.getGroupType().getAssociatedEntitlement());
+        systemEntitlementManager.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
         return TestUtils.saveAndReload(newS);
     }
 
@@ -585,7 +681,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict(newS);
         newS = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
-        assertNotNull(newS.getEntitledGroups());
+        assertNotNull(newS.getEntitledGroupTypes());
         assertNotNull(newS.getManagedGroups());
         assertNotNull(newS.getServerInfo());
         assertNotNull(newS.getServerInfo().getCheckinCounter());

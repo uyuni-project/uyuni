@@ -1,9 +1,9 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @ceos6_client
 Feature: Be able to register a CentOS 6 traditional client and do some basic operations on it
-  
+
   Scenario: Prepare a CentOS 6 traditional client
     Given I am authorized
     When I enable repository "Devel_Galaxy_Manager_4.0_RES-Manager-Tools-6-x86_64" on this "ceos6_client"
@@ -12,8 +12,9 @@ Feature: Be able to register a CentOS 6 traditional client and do some basic ope
     And I install package "hwdata m2crypto wget" on this "ceos6_client"
     And I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos6_client"
     And I install package "spacewalk-oscap scap-security-guide" on this "ceos6_client"
-    And I register "ceos6_client" as traditional client with activation key "ceos6_client_key"
+    And I register "ceos6_client" as traditional client with activation key "1-ceos6_client_key"
     And I run "mgr-actions-control --enable-all" on "ceos6_client"
+    And I wait until onboarding is completed for "ceos6_client"
 
   @proxy
   Scenario: Check connection from CentOS 6 traditional to proxy
@@ -28,20 +29,7 @@ Feature: Be able to register a CentOS 6 traditional client and do some basic ope
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos6_client" hostname
-    
-  Scenario: Re-subscribe the CentOS 6 traditional client to a base channel
-    Given I am on the Systems overview page of this "ceos_client"
-    When I follow "Software" in the content area
-    And I follow "Software Channels" in the content area
-    And I wait until I do not see "Loading..." text
-    And I check radio button "Test Base Channel"
-    And I wait until I do not see "Loading..." text
-    And I click on "Next"
-    Then I should see a "Confirm Software Channel Change" text
-    When I click on "Confirm"
-    Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
-    
+
   Scenario: Schedule an OpenSCAP audit job for the CentOS 6 traditional client
     Given I am on the Systems overview page of this "ceos6_client"
     When I follow "Audit" in the content area
@@ -52,7 +40,7 @@ Feature: Be able to register a CentOS 6 traditional client and do some basic ope
     And I run "rhn_check -vvv" on "ceos6_client"
     Then I should see a "XCCDF scan has been scheduled" text
     And I wait until event "OpenSCAP xccdf scanning" is completed
-    
+
   Scenario: Check the results of the OpenSCAP scan on the CentOS 6 traditional client
     Given I am on the Systems overview page of this "ceos6_client"
     When I follow "Audit" in the content area
@@ -62,7 +50,7 @@ Feature: Be able to register a CentOS 6 traditional client and do some basic ope
     And I should see a "XCCDF Rule Results" text
     And I should see a "pass" text
     And I should see a "service_" link
-    
+
   Scenario: Schedule some actions on the CentOS 6 traditional client
     Given I am authorized as "admin" with password "admin"
     When I authenticate to XML-RPC

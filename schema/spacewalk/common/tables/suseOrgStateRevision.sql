@@ -15,16 +15,16 @@
 
 CREATE TABLE suseOrgStateRevision
 (
-    org_id         NUMBER NOT NULL
+    org_id         NUMERIC NOT NULL
                           CONSTRAINT suse_server_group_rev_sid_fk
                               REFERENCES web_customer (id)
                               ON DELETE CASCADE,
-    state_revision_id NUMBER NOT NULL
+    state_revision_id NUMERIC NOT NULL
                           CONSTRAINT suse_server_group_rev_id_fk
                               REFERENCES suseStateRevision (id)
                               ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 ALTER TABLE suseOrgStateRevision

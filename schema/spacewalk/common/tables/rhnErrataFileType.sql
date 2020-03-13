@@ -16,19 +16,19 @@
 
 CREATE TABLE rhnErrataFileType
 (
-    id     NUMBER NOT NULL,
-    label  VARCHAR2(128) NOT NULL
+    id     NUMERIC NOT NULL,
+    label  VARCHAR(128) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_erratafile_type_id_idx
     ON rhnErrataFileType (id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_erratafile_type_label_idx
     ON rhnErrataFileType (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_erratafile_type_id_seq;
 

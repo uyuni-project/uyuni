@@ -1,5 +1,9 @@
+-------------------------------------------------------------------
+Mon Feb 17 12:39:00 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
 - disable globbing for api subcommand to allow wildcards in filter
-  settings
+  settings (bsc#1163871)
 
 -------------------------------------------------------------------
 Thu Jan 30 14:47:39 CET 2020 - jgonzalez@suse.com

@@ -1339,7 +1339,7 @@ ORDER BY S.ID
   SELECT SERVER_ID AS ID, OUTDATED_PACKAGES, SERVER_NAME, security_errata, bug_errata, enhancement_errata,
           SERVER_ADMINS, GROUP_COUNT, MODIFIED, CHANNEL_LABELS, CHANNEL_ID, HISTORY_COUNT,
           unique_crash_count, total_crash_count, LAST_CHECKIN_DAYS_AGO, PENDING_UPDATES, OS, RELEASE,
-          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED
+          SERVER_ARCH_NAME, LAST_CHECKIN, LOCKED, PROXY_ID AS IS_RHN_PROXY
   FROM  rhnServerOverview
   WHERE  server_id IN (%s)
 ORDER BY  UPPER(COALESCE(SERVER_NAME, '(none)')), SERVER_ID
@@ -1554,13 +1554,6 @@ SELECT id,
     </query>
 </callable-mode>
 
-<callable-mode name="can_entitle_server">
-  <query params="sid, entitlement">
-    {:retval = call rhn_entitlements.can_entitle_server(:sid, :entitlement)}
-  </query>
-</callable-mode>
-
-
 <callable-mode name="delete_action_for_system">
   <query params="action_id, server_id">
       {call rhn_server.remove_action(:server_id, :action_id)}
@@ -1568,17 +1561,46 @@ SELECT id,
 
 </callable-mode>
 
-<callable-mode name="insert_into_servergroup_maybe">
-  <query params="server_id, server_group_id">
-      {:retval = call rhn_server.insert_into_servergroup_maybe(:server_id, :server_group_id)}
+<callable-mode name="update_permissions_for_server_group">
+  <query params="sgid">
+      {call rhn_cache.update_perms_for_server_group(:sgid)}
   </query>
 </callable-mode>
 
-<callable-mode name="delete_from_servergroup">
-  <query params="server_id, server_group_id">
-      {call rhn_server.delete_from_servergroup(:server_id, :server_group_id)}
+<write-mode name="add_servers_to_server_group">
+  <query params="sgid">
+    INSERT INTO rhnServerGroupMembers(server_id, server_group_id)
+    SELECT S.id server_id, :sgid
+    FROM rhnServerGroup SG, rhnServer S
+    WHERE S.id IN (%s)
+      AND SG.id = :sgid
+      AND S.org_id = SG.org_id
+      AND NOT EXISTS (SELECT 1
+                      FROM rhnServerGroupMembers SGM
+                      WHERE SGM.server_id = S.id
+                        AND SGM.server_group_id = SG.id)
   </query>
-</callable-mode>
+</write-mode>
+
+<write-mode name="update_current_members_of_server_group">
+  <query params="sgid, members_count">
+    UPDATE rhnServerGroup
+    SET current_members = current_members + (:members_count)
+    WHERE id = :sgid
+  </query>
+</write-mode>
+
+<write-mode name="delete_from_servergroup">
+  <query params="sgid">
+    DELETE FROM rhnServerGroupMembers
+    WHERE server_group_id = :sgid
+	  AND server_id IN (%s)
+	  AND EXISTS (SELECT 1
+                  FROM rhnServerGroupMembers SGM
+                  WHERE SGM.server_id = server_id
+                    AND SGM.server_group_id = :sgid)
+  </query>
+</write-mode>
 
 <callable-mode name="update_needed_cache">
   <query params="server_id">
@@ -1691,23 +1713,38 @@ SELECT 1
   </query>
 </mode>
 
+<mode name="filter_systems_available_to_user">
+  <query params="uid">
+    SELECT USP.server_id
+    FROM rhnUserServerPerms USP
+    WHERE USP.user_id = :uid
+      AND USP.server_id IN (%s)
+  </query>
+</mode>
+
 <callable-mode name="entitle_server">
   <query params="sid, entitlement">
 {call rhn_entitlements.entitle_server(:sid, :entitlement)}
   </query>
 </callable-mode>
 
-<callable-mode name="unentitle_server">
-  <query params="sid">
-{call rhn_entitlements.unentitle_server(:sid)}
+<write-mode name="update_server_history_for_entitlement_event">
+  <query params="sid, entitlement_label, summary">
+    INSERT INTO rhnServerHistory (id, server_id, summary, details )
+    VALUES (nextval('rhn_event_id_seq'), :sid,
+            :summary,
+            CASE :entitlement_label
+              WHEN 'enterprise_entitled' then 'Management'
+              WHEN 'bootstrap_entitled' then 'Bootstrap'
+              WHEN 'salt_entitled' then 'Salt'
+              WHEN 'foreign_entitled' then 'Foreign'
+              WHEN 'virtualization_host' then 'Virtualization'
+              WHEN 'container_build_host' then 'Container'
+              WHEN 'osimage_build_host' then 'OS Image'
+              WHEN 'monitoring_entitled' then 'Monitoring'
+            END)
   </query>
-</callable-mode>
-
-<callable-mode name="remove_server_entitlement">
-  <query params="sid, entitlement">
-{call rhn_entitlements.remove_server_entitlement(:sid, :entitlement)}
-  </query>
-</callable-mode>
+</write-mode>
 
 <mode name="systems_in_set_with_channel">
   <query params="user_id, channel_id">

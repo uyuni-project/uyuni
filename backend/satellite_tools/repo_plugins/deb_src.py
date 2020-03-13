@@ -29,6 +29,8 @@ from spacewalk.satellite_tools.download import get_proxies
 from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common import repo
+
 try:
     #  python 2 
     from urllib import unquote
@@ -43,7 +45,7 @@ RETRY_DELAY = 1
 FORMAT_PRIORITY = ['.xz', '.gz', '']
 
 
-class DebPackage(object):
+class DebPackage:
     def __init__(self):
         self.name = None
         self.epoch = None
@@ -77,7 +79,7 @@ class DebPackage(object):
                                                             self.checksum)])
 
 
-class DebRepo(object):
+class DebRepo:
     # url example - http://ftp.debian.org/debian/dists/jessie/main/binary-amd64/
     def __init__(self, url, cache_dir, pkg_dir, proxy_addr="", proxy_user="", proxy_pass=""):
         self.url = url
@@ -100,6 +102,16 @@ class DebRepo(object):
         self.pkgdir = pkg_dir
         self.http_headers = {}
 
+    def verify(self):
+        """
+        Verify package index checksum and signature.
+
+        :return:
+        """
+        # TODO: Signature verification is not yet implemented here.
+        if not repo.DpkgRepo(self.url).verify_packages_index():
+            raise repo.GeneralRepoException("Package index checksum failure")
+
     def _download(self, url):
         if url.startswith('file://'):
             srcpath = unquote(url[len('file://'):])
@@ -114,19 +126,19 @@ class DebRepo(object):
                 if self.proxy:
                     (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.proxy)
                     proxies = {
-                        'http' : 'http://'+netloc,
-                        'https' : 'http://'+netloc
+                        'http': 'http://' + netloc,
+                        'https': 'http://' + netloc
                     }
                     if self.proxy_username and self.proxy_password:
                         proxies = {
-                            'http' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+netloc,
-                            'https' : 'http://'+self.proxy_username+":"+self.proxy_password+"@"+netloc,
+                            'http': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
+                            'https': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
                         }
                 data = requests.get(url, proxies=proxies, cert=(self.sslclientcert, self.sslclientkey),
                                     verify=self.sslcacert)
                 if not data.ok:
                     return ''
-                filename = self.basecachedir + '/' + os.path.basename(url)
+                filename = os.path.join(self.basecachedir, os.path.basename(urlparse.urlparse(url).path))
                 fd = open(filename, 'wb')
                 try:
                     for chunk in data.iter_content(chunk_size=1024):
@@ -135,8 +147,8 @@ class DebRepo(object):
                     if fd is not None:
                         fd.close()
                 return filename
-            except requests.exceptions.RequestException:
-                print("ERROR: requests.exceptions.RequestException occured")
+            except requests.exceptions.RequestException as exc:
+                print("ERROR: requests.exceptions.RequestException occurred:", exc)
                 time.sleep(RETRY_DELAY)
 
         return ''
@@ -147,7 +159,7 @@ class DebRepo(object):
         to_return = []
 
         for extension in FORMAT_PRIORITY:
-            (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.url)
+            scheme, netloc, path, query, fragid = urlparse.urlsplit(self.url)
             url = urlparse.urlunsplit((scheme, netloc,
                                        path + ('/' if not path.endswith('/') else '') + 'Packages' + extension, query, fragid))
             filename = self._download(url)
@@ -215,7 +227,7 @@ class DebRepo(object):
         return to_return
 
 
-class ContentSource(object):
+class ContentSource:
 
     def __init__(self, url, name, insecure=False, interactive=True, yumsrc_conf=None,
                  org="1", channel_label="", no_mirrors=False, ca_cert_file=None,
@@ -235,7 +247,9 @@ class ContentSource(object):
         self.authtoken = None
 
         self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
-                            os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'), self.proxy_addr, self.proxy_user, self.proxy_pass)
+                            os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
+                            self.proxy_addr, self.proxy_user, self.proxy_pass)
+        self.repo.verify()
 
         self.num_packages = 0
         self.num_excluded = 0
@@ -246,7 +260,7 @@ class ContentSource(object):
             self.authtoken = query
 
     def get_md_checksum_type(self):
-        return None
+        pass
 
     def get_products(self):
         # No products
@@ -263,11 +277,10 @@ class ContentSource(object):
         self.num_packages = len(pkglist)
         if latest:
             latest_pkgs = {}
-            new_pkgs = []
             for pkg in pkglist:
-               ident = '{}.{}'.format(pkg.name, pkg.arch)
-               if ident not in latest_pkgs.keys() or LooseVersion(pkg.evr()) > LooseVersion(latest_pkgs[ident].evr()):
-                  latest_pkgs[ident] = pkg
+                ident = '{}.{}'.format(pkg.name, pkg.arch)
+                if ident not in latest_pkgs.keys() or LooseVersion(pkg.evr()) > LooseVersion(latest_pkgs[ident].evr()):
+                    latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
         pkglist.sort(key = cmp_to_key(self._sort_packages))
 
@@ -302,6 +315,7 @@ class ContentSource(object):
             return 0
         else:
             return -1
+
     @staticmethod
     def _filter_packages(packages, filters):
         """ implement include / exclude logic
@@ -364,12 +378,11 @@ class ContentSource(object):
     @staticmethod
     def get_updates():
         # There isn't any update info in the repository
-        return ('', [])
+        return '', []
 
     @staticmethod
     def get_groups():
-        # There aren't any
-        return None
+        pass
 
     # Get download parameters for threaded downloader
     def set_download_parameters(self, params, relative_path, target_file, checksum_type=None,
@@ -403,4 +416,3 @@ class ContentSource(object):
         # pylint: disable=W0613
         # Called from import_kickstarts, not working for deb repo
         log2(0, 0, "Unable to download path %s from deb repo." % path, stream=sys.stderr)
-        return None

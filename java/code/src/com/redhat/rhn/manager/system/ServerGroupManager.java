@@ -29,7 +29,13 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.utils.Opt;
+
+import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,6 +53,12 @@ import java.util.stream.Collectors;
 public class ServerGroupManager {
 
     private static final ServerGroupManager MANAGER = new ServerGroupManager();
+
+    /** Logger */
+    private static final Logger LOG = Logger.getLogger(ServerGroupManager.class);
+
+    private MinionPillarFileManager minionGroupMembershipPillarFileManager =
+            new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
 
     /**
      * Singleton Instance to get manager object
@@ -334,12 +346,19 @@ public class ServerGroupManager {
     public void addServers(ServerGroup sg, Collection<Server> servers, User loggedInUser) {
         validateAccessCredentials(loggedInUser, sg, sg.getName());
         validateAdminCredentials(loggedInUser);
-        for (Server s : servers) {
-            SystemManager.addServerToServerGroup(s, sg);
-            s.asMinionServer().ifPresent(
-                    SaltStateGeneratorService.INSTANCE::generatePillar);
-        }
 
+        SystemManager.addServersToServerGroup(servers, sg);
+        updatePillarAfterGroupUpdateForServers(servers);
+    }
+
+    /**
+     * Updates the pillar regarding the server groups those servers belong to, for only the minion servers of the
+     * passed servers collection.
+     * @param servers a collection of servers to add.
+     */
+    public void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
+        servers.stream().map(server -> server.asMinionServer()).flatMap(Opt::stream)
+                .forEach(this.minionGroupMembershipPillarFileManager::generatePillarFile);
     }
 
     /**
@@ -363,10 +382,9 @@ public class ServerGroupManager {
      * @param servers a collection of servers to dissociate
      */
     public void removeServers(ServerGroup sg, Collection<Server> servers) {
-        for (Server s : servers) {
-            SystemManager.removeServerFromServerGroup(s, sg);
-            s.asMinionServer().ifPresent(
-                    SaltStateGeneratorService.INSTANCE::generatePillar);
+        if (!servers.isEmpty()) {
+            SystemManager.removeServersFromServerGroup(servers, sg);
+            updatePillarAfterGroupUpdateForServers(servers);
         }
     }
 

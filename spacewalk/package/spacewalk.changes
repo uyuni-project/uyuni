@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Mar 11 10:48:54 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
+- explicitly require postgresql10 package (bsc#1165926)
+- drop unused oracle subpackage
+
+-------------------------------------------------------------------
 Wed Nov 27 16:43:46 CET 2019 - jgonzalez@suse.com
 
 - version 4.1.1-1

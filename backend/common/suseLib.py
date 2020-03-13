@@ -386,7 +386,7 @@ def findAllExtensionProductsOf(baseId, rootId):
     rs = h.fetchall_dict()
     return rs or []
 
-def channelForProduct(product, ostarget, parent_id=None, org_id=None,
+def channelForProduct(product, parent_id=None, org_id=None,
                       user_id=None):
     """Find mandatory Channels for a given product and ostarget.
 
@@ -402,7 +402,6 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
 
     vals = {
         'pid': product_id,
-        'ostarget': ostarget,
         'org_id': org_id,
         'user_id': user_id
     }
@@ -425,11 +424,9 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
         rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe') subscribable
         FROM rhnChannel c
         JOIN suseProductChannel spc ON spc.channel_id = c.id
-        JOIN suseOSTarget sot ON sot.channel_arch_id = c.channel_arch_id
         JOIN rhnChannelArch ca ON c.channel_arch_id = ca.id
         WHERE spc.product_id = :pid
           AND spc.mandatory = 'Y'
-          AND sot.os = :ostarget
           AND c.parent_channel %s""" % parent_statement)
     h.execute(**vals)
     rs = h.fetchall_dict()

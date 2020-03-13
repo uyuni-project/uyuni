@@ -16,15 +16,15 @@
 
 CREATE TABLE rhnTagName
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_tn_id_pk PRIMARY KEY,
-    name      VARCHAR2(128) NOT NULL,
-    created   timestamp with local time zone
+    name      VARCHAR(128) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_tn_name_uq

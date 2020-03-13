@@ -31,14 +31,17 @@ public abstract class DocWriter {
 
 
     protected VelocityHelper serializerRenderer;
+    private boolean debug = false;
 
 
     /**
      * Constructor
      *
+     * @param debugIn whether to show debugging messages
+     *
      */
-    public DocWriter() {
-
+    public DocWriter(boolean debugIn) {
+        debug = debugIn;
     }
 
     protected  void writeFile(String filePath, String contents) throws Exception {
@@ -72,8 +75,6 @@ public abstract class DocWriter {
      */
     public  String generateIndex(List<Handler> handlers, String templateDir)
                 throws Exception {
-
-
         VelocityHelper vh = new VelocityHelper(templateDir);
         vh.addMatch("handlers", handlers);
         String output = vh.renderTemplateFile(ApiDoclet.API_HEADER_FILE);
@@ -91,8 +92,8 @@ public abstract class DocWriter {
      */
     public String generateHandler(Handler handler, String templateDir)
             throws Exception {
-
         for (ApiCall call : handler.getCalls()) {
+            log(String.format("Generating handler call %s.%s", handler.getName(), call.getName()));
             call.setReturnDoc(renderMacro(templateDir, call.getReturnDoc(),
                     call.getName()));
             List<String> params = new ArrayList<String>();
@@ -126,7 +127,8 @@ public abstract class DocWriter {
      */
     public String renderMacro(String templateDir, String input, String description)
                     throws Exception {
-        VelocityHelper macros = new VelocityHelper();
+        log("Rendering macro: " + input + ", " + description);
+        VelocityHelper macros = new VelocityHelper(templateDir);
         String macro = readFile(templateDir + ApiDoclet.API_MACROS_FILE);
 
         try {
@@ -155,10 +157,11 @@ public abstract class DocWriter {
     public void renderSerializers(String templateDir, Map<String, String> serializers)
                     throws Exception {
 
-        serializerRenderer = new VelocityHelper();
+        serializerRenderer = new VelocityHelper(templateDir);
 
         //macrotize the serializers
         for (String name : serializers.keySet()) {
+            log("Rendering serializer macro: " + name);
             String temp = renderMacro(templateDir, serializers.get(name), name);
             serializers.put(name, temp);
             serializerRenderer.addMatch(name, serializers.get(name));
@@ -168,6 +171,7 @@ public abstract class DocWriter {
         for (int i = 0; i < 3; i++) {
             VelocityHelper tempRenderer = new VelocityHelper();
             for (String name : serializers.keySet()) {
+                log("Rendering serializer: " + name);
                 String temp = serializerRenderer.renderTemplate(serializers.get(name));
                 serializers.put(name, temp);
                 tempRenderer.addMatch(name, temp);
@@ -187,4 +191,9 @@ public abstract class DocWriter {
             Map<String, String> serializers) throws Exception;
 
 
+    protected void log(String msg) {
+        if (debug) {
+            System.err.println(msg);
+        }
+    }
 }

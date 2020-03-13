@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnRegTokenEntitlement
 (
-    reg_token_id          NUMBER NOT NULL
+    reg_token_id          NUMERIC NOT NULL
                               CONSTRAINT rhn_reg_tok_ent_rtid_fk
                                   REFERENCES rhnRegToken (id)
                                   ON DELETE CASCADE,
-    server_group_type_id  NUMBER NOT NULL
+    server_group_type_id  NUMERIC NOT NULL
                               CONSTRAINT rhn_reg_tok_ent_sgtid_fk
                                   REFERENCES rhnServerGroupType (id)
                                   ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_rte_rtid_sgtid_uq_idx
     ON rhnRegTokenEntitlement (reg_token_id, server_group_type_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 

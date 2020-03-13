@@ -24,7 +24,7 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.1.2
+Version:        4.1.4
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -47,7 +47,6 @@ BuildRequires:  fdupes
 %endif
 
 %define rhnroot /etc/sysconfig/rhn/
-%define oracle %{rhnroot}/oracle
 %define postgres %{rhnroot}/postgres
 
 %description
@@ -67,20 +66,15 @@ Provides schema-source-sanity-check.pl script for external usage.
 %setup -q
 
 %build
-%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1110
 find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
-%endif
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
 pod2man spacewalk-schema-upgrade spacewalk-schema-upgrade.1
 pod2man spacewalk-sql spacewalk-sql.1
 
 %install
 install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}
-install -m 0755 -d $RPM_BUILD_ROOT%{oracle}
 install -m 0755 -d $RPM_BUILD_ROOT%{postgres}
-install -m 0644 oracle/main.sql $RPM_BUILD_ROOT%{oracle}
 install -m 0644 postgres/main.sql $RPM_BUILD_ROOT%{postgres}
-install -m 0644 oracle/end.sql $RPM_BUILD_ROOT%{oracle}/upgrade-end.sql
 install -m 0644 postgres/end.sql $RPM_BUILD_ROOT%{postgres}/upgrade-end.sql
 install -m 0755 -d $RPM_BUILD_ROOT%{_bindir}
 install -m 0755 spacewalk-schema-upgrade $RPM_BUILD_ROOT%{_bindir}
@@ -112,7 +106,6 @@ fi
 %files
 %defattr(-,root,root)
 %dir %{rhnroot}
-%{oracle}
 %{postgres}
 %{rhnroot}/schema-upgrade
 %{_bindir}/spacewalk-schema-upgrade

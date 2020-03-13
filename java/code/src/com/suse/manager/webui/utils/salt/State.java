@@ -36,7 +36,7 @@ public class State {
      *
      * @param mods state modules
      * @param pillar pillar data
-     * @return LocalCall<Map<String, ApplyResult>> result
+     * @return LocalCall&lt;Map&lt;String, ApplyResult&gt;&gt; result
      */
     public static LocalCall<Map<String, ApplyResult>> apply(List<String> mods, Optional<Map<String, Object>> pillar) {
         return com.suse.salt.netapi.calls.modules.State.apply(mods, pillar, Optional.of(true), Optional.empty());
@@ -51,7 +51,7 @@ public class State {
      * @param test  if run in test mode
      * @param returnType return type
      * @param <R> R
-     * @return LocalCall<R> result
+     * @return LocalCall&lt;R&gt; result
      */
     public static <R> LocalCall<R> apply(List<String> mods, Optional<Map<String, Object>> pillar,
                                          Optional<Boolean> queue, Optional<Boolean> test, Class<R> returnType) {
@@ -66,7 +66,7 @@ public class State {
      * @param test  if run in test mode
      * @param returnType return type
      * @param <R> R
-     * @return LocalCall<R> result
+     * @return LocalCall&lt;R&gt; result
      */
     public static <R> LocalCall<R> apply(List<String> mods, Optional<Map<String, Object>> pillar,
                                          Optional<Boolean> queue, Optional<Boolean> test,

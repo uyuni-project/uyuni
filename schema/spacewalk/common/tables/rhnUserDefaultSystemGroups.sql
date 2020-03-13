@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnUserDefaultSystemGroups
 (
-    user_id          NUMBER NOT NULL
+    user_id          NUMERIC NOT NULL
                          CONSTRAINT rhn_udsg_uid_fk
                              REFERENCES web_contact (id)
                              ON DELETE CASCADE,
-    system_group_id  NUMBER NOT NULL
+    system_group_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_udsg_cidffk
                              REFERENCES rhnServerGroup (id)
                              ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_udsg_uid_sgid_idx
     ON rhnUserDefaultSystemGroups (user_id, system_group_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 
 CREATE INDEX rhn_udsg_sgid_idx
     ON rhnUserDefaultSystemGroups (system_group_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

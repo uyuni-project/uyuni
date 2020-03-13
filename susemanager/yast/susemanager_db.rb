@@ -186,45 +186,17 @@ module Yast
           Builtins.foreach(@settings) do |key, value|
             val = ""
             if key == "DB_BACKEND"
-              if @localdb
-                if FileUtils.Exists("/etc/init.d/oracle")
-                  Builtins.y2milestone("local db oracle detected")
-                  val = "oracle"
-                else
-                  Builtins.y2milestone("local db postgres detected")
-                  val = "postgresql"
-                end
-              else
-                val = "postgresql"
-              end
+              val = "postgresql"
 
-              oraclepkgs = [
-                "spacewalk-oracle",
-                "spacewalk-java-oracle",
-                "spacewalk-backend-sql-oracle"
-              ]
               postgrespkgs = [
                 "spacewalk-postgresql",
                 "spacewalk-java-postgresql",
                 "spacewalk-backend-sql-postgresql"
               ]
-              if val == "oracle"
-                # install oracle packages
-                install_packages = FilterPackageList(oraclepkgs, false)
-                remove_packages = FilterPackageList(postgrespkgs, true)
-                if Ops.greater_than(Builtins.size(install_packages), 0) ||
-                    Ops.greater_than(Builtins.size(remove_packages), 0)
-                  if !Package.DoInstallAndRemove(
-                      install_packages,
-                      remove_packages
-                    )
-                    Popup.Error(Message.FailedToInstallPackages)
-                  end
-                end
-              elsif val == "postgresql"
+              if val == "postgresql"
                 # install postgresql packages
                 install_packages = FilterPackageList(postgrespkgs, false)
-                remove_packages = FilterPackageList(oraclepkgs, true)
+                remove_packages = FilterPackageList([], true)
                 if Ops.greater_than(Builtins.size(install_packages), 0) ||
                     Ops.greater_than(Builtins.size(remove_packages), 0)
                   if !Package.DoInstallAndRemove(
@@ -252,17 +224,6 @@ module Yast
                     "echo \"export %1='%2'\" >> %3",
                     "MANAGER_DB_PORT",
                     "5432",
-                    @env_file
-                  )
-                )
-              elsif val == "oracle"
-                Builtins.setenv("MANAGER_DB_PORT", "1521", true)
-                SCR.Execute(
-                  path(".target.bash"),
-                  Builtins.sformat(
-                    "echo \"export %1='%2'\" >> %3",
-                    "MANAGER_DB_PORT",
-                    "1521",
                     @env_file
                   )
                 )

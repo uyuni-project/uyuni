@@ -1,3 +1,0 @@
-update rhnPackage
-   set summary = rtrim(translate(summary, chr(10), ' '))
- where summary <> rtrim(translate(summary, chr(10), ' '));

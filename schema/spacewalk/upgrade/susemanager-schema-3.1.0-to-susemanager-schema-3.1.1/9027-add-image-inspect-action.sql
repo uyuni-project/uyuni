@@ -15,45 +15,45 @@
 
 CREATE TABLE rhnActionImageInspect
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_inspect_id_pk PRIMARY KEY,
-    action_id        NUMBER NOT NULL
+    action_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_inspect_act_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    image_store_id NUMBER NOT NULL
+    image_store_id NUMERIC NOT NULL
                          CONSTRAINT rhn_act_image_inspect_is_fk
                              REFERENCES suseImageStore (id)
                              ON DELETE CASCADE,
-    tag              VARCHAR2(128),
-    name             VARCHAR2(128),
-    created          timestamp with local time zone
+    tag              VARCHAR(128),
+    name             VARCHAR(128),
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_act_image_inspect_aid_idx
     ON rhnActionImageInspect (action_id)
-    NOLOGGING;
+    ;
 
 CREATE SEQUENCE rhn_act_image_inspect_id_seq;
 
 
 CREATE TABLE rhnActionImageInspectResult
 (
-    server_id              NUMBER NOT NULL
+    server_id              NUMERIC NOT NULL
                                CONSTRAINT rhn_image_inspect_res_sid_fk
                                    REFERENCES rhnServer (id)
                                    ON DELETE CASCADE,
-    action_image_inspect_id NUMBER NOT NULL
+    action_image_inspect_id NUMERIC NOT NULL
                                CONSTRAINT rhn_image_inspect_res_aid_fk
                                    REFERENCES rhnActionImageInspect (id)
                                    ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_image_inspect_result_sa_uq
@@ -61,7 +61,7 @@ CREATE UNIQUE INDEX rhn_image_inspect_result_sa_uq
 
 CREATE INDEX rhn_image_inspect_res_ad_idx
     ON rhnActionImageInspectResult (action_image_inspect_id)
-    NOLOGGING;
+    ;
 
 insert into rhnActionType values (505, 'image.inspect', 'Inspect an Image', 'N', 'N');
 

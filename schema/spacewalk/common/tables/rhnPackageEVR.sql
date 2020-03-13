@@ -16,14 +16,14 @@
 
 CREATE TABLE rhnPackageEVR
 (
-    id       NUMBER NOT NULL
+    id       NUMERIC NOT NULL
                  CONSTRAINT rhn_pe_id_pk PRIMARY KEY,
-    epoch    VARCHAR2(16),
-    version  VARCHAR2(512) NOT NULL,
-    release  VARCHAR2(512) NOT NULL,
+    epoch    VARCHAR(16),
+    version  VARCHAR(512) NOT NULL,
+    release  VARCHAR(512) NOT NULL,
     evr      EVR_T NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 -- unique index definitions has been moved to

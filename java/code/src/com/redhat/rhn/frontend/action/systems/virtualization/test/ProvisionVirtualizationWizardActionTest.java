@@ -40,6 +40,8 @@ import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -57,6 +59,7 @@ import junit.framework.AssertionFailedError;
 public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCase {
 
     private Server s;
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * {@inheritDoc}
@@ -71,7 +74,7 @@ public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCa
         s.addChannel(ChannelFactoryTest.createBaseChannel(user));
         EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(user.getOrg(),
                 ServerFactory.lookupServerGroupTypeByLabel("enterprise_entitled"));
-        SystemManager.entitleServer(s, sg.getGroupType().getAssociatedEntitlement());
+        systemEntitlementManager.addEntitlementToServer(s, sg.getGroupType().getAssociatedEntitlement());
         Channel c = ChannelFactoryTest.createTestChannel(user);
         // Required so the Server has a base channel
         // otherwise we cant ks.

@@ -312,7 +312,7 @@ class PackageImport(ChannelPackageSubscription):
                 key = (eula['text'], eula['checksum'])
                 self.suseEula_data[key] = None
 
-        if package['extra_tags'] is not None:
+        if 'extra_tags' in package and package['extra_tags'] is not None:
             for tag in package['extra_tags']:
                 self.extraTags[tag['name']] = None
 
@@ -415,7 +415,7 @@ class PackageImport(ChannelPackageSubscription):
         fileList = package['files']
         for f in fileList:
             f['checksum_id'] = self.checksums[(f['checksum_type'], f['checksum'])]
-        if package['extra_tags'] is not None:
+        if 'extra_tags' in package and package['extra_tags'] is not None:
             for t in package['extra_tags']:
                 t['key_id'] = self.extraTags[t['name']]
 

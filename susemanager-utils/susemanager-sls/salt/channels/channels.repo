@@ -15,6 +15,9 @@ autorefresh={{ args['autorefresh'] }}
 {%- if grains['os_family'] == 'RedHat' %}
 baseurl={{protocol}}://{{hostname}}:{{port}}/rhn/manager/download/{{ chan }}
 susemanager_token={{ args['token'] }}
+{%- if grains['osmajorrelease'] >= 8 and args['cloned_nonmodular'] %}
+module_hotfixes=1
+{%- endif %}
 {%- else %}
 baseurl={{protocol}}://{{hostname}}:{{port}}/rhn/manager/download/{{ chan }}?{{ args['token'] }}
 {%- endif %}

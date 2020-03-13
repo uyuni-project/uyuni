@@ -11,10 +11,10 @@
 
 CREATE TABLE rhnPackageExtraTagKey
 (
-    id          NUMBER NOT NULL
+    id          NUMERIC NOT NULL
                     CONSTRAINT rhn_pkg_extra_tags_keys_id_pk PRIMARY KEY,
-    name        VARCHAR2(256) NOT NULL,
-    created     timestamp with local time zone
+    name        VARCHAR(256) NOT NULL,
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
 ;

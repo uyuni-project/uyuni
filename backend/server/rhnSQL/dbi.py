@@ -14,11 +14,10 @@
 #
 #
 
-from .const import ORACLE, POSTGRESQL
+from .const import POSTGRESQL
 
 # Map supported backend constants to a specific Python driver:
 BACKEND_DRIVERS = {
-    ORACLE: "cx_Oracle",
     POSTGRESQL: "postgresql",
 }
 
@@ -28,7 +27,7 @@ def get_database_module(backend=None):
 
     # Assume Oracle if no backend is specified:
     if backend is None:
-        driver = BACKEND_DRIVERS[ORACLE]
+        driver = BACKEND_DRIVERS[POSTGRESQL]
     else:
         driver = BACKEND_DRIVERS[backend]
 

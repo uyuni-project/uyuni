@@ -21,9 +21,11 @@ import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -31,6 +33,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SoftwareCrashDto;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
+import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
@@ -45,8 +48,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 
-import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -299,47 +302,130 @@ public class ServerFactory extends HibernateFactory {
         return paths;
     }
 
+    /**
+     * Adds Servers to a server group.
+     * @param servers the servers to add
+     * @param serverGroup The group to add the servers to
+     */
+    public static void addServersToGroup(Collection<Server> servers, ServerGroup serverGroup) {
+        List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+                .map(Server::getId).collect(Collectors.toList());
+
+        boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
+
+        if (serversUpdated) {
+            servers.stream().forEach(s -> s.addGroup(serverGroup));
+            if (serverGroup.isManaged()) {
+                updatePermissionsForServerGroup(serverGroup.getId());
+            }
+        }
+    }
+
+    private static boolean insertServersToGroup(List<Long> serverIds, Long sgid) {
+        WriteMode m = ModeFactory.getWriteMode("System_queries", "add_servers_to_server_group");
+
+        Map params = new HashMap();
+        params.put("sgid", sgid);
+
+        int insertsCount = m.executeUpdate(params, serverIds);
+
+        if (insertsCount > 0) {
+            updateCurrentMembersOfServerGroup(sgid, insertsCount);
+            return true;
+        }
+        return false;
+    }
+
+    private static void updateCurrentMembersOfServerGroup(Long sgid, int membersCount) {
+        WriteMode mode = ModeFactory.getWriteMode("System_queries", "update_current_members_of_server_group");
+
+        Map params = new HashMap();
+        params.put("sgid", sgid);
+        params.put("members_count", membersCount);
+
+        mode.executeUpdate(params);
+    }
+
+    private static void updatePermissionsForServerGroup(Long sgid) {
+        CallableMode m = ModeFactory.getCallableMode("System_queries",
+                "update_permissions_for_server_group");
+        Map params = new HashMap();
+        params.put("sgid", sgid);
+
+        m.execute(params, new HashMap());
+    }
 
     /**
      * Adds a Server to a group.
      * @param serverIn The server to add
      * @param serverGroupIn The group to add the server to
      */
-    public static void addServerToGroup(Server serverIn,
-            ServerGroup serverGroupIn) {
-        Long sid = serverIn.getId();
-        Long sgid = serverGroupIn.getId();
-
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
-                "insert_into_servergroup_maybe");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
-
-        inParams.put("server_id", sid);
-        inParams.put("server_group_id", sgid);
-        // Outparam
-        outParams.put("retval", Types.NUMERIC);
-
-        m.execute(inParams, outParams);
+    public static void addServerToGroup(Server serverIn, ServerGroup serverGroupIn) {
+        addServersToGroup(Arrays.asList(serverIn), serverGroupIn);
     }
 
     /**
-     * Removes a Server from a group
-     * @param sid The server id to remove
-     * @param sgid The group id to remove the server from
+     * Adds a server history event after an entitlement event occurred
+     * @param server the server
+     * @param ent the entitlement
+     * @param summary the summary of the event
      */
-    public static void removeServerFromGroup(Long sid, Long sgid) {
-        CallableMode m = ModeFactory.getCallableMode("System_queries",
-                "delete_from_servergroup");
-        Map inParams = new HashMap();
-        Map outParams = new HashMap();
+    public static void addServerHistoryWithEntitlementEvent(Server server, Entitlement ent, String summary) {
+        Map<String, Object> in = new HashMap<String, Object>();
+        in.put("sid", server.getId());
+        in.put("entitlement_label", ent.getLabel());
+        in.put("summary", summary);
 
-        inParams.put("server_id", sid);
-        inParams.put("server_group_id", sgid);
-        // Outparam
-        // outParams.put("retval", Integer.valueOf(Types.NUMERIC));
+        WriteMode m = ModeFactory.getWriteMode("System_queries", "update_server_history_for_entitlement_event");
+        m.executeUpdate(in);
 
-        m.execute(inParams, outParams);
+        log.debug("update_server_history_for_entitlement_event mode query executed.");
+    }
+
+    /**
+     * Removes Servers from a server group.
+     * @param servers The servers to remove
+     * @param serverGroup The group to remove the servers from
+     */
+    public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
+        List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
+                .map(Server::getId).collect(Collectors.toList());
+
+        boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
+
+        if (serversUpdated) {
+            servers.stream().forEach(s -> s.removeGroup(serverGroup));
+            if (serverGroup.isManaged()) {
+                updatePermissionsForServerGroup(serverGroup.getId());
+            }
+        }
+        else {
+            throw new ServerNotInGroupException();
+        }
+    }
+
+    private static boolean removeServersFromGroup(List<Long> serverIds, Long sgid) {
+        WriteMode m = ModeFactory.getWriteMode("System_queries", "delete_from_servergroup");
+
+        Map params = new HashMap();
+        params.put("sgid", sgid);
+
+        int removesCount = m.executeUpdate(params, serverIds);
+
+        if (removesCount > 0) {
+            updateCurrentMembersOfServerGroup(sgid, -removesCount);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Removes a Server from a group.
+     * @param serverIn The server to remove
+     * @param serverGroupIn The group to remove the server from
+     */
+    public static void removeServerFromGroup(Server serverIn, ServerGroup serverGroupIn) {
+        removeServersFromGroup(Arrays.asList(serverIn), serverGroupIn);
     }
 
     /**
@@ -1258,4 +1344,16 @@ public class ServerFactory extends HibernateFactory {
         return results.stream().collect(toMap(row -> row[0].toString(), row -> (Long)row[1]));
     }
 
+    /**
+     * List all Systems with orgId.
+     *
+     * @param orgId The organization id
+     * @return List of servers
+     */
+    public static List<Server> listOrgSystems(long orgId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("orgId", orgId);
+        return singleton.listObjectsByNamedQuery(
+                "Server.listOrgSystems", params);
+    }
 }

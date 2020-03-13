@@ -35,6 +35,7 @@ import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.utils.Opt;
 import java.net.IDN;
 import java.sql.Timestamp;
@@ -49,6 +50,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
@@ -116,7 +118,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<ServerHistoryEvent> history = new HashSet<ServerHistoryEvent>();
     private Set<InstalledPackage> packages = new HashSet<>();
     private ProxyInfo proxyInfo;
-    private Set<ServerGroup> groups;
+    private Set<ServerGroup> groups = new HashSet<>();
     private Set<ClientCapability> capabilities = new HashSet<>();
     private CrashCount crashCount;
     private Set<Crash> crashes;
@@ -818,19 +820,30 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * The set of ServerGroup(s) that this Server is a member of
+     * The set of group types of the entitled server groups that this Server is a member of
      * @return Returns the serverGroups.
      */
-    public List<EntitlementServerGroup> getEntitledGroups() {
-        return ServerGroupFactory.listEntitlementGroups(this);
+    public List<ServerGroupType> getEntitledGroupTypes() {
+        return this.groups.stream().filter(g ->g.getGroupType() != null)
+                .map(ServerGroup::getGroupType).collect(Collectors.toList());
     }
 
     /**
-     * The set of ServerGroup(s) that this Server is a member of
+     * The set of entitled ServerGroup(s) that this Server is a member of
+     * @return Returns the serverGroups.
+     */
+    public List<EntitlementServerGroup> getEntitledGroups() {
+        return this.groups.stream().filter(g ->g.getGroupType() != null)
+                .map(s -> (EntitlementServerGroup) s).collect(Collectors.toList());
+    }
+
+    /**
+     * The set of managed ServerGroup(s) that this Server is a member of
      * @return Returns the serverGroups.
      */
     public List<ManagedServerGroup> getManagedGroups() {
-        return ServerGroupFactory.listManagedGroups(this);
+        return this.groups.stream().filter(g -> g.getGroupType() == null)
+                .map(s -> (ManagedServerGroup) s).collect(Collectors.toList());
     }
 
     /**
@@ -1355,21 +1368,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return true if the server has the given Entitlement.
      */
     public boolean hasEntitlement(Entitlement entitlement) {
-        List<?> grps = getEntitledGroups();
-        for (Iterator<?> itr = grps.iterator(); itr.hasNext();) {
-            ServerGroup g = (ServerGroup) itr.next();
-
-            // The server's group type can be null if the user has created some
-            // custom server groups.  If so, we won't check it against the
-            // given entitlement.
-
-            ServerGroupType groupType = g.getGroupType();
-            if (groupType.getLabel().equals(entitlement.getLabel())) {
-                return true;
-            }
-        }
-
-        return false;
+        return this.getEntitledGroupTypes().stream().anyMatch(sgt -> sgt.getLabel().equals(entitlement.getLabel()));
     }
 
     /**
@@ -1379,15 +1378,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return a set of Entitlement objects
      */
     public Set<Entitlement> getEntitlements() {
-        Set<Entitlement> entitlements = new HashSet<Entitlement>();
-
-        Iterator<EntitlementServerGroup> i = getEntitledGroups().iterator();
-        while (i.hasNext()) {
-            ServerGroup grp = i.next();
-            entitlements.add(EntitlementManager.getByName(
-                    grp.getGroupType().getLabel()));
-        }
-        return entitlements;
+        return this.getEntitledGroupTypes().stream().map(sgt -> EntitlementManager.getByName(sgt.getLabel()))
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -1395,42 +1387,21 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Entitlement that is the base entitlement for the server
      */
     public Entitlement getBaseEntitlement() {
-        Entitlement baseEntitlement = null;
-        Iterator<EntitlementServerGroup> i = getEntitledGroups().iterator();
+        List<ServerGroupType> serverGroupTypes = getEntitledGroupTypes();
 
-        while (i.hasNext() && baseEntitlement == null) {
-            ServerGroupType sgt = (i.next()).getGroupType();
-
-            if (sgt.isBase()) {
-                baseEntitlement = EntitlementManager.getByName(sgt.getLabel());
-            }
-        }
-
-        return baseEntitlement;
+       return serverGroupTypes.stream().filter(ServerGroupType::isBase).findFirst()
+                .map(sgt -> EntitlementManager.getByName(sgt.getLabel())).orElse(null);
     }
 
     /**
-     * Base entitlement for the Server.
-     * @param baseIn to update to
+     * Retrieves the Id of the base entitlement for the Server.
+     * @return Entitlement Id of the base entitlement for the server
      */
-    public void setBaseEntitlement(Entitlement baseIn) {
-        ServerGroupType verify = ServerFactory.
-                lookupServerGroupTypeByLabel(baseIn.getLabel());
-        if (!verify.isBase()) {
-            throw new IllegalArgumentException("baseIn is not a base entitlement");
-        }
+    public Optional<Long> getBaseEntitlementId() {
+        List<ServerGroupType> serverGroupTypes = getEntitledGroupTypes();
 
-        Entitlement baseEntitlement = this.getBaseEntitlement();
-        if (baseEntitlement != null && baseIn.equals(baseEntitlement)) {
-            // noop if there is no change
-            return;
-        }
-        if (baseEntitlement != null) {
-            this.getEntitlements().remove(baseEntitlement);
-            SystemManager.removeServerEntitlement(this.getId(), baseEntitlement);
-        }
-
-        SystemManager.entitleServer(this, baseIn);
+       return serverGroupTypes.stream().filter(ServerGroupType::isBase).findFirst()
+                .map(ServerGroupType::getId);
     }
 
     /**
@@ -1438,19 +1409,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Set of entitlements that are add-on entitlements for the server
      */
     public Set<Entitlement> getAddOnEntitlements() {
-        Set<Entitlement> s = new HashSet<Entitlement>();
-
-        Iterator<?> i = getEntitledGroups().iterator();
-
-        while (i.hasNext()) {
-            ServerGroupType sgt = ((ServerGroup) i.next()).getGroupType();
-
-            if (!sgt.isBase()) {
-                s.add(EntitlementManager.getByName(sgt.getLabel()));
-            }
-        }
-
-        return s;
+        return this.getEntitledGroupTypes().stream().filter(Predicate.not(ServerGroupType::isBase))
+                .map(sgt -> EntitlementManager.getByName(sgt.getLabel())).collect(Collectors.toSet());
     }
 
     /**
@@ -2148,5 +2108,55 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setPayg(boolean paygIn) {
         payg = paygIn;
+    }
+
+    /**
+     *
+     * @return Returns the org Id.
+     */
+    public Long getOrgId() {
+        return org.getId();
+    }
+
+    /**
+     * Adds a server group to this server
+     * @param serverGroup the server group
+     * @return true if the server groups of this server changed as a result of the call
+     */
+    public boolean addGroup(ServerGroup serverGroup) {
+        return this.groups.add(serverGroup);
+    }
+
+    /**
+     * Removes a server group from this server
+     * @param serverGroup the serverGroup
+     * @return true if the server groups of this server changed as a result of the call
+     */
+    public boolean removeGroup(ServerGroup serverGroup) {
+        return this.groups.remove(serverGroup);
+    }
+
+    /**
+     * Retrieves the server group that matches the passed entitlement, if this server is a member of.
+     * @param ent the entitlement
+     * @return the server group
+     */
+    public Optional<EntitlementServerGroup> findServerGroupByEntitlement(Entitlement ent) {
+        String entitlementLabel = ent.getLabel();
+        return this.getEntitledGroups().stream().filter(g -> g.getGroupType().getLabel().equals(entitlementLabel))
+                .findFirst();
+    }
+
+    /**
+     * Return the channel hostname for this server
+     *
+     * If case this server is directly connected to the SUMA Server, this method returns the
+     * this server's hostname. If, otherwise, the client is connected to the SUMA Server via a Proxy, this
+     * method returns the hostname of the first Proxy the client is connected to
+     * @return the channel hostname
+     */
+    public String getChannelHost() {
+        return this.getFirstServerPath().map(p -> p.getHostname())
+                .orElseGet(() -> ConfigDefaults.get().getCobblerHost());
     }
 }

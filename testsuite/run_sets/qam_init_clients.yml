@@ -10,9 +10,9 @@
 #- features/qam/init_clients/ceos6_minion.feature
 #- features/qam/init_clients/ceos6_ssh_minion.feature
 #- features/qam/init_clients/ceos6_client.feature
-- features/qam/init_clients/ceos7_minion.feature
-- features/qam/init_clients/ceos7_ssh_minion.feature
-- features/qam/init_clients/ceos7_client.feature
+#- features/qam/init_clients/ceos7_minion.feature
+#- features/qam/init_clients/ceos7_ssh_minion.feature
+#- features/qam/init_clients/ceos7_client.feature
 - features/qam/init_clients/sle11sp4_minion.feature
 - features/qam/init_clients/sle11sp4_ssh_minion.feature
 - features/qam/init_clients/sle11sp4_client.feature

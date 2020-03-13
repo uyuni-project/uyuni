@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnChannelPermission
 (
-    channel_id  NUMBER NOT NULL
+    channel_id  NUMERIC NOT NULL
                     CONSTRAINT rhn_cperm_cidffk
                         REFERENCES rhnChannel (id)
                         ON DELETE CASCADE,
-    user_id     NUMBER NOT NULL
+    user_id     NUMERIC NOT NULL
                     CONSTRAINT rhn_cperm_uid_fk
                         REFERENCES web_contact (id)
                         ON DELETE CASCADE,
-    role_id     NUMBER NOT NULL
+    role_id     NUMERIC NOT NULL
                     CONSTRAINT rhn_cperm_rid_fk
                         REFERENCES rhnChannelPermissionRole (id),
-    created     timestamp with local time zone
+    created     TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL,
-    modified    timestamp with local time zone
+    modified    TIMESTAMPTZ
                     DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_cperm_cid_uid_rid_idx
     ON rhnChannelPermission (channel_id, user_id, role_id)
-    TABLESPACE [[2m_tbs]];
+    ;
 

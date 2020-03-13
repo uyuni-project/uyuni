@@ -16,33 +16,33 @@
 
 CREATE TABLE rhnServerPackageArchCompat
 (
-    server_arch_id   NUMBER NOT NULL
+    server_arch_id   NUMERIC NOT NULL
                          CONSTRAINT rhn_sp_ac_said_fk
                              REFERENCES rhnServerArch (id),
-    package_arch_id  NUMBER NOT NULL
+    package_arch_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_sp_ac_paid_fk
                              REFERENCES rhnPackageArch (id),
-    preference       NUMBER NOT NULL,
-    created          timestamp with local time zone
+    preference       NUMERIC NOT NULL,
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_sp_ac_said_paid_pref
     ON rhnServerPackageArchCompat (server_arch_id, package_arch_id, preference)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE INDEX rhn_sp_ac_paid_pref
     ON rhnServerPackageArchCompat (package_arch_id)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 ALTER TABLE rhnServerPackageArchCompat
     ADD CONSTRAINT rhn_sp_ac_said_paid_uq UNIQUE (server_arch_id, package_arch_id);
 
 ALTER TABLE rhnServerPackageArchCompat
     ADD CONSTRAINT rhn_sp_ac_pref_said_uq UNIQUE (preference, server_arch_id)
-    USING INDEX TABLESPACE [[64k_tbs]];
+    ;
 

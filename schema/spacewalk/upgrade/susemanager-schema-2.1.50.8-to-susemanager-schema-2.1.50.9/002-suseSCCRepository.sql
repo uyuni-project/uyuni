@@ -15,23 +15,23 @@
 
 CREATE TABLE suseSCCRepository
 (
-    id             NUMBER NOT NULL PRIMARY KEY,
-    credentials_id NUMBER
+    id             NUMERIC NOT NULL PRIMARY KEY,
+    credentials_id NUMERIC
                        CONSTRAINT suse_sccrepo_credsid_fk
                        REFERENCES suseCredentials (id)
                        ON DELETE CASCADE,
     autorefresh    CHAR(1) NOT NULL
                        CONSTRAINT suse_sccrepo_ck
                        CHECK (autorefresh in ('Y', 'N')),
-    name           VARCHAR2(256),
-    distro_target  VARCHAR2(256),
-    description    VARCHAR2(2048),
-    url            VARCHAR2(2048),
-    created        timestamp with local time zone
+    name           VARCHAR(256),
+    distro_target  VARCHAR(256),
+    description    VARCHAR(2048),
+    url            VARCHAR(2048),
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 

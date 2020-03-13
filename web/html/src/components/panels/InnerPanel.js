@@ -7,6 +7,7 @@ type Props = {
   title: string,
   icon: string,
   buttons: React.Node,
+  buttonsLeft?: React.Node,
   children: React.Node,
 }
 
@@ -18,6 +19,11 @@ function InnerPanel(props: Props) {
         {props.title}
       </h2>
       <SectionToolbar>
+        <div className="selector-button-wrapper">
+          <div className="btn-group">
+            {props.buttonsLeft}
+          </div>
+        </div>
         <div className="action-button-wrapper">
           <div className="btn-group">
             {props.buttons}

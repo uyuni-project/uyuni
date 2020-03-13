@@ -19,17 +19,13 @@ class SuseData:
   def __init__(self):
     log_debug(4, "SuseData initialized")
     # format:
-    # suse_products { 'guid' = ...
-    #                 'secret' = ...
-    #                 'ostarget' = ...
-    #                 'products' = [{ 'name' = ..., 'version' = ..., 'release' = ..., 'arch' = ..., 'baseproduct' = ...},
-    #                               ...]
-    #               }
-    self.suse_products = {}
+    # suse_products [{ 'name' = ..., 'version' = ..., 'release' = ..., 'arch' = ..., 'baseproduct' = ...},
+    #               ...]
+    self.suse_products = []
 
   def get_suse_products(self):
       if len(self.suse_products) == 0:
-          self.suse_products = {}
+          self.suse_products = []
           self.load_suse_products()
       return self.suse_products
 
@@ -38,17 +34,6 @@ class SuseData:
       if not self.server['id']:
           return
       h = rhnSQL.prepare("""
-              SELECT s.guid,
-                     s.secret,
-                     ost.target ostarget
-                FROM suseServer s
-           LEFT JOIN suseOsTarget ost ON s.ostarget_id = ost.id
-               WHERE s.rhn_server_id = :server_id
-      """)
-      h.execute(server_id = self.server['id'])
-      self.suse_products = h.fetchone_dict() or {}
-      if len(self.suse_products) > 0:
-          h = rhnSQL.prepare("""
           SELECT sip.name,
                  sip.version,
                  sip.release,
@@ -58,117 +43,28 @@ class SuseData:
              JOIN rhnPackageArch rpa ON sip.arch_type_id = rpa.id
              JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
            WHERE ssip.rhn_server_id = :server_id
-          """)
-          h.execute(server_id = self.server['id'])
-          self.suse_products['products'] = h.fetchall_dict() or []
+      """)
+      h.execute(server_id = self.server['id'])
+      self.suse_products = h.fetchall_dict() or []
 
 
   def add_suse_products(self, suse_products):
       log_debug(1, suse_products)
-      if not isinstance(suse_products, dict):
-          log_error("argument type is not  hash: %s" % suse_products)
-          raise TypeError("This function requires a hash as an argument")
-      self.suse_products = suse_products
+      if isinstance(suse_products, dict):
+          self.suse_products = suse_products['products']
+      elif isinstance(suse_products, list):
+          self.suse_products = suse_products
 
   def save_suse_products_byid(self, sysid):
       log_debug(1, sysid, self.suse_products )
       if len(self.suse_products) == 0: # nothing loaded
           return 0
-      self.create_update_suse_products(self.server["id"],
-                                       self.suse_products["guid"],
-                                       self.suse_products["secret"],
-                                       self.suse_products["ostarget"],
-                                       self.suse_products["products"])
+      self.create_update_suse_products(self.server["id"], self.suse_products)
       return 0
 
-  def create_update_suse_products(self, sysid, guid, secret, ostarget, products):
-    log_debug(4, sysid, guid, ostarget, products)
+  def create_update_suse_products(self, sysid, products):
+    log_debug(4, sysid, products)
 
-    # search, if a suseServer with this guid exists which is not this server
-    # this would indicate a re-registration and we need to remove the old rhnServer
-    h = rhnSQL.prepare("""
-    SELECT
-           rhn_server_id as id
-      FROM suseServer
-     WHERE guid = :guid
-       AND rhn_server_id != :sysid
-    """)
-    h.execute(sysid = sysid, guid=guid)
-    d = h.fetchone_dict()
-    if d:
-      old_sysid = d['id']
-      log_debug(1, "Found duplicate server:", old_sysid)
-      delete_server = rhnSQL.Procedure("delete_server")
-      try:
-        if old_sysid != None:
-          delete_server(old_sysid)
-      except rhnSQL.SQLError:
-        log_error("Error deleting server: %s" % old_sysid)
-      # IF we delete rhnServer all reference are deleted too
-      #
-      # now switch suseServer to new id
-      #h = rhnSQL.prepare("""
-      #  UPDATE suseServer
-      #     SET rhn_server_id = :sysid
-      #  WHERE rhn_server_id = :oldsysid
-      #""")
-      #h.execute(sysid=sysid, oldsysid=old_sysid);
-
-    # remove this guid from suseDelServer list
-    h = rhnSQL.prepare("""
-      DELETE FROM suseDelServer
-      WHERE guid = :guid
-    """)
-    h.execute(guid=guid)
-    #rhnSQL.commit()
-
-    # search if suseServer with ID sysid exists
-    h = rhnSQL.prepare("""
-      SELECT
-        s.rhn_server_id as id,
-        s.guid,
-        s.secret,
-        sot.target as ostarget,
-        s.ncc_sync_required
-      FROM suseServer s
-      LEFT JOIN suseOSTarget sot ON s.ostarget_id = sot.id
-      WHERE rhn_server_id = :sysid
-    """)
-    h.execute(sysid = sysid)
-    t = h.fetchone_dict()
-    ncc_sync_required = False
-
-    # if not; create new suseServer
-    if not t:
-      ncc_sync_required = True
-      h = rhnSQL.prepare("""
-        INSERT INTO suseServer
-          (rhn_server_id, guid, secret, ostarget_id)
-          values (:sysid, :guid, :secret, 
-          (select id from suseOSTarget
-           where os = :ostarget))
-      """)
-      h.execute(sysid=sysid, guid=guid, secret=secret, ostarget=ostarget)
-    else:
-    # if yes, read values and compare them with the provided data
-    # update if needed
-      data = {
-        'rhn_server_id' : sysid,
-        'guid'          : guid,
-        'secret'        : secret,
-        'ostarget'      : ostarget
-      }
-
-      if t['guid'] != guid or t['secret'] != secret or t['ostarget'] != ostarget:
-        ncc_sync_required = True
-        h = rhnSQL.prepare("""
-          UPDATE suseServer
-             SET guid = :guid,
-                 secret = :secret,
-                 ostarget_id = (select id from suseOSTarget where os = :ostarget)
-           WHERE rhn_server_id = :rhn_server_id
-        """)
-        h.execute(*(), **data)
     # check products
     h = rhnSQL.prepare("""
       SELECT
@@ -192,7 +88,6 @@ class SuseData:
         VALUES(:sysid, :sipid)
       """)
       h.execute(sysid=sysid, sipid=sipid)
-      ncc_sync_required = True
 
     for pid in existing_products:
       h = rhnSQL.prepare("""
@@ -201,20 +96,6 @@ class SuseData:
            AND suse_installed_product_id = :pid
       """)
       h.execute(sysid=sysid, pid=pid)
-      ncc_sync_required = True
-
-    if ncc_sync_required:
-      # If the data have changed, we set the
-      # sync_required flag and reset the errors
-      # flag to give the registration another try
-      h = rhnSQL.prepare("""
-        UPDATE suseServer
-           SET ncc_sync_required = 'Y',
-               ncc_reg_error = 'N'
-        WHERE rhn_server_id = :sysid
-      """)
-      h.execute(sysid=sysid)
-    #rhnSQL.commit()
 
 
   def get_installed_product_id(self, product):

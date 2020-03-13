@@ -14,6 +14,32 @@
  */
 package com.redhat.rhn.domain.formula;
 
+import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
+import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.utils.Opt;
+
+import org.apache.log4j.Logger;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+import org.yaml.snakeyaml.error.YAMLException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,32 +62,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
-import com.suse.utils.Opt;
-import org.apache.log4j.Logger;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
-import org.yaml.snakeyaml.error.YAMLException;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.SystemManager;
-
-import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
-
 /**
  * Factory class for working with formulas.
  */
@@ -74,7 +74,7 @@ public class FormulaFactory {
     private static final Logger LOG = Logger.getLogger(FormulaFactory.class);
 
     private static String dataDir = "/srv/susemanager/formula_data/";
-    private static final String METADATA_DIR_MANAGER = "/usr/share/susemanager/formulas/metadata/";
+    private static String metadataDirManager = "/usr/share/susemanager/formulas/metadata/";
     private static final String METADATA_DIR_STANDALONE_SALT = "/usr/share/salt-formulas/metadata/";
     private static final String METADATA_DIR_CUSTOM = "/srv/formula_metadata/";
     private static final String PILLAR_DIR = "pillar/";
@@ -86,7 +86,6 @@ public class FormulaFactory {
     private static final String METADATA_FILE = "metadata.yml";
     private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
     private static final String PILLAR_FILE_EXTENSION = "json";
-    private static String metadataDirOfficial = METADATA_DIR_MANAGER;
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
@@ -105,18 +104,24 @@ public class FormulaFactory {
             .create();
     private static final Yaml YAML = new Yaml(new SafeConstructor());
 
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+
     private FormulaFactory() { }
 
     /**
-     * Setter for data directory(will be needed for testing)
+     * Setter for data directory, used for testing.
      * @param dataDirPath base path to where store files
      */
     public static void setDataDir(String dataDirPath) {
         FormulaFactory.dataDir = dataDirPath;
     }
 
+    /**
+     * Setter for metadata directory, used for testing.
+     * @param metadataDirPath base path where to read metadata files from
+     */
     public static void setMetadataDirOfficial(String metadataDirPath) {
-        FormulaFactory.metadataDirOfficial = metadataDirPath;
+        FormulaFactory.metadataDirManager = metadataDirPath;
     }
 
     /**
@@ -170,8 +175,8 @@ public class FormulaFactory {
             message += (error ? " and '" : " '") + METADATA_DIR_STANDALONE_SALT + "'";
             error = true;
         }
-        if (!new File(METADATA_DIR_MANAGER).canRead()) {
-            message += (error ? " and '" : " '") + METADATA_DIR_MANAGER + "'";
+        if (!new File(metadataDirManager).canRead()) {
+            message += (error ? " and '" : " '") + metadataDirManager + "'";
             error = true;
         }
         if (!new File(METADATA_DIR_CUSTOM).canRead()) {
@@ -187,7 +192,7 @@ public class FormulaFactory {
      */
     public static List<String> listFormulaNames() {
         File standaloneDir = new File(METADATA_DIR_STANDALONE_SALT);
-        File managerDir = new File(METADATA_DIR_MANAGER);
+        File managerDir = new File(metadataDirManager);
         File customDir = new File(METADATA_DIR_CUSTOM);
         List<File> files = new LinkedList<>();
         files.addAll(getFormulasFiles(standaloneDir));
@@ -259,7 +264,7 @@ public class FormulaFactory {
             minions.forEach(minion -> {
                 if (!hasMonitoringDataEnabled(formData)) {
                     if (!serverHasMonitoringFormulaEnabled(minion)) {
-                        SystemManager.removeServerEntitlement(minion.getId(), EntitlementManager.MONITORING);
+                        systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
                     }
                 }
                 else {
@@ -275,8 +280,8 @@ public class FormulaFactory {
      */
     public static void grantMonitoringEntitlement(Server server) {
         boolean hasEntitlement = SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING);
-        if (!hasEntitlement && SystemManager.canEntitleServer(server, EntitlementManager.MONITORING)) {
-            SystemManager.entitleServer(server, EntitlementManager.MONITORING);
+        if (!hasEntitlement && systemEntitlementManager.canEntitleServer(server, EntitlementManager.MONITORING)) {
+            systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.MONITORING);
             return;
         }
         if (LOG.isDebugEnabled() && hasEntitlement) {
@@ -305,13 +310,12 @@ public class FormulaFactory {
                                 " Not removing monitoring entitlement.", minionId));
                     }
                     else {
-                        SystemManager.removeServerEntitlement(s.getId(),
-                                EntitlementManager.MONITORING);
+                        systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
                     }
                 }
                 else if (!SystemManager.hasEntitlement(s.getId(), EntitlementManager.MONITORING) &&
-                        SystemManager.canEntitleServer(s, EntitlementManager.MONITORING)) {
-                    SystemManager.entitleServer(s, EntitlementManager.MONITORING);
+                        systemEntitlementManager.canEntitleServer(s, EntitlementManager.MONITORING)) {
+                    systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.MONITORING);
                 }
             });
         }
@@ -417,7 +421,7 @@ public class FormulaFactory {
     public static Optional<Map<String, Object>> getFormulaLayoutByName(String name) {
         String layoutFilePath = name + File.separator + LAYOUT_FILE;
         File layoutFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + layoutFilePath);
-        File layoutFileManager = new File(METADATA_DIR_MANAGER + layoutFilePath);
+        File layoutFileManager = new File(metadataDirManager + layoutFilePath);
         File layoutFileCustom = new File(METADATA_DIR_CUSTOM + layoutFilePath);
 
         try {
@@ -560,7 +564,7 @@ public class FormulaFactory {
             minions.forEach(minion -> {
                 // remove entitlement only if formula not enabled at server level
                 if (!serverHasMonitoringFormulaEnabled(minion)) {
-                    SystemManager.removeServerEntitlement(minion.getId(), EntitlementManager.MONITORING);
+                    systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.MONITORING);
                 }
             });
         }
@@ -643,9 +647,8 @@ public class FormulaFactory {
         if (deletedFormulas.contains(PROMETHEUS_EXPORTERS)) {
             MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
                 if (!isMemberOfGroupHavingMonitoring(s)) {
-                    SystemManager.removeServerEntitlement(s.getId(), EntitlementManager.MONITORING);
+                    systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.MONITORING);
                 }
-
             });
         }
     }
@@ -755,7 +758,7 @@ public class FormulaFactory {
     public static Map<String, Object> getMetadata(String name) {
         String metadataFilePath = name + File.separator + METADATA_FILE;
         File metadataFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + metadataFilePath);
-        File metadataFileManager = new File(METADATA_DIR_MANAGER + metadataFilePath);
+        File metadataFileManager = new File(metadataDirManager + metadataFilePath);
         File metadataFileCustom = new File(METADATA_DIR_CUSTOM + metadataFilePath);
         try {
             if (metadataFileStandalone.isFile()) {
@@ -797,7 +800,7 @@ public class FormulaFactory {
     public static Map<String, Object> getPillarExample(String name) {
         String pillarExamplePath = name + File.separator + PILLAR_EXAMPLE_FILE;
         File pillarExampleFileStandalone = new File(METADATA_DIR_STANDALONE_SALT + pillarExamplePath);
-        File pillarExampleFileManager = new File(METADATA_DIR_MANAGER + pillarExamplePath);
+        File pillarExampleFileManager = new File(metadataDirManager + pillarExamplePath);
         File pillarExampleFileCustom = new File(METADATA_DIR_CUSTOM + pillarExamplePath);
 
         try {
@@ -828,6 +831,7 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     public static Map<String, Object> disableMonitoring(Map<String, Object> formData) {
         ((Map<String, Object>) formData.get("node_exporter")).put("enabled", false);
+        ((Map<String, Object>) formData.get("apache_exporter")).put("enabled", false);
         ((Map<String, Object>) formData.get("postgres_exporter")).put("enabled", false);
         return formData;
     }
@@ -857,7 +861,9 @@ public class FormulaFactory {
     @SuppressWarnings("unchecked")
     private static boolean hasMonitoringDataEnabled(Map<String, Object> formData) {
         Map<String, Object> nodeExporter = (Map<String, Object>) formData.get("node_exporter");
+        Map<String, Object> apacheExporter = (Map<String, Object>) formData.get("apache_exporter");
         Map<String, Object> postgresExporter = (Map<String, Object>) formData.get("postgres_exporter");
-        return (boolean) nodeExporter.get("enabled") || (boolean) postgresExporter.get("enabled");
+        return (boolean) nodeExporter.get("enabled") || (boolean) apacheExporter.get("enabled") ||
+                (boolean) postgresExporter.get("enabled");
     }
 }

@@ -15,29 +15,29 @@
 
 CREATE TABLE suseProfileCustomDataValue
 (
-    id                NUMBER NOT NULL
+    id                NUMERIC NOT NULL
                           CONSTRAINT suse_pcdv_id_pk PRIMARY KEY,
-    profile_id        NUMBER NOT NULL
+    profile_id        NUMERIC NOT NULL
                           CONSTRAINT suse_pcdv_prid_fk
                               REFERENCES suseImageProfile (profile_id),
-    key_id            NUMBER NOT NULL
+    key_id            NUMERIC NOT NULL
                           CONSTRAINT suse_pcdv_kid_fk
                               REFERENCES rhnCustomDataKey (id),
-    value             VARCHAR2(4000),
-    created_by        NUMBER
+    value             VARCHAR(4000),
+    created_by        NUMERIC
                           CONSTRAINT suse_pcdv_cb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    last_modified_by  NUMBER
+    last_modified_by  NUMERIC
                           CONSTRAINT suse_pcdv_lmb_fk
                               REFERENCES web_contact (id)
                               ON DELETE SET NULL,
-    created           timestamp with local time zone
+    created           TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL,
-    modified          timestamp with local time zone
+    modified          TIMESTAMPTZ
                           DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_pcdv_prid_kid_uq

@@ -37,12 +37,7 @@ public class DataListTest extends RhnBaseTestCase {
     private String db_user;
 
     public void setUp() {
-        if (ConfigDefaults.get().isOracle()) {
-            db_sufix = "_or";
-        }
-        else {
-            db_sufix = "_pg";
-        }
+        db_sufix = "_pg";
         db_user = Config.get().getString(ConfigDefaults.DB_USER);
 
         hsm = new HookedSelectMode(

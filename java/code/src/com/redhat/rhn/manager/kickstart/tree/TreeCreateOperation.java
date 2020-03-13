@@ -20,12 +20,12 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
-
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.StringJoiner;
 
 /**
  * TreeCreateCommand
@@ -56,6 +56,7 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
      *
      * {@inheritDoc}
      */
+    @Override
     public ValidatorError store() {
         KickstartableTree existingTree = KickstartFactory.lookupKickstartTreeByLabel(
                         this.getTree().getLabel(), this.getUser().getOrg());
@@ -63,31 +64,39 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
             return new ValidatorError("distribution.tree.exists", existingTree.getLabel());
         }
 
-        if (this.tree.getInstallType().isSUSE()) {
-            String kopts = StringUtils.defaultString(this.tree.getKernelOptions());
-            if (!kopts.contains("install=")) {
-                String localhost = this.getServerName();
-                try {
-                    // Find the FQDN of localhost
-                    localhost = InetAddress.getByName(localhost).getCanonicalHostName();
-                }
-                catch (UnknownHostException e) {
-                    // Fall back to the local name in this case
-                }
-                kopts = kopts + " install=http://" + localhost + "/ks/dist/" +
-                       this.tree.getLabel();
+        String kopts = StringUtils.defaultString(this.tree.getKernelOptions());
+        StringJoiner kOptsJoiner = new StringJoiner(" ");
+        kOptsJoiner.add(kopts);
 
-                this.tree.setKernelOptions(kopts);
+        if (this.tree.getInstallType().isSUSE()) {
+            if (!kopts.contains("install=")) {
+                kOptsJoiner.add("install=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
             }
             // disable YaST self update for SLE
             if (!kopts.contains("self_update=")) {
-                kopts = kopts + " self_update=0 pt.options=+self_update";
-                this.tree.setKernelOptions(kopts);
+                kOptsJoiner.add("self_update=0").add("pt.options=+self_update");
+            }
+        }
+        else if (this.tree.getInstallType().isRhel8OrGreater()) {
+            if (!kopts.contains("inst.repo=")) {
+                kOptsJoiner.add("inst.repo=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
             }
         }
 
+        this.tree.setKernelOptions(kOptsJoiner.toString());
         return super.store();
 
     }
 
+    private String getServerFqdn() {
+        String localhost = this.getServerName();
+        try {
+            // Find the FQDN of localhost
+            return InetAddress.getByName(localhost).getCanonicalHostName();
+        }
+        catch (UnknownHostException e) {
+            // Fall back to the local name in this case
+            return localhost;
+        }
+    }
 }

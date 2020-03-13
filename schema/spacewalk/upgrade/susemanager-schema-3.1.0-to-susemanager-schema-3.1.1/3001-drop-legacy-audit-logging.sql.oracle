@@ -1,7 +1,0 @@
-DROP TABLE rhnserver_log PURGE;
-DROP TABLE rhnservergroup_log PURGE;
-DROP TABLE web_contact_log PURGE;
-
-DROP PACKAGE logging;
-
-DROP TABLE log PURGE;

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 0111c7616895e158d6f045a1af92b00093f5ab05
 
 create or replace function rhn_confcontent_mod_trig_fun() returns trigger as
 $$

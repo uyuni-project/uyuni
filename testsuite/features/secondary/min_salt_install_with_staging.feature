@@ -46,7 +46,7 @@ Feature: Install a package on the SLES minion with staging enabled
     And I follow "Software" in the content area
     And I follow "Packages" in the content area
     And I follow "Install" in the content area
-    When I check "orion-dummy-1.1-1.1" in the list
+    When I check row with "orion-dummy-1.1-1.1" and arch of "sle_minion"
     And I click on "Install Selected Packages"
     And I pick 2 minutes from now as schedule time
     And I click on "Confirm"
@@ -72,7 +72,7 @@ Feature: Install a package on the SLES minion with staging enabled
     And I follow "List / Remove"
     And I enter "orion-dummy" as the filtered package name
     And I click on the filter button
-    And I check "orion-dummy" in the list
+    And I check row with "orion-dummy" and arch of "sle_minion"
     And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy" in the list

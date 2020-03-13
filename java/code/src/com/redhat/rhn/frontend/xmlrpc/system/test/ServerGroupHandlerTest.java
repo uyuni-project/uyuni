@@ -225,7 +225,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         handler.addOrRemoveSystems(regular, group.getName(),
                 Arrays.asList(server3.getId().intValue()), Boolean.TRUE);
 
-        List systems = new ArrayList();
+        List<Long> systems = new ArrayList<Long>();
         systems.add(server1.getId());
         systems.add(server2.getId());
         systems.add(server3.getId());

@@ -704,8 +704,10 @@ class RepoSyncTest(unittest.TestCase):
         self.reposync.CFG = Mock()
         self.reposync.CFG.MOUNT_POINT = '/tmp'
         self.reposync.CFG.PREPENDED_DIR = ''
+        self.reposync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
         self.reposync.fileutils.createPath = Mock()
         self.reposync.os.walk = Mock(return_value=[])
+        self.reposync.subprocess.call = Mock()
         return rs
 
 
@@ -714,8 +716,7 @@ class SyncTest(unittest.TestCase):
     def setUp(self):
         module_patcher = patch.multiple(
             'spacewalk.satellite_tools.reposync',
-            rhnSQL=Mock(),
-            initCFG=Mock()
+            rhnSQL=Mock()
         )
         class_patcher = patch.multiple(
             'spacewalk.satellite_tools.reposync.RepoSync',
@@ -936,6 +937,7 @@ class RunScriptTest(unittest.TestCase):
     def test_config_parameter_channel_as_list(self):
         self.repo_sync.CFG = Mock()
         self.repo_sync.CFG.DEBUG = 3
+        self.repo_sync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
         self.repo_sync.main()
         self.assertEqual(self.repo_sync.reposync.RepoSync.call_count, 2)
 
@@ -949,6 +951,7 @@ def test_channel_exceptions():
     repoSync.CFG = repoSync.initCFG = Mock()
     repoSync.CFG.MOUNT_POINT = '/tmp'
     repoSync.CFG.PREPENDED_DIR = ''
+    repoSync.CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
     repoSync.fileutils.createPath = Mock()
     repoSync.os.walk = Mock(return_value=[])
     backup_os = repoSync.os

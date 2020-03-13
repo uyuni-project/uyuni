@@ -19,6 +19,8 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -28,6 +30,7 @@ import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -54,6 +57,8 @@ public class SystemEntitlementsSubmitAction extends
         "systementitlements.jsp.add_entitlement";
     public static final String KEY_REMOVE_ENTITLED =
         "systementitlements.jsp.remove_entitlement";
+
+    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     /**
      * {@inheritDoc}
@@ -168,16 +173,15 @@ public class SystemEntitlementsSubmitAction extends
         //Go through the set of systems to which we should add the entitlement
         for (RhnSetElement element : set.getElements()) {
             Long sid = element.getElement();
-
+            Server server = ServerFactory.lookupByIdAndOrg(sid, user.getOrg());
             //We are adding the add on entitlement
             if (add) {
                 //if the system already has the entitlement, do nothing
                 //  if so, neither success nor failure count will be updated.
-                if (!SystemManager.hasEntitlement(sid, ent)) {
-                    if (SystemManager.canEntitleServer(sid, ent)) {
+                if (!server.hasEntitlement(ent)) {
+                    if (systemEntitlementManager.canEntitleServer(server, ent)) {
                             log.debug("we can entitle.  Lets entitle to : " + ent);
-                            ValidatorResult vr =
-                                SystemManager.entitleServer(user.getOrg(), sid, ent);
+                            ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, ent);
                             log.debug("entitleServer.VE: " + vr.getMessage());
                             if (vr.getErrors().size() > 0) {
                                 failureCount++;
@@ -195,9 +199,9 @@ public class SystemEntitlementsSubmitAction extends
             } //if add
             //We are removing the add on entitlement
             else {
-                if (SystemManager.hasEntitlement(sid, ent)) {
+                if (server.hasEntitlement(ent)) {
                     log.debug("removing entitlement");
-                    SystemManager.removeServerEntitlement(sid, ent);
+                    systemEntitlementManager.removeServerEntitlement(server, ent);
                     successCount++;
                 }
             } //else

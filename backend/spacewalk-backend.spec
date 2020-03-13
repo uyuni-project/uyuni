@@ -46,7 +46,7 @@ Name:           spacewalk-backend
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
-Version:        4.1.3
+Version:        4.1.5
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -289,8 +289,6 @@ install -d $RPM_BUILD_ROOT/%{_prefix}/lib/susemanager/bin/
 
 make -f Makefile.backend install PREFIX=$RPM_BUILD_ROOT \
     MANDIR=%{_mandir} APACHECONFDIR=%{apacheconfd} PYTHON_BIN=python3
-# no support for oracle DB anymore
-rm -f $RPM_BUILD_ROOT%{python3rhnroot}/server/rhnSQL/driver_cx_Oracle.py*
 
 export PYTHON_MODULE_NAME=%{name}
 export PYTHON_MODULE_VERSION=%{version}

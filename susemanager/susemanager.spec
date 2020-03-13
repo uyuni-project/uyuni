@@ -23,7 +23,7 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           susemanager
-Version:        4.1.2
+Version:        4.1.5
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -282,7 +282,6 @@ fi
 %dir /srv/www/htdocs/pub/repositories/empty-deb
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
-%attr(0755,root,root) %{_sbindir}/mgr-register
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.system;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -50,6 +51,7 @@ public class VirtualizationActionCommand {
     private ActionType actionType;
     private Server targetSystem;
     private String uuid;
+    private String name;
     private Map context;
     private Action action;
 
@@ -62,17 +64,19 @@ public class VirtualizationActionCommand {
      * @param actionTypeIn ActionType of the action being performed.
      * @param targetSystemIn The host system for this action.
      * @param uuidIn String representation of the target instance's UUID
+     * @param nameIn name of the target instance for display purpose
      * @param contextIn Map of optional action arguments.
      */
     public VirtualizationActionCommand(User userIn, Date dateIn, Optional<ActionChain> actionChainIn,
                                        ActionType actionTypeIn, Server targetSystemIn, String uuidIn,
-                                       Map contextIn) {
+                                       String nameIn, Map contextIn) {
         this.setUser(userIn);
         this.setScheduleDate(dateIn);
         this.setActionChain(actionChainIn);
         this.setActionType(actionTypeIn);
         this.setTargetSystem(targetSystemIn);
         this.setUuid(uuidIn);
+        this.setName(nameIn);
         this.setContext(contextIn);
     }
 
@@ -95,7 +99,15 @@ public class VirtualizationActionCommand {
         LOG.debug("creating virtAction");
         BaseVirtualizationAction virtAction =
             (BaseVirtualizationAction) ActionFactory.createAction(this.getActionType());
-        virtAction.setName(this.getActionType().getName());
+        String actionName = this.getActionType().getName().replaceAll("\\.$", "");
+
+        // Handle VM Update name change.
+        if (getActionType().equals(ActionFactory.TYPE_VIRTUALIZATION_CREATE) &&
+                getUuid() != null) {
+            actionName = LocalizationService.getInstance().getMessage("virt.update");
+        }
+
+        virtAction.setName(actionName + ": " + this.getName());
         virtAction.setOrg(this.getUser().getOrg());
         virtAction.setSchedulerUser(this.getUser());
         virtAction.setEarliestAction(this.getScheduleDate());
@@ -257,6 +269,22 @@ public class VirtualizationActionCommand {
      */
     public void setUuid(String argUuid) {
         this.uuid = argUuid;
+    }
+
+
+    /**
+     * @return Returns the name.
+     */
+    public String getName() {
+        return name;
+    }
+
+
+    /**
+     * @param nameIn The name to set.
+     */
+    public void setName(String nameIn) {
+        name = nameIn;
     }
 
     /**

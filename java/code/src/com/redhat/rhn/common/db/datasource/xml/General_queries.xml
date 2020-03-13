@@ -192,11 +192,11 @@ ORDER BY SEV.label
   </query>
 </mode>
 
-<mode name="system_has_feature">
-  <query params="sid, feature">
-  SELECT 1
+<mode name="filter_system_ids_with_feature">
+  <query params="feature">
+  SELECT SFV.server_id
     FROM rhnServerFeaturesView SFV
-   WHERE SFV.server_id = :sid
+   WHERE SFV.server_id IN (%s)
      AND SFV.label = :feature
   </query>
 </mode>

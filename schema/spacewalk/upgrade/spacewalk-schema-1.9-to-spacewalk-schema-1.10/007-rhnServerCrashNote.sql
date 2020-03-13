@@ -16,35 +16,35 @@
 
 CREATE TABLE rhnServerCrashNote
 (
-    id         NUMBER NOT NULL
+    id         NUMERIC NOT NULL
                    CONSTRAINT rhn_server_crash_note_id_pk PRIMARY KEY
-                   USING INDEX TABLESPACE [[64k_tbs]],
-    creator    NUMBER
+                   ,
+    creator    NUMERIC
                    CONSTRAINT rhn_srv_crash_note_creator_fk
                        REFERENCES web_contact (id)
                        ON DELETE SET NULL,
-    crash_id  NUMBER NOT NULL
+    crash_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_srv_crash_note_sid_fk
                        REFERENCES rhnServerCrash (id)
                        ON DELETE CASCADE,
-    subject    VARCHAR2(80) NOT NULL,
-    note       VARCHAR2(4000),
-    created    timestamp with local time zone
+    subject    VARCHAR(80) NOT NULL,
+    note       VARCHAR(4000),
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_srv_crash_note_sid_idx
     ON rhnServerCrashNote (crash_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_srv_crash_note_creator_idx
     ON rhnServerCrashNote (creator)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_srv_crash_note_id_seq;

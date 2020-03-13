@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnVirtualInstanceInstallLog
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                        CONSTRAINT rhn_viil_id_pk PRIMARY KEY
-                       USING INDEX TABLESPACE [[64k_tbs]],
-    log_message    VARCHAR2(4000) NOT NULL,
-    ks_session_id  NUMBER
+                       ,
+    log_message    VARCHAR(4000) NOT NULL,
+    ks_session_id  NUMERIC
                        CONSTRAINT rhn_viil_ks_sid_fk
                            REFERENCES rhnKickstartSession (id)
                            ON DELETE CASCADE,
-    created        timestamp with local time zone
+    created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE rhn_viil_id_seq;

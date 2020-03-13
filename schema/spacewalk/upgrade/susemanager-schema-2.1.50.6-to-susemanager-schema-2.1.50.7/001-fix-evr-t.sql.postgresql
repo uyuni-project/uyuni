@@ -1,3 +1,0 @@
--- oracle equivalent source sha1 4eae3b9b9894c12fa28ebea94e10708b69925ab2
--- This file is intentionally left empty.
--- no changes for postgres db

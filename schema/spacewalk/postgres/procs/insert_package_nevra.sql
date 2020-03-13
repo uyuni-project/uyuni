@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 1062cff485519f46e7a53ab703b48a76e90c1a57
 -- This file is intentionally left empty.
 
 create or replace function

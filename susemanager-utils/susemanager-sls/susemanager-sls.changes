@@ -1,4 +1,22 @@
 - Enable support for bootstrapping Debian 9 and 10
+- Adapt 'mgractionchains' module to work with Salt 3000
+
+-------------------------------------------------------------------
+Wed Mar 11 11:03:06 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
+- cleanup key grains after usage
+- Disable modularity failsafe mechanism for RHEL 8 repos (bsc#1164875)
+- install dmidecode before HW profile update when missing
+- Add mgr_start_event_grains.sls to update minion config
+- Add 'product' custom state module to handle installation of
+  SUSE products at client side (bsc#1157447)
+- Support reading of pillar data for minions from multiple files (bsc#1158754)
+
+-------------------------------------------------------------------
+Mon Feb 17 12:56:29 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
 - Do not workaround util.syncmodules for SSH minions (bsc#1162609)
 - Force to run util.synccustomall when triggering action chains on SSH minions (bsc#1162683).
 - Adapt sls file for pre-downloading in Ubuntu minions

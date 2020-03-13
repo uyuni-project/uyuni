@@ -16,22 +16,22 @@
 
 CREATE TABLE rhnVersionInfo
 (
-    label     VARCHAR2(64) NOT NULL,
-    name_id   NUMBER NOT NULL
+    label     VARCHAR(64) NOT NULL,
+    name_id   NUMERIC NOT NULL
                   CONSTRAINT rhn_versioninfo_nid_fk
                       REFERENCES rhnPackageName (id),
-    evr_id    NUMBER NOT NULL
+    evr_id    NUMERIC NOT NULL
                   CONSTRAINT rhn_versioninfo_eid_fk
                       REFERENCES rhnPackageEVR (id),
-    created   timestamp with local time zone
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_versioninfo_label_uq
     ON rhnVersionInfo (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 

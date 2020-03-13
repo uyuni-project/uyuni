@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnConfigFileName
 (
-    id        NUMBER NOT NULL,
-    path      VARCHAR2(1024) NOT NULL,
-    created   timestamp with local time zone
+    id        NUMERIC NOT NULL,
+    path      VARCHAR(1024) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_cfname_path_uq
     ON rhnConfigFileName (path)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_cfname_id_seq;
 
 ALTER TABLE rhnConfigFileName
     ADD CONSTRAINT rhn_cfname_id_pk PRIMARY KEY (id)
-    USING INDEX TABLESPACE [[2m_tbs]];
+    ;
 

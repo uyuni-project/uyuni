@@ -14,22 +14,22 @@
 --
 
 CREATE TABLE rhnActionSubChannels (
-    id                  NUMBER NOT NULL
+    id                  NUMERIC NOT NULL
                             CONSTRAINT rhn_actionsubscrch_id_pk PRIMARY KEY,
-    action_id           NUMBER NOT NULL
+    action_id           NUMERIC NOT NULL
                             CONSTRAINT rhn_actionsubscrch_aid_fk
                             REFERENCES rhnAction (id)
                             ON DELETE CASCADE,
-    base_channel_id     NUMBER
+    base_channel_id     NUMERIC
                             CONSTRAINT rhn_actionsubscrch_base_ch_fk
                             REFERENCES rhnChannel (id)
                             ON DELETE CASCADE,
-    created             TIMESTAMP WITH LOCAL TIME ZONE
+    created             TIMESTAMPTZ
                             DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
-    modified            TIMESTAMP WITH LOCAL TIME ZONE
+    modified            TIMESTAMPTZ
                             DEFAULT (CURRENT_TIMESTAMP) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE SEQUENCE RHN_ACT_SUBSCR_CHNLS_ID_SEQ;

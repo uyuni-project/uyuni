@@ -101,18 +101,9 @@ if ($javamax == 0)
 my $mindb = (3*$javamax) + $apachemax + 60;
 my $dblimit = 0;
 
-if ($dbbackend eq "oracle")
-{
-    $dblimit = run_query(<<EOF);
-        select limit_value from v\$resource_limit where resource_name = 'sessions';
+$dblimit = run_query(<<EOF);
+    show max_connections;
 EOF
-}
-else
-{
-    $dblimit = run_query(<<EOF);
-        show max_connections;
-EOF
-}
 if (! defined $dblimit)
 {
     print "Unable to query the allowed DB connections.\n";

@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 0bfe648c2a2939268ca32fe054b7a8e0d60d9ed5
 
 create or replace function rhn_ssmop_mod_trig_fun() returns trigger as
 $$

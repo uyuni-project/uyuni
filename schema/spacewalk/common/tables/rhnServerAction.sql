@@ -16,38 +16,38 @@
 
 CREATE TABLE rhnServerAction
 (
-    server_id        NUMBER NOT NULL
+    server_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_server_action_sid_fk
                              REFERENCES rhnServer (id),
-    action_id        NUMBER NOT NULL
+    action_id        NUMERIC NOT NULL
                          CONSTRAINT rhn_server_action_aid_fk
                              REFERENCES rhnAction (id)
                              ON DELETE CASCADE,
-    status           NUMBER NOT NULL
+    status           NUMERIC NOT NULL
                          CONSTRAINT rhn_server_action_status_fk
                              REFERENCES rhnActionStatus (id),
-    result_code      NUMBER,
-    result_msg       CLOB,
-    pickup_time      timestamp with local time zone,
-    remaining_tries  NUMBER
+    result_code      NUMERIC,
+    result_msg       TEXT,
+    pickup_time      TIMESTAMPTZ,
+    remaining_tries  NUMERIC
                          DEFAULT (5) NOT NULL,
-    completion_time  timestamp with local time zone,
-    created          timestamp with local time zone
+    completion_time  TIMESTAMPTZ,
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_ser_act_sid_aid_s_idx
     ON rhnServerAction (server_id, action_id, status)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_ser_act_aid_idx
     ON rhnServerAction (action_id)
-    TABLESPACE [[8m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 ALTER TABLE rhnServerAction
     ADD CONSTRAINT rhn_server_action_sid_aid_uq UNIQUE (server_id, action_id);

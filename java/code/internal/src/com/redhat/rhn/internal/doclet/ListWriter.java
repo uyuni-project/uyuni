@@ -14,40 +14,52 @@
  */
 package com.redhat.rhn.internal.doclet;
 
-import com.sun.javadoc.Parameter;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.List;
 import java.util.Map;
 
+import javax.lang.model.element.VariableElement;
+
+import jdk.javadoc.doclet.DocletEnvironment;
+
 /**
  * Writes a  list of api calls that are used
- * ListWriter
- * @version $Rev$
  */
 public class ListWriter extends DocWriter {
 
-
-    private static final String LIST_OUT = "./build/reports/apidocs/apilist.txt";
+    private DocletEnvironment docEnv;
+    private String output;
 
     /**
+     * Constructor
+     *
+     * @param docEnvIn doclet environement
+     * @param outputFolderIn folder where the apilist.txt file will be written
+     * @param debugIn whether to show debugging messages
+     */
+    public ListWriter(DocletEnvironment docEnvIn, String outputFolderIn, boolean debugIn) {
+        super(debugIn);
+        docEnv = docEnvIn;
+        output = outputFolderIn;
+    }
+/**
      *
      * {@inheritDoc}
      */
     public void write(List<Handler> handlers,
             Map<String, String> serializers) throws Exception {
 
-        FileWriter fstream = new FileWriter(LIST_OUT);
+        FileWriter fstream = new FileWriter(output + "/apilist.txt");
         BufferedWriter out = new BufferedWriter(fstream);
 
         for (Handler handler : handlers) {
             for (ApiCall call : handler.getCalls()) {
                 out.write(handler.getName() + "." + call.getName() + " " +
-                        call.getMethod().parameters().length + " ");
+                        call.getMethod().getParameters().size() + " ");
 
-                for (Parameter param : call.getMethod().parameters()) {
-                    out.write(param.type().typeName() + " ");
+                for (VariableElement param : call.getMethod().getParameters()) {
+                    out.write(docEnv.getTypeUtils().asElement(param.asType()).getSimpleName().toString() + " ");
                 }
                 out.write("\n");
 

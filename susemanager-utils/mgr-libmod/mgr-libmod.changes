@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Feb 17 15:06:47 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.1-1
+- Align version with the rest of packages
+
+-------------------------------------------------------------------
 Fri Feb 07 11:13:09 CET 2020 - bo@suse.de
 
 - version 0.2-1

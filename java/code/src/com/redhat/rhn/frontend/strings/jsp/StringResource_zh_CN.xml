@@ -4299,7 +4299,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>启用分级内容</target>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp">
-        <source>Enable Errata E-mail Notifications (for users belonging to this organization)</source>
+        <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -25667,6 +25667,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="Highstate">
         <source>Highstate</source>
+      </trans-unit>
+      <trans-unit id="Recurring States">
+        <source>Recurring States</source>
       </trans-unit>
       <trans-unit id="Configuration Channels">
         <source>Configuration Channels</source>

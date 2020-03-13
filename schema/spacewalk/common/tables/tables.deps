@@ -248,9 +248,7 @@ suseImageInfoChannel           :: suseImageInfo rhnChannel
 suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo
 suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                 :: suseCredentials web_customer suseImageStoreType
-suseOSTarget                   :: rhnChannelArch
 suseMinionInfo                 :: rhnServer
-suseServer                     :: rhnServer suseOSTarget
 suseInstalledProduct           :: rhnPackageArch
 suseMdData                     :: rhnChannel rhnPackage suseMdKeyword
 susePackageEula                :: rhnPackage suseEula
@@ -290,3 +288,4 @@ rhnISSMasterOrgs               :: rhnISSMaster web_customer
 rhnChildChannelArchCompat      :: rhnChannelArch
 rhnResetPassword               :: web_contact
 suseUserNotification           :: suseNotificationMessage web_contact
+suseRecurringAction            :: web_customer web_contact rhnServerGroup suseMinionInfo

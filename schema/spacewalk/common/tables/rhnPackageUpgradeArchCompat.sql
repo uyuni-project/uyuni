@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnPackageUpgradeArchCompat
 (
-    package_arch_id   NUMBER NOT NULL
+    package_arch_id   NUMERIC NOT NULL
                          CONSTRAINT rhn_puac_paid_fk
                              REFERENCES rhnPackageArch (id),
-    package_upgrade_arch_id NUMBER NOT NULL
+    package_upgrade_arch_id NUMERIC NOT NULL
                          CONSTRAINT rhn_puac_pauid_fk
                              REFERENCES rhnPackageArch (id),
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_puac_pa_pua_uq
     ON rhnPackageUpgradeArchCompat (package_arch_id, package_upgrade_arch_id)
-    TABLESPACE [[64k_tbs]];
+    ;

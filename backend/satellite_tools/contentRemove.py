@@ -430,10 +430,7 @@ def list_packages(channelLabels, sources=0, force=0):
     if force:
         query = templ % ("", bind_params)
     else:
-        if CFG.DB_BACKEND == 'oracle':
-            minus_op = 'MINUS'  # ORA syntax
-        else:
-            minus_op = 'EXCEPT'  # ANSI syntax
+        minus_op = 'EXCEPT'  # ANSI syntax
         query = """
             %s
             %s

@@ -16,18 +16,18 @@
 
 CREATE TABLE rhnUserReserved
 (
-    login     VARCHAR2(64) NOT NULL,
-    login_uc  VARCHAR2(64) NOT NULL,
-    password  VARCHAR2(38) NOT NULL,
-    created   timestamp with local time zone
+    login     VARCHAR(64) NOT NULL,
+    login_uc  VARCHAR(64) NOT NULL,
+    password  VARCHAR(38) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_user_res_login_uc_uq
     ON rhnUserReserved (login_uc)
-    TABLESPACE [[64k_tbs]];
+    ;
 

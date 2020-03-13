@@ -28,6 +28,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -220,7 +222,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertTrue(acl.evalAcl(context, "system_has_salt_entitlement()"));
 
         // Change the base entitlement to MANAGEMENT
-        s.setBaseEntitlement(EntitlementManager.MANAGEMENT);
+        SystemEntitlementManager.INSTANCE.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         context.put("sid", new String[] {s.getId().toString()});
         context.put("user", user);
         assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));

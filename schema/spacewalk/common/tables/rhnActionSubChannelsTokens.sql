@@ -15,14 +15,14 @@
 
 CREATE TABLE rhnActionSubChannelsTokens (
     subscribe_channels_id
-                        NUMBER NOT NULL
+                        NUMERIC NOT NULL
                             CONSTRAINT rhn_actionsubscrchtok_det_fk
                             REFERENCES rhnActionSubChannels (id)
                             ON DELETE CASCADE,
-    token_id            NUMBER NOT NULL
+    token_id            NUMERIC NOT NULL
                             CONSTRAINT rhn_actionsubscrchtok_tok_fk
                             REFERENCES suseChannelAccessToken (id)
                             ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;

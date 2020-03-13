@@ -29,6 +29,7 @@ import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -45,7 +46,7 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.websocket.EndpointConfig;
@@ -73,6 +74,21 @@ public class VirtNotifications {
     private static final Object LOCK = new Object();
     private static Map<Session, Set<Long>> wsSessions = new HashMap<>();
     private static Set<Session> brokenSessions = new HashSet<>();
+
+    // Map each virtualization action types to an id supplier. The id is indeed
+    // different for guests, pools, volumes and networks
+    private static final Map<Class<? extends Action>, Function<Action, String>> IDS_MAPPER = Map.of(
+            BaseVirtualizationAction.class,
+            (action) -> {
+                String id = "new-" + action.getId();
+                BaseVirtualizationAction virtAction = (BaseVirtualizationAction)action;
+                String uuid = virtAction.getUuid();
+                if (uuid != null) {
+                    id = uuid;
+                }
+                return id;
+            }
+        );
 
     /**
      * Callback executed when the websocket is opened.
@@ -140,10 +156,23 @@ public class VirtNotifications {
                     // Send out a list of the latest pending actions to display
                     Server server = SystemManager.lookupByIdAndUser(newId, userOpt.get());
                     List<ServerAction> serverActions = ActionFactory.listServerActionsForServer(server,
-                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKEDUP));
+                            Arrays.asList(ActionFactory.STATUS_QUEUED,
+                                          ActionFactory.STATUS_PICKEDUP,
+                                          ActionFactory.STATUS_PICKED_UP));
+
                     Map<String, List<ServerAction>> groupedActions = serverActions.stream()
-                            .filter(sa -> sa.getParentAction() instanceof BaseVirtualizationAction)
-                            .collect(Collectors.toMap(sa -> ((BaseVirtualizationAction) sa.getParentAction()).getUuid(),
+                            .filter(sa -> ActionFactory.isVirtualizationActionType(
+                                        sa.getParentAction().getActionType()))
+                            .collect(Collectors.toMap(sa -> {
+                                        Action action = (Action)Hibernate.unproxy(sa.getParentAction());
+                                        return IDS_MAPPER.entrySet().stream()
+                                            .filter(entry -> entry.getKey().isInstance(action))
+                                            .findFirst()
+                                            .map(entry -> {
+                                                return entry.getValue().apply(action);
+                                            })
+                                            .orElse(null);
+                                    },
                                     sa -> Arrays.asList(sa),
                                     (sa1, sa2) -> {
                                         List<ServerAction> merged = new ArrayList<ServerAction>(sa1);
@@ -159,6 +188,8 @@ public class VirtNotifications {
                                                 Map<String, Object> data = new HashMap<>();
                                                 data.put("id", sa.getParentAction().getId());
                                                 data.put("status", sa.getStatus().getName());
+                                                data.put("type", sa.getParentAction().getActionType().getLabel());
+                                                data.put("name", sa.getParentAction().getName());
                                                 return data;
                                             }).get()));
 
@@ -211,19 +242,8 @@ public class VirtNotifications {
      * @param action the action that changed
      */
     public static void spreadActionUpdate(Action action) {
-
-        // Map each virtualization action types to an id supplier. The id is indeed
-        // different for guests, pools, volumes and networks
-        Map<Class<? extends Action>, Supplier<String>> idsMapper = Map.of(
-            BaseVirtualizationAction.class,
-            () -> {
-                BaseVirtualizationAction virtAction = (BaseVirtualizationAction)action;
-                return virtAction.getUuid();
-            }
-        );
-
         synchronized (LOCK) {
-            idsMapper.keySet().stream()
+            IDS_MAPPER.keySet().stream()
                 .filter(clazz -> clazz.isInstance(action))
                 .findFirst()
                 .ifPresent(virtClazz -> {
@@ -236,9 +256,11 @@ public class VirtNotifications {
                             Map<String, Object> actions = new HashMap<>();
                             actions.put("id", action.getId());
                             actions.put("status", sa.getStatus().getName());
+                            actions.put("type", sa.getParentAction().getActionType().getLabel());
+                            actions.put("name", sa.getParentAction().getName());
 
                             Map<String, Object> msg = new HashMap<>();
-                            msg.put(idsMapper.get(virtClazz).get(), actions);
+                            msg.put(IDS_MAPPER.get(virtClazz).apply(action), actions);
 
                             sendMessage(session, GSON.toJson(msg));
                         });

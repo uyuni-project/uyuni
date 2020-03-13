@@ -16,16 +16,16 @@
 
 CREATE TABLE rhnRegTokenOrgDefault
 (
-    org_id        NUMBER NOT NULL
+    org_id        NUMERIC NOT NULL
                       CONSTRAINT rhn_reg_token_def_oid_fk
                           REFERENCES web_customer (id)
                           ON DELETE CASCADE,
-    reg_token_id  NUMBER
+    reg_token_id  NUMERIC
                       CONSTRAINT rhn_reg_token_def_tokid_fk
                           REFERENCES rhnRegToken (id)
                           ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_reg_token_def_org_id_idx

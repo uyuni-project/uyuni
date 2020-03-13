@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 2b2bf621b8cf847decd116ab919f14292ce7cfda
 
 create or replace function rhn_cfstate_mod_trig_fun() returns trigger as
 $$

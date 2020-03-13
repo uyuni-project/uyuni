@@ -4,7 +4,8 @@
 const React = require("react");
 
 const CustomDiv = (props) => {
-  const styleClass = { width : props.width + props.um };
+  const width = props.width + props.um;
+  const styleClass = Number.isNaN(width) ? null : { width };
   return (
     <div
         style={styleClass}

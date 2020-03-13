@@ -15,23 +15,23 @@
 
 CREATE TABLE suseImageRepoDigest
 (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                      CONSTRAINT suse_rdigest_id_pk PRIMARY KEY,
-    image_history_id    NUMBER NOT NULL,
-    repo_digest    VARCHAR2(255) NOT NULL,
-    created        timestamp with local time zone
+    image_history_id    NUMERIC NOT NULL,
+    repo_digest    VARCHAR(255) NOT NULL,
+    created        TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified       timestamp with local time zone
+    modified       TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
     CONSTRAINT suse_rdigest_bldhst_fk FOREIGN KEY (image_history_id)
         REFERENCES suseImageBuildHistory (id) ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX suse_img_repodigest_idx
     ON suseImageRepoDigest(repo_digest, image_history_id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE suse_img_repodigest_id_seq;

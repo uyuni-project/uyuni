@@ -16,31 +16,31 @@
 
 CREATE TABLE rhnErrataNotificationQueue
 (
-    errata_id    NUMBER NOT NULL
+    errata_id    NUMERIC NOT NULL
                      CONSTRAINT rhn_enqueue_eid_fk
                          REFERENCES rhnErrata (id)
                          ON DELETE CASCADE,
-    org_id       NUMBER NOT NULL
+    org_id       NUMERIC NOT NULL
                      CONSTRAINT rhn_enqueue_oid_fk
                          REFERENCES web_customer (id)
                          ON DELETE CASCADE,
-    next_action  timestamp with local time zone
+    next_action  TIMESTAMPTZ
                      DEFAULT (current_timestamp),
-    channel_id   NUMBER NOT NULL
+    channel_id   NUMERIC NOT NULL
                      CONSTRAINT rhn_enqueue_cid_fk
                          REFERENCES rhnChannel(id)
                          ON DELETE cascade,
-    created      timestamp with local time zone
+    created      TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL,
-    modified     timestamp with local time zone
+    modified     TIMESTAMPTZ
                      DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_enqueue_na_idx
     ON rhnErrataNotificationQueue (next_action)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 ALTER TABLE rhnErrataNotificationQueue
     ADD CONSTRAINT rhn_enqueue_eoid_uq UNIQUE (errata_id, channel_id, org_id);

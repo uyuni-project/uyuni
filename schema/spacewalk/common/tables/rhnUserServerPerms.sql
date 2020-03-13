@@ -16,21 +16,21 @@
 
 CREATE TABLE rhnUserServerPerms
 (
-    user_id    NUMBER NOT NULL
+    user_id    NUMERIC NOT NULL
                    CONSTRAINT rhn_usperms_uid_fk
                        REFERENCES web_contact (id),
-    server_id  NUMBER NOT NULL
+    server_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_usperms_sid_fk
                        REFERENCES rhnServer (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_usperms_uid_sid_uq
     ON rhnUserServerPerms (user_id, server_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_usperms_sid_idx
     ON rhnUserServerPerms (server_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

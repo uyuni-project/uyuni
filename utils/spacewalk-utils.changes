@@ -1,3 +1,17 @@
+- Add Springdale Linux 6, 7 and 8 repositories
+
+-------------------------------------------------------------------
+Wed Mar 11 10:57:45 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.6-1
+- Split spacewalk-utils into two packages:
+  * spacewalk-utils with tools supported on SUSE Manager
+  * spacewalk-utils-extras with tools unsupported on SUSE Manager
+ 
+-------------------------------------------------------------------
+Mon Feb 17 12:52:28 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.5-1
 - Add Oracle Enterprise Linux 8 repositories
 
 -------------------------------------------------------------------
@@ -52,7 +66,7 @@ Thu Aug 01 19:00:44 CEST 2019 - jgonzalez@suse.com
 Wed Jul 31 17:37:23 CEST 2019 - jgonzalez@suse.com
 
 - version 4.0.11-1
-- common-channels: Fix repo type assignment for type YUM
+- common-channels: Fix repo type assignment for type YUM (bsc#1151683)
 - Use the same client tools for openSUSE Leap 15.0 for all openSUSE Leap
   15.X releases.
 - Fixes SSL hostname matching (bsc#1141663)

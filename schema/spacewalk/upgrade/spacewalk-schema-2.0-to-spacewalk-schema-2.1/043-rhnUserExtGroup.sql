@@ -16,20 +16,20 @@
 
 CREATE TABLE rhnUserExtGroup
 (
-    id        NUMBER NOT NULL
+    id        NUMERIC NOT NULL
                   CONSTRAINT rhn_userExtGroup_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    label     VARCHAR2(512) NOT NULL,
-    created   timestamp with local time zone
+                  ,
+    label     VARCHAR(512) NOT NULL,
+    created   TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL,
-    modified  timestamp with local time zone
+    modified  TIMESTAMPTZ
                   DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_userextgroup_label_uq
     ON rhnUserExtGroup (label)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_userextgroup_seq;

@@ -28,6 +28,9 @@ import com.redhat.rhn.frontend.action.systems.entitlements.SystemEntitlementsSub
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 
@@ -43,9 +46,13 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     private static final String UNENTITLED =
                                     "system_entitlements.unentitle";
 
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+
+
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/SystemEntitlementsSubmit");
@@ -83,7 +90,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
         ServerFactory.save(server);
         OrgFactory.save(user.getOrg());
         UserFactory.save(user);
-        SystemManager.removeAllServerEntitlements(server.getId());
+        systemEntitlementManager.removeAllServerEntitlements(server);
         assertFalse(SystemManager.hasEntitlement(server.getId(), ent));
 
         /*
@@ -151,8 +158,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
 
         Server server = ServerTestUtils.createVirtHostWithGuests(user, 1);
 
-        SystemManager.removeServerEntitlement(server.getId(),
-                EntitlementManager.VIRTUALIZATION);
+        systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
         ServerGroupTest.createTestServerGroup(user.getOrg(),
                 groupType);
 
@@ -182,7 +188,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
 
         assertTrue(SystemManager.hasEntitlement(server.getId(),
                                         EntitlementManager.MANAGEMENT));
-        SystemManager.entitleServer(server, ent);
+        systemEntitlementManager.addEntitlementToServer(server, ent);
 
         addRequestParameter("addOnEntitlement", selectKey);
         dispatch(SystemEntitlementsSubmitAction.KEY_REMOVE_ENTITLED, server);

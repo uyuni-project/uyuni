@@ -26,20 +26,26 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.suse.manager.virtualization.PoolCapabilitiesJson;
+import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 import com.suse.manager.webui.utils.gson.VirtualStorageVolumeInfoJson;
 
+import org.apache.http.HttpStatus;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -59,6 +65,10 @@ public class VirtualPoolsController {
                 withUserPreferences(withCsrfToken(withUser(VirtualPoolsController::show))), jade);
         get("/manager/api/systems/details/virtualization/pools/:sid/data",
                 withUser(VirtualPoolsController::data));
+        get("/manager/api/systems/details/virtualization/pools/:sid/capabilities",
+                withUser(VirtualPoolsController::getCapabilities));
+        get("/manager/api/systems/details/virtualization/pools/:sid/pool/:name",
+                withUser(VirtualPoolsController::getPool));
     }
 
     /**
@@ -70,31 +80,7 @@ public class VirtualPoolsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        Long serverId;
-        Server server;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        try {
-            server = SystemManager.lookupByIdAndUser(serverId, user);
-        }
-        catch (LookupException e) {
-            throw new NotFoundException();
-        }
-
-        /* For system-common.jade */
-        data.put("server", server);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(serverId));
-
-        /* For the rest of the template */
-
-        return new ModelAndView(data, "templates/virtualization/pools/show.jade");
+        return renderPage(request, response, user, "show", null);
     }
 
 
@@ -118,20 +104,120 @@ public class VirtualPoolsController {
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
-        Map<String, JsonElement> infos = VirtManager.getPools(minionId);
-        Map<String, Map<String, JsonElement>> volInfos = VirtManager.getVolumes(minionId);
+        Map<String, JsonObject> infos = VirtManager.getPools(minionId);
+        Map<String, Map<String, JsonObject>> volInfos = VirtManager.getVolumes(minionId);
         List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
-            Map<String, JsonElement> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
+            Map<String, JsonObject> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
             List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream().map(volEntry -> {
-                return new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue().getAsJsonObject());
+                return new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue());
             }).collect(Collectors.toList());
 
             VirtualStoragePoolInfoJson pool = new VirtualStoragePoolInfoJson(entry.getKey(),
-                    entry.getValue().getAsJsonObject(), volumes);
+                    entry.getValue(), volumes);
 
             return pool;
         }).collect(Collectors.toList());
 
         return json(response, pools);
+    }
+
+    /**
+     * Executes the GET query to extract the pool capabilities
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON-formatted capabilities
+     */
+    public static String getCapabilities(Request request, Response response, User user) {
+        Long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        String minionId = host.asMinionServer().orElseThrow(() ->
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
+
+        PoolCapabilitiesJson caps = VirtManager.getPoolCapabilities(minionId)
+            .orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST,
+                "Failed to get virtual host storage pool capabilities"));
+
+        return json(response, caps);
+    }
+
+/**
+     * Executes the GET query to extract the pool definition
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON-formatted capabilities
+     */
+    public static String getPool(Request request, Response response, User user) {
+        Long serverId;
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        String minionId = host.asMinionServer().orElseThrow(() ->
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get pool definition of Salt system")).getMinionId();
+
+        String poolName = request.params("name");
+        PoolDefinition definition = VirtManager.getPoolDefinition(minionId, poolName)
+                .orElseThrow(() -> new NotFoundException());
+
+        return json(response, definition);
+    }
+
+    /**
+     * Displays a page server-related virtual page
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @param template the name to the Jade template of the page
+     * @param modelExtender provides additional properties to pass to the Jade template
+     * @return the ModelAndView object to render the page
+     */
+    private static ModelAndView renderPage(Request request, Response response, User user,
+                                          String template,
+                                          Supplier<Map<String, Object>> modelExtender) {
+        Map<String, Object> data = new HashMap<>();
+        Long serverId;
+        Server server;
+
+        try {
+            serverId = Long.parseLong(request.params("sid"));
+        }
+        catch (NumberFormatException e) {
+            throw new NotFoundException();
+        }
+
+        try {
+            server = SystemManager.lookupByIdAndUser(serverId, user);
+        }
+        catch (LookupException e) {
+            throw new NotFoundException();
+        }
+
+        /* For system-common.jade */
+        data.put("server", server);
+        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(serverId));
+
+        if (modelExtender != null) {
+            data.putAll(modelExtender.get());
+        }
+
+        /* For the rest of the template */
+
+        return new ModelAndView(data, String.format("templates/virtualization/pools/%s.jade", template));
     }
 }

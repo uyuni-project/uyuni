@@ -10,4 +10,4 @@
 --
 --
 
-ALTER TABLE suseSCCRepository ADD scc_id NUMBER;
+ALTER TABLE suseSCCRepository ADD scc_id NUMERIC;

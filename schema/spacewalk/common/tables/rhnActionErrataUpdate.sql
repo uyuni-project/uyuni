@@ -16,23 +16,23 @@
 
 CREATE TABLE rhnActionErrataUpdate
 (
-    action_id  NUMBER NOT NULL
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_act_eu_act_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    errata_id  NUMBER NOT NULL
+    errata_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_act_eu_err_fk
                        REFERENCES rhnErrata (id)
                        ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_act_eu_aid_eid_uq
     ON rhnActionErrataUpdate (action_id, errata_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 CREATE INDEX rhn_act_eu_eid_idx
     ON rhnActionErrataUpdate (errata_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 

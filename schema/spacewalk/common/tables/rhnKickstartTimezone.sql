@@ -16,25 +16,25 @@
 
 CREATE TABLE rhnKickstartTimezone
 (
-    id            NUMBER NOT NULL
+    id            NUMERIC NOT NULL
                       CONSTRAINT rhn_ks_timezone_pk PRIMARY KEY
-                      USING INDEX TABLESPACE [[64k_tbs]],
-    label         VARCHAR2(128) NOT NULL,
-    name          VARCHAR2(128) NOT NULL,
-    install_type  NUMBER NOT NULL
+                      ,
+    label         VARCHAR(128) NOT NULL,
+    name          VARCHAR(128) NOT NULL,
+    install_type  NUMERIC NOT NULL
                       CONSTRAINT rhn_ks_timezone_it_fk
                           REFERENCES rhnKSInstallType (id)
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_ks_timezone_it_label_uq
     ON rhnKickstartTimezone (install_type, label)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE UNIQUE INDEX rhn_ks_timezone_it_name_uq
     ON rhnKickstartTimezone (install_type, name)
-    TABLESPACE [[64k_tbs]];
+    ;
 
 CREATE SEQUENCE rhn_ks_timezone_id_seq;
 

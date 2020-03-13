@@ -64,7 +64,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.1.3
+Version:        4.1.5
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -194,6 +194,7 @@ Requires:       snakeyaml
 Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
+Requires:       system-lock-formula
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       tomcat-taglibs-standard
@@ -412,7 +413,7 @@ export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=public \
 -Dcheckstyle.cache.file=build/checkstyle.cache.src \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
-find . -name *.java | grep -vE '(/test/|/jsp/|/playpen/)' | \
+find . -name *.java | grep -vE '(/test/|/jsp/)' | \
 xargs checkstyle -c buildconf/checkstyle.xml
 
 echo "Running checkstyle on java test sources"
@@ -422,7 +423,7 @@ export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=nothing \
 -Dcheckstyle.cache.file=build/checkstyle.cache.test \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
-find . -name *.java | grep -E '/test/' | grep -vE '(/jsp/|/playpen/)' | \
+find . -name *.java | grep -E '/test/' | grep -vE '/jsp/' | \
 xargs checkstyle -c buildconf/checkstyle.xml
 %endif
 
@@ -500,9 +501,9 @@ install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config
 
 # Adjust product tree tag
 %if 0%{?sle_version} && !0%{?is_opensuse}
-sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %else
-sed -i -e 's/^java.product_tree.tag =.*$/java.product_tree.tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 644 conf/logrotate/gatherer $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/gatherer

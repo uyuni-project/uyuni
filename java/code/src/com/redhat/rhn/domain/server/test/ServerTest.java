@@ -29,6 +29,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -47,6 +50,8 @@ import java.util.Optional;
  */
 public class ServerTest extends BaseTestCaseWithUser {
 
+    private SystemUnentitler systemUnentitler = SystemUnentitler.INSTANCE;
+
     public void testIsInactive() throws Exception {
         Server s = ServerFactory.createServer();
         s.setServerInfo(new ServerInfo());
@@ -59,11 +64,11 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     public void testSetBaseEntitlement() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
-        SystemManager.removeAllServerEntitlements(s.getId());
+        systemUnentitler.removeAllServerEntitlements(s);
         UserTestUtils.addManagement(s.getCreator().getOrg());
         HibernateFactory.getSession().clear();
         s = ServerFactory.lookupById(s.getId());
-        s.setBaseEntitlement(EntitlementManager.MANAGEMENT);
+        SystemEntitlementManager.INSTANCE.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(s);
         s = reload(s);
         assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));

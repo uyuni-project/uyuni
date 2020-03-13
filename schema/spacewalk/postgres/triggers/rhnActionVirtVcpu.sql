@@ -1,4 +1,3 @@
--- oracle equivalent source sha1 e0427ec22d4cd4d53d57f68e70bcb69c7c44dffb
 
 create or replace function rhn_avcpu_mod_trig_fun() returns trigger as
 $$

@@ -19,8 +19,8 @@ import static org.hamcrest.Matchers.containsString;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
@@ -29,6 +29,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
+import com.suse.manager.virtualization.PoolCapabilitiesJson;
+import com.suse.manager.virtualization.PoolCapabilitiesJson.PoolType;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -68,7 +70,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                     with(containsString("serverfactorytest")));
         }});
         VirtManager.setSaltService(saltServiceMock);
-        SystemManager.mockSaltService(saltServiceMock);
+        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
     }
@@ -107,5 +109,28 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         assertEquals(Long.valueOf(14412120064L), pool1.getAllocation());
         assertEquals(Long.valueOf(21003628544L), pool1.getCapacity());
         assertEquals(Long.valueOf(6591508480L), pool1.getFree());
+    }
+
+    public void testGetCapabilities() throws Exception {
+        context().checking(new Expectations() {{
+            oneOf(saltServiceMock).callSync(
+                    with(SaltTestUtils.functionEquals("virt", "pool_capabilities")),
+                    with(host.asMinionServer().get().getMinionId()));
+            will(returnValue(SaltTestUtils.getSaltResponse(
+                    "/com/suse/manager/webui/controllers/test/virt.pool.caps.json",
+                    null,
+                    new TypeToken<PoolCapabilitiesJson>() { }.getType())));
+        }});
+
+        String json = VirtualPoolsController.getCapabilities(getRequestWithCsrf(
+                "/manager/api/systems/details/virtualization/pools/:sid/capabilities", host.getId()), response, user);
+        PoolCapabilitiesJson caps = GSON.fromJson(json, new TypeToken<PoolCapabilitiesJson>() { }.getType());
+        assertTrue(caps.isComputed());
+        PoolType pType = caps.getPoolTypes().stream().filter(type -> type.getName().equals("fs")).findFirst().get();
+        assertTrue(pType.isSupported());
+        assertEquals("auto", pType.getOptions().getPool().getDefaultFormat());
+        assertTrue(pType.getOptions().getPool().getSourceFormatType().contains("iso9660"));
+        assertEquals("raw", pType.getOptions().getVolume().getDefaultFormat());
+        assertTrue(pType.getOptions().getVolume().getTargetFormatType().contains("cloop"));
     }
 }

@@ -13,12 +13,12 @@
 create table
 suseImageInfoInstalledProduct
 (
-    image_info_id         number
+    image_info_id         NUMERIC
                             CONSTRAINT suse_iiip_ii_id_fk
                             REFERENCES suseImageInfo (id)
                             ON DELETE CASCADE
                             not null,
-    installed_product_id  number
+    installed_product_id  NUMERIC
                             CONSTRAINT suse_iiip_ip_id_fk
                             REFERENCES suseInstalledProduct (id)
                             not null
@@ -26,4 +26,4 @@ suseImageInfoInstalledProduct
 
 CREATE UNIQUE INDEX suse_iiip_inprod_uq
     ON suseImageInfoInstalledProduct (image_info_id, installed_product_id)
-    TABLESPACE [[64k_tbs]];
+    ;

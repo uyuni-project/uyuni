@@ -68,7 +68,7 @@ public class SerializerHelper {
         output = new StringWriter();
     }
     /**
-     * Generates an XMLRPC <member>.
+     * Generates an XMLRPC &lt;member&gt;.
      * @param name Member name.
      * @param value Value to be serialized.
      * @param output Buffer to serialize the value to.

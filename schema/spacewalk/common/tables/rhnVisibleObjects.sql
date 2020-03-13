@@ -16,14 +16,14 @@
 
 CREATE TABLE rhnVisibleObjects
 (
-    pxt_session_id  NUMBER NOT NULL,
-    object_id       NUMBER NOT NULL,
-    object_type     VARCHAR2(40) NOT NULL,
+    pxt_session_id  NUMERIC NOT NULL,
+    object_id       NUMERIC NOT NULL,
+    object_type     VARCHAR(40) NOT NULL,
     CONSTRAINT rhn_vis_objs_sess_fk FOREIGN KEY (pxt_session_id)
         REFERENCES PXTSessions (id)
             ON DELETE CASCADE
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_vis_objs_sess_obj_type_idx

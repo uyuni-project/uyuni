@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnActionVirtReboot
 (
-    action_id  NUMBER NOT NULL
+    action_id  NUMERIC NOT NULL
                    CONSTRAINT rhn_avreboot_aid_fk
                        REFERENCES rhnAction (id)
                        ON DELETE CASCADE,
-    uuid       VARCHAR2(128) NOT NULL,
+    uuid       VARCHAR(128) NOT NULL,
     force      CHAR(1)
                    DEFAULT ('N') NOT NULL
                    CONSTRAINT rhn_avreboot_force_ck
                        CHECK (force in ('Y','N')),
-    created    timestamp with local time zone
+    created    TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL,
-    modified   timestamp with local time zone
+    modified   TIMESTAMPTZ
                    DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_avreboot_aid_uq
     ON rhnActionVirtReboot (action_id)
-    TABLESPACE [[8m_tbs]];
+    ;
 
 ALTER TABLE rhnActionVirtReboot
     ADD CONSTRAINT rhn_avreboot_aid_pk PRIMARY KEY (action_id);

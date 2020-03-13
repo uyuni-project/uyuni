@@ -80,11 +80,11 @@ end
 
 When(/^I apply highstate on "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  if %w[ssh_minion ceos_ssh_minion ubuntu_ssh_minion].include?(host)
+  if host.include? 'ssh_minion'
     cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
-  else
+  elsif host.include? 'minion'
     cmd = 'salt'
     extra_cmd = ''
   end
@@ -532,23 +532,6 @@ When(/^I enable IPv6 forwarding on all interfaces of the SLE minion$/) do
   $minion.run('sysctl net.ipv6.conf.all.forwarding=1')
 end
 
-And(/^I register "([^*]*)" as traditional client$/) do |client|
-  step %(I register "#{client}" as traditional client with activation key "1-SUSE-DEV-x86_64")
-end
-
-And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/) do |client, key|
-  node = get_target(client)
-  command = 'wget --no-check-certificate ' \
-            '-O /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
-            "http://#{$server.ip}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-  node.run(command)
-  command = 'rhnreg_ks --username=admin --password=admin --force ' \
-            "--serverUrl=#{registration_url} " \
-            '--sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ' \
-            "--activationkey=#{key}"
-  node.run(command)
-end
-
 When(/^I wait for the openSCAP audit to finish$/) do
   host = $server.full_hostname
   @sle_id = retrieve_server_id($minion.full_hostname)
@@ -583,7 +566,7 @@ When(/^I register this client for SSH push via tunnel$/) do
            "while {1} {\n" \
            "  expect {\n" \
            "    eof                                                        {break}\n" \
-           "    \"Are you sure you want to continue connecting (yes/no)?\" {send \"yes\r\"}\n" \
+	   "    -re \"Are you sure you want to continue connecting.*\" {send \"yes\r\"}\n" \
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"
@@ -806,6 +789,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   end
 end
 
+# rubocop:disable Metrics/BlockLength
 When(/^I configure the proxy$/) do
   # prepare the settings file
   settings = "RHN_PARENT=#{$server.ip}\n" \
@@ -834,8 +818,17 @@ When(/^I configure the proxy$/) do
   filename = File.basename(path)
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
-  $proxy.run(cmd, true, proxy_timeout, 'root')
+  return_code = 0
+  # WORKAROUND bsc#1138952
+  # Wrap the shell command inside a begin block to catch the exception
+  begin
+    return_code = $proxy.run(cmd, true, proxy_timeout, 'root')
+  rescue StandardError => e
+    puts "Catched exception (see bsc#1138952): #{e}"
+    return_code
+  end
 end
+# rubocop:enable Metrics/BlockLength
 
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
   # for testing buildtime of generated metadata - See bsc#1078056
@@ -1190,4 +1183,10 @@ When(/^I remove the bind zones created by retail_yaml$/) do
   domain = read_branch_prefix_from_yaml
   raise unless find(:xpath, "//*[text()='Configured Zones']/../..//*[@value='#{domain}']/../../../..//*[@title='Remove item']").click
   raise unless find(:xpath, "//*[text()='Available Zones']/../..//*[@value='#{domain}' and @name='Name']/../../../..//i[@title='Remove item']").click
+end
+
+Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
+  node = get_target(client)
+  _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", fatal = false)
+  raise if code.zero?
 end

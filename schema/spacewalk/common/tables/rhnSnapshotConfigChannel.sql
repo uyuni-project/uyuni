@@ -16,26 +16,26 @@
 
 CREATE TABLE rhnSnapshotConfigChannel
 (
-    snapshot_id        NUMBER NOT NULL
+    snapshot_id        NUMERIC NOT NULL
                            CONSTRAINT rhn_snapshotcc_sid_fk
                                REFERENCES rhnSnapshot (id)
                                ON DELETE CASCADE,
-    config_channel_id  NUMBER NOT NULL
+    config_channel_id  NUMERIC NOT NULL
                            CONSTRAINT rhn_snapshotcc_ccid_fk
                                REFERENCES rhnConfigChannel (id),
-    created            timestamp with local time zone
+    created            TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL,
-    modified           timestamp with local time zone
+    modified           TIMESTAMPTZ
                            DEFAULT (current_timestamp) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE UNIQUE INDEX rhn_snapshotcc_sid_ccid_uq
     ON rhnSnapshotConfigChannel (snapshot_id, config_channel_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 
 CREATE INDEX rhn_snpsht_cc_ccid_idx
     ON rhnSnapshotConfigChannel (config_channel_id)
-    TABLESPACE [[4m_tbs]];
+    ;
 

@@ -1,22 +1,21 @@
 // @flow
+import * as React from 'react';
 
-const { hot } = require('react-hot-loader');
-const React = require('react');
-const MessageContainer = require('components/messages').Messages;
-const MessagesUtils = require('components/messages').Utils;
-const { Table } = require('components/table');
-const { Column } = require('components/table');
-const { SearchField } = require('components/table');
-const Functions = require('utils/functions');
-const { LinkButton, AsyncButton } = require('components/buttons');
-const { ModalButton } = require('components/dialog/ModalButton');
-const Systems = require('components/systems');
-const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
-const { VirtualizationGuestsListRefreshApi } = require('../virtualization-guests-list-refresh-api');
-const { Utils: GuestsListUtils } = require('./guests-list.utils');
-const { ActionConfirm } = require('components/dialog/ActionConfirm');
-
-const { Utils } = Functions;
+import { Messages } from 'components/messages';
+import { Utils as MessagesUtils } from 'components/messages';
+import { Table } from 'components/table/Table';
+import { Column } from 'components/table/Column';
+import { SearchField } from 'components/table/SearchField';
+import { Utils } from 'utils/functions';
+import { LinkButton, AsyncButton } from 'components/buttons';
+import { ModalButton } from 'components/dialog/ModalButton';
+import * as Systems from 'components/systems';
+import { VirtualizationGuestActionApi } from '../virtualization-guest-action-api';
+import { VirtualizationGuestsListRefreshApi } from '../virtualization-guests-list-refresh-api';
+import { useVirtNotification } from '../../useVirtNotification.js';
+import { Utils as GuestsListUtils } from './guests-list.utils';
+import { ActionConfirm } from 'components/dialog/ActionConfirm';
+import { ActionStatus } from 'components/action/ActionStatus';
 
 declare var userPrefPageSize: number;
 
@@ -28,113 +27,30 @@ type Props = {
   isAdmin: boolean,
 };
 
-type State = {
-  actionsResults: Object,
-  errors: Array<string>,
-  selectedItems: Array<Object>,
-  selected?: Object,
-  pageUnloading: boolean,
-  websocketErr: boolean,
-};
+export function GuestsList(props: Props) {
+  const [selectedItems, setSelectedItems] = React.useState([]);
+  const [selected, setSelected] = React.useState(undefined);
+  const [errors, setErrors] = React.useState([]);
 
-class GuestsList extends React.Component<Props, State> {
-  static searchData(datum: Object, criteria: string) {
+  const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
+                                                                  props.serverId, props.saltEntitled);
+
+  const searchData = (datum: Object, criteria?: string): boolean => {
     if (criteria) {
       return datum.name.toLowerCase().includes(criteria.toLowerCase());
     }
     return true;
   }
 
-  websocket = { };
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      actionsResults: {},
-      errors: [],
-      selectedItems: [],
-      selected: undefined,
-      pageUnloading: false,
-      websocketErr: false,
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.saltEntitled) {
-      const { port } = window.location;
-      const url = `wss://${window.location.hostname}${port ? `:${port}` : ''}/rhn/websocket/minion/virt-notifications`;
-      const ws = new WebSocket(url);
-
-      ws.onopen = () => {
-        // Tell the websocket that we want to hear from all action results on this virtual host.
-        ws.send(this.props.serverId);
-      };
-
-      ws.onclose = () => {
-        this.setState(prevState => ({
-          errors: (prevState.errors || []).concat(
-            !prevState.pageUnloading && !prevState.websocketErr
-              ? t('Websocket connection closed. Refresh the page to try again.')
-              : [],
-          ),
-        }));
-      };
-
-      ws.onerror = () => {
-        this.setState({
-          errors: [t('Error connecting to server. Refresh the page to try again.')],
-          websocketErr: true,
-        });
-      };
-
-      ws.onmessage = (e) => {
-        if (typeof e.data === 'string') {
-          const newActions = JSON.parse(e.data);
-          this.setState(prevState => ({ actionsResults: Object.assign({}, prevState.actionsResults, newActions) }));
-        }
-      };
-
-      window.addEventListener('beforeunload', this.onBeforeUnload);
-
-      this.websocket = ws;
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.onBeforeUnload);
-    if (this.websocket !== undefined) {
-      this.websocket.close();
-    }
-  }
-
-  onBeforeUnload = () => {
-    this.setState({
-      pageUnloading: true,
-    });
-  }
-
-  handleSelectItems = (items: Array<Object>) => {
-    this.setState({
-      selectedItems: items,
-    });
-  }
-
-  selectGuest = (row: Object) => {
-    this.setState({
-      selected: row,
-    });
-  }
-
-  actionCallback = (results: Object) => {
+  const actionCallback = (results: Object): void => {
     const newActions = Object.keys(results).reduce((actions, uuid) => {
       const newAction = { [uuid]: { id: results[uuid], status: 'Queued' } };
       return Object.assign(actions, newAction);
     }, {});
-    this.setState(prevState => ({ actionsResults: Object.assign({}, prevState.actionsResults, newActions) }));
+    setActionsResults(Object.assign({}, actionsResults, newActions));
   }
 
-  createModalButton = (actionType: string, actionData: Array<Object>, row: Object) => {
+  const createModalButton = (actionType: string, actionData: Array<Object>, row: Object): React.Node => {
     const action = actionData.find(item => item.type === actionType);
     if (action) {
       return (
@@ -144,14 +60,14 @@ class GuestsList extends React.Component<Props, State> {
           icon={action.icon}
           target={`${actionType}-modal`}
           item={row}
-          onClick={this.selectGuest}
+          onClick={setSelected}
         />
       );
     }
     return <div />;
   }
 
-  createConfirmModal(action: Object, fn: Function) {
+  const createConfirmModal = (action: Object, fn: Function): Array<React.Node> => {
     return ([
       !action.bulkonly
       && (
@@ -162,11 +78,11 @@ class GuestsList extends React.Component<Props, State> {
           name={action.name}
           itemName={t('Guest')}
           icon={action.icon}
-          selected={[this.state.selected].filter(item => item)}
+          selected={[selected].filter(item => item)}
           fn={(type, guests, params) => fn(type, guests.map(guest => guest.uuid), params)}
           canForce={action.canForce}
           forceName={action.forceName}
-          onClose={() => this.selectGuest({})}
+          onClose={() => setSelected({})}
         />
       ), (
         <ActionConfirm
@@ -176,7 +92,7 @@ class GuestsList extends React.Component<Props, State> {
           name={action.name}
           itemName={t('Guest')}
           icon={action.icon}
-          selected={this.state.selectedItems}
+          selected={selectedItems}
           fn={(type, guests, params) => fn(type, guests.map(guest => guest.uuid), params)}
           canForce={action.canForce}
           forceName={action.forceName}
@@ -185,7 +101,7 @@ class GuestsList extends React.Component<Props, State> {
     ]);
   }
 
-  createSelectedModalButton(action: Object) {
+  const createSelectedModalButton = (action: Object): React.Node => {
     return (
       <ModalButton
         key={`${action.type}-selected-button`}
@@ -195,237 +111,249 @@ class GuestsList extends React.Component<Props, State> {
         text={action.name}
         title={t('{0} selected', action.name)}
         target={`${action.type}-selected-modal`}
-        disabled={this.state.selectedItems.length === 0}
+        disabled={selectedItems.length === 0}
       />
     );
   }
 
-  render() {
-    return (
-      <VirtualizationGuestActionApi
-        hostid={this.props.serverId}
-        callback={this.actionCallback}
-      >
-        {
-          ({
-            onAction,
-            messages,
-          }) => {
-            const modalsData = [
-              {
-                type: 'start', name: t('Start / Resume'), icon: 'fa-play', bulkonly: true,
-              },
-              {
-                type: 'shutdown', name: t('Stop'), icon: 'fa-stop', bulkonly: false, canForce: true, forceName: t('Force off'),
-              },
-              {
-                type: 'restart', name: t('Restart'), icon: 'fa-refresh', bulkonly: false, canForce: true, forceName: t('Reset'),
-              },
-              {
-                type: 'suspend', name: t('Suspend'), icon: 'fa-pause', bulkonly: false,
-              },
-              {
-                type: 'delete', name: t('Delete'), icon: 'fa-trash', bulkonly: false,
-              },
-            ];
-            const isActionVisible = (action, props) => !props.foreignEntitled && (action.type !== 'delete' || props.saltEntitled);
-            const panelButtons = (
-              <div className="pull-right btn-group">
-                {this.props.saltEntitled
-                  && (
-                  <LinkButton
-                    text={t('Create Guest')}
-                    title={t('Create Guest')}
-                    className="btn-default"
-                    icon="fa-plus"
-                    href={`/rhn/manager/systems/details/virtualization/guests/${this.props.serverId}/new`}
-                  />)
-                }
-                {modalsData
-                  .filter(action => isActionVisible(action, this.props))
-                  .map(action => this.createSelectedModalButton(action))}
-              </div>);
-
-            return (
-              <VirtualizationGuestsListRefreshApi
-                serverId={this.props.serverId}
-                refreshInterval={this.props.refreshInterval}
-              >
-                {
-                  ({
-                    guests,
-                    refreshError,
-                  }) => (
-                    <div>
-                      {panelButtons}
-                      <h2>{t('Hosted Virtual Systems')}</h2>
-                      <p>{t('This is a list of virtual guests which are configured to run on this host.')}</p>
-                      <MessageContainer items={this.state.errors.map(msg => MessagesUtils.error(msg))} />
-                      { refreshError && <MessageContainer items={refreshError} /> }
-                      { messages && <MessageContainer items={messages} /> }
-                      <Table
-                        data={Object.keys(guests).map(id => guests[id])}
-                        emptyText={t('No virtual guest to show.')}
-                        identifier={row => row.uuid}
-                        initialSortColumnKey="name"
-                        initialItemsPerPage={userPrefPageSize}
-                        selectable
-                        selectedItems={this.state.selectedItems.map(guest => guest.uuid)}
-                        onSelect={items => this.handleSelectItems(guests.filter(guest => items.includes(guest.uuid)))}
-                        searchField={(
-                          <SearchField
-                            filter={GuestsList.searchData}
-                            criteria=""
-                            placeholder={t('Filter by name')}
-                          />
-                        )}
-                      >
-                        <Column
-                          columnKey="name"
-                          comparator={Utils.sortByText}
-                          header={t('Guest')}
-                          cell={row => row.name}
-                        />
-                        <Column
-                          columnKey="serverName"
-                          comparator={Utils.sortByText}
-                          header={t('System')}
-                          cell={(row) => {
-                            if (row.virtualSystemId == null) {
-                              return t('Unregistered System');
-                            }
-
-                            if (row.accessible) {
-                              return <a href={`/rhn/systems/details/Overview.do?sid=${row.virtualSystemId}`}>{row.serverName}</a>;
-                            }
-                            return row.serverName;
-                          }}
-                        />
-                        <Column
-                          columnKey="statusType"
-                          comparator={GuestsListUtils.sortByUpdate}
-                          header={t('Updates')}
-                          cell={(row) => {
-                            if (row.statusType == null) {
-                              return '-';
-                            }
-                            return Systems.statusDisplay(row, this.props.isAdmin);
-                          }}
-                        />
-                        <Column
-                          columnKey="stateLabel"
-                          header={t('State')}
-                          comparator={GuestsListUtils.sortByState}
-                          cell={row => row.stateName}
-                        />
-                        <Column
-                          columnKey="memory"
-                          comparator={Utils.sortByNumber}
-                          header={t('Current Memory')}
-                          cell={row => `${row.memory / 1024} MiB`}
-                        />
-                        <Column
-                          columnKey="vcpus"
-                          comparator={Utils.sortByNumber}
-                          header={t('vCPUs')}
-                          cell={row => row.vcpus}
-                        />
-                        <Column
-                          columnKey="channelLabels"
-                          comparator={Utils.sortByText}
-                          header={t('Base Software Channel')}
-                          cell={(row) => {
-                            if (row.channelId == null) {
-                              return t('(none)');
-                            }
-                            if (row.subscribable) {
-                              return <a href={`/rhn/channels/ChannelDetail.do?cid=${row.channelId}`}>{row.channelLabels}</a>;
-                            }
-                            return row.channelLabels;
-                          }}
-                        />
-                        {this.props.saltEntitled && (
-                        <Column
-                          header={t('Action Status')}
-                          cell={(row) => {
-                            const actionResult = this.state.actionsResults[row.uuid];
-                            if (actionResult !== undefined) {
-                              const icons = {
-                                Queued: 'fa-clock-o text-info',
-                                Failed: 'fa-times-circle-o text-danger',
-                                Completed: 'fa-check-circle text-success',
-                              };
-                              return (
-                                <a href={`/rhn/systems/details/history/Event.do?sid=${this.props.serverId}&aid=${actionResult.id}`}>
-                                  <i
-                                    className={`fa ${icons[actionResult.status]} fa-1-5x`}
-                                    title={actionResult.status}
-                                  />
-                                </a>);
-                            }
-                            return '-';
-                          }}
-                            />)}
-                        {!this.props.foreignEntitled &&
-                         (<Column
-                          header={t('Actions')}
-                          columnClass="text-right"
-                          headerClass="text-right"
-                          cell={(row) => {
-                            const state = row.stateLabel;
-                            return (
-                              <div className="btn-group">
-                                {state !== 'running' && row.name !== 'Domain-0'
-                                 && (
-                                   <AsyncButton
-                                     defaultType="btn-default btn-sm"
-                                     title={t(state === 'paused' ? 'Resume' : 'Start')}
-                                     icon="fa-play"
-                                     action={() => onAction('start', [row.uuid], {})}
-                                   />) }
-                                {state === 'running' && row.name !== 'Domain-0'
-                                 && this.createModalButton('suspend', modalsData, row) }
-                                {state !== 'stopped' && row.name !== 'Domain-0'
-                                 && this.createModalButton('shutdown', modalsData, row) }
-                                {(state === 'paused' || state === 'running') && this.createModalButton('restart', modalsData, row) }
-                                {this.props.saltEntitled && state === 'running' && (
-                                  <LinkButton
-                                    title={t('Graphical Console')}
-                                    className="btn-default btn-sm"
-                                    icon="fa-desktop"
-                                    href={`/rhn/manager/systems/details/virtualization/guests/${this.props.serverId}/console/${row.uuid}`}
-                                    target="_blank"
-                                  />
-                                )}
-                                <LinkButton
-                                  title={t('Edit')}
-                                  className="btn-default btn-sm"
-                                  icon="fa-edit"
-                                  href={`/rhn/manager/systems/details/virtualization/guests/${this.props.serverId}/edit/${row.uuid}`}
-                                />
-                                { this.props.saltEntitled && row.name !== 'Domain-0'
-                                  && this.createModalButton('delete', modalsData, row) }
-                              </div>
-                            );
-                          }}
-                          />)
-                        }
-                      </Table>
-
-                      {modalsData
-                        .filter(action => isActionVisible(action, this.props))
-                        .map(action => this.createConfirmModal(action, onAction).map(modal => modal))}
-                    </div>
-                  )
-                }
-              </VirtualizationGuestsListRefreshApi>
-            );
-          }
-        }
-      </VirtualizationGuestActionApi>);
+  const getCreationActionMessages = (): React.Node => {
+    return Object.keys(actionsResults)
+      .filter(key => key.startsWith("new-") && actionsResults[key].type === "virt.create")
+      .flatMap(key => {
+        const action = actionsResults[key];
+        const messagesMapper = {
+          Failed: MessagesUtils.error,
+        };
+        return (messagesMapper[action.status] || MessagesUtils.info)(
+          <p><ActionStatus serverId={props.serverId} actionId={action.id} status={action.status}/>{action.name}</p>
+        );
+      });
   }
-}
 
-module.exports = {
-  GuestsList: hot(module)(GuestsList),
-};
+
+  return (
+    <VirtualizationGuestActionApi
+      hostid={props.serverId}
+      callback={actionCallback}
+    >
+      {
+        ({
+          onAction,
+          messages,
+        }) => {
+          const modalsData = [
+            {
+              type: 'start', name: t('Start / Resume'), icon: 'fa-play', bulkonly: true,
+            },
+            {
+              type: 'shutdown', name: t('Stop'), icon: 'fa-stop', bulkonly: false, canForce: true, forceName: t('Force off'),
+            },
+            {
+              type: 'restart', name: t('Restart'), icon: 'fa-refresh', bulkonly: false, canForce: true, forceName: t('Reset'),
+            },
+            {
+              type: 'suspend', name: t('Suspend'), icon: 'fa-pause', bulkonly: false,
+            },
+            {
+              type: 'delete', name: t('Delete'), icon: 'fa-trash', bulkonly: false,
+            },
+          ];
+          const isActionVisible = (action) => !props.foreignEntitled && (action.type !== 'delete' || props.saltEntitled);
+          const panelButtons = (
+            <div className="pull-right btn-group">
+              {props.saltEntitled
+                && (
+                <LinkButton
+                  text={t('Create Guest')}
+                  title={t('Create Guest')}
+                  className="btn-default"
+                  icon="fa-plus"
+                  href={`/rhn/manager/systems/details/virtualization/guests/${props.serverId}/new`}
+                />)
+              }
+              {modalsData
+                .filter(action => isActionVisible(action))
+                .map(action => createSelectedModalButton(action))}
+            </div>);
+
+          return (
+            <VirtualizationGuestsListRefreshApi
+              serverId={props.serverId}
+              refreshInterval={props.refreshInterval}
+            >
+              {
+                ({
+                  guests,
+                  refreshError,
+                }) => (
+                  <div>
+                    {panelButtons}
+                    <h2>{t('Hosted Virtual Systems')}</h2>
+                    <p>{t('This is a list of virtual guests which are configured to run on this host.')}</p>
+                    <Messages
+                      items={
+                        [].concat(
+                          errors.map(msg => MessagesUtils.error(msg)),
+                          getCreationActionMessages()
+                        )
+                      }
+                    />
+                    { refreshError && <Messages items={refreshError} /> }
+                    { messages && <Messages items={messages} /> }
+                    <Table
+                      data={Object.keys(guests).map(id => guests[id])}
+                      emptyText={t('No virtual guest to show.')}
+                      identifier={row => row.uuid}
+                      initialSortColumnKey="name"
+                      initialItemsPerPage={userPrefPageSize}
+                      selectable
+                      selectedItems={selectedItems.map(guest => guest.uuid)}
+                      onSelect={items => setSelectedItems(guests.filter(guest => items.includes(guest.uuid)))}
+                      searchField={(
+                        <SearchField
+                          filter={searchData}
+                          criteria=""
+                          placeholder={t('Filter by name')}
+                        />
+                      )}
+                    >
+                      <Column
+                        columnKey="name"
+                        comparator={Utils.sortByText}
+                        header={t('Guest')}
+                        cell={row => row.name}
+                      />
+                      <Column
+                        columnKey="serverName"
+                        comparator={Utils.sortByText}
+                        header={t('System')}
+                        cell={(row) => {
+                          if (row.virtualSystemId == null) {
+                            return t('Unregistered System');
+                          }
+
+                          if (row.accessible) {
+                            return <a href={`/rhn/systems/details/Overview.do?sid=${row.virtualSystemId}`}>{row.serverName}</a>;
+                          }
+                          return row.serverName;
+                        }}
+                      />
+                      <Column
+                        columnKey="statusType"
+                        comparator={GuestsListUtils.sortByUpdate}
+                        header={t('Updates')}
+                        cell={(row) => {
+                          if (row.statusType == null) {
+                            return '-';
+                          }
+                          return Systems.statusDisplay(row, props.isAdmin);
+                        }}
+                      />
+                      <Column
+                        columnKey="stateLabel"
+                        header={t('State')}
+                        comparator={GuestsListUtils.sortByState}
+                        cell={row => row.stateName}
+                      />
+                      <Column
+                        columnKey="memory"
+                        comparator={Utils.sortByNumber}
+                        header={t('Current Memory')}
+                        cell={row => `${row.memory / 1024} MiB`}
+                      />
+                      <Column
+                        columnKey="vcpus"
+                        comparator={Utils.sortByNumber}
+                        header={t('vCPUs')}
+                        cell={row => row.vcpus}
+                      />
+                      <Column
+                        columnKey="channelLabels"
+                        comparator={Utils.sortByText}
+                        header={t('Base Software Channel')}
+                        cell={(row) => {
+                          if (row.channelId == null) {
+                            return t('(none)');
+                          }
+                          if (row.subscribable) {
+                            return <a href={`/rhn/channels/ChannelDetail.do?cid=${row.channelId}`}>{row.channelLabels}</a>;
+                          }
+                          return row.channelLabels;
+                        }}
+                      />
+                      {props.saltEntitled && (
+                      <Column
+                        header={t('Action Status')}
+                        cell={(row) => {
+                          const actionResult = actionsResults[row.uuid];
+                          if (actionResult !== undefined) {
+                            return (
+                              <ActionStatus
+                                serverId={props.serverId}
+                                actionId={actionResult.id}
+                                status={actionResult.status}
+                              />
+                            );
+                          }
+                          return '-';
+                        }}
+                          />)}
+                      {!props.foreignEntitled &&
+                       (<Column
+                        header={t('Actions')}
+                        columnClass="text-right"
+                        headerClass="text-right"
+                        cell={(row) => {
+                          const state = row.stateLabel;
+                          return (
+                            <div className="btn-group">
+                              {state !== 'running' && row.name !== 'Domain-0'
+                               && (
+                                 <AsyncButton
+                                   defaultType="btn-default btn-sm"
+                                   title={t(state === 'paused' ? 'Resume' : 'Start')}
+                                   icon="fa-play"
+                                   action={() => onAction('start', [row.uuid], {})}
+                                 />) }
+                              {state === 'running' && row.name !== 'Domain-0'
+                               && createModalButton('suspend', modalsData, row) }
+                              {state !== 'stopped' && row.name !== 'Domain-0'
+                               && createModalButton('shutdown', modalsData, row) }
+                              {(state === 'paused' || state === 'running') && createModalButton('restart', modalsData, row) }
+                              {props.saltEntitled && state === 'running' && (
+                                <LinkButton
+                                  title={t('Graphical Console')}
+                                  className="btn-default btn-sm"
+                                  icon="fa-desktop"
+                                  href={`/rhn/manager/systems/details/virtualization/guests/${props.serverId}/console/${row.uuid}`}
+                                  target="_blank"
+                                />
+                              )}
+                              <LinkButton
+                                title={t('Edit')}
+                                className="btn-default btn-sm"
+                                icon="fa-edit"
+                                href={`/rhn/manager/systems/details/virtualization/guests/${props.serverId}/edit/${row.uuid}`}
+                              />
+                              { props.saltEntitled && row.name !== 'Domain-0'
+                                && createModalButton('delete', modalsData, row) }
+                            </div>
+                          );
+                        }}
+                        />)
+                      }
+                    </Table>
+
+                    {modalsData
+                      .filter(action => isActionVisible(action))
+                      .map(action => createConfirmModal(action, onAction).map(modal => modal))}
+                  </div>
+                )
+              }
+            </VirtualizationGuestsListRefreshApi>
+          );
+        }
+      }
+    </VirtualizationGuestActionApi>
+  );
+}

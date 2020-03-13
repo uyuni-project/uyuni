@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle11sp4_minion
@@ -16,19 +16,17 @@ Feature: Be able to bootstrap a sle11sp4 Salt minion via the GUI
     And I enter "22" as "port"
     And I enter "root" as "user"
     And I enter "linux" as "password"
-    And I select "sle11sp4_minion_key" from "activationKeys"
+    And I select "1-sle11sp4_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
+    And I wait until onboarding is completed for "sle11sp4_minion"
 
   Scenario: Check the new bootstrapped sle11sp4_minion in System Overview page
     Given I am authorized
     And I go to the minion onboarding page
     Then I should see a "accepted" text
     And the Salt master can reach "sle11sp4_minion"
-    When I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "sle11sp4_minion", refreshing the page
-    And I wait until onboarding is completed for "sle11sp4_minion"
 
 @proxy
   Scenario: Check connection from sle11sp4 minion to proxy
@@ -43,7 +41,6 @@ Feature: Be able to bootstrap a sle11sp4 Salt minion via the GUI
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle11sp4_minion" hostname
-
 
   # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
   Scenario: Check the new channel is working

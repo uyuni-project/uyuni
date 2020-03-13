@@ -17,7 +17,6 @@ package com.suse.manager.reactor;
 import static java.util.stream.Stream.empty;
 import static java.util.stream.Stream.of;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -39,6 +38,7 @@ import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAct
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
+import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -52,6 +52,7 @@ import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
+import com.suse.manager.webui.utils.salt.MinionStartEvent;
 import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
@@ -60,12 +61,11 @@ import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
-import com.suse.salt.netapi.event.MinionStartEvent;
 import com.suse.salt.netapi.exception.SaltException;
-
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -164,13 +164,8 @@ public class SaltReactor {
             retries++;
             try {
                 eventStream = SALT_SERVICE.getEventStream();
-                if (ConfigDefaults.get().isPostgresql()) {
-                    eventStream.addEventListener(new PGEventListener(this::eventStreamClosed, this::eventToMessages));
-                }
-                else {
-                    eventStream.addEventListener(new MessageQueueEventListener(this::eventStreamClosed,
-                            this::eventToMessages));
-                }
+                eventStream.addEventListener(new PGEventListener(this::eventStreamClosed, this::eventToMessages));
+
                 connected = true;
                 if (retries > 1) {
                     LOG.warn("Successfully connected to the Salt event bus after " +
@@ -256,12 +251,13 @@ public class SaltReactor {
      */
     private Stream<EventMessage> eventToMessages(MinionStartEvent minionStartEvent) {
         String minionId = (String) minionStartEvent.getData().get("id");
+        Optional<MinionStartupGrains> startupGrains = minionStartEvent.getStartUpGrains(MinionStartupGrains.class);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Trigger start and registration for minion: " + minionId);
         }
         return of(
             new MinionStartEventMessage(minionId),
-            new RegisterMinionEventMessage(minionId)
+            new RegisterMinionEventMessage(minionId, startupGrains)
         );
     }
 

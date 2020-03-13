@@ -1,11 +1,11 @@
 CREATE TABLE suseMatcherRunData (
-    id             NUMBER NOT NULL
+    id             NUMERIC NOT NULL
                    CONSTRAINT suse_matcher_run_data_pk PRIMARY KEY,
-    inputBinary blob,
-    outputBinary blob,
-    subscriptionReportBinary blob,
-    messageReportBinary blob,
-    unmatchedProductReportBinary blob
+    inputBinary BYTEA,
+    outputBinary BYTEA,
+    subscriptionReportBinary BYTEA,
+    messageReportBinary BYTEA,
+    unmatchedProductReportBinary BYTEA
 );
 
 CREATE SEQUENCE suse_matcher_run_data_id_seq;

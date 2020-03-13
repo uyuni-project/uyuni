@@ -16,72 +16,72 @@
 
 CREATE TABLE rhnPackage
 (
-    id               NUMBER NOT NULL
+    id               NUMERIC NOT NULL
                          CONSTRAINT rhn_package_id_pk PRIMARY KEY
-                         USING INDEX TABLESPACE [[4m_tbs]],
-    org_id           NUMBER
+                         ,
+    org_id           NUMERIC
                          CONSTRAINT rhn_package_oid_fk
                              REFERENCES web_customer (id)
                              ON DELETE CASCADE,
-    name_id          NUMBER NOT NULL
+    name_id          NUMERIC NOT NULL
                          CONSTRAINT rhn_package_nid_fk
                              REFERENCES rhnPackageName (id),
-    evr_id           NUMBER NOT NULL
+    evr_id           NUMERIC NOT NULL
                          CONSTRAINT rhn_package_eid_fk
                              REFERENCES rhnPackageEvr (id),
-    package_arch_id  NUMBER NOT NULL
+    package_arch_id  NUMERIC NOT NULL
                          CONSTRAINT rhn_package_paid_fk
                              REFERENCES rhnPackageArch (id),
-    package_group    NUMBER
+    package_group    NUMERIC
                          CONSTRAINT rhn_package_group_fk
                              REFERENCES rhnPackageGroup (id),
-    rpm_version      VARCHAR2(16),
-    description      VARCHAR2(4000),
-    summary          VARCHAR2(4000),
-    package_size     NUMBER NOT NULL,
-    payload_size     NUMBER,
-    installed_size   NUMBER,
-    build_host       VARCHAR2(256),
+    rpm_version      VARCHAR(16),
+    description      VARCHAR(4000),
+    summary          VARCHAR(4000),
+    package_size     NUMERIC NOT NULL,
+    payload_size     NUMERIC,
+    installed_size   NUMERIC,
+    build_host       VARCHAR(256),
     build_time       timestamp,
-    source_rpm_id    NUMBER
+    source_rpm_id    NUMERIC
                          CONSTRAINT rhn_package_srcrpmid_fk
                              REFERENCES rhnSourceRPM (id),
-    checksum_id      NUMBER NOT NULL
+    checksum_id      NUMERIC NOT NULL
                          CONSTRAINT rhn_package_chsum_fk
                              REFERENCES rhnChecksum (id),
-    vendor           VARCHAR2(64),
-    payload_format   VARCHAR2(32),
-    compat           NUMBER(1)
+    vendor           VARCHAR(64),
+    payload_format   VARCHAR(32),
+    compat           NUMERIC(1)
                          DEFAULT (0)
                          CONSTRAINT rhn_package_compat_check
                              CHECK (compat in ( 1 , 0 )),
-    path             VARCHAR2(1000),
-    header_sig       VARCHAR2(64),
-    copyright        VARCHAR2(128),
-    cookie           VARCHAR2(128),
-    last_modified    timestamp with local time zone
+    path             VARCHAR(1000),
+    header_sig       VARCHAR(64),
+    copyright        VARCHAR(128),
+    cookie           VARCHAR(128),
+    last_modified    TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    created          timestamp with local time zone
+    created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    modified         timestamp with local time zone
+    modified         TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
-    header_start     NUMBER
+    header_start     NUMERIC
                          DEFAULT (-1) NOT NULL,
-    header_end       NUMBER
+    header_end       NUMERIC
                          DEFAULT (-1) NOT NULL
 )
-ENABLE ROW MOVEMENT
+
 ;
 
 CREATE INDEX rhn_package_oid_id_idx
     ON rhnPackage (org_id, id)
-    TABLESPACE [[64k_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE INDEX rhn_package_nid_id_idx
     ON rhnPackage (name_id, id)
-    TABLESPACE [[2m_tbs]]
-    NOLOGGING;
+    
+    ;
 
 CREATE SEQUENCE rhn_package_id_seq;
 
