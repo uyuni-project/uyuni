@@ -1,3 +1,5 @@
+- Enable monitoring for ppc64le and aarch64 (bsc#1166613)
+
 -------------------------------------------------------------------
 Fri Feb 28 12:08:06 CET 2020 - jgonzalez@suse.com
 
