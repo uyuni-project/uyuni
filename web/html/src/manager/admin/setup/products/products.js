@@ -655,7 +655,14 @@ class CheckListItem extends React.Component {
         />;
     }
     else if (this.isInstalled()) {
-      selectorContent = <i className='fa fa-check-square-o fa-1-5x product-installed' title={t('This product is mirrored.')} />
+      selectorContent =
+        <input type='checkbox'
+            id={'checkbox-for-' + currentItem.identifier}
+            value={currentItem.identifier}
+            checked='checked'
+            disabled='disabled'
+            title={t('This product is mirrored.')}
+        />;
     }
     /*****/
 
