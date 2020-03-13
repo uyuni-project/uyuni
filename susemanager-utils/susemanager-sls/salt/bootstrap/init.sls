@@ -37,7 +37,7 @@ mgr_server_localhost_alias_absent:
 {%- if grains['os'] == 'Ubuntu' %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/ubuntu/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
 {%- else %}
-{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ osrelease[0] ~ '/' ~ osrelease[1].lstrip('0') ~ '/bootstrap/' %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/debian/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- endif %}
 {%- endif %}
 
@@ -116,6 +116,10 @@ trust_res_gpg_key:
 
 {%- elif grains['os_family'] == 'Debian' %}
 {%- include 'channels/debiankeyring.sls' %}
+install_gnupg_debian:
+  pkg.latest:
+    - pkgs:
+      - gnupg
 trust_suse_manager_tools_deb_gpg_key:
   module.run:
     - name: pkg.add_repo_key

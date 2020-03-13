@@ -628,7 +628,12 @@ elif [ "$INSTALLER" == apt ]; then
     getA_MISSING
 
     CLIENT_REPOS_ROOT="${{CLIENT_REPOS_ROOT:-${{HTTPS_PUB_DIRECTORY}}/repositories}}"
-    CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/${{A_CLIENT_CODE_MINOR_VERSION}}/bootstrap"
+    # Debian does not need minor version in the bootstrap repo URL
+    if [ "${{A_CLIENT_CODE_BASE}}" == "debian" ]; then
+      CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/bootstrap"
+    else
+      CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/${{A_CLIENT_CODE_BASE}}/${{A_CLIENT_CODE_MAJOR_VERSION}}/${{A_CLIENT_CODE_MINOR_VERSION}}/bootstrap"
+    fi
     CLIENT_REPO_NAME="susemanager_bootstrap"
     CLIENT_REPO_FILE="/etc/apt/sources.list.d/$CLIENT_REPO_NAME.list"
 

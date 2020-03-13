@@ -1,3 +1,4 @@
+- Enable support for bootstrapping Debian 9 and 10
 - Adapt 'mgractionchains' module to work with Salt 3000
 
 -------------------------------------------------------------------
