@@ -56,7 +56,7 @@ public class RecurringStateScheduleJson {
     /**  Login of the schedule creator **/
     private String creatorLogin;
 
-    /**  Name of the Organization **/
+    /**  Name of the Organization - only applicable for OrgRecurringAction **/
     private String orgName;
 
     /**
