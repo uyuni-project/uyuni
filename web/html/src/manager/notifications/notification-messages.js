@@ -193,7 +193,9 @@ class NotificationMessages extends React.Component {
   };
 
   buildTextDescription = (row) => {
-    return escapeHtml(row['textSummary'])
+    var div = document.createElement("div");
+    div.innerHTML = row['summary']
+    return div.textContent || div.innerText || "";
   };
 
   sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
