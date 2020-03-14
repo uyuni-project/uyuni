@@ -1,3 +1,4 @@
+- implement notification utility
 - Do not break when syncing Oracle 7 yum channel (bsc#1158463)
 
 -------------------------------------------------------------------
