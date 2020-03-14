@@ -79,8 +79,8 @@ public class ChannelSyncFailed implements NotificationData {
      */
     @Override
     public String getSummary() {
-        return LocalizationService.getInstance().
-                getMessage("notification.channelsyncfailed", getChannelId(), getChannelName());
+        return LocalizationService.getInstance().getMessage("notification.channelsyncfailed",
+                getChannelId().toString(), getChannelName());
     }
 
     /**
