@@ -64,17 +64,9 @@ public class CreateBootstrapRepoFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public String getTextSummary() {
-        return LocalizationService.getInstance().
-                getMessage("notification.text.bootstraprepofailed", getIdentifier());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
-        return getTextSummary();
+        return LocalizationService.getInstance().
+                getMessage("notification.bootstraprepofailed", getIdentifier());
     }
 
     /**

@@ -69,15 +69,6 @@ public class ChannelSyncFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public String getTextSummary() {
-        return LocalizationService.getInstance().
-                getMessage("notification.text.channelsyncfailed", getChannelName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
         return LocalizationService.getInstance().getMessage("notification.channelsyncfailed",
                 getChannelId().toString(), getChannelName());

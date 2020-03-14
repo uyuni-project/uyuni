@@ -69,15 +69,6 @@ public class ChannelSyncFinished implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public String getTextSummary() {
-        return LocalizationService.getInstance().
-                getMessage("notification.text.channelsyncfinished", getChannelName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
         return LocalizationService.getInstance().getMessage("notification.channelsyncfinished",
                 getChannelId().toString(), getChannelName());

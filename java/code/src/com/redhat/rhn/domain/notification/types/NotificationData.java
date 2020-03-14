@@ -31,11 +31,6 @@ public interface NotificationData {
     NotificationType getType();
 
     /**
-     * @return translated text summary of this notification
-     */
-    String getTextSummary();
-
-    /**
      * @return translated summary of this notification
      */
     String getSummary();

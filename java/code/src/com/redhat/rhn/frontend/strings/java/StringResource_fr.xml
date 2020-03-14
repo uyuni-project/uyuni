@@ -10166,26 +10166,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="notification.channelsyncfailed">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
       </trans-unit>
-      <trans-unit id="notification.text.channelsyncfailed">
-        <source>Error syncing the channel: {1}</source>
-      </trans-unit>
       <trans-unit id="notification.channelsyncfinished">
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
-      </trans-unit>
-      <trans-unit id="notification.text.channelsyncfinished">
-        <source>Channel {1} sync completed</source>
       </trans-unit>
       <trans-unit id="notification.onboardingfailed">
         <source>Error registering minion id: {0}</source>
       </trans-unit>
-      <trans-unit id="notification.text.onboardingfailed">
-        <source>Error registering minion id: {0}</source>
-      </trans-unit>
-      <trans-unit id="notification.text.bootstraprepofailed">
+      <trans-unit id="notification.bootstraprepofailed">
         <source>Error generating bootstrap repo for: {0}</source>
-      </trans-unit>
-      <trans-unit id="notification.text.stateapplyfailed">
-        <source>Error running state.apply on: {0}</source>
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
