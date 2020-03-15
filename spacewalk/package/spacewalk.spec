@@ -44,6 +44,8 @@ Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
 BuildRequires:  python3
+BuildRequires:  spacewalk-base-minimal-config
+BuildRequires:  spacewalk-backend
 Requires:       python3
 Requires:       spacewalk-setup
 
@@ -146,18 +148,22 @@ Version for PostgreSQL database backend.
 %install
 RDBMS="postgresql"
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}
-SW_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
-echo "Uyuni release $SW_REL (%{release_name})" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
+SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
+UYUNI_REL=$(grep -F 'web.version.uyuni' %{_datadir}/rhn/config-defaults/rhn_web.conf | sed 's/^.*= *\([[:digit:]\.]\+\) *$/\1/')
+echo "Uyuni release $UYUNI_REL" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
+if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
+  echo "SUSE Manager release $SUMA_REL ($UYUNI_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
+fi
 install -d $RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d
 for i in ${RDBMS} ; do
-        cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
+    cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
 # database backend to be used by spacewalk
 db-backend = $i
 EOF
 done
 
 %files common
-%{_sysconfdir}/uyuni-release
+%{_sysconfdir}/*-release
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup
