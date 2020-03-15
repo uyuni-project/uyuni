@@ -67,7 +67,16 @@ start() {
     else
         touch $DISABLE_FILE
     fi
-    systemctl start spacewalk.target
+    MSG1=$(systemctl start spacewalk.target 2>&1) || {
+        MSG2=$(systemctl status uyuni-check-database.service)
+        if [ $? -ne 0 ]; then
+            echo -e "$MSG2"
+        else
+            echo -e "$MSG1"
+        fi
+        echo "FAILED"
+        return 1
+    }
     if systemctl is-enabled osa-dispatcher > /dev/null 2>&1; then
         systemctl start jabberd
         /usr/sbin/spacewalk-startup-helper wait-for-jabberd
