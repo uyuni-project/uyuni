@@ -1440,10 +1440,26 @@ ORDER BY UPPER(EK.keyword)
   <elaborator name="errata_flags" />
 </mode>
 
+<!--    todo rename to erratum_not_ -->
 <write-mode name="insert_errata_notification">
   <query params="eid, cid, datetime">
   insert into rhnErrataQueue (channel_id, errata_id, next_action) values (:cid, :eid, :datetime)
   </query>
+</write-mode>
+
+<!--    todo rename to errata_not_ -->
+<write-mode name="insert_erratas_notification">
+    <query params="cid, datetime">
+        INSERT INTO rhnErrataQueue (channel_id, errata_id, next_action)
+        (SELECT :cid, E.id, :datetime FROM rhnErrata E WHERE E.id in (%s))
+    </query>
+</write-mode>
+
+<!--   name vole -->
+<write-mode name="clear_erratas_channel_notification">
+    <query params="cid">
+        delete from rhnErrataQueue where errata_id in (%s) and channel_id = :cid
+    </query>
 </write-mode>
 
 <write-mode name="clear_errata_notification">

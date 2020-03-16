@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.domain.errata.ClonedErrata;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -55,6 +56,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
@@ -749,7 +751,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(channel.getClonedChannels().contains(tgtChannel));
         assertEquals(channel, tgtChannel.getOriginal());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
-        assertEquals(channel.getErratas(), tgtChannel.getErratas());
+        assertEquals(channel.getErratas(), tgtChannel.getErratas().stream().map(e -> ((ClonedErrata)e).getOriginal()).collect(Collectors.toUnmodifiableSet()));
         assertEquals(Long.valueOf(1), env.getVersion());
 
         // 2. change a project source and rebuild
@@ -773,7 +775,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertNull(base.getParentChannel());
         assertEquals(base, child.getParentChannel());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
-        assertEquals(channel.getErratas(), tgtChannel.getErratas());
+        assertEquals(channel.getErratas(), tgtChannel.getErratas().stream().map(e -> ((ClonedErrata)e).getOriginal()).collect(Collectors.toUnmodifiableSet()));
 
         // 3. remove a source and rebuild
         contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
@@ -786,7 +788,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, tgts.size());
         assertEquals("cplabel-fst-" + newChannel.getLabel(), tgts.get(0).asSoftwareTarget().get().getChannel().getLabel());
         assertEquals(channel.getPackages(), tgtChannel.getPackages());
-        assertEquals(channel.getErratas(), tgtChannel.getErratas());
+        assertEquals(channel.getErratas(), tgtChannel.getErratas().stream().map(e -> ((ClonedErrata)e).getOriginal()).collect(Collectors.toUnmodifiableSet()));
     }
 
     /**
@@ -1200,8 +1202,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // build without filters
         contentManager.buildProject("cplabel", empty(), false, user);
-        assertEquals(1, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErrataCount());
-        assertEquals(erratum, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErratas().iterator().next());
+        HibernateFactory.getSession().flush();
+        Channel channel1 = ChannelFactory.lookupById(env.getTargets().get(0).asSoftwareTarget().get().getChannel().getId());
+        assertEquals(1, channel1.getErrataCount());
+        assertEquals(erratum, ((ClonedErrata) channel1.getErratas().iterator().next()).getOriginal());
 
         // build with filters
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());

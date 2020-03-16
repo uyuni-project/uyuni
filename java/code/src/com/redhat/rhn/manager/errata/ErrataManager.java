@@ -295,13 +295,14 @@ public class ErrataManager extends BaseManager {
 
         log.debug("Publishing");
         Set<Long> errataIds = getErrataIds(errataToMerge);
-        if (async) {
-            CloneErrataEvent eve = new CloneErrataEvent(toChannel, errataIds, repoRegen, user);
-            MessageQueue.publish(eve);
-        }
-        else {
-            cloneErrata(toChannel.getId(), errataIds, repoRegen, false, user);
-        }
+//        if (async) {
+//            CloneErrataEvent eve = new CloneErrataEvent(toChannel, errataIds, repoRegen, user);
+//            MessageQueue.publish(eve);
+//        }
+//        else {
+//            cloneErrata(toChannel.getId(), errataIds, repoRegen, false, user);
+//        }
+        cloneChannelErrata(errataIds, toChannel.getId(), user);
 
         // no need to regenerate errata cache, because we didn't touch any packages
         return errataToMerge;
@@ -1613,6 +1614,12 @@ public class ErrataManager extends BaseManager {
      */
     public static Set<Long> cloneChannelErrata(List<ErrataOverview> toClone, Long toCid,
             User user) {
+        Set<Long> eids = toClone.stream().map(o -> o.getId()).collect(toSet());
+        return cloneChannelErrata(eids, toCid, user);
+    }
+
+    public static Set<Long> cloneChannelErrata(Set<Long> eidsToClone, Long toCid,
+            User user) {
         List<OwnedErrata> owned = ErrataFactory
                 .listPublishedOwnedUnmodifiedClonedErrata(user.getOrg().getId());
         Set<Long> eids = new HashSet<Long>();
@@ -1631,27 +1638,24 @@ public class ErrataManager extends BaseManager {
             }
         }
 
-        for (ErrataOverview erratum : toClone) {
-            if (!eidToClone.containsKey(erratum.getId())) {
+        for (Long erratumId : eidsToClone) {
+            if (!eidToClone.containsKey(erratumId)) {
                 // no published owned clones yet, lets make our own
                 // hibernate was too slow, had to rewrite in mode queries
-                Long cloneId = PublishErrataHelper.cloneErrataFaster(erratum.getId(), user
-                        .getOrg());
+                Long cloneId = PublishErrataHelper.cloneErrataFaster(erratumId, user.getOrg());
                 eids.add(cloneId);
 
             }
             else {
                 // we have one already, reuse it
-                eids.add(eidToClone.get(erratum.getId()).getId());
+                eids.add(eidToClone.get(erratumId).getId());
             }
         }
 
         ChannelFactory.addClonedErrataToChannel(eids, toCid);
 
         // for things like errata email and auto errata updates
-        for (Long eid : eids) {
-            ErrataManager.addErrataChannelNotifications(eid, toCid);
-        }
+        ErrataManager.addErratasChannelNotifications(new LinkedList<>(eids), toCid);
         return eids;
     }
 
@@ -1733,6 +1737,20 @@ public class ErrataManager extends BaseManager {
         params.put("datetime", newDate);
         m = ModeFactory.getWriteMode("Errata_queries", "insert_errata_notification");
         m.executeUpdate(params);
+    }
+
+    // todo naming!
+    public static void addErratasChannelNotifications(List<Long> eids, Long cid) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cid", cid);
+        WriteMode m = ModeFactory.getWriteMode("Errata_queries",
+                "clear_erratas_channel_notification");
+        m.executeUpdate(params, eids);
+
+        java.sql.Date newDate = new java.sql.Date(new java.util.Date().getTime());
+        params.put("datetime", newDate);
+        m = ModeFactory.getWriteMode("Errata_queries", "insert_erratas_notification");
+        m.executeUpdate(params, eids);
     }
 
     /**
@@ -2294,7 +2312,7 @@ public class ErrataManager extends BaseManager {
                 if (clones.size() == 0) { // todo this path should be also optimized i guess
                     log.debug("Cloning errata");
                     Long publishedId = PublishErrataHelper.cloneErrataFaster(eid, user.getOrg());
-                    Errata published = (Errata) HibernateFactory.reload(publishedId);
+                    Errata published = (Errata) HibernateFactory.reload(ErrataFactory.lookupById(publishedId));
 //                    Errata published = PublishErrataHelper.cloneErrataFast(erratum, user.getOrg());
                     published.setChannels(channelSet);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, published);

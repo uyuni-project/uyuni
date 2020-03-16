@@ -1690,4 +1690,26 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         olderPkg.setPackageName(fromPkg.getPackageName());
         return olderPkg;
     }
+
+    public void testTest() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata);
+        TestUtils.saveAndFlush(errata2);
+        Package errataPackage = errata.getPackages().iterator().next();
+        // we assume version 1.0.0 for the test
+        assertEquals("1.0.0", errataPackage.getPackageEvr().getVersion());
+
+        Channel chan = ChannelFactoryTest.createTestChannel(user);
+        Package olderPack = copyPackage(errataPackage, user, chan, "0.9.9");
+
+        List<Long> eids = new ArrayList<>();
+        eids.add(errata.getId());
+        eids.add(errata2.getId());
+        ErrataManager.addErratasChannelNotifications(eids, chan.getId());
+
+        System.out.println(
+        ErrataFactory.getSession().createSQLQuery("select * from rhnerrataqueue").list());
+    }
 }
