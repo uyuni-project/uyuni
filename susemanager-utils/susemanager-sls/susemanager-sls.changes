@@ -1,3 +1,4 @@
+- Adapt 'mgractionchains' module to work with Salt 3000
 - Do not workaround util.syncmodules for SSH minions (bsc#1162609)
 - Force to run util.synccustomall when triggering action chains on SSH minions (bsc#1162683).
 
