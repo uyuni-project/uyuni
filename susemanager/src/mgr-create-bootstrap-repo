@@ -455,7 +455,8 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         else:
             os.system("createrepo -s sha %s" % destdirtmp)
         # move tmp dir to final location
-        os.rename(destdir, destdirold)
+        if os.path.exists(destdir):
+            os.rename(destdir, destdirold)
         os.rename(destdirtmp, destdir)
         cleanup_dir(destdirold)
 
