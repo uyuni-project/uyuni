@@ -42,6 +42,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -1275,14 +1276,10 @@ public class ChannelFactory extends HibernateFactory {
      * @param cid channel id we're cloning into
      */
     public static void addClonedErrataToChannel(Set<Long> eids, Long cid) {
-        WriteMode m = ModeFactory.getWriteMode("Channel_queries",
-                "add_cloned_erratum_to_channel");
+        WriteMode m = ModeFactory.getWriteMode("Channel_queries", "add_cloned_errata_to_channel");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("cid", cid);
-        for (Long eid : eids) {
-            params.put("eid", eid);
-            m.executeUpdate(params);
-        }
+        m.executeUpdate(params, new LinkedList<>(eids));
     }
 
     /**

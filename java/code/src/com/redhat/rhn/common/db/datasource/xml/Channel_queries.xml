@@ -1164,12 +1164,21 @@ INSERT INTO rhnChannelPackage
   </query>
 </write-mode>
 
+<!--    todo can we remove this? -->
 <write-mode name="add_cloned_erratum_to_channel">
   <query params="eid, cid">
 INSERT INTO rhnChannelErrata
        (errata_id, channel_id)
 VALUES (:eid, :cid)
   </query>
+</write-mode>
+
+<write-mode name="add_cloned_errata_to_channel">
+    <query params="cid">
+        INSERT INTO rhnChannelErrata
+        (errata_id, channel_id)
+        (SELECT E.id, :cid FROM rhnErrata E WHERE E.id in (%s))
+    </query>
 </write-mode>
 
 <mode name="likely_parent">

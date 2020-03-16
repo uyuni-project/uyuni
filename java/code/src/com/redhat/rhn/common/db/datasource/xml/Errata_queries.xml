@@ -1450,6 +1450,7 @@ ORDER BY UPPER(EK.keyword)
 <!--    todo rename to errata_not_ -->
 <write-mode name="insert_erratas_notification">
     <query params="cid, datetime">
+<!--        todo could this be written without the FROM rhnErrata? -->
         INSERT INTO rhnErrataQueue (channel_id, errata_id, next_action)
         (SELECT :cid, E.id, :datetime FROM rhnErrata E WHERE E.id in (%s))
     </query>
