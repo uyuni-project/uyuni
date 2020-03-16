@@ -1,3 +1,5 @@
+- fix interactive mode in mgr-create-bootstrap-repo (bsc#1166806)
+
 -------------------------------------------------------------------
 Wed Mar 11 11:01:51 CET 2020 - jgonzalez@suse.com
 
