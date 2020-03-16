@@ -1,3 +1,4 @@
+- Do not break when syncing Oracle 7 yum channel (bsc#1158463)
 - Always use the same RPM database when running "spacewalk-repo-sync"
   from the command line or via taskomatic (bsc#1163468)
 
