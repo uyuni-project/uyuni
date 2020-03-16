@@ -13,6 +13,7 @@
 # in this software or its documentation.
 #
 
+import codecs
 import os
 import sys
 import bz2
@@ -505,9 +506,9 @@ def decompress_open(filename):
             # uncompress, keep both, return uncompressed file
             subprocess.call(['xz', '-d', '-k', filename])
             uncompressed_path = filename.rsplit('.', 1)[0]
-            file_obj = open(uncompressed_path, 'rb')
+            file_obj = codecs.open(uncompressed_path, 'rb', encoding="utf8")
     else:
-        file_obj = open(filename, 'r')
+        file_obj = codecs.open(filename, 'r', encoding="utf8")
     if filename.endswith(('.gz', '.bz2', '.xz')):
-        return io.TextIOWrapper(file_obj)
+        return io.TextIOWrapper(file_obj, encoding="utf8")
     return file_obj
