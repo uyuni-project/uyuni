@@ -163,6 +163,18 @@ class rpmBinaryPackage(Package, rpmPackage):
         self._populateChangeLog(header)
         # Channels
         self._populateChannels(channels)
+        # Extra tags
+        self._populateExtraTags(header)
+
+    def _populateExtraTags(self, header):
+        """
+        Populate extra tags. Currently only "modularitylabel".
+        """
+        mlabel = header.modularitylabel()
+        if mlabel is not None:
+            self["extra_tags"] = [
+                {"name": "modularitylabel", "value": mlabel}
+            ]
 
     def _populateFiles(self, header):
         self._populateTag(header, 'files', rpmFile)
