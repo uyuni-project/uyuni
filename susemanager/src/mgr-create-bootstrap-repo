@@ -254,8 +254,8 @@ def cli():
         log_error(str(e))
         sys.exit(1)
 
-    if not options.list and not options.create:
-        options.auto = True
+    if not options.list and not options.create and not options.auto:
+        options.interactive = True
 
     return options, args, bootstrap_data
 
