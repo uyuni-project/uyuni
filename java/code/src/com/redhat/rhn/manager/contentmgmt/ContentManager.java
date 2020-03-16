@@ -848,29 +848,26 @@ public class ContentManager {
      */
     public void alignEnvironmentTargetSync(Collection<ContentFilter> filters, Channel src, Channel tgt,
             User user) {
-        HibernateFactory.doWithoutAutoFlushing( () -> {
-            // align packages and the cache (rhnServerNeededCache)
-            List<PackageFilter> packageFilters = filters.stream()
-                    .flatMap(f -> stream((Optional<PackageFilter>) f.asPackageFilter()))
-                    .collect(toList());
-            List<ErrataFilter> errataFilters = filters.stream()
-                    .flatMap(f -> stream((Optional<ErrataFilter>) f.asErrataFilter()))
-                    .collect(toList());
+        // align packages and the cache (rhnServerNeededCache)
+        List<PackageFilter> packageFilters = filters.stream()
+                .flatMap(f -> stream((Optional<PackageFilter>) f.asPackageFilter()))
+                .collect(toList());
+        List<ErrataFilter> errataFilters = filters.stream()
+                .flatMap(f -> stream((Optional<ErrataFilter>) f.asErrataFilter()))
+                .collect(toList());
 
-            alignPackages(src, tgt, packageFilters);
+        alignPackages(src, tgt, packageFilters);
 
-            // align errata and the cache (rhnServerNeededCache)
-            alignErrata(src, tgt, errataFilters, user);
+        // align errata and the cache (rhnServerNeededCache)
+        alignErrata(src, tgt, errataFilters, user);
 
-            // update the channel newest packages cache
-            ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
+        // update the channel newest packages cache
+        ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
 
-            // now request repo regen
-            tgt.setLastModified(new Date());
-            HibernateFactory.getSession().saveOrUpdate(tgt);
-            ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
-        });
-        HibernateFactory.getSession().flush();
+        // now request repo regen
+        tgt.setLastModified(new Date());
+        HibernateFactory.getSession().saveOrUpdate(tgt);
+        ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
