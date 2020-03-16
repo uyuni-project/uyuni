@@ -1,3 +1,4 @@
+- Adapt 'mgractionchains' module to work with Salt 3000
 - Disable modularity failsafe mechanism for RHEL 8 repos (bsc#1164875)
 
 -------------------------------------------------------------------
