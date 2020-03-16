@@ -47,6 +47,7 @@ del sym, val
 
 # need this for rpm-pyhon < 4.6 (e.g. on RHEL5)
 rpm.RPMTAG_FILEDIGESTALGO = 5011
+rpm.RPMTAG_MODULARITYLABEL = 5096
 
 # these values are taken from /usr/include/rpm/rpmpgp.h
 # PGPHASHALGO_MD5             =  1,   /*!< MD5 */
@@ -111,6 +112,13 @@ class RPM_Header:
         return bool(self.hdr)
 
     __bool__ = __nonzero__
+
+    def modularity_label(self):
+        """
+        Get modularity label tag.
+        Returns string of modularity label or None if tag is not there.
+        """
+        return self.hdr.get(rpm.RPMTAG_MODULARITYLABEL)
 
     def checksum_type(self):
         if self.hdr[rpm.RPMTAG_FILEDIGESTALGO] \
