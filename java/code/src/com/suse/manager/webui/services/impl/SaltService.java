@@ -164,9 +164,6 @@ public class SaltService implements SystemQuery {
 
     private SaltReactor reactor = null;
 
-    private final ScheduledExecutorService scheduledExecutorService =
-            Executors.newScheduledThreadPool(5);
-
     /**
      * Enum of all the available status for Salt keys.
      */

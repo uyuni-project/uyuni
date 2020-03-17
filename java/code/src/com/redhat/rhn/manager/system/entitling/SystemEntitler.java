@@ -324,12 +324,4 @@ public class SystemEntitler {
                     ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
         }
     }
-
-    /**
-     * Setter for the SaltService
-     * @param saltServiceIn The SaltService
-     */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.systemQuery = saltServiceIn;
-    }
 }
