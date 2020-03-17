@@ -254,8 +254,8 @@ def cli():
         log_error(str(e))
         sys.exit(1)
 
-    if not options.list and not options.create:
-        options.auto = True
+    if not options.list and not options.create and not options.auto:
+        options.interactive = True
 
     return options, args, bootstrap_data
 
@@ -315,14 +315,16 @@ def cleanup_dir(path):
 
 def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     pdids = None
+    usecustomchannels = options.usecustomchannels
+    parentchannel = options.parentchannel
 
     if 'PDID' in mgr_bootstrap_data.DATA[label]:
         pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
         if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu')):
-            options.usecustomchannels = True
+            usecustomchannels = True
     else:
-        options.usecustomchannels = True
-        options.parentchannel = mgr_bootstrap_data.DATA[label]['BASECHANNEL']
+        usecustomchannels = True
+        parentchannel = mgr_bootstrap_data.DATA[label]['BASECHANNEL']
 
     destdir = os.path.normpath(mgr_bootstrap_data.DATA[label]['DEST'])
     dirprefix, lastdir = os.path.split(destdir)
@@ -334,15 +336,15 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         'no-packages': None
     }
 
-    if options.usecustomchannels:
+    if usecustomchannels:
         if pdids:
             root_labels = find_root_channel_labels(pdids)
         else:
             root_labels = find_custom_parent_channel_labels()
-        if options.parentchannel and options.parentchannel not in root_labels:
-            log_error("'{0}' not found in existing parent channel options '{1}'".format(options.parentchannel, root_labels))
+        if parentchannel and parentchannel not in root_labels:
+            log_error("'{0}' not found in existing parent channel options '{1}'".format(parentchannel, root_labels))
             return 1
-        elif not options.parentchannel:
+        elif not parentchannel:
             if len(root_labels) > 1:
                 log_error("Multiple options for parent channel found. Please use option --with-parent-channel <label>")
                 log_error("and choose one of:")
@@ -350,12 +352,12 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                     log_error("- {0}".format(l))
                 return 1
             elif len(root_labels) == 1:
-                options.parentchannel = root_labels[0]
+                parentchannel = root_labels[0]
             else:
                 log("WARNING: no parent channel found. Execute without using custom channels")
-                options.parentchannel = ""
+                parentchannel = ""
     else:
-        options.parentchannel = ""
+        parentchannel = ""
 
     if not cleanup_dir(destdirtmp):
         return 1
@@ -370,11 +372,11 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         else:
             shutil.copytree(destdir, destdirtmp)
 
+    print()
     if label.startswith('RES') or label.startswith('RHEL'):
         log("Creating bootstrap repo for latest Service Pack of {0}".format(label))
     else:
         log("Creating bootstrap repo for {0}".format(label))
-    print()
 
     if pdids:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids)))
@@ -392,7 +394,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         altcount = 0
         for pkgname in alt:
             altcount += 1
-            h.execute(parentchannel=options.parentchannel, pkgname=pkgname)
+            h.execute(parentchannel=parentchannel, pkgname=pkgname)
             pkgs = h.fetchall_dict() or []
             log("Package {0} found {1} resulting packages:".format(
                 pkgname, len(pkgs)), 2)
@@ -455,14 +457,15 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         else:
             os.system("createrepo -s sha %s" % destdirtmp)
         # move tmp dir to final location
-        os.rename(destdir, destdirold)
+        if os.path.exists(destdir):
+            os.rename(destdir, destdirold)
         os.rename(destdirtmp, destdir)
         cleanup_dir(destdirold)
 
     if errors:
         for m in messages:
             log_error(m)
-        if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu'))  and not options.usecustomchannels:
+        if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu'))  and not usecustomchannels:
             log_error("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
         suggestions = list([_f for _f in list(suggestions.values()) if _f])
         if suggestions:
@@ -476,12 +479,15 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
     repos = {}
     errors = 0
 
+    log("Generating bootstrap repos for all available products which had changes.")
+
     for dist in sorted(list_labels(mgr_bootstrap_data, do_print=False).values()):
         if mgr_bootstrap_data.DATA[dist]['DEST'] in repos:
             continue
         repos[mgr_bootstrap_data.DATA[dist]['DEST']] = mgr_bootstrap_data.DATA[dist]
         repos[mgr_bootstrap_data.DATA[dist]['DEST']]['DIST'] = dist
 
+    regenerated = 0
     for dest, repo in repos.items():
         destfile = os.path.join(dest, 'repodata', 'repomd.xml')
         if 'TYPE' in repo and repo['TYPE'] == 'deb':
@@ -505,7 +511,6 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
             continue
         regen = True
         oneNewerTimestamp = 0
-        #import pdb; pdb.set_trace()
         for channelinfo in res:
             if channelinfo['newer'] == 1:
                 log("{0} modified after last bootstrap generation".format(channelinfo['label']), 2)
@@ -519,8 +524,11 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
             log("latest channel sync at: {0}. Grace period over. Regenarate bootstrap repo.".format(oneNewerTimestamp), 2)
             regen = True
         if regen:
+            regenerated += 1
             errors += create_repo(repo['DIST'], options, mgr_bootstrap_data, additional=additional)
 
+    if not regenerated:
+        log("Nothing to do.")
     return errors
 
 
