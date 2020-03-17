@@ -73,7 +73,7 @@ public class XmlRpcServletTest extends MockObjectTestCase {
         } });
 
         // ok run servlet
-        XmlRpcServlet xrs = new XmlRpcServlet(HandlerFactory.mockHandlers(), null);
+        XmlRpcServlet xrs = new XmlRpcServlet(XmlRpcTestUtils.getTestHandlerFactory(), null);
         xrs.init();
         xrs.doPost(mockreq, mockresp);
 

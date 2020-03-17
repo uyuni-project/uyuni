@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.test;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.manager.session.SessionManager;
 
 public class XmlRpcTestUtils {
@@ -39,5 +40,16 @@ public class XmlRpcTestUtils {
         WebSession session = SessionManager.makeSession(user.getId(), duration);
 
         return session.getKey();
+    }
+
+    /**
+     * HandlerFactory prepopulated with unit test handlers.
+     * @return HandlerFactory for unit tests.
+     */
+    public static HandlerFactory getTestHandlerFactory() {
+        HandlerFactory factory = new HandlerFactory();
+        factory.addHandler("registration", new com.redhat.rhn.frontend.xmlrpc.test.RegistrationHandler());
+        factory.addHandler("unittest", new com.redhat.rhn.frontend.xmlrpc.test.UnitTestHandler());
+        return factory;
     }
 }
