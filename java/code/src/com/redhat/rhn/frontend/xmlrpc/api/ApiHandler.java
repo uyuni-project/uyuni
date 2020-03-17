@@ -136,7 +136,9 @@ public class ApiHandler extends BaseHandler {
      */
     public Map getApiNamespaceCallList(User loggedInUser, String namespace) {
         Class<? extends BaseHandler> handlerClass =
-                                handlers.getHandler(namespace).get().getClass();
+                handlers.getHandler(namespace)
+                        .orElseThrow(() -> new RuntimeException("Handler " + namespace + " not found."))
+                        .getClass();
         Map<String, Map<String, Object>> methods  =
                                 new HashMap<String, Map<String, Object>>();
 
