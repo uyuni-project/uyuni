@@ -83,4 +83,57 @@ public class RecurringActionHandler extends BaseHandler {
             throw new PermissionCheckFailureException(e.getMessage());
         }
     }
+    /**
+     * Create a new recurring action.
+     *
+     * @param loggedInUser The current user
+     * @param actionProps Map containing action properties
+     * @return action id or exception thrown otherwise
+     *
+     * @xmlrpc.doc Create a new recurring action.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param
+     *  #struct("actionProps")
+     *      #prop_desc("string", "entity_type", "The type of the target entity")
+     *      #prop_desc("string", "entity_id", "The id of the target entity")
+     *      #prop_desc("string", "name", "The name of the action")
+     *      #prop_desc("string", "cron_expr", "The execution frequency of the action")
+     *      #prop_desc("boolean", "test", "Whether the action should be executed in test mode")
+     *  #struct_end()
+     * @xmlrpc.returntype int action_id - The action id of the recurring action
+     */
+    public Long create(User loggedInUser, Map<String, Object> actionProps) {
+        RecurringAction action = createAction(actionProps, loggedInUser);
+        try {
+            RecurringActionManager.saveAndSchedule(action, loggedInUser);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e.getMessage());
+        }
+        return action.getId();
+    }
+
+    /* Helper method */
+    private RecurringAction createAction(Map<String, Object> actionProps, User user) {
+        RecurringAction action;
+        if (actionProps.containsKey("id") || !actionProps.containsKey("entity_type") ||
+                !actionProps.containsKey("entity_id") || !actionProps.containsKey("cron_expr") ||
+                !actionProps.containsKey("name")) {
+            throw new InvalidArgsException("Incomplete action props");
+        }
+        action = RecurringActionManager.createRecurringAction(
+                getEntityType((String) actionProps.get("entity_type")),
+                Long.parseLong((String) actionProps.get("entity_id")),
+                user
+        );
+        action.setName((String) actionProps.get("name"));
+        action.setCronExpr((String) actionProps.get("cron_expr"));
+        if (actionProps.containsKey("test")) {
+            action.setTestMode(Boolean.parseBoolean(actionProps.get("test").toString()));
+        }
+        return action;
+    }
 }
