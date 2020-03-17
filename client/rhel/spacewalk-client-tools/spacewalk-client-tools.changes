@@ -1,3 +1,5 @@
+- Do not crash 'mgr-update-status' because 'long' type is not defined in Python 3
+
 -------------------------------------------------------------------
 Wed Mar 11 10:51:46 CET 2020 - jgonzalez@suse.com
 
