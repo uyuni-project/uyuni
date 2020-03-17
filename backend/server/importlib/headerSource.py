@@ -306,6 +306,7 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
         'payload_format': None,
         'channels': None,
         'package_id': None,
+        'extra_tags': None,
     })
 
     def populate(self, header, size, checksum_type, checksum, path=None, org_id=None,
