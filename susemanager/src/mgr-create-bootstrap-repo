@@ -372,11 +372,11 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         else:
             shutil.copytree(destdir, destdirtmp)
 
+    print()
     if label.startswith('RES') or label.startswith('RHEL'):
         log("Creating bootstrap repo for latest Service Pack of {0}".format(label))
     else:
         log("Creating bootstrap repo for {0}".format(label))
-    print()
 
     if pdids:
         h = rhnSQL.prepare(rhnSQL.Statement(_sql_find_pkgs % (pdids)))
