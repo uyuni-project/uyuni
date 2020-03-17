@@ -98,7 +98,20 @@ class rpmPackage(IncompletePackage):
             self['payload_format'] = 'cpio'
         if self['payload_size'] is None:
             self['payload_size'] = 0
+        # Extra tags
+        self._populateExtraTags(header)
+
         return self
+
+    def _populateExtraTags(self, header):
+        """
+        Populate extra tags. Currently only "modularitylabel".
+        """
+        mlabel = header.modularity_label()
+        if mlabel is not None:
+            self["extra_tags"] = [
+                {"name": "modularitylabel", "value": mlabel}
+            ]
 
 
 class rpmBinaryPackage(Package, rpmPackage):
@@ -163,18 +176,6 @@ class rpmBinaryPackage(Package, rpmPackage):
         self._populateChangeLog(header)
         # Channels
         self._populateChannels(channels)
-        # Extra tags
-        self._populateExtraTags(header)
-
-    def _populateExtraTags(self, header):
-        """
-        Populate extra tags. Currently only "modularitylabel".
-        """
-        mlabel = header.modularity_label()
-        if mlabel is not None:
-            self["extra_tags"] = [
-                {"name": "modularitylabel", "value": mlabel}
-            ]
 
     def _populateFiles(self, header):
         self._populateTag(header, 'files', rpmFile)
