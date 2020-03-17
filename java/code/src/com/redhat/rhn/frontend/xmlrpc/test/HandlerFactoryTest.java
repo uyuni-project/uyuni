@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.test;
 
-import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryLookupException;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.frontend.xmlrpc.channel.ChannelHandler;
@@ -27,7 +26,7 @@ public class HandlerFactoryTest extends RhnBaseTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        factory = HandlerFactory.defaultHandlers();
+        factory = HandlerFactory.getDefaultHandlerFactory();
     }
 
     public void testHandlerFactoryNotFound() {

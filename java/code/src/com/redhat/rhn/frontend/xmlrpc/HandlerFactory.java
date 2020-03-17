@@ -75,8 +75,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * HandlerFactory, simple factory class that uses ManifestFactory to
- * return RPC Handlers.
+ * HandlerFactory for XMLRPC Handlers.
  *
  * @version $Rev$
  */
@@ -92,17 +91,6 @@ public class HandlerFactory {
     }
 
     /**
-     * HandlerFactory prepopulated with unit test handlers.
-     * @return HandlerFactory for unit tests.
-     */
-    public static HandlerFactory mockHandlers() {
-        HandlerFactory factory = new HandlerFactory();
-        factory.addHandler("registration", new com.redhat.rhn.frontend.xmlrpc.test.RegistrationHandler());
-        factory.addHandler("unittest", new com.redhat.rhn.frontend.xmlrpc.test.UnitTestHandler());
-        return factory;
-    }
-
-    /**
      * Add a handler to this HandlerFactory.
      * @param namespace the xmlrpc namespace of this handler.
      * @param handler xml rpc handler.
@@ -115,7 +103,7 @@ public class HandlerFactory {
      * HandlerFactory prepopulated with the handlers used in production.
      * @return HandlerFactory used in production.
      */
-    public static HandlerFactory  defaultHandlers() {
+    public static HandlerFactory getDefaultHandlerFactory() {
         HandlerFactory factory = new HandlerFactory();
         factory.addHandler("actionchain", new ActionChainHandler());
         factory.addHandler("activationkey", new ActivationKeyHandler());

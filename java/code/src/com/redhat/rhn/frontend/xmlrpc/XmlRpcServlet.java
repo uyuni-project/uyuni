@@ -64,7 +64,7 @@ public class XmlRpcServlet extends HttpServlet {
      * default constructor
      */
     public XmlRpcServlet() {
-        this(HandlerFactory.defaultHandlers(), new SerializerFactory());
+        this(HandlerFactory.getDefaultHandlerFactory(), new SerializerFactory());
     }
 
     private void passControl(HttpServletRequest request,
