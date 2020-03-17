@@ -16,7 +16,6 @@
 package com.suse.manager.webui.controllers;
 
 import com.google.gson.reflect.TypeToken;
-
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.SCCRefreshLock;
@@ -33,17 +32,12 @@ import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
-import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.ChannelJson;
+import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.utils.Json;
-import org.apache.log4j.Logger;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.template.jade.JadeTemplateEngine;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,6 +45,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.log4j.Logger;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
@@ -319,6 +318,10 @@ public class ProductsController {
                                             s.getStatus(),
                                             s.getChannels().stream().map(c ->
                                                     new ChannelJson(
+                                                            s.getStatus().equals(MgrSyncStatus.INSTALLED) &&
+                                                                    ChannelFactory.lookupByLabel(c.getLabel()) != null ?
+                                                                    ChannelFactory.lookupByLabel(c.getLabel()).getId()
+                                                                    : -1L,
                                                             c.getName(),
                                                             c.getLabel(),
                                                             c.getSummary(),
@@ -365,6 +368,10 @@ public class ProductsController {
                         rootExtensions,
                         syncProduct.getChannels().stream().map(c ->
                                 new ChannelJson(
+                                        syncProduct.getStatus().equals(MgrSyncStatus.INSTALLED) &&
+                                                ChannelFactory.lookupByLabel(c.getLabel()) != null ?
+                                                ChannelFactory.lookupByLabel(c.getLabel()).getId()
+                                                : -1L,
                                         c.getName(),
                                         c.getLabel(),
                                         c.getSummary(),

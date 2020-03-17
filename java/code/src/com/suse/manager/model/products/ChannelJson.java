@@ -23,6 +23,7 @@ import com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage;
  */
 public class ChannelJson {
 
+    private final Long id;
     private final String name;
     private final String label;
     private final String summary;
@@ -32,15 +33,17 @@ public class ChannelJson {
     /**
      * Constructor
      *
+     * @param idIn the id of the channel, if present
      * @param nameIn the name of the channel
      * @param labelIn the label of the channel
      * @param summaryIn the summary of the channel
      * @param optionalIn if the channel is mandatory or optional
      * @param statusIn the status of the channel
      */
-    public ChannelJson(String nameIn, String labelIn,
+    public ChannelJson(Long idIn, String nameIn, String labelIn,
                        String summaryIn, boolean optionalIn,
                        SetupWizardProductDto.SyncStatus.SyncStage statusIn) {
+        this.id = idIn;
         this.name = nameIn;
         this.label = labelIn;
         this.summary = summaryIn;
@@ -54,6 +57,11 @@ public class ChannelJson {
     public SetupWizardProductDto.SyncStatus.SyncStage getStatus() {
         return status;
     }
+
+    /**
+     * @return the id of the channel
+     */
+    public Long getId() { return id; }
 
     /**
      * @return the label of the channel
