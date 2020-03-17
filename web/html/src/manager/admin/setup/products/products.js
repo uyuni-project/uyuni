@@ -23,6 +23,7 @@ const ProgressBar = require("components/progressbar").ProgressBar;
 const CustomDiv = require("components/custom-objects").CustomDiv;
 const {Toggler} = require("components/toggler");
 const {HelpLink} = require('components/utils/HelpLink');
+const ChannelLink = require('components/links').ChannelLink;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 const _DATA_ROOT_ID = 'baseProducts';
@@ -882,7 +883,11 @@ const ChannelList = (props) => {
                 <strong>{c.name}</strong>
                 &nbsp;{decodeChannelStatus(c.status)}
                 <br/>
-                {c.label}
+                {
+                  c.id != -1 ?
+                    <ChannelLink id={c.id} newWindow={true}>{c.label}</ChannelLink>
+                    : c.label
+                }
               </li>
             )
         }
