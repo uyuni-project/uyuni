@@ -118,7 +118,10 @@ class RPM_Header:
         Get modularity label tag.
         Returns string of modularity label or None if tag is not there.
         """
-        return self.hdr.get(rpm.RPMTAG_MODULARITYLABEL)
+        mtag = None
+        if rpm.RPMTAG_MODULARITYLABEL in self.hdr.keys():
+            mtag = self.hdr[rpm.RPMTAG_MODULARITYLABEL]
+        return mtag
 
     def checksum_type(self):
         if self.hdr[rpm.RPMTAG_FILEDIGESTALGO] \
