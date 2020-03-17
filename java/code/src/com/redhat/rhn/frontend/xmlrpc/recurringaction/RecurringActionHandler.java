@@ -136,4 +136,61 @@ public class RecurringActionHandler extends BaseHandler {
         }
         return action;
     }
+
+    /**
+     * Update a recurring action.
+     *
+     * @param loggedInUser The current user
+     * @param actionProps Map containing properties to update
+     * @return action id or exception thrown otherwise
+     *
+     * @xmlrpc.doc Update a recurring action.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param
+     *  #struct("actionProps")
+     *      #prop_desc("string", "id", "The id of the action to update")
+     *      #prop_desc("string", "name", "The name of the action (optional)")
+     *      #prop_desc("string", "cron_expr", "The execution frequency of the action (optional)")
+     *      #prop_desc("boolean", "test", "Whether the action should be executed in test mode (optional)")
+     *      #prop_desc("boolean", "active", "Whether the action should be active (optional)")
+     *  #struct_end()
+     * @xmlrpc.returntype int action_Id - The action id of the recurring action
+     */
+    public Long update(User loggedInUser, Map<String, Object> actionProps) {
+        RecurringAction action = updateAction(actionProps, loggedInUser);
+        try {
+            RecurringActionManager.saveAndSchedule(action, loggedInUser);
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+        return action.getId();
+    }
+
+    /* Helper method */
+    private  RecurringAction updateAction(Map<String, Object> actionProps, User user) {
+        if (!actionProps.containsKey("id")) {
+            throw new InvalidArgsException("No action id provided");
+        }
+        Long id = Long.parseLong((String) actionProps.get("id"));
+        try {
+            RecurringAction action = RecurringActionFactory.lookupById(id).orElseThrow();
+            if (actionProps.containsKey("name")) {
+                action.setName((String) actionProps.get("name"));
+            }
+            if (actionProps.containsKey("cron_expr")) {
+                action.setCronExpr((String) actionProps.get("cron_expr"));
+            }
+            if (actionProps.containsKey("test")) {
+                action.setTestMode(Boolean.parseBoolean(actionProps.get("test").toString()));
+            }
+            if (actionProps.containsKey("active")) {
+                action.setActive(Boolean.parseBoolean(actionProps.get("active").toString()));
+            }
+            return action;
+        }
+        catch (HibernateException e) {
+            throw new EntityNotExistsFaultException("Schedule with id: " + id + " does not exist");
+        }
+    }
 }
