@@ -23,6 +23,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
@@ -31,6 +32,7 @@ import org.hibernate.HibernateException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class RecurringActionHandler extends BaseHandler {
 
@@ -83,6 +85,32 @@ public class RecurringActionHandler extends BaseHandler {
             throw new PermissionCheckFailureException(e.getMessage());
         }
     }
+
+    /**
+     * Return recurring action with given action id.
+     *
+     * @param loggedInUser The current user
+     * @param actionId id of the action
+     * @return the list of recurring actions
+     *
+     * @xmlrpc.doc Return recurring action with given action id.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "action_id", "Id of the action")
+     * @xmlrpc.returntype $RecurringActionSerializer
+     */
+    public RecurringAction lookupById(User loggedInUser, Integer actionId) {
+        try {
+            RecurringAction action = RecurringActionFactory.lookupById(actionId).orElseThrow();
+            if (action.canAccess(loggedInUser)) {
+                return action;
+            }
+        }
+        catch (NoSuchElementException e) {
+            throw new EntityNotExistsFaultException("Action with id: " + actionId + " does not exist");
+        }
+        throw new PermissionCheckFailureException("Action not accessible to user: " + loggedInUser);
+    }
+
     /**
      * Create a new recurring action.
      *
