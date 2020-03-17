@@ -170,7 +170,7 @@ class rpmBinaryPackage(Package, rpmPackage):
         """
         Populate extra tags. Currently only "modularitylabel".
         """
-        mlabel = header.modularitylabel()
+        mlabel = header.modularity_label()
         if mlabel is not None:
             self["extra_tags"] = [
                 {"name": "modularitylabel", "value": mlabel}
