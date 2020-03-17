@@ -1,3 +1,4 @@
+- add XMLRPC API method: proxy.listProxyClients (bsc#1166408)
 - Filter out AppStream packages by 'modularitylabel' rpm tag
 
 -------------------------------------------------------------------
