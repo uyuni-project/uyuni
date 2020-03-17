@@ -14,17 +14,25 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.proxy.test;
 
+import static com.redhat.rhn.domain.server.ServerFactory.createServerPaths;
+import static java.lang.Math.toIntExact;
+
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerPath;
+import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import java.util.List;
+import java.util.Set;
 
 public class ProxyHandlerTest extends RhnBaseTestCase {
 
@@ -99,5 +107,27 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
 
     public void testLameTest() {
         assertNotNull(new ProxyHandler());
+    }
+
+    public void testListProxyClients() throws Exception {
+        // create user
+        User user = UserTestUtils.findNewUser("testuser", "testorg");
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        // create proxy
+        Server proxy = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltEntitled(),
+                ServerFactoryTest.TYPE_SERVER_PROXY);
+
+        // create minion behind proxy
+        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Set<ServerPath> proxyPaths = createServerPaths(minion, proxy, proxy.getName());
+        minion.getServerPaths().addAll(proxyPaths);
+
+        // call method
+        List<Long> clientIds = new ProxyHandler().listProxyClients(user, toIntExact(proxy.getId()));
+
+        // verify client id is in results
+        assertContains(clientIds, minion.getId());
     }
 }
