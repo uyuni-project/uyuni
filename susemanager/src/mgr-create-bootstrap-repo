@@ -315,14 +315,16 @@ def cleanup_dir(path):
 
 def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     pdids = None
+    usecustomchannels = options.usecustomchannels
+    parentchannel = options.parentchannel
 
     if 'PDID' in mgr_bootstrap_data.DATA[label]:
         pdids = ', '.join(mgr_bootstrap_data.DATA[label]['PDID'])
         if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu')):
-            options.usecustomchannels = True
+            usecustomchannels = True
     else:
-        options.usecustomchannels = True
-        options.parentchannel = mgr_bootstrap_data.DATA[label]['BASECHANNEL']
+        usecustomchannels = True
+        parentchannel = mgr_bootstrap_data.DATA[label]['BASECHANNEL']
 
     destdir = os.path.normpath(mgr_bootstrap_data.DATA[label]['DEST'])
     dirprefix, lastdir = os.path.split(destdir)
@@ -334,15 +336,15 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         'no-packages': None
     }
 
-    if options.usecustomchannels:
+    if usecustomchannels:
         if pdids:
             root_labels = find_root_channel_labels(pdids)
         else:
             root_labels = find_custom_parent_channel_labels()
-        if options.parentchannel and options.parentchannel not in root_labels:
-            log_error("'{0}' not found in existing parent channel options '{1}'".format(options.parentchannel, root_labels))
+        if parentchannel and parentchannel not in root_labels:
+            log_error("'{0}' not found in existing parent channel options '{1}'".format(parentchannel, root_labels))
             return 1
-        elif not options.parentchannel:
+        elif not parentchannel:
             if len(root_labels) > 1:
                 log_error("Multiple options for parent channel found. Please use option --with-parent-channel <label>")
                 log_error("and choose one of:")
@@ -350,12 +352,12 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                     log_error("- {0}".format(l))
                 return 1
             elif len(root_labels) == 1:
-                options.parentchannel = root_labels[0]
+                parentchannel = root_labels[0]
             else:
                 log("WARNING: no parent channel found. Execute without using custom channels")
-                options.parentchannel = ""
+                parentchannel = ""
     else:
-        options.parentchannel = ""
+        parentchannel = ""
 
     if not cleanup_dir(destdirtmp):
         return 1
@@ -392,7 +394,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         altcount = 0
         for pkgname in alt:
             altcount += 1
-            h.execute(parentchannel=options.parentchannel, pkgname=pkgname)
+            h.execute(parentchannel=parentchannel, pkgname=pkgname)
             pkgs = h.fetchall_dict() or []
             log("Package {0} found {1} resulting packages:".format(
                 pkgname, len(pkgs)), 2)
@@ -463,7 +465,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     if errors:
         for m in messages:
             log_error(m)
-        if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu'))  and not options.usecustomchannels:
+        if (label.startswith('RES') or label.startswith('RHEL') or label.lower().startswith('ubuntu'))  and not usecustomchannels:
             log_error("If the installation media was imported into a custom channel, try to run again with --with-custom-channels option")
         suggestions = list([_f for _f in list(suggestions.values()) if _f])
         if suggestions:
