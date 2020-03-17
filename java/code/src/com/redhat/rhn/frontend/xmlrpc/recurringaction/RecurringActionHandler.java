@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.recurringaction;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
@@ -27,8 +28,6 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
-
-import org.hibernate.HibernateException;
 
 import java.util.List;
 import java.util.Map;
@@ -200,25 +199,45 @@ public class RecurringActionHandler extends BaseHandler {
         if (!actionProps.containsKey("id")) {
             throw new InvalidArgsException("No action id provided");
         }
-        Long id = Long.parseLong((String) actionProps.get("id"));
+        Integer id = Integer.parseInt((String) actionProps.get("id"));
+        RecurringAction action = lookupById(user, id);
+
+        if (actionProps.containsKey("name")) {
+            action.setName((String) actionProps.get("name"));
+        }
+        if (actionProps.containsKey("cron_expr")) {
+            action.setCronExpr((String) actionProps.get("cron_expr"));
+        }
+        if (actionProps.containsKey("test")) {
+            action.setTestMode(Boolean.parseBoolean(actionProps.get("test").toString()));
+        }
+        if (actionProps.containsKey("active")) {
+            action.setActive(Boolean.parseBoolean(actionProps.get("active").toString()));
+        }
+        return action;
+    }
+
+    /**
+     * Delete recurring action with given action id.
+     *
+     * @param loggedInUser The current user
+     * @param actionId id of the action
+     * @return id of deleted action otherwise exception thrown
+     *
+     * @xmlrpc.doc Delete recurring action with given action id.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("int", "action_id", "Id of the action")
+     * @xmlrpc.returntype int action_id - The action id of the recurring action
+     */
+    public Long delete(User loggedInUser, Integer actionId) {
+        RecurringAction action = lookupById(loggedInUser, actionId);
         try {
-            RecurringAction action = RecurringActionFactory.lookupById(id).orElseThrow();
-            if (actionProps.containsKey("name")) {
-                action.setName((String) actionProps.get("name"));
-            }
-            if (actionProps.containsKey("cron_expr")) {
-                action.setCronExpr((String) actionProps.get("cron_expr"));
-            }
-            if (actionProps.containsKey("test")) {
-                action.setTestMode(Boolean.parseBoolean(actionProps.get("test").toString()));
-            }
-            if (actionProps.containsKey("active")) {
-                action.setActive(Boolean.parseBoolean(actionProps.get("active").toString()));
-            }
-            return action;
+            RecurringActionManager.deleteAndUnschedule(action, loggedInUser);
         }
-        catch (HibernateException e) {
-            throw new EntityNotExistsFaultException("Schedule with id: " + id + " does not exist");
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            HibernateFactory.rollbackTransaction();
+            throw new TaskomaticApiException(e.getMessage());
         }
+        return Long.valueOf(actionId);
     }
 }
