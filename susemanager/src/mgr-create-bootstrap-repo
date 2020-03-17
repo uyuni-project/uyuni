@@ -477,12 +477,15 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
     repos = {}
     errors = 0
 
+    log("Generating bootstrap repos for all available products which had changes.")
+
     for dist in sorted(list_labels(mgr_bootstrap_data, do_print=False).values()):
         if mgr_bootstrap_data.DATA[dist]['DEST'] in repos:
             continue
         repos[mgr_bootstrap_data.DATA[dist]['DEST']] = mgr_bootstrap_data.DATA[dist]
         repos[mgr_bootstrap_data.DATA[dist]['DEST']]['DIST'] = dist
 
+    regenerated = 0
     for dest, repo in repos.items():
         destfile = os.path.join(dest, 'repodata', 'repomd.xml')
         if 'TYPE' in repo and repo['TYPE'] == 'deb':
@@ -506,7 +509,6 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
             continue
         regen = True
         oneNewerTimestamp = 0
-        #import pdb; pdb.set_trace()
         for channelinfo in res:
             if channelinfo['newer'] == 1:
                 log("{0} modified after last bootstrap generation".format(channelinfo['label']), 2)
@@ -520,8 +522,11 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
             log("latest channel sync at: {0}. Grace period over. Regenarate bootstrap repo.".format(oneNewerTimestamp), 2)
             regen = True
         if regen:
+            regenerated += 1
             errors += create_repo(repo['DIST'], options, mgr_bootstrap_data, additional=additional)
 
+    if not regenerated:
+        log("Nothing to do.")
     return errors
 
 
