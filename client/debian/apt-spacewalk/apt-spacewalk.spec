@@ -14,7 +14,7 @@ Summary: Spacewalk plugin for Advanced Packaging Tool
 Packager: Uyuni Project <uyuni-devel@opensuse.org>
 Group: admin
 %endif
-Version: 1.0.14
+Version: 1.0.15
 Release: 1%{?dist}
 License: GPLv2
 Source0: %{name}-%{version}.tar.gz
@@ -108,6 +108,18 @@ esac
 %endif
 
 %changelog
+* Thu Oct 25 2018 Tomas Kasparek <tkasparek@redhat.com> 1.0.15-1
+- client, usix: Rework how client packaging is done for Debian/Ubuntu
+- Move apt-spacewalk to the client/debian/ directory
+
+* Mon Jun 18 2018 Michael Mraka <michael.mraka@redhat.com> 1.0.14-1
+- client/debian: Port apt-spacewalk to be Python 3 ready
+
+* Mon Apr 16 2018 Tomas Kasparek <tkasparek@redhat.com> 1.0.13-1
+- apt-transport-spacewalk: missed part of patch within pre_invoke
+- further modifications on apt-transport-spacewalk
+- modify apt-transport-spacewalk to support signed repos
+
 * Fri Feb 09 2018 Michael Mraka <michael.mraka@redhat.com> 1.0.12-1
 - removed BuildRoot from specfiles
 
