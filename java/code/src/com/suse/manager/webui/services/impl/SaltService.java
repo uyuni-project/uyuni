@@ -198,7 +198,7 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * @param reactorIn the Salt reactor
+     * {@inheritDoc}
      */
     public void setReactor(SaltReactor reactorIn) {
         this.reactor = reactorIn;
@@ -234,6 +234,9 @@ public class SaltService implements SystemQuery {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
         LocalCall<Map<String, JsonElement>> call =
@@ -243,6 +246,9 @@ public class SaltService implements SystemQuery {
         return callSync(call, minionId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, JsonObject> getNetworks(String minionId) {
         Map<String, Object> args = new LinkedHashMap<>();
@@ -635,6 +641,9 @@ public class SaltService implements SystemQuery {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateLibvirtEngine(MinionServer minion) {
         Map<String, Object> pillar = new HashMap<>();
@@ -643,6 +652,9 @@ public class SaltService implements SystemQuery {
                 Optional.of(pillar)), minion.getMinionId());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
         return callSync(new ElementCallJson(call), minionId);
@@ -751,6 +763,9 @@ public class SaltService implements SystemQuery {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Optional<List<Zypper.ProductInfo>> getProducts(String minionId) {
         return callSync(Zypper.listProducts(false), minionId);
@@ -813,11 +828,17 @@ public class SaltService implements SystemQuery {
         return results;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Result<Object>> showHighstate(String minionId) throws SaltException {
         return callSync(com.suse.salt.netapi.calls.modules.State.showHighstate(), new MinionList(minionId));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException {
         return callSync(
@@ -1155,6 +1176,9 @@ public class SaltService implements SystemQuery {
         ).map(s -> s.getContainers());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void notifySystemIdGenerated(MinionServer minion) throws InstantiationException, SaltException {
         ClientCertificate cert = SystemManager.createClientCertificate(minion);
