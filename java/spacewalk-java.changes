@@ -1,3 +1,4 @@
+- Remove no longer necessary check for retail TERMINALS group membership
 - change DB check before login
 - fix error when adding systems to ssm with 'add to ssm' button (bsc#1160246)
 
