@@ -6,8 +6,6 @@ import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.PoolCapabilitiesJson;
-import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -40,18 +38,7 @@ public interface SystemQuery {
 
     Map<String, JsonObject> getNetworks(String minionId);
 
-    /**
-     * Query virtual storage pool definition
-     *
-     * @param minionId the host minion ID
-     * @param poolName the domain name to look for
-     * @return the XML definition or an empty Optional
-     */
-    Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName);
-
     Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName);
-
-    Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId);
 
     Optional<Boolean> ping(String minionId);
 

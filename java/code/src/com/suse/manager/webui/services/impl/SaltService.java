@@ -30,8 +30,6 @@ import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.PoolCapabilitiesJson;
-import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
@@ -243,25 +241,6 @@ public class SaltService implements SystemQuery {
         return result.entrySet().stream()
                 .filter(entry -> entry.getValue().isJsonObject())
                 .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
-    }
-
-    @Override
-    public Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName) {
-        Map<String, JsonObject> infos = getPools(minionId);
-
-        Map<String, Object> args = new LinkedHashMap<>();
-        args.put("name", poolName);
-        LocalCall<String> call =
-                new LocalCall<>("virt.pool_get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
-
-        Optional<String> result = callSync(call, minionId);
-        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> {
-            PoolDefinition pool = PoolDefinition.parse(xml);
-            if (pool != null) {
-                pool.setAutostart(infos.get(poolName).get("autostart").getAsInt() == 1);
-            }
-            return pool;
-        });
     }
 
     @Override
@@ -647,15 +626,6 @@ public class SaltService implements SystemQuery {
         }, seconds, TimeUnit.SECONDS);
 
         return promise;
-    }
-
-    @Override
-    public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
-        LocalCall<PoolCapabilitiesJson> call =
-                new LocalCall<>("virt.pool_capabilities", Optional.empty(), Optional.empty(),
-                        new TypeToken<PoolCapabilitiesJson>() { });
-
-        return callSync(call, minionId);
     }
 
     @Override
