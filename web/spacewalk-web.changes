@@ -1,4 +1,9 @@
+-------------------------------------------------------------------
+Wed Mar 18 10:27:14 CET 2020 - jgonzalez@suse.com
+
+- version 2.8.7.23-1
 - Report merge_subscriptions message in a readable way (bsc#1140332)
+
 -------------------------------------------------------------------
 Mon Jan 13 15:12:48 CET 2020 - jgonzalez@suse.com
 
