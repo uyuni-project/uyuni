@@ -116,7 +116,11 @@ def add_channels(channels, section, arch, client):
                 pass
             elif channel_base_server:
                 # If not, if cannel exists on the server, convert it
-                channels[channel['base_channel']] = {'name' : channel_base_server['label'],
+                channels[channel['base_channel']] = {'label': channel_base_server['label'],
+                                                     'name' : channel_base_server['name'],
+                                                     'summary': channel_base_server['summary'],
+                                                     'arch': channel_base_server['arch_name'],
+                                                     'checksum': channel_base_server['checksum_label'],
                                                      'gpgkey_url': channel_base_server['gpg_key_url'],
                                                      'gpgkey_id': channel_base_server['gpg_key_id'],
                                                      'gpgkey_fingerprint': channel_base_server['gpg_key_fp'],
@@ -250,7 +254,7 @@ Create everything as well as unlimited activation key for every channel:
                              if fnmatch.fnmatch(channels[n]['section'], pattern)]
         for name in matching_channels:
             attr = channels[name]
-            if attr['base_channel']:
+            if 'base_channel' in attr and attr['base_channel']:
                 if attr['base_channel'] not in base_channels:
                     base_channels[attr['base_channel']] = False
                 if attr['base_channel'] in child_channels:
@@ -290,8 +294,8 @@ Create everything as well as unlimited activation key for every channel:
                                                    base_info['summary'], CHANNEL_ARCH[base_info['arch']],
                                                    '', base_info['checksum'],
                                                    {'url': base_info['gpgkey_url'],
-                                                       'id': base_info['gpgkey_id'],
-                                                       'fingerprint': base_info['gpgkey_fingerprint']})
+                                                    'id': base_info['gpgkey_id'],
+                                                    'fingerprint': base_info['gpgkey_fingerprint']})
                     client.channel.software.createRepo(key,
                                                        base_info['yum_repo_label'], repo_type,
                                                        base_info['repo_url'])
@@ -299,8 +303,7 @@ Create everything as well as unlimited activation key for every channel:
                                                           base_info['label'], base_info['yum_repo_label'])
                 except xmlrpclib.Fault as e:
                     if e.faultCode == 1200:  # ignore if channel exists
-                        sys.stderr.write("WARNING: %s: %s\n" % (
-                            base_info['label'], e.faultString))
+                        sys.stdout.write("INFO: %s exists\n" % base_info['label'])
                     else:
                         sys.stderr.write("ERROR: %s: %s\n" % (
                             base_info['label'], e.faultString))
