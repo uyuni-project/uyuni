@@ -320,7 +320,9 @@ def list_labels(mgr_bootstrap_data, do_print=True):
     custom_parent_channels = find_custom_parent_channel_labels()
     label_index = 1
     for label in sorted(mgr_bootstrap_data.DATA.keys()):
-        if 'PDID' in mgr_bootstrap_data.DATA[label] and all(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID']):
+        if ('PDID' in mgr_bootstrap_data.DATA[label] and mgr_bootstrap_data.DATA[label]['PDID'] and
+            all(elem in synced_products for elem in mgr_bootstrap_data.DATA[label]['PDID'])):
+
             if do_print:
                 print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
