@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Mar 18 10:25:01 CET 2020 - jgonzalez@suse.com
+
+- version 2.8.78.28-1
 - fix error when adding systems to ssm with 'add to ssm' button (bsc#1160246)
 - Validate the suseproductchannel table and update missing date when running mgr-sync refresh (bsc#1163538)
 - Read the subscriptions from the output instead of input (bsc#1140332)
