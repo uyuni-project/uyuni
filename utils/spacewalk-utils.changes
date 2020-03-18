@@ -1,3 +1,4 @@
+- fix spacewalk-common-channel when base channel exists
 - Add Springdale Linux 6, 7 and 8 repositories
 
 -------------------------------------------------------------------
