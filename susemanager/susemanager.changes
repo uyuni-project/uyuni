@@ -1,3 +1,4 @@
+- create bootstrap repos on Uyuni without SUSE Manager tools channels
 - Enable support for bootstrapping Debian 9 and 10
 
 -------------------------------------------------------------------
