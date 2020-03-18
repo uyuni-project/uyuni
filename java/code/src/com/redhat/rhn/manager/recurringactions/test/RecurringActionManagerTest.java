@@ -17,6 +17,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -157,6 +158,17 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             fail("ValidatorException should have been thrown");
         }
         catch (ValidatorException e) {
+            // no-op
+        }
+    }
+
+    public void testCreateOrgActionNoOrg() {
+        try {
+            // let's try to create an action for a nonexisting org
+            RecurringActionManager.createRecurringAction(ORG, -123456L, user);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityNotExistsException e) {
             // no-op
         }
     }
