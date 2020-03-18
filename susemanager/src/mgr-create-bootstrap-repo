@@ -355,9 +355,9 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             usecustomchannels = True
         if isUyuni():
             usecustomchannels = True
-            for label in find_root_channel_labels(pdids):
+            for plabel in find_root_channel_labels(pdids):
                 # we take the first one
-                parentchannel = label
+                parentchannel = plabel
                 break
     else:
         usecustomchannels = True
