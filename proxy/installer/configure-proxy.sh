@@ -348,7 +348,7 @@ fi
 
 SYSTEM_ID=$(/usr/bin/xsltproc /usr/share/rhn/get_system_id.xslt $SYSTEMID_PATH | cut -d- -f2)
 
-DIR=/usr/share/doc/proxy/conf-template
+DIR=/usr/share/rhn/proxy-template
 HOSTNAME=$(hostname -f)
 
 default_or_input "SUSE Manager Parent" RHN_PARENT $PROPOSED_PARENT
