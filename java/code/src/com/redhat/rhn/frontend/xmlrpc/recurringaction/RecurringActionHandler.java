@@ -17,16 +17,16 @@ package com.redhat.rhn.frontend.xmlrpc.recurringaction;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
-import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
-import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 
 import java.util.List;
@@ -131,16 +131,7 @@ public class RecurringActionHandler extends BaseHandler {
      */
     public Long create(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = createAction(actionProps, loggedInUser);
-        try {
-            RecurringActionManager.saveAndSchedule(action, loggedInUser);
-        }
-        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            throw new TaskomaticApiException(e.getMessage());
-        }
-        catch (EntityExistsException e) {
-            throw new EntityExistsFaultException(e.getMessage());
-        }
-        return action.getId();
+        return save(loggedInUser, action);
     }
 
     /* Helper method */
@@ -185,13 +176,7 @@ public class RecurringActionHandler extends BaseHandler {
      */
     public Long update(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = updateAction(actionProps, loggedInUser);
-        try {
-            RecurringActionManager.saveAndSchedule(action, loggedInUser);
-        }
-        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            throw new TaskomaticApiException(e.getMessage());
-        }
-        return action.getId();
+        return save(loggedInUser, action);
     }
 
     /* Helper method */
@@ -215,6 +200,21 @@ public class RecurringActionHandler extends BaseHandler {
             action.setActive(Boolean.parseBoolean(actionProps.get("active").toString()));
         }
         return action;
+    }
+
+    /* Helper method */
+    private Long save(User loggedInUser, RecurringAction action) {
+        try {
+            RecurringActionManager.saveAndSchedule(action, loggedInUser);
+        }
+        catch (ValidatorException e) {
+            throw new ValidationException(e.getMessage());
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            HibernateFactory.rollbackTransaction();
+            throw new TaskomaticApiException(e.getMessage());
+        }
+        return action.getId();
     }
 
     /**
