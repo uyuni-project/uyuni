@@ -41,7 +41,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.HibernateException;
 
 import java.util.List;
 
@@ -126,14 +125,11 @@ public class RecurringActionManager {
      * @return
      */
     private static OrgRecurringAction createOrgRecurringAction(long orgId, User user) {
-        try {
-            Org org = OrgFactory.lookupById(orgId);
-            OrgRecurringAction action = new OrgRecurringAction(false, true, org, user);
-            return action;
-        }
-        catch (HibernateException e) {
+        Org org = OrgFactory.lookupById(orgId);
+        if (org == null) {
             throw new EntityNotExistsException(Org.class, orgId);
         }
+        return new OrgRecurringAction(false, true, org, user);
     }
 
     /**
