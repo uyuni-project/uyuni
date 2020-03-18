@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.recurringaction;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
@@ -27,11 +26,11 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
+import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class RecurringActionHandler extends BaseHandler {
 
@@ -55,7 +54,7 @@ public class RecurringActionHandler extends BaseHandler {
      *
      * @xmlrpc.doc Return a list of recurring actions for a given entity.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("string", "entityType", "Type of the target entity")
+     * @xmlrpc.param #param_desc("string", "entityType", "Type of the target entity. Can be MINION, GROUP or ORG.")
      * @xmlrpc.param #param_desc("int", "entityId", "Id of the target entity")
      * @xmlrpc.returntype
      *      #array()
@@ -63,22 +62,17 @@ public class RecurringActionHandler extends BaseHandler {
      *      #array_end()
      */
     public List<? extends RecurringAction> listByEntity(User loggedInUser, String entityType, Integer entityId) {
-        List<? extends RecurringAction> schedules;
         try {
             switch (getEntityType(entityType)) {
                 case MINION:
-                    schedules = RecurringActionManager.listMinionRecurringActions(entityId, loggedInUser);
-                    break;
+                    return RecurringActionManager.listMinionRecurringActions(entityId, loggedInUser);
                 case GROUP:
-                    schedules = RecurringActionManager.listGroupRecurringActions(entityId, loggedInUser);
-                    break;
+                    return RecurringActionManager.listGroupRecurringActions(entityId, loggedInUser);
                 case ORG:
-                    schedules = RecurringActionManager.listOrgRecurringActions(entityId, loggedInUser);
-                    break;
+                    return RecurringActionManager.listOrgRecurringActions(entityId, loggedInUser);
                 default:
                     throw new IllegalStateException("Unsupported type " + entityType);
             }
-            return schedules;
         }
         catch (PermissionException e) {
             throw new PermissionCheckFailureException(e.getMessage());
@@ -90,24 +84,21 @@ public class RecurringActionHandler extends BaseHandler {
      *
      * @param loggedInUser The current user
      * @param actionId id of the action
-     * @return the list of recurring actions
+     * @return the recurring action exception thrown otherwise
      *
      * @xmlrpc.doc Return recurring action with given action id.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "action_id", "Id of the action")
+     * @xmlrpc.param #param_desc("int", "actionId", "Id of the action")
      * @xmlrpc.returntype $RecurringActionSerializer
      */
     public RecurringAction lookupById(User loggedInUser, Integer actionId) {
-        try {
-            RecurringAction action = RecurringActionFactory.lookupById(actionId).orElseThrow();
-            if (action.canAccess(loggedInUser)) {
-                return action;
-            }
+        RecurringAction action = RecurringActionFactory.lookupById(actionId).orElseThrow(
+                () -> new EntityNotExistsFaultException("Action with id: " + actionId + " does not exist")
+        );
+        if (!action.canAccess(loggedInUser)) {
+            throw new PermissionCheckFailureException("Action not accessible to user: " + loggedInUser);
         }
-        catch (NoSuchElementException e) {
-            throw new EntityNotExistsFaultException("Action with id: " + actionId + " does not exist");
-        }
-        throw new PermissionCheckFailureException("Action not accessible to user: " + loggedInUser);
+        return action;
     }
 
     /**
@@ -121,13 +112,13 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
      *  #struct("actionProps")
-     *      #prop_desc("string", "entity_type", "The type of the target entity")
-     *      #prop_desc("string", "entity_id", "The id of the target entity")
+     *      #prop_desc("string", "entity_type", "The type of the target entity. Can be MINION, GROUP or ORG.")
+     *      #prop_desc("int", "entity_id", "The id of the target entity")
      *      #prop_desc("string", "name", "The name of the action")
      *      #prop_desc("string", "cron_expr", "The execution frequency of the action")
-     *      #prop_desc("boolean", "test", "Whether the action should be executed in test mode")
+     *      #prop_desc("boolean", "test", "Whether the action should be executed in test mode (optional)")
      *  #struct_end()
-     * @xmlrpc.returntype int action_id - The action id of the recurring action
+     * @xmlrpc.returntype The id of the recurring action
      */
     public Long create(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = createAction(actionProps, loggedInUser);
@@ -136,17 +127,22 @@ public class RecurringActionHandler extends BaseHandler {
 
     /* Helper method */
     private RecurringAction createAction(Map<String, Object> actionProps, User user) {
-        RecurringAction action;
         if (actionProps.containsKey("id") || !actionProps.containsKey("entity_type") ||
                 !actionProps.containsKey("entity_id") || !actionProps.containsKey("cron_expr") ||
                 !actionProps.containsKey("name")) {
             throw new InvalidArgsException("Incomplete action props");
         }
-        action = RecurringActionManager.createRecurringAction(
-                getEntityType((String) actionProps.get("entity_type")),
-                Long.parseLong((String) actionProps.get("entity_id")),
-                user
-        );
+        RecurringAction action;
+        try {
+            action = RecurringActionManager.createRecurringAction(
+                    getEntityType((String) actionProps.get("entity_type")),
+                    ((Integer) actionProps.get("entity_id")).longValue(),
+                    user
+            );
+        }
+        catch (EntityNotExistsException e) {
+            throw new EntityNotExistsFaultException(e.getMessage());
+        }
         action.setName((String) actionProps.get("name"));
         action.setCronExpr((String) actionProps.get("cron_expr"));
         if (actionProps.containsKey("test")) {
@@ -166,13 +162,13 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
      *  #struct("actionProps")
-     *      #prop_desc("string", "id", "The id of the action to update")
+     *      #prop_desc("int", "id", "The id of the action to update")
      *      #prop_desc("string", "name", "The name of the action (optional)")
      *      #prop_desc("string", "cron_expr", "The execution frequency of the action (optional)")
      *      #prop_desc("boolean", "test", "Whether the action should be executed in test mode (optional)")
      *      #prop_desc("boolean", "active", "Whether the action should be active (optional)")
      *  #struct_end()
-     * @xmlrpc.returntype int action_Id - The action id of the recurring action
+     * @xmlrpc.returntype The id of the recurring action
      */
     public Long update(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = updateAction(actionProps, loggedInUser);
@@ -184,8 +180,7 @@ public class RecurringActionHandler extends BaseHandler {
         if (!actionProps.containsKey("id")) {
             throw new InvalidArgsException("No action id provided");
         }
-        Integer id = Integer.parseInt((String) actionProps.get("id"));
-        RecurringAction action = lookupById(user, id);
+        RecurringAction action = lookupById(user, ((Integer) actionProps.get("id")));
 
         if (actionProps.containsKey("name")) {
             action.setName((String) actionProps.get("name"));
@@ -211,7 +206,6 @@ public class RecurringActionHandler extends BaseHandler {
             throw new ValidationException(e.getMessage());
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            HibernateFactory.rollbackTransaction();
             throw new TaskomaticApiException(e.getMessage());
         }
         return action.getId();
@@ -226,8 +220,8 @@ public class RecurringActionHandler extends BaseHandler {
      *
      * @xmlrpc.doc Delete recurring action with given action id.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.param #param_desc("int", "action_id", "Id of the action")
-     * @xmlrpc.returntype int action_id - The action id of the recurring action
+     * @xmlrpc.param #param_desc("int", "actionId", "Id of the action")
+     * @xmlrpc.returntype The id of the recurring action
      */
     public Long delete(User loggedInUser, Integer actionId) {
         RecurringAction action = lookupById(loggedInUser, actionId);
@@ -235,7 +229,6 @@ public class RecurringActionHandler extends BaseHandler {
             RecurringActionManager.deleteAndUnschedule(action, loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
-            HibernateFactory.rollbackTransaction();
             throw new TaskomaticApiException(e.getMessage());
         }
         return Long.valueOf(actionId);
