@@ -229,7 +229,8 @@ public class RecurringActionManager {
                     new PermissionException(String.format("%s not accessible to user %s", action, user)));
         }
 
-        if (!TaskoQuartzHelper.isValidCronExpression(action.getCronExpr())) {
+        String cronExpr = action.getCronExpr();
+        if (StringUtils.isBlank(cronExpr) || !TaskoQuartzHelper.isValidCronExpression(cronExpr)) {
             throw new ValidatorException(getLocalization().getMessage("recurring_action.invalid_cron"));
         }
 
