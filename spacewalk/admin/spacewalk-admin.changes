@@ -1,3 +1,4 @@
+- run DB schema upgrade automatically on startup
 - add DB check service and prevent service start with wrong DB version
 
 -------------------------------------------------------------------
