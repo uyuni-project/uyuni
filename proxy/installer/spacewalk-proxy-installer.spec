@@ -80,7 +80,7 @@ Requires:       rhnlib
 Obsoletes:      proxy-installer < 5.3.0
 Provides:       proxy-installer = 5.3.0
 
-%define defaultdir %{_usr}/share/doc/proxy/conf-template/
+%define defaultdir %{_usr}/share/rhn/proxy-template
 
 %description
 The Spacewalk Proxy Server allows package proxying/caching
@@ -163,7 +163,7 @@ spacewalk-%{pythonX}-pylint .
 %{_usr}/sbin/rhn-proxy-activate
 %{_usr}/sbin/fetch-certificate
 %doc LICENSE answers.txt
-%dir %{_usr}/share/doc/proxy
+%dir %{_usr}/share/rhn/proxy-template
 %dir %{_usr}/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 %if 0%{?suse_version} > 1320
