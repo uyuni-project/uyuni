@@ -14,21 +14,36 @@ product.log = MagicMock()
 product.__salt__ = {}
 product.__grains__ = {}
 
-def test_virtual():
+@patch.dict(product.__grains__, {'os_family': 'Suse'})
+def test_suse_with_zypper():
     '''
-    Test if the state module is only available for SUSE OS
-    with Zypper available.
+    Test if the state module is available for SUSE OS only with a
+    supported version of zypper (>= 1.8.13) available.
     '''
-    with patch.dict(product.__grains__, {'os_family': 'Suse'}):
-        with patch('src.states.product.salt.utils.path.which', MagicMock(return_value="/my/zypper")):
+    # Supported zypper version
+    with patch.dict(product.__salt__, {'pkg.info_installed': MagicMock(return_value={'zypper': {'version': '1.9.0'}})}):
+        with patch.object(product, 'version_cmp', MagicMock(return_value=1)):
             assert product.__virtual__() is 'product'
-            product.salt.utils.path.which.assert_called_once_with('zypper')
-        with patch('src.states.product.salt.utils.path.which', MagicMock(return_value=None)):
-            assert product.__virtual__() == (False, "Module product: zypper package manager not found")
-            product.salt.utils.path.which.assert_called_once_with('zypper')
+            product.version_cmp.assert_called_once_with('1.9.0', '1.8.13')
 
-    with patch.dict(product.__grains__, {'os_family': 'Non-Suse'}):
-            assert product.__virtual__() == (False, "Module product: non SUSE OS not supported")
+    # Unsupported zypper version
+    with patch.dict(product.__salt__, {'pkg.info_installed': MagicMock(return_value={'zypper': {'version': '1.8.0'}})}):
+        with patch.object(product, 'version_cmp', MagicMock(return_value=-1)):
+            assert product.__virtual__() == (False, "Module product: zypper 1.8.13 or greater required")
+            product.version_cmp.assert_called_once_with('1.8.0', '1.8.13')
+
+    # No zypper available
+    with patch.dict(product.__salt__, {'pkg.info_installed': MagicMock(return_value=sys.modules['salt.exceptions'].CommandExecutionError)}):
+        assert product.__virtual__() == (False, "Module product: zypper package manager not found")
+
+
+@patch.dict(product.__grains__, {'os_family': 'Non-Suse'})
+def test_non_suse():
+    '''
+    Test if the state module is unavailable for Non-SUSE OS
+    '''
+    assert product.__virtual__() == (False, "Module product: non SUSE OS not supported")
+
 
 def test_get_missing_products():
     '''
