@@ -18,7 +18,6 @@ package com.redhat.rhn.manager.recurringactions;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
