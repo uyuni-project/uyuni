@@ -5,6 +5,15 @@ if [ -x "/usr/bin/lsof" ]; then
     LSOF="/usr/bin/lsof"
 fi
 
+perform_db_schema_upgrade() {
+    /usr/bin/spacewalk-schema-upgrade -y
+
+    if [ $? -ne 0 ]; then
+        echo "Database schema upgrade failed. Please check the logs."
+        exit 1
+    fi
+}
+
 check_database() {
     RETRIES=10;
     source /etc/os-release
@@ -17,6 +26,7 @@ check_database() {
                 echo "Database version '${VARR[0]}' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
                 exit 1
             fi
+            perform_db_schema_upgrade
             exit 0 # db is running
         fi
 
