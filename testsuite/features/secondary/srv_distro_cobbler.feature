@@ -85,7 +85,6 @@ Feature: Cobbler and distribution autoinstallation
     And I follow "fedora_kickstart_profile"
     And I enter "kernel_option=a_value" as "kernel_options"
     And I click on "Update"
-    And I wait for "5" seconds
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option=a_value" on server
 
   Scenario: Add a kernel option to the uploaded profile
@@ -93,7 +92,6 @@ Feature: Cobbler and distribution autoinstallation
     And I follow "fedora_kickstart_profile_upload"
     And I enter "kernel_option2=a_value2" as "kernel_options"
     And I click on "Update"
-    And I wait for "5" seconds
     And I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "kernel_option2=a_value2" on server
 
   Scenario: Check default snippets
