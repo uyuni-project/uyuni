@@ -330,6 +330,7 @@ public class LoginHelper {
      */
     public static List<String> validateDBVersion() {
         List<String> validationErrors = new ArrayList<>();
+        LocalizationService ls = LocalizationService.getInstance();
         if (ConfigDefaults.get().isPostgresql()) {
             Long serverVersion = 0L;
             String pgVersion = "";
@@ -369,7 +370,6 @@ public class LoginHelper {
                 log.debug("PG DB version is: " + serverVersion);
                 log.debug("OS Version is: " + osVersion + " " + osVersion);
             }
-            LocalizationService ls = LocalizationService.getInstance();
             if (serverVersion < MIN_PG_DB_VERSION) {
                 validationErrors.add(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
                 log.error(ls.getMessage("error.unsupported_db_min", pgVersion, MIN_PG_DB_VERSION_STRING));
@@ -384,6 +384,12 @@ public class LoginHelper {
                 log.error(ls.getMessage("error.unsupported_db_migrate", pgVersion, osName,
                         OS_VERSION_WANTED_DB_VERSION));
             }
+        }
+        SelectMode m = ModeFactory.getMode("General_queries", "installed_schema_version");
+        DataResult<HashMap> dr = m.execute();
+        if (dr.size() == 0) {
+            validationErrors.add(ls.getMessage("error.unfinished_schema_upgrade"));
+            log.error(ls.getMessage("error.unfinished_schema_upgrade"));
         }
         return validationErrors;
     }

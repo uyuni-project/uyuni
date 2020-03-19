@@ -3267,6 +3267,9 @@
         <trans-unit id="error.unsupported_db_migrate">
           <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
         </trans-unit>
+        <trans-unit id="error.unfinished_schema_upgrade">
+          <source>Database schema upgrade in progress!</source>
+        </trans-unit>
       </group>
     </body>
   </file>
