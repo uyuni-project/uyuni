@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.recurringactions;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -195,24 +196,31 @@ public class RecurringActionManager {
         return RecurringActionFactory.listAllRecurringActions(user);
     }
 
-    // checks perms & saves & schedules
-    // all create/update operations must go through this!
-
     /**
-     * Checks permissions on given {@link RecurringAction}, saves it and schedules corresponding taskomatic job.
+     * Checks permissions on given {@link RecurringAction}, validates it,
+     * saves it and schedules corresponding taskomatic job.
      *
      * All save/update operations on {@link RecurringAction} must use this method
      * (to make sure the taskomatic schedule is updated as well).
+     *
+     * The method can accept an entity in detached state.
+     * Such entity is merged and returned (in managed state). The original entity stays in detached state.
+     *
+     * When taskomatic throws an exception (e.g. it is down), make sure that the transaction is rolled back
+     * (normally it is enough to re-throw the exception), so that changes made to the entity are not persisted!
+     * We should make sure that either both the entity and the taskomatic schedule is updated, or none of them is.
      *
      * @param action the action
      * @param user the user performing the operation
      * @throws ValidatorException if an entity validation fails
      * @throws TaskomaticApiException when there is a problem with taskomatic during scheduling
+     * @return updated action entity in managed state
      */
-    public static void saveAndSchedule(RecurringAction action, User user) throws TaskomaticApiException {
+    public static RecurringAction saveAndSchedule(RecurringAction action, User user) throws TaskomaticApiException {
         validateAction(action, user);
-        RecurringActionFactory.save(action);
-        taskomaticApi.scheduleRecurringAction(action, user);
+        RecurringAction saved = (RecurringAction) RecurringActionFactory.getSession().merge(action);
+        taskomaticApi.scheduleRecurringAction(saved, user);
+        return saved;
     }
 
     /**

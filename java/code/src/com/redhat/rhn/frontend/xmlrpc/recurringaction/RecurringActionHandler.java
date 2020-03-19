@@ -189,6 +189,8 @@ public class RecurringActionHandler extends BaseHandler {
             throw new InvalidArgsException("No action id provided");
         }
         RecurringAction action = lookupById(user, ((Integer) actionProps.get("id")));
+        // detach the object and prevent hibernate from auto flushing when fields become dirty
+        RecurringActionFactory.getSession().evict(action);
 
         if (actionProps.containsKey("name")) {
             action.setName((String) actionProps.get("name"));
@@ -202,7 +204,8 @@ public class RecurringActionHandler extends BaseHandler {
         if (actionProps.containsKey("active")) {
             action.setActive(Boolean.parseBoolean(actionProps.get("active").toString()));
         }
-        return action;
+
+        return action; // return "detached" action
     }
 
     /* Helper method */
