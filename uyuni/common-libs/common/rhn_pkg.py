@@ -67,7 +67,7 @@ def package_from_filename(filename):
     stream = open(filename, mode='rb')
     return package_from_stream(stream, packaging)
 
-BUFFER_SIZE = 16384
+BUFFER_SIZE = 8388608
 DEFAULT_CHECKSUM_TYPE = 'md5'
 
 
