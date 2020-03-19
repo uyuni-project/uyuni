@@ -14,6 +14,9 @@ const Utils = Functions.Utils;
 const {AsyncButton, Button} = require("components/buttons");
 const { TopPanel } = require('components/panels/TopPanel');
 const escapeHtml = require('html-react-parser');
+const {Dialog} = require("components/dialog/Dialog");
+const {showDialog} = require("components/dialog/util");
+
 
 function reloadData(dataUrlSlice) {
   return Network.get('/rhn/manager/notification-messages/' + dataUrlSlice, "application/json").promise;
@@ -28,6 +31,7 @@ class NotificationMessages extends React.Component {
     loading: true,
     messages: [],
     selectedItems: [],
+    popupItem: null
   };
 
   UNSAFE_componentWillMount() {
@@ -214,9 +218,32 @@ class NotificationMessages extends React.Component {
     return Object.keys(message).map((id) => message[id]);
   };
 
+  showDescriptionPopup = (row) => {
+    this.setState({popupItem: row});
+    showDialog("notifications-popup-dialog");
+  }
+
   buildSummary = (row) => {
-    return escapeHtml(row['summary'])
+    const popupLink = <a href="#" onClick={() => this.showDescriptionPopup(row)}>{t("Details")}</a>;
+
+    return (
+      <span>
+        {escapeHtml(row['summary'])}
+        &nbsp;
+        {row['description'] && popupLink}
+      </span>
+    );
   };
+
+  buildPopupSummary = () => {
+    const summary = (this.state.popupItem || {}).summary || "";
+    return escapeHtml(summary);
+  }
+
+  buildPopupDescription = () => {
+    const description = (this.state.popupItem || {}).description || "";
+    return escapeHtml(description);
+  }
 
   retryOnboarding = (minionId) => {
     return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
@@ -362,6 +389,10 @@ class NotificationMessages extends React.Component {
               }
             />
           </Table>
+          <Dialog id="notifications-popup-dialog"
+            title={this.buildPopupSummary()}
+            content={this.buildPopupDescription()}
+          />
         </TopPanel>
       );
     }
