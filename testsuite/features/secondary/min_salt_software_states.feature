@@ -64,7 +64,7 @@ Feature: Salt package states
     And I click save
     Then I wait until I see "Package states have been saved." text
     And I click apply
-    And I wait for "milkyway-dummy" to be installed on this "sle_minion"
+    And I wait for "milkyway-dummy" to be installed on "sle_minion"
 
   Scenario: Install an already installed package through the UI
     Given I am on the Systems overview page of this "sle_minion"
@@ -79,7 +79,7 @@ Feature: Salt package states
     And I click save
     Then I wait until I see "Package states have been saved." text
     And I click apply
-    And I wait for "virgo-dummy-1.0" to be installed on this "sle_minion"
+    And I wait for "virgo-dummy-1.0" to be installed on "sle_minion"
 
   Scenario: Upgrade a package through the UI
     Given I am on the Systems overview page of this "sle_minion"
@@ -94,7 +94,7 @@ Feature: Salt package states
     And I click save
     Then I wait until I see "Package states have been saved." text
     And I click apply
-    And I wait for "andromeda-dummy-2.0-1.1" to be installed on this "sle_minion"
+    And I wait for "andromeda-dummy-2.0-1.1" to be installed on "sle_minion"
 
   Scenario: Verify the package states
     Given I am on the Systems overview page of this "sle_minion"

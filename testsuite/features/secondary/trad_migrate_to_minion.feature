@@ -66,7 +66,7 @@ Feature: Migrate a traditional client into a Salt minion
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait for "perseus-dummy-1.1-1.1" to be installed on this "sle_migrated_minion"
+    And I wait for "perseus-dummy-1.1-1.1" to be installed on "sle_migrated_minion"
 
   Scenario: Run a remote script on the migrated minion
     Given I am on the Systems overview page of this "sle_migrated_minion"

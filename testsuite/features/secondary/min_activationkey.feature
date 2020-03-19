@@ -70,8 +70,8 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     When I go to the minion onboarding page
     Then I should see a "accepted" text
     And the Salt master can reach "sle_minion"
-    When I wait for "orion-dummy" to be installed on this "sle_minion"
-    And I wait for "perseus-dummy" to be installed on this "sle_minion"
+    When I wait for "orion-dummy" to be installed on "sle_minion"
+    And I wait for "perseus-dummy" to be installed on "sle_minion"
 
   Scenario: Check system ID of bootstrapped minion
     Given I am on the Systems overview page of this "sle_minion"

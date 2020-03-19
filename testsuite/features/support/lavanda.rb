@@ -65,4 +65,14 @@ module LavandaBasic
       result
     end
   end
+
+  def wait_while_process_running(process)
+    result = nil
+    repeat_until_timeout(report_result: true) do
+      result, code = run("pgrep -x #{process} >/dev/null", false)
+      break if code.nonzero?
+      sleep 2
+      result
+    end
+  end
 end

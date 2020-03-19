@@ -165,7 +165,7 @@ Feature: Action chains on Salt minions
     And I follow "new action chain"
     And I click on "Save and Schedule"
     Then I should see a "Action Chain new action chain has been scheduled for execution." text
-    When I wait for "virgo-dummy" to be installed on this "sle_minion"
+    When I wait for "virgo-dummy" to be installed on "sle_minion"
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sle_minion"
 
   Scenario: Add a remote command to the new action chain on Salt minion

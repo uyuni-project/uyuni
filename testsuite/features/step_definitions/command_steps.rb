@@ -66,6 +66,28 @@ Then(/^"([^"]*)" should not be installed on "([^"]*)"$/) do |package, host|
   node.run("rpm -q #{package}; test $? -ne 0")
 end
 
+When(/^I wait for "([^"]*)" to be (uninstalled|installed) on "([^"]*)"$/) do |package, status, host|
+  node = get_target(host)
+  if host.include? 'ubuntu'
+    node.wait_while_process_running('apt-get')
+    pkg_version = package.split('-')[-1]
+    pkg_name = package.delete_suffix("-#{pkg_version}")
+    pkg_version_regexp = pkg_version.gsub('.', '\\.')
+    if status == 'installed'
+      node.run_until_ok("dpkg -l | grep -E '^ii +#{pkg_name} +#{pkg_version_regexp} +'")
+    else
+      node.run_until_fail("dpkg -l | grep -E '^ii +#{pkg_name} +#{pkg_version_regexp} +'")
+    end
+  else
+    node.wait_while_process_running('zypper')
+    if status == 'installed'
+      node.run_until_ok("rpm -q #{package}")
+    else
+      node.run_until_fail("rpm -q #{package}")
+    end
+  end
+end
+
 When(/^I query latest Salt changes on "(.*?)"$/) do |host|
   node = get_target(host)
   result, return_code = node.run("LANG=en_US.UTF-8 rpm -q --changelog salt")
@@ -195,7 +217,6 @@ When(/^I fetch "([^"]*)" to "([^"]*)"$/) do |file, host|
 end
 
 When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, content|
-  sleep(3)
   repeat_until_timeout(message: "#{content} not found in file #{file}", report_result: true) do
     output = sshcmd("grep #{content} #{file}", ignore_err: true)
     break if output[:stdout] =~ /#{content}/
@@ -214,7 +235,6 @@ end
 
 Then(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
-  sleep(5)
 end
 
 Then(/^I shutdown the spacewalk service$/) do
