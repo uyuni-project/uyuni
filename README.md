@@ -16,7 +16,7 @@ Following links might be of value in case you are interested:
 
   * [Project home](https://www.uyuni-project.org/)
   * [OBS project](https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master)
-  * [IRC](https://www.uyuni-project.org/contact.html#irc) (#uyuni at irc.freenode.org)
-  * [Mailing lists](https://www.uyuni-project.org/contact.html#ml)
+  * [IRC] #uyuni at irc.freenode.org
+  * [Mailing lists]
   * [Bug reports](https://github.com/uyuni-project/uyuni/issues)
   * [SUSE Manager](https://www.suse.com/products/suse-manager/)
