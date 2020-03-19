@@ -32,6 +32,9 @@ import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Handler for Recurring Actions ({@link RecurringAction})
+ */
 public class RecurringActionHandler extends BaseHandler {
 
     /* helper method */
@@ -112,7 +115,12 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
      *  #struct("actionProps")
-     *      #prop_desc("string", "entity_type", "The type of the target entity. Can be MINION, GROUP or ORG.")
+     *      #prop_desc("string", "entity_type", "The type of the target entity. One of the following:")
+     *        #options()
+     *          #item("MINION")
+     *          #item("GROUP")
+     *          #item("ORG")
+     *        #options_end()
      *      #prop_desc("int", "entity_id", "The id of the target entity")
      *      #prop_desc("string", "name", "The name of the action")
      *      #prop_desc("string", "cron_expr", "The execution frequency of the action")

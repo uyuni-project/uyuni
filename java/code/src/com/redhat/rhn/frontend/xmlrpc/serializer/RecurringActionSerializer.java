@@ -34,7 +34,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *   #prop("int", "entity_id")
  *   #prop("string", "entity_type")
  *   #prop("string", "cron_expr")
- *   #prop("string", "created")
+ *   #prop($date, "created")
  *   #prop("string", "creator")
  *   #prop("boolean", "test")
  *   #prop("boolean", "active")
