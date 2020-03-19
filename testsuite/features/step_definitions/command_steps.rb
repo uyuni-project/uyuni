@@ -21,13 +21,20 @@ Then(/^"([^"]*)" should communicate with the server$/) do |host|
   $server.run("ping -c1 #{node.full_hostname}")
 end
 
-Then(/^it should be possible to download the file "([^"]*)"$/) do |file|
-  $server.run("curl -k #{file} -o /dev/null")
-end
-
-Then(/^it should be possible to reach the (.*) registry$/) do |registry|
-  url = registry == 'portus' ? 'https://portus.mgr.suse.de:5000' : 'https://registry.mgr.suse.de:443'
-  $server.run("curl -k --fail #{url}")
+Then(/^it should be possible to reach the (.*)$/) do |resource|
+  url = case resource
+        when 'download site'
+    'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
+        when 'container profiles'
+    'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
+        when 'test suite profiles'
+    'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
+        when 'portus registry'
+    'https://portus.mgr.suse.de:5000'
+        when 'other registry'
+    'https://registry.mgr.suse.de:443'
+        end
+  $server.run("curl -k #{url} -o /dev/null") # --fail option does not work as expected
 end
 
 # Channels
