@@ -128,7 +128,7 @@ public class RecurringActionHandler extends BaseHandler {
      *  #struct_end()
      * @xmlrpc.returntype The id of the recurring action
      */
-    public Long create(User loggedInUser, Map<String, Object> actionProps) {
+    public int create(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = createAction(actionProps, loggedInUser);
         return save(loggedInUser, action);
     }
@@ -178,7 +178,7 @@ public class RecurringActionHandler extends BaseHandler {
      *  #struct_end()
      * @xmlrpc.returntype The id of the recurring action
      */
-    public Long update(User loggedInUser, Map<String, Object> actionProps) {
+    public int update(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = updateAction(actionProps, loggedInUser);
         return save(loggedInUser, action);
     }
@@ -206,9 +206,11 @@ public class RecurringActionHandler extends BaseHandler {
     }
 
     /* Helper method */
-    private Long save(User loggedInUser, RecurringAction action) {
+    private int save(User loggedInUser, RecurringAction action) {
         try {
-            RecurringActionManager.saveAndSchedule(action, loggedInUser);
+            RecurringAction saved = RecurringActionManager.saveAndSchedule(action, loggedInUser);
+            // let's throw an exeption on integer overflow
+            return Math.toIntExact(saved.getId());
         }
         catch (ValidatorException e) {
             throw new ValidationException(e.getMessage());
@@ -216,7 +218,6 @@ public class RecurringActionHandler extends BaseHandler {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
-        return action.getId();
     }
 
     /**
@@ -231,7 +232,7 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "actionId", "Id of the action")
      * @xmlrpc.returntype The id of the recurring action
      */
-    public Long delete(User loggedInUser, Integer actionId) {
+    public int delete(User loggedInUser, Integer actionId) {
         RecurringAction action = lookupById(loggedInUser, actionId);
         try {
             RecurringActionManager.deleteAndUnschedule(action, loggedInUser);
@@ -239,6 +240,6 @@ public class RecurringActionHandler extends BaseHandler {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
-        return Long.valueOf(actionId);
+        return actionId;
     }
 }
