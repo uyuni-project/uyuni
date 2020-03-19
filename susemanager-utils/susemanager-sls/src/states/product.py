@@ -6,7 +6,7 @@ Only supported with :mod:`zypper <salt.modules.zypper>`
 
 import logging
 
-import salt.utils.path
+from salt.utils.versions import version_cmp
 from salt.exceptions import CommandExecutionError
 
 log = logging.getLogger(__name__)
@@ -19,9 +19,16 @@ def __virtual__():
     '''
     if __grains__.get('os_family', '') != 'Suse':
         return (False, "Module product: non SUSE OS not supported")
+
     # Not all versions of SUSE use zypper, check that it is available
-    if not salt.utils.path.which('zypper'):
+    try:
+        zypp_info = __salt__['pkg.info_installed']('zypper')['zypper']
+    except CommandExecutionError:
         return (False, "Module product: zypper package manager not found")
+
+    # Minimum version that supports 'zypper search --provides'
+    if version_cmp(zypp_info['version'], '1.8.13') < 0:
+        return (False, "Module product: zypper 1.8.13 or greater required")
     return __virtualname__
 
 
