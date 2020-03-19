@@ -192,20 +192,20 @@ class NotificationMessages extends React.Component {
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
-  buildTextDescription = (row) => {
+  buildSummaryText = (row) => {
     var div = document.createElement("div");
     div.innerHTML = row['summary']
     return div.textContent || div.innerText || "";
   };
 
   sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = this.buildTextDescription(aRaw).toLowerCase().localeCompare(this.buildTextDescription(bRaw).toLowerCase());
+    var result = this.buildSummaryText(aRaw).toLowerCase().localeCompare(this.buildSummaryText(bRaw).toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   searchData = (datum, criteria) => {
       if (criteria) {
-        return (this.buildTextDescription(datum)).toLowerCase().includes(criteria.toLowerCase());
+        return (this.buildSummaryText(datum)).toLowerCase().includes(criteria.toLowerCase());
       }
       return true;
   };
@@ -214,7 +214,7 @@ class NotificationMessages extends React.Component {
     return Object.keys(message).map((id) => message[id]);
   };
 
-  buildDescription = (row) => {
+  buildSummary = (row) => {
     return escapeHtml(row['summary'])
   };
 
@@ -315,7 +315,7 @@ class NotificationMessages extends React.Component {
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
-                    placeholder={t("Filter by description")} />
+                    placeholder={t("Filter by summary")} />
             }>
             <Column
               columnKey="severity"
@@ -329,10 +329,10 @@ class NotificationMessages extends React.Component {
               cell={ (row) => this.decodeTypeText(row['type'])}
             />
             <Column
-              columnKey="description"
+              columnKey="summary"
               comparator={this.sortByText}
-              header={t("Description")}
-              cell={ (row) => this.buildDescription(row) }
+              header={t("Summary")}
+              cell={ (row) => this.buildSummary(row) }
             />
             <Column
               columnKey="created"
