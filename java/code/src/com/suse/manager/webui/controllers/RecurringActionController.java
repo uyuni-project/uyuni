@@ -193,8 +193,8 @@ public class RecurringActionController {
         RecurringStateScheduleJson json = GSON.fromJson(request.body(), RecurringStateScheduleJson.class);
 
         try {
-            validate(json, user);
             RecurringAction action = createOrGetAction(user, json);
+            RecurringActionFactory.getSession().evict(action); // entity -> detached, prevent hibernate flushes
             mapJsonToAction(json, action);
             RecurringActionManager.saveAndSchedule(action, user);
         }
@@ -210,24 +210,6 @@ public class RecurringActionController {
         }
 
         return json(response, ResultJson.success());
-    }
-
-    /**
-     * Check if saving/updating {@link RecurringAction} is valid
-     * given the data in the {@link RecurringStateScheduleJson}.
-     *
-     * @param json the action data
-     * @param user the user performing the save/update
-     */
-    private static void validate(RecurringStateScheduleJson json, User user) {
-        // we create a transient RecurringAction just for the validation purpose!
-        Type type = Type.valueOf(json.getTargetType().toUpperCase());
-        RecurringAction action = RecurringActionManager.createRecurringAction(type, json.getTargetId(), user);
-
-        mapJsonToAction(json, action);
-        action.setId(json.getRecurringActionId());
-
-        RecurringActionManager.validateAction(action, user);
     }
 
     private static RecurringAction createOrGetAction(User user, RecurringStateScheduleJson json) {

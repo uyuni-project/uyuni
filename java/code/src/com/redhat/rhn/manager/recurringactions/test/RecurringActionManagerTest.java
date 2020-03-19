@@ -243,7 +243,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
-        RecurringActionManager.saveAndSchedule(recurringAction, user);
+        recurringAction = RecurringActionManager.saveAndSchedule(recurringAction, user);
 
         var sameAction = RecurringActionFactory.lookupById(recurringAction.getId()).get();
         var newName = "testname";
