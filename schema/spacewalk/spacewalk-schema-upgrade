@@ -7,8 +7,13 @@ use Spacewalk::Setup ();
 use IPC::Open3 ();
 use File::Basename;
 
-my $MIN_PG_DB_VERSION = 90600;
-my $MIN_PG_DB_VERSION_STRING = "9.6";
+my $MIN_PG_DB_VERSION = 100001;
+my $MAX_PG_DB_VERSION = 129999;
+my $MIN_PG_DB_VERSION_STRING = "10";
+my $MAX_PG_DB_VERSION_STRING = "12";
+my $OS_VERSION_CHECK = 15.2;
+my $OS_VERSION_MIN_DB_VERSION = 120000;
+my $OS_VERSION_WANTED_DB_VERSION = "12";
 my $SCHEMA_UPGRADE_DIR = '/etc/sysconfig/rhn/schema-upgrade';
 my $SCHEMA_UPGRADE_LOGDIR = '/var/log/spacewalk/schema-upgrade';
 
@@ -65,8 +70,12 @@ if ($server_version < $MIN_PG_DB_VERSION) {
     print "\nRunning postgresql $pg_version is not supported. Minimal required version is $MIN_PG_DB_VERSION_STRING.\n\n";
     exit 1;
 }
-elsif(!$isUyuni && $server_version < 100001 && $os_version >= 12.4) {
-    print "\nRunning postgresql $pg_version on $os_name is unsupported. Please migrate to postgresql 10.\n\n";
+elsif($server_version > $MAX_PG_DB_VERSION) {
+    print "\nRunning postgresql $pg_version is not supported. Maximal allowed version is $MAX_PG_DB_VERSION_STRING.\n\n";
+    exit 1;
+}
+elsif($os_version >= $OS_VERSION_CHECK && $server_version < $OS_VERSION_MIN_DB_VERSION) {
+    print "\nRunning postgresql $pg_version on $os_name is unsupported. Please migrate to postgresql $OS_VERSION_WANTED_DB_VERSION.\n\n";
     exit 1;
 }
 
