@@ -788,6 +788,22 @@ When(/^I disable repositories after installing branch server$/) do
   end
 end
 
+When(/^I enable repositories before installing the Yomi image$/) do
+  os_version, os_family = get_os_version($proxy)
+
+  # Distribution
+  repos = "os_pool_repo os_update_repo server_devel_repo"
+  puts $proxy.run("zypper mr --enable #{repos}")
+end
+
+When(/^I disable repositories after installing the Yomi image$/) do
+  os_version, os_family = get_os_version($proxy)
+
+  # Distribution
+  repos = "os_pool_repo os_update_repo server_devel_repo"
+  puts $proxy.run("zypper mr --disable #{repos}")
+end
+
 # Register client
 Given(/^I update the profile of this client$/) do
   step %(I update the profile of "sle_client")

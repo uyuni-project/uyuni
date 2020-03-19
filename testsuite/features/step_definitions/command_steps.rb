@@ -1343,3 +1343,22 @@ When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   raise 'File injection failed' unless return_code.zero?
   node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
 end
+
+# Yomi commands
+When(/^I adapt for TFTP the Yomi image on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("cp /srv/pxe-yomi-image/{linux,initrd} /srv/pxe-yomi-image/boot/")
+  ["append", "config.bootoptions", "initrd", "kernel", "md5", "xz"].each do |ext|
+    node.run("ln -s -r -f /srv/pxe-yomi-image/image/pxe-yomi-image-*.#{ext} /srv/pxe-yomi-image/image/image.#{ext}")
+  end
+end
+
+When(/^I disable next PXE boot from "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("mv /srv/pxe-yomi-image/boot/pxelinux.0 /srv/pxe-yomi-image/boot/pxelinux.0.DISABLED")
+end
+
+When(/^I enable next PXE boot from "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run("mv /srv/pxe-yomi-image/boot/pxelinux.0.DISABLED /srv/pxe-yomi-image/boot/pxelinux.0")
+end

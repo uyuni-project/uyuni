@@ -44,6 +44,10 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion kvm_server xen_server].include?(minion)
 end
 
+When(/^I restart salt-master on the server$/) do
+  $server.run('systemctl restart salt-master', false)
+end
+
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
   cmd = "salt-key --list #{key_type}"
   repeat_until_timeout(timeout: key_timeout.to_i, message: "Minion '#{minion}' is not listed among #{key_type} keys on Salt master") do
@@ -137,6 +141,23 @@ Then(/^the PXE boot minion should have been reformatted$/) do
   system_name = get_system_name('pxeboot_minion')
   output, _code = $server.run("salt #{system_name} file.file_exists /intact")
   raise 'Minion is intact' unless output.include? 'False'
+end
+
+Then(/^the PXE boot minion should have been installed$/) do
+  system_name = get_system_name('pxeboot_minion')
+  output, _code = $server.run("salt #{system_name} file.contains /etc/os-release openSUSE")
+  raise 'Minion is intact' unless output.include? 'False'
+end
+
+When(/^I wipe the PXE boot minion hard disk$/) do
+  system_name = get_system_name('pxeboot_minion')
+  $server.run("salt #{system_name} devices.wipe /dev/vda")
+end
+
+Then(/^the PXE boot minion hard disk should be empty$/) do
+  system_name = get_system_name('pxeboot_minion')
+  output, _code = $server.run("salt #{system_name} partition.list /dev/vda", false)
+  raise 'Minion is intact' if output.include? 'file system'
 end
 
 # user salt steps
@@ -353,76 +374,18 @@ When(/^I enter the local IP address of "([^"]*)" in (.*) field for vsftpd$/) do 
 end
 
 When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
-  fieldids = { 'NIC'                             => 'branch_network#nic',
-               'domain name'                     => 'dhcpd#domain_name',
-               'listen interfaces'               => 'dhcpd#listen_interfaces#0',
-               'network mask'                    => 'dhcpd#subnets#0#netmask',
-               'filename'                        => 'dhcpd#subnets#0#filename',
-               'first reserved hostname'         => 'dhcpd#hosts#0#$key',
-               'second reserved hostname'        => 'dhcpd#hosts#1#$key',
-               'third reserved hostname'         => 'dhcpd#hosts#2#$key',
-               'virtual network IPv4 address'    => 'default_net#ipv4#gateway',
-               'first IPv4 address for DHCP'     => 'default_net#ipv4#dhcp_start',
-               'last IPv4 address for DHCP'      => 'default_net#ipv4#dhcp_end',
-               'first option'                    => 'bind#config#options#0#0',
-               'first value'                     => 'bind#config#options#0#1',
-               'first configured zone name'      => 'bind#configured_zones#0#$key',
-               'first available zone name'       => 'bind#available_zones#0#$key',
-               'first file name'                 => 'bind#available_zones#0#file',
-               'first name server'               => 'bind#available_zones#0#soa#ns',
-               'first contact'                   => 'bind#available_zones#0#soa#contact',
-               'first A name'                    => 'bind#available_zones#0#records#A#0#0',
-               'second A name'                   => 'bind#available_zones#0#records#A#1#0',
-               'third A name'                    => 'bind#available_zones#0#records#A#2#0',
-               'fourth A name'                   => 'bind#available_zones#0#records#A#3#0',
-               'first NS'                        => 'bind#available_zones#0#records#NS#@#0',
-               'first CNAME alias'               => 'bind#available_zones#0#records#CNAME#0#0',
-               'first CNAME name'                => 'bind#available_zones#0#records#CNAME#0#1',
-               'second CNAME alias'              => 'bind#available_zones#0#records#CNAME#1#0',
-               'second CNAME name'               => 'bind#available_zones#0#records#CNAME#1#1',
-               'third CNAME alias'               => 'bind#available_zones#0#records#CNAME#2#0',
-               'third CNAME name'                => 'bind#available_zones#0#records#CNAME#2#1',
-               'second name server'              => 'bind#available_zones#1#soa#ns',
-               'second contact'                  => 'bind#available_zones#1#soa#contact',
-               'second NS'                       => 'bind#available_zones#1#records#NS#@#0',
-               'second for zones'                => 'bind#available_zones#1#generate_reverse#for_zones#0',
-               'third configured zone name'      => 'bind#configured_zones#2#$key',
-               'third available zone name'       => 'bind#available_zones#2#$key',
-               'third file name'                 => 'bind#available_zones#2#file',
-               'third name server'               => 'bind#available_zones#2#soa#ns',
-               'third contact'                   => 'bind#available_zones#2#soa#contact',
-               'TFTP base directory'             => 'tftpd#root_dir',
-               'branch id'                       => 'pxe#branch_id',
-               'disk id'                         => 'partitioning#0#$key',
-               'disk device'                     => 'partitioning#0#device',
-               'first partition id'              => 'partitioning#0#partitions#0#$key',
-               'first partition size'            => 'partitioning#0#partitions#0#size_MiB',
-               'first mount point'               => 'partitioning#0#partitions#0#mountpoint',
-               'first OS image'                  => 'partitioning#0#partitions#0#image',
-               'first partition password'        => 'partitioning#0#partitions#0#luks_pass',
-               'second partition id'             => 'partitioning#0#partitions#1#$key',
-               'second partition size'           => 'partitioning#0#partitions#1#size_MiB',
-               'second mount point'              => 'partitioning#0#partitions#1#mountpoint',
-               'second OS image'                 => 'partitioning#0#partitions#1#image',
-               'second partition password'       => 'partitioning#0#partitions#1#luks_pass',
-               'third partition id'              => 'partitioning#0#partitions#2#$key',
-               'third partition size'            => 'partitioning#0#partitions#2#size_MiB',
-               'third filesystem format'         => 'partitioning#0#partitions#2#format',
-               'third mount point'               => 'partitioning#0#partitions#2#mountpoint',
-               'third OS image'                  => 'partitioning#0#partitions#2#image',
-               'third partition password'        => 'partitioning#0#partitions#2#luks_pass',
-               'FTP server directory'            => 'vsftpd_config#anon_root' }
-  fill_in fieldids[field], with: value
+  # value can be a string with values to interpolate, for now they are
+  # only host names.
+  value.gsub!(/\#\{[^}]*\}/) do |host|
+    get_system_name(host[2..-2])
+  end
+  fill_in FIELD_IDS[field], with: value
 end
 # rubocop:enable Metrics/BlockLength
 
 When(/^I enter the hostname of "([^"]*)" in (.*) field$/) do |host, field|
   system_name = get_system_name(host)
-  fieldids = { 'third CNAME name'   => 'bind#available_zones#0#records#CNAME#2#1',
-               'third name server'  => 'bind#available_zones#2#soa#ns',
-               'fifth A name'       => 'bind#available_zones#2#records#A#0#0',
-               'third NS'           => 'bind#available_zones#2#records#NS#@#0' }
-  fill_in fieldids[field], with: "#{system_name}."
+  fill_in FIELD_IDS[field], with: "#{system_name}."
 end
 
 When(/^I enter the IP address of "([^"]*)" in (.*) field$/) do |host, field|
@@ -481,7 +444,12 @@ When(/^I press "Add Item" in (.*) section$/) do |section|
                  'second for zones'  => 'bind#available_zones#1#generate_reverse#for_zones#add_item',
                  'third A'           => 'bind#available_zones#2#records#A#add_item',
                  'third NS'          => 'bind#available_zones#2#records#NS#@#add_item',
-                 'partitions'        => 'partitioning#0#partitions#add_item' }
+                 'partitions'        => 'partitioning#0#partitions#add_item',
+                 'Yomi partitions'   => 'partitions#devices#0#partitions#add_item',
+                 'filesystems'       => 'filesystems#add_item',
+                 'repositories'      => 'software#repositories#add_item',
+                 'packages'          => 'software#packages#add_item',
+                 'enabled services'  => 'services#enabled#add_item' }
   find(:xpath, "//i[@id='#{sectionids[section]}']").click
 end
 
@@ -504,6 +472,10 @@ When(/^I check (.*) box$/) do |box|
   boxids = { 'enable SLAAC with routing' => 'branch_network#firewall#enable_SLAAC_with_routing',
              'include forwarders'        => 'bind#config#include_forwarders' }
   check boxids[box]
+end
+
+When(/^I check (.*) box field$/) do |box|
+  check FIELD_IDS[box]
 end
 
 Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
