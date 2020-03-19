@@ -2141,16 +2141,17 @@ class Backend:
                     entry_list = object[tbl.getAttribute()]
                     if entry_list is None:
                         continue
-                    for entry in entry_list:
+                    seq_col = tbl.sequenceColumn
+                    new_ids = self.sequences[tbl.name].next_many(len(entry_list)) if seq_col else []
+                    for i, entry in enumerate(entry_list):
                         extObject = {childTables[tname]: id}
-                        seq_col = tbl.sequenceColumn
                         if seq_col:
                             # This table has to insert values in a sequenced
                             # column; since it's a child table and the entry
                             # in the master table is not created yet, there
                             # shouldn't be a problem with uniqueness
                             # constraints
-                            new_id = self.sequences[tbl.name].next()
+                            new_id = new_ids[i]
                             extObject[seq_col] = new_id
                             # Make sure we initialize the object's sequenced
                             # column as well
