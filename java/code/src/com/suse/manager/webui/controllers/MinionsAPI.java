@@ -27,7 +27,6 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
@@ -58,7 +57,7 @@ public class MinionsAPI {
 
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
-    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
+    private final SystemQuery systemQuery;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -67,18 +66,23 @@ public class MinionsAPI {
 
     private static final Logger LOG = Logger.getLogger(MinionsAPI.class);
 
-    private MinionsAPI() { }
+    /**
+     * @param systemQueryIn instance to use.
+     */
+    public MinionsAPI(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
+    }
 
     /**
      * Invoked from Router. Initializes routes.
      */
-    public static void initRoutes() {
-        post("/manager/api/systems/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
-        post("/manager/api/systems/bootstrap-ssh", withOrgAdmin(MinionsAPI::bootstrapSSH));
-        get("/manager/api/systems/keys", withUser(MinionsAPI::listKeys));
-        post("/manager/api/systems/keys/:target/accept", withOrgAdmin(MinionsAPI::accept));
-        post("/manager/api/systems/keys/:target/reject", withOrgAdmin(MinionsAPI::reject));
-        post("/manager/api/systems/keys/:target/delete", withOrgAdmin(MinionsAPI::delete));
+    public void initRoutes() {
+        post("/manager/api/systems/bootstrap", withOrgAdmin(this::bootstrap));
+        post("/manager/api/systems/bootstrap-ssh", withOrgAdmin(this::bootstrapSSH));
+        get("/manager/api/systems/keys", withUser(this::listKeys));
+        post("/manager/api/systems/keys/:target/accept", withOrgAdmin(this::accept));
+        post("/manager/api/systems/keys/:target/reject", withOrgAdmin(this::reject));
+        post("/manager/api/systems/keys/:target/delete", withOrgAdmin(this::delete));
     }
 
     /**
@@ -88,8 +92,8 @@ public class MinionsAPI {
      * @param user the current user
      * @return json result of the API call
      */
-    public static String listKeys(Request request, Response response, User user) {
-        Key.Fingerprints fingerprints = SALT_SERVICE.getFingerprints();
+    public String listKeys(Request request, Response response, User user) {
+        Key.Fingerprints fingerprints = systemQuery.getFingerprints();
 
         Map<String, Object> data = new TreeMap<>();
         data.put("isOrgAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
@@ -126,12 +130,12 @@ public class MinionsAPI {
      * @param user the current user
      * @return json result of the API call
      */
-    public static String accept(Request request, Response response, User user) {
+    public String accept(Request request, Response response, User user) {
         String target = request.params("target");
         MinionPendingRegistrationService.addMinion(
                 user, target, ContactMethodUtil.DEFAULT, Optional.empty());
         try {
-            SALT_SERVICE.acceptKey(target);
+            systemQuery.acceptKey(target);
         }
         catch (Exception e) {
             MinionPendingRegistrationService.removeMinion(target);
@@ -147,7 +151,7 @@ public class MinionsAPI {
      * @param user the current user
      * @return json result of the API call
      */
-    public static String delete(Request request, Response response, User user) {
+    public String delete(Request request, Response response, User user) {
         String target = request.params("target");
 
         // Is org admin checked somewhere else ?
@@ -164,9 +168,9 @@ public class MinionsAPI {
      * @param user the current user
      * @return json result of the API call
      */
-    public static String reject(Request request, Response response, User user) {
+    public String reject(Request request, Response response, User user) {
         String target = request.params("target");
-        SALT_SERVICE.rejectKey(target);
+        systemQuery.rejectKey(target);
         return json(response, true);
     }
 
@@ -177,7 +181,7 @@ public class MinionsAPI {
      * @param user the current user
      * @return json result of the API call
      */
-    public static String bootstrap(Request request, Response response, User user) {
+    public String bootstrap(Request request, Response response, User user) {
         return json(
                 response,
                 RegularMinionBootstrapper.getInstance().bootstrap(
@@ -199,7 +203,7 @@ public class MinionsAPI {
      * @param user     the current user
      * @return json result of the API call
      */
-    public static String bootstrapSSH(Request request, Response response, User user) {
+    public String bootstrapSSH(Request request, Response response, User user) {
         return json(
                 response,
                 SSHMinionBootstrapper.getInstance().bootstrap(
