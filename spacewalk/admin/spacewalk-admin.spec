@@ -56,6 +56,12 @@ install -p man/rhn-satellite.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 chmod 0644 $RPM_BUILD_ROOT%{_mandir}/man8/*.8*
 ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 
+%post
+if [ -x /usr/bin/systemctl ]; then
+    /usr/bin/systemctl daemon-reload || :
+fi
+
+
 %files
 %doc LICENSE
 %dir %{rhnroot}
