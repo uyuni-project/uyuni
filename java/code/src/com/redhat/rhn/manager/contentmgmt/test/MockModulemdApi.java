@@ -143,7 +143,7 @@ public class MockModulemdApi extends ModulemdApi {
         nevras.add(perlNevra);
 
         // 'modularitylabel' rpm tag determines that a package belongs to a module
-        PackageExtraTagsKeys modularityHeader = PackageManagerTest.createExtraTagKey("MODULARITYLABEL");
+        PackageExtraTagsKeys modularityHeader = PackageManagerTest.createExtraTagKey("modularitylabel");
 
         Pattern nevraPattern = Pattern.compile("^(.*)-(\\d+):(.*)-(.*)\\.(.*)$");
         for (String nevra : nevras) {
