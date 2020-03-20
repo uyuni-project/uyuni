@@ -113,7 +113,7 @@ Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
-%if %{?sle_version} > 150200
+%if 0%{?sle_version} >= 150200
 Requires:       postgresql12
 Requires:       postgresql12-contrib
 # we do not support postgresql versions > 12.x yet
