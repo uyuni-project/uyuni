@@ -182,7 +182,7 @@ public interface SystemQuery {
      * @return the event stream
      * @throws SaltException exception occured during connection (if any)
      */
-    EventStream getEventStream() throws SaltException;
+    EventStream getEventStream();
 
     /**
      * Run a remote command on a given minion.
@@ -484,13 +484,6 @@ public interface SystemQuery {
      */
     @Deprecated
     Optional<Map<String, Object>> getGrains(String minionId);
-
-    /**
-     * @deprecated this function is too general and should be replaced by more specific functionality.
-     * @param reactorIn the salt reactor.
-     */
-    @Deprecated
-    void setReactor(SaltReactor reactorIn);
 
     /**
      * @deprecated this function is too general and should be replaced by more specific functionality.

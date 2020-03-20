@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -26,8 +27,8 @@ import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.PGEventStream;
-import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.utils.MailHelper;
 import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
@@ -35,6 +36,7 @@ import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
@@ -44,6 +46,7 @@ import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -74,8 +77,10 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.errors.SaltError;
+import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
@@ -123,14 +128,16 @@ import java.util.stream.Stream;
 /**
  * Singleton class acting as a service layer for accessing the salt API.
  */
-public class SaltService implements SystemQuery {
+public class SaltService implements SystemQuery, SaltApi {
 
     private final Batch defaultBatch;
 
     /**
      * Singleton instance of this class
      */
-    public static final SystemQuery INSTANCE = new SaltService();
+    private static final SaltService INSTANCE_SALT_SERVICE = new SaltService();
+    public static final SystemQuery INSTANCE = INSTANCE_SALT_SERVICE;
+    public static final SaltApi INSTANCE_SALT_API = INSTANCE_SALT_SERVICE;
 
     // Logger
     private static final Logger LOG = Logger.getLogger(SaltService.class);
@@ -161,8 +168,6 @@ public class SaltService implements SystemQuery {
 
     private static final String CLEANUP_MINION_SALT_STATE = "cleanup_minion";
     protected static final String MINION_UNREACHABLE_ERROR = "minion_unreachable";
-
-    private SaltReactor reactor = null;
 
     /**
      * Enum of all the available status for Salt keys.
@@ -197,13 +202,6 @@ public class SaltService implements SystemQuery {
                         .withPresencePingTimeout(ConfigDefaults.get().getSaltPresencePingTimeout())
                         .withPresencePingGatherJobTimeout(ConfigDefaults.get().getSaltPresencePingGatherJobTimeout())
                         .build();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setReactor(SaltReactor reactorIn) {
-        this.reactor = reactorIn;
     }
 
     /**
@@ -543,15 +541,81 @@ public class SaltService implements SystemQuery {
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public EventStream getEventStream() throws SaltException {
+    // Reconnecting time (in seconds) to Salt event bus
+    private static final int DELAY_TIME_SECONDS = 5;
+
+    private EventStream eventStream;
+
+    private synchronized void eventStreamClosed() {
+        eventStream = null;
+    }
+
+    private synchronized EventStream createOrGetEventStream() {
+
+        int retries = 0;
+
+        while (eventStream == null || eventStream.isEventStreamClosed()) {
+            retries++;
+            try {
+                eventStream = createEventStream();
+                eventStream.addEventListener(new EventListener() {
+                    @Override
+                    public void notify(com.suse.salt.netapi.datatypes.Event event) {
+                    }
+
+                    @Override
+                    public void eventStreamClosed(int code, String phrase) {
+                        SaltService.this.eventStreamClosed();
+                    }
+                });
+                if (eventStream.isEventStreamClosed()) {
+                    eventStream = null;
+                }
+
+                if (retries > 1) {
+                    LOG.warn("Successfully connected to the Salt event bus after " +
+                            (retries - 1) + " retries.");
+                }
+                else {
+                    LOG.info("Successfully connected to the Salt event bus");
+                }
+            }
+            catch (SaltException e) {
+                try {
+                    LOG.error("Unable to connect: " + e + ", retrying in " +
+                            DELAY_TIME_SECONDS + " seconds.");
+                    Thread.sleep(1000 * DELAY_TIME_SECONDS);
+                    if (retries == 1) {
+                        MailHelper.withSmtp().sendAdminEmail("Cannot connect to salt event bus",
+                                "salt-api daemon is not responding. Check the status of " +
+                                        "salt-api daemon and (re)-start it if needed\n\n" +
+                                        "This is the only notification you will receive.");
+                    }
+                }
+                catch (JavaMailException javaMailException) {
+                    LOG.error("Error sending email: " + javaMailException.getMessage());
+                }
+                catch (InterruptedException e1) {
+                    LOG.error("Interrupted during sleep: " + e1);
+                }
+            }
+        }
+        return eventStream;
+    }
+
+    private EventStream createEventStream() throws SaltException {
         if (ConfigDefaults.get().isPostgresql()) {
             return new PGEventStream();
         }
         Token token = adaptException(SALT_CLIENT.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
         return SALT_CLIENT.events(token, 0, 0, 0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public EventStream getEventStream() {
+        return createOrGetEventStream();
     }
 
     /**
@@ -613,7 +677,7 @@ public class SaltService implements SystemQuery {
             try {
                 results.putAll(
                         completableAsyncCall(call, target,
-                        reactor.getEventStream(), cancel).orElseGet(Collections::emptyMap));
+                        getEventStream(), cancel).orElseGet(Collections::emptyMap));
             }
             catch (SaltException e) {
                 throw new RuntimeException(e);
@@ -725,7 +789,7 @@ public class SaltService implements SystemQuery {
             String target, CompletableFuture<GenericError> cancel) {
         try {
             return completableAsyncCall(Match.glob(target), new Glob(target),
-                    reactor.getEventStream(), cancel).orElseGet(Collections::emptyMap);
+                    getEventStream(), cancel).orElseGet(Collections::emptyMap);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
