@@ -17,13 +17,6 @@
 #
 
 
-%define release_name Smile
-%if 0%{?suse_version}
-%global postgresql postgresql >= 10
-%else
-%global postgresql /usr/bin/psql
-%endif
-
 Name:           spacewalk
 Version:        4.1.2
 Release:        1%{?dist}
@@ -43,8 +36,10 @@ Summary:        Spacewalk Systems Management Application with postgresql databas
 Group:          Applications/Internet
 Obsoletes:      spacewalk < 0.7.0
 
-BuildRequires:  python >= 3
-Requires:       python >= 3
+BuildRequires:  python3
+BuildRequires:  spacewalk-base-minimal-config
+BuildRequires:  spacewalk-backend
+Requires:       python3
 Requires:       spacewalk-setup
 
 # Java
@@ -114,21 +109,29 @@ Requires:       spacewalk-common = %{version}-%{release}
 Conflicts:      spacewalk-oracle
 Provides:       spacewalk-db-virtual = %{version}-%{release}
 
-Requires:       %{postgresql}
 Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
+%if %{?sle_version} > 150200
+Requires:       postgresql12
+Requires:       postgresql12-contrib
+# we do not support postgresql versions > 12.x yet
+Conflicts:      postgresql-implementation >= 13
+Conflicts:      postgresql-contrib-implementation >= 13
+%else
+# mainly for openSUSE Leap 15.1
 Requires:       postgresql10
 Requires:       postgresql10-contrib
-Conflicts:      postgresql12
-Conflicts:      postgresql12-contrib
+Conflicts:      postgresql-implementation >= 12
+Conflicts:      postgresql-contrib-implementation >= 12
+%endif
 %else
-Requires:       postgresql >= 10
-Requires:       postgresql-contrib >= 10
-# we do not support postgresql versions > 10.x yet
-Conflicts:      postgresql >= 11
-Conflicts:      postgresql-contrib >= 11
+Requires:       postgresql >= 12
+Requires:       postgresql-contrib >= 12
+# we do not support postgresql versions > 12.x yet
+Conflicts:      postgresql >= 13
+Conflicts:      postgresql-contrib >= 13
 %endif
 
 %description postgresql
@@ -145,18 +148,22 @@ Version for PostgreSQL database backend.
 %install
 RDBMS="postgresql"
 install -d $RPM_BUILD_ROOT/%{_sysconfdir}
-SW_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
-echo "Spacewalk release $SW_REL (%{release_name})" > $RPM_BUILD_ROOT/%{_sysconfdir}/spacewalk-release
+SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
+UYUNI_REL=$(grep -F 'web.version.uyuni' %{_datadir}/rhn/config-defaults/rhn_web.conf | sed 's/^.*= *\([[:digit:]\.]\+\) *$/\1/')
+echo "Uyuni release $UYUNI_REL" > $RPM_BUILD_ROOT/%{_sysconfdir}/uyuni-release
+if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
+  echo "SUSE Manager release $SUMA_REL ($UYUNI_REL)" > $RPM_BUILD_ROOT/%{_sysconfdir}/susemanager-release
+fi
 install -d $RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d
 for i in ${RDBMS} ; do
-        cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
+    cat <<EOF >$RPM_BUILD_ROOT/%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
 # database backend to be used by spacewalk
 db-backend = $i
 EOF
 done
 
 %files common
-%{_sysconfdir}/spacewalk-release
+%{_sysconfdir}/*-release
 %if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup

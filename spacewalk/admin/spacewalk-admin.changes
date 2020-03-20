@@ -1,3 +1,5 @@
+- add DB check service and prevent service start with wrong DB version
+
 -------------------------------------------------------------------
 Mon Feb 17 12:47:29 CET 2020 - jgonzalez@suse.com
 
