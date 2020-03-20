@@ -16,7 +16,7 @@ const Functions = require('utils/functions');
 const Utils = Functions.Utils;
 const {ModalButton} = require("components/dialog/ModalButton");
 const {ModalLink} = require("components/dialog/ModalLink");
-const Button = require('components/buttons').Button;
+const {Button, AsyncButton} = require('components/buttons');
 const SCCDialog = require('./products-scc-dialog').SCCDialog;
 const PopUp = require("components/popup").PopUp;
 const ProgressBar = require("components/progressbar").ProgressBar;
@@ -188,6 +188,30 @@ class ProductsPageWrapper extends React.Component {
     .catch(currentObject.handleResponseError);
   };
 
+  resyncProduct = (id, name) => {
+    const currentObject = this;
+    var scheduledItemsNew = currentObject.state.scheduledItems.concat([id]);
+    var scheduleResyncItemsNew = currentObject.state.scheduleResyncItems.concat([id]);
+    currentObject.setState({ scheduleResyncItems: scheduleResyncItemsNew});
+    Network.post('/rhn/manager/admin/setup/products', JSON.stringify([id]), 'application/json').promise
+    .then(data => {
+      if(!data[id]) {
+        currentObject.setState({
+          errors: MessagesUtils.success('The product \'' + name + '\' sync has been scheduled successfully'),
+          scheduleResyncItems: scheduleResyncItemsNew.filter(i => i != id),
+          scheduledItems: currentObject.state.scheduledItems.concat([id])
+        });
+      }
+      else {
+        currentObject.setState({
+          errors: MessagesUtils.warning('The product \'' + name + '\' sync was not scheduled correctly. Please check server log files.'),
+          scheduleResyncItems: scheduleResyncItemsNew.filter(i => i != id)
+        });
+      }
+    })
+    .catch(currentObject.handleResponseError);
+  };
+
   handleResponseError = (jqXHR, arg = "") => {
     const msg = Network.responseErrorMessage(jqXHR,
       (status, msg) => msgMap[msg] ? t(msgMap[msg], arg) : null);
@@ -275,6 +299,7 @@ class ProductsPageWrapper extends React.Component {
                   handleSelectedItems={this.handleSelectedItems}
                   handleUnselectedItems={this.handleUnselectedItems}
                   selectedItems={this.state.selectedItems}
+                  resyncProduct={this.resyncProduct}
                   scheduledItems={this.state.scheduledItems}
                   scheduleResyncItems={this.state.scheduleResyncItems}
               />
@@ -457,6 +482,7 @@ class Products extends React.Component {
                   listStyleClass: 'product-list',
                   showChannelsfor: this.showChannelsfor,
                   cols: _COLS,
+                  resyncProduct: this.props.resyncProduct,
                   scheduledItems: this.props.scheduledItems,
                   scheduleResyncItems: this.props.scheduleResyncItems,
                   handleVisibleSublist: this.handleVisibleSublist,
@@ -633,6 +659,18 @@ class CheckListItem extends React.Component {
     }
   };
 
+  scheduleResyncInProgress = () => {
+    return this.props.bypassProps.scheduleResyncItems.includes(this.props.item.identifier);
+  };
+
+  productResyncScheduled = () => {
+    return this.props.bypassProps.scheduledItems.includes(this.props.item.identifier);
+  };
+
+  resyncProduct = () => {
+    this.props.bypassProps.resyncProduct(this.props.item.identifier, this.props.item.label);
+  };
+
   getNestedData = (item) => {
     if (item && this.props.bypassProps.nestedKey && item[this.props.bypassProps.nestedKey] != null) {
      return item[this.props.bypassProps.nestedKey];
@@ -713,13 +751,7 @@ class CheckListItem extends React.Component {
       let currentProductChannels = currentItem.channels.filter(c => c.status != _CHANNEL_STATUS.notSynced);
 
       // if the product sync has just been scheduled
-      if (this.props.bypassProps.scheduledItems.includes(currentItem.identifier)) {
-        channelSyncContent =
-          <span className="text-info" title={t('Product Channels sync scheduled')}>
-            <i className="fa fa-clock-o fa-1-5x"></i>
-          </span>;
-      }
-      else if (currentProductChannels.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
+      if (currentProductChannels.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
         channelSyncContent =
           <span className="text-danger" title={t('Product channels sync failed')}>
             <i className="fa fa-exclamation-circle fa-1-5x"></i>
@@ -750,15 +782,7 @@ class CheckListItem extends React.Component {
           prod.channels.filter(channel => channel.status != _CHANNEL_STATUS.notSynced)
             .forEach(chan => { childProductChannels.push(chan) })
         });
-
-      // if the product sync has just been scheduled
-      if (this.props.bypassProps.scheduledItems.includes(currentItem.identifier)) {
-        childProductChannelSyncContent =
-          <span className="text-info" title={t('Child products channels sync scheduled')}>
-           (<i className="fa fa-clock-o"></i>)
-          </span>;
-      }
-      else if (childProductChannels.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
+      if (childProductChannels.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
         childProductChannelSyncContent =
           <span className="text-danger" title={t('Child products channels sync failed')}>
             (<i className="fa fa-exclamation-circle"></i>)
@@ -776,6 +800,45 @@ class CheckListItem extends React.Component {
             (<i className="fa fa-check-circle"></i>)
           </span>;
       }
+    }
+    /*****/
+
+    /** generate product resync button **/
+    let resyncActionContent;
+    if(this.isInstalled()) {
+      const isResyncActionInProgress = this.scheduleResyncInProgress();
+      const isResyncProductScheduled = this.productResyncScheduled();
+      const isReadonly = this.props.bypassProps.readOnlyMode
+
+      let conditionalResyncStyleClass;
+      let conditionalResyncTitle;
+
+      if (isReadonly) {
+        conditionalResyncStyleClass = 'text-muted';
+        conditionalResyncTitle = t('SCC product catalog refresh in progress');
+      }
+      else if (isResyncActionInProgress) {
+        conditionalResyncStyleClass = 'fa-spin text-muted';
+        conditionalResyncTitle = t('Scheduling channels product resync');
+      }
+      else if (isResyncProductScheduled) {
+        conditionalResyncStyleClass = 'text-muted';
+        conditionalResyncTitle = t('Channels product resync scheduled');
+      }
+      else {
+        conditionalResyncStyleClass = 'text-info';
+        conditionalResyncTitle = t('Schedule channels product resync');
+      }
+
+      resyncActionContent =  <AsyncButton
+            className='btn btn-default btn-sm'
+            id="resyncProduct"
+            defaultType="btn-default"
+            disabled={isReadonly || isResyncActionInProgress || isResyncProductScheduled ? 'disabled' : ''}
+            action={!isReadonly ? this.resyncProduct : null}
+            icon={isResyncProductScheduled ? 'fa-clock-o ' : 'fa-refresh ' + conditionalResyncStyleClass}
+            title={conditionalResyncTitle}
+        />;
     }
     /*****/
 
@@ -809,7 +872,7 @@ class CheckListItem extends React.Component {
             />
           </CustomDiv>
           <CustomDiv className='col text-right' width={this.props.bypassProps.cols.mix.width} um={this.props.bypassProps.cols.mix.um}>
-            {recommendedTogglerContent}
+            {recommendedTogglerContent}{resyncActionContent}
            </CustomDiv>
         </div>
         { this.isSublistVisible() ?
