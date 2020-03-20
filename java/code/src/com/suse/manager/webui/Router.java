@@ -89,6 +89,7 @@ public class Router implements SparkApplication {
         SystemsController systemsController = new SystemsController(systemQuery);
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
         NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
+        MinionsAPI minionsAPI = new MinionsAPI(systemQuery);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
@@ -121,7 +122,7 @@ public class Router implements SparkApplication {
         MinionController.initRoutes(jade);
 
         // Minions API
-        MinionsAPI.initRoutes();
+        minionsAPI.initRoutes();
 
         // Systems API
         SystemsController.initRoutes(systemsController);
