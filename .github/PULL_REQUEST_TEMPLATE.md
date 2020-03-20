@@ -14,7 +14,7 @@ After:
 
 ## Documentation
 - No documentation needed: **add explanation. This can't be used if there is a GUI diff**
-- [doc-susemanager](https://github.com/SUSE/doc-susemanager) PR or issue was created (GitHub automatic link expected below)
+- [Documentation PR](https://github.com/uyuni-project/uyuni-docs/pulls) or [Documentation issue](https://github.com/SUSE/spacewalk/projects/31) was created (GitHub automatic link expected below)
 
 - [ ] **DONE**
 
@@ -47,11 +47,11 @@ If you need to re-run a test, please mark the related checkbox, it will be unche
 
 - [ ] Re-run test "changelog_test"
 - [ ] Re-run test "backend_unittests_pgsql"
-- [ ] Re-run test "java_lint_checkstyle"		 
-- [ ] Re-run test "java_pgsql_tests"		 
+- [ ] Re-run test "java_lint_checkstyle"
+- [ ] Re-run test "java_pgsql_tests"
 - [ ] Re-run test "ruby_rubocop"
 - [ ] Re-run test "schema_migration_test_oracle"
-- [ ] Re-run test "schema_migration_test_pgsql"		 
+- [ ] Re-run test "schema_migration_test_pgsql"
 - [ ] Re-run test "susemanager_unittests"
-- [ ] Re-run test "javascript_lint"		 
+- [ ] Re-run test "javascript_lint"
 - [ ] Re-run test "spacecmd_unittests"
