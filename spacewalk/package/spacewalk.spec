@@ -17,13 +17,6 @@
 #
 
 
-%define release_name Smile
-%if 0%{?suse_version}
-%global postgresql postgresql >= 12
-%else
-%global postgresql /usr/bin/psql
-%endif
-
 Name:           spacewalk
 Version:        4.1.2
 Release:        1%{?dist}
@@ -116,16 +109,23 @@ Requires:       spacewalk-common = %{version}-%{release}
 Conflicts:      spacewalk-oracle
 Provides:       spacewalk-db-virtual = %{version}-%{release}
 
-Requires:       %{postgresql}
 Requires:       spacewalk-backend-sql-postgresql
 Requires:       spacewalk-java-postgresql
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
+%if %{?sle_version} > 150200
 Requires:       postgresql12
 Requires:       postgresql12-contrib
 # we do not support postgresql versions > 12.x yet
 Conflicts:      postgresql-implementation >= 13
 Conflicts:      postgresql-contrib-implementation >= 13
+%else
+# mainly for openSUSE Leap 15.1
+Requires:       postgresql10
+Requires:       postgresql10-contrib
+Conflicts:      postgresql-implementation >= 12
+Conflicts:      postgresql-contrib-implementation >= 12
+%endif
 %else
 Requires:       postgresql >= 12
 Requires:       postgresql-contrib >= 12
