@@ -27,6 +27,7 @@ Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Provides:       susemanager-branding = %{version}
+BuildRequires:  SUSE-Manager-Server-release
 Conflicts:      otherproviders(susemanager-branding)
 Conflicts:      oracle-server
 
@@ -39,6 +40,11 @@ SUSE Manager oss flavors.
 %setup -q
 
 %build
+cp /usr/share/licenses/product/SUSE-Manager-Server/license.txt license.txt
+echo "<p>" > eula.html
+cat license.txt | sed 's/^$/<\/p><p>/' >> eula.html
+echo "</p>" >> eula.html
+
 
 %install
 mkdir -p $RPM_BUILD_ROOT/srv/www/htdocs/help/
