@@ -227,15 +227,10 @@ public class RegisterMinionEventMessageAction implements MessageAction {
      * @param saltbootInitrd
      */
     private void applySaltBootStates(String minionId, MinionServer registeredMinion, boolean saltbootInitrd) {
-        // Saltboot treatment
-        // HACK: try to guess if the minion is a retail minion based on its groups.
-        // This way we don't need to call grains for each register minion event.
-        if (isRetailMinion(registeredMinion)) {
-            if (saltbootInitrd) {
-                // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
-                LOG.info("Applying saltboot for minion " + minionId);
-                applySaltboot(registeredMinion);
-            }
+        if (saltbootInitrd) {
+            // if we have the "saltboot_initrd" grain we want to re-deploy an image via saltboot,
+            LOG.info("Applying saltboot for minion " + minionId);
+            applySaltboot(registeredMinion);
         }
     }
 
@@ -485,13 +480,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         //apply management key properties that can be set before saving the server
         return grains.getMap("susemanager")
                 .flatMap(suma -> suma.getOptionalAsString("management_key"));
-    }
-
-
-    private boolean isRetailMinion(MinionServer registeredMinion) {
-        // for now, a retail minion is detected when it belongs to a compulsory "TERMINALS" group
-        return registeredMinion.getManagedGroups().stream()
-                .anyMatch(group -> group.getName().equals(TERMINALS_GROUP_NAME));
     }
 
     /**
