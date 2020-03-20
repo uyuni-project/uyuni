@@ -7,13 +7,14 @@ fi
 
 check_database() {
     RETRIES=10;
+    source /etc/os-release
     while [ $RETRIES -gt 0 ]; do
 
         IFS="." read -ra VARR <<< $(echo "show server_version;" | spacewalk-sql --select-mode - | sed -n 3p | xargs)
 
         if [ $? -eq 0 ]; then
-            if [ "${VARR[0]}" != "12" ]; then
-                echo "Database version '${VARR[0]}' is not supported for SUSE Manager. Perform database migration."
+            if [ $VERSION_ID == "15.2" -a "${VARR[0]}" != "12" ]; then
+                echo "Database version '${VARR[0]}' is not supported for SUSE Manager/Uyuni on $PRETTY_NAME. Perform database migration."
                 exit 1
             fi
             exit 0 # db is running
