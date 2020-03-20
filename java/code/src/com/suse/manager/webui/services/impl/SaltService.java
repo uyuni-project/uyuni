@@ -34,6 +34,7 @@ import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
@@ -1026,9 +1027,25 @@ public class SaltService implements SystemQuery {
     /**
      * {@inheritDoc}
      */
-    public Optional<Map<String, ApplyResult>> applyState(
+    private Optional<Map<String, ApplyResult>> applyState(
             String minionId, String state) {
         return callSync(State.apply(Arrays.asList(state), Optional.empty()), minionId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Optional<RedhatProductInfo> redhatProductInfo(String minionId) {
+        return callSync(State.apply(Arrays.asList("packages.redhatproductinfo"), Optional.empty()), minionId).map(result -> {
+            Optional<String> centosReleaseContent = Optional.ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE)
+                    .getChanges(CmdResult.class).getStdout());
+            Optional<String> rhelReleaseContent = Optional.ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE)
+                    .getChanges(CmdResult.class).getStdout());
+            Optional<String> whatProvidesRes = Optional.ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
+                    .getChanges(CmdResult.class).getStdout());
+
+            return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent, whatProvidesRes);
+        });
     }
 
     /**

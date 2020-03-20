@@ -17,6 +17,7 @@ package com.suse.manager.reactor.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonMap;
 
 import com.google.gson.reflect.TypeToken;
@@ -69,6 +70,8 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.iface.RedhatProductInfo;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
@@ -836,9 +839,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
 
-                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
-                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
-                            readFile("dummy_packages_redhatprodinfo_rhel.json")))));
+                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    will(returnValue(Optional.of(new RedhatProductInfo(
+                            Optional.empty(),
+                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                            Optional.empty()
+                    ))));
 
                 }},
                 null,
@@ -880,9 +886,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
 
-                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
-                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
-                            readFile("dummy_packages_redhatprodinfo_rhel.json")))));
+                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    will(returnValue(Optional.of(new RedhatProductInfo(
+                            Optional.empty(),
+                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                            Optional.empty()
+                    ))));
 
                 }},
                 (contactMethod) -> {
@@ -935,9 +944,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "PROVIDENAME=config(redhat-release-server),redhat-release,redhat-release-server,redhat-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7.2-9.el7,7Server,\n")))));
 
-                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
-                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
-                            readFile("dummy_packages_redhatprodinfo_rhel.json")))));
+                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    will(returnValue(Optional.of(new RedhatProductInfo(
+                            Optional.empty(),
+                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                            Optional.empty()
+                    ))));
 
                 }},
                 (contactMethod) -> {
@@ -993,9 +1005,16 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7.2-9.el7.2.1,7Server,\n")))));
 
-                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
-                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
-                            readFile("dummy_packages_redhatprodinfo_res.json")))));
+                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    will(returnValue(Optional.of(new RedhatProductInfo(
+                            Optional.empty(),
+                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)\n" +
+                                    "# This is a \"SLES Expanded Support platform Server release 7.2\"\n" +
+                                    "# The above \"Red Hat Enterprise Linux \" string is only used to \n" +
+                                    "# keep software compatibility."),
+
+                            Optional.of("sles_es-release-server-7.2-9.el7.2.1.x86_64")
+                    ))));
                 }},
                 null,
                 (optMinion, machineId, key) -> {
@@ -1049,9 +1068,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             "PROVIDENAME=centos-release,config(sles_es-release-server),redhat-release,redhat-release-server,sles_es-release-server,sles_es-release-server(x86-64),system-release,system-release(releasever),\n" +
                             "PROVIDEVERSION=,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7.3-7.el7,7Server,\n")))));
 
-                    allowing(saltServiceMock).applyState(MINION_ID, "packages.redhatproductinfo");
-                    will(returnValue(Optional.of(new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
-                            readFile("dummy_packages_redhatprodinfo_rhel.json")))));
+                    allowing(saltServiceMock).redhatProductInfo(MINION_ID);
+                    will(returnValue(Optional.of(new RedhatProductInfo(
+                            Optional.empty(),
+                            Optional.of("Red Hat Enterprise Linux Server release 7.2 (Maipo)"),
+                            Optional.empty()
+                    ))));
 
                 }},
                 null,
