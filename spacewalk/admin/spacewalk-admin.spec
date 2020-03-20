@@ -86,6 +86,12 @@ ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-events-config.py
 %endif
 
+%post
+if [ -x /usr/bin/systemctl ]; then
+    /usr/bin/systemctl daemon-reload || :
+fi
+
+
 %files
 %doc LICENSE
 %dir %{rhnroot}
