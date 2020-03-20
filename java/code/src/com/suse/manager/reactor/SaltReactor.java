@@ -19,7 +19,6 @@ import static java.util.stream.Stream.of;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.EventMessage;
-import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -39,6 +38,8 @@ import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAct
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
@@ -50,25 +51,17 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
-import com.suse.manager.utils.MailHelper;
 import com.suse.manager.virtualization.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.MinionStartEvent;
 import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
-import com.suse.salt.netapi.event.BatchStartedEvent;
-import com.suse.salt.netapi.event.BeaconEvent;
-import com.suse.salt.netapi.event.EngineEvent;
-import com.suse.salt.netapi.event.EventStream;
-import com.suse.salt.netapi.event.JobReturnEvent;
-import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.event.*;
 
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -81,24 +74,31 @@ public class SaltReactor {
     private static final Logger LOG = Logger.getLogger(SaltReactor.class);
 
     // Reference to the SaltService instance
-    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
+    private final SaltApi saltApi;
+    private final SystemQuery systemQuery;
 
     // The event stream object
     private EventStream eventStream;
 
+    private EventListener listener;
+
     // Indicate that the reactor has been stopped
     private volatile boolean isStopped = false;
 
-
-    // Reconnecting time (in seconds) to Salt event bus
-    private static final int DELAY_TIME_SECONDS = 5;
+    /**
+     * Processing salt events
+     * @param saltApiIn instance to talk to salt
+     * @param systemQueryIn instance to get system information.
+     */
+    public SaltReactor(SaltApi saltApiIn, SystemQuery systemQueryIn) {
+        this.saltApi = saltApiIn;
+        this.systemQuery = systemQueryIn;
+    }
 
     /**
      * Start the salt reactor.
      */
     public void start() {
-
-        SystemQuery systemQuery = SaltService.INSTANCE;
         VirtManager virtManager = new VirtManager(systemQuery);
 
         // Configure message queue to handle minion registrations
@@ -130,8 +130,6 @@ public class SaltReactor {
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
         connectToEventStream();
-
-        SaltService.INSTANCE.setReactor(this);
     }
 
     /**
@@ -140,12 +138,7 @@ public class SaltReactor {
     public void stop() {
         isStopped = true;
         if (eventStream != null) {
-            try {
-                eventStream.close();
-            }
-            catch (IOException e) {
-                LOG.error("Error stopping the salt reactor", e);
-            }
+            eventStream.removeEventListener(listener);
         }
     }
 
@@ -164,50 +157,14 @@ public class SaltReactor {
      * timeout.
      */
     public void connectToEventStream() {
-        boolean connected = false;
-
-        int retries = 0;
-
-        while (!connected) {
-            retries++;
-            try {
-                eventStream = SALT_SERVICE.getEventStream();
-                if (ConfigDefaults.get().isPostgresql()) {
-                    eventStream.addEventListener(new PGEventListener(this::eventStreamClosed, this::eventToMessages));
-                }
-                else {
-                    eventStream.addEventListener(new MessageQueueEventListener(this::eventStreamClosed,
-                            this::eventToMessages));
-                }
-                connected = true;
-                if (retries > 1) {
-                    LOG.warn("Successfully connected to the Salt event bus after " +
-                            (retries - 1) + " retries.");
-                }
-                else {
-                    LOG.info("Successfully connected to the Salt event bus");
-                }
-            }
-            catch (SaltException e) {
-                try {
-                    LOG.error("Unable to connect: " + e + ", retrying in " +
-                              DELAY_TIME_SECONDS + " seconds.");
-                    Thread.sleep(1000 * DELAY_TIME_SECONDS);
-                    if (retries == 1) {
-                        MailHelper.withSmtp().sendAdminEmail("Cannot connect to salt event bus",
-                                "salt-api daemon is not responding. Check the status of " +
-                                        "salt-api daemon and (re)-start it if needed\n\n" +
-                                        "This is the only notification you will receive.");
-                    }
-                }
-                catch (JavaMailException javaMailException) {
-                    LOG.error("Error sending email: " + javaMailException.getMessage());
-                }
-                catch (InterruptedException e1) {
-                    LOG.error("Interrupted during sleep: " + e1);
-                }
-            }
+        eventStream = saltApi.getEventStream();
+        if (ConfigDefaults.get().isPostgresql()) {
+            listener = new PGEventListener(this::eventStreamClosed, this::eventToMessages);
         }
+        else {
+            listener = new MessageQueueEventListener(this::eventStreamClosed, this::eventToMessages);
+        }
+        eventStream.addEventListener(listener);
     }
 
     private Stream<EventMessage> eventToMessages(Event event) {
@@ -341,10 +298,4 @@ public class SaltReactor {
         return empty();
     }
 
-    /**
-     * @return the Salt event stream
-     */
-    public EventStream getEventStream() {
-        return eventStream;
-    }
 }
