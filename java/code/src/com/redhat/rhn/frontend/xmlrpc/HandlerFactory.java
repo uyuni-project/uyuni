@@ -49,6 +49,7 @@ import com.redhat.rhn.frontend.xmlrpc.packages.provider.PackagesProviderHandler;
 import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
 import com.redhat.rhn.frontend.xmlrpc.satellite.SatelliteHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
@@ -139,6 +140,7 @@ public class HandlerFactory {
         factory.addHandler("packages.search", new PackagesSearchHandler());
         factory.addHandler("preferences.locale", new PreferencesLocaleHandler());
         factory.addHandler("proxy", new ProxyHandler());
+        factory.addHandler("recurringaction", new RecurringActionHandler());
         factory.addHandler("satellite", new SatelliteHandler());
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
