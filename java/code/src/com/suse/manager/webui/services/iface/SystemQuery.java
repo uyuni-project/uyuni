@@ -480,13 +480,10 @@ public interface SystemQuery {
     SaltSSHService getSaltSSHService();
 
     /**
-     * Apply a state synchronously.
-     * @deprecated this function is too general and should be replaced by more specific functionality.
-     * @param minionId the minion id
-     * @param state the state to apply
-     * @return the result of applying the state
+     * Get redhat product information
+     * @param minionId id of the target minion
+     * @return redhat product information
      */
-    @Deprecated
-    Optional<Map<String, State.ApplyResult>> applyState(String minionId, String state);
+    Optional<RedhatProductInfo> redhatProductInfo(String minionId);
 
 }

@@ -51,6 +51,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -340,20 +341,11 @@ public class RegistrationUtils {
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                 "centos".equalsIgnoreCase(grains.getValueAsString(OS))) {
-            Optional<Map<String, State.ApplyResult>> applyResultMap = systemQuery
-                    .applyState(server.getMinionId(), "packages.redhatproductinfo");
-            Optional<String> centosReleaseContent = applyResultMap.map(
-                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
-                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
-            Optional<String> rhelReleaseContent = applyResultMap.map(
-                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
-                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
-            Optional<String> whatProvidesRes = applyResultMap.map(map -> map
-                    .get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
-                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
+            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
-            Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
-                    server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
+            Optional<RhelUtils.RhelProduct> rhelProduct =
+                    redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
+                            server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());
