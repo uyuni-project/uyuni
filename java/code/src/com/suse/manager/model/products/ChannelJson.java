@@ -61,7 +61,9 @@ public class ChannelJson {
     /**
      * @return the id of the channel
      */
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
     /**
      * @return the label of the channel

@@ -320,8 +320,8 @@ public class ProductsController {
                                                     new ChannelJson(
                                                             s.getStatus().equals(MgrSyncStatus.INSTALLED) &&
                                                                     ChannelFactory.lookupByLabel(c.getLabel()) != null ?
-                                                                    ChannelFactory.lookupByLabel(c.getLabel()).getId()
-                                                                    : -1L,
+                                                                    ChannelFactory.lookupByLabel(c.getLabel()).getId() :
+                                                                    -1L,
                                                             c.getName(),
                                                             c.getLabel(),
                                                             c.getSummary(),
@@ -370,8 +370,8 @@ public class ProductsController {
                                 new ChannelJson(
                                         syncProduct.getStatus().equals(MgrSyncStatus.INSTALLED) &&
                                                 ChannelFactory.lookupByLabel(c.getLabel()) != null ?
-                                                ChannelFactory.lookupByLabel(c.getLabel()).getId()
-                                                : -1L,
+                                                ChannelFactory.lookupByLabel(c.getLabel()).getId() :
+                                                -1L,
                                         c.getName(),
                                         c.getLabel(),
                                         c.getSummary(),
