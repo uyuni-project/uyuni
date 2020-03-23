@@ -1977,7 +1977,7 @@ public class SaltServerActionService {
         }
 
         try {
-            List<String> results = SaltService.INSTANCE
+            List<String> results = systemQuery
                     .callAsync(call, new MinionList(minionIds),
                             Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain())).get().getMinions();
 
