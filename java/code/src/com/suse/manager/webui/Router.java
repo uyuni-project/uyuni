@@ -91,6 +91,7 @@ public class Router implements SparkApplication {
         NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
         MinionsAPI minionsAPI = new MinionsAPI(systemQuery);
         StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
+        FormulaController formulaController = new FormulaController(systemQuery);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
@@ -147,7 +148,7 @@ public class Router implements SparkApplication {
         FormulaCatalogController.initRoutes(jade);
 
         // Formulas
-        FormulaController.initRoutes(jade);
+        formulaController.initRoutes(jade);
 
         // Visualization
         VisualizationController.initRoutes(jade);
