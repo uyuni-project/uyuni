@@ -224,7 +224,7 @@ class NotificationMessages extends React.Component {
   }
 
   buildSummary = (row) => {
-    const popupLink = <a href="#" onClick={() => this.showDescriptionPopup(row)}>{t("Details")}</a>;
+    const popupLink = <a href="#" onClick={() => this.showDescriptionPopup(row)}>{"[" + t("show details") + "]"}</a>;
 
     return (
       <span>
