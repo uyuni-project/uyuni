@@ -1,3 +1,4 @@
+- Fix virt.deleted state dependency
 - remove key grains only when file and grain exists (bsc#1167237)
 - cleanup key grains after usage
 - Use saltutil states if available on the minion (bsc#1167556)
