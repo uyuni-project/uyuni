@@ -31,7 +31,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.formula.FormulaUtil;
 
 
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
@@ -84,36 +84,43 @@ public class FormulaController {
             .serializeNulls()
             .create();
 
-    private FormulaController() { }
+    private final SystemQuery systemQuery;
+
+    /**
+     * @param systemQueryIn instance to use.
+     */
+    public FormulaController(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
+    }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      *
      * @param jade the Jade engine to use to render the pages
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
+    public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/groups/details/formulas",
-                withCsrfToken(withUser(FormulaController::serverGroupFormulas)),
+                withCsrfToken(withUser(this::serverGroupFormulas)),
                 jade);
         get("/manager/systems/details/formulas",
-                withCsrfToken(withUser(FormulaController::minionFormulas)),
+                withCsrfToken(withUser(this::minionFormulas)),
                 jade);
         get("/manager/groups/details/formula/:formula_id",
-                withCsrfToken(withUser(FormulaController::serverGroupFormula)),
+                withCsrfToken(withUser(this::serverGroupFormula)),
                 jade);
         get("/manager/systems/details/formula/:formula_id",
-                withCsrfToken(FormulaController::minionFormula),
+                withCsrfToken(this::minionFormula),
                 jade);
 
         // Formula API
         get("/manager/api/formulas/list/:targetType/:id",
-                withUser(FormulaController::listSelectedFormulas));
+                withUser(this::listSelectedFormulas));
         get("/manager/api/formulas/form/:targetType/:id/:formula_id",
-                withUser(FormulaController::formulaData));
+                withUser(this::formulaData));
         post("/manager/api/formulas/select",
-                withUser(FormulaController::saveSelectedFormulas));
+                withUser(this::saveSelectedFormulas));
         post("/manager/api/formulas/save",
-                withUser(FormulaController::saveFormula));
+                withUser(this::saveFormula));
     }
 
     /**
@@ -124,7 +131,7 @@ public class FormulaController {
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView serverGroupFormula(Request request, Response response,
+    public ModelAndView serverGroupFormula(Request request, Response response,
             User user) {
         String serverGroupId = request.queryParams("sgid");
         Map<String, Object> data = new HashMap<>();
@@ -143,7 +150,7 @@ public class FormulaController {
      * @param user the current user
      * @return the JSON data
      */
-    public static String formulaData(Request request, Response response, User user) {
+    public String formulaData(Request request, Response response, User user) {
         Long id = Long.valueOf(request.params("id"));
         StateTargetType type = StateTargetType.valueOf(request.params("targetType"));
         int formulaId = Integer.parseInt(request.params("formula_id"));
@@ -219,7 +226,7 @@ public class FormulaController {
      * @param user the current user
      * @return null if successful, else list of error messages
      */
-    public static String saveFormula(Request request, Response response, User user) {
+    public String saveFormula(Request request, Response response, User user) {
         // Get data from request
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
         Long id = Long.valueOf((String) map.get("id"));
@@ -240,7 +247,7 @@ public class FormulaController {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulaData(formData, MinionServerFactory.getMinionId(id), formulaName);
-                    SaltService.INSTANCE.refreshPillar(new MinionList(minion.get().getMinionId()));
+                    systemQuery.refreshPillar(new MinionList(minion.get().getMinionId()));
                     break;
                 case GROUP:
                     ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
@@ -254,7 +261,7 @@ public class FormulaController {
                     List<String> minionIds = group.getServers().stream()
                             .flatMap(s -> Opt.stream(s.asMinionServer()))
                             .map(MinionServer::getMinionId).collect(Collectors.toList());
-                    SaltService.INSTANCE.refreshPillar(new MinionList(minionIds));
+                    systemQuery.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
                     return errorResponse(response, Arrays.asList("error_invalid_target")); //Invalid target type!
@@ -280,7 +287,7 @@ public class FormulaController {
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView serverGroupFormulas(Request request, Response response,
+    public ModelAndView serverGroupFormulas(Request request, Response response,
             User user) {
         String serverGroupId = request.queryParams("sgid");
         Map<String, Object> data = new HashMap<>();
@@ -299,7 +306,7 @@ public class FormulaController {
      * @param user the current user
      * @return the JSON data
      */
-    public static String listSelectedFormulas(Request request, Response response,
+    public String listSelectedFormulas(Request request, Response response,
             User user) {
         response.type("application/json");
         Long id = Long.valueOf(request.params("id"));
@@ -341,7 +348,7 @@ public class FormulaController {
      * @param user the current user
      * @return null if successful, else list of error messages
      */
-    public static String saveSelectedFormulas(Request request, Response response,
+    public String saveSelectedFormulas(Request request, Response response,
             User user) {
         // Get data from request
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
@@ -391,7 +398,7 @@ public class FormulaController {
      * @param response the response object
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView minionFormula(Request request, Response response) {
+    public ModelAndView minionFormula(Request request, Response response) {
         Map<String, Object> data = new HashMap<>();
         data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
         data.put("formula_id", request.params("formula_id"));
@@ -406,7 +413,7 @@ public class FormulaController {
     * @param user the current user
     * @return the ModelAndView object to render the page
     */
-   public static ModelAndView minionFormulas(Request request, Response response,
+   public ModelAndView minionFormulas(Request request, Response response,
            User user) {
        Map<String, Object> data = new HashMap<>();
        data.put("server", ServerFactory.lookupById(Long.valueOf(request.queryParams("sid"))));
@@ -414,13 +421,13 @@ public class FormulaController {
        return new ModelAndView(data, "templates/minion/formulas.jade");
    }
 
-    private static String errorResponse(Response response, List<String> errs) {
+    private String errorResponse(Response response, List<String> errs) {
         response.type("application/json");
         response.status(HttpStatus.SC_BAD_REQUEST);
         return GSON.toJson(errs);
     }
 
-    private static String deniedResponse(Response response) {
+    private String deniedResponse(Response response) {
         response.type("application/json");
         response.status(HttpStatus.SC_FORBIDDEN);
         return GSON.toJson("['Permission denied!']");
