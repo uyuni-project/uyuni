@@ -61,7 +61,7 @@ import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.SaltInclude;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
@@ -116,7 +116,8 @@ public class StatesAPI {
 
     /** Logger */
     private static final Logger LOG = Logger.getLogger(StatesAPI.class);
-    private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+    private final TaskomaticApi taskomaticApi;
+    private final SystemQuery systemQuery;
 
     private static final Gson GSON = new GsonBuilder().create();
     public static final String SALT_PACKAGE_FILES = "packages";
@@ -129,21 +130,28 @@ public class StatesAPI {
     public static final String YUM_SUMA_CHANNEL_REPO_FILE
             = "/etc/yum.repos.d/susemanager:channels.repo";
 
-    private StatesAPI() { }
+    /**
+     * @param systemQueryIn instance to use.
+     * @param taskomaticApiIn instance to use.
+     */
+    public StatesAPI(SystemQuery systemQueryIn, TaskomaticApi taskomaticApiIn) {
+        this.taskomaticApi = taskomaticApiIn;
+        this.systemQuery = systemQueryIn;
+    }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      */
-    public static void initRoutes() {
-        post("/manager/api/states/apply", withUser(StatesAPI::apply));
-        post("/manager/api/states/applyall", withUser(StatesAPI::applyHighstate));
-        get("/manager/api/states/match", withUser(StatesAPI::matchStates));
-        post("/manager/api/states/save", withUser(StatesAPI::saveConfigChannels));
-        get("/manager/api/states/packages", StatesAPI::packages);
-        post("/manager/api/states/packages/save", withUser(StatesAPI::savePackages));
-        get("/manager/api/states/packages/match", StatesAPI::matchPackages);
-        get("/manager/api/states/highstate", StatesAPI::showHighstate);
-        get("/manager/api/states/:channelId/content", withUser(StatesAPI::stateContent));
+    public void initRoutes() {
+        post("/manager/api/states/apply", withUser(this::apply));
+        post("/manager/api/states/applyall", withUser(this::applyHighstate));
+        get("/manager/api/states/match", withUser(this::matchStates));
+        post("/manager/api/states/save", withUser(this::saveConfigChannels));
+        get("/manager/api/states/packages", this::packages);
+        post("/manager/api/states/packages/save", withUser(this::savePackages));
+        get("/manager/api/states/packages/match", this::matchPackages);
+        get("/manager/api/states/highstate", this::showHighstate);
+        get("/manager/api/states/:channelId/content", withUser(this::stateContent));
     }
 
     /**
@@ -153,7 +161,7 @@ public class StatesAPI {
      * @param response the response object
      * @return JSON result of the API call
      */
-    public static String packages(Request request, Response response) {
+    public String packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(Long.valueOf(serverId)));
 
@@ -168,7 +176,7 @@ public class StatesAPI {
      * @param user the current user
      * @return the content of the state as a string
      */
-    public static String stateContent(Request request, Response response, User user) {
+    public String stateContent(Request request, Response response, User user) {
         Long channelId = Long.valueOf(request.params("channelId"));
         ConfigChannel channel = ConfigurationManager.getInstance().lookupConfigChannel(user, channelId);
         String content = ConfigChannelSaltManager.getInstance().getChannelStateContent(channel);
@@ -184,7 +192,7 @@ public class StatesAPI {
      * @param response the response object
      * @return JSON result of the API call
      */
-    public static String matchPackages(Request request, Response response) {
+    public String matchPackages(Request request, Response response) {
         String target = request.queryParams("target");
         String targetLowerCase = target.toLowerCase();
         String serverId = request.queryParams("sid");
@@ -218,7 +226,7 @@ public class StatesAPI {
      * @param user the current user
      * @return JSON result of the API call
      */
-    public static String matchStates(Request request, Response response, User user) {
+    public String matchStates(Request request, Response response, User user) {
         String target = request.queryParams("target");
         String targetLowerCase = target != null ? target.toLowerCase() : "";
         StateTargetType type = StateTargetType.valueOf(request.queryParams("type"));
@@ -265,7 +273,7 @@ public class StatesAPI {
      * @param user the current user
      * @return null to make spark happy
      */
-    public static String saveConfigChannels(Request request, Response response, User user) {
+    public String saveConfigChannels(Request request, Response response, User user) {
         ConfigurationManager configManager = ConfigurationManager.getInstance();
         ServerConfigChannelsJson json = GSON.fromJson(request.body(), ServerConfigChannelsJson.class);
 
@@ -312,7 +320,7 @@ public class StatesAPI {
      * @param <T> type of the entity
      * @return unwrapped entity of type T
      */
-    private static <T> T getEntityIfExists(Optional<T> entity) {
+    private <T> T getEntityIfExists(Optional<T> entity) {
         return entity.orElseGet(() -> {
             throw new NotFoundException();
         });
@@ -324,14 +332,14 @@ public class StatesAPI {
      * @param <T> type of the entity
      * @return given entity of type {@link T}
      */
-    private static <T> T getEntityIfExists(T entity) {
+    private <T> T getEntityIfExists(T entity) {
         if (entity == null) {
             throw new NotFoundException();
         }
         return entity;
     }
 
-    private static void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
+    private void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
         try {
             ServerGroupManager.getInstance().validateAccessCredentials(user, group,
                     group.getName());
@@ -342,13 +350,13 @@ public class StatesAPI {
         }
     }
 
-    private static void checkUserHasPermissionsOnServer(MinionServer server, User user) {
+    private void checkUserHasPermissionsOnServer(MinionServer server, User user) {
         if (!SystemManager.isAvailableToUser(user, server.getId())) {
             Spark.halt(HttpStatus.SC_FORBIDDEN);
         }
     }
 
-    private static void checkUserHasPermissionsOnOrg(Org org) {
+    private void checkUserHasPermissionsOnOrg(Org org) {
         // TODO
     }
 
@@ -361,7 +369,7 @@ public class StatesAPI {
      * @param user the user
      * @return null to make spark happy
      */
-    public static Object savePackages(Request request, Response response, User user) {
+    public Object savePackages(Request request, Response response, User user) {
         response.type("application/json");
         ServerPackageStatesJson json = GSON.fromJson(request.body(),
                 ServerPackageStatesJson.class);
@@ -400,7 +408,7 @@ public class StatesAPI {
      * @param user the user
      * @return the id of the scheduled action
      */
-    public static Object applyHighstate(Request req, Response res, User user) {
+    public Object applyHighstate(Request req, Response res, User user) {
         res.type("application/json");
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -451,7 +459,7 @@ public class StatesAPI {
      * @param user the user
      * @return the id of the scheduled action
      */
-    public static Object apply(Request request, Response response, User user) {
+    public Object apply(Request request, Response response, User user) {
         response.type("application/json");
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -507,7 +515,7 @@ public class StatesAPI {
                     }
             );
 
-            TASKOMATIC_API.scheduleActionExecution(scheduledAction);
+            taskomaticApi.scheduleActionExecution(scheduledAction);
 
             return GSON.toJson(scheduledAction.getId());
         }
@@ -517,7 +525,7 @@ public class StatesAPI {
         }
     }
 
-    private static Date getScheduleDate(ServerApplyStatesJson json) {
+    private Date getScheduleDate(ServerApplyStatesJson json) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
         return Date.from(
             json.getEarliest().map(t -> t.atZone(zoneId).toInstant())
@@ -525,14 +533,14 @@ public class StatesAPI {
         );
     }
 
-    private static Date getScheduleDate(ServerApplyHighstateJson json) {
+    private Date getScheduleDate(ServerApplyHighstateJson json) {
         ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
         return Date.from(
             json.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant()
         );
     }
 
-    private static <R> R handleTarget(StateTargetType targetType, long targetId,
+    private <R> R handleTarget(StateTargetType targetType, long targetId,
                                       Function<Long, R> serverHandler,
                                       Function<Long, R> groupHandler,
                                       Function<Long, R> orgHandler) {
@@ -556,7 +564,7 @@ public class StatesAPI {
      * @param server the server
      * @return the current set of package states
      */
-    private static Set<PackageStateJson> latestPackageStatesJSON(MinionServer server) {
+    private Set<PackageStateJson> latestPackageStatesJSON(MinionServer server) {
         return convertToJSON(StateFactory.latestPackageStates(server)
                 .orElse(Collections.emptySet()));
     }
@@ -568,7 +576,7 @@ public class StatesAPI {
      * @param packageStates the set of package states
      * @return set of JSON objects
      */
-    private static Set<PackageStateJson> convertToJSON(Set<PackageState> packageStates) {
+    private Set<PackageStateJson> convertToJSON(Set<PackageState> packageStates) {
         return packageStates.stream().map(state ->
             new PackageStateJson(
                     state.getName().getName(),
@@ -679,7 +687,7 @@ public class StatesAPI {
      * @param response the response object
      * @return JSON result of state.show_highstate
      */
-    public static String showHighstate(Request request, Response response) {
+    public String showHighstate(Request request, Response response) {
         response.type("text/yaml");
         return MinionServerFactory
                 .lookupById(Long.valueOf(request.queryParams("sid")))
@@ -688,9 +696,9 @@ public class StatesAPI {
                     try {
                         MinionList minions = new MinionList(minionId);
                         // sync to minion before showing highstate
-                        SaltService.INSTANCE.syncAll(minions);
+                        systemQuery.syncAll(minions);
 
-                        Map<String, Result<Object>> result = SaltService.INSTANCE.showHighstate(minionId);
+                        Map<String, Result<Object>> result = systemQuery.showHighstate(minionId);
 
                         return Optional.ofNullable(result.get(minionId))
                                 .map(r -> r.fold(
