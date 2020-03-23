@@ -1,3 +1,4 @@
+- run DB schema upgrade automatically on package update
 - change notification data type to TEXT
 - Update schema for virtualization pool actions
 
