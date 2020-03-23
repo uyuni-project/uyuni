@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -74,7 +73,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -84,6 +82,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.ArrayList;
@@ -113,6 +112,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String HOSTNAME = "foo.bar.com";
 
     private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService());
 
     @Override
     public void setUp() throws Exception {
@@ -1099,7 +1099,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
 
         Map<LocalCall<?>, List<MinionSummary>> localCallListMap =
-                SaltServerActionService.INSTANCE.errataAction(minionSummaries, Collections.singleton(e1.getId()));
+                saltServerActionService.errataAction(minionSummaries, Collections.singleton(e1.getId()));
 
         assertEquals(1, localCallListMap.size());
         localCallListMap.entrySet().forEach(result -> {

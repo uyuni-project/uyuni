@@ -171,9 +171,6 @@ import static java.util.stream.Collectors.toList;
  */
 public class SaltServerActionService {
 
-    /* Singleton instance of this class */
-    public static final SaltServerActionService INSTANCE = new SaltServerActionService(SaltService.INSTANCE);
-
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
     public static final String PACKAGES_PKGINSTALL = "packages.pkginstall";

@@ -46,7 +46,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     public void testIsAllowedOnServer() throws Exception {
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(SaltService.INSTANCE)
+                new SystemEntitler(new SaltService())
         );
         Server host = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
