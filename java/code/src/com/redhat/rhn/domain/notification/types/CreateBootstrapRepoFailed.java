@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017--2020 SUSE LLC
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,36 +17,31 @@ package com.redhat.rhn.domain.notification.types;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 
-/**
- * Notification data for channel sync finish.
- */
-public class ChannelSyncFinished implements NotificationData {
+import java.util.Optional;
 
-    private Long channelId;
-    private String channelName;
+/**
+ * Notification data for bootstrap repo creation failure.
+ */
+public class CreateBootstrapRepoFailed implements NotificationData {
+
+    private String identifier;
+    private String details;
 
     /**
      * Constructor
-     * @param channelIdIn id of the channel that finished
-     * @param channelNameIn name of the channel that finished
+     * @param ident the identifier
+     * @param detailsIn the details
      */
-    public ChannelSyncFinished(Long channelIdIn, String channelNameIn) {
-        this.channelId = channelIdIn;
-        this.channelName = channelNameIn;
+    public CreateBootstrapRepoFailed(String ident, String detailsIn) {
+        this.identifier = ident;
+        this.details = Optional.ofNullable(detailsIn).orElse("");
     }
 
     /**
-     * @return the channel id
+     * @return the bootstrap repo identifier
      */
-    public Long getChannelId() {
-        return channelId;
-    }
-
-    /**
-     * @return the channel name
-     */
-    public String getChannelName() {
-        return channelName;
+    public String getIdentifier() {
+        return identifier;
     }
 
     /**
@@ -54,7 +49,7 @@ public class ChannelSyncFinished implements NotificationData {
      */
     @Override
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.info;
+        return NotificationMessage.NotificationMessageSeverity.error;
     }
 
     /**
@@ -62,7 +57,7 @@ public class ChannelSyncFinished implements NotificationData {
      */
     @Override
     public NotificationType getType() {
-        return NotificationType.ChannelSyncFinished;
+        return NotificationType.CreateBootstrapRepoFailed;
     }
 
     /**
@@ -70,8 +65,8 @@ public class ChannelSyncFinished implements NotificationData {
      */
     @Override
     public String getSummary() {
-        return LocalizationService.getInstance().getMessage("notification.channelsyncfinished",
-                getChannelId().toString(), getChannelName());
+        return LocalizationService.getInstance().
+                getMessage("notification.bootstraprepofailed", getIdentifier());
     }
 
     /**
@@ -79,6 +74,6 @@ public class ChannelSyncFinished implements NotificationData {
      */
     @Override
     public String getDetails() {
-        return "";
+        return details;
     }
 }

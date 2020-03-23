@@ -55,6 +55,9 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -66,6 +69,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
@@ -144,6 +148,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -522,6 +527,14 @@ public class SaltUtils {
             String message = "Successfully applied state(s): " + states;
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 message = "Failed to apply state(s): " + states;
+
+                NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
+                        new StateApplyFailed(serverAction.getServer().getName(),
+                                serverAction.getServerId(), serverAction.getParentAction().getId()));
+
+                Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
+                // TODO: are also org admins and the creator part of this list?
+                UserNotificationFactory.storeForUsers(nm, admins);
             }
             if (applyStatesAction.getDetails().isTest()) {
                 message += " (test-mode)";

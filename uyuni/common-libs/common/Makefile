@@ -17,7 +17,8 @@ SPACEWALK_FILES	=   __init__ \
 	    rhn_rpm \
 	    stringutils \
 	    timezone_utils \
-	    usix
+	    usix \
+	    notificationUtils
 
 SCRIPTS =
 

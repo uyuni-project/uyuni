@@ -874,7 +874,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             if (e instanceof RegisterMinionException) {
                 RegisterMinionException rme = (RegisterMinionException) e;
                 NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
-                        new OnboardingFailed(rme.minionId)
+                        new OnboardingFailed(rme.minionId, e.getMessage())
                 );
                 if (rme.org == null) {
                     UserNotificationFactory.storeNotificationMessageFor(notificationMessage,

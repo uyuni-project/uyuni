@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -35,6 +35,8 @@ public class NotificationMessageJson {
     private NotificationMessage.NotificationMessageSeverity severity;
     private NotificationType type;
     private NotificationData data;
+    private String summary;
+    private String details;
     private boolean isRead;
     private Date created;
     private Date modified;
@@ -52,8 +54,10 @@ public class NotificationMessageJson {
      */
     public NotificationMessageJson(NotificationMessage nm, boolean isReadIn) {
         this.id = nm.getId();
-        this.severity = nm.getNotificationData().getSeverity();
         this.data = nm.getNotificationData();
+        this.severity = data.getSeverity();
+        this.summary = data.getSummary();
+        this.details = data.getDetails();
         this.type = nm.getType();
         this.isRead = isReadIn;
         this.created = nm.getCreated();
@@ -85,6 +89,38 @@ public class NotificationMessageJson {
      */
     public void setData(NotificationData dataIn) {
         this.data = dataIn;
+    }
+
+    /**
+     * @return the summary
+     */
+    public String getSummary() {
+        return summary;
+    }
+
+    /**
+     * @param summaryIn the summary to set
+     */
+    public void setSummary(String summaryIn) {
+        this.summary = summaryIn;
+    }
+
+    /**
+     * Gets the details.
+     *
+     * @return details
+     */
+    public String getDetails() {
+        return details;
+    }
+
+    /**
+     * Sets the details.
+     *
+     * @param detailsIn the details
+     */
+    public void setDetails(String detailsIn) {
+        details = detailsIn;
     }
 
     /**

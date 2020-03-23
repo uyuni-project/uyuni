@@ -1,3 +1,4 @@
+- Add StateApplyFailed and CreateBootstrapRepoFailed notifications
 - Add virtual storage pools actions
 - Remove no longer necessary check for retail TERMINALS group membership
 - change DB check before login
