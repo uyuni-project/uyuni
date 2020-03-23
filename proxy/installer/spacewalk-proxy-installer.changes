@@ -1,3 +1,5 @@
+- move vital proxy templates to a safe place outside of docu (bsc#1166284)
+
 -------------------------------------------------------------------
 Thu Jun 06 15:57:59 CEST 2019 - jgonzalez@suse.com
 
