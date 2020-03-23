@@ -218,19 +218,19 @@ class NotificationMessages extends React.Component {
     return Object.keys(message).map((id) => message[id]);
   };
 
-  showDescriptionPopup = (row) => {
+  showDetailsPopup = (row) => {
     this.setState({popupItem: row});
     showDialog("notifications-popup-dialog");
   }
 
   buildSummary = (row) => {
-    const popupLink = <a href="#" onClick={() => this.showDescriptionPopup(row)}>{"[" + t("show details") + "]"}</a>;
+    const popupLink = <a href="#" onClick={() => this.showDetailsPopup(row)}>{"[" + t("show details") + "]"}</a>;
 
     return (
       <span>
         {escapeHtml(row['summary'])}
         &nbsp;
-        {row['description'] && popupLink}
+        {row['details'] && popupLink}
       </span>
     );
   };
@@ -240,9 +240,9 @@ class NotificationMessages extends React.Component {
     return escapeHtml(summary);
   }
 
-  buildPopupDescription = () => {
-    const description = (this.state.popupItem || {}).description || "";
-    return escapeHtml(description);
+  buildPopupDetails = () => {
+    const details = (this.state.popupItem || {}).details || "";
+    return escapeHtml(details);
   }
 
   retryOnboarding = (minionId) => {
@@ -391,7 +391,7 @@ class NotificationMessages extends React.Component {
           </Table>
           <Dialog id="notifications-popup-dialog"
             title={this.buildPopupSummary()}
-            content={this.buildPopupDescription()}
+            content={this.buildPopupDetails()}
           />
         </TopPanel>
       );
