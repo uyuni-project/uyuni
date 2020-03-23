@@ -21,6 +21,7 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 import static spark.Spark.post;
 
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.ActivationKeysController;
@@ -80,6 +81,7 @@ public class Router implements SparkApplication {
 
         initNotFoundRoutes(jade);
 
+        TaskomaticApi taskomaticApi = new TaskomaticApi();
         SystemQuery systemQuery = SaltService.INSTANCE;
         KubernetesManager kubernetesManager = new KubernetesManager(systemQuery);
         VirtManager virtManager = new VirtManager(systemQuery);
@@ -88,6 +90,7 @@ public class Router implements SparkApplication {
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
         NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
         MinionsAPI minionsAPI = new MinionsAPI(systemQuery);
+        StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
@@ -129,7 +132,7 @@ public class Router implements SparkApplication {
         SsmController.initRoutes();
 
         // States API
-        StatesAPI.initRoutes();
+        statesAPI.initRoutes();
 
         // Subscription Matching
         SubscriptionMatchingController.initRoutes(jade);
