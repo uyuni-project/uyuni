@@ -88,7 +88,7 @@ public class StateApplyFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public String getDescription() {
+    public String getDetails() {
         return "";
     }
 }

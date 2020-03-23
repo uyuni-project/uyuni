@@ -36,7 +36,7 @@ public class NotificationMessageJson {
     private NotificationType type;
     private NotificationData data;
     private String summary;
-    private String description;
+    private String details;
     private boolean isRead;
     private Date created;
     private Date modified;
@@ -57,7 +57,7 @@ public class NotificationMessageJson {
         this.data = nm.getNotificationData();
         this.severity = data.getSeverity();
         this.summary = data.getSummary();
-        this.description = data.getDescription();
+        this.details = data.getDetails();
         this.type = nm.getType();
         this.isRead = isReadIn;
         this.created = nm.getCreated();
@@ -106,21 +106,21 @@ public class NotificationMessageJson {
     }
 
     /**
-     * Gets the description.
+     * Gets the details.
      *
-     * @return description
+     * @return details
      */
-    public String getDescription() {
-        return description;
+    public String getDetails() {
+        return details;
     }
 
     /**
-     * Sets the description.
+     * Sets the details.
      *
-     * @param descriptionIn the description
+     * @param detailsIn the details
      */
-    public void setDescription(String descriptionIn) {
-        description = descriptionIn;
+    public void setDetails(String detailsIn) {
+        details = detailsIn;
     }
 
     /**

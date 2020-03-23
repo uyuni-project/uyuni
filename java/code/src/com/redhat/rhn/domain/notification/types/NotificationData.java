@@ -36,7 +36,7 @@ public interface NotificationData {
     String getSummary();
 
     /**
-     * @return description of this notification
+     * @return details of this notification
      */
-    String getDescription();
+    String getDetails();
 }

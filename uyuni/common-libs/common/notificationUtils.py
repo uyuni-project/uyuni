@@ -14,9 +14,9 @@ def getNotificationsTypeDisabled():
 
 class CreateBootstrapRepoFailed:
 
-    def __init__(self, ident, descr=""):
+    def __init__(self, ident, detail=""):
         self.identifier = ident
-        self.description = descr
+        self.details = detail
         self.type = "CreateBootstrapRepoFailed"
 
     def store(self):

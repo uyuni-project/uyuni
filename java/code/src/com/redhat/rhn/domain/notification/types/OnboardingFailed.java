@@ -25,7 +25,7 @@ import java.util.Optional;
 public class OnboardingFailed implements NotificationData {
 
     private String minionId;
-    private String description;
+    private String details;
 
     /**
      * Constructor
@@ -38,11 +38,11 @@ public class OnboardingFailed implements NotificationData {
     /**
      * Constructor
      * @param minionIdIn minion id of the failed minion
-     * @param descriptionIn the description
+     * @param detailsIn the details
      */
-    public OnboardingFailed(String minionIdIn, String descriptionIn) {
+    public OnboardingFailed(String minionIdIn, String detailsIn) {
         this.minionId = minionIdIn;
-        this.description = descriptionIn;
+        this.details = Optional.ofNullable(detailsIn).orElse("");
     }
 
     /**
@@ -81,7 +81,7 @@ public class OnboardingFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public String getDescription() {
-        return Optional.ofNullable(description).orElse("");
+    public String getDetails() {
+        return details;
     }
 }

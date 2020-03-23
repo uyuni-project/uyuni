@@ -78,7 +78,7 @@ public class ChannelSyncFinished implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public String getDescription() {
+    public String getDetails() {
         return "";
     }
 }

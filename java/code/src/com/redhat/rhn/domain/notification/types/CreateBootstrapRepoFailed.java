@@ -25,16 +25,16 @@ import java.util.Optional;
 public class CreateBootstrapRepoFailed implements NotificationData {
 
     private String identifier;
-    private String description;
+    private String details;
 
     /**
      * Constructor
      * @param ident the identifier
-     * @param descriptionIn the description
+     * @param detailsIn the details
      */
-    public CreateBootstrapRepoFailed(String ident, String descriptionIn) {
+    public CreateBootstrapRepoFailed(String ident, String detailsIn) {
         this.identifier = ident;
-        this.description = descriptionIn;
+        this.details = Optional.ofNullable(detailsIn).orElse("");
     }
 
     /**
@@ -73,7 +73,7 @@ public class CreateBootstrapRepoFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public String getDescription() {
-        return Optional.ofNullable(description).orElse("");
+    public String getDetails() {
+        return details;
     }
 }
