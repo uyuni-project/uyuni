@@ -196,6 +196,11 @@ class NotificationMessages extends React.Component {
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
+  sortByType = (aRaw, bRaw, columnKey, sortDirection) => {
+    var result = this.decodeTypeText(aRaw[columnKey]).toLowerCase().localeCompare(this.decodeTypeText(bRaw[columnKey]).toLowerCase());
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
+  };
+
   buildSummaryText = (row) => {
     var div = document.createElement("div");
     div.innerHTML = row['summary']
@@ -352,6 +357,7 @@ class NotificationMessages extends React.Component {
             />
             <Column
               columnKey="type"
+              comparator={this.sortByType}
               header={t("Type")}
               cell={ (row) => this.decodeTypeText(row['type'])}
             />
