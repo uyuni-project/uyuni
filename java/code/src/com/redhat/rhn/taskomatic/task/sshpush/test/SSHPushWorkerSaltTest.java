@@ -308,7 +308,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 sshPushSystemMock,
                 saltServiceMock,
                 saltSSHServiceMock,
-                SaltServerActionService.INSTANCE
+                new SaltServerActionService(new SaltService())
         );
     }
 }

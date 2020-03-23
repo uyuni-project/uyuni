@@ -24,6 +24,7 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 
@@ -37,7 +38,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
     private static final int ACTION_DATABASE_GRACE_TIME = 10000;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
-    private SaltServerActionService saltServerActionService = SaltServerActionService.INSTANCE;
+    private SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService());
 
     /**
      * @param context the job execution context

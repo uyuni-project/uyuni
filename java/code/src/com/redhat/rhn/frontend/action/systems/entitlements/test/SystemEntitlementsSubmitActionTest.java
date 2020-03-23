@@ -159,7 +159,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(SaltService.INSTANCE)
+                new SystemEntitler(new SaltService())
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
 

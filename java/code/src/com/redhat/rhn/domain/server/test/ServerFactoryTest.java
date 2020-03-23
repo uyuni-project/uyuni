@@ -84,6 +84,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.ArrayList;
@@ -113,6 +114,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String HOSTNAME = "foo.bar.com";
 
     private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService());
 
     @Override
     public void setUp() throws Exception {
@@ -1099,7 +1101,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
 
         Map<LocalCall<?>, List<MinionSummary>> localCallListMap =
-                SaltServerActionService.INSTANCE.errataAction(minionSummaries, Collections.singleton(e1.getId()));
+                saltServerActionService.errataAction(minionSummaries, Collections.singleton(e1.getId()));
 
         assertEquals(1, localCallListMap.size());
         localCallListMap.entrySet().forEach(result -> {

@@ -57,7 +57,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         builder = new GuestBuilder(user);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(SaltService.INSTANCE)
+                new SystemEntitler(new SaltService())
         );
     }
 
