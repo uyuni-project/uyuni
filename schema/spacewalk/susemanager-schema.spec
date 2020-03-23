@@ -103,6 +103,9 @@ else
 fi
 %endif
 
+%posttrans
+systemctl try-restart uyuni-check-database.service ||:
+
 %files
 %defattr(-,root,root)
 %dir %{rhnroot}
