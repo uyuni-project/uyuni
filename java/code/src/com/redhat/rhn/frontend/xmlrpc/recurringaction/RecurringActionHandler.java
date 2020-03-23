@@ -34,6 +34,9 @@ import java.util.Map;
 
 /**
  * Handler for Recurring Actions ({@link RecurringAction})
+
+ * @xmlrpc.namespace recurringaction
+ * @xmlrpc.doc Provides methods to handle Recurring Actions for Minions, Groups and Organizations.
  */
 public class RecurringActionHandler extends BaseHandler {
 
