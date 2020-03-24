@@ -101,3 +101,52 @@ Feature: Recurring Actions
     Then I should see a "schedule_name_group" text
     And I should see a "Group" text
     And I should see a "0 0 0 ? * 1" text
+
+  Scenario: Create a yourorg Recurring Action
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Home > My Organization > Recurring States"
+    Then I should see a "No schedules created. Use Create to add a schedule" text
+    When I click on "Create"
+    Then I should see a "Schedule Name" text
+    When I enter "schedule_name" as "scheduleName"
+    And I check radio button "schedule-daily"
+    And I pick "00:00" as time from "time-daily_time"
+    And I click on the "disabled" toggler
+    And I click on "Create Schedule"
+    Then I wait until I see "Schedule successfully created" text
+    Then I should see a "schedule_name" text
+    And I should see a "Organization" text
+    And I should see a "0 0 0 ? * *" text
+
+  Scenario: View a yourorg recurring actions details
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Home > My Organization > Recurring States"
+    Then I should see a "schedule_name" text
+    When I click the "schedule_name" recurring action details button
+    Then I should see a "Every day at 00:00" text
+    When I click on "Back"
+    Then I should see a "Schedules" text
+
+  Scenario: Edit a yourorg Recurring Action
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Home > My Organization > Recurring States"
+    Then I should see a "schedule_name" text
+    When I click the "schedule_name" recurring action edit button
+    Then I should see a "Update Schedule" text
+    When I enter "schedule_name_edit" as "scheduleName"
+    And I check radio button "schedule-weekly"
+    And I click on "Update Schedule"
+    Then I wait until I see "Schedule successfully updated" text
+    Then I should see a "schedule_name_edit" text
+    And I should see a "Organization" text
+    And I should see a "0 0 0 ? * 1" text
+
+  Scenario: Delete a yourorg Recurring Action
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Home > My Organization > Recurring States"
+    Then I should see a "schedule_name_edit" text
+    When I click the "schedule_name" recurring action delete button
+    Then I should see a "Delete Recurring State Schedule" text
+    When I click on the red confirmation button
+    Then I wait until I see "Schedule 'schedule_name_edit' has been deleted." text
+    Then I should see a "No schedules created. Use Create to add a schedule" text
