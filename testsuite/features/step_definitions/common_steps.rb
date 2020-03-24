@@ -1107,3 +1107,14 @@ When(/^I add the "([^"]*)" channel to sources$/) do |channel|
     raise "Add channel failed" unless find(:xpath, './/input[@type="checkbox"]').set(true)
   end
 end
+
+When(/^I click the "([^\"]*)" recurring action (.*?) button$/) do |action_name, action|
+  button = case action
+           when /details/ then "i[contains(@class, 'fa-list')]"
+           when /edit/ then "i[contains(@class, 'fa-edit')]"
+           when /delete/ then "i[contains(@class, 'fa-trash')]"
+           else raise "Unknown element with description '#{action}'"
+           end
+  xpath = "//td[contains(text(), '#{action_name}')]/ancestor::tr[contains(@class, 'list-row-even')]/td/div/button/#{button}"
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
+end
