@@ -198,3 +198,49 @@ Feature: Recurring Actions
     Then I should see a "schedule_name_org" text
     And I should see a "Organization" text
     And I should see a "0 0 0 ? * 1" text
+
+  Scenario: Check list of all actions
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Schedule > Recurring States"
+    Then I should not see a "Create" text
+    And I should see a "schedule_name_minion" text
+    And I should see a "Minion" text
+    And I should see a "schedule_name_group" text
+    And I should see a "Group" text
+    And I should see a "schedule_name_org" text
+    And I should see a "Organization" text
+
+ Scenario: View details in list of all actions
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Schedule > Recurring States"
+    And I click the "schedule_name_minion" recurring action details button
+    Then I should see a "Every Sunday at 00:00" text
+    And I should not see a "Highstate for" text in the content area
+    When I click on "Edit"
+    Then I should see a "Update Schedule" text
+    When I click on "Back to list"
+    Then I should see a "schedule_name_group" text
+
+  Scenario: Edit in list of all actions
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Schedule > Recurring States"
+    And I wait until I see "schedule_name_org" text
+    And I click the "schedule_name_org" recurring action edit button
+    Then I should see a "Update Schedule" text
+    And I should not see a "Highstate for" text in the content area
+    When I enter "schedule_name_edit" as "scheduleName"
+    And I check radio button "schedule-monthly"
+    And I click on "Update Schedule"
+    Then I should not see a "schedule_name_org" text
+    And I should see a "schedule_name_edit" text
+    And I should see a "0 0 0 1 * ?" text
+
+  Scenario: Delete from list of all actions
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Schedule > Recurring States"
+    When I click the "schedule_name_edit" recurring action delete button
+    Then I should see a "Delete Recurring State Schedule" text
+    When I click on the red confirmation button
+    Then I wait until I see "Schedule 'schedule_name_edit' has been deleted." text
+    And I should not see a "Organization" text in the content area
+    And I should see a "schedule_name_group" text
