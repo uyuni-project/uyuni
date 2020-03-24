@@ -1,8 +1,13 @@
 {
   "private": true,
   "workspaces": {
-    "packages": ["susemanager-nodejs-sdk-devel", "../web/html/src"],
-    "nohoist": ["**"]
+    "packages": [
+      "susemanager-nodejs-sdk-devel",
+      "../web/html/src"
+    ],
+    "nohoist": [
+      "**"
+    ]
   },
   "engines": {
     "node": ">=8.0.0",
