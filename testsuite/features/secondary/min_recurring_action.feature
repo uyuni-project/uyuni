@@ -244,3 +244,35 @@ Feature: Recurring Actions
     Then I wait until I see "Schedule 'schedule_name_edit' has been deleted." text
     And I should not see a "Organization" text in the content area
     And I should see a "schedule_name_group" text
+
+  Scenario: Delete a minion Recurring Action
+    Given I am authorized as "admin" with password "admin"
+    When I am on the "States" page of this "sle_minion"
+    And I follow "Recurring States" in the content area
+    Then I should see a "schedule_name_minion" text
+    When I click the "schedule_name_minion" recurring action delete button
+    Then I should see a "Delete Recurring State Schedule" text
+    When I click on the red confirmation button
+    Then I wait until I see "Schedule 'schedule_name_minion' has been deleted." text
+    Then I should see a "No schedules created. Use Create to add a schedule" text
+
+  Scenario: Delete a group Recurring Action
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Systems > System Groups"
+    And I follow "Recurring-Action-test-group"
+    And I follow "States" in the content area
+    And I follow "Recurring States" in the content area
+    Then I should see a "schedule_name_group" text
+    When I click the "schedule_name_group" recurring action delete button
+    Then I should see a "Delete Recurring State Schedule" text
+    When I click on the red confirmation button
+    Then I wait until I see "Schedule 'schedule_name_group' has been deleted." text
+    Then I should see a "No schedules created. Use Create to add a schedule" text
+
+  Scenario: Cleanup after running the tests
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Systems > System Groups"
+    And I follow "Recurring-Action-test-group"
+    And I follow "Delete Group"
+    And I click on "Confirm Deletion"
+    Then I should see a "Your organization has no system groups." text
