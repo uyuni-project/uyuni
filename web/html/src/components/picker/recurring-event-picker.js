@@ -328,7 +328,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                                     <label className={styles.radio} htmlFor="schedule-daily">{t("Daily:")}</label>
                                 </div>
                                 <div className="col-sm-3">
-                                    <DateTimePicker onChange={this.onDailyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
+                                    <DateTimePicker onChange={this.onDailyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true} id="time-daily"/>
                                 </div>
                             </div>
                             <div className={`form-group ${styles.center}`}>
@@ -344,7 +344,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                                     />
                                 </div>
                                 <div className="col-sm-3">
-                                    <DateTimePicker onChange={this.onWeeklyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
+                                    <DateTimePicker onChange={this.onWeeklyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true} id="time-weekly"/>
                                 </div>
                             </div>
                             <div className={`form-group ${styles.center}`}>
@@ -360,7 +360,7 @@ class RecurringEventPicker extends React.Component<RecurringEventPickerProps, Re
                                     />
                                 </div>
                                 <div className="col-sm-3">
-                                    <DateTimePicker onChange={this.onMonthlyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true}/>
+                                    <DateTimePicker onChange={this.onMonthlyTimeChanged} value={this.state.time} timezone={this.props.timezone} hideDatePicker={true} id="time-monthly"/>
                                 </div>
                                 <div className={`col-sm-1 ${styles.helpIcon}`}>
                                     <HelpLink text={t("Days are limited to 28 to have a recurring schedule available for all the months")}/>

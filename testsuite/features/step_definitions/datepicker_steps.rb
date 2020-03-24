@@ -87,6 +87,13 @@ Given(/^I pick "([^"]*)" as time$/) do |arg1|
   time.click
 end
 
+When(/^I pick "([^"]*)" as time from "([^"]*)"$/) do |arg1, arg2|
+  find('.ui-timepicker-input', id: arg2).click
+  timepicker = find('ul.ui-timepicker-list', match: :first)
+  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{arg1}']")
+  time.click
+end
+
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
   execute_script("$('#date_timepicker_widget_input')
