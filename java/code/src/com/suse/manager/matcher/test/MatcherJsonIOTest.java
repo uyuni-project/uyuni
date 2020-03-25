@@ -27,6 +27,8 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.matcher.MatcherJsonIO;
+import com.suse.manager.webui.services.iface.TestVirtManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.ProductJson;
@@ -75,14 +77,14 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
 
-        SaltService saltServiceMock = new SaltService() {
+        VirtManager virtManager = new TestVirtManager() {
             @Override
             public void updateLibvirtEngine(MinionServer minion) {
             }
         };
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock)
+                new SystemEntitler(new SaltService(), virtManager)
         );
     }
 

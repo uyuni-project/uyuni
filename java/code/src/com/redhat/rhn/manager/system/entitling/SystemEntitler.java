@@ -39,6 +39,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 
@@ -59,12 +61,15 @@ public class SystemEntitler {
     private static final Logger LOG = Logger.getLogger(SystemEntitler.class);
 
     private SystemQuery systemQuery;
+    private VirtManager virtManager;
 
     /**
      * @param systemQueryIn instance for gathering data from a system.
+     * @param virtManagerIn instance for managing virtual machines.
      */
-    public SystemEntitler(SystemQuery systemQueryIn) {
+    public SystemEntitler(SystemQuery systemQueryIn, VirtManager virtManagerIn) {
         this.systemQuery = systemQueryIn;
+        this.virtManager = virtManagerIn;
     }
 
     /**
@@ -206,7 +211,7 @@ public class SystemEntitler {
     }
 
     private void updateLibvirtEngine(MinionServer minion) {
-        systemQuery.updateLibvirtEngine(minion);
+        virtManager.updateLibvirtEngine(minion);
     }
 
     // Need to do some extra logic here

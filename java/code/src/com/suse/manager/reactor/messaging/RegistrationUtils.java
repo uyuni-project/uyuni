@@ -50,6 +50,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -89,7 +90,7 @@ public class RegistrationUtils {
 
     private static SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(),
-            new SystemEntitler(SaltService.INSTANCE)
+            new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API))
     );
 
     private RegistrationUtils() {

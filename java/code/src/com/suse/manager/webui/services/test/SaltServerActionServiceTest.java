@@ -68,6 +68,8 @@ import com.google.gson.JsonElement;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.TestVirtManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.SaltModuleRun;
@@ -109,11 +111,12 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
 
-        SystemQuery systemQuery = new SaltService() {
+        VirtManager virtManager = new TestVirtManager() {
             @Override
             public void updateLibvirtEngine(MinionServer minion) {
             }
-
+        };
+        SystemQuery systemQuery = new SaltService() {
             @Override
             public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.of(new JsonObject());
@@ -125,7 +128,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         saltServerActionService.setSkipCommandScriptPerms(true);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(systemQuery)
+                new SystemEntitler(systemQuery, virtManager)
         );
 
         sshPushSystemMock = mock(SystemSummary.class);

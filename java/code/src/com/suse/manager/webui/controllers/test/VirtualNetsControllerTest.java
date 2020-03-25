@@ -34,8 +34,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.VirtManager;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.VirtualNetsController;
+import com.suse.manager.webui.services.iface.TestVirtManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.VirtualNetworkInfoJson;
 
@@ -64,7 +66,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        saltServiceMock = new SaltService() {
+        VirtManager virtManager = new TestVirtManager() {
             @Override
             public void updateLibvirtEngine(MinionServer minion) {
             }
@@ -81,7 +83,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock)
+                new SystemEntitler(new SaltService(), virtManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
@@ -90,7 +92,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
     public void testData() throws Exception {
 
-        VirtManager virtManager =  new VirtManager(saltServiceMock);
+        VirtManager virtManager =  new VirtManagerSalt(saltServiceMock);
 
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.data(getRequestWithCsrf(

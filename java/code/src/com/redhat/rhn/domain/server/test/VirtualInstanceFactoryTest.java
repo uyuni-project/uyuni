@@ -27,7 +27,9 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.TestVirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
@@ -57,7 +59,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         builder = new GuestBuilder(user);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(new SaltService())
+                new SystemEntitler(new SaltService(), new TestVirtManager())
         );
     }
 

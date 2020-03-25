@@ -14,12 +14,9 @@
  */
 package com.suse.manager.webui.services.iface;
 
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.suse.manager.reactor.SaltReactor;
-import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
@@ -36,7 +33,6 @@ import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.errors.GenericError;
-import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
@@ -53,31 +49,6 @@ import java.util.concurrent.CompletionStage;
  * Note: This interface should be split up further at some point.
  */
 public interface SystemQuery {
-
-    /**
-     * Query virtual host and domains capabilities.
-     *
-     * @param minionId the salt minion virtual host to ask about
-     * @return the output of the salt virt.all_capabilities call in JSON
-     */
-    Optional<Map<String, JsonElement>> getCapabilities(String minionId);
-
-    /**
-     * Query the list of virtual networks defined on a salt minion.
-     *
-     * @param minionId the minion to ask about
-     * @return a list of the network names
-     */
-    Map<String, JsonObject> getNetworks(String minionId);
-
-    /**
-     * Query virtual machine definition
-     *
-     * @param minionId the host minion ID
-     * @param domainName the domain name to look for
-     * @return the XML definition or an empty Optional
-     */
-    Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName);
 
     /**
      * call salt test.ping
@@ -157,14 +128,6 @@ public interface SystemQuery {
     Optional<MgrUtilRunner.ExecResult> deleteRejectedKey(String minionId);
 
     /**
-     * Return the stream of events happening in salt.
-     *
-     * @return the event stream
-     * @throws SaltException exception occured during connection (if any)
-     */
-    EventStream getEventStream();
-
-    /**
      * Run a remote command on a given minion.
      *
      * @param target the target
@@ -182,22 +145,6 @@ public interface SystemQuery {
      */
     Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(
             MinionList target, String cmd, CompletableFuture<GenericError> cancel);
-
-    /**
-     * Query the list of virtual storage pools defined on a salt minion.
-     *
-     * @param minionId the minion to ask about
-     * @return a map associating pool names with their informations as Json elements
-     */
-    Map<String, JsonObject> getPools(String minionId);
-
-    /**
-     * Query the list of virtual storage volumes defined on a salt minion.
-     *
-     * @param minionId the minion to ask about
-     * @return a map associating pool names with the list of volumes it contains mapped by their names
-     */
-    Map<String, Map<String, JsonObject>> getVolumes(String minionId);
 
     /**
      * Returns the currently running jobs on the target
@@ -409,12 +356,6 @@ public interface SystemQuery {
      */
     Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
             String imageStore);
-
-    /**
-     * Update libvirt engine on a given minion.
-     * @param minion to update.
-     */
-    void updateLibvirtEngine(MinionServer minion);
 
     /**
      * Execute generic salt call.
