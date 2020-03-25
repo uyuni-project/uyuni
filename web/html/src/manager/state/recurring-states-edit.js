@@ -3,7 +3,7 @@
 
 const React = require("react");
 const ReactDOM = require("react-dom");
-const {RecurringEventPicker} = require("components/recurring-event-picker");
+const {RecurringEventPicker} = require("components/picker/recurring-event-picker");
 const {DisplayHighstate} = require("./display-highstate");
 const Button = require("components/buttons").Button;
 const AsyncButton = require("components/buttons").AsyncButton;
@@ -56,7 +56,7 @@ class RecurringStatesEdit extends React.Component {
     };
 
     onEdit = () => {
-        this.props.onEdit({
+        return this.props.onEdit({
             targetId: this.state.targetId,
             recurringActionId: this.state.recurringActionId,
             scheduleName: this.state.scheduleName,
@@ -102,7 +102,7 @@ class RecurringStatesEdit extends React.Component {
                 ];
         const buttonsLeft = [
                 <div className="btn-group pull-left">
-                    <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back")}  handler={() => this.props.onActionChanged("back")}/>
+                    <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back to list")}  handler={() => this.props.onActionChanged("back")}/>
                 </div>
                 ];
 
@@ -120,7 +120,9 @@ class RecurringStatesEdit extends React.Component {
                                           onTypeChanged={this.onTypeChanged}
                                           onCronTimesChanged={this.onCronTimesChanged}
                                           onCronChanged={this.onCustomCronChanged} />
-                    <DisplayHighstate minions={this.state.minions}/>
+                    {entityType === "NONE" ? null :
+                        <DisplayHighstate minions={this.state.minions}/>
+                    }
                 </InnerPanel>
             </div>
         );

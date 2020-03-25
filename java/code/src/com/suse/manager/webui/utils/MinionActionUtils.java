@@ -33,7 +33,7 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
@@ -111,7 +111,7 @@ public class MinionActionUtils {
      * @param infoMap map from actionIds to Salt job information objects
      * @return the updated ServerAction
      */
-    public static ServerAction updateMinionActionStatus(SaltService salt, ServerAction sa,
+    public static ServerAction updateMinionActionStatus(SystemQuery salt, ServerAction sa,
             MinionServer server, List<SaltUtil.RunningInfo> running,
             Map<Long, Optional<Info>> infoMap) {
         long actionId = sa.getParentAction().getId();
@@ -170,7 +170,7 @@ public class MinionActionUtils {
      *
      * @param salt the salt service to use
      */
-    public static void cleanupMinionActions(SaltService salt) {
+    public static void cleanupMinionActions(SystemQuery salt) {
         ZonedDateTime now = ZonedDateTime.now();
         // Select only ServerActions that are for minions and where the Action
         // should already be executed or running
@@ -229,7 +229,7 @@ public class MinionActionUtils {
      * @param actionId the actionId
      * @return an optional job information object
      */
-    private static Optional<Info> infoForActionId(SaltService salt, long actionId) {
+    private static Optional<Info> infoForActionId(SystemQuery salt, long actionId) {
         // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
         // stored persistently via the database (see PGEventStream)
         if (POSTGRES) {
@@ -248,7 +248,7 @@ public class MinionActionUtils {
      * Cleans up Action Chain records.
      * @param salt a SaltService instance
      */
-    public static void cleanupMinionActionChains(SaltService salt) {
+    public static void cleanupMinionActionChains(SystemQuery salt) {
         // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
         // stored persistently via the database (see PGEventStream)
         if (POSTGRES) {

@@ -21,14 +21,46 @@ Then(/^"([^"]*)" should communicate with the server$/) do |host|
   $server.run("ping -c1 #{node.full_hostname}")
 end
 
-Then(/^it should be possible to download the file "([^"]*)"$/) do |file|
-  $server.run("curl -k #{file} -o /dev/null")
+# rubocop:disable Metrics/BlockLength
+Then(/^it should be possible to reach the (.*)$/) do |resource|
+  url = case resource
+        when 'download site'
+    if $product == 'Uyuni'
+      'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/repodata/repomd.xml'
+    else
+      'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
+    end
+        when 'container profiles'
+    # TODO: move that resource to next location ("test suite profiles")
+    if $product == 'Uyuni'
+      ''
+    else
+      'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
+    end
+        when 'test suite profiles'
+    'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
+        when 'portus registry'
+    if $product == 'Uyuni'
+      # TODO: move that internal resource to some other external location
+      ''
+    else
+      'https://portus.mgr.suse.de:5000'
+    end
+        when 'other registry'
+    if $product == 'Uyuni'
+      # TODO: move that internal resource to some other external location
+      ''
+    else
+      'https://registry.mgr.suse.de:443'
+    end
+        end
+  if url.empty?
+    STDERR.puts 'Sanity check not implemented, move resource to external network first'
+  else
+    $server.run("curl -k #{url} -o /dev/null") # --fail option does not work as expected
+  end
 end
-
-Then(/^it should be possible to reach the (.*) registry$/) do |registry|
-  url = registry == 'portus' ? 'https://portus.mgr.suse.de:5000' : 'https://registry.mgr.suse.de:443'
-  $server.run("curl -k --fail #{url}")
-end
+# rubocop:enable Metrics/BlockLength
 
 # Channels
 

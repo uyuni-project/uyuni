@@ -50,7 +50,9 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.utils.MailHelper;
+import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.MinionStartEvent;
 import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
@@ -77,7 +79,7 @@ public class SaltReactor {
     private static final Logger LOG = Logger.getLogger(SaltReactor.class);
 
     // Reference to the SaltService instance
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
 
     // The event stream object
     private EventStream eventStream;
@@ -93,12 +95,16 @@ public class SaltReactor {
      * Start the salt reactor.
      */
     public void start() {
+
+        SystemQuery systemQuery = SaltService.INSTANCE;
+        VirtManager virtManager = new VirtManager(systemQuery);
+
         // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new RegisterMinionEventMessageAction(),
+        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(),
+        MessageQueue.registerAction(new MinionStartEventMessageAction(systemQuery),
                 MinionStartEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(),
+        MessageQueue.registerAction(new MinionStartEventMessageAction(systemQuery),
                 MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
@@ -110,11 +116,11 @@ public class SaltReactor {
                 RunnableEventMessage.class);
         MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
                 VirtpollerBeaconEventMessage.class);
-        MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(),
+        MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(systemQuery),
                 SystemIdGenerateEventMessage.class);
-        MessageQueue.registerAction(new ImageDeployedEventMessageAction(),
+        MessageQueue.registerAction(new ImageDeployedEventMessageAction(systemQuery),
                 ImageDeployedEventMessage.class);
-        MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(),
+        MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(virtManager),
                 LibvirtEngineDomainLifecycleMessage.class);
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);

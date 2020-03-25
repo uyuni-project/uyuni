@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.recurringactions;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.log4j.Logger;
@@ -87,11 +89,16 @@ public class RecurringActionFactory extends HibernateFactory {
      */
     public static List<? extends RecurringAction> listAllRecurringActions(User user) {
         Org org = user.getOrg();
+        List<Org> orgs = List.of(org);
+        if (user.hasRole(RoleFactory.SAT_ADMIN)) {
+            orgs = OrgFactory.lookupAllOrgs();
+        }
+
         Stream<? extends RecurringAction> orgActions = getSession().createQuery(
                 "SELECT orgAction FROM OrgRecurringAction orgAction " +
-                        "WHERE orgAction.org = :org " +
+                        "WHERE orgAction.org IN :orgs " +
                         "ORDER by orgAction.id DESC")
-                .setParameter("org", org)
+                .setParameter("orgs", orgs)
                 .stream();
 
         Stream<? extends RecurringAction> groupActions = getSession().createQuery(

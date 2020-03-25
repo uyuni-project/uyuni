@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -43,14 +44,17 @@ import org.jmock.lib.legacy.ClassImposteriser;
 public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
     private SaltService saltServiceMock;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
     }
 
     /**
@@ -113,7 +117,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testEntitleVirtForGuest() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest();
+        Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         User user = host.getCreator();
         UserTestUtils.addVirtualization(user.getOrg());
 

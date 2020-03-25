@@ -43,11 +43,11 @@ class RecurringStates extends React.Component {
     constructor(props) {
         super(props);
 
-        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError",
-        "onMessageChanged", "updateSchedule", "toggleActive"]
+        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError", "updateSchedule", "toggleActive"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
+            schedules: [],
             minionIds: minions.length > 0 && minions[0].id ? minions.map(minion => minion.id) : undefined,
         };
     }
@@ -80,7 +80,7 @@ class RecurringStates extends React.Component {
                 this.setState({
                     action: undefined,
                     selected: undefined,
-                    schedules: schedules.data
+                    schedules: schedules
                 });
             }).catch(this.handleResponseError);
     };
@@ -111,49 +111,40 @@ class RecurringStates extends React.Component {
             "/rhn/manager/api/recurringactions/save",
             JSON.stringify(schedule),
             "application/json"
-        ).promise.then((data) => {
-            let newMsgs = [];
-            const decorator = data.success ? MessagesUtils.info : MessagesUtils.error;
-            if (data.messages === undefined || data.messages.length === 0) {
-                // no explicit messages from the server -> let's display a generic one
-                const defaultMsg = data.success
-                      ? <span>{t("Schedule successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
-                      : <span>{t("Error on saving schedule.")}</span>;
-                newMsgs = decorator(defaultMsg);
-            }
-            else {
-                newMsgs = decorator.apply(null, data.messages);
-            }
-
-            const msgs = this.state.messages.concat(newMsgs);
+        ).promise.then((_) => {
+            const successMsg = <span>{t("Schedule successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
+            const msgs = this.state.messages.concat(MessagesUtils.info(successMsg));
 
             while (msgs.length > messagesCounterLimit) {
                 msgs.shift();
             }
 
-            this.onMessageChanged(msgs);
             this.setState({
                 messages: msgs
             });
 
-            if (data.success) {
-                this.handleForwardAction();
-            } else {
-                this.handleResponseError();
-            }
-
+            this.handleForwardAction();
         }).catch(this.handleResponseError);
     }
 
     deleteSchedule(item) {
         return Network.del("/rhn/manager/api/recurringactions/" + item.recurringActionId + "/delete")
-            .promise.then(data => {
-                this.handleForwardAction();
+            .promise.then((_) => {
                 this.setState({
                     messages: MessagesUtils.info("Schedule \'" + item.scheduleName + "\' has been deleted.")
                 });
+                this.handleForwardAction();
             })
-            .catch(this.handleResponseError);
+            .catch(data => {
+                const taskoErrorMsg = MessagesUtils.error(
+                    t("Error when deleting the action. Check if Taskomatic is running"));
+                let messages = (data && data.status === 503)
+                    ? taskoErrorMsg
+                    : Network.responseErrorMessage(jqXHR);
+                this.setState({
+                    messages: messages
+                });
+            });
     }
 
     handleForwardAction = (action) => {
@@ -175,10 +166,6 @@ class RecurringStates extends React.Component {
             messages: []
         });
     }
-
-    onMessageChanged = (message) => {
-        this.setState({messages: message});
-    };
 
     handleResponseError = (jqXHR) => {
         this.setState({

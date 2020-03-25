@@ -55,6 +55,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
@@ -124,7 +125,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager;
     private Path metadataDirOfficial;
 
     @Override
@@ -134,7 +135,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
 
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
@@ -594,7 +598,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
@@ -1236,7 +1240,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         }});
 
         SaltUtils.INSTANCE.setXccdfResumeXsl(resumeXsl);
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
         messageAction.execute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
@@ -1526,7 +1530,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
         }});
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
@@ -1557,7 +1561,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
         }});
-        SaltUtils.INSTANCE.setSaltService(saltServiceMock);
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 

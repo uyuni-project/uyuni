@@ -1,4 +1,16 @@
 - add XMLRPC API method: proxy.listProxyClients (bsc#1166408)
+- Enable monitoring for RHEL 8 Salt clients
+- Add recurring actions xmlrpc interface
+- Add StateApplyFailed and CreateBootstrapRepoFailed notifications
+- Add virtual storage pools actions
+- Remove no longer necessary check for retail TERMINALS group membership
+- change DB check before login
+- fix error when adding systems to ssm with 'add to ssm' button (bsc#1160246)
+
+-------------------------------------------------------------------
+Thu Mar 19 12:16:18 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.6-1
 - Filter out AppStream packages by 'modularitylabel' rpm tag
 
 -------------------------------------------------------------------
@@ -83,6 +95,7 @@ Wed Nov 27 17:01:33 CET 2019 - jgonzalez@suse.com
 - Fix loading proper activation key details on SPA enabled (bsc#1157141)
 - Add 'license' entry to the kiwi image inspection test data
 - Enable aarch64 builds
+- Hide Virtualization > Provisioning tab for Salt systems (bsc#1167329)
 - Add self monitoring to Admin Monitoring UI (bsc#1143638)
 - Use apache proxy of websockify (bsc#1155455)
 - Split a query to the database for more reliability in case certain pages are visited and many systems are registered

@@ -129,6 +129,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -1859,7 +1860,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testAddEntitlements() throws Exception {
-        Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0);
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(SaltService.INSTANCE)
+        );
+        Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
         Integer serverId = server.getId().intValue();
         List<String> entitlements = new LinkedList<String>() { {
@@ -1884,7 +1889,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testAddEntitlementSystemAlreadyHas() throws Exception {
-        Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0);
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(SaltService.INSTANCE)
+        );
+        Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
         Integer serverId = server.getId().intValue();
         List<String> entitlements = new LinkedList<String>() { {

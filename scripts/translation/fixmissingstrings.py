@@ -68,7 +68,7 @@ def align(orig, translation):
                 found = False
                 for n, item in enumerate(newfile):
                     if isinstance(item, tuple) and item[0] == currentid:
-                        nd = sourcepattern.sub(item[2], node)
+                        nd = sourcepattern.sub(item[2].strip(), node)
                         newfile[n] = (item[0], nd, item[2])
                         found = True
                         break;

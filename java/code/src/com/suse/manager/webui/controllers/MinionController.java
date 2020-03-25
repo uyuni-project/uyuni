@@ -37,7 +37,6 @@ import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.utils.MinionServerUtils;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.utils.Json;
 
@@ -48,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -58,9 +56,6 @@ import spark.template.jade.JadeTemplateEngine;
  * Controller class providing backend code for the minions page.
  */
 public class MinionController {
-
-    // Reference to the SaltService instance
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
 
     private MinionController() { }
 
@@ -99,7 +94,7 @@ public class MinionController {
         get("/manager/systems/details/highstate",
                 withCsrfToken(withUser(MinionController::highstate)),
                 jade);
-        get("/manager/systems/details/states/schedules",
+        get("/manager/systems/details/recurring-states",
                 withCsrfToken(withUser(MinionController::recurringStates)),
                 jade);
         get("/manager/multiorg/details/custom",
@@ -119,7 +114,7 @@ public class MinionController {
                 jade);
         get("/manager/groups/details/highstate",
                 withCsrfToken(withUser(MinionController::serverGroupHighstate)), jade);
-        get("/manager/groups/details/states/schedules",
+        get("/manager/groups/details/recurring-states",
                 withCsrfToken(withUser(MinionController::serverGroupRecurringStates)),
                 jade);
     }
@@ -202,9 +197,10 @@ public class MinionController {
                 .collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
+        String orgId = request.queryParams("oid");
         data.put("minions", Json.GSON.toJson(minions));
-        data.put("orgId", user.getOrg().getId());
-        data.put("orgName", user.getOrg().getName());
+        data.put("orgId", orgId);
+        data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         data.put("entityType", "ORG");
         return new ModelAndView(data, "templates/org/recurring-states.jade");
     }

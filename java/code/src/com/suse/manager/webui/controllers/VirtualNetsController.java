@@ -40,16 +40,24 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class VirtualNetsController {
 
-    private VirtualNetsController() { }
+    private VirtManager virtManager;
+
+    /**
+     * Controller class providing backend for Virtual networks UI
+     * @param virtManagerIn instance to manage virtualization
+     */
+    public VirtualNetsController(VirtManager virtManagerIn) {
+        this.virtManager = virtManagerIn;
+    }
 
     /**
      * Initialize request routes for the pages served by VirtualNetsController
      *
      * @param jade jade engine
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
+    public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
-                withUser(VirtualNetsController::data));
+                withUser(this::data));
     }
 
     /**
@@ -60,7 +68,7 @@ public class VirtualNetsController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String data(Request request, Response response, User user) {
+    public String data(Request request, Response response, User user) {
         Long serverId;
 
         try {
@@ -72,7 +80,7 @@ public class VirtualNetsController {
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
-        Map<String, JsonObject> infos = VirtManager.getNetworks(minionId);
+        Map<String, JsonObject> infos = virtManager.getNetworks(minionId);
         List<VirtualNetworkInfoJson> networks = infos.entrySet().stream().map(entry -> {
             VirtualNetworkInfoJson net = new VirtualNetworkInfoJson(entry.getKey(),
                     entry.getValue());

@@ -1,3 +1,11 @@
+- run DB schema upgrade automatically on package update
+- change notification data type to TEXT
+- Update schema for virtualization pool actions
+
+-------------------------------------------------------------------
+Thu Mar 19 12:19:27 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.5-1
 - Enable monitoring for ppc64le and aarch64 (bsc#1166613)
 
 -------------------------------------------------------------------

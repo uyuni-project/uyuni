@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -29,4 +29,14 @@ public interface NotificationData {
      * @return type of this notification
      */
     NotificationType getType();
+
+    /**
+     * @return translated summary of this notification
+     */
+    String getSummary();
+
+    /**
+     * @return details of this notification
+     */
+    String getDetails();
 }

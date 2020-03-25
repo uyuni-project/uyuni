@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.action;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -47,6 +49,11 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSchedulePollerAction;
@@ -68,10 +75,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -85,8 +93,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toSet;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -432,6 +438,21 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_CREATE)) {
             retval = new VirtualizationCreateAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_REFRESH)) {
+            retval = new VirtualizationPoolRefreshAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_START)) {
+            retval = new VirtualizationPoolStartAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_STOP)) {
+            retval = new VirtualizationPoolStopAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_DELETE)) {
+            retval = new VirtualizationPoolDeleteAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_CREATE)) {
+            retval = new VirtualizationPoolCreateAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -909,7 +930,12 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_SET_VCPUS) ||
                 actionType.equals(TYPE_VIRTUALIZATION_SHUTDOWN) ||
                 actionType.equals(TYPE_VIRTUALIZATION_START) ||
-                actionType.equals(TYPE_VIRTUALIZATION_SUSPEND);
+                actionType.equals(TYPE_VIRTUALIZATION_SUSPEND) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_CREATE) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_DELETE) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_START) ||
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP);
     }
 
     /**
@@ -1258,5 +1284,35 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_CREATE =
             lookupActionTypeByLabel("virt.create");
+
+    /**
+     * The constant representing "Refresh a virtual storage pool." [ID:509]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_REFRESH =
+            lookupActionTypeByLabel("virt.pool_refresh");
+
+    /**
+     * The constant representing "Start a virtual storage pool." [ID:510]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_START =
+            lookupActionTypeByLabel("virt.pool_start");
+
+    /**
+     * The constant representing "Stops a virtual storage pool." [ID:511]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_STOP =
+            lookupActionTypeByLabel("virt.pool_stop");
+
+    /**
+     * The constant representing "Deletes a virtual storage pool." [ID:512]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_DELETE =
+            lookupActionTypeByLabel("virt.pool_delete");
+
+    /**
+     * The constant representing "Creates a virtual storage pool." [ID:513]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_POOL_CREATE =
+            lookupActionTypeByLabel("virt.pool_create");
 }
 

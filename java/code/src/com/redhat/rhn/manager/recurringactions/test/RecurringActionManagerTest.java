@@ -5,6 +5,7 @@ import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.ORG;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
@@ -16,10 +17,10 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -73,7 +74,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
-        catch (PermissionException e) {
+        catch (ValidatorException e) {
             // no-op
         }
 
@@ -99,7 +100,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
-        catch (PermissionException e) {
+        catch (ValidatorException e) {
             // no-op
         }
 
@@ -125,7 +126,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.saveAndSchedule(recurringAction, anotherUser);
             fail("User shouldn't have access");
         }
-        catch (PermissionException e) {
+        catch (ValidatorException e) {
             // no-op
         }
 
@@ -154,9 +155,20 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         action.setName("hack the planet!");
         try {
             RecurringActionManager.saveAndSchedule(action, anotherUser);
-            fail("PermissionException should have been thrown");
+            fail("ValidatorException should have been thrown");
         }
-        catch (PermissionException e) {
+        catch (ValidatorException e) {
+            // no-op
+        }
+    }
+
+    public void testCreateOrgActionNoOrg() {
+        try {
+            // let's try to create an action for a nonexisting org
+            RecurringActionManager.createRecurringAction(ORG, -123456L, user);
+            fail("An exception should have been thrown");
+        }
+        catch (EntityNotExistsException e) {
             // no-op
         }
     }
@@ -231,7 +243,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         var recurringAction = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
-        RecurringActionManager.saveAndSchedule(recurringAction, user);
+        recurringAction = RecurringActionManager.saveAndSchedule(recurringAction, user);
 
         var sameAction = RecurringActionFactory.lookupById(recurringAction.getId()).get();
         var newName = "testname";
@@ -292,7 +304,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             RecurringActionManager.saveAndSchedule(sameAction, user);
             fail("An exception should have been thrown");
         }
-        catch (EntityExistsException e) {
+        catch (ValidatorException e) {
             // no-op
         }
     }
@@ -318,6 +330,27 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
         catch (EntityExistsException e) {
             fail("An exception shouldn't have been thrown");
+        }
+    }
+
+    public void testCreateActionWithInvalidCron() throws Exception {
+        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var invalidCron = "SOMETHING INVALID";
+
+        CONTEXT.checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
+        } });
+
+        var action = RecurringActionManager.createRecurringAction(MINION, minion.getId(), user);
+        action.setCronExpr(invalidCron);
+        action.setName("test-recurring-action");
+
+        try {
+            RecurringActionManager.saveAndSchedule(action, user);
+            fail("An exception should have been thrown");
+        }
+        catch (ValidatorException e) {
+            // no-op
         }
     }
 }

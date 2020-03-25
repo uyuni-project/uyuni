@@ -53,6 +53,12 @@ public class RecurringStateScheduleJson {
     /** Schedule creation date **/
     private Date createdAt;
 
+    /**  Login of the schedule creator **/
+    private String creatorLogin;
+
+    /**  Name of the Organization - only applicable for OrgRecurringAction **/
+    private String orgName;
+
     /**
      * Gets the recurringActionId.
      *
@@ -215,5 +221,23 @@ public class RecurringStateScheduleJson {
      */
     public void setCreated(Date createdAtIn) {
         this.createdAt = createdAtIn;
+    }
+
+    /**
+     *  Sets the creator login
+     *
+     * @param creatorLoginIn login name of the creator
+     */
+    public void setCreatorLogin(String creatorLoginIn) {
+        this.creatorLogin = creatorLoginIn;
+    }
+
+    /**
+     *  Sets the name of the organization
+     *
+     * @param orgNameIn name of the organization
+     */
+    public void setOrgName(String orgNameIn) {
+        this.orgName = orgNameIn;
     }
 }

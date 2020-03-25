@@ -13,6 +13,10 @@ const Functions = require("utils/functions");
 const Utils = Functions.Utils;
 const {AsyncButton, Button} = require("components/buttons");
 const { TopPanel } = require('components/panels/TopPanel');
+const escapeHtml = require('html-react-parser');
+const {Dialog} = require("components/dialog/Dialog");
+const {showDialog} = require("components/dialog/util");
+
 
 function reloadData(dataUrlSlice) {
   return Network.get('/rhn/manager/notification-messages/' + dataUrlSlice, "application/json").promise;
@@ -27,6 +31,7 @@ class NotificationMessages extends React.Component {
     loading: true,
     messages: [],
     selectedItems: [],
+    popupItem: null
   };
 
   UNSAFE_componentWillMount() {
@@ -153,6 +158,8 @@ class NotificationMessages extends React.Component {
       case 'OnboardingFailed': typeText = t('Onboarding failed'); break;
       case 'ChannelSyncFailed': typeText = t('Channel sync failed'); break;
       case 'ChannelSyncFinished': typeText = t('Channel sync finished'); break;
+      case 'CreateBootstrapRepoFailed': typeText = t('Creating Bootstrap Repository failed'); break;
+      case 'StateApplyFailed': typeText = t('State apply failed'); break;
     }
     return typeText;
   };
@@ -189,31 +196,25 @@ class NotificationMessages extends React.Component {
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
-  buildTextDescription = (row) => {
-    let description = null;
-    switch(row['type']) {
-      case 'OnboardingFailed':
-        description = 'Error registering minion id: ' + row['data']['minionId'];
-      break;
-      case 'ChannelSyncFailed':
-        description = 'Error syncing the channel: ' + row['data']['channelName'];
-      break;
-      case 'ChannelSyncFinished':
-        description = 'Channel ' + row['data']['channelName'] + ' sync completed';
-      break;
-      default: description = JSON.stringify(row['data']);
-    }
-    return description;
+  sortByType = (aRaw, bRaw, columnKey, sortDirection) => {
+    var result = this.decodeTypeText(aRaw[columnKey]).toLowerCase().localeCompare(this.decodeTypeText(bRaw[columnKey]).toLowerCase());
+    return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
+  };
+
+  buildSummaryText = (row) => {
+    var div = document.createElement("div");
+    div.innerHTML = row['summary']
+    return div.textContent || div.innerText || "";
   };
 
   sortByText = (aRaw, bRaw, columnKey, sortDirection) => {
-    var result = this.buildTextDescription(aRaw).toLowerCase().localeCompare(this.buildTextDescription(bRaw).toLowerCase());
+    var result = this.buildSummaryText(aRaw).toLowerCase().localeCompare(this.buildSummaryText(bRaw).toLowerCase());
     return (result || Utils.sortById(aRaw, bRaw)) * sortDirection;
   };
 
   searchData = (datum, criteria) => {
       if (criteria) {
-        return (this.buildTextDescription(datum)).toLowerCase().includes(criteria.toLowerCase());
+        return (this.buildSummaryText(datum)).toLowerCase().includes(criteria.toLowerCase());
       }
       return true;
   };
@@ -222,22 +223,32 @@ class NotificationMessages extends React.Component {
     return Object.keys(message).map((id) => message[id]);
   };
 
-  buildDescription = (row) => {
-    let description = null;
-    switch(row['type']) {
-      case 'OnboardingFailed':
-        description = 'Error registering minion id: ' + row['data']['minionId'];
-      break;
-      case 'ChannelSyncFailed':
-        description = <span>Error syncing the channel: <a href={"/rhn/channels/ChannelDetail.do?cid=" + row['data']['channelId']}>{row['data']['channelName']}</a></span>;
-      break;
-      case 'ChannelSyncFinished':
-        description = <span>Channel <a href={"/rhn/channels/ChannelDetail.do?cid=" + row['data']['channelId']}>{row['data']['channelName']}</a> sync completed</span>;
-      break;
-      default: description = JSON.stringify(row['data']);
-    }
-    return description;
+  showDetailsPopup = (row) => {
+    this.setState({popupItem: row});
+    showDialog("notifications-popup-dialog");
+  }
+
+  buildSummary = (row) => {
+    const popupLink = <a href="#" onClick={() => this.showDetailsPopup(row)}>{"[" + t("show details") + "]"}</a>;
+
+    return (
+      <span>
+        {escapeHtml(row['summary'])}
+        &nbsp;
+        {row['details'] && popupLink}
+      </span>
+    );
   };
+
+  buildPopupSummary = () => {
+    const summary = (this.state.popupItem || {}).summary || "";
+    return escapeHtml(summary);
+  }
+
+  buildPopupDetails = () => {
+    const details = (this.state.popupItem || {}).details || "";
+    return escapeHtml(details);
+  }
 
   retryOnboarding = (minionId) => {
     return Network.post("/rhn/manager/notification-messages/retry-onboarding/" + minionId, "application/json").promise
@@ -336,7 +347,7 @@ class NotificationMessages extends React.Component {
             searchField={
                 <SearchField filter={this.searchData}
                     criteria={""}
-                    placeholder={t("Filter by description")} />
+                    placeholder={t("Filter by summary")} />
             }>
             <Column
               columnKey="severity"
@@ -346,14 +357,15 @@ class NotificationMessages extends React.Component {
             />
             <Column
               columnKey="type"
+              comparator={this.sortByType}
               header={t("Type")}
               cell={ (row) => this.decodeTypeText(row['type'])}
             />
             <Column
-              columnKey="description"
+              columnKey="summary"
               comparator={this.sortByText}
-              header={t("Description")}
-              cell={ (row) => this.buildDescription(row) }
+              header={t("Summary")}
+              cell={ (row) => this.buildSummary(row) }
             />
             <Column
               columnKey="created"
@@ -383,6 +395,10 @@ class NotificationMessages extends React.Component {
               }
             />
           </Table>
+          <Dialog id="notifications-popup-dialog"
+            title={this.buildPopupSummary()}
+            content={this.buildPopupDetails()}
+          />
         </TopPanel>
       );
     }

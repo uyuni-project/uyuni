@@ -378,6 +378,55 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction"
+          discriminator-value="509" lazy="true">
+          <join table="rhnActionVirtPoolRefresh">
+            <key column="action_id"/>
+            <property name="poolName" type="string" column="pool_name"/>
+          </join>
+        </subclass>
+
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction"
+          discriminator-value="510" lazy="true">
+          <join table="rhnActionVirtPoolStart">
+            <key column="action_id"/>
+            <property name="poolName" type="string" column="pool_name"/>
+          </join>
+        </subclass>
+
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction"
+          discriminator-value="511" lazy="true">
+          <join table="rhnActionVirtPoolStop">
+            <key column="action_id"/>
+            <property name="poolName" type="string" column="pool_name"/>
+          </join>
+        </subclass>
+
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction"
+          discriminator-value="512" lazy="true">
+          <join table="rhnActionVirtPoolDelete">
+            <key column="action_id"/>
+            <property name="poolName" type="string" column="pool_name"/>
+            <property name="purge" type="yes_no" column="purge"/>
+          </join>
+        </subclass>
+
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction"
+          discriminator-value="513" lazy="true">
+          <join table="rhnActionVirtPoolCreate">
+            <key column="action_id"/>
+            <property name="poolName" type="string" column="pool_name"/>
+            <property name="uuid" type="string" column="uuid"/>
+            <property name="type" type="string" column="type"/>
+            <property name="target" type="string" column="target"/>
+            <property name="autostart" type="yes_no" column="autostart"/>
+            <property name="mode" type="string" column="permission_mode"/>
+            <property name="owner" type="string" column="permission_owner"/>
+            <property name="group" type="string" column="permission_group"/>
+            <property name="seclabel" type="string" column="permission_seclabel"/>
+            <property name="sourceAsString" type="string" column="source"/>
+          </join>
+        </subclass>
 
         <!-- PackageActions: 1, 3, 4, 8, 13, 14, 33 -->
         <!-- PackageAction is abstract - the subclasses only get instantiated -->
@@ -502,7 +551,22 @@ select {ra.*}
             NULL as arch,
             NULL as graphics_type,
             NULL as remove_disks,
-            NULL as remove_interfaces from dual) ra_11_
+            NULL as remove_interfaces from dual) ra_11_,
+    (select NULL as pool_name from dual) ra_12_,
+    (select NULL as pool_name from dual) ra_13_,
+    (select NULL as pool_name from dual) ra_14_,
+    (select NULL as pool_name,
+            NULL as purge from dual) ra_15_,
+    (select NULL as pool_name,
+            NULL as uuid,
+            NULL as type,
+            NULL as target,
+            NULL as autostart,
+            NULL as permission_mode,
+            NULL as permission_owner,
+            NULL as permission_group,
+            NULL as permission_seclabel,
+            NULL as source from dual) ra_16_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -613,7 +677,22 @@ select sa.server_id
                              NULL as arch,
                              NULL as graphics_type,
                              NULL as remove_disks,
-                             NULL as remove_interfaces from dual) ra_11_
+                             NULL as remove_interfaces from dual) ra_11_,
+                     (select NULL as pool_name from dual) ra_12_,
+                     (select NULL as pool_name from dual) ra_13_,
+                     (select NULL as pool_name from dual) ra_14_,
+                     (select NULL as pool_name,
+                             NULL as purge from dual) ra_15_,
+                     (select NULL as pool_name,
+                             NULL as uuid,
+                             NULL as type,
+                             NULL as target,
+                             NULL as autostart,
+                             NULL as permission_mode,
+                             NULL as permission_owner,
+                             NULL as permission_group,
+                             NULL as permission_seclabel,
+                             NULL as source from dual) ra_16_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id

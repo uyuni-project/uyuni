@@ -54,8 +54,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
 
         saltServiceMock = mock(SaltService.class);
-        manager = new KubernetesManager();
-        manager.setSaltService(saltServiceMock);
+        manager = new KubernetesManager(saltServiceMock);
 
         for (VirtualHostManager virtHostMgr : VirtualHostManagerFactory.getInstance().listVirtualHostManagers()) {
             VirtualHostManagerFactory.getInstance().delete(virtHostMgr);
@@ -253,7 +252,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(saltServiceMock).getAllContainers(with(kubeconfig), with(context));
             will(returnValue(Optional.of(new JsonParser<>(MgrK8sRunner.getAllContainers("", "").getReturnType()).parse(
-                    TestUtils.readRelativeFile(this, file)))));
+                    TestUtils.readRelativeFile(this, file)).getContainers())));
         } });
     }
 

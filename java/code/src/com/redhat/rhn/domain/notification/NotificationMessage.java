@@ -18,9 +18,12 @@ package com.redhat.rhn.domain.notification;
 import com.google.gson.Gson;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
 import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
+import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
+import com.redhat.rhn.domain.notification.types.StateApplyFailed;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -115,8 +118,12 @@ public class NotificationMessage implements Serializable {
         switch (getType()) {
             case OnboardingFailed: return new Gson().fromJson(getData(), OnboardingFailed.class);
             case ChannelSyncFailed: return new Gson().fromJson(getData(), ChannelSyncFailed.class);
-        case ChannelSyncFinished:
-            return new Gson().fromJson(getData(), ChannelSyncFinished.class);
+            case ChannelSyncFinished:
+                return new Gson().fromJson(getData(), ChannelSyncFinished.class);
+            case CreateBootstrapRepoFailed:
+                return new Gson().fromJson(getData(), CreateBootstrapRepoFailed.class);
+            case StateApplyFailed:
+                return new Gson().fromJson(getData(), StateApplyFailed.class);
             default: throw new RuntimeException("should not happen!");
         }
     }

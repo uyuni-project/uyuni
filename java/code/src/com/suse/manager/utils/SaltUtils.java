@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -54,6 +55,9 @@ import com.redhat.rhn.domain.image.ImageProfile;
 import com.redhat.rhn.domain.image.ImageProfileFactory;
 import com.redhat.rhn.domain.image.ImageRepoDigest;
 import com.redhat.rhn.domain.image.OSImageStoreUtils;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -65,6 +69,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
@@ -81,6 +86,7 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
@@ -142,6 +148,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -178,7 +185,7 @@ public class SaltUtils {
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
-    private SaltService saltService = SaltService.INSTANCE;
+    private SystemQuery systemQuery = SaltService.INSTANCE;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -520,6 +527,14 @@ public class SaltUtils {
             String message = "Successfully applied state(s): " + states;
             if (serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
                 message = "Failed to apply state(s): " + states;
+
+                NotificationMessage nm = UserNotificationFactory.createNotificationMessage(
+                        new StateApplyFailed(serverAction.getServer().getName(),
+                                serverAction.getServerId(), serverAction.getParentAction().getId()));
+
+                Set<User> admins = new HashSet<>(ServerFactory.listAdministrators(serverAction.getServer()));
+                // TODO: are also org admins and the creator part of this list?
+                UserNotificationFactory.storeForUsers(nm, admins);
             }
             if (applyStatesAction.getDetails().isTest()) {
                 message += " (test-mode)";
@@ -623,7 +638,7 @@ public class SaltUtils {
                 // Make sure grains are updated after dist upgrade
                 serverAction.getServer().asMinionServer().ifPresent(minionServer -> {
                     MinionList minionTarget = new MinionList(minionServer.getMinionId());
-                    saltService.syncGrains(minionTarget);
+                    systemQuery.syncGrains(minionTarget);
                 });
             }
 
@@ -658,6 +673,12 @@ public class SaltUtils {
             JsonObject result = jsonResult.getAsJsonObject();
             String key = result.keySet().iterator().next();
             serverAction.setResultMsg(result.get(key).getAsJsonObject().get("comment").getAsString());
+        }
+        else if (action instanceof BaseVirtualizationPoolAction) {
+            // Tell VirtNotifications that we got a pool action change, passing action
+            VirtNotifications.spreadActionUpdate(action);
+            // Intentionally don't get only the comment since the changes value could be interesting
+            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
@@ -862,7 +883,7 @@ public class SaltUtils {
             serverAction.getServer().asMinionServer().ifPresent(
                     minion -> {
                         try {
-                            Map<Boolean, String> moveRes = saltService.storeMinionScapFiles(
+                            Map<Boolean, String> moveRes = systemQuery.storeMinionScapFiles(
                                     minion, openscapResult.getUploadDir(), action.getId());
                             moveRes.entrySet().stream().findFirst().ifPresent(moved -> {
                                 if (moved.getKey()) {
@@ -935,7 +956,7 @@ public class SaltUtils {
                                     .getKiwiBuildInfo().getChanges().getRet().getBundle();
                     infoOpt.ifPresent(info -> info.setChecksum(
                             ImageInfoFactory.convertChecksum(bundleInfo.getChecksum())));
-                    MgrUtilRunner.ExecResult collectResult = saltService
+                    MgrUtilRunner.ExecResult collectResult = systemQuery
                             .collectKiwiImage(minionServer, bundleInfo.getFilepath(),
                                     OSImageStoreUtils.getOsImageStorePath() + kiwiProfile.getTargetStore().getUri())
                             .orElseThrow(() -> new RuntimeException("Failed to download image."));
@@ -1244,7 +1265,7 @@ public class SaltUtils {
             try {
                 FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
-                saltService.refreshPillar(new MinionList(server.getMinionId()));
+                systemQuery.refreshPillar(new MinionList(server.getMinionId()));
             }
             catch (IOException e) {
                 LOG.error("Could not enable blackout formula", e);
@@ -1691,10 +1712,10 @@ public class SaltUtils {
 
     /**
      * For unit testing only.
-     * @param saltServiceIn the {@link SaltService} to set
+     * @param systemQueryIn the {@link SaltService} to set
      */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
+    public void setSystemQuery(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**

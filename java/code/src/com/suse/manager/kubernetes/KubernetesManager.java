@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -48,14 +49,15 @@ public class KubernetesManager {
     private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
     private static final String DOCKER_PULLABLE = "docker-pullable://";
 
-    private SaltService saltService;
+    private final SystemQuery systemQuery;
 
     /**
      * No arg constructor.
      * Configures this with the default {@link SaltService} instance.
+     * @param systemQueryIn instance for getting information from a system.
      */
-    public KubernetesManager() {
-        this.saltService = SaltService.INSTANCE;
+    public KubernetesManager(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**
@@ -100,8 +102,8 @@ public class KubernetesManager {
                         .findFirst();
 
                 if (kubeconfig.isPresent() && context.isPresent()) {
-                    Optional<MgrK8sRunner.ContainersList> containers =
-                            saltService.getAllContainers(kubeconfig.get(), context.get());
+                    Optional<List<MgrK8sRunner.Container>> containers =
+                            systemQuery.getAllContainers(kubeconfig.get(), context.get());
 
                     if (!containers.isPresent()) {
                         LOG.error("No container info returned by runner call " +
@@ -110,7 +112,7 @@ public class KubernetesManager {
                     }
 
                     // Loop through 'running' containers (with container id present)
-                    containers.get().getContainers().stream()
+                    containers.get().stream()
                             .filter(c -> c.getContainerId().isPresent()).forEach(container -> {
                         String imgDigest = container.getImageId();
                         if (imgDigest.startsWith(DOCKER_PULLABLE)) {
@@ -193,10 +195,4 @@ public class KubernetesManager {
         return imgToUsage.values().stream().collect(Collectors.toSet());
     }
 
-    /**
-     * @param saltServiceIn to set
-     */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
-    }
 }

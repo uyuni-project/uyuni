@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
@@ -41,13 +42,13 @@ import java.util.stream.Collectors;
 public class FormulaManager {
 
     private static FormulaManager instance;
-    private SaltService saltService;
+    private SystemQuery systemQuery;
     private static final String DEFAULT_KEY = "$default";
     private static final String TYPE_KEY = "$type";
     private static final String EDIT_GROUP = "edit-group";
     private static final String PROTOTYPE = "$prototype";
     private FormulaManager() {
-        saltService = SaltService.INSTANCE;
+        systemQuery = SaltService.INSTANCE;
     }
 
     /**
@@ -64,10 +65,10 @@ public class FormulaManager {
 
     /**
      * This method is only for testing purpose.
-     * @param saltServiceIn to set
+     * @param systemQueryIn to set
      */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
+    public void setSystemQuery(SaltService systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**
@@ -84,7 +85,7 @@ public class FormulaManager {
                 .orElseThrow(() -> new IllegalArgumentException("Minion " + systemId + " not found."));
         FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
         FormulaFactory.saveServerFormulaData(content, minion.getMinionId(), formulaName);
-        saltService.refreshPillar(new MinionList(minion.getMinionId()));
+        systemQuery.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
     /**
@@ -104,7 +105,7 @@ public class FormulaManager {
         List<String> minionIds = group.getServers().stream()
             .flatMap(s -> Opt.stream(s.asMinionServer()))
             .map(MinionServer::getMinionId).collect(Collectors.toList());
-        saltService.refreshPillar(new MinionList(minionIds));
+        systemQuery.refreshPillar(new MinionList(minionIds));
     }
 
     /**

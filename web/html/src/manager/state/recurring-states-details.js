@@ -107,6 +107,16 @@ class RecurringStatesDetails extends React.Component {
                             <td>{t("Target type")}:</td>
                             <td>{t(targetTypeToString(data.targetType))}</td>
                         </tr>
+                        { entityType === "NONE" && data.targetType === "ORG" &&
+                        <tr>
+                            <td>{t("Organization name")}:</td>
+                            <td>{data.orgName}</td>
+                        </tr>
+                        }
+                        <tr>
+                            <td>{t("Created by")}:</td>
+                            <td>{t(data.creatorLogin)}</td>
+                        </tr>
                         {<tr>
                             <td>{t("Created at")}:</td>
                             <td>{data.createdAt + " " + timezone}</td>
@@ -165,7 +175,9 @@ class RecurringStatesDetails extends React.Component {
                               content={<span>{t("Are you sure you want to delete this schedule?")}</span>}
                               onConfirm={() => this.props.onDelete(this.props.data)}
                 />
-                <DisplayHighstate minions={this.state.minions}/>
+                {entityType === "NONE" ? null :
+                    <DisplayHighstate minions={this.state.minions}/>
+                }
             </TopPanel>
         );
     }

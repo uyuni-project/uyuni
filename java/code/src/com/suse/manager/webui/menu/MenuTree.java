@@ -282,12 +282,12 @@ public class MenuTree {
             // Schedule
             nodes.add(new MenuItem("Schedule").withIcon("fa-clock-o").withDir("/rhn/schedule")
                 .addChild(new MenuItem("Pending Actions").withPrimaryUrl("/rhn/schedule/PendingActions.do"))
-                .addChild(new MenuItem("Recurring Actions").withPrimaryUrl("/rhn/manager/schedule/recurring-actions"))
                 .addChild(new MenuItem("Failed Actions").withPrimaryUrl("/rhn/schedule/FailedActions.do"))
                 .addChild(new MenuItem("Completed Actions").withPrimaryUrl("/rhn/schedule/CompletedActions.do"))
                 .addChild(new MenuItem("Archived Actions").withPrimaryUrl("/rhn/schedule/ArchivedActions.do"))
                 .addChild(new MenuItem("Action Chains").withPrimaryUrl("/rhn/schedule/ActionChains.do")
                     .withAltUrl("/rhn/schedule/ActionChain.do"))
+                .addChild(new MenuItem("Recurring States").withPrimaryUrl("/rhn/manager/schedule/recurring-states"))
                 );
 
             // Users

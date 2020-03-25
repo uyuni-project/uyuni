@@ -14,10 +14,16 @@
  */
 package com.suse.manager.webui.services;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
+import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
+import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -54,6 +60,11 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
@@ -88,6 +99,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
@@ -95,8 +111,8 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -112,6 +128,21 @@ import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.Logger;
+import org.cobbler.CobblerConnection;
+import org.cobbler.Distro;
+import org.cobbler.Profile;
+import org.cobbler.SystemRecord;
+import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
+import org.jose4j.lang.JoseException;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -142,29 +173,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
-import org.cobbler.CobblerConnection;
-import org.cobbler.Distro;
-import org.cobbler.Profile;
-import org.cobbler.SystemRecord;
-import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
-import org.jose4j.lang.JoseException;
-
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_COMPLETED;
-import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
-import static com.suse.manager.webui.services.SaltConstants.SALT_FS_PREFIX;
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.singletonMap;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
 
 /**
  * Takes {@link Action} objects to be executed via salt.
@@ -172,7 +180,7 @@ import static java.util.stream.Collectors.toList;
 public class SaltServerActionService {
 
     /* Singleton instance of this class */
-    public static final SaltServerActionService INSTANCE = new SaltServerActionService();
+    public static final SaltServerActionService INSTANCE = new SaltServerActionService(SaltService.INSTANCE);
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
@@ -201,10 +209,17 @@ public class SaltServerActionService {
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
-    private SaltService saltService = SaltService.INSTANCE;
+    private SystemQuery systemQuery;
     private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
     private SaltUtils saltUtils = SaltUtils.INSTANCE;
     private boolean skipCommandScriptPerms;
+
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public SaltServerActionService(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
+    }
 
     private Action unproxy(Action entity) {
         Hibernate.initialize(entity);
@@ -354,6 +369,32 @@ public class SaltServerActionService {
             KickstartInitiateAction autoInitAction = (KickstartInitiateAction)actionIn;
             return autoinstallInitAction(minions, autoInitAction);
         }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_REFRESH.equals(actionType)) {
+            VirtualizationPoolRefreshAction refreshAction =
+                    (VirtualizationPoolRefreshAction)actionIn;
+            return virtPoolRefreshAction(minions, refreshAction.getPoolName());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_START.equals(actionType)) {
+            VirtualizationPoolStartAction startAction =
+                    (VirtualizationPoolStartAction)actionIn;
+            return virtPoolStateChangeAction(minions, startAction.getPoolName(), "start");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_STOP.equals(actionType)) {
+            VirtualizationPoolStopAction stopAction =
+                    (VirtualizationPoolStopAction)actionIn;
+            return virtPoolStateChangeAction(minions, stopAction.getPoolName(), "stop");
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_DELETE.equals(actionType)) {
+            VirtualizationPoolDeleteAction deleteAction =
+                    (VirtualizationPoolDeleteAction)actionIn;
+            return virtPoolDeleteAction(minions, deleteAction.getPoolName(),
+                    deleteAction.isPurge());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_POOL_CREATE.equals(actionType)) {
+            VirtualizationPoolCreateAction createAction =
+                    (VirtualizationPoolCreateAction)actionIn;
+            return virtPoolCreateAction(minions, createAction);
+        }
         else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Action type " +
@@ -484,11 +525,10 @@ public class SaltServerActionService {
         // start the action chain synchronously
         try {
             // first check if there's an action chain with a reboot already executing
-            Map<String, Result<Map<String, String>>> pendingResumeConf = saltService.callSync(
-                    MgrActionChains.getPendingResume(),
-                    new MinionList(sshMinions.stream().map(minion -> minion.getMinionId())
-                            .collect(Collectors.toList())));
-
+            Map<String, Result<Map<String, String>>> pendingResumeConf = systemQuery.getPendingResume(
+                    sshMinions.stream().map(minion -> minion.getMinionId())
+                            .collect(Collectors.toList())
+            );
             List<MinionSummary> targetSSHMinions = sshMinions.stream()
                     .filter(sshMinion -> {
                         Optional<Map<String, String>> confValues = pendingResumeConf.get(sshMinion.getMinionId())
@@ -1640,6 +1680,26 @@ public class SaltServerActionService {
         return ret;
     }
 
+    private Map<LocalCall<?>, List<MinionSummary>> virtPoolRefreshAction(
+            List<MinionSummary> minionSummaries, String poolName) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_name", poolName);
+
+                    return State.apply(
+                            Collections.singletonList("virt.pool-refreshed"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
     private String buildKernelOptions(SystemRecord sys, Profile prof, Distro dist, String host) {
         String breed = dist.getBreed();
         Map<String, Object> kopts =
@@ -1697,6 +1757,129 @@ public class SaltServerActionService {
             }
         }
         return string.toString();
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtPoolStateChangeAction(
+            List<MinionSummary> minionSummaries, String poolName, String state) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_state", state);
+                    pillar.put("pool_name", poolName);
+
+                    return State.apply(
+                            Collections.singletonList("virt.pool-statechange"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtPoolDeleteAction(
+            List<MinionSummary> minionSummaries, String poolName, boolean purge) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_name", poolName);
+                    pillar.put("pool_purge", purge);
+
+                    return State.apply(
+                            Collections.singletonList("virt.pool-deleted"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtPoolCreateAction(
+            List<MinionSummary> minionSummaries, VirtualizationPoolCreateAction action) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+                    Map<String, Object> pillar = new HashMap<>();
+                    pillar.put("pool_name", action.getPoolName());
+                    pillar.put("pool_type", action.getType());
+                    pillar.put("autostart", action.isAutostart());
+                    pillar.put("target", action.getTarget());
+
+                    Map<String, Object> permissions = new HashMap<>();
+                    permissions.put("mode", action.getMode());
+                    permissions.put("owner", action.getOwner());
+                    permissions.put("group", action.getGroup());
+                    permissions.put("label", action.getSeclabel());
+                    pillar.put("permissions", permissions);
+                    pillar.put("autostart", action.isAutostart());
+
+                    if (action.getSource() != null) {
+                        Map<String, Object> source = new HashMap<>();
+                        source.put("dir", action.getSource().getDir());
+                        source.put("name", action.getSource().getName());
+                        source.put("format", action.getSource().getFormat());
+                        source.put("initiator", action.getSource().getInitiator());
+                        source.put("hosts", action.getSource().getHosts());
+                        if (action.getSource().getAuth() != null) {
+                            Map<String, Object> auth = new HashMap<>();
+                            auth.put("username", action.getSource().getAuth().getUsername());
+                            // TODO We surely need this one encrypted
+                            auth.put("password", action.getSource().getAuth().getPassword());
+                            source.put("auth", auth);
+                        }
+                        if (action.getSource().getAdapter() != null) {
+                            Map<String, Object> adapter = new HashMap<>();
+                            adapter.put("type", action.getSource().getAdapter().getType());
+                            adapter.put("name", action.getSource().getAdapter().getName());
+                            adapter.put("parent", action.getSource().getAdapter().getParent());
+                            adapter.put("managed", action.getSource().getAdapter().isManaged());
+                            adapter.put("parent_wwnn", action.getSource().getAdapter().getParentWwnn());
+                            adapter.put("parent_wwpn", action.getSource().getAdapter().getParentWwpn());
+                            adapter.put("parent_fabric_wwn", action.getSource().getAdapter().getParentWwnn());
+                            adapter.put("wwnn", action.getSource().getAdapter().getWwnn());
+                            adapter.put("wwpn", action.getSource().getAdapter().getWwpn());
+
+                            Map<String, Object> parentAddress = new HashMap<>();
+                            if (action.getSource().getAdapter().getParentAddressUid() != null) {
+                                parentAddress.put("unique_id", action.getSource().getAdapter().getParentAddressUid());
+                            }
+                            if (action.getSource().getAdapter().getParentAddress() != null) {
+                                parentAddress.put("address", action.getSource().getAdapter().getParentAddressParsed());
+                            }
+                            if (!parentAddress.isEmpty()) {
+                                adapter.put("parent_address", parentAddress);
+                            }
+
+                            source.put("adapter", adapter);
+                        }
+                        if (action.getSource().getDevices() != null) {
+                            source.put("devices", action.getSource().getDevices().stream().map(device -> {
+                                Map<String, Object> deviceParam = new HashMap<>();
+                                deviceParam.put("path", device.getPath());
+                                device.isSeparator().ifPresent(sep -> deviceParam.put("part_separator", sep));
+                                return deviceParam;
+                            }));
+                        }
+                        pillar.put("source", source);
+                    }
+                    pillar.put("action_type", action.getUuid() != null ? "defined" : "running");
+
+                    return State.apply(
+                            Collections.singletonList("virt.pool-create"),
+                            Optional.of(pillar));
+                },
+                Collections::singletonList
+        ));
+
+        ret.remove(null);
+
+        return ret;
     }
 
     /**
@@ -1853,7 +2036,7 @@ public class SaltServerActionService {
                 Optional<JsonElement> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
-                    result = saltService.callSync(new ElementCallJson(call), minion.getMinionId());
+                    result = systemQuery.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: " + action.getName() +
@@ -1965,10 +2148,10 @@ public class SaltServerActionService {
 
     /**
      * Only used in unit tests.
-     * @param saltServiceIn to set
+     * @param systemQueryIn to set
      */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
+    public void setSystemQuery(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**

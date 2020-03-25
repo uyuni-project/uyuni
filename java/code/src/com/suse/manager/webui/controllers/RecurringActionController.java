@@ -23,12 +23,16 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.RecurringEventPicker;
+import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.Type;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -39,6 +43,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -51,6 +56,7 @@ import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -69,8 +75,8 @@ public class RecurringActionController {
      * @param jade the template engine
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/schedule/recurring-actions",
-                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringActions))),
+        get("/manager/schedule/recurring-states",
+                withUserPreferences(withCsrfToken(withUser(RecurringActionController::recurringStates))),
                 jade);
 
         get("/manager/api/recurringactions", withUser(RecurringActionController::listAll));
@@ -80,15 +86,15 @@ public class RecurringActionController {
     }
 
     /**
-     * Handler for the Recurring Actions schedule page.
+     * Handler for the Recurring States schedule page.
      *
      * @param request the request object
      * @param response the response object
      * @param user the current user
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView recurringActions(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
+    public static ModelAndView recurringStates(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-states.jade");
     }
 
     /**
@@ -103,7 +109,7 @@ public class RecurringActionController {
         List<RecurringStateScheduleJson> schedules =
                 actionsToJson(RecurringActionManager.listAllRecurringActions(user));
 
-        return json(response, ResultJson.success(schedules));
+        return json(response, schedules);
     }
 
     /**
@@ -133,7 +139,7 @@ public class RecurringActionController {
                 throw new IllegalStateException("Unsupported type " + type);
         }
 
-        return json(response, ResultJson.success(actionsToJson(schedules)));
+        return json(response, actionsToJson(schedules));
     }
 
     private static List<RecurringStateScheduleJson> actionsToJson(List<? extends RecurringAction> actions) {
@@ -164,6 +170,10 @@ public class RecurringActionController {
         json.setTargetType(targetType.toString());
         json.setTargetId(a.getEntityId());
         json.setCreated(a.getCreated());
+        json.setCreatorLogin(a.getCreator().getLogin());
+        if (a instanceof OrgRecurringAction) {
+            json.setOrgName(OrgFactory.lookupById(a.getEntityId()).getName());
+        }
         return json;
     }
 
@@ -181,32 +191,31 @@ public class RecurringActionController {
         List<String> errors = new LinkedList<>();
 
         RecurringStateScheduleJson json = GSON.fromJson(request.body(), RecurringStateScheduleJson.class);
-        RecurringAction action = createOrGetAction(user, json);
-        mapJsonToAction(json, action);
 
         try {
+            RecurringAction action = createOrGetAction(user, json);
+            RecurringActionFactory.getSession().evict(action); // entity -> detached, prevent hibernate flushes
+            mapJsonToAction(json, action);
             RecurringActionManager.saveAndSchedule(action, user);
         }
-        catch (EntityExistsException e) {
-            errors.add("Action with given name already exists.");
+        catch (ValidatorException e) {
+            errors.add(e.getMessage()); // we assume the messages are already localized
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
         }
         catch (TaskomaticApiException e) {
-            errors.add("Error when scheduling the action.");
+            LOG.error("Rolling back transaction because of Taskomatic exception", e);
+            HibernateFactory.rollbackTransaction();
+            String errMsg = LocalizationService.getInstance().getMessage("recurring_action.taskomatic_error");
+            Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE, GSON.toJson(ResultJson.error(errMsg)));
         }
 
-        if (errors.isEmpty()) {
-            return json(response, ResultJson.success());
-        }
-
-        return json(response, ResultJson.error(errors));
+        return json(response, ResultJson.success());
     }
 
     private static RecurringAction createOrGetAction(User user, RecurringStateScheduleJson json) {
         if (json.getRecurringActionId() == null) {
-            return RecurringActionManager.createRecurringAction(
-                    Type.valueOf(json.getTargetType().toUpperCase()),
-                    json.getTargetId(),
-                    user);
+            Type type = Type.valueOf(json.getTargetType().toUpperCase());
+            return RecurringActionManager.createRecurringAction(type, json.getTargetId(), user);
         }
         else {
             return RecurringActionFactory.lookupById(json.getRecurringActionId()).orElseThrow();
@@ -225,13 +234,16 @@ public class RecurringActionController {
         long id = Long.parseLong(request.params("id"));
         Optional<RecurringAction> action = RecurringActionFactory.lookupById(id);
         if (action.isEmpty()) {
-            return json(response, ResultJson.error("Schedule with id: " + id + " does not exists"));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Schedule with id: " + id + " does not exists");
         }
         try {
             RecurringActionManager.deleteAndUnschedule(action.get(), user);
         }
         catch (TaskomaticApiException e) {
-            return json(response, ResultJson.error("Error when deleting the action"));
+            LOG.error("Rolling back transaction because of Taskomatic exception", e);
+            HibernateFactory.rollbackTransaction();
+            // Report just code. It seems that body in the DELETE response is not sent correctly
+            Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
         }
         return json(response, ResultJson.success());
     }

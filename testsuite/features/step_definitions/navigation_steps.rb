@@ -23,6 +23,12 @@ When(/^I click on "([^"]+)" in row "([^"]+)"$/) do |link, item|
   end
 end
 
+When(/^I click on "([^"]+)" in tree item "(.*?)"$/) do |button, item|
+  within(:xpath, "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]") do
+    click_link_or_button_and_wait(button)
+  end
+end
+
 Then(/^the current path is "([^"]*)"$/) do |arg1|
   raise "Path #{current_path} different than #{arg1}" unless current_path == arg1
 end

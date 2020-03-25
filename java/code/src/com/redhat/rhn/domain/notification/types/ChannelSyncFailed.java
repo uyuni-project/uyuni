@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 
 /**
@@ -48,13 +49,36 @@ public class ChannelSyncFailed implements NotificationData {
         return channelName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
         return NotificationMessage.NotificationMessageSeverity.error;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationType getType() {
         return NotificationType.ChannelSyncFailed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSummary() {
+        return LocalizationService.getInstance().getMessage("notification.channelsyncfailed",
+                getChannelId().toString(), getChannelName());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDetails() {
+        return "";
     }
 }

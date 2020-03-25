@@ -1,7 +1,7 @@
 /* eslint-disable */
 'use strict';
 
-import {Button} from "components/buttons";
+import {LinkButton} from "components/buttons";
 
 const React = require("react");
 const ReactDOM = require("react-dom");
@@ -80,69 +80,12 @@ class Highstate extends React.Component {
         this.setState({actionChain: actionChain})
     };
 
-    onMessageChanged = (message) => {
-        this.setState({messages: message});
-    };
-
-    handleForwardAction = (action) => {
-        const loc = window.location;
-        if(action === "back") {
-            history.pushState(null, null, loc.pathname + loc.search);
-            this.setState({
-               action: undefined
-            });
-        } else {
-            const pathname = loc.pathname.replace("highstate", "states/schedules");
-            Functions.Utils.urlBounce(pathname + loc.search);
-        }
-    };
-
     toggleTestState = () => {
         this.setState({test: !this.state.test})
     };
 
     isSSM = () => {
         return window.entityType === "SSM" ? true : false;
-    };
-
-    updateSchedule =(schedule) => {
-        return Network.post(
-            "/rhn/manager/api/recurringactions/save",
-            JSON.stringify(schedule),
-            "application/json"
-        ).promise.then((data) => {
-            // HACK: propagate the errors from messages to the UI
-            let newMsgs = [];
-            const decorator = data.success ? MessagesUtils.info : MessagesUtils.error;
-            if (data.messages === undefined || data.messages.length === 0) {
-                // no explicit messages from the server -> let's display a generic one
-                const defaultMsg = data.success
-                      ? <span>{t("Schedule successully created.")}</span>
-                      : <span>{t("Error on saving schedule.")}</span>;
-                newMsgs = decorator(defaultMsg);
-            }
-            else {
-                newMsgs = decorator.apply(null, data.messages);
-            }
-
-            const msgs = this.state.messages.concat(newMsgs);
-
-            while (msgs.length > messagesCounterLimit) {
-                msgs.shift();
-            }
-
-            this.onMessageChanged(msgs);
-            this.setState({
-                messages: msgs
-            });
-
-            if (data.success) {
-                this.handleForwardAction();
-            } else {
-                this.handleResponseError();
-            }
-
-        }).catch(this.handleResponseError);
     };
 
     render() {
@@ -153,16 +96,16 @@ class Highstate extends React.Component {
                 <AsyncButton action={this.applyHighstate} defaultType="btn-success" text={t("Apply Highstate")} disabled={minions.length === 0} />
             </div>
         ];
+
+        const loc = window.location;
+        const createLink = loc.pathname.replace("/highstate", "/recurring-states") +
+              loc.search + "#/create";
         const buttonsLeft = [
-            <Button
-                className="btn-default"
+            <LinkButton
                 icon="fa-plus"
-                text={t("Create Recurring")}
-                title="Schedule a new Recurring Highstate"
-                handler={() => {
-                    history.pushState(null, null, "#/create");
-                    this.setState({action: "create"});}}
-            />
+                href={createLink}
+                className="btn-default"
+                text={t("Create Recurring")}/>
         ];
         const showHighstate = [
             <InnerPanel title={t("Highstate")} icon="spacewalk-icon-salt" buttons={buttons} buttonsLeft={this.isSSM() ? undefined : buttonsLeft}>
@@ -187,11 +130,7 @@ class Highstate extends React.Component {
         return (
             <div>
                 {messages}
-                { this.state.action === "create" ?
-                    <RecurringStatesEdit onActionChanged={this.handleForwardAction}
-                                         onEdit={this.updateSchedule}/> :
-                    showHighstate
-                }
+                {showHighstate}
             </div>
         );
     }

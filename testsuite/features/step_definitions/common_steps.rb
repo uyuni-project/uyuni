@@ -461,7 +461,31 @@ When(/^I select "([^\"]*)" as a product$/) do |product|
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
-And(/^I open the sub-list of the product "(.*?)"$/) do |product|
+When(/I wait until the tree item "([^"]+)" has no sub-list/) do |item|
+  repeat_until_timeout(message: "could still find a sub list for tree item #{item}") do
+    xpath = "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-')]"
+    begin
+      find(:xpath, xpath)
+      sleep 1
+    rescue Capybara::ElementNotFound
+      break
+    end
+  end
+end
+
+When(/^I wait until the tree item "([^"]+)" contains "([^"]+)" text$/) do |item, text|
+  within(:xpath, "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]") do
+    raise "could not find text #{text} for tree item #{item}" unless has_text?(text, wait: DEFAULT_TIMEOUT)
+  end
+end
+
+When(/^I wait until the tree item "([^"]+)" contains "([^"]+)" button$/) do |item, button|
+  xpath_query = "//span[contains(text(), '#{item}')]/"\
+      "ancestor::div[contains(@class, 'product-details-wrapper')]/descendant::*[@title='#{button}']"
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
+end
+
+When(/^I open the sub-list of the product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-right')]"
   # within(:xpath, xpath) do
   #   raise unless find('i.fa-angle-down').click
@@ -573,8 +597,18 @@ Then(/^file "([^"]*)" should exist on "([^"]*)"$/) do |filename, host|
   node.run("test -f #{filename}", true)
 end
 
+Then(/^file "([^"]*)" should have ([0-9]+) permissions on "([^"]*)"$/) do |filename, permissions, host|
+  node = get_target(host)
+  node.run("test \"`stat -c '%a' #{filename}`\" = \"#{permissions}\"", true)
+end
+
 Then(/^file "([^"]*)" should not exist on server$/) do |filename|
   $server.run("test ! -f #{filename}")
+end
+
+Then(/^file "([^"]*)" should not exist on "([^"]*)"$/) do |filename, host|
+  node = get_target(host)
+  node.run("test ! -f #{filename}")
 end
 
 When(/^I store "([^"]*)" into file "([^"]*)" on "([^"]*)"$/) do |content, filename, host|
@@ -1072,4 +1106,15 @@ When(/^I add the "([^"]*)" channel to sources$/) do |channel|
   within(:xpath, "//span[text()='#{channel}']/../..") do
     raise "Add channel failed" unless find(:xpath, './/input[@type="checkbox"]').set(true)
   end
+end
+
+When(/^I click the "([^\"]*)" recurring action (.*?) button$/) do |action_name, action|
+  button = case action
+           when /details/ then "i[contains(@class, 'fa-list')]"
+           when /edit/ then "i[contains(@class, 'fa-edit')]"
+           when /delete/ then "i[contains(@class, 'fa-trash')]"
+           else raise "Unknown element with description '#{action}'"
+           end
+  xpath = "//td[contains(text(), '#{action_name}')]/ancestor::tr[contains(@class, 'list-row-even')]/td/div/button/#{button}"
+  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end

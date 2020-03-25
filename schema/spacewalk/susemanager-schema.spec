@@ -24,7 +24,7 @@ Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
 Group:          Applications/Internet
 
-Version:        4.1.4
+Version:        4.1.5
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -102,6 +102,9 @@ else
     touch /var/adm/update-messages/%{name}-%{version}-%{release}
 fi
 %endif
+
+%posttrans
+systemctl try-restart uyuni-check-database.service ||:
 
 %files
 %defattr(-,root,root)

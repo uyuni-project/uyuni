@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -47,9 +47,8 @@ Feature: Sanity checks
     And "xen_server" should communicate with the server
 
   Scenario: The external resources can be reached
-    Then it should be possible to download the file "http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key"
-    And it should be possible to download the file "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/repodata/repomd.xml"
-    And it should be possible to download the file "https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile"
-    And it should be possible to download the file "https://github.com/uyuni-project/uyuni/blob/master/README.md"
+    Then it should be possible to reach the download site
+    And it should be possible to reach the container profiles
+    And it should be possible to reach the test suite profiles
     And it should be possible to reach the portus registry
     And it should be possible to reach the other registry

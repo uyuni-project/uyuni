@@ -62,7 +62,6 @@ import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.utils.ImagesUtil;
 import com.suse.manager.webui.errors.NotFoundException;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
@@ -99,49 +98,54 @@ public class ImageBuildController {
     private static final ViewHelper VIEW_HELPER = ViewHelper.INSTANCE;
     private static Logger log = Logger.getLogger(ImageBuildController.class);
 
-    private static final KubernetesManager K8S_MANAGER = new KubernetesManager();
+    private final KubernetesManager kubernetesManager;
 
-    private ImageBuildController() {
-        K8S_MANAGER.setSaltService(SaltService.INSTANCE);
+    /**
+     * Spark controller class for image building and listing.
+     * @param kubernetesManagerIn instance for getting information from a kubernetes cluster.
+     */
+    public ImageBuildController(KubernetesManager kubernetesManagerIn) {
+        this.kubernetesManager = kubernetesManagerIn;
     }
 
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      *
+     * @param imageBuildController instance to register
      * @param jade the Jade engine to use to render the pages
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
-        Spark.get("/manager/cm/build", withCsrfToken(withUser(ImageBuildController::buildView)),
+    public static void initRoutes(JadeTemplateEngine jade, ImageBuildController imageBuildController) {
+        Spark.get("/manager/cm/build", withCsrfToken(withUser(imageBuildController::buildView)),
                 jade);
-        Spark.get("/manager/cm/import", withCsrfToken(withUser(ImageBuildController::importView)),
+        Spark.get("/manager/cm/import", withCsrfToken(withUser(imageBuildController::importView)),
                 jade);
         Spark.get("/manager/cm/rebuild/:id",
-                withCsrfToken(withUser(ImageBuildController::rebuild)), jade);
+                withCsrfToken(withUser(imageBuildController::rebuild)), jade);
 
-        Spark.get("/manager/api/cm/build/hosts/:type", withUser(ImageBuildController::getBuildHosts));
-        post("/manager/api/cm/build/:id", withImageAdmin(ImageBuildController::build));
+        Spark.get("/manager/api/cm/build/hosts/:type", withUser(imageBuildController::getBuildHosts));
+        post("/manager/api/cm/build/:id", withImageAdmin(imageBuildController::build));
 
-        Spark.get("/manager/cm/images", withUserPreferences(withCsrfToken(withUser(ImageBuildController::listView))),
+        Spark.get("/manager/cm/images", withUserPreferences(withCsrfToken(withUser(imageBuildController::listView))),
                 jade);
 
-        Spark.get("/manager/api/cm/images", withUser(ImageBuildController::list));
-        Spark.get("/manager/api/cm/images/:id", withUser(ImageBuildController::get));
-        Spark.get("/manager/api/cm/clusters", withUser(ImageBuildController::getClusterList));
+        Spark.get("/manager/api/cm/images", withUser(imageBuildController::list));
+        Spark.get("/manager/api/cm/images/:id", withUser(imageBuildController::get));
+        Spark.get("/manager/api/cm/clusters", withUser(imageBuildController::getClusterList));
         Spark.get("/manager/api/cm/runtime/:clusterId",
-                withUser(ImageBuildController::getRuntimeSummaryAll));
+                withUser(imageBuildController::getRuntimeSummaryAll));
         Spark.get("/manager/api/cm/runtime/:clusterId/:id",
-                withUser(ImageBuildController::getRuntimeSummary));
+                withUser(imageBuildController::getRuntimeSummary));
         Spark.get("/manager/api/cm/runtime/details/:clusterId/:id",
-                withUser(ImageBuildController::getRuntimeDetails));
+                withUser(imageBuildController::getRuntimeDetails));
         Spark.get("/manager/api/cm/images/patches/:id",
-                withUser(ImageBuildController::getPatches));
+                withUser(imageBuildController::getPatches));
         Spark.get("/manager/api/cm/images/packages/:id",
-                withUser(ImageBuildController::getPackages));
+                withUser(imageBuildController::getPackages));
         post("/manager/api/cm/images/inspect/:id",
-                withImageAdmin(ImageBuildController::inspect));
+                withImageAdmin(imageBuildController::inspect));
         post("/manager/api/cm/images/delete", withImageAdmin(ImageBuildController::delete));
         post("/manager/api/cm/images/import",
-                withImageAdmin(ImageBuildController::importImage));
+                withImageAdmin(imageBuildController::importImage));
     }
 
     /**
@@ -151,7 +155,7 @@ public class ImageBuildController {
      * @param user the user
      * @return ModelAndView for build page
      */
-    public static ModelAndView rebuild(Request req, Response res, User user) {
+    public ModelAndView rebuild(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
         MinionController.addActionChains(user, model);
         Optional<ImageInfo> imageInfo;
@@ -182,7 +186,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the model and view
      */
-    public static ModelAndView buildView(Request req, Response res, User user) {
+    public ModelAndView buildView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
         MinionController.addActionChains(user, model);
         // Parse optional query string parameters
@@ -213,7 +217,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the model and view
      */
-    public static ModelAndView importView(Request req, Response res, User user) {
+    public ModelAndView importView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
         return new ModelAndView(model, "templates/content_management/import.jade");
     }
@@ -226,7 +230,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object getBuildHosts(Request req, Response res, User user) {
+    public Object getBuildHosts(Request req, Response res, User user) {
         ServerGroup sg;
         String buildType = req.params("type");
 
@@ -251,7 +255,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the model and view
      */
-    public static ModelAndView listView(Request req, Response res, User user) {
+    public ModelAndView listView(Request req, Response res, User user) {
         Map<String, Object> model = new HashMap<>();
 
         // Parse optional image id
@@ -281,7 +285,7 @@ public class ImageBuildController {
      * @param systemList the system overview list
      * @return the list of JSON objects
      */
-    private static List<JsonObject> getServerStreamJson(List<SystemOverview> systemList) {
+    private List<JsonObject> getServerStreamJson(List<SystemOverview> systemList) {
         return systemList.stream().map(s -> {
             JsonObject json = new JsonObject();
             json.addProperty("id", s.getId());
@@ -402,7 +406,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object build(Request request, Response response, User user) {
+    public Object build(Request request, Response response, User user) {
         BuildRequest buildRequest;
         try {
             buildRequest = new GsonBuilder()
@@ -454,7 +458,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object inspect(Request req, Response res, User user) {
+    public Object inspect(Request req, Response res, User user) {
         InspectRequest inspectRequest;
         try {
             inspectRequest = new GsonBuilder()
@@ -498,7 +502,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object importImage(Request req, Response res, User user) {
+    public Object importImage(Request req, Response res, User user) {
         ImportRequest data;
         try {
             data = new GsonBuilder()
@@ -545,7 +549,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object list(Request req, Response res, User user) {
+    public Object list(Request req, Response res, User user) {
         List<JsonObject> result =
                 getImageInfoSummaryList(ImageInfoFactory.listImageOverviews(user.getOrg()));
 
@@ -560,7 +564,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object get(Request req, Response res, User user) {
+    public Object get(Request req, Response res, User user) {
         Long id;
         try {
             id = Long.parseLong(req.params("id"));
@@ -583,7 +587,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object getPatches(Request req, Response res, User user) {
+    public Object getPatches(Request req, Response res, User user) {
         Long id;
         try {
             id = Long.parseLong(req.params("id"));
@@ -607,7 +611,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object getPackages(Request req, Response res, User user) {
+    public Object getPackages(Request req, Response res, User user) {
         Long id;
         try {
             id = Long.parseLong(req.params("id"));
@@ -631,7 +635,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object getClusterList(Request req, Response res, User user) {
+    public Object getClusterList(Request req, Response res, User user) {
         JsonArray clusterList = new JsonArray();
         VirtualHostManagerFactory.getInstance().listVirtualHostManagers(user.getOrg())
                 .stream().filter(vhm -> VirtualHostManagerFactory.KUBERNETES
@@ -655,7 +659,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object getRuntimeSummary(Request req, Response res, User user) {
+    public Object getRuntimeSummary(Request req, Response res, User user) {
         Long id, clusterId;
         try {
             id = Long.parseLong(req.params("id"));
@@ -670,7 +674,7 @@ public class ImageBuildController {
                 .lookupByIdAndOrg(clusterId, user.getOrg());
 
         try {
-            Set<ImageUsage> usages = getImagesUsage(cluster);
+            Set<ImageUsage> usages = kubernetesManager.getImagesUsage(cluster);
             Optional<ImageOverview> imageInfo =
                     ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 
@@ -694,10 +698,6 @@ public class ImageBuildController {
         }
     }
 
-    private static Set<ImageUsage> getImagesUsage(VirtualHostManager cluster) {
-        return K8S_MANAGER.getImagesUsage(cluster);
-    }
-
     /**
      * Gets runtime summary for all images in JSON
      *
@@ -706,7 +706,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object getRuntimeSummaryAll(Request req, Response res, User user) {
+    public Object getRuntimeSummaryAll(Request req, Response res, User user) {
         Long clusterId;
         try {
             clusterId = Long.parseLong(req.params("clusterId"));
@@ -720,7 +720,7 @@ public class ImageBuildController {
         VirtualHostManager cluster = VirtualHostManagerFactory.getInstance()
                 .lookupByIdAndOrg(clusterId, user.getOrg());
         try {
-            Set<ImageUsage> usages = getImagesUsage(cluster);
+            Set<ImageUsage> usages = kubernetesManager.getImagesUsage(cluster);
             ImageInfoFactory.listImageOverviews(user.getOrg()).forEach(overview -> obj
                     .add(overview.getId().toString(),
                             getRuntimeOverviewJson(usages, overview)));
@@ -742,7 +742,7 @@ public class ImageBuildController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static Object getRuntimeDetails(Request req, Response res, User user) {
+    public Object getRuntimeDetails(Request req, Response res, User user) {
         Long id, clusterId;
         try {
             id = Long.parseLong(req.params("id"));
@@ -756,7 +756,7 @@ public class ImageBuildController {
         VirtualHostManager cluster = VirtualHostManagerFactory.getInstance()
                 .lookupByIdAndOrg(clusterId, user.getOrg());
         try {
-            Set<ImageUsage> usages = getImagesUsage(cluster);
+            Set<ImageUsage> usages = kubernetesManager.getImagesUsage(cluster);
             Optional<ImageOverview> imageInfo =
                     ImageInfoFactory.lookupOverviewByIdAndOrg(id, user.getOrg());
 

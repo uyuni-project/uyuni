@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.notification.NotificationMessage;
+
+import java.util.Optional;
 
 /**
  * Notification data for minion onboarding failure.
@@ -22,13 +25,24 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 public class OnboardingFailed implements NotificationData {
 
     private String minionId;
+    private String details;
 
     /**
      * Constructor
-     * @param minionIdId minion id of the failed minion
+     * @param minionIdIn minion id of the failed minion
      */
-    public OnboardingFailed(String minionIdId) {
-        this.minionId = minionIdId;
+    public OnboardingFailed(String minionIdIn) {
+        this.minionId = minionIdIn;
+    }
+
+    /**
+     * Constructor
+     * @param minionIdIn minion id of the failed minion
+     * @param detailsIn the details
+     */
+    public OnboardingFailed(String minionIdIn, String detailsIn) {
+        this.minionId = minionIdIn;
+        this.details = Optional.ofNullable(detailsIn).orElse("");
     }
 
     /**
@@ -52,5 +66,22 @@ public class OnboardingFailed implements NotificationData {
     @Override
     public NotificationType getType() {
         return NotificationType.OnboardingFailed;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSummary() {
+        return LocalizationService.getInstance().
+                getMessage("notification.onboardingfailed", getMinionId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getDetails() {
+        return details;
     }
 }

@@ -1404,12 +1404,6 @@
         </context-group>
         <target>கடவுச்சொல்லை உறுதிப்படுத்தல்</target>
       </trans-unit>
-      <trans-unit id="error.unsupported_db">
-        <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
-      </trans-unit>
-      <trans-unit id="error.unsupported_db_on_os">
-        <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
-      </trans-unit>
       <trans-unit id="error.invalid_login">
         <source>Either the password or username is incorrect.</source>
         <context-group name="ctx">
@@ -7949,6 +7943,12 @@ url பின்பற்றி செயலிழக்கப்பட்ட �
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="virt.update">
+        <source>Updates a virtual domain</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.manager.system.VirtualizationActionCommand</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="virt.setMemory">
         <source>Set Memory ({0} MB)</source>
         <context-group name="ctx">
@@ -9803,6 +9803,36 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Build">
         <source>Build</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.no_permissions">
+        <source>User has no permissions to do the action</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_name">
+        <source>Recurring Action name must be provided</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.action_name_exists">
+        <source>Recurring Action with given name already exists</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.taskomatic_error">
+        <source>Error when scheduling the action. Check if Taskomatic is running.</source>
+      </trans-unit>
+      <trans-unit id="recurring_action.invalid_cron">
+        <source>Invalid Quartz expression provided.</source>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed">
+        <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfinished">
+        <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
+      </trans-unit>
+      <trans-unit id="notification.onboardingfailed">
+        <source>Error registering minion id: {0}</source>
+      </trans-unit>
+      <trans-unit id="notification.bootstraprepofailed">
+        <source>Error generating bootstrap repo for: {0}</source>
+      </trans-unit>
+      <trans-unit id="notification.stateapplyfailed">
+        <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
       </trans-unit>
     </body>
   </file>

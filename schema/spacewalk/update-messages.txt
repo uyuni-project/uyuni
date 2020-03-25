@@ -2,19 +2,16 @@
 SUSE Manager Database Schema Update
 
 This patch updates the database schema.
-Additional configuration steps are required.
+The patch will be applied automatically at the end
+of the update.
+In case of a failure, spacewalk services are stopped and cannot
+be started until the issue is fixed.
 
-1. Stop the Spacewalk service before you apply this patch:
-spacewalk-service stop
+For more information about the failure, enter:
 
-2. Apply the patch.
+systemctl status uyuni-check-database.service
 
-3. If the SUSE Manager database is running on the same machine as
-your SUSE Manager Server, take care that the database instance is
-running
+When the schema update is applied successfully, start the
+services again with:
 
-4. Upgrade the database schema with:
-spacewalk-schema-upgrade
-
-5. Start the Spacewalk service:
 spacewalk-service start

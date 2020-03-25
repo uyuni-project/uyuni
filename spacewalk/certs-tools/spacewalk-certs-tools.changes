@@ -1,3 +1,9 @@
+- Enable support for bootstrapping Astra Linux CE "Orel"
+
+-------------------------------------------------------------------
+Thu Mar 19 12:08:00 CET 2020 - jgonzalez@suse.com
+
+- version 4.1.6-1
 - Enable support for bootstrapping Debian 9 and 10
 
 -------------------------------------------------------------------

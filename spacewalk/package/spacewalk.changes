@@ -1,3 +1,6 @@
+- change supported DB to postgresql 12
+- change release files to uyuni-release and susemanager-release
+
 -------------------------------------------------------------------
 Wed Mar 11 10:48:54 CET 2020 - jgonzalez@suse.com
 

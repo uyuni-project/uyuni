@@ -231,6 +231,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I wait until I see "Successfully bootstrapped host!" text
   When I wait until I do not see "Loading..." text
   When I wait at most 360 seconds until I see "Product Description" text
+  When I wait until the tree item "test-pool0" contains "inactive" text
 ```
 
 * Same, but re-issue HTTP requests to refresh the page
@@ -246,6 +247,11 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 (last one should probably be renamed - it looks in the contents area of the page)
 
+* Wait until a tree item has no sub list
+
+```cucumber
+  When I wait until the tree item "test-pool0" has no sub-list
+```
 
 <a name="b4" />
 
@@ -277,6 +283,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```cucumber
   When I click on "Schedule"
+  When I click on "Refresh" in tree item "test-pool0"
 ```
 
 The button can be identified by id, value, title, text content, or alt of image.
@@ -345,6 +352,7 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I wait until table row for "test-vm" contains button "Resume"
+  When I wait until the tree item "test-pool1" contains "test-pool1 is started automatically" button
 ```
 
 
@@ -437,6 +445,8 @@ The check box can be identified by name, id or label text.
   When I wait until file "/srv/tftpboot/pxelinux.cfg/default" exists on server
   Then file "/srv/susemanager/salt/manager_org_1/mixedchannel/init.sls" should exist on server
   Then file "/srv/susemanager/salt/manager_org_1/s-mgr/config/init.sls" should not exist on server
+  Then file "/var/lib/libvirt/images/test-pool0" should not exist on "kvm_server"
+  Then file "/var/lib/libvirt/images/test-pool1" should have 755 permissions on "kvm_server"
 ```
 
 * File contents

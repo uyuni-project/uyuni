@@ -79,7 +79,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
         MockConnection.clear();
         saltServiceMock = mock(SaltService.class);
-        manager.setSaltService(saltServiceMock);
+        manager.setSystemQuery(saltServiceMock);
     }
 
 

@@ -40,15 +40,12 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,9 +58,14 @@ public class SystemEntitler {
 
     private static final Logger LOG = Logger.getLogger(SystemEntitler.class);
 
-    public static final SystemEntitler INSTANCE = new SystemEntitler();
+    private SystemQuery systemQuery;
 
-    private SaltService saltService = SaltService.INSTANCE;
+    /**
+     * @param systemQueryIn instance for gathering data from a system.
+     */
+    public SystemEntitler(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
+    }
 
     /**
      * Checks whether or not a given server can be entitled with a specific entitlement
@@ -109,7 +111,7 @@ public class SystemEntitler {
             }
         }
         else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
-            saltService.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+            systemQuery.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
 
         entitleServer(server, ent);
@@ -204,10 +206,7 @@ public class SystemEntitler {
     }
 
     private void updateLibvirtEngine(MinionServer minion) {
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
-        saltService.callSync(State.apply(Collections.singletonList("virt.engine-events"),
-                                                 Optional.of(pillar)), minion.getMinionId());
+        systemQuery.updateLibvirtEngine(minion);
     }
 
     // Need to do some extra logic here
@@ -323,13 +322,5 @@ public class SystemEntitler {
                     "system.entitle.multiplechannelswithpackagepleaseinstall",
                     ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME));
         }
-    }
-
-    /**
-     * Setter for the SaltService
-     * @param saltServiceIn The SaltService
-     */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
     }
 }

@@ -30,7 +30,7 @@ type Props = {
   cssClassFunction?: Function,
   /** the React Object that contains the filter search field */
   searchField?: React.Element<typeof SearchField>,
-  /** the initial number of how many row-per-page to show */
+  /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
   initialItemsPerPage?: number,
   /** enables item selection */
   selectable: boolean,
@@ -250,6 +250,7 @@ export class TableDataHandler extends React.Component<Props, State> {
     return (
       <div className="spacewalk-list">
         <div className="panel panel-default">
+          { this.props.initialItemsPerPage !== 0 ?
           <div className="panel-heading">
             <div className="spacewalk-list-head-addons">
             <SearchPanel
@@ -274,7 +275,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                 /> {t("items per page")}
               </div>
             </div>
-          </div>
+          </div> : null }
           { this.state.loading ?
             <div className="panel-body text-center">
               <i className='fa fa-spinner fa-spin fa-1-5x'></i>
@@ -301,6 +302,7 @@ export class TableDataHandler extends React.Component<Props, State> {
               </div>
             )
           }
+          { this.props.initialItemsPerPage !== 0 ?
           <div className="panel-footer">
             <div className="spacewalk-list-bottom-addons">
               <PaginationBlock key="paginationBlock"
@@ -309,7 +311,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                 onPageChange={this.onPageChange}
               />
             </div>
-          </div>
+          </div> : null }
         </div>
       </div>
     );

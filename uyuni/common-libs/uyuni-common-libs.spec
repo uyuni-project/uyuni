@@ -45,7 +45,7 @@ Name:           uyuni-common-libs
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
 Group:          Development/Languages/Python
-Version:        4.1.2
+Version:        4.1.3
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -102,9 +102,7 @@ make -f Makefile.common-libs install PREFIX=$RPM_BUILD_ROOT \
 install -d $RPM_BUILD_ROOT%{python2root}/common
 cp $RPM_BUILD_ROOT%{python3root}/__init__.py \
     $RPM_BUILD_ROOT%{python2root}/
-cp $RPM_BUILD_ROOT%{python3root}/common/__init__.py \
-    $RPM_BUILD_ROOT%{python2root}/common
-cp $RPM_BUILD_ROOT%{python3root}/common/{checksum.py,cli.py,rhn_deb.py,rhn_mpm.py,rhn_pkg.py,rhn_rpm.py,stringutils.py,fileutils.py,rhnLib.py,timezone_utils.py,usix.py} \
+cp $RPM_BUILD_ROOT%{python3root}/common/*.py \
     $RPM_BUILD_ROOT%{python2root}/common
 %endif
 

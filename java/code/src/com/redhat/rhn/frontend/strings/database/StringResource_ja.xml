@@ -3262,6 +3262,23 @@
           <target>キックスタートは失敗しました。</target>
         </trans-unit>
       </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/Login.do</context>
+        </context-group>
+        <trans-unit id="error.unsupported_db_min">
+          <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
+        </trans-unit>
+        <trans-unit id="error.unsupported_db_max">
+          <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
+        </trans-unit>
+        <trans-unit id="error.unsupported_db_migrate">
+          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
+        </trans-unit>
+        <trans-unit id="error.unfinished_schema_upgrade">
+          <source>Database schema upgrade in progress!</source>
+        </trans-unit>
+      </group>
     </body>
   </file>
 </xliff>

@@ -121,7 +121,9 @@ public class UserNotificationFactory extends HibernateFactory {
         // save first the message to get the 'id' auto generated
         // because it is referenced by the UserNotification object
         singleton.saveObject(notificationMessageIn);
-        users.forEach(user -> UserNotificationFactory.store(new UserNotification(user, notificationMessageIn)));
+        users.stream().
+            filter(u -> !u.isDisabled()).
+            forEach(user -> UserNotificationFactory.store(new UserNotification(user, notificationMessageIn)));
 
         // Update Notification WebSocket Sessions right now
         Notification.spreadUpdate();

@@ -195,6 +195,66 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I should not see a "test-vm2" virtual machine on "kvm_server"
 
 @virthost_kvm
+  Scenario: Refresh a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Refresh" in tree item "test-pool0"
+    And I wait until the tree item "test-pool0" has no sub-list
+
+@virthost_kvm
+  Scenario: Stop a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Stop" in tree item "test-pool0"
+    And I wait until the tree item "test-pool0" contains "inactive" text
+
+@virthost_kvm
+  Scenario: Start a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Start" in tree item "test-pool0"
+    And I wait until the tree item "test-pool0" contains "running" text
+
+@virthost_kvm
+  Scenario: Delete a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Delete" in tree item "test-pool0"
+    And I check "purge"
+    And I click on "Delete" in "Delete Virtual Storage Pool" modal
+    Then I wait until I do not see "test-pool0" text
+    And file "/var/lib/libvirt/images/test-pool0" should not exist on "kvm_server"
+
+@virthost_kvm
+  Scenario: Create a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I follow "Create Pool"
+    And I wait until I see "General" text
+    And I select "dir" from "type"
+    And I enter "test-pool1" as "name"
+    And I uncheck "autostart"
+    And I enter "/var/lib/libvirt/images/test-pool1" as "target_path"
+    And I enter "0755" as "target_mode"
+    And I click on "Create"
+    Then I should see a "Virtual Storage Pools and Volumes" text
+    And I wait until the tree item "test-pool1" contains "running" text
+    And file "/var/lib/libvirt/images/test-pool1" should have 755 permissions on "kvm_server"
+
+@virthost_kvm
+  Scenario: Edit a virtual storage pool for KVM
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Storage"
+    And I click on "Edit Pool" in tree item "test-pool1"
+    And I wait until I see "General" text
+    And I enter "0711" as "target_mode"
+    And I check "autostart"
+    And I click on "Update"
+    Then I should see a "Virtual Storage Pools and Volumes" text
+    And I wait until the tree item "test-pool1" contains "test-pool1 is started automatically" button
+    And file "/var/lib/libvirt/images/test-pool1" should have 711 permissions on "kvm_server"
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
@@ -217,6 +277,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I delete test-net0 virtual network on "kvm_server" without error control
     And I delete test-net1 virtual network on "kvm_server" without error control
     And I delete test-pool0 virtual storage pool on "kvm_server" without error control
+    And I delete test-pool1 virtual storage pool on "kvm_server" without error control
     And I delete all "test-vm.*" volumes from "test-pool0" pool on "kvm_server" without error control
     # Remove the virtpoller cache to avoid problems
     And I run "rm /var/cache/virt_state.cache" on "kvm_server" without error control

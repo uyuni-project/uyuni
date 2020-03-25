@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.system.entitling;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
+import com.suse.manager.webui.services.impl.SaltService;
 
 /**
  * Manager class for adding/removing entitlements to/from servers
@@ -24,7 +25,7 @@ import com.redhat.rhn.domain.server.Server;
 public class SystemEntitlementManager {
 
     public static final SystemEntitlementManager INSTANCE =
-            new SystemEntitlementManager(SystemUnentitler.INSTANCE, SystemEntitler.INSTANCE);
+            new SystemEntitlementManager(SystemUnentitler.INSTANCE, new SystemEntitler(SaltService.INSTANCE));
 
     private SystemUnentitler systemUnentitler;
     private SystemEntitler systemEntitler;

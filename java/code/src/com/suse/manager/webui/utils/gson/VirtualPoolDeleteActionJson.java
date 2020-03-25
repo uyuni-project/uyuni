@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,19 +12,27 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.xmlrpc.test;
-
-import com.redhat.rhn.common.util.manifestfactory.ClassBuilder;
-import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
+package com.suse.manager.webui.utils.gson;
 
 /**
- * MockHandlerFactory
- * @version $Rev$
- */
-public class MockHandlerFactory extends HandlerFactory {
+*
+* represents the pool delete action request body structure.
+*/
+public class VirtualPoolDeleteActionJson extends VirtualPoolBaseActionJson {
 
-    public MockHandlerFactory() {
-        super(new ClassBuilder("com.redhat.rhn.frontend.xmlrpc.test",
-                "test-handler-manifest.xml"));
+    private Boolean purge;
+
+    /**
+     * @return Returns whether to remove all volumes or not.
+     */
+    public Boolean getPurge() {
+        return purge;
+    }
+
+    /**
+     * @param purgeIn whether to remove all volumes or not.
+     */
+    public void setPurge(Boolean purgeIn) {
+        purge = purgeIn;
     }
 }
