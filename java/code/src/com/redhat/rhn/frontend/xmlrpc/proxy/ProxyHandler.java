@@ -14,12 +14,15 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.proxy;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProxyVersionException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
@@ -33,6 +36,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,5 +205,27 @@ public class ProxyHandler extends BaseHandler {
             toReturn.add(helper.format(server));
         }
         return toReturn.toArray();
+    }
+
+    /**
+     * List the clients directly connected to a Proxy.
+     *
+     * @param loggedInUser the current user
+     * @param proxyId the ID of the Proxy
+     * @return list of client IDs
+     *
+     * @xmlrpc.doc List the clients directly connected to a given Proxy.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int","proxyId","the Proxy ID")
+     * @xmlrpc.returntype #array_single("int", "clientId")
+     */
+    public List<Long> listProxyClients(User loggedInUser, Integer proxyId) {
+        Server server = XmlRpcSystemHelper.getInstance().lookupServer(loggedInUser, proxyId);
+        if (!server.isProxy()) {
+            throw new ProxyNotActivatedException();
+        }
+        return SystemManager.listClientsThroughProxy(server.getId()).stream()
+                .map(SystemOverview::getId)
+                .collect(toList());
     }
 }

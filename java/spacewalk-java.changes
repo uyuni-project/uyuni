@@ -1,3 +1,4 @@
+- add XMLRPC API method: proxy.listProxyClients (bsc#1166408)
 - Enable monitoring for RHEL 8 Salt clients
 - Add recurring actions xmlrpc interface
 - Add StateApplyFailed and CreateBootstrapRepoFailed notifications
