@@ -17,6 +17,28 @@ const escapeHtml = require('html-react-parser');
 const {Dialog} = require("components/dialog/Dialog");
 const {showDialog} = require("components/dialog/util");
 
+const _MESSAGE_TYPE = {
+  OnboardingFailed: {
+    id: "OnboardingFailed",
+    text: "Onboarding failed",
+  },
+  ChannelSyncFailed: {
+    id: "ChannelSyncFailed",
+    text: "Channel sync failed",
+  },
+  ChannelSyncFinished: {
+    id: "ChannelSyncFinished",
+    text: "Channel sync finished",
+  },
+  CreateBootstrapRepoFailed: {
+    id: "CreateBootstrapRepoFailed",
+    text: "Creating Bootstrap Repository failed",
+  },
+  StateApplyFailed: {
+    id: "StateApplyFailed",
+    text: "State apply failed",
+  },
+}
 
 function reloadData(dataUrlSlice) {
   return Network.get('/rhn/manager/notification-messages/' + dataUrlSlice, "application/json").promise;
@@ -31,7 +53,8 @@ class NotificationMessages extends React.Component {
     loading: true,
     messages: [],
     selectedItems: [],
-    popupItem: null
+    popupItem: null,
+    typeCriteria: []
   };
 
   UNSAFE_componentWillMount() {
@@ -78,6 +101,20 @@ class NotificationMessages extends React.Component {
           messages: [],
           selectedItems: []
         });
+
+        //HACK: usage of JQuery here is needed to apply the select2js plugin
+        $('select#notification-messages-type-filter.apply-select2js-on-this').each(function(i) {
+          var select = $(this);
+          // apply select2js only one time
+          if (!select.hasClass('select2js-applied')) {
+            select.addClass('select2js-applied');
+
+            var select2js = select.select2({placeholder: t('Filter by type')});
+            select2js.on("change", function(event) {
+              currentObject.handleFilterTypeChange(select.val() || []);
+            });
+          }
+        });
       })
       .catch(response => {
         currentObject.setState({
@@ -89,6 +126,17 @@ class NotificationMessages extends React.Component {
           selectedItems: []
         });
       });
+  };
+
+  handleFilterTypeChange = (types) => {
+    this.setState({typeCriteria: types});
+  };
+
+  filterDataByType = (data) => {
+    if(this.state.typeCriteria.length > 0) {
+      return data.filter(p => this.state.typeCriteria.includes(p.type));
+    }
+    return data;
   };
 
   handleSelectItems = (items) => {
@@ -153,15 +201,7 @@ class NotificationMessages extends React.Component {
   };
 
   decodeTypeText = (rawType) => {
-    var typeText;
-    switch(rawType) {
-      case 'OnboardingFailed': typeText = t('Onboarding failed'); break;
-      case 'ChannelSyncFailed': typeText = t('Channel sync failed'); break;
-      case 'ChannelSyncFinished': typeText = t('Channel sync finished'); break;
-      case 'CreateBootstrapRepoFailed': typeText = t('Creating Bootstrap Repository failed'); break;
-      case 'StateApplyFailed': typeText = t('State apply failed'); break;
-    }
-    return typeText;
+    return t(_MESSAGE_TYPE[rawType].text);
   };
 
   decodeIconBySeverity = (severity) => {
@@ -273,11 +313,11 @@ class NotificationMessages extends React.Component {
   messageReaction = (messageType, messageData) => {
     let actionButton = null;
     switch(messageType) {
-      case 'OnboardingFailed':
+      case _MESSAGE_TYPE.OnboardingFailed.id:
         actionButton = <AsyncButton id="retryOnboarding" icon="fa-rocket fa-1-5x"
             title={t('Retry onboarding')} action={() => this.retryOnboarding(messageData['minionId'])} />;
       break;
-      case 'ChannelSyncFailed':
+      case _MESSAGE_TYPE.ChannelSyncFailed.id:
         actionButton = <AsyncButton id="retryReposync" icon="fa-refresh fa-1-5x"
             title={t('Retry repo sync')} action={() => this.retryReposync(messageData['channelId'])} />;
       break;
@@ -302,7 +342,16 @@ class NotificationMessages extends React.Component {
       </div>
     ;
 
+    const typeFilter =
+      <div className='multiple-select-wrapper'>
+        <select id='notification-messages-type-filter' name='notification-messages-type-filter' className='form-control d-inline-block apply-select2js-on-this' multiple='multiple'>
+          { Object.keys(_MESSAGE_TYPE).map((id) => <option key={id} value={id}>{this.decodeTypeText(id)}</option>) }
+        </select>
+      </div>;
+
+
     const panelButtons = <SectionToolbar>
+        {typeFilter}
         <div className='action-button-wrapper'>
           <div className='btn-group'>
             <AsyncButton id="reload" icon="fa-refresh" text={t('Refresh')} action={this.refreshServerData} />
@@ -334,7 +383,7 @@ class NotificationMessages extends React.Component {
           {panelButtons}
 
           <Table
-            data={this.buildRows(data)}
+            data={this.buildRows(this.filterDataByType(data))}
             identifier={(row) => row["id"]}
             cssClassFunction={(row) => row["isRead"] == true ? 'text-muted' : '' }
             initialSortColumnKey="created"
