@@ -86,7 +86,7 @@ To get the full list of supported functions, call "-l" option:
         except Exception as exc:
             err = mltypes.MLErrorType()
             err.exc = exc
-            err.error_code = mlerrcode.MLERR_GENERAL_ERROR
+            err.error_code = getattr(exc, "code", mlerrcode.MLERR_GENERAL_ERROR)
             print(err.to_json(pretty=True))
             if opts.verbose:
                 raise exc
