@@ -18,22 +18,13 @@ package com.redhat.rhn.domain.contentmgmt.modulemd;
 import java.util.List;
 
 /**
- * Exception thrown when a selected module is not found
+ * modulemd API exception response payload data from 'module_packages' call
  */
-public class ModuleNotFoundException extends Exception {
+public class ModulemdExceptionDataResponse {
 
-    private List<Module> modules;
+    private List<Module> streams;
 
-    /**
-     * Initialize a new instance
-     *
-     * @param modulesIn the missing modules
-     */
-    public ModuleNotFoundException(List<Module> modulesIn) {
-        this.modules = modulesIn;
-    }
-
-    public List<Module> getModules() {
-        return modules;
+    public List<Module> getStreams() {
+        return streams;
     }
 }

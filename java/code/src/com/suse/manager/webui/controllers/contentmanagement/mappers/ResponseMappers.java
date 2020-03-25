@@ -24,14 +24,9 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 
-import com.suse.manager.webui.controllers.contentmanagement.response.EnvironmentResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.FilterResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.ProjectFilterResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.ProjectHistoryEntryResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.ProjectPropertiesResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResumeResponse;
-import com.suse.manager.webui.controllers.contentmanagement.response.ProjectSoftwareSourceResponse;
+import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
+import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
+import com.suse.manager.webui.controllers.contentmanagement.response.*;
 import com.suse.manager.webui.utils.ViewHelper;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -147,6 +142,9 @@ public class ResponseMappers {
         project.setFilters(mapProjectFilterFromDB(projectDB.getProjectFilters()));
         project.setEnvironments(mapEnvironmentsFromDB(envsDB));
 
+        ContentProjectValidator projectValidator = new ContentProjectValidator(projectDB);
+        project.setProjectMessages(mapProjectMessagesFromDB(projectValidator.validate()));
+
         return project;
     }
 
@@ -242,6 +240,12 @@ public class ResponseMappers {
                     contentProjectFilterResponse.setState(projectFilter.getState().toString());
                     return contentProjectFilterResponse;
                 })
+                .collect(Collectors.toList());
+    }
+
+    public static List<ProjectMessageResponse> mapProjectMessagesFromDB(List<ContentValidationMessage> messages) {
+        return messages.stream()
+                .map(m -> new ProjectMessageResponse(m.getMessage(), m.getType()))
                 .collect(Collectors.toList());
     }
 }

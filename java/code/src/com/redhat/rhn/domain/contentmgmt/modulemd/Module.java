@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
 
 /**
@@ -41,6 +43,14 @@ public class Module {
 
     public String getStream() {
         return stream;
+    }
+
+    public String getFullName() {
+        if (StringUtils.isEmpty(stream)) {
+            return getName();
+        }
+
+        return String.join(":", name, stream);
     }
 
     @Override
