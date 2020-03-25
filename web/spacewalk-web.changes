@@ -1,3 +1,4 @@
+- Add notification messages type filter
 - Show separate info for syncing product channels and children
 - sort notifications by type
 - Add StateApplyFailed and CreateBootstrapRepoFailed notifications
