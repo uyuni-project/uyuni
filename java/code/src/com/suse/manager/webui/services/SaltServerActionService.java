@@ -1864,7 +1864,7 @@ public class SaltServerActionService {
                                 deviceParam.put("path", device.getPath());
                                 device.isSeparator().ifPresent(sep -> deviceParam.put("part_separator", sep));
                                 return deviceParam;
-                            }));
+                            }).collect(Collectors.toList()));
                         }
                         pillar.put("source", source);
                     }
