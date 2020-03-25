@@ -1,3 +1,5 @@
+- Use 'int' instead of 'long' on rhn_check for both Python 2 and 3
+
 -------------------------------------------------------------------
 Thu Mar 19 12:08:36 CET 2020 - jgonzalez@suse.com
 
