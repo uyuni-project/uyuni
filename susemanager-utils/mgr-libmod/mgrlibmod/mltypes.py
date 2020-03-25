@@ -5,6 +5,7 @@ from typing import List, Tuple, Any, AnyStr, Union, Optional, Dict, Set, cast
 import collections
 import json
 from abc import ABC, abstractmethod
+from mgrlibmod import mlerrcode
 
 
 class MLSet(list):
@@ -135,7 +136,8 @@ class MLInputType(MLAnyType):
         :rtype: str
         """
         obj = self.to_obj()
-        assert "function" in obj, "Unknown API function. Please define one."
+        if "function" not in obj:
+            raise mlerrcode.MlRequestError("Unknown API function. Please define one")
 
         return obj["function"]
 
@@ -147,10 +149,12 @@ class MLInputType(MLAnyType):
         :rtype: List[str]
         """
         obj = self.to_obj()
-        assert "paths" in obj, "No paths has been found in the input request."
+        if "paths" not in obj:
+            raise mlerrcode.MlRequestError("No paths has been found in the input request")
 
         paths: List[str] = obj.get("paths", [])
-        assert bool(paths), "Paths should not be empty. At least one path is required"
+        if not bool(paths):
+            raise mlerrcode.MlRequestError("Paths should not be empty. At least one path is required")
 
         return paths
 
@@ -164,9 +168,12 @@ class MLInputType(MLAnyType):
         obj: Dict = self.to_obj()
         out: List[MLStreamType] = []
 
-        assert obj["streams"] is not None, "Streams should not be null!"
+        if obj["streams"] is None:
+            raise mlerrcode.MlRequestError("Streams should not be null")
+
         for str_kw in obj["streams"]:
-            assert "name" in str_kw, "No 'name' attribute in the stream parameter {}".format(str_kw)
+            if "name" not in str_kw:
+                raise mlerrcode.MlRequestError("No 'name' attribute in the stream parameter {}".format(str_kw))
             out.append(MLStreamType(name=str_kw["name"], streamname=str_kw.get("stream") or ""))
 
         return out
