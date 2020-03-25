@@ -488,9 +488,17 @@ end
 
 When(/^I press "Remove Item" in (.*) section$/) do |section|
   sectionids = { 'first CNAME'       => 'bind#available_zones#0#records#CNAME#0',
-                 'second CNAME'      => 'bind#available_zones#0#records#CNAME#0',
-                 'third CNAME'       => 'bind#available_zones#0#records#CNAME#0' }
+                 'second CNAME'      => 'bind#available_zones#0#records#CNAME#1',
+                 'third CNAME'       => 'bind#available_zones#0#records#CNAME#2',
+                 'fourth CNAME'      => 'bind#available_zones#0#records#CNAME#3',
+                 'fifth CNAME'       => 'bind#available_zones#0#records#CNAME#4' }
   find(:xpath, "//div[@id='#{sectionids[section]}']/button").click
+end
+
+When(/^I press minus sign in (.*) section$/) do |section|
+  sectionids = { 'third configured zone' => 'bind#configured_zones#2',
+                 'third available zone'  => 'bind#available_zones#2' }
+  find(:xpath, "//div[@id='#{sectionids[section]}']/div[1]/i[@class='fa fa-minus']").click
 end
 
 When(/^I check (.*) box$/) do |box|

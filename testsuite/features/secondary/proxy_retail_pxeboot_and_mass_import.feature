@@ -342,7 +342,7 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Apply the highstate to clear PXE formulas
+  Scenario: Cleanup: apply the highstate to clear PXE formulas
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
     And I enable repositories before installing branch server
@@ -380,12 +380,6 @@ Feature: PXE boot a Retail terminal
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Bind" in the content area
-    # WORKAROUND to be removed when bsc#1150657 is fixed
-    # "empty-zones-enable" option is rewritten by retail_yaml command
-    And I press "Add Item" in config options section
-    And I enter "empty-zones-enable" in first option field
-    And I enter "no" in first value field
-    # end of WORKAROUND
     And I press "Add Item" in configured zones section
     And I enter "tf.local" in third configured zone name field
     And I press "Add Item" in available zones section
@@ -500,7 +494,25 @@ Feature: PXE boot a Retail terminal
 
 @proxy
 @private_net
-  Scenario: Cleanup: Disable the formulas needed for mass import
+  Scenario: Cleanup: remove DNS records added by mass import
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Formulas" in the content area
+    And I follow first "Bind" in the content area
+    # direct zone example.org:
+    And I press "Remove Item" in fifth CNAME section
+    And I press "Remove Item" in fourth CNAME section
+    And I press "Remove Item" in third CNAME section
+    And I press "Remove Item" in second CNAME section
+    And I press "Remove Item" in first CNAME section
+    # direct zone tf.local:
+    And I press minus sign in third configured zone section
+    And I press minus sign in third available zone section
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+
+@proxy
+@private_net
+  Scenario: Cleanup: disable the formulas needed for mass import
     Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I uncheck the "pxe" formula
