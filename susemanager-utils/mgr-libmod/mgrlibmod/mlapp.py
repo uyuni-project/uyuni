@@ -18,6 +18,8 @@ def get_opts() -> argparse.Namespace:
     ap.add_argument("-e", "--example", action="store_true", help="Show usage example")
     ap.add_argument("-l", "--list", action="store_true", help="Show list of supported functions")
     ap.add_argument("-v", "--verbose", action="store_true", help="Verbose output (debug mode)")
+    ap.add_argument("-p", "--pretty", action="store_true", help="Pretty-print JSON responses")
+
     return ap.parse_args()
 
 
@@ -82,8 +84,8 @@ To get the full list of supported functions, call "-l" option:
         print(example.strip() + "\n")
     else:
         try:
-            print(mllib.MLLibmodAPI(opts).set_repodata(get_stdin_data()).run().to_json(pretty=True))
+            print(mllib.MLLibmodAPI(opts).set_repodata(get_stdin_data()).run().to_json(pretty=opts.pretty))
         except Exception as exc:
-            print(mltypes.MLErrorType(exc).to_json(pretty=True))
+            print(mltypes.MLErrorType(exc).to_json(pretty=opts.pretty))
             if opts.verbose:  # Local debugging
                 raise exc
