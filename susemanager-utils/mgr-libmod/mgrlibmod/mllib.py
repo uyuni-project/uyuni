@@ -9,7 +9,7 @@ import argparse
 import binascii
 
 from typing import Any, Dict, List, Set, Optional
-from mgrlibmod import mltypes
+from mgrlibmod import mltypes, mlerrcode
 
 import gi  # type: ignore
 
@@ -33,9 +33,12 @@ class MLLibmodProc:
         """
         self.metadata = metadata
         self._mod_index: Modulemd.ModuleIndex = None
-        assert gi is not None and Modulemd is not None, "No libmodulemd found"
         self._enabled_stream_modules: Dict = {}
         self._streams: List = []
+
+        if gi is None or Modulemd is None:
+            raise mlerrcode.MlGeneralException("No python libmodulemd was found")
+
 
     def _is_stream_enabled(self, s_type: mltypes.MLStreamType) -> bool:
         """
@@ -82,7 +85,9 @@ class MLLibmodProc:
     def get_module_streams(self, name: str) -> List:
         if self._mod_index is None:
             self.index_modules()
-        assert self._mod_index is not None, "Unable to get module streams: module index not found"
+
+        if self._mod_index is None:
+            raise mlerrcode.MlStreamNotFound("Unable to get module streams: module index not found")
 
         streams: Set = set()
         module = self._mod_index.get_module(name)
@@ -95,7 +100,10 @@ class MLLibmodProc:
     def get_stream_contexts(self, s_type: mltypes.MLStreamType) -> List:
         if self._mod_index is None:
             self.index_modules()
-        assert self._mod_index is not None, "Unable to get stream contexts: module index not found"
+
+        if self._mod_index is None:
+            raise mlerrcode.MlStreamNotFound("Unable to get stream contexts: module index not found")
+
         contexts: List = []
         module = self._mod_index.get_module(s_type.name)
         if module:
@@ -139,10 +147,14 @@ class MLLibmodProc:
             self._mod_index = mgr.resolve()
 
     def get_default_stream(self, name: str):
-        assert self._mod_index is not None, "Unable to access module index when resolving default stream"
+        if self._mod_index is None:
+            raise mlerrcode.MlModuleNotFound("Unable to access module index when resolving default stream")
+
         module = self._mod_index.get_module(name)
+
         if not module:
-            raise ValueError("Module {} not found".format(name))
+            raise mlerrcode.MlModuleNotFound("Module {} not found".format(name))
+
         defaults = module.get_defaults()
         if defaults:
             return defaults.get_default_stream()
@@ -170,7 +182,9 @@ class MLLibmodProc:
             print(stream.get_NSVCA())
 
     def get_rpm_blacklist(self):
-        assert self._mod_index is not None, "No module index has been found"
+        if self._mod_index is None:
+            raise mlerrcode.MlModuleNotFound("No module index has been found")
+
         enabled_packages: Set = set()
         for stream in self._enabled_stream_modules.values():
             enabled_packages = enabled_packages.union(stream.get_rpm_artifacts())
@@ -198,8 +212,8 @@ class MLLibmodProc:
             worel = woarch.rsplit("-", 1)[0]
             wover = worel.rsplit("-", 1)[0]
         except Exception as e:
-            print("%s ** %s" % (e, pkg_name))
-            raise e
+            raise mlerrcode.MlGeneralException("{}: {}".format(e, pkg_name))
+
         return wover
 
     def get_artifact_with_name(self, artifacts, name):
@@ -262,7 +276,8 @@ class MLLibmodProc:
                 anchor_version = version
                 anchor_stream = stream
 
-        assert anchor_stream is not None, "Unable to find default stream"
+        if anchor_stream is None:
+            raise mlerrcode.MlStreamNotFound("Unable to find default stream")
 
         for stream in self._streams:
             if not stream:
@@ -339,7 +354,9 @@ class MLLibmodAPI:
         """
         self.repodata = mltypes.MLInputType(repodata)
         for modulepath in self.repodata.get_paths():
-            assert os.path.exists(modulepath), "File {} not found".format(modulepath)
+            if not os.path.exists(modulepath):
+                raise mlerrcode.MlGeneralException("File {} not found".format(modulepath))
+
         self._proc = MLLibmodProc(self.repodata.get_paths())
 
         return self
