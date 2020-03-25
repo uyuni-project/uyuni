@@ -196,6 +196,7 @@ class MLErrorType(MLAnyType):
         if exc is not None:
             self.exc = exc
             self.error_code = getattr(exc, "code", mlerrcode.MLERR_GENERAL_ERROR)
+            self.data = getattr(exc, "data", {})
 
     @property
     def error_code(self) -> int:

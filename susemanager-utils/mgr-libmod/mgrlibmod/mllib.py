@@ -277,7 +277,7 @@ class MLLibmodProc:
                 anchor_stream = stream
 
         if anchor_stream is None:
-            raise mlerrcode.MlStreamNotFound("Unable to find default stream")
+            raise mlerrcode.MlStreamNotFound("Unable to find default stream").set_data("streams", self._streams)
 
         for stream in self._streams:
             if not stream:
