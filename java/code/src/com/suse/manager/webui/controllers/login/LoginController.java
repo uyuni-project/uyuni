@@ -79,7 +79,8 @@ public class LoginController {
             catch (SettingsException | IOException e) {
                 log.error(e.getMessage());
             }
-            return null; // we forward the request to IdP via `auth.login`
+            return new ModelAndView(new HashMap<>(), "controllers/login/templates/login.jade");
+            // the return above is dummy, we already sent a redirect to the IdP login page via `auth.login`
         }
         else {
             // Redirect to user creation if needed

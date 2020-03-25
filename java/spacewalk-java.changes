@@ -1,3 +1,4 @@
+- Fix: unable to be redirected to the IdP when SSO is enabled (bsc#1167667)
 - improve performance of cleanup-data-bunch
 - Show separate info for syncing product channels and children
 - add XMLRPC API method: proxy.listProxyClients (bsc#1166408)
