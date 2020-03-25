@@ -14,23 +14,31 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
+import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MinionServerUtils;
+import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
+import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
+import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
@@ -41,12 +49,14 @@ import com.suse.salt.netapi.calls.WheelCall;
 import com.suse.salt.netapi.calls.WheelResult;
 import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.salt.netapi.calls.modules.Config;
+import com.suse.salt.netapi.calls.modules.Event;
 import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Match;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.calls.modules.Status;
 import com.suse.salt.netapi.calls.modules.Test;
+import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.calls.runner.Jobs;
 import com.suse.salt.netapi.calls.wheel.Key;
 import com.suse.salt.netapi.client.SaltClient;
@@ -91,6 +101,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -100,10 +111,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -112,14 +119,14 @@ import java.util.stream.Stream;
 /**
  * Singleton class acting as a service layer for accessing the salt API.
  */
-public class SaltService {
+public class SaltService implements SystemQuery {
 
     private final Batch defaultBatch;
 
     /**
      * Singleton instance of this class
      */
-    public static final SaltService INSTANCE = new SaltService();
+    public static final SystemQuery INSTANCE = new SaltService();
 
     // Logger
     private static final Logger LOG = Logger.getLogger(SaltService.class);
@@ -153,9 +160,6 @@ public class SaltService {
 
     private SaltReactor reactor = null;
 
-    private final ScheduledExecutorService scheduledExecutorService =
-            Executors.newScheduledThreadPool(5);
-
     /**
      * Enum of all the available status for Salt keys.
      */
@@ -163,8 +167,10 @@ public class SaltService {
         ACCEPTED, DENIED, UNACCEPTED, REJECTED
     }
 
-    // Prevent instantiation
-    SaltService() {
+    /**
+     * Default constructor
+     */
+    public SaltService() {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(0)
                 .setSocketTimeout(0)
@@ -190,7 +196,7 @@ public class SaltService {
     }
 
     /**
-     * @param reactorIn the Salt reactor
+     * {@inheritDoc}
      */
     public void setReactor(SaltReactor reactorIn) {
         this.reactor = reactorIn;
@@ -224,6 +230,59 @@ public class SaltService {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.all_capabilities", Optional.empty(), Optional.empty(),
+                        new TypeToken<Map<String, JsonElement>>() { });
+
+        return callSync(call, minionId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, JsonObject> getNetworks(String minionId) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.network_info", Optional.empty(), Optional.of(args),
+                        new TypeToken<Map<String, JsonElement>>() { });
+
+        Optional<Map<String, JsonElement>> nets = callSync(call, minionId);
+        Map<String, JsonElement> result = nets.orElse(new HashMap<String, JsonElement>());
+
+        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
+        return result.entrySet().stream()
+                .filter(entry -> entry.getValue().isJsonObject())
+                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("vm_", domainName);
+        LocalCall<String> call =
+                new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
+
+        Optional<String> result = callSync(call, minionId);
+        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Boolean> ping(String minionId) {
+        return callSync(Test.ping(), minionId);
     }
 
     /**
@@ -296,9 +355,7 @@ public class SaltService {
     }
 
     /**
-     * Get the minion keys from salt with their respective status.
-     *
-     * @return the keys with their respective status as returned from salt
+     * {@inheritDoc}
      */
     public Key.Names getKeys() {
         return callSync(Key.listAll())
@@ -374,12 +431,7 @@ public class SaltService {
     }
 
     /**
-     * For a given minion id check if there is a key in any of the given status. If no status is given as parameter,
-     * all the available status are considered.
-     *
-     * @param id the id to check for
-     * @param statusIn array of key status to consider
-     * @return true if there is a key with the given id, false otherwise
+     * {@inheritDoc}
      */
     public boolean keyExists(String id, KeyStatus... statusIn) {
         final Set<KeyStatus> status = new HashSet<>(Arrays.asList(statusIn));
@@ -395,9 +447,7 @@ public class SaltService {
     }
 
     /**
-     * Get the minion keys from salt with their respective status and fingerprint.
-     *
-     * @return the keys with their respective status and fingerprint as returned from salt
+     * {@inheritDoc}
      */
     public Key.Fingerprints getFingerprints() {
         return callSync(Key.finger("*"))
@@ -405,11 +455,7 @@ public class SaltService {
     }
 
     /**
-     * Generate a key pair for the given id and accept the public key.
-     *
-     * @param id the id to use
-     * @param force set true to overwrite an already existing key
-     * @return the generated key pair
+     * {@inheritDoc}
      */
     public Key.Pair generateKeysAndAccept(String id,
             boolean force) {
@@ -418,32 +464,21 @@ public class SaltService {
     }
 
     /**
-     * Get the specified grains for a given minion.
-     * @param minionId id of the target minion
-     * @param type  class type, result should be parsed into
-     * @param grainNames list of grains names
-     * @param <T> Type result should be parsed into
-     * @return Optional containing the grains parsed into specified type
+     * {@inheritDoc}
      */
     public <T> Optional<T> getGrains(String minionId, TypeToken<T> type, String... grainNames) {
        return callSync(com.suse.manager.webui.utils.salt.Grains.item(false, type, grainNames), minionId);
     }
 
     /**
-     * Get the grains for a given minion.
-     *
-     * @param minionId id of the target minion
-     * @return map containing the grains
+     * {@inheritDoc}
      */
     public Optional<Map<String, Object>> getGrains(String minionId) {
         return callSync(Grains.items(false), minionId);
     }
 
     /**
-     * Get the machine id for a given minion.
-     *
-     * @param minionId id of the target minion
-     * @return the machine id as a string
+     * {@inheritDoc}
      */
     public Optional<String> getMachineId(String minionId) {
         return getGrain(minionId, "machine_id").flatMap(grain -> {
@@ -459,9 +494,7 @@ public class SaltService {
     }
 
     /**
-     * Accept all keys matching the given pattern
-     *
-     * @param match a pattern for minion ids
+     * {@inheritDoc}
      */
     public void acceptKey(String match) {
         callSync(Key.accept(match))
@@ -469,9 +502,7 @@ public class SaltService {
     }
 
     /**
-     * Delete a given minion's key.
-     *
-     * @param minionId id of the minion
+     * {@inheritDoc}
      */
     public void deleteKey(String minionId) {
         callSync(Key.delete(minionId))
@@ -479,9 +510,7 @@ public class SaltService {
     }
 
     /**
-     * Reject a given minion's key.
-     *
-     * @param minionId id of the minion
+     * {@inheritDoc}
      */
     public void rejectKey(String minionId) {
         callSync(Key.reject(minionId))
@@ -489,10 +518,7 @@ public class SaltService {
     }
 
     /**
-     * Return the stream of events happening in salt.
-     *
-     * @return the event stream
-     * @throws SaltException exception occured during connection (if any)
+     * {@inheritDoc}
      */
     public EventStream getEventStream() throws SaltException {
         if (ConfigDefaults.get().isPostgresql()) {
@@ -516,11 +542,7 @@ public class SaltService {
     }
 
     /**
-     * Run a remote command on a given minion.
-     *
-     * @param target the target
-     * @param cmd the command
-     * @return the output of the command
+     * {@inheritDoc}
      */
     public Map<String, Result<String>> runRemoteCommand(MinionList target, String cmd) {
         try {
@@ -539,11 +561,7 @@ public class SaltService {
     }
 
     /**
-     * Run a remote command on a given minion asynchronously.
-     * @param target the target
-     * @param cmd the command to execute
-     * @param cancel a future used to cancel waiting on return events
-     * @return a map holding a {@link CompletionStage}s for each minion
+     * {@inheritDoc}
      */
     public Map<String, CompletionStage<Result<String>>> runRemoteCommandAsync(
             MinionList target, String cmd, CompletableFuture<GenericError> cancel) {
@@ -580,26 +598,37 @@ public class SaltService {
     }
 
     /**
-     * Create a {@link CompletableFuture} that completes exceptionally after
-     * the given number of seconds.
-     * @param seconds the seconds after which it completes exceptionally
-     * @return a {@link CompletableFuture}
+     * {@inheritDoc}
      */
-    public CompletableFuture failAfter(int seconds) {
-        final CompletableFuture promise = new CompletableFuture();
-        scheduledExecutorService.schedule(() -> {
-            final TimeoutException ex = new TimeoutException("Timeout after " + seconds);
-            return promise.completeExceptionally(ex);
-        }, seconds, TimeUnit.SECONDS);
+    @Override
+    public Map<String, JsonObject> getPools(String minionId) {
+        Map<String, Object> args = new LinkedHashMap<>();
+        LocalCall<Map<String, JsonElement>> call =
+                new LocalCall<>("virt.pool_info", Optional.empty(), Optional.of(args),
+                        new TypeToken<Map<String, JsonElement>>() { });
 
-        return promise;
+        Optional<Map<String, JsonElement>> pools = callSync(call, minionId);
+        Map<String, JsonElement> result = pools.orElse(new HashMap<String, JsonElement>());
+
+        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
+        return result.entrySet().stream()
+                .filter(entry -> entry.getValue().isJsonObject())
+                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
+    }
+
+    @Override
+    public Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
+        List<?> args = Arrays.asList(null, null);
+        LocalCall<Map<String, Map<String, JsonObject>>> call =
+                new LocalCall<>("virt.volume_infos", Optional.of(args), Optional.empty(),
+                        new TypeToken<Map<String, Map<String, JsonObject>>>() { });
+
+        Optional<Map<String, Map<String, JsonObject>>> volumes = callSync(call, minionId);
+        return volumes.orElse(new HashMap<String, Map<String, JsonObject>>());
     }
 
     /**
-     * Returns the currently running jobs on the target
-     *
-     * @param target the target
-     * @return list of running jobs
+     * {@inheritDoc}
      */
     public Map<String, Result<List<SaltUtil.RunningInfo>>> running(MinionList target) {
         try {
@@ -611,22 +640,33 @@ public class SaltService {
     }
 
     /**
-     * Return the jobcache filtered by metadata
-     *
-     * @param metadata search metadata
-     * @return list of running jobs
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateLibvirtEngine(MinionServer minion) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
+        callSync(State.apply(Collections.singletonList("virt.engine-events"),
+                Optional.of(pillar)), minion.getMinionId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
+        return callSync(new ElementCallJson(call), minionId);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata) {
         return callSync(Jobs.listJobs(metadata));
     }
 
     /**
-     * Return the jobcache filtered by metadata and start and end time.
-     *
-     * @param metadata search metadata
-     * @param startTime jobs start time
-     * @param endTime jobs end time
-     * @return list of running jobs
+     * {@inheritDoc}
      */
     public Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata,
                                                                     LocalDateTime startTime, LocalDateTime endTime) {
@@ -634,20 +674,14 @@ public class SaltService {
     }
 
     /**
-     * Return the result for a jobId
-     *
-     * @param jid the job id
-     * @return map from minion to result
+     * {@inheritDoc}
      */
     public Optional<Jobs.Info> listJob(String jid) {
         return callSync(Jobs.listJob(jid));
     }
 
     /**
-     * Match the given target expression asynchronously.
-     * @param target the target expression
-     * @param cancel  a future used to cancel waiting on return events
-     * @return a map holding a {@link CompletionStage}s for each minion
+     * {@inheritDoc}
      */
     public Map<String, CompletionStage<Result<Boolean>>> matchAsync(
             String target, CompletableFuture<GenericError> cancel) {
@@ -661,10 +695,7 @@ public class SaltService {
     }
 
     /**
-     * Executes match.glob in another thread and returns a {@link CompletionStage}.
-     * @param target the target to pass to match.glob
-     * @param cancel a future used to cancel waiting
-     * @return a future or Optional.empty if there's no ssh-push minion in the db
+     * {@inheritDoc}
      */
     public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
             String target, CompletableFuture<GenericError> cancel) {
@@ -689,8 +720,7 @@ public class SaltService {
     }
 
     /**
-     * Call 'saltutil.refresh_pillar' to sync the grains to the target minion(s).
-     * @param minionList minion list
+     * {@inheritDoc}
      */
     public void refreshPillar(MinionList minionList) {
         try {
@@ -704,8 +734,7 @@ public class SaltService {
     }
 
     /**
-     * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
-     * @param minionList minion list
+     * {@inheritDoc}
      */
     public void syncGrains(MinionList minionList) {
         try {
@@ -719,8 +748,7 @@ public class SaltService {
     }
 
     /**
-     * Call 'saltutil.sync_modules' to sync the grains to the target minion(s).
-     * @param minionList minion list
+     * {@inheritDoc}
      */
     public void syncModules(MinionList minionList) {
         try {
@@ -734,8 +762,15 @@ public class SaltService {
     }
 
     /**
-     * Call 'saltutil.sync_all' to sync everything to the target minion(s).
-     * @param minionList minion list
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<List<Zypper.ProductInfo>> getProducts(String minionId) {
+        return callSync(Zypper.listProducts(false), minionId);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public void syncAll(MinionList minionList) {
         try {
@@ -758,7 +793,7 @@ public class SaltService {
      * @return the result of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Map<String, Result<T>> callSync(LocalCall<T> callIn, MinionList target)
+    private <T> Map<String, Result<T>> callSync(LocalCall<T> callIn, MinionList target)
             throws SaltException {
         HashSet<String> uniqueMinionIds = new HashSet<>(target.getTarget());
         Map<Boolean, List<String>> minionPartitions =
@@ -789,6 +824,24 @@ public class SaltService {
         }
 
         return results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Result<Object>> showHighstate(String minionId) throws SaltException {
+        return callSync(com.suse.salt.netapi.calls.modules.State.showHighstate(), new MinionList(minionId));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Result<Map<String, String>>> getPendingResume(List<String> minionIds) throws SaltException {
+        return callSync(
+                MgrActionChains.getPendingResume(),
+                new MinionList(minionIds));
     }
 
     /**
@@ -826,20 +879,13 @@ public class SaltService {
      * @return the LocalAsyncResult of the call
      * @throws SaltException in case of an error executing the job with Salt
      */
-    public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> call, Target<?> target)
+    private <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> call, Target<?> target)
             throws SaltException {
         return callAsync(call, target, Optional.empty());
     }
 
     /**
-     * Execute a LocalCall asynchronously on the default Salt client.
-     *
-     * @param <T> the return type of the call
-     * @param callIn the call to execute
-     * @param target minions targeted by the call
-     * @param metadataIn the metadata to be passed in the call
-     * @return the LocalAsyncResult of the call
-     * @throws SaltException in case of an error executing the job with Salt
+     * {@inheritDoc}
      */
     public <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
             Optional<ScheduleMetadata> metadataIn) throws SaltException {
@@ -850,10 +896,17 @@ public class SaltService {
     }
 
     /**
-     * Performs an test.echo on a target set of minions for checkIn purpose.
-     * @param targetIn the target
-     * @return the LocalAsyncResult of the test.echo call
-     * @throws SaltException if we get a failure from Salt
+     * {@inheritDoc}
+     */
+    @Override
+    public void deployChannels(List<String> minionIds) throws SaltException {
+        callSync(
+                com.suse.salt.netapi.calls.modules.State.apply(ApplyStatesEventMessage.CHANNELS),
+                new MinionList(minionIds));
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public Optional<LocalAsyncResult<String>> checkIn(MinionList targetIn) throws SaltException {
         try {
@@ -914,8 +967,7 @@ public class SaltService {
     }
 
     /**
-     * Apply util.systeminfo state on the specified minion list
-     * @param minionTarget minion list
+     * {@inheritDoc}
      */
     public void updateSystemInfo(MinionList minionTarget) {
         try {
@@ -928,20 +980,14 @@ public class SaltService {
     }
 
     /**
-     * Gets a minion's master hostname.
-     *
-     * @param minionId the minion id
-     * @return the master hostname
+     * {@inheritDoc}
      */
     public Optional<String> getMasterHostname(String minionId) {
         return callSync(Config.get(Config.MASTER), minionId);
     }
 
     /**
-     * Apply a state synchronously.
-     * @param minionId the minion id
-     * @param state the state to apply
-     * @return the result of applying the state
+     * {@inheritDoc}
      */
     public Optional<Map<String, ApplyResult>> applyState(
             String minionId, String state) {
@@ -949,14 +995,7 @@ public class SaltService {
     }
 
     /**
-     * Bootstrap a system using salt-ssh.
-     *
-     * @param parameters - bootstrap parameters
-     * @param bootstrapMods - state modules to be applied during the bootstrap
-     * @param pillarData - pillar data used salt-ssh call
-     * @throws SaltException if something goes wrong during command execution or
-     * during manipulation the salt-ssh roster
-     * @return the result of the underlying ssh call for given host
+     * {@inheritDoc}
      */
     public Result<SSHResult<Map<String, ApplyResult>>> bootstrapMinion(
             BootstrapParameters parameters, List<String> bootstrapMods,
@@ -965,13 +1004,7 @@ public class SaltService {
     }
 
     /**
-     * Store the files uploaded by a minion to the SCAP storage directory.
-     * @param minion the minion
-     * @param uploadDir the uploadDir
-     * @param actionId the action id
-     * @return a map with one element: @{code true} -> scap store path,
-     * {@code false} -> err message
-     *
+     * {@inheritDoc}
      */
     public Map<Boolean, String> storeMinionScapFiles(
             MinionServer minion, String uploadDir, Long actionId) {
@@ -1069,10 +1102,7 @@ public class SaltService {
     }
 
     /**
-     * Call the custom mgrutil.ssh_keygen runner if the key files are not present.
-     *
-     * @param path of the key files
-     * @return the result of the runner call as a map
+     * {@inheritDoc}
      */
     public Optional<MgrUtilRunner.ExecResult> generateSSHKey(String path) {
         File pubKey = new File(path + ".pub");
@@ -1084,10 +1114,7 @@ public class SaltService {
     }
 
     /**
-     * Delete a Salt key from the "Rejected Keys" category using the mgrutil runner.
-     *
-     * @param minionId the minionId to look for in "Rejected Keys"
-     * @return the result of the runner call as a map
+     * {@inheritDoc}
      */
     public Optional<MgrUtilRunner.ExecResult> deleteRejectedKey(String minionId) {
         RunnerCall<MgrUtilRunner.ExecResult> call = MgrUtilRunner.deleteRejectedKey(minionId);
@@ -1095,18 +1122,7 @@ public class SaltService {
     }
 
     /**
-     * Chain ssh calls over one or more hops to run a command on the last host in the chain.
-     * This calls the mgrutil.chain_ssh_command runner.
-     *
-     * @param hosts a list of hosts, where the last one is where
-     *              the command will be executed
-     * @param clientKey the ssh key to use to connect to the first host
-     * @param proxyKey the ssh key path to use for the rest of the hosts
-     * @param user the user
-     * @param options ssh options
-     * @param command the command to execute
-     * @param outputfile the file to which to dump the command stdout
-     * @return the execution result
+     * {@inheritDoc}
      */
     public Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts,
                                                     String clientKey,
@@ -1122,12 +1138,9 @@ public class SaltService {
     }
 
     /**
-     * Get information about all containers running in a Kubernetes cluster.
-     * @param kubeconfig path to the kubeconfig file
-     * @param context kubeconfig context to use
-     * @return a list of containers
+     * {@inheritDoc}
      */
-    public Optional<MgrK8sRunner.ContainersList> getAllContainers(String kubeconfig,
+    public Optional<List<MgrK8sRunner.Container>> getAllContainers(String kubeconfig,
                                                         String context) {
         RunnerCall<MgrK8sRunner.ContainersList> call =
                 MgrK8sRunner.getAllContainers(kubeconfig, context);
@@ -1158,15 +1171,25 @@ public class SaltService {
                         throw new NoSuchElementException();
                     }
                 )
+        ).map(s -> s.getContainers());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notifySystemIdGenerated(MinionServer minion) throws InstantiationException, SaltException {
+        ClientCertificate cert = SystemManager.createClientCertificate(minion);
+        Map<String, Object> data = new HashMap<>();
+        data.put("data", cert.toString());
+        callAsync(
+                Event.fire(data, "suse/systemid/generated"),
+                new MinionList(minion.getMinionId())
         );
     }
 
     /**
-     * Remove SUSE Manager specific configuration from a Salt minion.
-     *
-     * @param minion the minion.
-     * @param timeout operation timeout
-     * @return list of error messages or empty if no error
+     * {@inheritDoc}
      */
     public Optional<List<String>> cleanupMinion(MinionServer minion,
                                                    int timeout) {
@@ -1202,18 +1225,14 @@ public class SaltService {
     }
 
     /**
-     * @return saltSSHService to get
+     * {@inheritDoc}
      */
     public SaltSSHService getSaltSSHService() {
         return saltSSHService;
     }
+
     /**
-     * Upload built Kiwi image to SUSE Manager
-     *
-     * @param minion     the minion
-     * @param filepath   the filepath of the image to upload, in the build host
-     * @param imageStore the image store location
-     * @return the execution result
+     * {@inheritDoc}
      */
     public Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
             String imageStore) {

@@ -14,19 +14,21 @@
  */
 package com.suse.manager.webui.controllers.test;
 
-import static org.hamcrest.Matchers.containsString;
 
+import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.VirtManager;
@@ -46,6 +48,8 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
     private SaltService saltServiceMock;
     private Server host;
     private static final Gson GSON = new GsonBuilder().create();
+    private VirtManager virtManager;
+    private SystemEntitlementManager systemEntitlementManager;
 
     /**
      * {@inheritDoc}
@@ -61,31 +65,42 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        saltServiceMock = context().mock(SaltService.class);
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("state", "apply")),
-                    with(containsString("serverfactorytest")));
-        }});
-        VirtManager.setSaltService(saltServiceMock);
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        saltServiceMock = new SaltService() {
 
-        host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
-        host.asMinionServer().get().setMinionId("testminion.local");
+            @Override
+            public void updateLibvirtEngine(MinionServer minion) {
+            }
+
+            @Override
+            public Map<String, JsonObject> getPools(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/test/virt.pool.info.json",
+                        null,
+                        new TypeToken<Map<String, JsonObject>>() { }).get();
+            }
+
+            @Override
+            public Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/test/virt.volume.info.json",
+                        null,
+                        new TypeToken<Map<String, Map<String, JsonObject>>>() { }).get();
+            }
+
+        };
+
+        virtManager = new VirtManager(saltServiceMock);
+        systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
+
+        host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
     }
 
-    public void testData() throws Exception {
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("virt", "pool_info")),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(SaltTestUtils.getSaltResponse(
-                    "/com/suse/manager/webui/controllers/test/virt.pool.info.json",
-                    null,
-                    new TypeToken<Map<String, JsonElement>>() { }.getType())));
-        }});
-
-        String json = VirtualPoolsController.data(getRequestWithCsrf(
+    public void testData() {
+        VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
+        String json = virtualPoolsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/pools/:sid/data", host.getId()), response, user);
 
         List<VirtualStoragePoolInfoJson> pools = GSON.fromJson(json, new TypeToken<List<VirtualStoragePoolInfoJson>>() {}.getType());

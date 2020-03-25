@@ -19,11 +19,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -69,9 +66,7 @@ public class TokenCleanup extends RhnJavaJob {
 
             List<String> changedMinionIds = changedMinions.map(m -> m.getMinionId()).collect(Collectors.toList());
             if (Config.get().getBoolean(ConfigDefaults.TOKEN_REFRESH_AUTO_DEPLOY)) {
-                SaltService.INSTANCE.callSync(
-                        State.apply(ApplyStatesEventMessage.CHANNELS),
-                        new MinionList(changedMinionIds));
+                SaltService.INSTANCE.deployChannels(changedMinionIds);
             }
             else {
                 log.warn("The following minions got channel tokens changed and" +

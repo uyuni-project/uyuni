@@ -64,7 +64,7 @@ public class XmlRpcServlet extends HttpServlet {
      * default constructor
      */
     public XmlRpcServlet() {
-        this(new HandlerFactory(), new SerializerFactory());
+        this(HandlerFactory.getDefaultHandlerFactory(), new SerializerFactory());
     }
 
     private void passControl(HttpServletRequest request,
@@ -111,9 +111,12 @@ public class XmlRpcServlet extends HttpServlet {
 
             if (log.isDebugEnabled()) {
                 log.debug("registerInvocationHandler: namespace [" + namespace +
-                          "] handler [" + handlers.getHandler(namespace) + "]");
+                          "] handler [" + handlers.getHandler(namespace).get() + "]");
             }
-            srvr.addInvocationHandler(namespace, handlers.getHandler(namespace));
+            srvr.addInvocationHandler(
+                    namespace,
+                    handlers.getHandler(namespace).get()
+            );
         }
     }
 

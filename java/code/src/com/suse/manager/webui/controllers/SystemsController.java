@@ -39,7 +39,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -69,13 +69,23 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Controller class providing backend code for the systems page.
  */
 public class SystemsController {
 
-    private SystemsController() { }
+    private final SystemQuery systemQuery;
+
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public SystemsController(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
+    }
 
     // Logger for this class
     private static final Logger LOG = Logger.getLogger(SystemsController.class);
@@ -87,13 +97,27 @@ public class SystemsController {
             .create();
 
     /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     * @param systemsController instance to register.
+     */
+    public static void initRoutes(SystemsController systemsController) {
+        post("/manager/api/systems/:sid/delete", withUser(systemsController::delete));
+        get("/manager/api/systems/:sid/channels", withUser(systemsController::getChannels));
+        get("/manager/api/systems/:sid/channels-available-base",
+                withUser(systemsController::getAvailableBaseChannels));
+        post("/manager/api/systems/:sid/channels", withUser(systemsController::subscribeChannels));
+        get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
+                withUser(systemsController::getAccessibleChannelChildren));
+    }
+
+    /**
      * Deletes a system.
      * @param request the request
      * @param response the response
      * @param user the user
      * @return the json response
      */
-    public static String delete(Request request, Response response, User user) {
+    public String delete(Request request, Response response, User user) {
         String sidStr = request.params("sid");
         String noclean = request.queryParams("nocleanup");
         long sid;
@@ -109,8 +133,7 @@ public class SystemsController {
         if (server.asMinionServer().isPresent()) {
             if (!Boolean.parseBoolean(noclean) && !isEmptyProfile) {
                 Optional<List<String>> cleanupErr =
-                        SaltService.INSTANCE.
-                                cleanupMinion(server.asMinionServer().get(), 300);
+                        systemQuery.cleanupMinion(server.asMinionServer().get(), 300);
                 if (cleanupErr.isPresent()) {
                     return json(response, ResultJson.error(cleanupErr.get()));
                 }
@@ -157,7 +180,7 @@ public class SystemsController {
      * @param user the user
      * @return the json response
      */
-    public static String getChannels(Request request, Response response, User user) {
+    public String getChannels(Request request, Response response, User user) {
         return withServer(request, response, user, (server) -> {
             Channel base = server.getBaseChannel();
             ChannelsJson jsonChannels = new ChannelsJson();
@@ -178,7 +201,7 @@ public class SystemsController {
      * @param user the user
      * @return the json response
      */
-    public static String getAvailableBaseChannels(Request request, Response response, User user) {
+    public String getAvailableBaseChannels(Request request, Response response, User user) {
         return withServer(request, response, user, (server) -> {
             List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(
                     user, server);
@@ -197,7 +220,7 @@ public class SystemsController {
         });
     }
 
-    private static String withServer(Request request, Response response, User user, Function<Server, String> handler) {
+    private String withServer(Request request, Response response, User user, Function<Server, String> handler) {
         long serverId;
         try {
             serverId = Long.parseLong(request.params("sid"));
@@ -223,7 +246,7 @@ public class SystemsController {
      * @param user the user
      * @return the json response
      */
-    public static String subscribeChannels(Request request, Response response, User user) {
+    public String subscribeChannels(Request request, Response response, User user) {
         long serverId;
         try {
             serverId = Long.parseLong(request.params("sid"));
@@ -291,7 +314,7 @@ public class SystemsController {
         }
     }
 
-    protected static void createSuccessMessage(HttpServletRequest req, String msgKey,
+    protected void createSuccessMessage(HttpServletRequest req, String msgKey,
                                         String param1) {
         ActionMessages msg = new ActionMessages();
         Object[] args = new Object[1];
@@ -300,7 +323,7 @@ public class SystemsController {
         StrutsDelegate.getInstance().saveMessages(req, msg);
     }
 
-    protected static void createErrorMessage(HttpServletRequest req, String beanKey,
+    protected void createErrorMessage(HttpServletRequest req, String beanKey,
                                       String param) {
         ActionErrors errs = new ActionErrors();
         String escParam = StringEscapeUtils.escapeHtml4(param);
@@ -315,7 +338,7 @@ public class SystemsController {
      * @param user the user
      * @return the json response
      */
-    public static Object getAccessibleChannelChildren(Request request, Response response, User user) {
+    public Object getAccessibleChannelChildren(Request request, Response response, User user) {
         return withServer(request, response, user, (server) -> {
             long channelId;
             try {

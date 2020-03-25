@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.controllers.test;
 
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.containsString;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -23,13 +24,16 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerTestUtils;
 
@@ -47,11 +51,7 @@ import com.suse.salt.netapi.calls.LocalCall;
 
 import org.jmock.Expectations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import spark.HaltException;
 
@@ -64,6 +64,10 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
     private SaltService saltServiceMock;
     private static final Gson GSON = new GsonBuilder().create();
     private Server host;
+    private VirtManager virtManager;
+    private VirtualGuestsController virtualGuestsController;
+    private String guid = "b99a81764f40498d8e612f6ade654fe2";
+    private String uuid = "b99a8176-4f40-498d-8e61-2f6ade654fe2";
 
     /**
      * {@inheritDoc}
@@ -80,17 +84,39 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        saltServiceMock = context().mock(SaltService.class);
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(containsString("serverfactorytest")));
-        }});
-        VirtManager.setSaltService(saltServiceMock);
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
+        saltServiceMock = new SaltService() {
 
-        host = ServerTestUtils.createVirtHostWithGuests(user, 2, true);
+            @Override
+            public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/test/virt.guest.allcaps.json", null,
+                        new TypeToken<Map<String, JsonElement>>() { });
+            }
+
+            @Override
+            public void updateLibvirtEngine(MinionServer minion) {
+                assertTrue(minion.getMinionId().startsWith("serverfactorytest"));
+            }
+
+            @Override
+            public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+                return SaltTestUtils.<String>getSaltResponse(
+                        "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", Collections.emptyMap(), null)
+                        .map(GuestDefinition::parse);
+            }
+        };
+
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
+
+        host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, systemEntitlementManager);
         host.asMinionServer().get().setMinionId("testminion.local");
+        host.getGuests().iterator().next().setUuid(guid);
+
+        virtManager = new VirtManager(saltServiceMock);
+        virtualGuestsController = new VirtualGuestsController(virtManager);
 
         // Clean pending actions for easier checks in the tests
         DataResult<ScheduledAction> actions = ActionManager.allActions(user, null);
@@ -110,7 +136,8 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         VirtualInstance[] guests = host.getGuests().toArray(new VirtualInstance[size]);
         Long sid = host.getId();
 
-        String json = VirtualGuestsController.data(
+
+        String json = virtualGuestsController.data(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/data", sid),
                 response, user);
         List<Map<String, Object>> model = GSON.fromJson(json, List.class);
@@ -138,7 +165,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
 
-        String json = VirtualGuestsController.action(
+        String json = virtualGuestsController.action(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"]}",
                                               sid, "shutdown"),
@@ -170,7 +197,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         Integer vcpus = 3;
-        String json = VirtualGuestsController.action(
+        String json = virtualGuestsController.action(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"], value: " + vcpus + "}",
                                               sid, "setVcpu"),
@@ -200,7 +227,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         try {
-            VirtualGuestsController.action(
+            virtualGuestsController.action(
                     getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                                   "{uuids: [\"" + guest.getUuid() + "\"]}",
                                                   sid, "setVcpu"),
@@ -226,7 +253,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         Integer mem = 2048;
-        String json = VirtualGuestsController.action(
+        String json = virtualGuestsController.action(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guests[0].getUuid() + "\", " +
                                                        "\"" + guests[1].getUuid() + "\"], " +
@@ -266,21 +293,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
      */
     @SuppressWarnings("unchecked")
     public void testGetGuest() throws Exception {
-        String guid = host.getGuests().iterator().next().getUuid();
-        String uuid = guid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("b99a8176-4f40-498d-8e61-2f6ade654fe2", uuid);
-
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(SaltTestUtils.getSaltResponse(
-                    "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", placeholders, null)));
-        }});
-
-        String json = VirtualGuestsController.getGuest(
+        String json = virtualGuestsController.getGuest(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
                         host.getId(), guid),
                 response, user);
@@ -320,16 +333,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("[\"ide\", \"fdc\", \"scsi\", \"virtio\", \"usb\"]", "[\"ide\", \"fdc\", \"scsi\", \"usb\"]");
 
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(SaltTestUtils.functionEquals("virt", "all_capabilities")),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(SaltTestUtils.getSaltResponse(
-                    "/com/suse/manager/webui/controllers/test/virt.guest.allcaps.json", null,
-                    new TypeToken<Map<String, JsonElement>>() { }.getType())));
-        }});
-
-        String json = VirtualGuestsController.getDomainsCapabilities(
+        String json = virtualGuestsController.getDomainsCapabilities(
                 getRequestWithCsrf("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
                         host.getId()), response, user);
 

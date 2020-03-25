@@ -15,6 +15,12 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -47,6 +53,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Spark controller class for image store pages and API endpoints.
@@ -58,6 +65,33 @@ public class ImageStoreController {
     private static Logger log = Logger.getLogger(ImageStoreController.class);
 
     private ImageStoreController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/cm/imagestores",
+                withUserPreferences(withCsrfToken(withUser(ImageStoreController::listView))), jade);
+        get("/manager/cm/imagestores/create",
+                withCsrfToken(withImageAdmin(ImageStoreController::createView)), jade);
+        get("/manager/cm/imagestores/edit/:id",
+                withCsrfToken(withImageAdmin(ImageStoreController::updateView)), jade);
+
+        get("/manager/api/cm/imagestores", withUser(ImageStoreController::list));
+        get("/manager/api/cm/imagestores/type/:type",
+                withUser(ImageStoreController::listAllWithType));
+        get("/manager/api/cm/imagestores/:id", withUser(ImageStoreController::getSingle));
+        get("/manager/api/cm/imagestores/find/:label",
+                withUser(ImageStoreController::getSingleByLabel));
+        post("/manager/api/cm/imagestores/create",
+                withImageAdmin(ImageStoreController::create));
+        post("/manager/api/cm/imagestores/update/:id",
+                withImageAdmin(ImageStoreController::update));
+        post("/manager/api/cm/imagestores/delete",
+                withImageAdmin(ImageStoreController::delete));
+    }
 
     /**
      * Returns a view to list image stores

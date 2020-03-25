@@ -23,6 +23,7 @@ import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
@@ -49,10 +50,10 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use
      * getInstance.
-     * @param saltService salt service to use
+     * @param systemQueryIn systemQuery to use
      */
-    public SSHMinionBootstrapper(SaltService saltService) {
-        super(saltService);
+    public SSHMinionBootstrapper(SystemQuery systemQueryIn) {
+        super(systemQueryIn);
     }
 
     /**
@@ -123,7 +124,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
     // we want to override this in tests
     protected RegisterMinionEventMessageAction getRegisterAction() {
-        return new RegisterMinionEventMessageAction();
+        return new RegisterMinionEventMessageAction(systemQuery);
     }
 
     /**

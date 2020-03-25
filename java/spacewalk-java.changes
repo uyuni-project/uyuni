@@ -1,4 +1,6 @@
 - add XMLRPC API method: proxy.listProxyClients (bsc#1166408)
+- Hide Virtualization > Provisioning tab for Salt systems (bsc#1167329)
+- Remove no longer necessary check for retail TERMINALS group membership
 - fix error when adding systems to ssm with 'add to ssm' button (bsc#1160246)
 - Prevent build/promote on content projects which have build/promote in progress
 - Clean stale Content Lifecycle targets on Tomcat startup (bsc#1164121)

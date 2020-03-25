@@ -28,6 +28,7 @@ import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;
@@ -45,6 +46,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Controller class providing backend code for the minions page.
@@ -53,7 +58,7 @@ public class MinionsAPI {
 
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -63,6 +68,18 @@ public class MinionsAPI {
     private static final Logger LOG = Logger.getLogger(MinionsAPI.class);
 
     private MinionsAPI() { }
+
+    /**
+     * Invoked from Router. Initializes routes.
+     */
+    public static void initRoutes() {
+        post("/manager/api/systems/bootstrap", withOrgAdmin(MinionsAPI::bootstrap));
+        post("/manager/api/systems/bootstrap-ssh", withOrgAdmin(MinionsAPI::bootstrapSSH));
+        get("/manager/api/systems/keys", withUser(MinionsAPI::listKeys));
+        post("/manager/api/systems/keys/:target/accept", withOrgAdmin(MinionsAPI::accept));
+        post("/manager/api/systems/keys/:target/reject", withOrgAdmin(MinionsAPI::reject));
+        post("/manager/api/systems/keys/:target/delete", withOrgAdmin(MinionsAPI::delete));
+    }
 
     /**
      * API endpoint to get all minions matching a target glob

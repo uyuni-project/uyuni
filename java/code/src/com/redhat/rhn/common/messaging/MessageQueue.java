@@ -265,9 +265,8 @@ public class MessageQueue {
 
 
     /**
-     * Configures defaut messaging actions needed by RHN
+     * Configures default messaging actions needed by RHN
      * This method should be called directly after <code>startMessaging</code>.
-     *
      */
     public static void configureDefaultActions() {
         // Register the Actions for the Events
@@ -338,4 +337,3 @@ public class MessageQueue {
                 ChannelsChangedEventMessage.class);
     }
 }
-

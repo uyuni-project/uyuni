@@ -14,16 +14,17 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import static org.hamcrest.Matchers.containsString;
-
+import com.google.gson.JsonElement;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -31,21 +32,21 @@ import com.redhat.rhn.testing.TestUtils;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
+import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.parser.JsonParser;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,6 +59,9 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     private SaltService saltServiceMock;
     private Server host;
+    private VirtManager virtManager;
+    private String guid = "b99a81764f40498d8e612f6ade654fe2";
+    private String uuid = "b99a8176-4f40-498d-8e61-2f6ade654fe2";
 
     // JsonParser for parsing events from files
     public static final JsonParser<Event> EVENTS =
@@ -70,32 +74,47 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         setImposteriser(ClassImposteriser.INSTANCE);
 
-        saltServiceMock = context().mock(SaltService.class);
-        context().checking(new Expectations() {{
-            allowing(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(containsString("serverfactorytest")));
-        }});
-        SystemEntitler.INSTANCE.setSaltService(saltServiceMock);
-        VirtManager.setSaltService(saltServiceMock);
+        saltServiceMock = new SaltService() {
 
-        host = ServerTestUtils.createVirtHostWithGuests(user, 1, true);
+            @Override
+            public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
+                return SaltTestUtils.getSaltResponse(
+                        "/com/suse/manager/webui/controllers/test/virt.guest.allcaps.json", null,
+                        new TypeToken<Map<String, JsonElement>>() { });
+            }
+
+            @Override
+            public void updateLibvirtEngine(MinionServer minion) {
+                assertTrue(minion.getMinionId().startsWith("serverfactorytest"));
+            }
+
+            @Override
+            public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+                return SaltTestUtils.<String>getSaltResponse(
+                        "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", Collections.emptyMap(), null)
+                        .map(GuestDefinition::parse);
+            }
+        };
+
+        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(),
+                new SystemEntitler(saltServiceMock)
+        );
+
+        virtManager = new VirtManager(saltServiceMock);
+
+        host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
+        host.getGuests().iterator().next().setUuid(guid);
+        host.getGuests().iterator().next().setName("sles12sp2");
         host.asMinionServer().get().setMinionId("testminion.local");
     }
 
     @SuppressWarnings("unchecked")
     public void testNewGuest() throws Exception {
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(getSaltResponse("virt.guest.definition.xml", null)));
-        }});
-
         Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.started.json", null));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
-        new LibvirtEngineDomainLifecycleMessageAction().execute(message);
+        new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> newGuests = guests.stream().filter(vso -> vso.getName().equals("sles12sp2"))
@@ -107,25 +126,10 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     @SuppressWarnings("unchecked")
     public void testShutdownPersistent() throws Exception {
-        VirtualInstance guest = host.getGuests().iterator().next();
-        String guid = guest.getUuid();
-        String uuid = guid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("sles12sp2", guest.getName());
-        placeholders.put("b99a8176-4f40-498d-8e61-2f6ade654fe2", uuid);
-
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(getSaltResponse("virt.guest.definition.xml", placeholders)));
-        }});
-
-        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", placeholders));
+        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", Collections.emptyMap()));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
-        new LibvirtEngineDomainLifecycleMessageAction().execute(message);
+        new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))
@@ -137,25 +141,18 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     @SuppressWarnings("unchecked")
     public void testShutdownTransient() throws Exception {
-        VirtualInstance guest = host.getGuests().iterator().next();
-        String guid = guest.getUuid();
-        String uuid = guid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
+        SystemQuery saltServiceMock = new SaltService() {
+            @Override
+            public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+                return Optional.empty();
+            }
+        };
 
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("sles12sp2", guest.getName());
-        placeholders.put("b99a8176-4f40-498d-8e61-2f6ade654fe2", uuid);
-
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(Optional.of("ERROR: The VM \"" + guest.getName() +"\" is not present")));
-        }});
-
-        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", placeholders));
+        VirtManager virtManager = new VirtManager(saltServiceMock);
+        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", Collections.emptyMap()));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
-        new LibvirtEngineDomainLifecycleMessageAction().execute(message);
+        new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))
@@ -166,25 +163,10 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     @SuppressWarnings("unchecked")
     public void testUpdate() throws Exception {
-        VirtualInstance guest = host.getGuests().iterator().next();
-        String guid = guest.getUuid();
-        String uuid = guid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
-
-        Map<String, String> placeholders = new HashMap<>();
-        placeholders.put("sles12sp2", guest.getName());
-        placeholders.put("b99a8176-4f40-498d-8e61-2f6ade654fe2", uuid);
-
-        context().checking(new Expectations() {{
-            oneOf(saltServiceMock).callSync(
-                    with(any(LocalCall.class)),
-                    with(host.asMinionServer().get().getMinionId()));
-            will(returnValue(getSaltResponse("virt.guest.definition.xml", placeholders)));
-        }});
-
-        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.updated.json", placeholders));
+        Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.updated.json", Collections.emptyMap()));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 
-        new LibvirtEngineDomainLifecycleMessageAction().execute(message);
+        new LibvirtEngineDomainLifecycleMessageAction(virtManager).execute(message);
 
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         List<VirtualSystemOverview> matchingGuests = guests.stream().filter(vso -> vso.getUuid().equals(guid))

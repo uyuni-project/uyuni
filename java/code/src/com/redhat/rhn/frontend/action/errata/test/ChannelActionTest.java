@@ -36,6 +36,7 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 

@@ -18,7 +18,7 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.log4j.Logger;
 
@@ -32,22 +32,15 @@ public class MinionStartEventMessageAction implements MessageAction {
     private static final Logger LOG = Logger.getLogger(MinionStartEventMessageAction.class);
 
     // Reference to the SaltService instance
-    private final SaltService SALT_SERVICE;
+    private final SystemQuery systemQuery;
 
     /**
-     * Default constructor.
-     */
-    public MinionStartEventMessageAction() {
-        this(SaltService.INSTANCE);
-    }
-
-    /**
-     * Constructor taking a {@link SaltService} instance.
+     * Constructor taking a {@link SystemQuery} instance.
      *
-     * @param saltService the salt service to use
+     * @param systemQueryIn systemQuery instance for gathering data from a system.
      */
-    public MinionStartEventMessageAction(SaltService saltService) {
-        SALT_SERVICE = saltService;
+    public MinionStartEventMessageAction(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     @Override
@@ -57,7 +50,7 @@ public class MinionStartEventMessageAction implements MessageAction {
                 .ifPresent(minion -> {
             // Sync grains, modules and beacons, also update uptime and required grains on every minion restart
             MinionList minionTarget = new MinionList(minionId);
-            SALT_SERVICE.updateSystemInfo(minionTarget);
+            systemQuery.updateSystemInfo(minionTarget);
         });
     }
 

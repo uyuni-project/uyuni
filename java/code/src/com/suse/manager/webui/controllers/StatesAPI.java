@@ -15,6 +15,9 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
@@ -72,7 +75,6 @@ import com.suse.manager.webui.utils.gson.ServerApplyStatesJson;
 import com.suse.manager.webui.utils.gson.ServerConfigChannelsJson;
 import com.suse.manager.webui.utils.gson.ServerPackageStatesJson;
 import com.suse.manager.webui.utils.gson.StateTargetType;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
@@ -128,6 +130,21 @@ public class StatesAPI {
             = "/etc/yum.repos.d/susemanager:channels.repo";
 
     private StatesAPI() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     */
+    public static void initRoutes() {
+        post("/manager/api/states/apply", withUser(StatesAPI::apply));
+        post("/manager/api/states/applyall", withUser(StatesAPI::applyHighstate));
+        get("/manager/api/states/match", withUser(StatesAPI::matchStates));
+        post("/manager/api/states/save", withUser(StatesAPI::saveConfigChannels));
+        get("/manager/api/states/packages", StatesAPI::packages);
+        post("/manager/api/states/packages/save", withUser(StatesAPI::savePackages));
+        get("/manager/api/states/packages/match", StatesAPI::matchPackages);
+        get("/manager/api/states/highstate", StatesAPI::showHighstate);
+        get("/manager/api/states/:channelId/content", withUser(StatesAPI::stateContent));
+    }
 
     /**
      * Query the current list of package states for a given server.
@@ -671,8 +688,7 @@ public class StatesAPI {
                         // sync to minion before showing highstate
                         SaltService.INSTANCE.syncAll(minions);
 
-                        Map<String, Result<Object>> result = SaltService.INSTANCE
-                                .callSync(State.showHighstate(), minions);
+                        Map<String, Result<Object>> result = SaltService.INSTANCE.showHighstate(minionId);
 
                         return Optional.ofNullable(result.get(minionId))
                                 .map(r -> r.fold(

@@ -27,11 +27,10 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.utils.salt.MgrActionChains;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.salt.netapi.calls.modules.Test;
 
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
@@ -43,6 +42,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
@@ -55,7 +55,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private SystemSummary system;
     private TaskQueue parentQueue;
 
-    private SaltService saltService;
+    private SystemQuery systemQuery;
     private SaltSSHService saltSSHService;
     private SaltServerActionService saltServerActionService;
 
@@ -67,7 +67,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
     public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn) {
         log = logger;
         system = systemIn;
-        saltService = SaltService.INSTANCE;
+        systemQuery = SaltService.INSTANCE;
         saltSSHService = SaltService.INSTANCE.getSaltSSHService();
         saltServerActionService = SaltServerActionService.INSTANCE;
     }
@@ -81,11 +81,11 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param saltServerActionServiceIn the {@link SaltServerActionService} to work with
      */
     public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn,
-            SaltService saltServiceIn, SaltSSHService saltSSHServiceIn,
+            SystemQuery saltServiceIn, SaltSSHService saltSSHServiceIn,
             SaltServerActionService saltServerActionServiceIn) {
         log = logger;
         system = systemIn;
-        saltService = saltServiceIn;
+        systemQuery = saltServiceIn;
         saltSSHService = saltSSHServiceIn;
         saltServerActionService = saltServerActionServiceIn;
     }
@@ -149,8 +149,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         try {
             // first check if there's any pending action chain execution on the minion
             // fetch the extra_filerefs and next_action_id
-            pendingResume = saltService.callSync(MgrActionChains.getPendingResume(),
-                    new MinionList(minion.getMinionId()));
+            pendingResume = systemQuery.getPendingResume(Collections.singletonList(minion.getMinionId()));
         }
         catch (SaltException e) {
             log.error("Could not retrive pending action chain executions for minion", e);
@@ -335,8 +334,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private void performCheckin(MinionServer minion) {
         // Ping minion and perform check-in on success
         log.info("Performing a check-in for: " + minion.getMinionId());
-        Optional<Boolean> result = saltService
-                .callSync(Test.ping(), minion.getMinionId());
+        Optional<Boolean> result = systemQuery.ping(minion.getMinionId());
+
         result.ifPresent(res -> minion.updateServerInfo());
     }
 

@@ -14,6 +14,12 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.UserNotification;
@@ -24,7 +30,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.NotificationMessageJson;
 import com.suse.manager.webui.websocket.Notification;
 import com.suse.utils.Json;
@@ -43,6 +49,7 @@ import java.util.stream.Collectors;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for the messages page.
@@ -54,7 +61,36 @@ public class NotificationMessageController {
             .serializeNulls()
             .create();
 
-    private NotificationMessageController() { }
+    private final SystemQuery systemQuery;
+
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public NotificationMessageController(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
+    }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param notificationMessageController instance to register.
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade,
+                                  NotificationMessageController notificationMessageController) {
+        get("/manager/notification-messages",
+                withUserPreferences(withCsrfToken(withUser(notificationMessageController::getList))), jade);
+        get("/manager/notification-messages/data-unread", withUser(notificationMessageController::dataUnread));
+        get("/manager/notification-messages/data-all", withUser(notificationMessageController::dataAll));
+        post("/manager/notification-messages/update-messages-status",
+                withUser(notificationMessageController::updateMessagesStatus));
+        post("/manager/notification-messages/delete",
+                withUser(notificationMessageController::delete));
+        post("/manager/notification-messages/retry-onboarding/:minionId",
+                withUser(notificationMessageController::retryOnboarding));
+        post("/manager/notification-messages/retry-reposync/:channelId",
+                withUser(notificationMessageController::retryReposync));
+    }
 
     /**
      * Displays a list of messages.
@@ -64,7 +100,7 @@ public class NotificationMessageController {
      * @param user the user object
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView getList(Request request, Response response, User user) {
+    public ModelAndView getList(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "templates/notification-messages/list.jade");
     }
 
@@ -77,7 +113,7 @@ public class NotificationMessageController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String dataUnread(Request request, Response response, User user) {
+    public String dataUnread(Request request, Response response, User user) {
         Object data = getJSONNotificationMessages(UserNotificationFactory.listUnreadByUser(user), user);
 
         response.type("application/json");
@@ -92,7 +128,7 @@ public class NotificationMessageController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String dataAll(Request request, Response response, User user) {
+    public String dataAll(Request request, Response response, User user) {
         Object data = getJSONNotificationMessages(UserNotificationFactory.listAllByUser(user), user);
 
         response.type("application/json");
@@ -107,7 +143,7 @@ public class NotificationMessageController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String delete(Request request, Response response, User user) {
+    public String delete(Request request, Response response, User user) {
         List<Long> messageIds = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
 
         messageIds.forEach(messageId ->
@@ -140,7 +176,7 @@ public class NotificationMessageController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String updateMessagesStatus(Request request, Response response, User user) {
+    public String updateMessagesStatus(Request request, Response response, User user) {
         Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
         List<Long> messageIds = Json.GSON.fromJson(
                 map.get("messageIds").toString(),
@@ -177,13 +213,13 @@ public class NotificationMessageController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String retryOnboarding(Request request, Response response, User user) {
+    public String retryOnboarding(Request request, Response response, User user) {
         String minionId = request.params("minionId");
 
         String severity = "success";
         String resultMessage = "Onboarding restarted of the minioniId '%s'";
 
-        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(SaltService.INSTANCE);
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(systemQuery);
         action.execute(new RegisterMinionEventMessage(minionId, Optional.empty()));
 
         Map<String, String> data = new HashMap<>();
@@ -199,7 +235,7 @@ public class NotificationMessageController {
      * @param channel the channel
      * @return Optional containing the String of the Channel Label or empty
      */
-    private static Optional<String> getChannelLabel(Channel channel) {
+    private Optional<String> getChannelLabel(Channel channel) {
         if (channel == null) {
             return Optional.empty();
         }
@@ -214,7 +250,7 @@ public class NotificationMessageController {
      * @param user the user
      * @return JSON result of the API call
      */
-    public static String retryReposync(Request request, Response response, User user) {
+    public String retryReposync(Request request, Response response, User user) {
         Long channelId = Long.valueOf(request.params("channelId"));
 
         String resultMessage = "Reposync restarted for the channel '%s'";
@@ -252,7 +288,7 @@ public class NotificationMessageController {
      * @param user the current user
      * @return a list of JSONNotificationMessages
      */
-    public static List<NotificationMessageJson> getJSONNotificationMessages(List<UserNotification> list, User user) {
+    public List<NotificationMessageJson> getJSONNotificationMessages(List<UserNotification> list, User user) {
         return list.stream()
                 .map(un -> new NotificationMessageJson(un.getMessage(), un.getRead()))
                 .collect(Collectors.toList());

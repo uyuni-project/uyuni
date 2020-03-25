@@ -16,6 +16,12 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -61,6 +67,7 @@ import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Spark controller class for image profile pages and API endpoints.
@@ -71,6 +78,36 @@ public class ImageProfileController {
     private static final Role ADMIN_ROLE = RoleFactory.IMAGE_ADMIN;
 
     private ImageProfileController() { }
+
+    /**
+     * Invoked from Router. Initialize routes for Systems Views.
+     *
+     * @param jade the Jade engine to use to render the pages
+     */
+    public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/cm/imageprofiles",
+                withUserPreferences(withCsrfToken(withUser(ImageProfileController::listView))), jade);
+        get("/manager/cm/imageprofiles/create",
+                withCsrfToken(withImageAdmin(ImageProfileController::createView)), jade);
+        get("/manager/cm/imageprofiles/edit/:id",
+                withCsrfToken(withImageAdmin(ImageProfileController::updateView)), jade);
+
+        get("/manager/api/cm/imageprofiles", withUser(ImageProfileController::list));
+        get("/manager/api/cm/imageprofiles/:id",
+                withUser(ImageProfileController::getSingle));
+        get("/manager/api/cm/imageprofiles/find/:label",
+                withUser(ImageProfileController::getSingleByLabel));
+        get("/manager/api/cm/imageprofiles/channels/:token",
+                withUser(ImageProfileController::getChannels));
+        post("/manager/api/cm/imageprofiles/create",
+                withImageAdmin(ImageProfileController::create));
+        post("/manager/api/cm/imageprofiles/update/:id",
+                withImageAdmin(ImageProfileController::update));
+        post("/manager/api/cm/imageprofiles/delete",
+                withImageAdmin(ImageProfileController::delete));
+        get("/manager/api/cm/activationkeys",
+                withUser(ImageProfileController::getActivationKeys));
+    }
 
     /**
      * Returns a view to list image profiles
@@ -101,7 +138,7 @@ public class ImageProfileController {
             imageTypesDataFromTheServer.add("kiwi");
         }
         Map<String, Object> data = new HashMap<>();
-        data.put("activationKeys", getActivationKeys(user));
+        data.put("activationKeys", getActivationKeysAsJson(user));
         data.put("customDataKeys", getCustomDataKeys(user.getOrg()));
         data.put("imageTypesDataFromTheServer", GSON.toJson(imageTypesDataFromTheServer));
         return new ModelAndView(data, "templates/content_management/edit-profile.jade");
@@ -138,7 +175,7 @@ public class ImageProfileController {
 
         Map<String, Object> data = new HashMap<>();
         data.put("profileId", profileId);
-        data.put("activationKeys", getActivationKeys(user));
+        data.put("activationKeys", getActivationKeysAsJson(user));
         data.put("customDataKeys", getCustomDataKeys(user.getOrg()));
         data.put("imageTypesDataFromTheServer", GSON.toJson(imageTypesDataFromTheServer));
         return new ModelAndView(data, "templates/content_management/edit-profile.jade");
@@ -400,7 +437,7 @@ public class ImageProfileController {
      * @return a JSON string of the list of activation keys
      */
     public static String getActivationKeys(Request req, Response res, User user) {
-        return json(res, getActivationKeyNames(user));
+        return getActivationKeysAsJson(user);
     }
 
     /**
@@ -409,7 +446,7 @@ public class ImageProfileController {
      * @param user the user
      * @return a JSON string of the list of activation keys
      */
-    private static String getActivationKeys(User user) {
+    private static String getActivationKeysAsJson(User user) {
         return GSON.toJson(getActivationKeyNames(user));
     }
 

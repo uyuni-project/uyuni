@@ -95,8 +95,8 @@ import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
@@ -172,7 +172,7 @@ import static java.util.stream.Collectors.toList;
 public class SaltServerActionService {
 
     /* Singleton instance of this class */
-    public static final SaltServerActionService INSTANCE = new SaltServerActionService();
+    public static final SaltServerActionService INSTANCE = new SaltServerActionService(SaltService.INSTANCE);
 
     /* Logger for this class */
     private static final Logger LOG = Logger.getLogger(SaltServerActionService.class);
@@ -201,10 +201,17 @@ public class SaltServerActionService {
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
-    private SaltService saltService = SaltService.INSTANCE;
+    private SystemQuery systemQuery;
     private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
     private SaltUtils saltUtils = SaltUtils.INSTANCE;
     private boolean skipCommandScriptPerms;
+
+    /**
+     * @param systemQueryIn instance for getting information from a system.
+     */
+    public SaltServerActionService(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
+    }
 
     private Action unproxy(Action entity) {
         Hibernate.initialize(entity);
@@ -484,11 +491,10 @@ public class SaltServerActionService {
         // start the action chain synchronously
         try {
             // first check if there's an action chain with a reboot already executing
-            Map<String, Result<Map<String, String>>> pendingResumeConf = saltService.callSync(
-                    MgrActionChains.getPendingResume(),
-                    new MinionList(sshMinions.stream().map(minion -> minion.getMinionId())
-                            .collect(Collectors.toList())));
-
+            Map<String, Result<Map<String, String>>> pendingResumeConf = systemQuery.getPendingResume(
+                    sshMinions.stream().map(minion -> minion.getMinionId())
+                            .collect(Collectors.toList())
+            );
             List<MinionSummary> targetSSHMinions = sshMinions.stream()
                     .filter(sshMinion -> {
                         Optional<Map<String, String>> confValues = pendingResumeConf.get(sshMinion.getMinionId())
@@ -1854,7 +1860,7 @@ public class SaltServerActionService {
                 Optional<JsonElement> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
-                    result = saltService.callSync(new ElementCallJson(call), minion.getMinionId());
+                    result = systemQuery.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: " + action.getName() +
@@ -1966,10 +1972,10 @@ public class SaltServerActionService {
 
     /**
      * Only used in unit tests.
-     * @param saltServiceIn to set
+     * @param systemQueryIn to set
      */
-    public void setSaltService(SaltService saltServiceIn) {
-        this.saltService = saltServiceIn;
+    public void setSystemQuery(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
     }
 
     /**
