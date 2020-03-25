@@ -10,6 +10,9 @@ zypper --non-interactive in avahi
 cp /root/avahi-daemon.conf /etc/avahi/avahi-daemon.conf
 /usr/sbin/avahi-daemon -D
 
+# install python3 on the container
+zypper --non-interactive in python3 python3-xml
+
 # re-enable normal repo and remove helper repo
 zypper mr --enable Test-Channel-x86_64 || :
 zypper rr sles12sp4
