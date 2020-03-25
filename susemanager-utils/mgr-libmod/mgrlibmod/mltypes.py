@@ -21,11 +21,11 @@ class MLSet(list):
         if obj not in self:
             self.__append(obj)
 
+
 class MLAnyType(ABC):
     """
     Base MLType mix-in.
     """
-
     def __init__(self, data: str):
         """
         Constructor
@@ -58,7 +58,6 @@ class MLPackageType(MLAnyType):
     """
     Package type input.
     """
-
     def __init__(self):
         """
         Constructor
@@ -96,7 +95,9 @@ class MLStreamType:
         self.__exc = Exception("This is a read-only property")
 
     def __repr__(self) -> str:
-        return "<{} ({}/{}) at {}>".format(self.__class__.__name__, self.__name, self.__stream, hex(id(self)))
+        return "<{} ({}/{}) at {}>".format(self.__class__.__name__,
+                                           self.__name, self.__stream,
+                                           hex(id(self)))
 
     @property
     def name(self) -> str:
@@ -119,7 +120,6 @@ class MLInputType(MLAnyType):
     """
     Input type.
     """
-
     def to_obj(self) -> Dict:
         return cast(Dict, self._obj)
 
@@ -166,3 +166,48 @@ class MLInputType(MLAnyType):
             out.append(MLStreamType(name=str_kw["name"], streamname=str_kw.get("stream") or ""))
 
         return out
+
+
+class MLErrorType(MLAnyType):
+    """
+    Error response
+    """
+    def __init__(self):
+        """
+        Constructor.
+        """
+        self._obj: Dict = {
+            "error_code": 0,
+            "data": {},
+            "exception": "",
+        }
+
+    @property
+    def error_code(self) -> int:
+        return self._obj["error_code"]
+
+    @error_code.setter
+    def error_code(self, value: int) -> None:
+        self._obj["error_code"] = value
+
+    @property
+    def exc(self) -> str:
+        return self._obj["exception"]
+
+    @exc.setter
+    def exc(self, ex: Exception) -> None:
+        self._obj["exception"] = str(ex)
+
+    @property
+    def data(self) -> Dict:
+        return self._obj["data"]
+
+    @data.setter
+    def data(self, d: Dict) -> None:
+        self._obj["data"] = d
+
+    def to_obj(self) -> Dict:
+        """
+        Return JSON object
+        """
+        return cast(Dict, self._obj)
