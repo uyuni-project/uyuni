@@ -58,6 +58,8 @@ public class MinionsAPI {
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
     private final SystemQuery systemQuery;
+    private final SSHMinionBootstrapper sshMinionBootstrapper;
+    private final RegularMinionBootstrapper regularMinionBootstrapper;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -69,8 +71,12 @@ public class MinionsAPI {
     /**
      * @param systemQueryIn instance to use.
      */
-    public MinionsAPI(SystemQuery systemQueryIn) {
+    public MinionsAPI(SystemQuery systemQueryIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
+                      RegularMinionBootstrapper regularMinionBootstrapperIn) {
         this.systemQuery = systemQueryIn;
+        sshMinionBootstrapper = sshMinionBootstrapperIn;
+        regularMinionBootstrapper = regularMinionBootstrapperIn;
+
     }
 
     /**
@@ -184,7 +190,7 @@ public class MinionsAPI {
     public String bootstrap(Request request, Response response, User user) {
         return json(
                 response,
-                RegularMinionBootstrapper.getInstance().bootstrap(
+                regularMinionBootstrapper.bootstrap(
                         GSON.fromJson(request.body(), BootstrapHostsJson.class),
                         user, ContactMethodUtil.getRegularMinionDefault()).asMap());
     }
@@ -206,7 +212,7 @@ public class MinionsAPI {
     public String bootstrapSSH(Request request, Response response, User user) {
         return json(
                 response,
-                SSHMinionBootstrapper.getInstance().bootstrap(
+                sshMinionBootstrapper.bootstrap(
                         GSON.fromJson(request.body(), BootstrapHostsJson.class),
                         user, ContactMethodUtil.getSSHMinionDefault()).asMap());
     }

@@ -55,9 +55,9 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
      * Get instance of the RegularMinionBootstrapper
      * @return instance of the RegularMinionBootstrapper
      */
-    public static synchronized RegularMinionBootstrapper getInstance() {
+    public static synchronized RegularMinionBootstrapper getInstance(SystemQuery systemQuery) {
         if (instance == null) {
-            instance = new RegularMinionBootstrapper(SaltService.INSTANCE);
+            instance = new RegularMinionBootstrapper(systemQuery);
         }
         return instance;
     }

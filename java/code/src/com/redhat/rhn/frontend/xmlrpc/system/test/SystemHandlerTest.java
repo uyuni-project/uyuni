@@ -129,6 +129,7 @@ import com.redhat.rhn.frontend.xmlrpc.UndefinedCustomFieldsException;
 import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.frontend.xmlrpc.system.SUSEInstalledProduct;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -152,6 +153,9 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -166,7 +170,15 @@ import java.util.stream.Collectors;
 
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
-    private SystemHandler handler = new SystemHandler();
+    private TaskomaticApi taskomaticApi = new TaskomaticApi();
+    private SystemQuery systemQuery = new SaltService();
+    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+            regularMinionBootstrapper,
+            sshMinionBootstrapper
+    );
+    private SystemHandler handler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper);
     private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
@@ -2726,7 +2738,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
-        SystemHandler systemHandler = new SystemHandler(taskomaticMock);
+        SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper);
 
         MOCK_CONTEXT.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));

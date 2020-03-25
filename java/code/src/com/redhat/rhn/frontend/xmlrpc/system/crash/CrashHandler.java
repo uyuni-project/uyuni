@@ -60,6 +60,11 @@ import java.util.Map;
 public class CrashHandler extends BaseHandler {
 
     private static float freeMemCoeff = 0.9f;
+    private final XmlRpcSystemHelper xmlRpcSystemHelper;
+
+    public CrashHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+        xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+    }
 
     private CrashCount getCrashCount(Server serverIn) {
         CrashCount crashCount = serverIn.getCrashCount();
@@ -89,8 +94,7 @@ public class CrashHandler extends BaseHandler {
      *     #struct_end()
      */
     public Map getCrashCountInfo(User loggedInUser, Integer serverId) {
-        XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
-        Server server = sysHelper.lookupServer(loggedInUser, serverId);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, serverId);
 
         Map returnMap = new HashMap();
         CrashCount crashCount = null;
@@ -142,8 +146,7 @@ public class CrashHandler extends BaseHandler {
      *     #array_end()
      */
     public List listSystemCrashes(User loggedInUser, Integer serverId) {
-        XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
-        Server server = sysHelper.lookupServer(loggedInUser, serverId);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, serverId);
 
         List returnList = new ArrayList();
 

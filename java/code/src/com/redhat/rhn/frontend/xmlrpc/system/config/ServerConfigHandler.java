@@ -70,21 +70,17 @@ public class ServerConfigHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(ServerConfigHandler.class);
     private final TaskomaticApi taskomaticApi;
-    /**
-     * Default constructor.
-     */
-    public ServerConfigHandler() {
-        this(new TaskomaticApi());
-    }
+    private final XmlRpcSystemHelper xmlRpcSystemHelper;
+
 
     /**
      * Set the {@link TaskomaticApi} instance to use, only for unit tests.
      *
      * @param taskomaticApiIn the {@link TaskomaticApi}
      */
-    public ServerConfigHandler(TaskomaticApi taskomaticApiIn) {
-        super();
+    public ServerConfigHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         taskomaticApi = taskomaticApiIn;
+        xmlRpcSystemHelper = xmlRpcSystemHelperIn;
     }
     /**
      * List files in a given server
@@ -112,9 +108,8 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public List<ConfigFileNameDto> listFiles(User loggedInUser,
             Integer sid, boolean listLocal) {
-        XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        Server server = sysHelper.lookupServer(loggedInUser, sid);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         if (listLocal) {
             return cm.listFileNamesForSystemQuick(loggedInUser, server, null);
         }
@@ -212,8 +207,7 @@ public class ServerConfigHandler extends BaseHandler {
         }
         validateMap(validKeys, data);
 
-        XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
-        Server server = sysHelper.lookupServer(loggedInUser, sid);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         checkIfLocalPermissible(server);
         ConfigChannel channel;
         if (commitToLocal) {
@@ -278,8 +272,7 @@ public class ServerConfigHandler extends BaseHandler {
         validKeys.add(ConfigRevisionSerializer.REVISION);
         validateMap(validKeys, data);
 
-        XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
-        Server server = sysHelper.lookupServer(loggedInUser, sid);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         checkIfLocalPermissible(server);
         ConfigChannel channel;
         if (commitToLocal) {
@@ -324,8 +317,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public List<ConfigRevision> lookupFileInfo(User loggedInUser,
             Integer sid, List<String> paths, boolean searchLocal) {
-        XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
-        Server server = sysHelper.lookupServer(loggedInUser, sid);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         List<ConfigRevision> revisions = new LinkedList<ConfigRevision>();
         for (String path : paths) {
@@ -379,9 +371,8 @@ public class ServerConfigHandler extends BaseHandler {
             Integer sid,
             List<String> paths,
             boolean deleteFromLocal) {
-        XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        Server server = sysHelper.lookupServer(loggedInUser, sid);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         List<ConfigFile> cfList = new ArrayList<>();
         for (String path : paths) {
             ConfigFile cf;
@@ -424,10 +415,9 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int deployAll(User loggedInUser, List<Number> serverIds, Date date) {
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
         List<Server> servers = new ArrayList<Server>(serverIds.size());
         for (Number sid : serverIds) {
-            servers.add(helper.lookupServer(loggedInUser, sid));
+            servers.add(xmlRpcSystemHelper.lookupServer(loggedInUser, sid));
         }
         ConfigurationManager manager = ConfigurationManager.getInstance();
         try {
@@ -461,8 +451,7 @@ public class ServerConfigHandler extends BaseHandler {
      *  #array_end()
      */
     public List<ConfigChannel> listChannels(User loggedInUser, Integer sid) {
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        Server server = helper.lookupServer(loggedInUser, sid);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         return server.getConfigChannelList();
     }
 
@@ -507,8 +496,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int addChannels(User loggedInUser, List<Number> serverIds, List<String> configChannelLabels,
                            boolean addToTop) {
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        List<Server> servers = helper.lookupServers(loggedInUser, serverIds);
+        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser, configChannelLabels);
 
@@ -562,8 +550,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int setChannels(User loggedInUser, List<Number> serverIds,
             List<String> configChannelLabels) {
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        List<Server> servers = helper.lookupServers(loggedInUser, serverIds);
+        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
@@ -591,8 +578,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int removeChannels(User loggedInUser, List<Number> serverIds,
             List<String> configChannelLabels) {
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        List<Server> servers = helper.lookupServers(loggedInUser, serverIds);
+        List<Server> servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
         List<ConfigChannel> channels = configHelper.
@@ -627,8 +613,7 @@ public class ServerConfigHandler extends BaseHandler {
     public Long scheduleApplyConfigChannel(User user, List<Integer> serverIds, Date earliest, boolean test) {
         try {
             // Validate the given system id
-            XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-            List<Server> servers = helper.lookupServers(user, serverIds);
+            List<Server> servers = xmlRpcSystemHelper.lookupServers(user, serverIds);
 
             servers.stream().filter(srv->!MinionServerUtils.isMinionServer(srv)).findFirst().ifPresent(srv-> {
                 throw new UnsupportedOperationException("Aborting. System not managed with Salt: " + srv.getId());

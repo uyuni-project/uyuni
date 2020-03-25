@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.satellite;
 
+import com.redhat.rhn.common.errors.SatelliteExceptionHandler;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
@@ -31,6 +32,12 @@ import org.apache.log4j.Logger;
 public class SatelliteHandler extends BaseHandler {
     private static Logger log = Logger.getLogger(SatelliteHandler.class);
 
+    private ProxyHandler proxyHandler;
+
+    public SatelliteHandler(ProxyHandler proxyHandlerIn) {
+        proxyHandler = proxyHandlerIn;
+    }
+
     /**
      * List all proxies on the Satellite for the current org
      * @param loggedInUser The current user
@@ -46,7 +53,6 @@ public class SatelliteHandler extends BaseHandler {
      */
     @Deprecated
     public Object[] listProxies(User loggedInUser) {
-        ProxyHandler proxyHandler = new ProxyHandler();
         return proxyHandler.listProxies(loggedInUser);
     }
 
