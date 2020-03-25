@@ -44,14 +44,18 @@ class MLAnyType(ABC):
         :rtype: Dict
         """
 
-    def to_json(self) -> str:
+    def to_json(self, pretty: bool = False) -> str:
         """
         to_json serialises type to JSON.
 
         :return: valid JSON unicode string.
         :rtype: str
         """
-        return json.dumps(self.to_obj())
+        if pretty:
+            out = json.dumps(self.to_obj(), indent=2, sort_keys=True)
+        else:
+            out = json.dumps(self.to_obj())
+        return out
 
 
 class MLPackageType(MLAnyType):
