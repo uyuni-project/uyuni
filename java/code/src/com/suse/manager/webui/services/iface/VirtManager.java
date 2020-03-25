@@ -12,11 +12,14 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.virtualization;
+package com.suse.manager.webui.services.iface;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.PoolCapabilitiesJson;
+import com.suse.manager.virtualization.PoolDefinition;
 
 import java.util.Map;
 import java.util.Optional;
@@ -24,17 +27,7 @@ import java.util.Optional;
 /**
  * Service providing utility functions to handle virtual machines.
  */
-public class VirtManager {
-
-    private final SystemQuery systemQuery;
-
-    /**
-     * Service providing utility functions to handle virtual machines.
-     * @param systemQueryIn instance for getting information from a system.
-     */
-    public VirtManager(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
-    }
+public interface VirtManager {
 
     /**
      * Query virtual machine definition
@@ -43,9 +36,7 @@ public class VirtManager {
      * @param domainName the domain name to look for
      * @return the XML definition or an empty Optional
      */
-    public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
-        return systemQuery.getGuestDefinition(minionId, domainName);
-    }
+    Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName);
 
     /**
      * Query virtual host and domains capabilities.
@@ -53,9 +44,7 @@ public class VirtManager {
      * @param minionId the salt minion virtual host to ask about
      * @return the output of the salt virt.all_capabilities call in JSON
      */
-    public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
-        return systemQuery.getCapabilities(minionId);
-    }
+    Optional<Map<String, JsonElement>> getCapabilities(String minionId);
 
     /**
      * Query virtual storage pool capabilities
@@ -63,9 +52,7 @@ public class VirtManager {
      * @param minionId the salt minion virtual host to ask about
      * @return the output of the salt virt.pool_capabilities call
      */
-    public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
-        return systemQuery.getPoolCapabilities(minionId);
-    }
+    Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId);
 
     /**
      * Query virtual storage pool definition
@@ -74,9 +61,7 @@ public class VirtManager {
      * @param poolName the domain name to look for
      * @return the XML definition or an empty Optional
      */
-    public Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName) {
-        return systemQuery.getPoolDefinition(minionId, poolName);
-    }
+    Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName);
 
     /**
      * Query the list of virtual networks defined on a salt minion.
@@ -84,9 +69,7 @@ public class VirtManager {
      * @param minionId the minion to ask about
      * @return a list of the network names
      */
-    public Map<String, JsonObject> getNetworks(String minionId) {
-        return systemQuery.getNetworks(minionId);
-    }
+    Map<String, JsonObject> getNetworks(String minionId);
 
     /**
      * Query the list of virtual storage pools defined on a salt minion.
@@ -94,9 +77,7 @@ public class VirtManager {
      * @param minionId the minion to ask about
      * @return a map associating pool names with their informations as Json elements
      */
-    public Map<String, JsonObject> getPools(String minionId) {
-        return systemQuery.getPools(minionId);
-    }
+    Map<String, JsonObject> getPools(String minionId);
 
     /**
      * Query the list of virtual storage volumes defined on a salt minion.
@@ -104,8 +85,12 @@ public class VirtManager {
      * @param minionId the minion to ask about
      * @return a map associating pool names with the list of volumes it contains mapped by their names
      */
-    public Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
-        return systemQuery.getVolumes(minionId);
-    }
+    Map<String, Map<String, JsonObject>> getVolumes(String minionId);
+
+    /**
+     * Update libvirt engine on a given minion.
+     * @param minion to update.
+     */
+    void updateLibvirtEngine(MinionServer minion);
 
 }

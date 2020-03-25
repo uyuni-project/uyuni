@@ -37,7 +37,9 @@ import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAct
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
@@ -49,7 +51,6 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
-import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.MinionStartEvent;
@@ -100,7 +101,7 @@ public class SaltReactor {
      * Start the salt reactor.
      */
     public void start() {
-        VirtManager virtManager = new VirtManager(systemQuery);
+        VirtManager virtManager = new VirtManagerSalt(saltApi);
 
         // Configure message queue to handle minion registrations
         MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery),

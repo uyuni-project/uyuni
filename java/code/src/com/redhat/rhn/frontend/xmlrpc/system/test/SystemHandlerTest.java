@@ -131,6 +131,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
@@ -1862,9 +1863,11 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testAddEntitlements() throws Exception {
+        SaltService saltService = new SaltService();
+
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(new SaltService())
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
@@ -1891,9 +1894,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testAddEntitlementSystemAlreadyHas() throws Exception {
+        SaltService saltService = new SaltService();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(new SaltService())
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 

@@ -66,6 +66,7 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -135,9 +136,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
+        SaltService saltService = new SaltService();
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock)
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
         );
 
         metadataDirOfficial = Files.createTempDirectory("meta");

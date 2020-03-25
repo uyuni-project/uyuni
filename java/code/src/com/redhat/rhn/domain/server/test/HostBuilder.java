@@ -23,6 +23,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.hibernate.Session;
 
@@ -91,7 +92,7 @@ public class HostBuilder {
     public HostBuilder createVirtHost() throws Exception {
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(SaltService.INSTANCE)
+                new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API))
         );
         host = ServerTestUtils.createVirtHostWithGuests(owner, 0, systemEntitlementManager);
         return this;

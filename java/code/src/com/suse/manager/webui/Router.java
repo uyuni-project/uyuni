@@ -23,7 +23,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.kubernetes.KubernetesManager;
-import com.suse.manager.virtualization.VirtManager;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
@@ -57,6 +57,8 @@ import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApi
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import org.apache.http.HttpStatus;
@@ -85,8 +87,9 @@ public class Router implements SparkApplication {
 
         TaskomaticApi taskomaticApi = new TaskomaticApi();
         SystemQuery systemQuery = SaltService.INSTANCE;
+        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
         KubernetesManager kubernetesManager = new KubernetesManager(systemQuery);
-        VirtManager virtManager = new VirtManager(systemQuery);
+        VirtManager virtManager = new VirtManagerSalt(saltApi);
 
         SystemsController systemsController = new SystemsController(systemQuery);
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
