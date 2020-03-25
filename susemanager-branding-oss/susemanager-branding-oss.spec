@@ -26,8 +26,12 @@ Url:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Provides:       susemanager-branding = %{version}
+%if 0%{?is_opensuse}
+ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
+%else
 BuildRequires:  SUSE-Manager-Server-release
+%endif
+Provides:       susemanager-branding = %{version}
 Conflicts:      otherproviders(susemanager-branding)
 Conflicts:      oracle-server
 
