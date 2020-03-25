@@ -20,10 +20,15 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.ExternalGroupAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -110,7 +115,14 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         String name = "My External Group Name" + TestUtils.randomString();
         String systemGroupName = "my-system-group-name" + TestUtils.randomString();
         String desc = TestUtils.randomString();
-        ServerGroupHandler sghandler = new ServerGroupHandler();
+        SystemQuery systemQuery = new SaltService();
+        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+                regularMinionBootstrapper,
+                sshMinionBootstrapper
+        );
+        ServerGroupHandler sghandler = new ServerGroupHandler(xmlRpcSystemHelper);
         sghandler.create(admin, systemGroupName, desc);
 
         //admin should be able to call list users, regular should not

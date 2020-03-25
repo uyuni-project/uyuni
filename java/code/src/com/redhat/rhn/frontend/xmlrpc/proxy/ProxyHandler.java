@@ -48,6 +48,11 @@ import java.util.List;
  */
 public class ProxyHandler extends BaseHandler {
     private static Logger log = Logger.getLogger(ProxyHandler.class);
+    private final XmlRpcSystemHelper xmlRpcSystemHelper;
+
+    public ProxyHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+        xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+    }
 
 
     /**
@@ -200,9 +205,8 @@ public class ProxyHandler extends BaseHandler {
     public Object[] listProxies(User loggedInUser) {
         List<Server> proxies = ServerFactory.lookupProxiesByOrg(loggedInUser);
         List toReturn = new ArrayList();
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
         for (Server server : proxies) {
-            toReturn.add(helper.format(server));
+            toReturn.add(xmlRpcSystemHelper.format(server));
         }
         return toReturn.toArray();
     }
@@ -220,7 +224,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("int", "clientId")
      */
     public List<Long> listProxyClients(User loggedInUser, Integer proxyId) {
-        Server server = XmlRpcSystemHelper.getInstance().lookupServer(loggedInUser, proxyId);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, proxyId);
         if (!server.isProxy()) {
             throw new ProxyNotActivatedException();
         }

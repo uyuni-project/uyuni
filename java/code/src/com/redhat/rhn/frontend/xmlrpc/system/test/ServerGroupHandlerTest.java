@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.ServerGroupAccessChangeException;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
+import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -31,6 +32,10 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +48,14 @@ import java.util.List;
  * @version $Rev$
  */
 public class ServerGroupHandlerTest extends BaseHandlerTestCase {
-    private ServerGroupHandler handler = new ServerGroupHandler();
+    private SystemQuery systemQuery = new SaltService();
+    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+            regularMinionBootstrapper,
+            sshMinionBootstrapper
+    );
+    private ServerGroupHandler handler = new ServerGroupHandler(xmlRpcSystemHelper);
     private ServerGroupManager manager = ServerGroupManager.getInstance();
     private static final String NAME = "HAHAHA" + TestUtils.randomString();
     private static final String DESCRIPTION =  TestUtils.randomString();

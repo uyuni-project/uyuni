@@ -27,15 +27,27 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.List;
 import java.util.Set;
 
 public class ProxyHandlerTest extends RhnBaseTestCase {
 
+    private SystemQuery systemQuery = new SaltService();
+    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+            regularMinionBootstrapper,
+            sshMinionBootstrapper
+    );
 
     public void testDeactivateProxyWithReload() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
@@ -48,7 +60,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
 
     public void testActivateProxy() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
-        ProxyHandler ph = new ProxyHandler();
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -64,7 +76,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
 
     public void testActivateSaltProxy() throws Exception {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
-        ProxyHandler ph = new ProxyHandler();
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -91,7 +103,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
 
-        ProxyHandler ph = new ProxyHandler();
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
         int rc = ph.deactivateProxy(cert.toString());
         assertEquals(1, rc);
     }
@@ -100,13 +112,13 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         Server server = ServerFactory.lookupById(1005012107L);
         ClientCertificate cert = SystemManager.createClientCertificate(server);
         cert.validate(server.getSecret());
-        ProxyHandler ph = new ProxyHandler();
+        ProxyHandler ph = new ProxyHandler(xmlRpcSystemHelper);
         int rc = ph.deactivateProxy(cert.toString());
         assertEquals(1, rc);
     }
 
     public void testLameTest() {
-        assertNotNull(new ProxyHandler());
+        assertNotNull(new ProxyHandler(xmlRpcSystemHelper));
     }
 
     public void testListProxyClients() throws Exception {
@@ -125,7 +137,7 @@ public class ProxyHandlerTest extends RhnBaseTestCase {
         minion.getServerPaths().addAll(proxyPaths);
 
         // call method
-        List<Long> clientIds = new ProxyHandler().listProxyClients(user, toIntExact(proxy.getId()));
+        List<Long> clientIds = new ProxyHandler(xmlRpcSystemHelper).listProxyClients(user, toIntExact(proxy.getId()));
 
         // verify client id is in results
         assertContains(clientIds, minion.getId());
