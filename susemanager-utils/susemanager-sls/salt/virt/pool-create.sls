@@ -50,7 +50,7 @@ pool_{{ state }}:
           password: {{ pillar['source']['auth']['password'] }}
       {% endif %}  {# pillar['source']['auth']|default(none) #}
       {% if pillar['source']['devices']|default(none) %}
-        - devices:
+        devices:
         {% for device in pillar['source']['devices'] %}
           - path: {{ device['path'] }}
           {% if device['part_separator']|default(none) %}
