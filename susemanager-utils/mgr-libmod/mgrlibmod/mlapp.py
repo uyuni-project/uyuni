@@ -1,7 +1,7 @@
 """
 CLI app
 """
-from mgrlibmod import mllib
+from mgrlibmod import mllib, mltypes, mlerrcode
 from typing import List
 import argparse
 import os
@@ -84,6 +84,9 @@ To get the full list of supported functions, call "-l" option:
         try:
             print(mllib.MLLibmodAPI(opts).set_repodata(get_stdin_data()).run().to_json(pretty=True))
         except Exception as exc:
-            print("ERROR:", exc)
+            err = mltypes.MLErrorType()
+            err.exc = exc
+            err.error_code = mlerrcode.MLERR_GENERAL_ERROR
+            print(err.to_json(pretty=True))
             if opts.verbose:
                 raise exc
