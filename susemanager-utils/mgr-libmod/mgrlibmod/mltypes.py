@@ -191,8 +191,8 @@ class MLErrorType(MLAnyType):
         self._obj["error_code"] = value
 
     @property
-    def exc(self) -> str:
-        return self._obj["exception"]
+    def exc(self) -> Exception:
+        return Exception(self._obj["exception"])
 
     @exc.setter
     def exc(self, ex: Exception) -> None:
