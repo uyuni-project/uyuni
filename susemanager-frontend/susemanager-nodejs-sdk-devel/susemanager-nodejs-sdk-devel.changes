@@ -1,3 +1,5 @@
+- upgrade node_module dependencies - CVE-2020-7598 and SNYK-JS-ACORN-559469
+
 -------------------------------------------------------------------
 Fri Feb 28 12:07:07 CET 2020 - jgonzalez@suse.com
 
