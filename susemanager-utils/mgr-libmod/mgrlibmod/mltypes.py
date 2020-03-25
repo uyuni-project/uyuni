@@ -183,7 +183,7 @@ class MLErrorType(MLAnyType):
     """
     Error response
     """
-    def __init__(self):
+    def __init__(self, exc: Exception = None):
         """
         Constructor.
         """
@@ -192,6 +192,10 @@ class MLErrorType(MLAnyType):
             "data": {},
             "exception": "",
         }
+
+        if exc is not None:
+            self.exc = exc
+            self.error_code = getattr(exc, "code", mlerrcode.MLERR_GENERAL_ERROR)
 
     @property
     def error_code(self) -> int:
