@@ -402,7 +402,7 @@ class MLLibmodAPI:
                     self._proc.pick_stream(s_type)
                 else:
                     self._proc.pick_default_stream(s_type=s_type)
-            except Exception as exc:
+            except Exception:
                 sys.stderr.write("Skipping stream {}\n".format(s_type.name))
         return self._proc._streams
 
