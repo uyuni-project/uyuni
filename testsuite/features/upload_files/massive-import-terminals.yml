@@ -2,6 +2,10 @@ branches:
   <PROXY_HOSTNAME>:
     branch_ip: <NET_PREFIX><PROXY>
     branch_prefix: example.org
+    configure_bind_options:
+      include_forwarders: true
+      options:
+        empty-zones-enable: 'no'
     dedicated_nic: true
     configure_firewall: true
     firewall:
