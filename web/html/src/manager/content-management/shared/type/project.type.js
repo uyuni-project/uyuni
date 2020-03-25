@@ -40,10 +40,16 @@ export type ProjectFilterServerType = {
   state: string,
 }
 
+export type ProjectMessageType = {
+  text: string,
+  type: "info" | "warn" | "alert"
+}
+
 
 export type ProjectType = {
   properties: ProjectPropertiesType,
   softwareSources: Array<ProjectSoftwareSourceType>,
   filters: Array<any>,
-  environments: Array<ProjectEnvironmentType>
+  environments: Array<ProjectEnvironmentType>,
+  messages: Array<ProjectMessageType>
 }

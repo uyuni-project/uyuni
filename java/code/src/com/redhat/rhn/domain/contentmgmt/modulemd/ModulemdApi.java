@@ -23,6 +23,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.Modules;
+import com.redhat.rhn.manager.contentmgmt.DependencyResolutionException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -77,7 +78,7 @@ public class ModulemdApi {
      * @throws ModuleNotFoundException if a selected module is not found
      */
     public ModulePackagesResponse getPackagesForModules(List<Channel> sources, List<Module> selectedModules)
-            throws ConflictingStreamsException, ModuleNotFoundException {
+            throws ConflictingStreamsException, ModuleNotFoundException, DependencyResolutionException {
         List<String> mdPaths = getMetadataPaths(sources);
 
         Map<String, List<Module>> moduleMap = selectedModules.stream().collect(Collectors.groupingBy(Module::getName));
@@ -89,6 +90,22 @@ public class ModulemdApi {
 
         ModulemdApiResponse res =
                 callSync(ModulemdApiRequest.modulePackagesRequest(mdPaths, selectedModules));
+
+        // Handle possible errors
+        if (res.isError()) {
+            switch (res.getErrorCode()) {
+                case ModulemdApiResponse.CONFLICTING_STREAMS:
+                    List<Module> conflictingModules = res.getData().getStreams();
+                    throw new ConflictingStreamsException(conflictingModules.get(0), conflictingModules.get(1));
+                case ModulemdApiResponse.MODULE_NOT_FOUND:
+                    throw new ModuleNotFoundException(res.getData().getStreams());
+                case ModulemdApiResponse.DEPENDENCY_RESOLUTION_ERROR:
+                    throw new DependencyResolutionException(res.getData().getStreams().get(0));
+                    default:
+                        throw new RuntimeException(String.format("Cannot resolve modular dependencies. %s (%s)",
+                                res.getException(), res.getErrorCode()));
+            }
+        }
 
         return res.getModulePackages();
     }
@@ -138,14 +155,14 @@ public class ModulemdApi {
 
             // Read JSON from stdout
             BufferedReader procReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            ModulemdApiResponse res = GSON.fromJson(procReader, new TypeToken<ModulemdApiResponse>() { }.getType());
+            ModulemdApiResponse res = GSON.fromJson(procReader, new TypeToken<ModulemdApiResponse>() {}.getType());
 
             proc.waitFor();
             return res;
 
         }
         catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Handle this!");
+            throw new RuntimeException(e);
         }
     }
 }

@@ -19,17 +19,25 @@ package com.redhat.rhn.domain.contentmgmt.modulemd;
  * modulemd API response wrapper class
  */
 public class ModulemdApiResponse {
-    private int returnCode;
-    private String comment;
+    static final int OK = 0;
+    static final int EXCEPTION = 1;
+    static final int MODULE_NOT_FOUND = 201;
+    static final int DEPENDENCY_RESOLUTION_ERROR = 202;
+    static final int CONFLICTING_STREAMS = 203;
+    static final int REQUEST_ERROR = 301;
+
+    private int errorCode;
+    private String exception;
     private ModulePackagesResponse modulePackages;
     private ListPackagesResponse listPackages;
+    private ModulemdExceptionDataResponse data;
 
-    public int getReturnCode() {
-        return returnCode;
+    public int getErrorCode() {
+        return errorCode;
     }
 
-    public String getComment() {
-        return comment;
+    public String getException() {
+        return exception;
     }
 
     public ModulePackagesResponse getModulePackages() {
@@ -38,5 +46,13 @@ public class ModulemdApiResponse {
 
     public ListPackagesResponse getListPackages() {
         return listPackages;
+    }
+
+    public ModulemdExceptionDataResponse getData() {
+        return data;
+    }
+
+    public boolean isError() {
+        return errorCode != OK;
     }
 }

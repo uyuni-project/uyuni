@@ -6,6 +6,8 @@ import Sources from "../shared/components/panels/sources/sources";
 import PropertiesEdit from "../shared/components/panels/properties/properties-edit";
 import Build from "../shared/components/panels/build/build";
 import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
+import {Messages} from "components/messages";
+import MessagesPanel from "../shared/components/panels/messages/messages";
 import {showErrorToastr, showSuccessToastr} from 'components/toastr/toastr';
 import _isEmpty from "lodash/isEmpty";
 import "./project.css";
@@ -72,12 +74,15 @@ const Project = (props: Props) => {
     );
   }
 
+  const hasErrors = project.messages.some(m => m.type === 'error');
+
   const isProjectEdited = changesToBuild.length > 0;
   const isBuildDisabled = !hasEditingPermissions
         || _isEmpty(project.environments)
         || _isEmpty(project.softwareSources)
         || project.environments[0].status === "building" // already building
-        || (project.environments[1] || {}).status === "building"; // promoting 1st env to 2nd: we can't build as it would affect this promotion
+        || (project.environments[1] || {}).status === "building" // promoting 1st env to 2nd: we can't build as it would affect this promotion
+        || hasErrors;
 
   return (
     <TopPanel
@@ -121,6 +126,7 @@ const Project = (props: Props) => {
       />
 
       <div className="panel-group-contentmngt">
+        {_isEmpty(project.messages) || <MessagesPanel messages={project.messages}/>}
         <Sources
           projectId={projectId}
           softwareSources={project.softwareSources}

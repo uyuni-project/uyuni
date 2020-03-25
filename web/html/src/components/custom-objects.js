@@ -1,9 +1,9 @@
 /* eslint-disable */
 "use strict";
 
-const React = require("react");
+import React from "react";
 
-const CustomDiv = (props) => {
+export const CustomDiv = (props) => {
   const width = props.width + props.um;
   const styleClass = Number.isNaN(width) ? null : { width };
   return (
@@ -14,8 +14,4 @@ const CustomDiv = (props) => {
       {props.children}
     </div>
   );
-}
-
-module.exports = {
-    CustomDiv: CustomDiv
 }

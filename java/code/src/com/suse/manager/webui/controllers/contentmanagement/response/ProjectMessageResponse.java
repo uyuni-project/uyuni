@@ -12,28 +12,26 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+package com.suse.manager.webui.controllers.contentmanagement.response;
 
-package com.redhat.rhn.domain.contentmgmt.modulemd;
-
-import java.util.List;
 
 /**
- * Exception thrown when a selected module is not found
+ * JSON response wrapper for a content project feedback message.
  */
-public class ModuleNotFoundException extends Exception {
+public class ProjectMessageResponse {
+    private String text;
+    private String type;
 
-    private List<Module> modules;
-
-    /**
-     * Initialize a new instance
-     *
-     * @param modulesIn the missing modules
-     */
-    public ModuleNotFoundException(List<Module> modulesIn) {
-        this.modules = modulesIn;
+    public ProjectMessageResponse(String textIn, String typeIn) {
+        this.text = textIn;
+        this.type = typeIn;
     }
 
-    public List<Module> getModules() {
-        return modules;
+    public String getText() {
+        return text;
+    }
+
+    public String getType() {
+        return type;
     }
 }

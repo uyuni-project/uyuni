@@ -38,6 +38,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -170,6 +171,7 @@ public class MockModulemdApi extends ModulemdApi {
     private static List<String> getRpmApis(List<Module> modules) throws ModuleNotFoundException {
         List<String> apiList = new LinkedList<>();
 
+        List<Module> missingModules = new ArrayList<>();
         for (Module m : modules) {
             if ("postgresql".equals(m.getName()) && ("10".equals(m.getStream()) || "9.6".equals(m.getStream()))) {
                 apiList.addAll(asList("postgresql", "postgresql-server"));
@@ -181,10 +183,13 @@ public class MockModulemdApi extends ModulemdApi {
                 apiList.add("perl");
             }
             else {
-                throw new ModuleNotFoundException(m);
+                missingModules.add(m);
             }
         }
 
+        if (!missingModules.isEmpty()) {
+            throw new ModuleNotFoundException(missingModules);
+        }
         return apiList;
     }
 
@@ -192,6 +197,7 @@ public class MockModulemdApi extends ModulemdApi {
         // Mock package lists
         List<String> pkgList = new LinkedList<>();
 
+        List<Module> missingModules = new ArrayList<>();
         for (Module module : moduleList) {
             if ("postgresql".equals(module.getName()) && "10".equals(module.getStream())) {
                 pkgList.addAll(asList(
@@ -218,10 +224,13 @@ public class MockModulemdApi extends ModulemdApi {
                 ));
             }
             else {
-                throw new ModuleNotFoundException(module);
+                missingModules.add(module);
             }
         }
 
+        if (!missingModules.isEmpty()) {
+            throw new ModuleNotFoundException(missingModules);
+        }
         return pkgList;
     }
 

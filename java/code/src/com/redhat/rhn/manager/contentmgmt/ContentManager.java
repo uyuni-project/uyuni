@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.ErrataFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
@@ -700,14 +701,8 @@ public class ContentManager {
                     alignEnvironmentTarget(srcTgt.getLeft(), srcTgt.getRight(), resolvedFilters, async, user));
         }
         catch (DependencyResolutionException e) {
-            if (e.getCause() instanceof ModuleNotFoundException) {
-                ModuleNotFoundException cause = (ModuleNotFoundException) e.getCause();
-                LOG.info(String.format("Module '%s:%s' not found.", cause.getModule().getName(),
-                        cause.getModule().getStream()));
-            }
-            else {
-                throw new RuntimeException(e);
-            }
+            // Build shouldn't be allowed if dependency resolution fails
+            throw new RuntimeException(e);
         }
 
     }

@@ -25,6 +25,7 @@ public class ProjectResponse {
     private List<ProjectSoftwareSourceResponse> softwareSources;
     private List<ProjectFilterResponse> filters;
     private List<EnvironmentResponse> environments;
+    private List<ProjectMessageResponse> messages;
 
     public void setProperties(ProjectPropertiesResponse propertiesIn) {
         this.properties = propertiesIn;
@@ -40,5 +41,9 @@ public class ProjectResponse {
 
     public void setSoftwareSources(List<ProjectSoftwareSourceResponse> sourcesIn) {
         this.softwareSources = sourcesIn;
+    }
+
+    public void setProjectMessages(List<ProjectMessageResponse> messagesIn) {
+        this.messages = messagesIn;
     }
 }
