@@ -49,6 +49,9 @@ public class ServerGroupHandler extends BaseHandler {
 
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
+    /**
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     */
     public ServerGroupHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
     }

@@ -16,7 +16,6 @@
 package com.suse.manager.webui.controllers.test;
 
 import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.Matchers.containsString;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -29,7 +28,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -44,12 +42,10 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
-import com.suse.manager.webui.services.iface.TestVirtManager;
+import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.salt.netapi.calls.LocalCall;
 
 import org.jmock.Expectations;
 

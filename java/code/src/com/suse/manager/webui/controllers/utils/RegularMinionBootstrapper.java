@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.InputValidator;
@@ -53,6 +52,7 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
     /**
      * Get instance of the RegularMinionBootstrapper
+     * @param systemQuery instance to get system information.
      * @return instance of the RegularMinionBootstrapper
      */
     public static synchronized RegularMinionBootstrapper getInstance(SystemQuery systemQuery) {

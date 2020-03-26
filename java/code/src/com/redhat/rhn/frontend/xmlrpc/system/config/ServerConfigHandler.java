@@ -74,9 +74,8 @@ public class ServerConfigHandler extends BaseHandler {
 
 
     /**
-     * Set the {@link TaskomaticApi} instance to use, only for unit tests.
-     *
      * @param taskomaticApiIn the {@link TaskomaticApi}
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
      */
     public ServerConfigHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         taskomaticApi = taskomaticApiIn;

@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.controllers.test;
 
-import static org.hamcrest.Matchers.containsString;
-
 import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -30,13 +28,10 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
-import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.VirtualNetsController;
-import com.suse.manager.webui.services.iface.TestVirtManager;
+import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.VirtualNetworkInfoJson;

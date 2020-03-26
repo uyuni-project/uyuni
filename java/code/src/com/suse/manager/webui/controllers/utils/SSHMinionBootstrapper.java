@@ -22,7 +22,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -58,6 +57,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
     /**
      * Get instance of the SSHMinionBootstrapper
+     * @param systemQuery systemQuery to use
      * @return the instance of the SSHMinionBootstrapper
      */
     public static synchronized SSHMinionBootstrapper getInstance(SystemQuery systemQuery) {

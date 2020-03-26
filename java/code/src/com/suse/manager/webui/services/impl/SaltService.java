@@ -976,16 +976,20 @@ public class SaltService implements SystemQuery, SaltApi {
      * {@inheritDoc}
      */
     public Optional<RedhatProductInfo> redhatProductInfo(String minionId) {
-        return callSync(State.apply(Arrays.asList("packages.redhatproductinfo"), Optional.empty()), minionId).map(result -> {
-            Optional<String> centosReleaseContent = Optional.ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE)
-                    .getChanges(CmdResult.class).getStdout());
-            Optional<String> rhelReleaseContent = Optional.ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE)
-                    .getChanges(CmdResult.class).getStdout());
-            Optional<String> whatProvidesRes = Optional.ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
-                    .getChanges(CmdResult.class).getStdout());
+        return callSync(State.apply(Arrays.asList("packages.redhatproductinfo"), Optional.empty()), minionId)
+                .map(result -> {
+                    Optional<String> centosReleaseContent = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
+                    Optional<String> rhelReleaseContent = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
+                    Optional<String> whatProvidesRes = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
 
-            return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent, whatProvidesRes);
-        });
+                    return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent, whatProvidesRes);
+                });
     }
 
     /**
