@@ -139,6 +139,7 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
@@ -4897,6 +4898,14 @@ public class SystemHandler extends BaseHandler {
                 needsSnapshot = true;
                 if (vr.getErrors().size() > 0) {
                     throw new InvalidEntitlementException();
+                }
+                else {
+                    // Handle monitoring enablement
+                    server.asMinionServer().ifPresent(minion -> {
+                        if (EntitlementManager.MONITORING.equals(ent)) {
+                            FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
+                        }
+                    });
                 }
             }
             else {

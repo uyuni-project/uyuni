@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -188,6 +189,13 @@ public class SystemEntitlementsSubmitAction extends
                             }
                             else {
                                 successCount++;
+
+                                // Handle monitoring enablement
+                                server.asMinionServer().ifPresent(minion -> {
+                                    if (EntitlementManager.MONITORING.equals(ent)) {
+                                        FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
+                                    }
+                                });
                             }
                         }
                         else {
