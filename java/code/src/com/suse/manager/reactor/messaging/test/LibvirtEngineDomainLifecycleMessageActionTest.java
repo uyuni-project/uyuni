@@ -97,7 +97,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(new SaltService(), new TestVirtManager())
+                new SystemEntitler(new SaltService(), virtManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
