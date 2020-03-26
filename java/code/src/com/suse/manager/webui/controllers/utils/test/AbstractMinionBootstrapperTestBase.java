@@ -185,6 +185,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         context().checking(new Expectations() {{
             allowing(input).getFirstActivationKey();
             will(returnValue(of(key.getKey())));
+            allowing(input).getActivationKeys();
+            will(returnValue(List.of(key.getKey())));
         }});
 
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
