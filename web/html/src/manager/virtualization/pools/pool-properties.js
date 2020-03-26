@@ -106,15 +106,20 @@ export function PoolProperties(props: Props) {
   }
 
   const onPoolTypeChanged = () => {
-    model.source_format = undefined;
-    if (FieldsData.getValue(model.type, 'source_hosts.show', false)) {
-      model.source_hosts0_name = '';
-      model.source_hosts0_port = '';
-    }
-    if (FieldsData.getValue(model.type, 'source_devices.show', false)) {
-      model.source_devices0_path = '';
-      model.source_devices0_separator = '';
-    }
+    const hostsProps =
+      FieldsData.getValue(model.type, 'source_hosts.show', false) ?
+      { source_hosts0_name: '', source_host0_port: '' } :
+      {};
+    const devicesProps =
+      FieldsData.getValue(model.type, 'source_devices.show', false) &&
+      FieldsData.getValue(model.type, 'source_devices.min', 1) ?
+      { source_devices0_path: '', source_devices0_separator: '' } :
+      {};
+    setModel(Object.assign({},
+      {
+        name: model.name,
+        type: model.type,
+      }, hostsProps, devicesProps));
   }
 
   return (

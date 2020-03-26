@@ -86,6 +86,7 @@ const mapping = {
     source_devices: {
       show: true,
       list: true,
+      min: 0,
     },
     source_name: {
       show: true
