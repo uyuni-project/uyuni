@@ -36,7 +36,6 @@ import com.suse.manager.model.products.ChannelJson;
 import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.utils.Json;
 import java.util.Collection;
 import java.util.HashMap;
@@ -318,10 +317,8 @@ public class ProductsController {
                                             s.getStatus(),
                                             s.getChannels().stream().map(c ->
                                                     new ChannelJson(
-                                                            s.getStatus().equals(MgrSyncStatus.INSTALLED) &&
-                                                                    ChannelFactory.lookupByLabel(c.getLabel()) != null ?
-                                                                    ChannelFactory.lookupByLabel(c.getLabel()).getId() :
-                                                                    -1L,
+                                                            Optional.ofNullable(channelByLabel.get(c.getLabel()))
+                                                                    .map(x -> x.getId()).orElse(-1L),
                                                             c.getName(),
                                                             c.getLabel(),
                                                             c.getSummary(),
@@ -368,10 +365,8 @@ public class ProductsController {
                         rootExtensions,
                         syncProduct.getChannels().stream().map(c ->
                                 new ChannelJson(
-                                        syncProduct.getStatus().equals(MgrSyncStatus.INSTALLED) &&
-                                                ChannelFactory.lookupByLabel(c.getLabel()) != null ?
-                                                ChannelFactory.lookupByLabel(c.getLabel()).getId() :
-                                                -1L,
+                                        Optional.ofNullable(channelByLabel.get(c.getLabel()))
+                                                .map(x -> x.getId()).orElse(-1L),
                                         c.getName(),
                                         c.getLabel(),
                                         c.getSummary(),
