@@ -22,7 +22,6 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -46,7 +45,6 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -127,24 +125,6 @@ public class SystemEntitler {
             if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
                     !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
                 this.updateLibvirtEngine(minion);
-            }
-
-            if (EntitlementManager.MONITORING.equals(ent)) {
-                try {
-                    // Assign the monitoring formula to the system
-                    // unless the system belongs to a group having monitoring already enabled
-                    if (!FormulaFactory.isMemberOfGroupHavingMonitoring(server)) {
-                        List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
-                        if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
-                            formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
-                            FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
-                        }
-                    }
-                }
-                catch (UnsupportedOperationException | ValidatorException | IOException e) {
-                    LOG.error("Error assigning formula: " + e.getMessage(), e);
-                    result.addError(new ValidatorError("system.entitle.formula_error"));
-                }
             }
         });
 

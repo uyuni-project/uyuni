@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
@@ -282,6 +283,13 @@ public class SystemDetailsEditAction extends RhnAction {
                                 "system.entitle.added." + e.getLabel() + ".nodoc",
                                 s.getId().toString());
                     }
+
+                    // Handle monitoring enablement
+                    s.asMinionServer().ifPresent(minion -> {
+                        if (EntitlementManager.MONITORING.equals(e)) {
+                            FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
+                        }
+                    });
                 }
             }
             else if ((daForm.get(e.getLabel()) == null ||
