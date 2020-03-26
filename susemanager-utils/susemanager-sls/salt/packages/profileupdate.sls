@@ -31,12 +31,20 @@ grains_update:
   module.run:
     - name: grains.items
     - require:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: sync_grains
+{%- else %}
       - module: sync_grains
+{%- endif %}
 
 {% if not pillar.get('imagename') %}
 kernel_live_version:
   module.run:
     - name: sumautil.get_kernel_live_version
     - require:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: sync_modules
+{%- else %}
       - module: sync_modules
+{%- endif %}
 {% endif %}
