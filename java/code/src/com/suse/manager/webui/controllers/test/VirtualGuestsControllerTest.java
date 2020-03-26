@@ -59,7 +59,6 @@ import spark.HaltException;
 public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
     private TaskomaticApi taskomaticMock;
-    private SaltService saltServiceMock;
     private static final Gson GSON = new GsonBuilder().create();
     private Server host;
     private VirtManager virtManager;
@@ -82,7 +81,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        VirtManager virtManager = new TestVirtManager() {
+        virtManager = new TestVirtManager() {
 
             @Override
             public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
@@ -113,7 +112,6 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         host.asMinionServer().get().setMinionId("testminion.local");
         host.getGuests().iterator().next().setUuid(guid);
 
-        virtManager = new VirtManagerSalt(saltServiceMock);
         virtualGuestsController = new VirtualGuestsController(virtManager);
 
         // Clean pending actions for easier checks in the tests

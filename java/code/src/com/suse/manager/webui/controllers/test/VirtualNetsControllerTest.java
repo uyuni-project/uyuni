@@ -43,7 +43,7 @@ import java.util.*;
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
     private TaskomaticApi taskomaticMock;
-    private SaltService saltServiceMock;
+    private VirtManager virtManager;
     private Server host;
     private static final Gson GSON = new GsonBuilder().create();
 
@@ -61,7 +61,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        VirtManager virtManager = new TestVirtManager() {
+        virtManager = new TestVirtManager() {
             @Override
             public void updateLibvirtEngine(MinionServer minion) {
             }
@@ -86,9 +86,6 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
     }
 
     public void testData() throws Exception {
-
-        VirtManager virtManager =  new VirtManagerSalt(saltServiceMock);
-
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/data", host.getId()), response, user);

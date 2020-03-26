@@ -163,16 +163,15 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
                 will(returnValue(Optional.of(mockResult)));
         }});
-        SaltService saltService = new SaltService();
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+        SystemEntitlementManager sem = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
+                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock))
         );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
-        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        sem.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createKiwiImageProfile("myprofile", ak, admin);
 
