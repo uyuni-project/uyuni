@@ -342,6 +342,12 @@ The check box can be identified by name, id or label text.
   When I select the hostname of "proxy" from "proxies"
 ```
 
+* Wait for a selection box to contain an item
+
+```cucumber
+  When I wait until option "dir" appears in list "type"
+```
+
 * Make sure an item in a selection box is selected
 
 ```cucumber

@@ -230,7 +230,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Storage"
     And I follow "Create Pool"
-    And I wait until I see "General" text
+    And I wait until option "dir" appears in list "type"
     And I select "dir" from "type"
     And I enter "test-pool1" as "name"
     And I uncheck "autostart"
