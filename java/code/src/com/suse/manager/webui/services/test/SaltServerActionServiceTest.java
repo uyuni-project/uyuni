@@ -68,7 +68,7 @@ import com.google.gson.JsonElement;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.iface.TestVirtManager;
+import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;

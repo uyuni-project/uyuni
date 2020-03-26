@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.satellite;
 
-import com.redhat.rhn.common.errors.SatelliteExceptionHandler;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
@@ -34,6 +33,9 @@ public class SatelliteHandler extends BaseHandler {
 
     private ProxyHandler proxyHandler;
 
+    /**
+     * @param proxyHandlerIn proxy hander to delegate
+     */
     public SatelliteHandler(ProxyHandler proxyHandlerIn) {
         proxyHandler = proxyHandlerIn;
     }

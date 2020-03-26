@@ -49,6 +49,9 @@ public class SnapshotHandler extends BaseHandler {
 
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
+    /**
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     */
     public SnapshotHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
     }

@@ -50,6 +50,9 @@ public class ProxyHandler extends BaseHandler {
     private static Logger log = Logger.getLogger(ProxyHandler.class);
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
+    /**
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     */
     public ProxyHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
     }

@@ -62,6 +62,9 @@ public class CrashHandler extends BaseHandler {
     private static float freeMemCoeff = 0.9f;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
+    /**
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     */
     public CrashHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
     }

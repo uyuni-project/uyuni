@@ -27,7 +27,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.matcher.MatcherJsonIO;
-import com.suse.manager.webui.services.iface.TestVirtManager;
+import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.matcher.json.MatchJson;
@@ -35,10 +35,8 @@ import com.suse.matcher.json.ProductJson;
 import com.suse.matcher.json.SubscriptionJson;
 import com.suse.matcher.json.SystemJson;
 import com.suse.matcher.json.VirtualizationGroupJson;
-import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.scc.model.SCCSubscriptionJson;
 
-import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;

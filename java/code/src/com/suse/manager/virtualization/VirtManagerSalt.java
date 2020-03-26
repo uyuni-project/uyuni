@@ -19,12 +19,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.salt.State;
 import com.suse.salt.netapi.calls.LocalCall;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**

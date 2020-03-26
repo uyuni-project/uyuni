@@ -70,6 +70,8 @@ public class MinionsAPI {
 
     /**
      * @param systemQueryIn instance to use.
+     * @param regularMinionBootstrapperIn regular bootstrapper
+     * @param sshMinionBootstrapperIn ssh bootstrapper
      */
     public MinionsAPI(SystemQuery systemQueryIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
                       RegularMinionBootstrapper regularMinionBootstrapperIn) {

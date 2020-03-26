@@ -56,10 +56,7 @@ import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper;
-import com.suse.salt.netapi.results.CmdResult;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
