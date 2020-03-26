@@ -35,6 +35,8 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -204,6 +206,14 @@ public class RegistrationUtils {
                 }
                 if (vr.getErrors().size() > 0) {
                     LOG.error(vr.getErrors().toString());
+                }
+                else {
+                    // Handle monitoring enablement
+                    server.asMinionServer().ifPresent(minion -> {
+                        if (EntitlementManager.MONITORING.equals(e)) {
+                            FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
+                        }
+                    });
                 }
             }
         });
