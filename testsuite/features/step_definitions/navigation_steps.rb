@@ -768,6 +768,15 @@ Then(/^option "([^"]*)" is selected as "([^"]*)"$/) do |arg1, arg2|
 end
 
 #
+# Wait for an option to appear in a list
+#
+When(/^I wait until option "([^"]*)" appears in list "([^"]*)"$/) do |arg1, arg2|
+  repeat_until_timeout(message: "#{arg1} has not been listed in #{arg2}") do
+    break if has_select?(arg2, with_options: [arg1])
+  end
+end
+
+#
 # Test if a radio button is checked
 #
 Then(/^radio button "([^"]*)" is checked$/) do |arg1|
