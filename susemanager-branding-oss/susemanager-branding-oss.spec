@@ -29,6 +29,8 @@ BuildArch:      noarch
 %if 0%{?is_opensuse}
 ExcludeArch:    i586 x86_64 ppc64le s390x aarch64
 %else
+# SUSE Manager does not support aarch64 for the server
+ExcludeArch:    aarch64
 BuildRequires:  SUSE-Manager-Server-release
 %endif
 Provides:       susemanager-branding = %{version}
