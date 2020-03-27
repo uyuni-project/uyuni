@@ -97,8 +97,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     @Override
     protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user,
                                                 String defaultContactMethod) {
-        BootstrapResult result = super.bootstrapInternal(params, user,
-                defaultContactMethod);
+        BootstrapResult result = super.bootstrapInternal(params, user, defaultContactMethod);
         LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
                 ", proceeding with registration.");
         String minionId = params.getHost();

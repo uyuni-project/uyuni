@@ -34,7 +34,7 @@ public class BootstrapParameters {
     private Optional<Long> proxyId;
 
     /**
-     * For testing purposes.
+     * Create {@link BootstrapParameters}.
      *
      * @param hostIn host
      * @param portIn port

@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils.gson;
 
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -186,6 +187,6 @@ public class BootstrapHostsJson {
         if (StringUtils.isEmpty(password)) {
             return empty();
         }
-        return Optional.of(password);
+        return of(password);
     }
 }
