@@ -139,9 +139,8 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
             user = getSSHUser();
         }
         return new BootstrapParameters(input.getHost(),
-                Optional.of(SSH_PUSH_PORT), user, input.maybeGetPassword(),
-                input.getActivationKeys(), input.getIgnoreHostKeys(),
-                Optional.ofNullable(input.getProxy()));
+                Optional.of(SSH_PUSH_PORT), user, input.maybeGetPassword(), input.getPrivKey(), input.getPrivKeyPwd(),
+                input.getActivationKeys(), input.getIgnoreHostKeys(), Optional.ofNullable(input.getProxy()));
     }
 
     @Override
