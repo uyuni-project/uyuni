@@ -487,6 +487,7 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/subscription-m
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -d $RPM_BUILD_ROOT/srv/susemanager/salt
 install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh
+install -d $RPM_BUILD_ROOT/srv/susemanager/salt/salt_ssh/temp_bootstrap_keys
 install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data
 install -d -m 775 $RPM_BUILD_ROOT/srv/susemanager/pillar_data/images
 install -d $RPM_BUILD_ROOT/srv/susemanager/formula_data
@@ -599,6 +600,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(644,tomcat,tomcat,775)
 %attr(775, salt, salt) %dir /srv/susemanager/salt/salt_ssh
+%attr(775, salt, salt) %dir /srv/susemanager/salt/salt_ssh/temp_bootstrap_keys
 %attr(775, root, tomcat) %dir %{appdir}
 %dir /srv/susemanager
 %dir /srv/susemanager/salt
