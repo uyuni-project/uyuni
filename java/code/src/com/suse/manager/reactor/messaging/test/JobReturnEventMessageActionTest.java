@@ -1692,6 +1692,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
+        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService());
+
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("dev-minsles12sp2.test.local");
 
@@ -1718,8 +1720,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
 
-        SaltServerActionService.INSTANCE.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionSummary>> calls = SaltServerActionService.INSTANCE.callsForAction(action);
+        saltServerActionService.setCommitTransaction(false);
+        Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
 
         HibernateFactory.getSession().flush();
 
@@ -1752,6 +1754,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
                     with(any(SubscribeChannelsAction.class)));
         } });
+        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService());
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("dev-minsles12sp2.test.local");
@@ -1779,8 +1782,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerAction sa = ActionFactoryTest.createServerAction(minion, action);
         action.addServerAction(sa);
 
-        SaltServerActionService.INSTANCE.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionSummary>> calls = SaltServerActionService.INSTANCE.callsForAction(action);
+        saltServerActionService.setCommitTransaction(false);
+        Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
 
         // artifically expire tokens
         action.getDetails().getAccessTokens().stream().forEach(t -> t.setMinion(null));

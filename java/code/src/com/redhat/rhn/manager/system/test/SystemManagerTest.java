@@ -172,7 +172,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         });
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(SaltService.INSTANCE)
+                new SystemEntitler(new SaltService())
         );
     }
 
