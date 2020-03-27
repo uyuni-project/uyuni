@@ -33,6 +33,8 @@ type TableProps = {
   loadingText?: string,
   /** Children node in the table */
   children: React.Node,
+  /** Other filter fields */
+  additionalFilters?: Array<React.Node>,
 };
 
 export function Table(props: TableProps): React.Node {
