@@ -1241,6 +1241,53 @@ public class SaltService implements SystemQuery {
     }
 
     /**
+     * Using a {@link RunnerCall}, store given contents to given path and set the mode, so that SSH likes it
+     * (read-write for owner, nothing for others).
+     *
+     * @param path the path where key will be stored
+     * @param contents the contents of the key (PEM format)
+     * @throws IllegalStateException if something goes wrong during the operation, or if given path is not absolute
+     */
+    public void storeSshKeyFile(Path path, String contents) {
+        ensureAbsolutePath(path);
+
+        String absolutePath = path.toAbsolutePath().toString();
+        RunnerCall<String> createFile = MgrUtilRunner.writeTextFile(absolutePath, contents);
+        callSync(createFile).orElseThrow(() -> new IllegalStateException("Can't create SSH priv key file " + path));
+
+        // this might not be needed, the file is created with sane perms already
+        String desiredMode = "0600";
+        RunnerCall<String> setMode = MgrUtilRunner.setFileMode(absolutePath, desiredMode);
+        String mode = callSync(setMode)
+                .orElseThrow(() -> new IllegalStateException("Can't set mode for SSH priv key file " + path));
+
+        if (!mode.equals(desiredMode)) {
+            throw new IllegalStateException(
+                    String.format("Invalid mode '%s' for SSH Key private file '%s'", path, mode));
+        }
+    }
+
+    /**
+     * Remove given file using {@link RunnerCall}
+     *
+     * @param path the path of file to be removed
+     * @throws IllegalStateException if the given path is not absolute
+     * @return todo
+     */
+    public Optional<Boolean> removeFile(Path path) {
+        ensureAbsolutePath(path);
+        String absolutePath = path.toAbsolutePath().toString();
+        RunnerCall<Boolean> createFile = MgrUtilRunner.removeFile(absolutePath);
+        return callSync(createFile);
+    }
+
+    private void ensureAbsolutePath(Path path) {
+        if (!path.isAbsolute()) {
+            throw new IllegalStateException("Given path is not absolute: " + path);
+        }
+    }
+
+    /**
      * Remove SUSE Manager specific configuration from a Salt regular minion.
      *
      * @param minion the minion.
