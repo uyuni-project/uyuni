@@ -147,39 +147,45 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
     private StringBuffer processArguments(String handler, String method,
                                   List arguments) {
         StringBuffer ret = new StringBuffer();
-
-        // bug 199130: don't log password :)
-        if ("auth.login".equals(handler + "." + method)) {
-            if (arguments != null && arguments.size() > 0) {
-                String arg = (String) Translator.convert(
-                        arguments.get(0), String.class);
-
-                ret.append(arg);
-                ret.append(", ********");
-            }
-        }
-        else {
-            if (arguments != null) {
-                int size = arguments.size();
-                for (int i = 0; i < size; i++) {
-                    String arg = null;
-                    if (arguments.get(i) instanceof User) {
-                        arg = ((User)arguments.get(i)).getLogin();
+        if (arguments != null) {
+            int size = arguments.size();
+            for (int i = 0; i < size; i++) {
+                String arg;
+                if (arguments.get(i) instanceof User) {
+                    arg = ((User)arguments.get(i)).getLogin();
+                }
+                else {
+                    if (preventValueLogging(handler, method, i)) {
+                        arg = "******";
                     }
                     else {
-                        arg = (String) Translator.convert(
-                                arguments.get(i), String.class);
+                        arg = (String) Translator.convert(arguments.get(i), String.class);
                     }
+                }
 
-                    ret.append(arg);
+                ret.append(arg);
 
-                    if ((i + 1) < size) {
-                        ret.append(", ");
-                    }
+                if ((i + 1) < size) {
+                    ret.append(", ");
                 }
             }
         }
         return ret;
+    }
+
+    // determines whether the value should be hidden from logging
+    private static boolean preventValueLogging(String handler, String method, int argPosition) {
+        String handlerAndMethod = handler + "." + method;
+        switch (handlerAndMethod) {
+            case "auth.login":
+                return argPosition == 1;
+            case "system.bootstrap":
+                return argPosition == 4;
+            case "system.bootstrapWithPrivateKey":
+                return argPosition == 4 || argPosition == 5;
+            default:
+                return false;
+        }
     }
 
     /**
