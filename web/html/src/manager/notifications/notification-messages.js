@@ -351,7 +351,6 @@ class NotificationMessages extends React.Component {
 
 
     const panelButtons = <SectionToolbar>
-        {typeFilter}
         <div className='action-button-wrapper'>
           <div className='btn-group'>
             <AsyncButton id="reload" icon="fa-refresh" text={t('Refresh')} action={this.refreshServerData} />
@@ -397,7 +396,8 @@ class NotificationMessages extends React.Component {
                 <SearchField filter={this.searchData}
                     criteria={""}
                     placeholder={t("Filter by summary")} />
-            }>
+            }
+            additionalFilters={[typeFilter]}>
             <Column
               columnKey="severity"
               comparator={this.sortBySeverity}
