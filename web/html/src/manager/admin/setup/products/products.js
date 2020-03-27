@@ -678,6 +678,31 @@ class CheckListItem extends React.Component {
     return [];
   };
 
+  channelsStatusSync = (channelList, isRootProduct) => {
+    const iconSize = isRootProduct ? "fa-1-5x" : "";
+    const wrapPrefix = isRootProduct ? null : "(";
+    const wrapSuffix = isRootProduct ? null : ")";
+    const testPrefix = isRootProduct ? "Product" : "Child products";
+    if (channelList.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
+      return (
+        <span className="text-danger" title={t(testPrefix + ' channels sync failed')}>
+          {wrapPrefix}<i className={"fa fa-exclamation-circle " + iconSize}></i>{wrapSuffix}
+        </span>);
+    }
+    else if (channelList.filter(c => c.status == _CHANNEL_STATUS.syncing).length > 0) {
+      return (
+        <span className="text-info" title={t(testPrefix + ' channels sync in progress')}>
+          {wrapPrefix}<i className={"fa fa-spinner fa-spin " + iconSize}></i>{wrapSuffix}
+        </span>);
+    }
+    else if (channelList.filter(c => c.status == _CHANNEL_STATUS.synced).length > 0) {
+      return (
+        <span className="text-success" title={t(testPrefix + ' channels synced')}>
+          {wrapPrefix}<i className={"fa fa-check-circle " + iconSize}></i>{wrapSuffix}
+        </span>);
+    }
+  };
+
   render() {
     const currentItem = this.props.item;
     /** generate item selector content **/
@@ -749,57 +774,22 @@ class CheckListItem extends React.Component {
     let channelSyncContent;
     if (this.isInstalled()) {
       let currentProductChannels = currentItem.channels.filter(c => c.status != _CHANNEL_STATUS.notSynced);
-
-      // if the product sync has just been scheduled
-      if (currentProductChannels.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
-        channelSyncContent =
-          <span className="text-danger" title={t('Product channels sync failed')}>
-            <i className="fa fa-exclamation-circle fa-1-5x"></i>
-          </span>;
-      }
-      else if (currentProductChannels.filter(c => c.status == _CHANNEL_STATUS.syncing).length > 0) {
-        channelSyncContent =
-          <span className="text-info" title={t('Product channels sync in progress')}>
-            <i className="fa fa-spinner fa-spin fa-1-5x"></i>
-          </span>;
-      }
-      else if (currentProductChannels.filter(c => c.status == _CHANNEL_STATUS.synced).length > 0) {
-        channelSyncContent =
-          <span className="text-success" title={t('Product channels synced')}>
-            <i className="fa fa-check-circle fa-1-5x"></i>
-          </span>;
-      }
+      channelSyncContent = this.channelsStatusSync(currentProductChannels, true);
     }
 
     let childProductChannelSyncContent;
     if (this.isInstalled()) {
-      // add all channels of the subtree
       let childProductChannels = [];
 
+      // add all channels of the subtree
       this.getChildrenTree(currentItem)
         .filter(product => product.status == _PRODUCT_STATUS.installed)
         .forEach(prod => {
           prod.channels.filter(channel => channel.status != _CHANNEL_STATUS.notSynced)
             .forEach(chan => { childProductChannels.push(chan) })
         });
-      if (childProductChannels.filter(c => c.status == _CHANNEL_STATUS.failed).length > 0) {
-        childProductChannelSyncContent =
-          <span className="text-danger" title={t('Child products channels sync failed')}>
-            (<i className="fa fa-exclamation-circle"></i>)
-          </span>;
-      }
-      else if (childProductChannels.filter(c => c.status == _CHANNEL_STATUS.syncing).length > 0) {
-        childProductChannelSyncContent =
-          <span className="text-info" title={t('Child products channels in progress')}>
-            (<i className="fa fa-spinner fa-spin"></i>)
-          </span>;
-      }
-      else if (childProductChannels.filter(c => c.status == _CHANNEL_STATUS.synced).length > 0) {
-        childProductChannelSyncContent =
-          <span className="text-success" title={t('Child products channels synced')}>
-            (<i className="fa fa-check-circle"></i>)
-          </span>;
-      }
+
+      childProductChannelSyncContent = this.channelsStatusSync(childProductChannels, false);
     }
     /*****/
 
