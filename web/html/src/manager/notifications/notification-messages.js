@@ -20,23 +20,23 @@ const {showDialog} = require("components/dialog/util");
 const _MESSAGE_TYPE = {
   OnboardingFailed: {
     id: "OnboardingFailed",
-    text: "Onboarding failed",
+    text: t("Onboarding failed"),
   },
   ChannelSyncFailed: {
     id: "ChannelSyncFailed",
-    text: "Channel sync failed",
+    text: t("Channel sync failed"),
   },
   ChannelSyncFinished: {
     id: "ChannelSyncFinished",
-    text: "Channel sync finished",
+    text: t("Channel sync finished"),
   },
   CreateBootstrapRepoFailed: {
     id: "CreateBootstrapRepoFailed",
-    text: "Creating Bootstrap Repository failed",
+    text: t("Creating Bootstrap Repository failed"),
   },
   StateApplyFailed: {
     id: "StateApplyFailed",
-    text: "State apply failed",
+    text: t("State apply failed"),
   },
 }
 
@@ -201,7 +201,7 @@ class NotificationMessages extends React.Component {
   };
 
   decodeTypeText = (rawType) => {
-    return t(_MESSAGE_TYPE[rawType].text);
+    return _MESSAGE_TYPE[rawType].text;
   };
 
   decodeIconBySeverity = (severity) => {
