@@ -80,6 +80,7 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
   Scenario: Verify that minion bootstrapped with activation key
     Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "Activation Key: 	1-MINION-TEST" text
+    And the "activation_key" on "sle_minion" grains does not exist
 
   Scenario: Verify that minion bootstrapped with base channel
     Given I am on the Systems page
