@@ -21,6 +21,7 @@ import sys
 import string
 import re
 import psycopg2
+import psycopg2.extras
 
 # workaround for python-psycopg2 = 2.0.13 (RHEL6)
 # which does not import extensions by default
@@ -349,6 +350,11 @@ class Cursor(sql_base.Cursor):
         self.description = self._real_cursor.description
         rowcount = self._real_cursor.rowcount
         return rowcount
+
+    def _execute_values(self, sql, argslist, template=None, page_size=100, fetch=True):
+        results = psycopg2.extras.execute_values(self._real_cursor, sql, argslist, template=template, page_size=page_size, fetch=fetch)
+        self.description = self._real_cursor.description
+        return results
 
     def update_blob(self, table_name, column_name, where_clause, data,
                     **kwargs):
