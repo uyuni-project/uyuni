@@ -167,17 +167,14 @@ public abstract class DocWriter {
             serializerRenderer.addMatch(name, serializers.get(name));
         }
 
-        //do replacement on the serializers serveral times
-        for (int i = 0; i < 3; i++) {
-            VelocityHelper tempRenderer = new VelocityHelper();
-            for (String name : serializers.keySet()) {
-                log("Rendering serializer: " + name);
-                String temp = serializerRenderer.renderTemplate(serializers.get(name));
-                serializers.put(name, temp);
-                tempRenderer.addMatch(name, temp);
-            }
-            serializerRenderer = tempRenderer;
+        VelocityHelper tempRenderer = new VelocityHelper();
+        for (String name : serializers.keySet()) {
+            log("Rendering serializer: " + name);
+            String temp = serializerRenderer.renderTemplate(serializers.get(name));
+            serializers.put(name, temp);
+            tempRenderer.addMatch(name, temp);
         }
+        serializerRenderer = tempRenderer;
     }
 
 
