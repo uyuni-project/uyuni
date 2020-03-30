@@ -575,12 +575,12 @@ public class SaltSSHService {
     private Path createTempKeyFile(String privateKeyContents) {
         String fileName = "boostrapKeyTmp-" + UUID.randomUUID();
         Path fileAbsolutePath = Path.of(SSH_TEMP_BOOTSTRAP_KEY_DIR).resolve(fileName).toAbsolutePath();
-        ((SaltService) SaltService.INSTANCE).storeSshKeyFile(fileAbsolutePath, privateKeyContents.replaceAll("- *", "-"));
+        SaltService.INSTANCE.storeSshKeyFile(fileAbsolutePath, privateKeyContents);
         return fileAbsolutePath;
     }
 
     private void cleanUpTempKeyFile(Path path) {
-        ((SaltService) SaltService.INSTANCE)
+        SaltService.INSTANCE
                 .removeFile(path)
                 .orElseThrow(() -> new IllegalStateException("Can't remove file " + path));
     }

@@ -43,6 +43,7 @@ import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -508,4 +509,22 @@ public interface SystemQuery {
     @Deprecated
     Optional<Map<String, State.ApplyResult>> applyState(String minionId, String state);
 
+    /**
+     * Using a RunnerCall, store given contents to given path and set the mode, so that SSH likes it
+     * (read-write for owner, nothing for others).
+     *
+     * @param path the path where key will be stored
+     * @param contents the contents of the key (PEM format)
+     * @throws IllegalStateException if something goes wrong during the operation, or if given path is not absolute
+     */
+    void storeSshKeyFile(Path path, String contents);
+
+    /**
+     * Remove given file using RunnerCall
+     *
+     * @param path the path of file to be removed
+     * @throws IllegalStateException if the given path is not absolute
+     * @return todo
+     */
+    Optional<Boolean> removeFile(Path path);
 }

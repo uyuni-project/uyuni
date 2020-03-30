@@ -1241,13 +1241,9 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Using a {@link RunnerCall}, store given contents to given path and set the mode, so that SSH likes it
-     * (read-write for owner, nothing for others).
-     *
-     * @param path the path where key will be stored
-     * @param contents the contents of the key (PEM format)
-     * @throws IllegalStateException if something goes wrong during the operation, or if given path is not absolute
+     * {@inheritDoc}
      */
+    @Override
     public void storeSshKeyFile(Path path, String contents) {
         ensureAbsolutePath(path);
 
@@ -1268,12 +1264,9 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * Remove given file using {@link RunnerCall}
-     *
-     * @param path the path of file to be removed
-     * @throws IllegalStateException if the given path is not absolute
-     * @return todo
+     * {@inheritDoc}
      */
+    @Override
     public Optional<Boolean> removeFile(Path path) {
         ensureAbsolutePath(path);
         String absolutePath = path.toAbsolutePath().toString();
