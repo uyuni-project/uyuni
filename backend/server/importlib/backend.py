@@ -95,16 +95,48 @@ class Backend:
                                     % format)
         sth.execute()
 
-    # Note: postgres-specific implementation overrides this in PostgresBackend
     def processCapabilities(self, capabilityHash):
-        h = self.dbmodule.prepare("select lookup_package_capability(:name, :version) as id from dual")
-        for name, version in list(capabilityHash.keys()):
-            ver = version
-            if version is None or version == '':
-                ver = None
-            h.execute(name=name, version=ver)
-            row = h.fetchone_dict()
-            capabilityHash[(name, version)] = row['id']
+        if not capabilityHash:
+            return
+
+        sql = """
+            WITH
+              wanted (name, version) AS (
+                VALUES %s
+              ),
+              missing AS (
+                SELECT nextval('rhn_pkg_capability_id_seq') AS id, wanted.*
+                  FROM wanted
+                  LEFT JOIN rhnPackageCapability
+                    ON rhnPackageCapability.name = wanted.name
+                      AND rhnPackageCapability.version IS NOT DISTINCT FROM wanted.version
+                  WHERE rhnPackageCapability.id IS NULL
+              )
+              INSERT INTO rhnPackageCapability(id, name, version)
+                SELECT *
+                  FROM missing
+                ON CONFLICT DO NOTHING
+        """
+        wanted = [(key[0], None if key[1] == '' else key[1]) for key in capabilityHash.keys()]
+        h = self.dbmodule.prepare(sql)
+        h.execute_values(sql, wanted, fetch=False)
+
+        sql = """
+            WITH
+              wanted (name, version) AS (
+                VALUES %s
+              )
+              SELECT wanted.*, rhnPackageCapability.id
+                FROM wanted
+                JOIN rhnPackageCapability
+                  ON rhnPackageCapability.name = wanted.name
+                    AND rhnPackageCapability.version IS NOT DISTINCT FROM wanted.version
+        """
+        h = self.dbmodule.prepare(sql)
+        capabilities = h.execute_values(sql, wanted)
+
+        for capability in capabilities:
+            capabilityHash[(capability[0], capability[1] or '')] = capability[2]
 
     def processChangeLog(self, changelogHash):
         if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
@@ -1003,8 +1035,7 @@ class Backend:
         channel_ids = [x[1] for x in errata_channel_ids]
         timeouts = [timeout] * len(errata_ids)
         hdel.executemany(errata_id=errata_ids)
-        return h.executemany(errata_id=errata_ids, channel_id=channel_ids,
-                             timeout=timeouts)
+        h.executemany(errata_id=errata_ids, channel_id=channel_ids, timeout=timeouts)
 
     def processChannels(self, channels, base_channels):
         childTables = [
