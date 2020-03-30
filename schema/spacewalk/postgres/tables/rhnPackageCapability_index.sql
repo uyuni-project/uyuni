@@ -20,3 +20,6 @@ CREATE UNIQUE INDEX rhn_pkg_cap_name_version_uq
 create unique index rhn_pkg_cap_name_uq
     on rhnPackageCapability (name)
  where version is null;
+
+CREATE INDEX rhn_pkg_cap_name_idx
+    ON rhnPackageCapability USING HASH (name);
