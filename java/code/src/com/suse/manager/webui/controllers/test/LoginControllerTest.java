@@ -3,13 +3,13 @@ package com.suse.manager.webui.controllers.test;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.controllers.login.LoginController;
+import com.suse.manager.webui.utils.LoginHelper;
 import com.suse.manager.webui.utils.SparkTestUtils;
 import com.suse.utils.Json;
 
@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.RequestResponseFactory;
@@ -70,7 +71,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
-        assertNull(result); // redirect to the SSO login page
+        assertNotNull(result); // redirect to the SSO login page
     }
 
     public void testUrlBounceNotAuthenticated() throws UnsupportedEncodingException {
