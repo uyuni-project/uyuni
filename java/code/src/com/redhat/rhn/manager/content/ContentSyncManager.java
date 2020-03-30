@@ -2235,6 +2235,7 @@ public class ContentSyncManager {
                             (s.getStartsAt() == null || s.getStartsAt().before(new Date())))
                .map(s -> s.getProducts())
                .flatMap(Set::stream)
+               .filter(p -> p.getChannelFamily() != null)
                .anyMatch(p -> p.getChannelFamily().getLabel().equals(ChannelFamily.TOOLS_CHANNEL_FAMILY_LABEL));
     }
 }
