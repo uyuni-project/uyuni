@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *      #struct("distChannelMap")
+ *      #struct_begin("distChannelMap")
  *          #prop_desc("string", "os", "Operationg System")
  *          #prop_desc("string", "release", "OS Relase")
  *          #prop_desc("string", "arch_name", "Channel architecture")

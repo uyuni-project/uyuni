@@ -29,7 +29,7 @@ import java.util.Date;
  * EmptySystemProfileSerializer
  *
  * @xmlrpc.doc
- * #struct("system")
+ * #struct_begin("system")
  *     #prop("int", "id")
  *     #prop("string", "name")
  *     #prop_desc("dateTime.iso8601",  "created", "Server creation time")

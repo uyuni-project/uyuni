@@ -37,7 +37,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
  *
  *
  * @xmlrpc.doc
- *  #struct("server details")
+ *  #struct_begin("server details")
  *         #prop_desc("int", "id", "System id")
  *         #prop("string", "profile_name")
  *         #prop("string", "machine_id")

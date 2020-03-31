@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("entitlement info")
+ * #struct_begin("entitlement info")
  *   #prop("string", "label")
  *   #prop("string", "name")
  *   #prop("string", "type")

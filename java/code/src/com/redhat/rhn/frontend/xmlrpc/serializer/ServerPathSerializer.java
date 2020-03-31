@@ -31,7 +31,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("proxy connection path details")
+ *  #struct_begin("proxy connection path details")
  *         #prop_desc("int", "position", "Position of proxy in chain. The proxy that the
  *             system connects directly to is listed in position 1.")
  *         #prop_desc("int", "id", "Proxy system id")

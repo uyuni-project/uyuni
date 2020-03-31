@@ -157,7 +157,7 @@ public class ServerConfigHandler extends BaseHandler {
      *          #item_desc ("False", "if the path is a file")
      *      #options_end()
      * @xmlrpc.param
-     *   #struct("path info")
+     *   #struct_begin("path info")
      *      #prop_desc("string","contents",
      *              "Contents of the file (text or base64 encoded if binary)
      *                   ((only for non-directories)")
@@ -249,7 +249,7 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string","path",
      *                          "the configuration file/directory path")
      * @xmlrpc.param
-     *  #struct("path info")
+     *  #struct_begin("path info")
      *      #prop_desc("string","target_path",
      *              "The target path for the symbolic link")
      *      #prop_desc("string", "selinux_ctx", "SELinux Security context (optional)")

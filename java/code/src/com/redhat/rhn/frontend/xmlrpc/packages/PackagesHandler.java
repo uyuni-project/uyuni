@@ -71,7 +71,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
-     *   #struct("package")
+     *   #struct_begin("package")
      *       #prop("int", "id")
      *       #prop("string", "name")
      *       #prop("string", "epoch")
@@ -117,7 +117,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
      * #array_begin()
-     *   #struct("channel")
+     *   #struct_begin("channel")
      *     #prop("string", "label")
      *     #prop("string", "parent_label")
      *     #prop("string", "name")
@@ -147,7 +147,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
      * #array_begin()
-     *   #struct("errata")
+     *   #struct_begin("errata")
      *     #prop("string", "advisory")
      *     #prop("string", "issue_date")
      *     #prop("string", "last_modified_date")
@@ -181,7 +181,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
      *   #array_begin()
-     *     #struct("file info")
+     *     #struct_begin("file info")
      *       #prop("string", "path")
      *       #prop("string", "type")
      *       #prop("string", "last_modified_date")
@@ -267,7 +267,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
      *   #array_begin()
-     *     #struct("dependency")
+     *     #struct_begin("dependency")
      *       #prop("string", "dependency")
      *       #prop_desc("string", "dependency_type", "One of the following:")
      *         #options()
@@ -424,7 +424,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      * #array_begin()
-     *   #struct("source_package")
+     *   #struct_begin("source_package")
      *     #prop("int", "id")
      *     #prop("string", "name")
      *   #struct_end()

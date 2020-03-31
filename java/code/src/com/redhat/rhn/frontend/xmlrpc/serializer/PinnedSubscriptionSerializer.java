@@ -27,7 +27,7 @@ import java.io.Writer;
  * Serializer for the PinnedSubscription class
  *
  * @xmlrpc.doc
- *  #struct("pinned subscription")
+ *  #struct_begin("pinned subscription")
  *      #prop("int", "id")
  *      #prop("int", "subscription_id")
  *      #prop("int", "system_id")

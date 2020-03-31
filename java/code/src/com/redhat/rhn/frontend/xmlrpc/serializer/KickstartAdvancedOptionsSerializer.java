@@ -31,7 +31,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *      #struct("option")
+ *      #struct_begin("option")
  *          #prop("string", "name")
  *          #prop("string", "arguments")
  *      #struct_end()

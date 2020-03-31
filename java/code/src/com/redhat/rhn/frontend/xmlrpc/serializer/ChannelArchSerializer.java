@@ -27,7 +27,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * ChannelArchSerializer serializes ChannelArch object to XMLRPC.
  * @version $Rev$
  * @xmlrpc.doc
- *      #struct("channel arch")
+ *      #struct_begin("channel arch")
  *          #prop("string", "name")
  *          #prop("string", "label")
  *      #struct_end()

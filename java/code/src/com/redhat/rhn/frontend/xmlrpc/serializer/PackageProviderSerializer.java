@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *   #struct("package provider")
+ *   #struct_begin("package provider")
  *   #prop("string", "name")
  *   #prop_array_begin("keys")
  *      $PackageKeySerializer

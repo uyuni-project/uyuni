@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *   #struct("file preservation")
+ *   #struct_begin("file preservation")
  *      #prop("int", "id")
  *      #prop("string", "name")
  *      #prop("dateTime.iso8601", "created")

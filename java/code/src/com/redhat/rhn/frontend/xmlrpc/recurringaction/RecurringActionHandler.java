@@ -117,7 +117,7 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.doc Create a new recurring action.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
-     *  #struct("actionProps")
+     *  #struct_begin("actionProps")
      *      #prop_desc("string", "entity_type", "The type of the target entity. One of the following:")
      *        #options()
      *          #item("MINION")
@@ -172,7 +172,7 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.doc Update a recurring action.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
-     *  #struct("actionProps")
+     *  #struct_begin("actionProps")
      *      #prop_desc("int", "id", "The id of the action to update")
      *      #prop_desc("string", "name", "The name of the action (optional)")
      *      #prop_desc("string", "cron_expr", "The execution frequency of the action (optional)")

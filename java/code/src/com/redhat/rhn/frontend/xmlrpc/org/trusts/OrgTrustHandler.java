@@ -78,7 +78,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "trustOrgId", "Id of the trusted organization")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("channel info")
+     *         #struct_begin("channel info")
      *             #prop("int", "channel_id")
      *             #prop("string", "channel_name")
      *             #prop("int", "packages")
@@ -121,7 +121,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "trustOrgId", "Id of the trusted organization")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("channel info")
+     *         #struct_begin("channel info")
      *             #prop("int", "channel_id")
      *             #prop("string", "channel_name")
      *             #prop("int", "packages")
@@ -162,7 +162,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "trustOrgId", "Id of the trusted organization")
      * @xmlrpc.returntype
-     *     #struct("org trust details")
+     *     #struct_begin("org trust details")
      *          #prop_desc("dateTime.iso8601", "created", "Date the organization was
      *          created")
      *          #prop_desc("dateTime.iso8601", "trusted_since", "Date the organization was
@@ -307,7 +307,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "trustOrgId")
      * @xmlrpc.returntype
      *   #array_begin()
-     *     #struct("affected systems")
+     *     #struct_begin("affected systems")
      *       #prop("int", "systemId")
      *       #prop("string", "systemName")
      *     #struct_end()

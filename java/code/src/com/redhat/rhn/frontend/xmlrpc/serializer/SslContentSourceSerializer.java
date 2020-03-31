@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("contentsourcessl")
+ *  #struct_begin("contentsourcessl")
  *      #prop("string", "sslCaDesc")
  *      #prop("string", "sslCertDesc")
  *      #prop("string", "sslKeyDesc")

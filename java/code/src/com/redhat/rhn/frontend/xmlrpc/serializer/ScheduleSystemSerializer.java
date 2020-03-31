@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  * @xmlrpc.doc
  *
- * #struct("system")
+ * #struct_begin("system")
  *   #prop("int", "server_id")
  *   #prop_desc("string", "server_name", "Server name.")
  *   #prop_desc("string", "base_channel", "Base channel used by the server.")

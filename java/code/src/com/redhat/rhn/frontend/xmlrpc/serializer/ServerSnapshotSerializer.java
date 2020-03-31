@@ -38,7 +38,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  *
  * @xmlrpc.doc
- *  #struct("server snapshot")
+ *  #struct_begin("server snapshot")
  *      #prop("int", "id")
  *      #prop_desc("string", "reason", "the reason for the snapshot's existence")
  *      #prop($date, "created")

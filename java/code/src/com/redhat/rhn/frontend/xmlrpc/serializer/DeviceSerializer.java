@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("device")
+ *  #struct_begin("device")
  *      #prop_desc("string", "device", "optional")
  *      #prop_desc("string", "device_class",  "Includes CDROM, FIREWIRE, HD, USB, VIDEO,
  *                  OTHER, etc.")

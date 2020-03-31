@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("package profile")
+ * #struct_begin("package profile")
  *   #prop("int", "id")
  *   #prop("string", "name")
  *   #prop("string", "channel")

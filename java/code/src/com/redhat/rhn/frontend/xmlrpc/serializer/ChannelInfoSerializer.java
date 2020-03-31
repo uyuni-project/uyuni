@@ -28,7 +28,7 @@ import java.io.Writer;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("channelInfo")
+ *  #struct_begin("channelInfo")
  *       #prop_desc("string", "label", "Channel label")
  *       #prop_desc("string", "name", "Channel name")
  *       #prop_desc("string", "url", "Channel url")

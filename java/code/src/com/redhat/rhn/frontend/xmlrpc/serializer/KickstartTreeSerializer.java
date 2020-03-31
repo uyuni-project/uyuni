@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  * @xmlrpc.doc
  *
- * #struct("kickstartable tree")
+ * #struct_begin("kickstartable tree")
  *   #prop("int", "id")
  *   #prop("string", "label")
  *   #prop("string", "base_path")

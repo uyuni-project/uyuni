@@ -567,7 +567,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype
-     *     #struct("scap_upload_info")
+     *     #struct_begin("scap_upload_info")
      *         #prop_desc("boolean", "enabled",
      *             "Aggregation of detailed SCAP results is enabled.")
      *         #prop_desc("int", "size_limit",
@@ -599,7 +599,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param
-     *     #struct("scap_upload_info")
+     *     #struct_begin("scap_upload_info")
      *         #prop_desc("boolean", "enabled",
      *             "Aggregation of detailed SCAP results is enabled.")
      *         #prop_desc("int", "size_limit",
@@ -641,7 +641,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype
-     *     #struct("scap_deletion_info")
+     *     #struct_begin("scap_deletion_info")
      *         #prop_desc("boolean", "enabled", "Deletion of SCAP results is enabled")
      *         #prop_desc("int", "retention_period",
      *             "Period (in days) after which a scan can be deleted (if enabled).")
@@ -673,7 +673,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param
-     *     #struct("scap_deletion_info")
+     *     #struct_begin("scap_deletion_info")
      *         #prop_desc("boolean", "enabled",
      *             "Deletion of SCAP results is enabled")
      *         #prop_desc("int", "retention_period",

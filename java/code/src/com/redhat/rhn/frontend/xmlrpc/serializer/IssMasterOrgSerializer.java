@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("IssMasterOrg info")
+ * #struct_begin("IssMasterOrg info")
  *   #prop("int", "masterOrgId")
  *   #prop("string", "masterOrgName")
  *   #prop("int", "localOrgId")

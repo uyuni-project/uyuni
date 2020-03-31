@@ -27,7 +27,7 @@ import java.io.Writer;
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ProjectSource} class and subclasses
  *
  * @xmlrpc.doc
- * #struct("Content Project Source information")
+ * #struct_begin("Content Project Source information")
  *   #prop("string", "contentProjectLabel")
  *   #prop("string", "type")
  *   #prop("string", "state")

@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("note details")
+ * #struct_begin("note details")
  *   #prop("int", "id")
  *   #prop_desc("string", "subject", "Subject of the note")
  *   #prop_desc("string", "note", "Contents of the note")

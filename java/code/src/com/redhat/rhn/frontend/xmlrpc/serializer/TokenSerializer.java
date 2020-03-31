@@ -37,7 +37,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 * @version $Rev$
 *
 * @xmlrpc.doc
-*   #struct("token serializer")
+*   #struct_begin("token serializer")
 *     #prop("string", "description")
 *     #prop("int", "usage_limit")
 *     #prop("string", "base_channel_label")
@@ -46,7 +46,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 *     #prop_array("server_group_ids", "string", "serverGroupId")
 *     #prop_array("package_names", "string", "packageName")
 *     #prop_array_begin("packages")
-*       #struct("package")
+*       #struct_begin("package")
 *         #prop_desc("name", "string", "packageName")
 *         #prop_desc("arch", "string", "archLabel - optional")
 *       #struct_end()

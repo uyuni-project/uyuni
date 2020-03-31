@@ -28,7 +28,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("Package Metadata")
+ *  #struct_begin("Package Metadata")
  *      #prop("int", "package_name_id")
  *      #prop("string", "package_name")
  *      #prop("string", "package_epoch")

@@ -71,7 +71,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.doc List currently available action chains.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array_begin()
-     *                      #struct("chain")
+     *                      #struct_begin("chain")
      *                        #prop_desc("string", "label", "Label of an Action Chain")
      *                        #prop_desc("string", "entrycount",
      *                                   "Number of entries in the Action Chain")
@@ -101,7 +101,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.returntype #array_begin()
-     *                      #struct("entry")
+     *                      #struct_begin("entry")
      *                        #prop_desc("int", "id", "Action ID")
      *                        #prop_desc("string", "label", "Label of an Action")
      *                        #prop_desc("string", "created", "Created date/time")
@@ -567,7 +567,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
      * @xmlrpc.param #param_desc("int", "System ID", "System ID")
      * @xmlrpc.param #array_begin()
-     *                   #struct("config revision specifier")
+     *                   #struct_begin("config revision specifier")
      *                       #prop_desc("string", "channelLabel", "Channel label")
      *                       #prop_desc("string", "filePath",
      *                                  "Path of the configuration file")

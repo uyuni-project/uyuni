@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("virtual system")
+ *  #struct_begin("virtual system")
  *      #prop("int", "id")
  *      #prop("string", "name")
  *      #prop_desc("string", "guest_name", "The virtual guest name as provided

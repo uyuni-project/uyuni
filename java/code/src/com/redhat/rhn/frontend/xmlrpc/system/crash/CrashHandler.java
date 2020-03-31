@@ -79,7 +79,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *     #struct("Crash Count Information")
+     *     #struct_begin("Crash Count Information")
      *         #prop_desc("int", "total_count",
      *                    "Total number of software crashes for a system")
      *         #prop_desc("int", "unique_count",
@@ -122,7 +122,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("crash")
+     *         #struct_begin("crash")
      *             #prop("int", "id")
      *             #prop("string", "crash")
      *             #prop("string", "path")
@@ -211,7 +211,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "crashId")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("crashFile")
+     *         #struct_begin("crashFile")
      *             #prop("int", "id")
      *             #prop("string", "filename")
      *             #prop("string", "path")
@@ -372,7 +372,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "crashId")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("crashNote")
+     *         #struct_begin("crashNote")
      *             #prop("int", "id")
      *             #prop("string", "subject")
      *             #prop("string", "details")
@@ -403,7 +403,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("crash")
+     *         #struct_begin("crash")
      *             #prop_desc("string", "uuid", "Crash UUID")
      *             #prop_desc("string", "component",
      *                        "Package component (set if unique and non empty)")
@@ -441,7 +441,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "uuid")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("crash")
+     *         #struct_begin("crash")
      *             #prop_desc("int", "server_id",
      *                        "ID of the server the crash occurred on")
      *             #prop_desc("string", "server_name",

@@ -819,7 +819,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string","ksLabel")
      * @xmlrpc.param
      *   #array_begin()
-     *      #struct("advanced options")
+     *      #struct_begin("advanced options")
      *          #prop_desc("string", "name", "Name of the advanced option.
      *              Valid Option names: autostep, interactive, install, upgrade, text,
      *              network, cdrom, harddrive, nfs, url, lang, langsupport keyboard,
@@ -1127,7 +1127,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "kickstartLabel1")
      * @xmlrpc.param #param("string", "kickstartLabel2")
      * @xmlrpc.returntype
-     *  #struct("Comparison Info")
+     *  #struct_begin("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
      *          #array_begin()
@@ -1197,7 +1197,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "kickstartLabel1")
      * @xmlrpc.param #param("string", "kickstartLabel2")
      * @xmlrpc.returntype
-     *  #struct("Comparison Info")
+     *  #struct_begin("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
      *          #array_single("string", "package name")
@@ -1276,7 +1276,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "kickstartLabel1")
      * @xmlrpc.param #param("string", "kickstartLabel2")
      * @xmlrpc.returntype
-     *  #struct("Comparison Info")
+     *  #struct_begin("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
      *          #array_begin()
@@ -1363,7 +1363,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype
-     *     #struct("kickstart variable")
+     *     #struct_begin("kickstart variable")
      *         #prop("string", "key")
      *         #prop("string or int", "value")
      *     #struct_end()
@@ -1392,7 +1392,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.param
-     *     #struct("kickstart variable")
+     *     #struct_begin("kickstart variable")
      *         #prop("string", "key")
      *         #prop("string or int", "value")
      *     #struct_end()

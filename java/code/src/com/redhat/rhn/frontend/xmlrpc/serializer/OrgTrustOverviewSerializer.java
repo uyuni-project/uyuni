@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * It converts an OrgTrustOverview to an XMLRPC &lt;struct&gt;.
  * @xmlrpc.doc
  *   #array_begin()
- *     #struct("trusted organizations")
+ *     #struct_begin("trusted organizations")
  *       #prop("int", "orgId")
  *       #prop("string", "orgName")
  *       #prop("bool", "trustEnabled")

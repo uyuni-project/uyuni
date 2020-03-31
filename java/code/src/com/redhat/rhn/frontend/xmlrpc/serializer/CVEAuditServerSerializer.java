@@ -33,7 +33,7 @@ import com.redhat.rhn.manager.audit.ErrataIdAdvisoryPair;
  *
  * @xmlrpc.doc
  *
- * #struct("cve_audit_system")
+ * #struct_begin("cve_audit_system")
  *     #prop("int", "system_id")
  *     #prop("string", "patch_status")
  *         #options()

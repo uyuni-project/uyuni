@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * PackageSerializer
  * @version $Rev$
  * @xmlrpc.doc
- * #struct("package")
+ * #struct_begin("package")
  *      #prop("string", "name")
  *      #prop("string", "version")
  *      #prop("string", "release")

@@ -64,7 +64,7 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("Exporters")
+     *      #struct_begin("Exporters")
      *          #prop("string", "node")
      *          #prop("string", "tomcat")
      *          #prop("string", "taskomatic")
@@ -91,7 +91,7 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("Exporters")
+     *      #struct_begin("Exporters")
      *          #prop("string", "node")
      *          #prop("string", "tomcat")
      *          #prop("string", "taskomatic")
@@ -116,7 +116,7 @@ public class AdminMonitoringHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("Exporters")
+     *      #struct_begin("Exporters")
      *          #prop("string", "node")
      *          #prop("string", "tomcat")
      *          #prop("string", "taskomatic")

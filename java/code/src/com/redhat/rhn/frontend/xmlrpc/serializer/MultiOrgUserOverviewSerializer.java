@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("user")
+ * #struct_begin("user")
  *   #prop("string", "login")
  *   #prop("string", "login_uc")
  *   #prop("string", "name")

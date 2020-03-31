@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("Configuration Channel information")
+ * #struct_begin("Configuration Channel information")
  *   #prop("int", "id")
  *   #prop("int", "orgId")
  *   #prop("string", "label")

@@ -29,7 +29,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * ImageProfileSerializer
  *
  * @xmlrpc.doc
- * #struct("Image Profile information")
+ * #struct_begin("Image Profile information")
  *   #prop("string", "label")
  *   #prop("string", "imageType")
  *   #prop("string", "imageStore")

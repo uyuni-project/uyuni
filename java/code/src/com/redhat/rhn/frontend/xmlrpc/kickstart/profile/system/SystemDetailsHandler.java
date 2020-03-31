@@ -251,7 +251,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.returntype
-     *          #struct("locale info")
+     *          #struct_begin("locale info")
      *              #prop("string", "locale")
      *              #prop("boolean", "useUtc")
      *                  #options()
@@ -410,7 +410,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "kickstartLabel")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("key")
+     *          #struct_begin("key")
      *              #prop("string", "description")
      *              #prop("string", "type")
      *              #prop("string", "content")

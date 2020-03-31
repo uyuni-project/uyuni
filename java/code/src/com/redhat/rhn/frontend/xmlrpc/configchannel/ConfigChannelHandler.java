@@ -386,7 +386,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "configChannelLabel")
      * @xmlrpc.param
-     *  #struct("path info")
+     *  #struct_begin("path info")
      *      #prop_desc("string","contents", "Contents of the init.sls file")
      *      #prop_desc("boolean","contents_enc64", "Identifies base64 encoded content(default: disabled)")
      *  #struct_end()
@@ -447,7 +447,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean","isDir",
      *              "True if the path is a directory, False if it is a file.")
      * @xmlrpc.param
-     *  #struct("path info")
+     *  #struct_begin("path info")
      *      #prop_desc("string","contents",
      *              "Contents of the file (text or base64 encoded if binary or want to preserve
      *                         control characters like LF, CR etc.)(only for non-directories)")
@@ -532,7 +532,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "configChannelLabel")
      * @xmlrpc.param #param("string", "path")
      * @xmlrpc.param
-     *  #struct("path info")
+     *  #struct_begin("path info")
      *      #prop_desc("string","target_path",
      *              "The target path for the symbolic link")
      *      #prop_desc("string", "selinux_ctx", "SELinux Security context (optional)")

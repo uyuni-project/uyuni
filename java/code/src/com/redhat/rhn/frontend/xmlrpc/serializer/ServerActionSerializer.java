@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *      #struct("action")
+ *      #struct_begin("action")
  *          #prop_desc("int", "failed_count", "Number of times action failed.")
  *          #prop_desc("string", "modified", "Date modified. (Deprecated by modified_date)")
  *          #prop_desc($date, "modified_date", "Date modified.")

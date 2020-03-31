@@ -290,7 +290,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
      * @xmlrpc.param
      *   #array_begin()
-     *      #struct("master-org details")
+     *      #struct_begin("master-org details")
      *          #prop("int", "masterOrgId")
      *          #prop("string", "masterOrgName")
      *          #prop("int", "localOrgId")
@@ -325,7 +325,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
      * @xmlrpc.param
-     *      #struct("master-org details")
+     *      #struct_begin("master-org details")
      *          #prop("int", "masterOrgId")
      *          #prop("string", "masterOrgName")
      *          #prop("int", "localOrgId")
