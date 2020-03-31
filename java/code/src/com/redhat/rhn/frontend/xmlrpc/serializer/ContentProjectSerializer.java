@@ -27,7 +27,7 @@ import java.io.Writer;
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ContentProject}
  *
  * @xmlrpc.doc
- * #struct("Content Project information")
+ * #struct_begin("Content Project information")
  *   #prop("int", "id")
  *   #prop("string", "label")
  *   #prop("string", "name")

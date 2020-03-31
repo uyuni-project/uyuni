@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("IssMaster info")
+ * #struct_begin("IssMaster info")
  *   #prop("int", "id")
  *   #prop("string", "label")
  *   #prop("string", "caCert")

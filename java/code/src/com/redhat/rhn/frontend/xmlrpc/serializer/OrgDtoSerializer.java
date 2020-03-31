@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("organization info")
+ * #struct_begin("organization info")
  *   #prop("int", "id")
  *   #prop("string", "name")
  *   #prop_desc("int", "active_users", "Number of active users in the organization.")

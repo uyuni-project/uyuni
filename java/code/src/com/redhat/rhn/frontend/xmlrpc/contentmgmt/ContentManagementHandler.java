@@ -128,7 +128,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Content Project label")
      * @xmlrpc.param
-     *  #struct("data")
+     *  #struct_begin("data")
      *      #prop_desc("string", "name", "Content Project name")
      *      #prop_desc("string", "description", "Content Project description")
      *  #struct_end()
@@ -272,7 +272,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.param #param_desc("string", "envLabel", "Content Environment label")
      * @xmlrpc.param
-     *  #struct("data")
+     *  #struct_begin("data")
      *      #prop_desc("string", "name", "Content Environment name")
      *      #prop_desc("string", "description", "Content Environment description")
      *  #struct_end()
@@ -506,7 +506,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      * #array_begin()
-     * #struct("Filter Criteria")
+     * #struct_begin("Filter Criteria")
      * #prop("string", "type")
      * #prop("string", "matcher")
      * #prop("string", "field")
@@ -561,7 +561,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "rule", "Filter rule ('deny' or 'allow')")
      * @xmlrpc.param #param_desc("string", "entityType", "Filter entityType ('package' or 'erratum')")
      * @xmlrpc.param
-     *  #struct("criteria")
+     *  #struct_begin("criteria")
      *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
      *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
      *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
@@ -601,7 +601,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "name", "New filter name")
      * @xmlrpc.param #param_desc("string", "rule", "New filter rule ('deny' or 'allow')")
      * @xmlrpc.param
-     *  #struct("criteria")
+     *  #struct_begin("criteria")
      *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
      *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
      *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")

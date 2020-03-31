@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Revision$
  *
  * @xmlrpc.doc
- *      #struct("value")
+ *      #struct_begin("value")
  *          #prop("string", "name")
  *          #prop("string", "value")
  *          #prop("boolean", "enabled")

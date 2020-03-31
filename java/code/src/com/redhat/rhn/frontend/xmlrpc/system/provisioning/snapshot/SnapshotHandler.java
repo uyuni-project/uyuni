@@ -70,7 +70,7 @@ public class SnapshotHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param
-     *     #struct("date details")
+     *     #struct_begin("date details")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")
@@ -161,7 +161,7 @@ public class SnapshotHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
-     *     #struct("date details")
+     *     #struct_begin("date details")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")
@@ -208,7 +208,7 @@ public class SnapshotHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "sid", "system id of system to delete
      *          snapshots for")
      * @xmlrpc.param
-     *     #struct("date details")
+     *     #struct_begin("date details")
      *         #prop_desc($date, "startDate", "Optional, unless endDate
      *         is provided.")
      *         #prop_desc($date, "endDate", "Optional.")

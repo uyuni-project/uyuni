@@ -235,7 +235,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *                 #prop("string", "name")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
@@ -276,7 +276,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype
-     *    #struct("Map of custom labels to custom values")
+     *    #struct_begin("Map of custom labels to custom values")
      *      #prop("string", "custom info label")
      *      #prop("string", "value")
      *    #struct_end()

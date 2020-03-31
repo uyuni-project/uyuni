@@ -32,7 +32,7 @@
         </ul>
     </li>
 #end
-#macro( struct $type )	 
+#macro(struct_begin $type)
 	     struct - $type
 	<ul>
 #end

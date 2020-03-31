@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * XccdfRuleResultDtoSerializer
  * @version $Rev$
  * @xmlrpc.doc
- * #struct("OpenSCAP XCCDF RuleResult")
+ * #struct_begin("OpenSCAP XCCDF RuleResult")
  *   #prop_desc("string", "idref", "idref from XCCDF document.")
  *   #prop_desc("string", "result", "Result of evaluation.")
  *   #prop_desc("string", "idents", "Comma separated list of XCCDF idents.")

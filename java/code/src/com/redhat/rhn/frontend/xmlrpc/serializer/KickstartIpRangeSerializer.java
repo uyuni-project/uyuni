@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *   #struct("Kickstart Ip Range")
+ *   #struct_begin("Kickstart Ip Range")
  *     #prop_desc("string", "ksLabel", "The kickstart label associated with the ip range")
  *     #prop_desc("string", "max", "The max ip of the range")
  *     #prop_desc("string", "min", "The min ip of the range")

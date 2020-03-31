@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- * #struct("IssSlave info")
+ * #struct_begin("IssSlave info")
  *   #prop("int", "id")
  *   #prop("string", "slave")
  *   #prop("boolean", "enabled")

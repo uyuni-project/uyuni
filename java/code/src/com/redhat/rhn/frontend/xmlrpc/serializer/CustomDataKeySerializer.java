@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *      #struct("custom info")
+ *      #struct_begin("custom info")
  *          #prop("int", "id")
  *          #prop("string", "label")
  *          #prop("string", "description")

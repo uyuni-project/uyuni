@@ -33,7 +33,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("externalGroup")
+ *  #struct_begin("externalGroup")
  *      #prop("string", "name")
  *      #prop_array("roles", "string", "role")
  *  #struct_end()

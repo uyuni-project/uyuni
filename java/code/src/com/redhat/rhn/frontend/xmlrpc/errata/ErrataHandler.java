@@ -201,7 +201,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
-     *      #struct("erratum")
+     *      #struct_begin("erratum")
      *          #prop("int", "id")
      *          #prop("string", "issue_date")
      *          #prop("string", "update_date")
@@ -286,7 +286,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
-     *      #struct("errata details")
+     *      #struct_begin("errata details")
      *          #prop("string", "synopsis")
      *          #prop("string", "advisory_name")
      *          #prop("int", "advisory_release")
@@ -307,7 +307,7 @@ public class ErrataHandler extends BaseHandler {
      *                  or 'Unspecified'")
      *          #prop_desc("array", "bugs", "'bugs' is the key into the struct")
      *              #array_begin()
-     *                 #struct("bug")
+     *                 #struct_begin("bug")
      *                    #prop_desc("int", "id", "Bug Id")
      *                    #prop("string", "summary")
      *                    #prop("string", "url")
@@ -579,7 +579,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
-     *      #struct("Bugzilla info")
+     *      #struct_begin("Bugzilla info")
      *          #prop_desc("string", "bugzilla_id", "actual bug number is the key into the
      *                      struct")
      *          #prop_desc("string", "bug_summary", "summary who's key is the bug id")
@@ -644,7 +644,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("channel")
+     *          #struct_begin("channel")
      *              #prop("int", "channel_id")
      *              #prop("string", "label")
      *              #prop("string", "name")
@@ -672,7 +672,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("erratum")
+     *          #struct_begin("erratum")
      *              #prop("int", "id")
      *              #prop("int", "published")
      *              #prop("string", "advisory")
@@ -753,7 +753,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
      *          #array_begin()
-     *              #struct("package")
+     *              #struct_begin("package")
      *                  #prop("int", "id")
      *                  #prop("string", "name")
      *                  #prop("string", "epoch")
@@ -1166,7 +1166,7 @@ public class ErrataHandler extends BaseHandler {
      *      the errata will be published as well
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
-     *      #struct("errata info")
+     *      #struct_begin("errata info")
      *          #prop("string", "synopsis")
      *          #prop("string", "advisory_name")
      *          #prop("int", "advisory_release")
@@ -1186,7 +1186,7 @@ public class ErrataHandler extends BaseHandler {
      *       #struct_end()
      *  @xmlrpc.param
      *       #array_begin()
-     *              #struct("bug")
+     *              #struct_begin("bug")
      *                  #prop_desc("int", "id", "Bug Id")
      *                  #prop("string", "summary")
      *                  #prop("string", "url")

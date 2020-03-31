@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *   #struct("kickstart")
+ *   #struct_begin("kickstart")
  *          #prop("string", "label")
  *          #prop("string", "tree_label")
  *          #prop("string", "name")

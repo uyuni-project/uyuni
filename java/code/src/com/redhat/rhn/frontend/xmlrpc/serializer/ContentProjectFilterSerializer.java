@@ -28,7 +28,7 @@ import java.io.Writer;
  * Also serializes the information about the associated {@link ContentFilter}
  *
  * @xmlrpc.doc
- * #struct("Assigned Content Filter information")
+ * #struct_begin("Assigned Content Filter information")
  *   #prop("string", "state")
  *   $ContentFilterSerializer
  * #struct_end()

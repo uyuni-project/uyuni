@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * CpuSerializer
  * @version $Rev$
  * @xmlrpc.doc
- *   #struct("CPU")
+ *   #struct_begin("CPU")
  *      #prop("string", "cache")
  *      #prop("string", "family")
  *      #prop("string", "mhz")

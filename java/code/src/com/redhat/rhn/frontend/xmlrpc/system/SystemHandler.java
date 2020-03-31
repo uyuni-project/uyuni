@@ -637,7 +637,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("channel")
+     *      #struct_begin("channel")
      *          #prop_desc("int" "id" "Base Channel ID.")
      *          #prop_desc("string" "name" "Name of channel.")
      *          #prop_desc("string" "label" "Label of Channel")
@@ -669,7 +669,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("channel")
+     *      #struct_begin("channel")
      *          #prop_desc("int" "id" "Base Channel ID.")
      *          #prop_desc("string" "name" "Name of channel.")
      *          #prop_desc("string" "label" "Label of Channel")
@@ -789,7 +789,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param  #array_single("int", "serverIds")
      * @xmlrpc.returntype
      *   #array_begin()
-     *     #struct("server details")
+     *     #struct_begin("server details")
      *       #prop_desc("int", "id", "The server's id")
      *       #prop_desc("string", "name", "The server's name")
      *       #prop_desc("string", "minion_id", "The server's minion id, in case it is a salt minion client")
@@ -805,7 +805,7 @@ public class SystemHandler extends BaseHandler {
      *       $CpuSerializer
      *       #prop_desc("array", "subscribed_channels", "List of subscribed channels")
      *         #array_begin()
-     *           #struct("channel")
+     *           #struct_begin("channel")
      *             #prop_desc("int", "channel_id", "The channel id.")
      *             #prop_desc("string", "channel_label", "The channel label.")
      *           #struct_end()
@@ -913,7 +913,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("child channel")
+     *          #struct_begin("child channel")
      *              #prop("int", "id")
      *              #prop("string", "name")
      *              #prop("string", "label")
@@ -945,7 +945,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("child channel")
+     *          #struct_begin("child channel")
      *              #prop("int", "id")
      *              #prop("string", "name")
      *              #prop("string", "label")
@@ -1017,7 +1017,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "epoch",  "Package epoch.")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
      *              #prop("string", "release")
@@ -1081,7 +1081,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "epoch",  "Package epoch.")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
      *              #prop("string", "release")
@@ -1276,7 +1276,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      * #array_begin()
-     *      #struct("package")
+     *      #struct_begin("package")
      *          #prop("string", "name")
      *          #prop("string", "arch")
      *          #prop("string", "from_version")
@@ -1310,7 +1310,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      * #array_begin()
-     *      #struct("package")
+     *      #struct_begin("package")
      *          #prop("string", "name")
      *          #prop("string", "version")
      *          #prop("string", "release")
@@ -1339,7 +1339,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      * #array_begin()
-     *      #struct("package")
+     *      #struct_begin("package")
      *          #prop("string", "name")
      *          #prop("string", "version")
      *          #prop("string", "release")
@@ -1372,11 +1372,11 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "packageName")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("system")
+     *         #struct_begin("system")
      *             #prop_desc("int", "id", "server ID")
      *             #prop_desc("string", "name", "server name")
      *             #prop_desc("struct", "package", "package structure")
-     *                 #struct("package")
+     *                 #struct_begin("package")
      *                     #prop("int", "id")
      *                     #prop("string", "name")
      *                     #prop("string", "version")
@@ -1509,7 +1509,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *                 #prop("string", "name")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
@@ -1737,7 +1737,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *          #struct("network info")
+     *          #struct_begin("network info")
      *              #prop_desc("string", "ip", "IPv4 address of server")
      *              #prop_desc("string", "ip6", "IPv6 address of server")
      *              #prop_desc("string", "hostname", "Hostname of server")
@@ -1849,7 +1849,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("system group")
+     *      #struct_begin("system group")
      *          #prop_desc("int", "id", "server group id")
      *          #prop_desc("int", "subscribed", "1 if the given server is subscribed
      *               to this server group, 0 otherwise")
@@ -1936,7 +1936,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param
-     *    #struct("Map of custom labels to custom values")
+     *    #struct_begin("Map of custom labels to custom values")
      *      #prop("string", "custom info label")
      *      #prop("string", "value")
      *    #struct_end()
@@ -1997,7 +1997,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #struct("custom value")
+     *      #struct_begin("custom value")
      *          #prop("string", "custom info label")
      *      #struct_end()
      */
@@ -2228,7 +2228,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("action")
+     *      #struct_begin("action")
      *          #prop_desc("int", "failed_count", "Number of times action failed.")
      *          #prop_desc("string", "modified", "Date modified. (Deprecated by
      *                     modified_date)")
@@ -2264,7 +2264,7 @@ public class SystemHandler extends BaseHandler {
      *                     executes at the client machine. (optional)")
      *          #prop_array_begin_desc("additional_info", "This array contains additional
      *              information for the event, if available.")
-     *              #struct("info")
+     *              #struct_begin("info")
      *                  #prop_desc("string", "detail", "The detail provided depends on the
      *                  specific event.  For example, for a package event, this will be the
      *                  package name, for an errata event, this will be the advisory name
@@ -2495,7 +2495,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("action")
+     *      #struct_begin("action")
      *          #prop_desc("int", "failed_count", "Number of times action failed.")
      *          #prop_desc("string", "modified", "Date modified. (Deprecated by
      *                     modified_date)")
@@ -2531,7 +2531,7 @@ public class SystemHandler extends BaseHandler {
      *                     executes at the client machine. (optional)")
      *          #prop_array_begin_desc("additional_info", "This array contains additional
      *              information for the event, if available.")
-     *              #struct("info")
+     *              #struct_begin("info")
      *                  #prop_desc("string", "detail", "The detail provided depends on the
      *                  specific event.  For example, for a package event, this will be the
      *                  package name, for an errata event, this will be the advisory name
@@ -2821,7 +2821,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "serverId")
      * @xmlrpc.returntype
-     *  #struct("name info")
+     *  #struct_begin("name info")
      *      #prop_desc("int", "id", "Server id")
      *      #prop_desc("string", "name", "Server name")
      *      #prop_desc("dateTime.iso8601", "last_checkin", "Last time server
@@ -3427,7 +3427,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *  #struct("memory")
+     *  #struct_begin("memory")
      *      #prop_desc("int", "ram", "The amount of physical memory in MB.")
      *      #prop_desc("int", "swap", "The amount of swap space in MB.")
      *  #struct_end()
@@ -3742,7 +3742,7 @@ public class SystemHandler extends BaseHandler {
     * @xmlrpc.param #param("string", "sessionKey")
     * @xmlrpc.param #array_single("int", "serverId")
     * @xmlrpc.param #array_begin()
-    *                   #struct("Package nevra")
+    *                   #struct_begin("Package nevra")
     *                          #prop("string", "package_name")
     *                          #prop("string", "package_epoch")
     *                          #prop("string", "package_version")
@@ -3777,7 +3777,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #array_begin()
-     *                   #struct("Package nevra")
+     *                   #struct_begin("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
      *                          #prop("string", "package_version")
@@ -3812,7 +3812,7 @@ public class SystemHandler extends BaseHandler {
     * @xmlrpc.param #param("string", "sessionKey")
     * @xmlrpc.param #param("int", "serverId")
     * @xmlrpc.param #array_begin()
-    *                   #struct("Package nevra")
+    *                   #struct_begin("Package nevra")
     *                          #prop("string", "package_name")
     *                          #prop("string", "package_epoch")
     *                          #prop("string", "package_version")
@@ -3850,7 +3850,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_begin()
-     *                   #struct("Package nevra")
+     *                   #struct_begin("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
      *                          #prop("string", "package_version")
@@ -3998,7 +3998,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #array_begin()
-     *                   #struct("Package nevra")
+     *                   #struct_begin("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
      *                          #prop("string", "package_version")
@@ -4033,7 +4033,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #array_begin()
-     *                   #struct("Package nevra")
+     *                   #struct_begin("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
      *                          #prop("string", "package_version")
@@ -4068,7 +4068,7 @@ public class SystemHandler extends BaseHandler {
     * @xmlrpc.param #param("string", "sessionKey")
     * @xmlrpc.param #param("int", "serverId")
     * @xmlrpc.param #array_begin()
-    *                   #struct("Package nevra")
+    *                   #struct_begin("Package nevra")
     *                          #prop("string", "package_name")
     *                          #prop("string", "package_epoch")
     *                          #prop("string", "package_version")
@@ -4106,7 +4106,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_begin()
-     *                   #struct("Package nevra")
+     *                   #struct_begin("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
      *                          #prop("string", "package_version")
@@ -4495,7 +4495,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "actionId", "ID of the script run action.")
      * @xmlrpc.returntype
-     *      #struct("Script details")
+     *      #struct_begin("Script details")
      *          #prop_desc("int" "id" "action id")
      *          #prop_desc("string" "content" "script content")
      *          #prop_desc("string" "run_as_user" "Run as user")
@@ -4614,7 +4614,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of server to lookup details for.")
      * @xmlrpc.param
-     *      #struct("server details")
+     *      #struct_begin("server details")
      *          #prop_desc("string", "profile_name", "System's profile name")
      *          #prop_desc("string", "base_entitlement", "System's base entitlement label.
      *                      (enterprise_entitled or unentitle)")
@@ -5937,7 +5937,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "comment")
      * @xmlrpc.param
      *      #array_begin()
-     *          #struct("network device")
+     *          #struct_begin("network device")
      *              #prop("string", "name")
      *              #prop("string", "mac")
      *              #prop("string", "ip")
@@ -6011,7 +6011,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "systemName", "System name")
      * @xmlrpc.param
-     *  #struct("data")
+     *  #struct_begin("data")
      *      #prop_desc("string", "hwAddress", "The HW address of the network interface (MAC)")
      *      #prop_desc("string", "hostname", "The hostname of the profile")
      *  #struct_end()
@@ -6049,10 +6049,10 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #struct("System kickstart variables")
+     *      #struct_begin("System kickstart variables")
      *          #prop_desc("boolean" "netboot" "netboot enabled")
      *          #prop_array_begin("kickstart variables")
-     *              #struct("kickstart variable")
+     *              #struct_begin("kickstart variable")
      *                  #prop("string", "key")
      *                  #prop("string or int", "value")
      *              #struct_end()
@@ -6112,7 +6112,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("boolean","netboot")
      * @xmlrpc.param
      *      #array_begin()
-     *          #struct("kickstart variable")
+     *          #struct_begin("kickstart variable")
      *              #prop("string", "key")
      *              #prop("string or int", "value")
      *          #struct_end()
@@ -6171,7 +6171,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array_begin()
-     *           #struct("Duplicate Group")
+     *           #struct_begin("Duplicate Group")
      *                   #prop("string", "ip")
      *                   #prop_array_begin("systems")
      *                      $NetworkDtoSerializer
@@ -6195,7 +6195,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array_begin()
-     *           #struct("Duplicate Group")
+     *           #struct_begin("Duplicate Group")
      *                   #prop("string", "mac")
      *                   #prop_array_begin("systems")
      *                      $NetworkDtoSerializer
@@ -6219,7 +6219,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array_begin()
-     *           #struct("Duplicate Group")
+     *           #struct_begin("Duplicate Group")
      *                   #prop("string", "hostname")
      *                   #prop_array_begin("systems")
      *                      $NetworkDtoSerializer
@@ -6264,7 +6264,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("system currency")
+     *          #struct_begin("system currency")
      *              #prop("int", "sid")
      *              #prop("int", "critical security errata count")
      *              #prop("int", "important security errata count")
@@ -6380,7 +6380,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *     #array_begin()
-     *         #struct("system")
+     *         #struct_begin("system")
      *             #prop_desc("int", "id", "System ID")
      *             #prop_desc("string", "name", "System profile name")
      *             #prop_desc("int", "extra_pkg_count", "Extra packages count")
@@ -6402,7 +6402,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *                 #prop("string", "name")
      *                 #prop("string", "version")
      *                 #prop("string", "release")
@@ -6554,7 +6554,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("User", "loggedInUser")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #struct("osaPing")
+     *      #struct_begin("osaPing")
      *          #prop_desc("String" "state"
      *          "state of the system (unknown, online, offline)")
      *          #prop_desc("dateTime.iso8601" "lastMessageTime"
@@ -6607,7 +6607,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("migrationtarget")
+     *          #struct_begin("migrationtarget")
      *                 #prop("string", "ident")
      *                 #prop("string", "friendly")
      *          #struct_end()
@@ -6879,7 +6879,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("system")
+     *          #struct_begin("system")
      *              #prop("int" "id")
      *              #prop("string" "name")
      *          #struct_end()

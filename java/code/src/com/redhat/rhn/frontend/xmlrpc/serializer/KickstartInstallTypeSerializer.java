@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  * @xmlrpc.doc
  *
- * #struct("kickstart install type")
+ * #struct_begin("kickstart install type")
  *   #prop("int", "id")
  *   #prop("string", "label")
  *   #prop("string", "name")

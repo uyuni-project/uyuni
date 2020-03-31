@@ -27,7 +27,7 @@ import java.io.Writer;
  * Serializer for {@link com.redhat.rhn.domain.contentmgmt.ContentEnvironment}
  *
  * @xmlrpc.doc
- * #struct("Content Environment information")
+ * #struct_begin("Content Environment information")
  *   #prop("int", "id")
  *   #prop("string", "label")
  *   #prop("string", "name")

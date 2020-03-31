@@ -170,7 +170,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
-     *   #struct("user details")
+     *   #struct_begin("user details")
      *     #prop_desc("string", "first_names", "deprecated, use first_name")
      *     #prop("string", "first_name")
      *     #prop("string", "last_name")
@@ -241,7 +241,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.param
-     *   #struct("user details")
+     *   #struct_begin("user details")
      *     #prop_desc("string", "first_names", "deprecated, use first_name")
      *     #prop("string", "first_name")
      *     #prop("string", "last_name")
@@ -844,7 +844,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
      *   #array_begin()
-     *     #struct("system group")
+     *     #struct_begin("system group")
      *       #prop("int", "id")
      *       #prop("string", "name")
      *       #prop("string", "description")
@@ -881,7 +881,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
      *   #array_begin()
-     *     #struct("system group")
+     *     #struct_begin("system group")
      *       #prop("int", "id")
      *       #prop("string", "name")
      *       #prop("string", "description")

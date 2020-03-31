@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("filter")
+ *  #struct_begin("filter")
  *      #prop("int", "sortOrder")
  *      #prop("string", "filter")
  *      #prop("string", "flag")

@@ -28,7 +28,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * Serializes {@link MgrSyncProductDto}.
  *
  * @xmlrpc.doc
- *   #struct("product")
+ *   #struct_begin("product")
  *     #prop_desc("string", "friendly_name", "Friendly name of the product")
  *     #prop_desc("string", "arch", "Architecture")
  *     #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
@@ -36,7 +36,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *       $MgrSyncChannelDtoSerializer
  *     #array_end()
  *     #array_begin()
- *       #struct("extension product")
+ *       #struct_begin("extension product")
  *         #prop_desc("string", "friendly_name", "Friendly name of extension product")
  *         #prop_desc("string", "arch", "Architecture")
  *         #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")

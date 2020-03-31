@@ -197,7 +197,7 @@ public class SoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "Label of the kickstart profile")
      * @xmlrpc.param
-     *          #struct("Kickstart packages info")
+     *          #struct_begin("Kickstart packages info")
      *              #prop_desc("string", "noBase", "Install @Base package group")
      *              #prop_desc("string", "ignoreMissing", "Ignore missing packages")
      *          #struct_end()
@@ -223,7 +223,7 @@ public class SoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "Label of the kickstart profile")
      * @xmlrpc.returntype
-     *          #struct("Kickstart packages info")
+     *          #struct_begin("Kickstart packages info")
      *              #prop_desc("string", "noBase", "Install @Base package group")
      *              #prop_desc("string", "ignoreMissing", "Ignore missing packages")
      *          #struct_end()

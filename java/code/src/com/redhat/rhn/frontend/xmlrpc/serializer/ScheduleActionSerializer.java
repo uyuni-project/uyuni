@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  * @xmlrpc.doc
  *
- * #struct("action")
+ * #struct_begin("action")
  *   #prop_desc("int", "id", "Action Id.")
  *   #prop_desc("string", "name", "Action name.")
  *   #prop_desc("string", "type", "Action type.")

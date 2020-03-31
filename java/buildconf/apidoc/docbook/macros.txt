@@ -32,7 +32,7 @@
   </itemizedlist>
 </listitem>
 #end
-#macro(struct $type)
+#macro(struct_begin $type)
 <listitem>
   <para>struct - $type</para>
   <itemizedlist spacing="compact">

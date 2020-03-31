@@ -385,7 +385,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.doc Update the details of an activation key.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "key")
-     * @xmlrpc.param #struct("activation key")
+     * @xmlrpc.param #struct_begin("activation key")
      *   #prop_desc("string", "description", "optional")
      *   #prop_desc("string", "base_channel_label", "optional -
      *   to set default base channel set to empty string or 'none'")
@@ -810,7 +810,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.param
      *   #array_begin()
-     *      #struct("packages")
+     *      #struct_begin("packages")
      *          #prop_desc("string", "name", "Package name")
      *          #prop_desc("string", "arch", "Arch label - Optional")
      *     #struct_end()
@@ -863,7 +863,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.param
      *   #array_begin()
-     *      #struct("packages")
+     *      #struct_begin("packages")
      *          #prop_desc("string", "name", "Package name")
      *          #prop_desc("string", "arch", "Arch label - Optional")
      *     #struct_end()
@@ -939,7 +939,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.returntype
      *   #array_begin()
-     *       #struct("system structure")
+     *       #struct_begin("system structure")
      *           #prop_desc("int", "id", "System id")
      *           #prop("string", "hostname")
      *           #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server

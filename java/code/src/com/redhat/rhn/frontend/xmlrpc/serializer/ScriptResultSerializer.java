@@ -32,7 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("script result")
+ *  #struct_begin("script result")
  *      #prop_desc("int", "serverId", "ID of the server the script runs on.")
  *      #prop_desc("dateTime.iso8601", "startDate", "Time script began execution.")
  *      #prop_desc("dateTime.iso8601", "stopDate", "Time script stopped execution.")

@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *   #struct("package security key")
+ *   #struct_begin("package security key")
  *     #prop("string", "key")
  *     #prop("string", "type")
  *   #struct_end()

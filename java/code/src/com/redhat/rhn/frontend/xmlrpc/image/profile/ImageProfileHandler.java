@@ -229,7 +229,7 @@ public class ImageProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param
-     *   #struct("image profile details")
+     *   #struct_begin("image profile details")
      *     #prop("string", "storeLabel")
      *     #prop("string", "path")
      *     #prop_desc("string", "activationKey", "set empty string to unset")
@@ -310,7 +310,7 @@ public class ImageProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.returntype
-     *    #struct("Map of custom labels to custom values")
+     *    #struct_begin("Map of custom labels to custom values")
      *      #prop("string", "custom info label")
      *      #prop("string", "value")
      *    #struct_end()
@@ -332,7 +332,7 @@ public class ImageProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param
-     *    #struct("Map of custom labels to custom values")
+     *    #struct_begin("Map of custom labels to custom values")
      *      #prop("string", "custom info label")
      *      #prop("string", "value")
      *    #struct_end()

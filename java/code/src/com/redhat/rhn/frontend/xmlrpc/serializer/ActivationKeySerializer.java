@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *   #struct("activation key")
+ *   #struct_begin("activation key")
  *     #prop("string", "key")
  *     #prop("string", "description")
  *     #prop("int", "usage_limit")
@@ -39,7 +39,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *     #prop_array("server_group_ids", "string", "serverGroupId")
  *     #prop_array("package_names", "string", "packageName - (deprecated by packages)")
  *     #prop_array_begin("packages")
- *       #struct("package")
+ *       #struct_begin("package")
  *         #prop_desc("string", "name", "packageName")
  *         #prop_desc("string", "arch", "archLabel - optional")
  *       #struct_end()

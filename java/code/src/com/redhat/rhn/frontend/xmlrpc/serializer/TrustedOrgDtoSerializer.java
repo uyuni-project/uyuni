@@ -27,7 +27,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * TrustedOrgDtoSerializer is a custom serializer for the XMLRPC library.
  * It converts an TrustedOrgDto to an XMLRPC &lt;struct&gt;.
  * @xmlrpc.doc
- *     #struct("trusted organizations")
+ *     #struct_begin("trusted organizations")
  *       #prop("int", "org_id")
  *       #prop("string", "org_name")
  *       #prop("int", "shared_channels")

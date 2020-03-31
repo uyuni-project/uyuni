@@ -26,7 +26,7 @@ import java.io.Writer;
  * Converts an InstalledProduct object for representation as an XMLRPC struct.
  *
  * @xmlrpc.doc
- * #struct("installed product")
+ * #struct_begin("installed product")
  *     #prop("string", "name")
  *     #prop("boolean", "isBaseProduct")
  *     #prop_desc("string", "version", "returned only if applies")

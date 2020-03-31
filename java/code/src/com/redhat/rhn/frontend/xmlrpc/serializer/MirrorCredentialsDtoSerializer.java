@@ -27,7 +27,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * Serializer for {@link MirrorCredentialsDto} objects.
  *
  * @xmlrpc.doc
- *   #struct("credentials")
+ *   #struct_begin("credentials")
  *     #prop_desc("int", "id", "ID of the credentials")
  *     #prop_desc("string", "user", "username")
  *     #prop_desc("boolean", "isPrimary", "primary")

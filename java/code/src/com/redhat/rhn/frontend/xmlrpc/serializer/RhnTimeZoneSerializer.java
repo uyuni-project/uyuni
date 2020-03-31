@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  * @xmlrpc.doc
  *
- * #struct("timezone")
+ * #struct_begin("timezone")
  *   #prop_desc("int", "time_zone_id", "Unique identifier for timezone.")
  *   #prop_desc("string", "olson_name", "Name as identified by the Olson database.")
  * #struct_end()

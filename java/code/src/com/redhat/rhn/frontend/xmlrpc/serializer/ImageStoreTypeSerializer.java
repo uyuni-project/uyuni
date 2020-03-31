@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * ImageStoreTypeSerializer
  *
  * @xmlrpc.doc
- * #struct("Image Store Type information")
+ * #struct_begin("Image Store Type information")
  *   #prop("int", "id")
  *   #prop("string", "label")
  *   #prop("string", "name")

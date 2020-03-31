@@ -31,7 +31,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * DmiSerializer
  * @version $Rev$
  * @xmlrpc.doc
- *      #struct("DMI")
+ *      #struct_begin("DMI")
  *          #prop("string", "vendor")
  *          #prop("string", "system")
  *          #prop("string", "product")

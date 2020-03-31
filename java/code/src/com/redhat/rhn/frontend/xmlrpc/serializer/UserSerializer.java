@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *      #struct("user")
+ *      #struct_begin("user")
  *              #prop("int", "id")
  *              #prop("string", "login")
  *              #prop_desc("string", "login_uc", "upper case version of the login")

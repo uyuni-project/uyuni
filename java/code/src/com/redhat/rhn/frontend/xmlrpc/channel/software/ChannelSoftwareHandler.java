@@ -257,7 +257,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
      *              #prop("string", "release")
@@ -435,7 +435,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "endDate")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
      *              #prop("string", "release")
@@ -476,7 +476,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
      *              #prop("string", "release")
@@ -509,7 +509,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("package")
+     *          #struct_begin("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
      *              #prop("string", "release")
@@ -658,7 +658,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "channelId", "channel id")
      * @xmlrpc.param
-     *  #struct("channel_map")
+     *  #struct_begin("channel_map")
      *      #prop_desc("string", "checksum_label", "new channel repository checksum label
      *          (optional)")
      *      #prop_desc("string", "name", "new channel name (optional)")
@@ -694,7 +694,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "channelId", "channel id")
      * @xmlrpc.param
-     *  #struct("channel_map")
+     *  #struct_begin("channel_map")
      *      #prop_desc("string", "checksum_label", "new channel repository checksum label
      *          (optional)")
      *      #prop_desc("string", "name", "new channel name (optional)")
@@ -863,7 +863,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *                        or Enterprise Linux 6 and newer.")
      *      #options_end()
      * @xmlrpc.param
-     *      #struct("gpgKey")
+     *      #struct_begin("gpgKey")
      *          #prop_desc("string", "url", "GPG key URL")
      *          #prop_desc("string", "id", "GPG key ID")
      *          #prop_desc("string", "fingerprint", "GPG key Fingerprint")
@@ -940,7 +940,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *                        or Enterprise Linux 6 and newer.")
      *      #options_end()
      * @xmlrpc.param
-     *      #struct("gpgKey")
+     *      #struct_begin("gpgKey")
      *          #prop_desc("string", "url", "GPG key URL")
      *          #prop_desc("string", "id", "GPG key ID")
      *          #prop_desc("string", "fingerprint", "GPG key Fingerprint")
@@ -1108,7 +1108,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
      *          #array_begin()
-     *              #struct("system")
+     *              #struct_begin("system")
      *                  #prop("int", "id")
      *                  #prop("string", "name")
      *              #struct_end()
@@ -1150,7 +1150,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *          #array_begin()
-     *              #struct("channel")
+     *              #struct_begin("channel")
      *                  #prop("string", "id")
      *                  #prop("string", "label")
      *                  #prop("string", "name")
@@ -1781,7 +1781,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
      *    #array_begin()
-     *      #struct("errata")
+     *      #struct_begin("errata")
      *        #prop_desc("int", "id", "Errata Id")
      *        #prop_desc("string", "advisory_synopsis", "Summary of the erratum.")
      *        #prop_desc("string", "advisory_type", "Type label such as Security, Bug Fix")
@@ -1819,7 +1819,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("errata")
+     *          #struct_begin("errata")
      *              #prop_desc("string","advisory", "name of the advisory")
      *              #prop_desc("string","issue_date",
      *                         "date format follows YYYY-MM-DD HH24:MI:SS")
@@ -1858,7 +1858,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "endDate")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("errata")
+     *          #struct_begin("errata")
      *              #prop_desc("string","advisory", "name of the advisory")
      *              #prop_desc("string","issue_date",
      *                         "date format follows YYYY-MM-DD HH24:MI:SS")
@@ -1900,7 +1900,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * 'Bug Fix Advisory'")
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("errata")
+     *          #struct_begin("errata")
      *              #prop_desc("string","advisory", "name of the advisory")
      *              #prop_desc("string","issue_date",
      *                         "date format follows YYYY-MM-DD HH24:MI:SS")
@@ -2095,7 +2095,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "original_label")
      * @xmlrpc.param
-     *      #struct("channel details")
+     *      #struct_begin("channel details")
      *          #prop("string", "name")
      *          #prop("string", "label")
      *          #prop("string", "summary")
@@ -2470,7 +2470,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("map")
+     *          #struct_begin("map")
      *              #prop_desc("long","id", "ID of the repo")
      *              #prop_desc("string","label", "label of the repo")
      *              #prop_desc("string","sourceUrl", "URL of the repo")
@@ -3001,7 +3001,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
      * @xmlrpc.param
-     *  #struct("params_map")
+     *  #struct_begin("params_map")
      *    #prop_desc("Boolean", "sync-kickstart", "Create kickstartable tree - Optional")
      *    #prop_desc("Boolean", "no-errata", "Do not sync errata - Optional")
      *    #prop_desc("Boolean", "fail", "Terminate upon any error - Optional")
@@ -3065,7 +3065,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "cron expression",
      *      "if empty all periodic schedules will be disabled")
      * @xmlrpc.param
-     *  #struct("params_map")
+     *  #struct_begin("params_map")
      *    #prop_desc("Boolean", "sync-kickstart", "Create kickstartable tree - Optional")
      *    #prop_desc("Boolean", "no-errata", "Do not sync errata - Optional")
      *    #prop_desc("Boolean", "fail", "Terminate upon any error - Optional")
@@ -3155,7 +3155,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey ")
      * @xmlrpc.param #param_desc("string", "label", "repository label")
      * @xmlrpc.param
-     *  #struct("filter_map")
+     *  #struct_begin("filter_map")
      *          #prop_desc("string", "filter", "string to filter on")
      *          #prop_desc("string", "flag", "+ for include, - for exclude")
      *  #struct_end()
@@ -3206,7 +3206,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey ")
      * @xmlrpc.param #param_desc("string", "label", "repository label")
      * @xmlrpc.param
-     *  #struct("filter_map")
+     *  #struct_begin("filter_map")
      *          #prop_desc("string", "filter", "string to filter on")
      *          #prop_desc("string", "flag", "+ for include, - for exclude")
      *  #struct_end()
@@ -3262,7 +3262,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "label", "repository label")
      * @xmlrpc.param
      *  #array_begin()
-     *      #struct("filter_map")
+     *      #struct_begin("filter_map")
      *          #prop_desc("string", "filter", "string to filter on")
      *          #prop_desc("string", "flag", "+ for include, - for exclude")
      *      #struct_end()

@@ -36,7 +36,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *      #struct("network device")
+ *      #struct_begin("network device")
  *          #prop_desc("string", "ip", "IP address assigned to this network device")
  *          #prop_desc("string", "interface", "Network interface assigned to device e.g.
  *                              eth0")
@@ -46,7 +46,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *          #prop_desc("string", "broadcast", " Broadcast address for device.")
  *          #prop_desc("array", "ipv6", "List of IPv6 addresses")
  *            #array_begin()
- *               #struct("ipv6 address")
+ *               #struct_begin("ipv6 address")
  *                 #prop_desc("string", "address", "IPv6 address of this network device")
  *                 #prop_desc("string", "netmask", "IPv6 netmask of this network device")
  *                 #prop_desc("string", "scope", "IPv6 address scope")
@@ -54,7 +54,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *            #array_end()
  *          #prop_desc("array", "ipv4", "List of IPv4 addresses")
  *            #array_begin()
- *               #struct("ipv4 address")
+ *               #struct_begin("ipv4 address")
  *                 #prop_desc("string", "address", "IPv4 address of this network device")
  *                 #prop_desc("string", "netmask", "IPv4 netmask of this network device")
  *                 #prop_desc("string", "broadcast", "IPv4 broadcast address of this network device")

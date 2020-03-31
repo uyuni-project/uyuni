@@ -49,7 +49,7 @@ public class CryptoKeysHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *      #array_begin()
-     *          #struct("key")
+     *          #struct_begin("key")
      *              #prop("string", "description")
      *              #prop("string", "type")
      *          #struct_end()
@@ -192,7 +192,7 @@ public class CryptoKeysHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "session_key")
      * @xmlrpc.param #param("string", "description")
      * @xmlrpc.returntype
-     *      #struct("key")
+     *      #struct_begin("key")
      *          #prop("string", "description")
      *          #prop("string", "type")
      *          #prop("string", "content")

@@ -32,7 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *   #struct("file list")
+ *   #struct_begin("file list")
  *     #prop("string", "name")
  *     #prop_array("file_names", "string", "name")
  *   #struct_end()

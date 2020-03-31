@@ -36,7 +36,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *  #struct("channel")
+ *  #struct_begin("channel")
  *      #prop("int", "id")
  *      #prop("string", "name")
  *      #prop("string", "label")
@@ -58,7 +58,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *      #prop("string", "parent_channel_label")
  *      #prop("string", "clone_original")
  *      #array_begin()
- *          #struct("contentSources")
+ *          #struct_begin("contentSources")
  *              #prop("int", "id")
  *              #prop("string", "label")
  *              #prop("string", "sourceUrl")

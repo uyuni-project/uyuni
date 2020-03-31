@@ -34,7 +34,7 @@ import java.util.Map;
  * The content of the "config" struct is dynamic.
  *
  * @xmlrpc.doc
- *  #struct("virtual host manager")
+ *  #struct_begin("virtual host manager")
  *      #prop("string", "label")
  *      #prop("int", "org_id")
  *      #prop("string", "gatherer_module")

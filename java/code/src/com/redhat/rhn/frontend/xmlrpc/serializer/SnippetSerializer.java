@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * @version $Rev$
  *
  * @xmlrpc.doc
- *   #struct("snippet")
+ *   #struct_begin("snippet")
  *     #prop("string", "name")
  *     #prop("string", "contents")
  *     #prop_desc("string", "fragment", "The string to include in a kickstart

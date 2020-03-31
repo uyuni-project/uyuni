@@ -63,7 +63,7 @@ public class ChannelOrgHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
      * @xmlrpc.returntype
      *   #array_begin()
-     *      #struct("org")
+     *      #struct_begin("org")
      *          #prop("int", "org_id")
      *          #prop("string", "org_name")
      *          #prop("boolean", "access_enabled")

@@ -30,7 +30,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * It converts an ServerGroup to an XMLRPC &lt;struct&gt;.
  * @version $Rev$
  * @xmlrpc.doc
- *      #struct("Server Group")
+ *      #struct_begin("Server Group")
  *          #prop("int", "id")
  *          #prop("string", "name")
  *          #prop("string", "description")

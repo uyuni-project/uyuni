@@ -47,7 +47,7 @@ public class ChannelHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
      *  #array_begin()
-     *      #struct("channel")
+     *      #struct_begin("channel")
      *          #prop("string", "label")
      *          #prop("string", "name")
      *          #prop("string", "parent_label")

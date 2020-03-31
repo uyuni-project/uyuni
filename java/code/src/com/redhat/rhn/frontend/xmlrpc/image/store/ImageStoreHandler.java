@@ -175,7 +175,7 @@ public class ImageStoreHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "label")
      * @xmlrpc.param
-     *   #struct("image store details")
+     *   #struct_begin("image store details")
      *     #prop("string", "uri")
      *     #prop_desc("string", "username", "pass empty string to unset credentials")
      *     #prop("string", "password")

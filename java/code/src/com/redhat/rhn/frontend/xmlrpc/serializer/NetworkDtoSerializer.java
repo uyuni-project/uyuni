@@ -32,7 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *
  * @xmlrpc.doc
  *
- * #struct("system")
+ * #struct_begin("system")
  *      #prop("int", "systemId")
  *      #prop("string", "systemName")
  *      #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
