@@ -348,8 +348,6 @@ class Cursor(sql_base.Cursor):
 
         self._real_cursor.executemany(self.sql, all_kwargs)
         self.description = self._real_cursor.description
-        rowcount = self._real_cursor.rowcount
-        return rowcount
 
     def _execute_values(self, sql, argslist, template=None, page_size=1000, fetch=True):
         results = psycopg2.extras.execute_values(self._real_cursor, sql, argslist, template=template, page_size=page_size, fetch=fetch)

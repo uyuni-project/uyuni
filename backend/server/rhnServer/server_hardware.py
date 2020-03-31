@@ -527,7 +527,7 @@ class NetIfaceInformation(Device):
         columns.sort()
         bind_params = ", ".join([':' + x for x in columns])
         h = rhnSQL.prepare(q % (", ".join(columns), bind_params))
-        return _dml(h, params)
+        _dml(h, params)
 
     def _delete(self, params):
         q = """delete from rhnServerNetInterface
@@ -536,7 +536,7 @@ class NetIfaceInformation(Device):
         columns = ['server_id', 'name']
         wheres = ['%s = :%s' % (x, x) for x in columns]
         h = rhnSQL.prepare(q % " and ".join(wheres))
-        return _dml(h, params)
+        _dml(h, params)
 
     def _update(self, params):
         q = """update rhnServerNetInterface
@@ -554,7 +554,7 @@ class NetIfaceInformation(Device):
         updates = ", ".join(updates)
 
         h = rhnSQL.prepare(q % (updates, wheres))
-        return _dml(h, params)
+        _dml(h, params)
 
     def reload(self, server_id):
         h = rhnSQL.prepare("""
@@ -694,7 +694,7 @@ class NetIfaceAddress(Device):
         columns.sort()
         bind_params = ", ".join([':' + x for x in columns])
         h = rhnSQL.prepare(q % (self.table, ", ".join(columns), bind_params))
-        return _dml(h, params)
+        _dml(h, params)
 
     def _delete(self, params):
         q = """delete from %s
@@ -703,7 +703,7 @@ class NetIfaceAddress(Device):
         columns = self.unique
         wheres = ['%s = :%s' % (x, x) for x in columns]
         h = rhnSQL.prepare(q % (self.table, " and ".join(wheres)))
-        return _dml(h, params)
+        _dml(h, params)
 
     def _update(self, params):
         q = """update %s
@@ -721,7 +721,7 @@ class NetIfaceAddress(Device):
         updates = ", ".join(updates)
 
         h = rhnSQL.prepare(q % (self.table, updates, wheres))
-        return _dml(h, params)
+        _dml(h, params)
 
     def reload(self, interface_id):
         h = rhnSQL.prepare("""
@@ -796,10 +796,7 @@ def _dml(statement, params):
     if not params:
         return 0
     params = _transpose(params)
-    rowcount = statement.executemany(**params)
-    log_debug(5, "Affected rows", rowcount)
-    return rowcount
-
+    statement.executemany(**params)
 
 def _transpose(hasharr):
     """ Transpose the array of hashes into a hash of arrays """
