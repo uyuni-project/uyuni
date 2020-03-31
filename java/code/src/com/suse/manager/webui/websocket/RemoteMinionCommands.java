@@ -25,6 +25,7 @@ import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.webui.services.FutureUtils;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.websocket.json.AsyncJobStartEventDto;
 import com.suse.manager.webui.websocket.json.ExecuteMinionActionDto;
@@ -79,6 +80,7 @@ public class RemoteMinionCommands {
     private CompletableFuture failAfter;
     private List<String> previewedMinions;
     private static ExecutorService eventHistoryExecutor = Executors.newCachedThreadPool();
+    private static SystemQuery systemQuery = SaltService.INSTANCE;
 
     /**
      * Callback executed when the websocket is opened.
@@ -141,11 +143,11 @@ public class RemoteMinionCommands {
                 String target = StringUtils.trim(msg.getTarget());
 
                 Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
-                        SaltService.INSTANCE.matchAsyncSSH(target, failAfter);
+                        systemQuery.matchAsyncSSH(target, failAfter);
 
                 Map<String, CompletionStage<Result<Boolean>>> res = new HashMap<>();
 
-                res = SaltService.INSTANCE.matchAsync(target, failAfter);
+                res = systemQuery.matchAsync(target, failAfter);
                 if (res.isEmpty() && !resSSH.isPresent()) {
                     // just return, no need to wait for salt-ssh results
                     sendMessage(session, new ActionErrorEventDto(null,
@@ -256,7 +258,7 @@ public class RemoteMinionCommands {
                 this.failAfter = FutureUtils.failAfter(timeOut);
                 Map<String, CompletionStage<Result<String>>> res;
                 try {
-                    res = SaltService.INSTANCE
+                    res = systemQuery
                             .runRemoteCommandAsync(new MinionList(previewedMinions),
                                     msg.getCommand(), failAfter);
                     LOG.info("User '" + webSession.getUser().getLogin() + "' has sent the command '" +

@@ -69,7 +69,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
         system = systemIn;
         systemQuery = SaltService.INSTANCE;
         saltSSHService = SaltService.INSTANCE.getSaltSSHService();
-        saltServerActionService = SaltServerActionService.INSTANCE;
+        saltServerActionService = new SaltServerActionService(new SaltService());
     }
 
     /**

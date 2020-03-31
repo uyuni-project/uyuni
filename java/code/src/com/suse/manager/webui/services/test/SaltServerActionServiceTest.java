@@ -168,7 +168,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
-        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction, minionSummaries);
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(updateAction, minionSummaries);
         RhnBaseTestCase.assertNotEmpty(result.values());
     }
 
@@ -200,7 +200,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
-        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction,
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(updateAction,
                 minionSummaries);
         assertEquals(1, result.size());
         LocalCall<?> resultCall = result.keySet().iterator().next();
@@ -253,7 +253,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
-        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(updateAction,
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(updateAction,
                 minionSummaries);
         assertEquals(1, result.size());
         LocalCall<?> resultCall = result.keySet().iterator().next();
@@ -307,7 +307,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         TestUtils.saveAndReload(configAction);
 
         Map<LocalCall<?>, List<MinionSummary>> result =
-                SaltServerActionService.INSTANCE.callsForAction(configAction);
+                saltServerActionService.callsForAction(configAction);
         assertEquals(result.size(), 3);
     }
 
@@ -330,7 +330,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             va.setUuid(minionHost.getGuests().iterator().next().getUuid());
             ActionFactory.addServerToAction(minionHost, action);
 
-            Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(action, minions);
+            Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action, minions);
             assertEquals(1, result.size());
         }
     }
@@ -345,7 +345,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         va.setForce(true);
         ActionFactory.addServerToAction(minionHost, action);
 
-        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(action, minions);
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action, minions);
         LocalCall<?> saltCall = result.keySet().iterator().next();
         assertStateApplyWithPillar("virt.statechange", "domain_state", "powered_off", saltCall);
     }
@@ -360,7 +360,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         va.setForce(true);
         ActionFactory.addServerToAction(minionHost, action);
 
-        Map<LocalCall<?>, List<MinionSummary>> result = SaltServerActionService.INSTANCE.callsForAction(action, minions);
+        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action, minions);
         LocalCall<?> saltCall = result.keySet().iterator().next();
         assertStateApply("virt.reset", saltCall);
     }
@@ -485,8 +485,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         ActionFactory.addServerToAction(minion1, action);
 
-        SaltServerActionService.INSTANCE.setCommitTransaction(false);
-        Map<LocalCall<?>, List<MinionSummary>> calls = SaltServerActionService.INSTANCE.callsForAction(action);
+        saltServerActionService.setCommitTransaction(false);
+        Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
