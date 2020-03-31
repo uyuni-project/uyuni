@@ -156,7 +156,7 @@ class Cursor:
         Call with keyword arguments mapping to ordered lists.
         i.e. cursor.executemany(id=[1, 2], name=["Bill", "Mary"])
         """
-        return self._execute_wrapper(self._executemany, *p, **kw)
+        self._execute_wrapper(self._executemany, *p, **kw)
 
     def execute_values(self, sql, argslist, template=None, page_size=100, fetch=True):
         """
@@ -178,7 +178,6 @@ class Cursor:
         dict is supposed to be the dictionary that we normally apply to
         statement.execute.
         """
-        ret = 0
         start_chunk = 0
         while 1:
             subdict = {}
@@ -186,13 +185,13 @@ class Cursor:
                 subarr = arr[start_chunk:start_chunk + chunk_size]
                 if not subarr:
                     # Nothing more to do here - we exhausted the array(s)
-                    return ret
+                    return
                 subdict[k] = subarr
-            ret = ret + self.executemany(**subdict)
+            self.executemany(**subdict)
             start_chunk = start_chunk + chunk_size
 
         # Should never reach this point
-        return ret
+
 
     def _execute_wrapper(self, function, *p, **kw):
         """

@@ -464,7 +464,6 @@ def executeStatement(statement, valuesHash, chunksize):
     if not valuesHash:
         # Empty hash
         return
-    count = 0
     while 1:
         tempdict = {}
         for k, vals in list(valuesHash.items()):
@@ -481,10 +480,9 @@ def executeStatement(statement, valuesHash, chunksize):
             break
         # Now execute it
         if chunksize > 1:
-            count += statement.executemany(**tempdict)
+            statement.executemany(**tempdict)
         else:
-            count += statement.execute(**tempdict)
-    return count
+            statement.execute(**tempdict)
 
 
 def sanitizeValue(value, datatype):
