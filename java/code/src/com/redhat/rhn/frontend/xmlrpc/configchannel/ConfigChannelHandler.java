@@ -183,7 +183,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "filePath",
      *                          "config file path to examine")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ConfigRevisionSerializer
      * #array_end()
      */
@@ -346,7 +346,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param
      * #array_single("string","configuration channel label")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *  $ConfigChannelSerializer
      * #array_end()
      */
@@ -364,7 +364,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.doc List all the global config channels accessible to the logged-in user.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *  $ConfigChannelDtoSerializer
      * #array_end()
      */
@@ -585,7 +585,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param
      *          #array_single("string", "List of paths to examine.")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ConfigRevisionSerializer
      * #array_end()
      */
@@ -665,7 +665,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel",
      *                          "label of config channel to list files on.")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ConfigFileDtoSerializer
      * #array_end()
      */
@@ -964,7 +964,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel",
      *                          "label of config channel to list subscribed systems.")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ConfigSystemDtoSerializer
      * #array_end()
      */

@@ -427,7 +427,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart")
-     * @xmlrpc.returntype #array() $KickstartScriptSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $KickstartScriptSerializer #array_end()
      */
     public List<KickstartScript> listScripts(User loggedInUser, String label) {
         checkKickstartPerms(loggedInUser);
@@ -782,7 +782,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "ksLabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $KickstartAdvancedOptionsSerializer
      * #array_end()
      */
@@ -818,7 +818,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string","ksLabel")
      * @xmlrpc.param
-     *   #array()
+     *   #array_begin()
      *      #struct("advanced options")
      *          #prop_desc("string", "name", "Name of the advanced option.
      *              Valid Option names: autostep, interactive, install, upgrade, text,
@@ -941,7 +941,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string","ksLabel")
      *
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $KickstartCommandSerializer
      * #array_end()
      */
@@ -1025,7 +1025,7 @@ public class ProfileHandler extends BaseHandler {
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "label", "The label of the
     * kickstart")
-    * @xmlrpc.returntype #array() $KickstartIpRangeSerializer #array_end()
+    * @xmlrpc.returntype #array_begin() $KickstartIpRangeSerializer #array_end()
     *
     */
    public Set listIpRanges(User loggedInUser, String ksLabel) {
@@ -1130,12 +1130,12 @@ public class ProfileHandler extends BaseHandler {
      *  #struct("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
-     *          #array()
+     *          #array_begin()
      *              $ActivationKeySerializer
      *          #array_end()
      *      #prop_desc("array", "kickstartLabel2", "Actual label of the second kickstart
      *                 profile is the key into the struct")
-     *          #array()
+     *          #array_begin()
      *              $ActivationKeySerializer
      *          #array_end()
      *  #struct_end()
@@ -1279,12 +1279,12 @@ public class ProfileHandler extends BaseHandler {
      *  #struct("Comparison Info")
      *      #prop_desc("array", "kickstartLabel1", "Actual label of the first kickstart
      *                 profile is the key into the struct")
-     *          #array()
+     *          #array_begin()
      *              $KickstartOptionValueSerializer
      *          #array_end()
      *      #prop_desc("array", "kickstartLabel2", "Actual label of the second kickstart
      *                 profile is the key into the struct")
-     *          #array()
+     *          #array_begin()
      *              $KickstartOptionValueSerializer
      *          #array_end()
      *  #struct_end()

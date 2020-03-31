@@ -116,7 +116,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   #struct("channel")
      *     #prop("string", "label")
      *     #prop("string", "parent_label")
@@ -146,7 +146,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   #struct("errata")
      *     #prop("string", "advisory")
      *     #prop("string", "issue_date")
@@ -180,7 +180,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     #struct("file info")
      *       #prop("string", "path")
      *       #prop("string", "type")
@@ -266,7 +266,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "packageId")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     #struct("dependency")
      *       #prop("string", "dependency")
      *       #prop_desc("string", "dependency_type", "One of the following:")
@@ -423,7 +423,7 @@ public class PackagesHandler extends BaseHandler {
      * @xmlrpc.doc List all source packages in user's organization.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   #struct("source_package")
      *     #prop("int", "id")
      *     #prop("string", "name")
@@ -527,7 +527,7 @@ public class PackagesHandler extends BaseHandler {
      *          NVRA combination, it will be returned.  (Empty string is recommended.)")
      * @xmlrpc.param #param("string", "archLabel")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     $PackageSerializer
      *   #array_end()
      */

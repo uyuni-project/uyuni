@@ -170,7 +170,7 @@ public class SlaveHandler extends BaseHandler {
      * @xmlrpc.doc Get all the Slaves this Master knows about
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $IssSlaveSerializer
      *      #array_end()
      */

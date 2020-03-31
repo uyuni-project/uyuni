@@ -225,7 +225,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * "activation key to use channels from.")
      *
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelInfoSerializer
      *     #array_end()
      *
@@ -809,7 +809,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.param
-     *   #array()
+     *   #array_begin()
      *      #struct("packages")
      *          #prop_desc("string", "name", "Package name")
      *          #prop_desc("string", "arch", "Arch label - Optional")
@@ -862,7 +862,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.param
-     *   #array()
+     *   #array_begin()
      *      #struct("packages")
      *          #prop_desc("string", "name", "Package name")
      *          #prop_desc("string", "arch", "Arch label - Optional")
@@ -908,7 +908,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * user.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     $ActivationKeySerializer
      *   #array_end()
      */
@@ -938,7 +938,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *       #struct("system structure")
      *           #prop_desc("int", "id", "System id")
      *           #prop("string", "hostname")
@@ -989,7 +989,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "key")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     $ConfigChannelSerializer
      *   #array_end()
      */

@@ -105,7 +105,7 @@ public class PreferencesLocaleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of all understood timezones. Results can be
      * used as input to setTimeZone.
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $RhnTimeZoneSerializer
      * #array_end()
      */

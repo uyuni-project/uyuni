@@ -76,7 +76,7 @@ public class SnapshotHandler extends BaseHandler {
      *         #prop_desc($date, "endDate", "Optional.")
      *     #struct_end()
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      $ServerSnapshotSerializer
      *  #array_end()
      */
@@ -111,7 +111,7 @@ public class SnapshotHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "snapId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *         $PackageNevraSerializer
      *     #array_end()
      */
@@ -132,7 +132,7 @@ public class SnapshotHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "snapId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *         $ConfigRevisionSerializer
      *     #array_end()
      */

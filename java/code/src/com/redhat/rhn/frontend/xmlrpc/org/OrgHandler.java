@@ -170,7 +170,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.doc Returns the list of organizations.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     $OrgDtoSerializer
      *   #array_end()
      */
@@ -224,7 +224,7 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     $MultiOrgUserOverviewSerializer
      *   #array_end()
      */

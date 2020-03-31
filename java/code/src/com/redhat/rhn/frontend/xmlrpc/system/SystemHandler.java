@@ -636,7 +636,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      *
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      #struct("channel")
      *          #prop_desc("int" "id" "Base Channel ID.")
      *          #prop_desc("string" "name" "Name of channel.")
@@ -668,7 +668,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      *
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      #struct("channel")
      *          #prop_desc("int" "id" "Base Channel ID.")
      *          #prop_desc("string" "name" "Name of channel.")
@@ -709,7 +709,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of all servers visible to the user.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -729,7 +729,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      *
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $EmptySystemProfileSerializer
      *          #array_end()
      */
@@ -748,7 +748,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of active servers visible to the user.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -788,7 +788,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param  #array_single("int", "serverIds")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     #struct("server details")
      *       #prop_desc("int", "id", "The server's id")
      *       #prop_desc("string", "name", "The server's name")
@@ -804,7 +804,7 @@ public class SystemHandler extends BaseHandler {
      *       #prop_desc("struct", "cpu_info", "The server's cpu info")
      *       $CpuSerializer
      *       #prop_desc("array", "subscribed_channels", "List of subscribed channels")
-     *         #array()
+     *         #array_begin()
      *           #struct("channel")
      *             #prop_desc("int", "channel_id", "The channel id.")
      *             #prop_desc("string", "channel_label", "The channel label.")
@@ -812,7 +812,7 @@ public class SystemHandler extends BaseHandler {
      *         #array_end()
      *       #prop_desc("array", "active_guest_system_ids",
      *           "List of virtual guest system ids for active guests")
-     *         #array()
+     *         #array_begin()
      *           #prop_desc("int", "guest_id", "The guest's system id.")
      *         #array_end()
      *     #struct_end()
@@ -912,7 +912,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("child channel")
      *              #prop("int", "id")
      *              #prop("string", "name")
@@ -944,7 +944,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("child channel")
      *              #prop("int", "id")
      *              #prop("string", "name")
@@ -1016,7 +1016,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "release", "Package release.")
      * @xmlrpc.param #param_desc("string", "epoch",  "Package epoch.")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
@@ -1080,7 +1080,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "release", "Package release.")
      * @xmlrpc.param #param_desc("string", "epoch",  "Package epoch.")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
@@ -1275,7 +1275,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *      #struct("package")
      *          #prop("string", "name")
      *          #prop("string", "arch")
@@ -1309,7 +1309,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *      #struct("package")
      *          #prop("string", "name")
      *          #prop("string", "version")
@@ -1338,7 +1338,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *      #struct("package")
      *          #prop("string", "name")
      *          #prop("string", "version")
@@ -1371,7 +1371,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #param("string", "packageName")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("system")
      *             #prop_desc("int", "id", "server ID")
      *             #prop_desc("string", "name", "server name")
@@ -1508,7 +1508,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *                 #prop("string", "name")
      *                 #prop("string", "version")
@@ -1774,7 +1774,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $NetworkInterfaceSerializer
      *      #array_end()
      */
@@ -1848,7 +1848,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      #struct("system group")
      *          #prop_desc("int", "id", "server group id")
      *          #prop_desc("int", "subscribed", "1 if the given server is subscribed
@@ -1895,7 +1895,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $SystemOverviewSerializer
      *          #array_end()
      */
@@ -1914,7 +1914,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc List systems for the logged in user.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $SystemOverviewSerializer
      *          #array_end()
      */
@@ -2227,7 +2227,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
      * @xmlrpc.param #param_desc("string", "actionType", "Type of the action.")
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      #struct("action")
      *          #prop_desc("int", "failed_count", "Number of times action failed.")
      *          #prop_desc("string", "modified", "Date modified. (Deprecated by
@@ -2494,7 +2494,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of system.")
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      #struct("action")
      *          #prop_desc("int", "failed_count", "Number of times action failed.")
      *          #prop_desc("string", "modified", "Date modified. (Deprecated by
@@ -2802,7 +2802,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "systemName")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $SystemOverviewSerializer
      *          #array_end()
      */
@@ -2868,7 +2868,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ChannelSerializer
      *      #array_end()
      */
@@ -2903,7 +2903,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "regexp",  "A regular expression")
      *
      * @xmlrpc.returntype
-     *           #array()
+     *           #array_begin()
      *              $SystemOverviewSerializer
      *          #array_end()
      *
@@ -2937,7 +2937,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *              $UserSerializer
      *      #array_end()
      */
@@ -2989,7 +2989,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *           $HistoryEventSerializer
      *      #array_end()
      */
@@ -3012,7 +3012,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
@@ -3045,7 +3045,7 @@ public class SystemHandler extends BaseHandler {
      * of the following: 'Security Advisory', 'Product Enhancement Advisory',
      * 'Bug Fix Advisory'")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
@@ -3073,7 +3073,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataSerializer
      *      #array_end()
      */
@@ -3336,7 +3336,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "thisServerId")
      * @xmlrpc.param #param("int", "otherServerId")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $PackageMetadataSerializer
      *          #array_end()
      *
@@ -3451,7 +3451,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $DeviceSerializer
      *              #array_end()
      */
@@ -3741,7 +3741,7 @@ public class SystemHandler extends BaseHandler {
     * @xmlrpc.doc Schedule package installation for several systems.
     * @xmlrpc.param #param("string", "sessionKey")
     * @xmlrpc.param #array_single("int", "serverId")
-    * @xmlrpc.param #array()
+    * @xmlrpc.param #array_begin()
     *                   #struct("Package nevra")
     *                          #prop("string", "package_name")
     *                          #prop("string", "package_epoch")
@@ -3776,7 +3776,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule package installation for several systems.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.param #array()
+     * @xmlrpc.param #array_begin()
      *                   #struct("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
@@ -3811,7 +3811,7 @@ public class SystemHandler extends BaseHandler {
     * @xmlrpc.doc Schedule package installation for a system.
     * @xmlrpc.param #param("string", "sessionKey")
     * @xmlrpc.param #param("int", "serverId")
-    * @xmlrpc.param #array()
+    * @xmlrpc.param #array_begin()
     *                   #struct("Package nevra")
     *                          #prop("string", "package_name")
     *                          #prop("string", "package_epoch")
@@ -3849,7 +3849,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule package installation for a system.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #array()
+     * @xmlrpc.param #array_begin()
      *                   #struct("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
@@ -3997,7 +3997,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule package removal for several systems.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.param #array()
+     * @xmlrpc.param #array_begin()
      *                   #struct("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
@@ -4032,7 +4032,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule package removal for several systems.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.param #array()
+     * @xmlrpc.param #array_begin()
      *                   #struct("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
@@ -4067,7 +4067,7 @@ public class SystemHandler extends BaseHandler {
     * @xmlrpc.doc Schedule package removal for a system.
     * @xmlrpc.param #param("string", "sessionKey")
     * @xmlrpc.param #param("int", "serverId")
-    * @xmlrpc.param #array()
+    * @xmlrpc.param #array_begin()
     *                   #struct("Package nevra")
     *                          #prop("string", "package_name")
     *                          #prop("string", "package_epoch")
@@ -4105,7 +4105,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule package removal for a system.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.param #array()
+     * @xmlrpc.param #array_begin()
      *                   #struct("Package nevra")
      *                          #prop("string", "package_name")
      *                          #prop("string", "package_epoch")
@@ -4142,7 +4142,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      $NoteSerializer
      *  #array_end()
      */
@@ -4190,7 +4190,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "channelLabel")
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      $PackageSerializer
      *  #array_end()
      */
@@ -4464,7 +4464,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "actionId", "ID of the script run action.")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $ScriptResultSerializer
      *         #array_end()
      */
@@ -4501,7 +4501,7 @@ public class SystemHandler extends BaseHandler {
      *          #prop_desc("string" "run_as_user" "Run as user")
      *          #prop_desc("string" "run_as_group" "Run as group")
      *          #prop_desc("int" "timeout" "Timeout in seconds")
-     *          #array()
+     *          #array_begin()
      *              $ScriptResultSerializer
      *          #array_end()
      *      #struct_end()
@@ -5105,7 +5105,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc List the package profiles in this organization
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      $ProfileOverviewDtoSerializer
      *  #array_end()
      */
@@ -5194,7 +5194,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "profileLabel")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $PackageMetadataSerializer
      *          #array_end()
      */
@@ -5226,7 +5226,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Returns list of systems needing package updates.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $SystemOverviewSerializer
      *          #array_end()
      *
@@ -5352,7 +5352,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc List systems that are not associated with any system groups.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -5392,7 +5392,7 @@ public class SystemHandler extends BaseHandler {
      *          inactivity
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -5412,7 +5412,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "days")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -5448,7 +5448,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "pid", "the package id")
      * @xmlrpc.returntype
-     *           #array()
+     *           #array_begin()
      *              $SystemOverviewSerializer
      *           #array_end()
      */
@@ -5477,7 +5477,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "version", "the package version")
      * @xmlrpc.param #param_desc("string", "release", "the package release")
      * @xmlrpc.returntype
-     *              #array()
+     *              #array_begin()
      *                  $SystemOverviewSerializer
      *              #array_end()
      */
@@ -5499,7 +5499,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of all Physical servers visible to the user.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -5517,7 +5517,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Lists the virtual hosts visible to the user
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *       $SystemOverviewSerializer
      *      #array_end()
      */
@@ -5535,7 +5535,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "sid", "the virtual host's id")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $VirtualSystemOverviewSerializer
      *     #array_end()
      */
@@ -5755,7 +5755,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ServerPathSerializer
      *      #array_end()
      */
@@ -5936,7 +5936,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "kOptions")
      * @xmlrpc.param #param("string", "comment")
      * @xmlrpc.param
-     *      #array()
+     *      #array_begin()
      *          #struct("network device")
      *              #prop("string", "name")
      *              #prop("string", "mac")
@@ -6111,7 +6111,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("boolean","netboot")
      * @xmlrpc.param
-     *      #array()
+     *      #array_begin()
      *          #struct("kickstart variable")
      *              #prop("string", "key")
      *              #prop("string or int", "value")
@@ -6170,7 +6170,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc List duplicate systems by IP Address.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *           #struct("Duplicate Group")
      *                   #prop("string", "ip")
      *                   #prop_array_begin("systems")
@@ -6194,7 +6194,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc List duplicate systems by Mac Address.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *           #struct("Duplicate Group")
      *                   #prop("string", "mac")
      *                   #prop_array_begin("systems")
@@ -6218,7 +6218,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc List duplicate systems by Hostname.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *           #struct("Duplicate Group")
      *                   #prop("string", "hostname")
      *                   #prop_array_begin("systems")
@@ -6263,7 +6263,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Get the System Currency scores for all servers the user has access to
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("system currency")
      *              #prop("int", "sid")
      *              #prop("int", "critical security errata count")
@@ -6379,7 +6379,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc List systems with extra packages
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("system")
      *             #prop_desc("int", "id", "System ID")
      *             #prop_desc("string", "name", "System profile name")
@@ -6401,7 +6401,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *                 #prop("string", "name")
      *                 #prop("string", "version")
@@ -6606,7 +6606,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("migrationtarget")
      *                 #prop("string", "ident")
      *                 #prop("string", "friendly")
@@ -6878,7 +6878,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc List systems that require reboot.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("system")
      *              #prop("int" "id")
      *              #prop("string" "name")
@@ -6901,7 +6901,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("User", "loggedInUser")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SUSEInstalledProductSerializer
      *      #array_end()
      */

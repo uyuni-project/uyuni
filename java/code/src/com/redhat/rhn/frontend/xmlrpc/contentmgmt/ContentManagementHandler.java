@@ -62,7 +62,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc List Content Projects visible to user
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ContentProjectSerializer
      * #array_end()
      */
@@ -182,7 +182,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ContentEnvironmentSerializer
      * #array_end()
      */
@@ -330,7 +330,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Content Project label")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ContentProjectSourceSerializer
      * #array_end()
      */
@@ -470,7 +470,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc List all Content Filters visible to given user
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ContentFilterSerializer
      * #array_end()
      */
@@ -505,7 +505,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.doc List of available filter criteria
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * #struct("Filter Criteria")
      * #prop("string", "type")
      * #prop("string", "matcher")
@@ -684,7 +684,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "projectLabel", "Project label")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ContentProjectFilterSerializer
      * #array_end()
      */

@@ -51,7 +51,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc List all accessible products.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #array()
+     * @xmlrpc.returntype #array_begin()
      *                       $MgrSyncProductDtoSerializer
      *                    #array_end()
      */
@@ -71,7 +71,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc List all accessible channels.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #array()
+     * @xmlrpc.returntype #array_begin()
      *                       $MgrSyncChannelDtoSerializer
      *                    #array_end()
      */
@@ -365,7 +365,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc List organization credentials (mirror credentials) available in
      *             SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #array()
+     * @xmlrpc.returntype #array_begin()
      *                       $MirrorCredentialsDtoSerializer
      *                    #array_end()
      */

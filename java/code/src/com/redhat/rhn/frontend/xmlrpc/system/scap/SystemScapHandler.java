@@ -52,7 +52,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $XccdfTestResultDtoSerializer
      * #array_end()
      */
@@ -89,7 +89,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "Id of XCCDF scan (xid).")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $XccdfRuleResultDtoSerializer
      * #array_end()
      */
