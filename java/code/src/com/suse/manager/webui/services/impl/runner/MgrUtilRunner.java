@@ -159,5 +159,4 @@ public class MgrUtilRunner {
                         new TypeToken<Map<Boolean, String>>() { });
         return call;
     }
-
 }

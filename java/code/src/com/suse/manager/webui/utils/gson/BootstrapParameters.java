@@ -27,6 +27,8 @@ public class BootstrapParameters {
     private Optional<Integer> port;
     private String user;
     private Optional<String> password;
+    private Optional<String> privateKey = Optional.empty();
+    private Optional<String> privateKeyPassphrase = Optional.empty();
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
     private Optional<Long> proxyId;
@@ -38,17 +40,21 @@ public class BootstrapParameters {
      * @param portIn port
      * @param userIn user
      * @param passwordIn password
+     * @param privateKeyIn SSH private key as string in PEM format
+     * @param privateKeyPwdIn SSH private key passphrase
      * @param activationKeysIn activation keys
      * @param ignoreHostKeysIn ignore hostIn keys?
      * @param proxyIdIn proxy id
      */
-    public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn,
-            Optional<String> passwordIn, List<String> activationKeysIn,
+    public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn, Optional<String> passwordIn,
+            Optional<String> privateKeyIn, Optional<String> privateKeyPwdIn, List<String> activationKeysIn,
             boolean ignoreHostKeysIn, Optional<Long> proxyIdIn) {
         this.host = hostIn;
         this.port = portIn;
         this.user = userIn;
         this.password = passwordIn;
+        this.privateKey = privateKeyIn;
+        this.privateKeyPassphrase = privateKeyPwdIn;
         this.activationKeys = activationKeysIn;
         this.ignoreHostKeys = ignoreHostKeysIn;
         this.proxyId = proxyIdIn;
@@ -60,9 +66,9 @@ public class BootstrapParameters {
      * @param json JSON input
      */
     public BootstrapParameters(BootstrapHostsJson json) {
-        this(json.getHost(), json.getPortInteger(), json.getUser(),
-                json.maybeGetPassword(), json.getActivationKeys(),
-                json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
+        this(json.getHost(), json.getPortInteger(), json.getUser(), json.maybeGetPassword(), json.getPrivKey(),
+                json.getPrivKeyPwd(), json.getActivationKeys(), json.getIgnoreHostKeys(),
+                Optional.ofNullable(json.getProxy()));
     }
 
     /**
@@ -135,6 +141,42 @@ public class BootstrapParameters {
      */
     public void setPassword(Optional<String> passwordIn) {
         password = passwordIn;
+    }
+
+    /**
+     * Gets the privateKey.
+     *
+     * @return privateKey
+     */
+    public Optional<String> getPrivateKey() {
+        return privateKey;
+    }
+
+    /**
+     * Sets the privateKey.
+     *
+     * @param privateKeyIn the privateKey
+     */
+    public void setPrivateKey(Optional<String> privateKeyIn) {
+        privateKey = privateKeyIn;
+    }
+
+    /**
+     * Gets the privateKeyPassphrase.
+     *
+     * @return privateKeyPassphrase
+     */
+    public Optional<String> getPrivateKeyPassphrase() {
+        return privateKeyPassphrase;
+    }
+
+    /**
+     * Sets the privateKeyPassphrase.
+     *
+     * @param privateKeyPassphraseIn the privateKeyPassphrase
+     */
+    public void setPrivateKeyPassphrase(Optional<String> privateKeyPassphraseIn) {
+        privateKeyPassphrase = privateKeyPassphraseIn;
     }
 
     /**

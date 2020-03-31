@@ -74,6 +74,10 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue("myuser"));
             allowing(input).getPassword();
             will(returnValue("mypassword"));
+            allowing(input).getPrivKey();
+            will(returnValue(empty()));
+            allowing(input).getPrivKeyPwd();
+            will(returnValue(empty()));
             allowing(input).maybeGetPassword();
             will(returnValue(Optional.of("mypassword")));
             allowing(input).getIgnoreHostKeys();

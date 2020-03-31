@@ -14,10 +14,12 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import static java.util.Optional.empty;
+
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,8 @@ public class BootstrapHostsJson {
     private String port = "22";
     private String user = "root";
     private String password;
+    private Optional<String> privKey = empty();
+    private Optional<String> privKeyPwd = empty();
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
     private Long proxy;
@@ -42,7 +46,7 @@ public class BootstrapHostsJson {
     }
 
     /**
-     * Constructor to be used for bootstrapping systems via API.
+     * Constructor to be used for bootstrapping systems with SSH password via API.
      *
      * @param hostIn target host
      * @param portIn SSH port
@@ -57,8 +61,30 @@ public class BootstrapHostsJson {
         port = String.valueOf(portIn);
         user = userIn;
         password = passwordIn;
-        activationKeys = StringUtils.isEmpty(activationKey) ?
-                new ArrayList<>() : Arrays.asList(activationKey);
+        activationKeys = StringUtils.isEmpty(activationKey) ? Collections.emptyList() : Arrays.asList(activationKey);
+        proxy = proxyIn;
+        ignoreHostKeys = true;
+    }
+
+    /**
+     * Constructor to be used for bootstrapping systems with SSH private key via API.
+     *
+     * @param hostIn target host
+     * @param portIn SSH port
+     * @param userIn SSH user
+     * @param privKeyIn SSH private key in PEM format
+     * @param privKeyPwdIn SSH private key passphrase (empty/null string = no passphrase)
+     * @param activationKey activation key
+     * @param proxyIn system ID of proxy server to use
+     */
+    public BootstrapHostsJson(String hostIn, Integer portIn, String userIn,
+            String privKeyIn, String privKeyPwdIn, String activationKey, Long proxyIn) {
+        host = hostIn;
+        port = String.valueOf(portIn);
+        user = userIn;
+        privKey = Optional.of(privKeyIn);
+        privKeyPwd = StringUtils.isEmpty(privKeyPwdIn) ? empty() : Optional.of(privKeyPwdIn);
+        activationKeys = StringUtils.isEmpty(activationKey) ? Collections.emptyList() : Arrays.asList(activationKey);
         proxy = proxyIn;
         ignoreHostKeys = true;
     }
@@ -89,6 +115,24 @@ public class BootstrapHostsJson {
      */
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * Gets the privKey.
+     *
+     * @return privKey
+     */
+    public Optional<String> getPrivKey() {
+        return privKey;
+    }
+
+    /**
+     * Gets the privKeyPwd.
+     *
+     * @return privKeyPwd
+     */
+    public Optional<String> getPrivKeyPwd() {
+        return privKeyPwd;
     }
 
     /**
@@ -127,7 +171,7 @@ public class BootstrapHostsJson {
      * @return port as an Optional&lt;Integer&gt;
      */
     public Optional<Integer> getPortInteger() {
-        Optional<Integer> ret = Optional.empty();
+        Optional<Integer> ret = empty();
         if (StringUtils.isNotEmpty(port)) {
             ret = Optional.of(Integer.valueOf(port));
         }
@@ -141,7 +185,7 @@ public class BootstrapHostsJson {
      */
     public Optional<String> maybeGetPassword() {
         if (StringUtils.isEmpty(password)) {
-            return Optional.empty();
+            return empty();
         }
         return Optional.of(password);
     }

@@ -78,6 +78,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
@@ -101,6 +102,7 @@ public class SaltSSHService {
 
     private static final String SSH_KEY_DIR = "/srv/susemanager/salt/salt_ssh";
     public static final String SSH_KEY_PATH = SSH_KEY_DIR + "/mgr_ssh_id";
+    private static final String SSH_TEMP_BOOTSTRAP_KEY_DIR = SSH_KEY_DIR + "/temp_bootstrap_keys";
     private static final String PROXY_SSH_PUSH_USER = "mgrsshtunnel";
     private static final String PROXY_SSH_PUSH_KEY =
             "/var/lib/spacewalk/" + PROXY_SSH_PUSH_USER + "/.ssh/id_susemanager_ssh_push";
@@ -543,23 +545,48 @@ public class SaltSSHService {
                 .flatMap(contactMethod ->
                         remotePortForwarding(bootstrapProxyPath, contactMethod));
 
-        SaltRoster roster = new SaltRoster();
-        roster.addHost(parameters.getHost(), parameters.getUser(), parameters.getPassword(),
-                parameters.getPort(),
-                portForwarding,
-                sshProxyCommandOption(bootstrapProxyPath,
-                        ContactMethodUtil.SSH_PUSH,
-                        parameters.getHost()),
-                getSshPushTimeout(),
-                minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH));
+        // private key handling just for bootstrap
+        Optional<Path> tmpKeyFileAbsolutePath = parameters.getPrivateKey().map(key -> createTempKeyFile(key));
 
-        Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
-                callSyncSSHInternal(call,
-                        new MinionList(parameters.getHost()),
-                        roster,
-                        parameters.isIgnoreHostKeys(),
-                        isSudoUser(parameters.getUser()));
-        return result.get(parameters.getHost());
+        try {
+            SaltRoster roster = new SaltRoster();
+            roster.addHost(parameters.getHost(),
+                    parameters.getUser(),
+                    parameters.getPassword(),
+                    tmpKeyFileAbsolutePath.map(p -> p.toString()),
+                    parameters.getPrivateKeyPassphrase(),
+                    parameters.getPort(),
+                    portForwarding,
+                    sshProxyCommandOption(bootstrapProxyPath,
+                            ContactMethodUtil.SSH_PUSH,
+                            parameters.getHost()),
+                    getSshPushTimeout(),
+                    minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH));
+
+            Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
+                    callSyncSSHInternal(call,
+                            new MinionList(parameters.getHost()),
+                            roster,
+                            parameters.isIgnoreHostKeys(),
+                            isSudoUser(parameters.getUser()));
+            return result.get(parameters.getHost());
+        }
+        finally {
+            tmpKeyFileAbsolutePath.ifPresent(path -> cleanUpTempKeyFile(path));
+        }
+    }
+
+    private Path createTempKeyFile(String privateKeyContents) {
+        String fileName = "boostrapKeyTmp-" + UUID.randomUUID();
+        Path fileAbsolutePath = Path.of(SSH_TEMP_BOOTSTRAP_KEY_DIR).resolve(fileName).toAbsolutePath();
+        SaltService.INSTANCE.storeSshKeyFile(fileAbsolutePath, privateKeyContents);
+        return fileAbsolutePath;
+    }
+
+    private void cleanUpTempKeyFile(Path path) {
+        SaltService.INSTANCE
+                .removeFile(path)
+                .orElseThrow(() -> new IllegalStateException("Can't remove file " + path));
     }
 
     private Optional<Map<String, Object>> minionOpts(String minionId,
