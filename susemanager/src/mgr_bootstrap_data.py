@@ -234,6 +234,7 @@ RES6 = [
     "yum",
     "python2-rhnlib",
     "rpm-python",
+    "redhat-rpm-config",
     "slang",
     "spacewalk-check",
     "python2-spacewalk-check",
@@ -283,6 +284,7 @@ RES7 = [
     "openssl",
     "openssl-libs",
     "python-ipaddress",
+    "redhat-rpm-config",
     "rpm-python",
     "spacewalk-check",
     "python2-spacewalk-check",
@@ -299,6 +301,7 @@ RES7 = [
 ]
 
 RES8 = [
+    "redhat-rpm-config",
     "salt",
     "salt-minion",
     "python3-salt",

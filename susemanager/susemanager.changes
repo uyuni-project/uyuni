@@ -1,3 +1,4 @@
+- add package redhat-rpm-config to bootstrap repo for RH and CentOS systems (bsc#1168069)
 - Add 'python-singledispatch' to SLE12 (all SPs) and RES7 bootstrap repos.
 - Fix salt bootstrapping on SLE15 (require python3-pycrypto or 
   python3-M2Crypto to support all variants) (bsc#1164563)
