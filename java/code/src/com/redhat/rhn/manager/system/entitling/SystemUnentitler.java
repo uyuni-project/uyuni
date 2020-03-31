@@ -15,22 +15,13 @@
 
 package com.redhat.rhn.manager.system.entitling;
 
-import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
-
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -72,28 +63,6 @@ public class SystemUnentitler {
         else {
             unentitleServer(server, ent);
         }
-
-        server.asMinionServer().ifPresent(s -> {
-            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
-
-            // Configure prometheus-exporters for cleanup (disable all exporters) if applicable
-            if (EntitlementManager.MONITORING.equals(ent)) {
-                if (FormulaManager.getInstance().isMonitoringCleanupNeeded(s)) {
-                    try {
-                     // Get the current data and set all exporters to disabled
-                        String minionId = s.getMinionId();
-                        Map<String, Object> data = FormulaFactory
-                                .getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId)
-                                .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));
-                        FormulaFactory.saveServerFormulaData(
-                                FormulaFactory.disableMonitoring(data), minionId, PROMETHEUS_EXPORTERS);
-                    }
-                    catch (UnsupportedOperationException | IOException e) {
-                        LOG.warn("Exception on saving formula data: " + e.getMessage());
-                    }
-                }
-            }
-        });
     }
 
     private void unentitleServer(Server server, Entitlement ent) {

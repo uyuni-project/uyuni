@@ -299,6 +299,13 @@ public class SystemDetailsEditAction extends RhnAction {
                 systemEntitlementManager.removeServerEntitlement(s, e);
 
                 needsSnapshot = true;
+
+                // Handle monitoring disablement
+                s.asMinionServer().ifPresent(minion -> {
+                    if (EntitlementManager.MONITORING.equals(e)) {
+                        FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
+                    }
+                });
             }
         }
 
