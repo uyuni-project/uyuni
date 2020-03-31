@@ -47,7 +47,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *   #prop_desc($date, "start_time", "Client machine time of scan start.")
  *   #prop_desc($date, "end_time", "Client machine time of scan completion.")
  *   #prop_desc("string", "errors", "Stderr output of scan.")
- *   #prop_desc("bool", "deletable", "Indicates whether the scan can be deleted.")
+ *   #prop_desc("boolean", "deletable", "Indicates whether the scan can be deleted.")
  * #struct_end()
  */
 public class XccdfTestResultSerializer extends RhnXmlRpcCustomSerializer {
