@@ -52,7 +52,7 @@ Feature: Install a package on the SLES minion with staging enabled
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until the package "orion-dummy-1.1-1.1" has been cached on this "sle_minion"
-    And I wait for "orion-dummy-1.1-1.1" to be installed on this "sle_minion"
+    And I wait for "orion-dummy-1.1-1.1" to be installed on "sle_minion"
 
   Scenario: Install patch in the future and check for staging
     Given I am on the Systems overview page of this "sle_minion"
@@ -64,7 +64,7 @@ Feature: Install a package on the SLES minion with staging enabled
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until the package "virgo-dummy-2.0-1.1.noarch" has been cached on this "sle_minion"
-    And I wait for "virgo-dummy-2.0-1.1" to be installed on this "sle_minion"
+    And I wait for "virgo-dummy-2.0-1.1" to be installed on "sle_minion"
 
   Scenario: Cleanup: remove virgo-dummy package from SLES minion
     Given I am on the Systems overview page of this "sle_minion"

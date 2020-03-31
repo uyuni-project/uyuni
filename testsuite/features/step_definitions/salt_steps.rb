@@ -666,34 +666,6 @@ When(/^I change the state of "([^"]*)" to "([^"]*)" and "([^"]*)"$/) do |pkg, st
   end
 end
 
-Then(/^I wait for "([^"]*)" to be uninstalled on "([^"]*)"$/) do |package, host|
-  node = get_target(host)
-  repeat_until_timeout(message: "Package removal failed", report_result: true) do
-    output, code = node.run("rpm -q #{package}", false)
-    if code.nonzero?
-      uninstalled = true
-      break
-    end
-    sleep 1
-    "code #{code}, #{output}"
-  end
-end
-
-Then(/^I wait for "([^"]*)" to be installed on this "([^"]*)"$/) do |package, host|
-  if package.include?("suma") && $product == "Uyuni"
-    package.gsub! "suma", "uyuni"
-  end
-  node = get_target(host)
-  if host.include? 'ubuntu'
-    pkg_version = package.split('-')[-1]
-    pkg_name = package.delete_suffix("-#{pkg_version}")
-    pkg_version_regexp = pkg_version.gsub('.', '\\.')
-    node.run_until_ok("dpkg -l | grep -E '^ii +#{pkg_name} +#{pkg_version_regexp} +'")
-  else
-    node.run_until_ok("rpm -q #{package}")
-  end
-end
-
 When(/^I click undo for "(.*?)"$/) do |pkg|
   find("button##{pkg}-undo").click
 end
