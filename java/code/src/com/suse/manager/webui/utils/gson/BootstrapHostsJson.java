@@ -18,8 +18,8 @@ import static java.util.Optional.empty;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +61,7 @@ public class BootstrapHostsJson {
         port = String.valueOf(portIn);
         user = userIn;
         password = passwordIn;
-        activationKeys = StringUtils.isEmpty(activationKey) ? new ArrayList<>() : Arrays.asList(activationKey);
+        activationKeys = StringUtils.isEmpty(activationKey) ? Collections.emptyList() : Arrays.asList(activationKey);
         proxy = proxyIn;
         ignoreHostKeys = true;
     }
@@ -84,7 +84,7 @@ public class BootstrapHostsJson {
         user = userIn;
         privKey = Optional.of(privKeyIn);
         privKeyPwd = StringUtils.isEmpty(privKeyPwdIn) ? empty() : Optional.of(privKeyPwdIn);
-        activationKeys = StringUtils.isEmpty(activationKey) ? new ArrayList<>() : Arrays.asList(activationKey);
+        activationKeys = StringUtils.isEmpty(activationKey) ? Collections.emptyList() : Arrays.asList(activationKey);
         proxy = proxyIn;
         ignoreHostKeys = true;
     }

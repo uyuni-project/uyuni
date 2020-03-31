@@ -548,28 +548,32 @@ public class SaltSSHService {
         // private key handling just for bootstrap
         Optional<Path> tmpKeyFileAbsolutePath = parameters.getPrivateKey().map(key -> createTempKeyFile(key));
 
-        SaltRoster roster = new SaltRoster();
-        roster.addHost(parameters.getHost(),
-                parameters.getUser(),
-                parameters.getPassword(),
-                tmpKeyFileAbsolutePath.map(p -> p.toString()),
-                parameters.getPrivateKeyPassphrase(),
-                parameters.getPort(),
-                portForwarding,
-                sshProxyCommandOption(bootstrapProxyPath,
-                        ContactMethodUtil.SSH_PUSH,
-                        parameters.getHost()),
-                getSshPushTimeout(),
-                minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH));
+        try {
+            SaltRoster roster = new SaltRoster();
+            roster.addHost(parameters.getHost(),
+                    parameters.getUser(),
+                    parameters.getPassword(),
+                    tmpKeyFileAbsolutePath.map(p -> p.toString()),
+                    parameters.getPrivateKeyPassphrase(),
+                    parameters.getPort(),
+                    portForwarding,
+                    sshProxyCommandOption(bootstrapProxyPath,
+                            ContactMethodUtil.SSH_PUSH,
+                            parameters.getHost()),
+                    getSshPushTimeout(),
+                    minionOpts(parameters.getHost(), ContactMethodUtil.SSH_PUSH));
 
-        Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
-                callSyncSSHInternal(call,
-                        new MinionList(parameters.getHost()),
-                        roster,
-                        parameters.isIgnoreHostKeys(),
-                        isSudoUser(parameters.getUser()));
-        tmpKeyFileAbsolutePath.ifPresent(path -> cleanUpTempKeyFile(path));
-        return result.get(parameters.getHost());
+            Map<String, Result<SSHResult<Map<String, ApplyResult>>>> result =
+                    callSyncSSHInternal(call,
+                            new MinionList(parameters.getHost()),
+                            roster,
+                            parameters.isIgnoreHostKeys(),
+                            isSudoUser(parameters.getUser()));
+            return result.get(parameters.getHost());
+        }
+        finally {
+            tmpKeyFileAbsolutePath.ifPresent(path -> cleanUpTempKeyFile(path));
+        }
     }
 
     private Path createTempKeyFile(String privateKeyContents) {

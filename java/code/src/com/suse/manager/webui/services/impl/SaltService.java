@@ -37,6 +37,7 @@ import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
+import com.suse.manager.webui.services.impl.runner.MgrRunner;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -1248,12 +1249,12 @@ public class SaltService implements SystemQuery {
         ensureAbsolutePath(path);
 
         String absolutePath = path.toAbsolutePath().toString();
-        RunnerCall<String> createFile = MgrUtilRunner.writeTextFile(absolutePath, contents);
+        RunnerCall<String> createFile = MgrRunner.writeTextFile(absolutePath, contents);
         callSync(createFile).orElseThrow(() -> new IllegalStateException("Can't create SSH priv key file " + path));
 
         // this might not be needed, the file is created with sane perms already
         String desiredMode = "0600";
-        RunnerCall<String> setMode = MgrUtilRunner.setFileMode(absolutePath, desiredMode);
+        RunnerCall<String> setMode = MgrRunner.setFileMode(absolutePath, desiredMode);
         String mode = callSync(setMode)
                 .orElseThrow(() -> new IllegalStateException("Can't set mode for SSH priv key file " + path));
 
@@ -1270,7 +1271,7 @@ public class SaltService implements SystemQuery {
     public Optional<Boolean> removeFile(Path path) {
         ensureAbsolutePath(path);
         String absolutePath = path.toAbsolutePath().toString();
-        RunnerCall<Boolean> createFile = MgrUtilRunner.removeFile(absolutePath);
+        RunnerCall<Boolean> createFile = MgrRunner.removeFile(absolutePath);
         return callSync(createFile);
     }
 
