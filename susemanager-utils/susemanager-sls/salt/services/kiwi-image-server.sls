@@ -83,7 +83,7 @@ mgr_sshd_public_key_copied:
 
 mgr_saltutil_synced:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
-    saltutil.sync_all
+  saltutil.sync_all
 {%- else %}
   module.run:
     - name: saltutil.sync_all
