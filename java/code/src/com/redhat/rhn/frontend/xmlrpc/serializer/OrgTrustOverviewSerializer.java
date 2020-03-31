@@ -32,7 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *     #struct_begin("trusted organizations")
  *       #prop("int", "orgId")
  *       #prop("string", "orgName")
- *       #prop("bool", "trustEnabled")
+ *       #prop("boolean", "trustEnabled")
  *     #struct_end()
  *   #array_end()
  * @version $Rev$

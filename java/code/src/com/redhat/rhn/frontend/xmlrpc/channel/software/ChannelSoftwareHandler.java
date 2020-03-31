@@ -3002,10 +3002,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
      * @xmlrpc.param
      *  #struct_begin("params_map")
-     *    #prop_desc("Boolean", "sync-kickstart", "Create kickstartable tree - Optional")
-     *    #prop_desc("Boolean", "no-errata", "Do not sync errata - Optional")
-     *    #prop_desc("Boolean", "fail", "Terminate upon any error - Optional")
-     *    #prop_desc("Boolean", "latest", "Only download latest packages - Optional")
+     *    #prop_desc("boolean", "sync-kickstart", "Create kickstartable tree - Optional")
+     *    #prop_desc("boolean", "no-errata", "Do not sync errata - Optional")
+     *    #prop_desc("boolean", "fail", "Terminate upon any error - Optional")
+     *    #prop_desc("boolean", "latest", "Only download latest packages - Optional")
      *  #struct_end()
      * @xmlrpc.returntype  #return_int_success()
      */
@@ -3066,10 +3066,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *      "if empty all periodic schedules will be disabled")
      * @xmlrpc.param
      *  #struct_begin("params_map")
-     *    #prop_desc("Boolean", "sync-kickstart", "Create kickstartable tree - Optional")
-     *    #prop_desc("Boolean", "no-errata", "Do not sync errata - Optional")
-     *    #prop_desc("Boolean", "fail", "Terminate upon any error - Optional")
-     *    #prop_desc("Boolean", "latest", "Only download latest packages - Optional")
+     *    #prop_desc("boolean", "sync-kickstart", "Create kickstartable tree - Optional")
+     *    #prop_desc("boolean", "no-errata", "Do not sync errata - Optional")
+     *    #prop_desc("boolean", "fail", "Terminate upon any error - Optional")
+     *    #prop_desc("boolean", "latest", "Only download latest packages - Optional")
      *  #struct_end()
      * @xmlrpc.returntype  #return_int_success()
      */
