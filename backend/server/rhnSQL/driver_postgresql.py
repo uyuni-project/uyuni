@@ -346,7 +346,7 @@ class Cursor(sql_base.Cursor):
                 all_kwargs[i][key] = val
                 i = i + 1
 
-        self._real_cursor.executemany(self.sql, all_kwargs)
+        psycopg2.extras.execute_batch(self._real_cursor, self.sql, all_kwargs)
         self.description = self._real_cursor.description
 
     def _execute_values(self, sql, argslist, template=None, page_size=1000, fetch=True):
