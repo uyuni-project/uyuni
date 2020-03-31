@@ -98,7 +98,6 @@ Feature: CVE Audit on traditional clients
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
-    And I wait for "5" seconds
     And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "patch update has been scheduled" text
 

@@ -37,7 +37,6 @@ Feature: Register a Salt minion via Bootstrap-script
   Scenario: Bootstrap the minion using the script
     Given I am authorized as "admin" with password "admin"
     When I run "sh /root/bootstrap.sh" on "sle_minion"
-    And I wait for "5" seconds
     When I follow the left menu "Salt > Keys"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I should see a "pending" text
