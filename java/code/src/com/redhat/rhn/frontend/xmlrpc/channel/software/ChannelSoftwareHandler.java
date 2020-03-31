@@ -168,7 +168,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to update")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
@@ -256,7 +256,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
@@ -294,7 +294,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param($date, "startDate")
      * @xmlrpc.param #param($date, "endDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *              $PackageDtoSerializer
      *      #array_end()
      */
@@ -321,7 +321,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.param #param($date, "startDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *              $PackageDtoSerializer
      *      #array_end()
      */
@@ -341,7 +341,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *              $PackageDtoSerializer
      *      #array_end()
      */
@@ -373,7 +373,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.param #param("string", "endDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *              $PackageDtoSerializer
      *      #array_end()
      */
@@ -403,7 +403,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *              $PackageDtoSerializer
      *      #array_end()
      */
@@ -434,7 +434,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.param #param("string", "endDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
@@ -475,7 +475,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
@@ -508,7 +508,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *              #prop("string", "name")
      *              #prop("string", "version")
@@ -537,7 +537,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.doc Lists the potential software channel architectures that can be created
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $ChannelArchSerializer
      *          #array_end()
      */
@@ -1107,7 +1107,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              #struct("system")
      *                  #prop("int", "id")
      *                  #prop("string", "name")
@@ -1149,7 +1149,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              #struct("channel")
      *                  #prop("string", "id")
      *                  #prop("string", "label")
@@ -1689,7 +1689,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.param #param($date, "startDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
@@ -1714,7 +1714,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param($date, "startDate")
      * @xmlrpc.param #param($date, "endDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
@@ -1745,7 +1745,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "lastModified",
      *     "select by last modified or not")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
@@ -1780,7 +1780,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.returntype
-     *    #array()
+     *    #array_begin()
      *      #struct("errata")
      *        #prop_desc("int", "id", "Errata Id")
      *        #prop_desc("string", "advisory_synopsis", "Summary of the erratum.")
@@ -1818,7 +1818,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("errata")
      *              #prop_desc("string","advisory", "name of the advisory")
      *              #prop_desc("string","issue_date",
@@ -1857,7 +1857,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.param #param("string", "endDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("errata")
      *              #prop_desc("string","advisory", "name of the advisory")
      *              #prop_desc("string","issue_date",
@@ -1899,7 +1899,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * of the following: 'Security Advisory', 'Product Enhancement Advisory',
      * 'Bug Fix Advisory'")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("errata")
      *              #prop_desc("string","advisory", "name of the advisory")
      *              #prop_desc("string","issue_date",
@@ -2002,7 +2002,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          these are custom packages.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      $PackageSerializer
      *   #array_end()
      */
@@ -2175,7 +2175,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "mergeToLabel", "the label to push the
      * errata into")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataSerializer
      *      #array_end()
      */
@@ -2215,7 +2215,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "startDate")
      * @xmlrpc.param #param("string", "endDate")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataSerializer
      *      #array_end()
      */
@@ -2256,7 +2256,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param
      *      #array_single("string", " advisory - The advisory name of the errata to merge")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataSerializer
      *      #array_end()
      */
@@ -2306,7 +2306,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "mergeToLabel", "the label to push the
      *              packages into")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $PackageSerializer
      *      #array_end()
      */
@@ -2426,7 +2426,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "the label of the channel")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *              $ChannelSerializer
      *      #array_end()
      */
@@ -2469,7 +2469,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of ContentSource (repos) that the user can see
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("map")
      *              #prop_desc("long","id", "ID of the repo")
      *              #prop_desc("string","label", "label of the repo")
@@ -2933,7 +2933,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ContentSourceSerializer
      *      #array_end()
      */
@@ -3132,7 +3132,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("string", "label", "repository label")
     * @xmlrpc.returntype
-    *      #array()
+    *      #array_begin()
     *          $ContentSourceFilterSerializer
     *      #array_end()
     *
@@ -3261,7 +3261,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey ")
      * @xmlrpc.param #param_desc("string", "label", "repository label")
      * @xmlrpc.param
-     *  #array()
+     *  #array_begin()
      *      #struct("filter_map")
      *          #prop_desc("string", "filter", "string to filter on")
      *          #prop_desc("string", "flag", "+ for include, - for exclude")

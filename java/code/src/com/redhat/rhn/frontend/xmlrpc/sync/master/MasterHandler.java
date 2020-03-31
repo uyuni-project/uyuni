@@ -246,7 +246,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.doc Get all the Masters this Slave knows about
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $IssMasterSerializer
      *      #array_end()
      */
@@ -266,7 +266,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     $IssMasterOrgSerializer
      *   #array_end()
      */
@@ -289,7 +289,7 @@ public class MasterHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "id", "Id of the desired Master")
      * @xmlrpc.param
-     *   #array()
+     *   #array_begin()
      *      #struct("master-org details")
      *          #prop("int", "masterOrgId")
      *          #prop("string", "masterOrgName")

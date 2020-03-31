@@ -106,7 +106,7 @@ public class ServerConfigHandler extends BaseHandler {
      *      #options_end()
      *
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      * $ConfigFileNameDtoSerializer
      * #array_end()
      */
@@ -318,7 +318,7 @@ public class ServerConfigHandler extends BaseHandler {
      *              in the system's sandbox configuration channel")
      *      #options_end()
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ConfigRevisionSerializer
      *      #array_end()
      */
@@ -456,7 +456,7 @@ public class ServerConfigHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int","serverId")
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *  $ConfigChannelSerializer
      *  #array_end()
      */

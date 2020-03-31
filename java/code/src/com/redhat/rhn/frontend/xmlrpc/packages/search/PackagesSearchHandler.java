@@ -71,7 +71,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "name",
      *      "package name to search for")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
@@ -94,7 +94,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "query",
      *      "text to match in package name or description")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
@@ -117,7 +117,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "query",
      *      "text to match in package name or summary")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $PackageOverviewSerializer
      * #array_end()
      *  */
@@ -151,7 +151,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "luceneQuery",
      *      "a query written in the form of Lucene QueryParser Syntax")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */
@@ -194,7 +194,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "channelLabel",
      *      "Channel Label")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */
@@ -258,7 +258,7 @@ public class PackagesSearchHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "actKey",
      *      "activation key to look for packages in")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *      $PackageOverviewSerializer
      *   #array_end()
      *  */

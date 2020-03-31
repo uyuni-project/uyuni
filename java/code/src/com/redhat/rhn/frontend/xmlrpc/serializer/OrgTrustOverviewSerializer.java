@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  * OrgSerializer is a custom serializer for the XMLRPC library.
  * It converts an OrgTrustOverview to an XMLRPC &lt;struct&gt;.
  * @xmlrpc.doc
- *   #array()
+ *   #array_begin()
  *     #struct("trusted organizations")
  *       #prop("int", "orgId")
  *       #prop("string", "orgName")

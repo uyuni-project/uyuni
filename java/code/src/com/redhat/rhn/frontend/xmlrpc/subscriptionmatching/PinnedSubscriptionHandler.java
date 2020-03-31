@@ -46,7 +46,7 @@ public class PinnedSubscriptionHandler extends BaseHandler {
      * @xmlrpc.doc Lists all PinnedSubscriptions
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $PinnedSubscriptionSerializer
      *     #array_end()
      */

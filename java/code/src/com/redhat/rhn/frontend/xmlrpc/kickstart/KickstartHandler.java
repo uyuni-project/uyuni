@@ -62,7 +62,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to
      * search.")
-     * @xmlrpc.returntype #array() $KickstartTreeSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $KickstartTreeSerializer #array_end()
      */
     @Deprecated
     public List listKickstartableTrees(User loggedInUser,
@@ -78,7 +78,7 @@ public class KickstartHandler extends BaseHandler {
      *
      * @xmlrpc.doc List kickstartable channels for the logged in user.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array() $ChannelSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $ChannelSerializer #array_end()
      */
     public List<Channel> listKickstartableChannels(User loggedInUser) {
         ensureConfigAdmin(loggedInUser);
@@ -94,7 +94,7 @@ public class KickstartHandler extends BaseHandler {
      *
      * @xmlrpc.doc List autoinstallable channels for the logged in user.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array() $ChannelSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $ChannelSerializer #array_end()
      */
     public List<Channel> listAutoinstallableChannels(User loggedInUser) {
         ensureConfigAdmin(loggedInUser);
@@ -452,7 +452,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.doc Provides a list of kickstart profiles visible to the user's
      * org
      * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array() $KickstartDtoSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $KickstartDtoSerializer #array_end()
      */
     public List listKickstarts(User loggedInUser) {
         checkKickstartPerms(loggedInUser);
@@ -467,7 +467,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.doc List all Ip Ranges and their associated kickstarts available
      * in the user's org.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype #array() $KickstartIpRangeSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $KickstartIpRangeSerializer #array_end()
      *
      */
     public List listAllIpRanges(User loggedInUser) {

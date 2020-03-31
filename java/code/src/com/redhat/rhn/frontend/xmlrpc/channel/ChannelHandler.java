@@ -46,7 +46,7 @@ public class ChannelHandler extends BaseHandler {
      * @xmlrpc.doc List all visible software channels.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      #struct("channel")
      *          #prop("string", "label")
      *          #prop("string", "name")
@@ -98,7 +98,7 @@ public class ChannelHandler extends BaseHandler {
      * @xmlrpc.doc List all software channels that the user's organization is entitled to.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
@@ -119,7 +119,7 @@ public class ChannelHandler extends BaseHandler {
      * is entitled to.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
@@ -141,7 +141,7 @@ public class ChannelHandler extends BaseHandler {
      * entitled to.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
@@ -165,7 +165,7 @@ public class ChannelHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "popularityCount")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
@@ -185,7 +185,7 @@ public class ChannelHandler extends BaseHandler {
      * @xmlrpc.doc List all software channels that belong to the user's organization.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
@@ -205,7 +205,7 @@ public class ChannelHandler extends BaseHandler {
      * organization.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
@@ -229,7 +229,7 @@ public class ChannelHandler extends BaseHandler {
      * their 'end-of-life' date.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */
@@ -249,7 +249,7 @@ public class ChannelHandler extends BaseHandler {
      * @xmlrpc.doc List all software channels that the user is entitled to manage.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $ChannelTreeNodeSerializer
      *     #array_end()
      */

@@ -144,7 +144,7 @@ public class CustomInfoHandler extends BaseHandler {
      * @xmlrpc.doc List the custom information keys defined for the user's organization.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $CustomDataKeySerializer
      *      #array_end()
      */

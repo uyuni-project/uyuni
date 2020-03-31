@@ -48,7 +48,7 @@ public class FilePreservationListHandler extends BaseHandler {
      * associated with the user logged into the given session
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *        $FilePreservationDtoSerializer
      *      #array_end()
      */

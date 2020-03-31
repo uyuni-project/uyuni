@@ -46,7 +46,7 @@
 #macro( struct_desc_end )
 	</ul>
 #end
-#macro( array)
+#macro(array_begin)
 array:
   <ul>
    <li>

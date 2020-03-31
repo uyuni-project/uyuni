@@ -76,7 +76,7 @@ public class ImageProfileHandler extends BaseHandler {
      *
      * @xmlrpc.doc List available Image Profiles
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array() $ImageProfileSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $ImageProfileSerializer #array_end()
      */
     public List<ImageProfile> listImageProfiles(User loggedInUser) {
         ensureImageAdmin(loggedInUser);

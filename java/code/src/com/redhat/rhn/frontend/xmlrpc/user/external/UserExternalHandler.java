@@ -364,7 +364,7 @@ public class UserExternalHandler extends BaseHandler {
      * by a satellite_admin.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *     $UserExtGroupSerializer
      * #array_end()
      */
@@ -532,7 +532,7 @@ public class UserExternalHandler extends BaseHandler {
      * called by an org_admin.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *     $OrgUserExtGroupSerializer
      * #array_end()
      */

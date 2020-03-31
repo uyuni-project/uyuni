@@ -193,7 +193,7 @@ public class ProxyHandler extends BaseHandler {
      * @xmlrpc.doc List the proxies within the user's organization.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $SystemOverviewSerializer
      * #array_end()
      */

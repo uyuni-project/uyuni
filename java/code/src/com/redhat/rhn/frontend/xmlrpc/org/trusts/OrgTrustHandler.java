@@ -53,7 +53,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.doc List all organanizations trusted by the user's organization.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $TrustedOrgDtoSerializer
      *     #array_end()
      */
@@ -77,7 +77,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "trustOrgId", "Id of the trusted organization")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("channel info")
      *             #prop("int", "channel_id")
      *             #prop("string", "channel_name")
@@ -120,7 +120,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "trustOrgId", "Id of the trusted organization")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("channel info")
      *             #prop("int", "channel_id")
      *             #prop("string", "channel_name")
@@ -306,7 +306,7 @@ public class OrgTrustHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "orgId")
      * @xmlrpc.param #param("string", "trustOrgId")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     #struct("affected systems")
      *       #prop("int", "systemId")
      *       #prop("string", "systemName")

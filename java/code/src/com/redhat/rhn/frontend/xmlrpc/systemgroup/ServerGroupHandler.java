@@ -60,7 +60,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param  string systemGroupName
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      $UserSerializer
      *   #array_end()
      */
@@ -137,7 +137,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ServerSerializer
      *      #array_end()
      */
@@ -159,7 +159,7 @@ public class ServerGroupHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "systemGroupName")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -287,7 +287,7 @@ public class ServerGroupHandler extends BaseHandler {
      * system groups) Caller must be an organization administrator.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ManagedServerGroupSerializer
      *      #array_end()
      */
@@ -307,7 +307,7 @@ public class ServerGroupHandler extends BaseHandler {
      *      in user.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ManagedServerGroupSerializer
      *      #array_end()
      */

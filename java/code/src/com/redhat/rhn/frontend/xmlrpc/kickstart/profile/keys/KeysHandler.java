@@ -53,7 +53,7 @@ public class KeysHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "ksLabel", "the kickstart profile label")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     $ActivationKeySerializer
      *   #array_end()
      */

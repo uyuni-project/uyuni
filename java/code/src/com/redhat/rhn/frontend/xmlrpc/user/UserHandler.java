@@ -101,7 +101,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of users in your organization.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *     $UserSerializer
      * #array_end()
      */
@@ -843,7 +843,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     #struct("system group")
      *       #prop("int", "id")
      *       #prop("string", "name")
@@ -880,7 +880,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
-     *   #array()
+     *   #array_begin()
      *     #struct("system group")
      *       #prop("int", "id")
      *       #prop("string", "name")

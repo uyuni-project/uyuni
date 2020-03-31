@@ -48,7 +48,7 @@ public class PackagesProviderHandler extends BaseHandler {
      * User executing the request must be a Satellite administrator.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      $PackageProviderSerializer
      *  #array_end()
      */
@@ -70,7 +70,7 @@ public class PackagesProviderHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "providerName", "The provider name")
      * @xmlrpc.returntype
-     *  #array()
+     *  #array_begin()
      *      $PackageKeySerializer
      *  #array_end()
      */

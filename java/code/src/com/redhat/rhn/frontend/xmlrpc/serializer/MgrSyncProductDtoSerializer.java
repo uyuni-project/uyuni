@@ -32,15 +32,15 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "friendly_name", "Friendly name of the product")
  *     #prop_desc("string", "arch", "Architecture")
  *     #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
- *     #array()
+ *     #array_begin()
  *       $MgrSyncChannelDtoSerializer
  *     #array_end()
- *     #array()
+ *     #array_begin()
  *       #struct("extension product")
  *         #prop_desc("string", "friendly_name", "Friendly name of extension product")
  *         #prop_desc("string", "arch", "Architecture")
  *         #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
- *         #array()
+ *         #array_begin()
  *           $MgrSyncChannelDtoSerializer
  *         #array_end()
  *       #struct_end()

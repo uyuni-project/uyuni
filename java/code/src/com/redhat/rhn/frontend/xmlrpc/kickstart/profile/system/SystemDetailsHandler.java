@@ -409,7 +409,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "kickstartLabel")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("key")
      *              #prop("string", "description")
      *              #prop("string", "type")
@@ -538,7 +538,7 @@ public class SystemDetailsHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "kickstartLabel")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         $FileListSerializer
      *     #array_end()
      */

@@ -95,7 +95,7 @@ public class ImageStoreHandler extends BaseHandler {
      *
      * @xmlrpc.doc List available Image Store Types
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array() $ImageStoreTypeSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $ImageStoreTypeSerializer #array_end()
      */
     public List<ImageStoreType> listImageStoreTypes(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
@@ -109,7 +109,7 @@ public class ImageStoreHandler extends BaseHandler {
      *
      * @xmlrpc.doc List available Image Stores
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array() $ImageStoreSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $ImageStoreSerializer #array_end()
      */
     public List<ImageStore> listImageStores(User loggedInUser) {
         ensureImageAdmin(loggedInUser);

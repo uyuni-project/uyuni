@@ -50,7 +50,7 @@
   </itemizedlist>
 </listitem>
 #end
-#macro(array)
+#macro(array_begin)
 <listitem>
   <para>array:</para>
   <itemizedlist spacing="compact">

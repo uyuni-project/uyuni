@@ -121,7 +121,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("crash")
      *             #prop("int", "id")
      *             #prop("string", "crash")
@@ -210,7 +210,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "crashId")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("crashFile")
      *             #prop("int", "id")
      *             #prop("string", "filename")
@@ -371,7 +371,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "crashId")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("crashNote")
      *             #prop("int", "id")
      *             #prop("string", "subject")
@@ -402,7 +402,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.doc Get Software Crash Overview
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("crash")
      *             #prop_desc("string", "uuid", "Crash UUID")
      *             #prop_desc("string", "component",
@@ -440,7 +440,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "uuid")
      * @xmlrpc.returntype
-     *     #array()
+     *     #array_begin()
      *         #struct("crash")
      *             #prop_desc("int", "server_id",
      *                        "ID of the server the crash occurred on")

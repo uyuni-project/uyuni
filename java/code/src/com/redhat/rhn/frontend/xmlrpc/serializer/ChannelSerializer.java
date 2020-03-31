@@ -57,7 +57,7 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *      #prop("string", "end_of_life")
  *      #prop("string", "parent_channel_label")
  *      #prop("string", "clone_original")
- *      #array()
+ *      #array_begin()
  *          #struct("contentSources")
  *              #prop("int", "id")
  *              #prop("string", "label")

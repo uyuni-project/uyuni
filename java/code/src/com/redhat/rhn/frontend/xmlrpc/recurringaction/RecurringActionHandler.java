@@ -63,7 +63,7 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "entityType", "Type of the target entity. Can be MINION, GROUP or ORG.")
      * @xmlrpc.param #param_desc("int", "entityId", "Id of the target entity")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $RecurringActionSerializer
      *      #array_end()
      */

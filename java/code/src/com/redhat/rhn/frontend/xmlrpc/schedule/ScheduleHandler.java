@@ -130,7 +130,7 @@ public class ScheduleHandler extends BaseHandler {
      * failed and archived actions.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -150,7 +150,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that have completed successfully.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -169,7 +169,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that are in progress.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -188,7 +188,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that have failed.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -207,7 +207,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of actions that have been archived.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $ScheduleActionSerializer
      * #array_end()
      */
@@ -228,7 +228,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $ScheduleSystemSerializer
      * #array_end()
      */
@@ -253,7 +253,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $ScheduleSystemSerializer
      * #array_end()
      */
@@ -278,7 +278,7 @@ public class ScheduleHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "actionId")
      * @xmlrpc.returntype
-     * #array()
+     * #array_begin()
      *   $ScheduleSystemSerializer
      * #array_end()
      */

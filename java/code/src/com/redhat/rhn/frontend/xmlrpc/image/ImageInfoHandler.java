@@ -65,7 +65,7 @@ public class ImageInfoHandler extends BaseHandler {
      *
      * @xmlrpc.doc List available Images
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array() $ImageInfoSerializer #array_end()
+     * @xmlrpc.returntype #array_begin() $ImageInfoSerializer #array_end()
      */
     public List<ImageInfo> listImages(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
@@ -204,7 +204,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $ErrataOverviewSerializer
      *      #array_end()
      */
@@ -234,7 +234,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "imageId")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("package")
      *                 #prop("string", "name")
      *                 #prop("string", "version")

@@ -306,7 +306,7 @@ public class ErrataHandler extends BaseHandler {
      *                  following: 'Low', 'Moderate', 'Important', 'Critical'
      *                  or 'Unspecified'")
      *          #prop_desc("array", "bugs", "'bugs' is the key into the struct")
-     *              #array()
+     *              #array_begin()
      *                 #struct("bug")
      *                    #prop_desc("int", "id", "Bug Id")
      *                    #prop("string", "summary")
@@ -544,7 +544,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          $SystemOverviewSerializer
      *      #array_end()
      */
@@ -643,7 +643,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("channel")
      *              #prop("int", "channel_id")
      *              #prop("string", "label")
@@ -671,7 +671,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.doc Returns a list of unpublished errata
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype
-     *      #array()
+     *      #array_begin()
      *          #struct("erratum")
      *              #prop("int", "id")
      *              #prop("int", "published")
@@ -752,7 +752,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              #struct("package")
      *                  #prop("int", "id")
      *                  #prop("string", "name")
@@ -949,7 +949,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param
      *     #array_single("string", " advisory - The advisory name of the errata to clone.")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $ErrataSerializer
      *          #array_end()
      */
@@ -1089,7 +1089,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param
      *     #array_single("string", " advisory - The advisory name of the errata to clone.")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $ErrataSerializer
      *          #array_end()
      */
@@ -1185,7 +1185,7 @@ public class ErrataHandler extends BaseHandler {
      *                  or 'Unspecified'")
      *       #struct_end()
      *  @xmlrpc.param
-     *       #array()
+     *       #array_begin()
      *              #struct("bug")
      *                  #prop_desc("int", "id", "Bug Id")
      *                  #prop("string", "summary")
@@ -1487,7 +1487,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "channelLabel")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $ErrataSerializer
      *          #array_end()
      */
@@ -1509,7 +1509,7 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "cveName")
      * @xmlrpc.returntype
-     *          #array()
+     *          #array_begin()
      *              $ErrataSerializer
      *          #array_end()
      */
