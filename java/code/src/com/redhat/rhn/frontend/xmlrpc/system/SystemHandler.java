@@ -6555,7 +6555,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
      *      #struct_begin("osaPing")
-     *          #prop_desc("String" "state"
+     *          #prop_desc("string" "state"
      *          "state of the system (unknown, online, offline)")
      *          #prop_desc("dateTime.iso8601" "lastMessageTime"
      *          "time of the last received response
