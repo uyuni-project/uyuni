@@ -211,6 +211,13 @@ public class SystemEntitlementsSubmitAction extends
                     log.debug("removing entitlement");
                     systemEntitlementManager.removeServerEntitlement(server, ent);
                     successCount++;
+
+                    // Handle monitoring disablement
+                    server.asMinionServer().ifPresent(minion -> {
+                        if (EntitlementManager.MONITORING.equals(ent)) {
+                            FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
+                        }
+                    });
                 }
             } //else
 
