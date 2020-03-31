@@ -52,12 +52,12 @@ There are also hints about [Pitfalls in writing the testsuite](documentation/pit
 
 * Development (to be run against a HEAD version of SUSE Manager):
 
-  * [`Manager`](https://github.com/SUSE/spacewalk-testsuite-base)
+  * [`master`](https://github.com/uyuni-project/uyuni)
 
 * Release (to be run against a nightly or released *tagged* version of SUSE Manager):
 
-  * [`Manager-3.1`](https://github.com/SUSE/spacewalk/tree/manager31)
-  * [`Manager-3.0`](https://github.com/SUSE/spacewalk/tree/manager30)
+  * [`Manager-4.0`](https://github.com/SUSE/spacewalk/tree/Manager-4.0)
+  * [`Manager-3.2`](https://github.com/SUSE/spacewalk/tree/Manager-3.2)
 
 
 # Dummy packages used by the Testsuite
