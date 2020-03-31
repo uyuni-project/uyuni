@@ -206,11 +206,7 @@ class FormulaSelection extends React.Component {
     }
 
     render() {
-      var items = [{severity: "info", text:
-            <p>On this page you can select <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html">Salt Formulas</a> for
-            this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software. 
-            </p>
-        }];
+      var items = [];
         if(this.props.warningMessage){
           items.push({severity: "warning", text: this.props.warningMessage});
         }
@@ -230,6 +226,9 @@ class FormulaSelection extends React.Component {
 
         return (
             <div>
+                <p>
+                    {t('On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software.')} 
+                </p>
                 <Messages items={items}/>
                 <SectionToolbar>
                     <div className="action-button-wrapper">

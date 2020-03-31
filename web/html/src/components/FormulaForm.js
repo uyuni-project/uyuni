@@ -28,8 +28,6 @@ class FormulaForm extends React.Component {
     constructor(props) {
         super(props);
 
-        const previewMessage = <p>On this page you can configure <a href="https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html" target="_blank" rel="noopener noreferrer">Salt Formulas</a> to automatically install and configure software.</p>;
-
         this.state = {
             formulaName: "",
             formulaList: [],
@@ -37,7 +35,7 @@ class FormulaForm extends React.Component {
             systemData: {},
             groupData: {},
             formulaChanged: false,
-            messages: [previewMessage],
+            messages: [],
             errors: []
         };
 
@@ -150,6 +148,8 @@ class FormulaForm extends React.Component {
     }
 
     render() {
+        const defaultMessage = <p>{t('On this page you can configure Salt Formulas to automatically install and configure software.')}</p>;
+
         let messageItems = this.state.messages.map((msg) => {
             return { severity: "info", text: msg };
         });
@@ -163,6 +163,7 @@ class FormulaForm extends React.Component {
                 this.props.addFormulaNavBar(get(this.state.formulaList, ["Not found"]), this.props.formulaId);
             return (
                 <div>
+                    {defaultMessage}
                     {messages}
                     <div className="panel panel-default">
                         <div className="panel-heading">
@@ -187,6 +188,7 @@ class FormulaForm extends React.Component {
                     groupData={this.state.groupData}
                     scope={this.props.scope}>
                         <div>
+                            {defaultMessage}
                             {messages}
                             <div className="form-horizontal">
                                 <SectionToolbar>
