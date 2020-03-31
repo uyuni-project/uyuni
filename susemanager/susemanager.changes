@@ -1,3 +1,4 @@
+- add package redhat-rpm-config to bootstrap repo for RH and CentOS systems (bsc#1168069)
 - Add 'python-singledispatch' to SLE12 (all SPs) and RES7 bootstrap repos.
 - Enable support for bootstrapping Astra Linux CE "Orel"
 - add database 10 to 12 migration script
