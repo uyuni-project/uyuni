@@ -384,7 +384,7 @@ The check box can be identified by name, id or label text.
   When I install package "virgo-dummy-1.0-1.1" on this "sle_minion"
   When I remove package "orion-dummy" from this "sle_minion"
   When I refresh packages list via spacecmd on "sle_minion"
-  When I wait for "virgo-dummy-1.0" to be installed on this "sle_minion"
+  When I wait for "virgo-dummy-1.0" to be installed on "sle_minion"
   When I wait for "milkyway-dummy" to be uninstalled on "sle_minion"
   When I wait until refresh package list on "sle_minion" is finished
   When I wait until package "virgo-dummy" is installed on "sle_minion" via spacecmd

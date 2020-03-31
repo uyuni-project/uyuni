@@ -164,7 +164,7 @@ Feature: Salt SSH action chain
     And I should see a "Action Chain new action chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain was executed successfully
-    When I wait for "virgo-dummy" to be installed on this "ssh_minion"
+    When I wait for "virgo-dummy" to be installed on "ssh_minion"
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "ssh_minion"
 
   Scenario: Add a remote command to the new action chain on SSH minion
