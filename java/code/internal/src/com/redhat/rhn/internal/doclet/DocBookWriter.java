@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,14 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DocBookWriter
+ * DocBook Writer
  */
 public class DocBookWriter extends DocWriter {
 
     private static final String[] OTHER_FILES = {"faqs", "scripts"};
-
-    private String output;
-    private String templates;
 
     /**
      * @param outputIn path to the output folder
@@ -35,9 +32,7 @@ public class DocBookWriter extends DocWriter {
      *
      */
     public DocBookWriter(String outputIn, String templatesIn, boolean debugIn) {
-        super(debugIn);
-        output = outputIn;
-        templates = templatesIn;
+        super(outputIn, templatesIn, debugIn);
     }
 
     /**

@@ -23,8 +23,6 @@ import java.util.Map;
  */
 public class AsciidocWriter extends DocWriter {
 
-    private String output;
-    private String templates;
 
     /**
      * @param outputIn path to the output folder
@@ -32,9 +30,7 @@ public class AsciidocWriter extends DocWriter {
      * @param debugIn whether to show debugging messages
      */
     public AsciidocWriter(String outputIn, String templatesIn, boolean debugIn) {
-        super(debugIn);
-        output = outputIn;
-        templates = templatesIn;
+        super(outputIn, templatesIn, debugIn);
     }
 
     /**
