@@ -8,17 +8,20 @@ import Promote from "../promote/promote";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import {mapAddEnvironmentRequest, mapUpdateEnvironmentRequest} from './environment.utils';
 
-import type {ProjectEnvironmentType} from '../../../type/project.type.js';
-import type {ProjectHistoryEntry} from "../../../type/project.type";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
+import getRenderedMessages from "../../messages/messages";
+
+import type {ProjectEnvironmentType, ProjectHistoryEntry, ProjectMessageType}
+  from "../../../type/project.type";
 
 type Props = {
   projectId: string,
   environments: Array<ProjectEnvironmentType>,
   historyEntries: Array<ProjectHistoryEntry>,
   onChange: Function,
+  messages?: Array<ProjectMessageType>
 };
 
 const EnvironmentLifecycle = (props: Props) => {
@@ -29,11 +32,14 @@ const EnvironmentLifecycle = (props: Props) => {
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
+  const messages = getRenderedMessages(props.messages || []);
+
   return (
     <CreatorPanel
       id="environmentLifecycle"
       title={t("Environment Lifecycle")}
       creatingText={t("Add Environment")}
+      className={messages.panelClass}
       panelLevel="2"
       disableEditing={!hasEditingPermissions}
       collapsible
@@ -73,6 +79,7 @@ const EnvironmentLifecycle = (props: Props) => {
       renderContent={() =>
         <div className="min-height-panel">
           <>
+            {messages.messages}
             {
               props.environments.length === 0 &&
               <h4>{t("No environments created")}</h4>

@@ -45,6 +45,11 @@ public class Module {
         return stream;
     }
 
+    /**
+     * Get the stream name in the 'module:stream' format
+     *
+     * @return the module stream name
+     */
     public String getFullName() {
         if (StringUtils.isEmpty(stream)) {
             return getName();

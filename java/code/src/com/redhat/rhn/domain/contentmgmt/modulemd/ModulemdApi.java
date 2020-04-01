@@ -155,7 +155,7 @@ public class ModulemdApi {
 
             // Read JSON from stdout
             BufferedReader procReader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            ModulemdApiResponse res = GSON.fromJson(procReader, new TypeToken<ModulemdApiResponse>() {}.getType());
+            ModulemdApiResponse res = GSON.fromJson(procReader, new TypeToken<ModulemdApiResponse>() { }.getType());
 
             proc.waitFor();
             return res;
