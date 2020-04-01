@@ -432,31 +432,27 @@ class TableInsert(TableUpdate):
 
     def __init__(self, table, dbmodule):
         TableUpdate.__init__(self, table, dbmodule)
-        self.queryTemplate = "insert into %s (%s) values (%s)"
-        self.count = 1000
+        self.queryTemplate = "insert into %s (%s) values %%s"
 
         self.insert_fields = self.pks + self.otherfields + self.blob_fields
-        self.insert_values = [':%s' % x for x in self.pks + self.otherfields + self.blob_fields]
 
     def _buildQuery(self, key):
-        q = self.queryTemplate % (self.table.name,
-                                  ', '.join(self.insert_fields),
-                                  ', '.join(self.insert_values))
+        q = self.queryTemplate % (self.table.name, ', '.join(self.insert_fields))
         return q
 
     def query(self, values):
         if self.blob_fields:
-            chunksize = 1
             blob_map = {}
             for f in self.blob_fields:
                 blob_map[f] = f
         else:
-            chunksize = self.count
             blob_map = None
 
         # Do the insert
         statement = self._getCachedQuery(None, blob_map=blob_map)
-        executeStatement(statement, values, chunksize)
+        l = len(values[self.insert_fields[0]])
+        value_list = [[values[f][i] for f in self.insert_fields] for i in range(l)]
+        statement.execute_values(self._buildQuery(None), value_list, fetch=False, page_size=10_000)
 
 
 def executeStatement(statement, valuesHash, chunksize):
