@@ -185,13 +185,6 @@
     <antcall target="apidoc" />
   </target>
 
-  <target name="apidoc-list" description="Generate the api for jsps" depends="init">
-    <property name="doclet.class" value="ListDoclet" />
-    <property name="template.dir" value="list" />
-    <property name="apidoc.output" value="${report.dir}/apidocs/" />
-    <antcall target="apidoc" />
-  </target>
-
   <target name="apidoc-html" description="Generate the api for jsps" depends="init">
     <property name="doclet.class" value="HtmlDoclet" />
     <property name="template.dir" value="html" />
