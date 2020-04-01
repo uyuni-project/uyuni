@@ -317,8 +317,7 @@ This package contains apidoc sources of spacewalk-java.
 %dir %{_defaultdocdir}/%{name}
 %dir %{_defaultdocdir}/%{name}/xml
 %{_defaultdocdir}/%{name}/xml/susemanager_api_doc.xml
-%dir %{_defaultdocdir}/%{name}/asciidoc
-%{_defaultdocdir}/%{name}/asciidoc/susemanager_api_doc.adoc
+%{_defaultdocdir}/%{name}/asciidoc/
 
 %package -n spacewalk-taskomatic
 Summary:        Java version of taskomatic
@@ -564,8 +563,7 @@ ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/po
 # install apidoc sources
 mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/xml
 install -m 644 build/reports/apidocs/docbook/susemanager_api_doc.xml $RPM_BUILD_ROOT%{_docdir}/%{name}/xml/susemanager_api_doc.xml
-mkdir -p $RPM_BUILD_ROOT%{_docdir}/%{name}/asciidoc
-install -m 644 build/reports/apidocs/asciidoc/handlers/apilist.adoc $RPM_BUILD_ROOT%{_docdir}/%{name}/asciidoc/susemanager_api_doc.adoc
+cp -R build/reports/apidocs/asciidoc/ $RPM_BUILD_ROOT%{_docdir}/%{name}/asciidoc/
 # delete JARs which must not be deployed
 rm -rf $RPM_BUILD_ROOT%{jardir}/jspapi.jar
 rm -rf $RPM_BUILD_ROOT%{jardir}/jasper5-compiler.jar
