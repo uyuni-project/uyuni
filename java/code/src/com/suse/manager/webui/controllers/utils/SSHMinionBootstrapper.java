@@ -68,8 +68,8 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected List<String> validateJsonInput(BootstrapHostsJson input) {
-        return InputValidator.INSTANCE.validateBootstrapSSHManagedInput(input);
+    protected List<String> validateParamsPerContactMethod(BootstrapParameters params) {
+        return InputValidator.INSTANCE.validateBootstrapSSHManagedInput(params);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
      * @return the bootstrap parameters
      */
     @Override
-    protected BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
+    public BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
         String user = input.getUser();
         if (StringUtils.isEmpty(user)) {
             user = getSSHUser();

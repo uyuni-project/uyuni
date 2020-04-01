@@ -55,8 +55,7 @@ public class BootstrapHostsJson {
      * @param activationKey activation key
      * @param proxyIn system ID of proxy server to use
      */
-    public BootstrapHostsJson(String hostIn, Integer portIn, String userIn,
-                              String passwordIn, String activationKey, Long proxyIn) {
+    public BootstrapHostsJson(String hostIn, Integer portIn, String userIn, String passwordIn, String activationKey, Long proxyIn) {
         host = hostIn;
         port = String.valueOf(portIn);
         user = userIn;

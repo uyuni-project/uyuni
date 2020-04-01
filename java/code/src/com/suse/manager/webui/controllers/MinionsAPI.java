@@ -29,6 +29,7 @@ import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 import org.apache.log4j.Logger;
@@ -190,11 +191,10 @@ public class MinionsAPI {
      * @return json result of the API call
      */
     public String bootstrap(Request request, Response response, User user) {
-        return json(
-                response,
-                regularMinionBootstrapper.bootstrap(
-                        GSON.fromJson(request.body(), BootstrapHostsJson.class),
-                        user, ContactMethodUtil.getRegularMinionDefault()).asMap());
+        BootstrapHostsJson input = GSON.fromJson(request.body(), BootstrapHostsJson.class);
+        BootstrapParameters params = regularMinionBootstrapper.createBootstrapParams(input);
+        String defaultContactMethod = ContactMethodUtil.getRegularMinionDefault();
+        return json(response, regularMinionBootstrapper.bootstrap(params, user, defaultContactMethod).asMap());
     }
 
 
@@ -212,11 +212,9 @@ public class MinionsAPI {
      * @return json result of the API call
      */
     public String bootstrapSSH(Request request, Response response, User user) {
-        return json(
-                response,
-                sshMinionBootstrapper.bootstrap(
-                        GSON.fromJson(request.body(), BootstrapHostsJson.class),
-                        user, ContactMethodUtil.getSSHMinionDefault()).asMap());
+        BootstrapHostsJson input = GSON.fromJson(request.body(), BootstrapHostsJson.class);
+        BootstrapParameters params = sshMinionBootstrapper.createBootstrapParams(input);
+        String defaultContactMethod = ContactMethodUtil.getSSHMinionDefault();
+        return json(response, sshMinionBootstrapper.bootstrap(params, user, defaultContactMethod).asMap());
     }
-
 }

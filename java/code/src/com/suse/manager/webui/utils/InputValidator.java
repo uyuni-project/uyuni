@@ -15,7 +15,8 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.validator.HostPortValidator;
-import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,23 +40,25 @@ public enum InputValidator {
     /**
      * Validate input as sent from the minion bootstrapping UI.
      *
-     * @param input the data as entered in the form
+     * @param params the bootstrap parameteres
      * @return list of validation error messages
      */
-    public List<String> validateBootstrapInput(BootstrapHostsJson input) {
+    public List<String> validateBootstrapInput(BootstrapParameters params) {
         List<String> errors = new LinkedList<>();
 
-        errors.addAll(validateBootstrapSSHManagedInput(input));
+        errors.addAll(validateBootstrapSSHManagedInput(params));
 
-        String user = input.getUser();
+        String user = params.getUser();
         if (StringUtils.isEmpty(user) || !USERNAME.matcher(user).matches()) {
             errors.add("Non-valid user. Allowed characters are: letters, numbers, '.'," +
                     " '\\', '-' and '_'");
         }
 
-        String port = input.getPort();
-        if (StringUtils.isNotEmpty(port) &&
-                !HostPortValidator.getInstance().isValidPort(port)) {
+        boolean invalidPort = params.getPort()
+                .map(port -> port.toString())
+                .filter(port -> StringUtils.isNotEmpty(port) && !HostPortValidator.getInstance().isValidPort(port))
+                .isPresent();
+        if (invalidPort) {
             errors.add("Port must be a number within range 1-65535.");
         }
 
@@ -65,13 +68,13 @@ public enum InputValidator {
     /**
      * Validate input as sent from the minion bootstrapping UI for salt-ssh minions.
      *
-     * @param input the data as entered in the form
+     * @param params the bootstrap parameters
      * @return list of validation error messages
      */
-    public List<String> validateBootstrapSSHManagedInput(BootstrapHostsJson input) {
+    public List<String> validateBootstrapSSHManagedInput(BootstrapParameters params) {
         List<String> errors = new LinkedList<>();
 
-        String host = input.getHost();
+        String host = params.getHost();
         if (StringUtils.isEmpty(host) ||
                 !HostPortValidator.getInstance().isValidHost(host)) {
             errors.add("Invalid host name.");
