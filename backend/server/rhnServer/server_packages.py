@@ -195,7 +195,7 @@ class Packages:
             and ((:package_arch_id is null and package_arch_id is null)
                 or package_arch_id = :package_arch_id)
             """)
-            h.execute_bulk({
+            h.executemany(**{
                 'sysid': [sysid] * len(dlist),
                 'name_id': [a.name_id for a in dlist],
                 'evr_id': [a.evr_id for a in dlist],
@@ -232,7 +232,7 @@ class Packages:
                 'instime': [self.__expand_installtime(a.installtime) for a in alist],
             }
             try:
-                h.execute_bulk(package_data)
+                h.executemany(**package_data)
                 rhnSQL.commit()
             except rhnSQL.SQLSchemaError:
                 e = sys.exc_info()[1]

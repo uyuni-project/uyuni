@@ -116,7 +116,7 @@ def _create_rresult(testresult_id, result_label):
 
 def _store_idents(data):
     h = rhnSQL.prepare(_query_insert_identmap)
-    h.execute_bulk(data)
+    h.executemany(**data)
 
 def _get_text(node):
     rc = []
