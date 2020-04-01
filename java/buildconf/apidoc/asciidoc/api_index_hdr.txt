@@ -1,7 +1,11 @@
 = $productName API Documentation
 $productName
 4.0
+#if ($productName == "Uyuni")
+:homepage: https://www.uyuni-project.org/
+#else
 :homepage: http://www.suse.com/products/suse-manager
+#end
 
 Wecome to the $productName API. By using the included API calls, you can easily automate many of
 the tasks you perform everyday. All API calls are grouped by common functionality.

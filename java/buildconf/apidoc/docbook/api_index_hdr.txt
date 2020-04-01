@@ -7,7 +7,11 @@
     <pubdate><?dbtimestamp?></pubdate>
     <productname>$productName</productname>
     <productnumber>4.0</productnumber>
+#if ($productName == "Uyuni")
+    <bibliosource class="uri">https://www.uyuni-project.org/</bibliosource>
+#else
     <bibliosource class="uri">http://www.suse.com/products/suse-manager</bibliosource>
+#end
     <abstract>
       <para>
         Welcome to the $productName API. By using the included API calls, you can easily automate many of
