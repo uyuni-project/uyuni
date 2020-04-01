@@ -407,7 +407,7 @@ def _mark_dep_failures(server_id, action_id, data):
 
     h = rhnSQL.prepare(_query_insert_dep_failures)
 
-    h.execute_bulk(inserts)
+    h.executemany(**inserts)
 
 
 def _check_dep(server_id, action_id, failed_dep):

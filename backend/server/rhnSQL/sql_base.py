@@ -165,34 +165,6 @@ class Cursor:
         """
         return self._execute_wrapper(self._execute_values, sql, argslist, template, page_size, fetch)
 
-    def execute_bulk(self, dict, chunk_size=100):
-        """
-        Uses executemany but chops the incoming dict into chunks for each
-        call.
-
-        When attempting to execute bulk operations with a lot of rows in the
-        arrays,
-        Oracle may occasionally lock (probably the oracle client library).
-        I noticed this previously with the import code. -- misa
-        This function executes bulk operations in smaller chunks
-        dict is supposed to be the dictionary that we normally apply to
-        statement.execute.
-        """
-        start_chunk = 0
-        while 1:
-            subdict = {}
-            for k, arr in list(dict.items()):
-                subarr = arr[start_chunk:start_chunk + chunk_size]
-                if not subarr:
-                    # Nothing more to do here - we exhausted the array(s)
-                    return
-                subdict[k] = subarr
-            self.executemany(**subdict)
-            start_chunk = start_chunk + chunk_size
-
-        # Should never reach this point
-
-
     def _execute_wrapper(self, function, *p, **kw):
         """
         Database specific execute wrapper. Mostly used just to catch DB
