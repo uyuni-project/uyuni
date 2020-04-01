@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2020 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,23 +25,28 @@ import java.util.Map;
 
 /**
  *
- * DocWriter
- * @version $Rev$
+ * Base doc Writer
  */
 public abstract class DocWriter {
 
 
     protected VelocityHelper serializerRenderer;
+    protected String output;
+    protected String templates;
     private boolean debug = false;
 
 
     /**
      * Constructor
      *
+     * @param outputIn path to the output folder
+     * @param templatesIn path to the HTML templates folder
      * @param debugIn whether to show debugging messages
      *
      */
-    public DocWriter(boolean debugIn) {
+    public DocWriter(String outputIn, String templatesIn, boolean debugIn) {
+        output = outputIn;
+        templates = templatesIn;
         debug = debugIn;
     }
 
@@ -77,10 +83,10 @@ public abstract class DocWriter {
                 throws Exception {
         VelocityHelper vh = new VelocityHelper(templateDir);
         vh.addMatch("handlers", handlers);
-        String output = vh.renderTemplateFile(ApiDoclet.API_HEADER_FILE);
-        output += vh.renderTemplateFile(ApiDoclet.API_INDEX_FILE);
-        output += vh.renderTemplateFile(ApiDoclet.API_FOOTER_FILE);
-        return output;
+        String out = vh.renderTemplateFile(ApiDoclet.API_HEADER_FILE);
+        out += vh.renderTemplateFile(ApiDoclet.API_INDEX_FILE);
+        out += vh.renderTemplateFile(ApiDoclet.API_FOOTER_FILE);
+        return out;
     }
 
     /**
@@ -108,13 +114,12 @@ public abstract class DocWriter {
 
         VelocityHelper vh = new VelocityHelper(templateDir);
         vh.addMatch("handler", handler);
-        String output = vh.renderTemplateFile(ApiDoclet.API_HANDLER_FILE);
+        String out = vh.renderTemplateFile(ApiDoclet.API_HANDLER_FILE);
 
         //Now we render the serializers
-        output = serializerRenderer.renderTemplate(output);
+        out = serializerRenderer.renderTemplate(out);
 
-
-        return output;
+        return out;
     }
 
     /**

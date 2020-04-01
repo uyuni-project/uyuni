@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2020 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,12 +20,9 @@ import java.util.Map;
 
 /**
  *
- * JSPWriter
+ * Singlepage Writer
  */
 public class SinglePageWriter extends DocWriter {
-
-    private String output;
-    private String templates;
 
     /**
      * @param outputIn path to the output folder
@@ -32,9 +30,7 @@ public class SinglePageWriter extends DocWriter {
      * @param debugIn whether to show debugging messages
      */
     public SinglePageWriter(String outputIn, String templatesIn, boolean debugIn) {
-        super(debugIn);
-        output = outputIn;
-        templates = templatesIn;
+        super(outputIn, templatesIn, debugIn);
     }
 
     /**

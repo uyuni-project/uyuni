@@ -124,11 +124,11 @@ public abstract class ApiDoclet implements Doclet {
     /**
      * @return The documentation writer for the Doclet implementation
      *
-     * @param output the folder where the result needs to be written
-     * @param template the folder where the templates are located
+     * @param outputIn the folder where the result needs to be written
+     * @param templateIn the folder where the templates are located
      * @param debugIn whether to show debug infos
      */
-    public abstract DocWriter getWriter(String output, String template, boolean debugIn);
+    public abstract DocWriter getWriter(String outputIn, String templateIn, boolean debugIn);
 
     @Override
     public Set<? extends Option> getSupportedOptions() {
