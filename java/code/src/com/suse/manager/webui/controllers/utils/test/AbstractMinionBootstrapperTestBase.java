@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2020 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+
 package com.suse.manager.webui.controllers.utils.test;
 
 import com.redhat.rhn.domain.server.MinionServer;
@@ -57,7 +72,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(true));
         }});
 
-        BootstrapResult bootstrap = bootstrapper.bootstrap(input, user, "default");
+        BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, "default");
         assertFalse(bootstrap.isSuccess());
     }
 
@@ -116,8 +132,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(false));
         }});
 
-        BootstrapResult bootstrap = bootstrapper.bootstrap(input, user,
-                getDefaultContactMethod());
+        BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
         assertFalse(bootstrap.isSuccess());
     }
 
@@ -153,7 +169,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
 
         BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
-        BootstrapResult bootstrap = bootstrapper.bootstrap(input, user, getDefaultContactMethod());
+        BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
         assertTrue(bootstrap.isSuccess());
     }
 
@@ -170,7 +187,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(of(key.getKey())));
         }});
 
-        assertFalse(bootstrapper.bootstrap(input, user, getDefaultContactMethod()).isSuccess());
+        BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+        assertFalse(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
     }
 
     /**
@@ -204,7 +222,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             will(returnValue(new Result<>(Xor.right(sshResult))));
         }});
 
-        assertTrue(bootstrapper.bootstrap(input, user, getDefaultContactMethod()).isSuccess());
+        BootstrapParameters params = bootstrapper.createBootstrapParams(input);
+        assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
     }
 
     protected abstract Map<String, Object> createPillarData(Optional<ActivationKey> key);
@@ -218,7 +237,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
             allowing(result).isResult();
             will(returnValue(true));
 
-            Map<String,State.ApplyResult> innerResult = new HashMap<>();
+            Map<String, State.ApplyResult> innerResult = new HashMap<>();
             innerResult.put("myhost", result);
             allowing(sshResult).getReturn();
             will(returnValue(of(innerResult)));
