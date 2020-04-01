@@ -45,16 +45,12 @@ public class AsciidocWriter extends DocWriter {
         renderSerializers(templates, serializers);
 
         //Lets do the index first
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append(generateIndex(handlers, templates));
+        writeFile(output + "handlers/apilist.adoc", generateIndex(handlers, templates));
 
         for (Handler handler : handlers) {
-            //writeFile(JSP_OUTPUT + "handlers/" + handler.getClassName() + ".html",
-                    buffer.append(generateHandler(handler, templates));
+            writeFile(output + "handlers/" + handler.getName() + ".adoc",
+                    generateHandler(handler, templates));
         }
-
-        writeFile(output + "handlers/apilist.adoc", buffer.toString());
 
         VelocityHelper vh = new VelocityHelper(templates);
         vh.addMatch("productName", product);
