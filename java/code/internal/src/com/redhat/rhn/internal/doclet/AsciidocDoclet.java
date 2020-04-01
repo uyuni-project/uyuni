@@ -18,7 +18,7 @@ import jdk.javadoc.doclet.DocletEnvironment;
 
 /**
  *
- * AsciidocDoclet
+ * Asciidoc doclet
  */
 public class AsciidocDoclet extends ApiDoclet {
 
@@ -33,8 +33,8 @@ public class AsciidocDoclet extends ApiDoclet {
     }
 
     @Override
-    public DocWriter getWriter(String outputFolder, String templateFolder, boolean debug) {
-        return new AsciidocWriter(outputFolder, templateFolder, debug);
+    public DocWriter getWriter(String outputFolder, String templateFolder, String product, boolean debug) {
+        return new AsciidocWriter(outputFolder, templateFolder, product, debug);
     }
 
 }

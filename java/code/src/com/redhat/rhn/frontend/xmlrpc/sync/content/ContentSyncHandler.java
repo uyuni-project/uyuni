@@ -83,7 +83,7 @@ public class ContentSyncHandler extends BaseHandler {
 
     /**
      * @Deprecated
-     * Synchronize channels between the Customer Center and the SUSE Manager database.
+     * Synchronize channels between the Customer Center and the #product() database.
      * This method is one step of the whole refresh cycle.
      *
      * @param loggedInUser the currently logged in user
@@ -92,7 +92,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc (Deprecated) Synchronize channels between the Customer Center
-     *             and the SUSE Manager database.
+     *             and the #product() database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @xmlrpc.returntype #return_int_success()
@@ -104,7 +104,7 @@ public class ContentSyncHandler extends BaseHandler {
 
     /**
      * Synchronize channel families between the Customer Center
-     * and the SUSE Manager database.
+     * and the #product() database.
      * This method is one step of the whole refresh cycle.
      *
      * @param loggedInUser the currently logged in user
@@ -112,7 +112,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Synchronize channel families between the Customer Center
-     *             and the SUSE Manager database.
+     *             and the #product() database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -131,7 +131,7 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Synchronize SUSE products between the Customer Center and the SUSE Manager database.
+     * Synchronize SUSE products between the Customer Center and the #product() database.
      * This method is one step of the whole refresh cycle.
      *
      * @param loggedInUser the currently logged in user
@@ -139,7 +139,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Synchronize SUSE products between the Customer Center
-     *             and the SUSE Manager database.
+     *             and the #product() database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -159,14 +159,14 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * @deprecated
      * Synchronize SUSE product channels between the Customer Center
-     * and the SUSE Manager database.
+     * and the #product() database.
      * This method is one step of the whole refresh cycle.
      *
      * @param loggedInUser the currently logged in user
      * @return Integer
      *
      * @xmlrpc.doc (Deprecated) Synchronize SUSE product channels between the Customer Center
-     *             and the SUSE Manager database.
+     *             and the #product() database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -178,7 +178,7 @@ public class ContentSyncHandler extends BaseHandler {
 
     /**
      * Synchronize subscriptions between the Customer Center
-     * and the SUSE Manager database.
+     * and the #product() database.
      * This method is one step of the whole refresh cycle.
      *
      * @param loggedInUser the currently logged in user
@@ -186,7 +186,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Synchronize subscriptions between the Customer Center
-     *             and the SUSE Manager database.
+     *             and the #product() database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
@@ -205,7 +205,7 @@ public class ContentSyncHandler extends BaseHandler {
 
     /**
      * Synchronize Repositories between the Customer Center
-     * and the SUSE Manager database.
+     * and the #product() database.
      * This method is one step of the whole refresh cycle.
      *
      * @param loggedInUser the currently logged in user
@@ -214,7 +214,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Synchronize repositories between the Customer Center
-     *             and the SUSE Manager database.
+     *             and the #product() database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional mirror url or null")
      * @xmlrpc.returntype #return_int_success()
@@ -233,7 +233,7 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Add a new channel to the SUSE Manager database.
+     * Add a new channel to the #product() database.
      *
      * @param loggedInUser the currently logged in user
      * @param channelLabel label of the channel to add
@@ -241,7 +241,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Add a new channel to the SUSE Manager database
+     * @xmlrpc.doc Add a new channel to the #product() database
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
@@ -259,7 +259,7 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Add a new channel to the SUSE Manager database and its required bases.
+     * Add a new channel to the #product() database and its required bases.
      *
      * @param loggedInUser the currently logged in user
      * @param channelLabel label of the channel to add
@@ -267,7 +267,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Array of enabled channel labels
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Add a new channel to the SUSE Manager database
+     * @xmlrpc.doc Add a new channel to the #product() database
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
@@ -300,7 +300,7 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Add organization credentials (mirror credentials) to SUSE Manager.
+     * Add organization credentials (mirror credentials) to #product().
      *
      * @param loggedInUser the currently logged in user
      * @param username organization credentials (mirror credentials) username
@@ -309,7 +309,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Add organization credentials (mirror credentials) to SUSE Manager.
+     * @xmlrpc.doc Add organization credentials (mirror credentials) to #product().
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "username", "Organization credentials
      *                                                  (Mirror credentials) username")
@@ -331,14 +331,14 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Delete organization credentials (mirror credentials) from SUSE Manager.
+     * Delete organization credentials (mirror credentials) from #product().
      *
      * @param loggedInUser the currently logged in user
      * @param username username of the credentials to be deleted
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
-     * @xmlrpc.doc Delete organization credentials (mirror credentials) from SUSE Manager.
+     * @xmlrpc.doc Delete organization credentials (mirror credentials) from #product().
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "username", "Username of credentials to delete")
      * @xmlrpc.returntype #return_int_success()
@@ -356,14 +356,14 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * List organization credentials (mirror credentials) available in SUSE Manager.
+     * List organization credentials (mirror credentials) available in #product().
      *
      * @param loggedInUser the currently logged in user
      * @return List of organization credentials (mirror credentials)
      * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc List organization credentials (mirror credentials) available in
-     *             SUSE Manager.
+     *             #product().
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array_begin()
      *                       $MirrorCredentialsDtoSerializer

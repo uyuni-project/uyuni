@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 /**
  * AdminMonitoringHandler
  * @xmlrpc.namespace admin.monitoring
- * @xmlrpc.doc Provides methods to manage the monitoring of the Uyuni server.
+ * @xmlrpc.doc Provides methods to manage the monitoring of the #product() server.
  */
 public class AdminMonitoringHandler extends BaseHandler {
 

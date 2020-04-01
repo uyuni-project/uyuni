@@ -1,9 +1,9 @@
-= SUSE Manager API Documentation
-SUSE Manager
-4.0, <?dbtimestamp?>
+= $productName API Documentation
+$productName
+4.0
 :homepage: http://www.suse.com/products/suse-manager
 
-Wecome to the SUSE Manager API. By using the included API calls, you can easily automate many of
+Wecome to the $productName API. By using the included API calls, you can easily automate many of
 the tasks you perform everyday. All API calls are grouped by common functionality.
 
 == Legal Notice

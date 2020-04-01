@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2020 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,7 +19,7 @@ import jdk.javadoc.doclet.DocletEnvironment;
 
 /**
  *
- * HtmlDoclet
+ * Html doclet
  */
 public class HtmlDoclet extends ApiDoclet {
 
@@ -33,8 +34,8 @@ public class HtmlDoclet extends ApiDoclet {
     }
 
     @Override
-    public DocWriter getWriter(String outputFolder, String templateFolder, boolean debug) {
-        return new HtmlWriter(outputFolder, templateFolder, debug);
+    public DocWriter getWriter(String outputFolder, String templateFolder, String productName, boolean debug) {
+        return new HtmlWriter(outputFolder, templateFolder, productName, debug);
     }
 
 }

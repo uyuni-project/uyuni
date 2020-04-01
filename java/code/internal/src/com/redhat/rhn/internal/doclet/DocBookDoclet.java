@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -33,7 +33,7 @@ public class DocBookDoclet extends ApiDoclet {
     }
 
     @Override
-    public DocWriter getWriter(String outputFolder, String templateFolder, boolean debug) {
-        return new DocBookWriter(outputFolder, templateFolder, debug);
+    public DocWriter getWriter(String outputFolder, String templateFolder, String product, boolean debug) {
+        return new DocBookWriter(outputFolder, templateFolder, product, debug);
     }
 }
