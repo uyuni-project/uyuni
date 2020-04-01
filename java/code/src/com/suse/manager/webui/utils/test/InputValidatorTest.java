@@ -184,18 +184,6 @@ public class InputValidatorTest extends TestCase {
     }
 
     /**
-     * Test the check for non numeric port numbers.
-     */
-    public void testValidateBootstrapInputPortNotNumeric() {
-        String json = "{host: 'host.domain.com', user: 'root', port: 'abcdef'}";
-        BootstrapHostsJson input = MinionsAPI.GSON.fromJson(json, BootstrapHostsJson.class);
-        BootstrapParameters params = RegularMinionBootstrapper.getInstance().createBootstrapParams(input);
-        List<String> validationErrors = InputValidator.INSTANCE.validateBootstrapInput(params);
-        assertTrue(validationErrors.size() == 1);
-        assertTrue(validationErrors.contains(PORT_ERROR_MESSAGE));
-    }
-
-    /**
      * Test the check for port numbers outside the valid range.
      */
     public void testValidateBootstrapInputPortRange() {
