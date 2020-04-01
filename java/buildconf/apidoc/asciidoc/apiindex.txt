@@ -1,5 +1,3 @@
-#set ($path = "")
-#set ($xml = ".xml")
 #foreach ($handler in $handlers)
-* <<$handler.name.replaceAll('\.', '_')>>
+* <<handlers/${handler.name}.adoc#apidoc-$handler.name.replaceAll('\.', '_')>>
 #end
