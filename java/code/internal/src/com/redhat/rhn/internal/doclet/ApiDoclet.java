@@ -1,4 +1,5 @@
 /**
+ * Copyright (c) 2020 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -51,9 +52,7 @@ import jdk.javadoc.doclet.Reporter;
 
 
 /**
- *
- * TestDoclet
- * @version $Rev$
+ * Base doclet class
  */
 public abstract class ApiDoclet implements Doclet {
 
@@ -73,6 +72,7 @@ public abstract class ApiDoclet implements Doclet {
     private boolean debug = false;
     private String outputFolder;
     private String templateFolder;
+    private String productName;
 
     protected final Set<Option> getOptions() {
         return Set.of(
@@ -108,6 +108,15 @@ public abstract class ApiDoclet implements Doclet {
                     }
                     return true;
                 }
+            },
+            new AbstractOption("-product", true,
+                    "name of the product to write in the generated docs", "name") {
+                @Override
+                public boolean process(String option,
+                                       List<String> arguments) {
+                    productName = arguments.get(0);
+                    return true;
+                }
             }
         );
     }
@@ -126,9 +135,10 @@ public abstract class ApiDoclet implements Doclet {
      *
      * @param outputIn the folder where the result needs to be written
      * @param templateIn the folder where the templates are located
+     * @param productNameIn the name of the product to write in the docs
      * @param debugIn whether to show debug infos
      */
-    public abstract DocWriter getWriter(String outputIn, String templateIn, boolean debugIn);
+    public abstract DocWriter getWriter(String outputIn, String templateIn, String productNameIn, boolean debugIn);
 
     @Override
     public Set<? extends Option> getSupportedOptions() {
@@ -272,7 +282,7 @@ public abstract class ApiDoclet implements Doclet {
             handlerList.add(handler);
         }
         Collections.sort(handlerList);
-        DocWriter writer = getWriter(outputFolder, templateFolder, debug);
+        DocWriter writer = getWriter(outputFolder, templateFolder, productName, debug);
         try {
             writer.write(handlerList, serialMap);
         }

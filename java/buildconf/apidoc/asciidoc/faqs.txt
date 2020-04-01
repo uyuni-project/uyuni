@@ -1,8 +1,8 @@
 = Frequently Asked Questions
 
-== What programming languages are supported by the SUSE Manager API?
+== What programming languages are supported by the $productName API?
 
-Any language that provides an XMLRPC client interface will work with the SUSE Manager API. While
+Any language that provides an XMLRPC client interface will work with the $productName API. While
 Perl and Python are two of the most commonly used, an XMLRPC client implementation is available for every
 common language.
 

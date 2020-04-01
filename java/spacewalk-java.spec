@@ -403,6 +403,11 @@ done
 %endif
 
 %build
+PRODUCT_NAME="SUSE Manager"
+%if !0%{?sle_version} || 0%{?is_opensuse}
+PRODUCT_NAME="Uyuni"
+%endif
+
 # compile only java sources (no packing here)
 ant -Dprefix=$RPM_BUILD_ROOT init-install compile
 
@@ -446,23 +451,27 @@ find . -type f -name '*.xml' | xargs perl -CSAD -lne '
           END { exit $exit }'
 
 echo "Building apidoc docbook sources"
-ant -Dprefix=$RPM_BUILD_ROOT init-install apidoc-docbook
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT init-install apidoc-docbook
 pushd build/reports/apidocs/docbook
 /usr/bin/xmllint --xinclude --postvalid book.xml > susemanager_api_doc.xml
 popd
 
 echo "Building apidoc asciidoc sources"
-ant -Dprefix=$RPM_BUILD_ROOT init-install apidoc-asciidoc
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT init-install apidoc-asciidoc
 
 %install
+PRODUCT_NAME="SUSE Manager"
+%if !0%{?sle_version} || 0%{?is_opensuse}
+PRODUCT_NAME="Uyuni"
+%endif
 export NO_BRP_STALE_LINK_ERROR=yes
 
 %if 0%{?suse_version}
-ant -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT -Dtomcat="tomcat9" install-tomcat9-suse
 install -d -m 755 $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/
 install -m 755 conf/rhn-tomcat9.xml $RPM_BUILD_ROOT%{appdir}/rhn/META-INF/context.xml
 %else
-ant -Dprefix=$RPM_BUILD_ROOT install-tomcat
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=$RPM_BUILD_ROOT install-tomcat
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 644 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif

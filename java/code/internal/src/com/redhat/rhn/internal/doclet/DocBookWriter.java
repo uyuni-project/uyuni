@@ -28,11 +28,12 @@ public class DocBookWriter extends DocWriter {
     /**
      * @param outputIn path to the output folder
      * @param templatesIn path to the DocBook templates folder
+     * @param productIn name of the product
      * @param debugIn whether to show debugging messages
      *
      */
-    public DocBookWriter(String outputIn, String templatesIn, boolean debugIn) {
-        super(outputIn, templatesIn, debugIn);
+    public DocBookWriter(String outputIn, String templatesIn, String productIn, boolean debugIn) {
+        super(outputIn, templatesIn, productIn, debugIn);
     }
 
     /**
@@ -51,9 +52,11 @@ public class DocBookWriter extends DocWriter {
                     generateHandler(handler, templates));
         }
 
+        VelocityHelper vh = new VelocityHelper(templates);
+        vh.addMatch("productName", product);
         for (String file : OTHER_FILES) {
-            writeFile(output + file + ".xml",
-                    readFile(templates + file + ".txt"));
+            String content = vh.renderTemplateFile(file + ".txt");
+            writeFile(output + file + ".xml", content);
         }
     }
 

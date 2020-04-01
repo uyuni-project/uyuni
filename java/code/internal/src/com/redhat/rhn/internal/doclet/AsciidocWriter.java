@@ -23,14 +23,16 @@ import java.util.Map;
  */
 public class AsciidocWriter extends DocWriter {
 
+    private static final String[] OTHER_FILES = {"faqs", "scripts"};
 
     /**
      * @param outputIn path to the output folder
      * @param templatesIn path to the HTML templates folder
+     * @param productIn name of the product
      * @param debugIn whether to show debugging messages
      */
-    public AsciidocWriter(String outputIn, String templatesIn, boolean debugIn) {
-        super(outputIn, templatesIn, debugIn);
+    public AsciidocWriter(String outputIn, String templatesIn, String productIn, boolean debugIn) {
+        super(outputIn, templatesIn, productIn, debugIn);
     }
 
     /**
@@ -54,33 +56,11 @@ public class AsciidocWriter extends DocWriter {
 
         writeFile(output + "handlers/apilist.adoc", buffer.toString());
 
-        /*for (String file : OTHER_FILES) {
-            writeFile(JSP_OUTPUT + file + ".html", readFile(JSP_TEMPLATES + file + ".txt"));
-        }*/
-
+        VelocityHelper vh = new VelocityHelper(templates);
+        vh.addMatch("productName", product);
+        for (String file : OTHER_FILES) {
+            String content = vh.renderTemplateFile(file + ".txt");
+            writeFile(output + file + ".adoc", content);
+        }
     }
-
-
-    /**
-     * Generate the index from the template dir from (API_HEADER/INDEX/FOOTER_FILE) files
-     * @param handlers list of the handlers
-     * @param templateDir directory of the templates
-     * @return a string representing the index
-     * @throws Exception e
-     */
-    public  String generateIndex(List<Handler> handlers, String templateDir)
-                throws Exception {
-
-        String buf = "";
-        VelocityHelper vh = new VelocityHelper(templateDir);
-        vh.addMatch("handlers", handlers);
-
-        buf += vh.renderTemplateFile(ApiDoclet.API_INDEX_FILE);
-
-        return buf;
-    }
-
-
-
-
 }

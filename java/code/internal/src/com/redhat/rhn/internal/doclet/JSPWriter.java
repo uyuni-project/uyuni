@@ -30,10 +30,11 @@ public class JSPWriter extends DocWriter {
     /**
      * @param outputIn path to the output folder
      * @param templatesIn path to the JSP templates folder
+     * @param productIn name of the product
      * @param debugIn whether to show debugging messages
      */
-    public JSPWriter(String outputIn, String templatesIn, boolean debugIn) {
-        super(outputIn, templatesIn, debugIn);
+    public JSPWriter(String outputIn, String templatesIn, String productIn, boolean debugIn) {
+        super(outputIn, templatesIn, productIn, debugIn);
     }
 
     /**

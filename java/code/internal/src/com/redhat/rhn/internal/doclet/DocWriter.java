@@ -33,6 +33,7 @@ public abstract class DocWriter {
     protected VelocityHelper serializerRenderer;
     protected String output;
     protected String templates;
+    protected String product;
     private boolean debug = false;
 
 
@@ -41,12 +42,14 @@ public abstract class DocWriter {
      *
      * @param outputIn path to the output folder
      * @param templatesIn path to the HTML templates folder
+     * @param productIn name of the product
      * @param debugIn whether to show debugging messages
      *
      */
-    public DocWriter(String outputIn, String templatesIn, boolean debugIn) {
+    public DocWriter(String outputIn, String templatesIn, String productIn, boolean debugIn) {
         output = outputIn;
         templates = templatesIn;
+        product = productIn;
         debug = debugIn;
     }
 
@@ -83,6 +86,7 @@ public abstract class DocWriter {
                 throws Exception {
         VelocityHelper vh = new VelocityHelper(templateDir);
         vh.addMatch("handlers", handlers);
+        vh.addMatch("productName", product);
         String out = vh.renderTemplateFile(ApiDoclet.API_HEADER_FILE);
         out += vh.renderTemplateFile(ApiDoclet.API_INDEX_FILE);
         out += vh.renderTemplateFile(ApiDoclet.API_FOOTER_FILE);
@@ -136,8 +140,10 @@ public abstract class DocWriter {
         VelocityHelper macros = new VelocityHelper(templateDir);
         String macro = readFile(templateDir + ApiDoclet.API_MACROS_FILE);
 
+        String productMacro = "#macro(product)" + product + "#end\n";
+
         try {
-            String toReturn = macros.renderTemplate(macro + input + " \n ");
+            String toReturn = macros.renderTemplate(macro + productMacro + input + " \n ");
             return toReturn;
         }
         catch (Exception e) {
