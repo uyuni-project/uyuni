@@ -7,17 +7,21 @@ import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import PropertiesView from "./properties-view";
 import produce from "immer";
 
-import type {ProjectHistoryEntry, ProjectPropertiesType} from '../../../type/project.type.js';
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
+import getRenderedMessages from "../../messages/messages";
+
+import type {ProjectMessageType, ProjectHistoryEntry, ProjectPropertiesType}
+  from '../../../type/project.type.js';
 
 type Props = {
   projectId: string,
   properties: ProjectPropertiesType,
   showDraftVersion: boolean,
   onChange: Function,
-  currentHistoryEntry: ProjectHistoryEntry
+  currentHistoryEntry: ProjectHistoryEntry,
+  messages?: Array<ProjectMessageType>
 };
 
 const PropertiesEdit = (props: Props) => {
@@ -32,6 +36,8 @@ const PropertiesEdit = (props: Props) => {
     message:t('(draft - not built) - Check the changes below')
   };
 
+  const messages = getRenderedMessages(props.messages || []);
+
   let propertiesToShow = produce(props.properties, draftProperties => {
       if(props.showDraftVersion){
         draftProperties.historyEntries.unshift(defaultDraftHistory);
@@ -42,6 +48,7 @@ const PropertiesEdit = (props: Props) => {
       <CreatorPanel
         id="properties"
         creatingText={t("Edit Properties")}
+        className={messages.panelClass}
         panelLevel="2"
         disableEditing={!hasEditingPermissions}
         title={t('Project Properties')}
@@ -61,7 +68,12 @@ const PropertiesEdit = (props: Props) => {
             })
         }}
         onCancel={() => cancelAction()}
-        renderContent={() => <PropertiesView properties={propertiesToShow}/>}
+        renderContent={() =>
+          <React.Fragment>
+            {messages.messages}
+            <PropertiesView properties={propertiesToShow}/>
+          </React.Fragment>
+        }
         renderCreationContent={({ open, item, setItem }) => {
 
           if (isLoading) {

@@ -6,8 +6,6 @@ import Sources from "../shared/components/panels/sources/sources";
 import PropertiesEdit from "../shared/components/panels/properties/properties-edit";
 import Build from "../shared/components/panels/build/build";
 import EnvironmentLifecycle from "../shared/components/panels/environment-lifecycle/environment-lifecycle";
-import {Messages} from "components/messages";
-import MessagesPanel from "../shared/components/panels/messages/messages";
 import {showErrorToastr, showSuccessToastr} from 'components/toastr/toastr';
 import _isEmpty from "lodash/isEmpty";
 import "./project.css";
@@ -18,6 +16,7 @@ import withPageWrapper from 'components/general/with-page-wrapper';
 import type {ProjectType} from '../shared/type/project.type';
 import {hot} from 'react-hot-loader';
 import _last from "lodash/last";
+import _groupBy from "lodash/groupBy";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useInterval from "core/hooks/use-interval";
@@ -75,6 +74,7 @@ const Project = (props: Props) => {
   }
 
   const hasErrors = project.messages.some(m => m.type === 'error');
+  const messageGroups = _groupBy(project.messages, (m) => m.entity);
 
   const isProjectEdited = changesToBuild.length > 0;
   const isBuildDisabled = !hasEditingPermissions
@@ -123,10 +123,10 @@ const Project = (props: Props) => {
           setProject(projectWithNewProperties);
           cancelRefreshAction();
         }}
+        messages={messageGroups['properties']}
       />
 
       <div className="panel-group-contentmngt">
-        {_isEmpty(project.messages) || <MessagesPanel messages={project.messages}/>}
         <Sources
           projectId={projectId}
           softwareSources={project.softwareSources}
@@ -134,6 +134,7 @@ const Project = (props: Props) => {
             setProject(projectWithNewSources);
             cancelRefreshAction();
           }}
+          messages={messageGroups['softwareSources']}
         />
         <FiltersProject
           projectId={projectId}
@@ -142,6 +143,7 @@ const Project = (props: Props) => {
             setProject(projectWithNewSources)
             cancelRefreshAction();
           }}
+          messages={messageGroups['filters']}
         />
       </div>
 
@@ -164,6 +166,7 @@ const Project = (props: Props) => {
           setProject(projectWithNewEnvironment);
           cancelRefreshAction();
         }}
+        messages={messageGroups['environments']}
       />
     </TopPanel>
   );

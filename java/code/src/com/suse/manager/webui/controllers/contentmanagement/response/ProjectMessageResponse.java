@@ -21,10 +21,19 @@ package com.suse.manager.webui.controllers.contentmanagement.response;
 public class ProjectMessageResponse {
     private String text;
     private String type;
+    private String entity;
 
-    public ProjectMessageResponse(String textIn, String typeIn) {
+    /**
+     * Initialize a new project message JSON object
+     *
+     * @param textIn the message text
+     * @param typeIn the message type
+     * @param entityIn the entity the message belongs to
+     */
+    public ProjectMessageResponse(String textIn, String typeIn, String entityIn) {
         this.text = textIn;
         this.type = typeIn;
+        this.entity = entityIn;
     }
 
     public String getText() {
@@ -33,5 +42,9 @@ public class ProjectMessageResponse {
 
     public String getType() {
         return type;
+    }
+
+    public String getEntity() {
+        return entity;
     }
 }

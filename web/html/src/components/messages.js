@@ -3,7 +3,7 @@ import React  from "react";
 
 type Severity = "info" | "success" | "warning" | "error";
 
-type MessageType = {
+export type MessageType = {
   severity: Severity,
   text: React.Node
 }

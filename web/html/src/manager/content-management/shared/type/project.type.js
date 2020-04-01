@@ -42,7 +42,8 @@ export type ProjectFilterServerType = {
 
 export type ProjectMessageType = {
   text: string,
-  type: "info" | "warn" | "alert"
+  type: "info" | "warning" | "error",
+  entity: "properties" | "softwareSources" | "filters" | "environments"
 }
 
 

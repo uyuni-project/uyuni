@@ -4,7 +4,7 @@ import {Select} from "../../../../../../components/input/Select";
 import CreatorPanel from "../../../../../../components/panels/CreatorPanel";
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 
-import type {ProjectSoftwareSourceType} from '../../../type/project.type.js';
+import type {ProjectMessageType, ProjectSoftwareSourceType} from '../../../type/project.type.js';
 import ChannelsSelection from "./channels/channels-selection";
 import {Panel} from "../../../../../../components/panels/Panel";
 import styles from "./sources.css";
@@ -12,11 +12,13 @@ import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import statesEnum from "../../../business/states.enum";
+import getRenderedMessages from "../../messages/messages";
 
 type SourcesProps = {
   projectId: string,
   softwareSources: Array<ProjectSoftwareSourceType>,
   onChange: Function,
+  messages?: Array<ProjectMessageType>
 };
 
 const ModalSourceCreationContent = ({isLoading, softwareSources, onChange}) => {
@@ -81,11 +83,14 @@ const Sources = (props: SourcesProps) => {
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
 
+  const messages = getRenderedMessages(props.messages || []);
+
   return (
     <CreatorPanel
       id="sources"
       title={t("Sources")}
       creatingText="Attach/Detach Sources"
+      className={messages.panelClass}
       panelLevel="2"
       disableEditing={!hasEditingPermissions}
       collapsible
@@ -121,6 +126,7 @@ const Sources = (props: SourcesProps) => {
       }}
       renderContent={() =>
         <div className="min-height-panel">
+          {messages.messages}
           {
             props.softwareSources.length > 0 &&
             <Panel

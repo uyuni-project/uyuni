@@ -6,17 +6,19 @@ import styles from "./filters-project.css"
 import {showErrorToastr, showSuccessToastr} from "components/toastr/toastr";
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import CreatorPanel from "components/panels/CreatorPanel";
-import type {ProjectFilterServerType} from "../../../type/project.type";
+import type {ProjectMessageType, ProjectFilterServerType} from "../../../type/project.type";
 import FiltersProjectSelection from "./filters-project-selection";
 import statesEnum from "../../../business/states.enum";
 import {getClmFilterDescription} from "../../../business/filters.enum";
 import useRoles from "core/auth/use-roles";
 import {isOrgAdmin} from "core/auth/auth.utils";
+import getRenderedMessages from "../../messages/messages";
 
 type FiltersProps = {
   projectId: string,
   selectedFilters: Array<ProjectFilterServerType>,
   onChange: Function,
+  messages?: Array<ProjectMessageType>
 };
 
 const renderFilterEntry = (filter, projectId, symbol, last) => {
@@ -80,12 +82,15 @@ const FiltersProject = (props:  FiltersProps) => {
   const denyFilters = displayingFilters.filter(filter => filter.entityType !== "module" && filter.rule === "deny");
   const moduleFilters = displayingFilters.filter(filter => filter.entityType === "module");
 
+  const messages = getRenderedMessages(props.messages || []);
+
   return (
 
     <CreatorPanel
       id="filters"
       title={t('Filters')}
       creatingText={t("Attach/Detach Filters")}
+      className={messages.panelClass}
       panelLevel="2"
       collapsible
       customIconClass="fa-small"
@@ -124,6 +129,7 @@ const FiltersProject = (props:  FiltersProps) => {
       }}
       renderContent={() =>
         <div className="min-height-panel">
+          {messages.messages}
           <div className="row">
             <div className="col-md-12">
               {

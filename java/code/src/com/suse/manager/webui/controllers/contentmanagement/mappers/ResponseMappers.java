@@ -26,7 +26,17 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 
 import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
-import com.suse.manager.webui.controllers.contentmanagement.response.*;
+import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
+import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
+import com.suse.manager.webui.controllers.contentmanagement.response.EnvironmentResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.FilterResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectFilterResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectHistoryEntryResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectMessageResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectPropertiesResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectResumeResponse;
+import com.suse.manager.webui.controllers.contentmanagement.response.ProjectSoftwareSourceResponse;
 import com.suse.manager.webui.utils.ViewHelper;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -34,6 +44,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -142,7 +153,8 @@ public class ResponseMappers {
         project.setFilters(mapProjectFilterFromDB(projectDB.getProjectFilters()));
         project.setEnvironments(mapEnvironmentsFromDB(envsDB));
 
-        ContentProjectValidator projectValidator = new ContentProjectValidator(projectDB);
+        ContentProjectValidator projectValidator = new ContentProjectValidator(projectDB,
+                Arrays.asList(new ModularSourcesValidator(), new ModularDependencyValidator()));
         project.setProjectMessages(mapProjectMessagesFromDB(projectValidator.validate()));
 
         return project;
@@ -243,9 +255,15 @@ public class ResponseMappers {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Map validation messages into a list with resume of message views beans
+     *
+     * @param messages list of validation messages
+     * @return list with a filter resume response bean
+     */
     public static List<ProjectMessageResponse> mapProjectMessagesFromDB(List<ContentValidationMessage> messages) {
         return messages.stream()
-                .map(m -> new ProjectMessageResponse(m.getMessage(), m.getType()))
+                .map(m -> new ProjectMessageResponse(m.getMessage(), m.getType(), m.getEntity()))
                 .collect(Collectors.toList());
     }
 }

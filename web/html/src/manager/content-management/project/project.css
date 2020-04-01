@@ -22,3 +22,9 @@
     overflow-y: auto;
     max-height: calc(100vh - 200px)
 }
+
+/* Validation messages */
+
+:global(.panel .alert) {
+    margin-top: 0;
+}
