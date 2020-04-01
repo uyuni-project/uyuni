@@ -4,7 +4,6 @@ require 'yaml'
 require 'cucumber/rake/task'
 require 'rake/task'
 require 'parallel'
-require 'yard'
 
 junit_results = '-f junit -o results_junit'
 
@@ -42,12 +41,6 @@ task :cucumber_testsuite do
 end
 
 task default: [:cucumber_testsuite]
-
-namespace :doc do
-  YARD::Rake::YardocTask.new do |t|
-    t.files   = %w(features/**/*.feature features/**/**/*.feature features/**/*.rb features/**/**/*.rb)
-  end
-end
 
 namespace :utils do
   desc 'Generate feature file for a client from a template and include it in a yaml file'
