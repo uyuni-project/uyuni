@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,9 +23,11 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,10 +43,15 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.DynamicComparator;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -109,6 +116,16 @@ public class SPMigrationAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         Server server = ctx.lookupAndBindServer();
 
+        DynaActionForm form = (DynaActionForm) actionForm;
+        String actionStep = TARGET;
+
+        if (ctx.hasParam("aid")) {
+            DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, form,
+                    "date", DatePicker.YEAR_RANGE_POSITIVE);
+            request.setAttribute("date", picker);
+            return actionMapping.findForward(getActionDetails(request, ctx));
+        }
+
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
         // Check if this server is a minion
         boolean isMinion = minion.isPresent();
@@ -164,10 +181,7 @@ public class SPMigrationAction extends RhnAction {
         String targetProductSelected = request.getParameter(TARGET_PRODUCT_SELECTED);
 
         // Read form parameters if dispatching
-        DynaActionForm form = (DynaActionForm) actionForm;
-        String actionStep = TARGET;
         String dispatch = request.getParameter(RequestContext.DISPATCH);
-
         if (dispatch != null) {
             actionStep = (String) form.get(ACTION_STEP);
 
@@ -453,5 +467,40 @@ public class SPMigrationAction extends RhnAction {
             channelIDs.add(c.getId());
         }
         return channelIDs;
+    }
+
+    private String getActionDetails(HttpServletRequest request, RequestContext ctx) {
+        Long aid = ctx.getParamAsLong("aid");
+
+        DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(aid);
+        DistUpgradeActionDetails details = action.getDetails();
+        List<Channel> channels = details.getChannelTasks().stream()
+                .filter(channel -> channel.getTask() == DistUpgradeChannelTask.SUBSCRIBE)
+                .map(DistUpgradeChannelTask::getChannel)
+                .collect(Collectors.toList());
+
+        Set<Channel> baseChannelSet = channels.stream()
+                .map(Channel::getParentChannel)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        if (baseChannelSet.size() != 1) {
+            return TARGET;
+        }
+
+        Channel baseChannel = baseChannelSet.iterator().next();
+        List<Long> channelIds = channels.stream().map(Channel::getId).collect(Collectors.toList());
+        List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel, channelIds);
+        SUSEProduct baseProduct = SUSEProductFactory.lookupByChannelName(baseChannel.getName()).get(0).getRootProduct();
+        SUSEProductSet targetProductSet = createProductSet(baseProduct.getId(), new Long[0]);
+
+        request.setAttribute(TARGET_PRODUCTS, targetProductSet);
+        request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
+        request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
+
+        request.setAttribute(BASE_CHANNEL, baseChannel);
+        request.setAttribute(CHILD_CHANNELS, childChannels);
+
+        return CONFIRM;
     }
 }

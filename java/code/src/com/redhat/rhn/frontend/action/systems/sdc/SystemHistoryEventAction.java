@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
@@ -93,6 +94,11 @@ public class SystemHistoryEventAction extends RhnAction {
                 serverAction.getStatus().equals(ActionFactory.STATUS_FAILED));
         request.setAttribute("pickedup",
                 serverAction.getStatus().equals(ActionFactory.STATUS_PICKEDUP));
+        request.setAttribute("completed",
+                serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED));
+        request.setAttribute("typedistupgradedryrun",
+                action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
+                        ((DistUpgradeAction) action).getDetails().isDryRun());
         if (!serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) &&
                 !serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             request.setAttribute("referrerLink", "Pending.do");
@@ -100,6 +106,9 @@ public class SystemHistoryEventAction extends RhnAction {
             request.setAttribute("headerLabel", "system.event.pendingHeader");
         }
         if (isSubmitted((DynaActionForm)formIn)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+                return mapping.findForward("confirm");
+            }
             createMessage(request, "system.event.rescheduled", action.getName(),
                     action.getId().toString());
             ActionFactory.rescheduleSingleServerAction(action, 5L, server.getId());

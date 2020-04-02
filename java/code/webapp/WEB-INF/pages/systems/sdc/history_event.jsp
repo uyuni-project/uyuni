@@ -91,7 +91,17 @@
   </div>
 </c:if>
 
-<rhn:icon type="nav-up" title="system.event.returnIcon"/><a href="${referrerLink}?sid=${system.id}"><bean:message key="${linkLabel}" arg0="${fn:escapeXml(system.name)}" /></a>
+  <c:if test="${requestScope.completed == true && requestScope.typedistupgradedryrun == true}">
+    <div align="right">
+      <hr/>
+      <rhn:hidden name="aid" value="${requestScope.aid}" />
+      <html:submit styleClass="btn btn-success">
+        <bean:message key="system.event.spmigration.rescheduleDryRun"/>
+      </html:submit>
+    </div>
+  </c:if>
+
+  <rhn:icon type="nav-up" title="system.event.returnIcon"/><a href="${referrerLink}?sid=${system.id}"><bean:message key="${linkLabel}" arg0="${fn:escapeXml(system.name)}" /></a>
 
 </html:form>
 

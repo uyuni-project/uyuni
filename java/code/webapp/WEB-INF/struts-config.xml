@@ -3232,6 +3232,8 @@
                  path="/WEB-INF/pages/systems/sdc/history_event.jsp"/>
         <forward name="continue"
                  path="/systems/details/history/History.do"/>
+        <forward name="confirm"
+                 path="/systems/details/SPMigration.do"/>
     </action>
 
     <action path="/systems/details/history/History"

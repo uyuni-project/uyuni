@@ -60,10 +60,12 @@
       </div>
     </div>
     <hr />
-    <div class="alert alert-danger">
-      <rhn:icon type="system-crit" />
-      <bean:message key="spmigration.jsp.confirm.note" />
-    </div>
+    <c:if test="${!requestScope.completed == true}">
+      <div class="alert alert-danger">
+        <rhn:icon type="system-crit" />
+        <bean:message key="spmigration.jsp.confirm.note" />
+      </div>
+    </c:if>
     <div>
       <div class="pull-left">
         <html:submit styleClass="btn btn-default" property="dispatch">
@@ -71,9 +73,11 @@
         </html:submit>
       </div>
       <div class="pull-right">
-        <html:submit styleClass="btn btn-success" property="dispatch">
-          <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
-        </html:submit>
+        <c:if test="${!requestScope.completed == true}">
+          <html:submit styleClass="btn btn-success" property="dispatch">
+            <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
+          </html:submit>
+        </c:if>
         <html:submit styleClass="btn btn-danger" property="dispatch">
           <bean:message key="spmigration.jsp.confirm.submit" />
         </html:submit>
