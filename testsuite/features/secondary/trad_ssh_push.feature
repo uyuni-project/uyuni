@@ -38,7 +38,7 @@ Feature: Register a traditional system to be managed via SSH push
 
   Scenario: Register this client for SSH push via tunnel
     When I register this client for SSH push via tunnel
-    Then I should see "sle_client" in spacewalk
+    Then I should see "sle_client" via spacecmd
 
   Scenario: Check this client's contact method
     Given I am on the Systems overview page of this "sle_client"
@@ -75,5 +75,5 @@ Feature: Register a traditional system to be managed via SSH push
     And I remove server hostname from hosts file on "sle_client"
  
   Scenario: Cleanup: register a traditional client after SSH push tests
-    When I register using "1-SUSE-DEV-x86_64" key
-    Then I should see "sle_client" in spacewalk
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    Then I should see "sle_client" via spacecmd

@@ -643,6 +643,27 @@ When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run("salt-key -y --accept=pxeboot.example.org")
 end
 
+When(/^I bootstrap traditional client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the proxy$/) do |host, key|
+  # Preparation of bootstrap script for traditional client
+  cmd = "mgr-bootstrap --traditional &&
+  sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
+  sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
+  chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
+  sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=RHN-ORG-TRUSTED-SSL-CERT' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
+  cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
+  output, code = $proxy.run(cmd)
+  raise "Key: #{key} not included" unless output.include? key
+  # Run bootstrap script and check for result
+  trad = 'bootstrap-traditional.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + trad
+  dest = '/tmp/' + trad
+  return_code = file_inject($proxy, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  system_name = get_system_name(host)
+  output, code = $proxy.run("expect -f /tmp/#{trad} #{system_name}")
+  raise 'Bootstrapp didn\'t finish properly' unless output.include? '-bootstrap complete-'
+end
+
 Then(/^file "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |filename, content, host|
   node = get_target(host)
   node.run("test -f #{filename}")
@@ -792,11 +813,15 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   node.run(command2, true, 500, 'root')
 end
 
-Then(/^I should see "([^"]*)" in spacewalk$/) do |host|
-  steps %(
-    Given I am on the Systems page
-    Then I should see "#{host}" as link
-    )
+Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
+  $server.run("spacecmd -u admin -p admin clear_caches")
+  command = "spacecmd -u admin -p admin system_list"
+  system_name = get_system_name(host)
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "system #{system_name} is not in the list yet") do
+    result, code = $server.run(command, false)
+    break if result.include? system_name
+    sleep 1
+  end
 end
 
 Then(/^I should see "([^"]*)" as link$/) do |host|
