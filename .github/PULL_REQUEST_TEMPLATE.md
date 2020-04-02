@@ -19,7 +19,7 @@ After:
 ## Documentation
 - No documentation needed: only internal and user invisible changes
 - No documentation needed: **add explanation. This can't be used if there is a GUI diff**
-- [Documentation issue](https://github.com/SUSE/spacewalk/projects/31) was created (GitHub automatic link expected below)
+- [Create documentation issue](https://github.com/SUSE/spacewalk/issues/new?template=ISSUE_TEMPLATE_DOCUMENTATION.md&labels=documentation&projects=SUSE/spacewalk/31)
 - (OPTIONAL) [Documentation PR](https://github.com/uyuni-project/uyuni-docs/pulls)
 
 - [ ] **DONE**
