@@ -38,7 +38,24 @@ import static com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMess
  */
 public class ModularDependencyValidator implements ContentValidator {
 
+    private ModulemdApi modulemdApi;
     private LocalizationService loc = LocalizationService.getInstance();
+
+    /**
+     * Initialize a modular dependency validator with {@link ModulemdApi} as the default modulemd API
+     */
+    public ModularDependencyValidator() {
+        this.modulemdApi = new ModulemdApi();
+    }
+
+    /**
+     * Initialzie a modular dependency validator with a modulemd API instance
+     *
+     * @param modulemdApiIn the modulemd API instance
+     */
+    public ModularDependencyValidator(ModulemdApi modulemdApiIn) {
+        this.modulemdApi = modulemdApiIn;
+    }
 
     @Override
     public List<ContentValidationMessage> validate(ContentProject project) {
@@ -54,7 +71,7 @@ public class ModularDependencyValidator implements ContentValidator {
             return Collections.emptyList();
         }
 
-        DependencyResolver resolver = new DependencyResolver(project, new ModulemdApi());
+        DependencyResolver resolver = new DependencyResolver(project, modulemdApi);
 
         List<ContentValidationMessage> messages = new ArrayList<>();
         try {

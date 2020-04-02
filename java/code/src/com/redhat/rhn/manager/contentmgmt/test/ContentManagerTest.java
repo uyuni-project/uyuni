@@ -46,6 +46,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.manager.contentmgmt.DependencyResolutionException;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -1124,12 +1125,13 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:notexists");
         ContentFilter filter = contentManager.createFilter("my-filter-1", ContentFilter.Rule.DENY, EntityType.MODULE, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
-        contentManager.buildProject("cplabel", empty(), false, user);
-        Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
-
-        // All the modular packages should be filtered out
-        assertEquals(0, targetChannel.getPackageCount());
-        assertFalse(targetChannel.isModular());
+        try {
+            contentManager.buildProject("cplabel", empty(), false, user);
+            fail("An exception must be thrown.");
+        }
+        catch (RuntimeException e) {
+            assertTrue(e.getCause() instanceof DependencyResolutionException);
+        }
 
         contentManager.detachFilter("cplabel", filter.getId(), user);
 
@@ -1138,7 +1140,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         filter = contentManager.createFilter("my-filter-2", ContentFilter.Rule.DENY, EntityType.MODULE, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
-        targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
+        Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
 
         // Only the packages from postgresql:10 should be in the target
         assertEquals(MockModulemdApi.getPackageCount("postgresql", "10"), targetChannel.getPackageCount());
