@@ -660,19 +660,53 @@ class Backend:
             if row:
                 evrHash[evr] = row['id']
 
-    # Note: postgres-specific implementation overrides this in PostgresBackend
     def lookupChecksums(self, checksumHash):
         if not checksumHash:
             return
-        sql = "select lookup_checksum(:ctype, :csum) id from dual"
+
+        sql = """
+            WITH wanted (checksum_type, checksum) AS (
+              VALUES %s
+            ),
+            missing AS (
+              SELECT nextval('rhnchecksum_seq') AS id, rhnChecksumType.id AS checksum_type_id, wanted.checksum
+                FROM wanted
+                  JOIN rhnChecksumType ON wanted.checksum_type = rhnChecksumType.label
+                  LEFT JOIN rhnChecksum
+                    ON rhnChecksum.checksum_type_id = rhnChecksumType.id
+                      AND rhnChecksum.checksum = wanted.checksum
+                WHERE rhnChecksum.id IS NULL
+            )
+            INSERT INTO rhnChecksum(id, checksum_type_id, checksum)
+              SELECT *
+                FROM missing
+              ON CONFLICT DO NOTHING
+        """
+        values = [(key[0], key[1]) for key in checksumHash.keys() if key[1] != '']
+
+        if not values:
+            return
+
         h = self.dbmodule.prepare(sql)
-        for k in list(checksumHash.keys()):
-            ctype, csum = k
-            if csum != '':
-                h.execute(ctype=ctype, csum=csum)
-                row = h.fetchone_dict()
-                if row:
-                    checksumHash[k] = row['id']
+        r = h.execute_values(sql, values, fetch=False)
+
+
+        sql = """
+          WITH wanted (checksum_type, checksum) AS (
+            VALUES %s
+          )
+          SELECT wanted.checksum_type, wanted.checksum, rhnChecksum.id
+            FROM wanted
+              JOIN rhnChecksumType ON wanted.checksum_type = rhnChecksumType.label
+              JOIN rhnChecksum
+                ON rhnChecksum.checksum_type_id = rhnChecksumType.id
+                  AND rhnChecksum.checksum = wanted.checksum
+        """
+        h = self.dbmodule.prepare(sql)
+        checksums = h.execute_values(sql, values)
+
+        for checksum in checksums:
+            checksumHash[(checksum[0], checksum[1])] = checksum[2]
 
     def lookupChecksumTypes(self, checksumTypeHash):
         if not checksumTypeHash:
