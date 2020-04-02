@@ -120,8 +120,9 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
         catch (DependencyResolutionException e) {
             assertTrue(e.getCause() instanceof ModuleNotFoundException);
             ModuleNotFoundException cause = (ModuleNotFoundException) e.getCause();
-            assertEquals("postgresql", cause.getModule().getName());
-            assertEquals("foo", cause.getModule().getStream());
+            assertEquals(1, cause.getModules().size());
+            assertEquals("postgresql", cause.getModules().get(0).getName());
+            assertEquals("foo", cause.getModules().get(0).getStream());
         }
     }
 
