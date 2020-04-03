@@ -13,22 +13,26 @@ class BootstrapMinions extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
+
+        this.initState = {
             host: "",
             port: "",
             user: "",
             authMethod: "password",
             password: "",
             privKey: "",
-            privKeyLoading: false,
             privKeyPwd: "",
             activationKey: "",
             ignoreHostKeys: true,
             manageWithSSH: false,
             messages: [],
-            loading: false,
-            showProxyHostnameWarn: false
+            proxy: "",
+            showProxyHostnameWarn: false,
+            loading: false
         };
+
+        this.state = this.initState;
+
         ["hostChanged", "portChanged", "userChanged", "authMethodChanged", "passwordChanged", "privKeyPwdChanged", "privKeyFileChanged", "privKeyLoaded", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields", "proxyChanged"]
             .forEach(method => this[method] = this[method].bind(this));
     }
@@ -168,23 +172,7 @@ class BootstrapMinions extends React.Component {
     }
 
     clearFields() {
-      this.setState({
-          host: "",
-          port: "",
-          user: "",
-          authMethod: "password",
-          password: "",
-          privKey: "",
-          privKeyPwd: "",
-          activationKey: "",
-          ignoreHostKeys: true,
-          manageWithSSH: false,
-          messages: [],
-          proxy: "",
-          showProxyHostnameWarn: false,
-          loading: false
-      });
-      return;
+      this.setState(this.initState);
     }
 
     render() {
