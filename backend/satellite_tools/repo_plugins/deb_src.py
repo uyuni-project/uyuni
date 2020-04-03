@@ -240,6 +240,7 @@ class ContentSource:
         else:
             self.org = "NULL"
 
+        comp = CFG.getComponent()
         # read the proxy configuration in /etc/rhn/rhn.conf
         initCFG('server.satellite')
 
@@ -258,6 +259,7 @@ class ContentSource:
         (_scheme, _netloc, _path, query, _fragid) = urlparse.urlsplit(url)
         if query:
             self.authtoken = query
+        initCFG(comp)
 
     def get_md_checksum_type(self):
         pass

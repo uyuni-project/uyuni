@@ -1,3 +1,5 @@
+- restore config namespace in debian repo module to fix
+  autogeneration of bootstrap repos
 - send CreateBootstrapRepoFailed Notification
 
 -------------------------------------------------------------------
