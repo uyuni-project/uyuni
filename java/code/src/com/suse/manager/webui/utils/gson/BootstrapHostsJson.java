@@ -20,8 +20,6 @@ import static java.util.Optional.ofNullable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,51 +68,7 @@ public class BootstrapHostsJson {
     /**
      * Default constructor.
      */
-    public BootstrapHostsJson() {
-    }
-
-    /**
-     * Constructor to be used for bootstrapping systems with SSH password via API.
-     *
-     * @param hostIn target host
-     * @param portIn SSH port
-     * @param userIn SSH user
-     * @param passwordIn SSH password
-     * @param activationKey activation key
-     * @param proxyIn system ID of proxy server to use
-     */
-    public BootstrapHostsJson(String hostIn, Integer portIn, String userIn, String passwordIn, String activationKey, Long proxyIn) {
-        host = hostIn;
-        port = String.valueOf(portIn);
-        user = userIn;
-        password = passwordIn;
-        activationKeys = StringUtils.isEmpty(activationKey) ? Collections.emptyList() : Arrays.asList(activationKey);
-        proxy = proxyIn;
-        ignoreHostKeys = true;
-    }
-
-    /**
-     * Constructor to be used for bootstrapping systems with SSH private key via API.
-     *
-     * @param hostIn target host
-     * @param portIn SSH port
-     * @param userIn SSH user
-     * @param privKeyIn SSH private key in PEM format
-     * @param privKeyPwdIn SSH private key passphrase (empty/null string = no passphrase)
-     * @param activationKey activation key
-     * @param proxyIn system ID of proxy server to use
-     */
-    public BootstrapHostsJson(String hostIn, Integer portIn, String userIn,
-            String privKeyIn, String privKeyPwdIn, String activationKey, Long proxyIn) {
-        host = hostIn;
-        port = String.valueOf(portIn);
-        user = userIn;
-        privKey = privKeyIn;
-        privKeyPwd = privKeyPwdIn;
-        activationKeys = StringUtils.isEmpty(activationKey) ? Collections.emptyList() : Arrays.asList(activationKey);
-        proxy = proxyIn;
-        ignoreHostKeys = true;
-    }
+    public BootstrapHostsJson() { }
 
     /**
      * @return the host
