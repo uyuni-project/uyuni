@@ -9,6 +9,10 @@ import logging
 import salt.utils
 import salt.modules.cmdmod
 from salt.exceptions import CommandExecutionError
+try:
+    from salt.utils.path import which_bin as _which_bin
+except ImportError:
+    from salt.utils import which_bin as _which_bin
 
 __salt__ = {
     'cmd.run_all': salt.modules.cmdmod.run_all,
@@ -21,7 +25,7 @@ def __virtual__():
     '''
     Only work when udevadm is installed.
     '''
-    return salt.utils.which_bin(['udevadm']) is not None
+    return _which_bin(['udevadm']) is not None
 
 
 def exportdb():

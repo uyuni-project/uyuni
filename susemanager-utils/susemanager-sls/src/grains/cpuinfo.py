@@ -5,6 +5,10 @@ import salt.modules.cmdmod
 import salt.utils
 import os
 import re
+try:
+    from salt.utils.path import which_bin as _which_bin
+except ImportError:
+    from salt.utils import which_bin as _which_bin
 
 __salt__ = {
     'cmd.run_all': salt.modules.cmdmod.run_all,
@@ -19,7 +23,7 @@ def _lscpu(feedback):
 
     :return:
     '''
-    lscpu = salt.utils.which_bin(['lscpu'])
+    lscpu = _which_bin(['lscpu'])
     if lscpu is not None:
         try:
             log.debug("Trying lscpu to get CPU socket count")
@@ -71,7 +75,7 @@ def _dmidecode(feedback):
 
     :return:
     '''
-    dmidecode = salt.utils.which_bin(['dmidecode'])
+    dmidecode = _which_bin(['dmidecode'])
     if dmidecode is not None:
         try:
             log.debug("Trying dmidecode to get CPU socket count")
