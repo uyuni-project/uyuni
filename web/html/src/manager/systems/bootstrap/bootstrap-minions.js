@@ -33,7 +33,9 @@ class BootstrapMinions extends React.Component {
 
         this.state = this.initState;
 
-        ["hostChanged", "portChanged", "userChanged", "authMethodChanged", "passwordChanged", "privKeyPwdChanged", "privKeyFileChanged", "privKeyLoaded", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields", "proxyChanged"]
+        ["hostChanged", "portChanged", "userChanged", "authMethodChanged", "passwordChanged", "privKeyPwdChanged",
+        "privKeyFileChanged", "privKeyLoaded", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged",
+        "activationKeyChanged", "clearFields", "proxyChanged"]
             .forEach(method => this[method] = this[method].bind(this));
     }
 
