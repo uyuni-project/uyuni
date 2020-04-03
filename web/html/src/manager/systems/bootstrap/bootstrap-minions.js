@@ -17,7 +17,11 @@ class BootstrapMinions extends React.Component {
             host: "",
             port: "",
             user: "",
+            authMethod: "password",
             password: "",
+            privKey: "",
+            privKeyLoading: false,
+            privKeyPwd: "",
             activationKey: "",
             ignoreHostKeys: true,
             manageWithSSH: false,
@@ -25,8 +29,7 @@ class BootstrapMinions extends React.Component {
             loading: false,
             showProxyHostnameWarn: false
         };
-        ["hostChanged", "portChanged", "userChanged", "passwordChanged", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields",
-        "proxyChanged"]
+        ["hostChanged", "portChanged", "userChanged", "authMethodChanged", "passwordChanged", "privKeyPwdChanged", "privKeyFileChanged", "privKeyLoaded", "onBootstrap", "ignoreHostKeysChanged", "manageWithSSHChanged", "activationKeyChanged", "clearFields", "proxyChanged"]
             .forEach(method => this[method] = this[method].bind(this));
     }
 
@@ -48,9 +51,38 @@ class BootstrapMinions extends React.Component {
         });
     }
 
+    authMethodChanged(event) {
+        this.setState({
+            authMethod: event.target.value
+        });
+    }
+
     passwordChanged(event) {
         this.setState({
             password: event.target.value
+        });
+    }
+
+    privKeyFileChanged(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => this.privKeyLoaded(e.target.result);
+        reader.readAsText(file);
+        this.setState({
+            privKeyLoading: true
+        });
+    }
+
+    privKeyLoaded(keyString) {
+        this.setState({
+            privKey: keyString,
+            privKeyLoading: false
+        });
+    }
+
+    privKeyPwdChanged(event) {
+        this.setState({
+            privKeyPwd: event.target.value
         });
     }
 
@@ -89,9 +121,17 @@ class BootstrapMinions extends React.Component {
         formData['host'] = this.state.host.trim();
         formData['port'] = this.state.port.trim() === "" ? undefined : this.state.port.trim();
         formData['user'] = this.state.user.trim() === "" ? undefined : this.state.user.trim();
-        formData['password'] = this.state.password.trim();
         formData['activationKeys'] = this.state.activationKey === "" ? [] : [this.state.activationKey] ;
         formData['ignoreHostKeys'] = this.state.ignoreHostKeys;
+
+        const authMethod = this.state.authMethod;
+        formData['authMethod'] = authMethod;
+        if (authMethod === "password") {
+            formData['password'] = this.state.password.trim();
+        } else if (authMethod === "ssh-key") {
+            formData['privKey'] = this.state.privKey;
+            formData['privKeyPwd'] = this.state.privKeyPwd;
+        }
         if (this.state.proxy) {
             formData['proxy'] = this.state.proxy;
         }
@@ -132,7 +172,10 @@ class BootstrapMinions extends React.Component {
           host: "",
           port: "",
           user: "",
+          authMethod: "password",
           password: "",
+          privKey: "",
+          privKeyPwd: "",
           activationKey: "",
           ignoreHostKeys: true,
           manageWithSSH: false,
@@ -158,10 +201,15 @@ class BootstrapMinions extends React.Component {
           messages = <Messages items={[{severity: "info", text:
               <p>{t('Your system is bootstrapping: waiting for a response..')}</p>
           }]}/>;
+        } else if (this.state.privKeyLoading) {
+          messages = <Messages items={[{severity: "info", text:
+              <p>{t('Loading SSH Private Key..')}</p>
+          }]}/>;
         }
 
+
         var buttons = [
-            <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="fa-plus" text={t("Bootstrap")} action={this.onBootstrap}/>,
+            <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="fa-plus" text={t("Bootstrap")} disabled={this.state.privKeyLoading} action={this.onBootstrap}/>,
             <AsyncButton id="clear-btn" defaultType="btn-default pull-right" icon="fa-eraser" text={t("Clear fields")} action={this.clearFields}/>
         ];
 
@@ -198,10 +246,42 @@ class BootstrapMinions extends React.Component {
                     </div>
                 </div>
                 <div className="form-group">
+                    <label className="col-md-3 control-label">Authentication method:</label>
+
+                    <div className="col-md-6">
+                        <div className="radio col-md-3">
+                            <label>
+                                <input name="authMethod" type="radio" value="password" checked={this.state.authMethod === "password"} onChange={this.authMethodChanged}/>
+                                <span>{t("Password")}</span>
+                            </label>
+                        </div>
+                        <div className="radio col-md-3">
+                            <label>
+                                <input name="authMethod" type="radio" value="ssh-key" checked={this.state.authMethod === "ssh-key"} onChange={this.authMethodChanged}/>
+                                <span>{t("SSH Private Key")}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-group" style={this.state.authMethod === "password" ? {} : {display: "none"} } >
                     <label className="col-md-3 control-label">Password:</label>
                     <div className="col-md-6">
                         <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} value={this.state.password} onChange={this.passwordChanged}/>
                     </div>
+                </div>
+                <div style={this.state.authMethod === "ssh-key" ? {} : {display: "none"} }>
+                   <div className="form-group">
+                       <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
+                       <div className="col-md-6">
+                           <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged}/>
+                       </div>
+                   </div>
+                   <div className="form-group">
+                       <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
+                       <div className="col-md-6">
+                           <input name="privKeyPwd" className="form-control" type="password" placeholder={t("Leave empty for no passphrase")} value={this.state.privKeyPwd} onChange={this.privKeyPwdChanged}/>
+                       </div>
+                   </div>
                 </div>
                 <div className="form-group">
                     <label className="col-md-3 control-label">Activation Key:</label>
