@@ -16,6 +16,12 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
+
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -36,6 +42,7 @@ import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -64,6 +71,7 @@ public class MinionsAPI {
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
+            .registerTypeAdapter(BootstrapHostsJson.AuthMethod.class, new AuthMethodAdapter())
             .serializeNulls()
             .create();
 
@@ -216,5 +224,27 @@ public class MinionsAPI {
         BootstrapParameters params = sshMinionBootstrapper.createBootstrapParams(input);
         String defaultContactMethod = ContactMethodUtil.getSSHMinionDefault();
         return json(response, sshMinionBootstrapper.bootstrap(params, user, defaultContactMethod).asMap());
+    }
+
+    private static class AuthMethodAdapter extends TypeAdapter<BootstrapHostsJson.AuthMethod> {
+        @Override
+        public BootstrapHostsJson.AuthMethod read(JsonReader in) throws IOException {
+            try {
+                if (in.peek().equals(JsonToken.NULL)) {
+                    in.nextNull();
+                    return null;
+                }
+                String authMethod = in.nextString();
+                return BootstrapHostsJson.AuthMethod.parse(authMethod);
+            }
+            catch (IllegalArgumentException e) {
+                throw new JsonParseException(e);
+            }
+        }
+
+        @Override
+        public void write(JsonWriter jsonWriter, BootstrapHostsJson.AuthMethod authMethod) throws IOException {
+            throw new UnsupportedOperationException();
+        }
     }
 }
