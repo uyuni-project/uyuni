@@ -54,6 +54,8 @@ public abstract class AbstractMinionBootstrapper {
 
     protected final SystemQuery systemQuery;
 
+    private static final int KEY_LENGTH_LIMIT = 1_000_000;
+
     private static final Logger LOG = Logger.getLogger(AbstractMinionBootstrapper.class);
 
     /**
@@ -255,6 +257,10 @@ public abstract class AbstractMinionBootstrapper {
         List<String> errors = validateParamsPerContactMethod(params);
         if (!errors.isEmpty()) {
             return errors;
+        }
+
+        if (params.getPrivateKey().map(pk -> pk.length() > KEY_LENGTH_LIMIT).orElse(false)) {
+            return Collections.singletonList("Key string is too long.");
         }
 
         Optional<String> activationKeyErrorMessage = params.getFirstActivationKey()
