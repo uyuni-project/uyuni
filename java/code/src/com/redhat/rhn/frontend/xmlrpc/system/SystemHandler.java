@@ -6976,8 +6976,8 @@ public class SystemHandler extends BaseHandler {
             String sshPassword, String activationKey, boolean saltSSH) {
         Optional<String> maybePassword = maybeString(sshPassword);
         List<String> activationKeys = maybeActivationKeys(activationKey);
-        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword,
-                empty(), empty(), activationKeys, true, empty());
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                true, empty());
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7013,8 +7013,8 @@ public class SystemHandler extends BaseHandler {
     public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
             String sshPrivKey, String sshPrivKeyPass, String activationKey, boolean saltSSH) {
         List<String> activationKeys = maybeActivationKeys(activationKey);
-        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, empty(),
-                maybeString(sshPrivKey), maybeString(sshPrivKeyPass), activationKeys, true, empty());
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, true, empty());
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7048,8 +7048,8 @@ public class SystemHandler extends BaseHandler {
             String sshPassword, String activationKey, Integer proxyId, boolean saltSSH) {
         Optional<String> maybePassword = maybeString(sshPassword);
         List<String> activationKeys = maybeActivationKeys(activationKey);
-        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, empty(),
-                empty(), activationKeys, true, of(proxyId.longValue()));
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                true, of(proxyId.longValue()));
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
@@ -7087,9 +7087,8 @@ public class SystemHandler extends BaseHandler {
     public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
             String sshPrivKey, String sshPrivKeyPass, String activationKey, Integer proxyId, boolean saltSSH) {
         List<String> activationKeys = maybeActivationKeys(activationKey);
-        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, empty(),
-                maybeString(sshPrivKey), maybeString(sshPrivKeyPass), activationKeys, true,
-                of(proxyId.longValue()));
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, true, of(proxyId.longValue()));
         return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 

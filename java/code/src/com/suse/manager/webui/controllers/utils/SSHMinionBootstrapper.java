@@ -133,13 +133,14 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
      */
     @Override
     public BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
-        String user = input.getUser();
-        if (StringUtils.isEmpty(user)) {
-            user = getSSHUser();
+        final BootstrapParameters params = BootstrapParameters.createFromJson(input);
+        if (StringUtils.isEmpty(input.getUser())) {
+            params.setUser(getSSHUser());
         }
-        return new BootstrapParameters(input.getHost(),
-                Optional.of(SSH_PUSH_PORT), user, input.maybeGetPassword(), input.getPrivKey(), input.getPrivKeyPwd(),
-                input.getActivationKeys(), input.getIgnoreHostKeys(), Optional.ofNullable(input.getProxy()));
+
+        params.setPort(Optional.of(SSH_PUSH_PORT));
+
+        return params;
     }
 
     @Override
