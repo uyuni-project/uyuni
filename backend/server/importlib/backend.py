@@ -137,33 +137,47 @@ class Backend:
     def processChangeLog(self, changelogHash):
         if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
             return
-        sql = "select id from rhnPackageChangeLogData where name = :name and time = :time and text = :text"
-        h = self.dbmodule.prepare(sql)
-        toinsert = [[], [], [], []]
-        for name, time, text in list(changelogHash.keys()):
-            val = {}
-            _buildExternalValue(val, {'name': name, 'time': time, 'text': text}, self.tables['rhnPackageChangeLogData'])
-            h.execute(name=val['name'], time=val['time'], text=val['text'])
-            row = h.fetchone_dict()
-            if row:
-                changelogHash[(name, time, text)] = row['id']
-                continue
 
-            id = self.sequences['rhnPackageChangeLogData'].next()
-            changelogHash[(name, time, text)] = id
-
-            toinsert[0].append(id)
-            toinsert[1].append(val['name'])
-            toinsert[2].append(val['time'])
-            toinsert[3].append(val['text'])
-
-        if not toinsert[0]:
-            # Nothing to do
+        if not changelogHash:
             return
 
-        sql = "insert into rhnPackageChangeLogData (id, name, time, text) values (:id, :name, :time, :text)"
+        sql = """
+            WITH wanted (name, time, text) AS (VALUES %s),
+            missing AS (
+              SELECT wanted.*
+                FROM wanted
+                LEFT JOIN rhnPackageChangeLogData
+                    ON rhnPackageChangeLogData.name = wanted.name
+                      AND rhnPackageChangeLogData.time = wanted.time
+                      AND rhnPackageChangeLogData.text = wanted.text
+                WHERE id IS NULL
+            ),
+            inserted AS (
+              INSERT INTO rhnPackageChangeLogData(id, name, time, text)
+                SELECT nextval('rhn_pkg_cld_id_seq'), name, time, text FROM missing ON CONFLICT DO NOTHING
+                RETURNING  name, time, text, id
+            ),
+            not_inserted AS (
+              SELECT wanted.*, rhnPackageChangeLogData.id
+                FROM wanted
+                JOIN rhnPackageChangeLogData
+                    ON rhnPackageChangeLogData.name = wanted.name
+                      AND rhnPackageChangeLogData.time = wanted.time
+                      AND rhnPackageChangeLogData.text = wanted.text
+                WHERE id NOT IN (SELECT id FROM inserted)
+            )
+            SELECT * FROM inserted
+              UNION ALL (SELECT * FROM not_inserted)
+        """
+        from datetime import datetime
+        values = [(key[0], datetime.strptime(key[1], '%Y-%m-%d %H:%M:%S'), key[2]) for key in changelogHash.keys()]
+
         h = self.dbmodule.prepare(sql)
-        h.executemany(id=toinsert[0], name=toinsert[1], time=toinsert[2], text=toinsert[3])
+        r = h.execute_values(sql, values, page_size=512_000)
+
+        for changelog in r:
+            changelogHash[(changelog[0], changelog[1].strftime('%Y-%m-%d %H:%M:%S'), changelog[2])] = changelog[3]
+
 
     def processSuseProductFiles(self, prodfileHash):
         sql = """
