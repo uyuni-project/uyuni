@@ -6584,6 +6584,10 @@ public class SystemHandler extends BaseHandler {
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> migrationTargets = DistUpgradeManager.
                 getTargetProductSets(installedProducts, arch, loggedInUser);
+
+        migrationTargets = DistUpgradeManager.removeIncompatibleTargets(
+                installedProducts, migrationTargets, Optional.empty());
+
         for (SUSEProductSet ps : migrationTargets) {
             if (!ps.getIsEveryChannelSynced()) {
                 continue;
@@ -6694,6 +6698,7 @@ public class SystemHandler extends BaseHandler {
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
                 installedProducts, arch, loggedInUser);
+        targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets, Optional.empty());
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = null;
             if (StringUtils.isBlank(targetIdent)) {
