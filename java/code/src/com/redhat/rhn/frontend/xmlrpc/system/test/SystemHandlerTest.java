@@ -14,6 +14,15 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
+import com.redhat.rhn.frontend.dto.ErrataOverview;
+import com.redhat.rhn.frontend.dto.HistoryEvent;
+import com.redhat.rhn.frontend.dto.OperationDetailsDto;
+import com.redhat.rhn.frontend.dto.PackageMetadata;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.dto.ServerPath;
+import com.redhat.rhn.frontend.dto.ShortSystemInfo;
+import com.redhat.rhn.frontend.dto.SystemOverview;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -81,13 +90,6 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.dto.ErrataOverview;
-import com.redhat.rhn.frontend.dto.HistoryEvent;
-import com.redhat.rhn.frontend.dto.OperationDetailsDto;
-import com.redhat.rhn.frontend.dto.PackageMetadata;
-import com.redhat.rhn.frontend.dto.ScheduledAction;
-import com.redhat.rhn.frontend.dto.ServerPath;
-import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
@@ -1252,7 +1254,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server2 = ServerFactoryTest.createTestServer(admin, true);
         server2.setName("ydjdk-test1234");
 
-        List<SystemOverview> sysList = handler.searchByName(admin, "ydjdk1");
+        List<ShortSystemInfo> sysList = handler.searchByName(admin, "ydjdk1");
         assertTrue(sysList.size() == 1);
         SystemOverview result = sysList.get(0);
         assertEquals(server.getId().intValue(), (result.getId().intValue()));

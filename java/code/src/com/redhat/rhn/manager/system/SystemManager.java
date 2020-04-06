@@ -66,6 +66,7 @@ import com.redhat.rhn.frontend.dto.NetworkDto;
 import com.redhat.rhn.frontend.dto.OrgProxyServer;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.ServerPath;
+import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.dto.SnapshotTagDto;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
 import com.redhat.rhn.frontend.dto.SystemEventDto;
@@ -807,15 +808,15 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> systemListShort(User user,
+    public static DataResult<ShortSystemInfo> systemListShort(User user,
             PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "xmlrpc_visible_to_user",
-                SystemOverview.class);
+                ShortSystemInfo.class);
         Map<String, Long> params = new HashMap<String, Long>();
         params.put("user_id", user.getId());
         Map<String, Long> elabParams = new HashMap<String, Long>();
 
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m, ShortSystemInfo.class);
     }
 
     /**
@@ -825,7 +826,7 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> systemListShortInactive(User user,
+    public static DataResult<ShortSystemInfo> systemListShortInactive(User user,
             PageControl pc) {
         return systemListShortInactive(user, Config.get().getInt(ConfigDefaults
                 .SYSTEM_CHECKIN_THRESHOLD), pc);
@@ -839,17 +840,17 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult<SystemOverview> systemListShortInactive(
+    public static DataResult<ShortSystemInfo> systemListShortInactive(
             User user, int inactiveThreshold, PageControl pc) {
         SelectMode m = ModeFactory.getMode(
                 "System_queries", "xmlrpc_visible_to_user_inactive",
-                SystemOverview.class);
+                ShortSystemInfo.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("checkin_threshold", inactiveThreshold);
         Map<String, Object> elabParams = new HashMap<String, Object>();
 
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m, ShortSystemInfo.class);
     }
 
     /**
@@ -857,19 +858,19 @@ public class SystemManager extends BaseManager {
      *    This is meant to be fast and only gets the id, name, and last checkin
      * @param user Currently logged in user.
      * @param pc PageControl
-     * @return list of SystemOverviews.
+     * @return list of ShortSystemInfos.
      */
-    public static DataResult<SystemOverview> systemListShortActive(User user,
+    public static DataResult<ShortSystemInfo> systemListShortActive(User user,
             PageControl pc) {
         SelectMode m = ModeFactory.getMode(
-                "System_queries", "xmlrpc_visible_to_user_active", SystemOverview.class);
+                "System_queries", "xmlrpc_visible_to_user_active", ShortSystemInfo.class);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("checkin_threshold", Config.get().getInt(ConfigDefaults
                 .SYSTEM_CHECKIN_THRESHOLD));
         Map<String, Object> elabParams = new HashMap<String, Object>();
 
-        return makeDataResult(params, elabParams, pc, m, SystemOverview.class);
+        return makeDataResult(params, elabParams, pc, m, ShortSystemInfo.class);
     }
 
     /**
