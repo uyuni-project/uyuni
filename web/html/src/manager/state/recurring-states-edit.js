@@ -31,7 +31,6 @@ class RecurringStatesEdit extends React.Component {
     };
 
     getTargetType = () => {
-        console.log(window.entityType);
         if (window.entityType === "GROUP") {
             Object.assign(this.state, {
                 targetType: entityType,

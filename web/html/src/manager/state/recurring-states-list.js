@@ -103,6 +103,18 @@ class RecurringStatesList extends React.Component {
                                     cell={(row) => targetTypeToString(row.targetType)}
                                 />
                                 <Column
+                                    columnClass="text-center"
+                                    headerClass="text-center"
+                                    header={t("Skip Next")}
+                                    cell={(row) =>
+                                        <input
+                                            type="checkbox"
+                                            onChange={() => this.props.onSkipNext(row)}
+                                            checked={row.skipNext}
+                                            title="Skip next action execution"
+                                        />}
+                                />
+                                <Column
                                     columnClass="text-right"
                                     headerClass="text-right"
                                     header={t('Actions')}

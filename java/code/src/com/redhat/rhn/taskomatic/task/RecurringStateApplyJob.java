@@ -46,7 +46,14 @@ public class RecurringStateApplyJob extends RhnJavaJob {
         recurringAction.ifPresentOrElse(
                 action ->  {
                     if (action.isActive()) {
-                        scheduleAction(context, action);
+                        if (action.isSkipNext()) {
+                            action.setSkipNext(false);
+                            RecurringActionFactory.save(action);
+                            log.debug(String.format("Skip next flag active, skipping action %S", action));
+                        }
+                        else {
+                            scheduleAction(context, action);
+                        }
                     }
                     else {
                         log.debug(String.format("Action %s not active, skipping", action));

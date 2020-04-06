@@ -171,6 +171,7 @@ public class RecurringActionController {
         json.setTargetId(a.getEntityId());
         json.setCreated(a.getCreated());
         json.setCreatorLogin(a.getCreator().getLogin());
+        json.setSkipNext(a.isSkipNext());
         if (a instanceof OrgRecurringAction) {
             json.setOrgName(OrgFactory.lookupById(a.getEntityId()).getName());
         }
@@ -252,6 +253,7 @@ public class RecurringActionController {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
         action.setTestMode(json.isTest());
+        action.setSkipNext(json.isSkipNext());
 
         String cron = json.getCron();
         if (StringUtils.isBlank(cron)) {

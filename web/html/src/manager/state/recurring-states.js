@@ -43,7 +43,7 @@ class RecurringStates extends React.Component {
     constructor(props) {
         super(props);
 
-        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError", "updateSchedule", "toggleActive"]
+        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError", "updateSchedule", "toggleActive", "skipNext"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
@@ -102,6 +102,13 @@ class RecurringStates extends React.Component {
     toggleActive(schedule) {
         Object.assign(schedule, {
             active: !(schedule.active)
+        });
+        this.updateSchedule(schedule);
+    }
+
+    skipNext(schedule) {
+        Object.assign(schedule, {
+            skipNext: !(schedule.skipNext)
         });
         this.updateSchedule(schedule);
     }
@@ -200,6 +207,7 @@ class RecurringStates extends React.Component {
                                              disableCreate={!this.isFilteredList()}
                                              onActionChanged={this.handleForwardAction}
                                              onToggleActive={this.toggleActive}
+                                             onSkipNext={this.skipNext}
                                              onSelect={this.handleDetailsAction}
                                              onEdit={this.handleEditAction}
                                              onDelete={this.deleteSchedule}

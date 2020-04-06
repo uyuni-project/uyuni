@@ -55,6 +55,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
     private boolean testMode;
     private boolean active;
     private User creator;
+    private boolean skipNext;
 
     public static final String RECURRING_ACTION_PREFIX = "recurring-action-";
 
@@ -246,6 +247,26 @@ public abstract class RecurringAction extends BaseDomainHelper {
      */
     public void setCreator(User creatorIn) {
         creator = creatorIn;
+    }
+
+    /**
+     * Gets if to skip next execution.
+     *
+     * @return active - whether to skip next action execution
+     */
+    @Column(name = "skip_next")
+    @org.hibernate.annotations.Type(type = "yes_no")
+    public boolean isSkipNext() {
+        return skipNext;
+    }
+
+    /**
+     * Sets if to skip next action execution
+     *
+     * @param skipNextIn - skipNext
+     */
+    public void setSkipNext(boolean skipNextIn) {
+        this.skipNext = skipNextIn;
     }
 
     @Override

@@ -59,6 +59,9 @@ public class RecurringStateScheduleJson {
     /**  Name of the Organization - only applicable for OrgRecurringAction **/
     private String orgName;
 
+    /**  Skip next action execution **/
+    private boolean skipNext;
+
     /**
      * Gets the recurringActionId.
      *
@@ -131,6 +134,13 @@ public class RecurringStateScheduleJson {
      */
     public boolean isTest() {
         return test;
+    }
+
+    /**
+     * @return whether to skip the next execution
+     */
+    public boolean isSkipNext() {
+        return skipNext;
     }
 
     /**
@@ -239,5 +249,14 @@ public class RecurringStateScheduleJson {
      */
     public void setOrgName(String orgNameIn) {
         this.orgName = orgNameIn;
+    }
+
+    /**
+     * Sets skip next
+     *
+     * @param skipNextIn whether to skip next execution
+     */
+    public void setSkipNext(boolean skipNextIn) {
+        this.skipNext = skipNextIn;
     }
 }
