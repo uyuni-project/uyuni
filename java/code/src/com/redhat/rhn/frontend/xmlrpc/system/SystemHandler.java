@@ -84,6 +84,7 @@ import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
 import com.redhat.rhn.frontend.dto.ServerPath;
+import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
@@ -672,11 +673,11 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array()
-     *          $SystemOverviewSerializer
+     *          $ShortSystemInfoSerializer
      *      #array_end()
      */
     public Object[] listSystems(User loggedInUser) throws FaultException {
-        DataResult<SystemOverview> dr = SystemManager.systemListShort(loggedInUser, null);
+        DataResult<ShortSystemInfo> dr = SystemManager.systemListShort(loggedInUser, null);
         dr.elaborate();
         return dr.toArray();
     }
@@ -711,10 +712,10 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array()
-     *          $SystemOverviewSerializer
+     *          $ShortSystemInfoSerializer
      *      #array_end()
      */
-    public List<SystemOverview> listActiveSystems(User loggedInUser)
+    public List<ShortSystemInfo> listActiveSystems(User loggedInUser)
             throws FaultException {
         return SystemManager.systemListShortActive(loggedInUser, null);
     }
@@ -1858,10 +1859,10 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
      * @xmlrpc.returntype
      *          #array()
-     *              $SystemOverviewSerializer
+     *              $ShortSystemInfoSerializer
      *          #array_end()
      */
-    public List<SystemOverview> listUserSystems(User loggedInUser, String login)
+    public List<ShortSystemInfo> listUserSystems(User loggedInUser, String login)
             throws FaultException {
         // Get the logged in user
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
@@ -1877,10 +1878,10 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *          #array()
-     *              $SystemOverviewSerializer
+     *              $ShortSystemInfoSerializer
      *          #array_end()
      */
-    public List<SystemOverview> listUserSystems(User loggedInUser) {
+    public List<ShortSystemInfo> listUserSystems(User loggedInUser) {
         // Get the logged in user
         return SystemManager.systemListShort(loggedInUser, null);
     }
@@ -2866,17 +2867,17 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.returntype
      *           #array()
-     *              $SystemOverviewSerializer
+     *              $ShortSystemInfoSerializer
      *          #array_end()
      *
      */
-    public List<SystemOverview> searchByName(User loggedInUser, String regexp) {
-        List<SystemOverview> systems =  SystemManager.systemListShort(loggedInUser, null);
-        List<SystemOverview> returnList = new ArrayList<SystemOverview>();
+    public List<ShortSystemInfo> searchByName(User loggedInUser, String regexp) {
+        List<ShortSystemInfo> systems =  SystemManager.systemListShort(loggedInUser, null);
+        List<ShortSystemInfo> returnList = new ArrayList<>();
 
         Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
 
-        for (SystemOverview system : systems) {
+        for (ShortSystemInfo system : systems) {
             Matcher match = pattern.matcher(system.getName());
             if (match.find()) {
                 returnList.add(system);
@@ -5355,10 +5356,10 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array()
-     *          $SystemOverviewSerializer
+     *          $ShortSystemInfoSerializer
      *      #array_end()
      */
-    public List<SystemOverview> listInactiveSystems(User loggedInUser) {
+    public List<ShortSystemInfo> listInactiveSystems(User loggedInUser) {
         return SystemManager.systemListShortInactive(loggedInUser, null);
     }
 
@@ -5375,10 +5376,10 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "days")
      * @xmlrpc.returntype
      *      #array()
-     *          $SystemOverviewSerializer
+     *          $ShortSystemInfoSerializer
      *      #array_end()
      */
-    public List<SystemOverview> listInactiveSystems(User loggedInUser,
+    public List<ShortSystemInfo> listInactiveSystems(User loggedInUser,
             Integer days) {
         return SystemManager.systemListShortInactive(loggedInUser, days, null);
     }

@@ -1,3 +1,4 @@
+- fix serializer and documentation for system.listSystems (bsc#1168083)
 - skip and show migration targets which do not have a successor
   for all installed extension products (bsc#1168227)
 - fix resource leak in taskomatic (bsc#1168696)
