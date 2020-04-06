@@ -1,3 +1,4 @@
+- fix resource leak in taskomatic (bsc#1168696)
 - add XMLRPC API method: proxy.listProxyClients (bsc#1166408)
 - Hide Virtualization > Provisioning tab for Salt systems (bsc#1167329)
 - Remove no longer necessary check for retail TERMINALS group membership

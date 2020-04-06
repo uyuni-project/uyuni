@@ -38,7 +38,7 @@ public class MinionActionChainExecutor extends RhnJavaJob {
     private static final int ACTION_DATABASE_GRACE_TIME = 10000;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
-    private SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService());
+    private SaltServerActionService saltServerActionService = new SaltServerActionService(SaltService.INSTANCE);
 
     /**
      * @param context the job execution context
