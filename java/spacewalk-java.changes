@@ -1,3 +1,5 @@
+- skip and show migration targets which do not have a successor
+  for all installed extension products (bsc#1168227)
 - fix resource leak in taskomatic (bsc#1168696)
 - add XMLRPC API method: proxy.listProxyClients (bsc#1166408)
 - Hide Virtualization > Provisioning tab for Salt systems (bsc#1167329)
