@@ -360,6 +360,7 @@ PKGLIST15_TRAD = [
     "libnewt0_52",
     "libslang2",
     "newt",
+    "perl",
     "python3-asn1crypto",
     "python3-cffi",
     "python3-cryptography",
