@@ -56,7 +56,7 @@ public enum InputValidator {
 
         boolean invalidPort = params.getPort()
                 .map(port -> port.toString())
-                .filter(port -> StringUtils.isNotEmpty(port) && !HostPortValidator.getInstance().isValidPort(port))
+                .filter(port -> !HostPortValidator.getInstance().isValidPort(port))
                 .isPresent();
         if (invalidPort) {
             errors.add("Port must be a number within range 1-65535.");
