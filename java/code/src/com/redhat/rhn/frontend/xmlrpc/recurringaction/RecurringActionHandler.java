@@ -178,6 +178,7 @@ public class RecurringActionHandler extends BaseHandler {
      *      #prop_desc("string", "cron_expr", "The execution frequency of the action (optional)")
      *      #prop_desc("boolean", "test", "Whether the action should be executed in test mode (optional)")
      *      #prop_desc("boolean", "active", "Whether the action should be active (optional)")
+     *      #prop_desc("boolean", "skip_next", "Whether to skip the next execution of the action (optional)")
      *  #struct_end()
      * @xmlrpc.returntype The id of the recurring action
      */
@@ -206,6 +207,9 @@ public class RecurringActionHandler extends BaseHandler {
         }
         if (actionProps.containsKey("active")) {
             action.setActive(Boolean.parseBoolean(actionProps.get("active").toString()));
+        }
+        if (actionProps.containsKey("skip_next")) {
+            action.setSkipNext(Boolean.parseBoolean(actionProps.get("skip_next").toString()));
         }
 
         return action; // return "detached" action
