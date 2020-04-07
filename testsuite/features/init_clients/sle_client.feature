@@ -4,11 +4,11 @@
 Feature: Register a traditional client
   In order to register a traditional client to the SUSE Manager server
   As the root user
-  I want to call rhnreg_ks
+  I want to create, parametrize and run boostrap script from proxy
 
   Scenario: Register a traditional client
-    When I register using "1-SUSE-DEV-x86_64" key
-    Then I should see "sle_client" in spacewalk
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    Then I should see "sle_client" via spacecmd
 
   Scenario: Check registration values
     Given I update the profile of this client

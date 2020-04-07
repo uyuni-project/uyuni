@@ -34,7 +34,7 @@ Feature: Setup SUSE Manager proxy
   Scenario: Copy the keys and configure the proxy
     When I copy server's keys to the proxy
     And I configure the proxy
-    Then I should see "proxy" in spacewalk
+    Then I should see "proxy" via spacecmd
 
   Scenario: Check proxy system details
     When I am on the Systems overview page of this "proxy"
