@@ -19,10 +19,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,6 +71,7 @@ public class SPMigrationAction extends RhnAction {
     private static final String ZYPP_INSTALLED = "zyppPluginInstalled";
     private static final String MIGRATION_SCHEDULED = "migrationScheduled";
     private static final String LATEST_SP = "latestServicePack";
+    private static final String MISSING_SUCCESSOR_EXTENSIONS = "missingSuccessorExtensions";
     private static final String TARGET_PRODUCTS = "targetProducts";
     private static final String CHANNEL_MAP = "channelMap";
     private static final String UPDATESTACK_UPDATE_NEEDED = "updateStackUpdateNeeded";
@@ -203,17 +206,24 @@ public class SPMigrationAction extends RhnAction {
                 migration == null) {
             // Find target products
             Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
-            List<SUSEProductSet> migrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts,
-                            server.getServerArch().getCompatibleChannelArch(),
-                            ctx.getCurrentUser());
-
-            if (migrationTargets == null) {
+            if (installedProducts.isEmpty()) {
                 // Installed products are 'unknown'
                 logger.debug("Installed products are 'unknown'");
                 return forward;
             }
-            else if (migrationTargets.size() == 0) {
+
+            List<SUSEProductSet> allMigrationTargets = DistUpgradeManager.
+                    getTargetProductSets(installedProducts,
+                            server.getServerArch().getCompatibleChannelArch(),
+                            ctx.getCurrentUser());
+
+            Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
+            List<SUSEProductSet> migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts,
+                    allMigrationTargets, missingSuccessorExtensions);
+            request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS,
+                    missingSuccessorExtensions.orElse(new HashSet<String>()));
+
+            if (migrationTargets.size() == 0) {
                 // Latest SP is apparently installed
                 logger.debug("Latest SP is apparently installed");
                 request.setAttribute(LATEST_SP, true);

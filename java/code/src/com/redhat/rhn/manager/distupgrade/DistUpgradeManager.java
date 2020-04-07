@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
+
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.FaultException;
@@ -694,5 +696,43 @@ public class DistUpgradeManager extends BaseManager {
 
         // Return the ID of the scheduled action
         return ActionManager.scheduleDistUpgrade(user, server, details, earliest).getId();
+    }
+
+    /**
+     * Remove incompatible migration targets compared to the installed products.
+     * Write the failed products in the missingSuccesorExtensions set in case it should
+     * be shown somewhere.
+     *
+     * @param installedProducts Optional set of the installed products
+     * @param allMigrationTargets all calculated migration targets
+     * @param missingSuccessorExtensions OUT: info about installed extensions missing a successor
+     * @return list of valid migration targets
+     */
+    public static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
+            List<SUSEProductSet> allMigrationTargets, Optional<Set<String>> missingSuccessorExtensions) {
+        List<SUSEProductSet> migrationTargets = new LinkedList<SUSEProductSet>();
+        for (SUSEProductSet t : allMigrationTargets) {
+            if (installedProducts.get().getAddonProducts().isEmpty()) {
+                migrationTargets.add(t);
+                logger.debug("Found valid migration target: " + t.toString());
+                continue;
+            }
+            List<SUSEProduct> missingAddonSuccessors = installedProducts.get().getAddonProducts()
+                .stream()
+                .filter(addon -> DistUpgradeManager.findMatch(addon, t.getAddonProducts()) == null)
+                .collect(Collectors.toList());
+
+            if (missingAddonSuccessors.isEmpty()) {
+                logger.debug("Found valid migration target: " + t.toString());
+                migrationTargets.add(t);
+            }
+            else {
+                List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
+                        .collect(Collectors.toList());
+                logger.warn("No migration target found for '" +  String.join(", ", missing) + "'. Skipping");
+                missingSuccessorExtensions.ifPresent(l -> l.addAll(missing));
+            }
+        }
+        return migrationTargets;
     }
 }

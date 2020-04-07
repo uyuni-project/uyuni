@@ -21369,6 +21369,9 @@ given channel.</source>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed">
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
       </trans-unit>
+      <trans-unit id="spmigration.jsp.error.missing-successor-extensions">
+        <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title">
         <source>Service Pack Migration - Confirm</source>
       </trans-unit>
