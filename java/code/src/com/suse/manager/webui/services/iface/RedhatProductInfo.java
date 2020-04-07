@@ -37,7 +37,6 @@ public class RedhatProductInfo {
         this.whatProvidesRes = whatProvidesResIn;
     }
 
-
     /**
      * @return centos release content
      */
