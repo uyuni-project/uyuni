@@ -11,7 +11,7 @@ Feature: Generate a bootstrap script and use it to register a client
   Scenario: Register this client using the bootstrap script
     When I fetch "pub/bootstrap/bootstrap-test.sh" to "sle_client"
     And I run "sh ./bootstrap-test.sh" on "sle_client"
-    Then I should see "sle_client" in spacewalk
+    Then I should see "sle_client" via spacecmd
     And "sed" should be installed on "sle_client"
     And config-actions are enabled
     And remote-commands are enabled

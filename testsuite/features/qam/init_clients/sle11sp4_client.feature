@@ -10,7 +10,7 @@ Feature: Register a sle11sp4 traditional client
   Scenario: Register a sle11sp4 traditional client
     When I register "sle11sp4_client" as traditional client with activation key "1-sle11sp4_client_key"
     And I run "mgr-actions-control --enable-all" on "sle11sp4_client"
-    Then I should see "sle11sp4_client" in spacewalk
+    Then I should see "sle11sp4_client" via spacecmd
     And I wait until onboarding is completed for "sle11sp4_client"
 
   Scenario: Check registration values of sle11sp4 traditional

@@ -23,8 +23,8 @@ Feature: Bare metal discovery
     And the PXE default profile should be enabled
 
   Scenario: Register a client for bare metal discovery
-    When I register using "1-spacewalk-bootstrap-activation-key" key
-    Then I should see "sle_client" in spacewalk
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-spacewalk-bootstrap-activation-key" from the proxy
+    Then I should see "sle_client" via spacecmd
 
   Scenario: Check registration values of client
     Given I am on the Systems overview page of this "sle_client"
@@ -81,7 +81,7 @@ Feature: Bare metal discovery
     When I check the "sle_client" client
     And I wait for "30" seconds
     Then I am on System Set Manager Overview
-  
+
   Scenario: Check SSM page for bare metal system
     Given I am authorized as "admin" with password "admin"
     And I am on System Set Manager Overview
@@ -115,10 +115,10 @@ Feature: Bare metal discovery
     When I click on "Disable adding to this organization"
     Then I should see a "Automatic bare-metal system discovery has been successfully disabled" text
     And the PXE default profile should be disabled
-  
+
   Scenario: Cleanup: register a traditional client after bare metal tests
-    When I register using "1-SUSE-DEV-x86_64" key
-    Then I should see "sle_client" in spacewalk
+    When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: remove remaining systems from SSM after bare metal tests
     When I am authorized as "admin" with password "admin"
