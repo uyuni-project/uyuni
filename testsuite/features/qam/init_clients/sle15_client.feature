@@ -10,7 +10,7 @@ Feature: Register a sle15 traditional client
   Scenario: Register a traditional client
     When I register "sle15_client" as traditional client with activation key "1-sle15_client_key"
     And I run "mgr-actions-control --enable-all" on "sle15_client"
-    Then I should see "sle15_client" in spacewalk
+    Then I should see "sle15_client" via spacecmd
     And I wait until onboarding is completed for "sle15_client"
 
   Scenario: Check registration values

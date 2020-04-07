@@ -96,7 +96,8 @@ Feature: Migrate a traditional client into a Salt minion
     When I enable SUSE Manager tools repositories on "sle_client"
     And I install package "spacewalk-client-setup spacewalk-oscap mgr-cfg-actions" on this "sle_client"
     And I remove package "salt-minion" from this "sle_client"
-    And I register using "1-SUSE-DEV-x86_64" key
+    And I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    Then I should see "sle_client" via spacecmd
 
   Scenario: Cleanup: check that this is again a traditional client
     Given I am on the Systems overview page of this "sle_client"
