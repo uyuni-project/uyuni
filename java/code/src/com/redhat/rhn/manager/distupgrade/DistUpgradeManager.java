@@ -31,6 +31,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.util.RpmVersionComparator;
@@ -375,6 +376,12 @@ public class DistUpgradeManager extends BaseManager {
                 .collect(toList());
 
         for (List<SUSEProduct> combination : combinations) {
+            if (combination.size() != (installedExtensions.size() + 1)) {
+                // Not all installed products have a successor
+                logger.info("SP Migration invalid combination: " + combination.stream()
+                    .map(p -> p.getFriendlyName()).collect(joining(", ")));
+                continue;
+            }
             SUSEProduct base = combination.get(0);
             if (!ContentSyncManager.isProductAvailable(base, base)) {
                 // No Product Channels means, no subscription to access the channels

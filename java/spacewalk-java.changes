@@ -1,3 +1,6 @@
+- skip migration targets when they do not have the same amount of
+  products as the installed set (bsc#1168227)
+
 -------------------------------------------------------------------
 Wed Mar 18 10:25:01 CET 2020 - jgonzalez@suse.com
 
