@@ -21318,6 +21318,9 @@ given channel.</source>
           <source>Total Packages</source>
         </trans-unit>
       </group>
+      <trans-unit id="spmigration.jsp.error.missing-successor-extensions">
+        <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

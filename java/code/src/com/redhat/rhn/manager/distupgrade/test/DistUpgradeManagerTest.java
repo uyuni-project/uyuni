@@ -131,6 +131,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
                 Optional.of(sourceProducts), arch, user);
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts),
+                targetProductSets, Optional.empty());
         assertNotNull(targetProductSets);
         assertTrue(targetProductSets.isEmpty());
     }
@@ -150,6 +152,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
                 Optional.of(sourceProducts), arch , user);
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts),
+                targetProductSets, Optional.empty());
         assertNotNull(targetProductSets);
         assertEquals(1, targetProductSets.size());
         assertEquals(targetBaseProduct, targetProductSets.get(0).getBaseProduct());
@@ -170,6 +174,9 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
                 Optional.of(sourceProducts), arch, user);
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts),
+                targetProductSets, Optional.empty());
+
         assertNotNull(targetProductSets);
         assertTrue(targetProductSets.isEmpty());
     }
@@ -274,6 +281,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.empty());
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -391,6 +400,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
         List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.empty());
 
         assertNotNull(targetProductSets);
         assertEquals(2, targetProductSets.size());
@@ -626,6 +637,149 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 assertTrue(task.getChannel().equals(channel1) ||
                         task.getChannel().equals(channel2));
                 assertEquals('S', task.getTask());
+            }
+        }
+    }
+
+    /**
+     * Test getTargetProductSets():
+     * SLES as base product with LTSS as addon. On the target product there is no successor for LTSS
+     * Expected outcome: No migration available
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testGetTargetProductSetsLTSScase() throws Exception {
+        Credentials sccc = SUSEProductTestUtils.createSCCCredentials("dummy", user);
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct slesSP1BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel slesSP1BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(slesSP1BaseProduct, user);
+
+        SUSEProductChannel slesSP1Mirrored = new SUSEProductChannel();
+        slesSP1Mirrored.setChannel(slesSP1BaseChannel);
+        slesSP1Mirrored.setProduct(slesSP1BaseProduct);
+        slesSP1Mirrored.setMandatory(true);
+        SUSEProductFactory.save(slesSP1Mirrored);
+
+        List<SUSEProduct> slesSP1Addons = new ArrayList<>();
+        SUSEProduct ltssSP1AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel ltssSP1ChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(ltssSP1AddonProduct, slesSP1BaseChannel, user);
+        SUSEProductExtension e = new SUSEProductExtension(slesSP1BaseProduct, ltssSP1AddonProduct, slesSP1BaseProduct, false);
+        TestUtils.saveAndReload(e);
+
+        SUSEProductChannel ltssSP1Mirrored = new SUSEProductChannel();
+        ltssSP1Mirrored.setChannel(ltssSP1ChildChannel);
+        ltssSP1Mirrored.setProduct(ltssSP1AddonProduct);
+        ltssSP1Mirrored.setMandatory(true);
+        SUSEProductFactory.save(ltssSP1Mirrored);
+
+        slesSP1Addons.add(ltssSP1AddonProduct);
+        SUSEProductSet sourceProducts = new SUSEProductSet(slesSP1BaseProduct, slesSP1Addons);
+
+        SCCRepository slesSP1SCCRepository = SUSEProductTestUtils.createSCCRepository();
+        SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, slesSP1SCCRepository);
+
+        SUSEProductSCCRepository slesSP1ProdRepo = new SUSEProductSCCRepository();
+        slesSP1ProdRepo.setProduct(slesSP1BaseProduct);
+        slesSP1ProdRepo.setRootProduct(slesSP1BaseProduct);
+        slesSP1ProdRepo.setRepository(slesSP1SCCRepository);
+        slesSP1ProdRepo.setChannelLabel(slesSP1BaseChannel.getLabel());
+        slesSP1ProdRepo.setParentChannelLabel(slesSP1BaseChannel.getLabel());
+        slesSP1ProdRepo.setChannelName(slesSP1BaseChannel.getLabel());
+        slesSP1ProdRepo.setMandatory(true);
+        slesSP1ProdRepo = TestUtils.saveAndReload(slesSP1ProdRepo);
+
+        SCCRepository ltssSP1SCCRepository = SUSEProductTestUtils.createSCCRepository();
+        SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, ltssSP1SCCRepository);
+
+        SUSEProductSCCRepository ltssSP1ProdRepo = new SUSEProductSCCRepository();
+        ltssSP1ProdRepo.setProduct(ltssSP1AddonProduct);
+        ltssSP1ProdRepo.setRootProduct(slesSP1BaseProduct);
+        ltssSP1ProdRepo.setRepository(ltssSP1SCCRepository);
+        ltssSP1ProdRepo.setChannelLabel(ltssSP1ChildChannel.getLabel());
+        ltssSP1ProdRepo.setParentChannelLabel(slesSP1BaseChannel.getLabel());
+        ltssSP1ProdRepo.setChannelName(slesSP1BaseChannel.getLabel());
+        ltssSP1ProdRepo.setMandatory(true);
+        ltssSP1ProdRepo = TestUtils.saveAndReload(ltssSP1ProdRepo);
+
+        // Setup migration target product + upgrade path
+        SUSEProduct slesSP2BaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel slesSP2BaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(slesSP2BaseProduct, user);
+        SUSEProductChannel slesSP2Mirrored = new SUSEProductChannel();
+        slesSP2Mirrored.setChannel(slesSP2BaseChannel);
+        slesSP2Mirrored.setProduct(slesSP2BaseProduct);
+        slesSP2Mirrored.setMandatory(true);
+        SUSEProductFactory.save(slesSP2Mirrored);
+        slesSP1BaseProduct.setUpgrades(Collections.singleton(slesSP2BaseProduct));
+
+        SCCRepository slesSP2SCCRepository = SUSEProductTestUtils.createSCCRepository();
+        SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, slesSP2SCCRepository);
+
+        SUSEProductSCCRepository slesSP2ProdRepo = new SUSEProductSCCRepository();
+        slesSP2ProdRepo.setProduct(slesSP2BaseProduct);
+        slesSP2ProdRepo.setRootProduct(slesSP2BaseProduct);
+        slesSP2ProdRepo.setRepository(slesSP2SCCRepository);
+        slesSP2ProdRepo.setChannelLabel(slesSP2BaseChannel.getLabel());
+        slesSP2ProdRepo.setParentChannelLabel(slesSP2BaseChannel.getLabel());
+        slesSP2ProdRepo.setChannelName(slesSP2BaseChannel.getLabel());
+        slesSP2ProdRepo.setMandatory(true);
+        slesSP2ProdRepo = TestUtils.saveAndReload(slesSP2ProdRepo);
+
+        // Verify that target products are returned correctly
+
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+
+        Set<String> msg = new HashSet<String>();
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.of(msg));
+
+        assertNotNull(targetProductSets);
+        assertEquals(0, targetProductSets.size());
+        assert(msg.contains(ltssSP1AddonProduct.getFriendlyName()));
+
+
+        // Setup target ltss addon product + upgrade path
+        SUSEProduct ltssSP2AddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel ltssSP2AddonChannel = SUSEProductTestUtils.createChildChannelsForProduct(ltssSP2AddonProduct, slesSP2BaseChannel, user);
+        SUSEProductChannel ltssSP2Mirrored = new SUSEProductChannel();
+        ltssSP2Mirrored.setChannel(ltssSP2AddonChannel);
+        ltssSP2Mirrored.setProduct(ltssSP2AddonProduct);
+        ltssSP2Mirrored.setMandatory(true);
+        SUSEProductFactory.save(ltssSP2Mirrored);
+
+        ltssSP1AddonProduct.setUpgrades(Collections.singleton(ltssSP2AddonProduct));
+        SUSEProductExtension e3 = new SUSEProductExtension(slesSP2BaseProduct, ltssSP2AddonProduct, slesSP2BaseProduct, false);
+        TestUtils.saveAndReload(e3);
+
+        SCCRepository ltssSP2SCCRepository = SUSEProductTestUtils.createSCCRepository();
+        SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, ltssSP2SCCRepository);
+
+        SUSEProductSCCRepository ltssSP2ProdRepo = new SUSEProductSCCRepository();
+        ltssSP2ProdRepo.setProduct(ltssSP2AddonProduct);
+        ltssSP2ProdRepo.setRootProduct(slesSP2BaseProduct);
+        ltssSP2ProdRepo.setRepository(ltssSP2SCCRepository);
+        ltssSP2ProdRepo.setChannelLabel(ltssSP2AddonChannel.getLabel());
+        ltssSP2ProdRepo.setParentChannelLabel(slesSP2BaseChannel.getLabel());
+        ltssSP2ProdRepo.setChannelName(slesSP2BaseChannel.getLabel());
+        ltssSP2ProdRepo.setMandatory(true);
+        ltssSP2ProdRepo = TestUtils.saveAndReload(ltssSP2ProdRepo);
+
+        targetProductSets = DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(Optional.of(sourceProducts), targetProductSets, Optional.empty());
+
+        // now the migration should be possible
+        assertNotNull(targetProductSets);
+        assertEquals(1, targetProductSets.size());
+
+        for (SUSEProductSet target : targetProductSets) {
+            if (target.getBaseProduct().getId() == slesSP2BaseProduct.getId()) {
+                List<SUSEProduct> addonProducts = target.getAddonProducts();
+                assertEquals(1, addonProducts.size());
+                assertEquals(ltssSP2AddonProduct, addonProducts.get(0));
+            }
+            else {
+                fail("unexpected product " + target.getBaseProduct());
             }
         }
     }
