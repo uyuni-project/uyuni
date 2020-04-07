@@ -1,3 +1,4 @@
+- Add option to skip next recurring actions execution
 - fix resource leak in taskomatic (bsc#1168696)
 - XMLRPC: Implement bootstrapping minions using an SSH private key
 - Fix: unable to be redirected to the IdP when SSO is enabled (bsc#1167667)
