@@ -21,6 +21,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentManagementException;
@@ -49,6 +50,7 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.CloneChannelCommand;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
@@ -63,6 +65,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static com.redhat.rhn.domain.contentmgmt.ContentProjectFactory.lookupClonesInProject;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.ATTACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
@@ -102,6 +105,8 @@ public class ContentManager {
     public ContentManager(ModulemdApi modulemdApiIn) {
         this.modulemdApi = Objects.requireNonNullElseGet(modulemdApiIn, ModulemdApi::new);
     }
+
+    private static Logger log = Logger.getLogger(ContentManager.class);
 
     /**
      * Create a Content Project
@@ -727,26 +732,54 @@ public class ContentManager {
             Channel leader, Stream<Channel> channels, User user) {
         // first make sure the leader exists
         SoftwareEnvironmentTarget leaderTarget = lookupTarget(leader, env, user)
-                .map(tgt -> {
-                    tgt.getChannel().setParentChannel(null);
-                    return tgt;
-                })
+                .map(tgt -> fixTargetProperties(tgt, leader, null))
                 .orElseGet(() -> createSoftwareTarget(leader, empty(), env, user));
 
         // then do the same with the children
         Stream<Pair<Channel, SoftwareEnvironmentTarget>> nonLeaderTargets = channels
                 .map(src -> lookupTarget(src, env, user)
-                        .map(tgt -> {
-                            tgt.getChannel().setParentChannel(leaderTarget.getChannel());
-                            return Pair.of(src, tgt);
-                        })
+                        .map(tgt -> fixTargetProperties(tgt, src, leaderTarget.getChannel()))
+                        .map(tgt -> Pair.of(src, tgt))
                         .orElseGet(() ->
                                 Pair.of(src, createSoftwareTarget(src, of(leaderTarget.getChannel()), env, user))));
 
-        return Stream.concat(
+        List<Pair<Channel, SoftwareEnvironmentTarget>> srcTgtPairs = Stream.concat(
                 Stream.of(Pair.of(leader, leaderTarget)),
                 nonLeaderTargets)
                 .collect(toList());
+
+        return srcTgtPairs;
+    }
+
+    /**
+     * Fixes target properties:
+     *
+     * - parent-child relation
+     * - original-clone relation of source and target. This makes sure that:
+     *   1. Old clones of source in the same content project will become clones of the target
+     *   2. Target will become clone of the source
+     *
+     * @param swTgt the target
+     * @param newSource new source channel of the target
+     * @param newParent new parent channel of the target
+     *
+     * @return the fixed target
+     */
+    private static SoftwareEnvironmentTarget fixTargetProperties(SoftwareEnvironmentTarget swTgt, Channel newSource,
+            Channel newParent) {
+        Channel tgt = swTgt.getChannel();
+        // make sure parent is set correctly
+        tgt.setParentChannel(newParent);
+
+        // fix the original-clone relation
+        tgt.asCloned().ifPresentOrElse(
+                t -> t.setOriginal(newSource),
+                () -> {
+                    log.info("Channel is not a clone: " + tgt + ". Adding clone info.");
+                    ChannelManager.addCloneInfo(newSource.getId(), tgt.getId());
+                });
+
+        return swTgt;
     }
 
     private static Optional<SoftwareEnvironmentTarget> lookupTarget(Channel srcChannel, ContentEnvironment env,
@@ -757,6 +790,7 @@ public class ContentManager {
 
     private SoftwareEnvironmentTarget createSoftwareTarget(Channel sourceChannel, Optional<Channel> leader,
             ContentEnvironment env, User user) {
+        List<ClonedChannel> oldSuccessors = lookupClonesInProject(sourceChannel, env.getContentProject());
         String targetLabel = channelLabelInEnvironment(sourceChannel.getLabel(), env);
 
         Channel targetChannel = ofNullable(ChannelFactory.lookupByLabelAndUser(targetLabel, user))
@@ -769,6 +803,9 @@ public class ContentManager {
                     leader.ifPresent(l -> cloneCmd.setParentLabel(l.getLabel()));
                     return cloneCmd.create();
                 });
+
+        // make sure the old successor of the sourceChannel in the project points to targetChannel now
+        oldSuccessors.forEach(c -> c.setOriginal(targetChannel));
 
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, targetChannel);
         env.addTarget(target);
