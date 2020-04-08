@@ -95,6 +95,7 @@ PKGLIST11_X86_I586 = [
 ]
 
 PKGLIST12 = [
+    "dbus-1-glib",
     "dbus-1-python",
     "hwdata",
     "libcurl4",
