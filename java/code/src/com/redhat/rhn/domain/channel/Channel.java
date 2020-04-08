@@ -955,5 +955,13 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         return "deb".equalsIgnoreCase(getArchTypeLabel());
     }
 
+    /**
+     * Return the {@link Channel} as {@link ClonedChannel} if it is one
+     *
+     * @return the optional of {@link ClonedChannel}
+     */
+    public Optional<ClonedChannel> asCloned() {
+        return Optional.empty();
+    }
 }
 

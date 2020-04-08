@@ -19,6 +19,7 @@ package com.redhat.rhn.domain.contentmgmt.test;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -599,5 +600,45 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
                 assertEquals(oldStatus, tgt.getStatus());
             }
         });
+    }
+
+    /**
+     * Test the lookup method for cloned channels within content project
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLookupClonesInProject() throws Exception {
+        // create CLM objects
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProjectFactory.save(cp);
+
+        var devEnv = new ContentEnvironment("dev", "dev", null, cp);
+        cp.setFirstEnvironment(devEnv);
+        ContentProjectFactory.save(devEnv);
+        var testEnv = new ContentEnvironment("test", "test", null, cp);
+        ContentProjectFactory.save(testEnv);
+        ContentProjectFactory.insertEnvironment(testEnv, of(devEnv));
+
+        // create channels and corresponding targets
+        Channel srcChannel = ChannelFactoryTest.createTestChannel(user);
+        srcChannel.setLabel("channel123");
+        Channel devChannel = ChannelFactoryTest.createTestClonedChannel(srcChannel, user);
+        devChannel.setLabel("testproj1-dev-channel123");
+        Channel testChannel = ChannelFactoryTest.createTestClonedChannel(devChannel, user);
+        testChannel.setLabel("testproj1-test-channel123");
+
+        var devTgt = new SoftwareEnvironmentTarget(devEnv, devChannel);
+        devEnv.addTarget(devTgt);
+        var testTgt = new SoftwareEnvironmentTarget(testEnv, testChannel);
+        testEnv.addTarget(testTgt);
+
+        // check dev environment
+        assertEquals(srcChannel, devTgt.getChannel().asCloned().map(c1 -> c1.getOriginal()).get());
+        assertEquals(1, ContentProjectFactory.lookupClonesInProject(devTgt.getChannel(), devTgt.getContentEnvironment().getContentProject()).size());
+        assertEquals(testChannel, ContentProjectFactory.lookupClonesInProject(devTgt.getChannel(), devTgt.getContentEnvironment().getContentProject()).iterator().next());
+
+        // check test environment
+        assertEquals(devChannel, testTgt.getChannel().asCloned().map(c -> c.getOriginal()).get());
+        assertTrue(ContentProjectFactory.lookupClonesInProject(testTgt.getChannel(), testTgt.getContentEnvironment().getContentProject()).isEmpty());
     }
 }
