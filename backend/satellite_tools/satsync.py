@@ -1112,8 +1112,9 @@ class Syncer:
                 # XXX Catch errors
                 if (not package_collection.has_package(pid) or not package_collection.get_package(pid)
                         or package_collection.get_package(pid)['last_modified']
-                        != short_package_collection.get_package(pid)['last_modified']):
-                    # not in the cache
+                        != short_package_collection.get_package(pid)['last_modified']
+                        or 'extra_tags' not in package_collection.get_package(pid)):
+                    # not in the cache or cache outdated
                     mp.append(pid)
 
         return missing_packages
