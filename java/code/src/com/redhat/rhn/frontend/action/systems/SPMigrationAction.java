@@ -23,7 +23,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedMap;
@@ -119,11 +118,12 @@ public class SPMigrationAction extends RhnAction {
         DynaActionForm form = (DynaActionForm) actionForm;
         String actionStep = TARGET;
 
+        // Called after redirect from event history after running a sp migration dry-run
         if (ctx.hasParam("aid")) {
             DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, form,
                     "date", DatePicker.YEAR_RANGE_POSITIVE);
             request.setAttribute("date", picker);
-            return actionMapping.findForward(getActionDetails(request, ctx));
+            return actionMapping.findForward(populateRequestFromAction(request, ctx));
         }
 
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
@@ -226,16 +226,12 @@ public class SPMigrationAction extends RhnAction {
                 return forward;
             }
 
-            List<SUSEProductSet> allMigrationTargets = DistUpgradeManager.
-                    getTargetProductSets(installedProducts,
-                            server.getServerArch().getCompatibleChannelArch(),
-                            ctx.getCurrentUser());
-
-            Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
-            List<SUSEProductSet> migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts,
-                    allMigrationTargets, missingSuccessorExtensions);
-            request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS,
-                    missingSuccessorExtensions.orElse(new HashSet<String>()));
+            List<SUSEProductSet> migrationTargets = getMigrationTargets(
+                    request,
+                    installedProducts,
+                    server.getServerArch().getCompatibleChannelArch(),
+                    ctx.getCurrentUser()
+            );
 
             if (migrationTargets.size() == 0) {
                 // Latest SP is apparently installed
@@ -469,7 +465,40 @@ public class SPMigrationAction extends RhnAction {
         return channelIDs;
     }
 
-    private String getActionDetails(HttpServletRequest request, RequestContext ctx) {
+    /**
+     * Gets a list of valid migration targets for given ProductSet.
+     * Filters out extensions missing a successor and populates MISSING_SUCCESSOR_EXTENSIONS.
+     * OUT: MISSING_SUCESSOR_EXTENSIONS
+     *
+     * @param request the HttpServletRequest
+     * @param installedProducts SUSEProductSet containing installed products
+     * @param channelArch architecture of the server
+     * @param user the user
+     * @return list containing available migration targets
+     */
+    private List<SUSEProductSet> getMigrationTargets(HttpServletRequest request,
+                                                     Optional<SUSEProductSet> installedProducts,
+                                                     ChannelArch channelArch,
+                                                     User user) {
+        List<SUSEProductSet> allMigrationTargets = DistUpgradeManager.
+                getTargetProductSets(installedProducts, channelArch, user);
+
+        Optional<Set<String>> missingSuccessorExtensions = Optional.of(new HashSet<String>());
+        List<SUSEProductSet> migrationTargets = DistUpgradeManager.removeIncompatibleTargets(installedProducts,
+                allMigrationTargets, missingSuccessorExtensions);
+        request.setAttribute(MISSING_SUCCESSOR_EXTENSIONS,
+                missingSuccessorExtensions.orElse(new HashSet<String>()));
+        return migrationTargets;
+    }
+
+    /**
+     * Populate the request attributes from a given action
+     *
+     * @param request the HttpServletRequest
+     * @param ctx the RequestContext
+     * @return String containing the ActionForward target
+     */
+    private String populateRequestFromAction(HttpServletRequest request, RequestContext ctx) {
         Long aid = ctx.getParamAsLong("aid");
 
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(aid);
@@ -480,8 +509,7 @@ public class SPMigrationAction extends RhnAction {
                 .collect(Collectors.toList());
 
         Set<Channel> baseChannelSet = channels.stream()
-                .map(Channel::getParentChannel)
-                .filter(Objects::nonNull)
+                .filter(Channel::isBaseChannel)
                 .collect(Collectors.toSet());
 
         if (baseChannelSet.size() != 1) {
@@ -491,12 +519,25 @@ public class SPMigrationAction extends RhnAction {
         Channel baseChannel = baseChannelSet.iterator().next();
         List<Long> channelIds = channels.stream().map(Channel::getId).collect(Collectors.toList());
         List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel, channelIds);
-        SUSEProduct baseProduct = SUSEProductFactory.lookupByChannelName(baseChannel.getName()).get(0).getRootProduct();
-        SUSEProductSet targetProductSet = createProductSet(baseProduct.getId(), new Long[0]);
 
-        request.setAttribute(TARGET_PRODUCTS, targetProductSet);
-        request.setAttribute(BASE_PRODUCT, targetProductSet.getBaseProduct());
-        request.setAttribute(ADDON_PRODUCTS, targetProductSet.getAddonProducts());
+        SUSEProduct baseProduct = SUSEProductFactory.lookupByChannelName(baseChannel.getName()).get(0).getRootProduct();
+
+        Server server = ctx.lookupAndBindServer();
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        Optional<SUSEProductSet> targetProductSet = getMigrationTargets(
+                request,
+                installedProducts,
+                server.getServerArch().getCompatibleChannelArch(),
+                ctx.getCurrentUser()
+        ).stream().filter(productSet -> productSet.getBaseProduct().equals(baseProduct)).findFirst();
+
+        if (targetProductSet.isEmpty()) {
+            return TARGET;
+        }
+
+        request.setAttribute(TARGET_PRODUCTS, targetProductSet.get());
+        request.setAttribute(BASE_PRODUCT, targetProductSet.get().getBaseProduct());
+        request.setAttribute(ADDON_PRODUCTS, targetProductSet.get().getAddonProducts());
 
         request.setAttribute(BASE_CHANNEL, baseChannel);
         request.setAttribute(CHILD_CHANNELS, childChannels);

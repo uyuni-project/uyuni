@@ -3232,7 +3232,7 @@
                  path="/WEB-INF/pages/systems/sdc/history_event.jsp"/>
         <forward name="continue"
                  path="/systems/details/history/History.do"/>
-        <forward name="confirm"
+        <forward name="spmigration"
                  path="/systems/details/SPMigration.do"/>
     </action>
 

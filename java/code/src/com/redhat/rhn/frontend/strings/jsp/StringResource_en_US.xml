@@ -11515,6 +11515,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <trans-unit id="system.event.pending.canceled">
           <source>{0} system event(s) canceled.</source>
         </trans-unit>
+        <trans-unit id="system.event.spmigration.notification">
+            <source>&lt;strong&gt;Reload&lt;/strong&gt; the page after the action completed successfully to schedule the full migration.</source>
+        </trans-unit>
         <trans-unit id="system.event.spmigration.rescheduleDryRun">
           <source>Run migration</source>
         </trans-unit>
