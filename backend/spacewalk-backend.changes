@@ -1,3 +1,4 @@
+- validate cached package entries on ISS slave (bsc#1159184)
 - restore config namespace in debian repo module to fix
   autogeneration of bootstrap repos
 - send CreateBootstrapRepoFailed Notification
