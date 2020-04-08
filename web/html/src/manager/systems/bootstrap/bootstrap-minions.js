@@ -70,13 +70,12 @@ class BootstrapMinions extends React.Component {
     }
 
     privKeyFileChanged(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (e) => this.privKeyLoaded(e.target.result);
-        reader.readAsText(file);
         this.setState({
             privKeyLoading: true
         });
+        const reader = new FileReader();
+        reader.onload = (e) => this.privKeyLoaded(e.target.result);
+        reader.readAsText(event.target.files[0]);
     }
 
     privKeyLoaded(keyString) {
@@ -197,13 +196,35 @@ class BootstrapMinions extends React.Component {
           }]}/>;
         }
 
-
         var buttons = [
             <AsyncButton id="bootstrap-btn" defaultType="btn-success" icon="fa-plus" text={t("Bootstrap")} disabled={this.state.privKeyLoading} action={this.onBootstrap}/>,
             <AsyncButton id="clear-btn" defaultType="btn-default pull-right" icon="fa-eraser" text={t("Clear fields")} action={this.clearFields}/>
         ];
 
         const productName = _IS_UYUNI ? "Uyuni" : "SUSE Manager"
+
+        const authenticationData = this.state.authMethod === "password" ?
+            <div className="form-group" >
+                <label className="col-md-3 control-label">Password:</label>
+                <div className="col-md-6">
+                    <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} value={this.state.password} onChange={this.passwordChanged}/>
+                </div>
+             </div>
+             :
+             <div>
+                 <div className="form-group">
+                     <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
+                     <div className="col-md-6">
+                         <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged}/>
+                     </div>
+                 </div>
+                 <div className="form-group">
+                     <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
+                     <div className="col-md-6">
+                         <input name="privKeyPwd" className="form-control" type="password" placeholder={t("Leave empty for no passphrase")} value={this.state.privKeyPwd} onChange={this.privKeyPwdChanged}/>
+                     </div>
+                 </div>
+             </div>;
 
         return (
         <TopPanel title={t("Bootstrap Minions")} icon="fa fa-rocket" helpUrl="/docs/reference/systems/bootstrapping.html">
@@ -236,7 +257,7 @@ class BootstrapMinions extends React.Component {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label className="col-md-3 control-label">Authentication method:</label>
+                    <label className="col-md-3 control-label">Authentication Method:</label>
 
                     <div className="col-md-6">
                         <div className="radio col-md-3">
@@ -253,26 +274,7 @@ class BootstrapMinions extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="form-group" style={this.state.authMethod === "password" ? {} : {display: "none"} } >
-                    <label className="col-md-3 control-label">Password:</label>
-                    <div className="col-md-6">
-                        <input name="password" className="form-control" type="password" placeholder={t("e.g., ••••••••••••")} value={this.state.password} onChange={this.passwordChanged}/>
-                    </div>
-                </div>
-                <div style={this.state.authMethod === "ssh-key" ? {} : {display: "none"} }>
-                   <div className="form-group">
-                       <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
-                       <div className="col-md-6">
-                           <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged}/>
-                       </div>
-                   </div>
-                   <div className="form-group">
-                       <label className="col-md-3 control-label">{t("SSH Private Key Passphrase")}:</label>
-                       <div className="col-md-6">
-                           <input name="privKeyPwd" className="form-control" type="password" placeholder={t("Leave empty for no passphrase")} value={this.state.privKeyPwd} onChange={this.privKeyPwdChanged}/>
-                       </div>
-                   </div>
-                </div>
+                {authenticationData}
                 <div className="form-group">
                     <label className="col-md-3 control-label">Activation Key:</label>
                     <div className="col-md-6">
