@@ -96,9 +96,9 @@ public class SystemHistoryEventAction extends RhnAction {
                 serverAction.getStatus().equals(ActionFactory.STATUS_PICKEDUP));
         request.setAttribute("completed",
                 serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        request.setAttribute("typedistupgradedryrun",
-                action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
-                        ((DistUpgradeAction) action).getDetails().isDryRun());
+        boolean typeDistUpgradeDryRun = action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
+                        ((DistUpgradeAction) action).getDetails().isDryRun();
+        request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
         if (!serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) &&
                 !serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             request.setAttribute("referrerLink", "Pending.do");
@@ -106,8 +106,8 @@ public class SystemHistoryEventAction extends RhnAction {
             request.setAttribute("headerLabel", "system.event.pendingHeader");
         }
         if (isSubmitted((DynaActionForm)formIn)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
-                return mapping.findForward("confirm");
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) && typeDistUpgradeDryRun) {
+                return mapping.findForward("spmigration");
             }
             createMessage(request, "system.event.rescheduled", action.getName(),
                     action.getId().toString());

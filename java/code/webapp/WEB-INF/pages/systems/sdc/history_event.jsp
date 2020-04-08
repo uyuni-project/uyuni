@@ -46,6 +46,9 @@
         </div>
         <div class="col-sm-10">
           <c:out value="${requestScope.actionnotes}" escapeXml="false"/><!-- already html-escaped in backend -->
+          <c:if test="${!requestScope.completed && requestScope.typeDistUpgradeDryRun}">
+            <bean:message key="system.event.spmigration.notification"/><br>
+          </c:if>
         </div>
       </div>
     </li>
@@ -91,7 +94,7 @@
   </div>
 </c:if>
 
-  <c:if test="${requestScope.completed == true && requestScope.typedistupgradedryrun == true}">
+  <c:if test="${requestScope.completed == true && requestScope.typeDistUpgradeDryRun == true}">
     <div align="right">
       <hr/>
       <rhn:hidden name="aid" value="${requestScope.aid}" />

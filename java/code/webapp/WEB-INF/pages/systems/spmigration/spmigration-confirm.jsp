@@ -60,7 +60,7 @@
       </div>
     </div>
     <hr />
-    <c:if test="${!requestScope.completed == true}">
+    <c:if test="${!requestScope.completed}">
       <div class="alert alert-danger">
         <rhn:icon type="system-crit" />
         <bean:message key="spmigration.jsp.confirm.note" />
@@ -73,7 +73,7 @@
         </html:submit>
       </div>
       <div class="pull-right">
-        <c:if test="${!requestScope.completed == true}">
+        <c:if test="${!requestScope.completed}">
           <html:submit styleClass="btn btn-success" property="dispatch">
             <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
           </html:submit>
