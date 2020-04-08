@@ -1,3 +1,6 @@
+- Add dbus-1-glib to SLE12 to allow onboarding of JeOS SLE12SP5 clients
+  (they do not have it by defaul anymore)
+
 -------------------------------------------------------------------
 Mon Apr 13 09:37:12 CEST 2020 - jgonzalez@suse.com
 
