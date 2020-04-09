@@ -7,7 +7,8 @@ from typing import Dict, Any
 MLERR_OK = 0
 MLERR_GENERAL_ERROR = 1
 MLERR_MODULE_NOT_FOUND = 201
-MLERR_STREAM_NOT_FOUND = 202
+MLERR_DEPENDENCY_RESOLUTION_ERROR = 202
+MLERR_CONFLICTING_STREAMS = 203
 MLERR_REQUEST_ERROR = 301
 
 class MlException(Exception):
@@ -21,8 +22,7 @@ class MlException(Exception):
     def set_data(self, key: str, val: Any) -> "MlException":
         """
         Add a data key/value to the final output.
-        
-        Returns:
+        eturns:
             [type] -- [description]
         """
         self.data[key] = val
@@ -42,11 +42,19 @@ class MlModuleNotFound(MlException):
     code = MLERR_MODULE_NOT_FOUND
 
 
-class MlStreamNotFound(MlException):
+class MlDependencyResolutionError(MlException):
     """
-    Stream was not found exception
+    Dependency resolution error
     """
-    code = MLERR_STREAM_NOT_FOUND
+    code = MLERR_DEPENDENCY_RESOLUTION_ERROR
+
+
+class MlConflictingStreams(MlException):
+    """
+    Conflicting streams exception
+    """
+    code = MLERR_CONFLICTING_STREAMS
+
 
 class MlRequestError(MlException):
     """

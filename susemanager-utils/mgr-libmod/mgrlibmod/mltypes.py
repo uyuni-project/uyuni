@@ -120,6 +120,9 @@ class MLStreamType:
     def stream(self, v: str) -> None:
         raise self.__exc
 
+    def to_obj(self) -> Dict:
+        return {"name": self.__name, "stream":self.__stream}
+
 
 class MLInputType(MLAnyType):
     """
