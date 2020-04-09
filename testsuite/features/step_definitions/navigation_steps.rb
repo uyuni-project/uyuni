@@ -847,3 +847,23 @@ end
 When(/^I scroll to the top of the page$/) do
   execute_script('window.scrollTo(0,0)')
 end
+
+# Check a Prometheus exporter
+When(/^I check "([^"]*)" exporter$/) do |exporter_type|
+  step %(I check "#{exporter_type}_exporter#enabled")
+end
+
+# Navigate to a service endpoint
+When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
+  node = get_target(host)
+  system_name = get_system_name(host)
+  port, text = case service
+               when 'Prometheus' then [9090, 'graph']
+               when 'Prometheus node exporter' then [9100, 'Node Exporter']
+               when 'Prometheus apache exporter' then [9117, 'Apache Exporter']
+               when 'Prometheus postgres exporter' then [9187, 'Postgres Exporter']
+               else raise "Unknown port for service #{service}"
+               end
+  _output, code = node.run("curl -s http://#{system_name}:#{port} | grep -i '#{text}'")
+  raise unless code.zero?
+end
