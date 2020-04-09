@@ -31,7 +31,7 @@ import java.util.Date;
  *
  * @xmlrpc.doc
  *
- * #struct("system")
+ * #struct_begin("system")
  *     #prop("int", "id")
  *     #prop("string", "name")
  *     #prop_desc("dateTime.iso8601",  "last_checkin", "Last time server
