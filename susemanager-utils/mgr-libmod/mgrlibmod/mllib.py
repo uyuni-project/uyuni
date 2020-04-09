@@ -87,7 +87,7 @@ class MLLibmodProc:
             self.index_modules()
 
         if self._mod_index is None:
-            raise mlerrcode.MlStreamNotFound("Unable to get module streams: module index not found")
+            raise mlerrcode.MlGeneralException("Module index not found")
 
         streams: Set = set()
         module = self._mod_index.get_module(name)
@@ -102,7 +102,7 @@ class MLLibmodProc:
             self.index_modules()
 
         if self._mod_index is None:
-            raise mlerrcode.MlStreamNotFound("Unable to get stream contexts: module index not found")
+            raise mlerrcode.MlGeneralException("Module index not found")
 
         contexts: List = []
         module = self._mod_index.get_module(s_type.name)
@@ -268,21 +268,8 @@ class MLLibmodProc:
             "selected": mltypes.MLSet(),
         }
 
-        anchor_version: int = 0
-        anchor_stream: Optional[Modulemd.ModuleStreamV2] = None
-        for stream in self._streams:
-            version: int = stream.get_version()
-            if anchor_version < version:
-                anchor_version = version
-                anchor_stream = stream
-
-        if anchor_stream is None:
-            raise mlerrcode.MlStreamNotFound("Unable to find default stream").set_data("streams", self._streams)
-
         for stream in self._streams:
             if not stream:
-                continue
-            if stream.get_context() != anchor_stream.get_context():
                 continue
 
             stream_artifacts = stream.get_rpm_artifacts()
@@ -302,11 +289,27 @@ class MLLibmodProc:
         return api_provides
 
     def pick_stream(self, s_type: mltypes.MLStreamType):
-        if self._is_stream_enabled(s_type=s_type):
+        if s_type.name in MLLibmodProc.RESERVED_STREAMS:
+            # Reserved streams are always enabled
             return
+
+        if self._is_stream_enabled(s_type):
+            enabled_stream = self._enabled_stream_modules[s_type.name]
+            if enabled_stream.get_stream_name() == s_type.stream:
+                # Stream already enabled, nothing to do
+                return
+            else:
+                # Another stream of the same module already enabled
+                conflicting = [
+                    mltypes.MLStreamType(s_type.name, enabled_stream.get_stream_name()).to_obj(),
+                    s_type.to_obj()
+                ]
+                raise mlerrcode.MlConflictingStreams("Conflicting streams").set_data("streams", conflicting)
 
         all_deps = set()  # type: ignore
         allContexts = self.get_stream_contexts(s_type=s_type)
+        if not allContexts:
+            raise mlerrcode.MlModuleNotFound("Module not found").set_data("streams", [s_type.to_obj()])
         for c in allContexts:
             all_deps = all_deps.union(self.get_stream_dependencies(c))
 
@@ -322,6 +325,9 @@ class MLLibmodProc:
 
                 self.enable_stream(ctx)
                 self._streams.append(ctx)
+            else:
+                # Return s_type
+                raise mlerrcode.MlDependencyResolutionError("Dependencies cannot be resolved").set_data("streams", [s_type.to_obj()])
 
     def pick_default_stream(self, s_type: mltypes.MLStreamType):
         s_type = mltypes.MLStreamType(s_type.name, self.get_default_stream(s_type.name))
@@ -396,14 +402,20 @@ class MLLibmodAPI:
         self._proc._streams.clear()
         self._proc.index_modules()
 
+        #TODO: Optimize error data
+        not_found = []
         for s_type in self.repodata.get_streams():
             try:
                 if s_type.stream:
                     self._proc.pick_stream(s_type)
                 else:
                     self._proc.pick_default_stream(s_type=s_type)
-            except Exception:
-                sys.stderr.write("Skipping stream {}\n".format(s_type.name))
+            except mlerrcode.MlModuleNotFound as e:
+                not_found += e.data["streams"]
+
+        if not_found:
+            raise mlerrcode.MlModuleNotFound("Module not found").set_data("streams", not_found)
+
         return self._proc._streams
 
     # Functions
