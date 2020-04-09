@@ -44,6 +44,7 @@
 # - features/secondary/allcli_software_channels_dependencies.feature
 
 - features/secondary/minssh_centos_salt_install_package_and_patch.feature
+- features/secondary/min_centos_monitoring.feature
 - features/secondary/minssh_salt_install_package.feature
 - features/secondary/min_ubuntu_salt_install_package.feature
 - features/secondary/min_bootstrap_xmlrpc.feature
@@ -60,6 +61,7 @@
 - features/secondary/min_state_config_channel.feature
 - features/secondary/min_salt_pkgset_beacon.feature
 - features/secondary/min_custom_pkg_download_endpoint.feature
+- features/secondary/min_monitoring.feature
 
 - features/secondary/trad_metadata_check.feature
 - features/secondary/trad_cve_audit.feature
