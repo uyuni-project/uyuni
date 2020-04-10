@@ -1055,16 +1055,53 @@ class RepoSync(object):
         log(0, '  Importing packages to DB:')
         progress_bar = ProgressBarLogger("               Importing packages:    ", to_download_count)
 
+        affected_channels, failed_packages = self.import_package_batch(to_process, to_disassociate, progress_bar, is_non_local_repo)
+
+        if affected_channels:
+            errataCache.schedule_errata_cache_update(affected_channels)
+        log2background(0, "Importing packages finished.")
+
+        # Disassociate packages
+        for (checksum_type, checksum) in to_disassociate:
+            if to_disassociate[(checksum_type, checksum)]:
+                self.disassociate_package(checksum_type, checksum)
+        # Do not re-link if nothing was marked to link
+        if any([to_link for (pack, to_download, to_link) in to_process]):
+            log(0, '')
+            log(0, "  Linking packages to the channel.")
+            # Packages to append to channel
+            import_batches = list(self.chunks(
+                [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link],
+                1000))
+            count = 0
+            for import_batch in import_batches:
+                backend = SQLBackend()
+                caller = "server.app.yumreposync"
+                importer = ChannelPackageSubscription(import_batch,
+                                                      backend, caller=caller, repogen=False)
+                importer.run()
+                backend.commit()
+                del importer.batch
+                count += len(import_batch)
+                log(0, "    {} packages linked".format(count))
+            self.regen = True
+        self._normalize_orphan_vendor_packages()
+        return failed_packages
+
+    def import_package_batch(self, to_process, to_disassociate, progress_bar, is_non_local_repo):
+
         # Prepare SQL statements
         h_delete_package_queue = rhnSQL.prepare("""delete from rhnPackageFileDeleteQueue where path = :path""")
         backend = SQLBackend()
-
         mpm_bin_batch = importLib.Collection()
         mpm_src_batch = importLib.Collection()
         affected_channels = []
         upload_caller = "server.app.uploadPackage"
 
+        to_download_count = sum(p[1] for p in to_process)
         import_count = 0
+        failed_packages = 0
+
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
             if not to_download:
@@ -1182,36 +1219,8 @@ class RepoSync(object):
                             else:
                                 raise exc
             pack.clear_header()
-        if affected_channels:
-            errataCache.schedule_errata_cache_update(affected_channels)
-        log2background(0, "Importing packages finished.")
 
-        # Disassociate packages
-        for (checksum_type, checksum) in to_disassociate:
-            if to_disassociate[(checksum_type, checksum)]:
-                self.disassociate_package(checksum_type, checksum)
-        # Do not re-link if nothing was marked to link
-        if any([to_link for (pack, to_download, to_link) in to_process]):
-            log(0, '')
-            log(0, "  Linking packages to the channel.")
-            # Packages to append to channel
-            import_batches = list(self.chunks(
-                [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link],
-                1000))
-            count = 0
-            for import_batch in import_batches:
-                backend = SQLBackend()
-                caller = "server.app.yumreposync"
-                importer = ChannelPackageSubscription(import_batch,
-                                                      backend, caller=caller, repogen=False)
-                importer.run()
-                backend.commit()
-                del importer.batch
-                count += len(import_batch)
-                log(0, "    {} packages linked".format(count))
-            self.regen = True
-        self._normalize_orphan_vendor_packages()
-        return failed_packages
+        return (affected_channels, failed_packages)
 
     def show_packages(self, plug, source_id):
 
