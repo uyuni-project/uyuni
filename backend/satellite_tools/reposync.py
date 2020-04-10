@@ -70,7 +70,7 @@ default_log_location = '/var/log/rhn/'
 relative_comps_dir = 'rhn/comps'
 relative_modules_dir = 'rhn/modules'
 checksum_cache_filename = 'reposync/checksum_cache'
-default_import_batch_size = 10
+default_import_batch_size = 50
 
 errata_typemap = {
     'security': 'Security Advisory',
