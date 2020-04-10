@@ -34,6 +34,7 @@ import gzip
 from dateutil.tz import tzutc
 import gettext
 import errno
+import multiprocessing
 
 from rhn.connections import idn_puny_to_unicode
 
@@ -1053,9 +1054,21 @@ class RepoSync(object):
         log2background(0, "Importing packages started.")
         log(0, '')
         log(0, '  Importing packages to DB:')
-        progress_bar = ProgressBarLogger("               Importing packages:    ", to_download_count)
 
-        affected_channels, failed_packages = self.import_package_batch(to_process, to_disassociate, progress_bar, is_non_local_repo)
+        to_process_batches = [to_process[i:i + self.import_batch_size] for i in range(0, len(to_process), self.import_batch_size)]
+
+        affected_channels = []
+        with multiprocessing.Pool(processes=max(os.cpu_count() * 2, 32), maxtasksperchild=1) as pool:
+            results = [pool.apply_async(self.import_package_batch, args=[to_process_batch, to_disassociate, is_non_local_repo, i, len(to_process_batches)])
+                       for i, to_process_batch in enumerate(to_process_batches)]
+
+            for i, result in enumerate(results):
+                affected_channels_batch, failed_packages_batch, all_packages, processed_batch = result.get()
+                affected_channels += affected_channels_batch
+                failed_packages += failed_packages_batch
+                self.all_packages.update(all_packages)
+                for j, processed in enumerate(processed_batch):
+                    to_process[twisted_batch_indexes[i][j]] = processed
 
         if affected_channels:
             errataCache.schedule_errata_cache_update(affected_channels)
@@ -1088,9 +1101,11 @@ class RepoSync(object):
         self._normalize_orphan_vendor_packages()
         return failed_packages
 
-    def import_package_batch(self, to_process, to_disassociate, progress_bar, is_non_local_repo):
 
+    def import_package_batch(self, to_process, to_disassociate, is_non_local_repo, batch_index, batch_count):
         # Prepare SQL statements
+        rhnSQL.closeDB(committing=False, closing=False)
+        rhnSQL.initDB()
         h_delete_package_queue = rhnSQL.prepare("""delete from rhnPackageFileDeleteQueue where path = :path""")
         backend = SQLBackend()
         mpm_bin_batch = importLib.Collection()
@@ -1101,6 +1116,7 @@ class RepoSync(object):
         to_download_count = sum(p[1] for p in to_process)
         import_count = 0
         failed_packages = 0
+        all_packages = set()
 
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
@@ -1162,7 +1178,7 @@ class RepoSync(object):
                 pack.epoch = pack.a_pkg.header['epoch']
                 pack.a_pkg = None
 
-                self.all_packages.add((pack.checksum_type, pack.checksum))
+                all_packages.add((pack.checksum_type, pack.checksum))
 
                 # Downloaded pkg checksum matches with pkg already in channel, no need to disassociate from channel
                 if (pack.checksum_type, pack.checksum) in to_disassociate:
@@ -1191,7 +1207,6 @@ class RepoSync(object):
                     del mpm_src_batch
                     mpm_src_batch = importLib.Collection()
 
-                progress_bar.log(True, None)
             except KeyboardInterrupt:
                 raise
             except rhnSQL.SQLError:
@@ -1204,7 +1219,6 @@ class RepoSync(object):
                 if self.fail:
                     raise
                 to_process[index] = (pack, False, False)
-                progress_bar.log(False, None)
             finally:
                 if is_non_local_repo and stage_path:
                     if os.path.exists(stage_path):
@@ -1220,7 +1234,9 @@ class RepoSync(object):
                                 raise exc
             pack.clear_header()
 
-        return (affected_channels, failed_packages)
+        rhnSQL.closeDB()
+        log(0, "  Package batch #{} of {} completed...".format(batch_index + 1, batch_count))
+        return affected_channels, failed_packages, all_packages, to_process
 
     def show_packages(self, plug, source_id):
 

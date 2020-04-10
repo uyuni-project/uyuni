@@ -129,7 +129,7 @@ def initDB(backend=None, host=None, port=None, username=None,
 # close the database
 
 
-def closeDB():
+def closeDB(committing=True, closing=True):
     global __DB
     try:
         my_db = __DB
@@ -137,8 +137,10 @@ def closeDB():
         return
     else:
         del my_db
-    __DB.commit()
-    __DB.close()
+    if committing:
+        __DB.commit()
+    if closing:
+        __DB.close()
     del __DB
     return
 
