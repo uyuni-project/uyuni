@@ -1,3 +1,4 @@
+- refresh pillar after channel change
 - Use 'changes' field if 'pchanges' field doesn't exist (bsc#1159202)
 - Fix the original-clone channel relationship for CLM channels (bsc#1163121)
 - fix serializer and documentation for system.listSystems (bsc#1168083)
