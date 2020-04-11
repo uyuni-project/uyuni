@@ -73,48 +73,14 @@ def __init__DB(backend, host, port, username, password, database, sslmode, sslro
     return 0
 
 
-def __init__DB2(backend, host, port, username, password, database, sslmode, sslrootcert):
-    """
-    Establish and check the connection so we can wrap it and handle
-    exceptions.
-    """
-    # __DB2 global object created here and pushed into the global namespace.
-    global __DB2
-    try:
-        my_db = __DB2
-    except NameError:  # __DB2 has not been set up
-        db_class = dbi.get_database_class(backend=backend)
-        __DB2 = db_class(host, port, username, password, database, sslmode, sslrootcert)
-        __DB2.connect()
-        return
-    else:
-        del my_db
-
-    if __DB2.is_connected_to(backend, host, port, username, password,
-                             database, sslmode, sslrootcert):
-        __DB2.check_connection()
-        return
-
-    __DB2.commit()
-    __DB2.close()
-    # now we have to get a different connection
-    __DB2 = dbi.get_database_class(backend=backend)(
-        host, port, username, password, database, sslmode, sslrootcert)
-    __DB2.connect()
-    return 0
-
-
 def initDB(backend=None, host=None, port=None, username=None,
-           password=None, database=None, sslmode=None, sslrootcert=None, initsecond=False):
+           password=None, database=None, sslmode=None, sslrootcert=None):
     """
     Initialize the database.
 
     Either we get backend and all parameter which means the caller
     knows what they are doing, or we populate everything from the
     config files.
-
-    initsecond: If set to True it initialize a second DB connection.
-                By default only one DB connection is needed.
     """
 
     if backend is None:
@@ -141,10 +107,7 @@ def initDB(backend=None, host=None, port=None, username=None,
     # Hide the password
     add_to_seclist(password)
     try:
-        if initsecond == False:
-            __init__DB(backend, host, port, username, password, database, sslmode, sslrootcert)
-        else:
-            __init__DB2(backend, host, port, username, password, database, sslmode, sslrootcert)
+        __init__DB(backend, host, port, username, password, database, sslmode, sslrootcert)
 #    except (rhnException, SQLError):
 #        raise  # pass on, we know those ones
 #    except (KeyboardInterrupt, SystemExit):
@@ -163,24 +126,6 @@ def initDB(backend=None, host=None, port=None, username=None,
         #                   str(e_type), str(e_value))
     return 0
 
-
-def __closeDB2():
-    global __DB2
-    try:
-        my_db = __DB2
-    except NameError:
-        return
-    else:
-        del my_db
-    # can be None
-    if not __DB2:
-        del __DB2
-        return
-    __DB2.commit()
-    __DB2.close()
-    del __DB2
-    return
-
 # close the database
 
 
@@ -189,14 +134,12 @@ def closeDB():
     try:
         my_db = __DB
     except NameError:
-        __closeDB2()
         return
     else:
         del my_db
     __DB.commit()
     __DB.close()
     del __DB
-    __closeDB2()
     return
 
 
@@ -207,19 +150,6 @@ def __test_DB():
         return __DB
     except NameError:
         raise_with_tb(SystemError("Not connected to any database!"), sys.exc_info()[2])
-
-
-def __test_DB2():
-    global __DB2
-    try:
-        return __DB2
-    except NameError:
-        # try open the connection
-        try:
-            initDB(initsecond=True)
-            return __DB2
-        except NameError:
-            raise_with_tb(SystemError("Not connected to secondary database!"), sys.exc_info()[2])
 
 # wrapper for a Procedure callable class
 
@@ -270,20 +200,8 @@ def prepare(sql, blob_map=None):
     return db.prepare(sql, blob_map=blob_map)
 
 
-def prepare_secondary(sql, blob_map=None):
-    db = __test_DB2()
-    if isinstance(sql, Statement):
-        sql = sql.statement
-    return db.prepare(sql, blob_map=blob_map)
-
-
 def execute(sql, *args, **kwargs):
     db = __test_DB()
-    return db.execute(sql, *args, **kwargs)
-
-
-def execute_secondary(sql, *args, **kwargs):
-    db = __test_DB2()
     return db.execute(sql, *args, **kwargs)
 
 
@@ -301,11 +219,6 @@ def fetchone_dict(sql, *args, **kwargs):
 
 def commit():
     db = __test_DB()
-    return db.commit()
-
-
-def commit_secondary():
-    db = __test_DB2()
     return db.commit()
 
 
