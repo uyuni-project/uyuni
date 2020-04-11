@@ -31,7 +31,9 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.log4j.Logger;
 
@@ -49,7 +51,19 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
 
     private static Logger log = Logger.getLogger(ChannelsChangedEventMessageAction.class);
 
+    // Reference to the SaltService instance
+    private final SystemQuery systemQuery;
+
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
+
+    /**
+     * Constructor taking a {@link SystemQuery} instance.
+     *
+     * @param systemQueryIn systemQuery instance for gathering data from a system.
+     */
+    public ChannelsChangedEventMessageAction(SystemQuery systemQueryIn) {
+        systemQuery = systemQueryIn;
+    }
 
     @Override
     public void execute(EventMessage event) {
@@ -86,6 +100,9 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
             // add product packages to package state
             StateFactory.addPackagesToNewStateRevision(minion,
                     Optional.ofNullable(event.getUserId()), prodPkgs);
+
+            // push the changed pillar data to the minion
+            systemQuery.refreshPillar(new MinionList(minion.getMinionId()));
 
             if (msg.isScheduleApplyChannelsState()) {
                 User user = UserFactory.lookupById(event.getUserId());
