@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:31:19 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
 - change supported DB to postgresql 12
 - change release files to uyuni-release and susemanager-release
 
