@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:29:25 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - take license from OS package and make a text and html version
   (bsc#1164462)
 
