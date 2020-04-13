@@ -1,0 +1,96 @@
+#!/usr/bin/python3
+
+from argparse import ArgumentParser
+from configparser import ConfigParser
+from itertools import chain
+from os.path import dirname, expanduser, realpath
+from re import match
+from sys import exit
+import urllib.parse
+import urllib.request
+
+PRJ = 'systemsmanagement:Uyuni:Master'
+PACKAGES = ['patterns-uyuni', 'uyuni-docs_en',
+            'release-notes-uyuni', 'release-notes-uyuni-proxy']
+CONFIG = '%s/../web/conf/rhn_web.conf' % dirname(realpath(__file__))
+
+
+def get_webui_version(conf):
+    config = ConfigParser()
+    with open(conf) as f:
+        # This is basically a hack, as our .conf file does not have sections
+        config.read_file(chain(['[section]'], f), source=conf)
+        return config.get('section', 'web.version.uyuni')
+
+
+def obs_get_package_ver(args, project, package):
+    url = "{0}/source/{1}/{2}/{2}.spec".format(args.apiurl, project, package)
+    user = args.user
+    password = args.password
+    password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+    password_mgr.add_password(None, url, user, password)
+    auth_handler = urllib.request.HTTPBasicAuthHandler(password_mgr)
+    opener = urllib.request.build_opener(auth_handler)
+    urllib.request.install_opener(opener)
+    req = urllib.request.Request(url=url, method='GET')
+    resource = urllib.request.urlopen(req)
+    charset = resource.headers.get_content_charset()
+    if charset is None:
+        charset = 'utf-8'
+    for line in resource.read().decode(charset).split('\n'):
+        version = match('^Version:\s*(\S+)$', line)
+        if version:
+            return version.group(1)
+
+
+def parse_arguments():
+    """ Parse arguments from command line """
+    parser = ArgumentParser(
+        description="Check if Uyuni versions are aligned at all packages before a release")
+    parser.add_argument("-u", "--user", action="store", dest="user",
+                        help="OBS Username or read from ~/.oscrc")
+    parser.add_argument("-p", "--password", action="store", dest="password",
+                        help="OBS Password or read from ~/.oscrc")
+    parser.add_argument("-a", "--api-url", action="store", dest="apiurl",
+                        default="https://api.opensuse.org",
+                        help="OBS API URL (Default: https://api.opensuse.org")
+    args = parser.parse_args()
+    if not args.user or not args.password:
+        try:
+            creds_path = "%s/.oscrc" % expanduser('~')
+            creds = ConfigParser()
+            creds.read(creds_path)
+            args.user = creds.get(args.apiurl, 'user')
+            args.password = creds.get(args.apiurl, 'pass')
+        except Exception:
+            raise RuntimeError(
+                'Could not find credentials for {} at {}'.format(args.apiurl, creds_path))
+    return args
+
+
+def print_info(msg):
+    print("[\033[01m\033[34mINFO \033[0m] %s" % msg)
+
+
+def print_ok(msg):
+    print("[\033[01m\033[32mOK   \033[0m] %s" % msg)
+
+
+def print_error(msg):
+    print("[\033[01m\033[31mERROR\033[0m] %s" % msg)
+
+
+args = parse_arguments()
+webui_version = get_webui_version(CONFIG)
+print_info("WebUI version from the config file is '%s'" % webui_version)
+
+error = False
+for package in PACKAGES:
+    package_ver = obs_get_package_ver(args, PRJ, package)
+    if package_ver == webui_version:
+        print_ok("{} version ({}) is OK".format(package, package_ver))
+    else:
+        print_error("{} version ({}) is WRONG".format(package, package_ver))
+        error = True
+
+exit(error)
