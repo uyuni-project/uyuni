@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:30:24 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - Fix few compat issues with Python3 at MultipartPostHandler
 - Use alternative method for deprecated 'Request.get_data' (bsc#1164111)
 
