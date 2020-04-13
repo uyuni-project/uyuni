@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:37:50 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.6-1
 - Fix virt.deleted state dependency
 - Make 'product' state module only available for minions with zypper >= 1.8.13 (bsc#1166699)
 - Use saltutil states if available on the minion (bsc#1167556)
