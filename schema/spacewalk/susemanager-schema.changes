@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:46:40 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.6-1
 - run DB schema upgrade automatically on package update
 - change notification data type to TEXT
 - Update schema for virtualization pool actions
