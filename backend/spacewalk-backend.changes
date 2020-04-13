@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:32:22 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.7-1
 - validate cached package entries on ISS slave (bsc#1159184)
 - restore config namespace in debian repo module to fix
   autogeneration of bootstrap repos
