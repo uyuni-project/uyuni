@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:38:18 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
 - implement notification utility
 - Do not break when syncing Oracle 7 yum channel (bsc#1158463)
 
