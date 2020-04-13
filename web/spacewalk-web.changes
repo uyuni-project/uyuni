@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:36:39 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
 - Add notification messages type filter
 - Show separate info for syncing product channels and children
 - sort notifications by type
