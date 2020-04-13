@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:34:52 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
 - Add Astra Linux CE "Orel" repositories
 - check for delimiter as well when detecting current phase (bsc#1164771)
 
