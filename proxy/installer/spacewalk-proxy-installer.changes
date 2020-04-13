@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 13 09:34:15 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
 - move vital proxy templates to a safe place outside of docu (bsc#1166284)
 
 -------------------------------------------------------------------
