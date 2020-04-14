@@ -458,13 +458,14 @@ public class ActionChainHandler extends BaseHandler {
      * @param timeout Timeout
      * @return True or false in XML-RPC representation (1 or 0 respectively)
      *
-     * @xmlrpc.doc Add an action to run a script to an Action Chain.
+     * @xmlrpc.doc Add an action with label to run a script to an Action Chain.
      * NOTE: The script body must be Base64 encoded!
      *
      * @xmlrpc.param #param_desc("string", "sessionKey",
      * "Session token, issued at login")
      * @xmlrpc.param #param_desc("int", "serverId", "System ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
+     * @xmlrpc.param #param_desc("string", "scriptLabel", "Label of the script")
      * @xmlrpc.param #param_desc("string", "uid", "User ID on the particular system")
      * @xmlrpc.param #param_desc("string", "gid", "Group ID on the particular system")
      * @xmlrpc.param #param_desc("int", "timeout", "Timeout")
