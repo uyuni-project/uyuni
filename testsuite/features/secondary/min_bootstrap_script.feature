@@ -19,36 +19,17 @@ Feature: Register a Salt minion via Bootstrap-script
     And I cleanup minion "sle_minion"
     Then "sle_minion" should not be registered
 
-  Scenario: Create bootstrap script
-    Given I am authorized as "admin" with password "admin"
-    When I follow the left menu "Admin > Manager Configuration > Bootstrap Script"
-    And I uncheck "Enable Client GPG checking"
-    Then I should see a "SUSE Manager Configuration - Bootstrap" text
-    And I should see "Bootstrap using Salt" as checked
-    When I click on "Update"
-    Then I should see a "Bootstrap script successfully generated" text
-    And I set the activation key "1-SUSE-PKG-x86_64" in the bootstrap script on the server
-
-  Scenario: Download script to minion
-    When I fetch "pub/bootstrap/bootstrap.sh" to "sle_minion"
-    Then I wait until file "/root/bootstrap.sh" exists on "sle_minion"
-    And file "/root/bootstrap.sh" should contain "ACTIVATION_KEYS=1-SUSE-PKG-x86_64" on "sle_minion"
-
   Scenario: Bootstrap the minion using the script
-    Given I am authorized as "admin" with password "admin"
-    When I run "sh /root/bootstrap.sh" on "sle_minion"
-    When I follow the left menu "Salt > Keys"
-    And I wait until I see the name of "sle_minion", refreshing the page
-    And I should see a "pending" text
-    And I accept "sle_minion" key
+    When I bootstrap minion client "sle_minion" using bootstrap script with activation key "1-SUSE-PKG-x86_64" from the proxy
+    And I wait at most 10 seconds until Salt master sees "sle_minion" as "unaccepted"
+    And I accept "sle_minion" key in the Salt master
+    Then I should see "sle_minion" via spacecmd
 
   Scenario: Check if onboarding for the script-bootstrapped minion was successful
     Given I am authorized as "admin" with password "admin"
     When I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
-    And I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap.sh" on "server"
-    And I run "rm /root/bootstrap.sh" on "sle_minion"
 
   Scenario: Detect latest Salt changes on the script-bootstrapped SLES minion
     When I query latest Salt changes on "sle_minion"
