@@ -1,3 +1,3 @@
 #foreach ($handler in $handlers)
-* <<handlers/${handler.name}.adoc#apidoc-$handler.name.replaceAll('\.', '_')>>
+* <<${handler.name}.adoc#apidoc-$handler.name.replaceAll('\.', '_')>>
 #end
