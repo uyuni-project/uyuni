@@ -133,6 +133,14 @@ public class ApiCall implements Comparable<ApiCall> {
     }
 
     /**
+     * Get the calls unique ID to be used in the generated pages.
+     * @return the ID
+     */
+    public String getId() {
+        return name + "-" + getMethod().hashCode();
+    }
+
+    /**
      * gets the call's params
      * @return an array of the calls params
      */

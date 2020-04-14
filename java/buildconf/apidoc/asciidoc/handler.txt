@@ -5,7 +5,7 @@
 == Available methods
 
 #foreach( $call in $handler.calls )
-* <<apidoc-${handler.name.replaceAll('\.', '_')}-$call.name,$call.name>>
+* <<apidoc-${handler.name.replaceAll('\.', '_')}-$call.id,$call.name>>
 #end
 
 == Description
@@ -20,7 +20,7 @@ $handler.name
 
 #foreach( $call in $handler.calls )
 
-[#apidoc-${handler.name.replaceAll('\.', '_')}-$call.name]
+[#apidoc-${handler.name.replaceAll('\.', '_')}-$call.id]
 #if($call.deprecated)
 == Method: $call.name (Deprecated)
 #else
