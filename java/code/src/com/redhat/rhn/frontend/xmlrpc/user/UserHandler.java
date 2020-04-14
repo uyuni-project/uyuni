@@ -910,7 +910,7 @@ public class UserHandler extends BaseHandler {
      * @xmlrpc.doc Returns the time user last logged in.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("string", "login", "User's login name.")
-     * @xmlrpc.returntype dateTime.iso8601
+     * @xmlrpc.returntype #param("dateTime.iso8601", "date")
      */
     @Deprecated
     public Date getLoggedInTime(User loggedInUser, String login)

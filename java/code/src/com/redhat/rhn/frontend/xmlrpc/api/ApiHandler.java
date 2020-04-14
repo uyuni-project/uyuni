@@ -58,7 +58,7 @@ public class ApiHandler extends BaseHandler {
      * @return Returns the server version.
      *
      * @xmlrpc.doc Returns the server version.
-     * @xmlrpc.returntype string
+     * @xmlrpc.returntype #param("string", "version")
      */
     public String systemVersion() {
         return ConfigDefaults.get().getProductVersion();
@@ -70,7 +70,7 @@ public class ApiHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns the version of the API. Since Spacewalk 0.4
      * (Satellite 5.3) it is no more related to server version.
-     * @xmlrpc.returntype string
+     * @xmlrpc.returntype #param("string", "version")
      */
     public String getVersion() {
         return Config.get().getString("java.apiversion");

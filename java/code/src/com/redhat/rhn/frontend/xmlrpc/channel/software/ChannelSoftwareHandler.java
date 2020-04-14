@@ -595,7 +595,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * in the organization
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel to query")
-     * @xmlrpc.returntype int - 1 if true, 0 otherwise
+     * @xmlrpc.returntype #param_desc("int", "subscribable", "1 if true, 0 otherwise")
      */
     public int isGloballySubscribable(User loggedInUser, String channelLabel) {
         // TODO: this should return a boolean NOT an int
@@ -867,7 +867,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "gpgCheck", "true if the GPG check should be
      *     enabled by default, false otherwise")
 
-     * @xmlrpc.returntype int - 1 if the creation operation succeeded, 0 otherwise
+     * @xmlrpc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
     public int create(User loggedInUser, String label, String name,
                       String summary, String archLabel, String parentLabel,
@@ -941,7 +941,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          #prop_desc("string", "id", "GPG key ID")
      *          #prop_desc("string", "fingerprint", "GPG key Fingerprint")
      *      #struct_end()
-     * @xmlrpc.returntype int - 1 if the creation operation succeeded, 0 otherwise
+     * @xmlrpc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
     public int create(User loggedInUser, String label, String name,
             String summary, String archLabel, String parentLabel, String checksumType,
@@ -991,7 +991,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *                        only with newer clients: Fedora 11 and newer,
      *                        or Enterprise Linux 6 and newer.")
      *      #options_end()
-     * @xmlrpc.returntype int - 1 if the creation operation succeeded, 0 otherwise
+     * @xmlrpc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
 
     public int create(User loggedInUser, String label, String name,
@@ -1032,7 +1032,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *              run channel.software.listArches API for complete listing")
      * @xmlrpc.param #param_desc("string", "parentLabel", "label of the parent of this
      *              channel, an empty string if it does not have one")
-     * @xmlrpc.returntype int - 1 if the creation operation succeeded, 0 otherwise
+     * @xmlrpc.returntype #param_desc("int", "status", "1 if the creation operation succeeded, 0 otherwise")
      */
     public int create(User loggedInUser, String label, String name,
             String summary, String archLabel, String parentLabel)
@@ -1378,7 +1378,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
      * @xmlrpc.param #param_desc("string", "login", "login of the target user")
-     * @xmlrpc.returntype int - 1 if subscribable, 0 if not
+     * @xmlrpc.returntype #param_desc("int", "status", "1 if subscribable, 0 if not")
      */
     public int isUserSubscribable(User loggedInUser, String channelLabel,
             String login) throws FaultException {
@@ -1410,7 +1410,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
      * @xmlrpc.param #param_desc("string", "login", "login of the target user")
-     * @xmlrpc.returntype int - 1 if manageable, 0 if not
+     * @xmlrpc.returntype #param_desc("int", "status", "1 if manageable, 0 if not")
      */
     public int isUserManageable(User loggedInUser, String channelLabel,
             String login) throws FaultException {
@@ -2108,7 +2108,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          #prop_desc("string", "checksum", "either sha1 or sha256")
      *      #struct_end()
      * @xmlrpc.param #param("boolean", "original_state")
-     * @xmlrpc.returntype int the cloned channel ID
+     * @xmlrpc.returntype #param_desc("int", "id", "the cloned channel ID")
      */
     public int clone(User loggedInUser, String originalLabel,
             Map<String, String> channelDetails, Boolean originalState) {
@@ -2444,8 +2444,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
     * for the given channel as a localised string.
     * @xmlrpc.param #session_key()
     * @xmlrpc.param #param_desc("int", "id", "id of channel wanted")
-    * @xmlrpc.returntype the last build date of the repomd.xml file
-    * as a localised string
+    * @xmlrpc.returntype
+    *   #param_desc("date", "date", "the last build date of the repomd.xml file as a localised string")
     */
 
     public String getChannelLastBuildById(User loggedInUser, Integer id)
@@ -3102,7 +3102,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.doc Returns repo synchronization cron expression
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "channel label")
-     * @xmlrpc.returntype string quartz expression
+     * @xmlrpc.returntype #param_desc("string", "expression", "quartz expression")
      */
     public String getRepoSyncCronExpression(User loggedInUser, String channelLabel) {
         try {
@@ -3155,7 +3155,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      *          #prop_desc("string", "filter", "string to filter on")
      *          #prop_desc("string", "flag", "+ for include, - for exclude")
      *  #struct_end()
-     * @xmlrpc.returntype int sort order for new filter
+     * @xmlrpc.returntype #param_desc("int", "order", "sort order for new filter")
      */
     public int addRepoFilter(User loggedInUser, String label,
             Map<String, String> filterIn) {

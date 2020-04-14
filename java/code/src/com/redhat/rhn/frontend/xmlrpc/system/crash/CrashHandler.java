@@ -274,7 +274,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.doc Get a crash file download url.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "crashFileId")
-     * @xmlrpc.returntype string - The crash file download url
+     * @xmlrpc.returntype #param_desc("string", "url", "The crash file download url")
      */
     public String getCrashFileUrl(User loggedInUser, Integer crashFileId) {
         CrashFile crashFile = CrashManager.lookupCrashFileByUserAndId(loggedInUser,
@@ -295,7 +295,7 @@ public class CrashHandler extends BaseHandler {
      * @xmlrpc.doc Download a crash file.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "crashFileId")
-     * @xmlrpc.returntype base64 - base64 encoded crash file.
+     * @xmlrpc.returntype #array_single("byte", "base64 encoded crash file")
      */
     public byte[] getCrashFile(User loggedInUser, Integer crashFileId) throws IOException {
         CrashFile crashFile = CrashManager.lookupCrashFileByUserAndId(loggedInUser,

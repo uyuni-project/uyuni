@@ -760,7 +760,7 @@ public class ConfigChannelHandler extends BaseHandler {
       * @xmlrpc.param #param_desc("string", "path", "File path")
       * @xmlrpc.param #array_single("long","The list of server id that the
       * comparison will be performed on")
-      * @xmlrpc.returntype int actionId - The action id of the scheduled action
+      * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
       */
      public Integer scheduleFileComparisons(User loggedInUser, String channelLabel,
              String path, List<Integer> serverIds) {
@@ -805,7 +805,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string","channelLabel",
      *                       "Channel to check for.")
-     * @xmlrpc.returntype 1 if exists, 0 otherwise.
+     * @xmlrpc.returntype #param_desc("int", "existence", "1 if exists, 0 otherwise")
      */
     public int channelExists(User loggedInUser, String channelLabel) {
         ConfigurationManager manager = ConfigurationManager.getInstance();

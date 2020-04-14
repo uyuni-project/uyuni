@@ -159,8 +159,9 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
      * profile to be changed.")
-     * @xmlrpc.returntype boolean - The value of the option. True means that
-     *     ks.cfg will be copied to /root, false means that it will not.
+     * @xmlrpc.returntype
+     *   #param_desc("boolean", "preserve", "The value of the option.
+     *      True means that ks.cfg will be copied to /root, false means that it will not")
      */
     public Boolean getCfgPreservation(User loggedInUser, String kslabel) {
         checkKickstartPerms(loggedInUser);
@@ -581,7 +582,7 @@ public class ProfileHandler extends BaseHandler {
      * 'pre' or 'post').")
      * @xmlrpc.param #param_desc("boolean", "chroot", "Whether to run the script
      * in the chrooted install location (recommended) or not.")
-     * @xmlrpc.returntype int id - the id of the added script
+     * @xmlrpc.returntype #param_desc("int", "id", "the id of the added script")
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
@@ -617,7 +618,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "chroot", "Whether to run the script
      * in the chrooted install location (recommended) or not.")
      * @xmlrpc.param #param_desc("boolean", "template", "Enable templating using cobbler.")
-     * @xmlrpc.returntype int id - the id of the added script
+     * @xmlrpc.returntype #param_desc("int", "id", "the id of the added script")
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
@@ -656,7 +657,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "template", "Enable templating using cobbler.")
      * @xmlrpc.param #param_desc("boolean", "erroronfail", "Whether to throw an
      * error if the script fails or not")
-     * @xmlrpc.returntype int id - the id of the added script
+     * @xmlrpc.returntype #param_desc("int", "id", "the id of the added script")
      *
      */
     public int addScript(User loggedInUser, String ksLabel, String name, String contents,
@@ -737,10 +738,10 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "host", "The host to use when
      * referring to the satellite itself (Usually this should be the FQDN of the
      * satellite, but could be the ip address or shortname of it as well.")
-     * @xmlrpc.returntype string - The contents of the kickstart file. Note: if
+     * @xmlrpc.returntype #param_desc("string", "ks", "The contents of the kickstart file. Note: if
      * an activation key is not associated with the kickstart file, registration
      * will not occur in the satellite generated %post section. If one is
-     * associated, it will be used for registration.
+     * associated, it will be used for registration")
      *
      *
      */
@@ -761,7 +762,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "The label of the
      * kickstart to download.")
-     * @xmlrpc.returntype string - The contents of the kickstart file.
+     * @xmlrpc.returntype #param_desc("string", "ks", "The contents of the kickstart file")
      */
     public String downloadRenderedKickstart(User loggedInUser, String ksLabel) {
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
@@ -1089,8 +1090,8 @@ public class ProfileHandler extends BaseHandler {
     * @xmlrpc.param #param_desc("string", "ip_address", "An Ip Address that
     * falls within the range that you are wanting to remove. The min or max of
     * the range will work.")
-    * @xmlrpc.returntype int - 1 on successful removal, 0 if range wasn't found
-    * for the specified kickstart, exception otherwise.
+    * @xmlrpc.returntype #param_desc("int", "status", "1 on successful removal, 0 if range wasn't found
+    * for the specified kickstart, exception otherwise")
     */
    public int removeIpRange(User loggedInUser, String ksLabel, String ipAddress) {
        if (!loggedInUser.hasRole(RoleFactory.CONFIG_ADMIN)) {

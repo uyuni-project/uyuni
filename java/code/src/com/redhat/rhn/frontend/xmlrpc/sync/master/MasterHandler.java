@@ -161,7 +161,7 @@ public class MasterHandler extends BaseHandler {
      * @return boolean if there is ISS master.
      *
      * @xmlrpc.doc Check if this host is reading configuration from an ISS master.
-     * @xmlrpc.returntype boolean - True if has an ISS master, false otherwise.
+     * @xmlrpc.returntype #param_desc("boolean", "master", "True if has an ISS master, false otherwise")
      */
     public boolean hasMaster() {
         return IssFactory.getCurrentMaster() != null;

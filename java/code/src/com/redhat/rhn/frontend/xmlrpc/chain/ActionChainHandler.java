@@ -196,7 +196,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.doc Create an Action Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.returntype int actionId - The ID of the created action chain
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The ID of the created action chain")
      */
     public Integer createChain(User loggedInUser,
                                      String chainLabel) {
@@ -226,7 +226,7 @@ public class ActionChainHandler extends BaseHandler {
      * "Session token, issued at login")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Integer addSystemReboot(User loggedInUser,
                                    Integer serverId,
@@ -260,7 +260,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "serverId", "System ID")
      * @xmlrpc.param #array_single("int", "Errata ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Integer addErrataUpdate(User loggedInUser,
                                    Integer serverId,
@@ -304,7 +304,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "serverId", "System ID")
      * @xmlrpc.param #array_single("int", "Package ID")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action or exception
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action or exception")
      */
     public Integer addPackageRemoval(User loggedInUser,
                                      Integer serverId,
@@ -421,7 +421,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "serverId", "System ID")
      * @xmlrpc.param #array_single("int", "packageId")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.returntype int actionId - The id of the action or throw an exception
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The id of the action or throw an exception")
      */
     public int addPackageUpgrade(User loggedInUser,
                                  Integer serverId,
@@ -470,8 +470,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "gid", "Group ID on the particular system")
      * @xmlrpc.param #param_desc("int", "timeout", "Timeout")
      * @xmlrpc.param #param_desc("string", "scriptBodyBase64", "Base64 encoded script body")
-     * @xmlrpc.returntype int actionId - The id of the action or throw an
-     * exception
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The id of the action or throw an exception")
      */
     public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
             String scriptLabel, String uid, String gid,
@@ -517,8 +516,7 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "gid", "Group ID on the particular system")
      * @xmlrpc.param #param_desc("int", "timeout", "Timeout")
      * @xmlrpc.param #param_desc("string", "scriptBodyBase64", "Base64 encoded script body")
-     * @xmlrpc.returntype int actionId - The id of the action or throw an
-     * exception
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The id of the action or throw an exception")
      */
     public Integer addScriptRun(User loggedInUser, Integer serverId, String chainLabel,
             String uid, String gid, Integer timeout, String scriptBody) {

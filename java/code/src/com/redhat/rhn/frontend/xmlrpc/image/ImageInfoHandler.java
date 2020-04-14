@@ -116,7 +116,7 @@ public class ImageInfoHandler extends BaseHandler {
      * the channel data from")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence", "earliest
      * the following inspect can run")
-     * @xmlrpc.returntype int - ID of the inspect action created
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the inspect action created")
      */
     public Long importImage(User loggedInUser, String name, String version,
             Integer buildHostId, String storeLabel, String activationKey,
@@ -168,7 +168,7 @@ public class ImageInfoHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "buildHostId", "system id of the build host")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "earliest the build can run.")
-     * @xmlrpc.returntype int - ID of the build action created.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the build action created")
      */
     public Long scheduleImageBuild(User loggedInUser, String profileLabel, String version,
             Integer buildHostId, Date earliestOccurrence) {

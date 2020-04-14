@@ -488,8 +488,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ipAddress", "The ip address to
      * search for (i.e. 192.168.0.1)")
-     * @xmlrpc.returntype string - label of the kickstart. Empty string ("") if
-     * not found.
+     * @xmlrpc.returntype #param_desc("string", "label", "label of the kickstart. Empty string if not found")
      */
     public String findKickstartForIp(User loggedInUser, String ipAddress) {
         List<KickstartIpRange> ranges = KickstartFactory.lookupRangeByOrg(loggedInUser
@@ -569,7 +568,7 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.doc Returns whether a kickstart profile is disabled
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "profileLabel" "kickstart profile label")
-     * @xmlrpc.returntype true if profile is disabled
+     * @xmlrpc.returntype #param_desc("boolean", "disabled", "true if profile is disabled")
      */
     public boolean isProfileDisabled(User loggedInUser, String profileLabel) {
 
