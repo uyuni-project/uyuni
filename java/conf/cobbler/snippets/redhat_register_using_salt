@@ -1,0 +1,9 @@
+# begin Red Hat management server registration
+wget http://$redhat_management_server/pub/bootstrap/bootstrap.sh
+key=$redhat_management_key
+if [ -f /tmp/key ]; then
+    key=`cat /tmp/key`,\$key
+fi
+sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=\$key' bootstrap.sh
+sh bootstrap.sh
+# end Red Hat management server registration
