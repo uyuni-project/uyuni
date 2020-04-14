@@ -1,78 +1,89 @@
 #set($date="dateTime.iso8601")
+#set($listlevel = 1)
+#macro(list)#foreach($i in [1..$listlevel])*#end#end
 #macro(type $type)[.$type]#$type# #end
 #macro(serializer $serializer)
-* $serializer
+#list() $serializer
 #end
 #macro(prop $type $value)
-* #type($type) "$value"
+#list() #type($type) "$value"
 #end
 #macro(prop_desc $type $value $desc)
-* #type($type) "$value" - $desc
+#list() #type($type) "$value" - $desc
 #end
 #macro(prop_array $key $type $desc)
-* #type("array") "$key"
-** $type - $desc
+#list() #type("array") "$key"
+#set($listlevel = $listlevel + 1)
+#list() $type - $desc
+#set($listlevel = $listlevel - 1)
 #end
 #macro(prop_array_begin $key)
-* #type("array") "$key"
+#list() #type("array") "$key"
+#set($listlevel = $listlevel + 1)
 #end
 #macro(prop_array_begin_desc $key $desc)
-* #type("array") "$key" - $desc
+#list() #type("array") "$key" - $desc
 #end
 #macro(prop_array_end)
-
+#set($listlevel = $listlevel - 1)
 #end
 #macro(struct_begin $type)
-* #type("struct") - $type
+#list() #type("struct") - $type
+#set($listlevel = $listlevel + 1)
 #end
 #macro(struct_end)
-
+#set($listlevel = $listlevel - 1)
 #end
 #macro(struct_desc $type $desc)
-* #type("struct") - $type $desc
+#list() #type("struct") - $type $desc
+#set($listlevel = $listlevel + 1)
 #end
 #macro(struct_desc_end)
-
+#set($listlevel = $listlevel - 1)
 #end
 #macro(array_begin)
-* #type("array"):
+#list() #type("array"):
+#set($listlevel = $listlevel + 1)
 #end
 #macro(array_end)
-
+#set($listlevel = $listlevel - 1)
 #end
 #macro(array_desc $type $desc)
-* #type("array") $type - $desc
+#list() #type("array") $type - $desc
+#set($listlevel = $listlevel + 1)
 #end
 #macro(array_desc_end)
-
+#set($listlevel = $listlevel - 1)
 #end
 #macro(array_single $type $desc)
-* #type("array"):
-** #type($type) - $desc
+#list() #type("array"):
+#set($listlevel = $listlevel + 1)
+#list() #type($type) - $desc
+#set($listlevel = $listlevel - 1)
 #end
 #macro(options)
 
 #end
 #macro(item $item)
-* $item
+#list() $item
 #end
 #macro(item_desc $item, $desc)
-* $item - $desc
+#list() $item - $desc
 #end
 #macro(options_end)
 
 #end
 #macro(param $type $value)
-* #type($type) $value
+#list() #type($type) $value
 #end
 #macro(param_desc $type $value $desc)
-* #type($type) $value - $desc
+#list() #type($type) $value - $desc
 #end
 #macro(session_key)
   #param("string", "sessionKey")
 #end
 #macro(return_int_success)
-* #type('int') - 1 on success, exception thrown otherwise.
+#list() #type('int') - 1 on success, exception thrown otherwise.
 #end
 #macro(itemlist)
 
