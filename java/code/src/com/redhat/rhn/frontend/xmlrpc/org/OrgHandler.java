@@ -417,7 +417,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype int - Crash file size limit.
+     * @xmlrpc.returntype #param_desc("int", "limit", "Crash file size limit")
      */
     public int getCrashFileSizeLimit(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -464,7 +464,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype boolean - Get the status of crash reporting settings.
+     * @xmlrpc.returntype #param_desc("boolean", "status", "Get the status of crash reporting settings")
      */
     public boolean isCrashReportingEnabled(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -515,7 +515,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype boolean - Get the status of crash file upload settings.
+     * @xmlrpc.returntype #param_desc("boolean", "status", "Get the status of crash file upload settings")
      */
     public boolean isCrashfileUploadEnabled(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -723,7 +723,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype boolean - Returns the status org admin management setting
+     * @xmlrpc.returntype #param_desc("boolean", "status", "Returns the status org admin management setting")
      */
     public boolean isOrgConfigManagedByOrgAdmin(User loggedInUser, Integer orgId) {
         verifyManagesOrgConfig(loggedInUser, orgId);
@@ -786,8 +786,8 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype boolean - Returns the status of the errata e-mail notification
-     * setting for the organization
+     * @xmlrpc.returntype #param_desc("boolean", "status", "Returns the status of the errata e-mail notification
+     * setting for the organization")
      */
     public boolean isErrataEmailNotifsForOrg(User loggedInUser, Integer orgId) {
         verifyManagesOrgConfig(loggedInUser, orgId);
@@ -832,7 +832,7 @@ public class OrgHandler extends BaseHandler {
      *
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "orgId")
-     * @xmlrpc.returntype boolean - Get the status of content staging settings.
+     * @xmlrpc.returntype #param_desc("boolean", "status", "Get the status of content staging settings")
      */
     public boolean isContentStagingEnabled(User loggedInUser, Integer orgId) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);

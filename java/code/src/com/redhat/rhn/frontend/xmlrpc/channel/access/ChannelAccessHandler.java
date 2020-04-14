@@ -150,8 +150,8 @@ public class ChannelAccessHandler extends BaseHandler {
      * @xmlrpc.doc Get organization sharing access control.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
-     * @xmlrpc.returntype string - The access value (one of the following: 'public',
-     * 'private', or 'protected'.
+     * @xmlrpc.returntype
+     *  #param_desc("string", "access", "The access value (one of the following: 'public', 'private', or 'protected'")
      */
     public String getOrgSharing(User loggedInUser, String channelLabel)
         throws FaultException {

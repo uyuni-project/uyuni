@@ -171,7 +171,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * It returns a map of parameters with their typical default values.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "moduleName", "The name of the module")
-     * @xmlrpc.returntype map
+     * @xmlrpc.returntype #param_desc("map", "module_params", "module parameters")
      */
     public Map<String, String> getModuleParameters(User loggedInUser, String moduleName) {
         ensureOrgAdmin(loggedInUser);

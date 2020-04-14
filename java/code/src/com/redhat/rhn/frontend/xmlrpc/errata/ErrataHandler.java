@@ -99,7 +99,7 @@ public class ErrataHandler extends BaseHandler {
      *              CVE/CAN, or advisory name.  In the case of CVE/CAN, all dashes must be
      *             removed from the name.Numeric advisory IDs and advisory names
      *              (RHSA-2006:011) can be submitted as they are.")
-     * @xmlrpc.returntype string - The OVAL metadata document in escaped XML form.
+     * @xmlrpc.returntype #param_desc("string", "metadata", "The OVAL metadata document in escaped XML form")
      */
     /**
      * The getOval method is being commented out due to bugzilla 504054.  This bug
@@ -805,8 +805,8 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param #array_single("int", "packageId")
-     * @xmlrpc.returntype int - representing the number of packages added,
-     * exception otherwise
+     * @xmlrpc.returntype
+     *   #param_desc("int", "count", "representing the number of packages added, exception otherwise")
      */
     public int addPackages(User loggedInUser, String advisoryName,
             List<Integer> packageIds) throws FaultException {
@@ -855,8 +855,8 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param #array_single("int", "packageId")
-     * @xmlrpc.returntype int - representing the number of packages removed,
-     * exception otherwise
+     * @xmlrpc.returntype
+     *   #param_desc("int", "count", "representing the number of packages removed, exception otherwise")
      */
     public int removePackages(User loggedInUser, String advisoryName,
             List<Integer> packageIds) throws FaultException {

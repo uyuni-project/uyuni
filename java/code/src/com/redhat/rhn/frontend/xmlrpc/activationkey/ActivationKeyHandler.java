@@ -130,7 +130,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *   #options_end()
      * #array_desc_end()
      * @xmlrpc.param #param("boolean", "universalDefault")
-     * @xmlrpc.returntype string - The new activation key.
+     * @xmlrpc.returntype #param("string", "The new activation key")
      */
     public String create(User loggedInUser, String key, String description,
             String baseChannelLabel, Integer usageLimit, List entitlements,
@@ -298,7 +298,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "key", "Key to be cloned.")
      * @xmlrpc.param #param_desc("string", "cloneDescription",
      * "Description of the cloned key.")
-     * @xmlrpc.returntype string - The new activation key.
+     * @xmlrpc.returntype #param("string", "The new activation key")
      */
     public String clone(User loggedInUser, String key, String cloneDescription)
         throws FaultException {
@@ -342,7 +342,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *   #options_end()
      * #array_desc_end()
      * @xmlrpc.param #param("boolean", "universalDefault")
-     * @xmlrpc.returntype string - The new activation key.
+     * @xmlrpc.returntype #param("string", "The new activation key")
      */
     public String create(User loggedInUser, String key, String description,
             String baseChannelLabel, List entitlements,
@@ -1172,7 +1172,7 @@ public class ActivationKeyHandler extends BaseHandler {
        * activation key specified.
        * @xmlrpc.param #param("string", "sessionKey")
        * @xmlrpc.param #param("string", "key")
-       * @xmlrpc.returntype 1 if enabled, 0 if disabled, exception thrown otherwise.
+       * @xmlrpc.returntype #param_desc("int", "status", "1 if enabled, 0 if disabled, exception thrown otherwise")
        */
       public int checkConfigDeployment(User loggedInUser, String key) {
           ActivationKey ac = lookupKey(key, loggedInUser);

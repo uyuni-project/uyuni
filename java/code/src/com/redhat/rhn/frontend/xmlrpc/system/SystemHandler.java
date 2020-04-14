@@ -226,7 +226,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Obtains a reactivation key for this server.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype string
+     * @xmlrpc.returntype #param("string", "key")
      */
     public String obtainReactivationKey(User loggedInUser, Integer sid)
             throws FaultException {
@@ -270,7 +270,7 @@ public class SystemHandler extends BaseHandler {
      * @since 10.10
      * @xmlrpc.doc Obtains a reactivation key for this server.
      * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
-     * @xmlrpc.returntype string
+     * @xmlrpc.returntype #param("string", "key")
      */
     public String obtainReactivationKey(String clientCert)
             throws FaultException, MethodInvalidParamException {
@@ -531,8 +531,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "baseChannelLabel")
      * @xmlrpc.param #array_single("string", "channelLabel")
      * @xmlrpc.param  #param_desc($date, "date", "the time/date to schedule the action")
-     * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
-     * on error
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
      */
     public long scheduleChangeChannels(User loggedInUser, Integer serverId, String baseChannelLabel,
                                        List childLabels, Date earliestOccurrence) {
@@ -1179,8 +1179,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "name", "Package name.")
      * @xmlrpc.param #param_desc("string", "version","Package version.")
      * @xmlrpc.param #param_desc("string", "release", "Package release.")
-     * @xmlrpc.returntype 1 if package exists, 0 if not, exception is thrown
-     * if an error occurs
+     * @xmlrpc.returntype #param_desc("int", "status", "1 if package exists, 0 if not, exception is thrown
+     * if an error occurs")
      */
     public int isNvreInstalled(User loggedInUser, Integer sid, String name,
             String version, String release) throws FaultException {
@@ -1207,8 +1207,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "version", "Package version.")
      * @xmlrpc.param #param_desc("string", "release", "Package release.")
      * @xmlrpc.param #param_desc("string", "epoch",  "Package epoch.")
-     * @xmlrpc.returntype 1 if package exists, 0 if not, exception is thrown
-     * if an error occurs
+     * @xmlrpc.returntype #param_desc("int", "status", "1 if package exists, 0 if not, exception is thrown
+     * if an error occurs")
      */
     public int isNvreInstalled(User loggedInUser, Integer sid, String name,
             String version, String release, String epoch) throws FaultException {
@@ -1473,7 +1473,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Get the system ID file for a given server.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype string
+     * @xmlrpc.returntype #param("string", "id")
      */
     public String downloadSystemId(User loggedInUser, Integer sid) throws FaultException {
         // Get the logged in user and server
@@ -2587,8 +2587,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "serverId", "ID of the system to be provisioned.")
      * @xmlrpc.param #param_desc("string", "profileName", "Profile to use.")
-     * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
-     * on error
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
      */
     public int provisionSystem(User loggedInUser, Integer serverId, String profileName)
             throws FaultException {
@@ -2639,8 +2639,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "serverId", "ID of the system to be provisioned.")
      * @xmlrpc.param #param_desc("string", "profileName", "Profile to use.")
      * @xmlrpc.param #param("dateTime.iso8601", "earliestDate")
-     * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
-     * on error
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
      */
     public int provisionSystem(User loggedInUser, Integer serverId,
             String profileName, Date earliestDate)
@@ -2842,8 +2842,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Returns the date the system was registered.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype dateTime.iso8601 - The date the system was registered,
-     * in local time.
+     * @xmlrpc.returntype #param_desc("dateTime.iso8601", "date", "The date the system was registered,
+     * in local time")
      */
     public Date getRegistrationDate(User loggedInUser, Integer sid) {
         Server server = lookupServer(loggedInUser, sid);
@@ -2952,7 +2952,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Returns the running kernel of the given system.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype string
+     * @xmlrpc.returntype #param("string", "kernel")
      */
     public String getRunningKernel(User loggedInUser, Integer sid) {
         try {
@@ -3681,7 +3681,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("int", "packageId")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long schedulePackageInstall(User loggedInUser, final Integer sid,
             List<Integer> packageIds, Date earliestOccurrence) {
@@ -3712,7 +3712,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long schedulePackageInstall(User loggedInUser, final Integer sid,
                                        List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
@@ -3818,7 +3818,7 @@ public class SystemHandler extends BaseHandler {
     *                   #struct_end()
     *               #array_end()
     * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-    * @xmlrpc.returntype int actionId - The action id of the scheduled action
+    * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
     */
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid,
             List<Map<String, String>> packageNevraList, Date earliestOccurrence) {
@@ -3858,7 +3858,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *              "Allow this API call, despite modular content being present")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long schedulePackageInstallByNevra(User loggedInUser, final Integer sid, List<Map<String,
             String>> packageNevraList, Date earliestOccurrence, Boolean allowModules) {
@@ -3937,7 +3937,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("int", "packageId")
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int schedulePackageRemove(User loggedInUser, Integer sid,
             List<Integer> packageIds, Date earliestOccurrence) {
@@ -3968,7 +3968,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param dateTime.iso8601 earliestOccurrence
      * @xmlrpc.param #param_desc("boolean", "allowModules",
      *          "Allow this API call, despite modular content being present")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int schedulePackageRemove(User loggedInUser, Integer sid,
                                      List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
@@ -4213,7 +4213,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliestOccurrence")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleHardwareRefresh(User loggedInUser, Integer sid,
             Date earliestOccurrence) {
@@ -4247,8 +4247,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliestOccurrence")
-     * @xmlrpc.returntype int - ID of the action scheduled, otherwise exception thrown
-     * on error
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
      */
     public int schedulePackageRefresh(User loggedInUser, Integer sid,
             Date earliestOccurrence) {
@@ -4294,8 +4294,8 @@ public class SystemHandler extends BaseHandler {
      * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
-     * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
-     * results with system.getScriptResults.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the script run action created. Can be used to fetch
+     * results with system.getScriptResults")
      */
     public Integer scheduleScriptRun(User loggedInUser, String label, List<Integer>
             systemIds, String username, String groupname, Integer timeout, String script,
@@ -4359,8 +4359,8 @@ public class SystemHandler extends BaseHandler {
      * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
-     * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
-     * results with system.getScriptResults.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the script run action created. Can be used to fetch
+     * results with system.getScriptResults")
      */
     public Integer scheduleScriptRun(User loggedInUser, List<Integer>
             systemIds, String username, String groupname, Integer timeout, String script,
@@ -4393,8 +4393,8 @@ public class SystemHandler extends BaseHandler {
      * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
-     * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
-     * results with system.getScriptResults.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the script run action created. Can be used to fetch
+     * results with system.getScriptResults")
      */
     public Integer scheduleScriptRun(User loggedInUser, Integer sid, String username,
                                      String groupname, Integer timeout, String script,
@@ -4433,8 +4433,8 @@ public class SystemHandler extends BaseHandler {
      * Must start with a shebang (e.g. #!/bin/bash)")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "earliestOccurrence",
      * "Earliest the script can run.")
-     * @xmlrpc.returntype int - ID of the script run action created. Can be used to fetch
-     * results with system.getScriptResults.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the script run action created. Can be used to fetch
+     * results with system.getScriptResults")
      */
     public Integer scheduleScriptRun(User loggedInUser, String label, Integer sid, String
             username, String groupname, Integer timeout, String script, Date earliest) {
@@ -4552,7 +4552,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("dateTime.iso860", "earliestOccurrence")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleReboot(User loggedInUser, Integer sid,
             Date earliestOccurrence) {
@@ -5253,7 +5253,7 @@ public class SystemHandler extends BaseHandler {
      *                  package state from.")
      * @xmlrpc.param  #array_single("int", "packageId - Package IDs to be synced.")
      * @xmlrpc.param #param_desc("dateTime.iso8601", "date", "Date to schedule action for")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleSyncPackagesWithSystem(User loggedInUser, Integer targetServerId,
             Integer sourceServerId,
@@ -5557,8 +5557,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "sid", "The guest's system id")
      * @xmlrpc.param #param_desc("int", "memory", "The amount of memory to
      *          allocate to the guest")
-     *  @xmlrpc.returntype int actionID - the action Id for the schedule action
-     *              on the host system.
+     *  @xmlrpc.returntype #param_desc("int", "actionID", "the action Id for the schedule action
+     *              on the host system")
      *
      */
     public int setGuestMemory(User loggedInUser, Integer sid, Integer memory) {
@@ -5602,8 +5602,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "sid", "The guest's system id")
      * @xmlrpc.param #param_desc("int", "numOfCpus", "The number of virtual cpus to
      *          allocate to the guest")
-     *  @xmlrpc.returntype int actionID - the action Id for the schedule action
-     *              on the host system.
+     *  @xmlrpc.returntype #param_desc("int", "actionID", "the action Id for the schedule action
+     *              on the host system")
      *
      */
     public int setGuestCpus(User loggedInUser, Integer sid, Integer numOfCpus) {
@@ -5646,7 +5646,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "state", "One of the following actions  'start',
      *          'suspend', 'resume', 'restart', 'shutdown'.")
      * @xmlrpc.param  #param_desc($date, "date", "the time/date to schedule the action")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int scheduleGuestAction(User loggedInUser, Integer sid, String state,
             Date date) {
@@ -5704,7 +5704,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("int", "sid", "the system Id of the guest")
      * @xmlrpc.param #param_desc("string", "state", "One of the following actions  'start',
      *          'suspend', 'resume', 'restart', 'shutdown'.")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int scheduleGuestAction(User loggedInUser, Integer sid, String state) {
         return scheduleGuestAction(loggedInUser, sid, state, null);
@@ -6011,7 +6011,7 @@ public class SystemHandler extends BaseHandler {
      *      #prop_desc("string", "hwAddress", "The HW address of the network interface (MAC)")
      *      #prop_desc("string", "hostname", "The hostname of the profile")
      *  #struct_end()
-     * @xmlrpc.returntype int systemId - The id of the created system
+     * @xmlrpc.returntype #param_desc("int", "systemId", "The id of the created system")
      */
     public int createSystemProfile(User loggedInUser, String systemName, Map<String, Object> data) {
         try {
@@ -6236,7 +6236,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Get the System Currency score multipliers
      *  @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype Map of score multipliers
+     * @xmlrpc.returntype #param_desc("map", "multipliers", "Map of score multipliers")
      */
     public Map<String, Integer> getSystemCurrencyMultipliers(User loggedInUser) {
         Map<String, Integer> multipliers = new HashMap<String, Integer>();
@@ -6302,7 +6302,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Get the UUID from the given system ID.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype string
+     * @xmlrpc.returntype #param("string", "uuid")
      */
     public String getUuid(User loggedInUser, Integer serverId) {
         Server server = lookupServer(loggedInUser, serverId);
@@ -6471,7 +6471,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Schedule update of client certificate
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int scheduleCertificateUpdate(User loggedInUser, Integer serverId) {
         return scheduleCertificateUpdate(loggedInUser, serverId, new Date());
@@ -6488,7 +6488,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("dateTime.iso860", "date")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public int scheduleCertificateUpdate(User loggedInUser, Integer serverId, Date date) {
         Server server = lookupServer(loggedInUser, serverId);
@@ -6668,7 +6668,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
             List<String> optionalChildChannels, boolean dryRun, Date earliest) {
@@ -6705,7 +6705,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "optionalChildChannels")
      * @xmlrpc.param #param("boolean", "dryRun")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param_desc("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleSPMigration(User loggedInUser, Integer sid, String targetIdent,
             String baseChannelLabel, List<String> optionalChildChannels, boolean dryRun,
@@ -6844,7 +6844,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "channels")
      * @xmlrpc.param #param("boolean", "dryRun")
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
             boolean dryRun, Date earliest) {
@@ -7096,7 +7096,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("dateTime.iso8601", "earliestOccurrence")
      * @xmlrpc.param #param_desc("boolean", "test", "Run states in test-only mode")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype #param("int", "actionId", "The action id of the scheduled action")
      */
     public Long scheduleApplyHighstate(User loggedInUser, Integer sid, Date earliestOccurrence, boolean test) {
         try {
@@ -7130,7 +7130,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Return a map from Salt minion IDs to System IDs.
      * Map entries are limited to systems that are visible by the current user.
      * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype  Map from minion IDs to system IDs
+     * @xmlrpc.returntype #param_desc("map", "id_map", "minion IDs to system IDs")
      */
     public Map<String, Long> getMinionIdMap(User loggedInUser) {
         return ServerFactory.getMinionIdMap(loggedInUser.getId());

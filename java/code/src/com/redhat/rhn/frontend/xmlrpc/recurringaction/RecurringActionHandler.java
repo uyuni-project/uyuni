@@ -129,7 +129,7 @@ public class RecurringActionHandler extends BaseHandler {
      *      #prop_desc("string", "cron_expr", "The execution frequency of the action")
      *      #prop_desc("boolean", "test", "Whether the action should be executed in test mode (optional)")
      *  #struct_end()
-     * @xmlrpc.returntype The id of the recurring action
+     * @xmlrpc.returntype #param_desc("int", "id", "The id of the recurring action")
      */
     public int create(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = createAction(actionProps, loggedInUser);
@@ -179,7 +179,7 @@ public class RecurringActionHandler extends BaseHandler {
      *      #prop_desc("boolean", "test", "Whether the action should be executed in test mode (optional)")
      *      #prop_desc("boolean", "active", "Whether the action should be active (optional)")
      *  #struct_end()
-     * @xmlrpc.returntype The id of the recurring action
+     * @xmlrpc.returntype #param_desc("int", "id", "The id of the recurring action")
      */
     public int update(User loggedInUser, Map<String, Object> actionProps) {
         RecurringAction action = updateAction(actionProps, loggedInUser);
@@ -236,7 +236,7 @@ public class RecurringActionHandler extends BaseHandler {
      * @xmlrpc.doc Delete recurring action with given action id.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("int", "actionId", "Id of the action")
-     * @xmlrpc.returntype The id of the recurring action
+     * @xmlrpc.returntype #param_desc("int", "id", "The id of the recurring action")
      */
     public int delete(User loggedInUser, Integer actionId) {
         RecurringAction action = lookupById(loggedInUser, actionId);

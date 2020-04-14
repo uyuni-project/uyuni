@@ -96,8 +96,8 @@ public class UserExternalHandler extends BaseHandler {
      * their IPA groups even after they log in through a non-IPA method. Can only be
      * called by a satellite_admin.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype boolean - True if we should keep roles
-     * after users log in through non-IPA method, false otherwise.
+     * @xmlrpc.returntype #param_desc("boolean", "keep", "True if we should keep roles
+     * after users log in through non-IPA method, false otherwise")
      */
     public boolean getKeepTemporaryRoles(User loggedInUser)
             throws PermissionCheckFailureException {
@@ -146,8 +146,8 @@ public class UserExternalHandler extends BaseHandler {
      * to the "orgunit" set on the IPA server. The orgunit name must match exactly the
      * Satellite organization name. Can only be called by a satellite_admin.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype boolean - True if we should use the IPA
-     * orgunit to determine which organization to create the user in, false otherwise.
+     * @xmlrpc.returntype #param_desc("boolean", "use", "True if we should use the IPA
+     * orgunit to determine which organization to create the user in, false otherwise")
      */
     public boolean getUseOrgUnit(User loggedInUser) throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
@@ -198,7 +198,7 @@ public class UserExternalHandler extends BaseHandler {
      * @xmlrpc.doc Get the default org that users should be added in if orgunit from
      * IPA server isn't found or is disabled. Can only be called by a satellite_admin.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype int - Id of the default organization. 0 if there is no default.
+     * @xmlrpc.returntype #param_desc("int", "id", "Id of the default organization. 0 if there is no default")
      */
     public int getDefaultOrg(User loggedInUser) throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin

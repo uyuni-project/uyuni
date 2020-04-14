@@ -578,7 +578,7 @@ public class PackagesHandler extends BaseHandler {
      * for larger files.)
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "package_id")
-     * @xmlrpc.returntype binary object - package file
+     * @xmlrpc.returntype #array_single("byte", "binary object - package file")
      */
     public byte[] getPackage(User loggedInUser, Integer pid) throws IOException {
         Package pkg = lookupPackage(loggedInUser, pid);

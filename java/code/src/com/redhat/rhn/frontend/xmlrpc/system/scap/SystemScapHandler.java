@@ -109,7 +109,7 @@ public class SystemScapHandler extends BaseHandler {
      * only those SCAP Scans can be deleted which have passed their retention period.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("int", "Id of XCCDF scan (xid).")
-     * @xmlrpc.returntype boolean - indicates success of the operation.
+     * @xmlrpc.returntype #param_desc("boolean", "status", "indicates success of the operation")
      */
     public Boolean deleteXccdfScan(User loggedInUser, Integer xid) {
         ScapManager.ensureAvailableToUser(loggedInUser, Long.valueOf(xid));
@@ -129,7 +129,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.param #array_single("int", "serverId")
      * @xmlrpc.param #param("string", "Path to xccdf content on targeted systems.")
      * @xmlrpc.param #param("string", "Additional parameters for oscap tool.")
-     * @xmlrpc.returntype int - ID if SCAP action created.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
     public int scheduleXccdfScan(User loggedInUser, List serverIds,
             String xccdfPath, String oscapParams) {
@@ -153,7 +153,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "Additional parameters for oscap tool.")
      * @xmlrpc.param #param_desc("dateTime.iso8601","date",
      *                       "The date to schedule the action")
-     * @xmlrpc.returntype int - ID if SCAP action created.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID if SCAP action created")
      */
     public int scheduleXccdfScan(User loggedInUser, List serverIds,
              String xccdfPath, String oscapParams, Date date) {
@@ -197,7 +197,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "Path to xccdf content on targeted system.")
      * @xmlrpc.param #param("string", "Additional parameters for oscap tool.")
-     * @xmlrpc.returntype int - ID of the scap action created.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the scap action created")
      */
     public int scheduleXccdfScan(User loggedInUser, Integer sid,
         String xccdfPath, String oscapParams) {
@@ -220,7 +220,7 @@ public class SystemScapHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "Additional parameters for oscap tool.")
      * @xmlrpc.param #param_desc("dateTime.iso8601","date",
      *                       "The date to schedule the action")
-     * @xmlrpc.returntype int - ID of the scap action created.
+     * @xmlrpc.returntype #param_desc("int", "id", "ID of the scap action created")
      */
     public int scheduleXccdfScan(User loggedInUser, Integer sid,
             String xccdfPath, String oscapParams, Date date) {

@@ -68,7 +68,7 @@ public class ProxyHandler extends BaseHandler {
      *
      * @xmlrpc.doc Create Monitoring Scout for proxy.
      * @xmlrpc.param #param_desc("string", "systemid", "systemid file")
-     * @xmlrpc.returntype string
+     * @xmlrpc.returntype #param("string", "")
      */
     public String createMonitoringScout(String clientcert)
         throws NotSupportedException {

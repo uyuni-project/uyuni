@@ -54,8 +54,8 @@ public class SoftwareHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "The label of a kickstart
      * profile.")
-     * @xmlrpc.returntype string[] - Get a list of a kickstart profile's
-     * software packages.
+     * @xmlrpc.returntype
+     * #array_single("string", "Get a list of a kickstart profile's software packages")
      */
     public List<String> getSoftwareList(User loggedInUser, String ksLabel) {
 

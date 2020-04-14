@@ -367,8 +367,8 @@ public class SystemDetailsHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "The label of a kickstart
      * profile.")
-     * @xmlrpc.returntype string[] - A list of partitioning commands used to
-     * setup the partitions, logical volumes and volume groups."
+     * @xmlrpc.returntype #array_single("string", "A list of partitioning commands used to
+     * setup the partitions, logical volumes and volume groups")
      */
     public List<String> getPartitioningScheme(User loggedInUser, String ksLabel) {
         KickstartData ksdata = lookupKsData(ksLabel, loggedInUser.getOrg());
