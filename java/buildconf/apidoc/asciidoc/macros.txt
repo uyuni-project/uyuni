@@ -48,7 +48,7 @@
 #end
 #macro(array_single $type $desc)
 * #type("array"):
-** $type - $desc
+** #type($type) - $desc
 #end
 #macro(options)
 
