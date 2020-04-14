@@ -321,10 +321,7 @@ class UnwrappedFormulaFormRenderer extends React.Component {
     }
 
     dontSubmitForm = (event) => {
-        // TODO checkValidity must be called on each form input, not on the entire form
-        // this.form.current.checkValidity();
         event.preventDefault();
-        // return false; // form if submitted via ajax
     }
 
     getFormulaValues = () => {
@@ -341,7 +338,7 @@ class UnwrappedFormulaFormRenderer extends React.Component {
         for (const key in layout) {
             form.push(generateFormulaComponent(layout[key], values[key], this));
         }
-        return <form id="formula-form" className="form-horizontal" onSubmit={(event) => {event.preventDefault(); console.log("submitted"); return false;}}>
+        return <form id="formula-form" className="form-horizontal" onSubmit={(event) => {event.preventDefault(); return false;}}>
             <input ref={this.submitButton} type="submit" hidden/>
             {form}
             </form>;

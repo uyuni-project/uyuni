@@ -110,7 +110,6 @@ class FormulaForm extends React.Component {
                     errors: messages
             });
         } else {
-            console.log("saveFormula");
           let formData = {
                 type: formType,
                 id: this.props.systemId,
