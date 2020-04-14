@@ -431,6 +431,7 @@
     <property name="template.dir" value="asciidoc" />
     <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/" />
     <antcall target="apidoc" />
+    <delete dir="${report.dir}/apidocs/${template.dir}/handlers/" />
   </target>
 
   <target name="apidoc" description="Generate the api documentation" depends="compile">

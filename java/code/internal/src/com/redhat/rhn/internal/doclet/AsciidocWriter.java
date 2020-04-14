@@ -45,10 +45,10 @@ public class AsciidocWriter extends DocWriter {
         renderSerializers(templates, serializers);
 
         //Lets do the index first
-        writeFile(output + "handlers/apilist.adoc", generateIndex(handlers, templates));
+        writeFile(output + "apilist.adoc", generateIndex(handlers, templates));
 
         for (Handler handler : handlers) {
-            writeFile(output + "handlers/" + handler.getName() + ".adoc",
+            writeFile(output + handler.getName() + ".adoc",
                     generateHandler(handler, templates));
         }
 
