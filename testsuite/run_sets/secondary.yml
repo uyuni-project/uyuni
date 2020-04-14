@@ -40,5 +40,6 @@
 - features/secondary/min_docker_auth_registry.feature
 - features/secondary/min_docker_xmlrpc.feature
 - features/secondary/min_recurring_action.feature
+- features/secondary/min_change_software_channel.feature
 
 ## Secondary features END ##
