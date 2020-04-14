@@ -21,46 +21,55 @@ Then(/^"([^"]*)" should communicate with the server$/) do |host|
   $server.run("ping -c1 #{node.full_hostname}")
 end
 
-# rubocop:disable Metrics/BlockLength
-Then(/^it should be possible to reach the (.*)$/) do |resource|
-  url = case resource
-        when 'download site'
-    if $product == 'Uyuni'
-      'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/repodata/repomd.xml'
-    else
-      'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
-    end
-        when 'container profiles'
-    # TODO: move that resource to next location ("test suite profiles")
-    if $product == 'Uyuni'
-      ''
-    else
-      'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
-    end
-        when 'test suite profiles'
-    'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
-        when 'portus registry'
-    if $product == 'Uyuni'
-      # TODO: move that internal resource to some other external location
-      ''
-    else
-      'https://portus.mgr.suse.de:5000'
-    end
-        when 'other registry'
-    if $product == 'Uyuni'
-      # TODO: move that internal resource to some other external location
-      ''
-    else
-      'https://registry.mgr.suse.de:443'
-    end
-        end
-  if url.empty?
+Then(/^it should be possible to reach the test packages$/) do
+  url = 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/x86_64/orion-dummy-1.1-1.1.x86_64.rpm'
+  $server.run("curl --insecure --location #{url} --output /dev/null")
+end
+
+Then(/^it should be possible to reach the build sources$/) do
+  if $product == 'Uyuni'
+    # TODO: move that internal resource to some other external location
     STDERR.puts 'Sanity check not implemented, move resource to external network first'
   else
-    $server.run("curl -k #{url} -o /dev/null") # --fail option does not work as expected
+    url = 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
+    $server.run("curl --insecure --location #{url} --output /dev/null")
   end
 end
-# rubocop:enable Metrics/BlockLength
+
+Then(/^it should be possible to reach the container profiles$/) do
+  if $product == 'Uyuni'
+    # TODO: move that resource to next location ("test suite profiles")
+    STDERR.puts 'Sanity check not implemented, move resource to external network first'
+  else
+    url = 'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
+    $server.run("curl --insecure --location #{url} --output /dev/null")
+  end
+end
+
+Then(/^it should be possible to reach the test suite profiles$/) do
+  url = 'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
+  $server.run("curl --insecure --location #{url} --output /dev/null")
+end
+
+Then(/^it should be possible to reach the portus registry$/) do
+  if $product == 'Uyuni'
+    # TODO: move that internal resource to some other external location
+    STDERR.puts 'Sanity check not implemented, move resource to external network first'
+  else
+    url = 'https://portus.mgr.suse.de:5000'
+    $server.run("curl --insecure --location #{url} --output /dev/null")
+  end
+end
+
+Then(/^it should be possible to reach the other registry$/) do
+  if $product == 'Uyuni'
+    # TODO: move that internal resource to some other external location
+    STDERR.puts 'Sanity check not implemented, move resource to external network first'
+  else
+    url = 'https://registry.mgr.suse.de:443'
+    $server.run("curl --insecure --location #{url} --output /dev/null")
+  end
+end
 
 # Channels
 
