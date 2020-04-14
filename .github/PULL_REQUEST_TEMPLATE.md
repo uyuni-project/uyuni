@@ -14,7 +14,7 @@ After:
 
 ## Documentation
 - No documentation needed: **add explanation. This can't be used if there is a GUI diff**
-- [Documentation issue](https://github.com/SUSE/spacewalk/issues/new?template=ISSUE_TEMPLATE_DOCUMENTATION.md&labels=documentation&projects=SUSE/spacewalk/31) was created (GitHub automatic link expected below)
+- Documentation issue was created: [Link for SUSE Manager contributors](https://github.com/SUSE/spacewalk/issues/new?template=ISSUE_TEMPLATE_DOCUMENTATION.md&labels=documentation&projects=SUSE/spacewalk/31), [Link for community contributors](https://github.com/uyuni-project/uyuni-docs/issues/new).
 - (OPTIONAL) [Documentation PR](https://github.com/uyuni-project/uyuni-docs/pulls)
 
 - [ ] **DONE**
