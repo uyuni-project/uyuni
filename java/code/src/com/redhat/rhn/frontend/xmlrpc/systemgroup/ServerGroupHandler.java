@@ -47,6 +47,15 @@ import java.util.List;
  */
 public class ServerGroupHandler extends BaseHandler {
 
+    private final XmlRpcSystemHelper xmlRpcSystemHelper;
+
+    /**
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     */
+    public ServerGroupHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+        xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+    }
+
     /**
      * Given a systemGroupName this call returns the list of users
      * who can administer the group. One has to be a SystemGroupAdmin
@@ -192,7 +201,7 @@ public class ServerGroupHandler extends BaseHandler {
         ServerGroupManager manager = ServerGroupManager.getInstance();
         ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
 
-        List servers = XmlRpcSystemHelper.getInstance().lookupServers(loggedInUser, serverIds);
+        List servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
 
         if (add.booleanValue()) {
             manager.addServers(group, servers, loggedInUser);

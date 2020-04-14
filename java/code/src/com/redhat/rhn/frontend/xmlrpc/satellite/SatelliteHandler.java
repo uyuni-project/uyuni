@@ -31,6 +31,15 @@ import org.apache.log4j.Logger;
 public class SatelliteHandler extends BaseHandler {
     private static Logger log = Logger.getLogger(SatelliteHandler.class);
 
+    private ProxyHandler proxyHandler;
+
+    /**
+     * @param proxyHandlerIn proxy hander to delegate
+     */
+    public SatelliteHandler(ProxyHandler proxyHandlerIn) {
+        proxyHandler = proxyHandlerIn;
+    }
+
     /**
      * List all proxies on the Satellite for the current org
      * @param loggedInUser The current user
@@ -46,7 +55,6 @@ public class SatelliteHandler extends BaseHandler {
      */
     @Deprecated
     public Object[] listProxies(User loggedInUser) {
-        ProxyHandler proxyHandler = new ProxyHandler();
         return proxyHandler.listProxies(loggedInUser);
     }
 

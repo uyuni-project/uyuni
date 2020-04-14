@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.ConfigFileNameDto;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
+import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -45,6 +46,10 @@ import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit3.JUnit3Mockery;
@@ -65,7 +70,15 @@ import java.util.Set;
  * SystemConfigHandlerTest
  */
 public class ServerConfigHandlerTest extends BaseHandlerTestCase {
-    private ServerConfigHandler handler = new ServerConfigHandler();
+    private TaskomaticApi taskomaticApi = new TaskomaticApi();
+    private SystemQuery systemQuery = new SaltService();
+    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+            regularMinionBootstrapper,
+            sshMinionBootstrapper
+    );
+    private ServerConfigHandler handler = new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper);
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ClassImposteriser.INSTANCE);
@@ -452,7 +465,14 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     private ServerConfigHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
-        ServerConfigHandler serverConfigHandler = new ServerConfigHandler(taskomaticMock);
+        SystemQuery systemQuery = new SaltService();
+        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+                regularMinionBootstrapper,
+                sshMinionBootstrapper
+        );
+        ServerConfigHandler serverConfigHandler = new ServerConfigHandler(taskomaticMock, xmlRpcSystemHelper);
 
         MOCK_CONTEXT.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));

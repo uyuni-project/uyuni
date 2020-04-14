@@ -16,7 +16,6 @@
 package com.suse.manager.webui.controllers.test;
 
 import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.Matchers.containsString;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -29,7 +28,6 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -44,10 +42,10 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.controllers.VirtualGuestsController;
+import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.salt.netapi.calls.LocalCall;
 
 import org.jmock.Expectations;
 
@@ -61,7 +59,6 @@ import spark.HaltException;
 public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
     private TaskomaticApi taskomaticMock;
-    private SaltService saltServiceMock;
     private static final Gson GSON = new GsonBuilder().create();
     private Server host;
     private VirtManager virtManager;
@@ -84,7 +81,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        saltServiceMock = new SaltService() {
+        virtManager = new TestVirtManager() {
 
             @Override
             public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
@@ -108,14 +105,13 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock)
+                new SystemEntitler(new SaltService(), virtManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, systemEntitlementManager);
         host.asMinionServer().get().setMinionId("testminion.local");
         host.getGuests().iterator().next().setUuid(guid);
 
-        virtManager = new VirtManager(saltServiceMock);
         virtualGuestsController = new VirtualGuestsController(virtManager);
 
         // Clean pending actions for easier checks in the tests

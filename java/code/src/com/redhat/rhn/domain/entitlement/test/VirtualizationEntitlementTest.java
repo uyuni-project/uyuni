@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.HashMap;
@@ -44,9 +45,10 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
 
     @Override
     public void testIsAllowedOnServer() throws Exception {
+        SaltService saltService = new SaltService();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(new SaltService())
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
         );
         Server host = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();

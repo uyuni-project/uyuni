@@ -50,14 +50,13 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper;
-import com.suse.salt.netapi.results.CmdResult;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
@@ -88,7 +87,7 @@ public class RegistrationUtils {
 
     private static SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(),
-            new SystemEntitler(SaltService.INSTANCE)
+            new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API))
     );
 
     private RegistrationUtils() {
@@ -340,20 +339,11 @@ public class RegistrationUtils {
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
                 "centos".equalsIgnoreCase(grains.getValueAsString(OS))) {
-            Optional<Map<String, State.ApplyResult>> applyResultMap = systemQuery
-                    .applyState(server.getMinionId(), "packages.redhatproductinfo");
-            Optional<String> centosReleaseContent = applyResultMap.map(
-                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE))
-                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
-            Optional<String> rhelReleaseContent = applyResultMap.map(
-                    map -> map.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE))
-                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
-            Optional<String> whatProvidesRes = applyResultMap.map(map -> map
-                    .get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE))
-                    .map(r -> r.getChanges(CmdResult.class)).map(c -> c.getStdout());
+            Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
-            Optional<RhelUtils.RhelProduct> rhelProduct = RhelUtils.detectRhelProduct(
-                    server, whatProvidesRes, rhelReleaseContent, centosReleaseContent);
+            Optional<RhelUtils.RhelProduct> rhelProduct =
+                    redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
+                            server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());

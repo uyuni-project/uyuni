@@ -20,6 +20,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -30,10 +31,10 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
-import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.manager.ssm.SsmManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.utils.MinionServerUtils;
@@ -188,8 +189,10 @@ public class MinionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView orgRecurringStates(Request request, Response response, User user) {
-        Set<Long> systems = Arrays.stream(new SystemHandler().listSystems(user))
-                .map(system -> ((SystemOverview) system).getId()).
+        DataResult<ShortSystemInfo> dr = SystemManager.systemListShort(user, null);
+        dr.elaborate();
+        Set<Long> systems = Arrays.stream(dr.toArray())
+                .map(system -> ((ShortSystemInfo) system).getId()).
                         collect(Collectors.toSet());
         List<Server> servers = ServerFactory.lookupByIdsAndOrg(systems, user.getOrg());
         List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(servers)
@@ -230,8 +233,10 @@ public class MinionController {
      */
     public static ModelAndView yourOrgRecurringStates(Request request, Response response,
                                                      User user) {
-        Set<Long> systems = Arrays.stream(new SystemHandler().listSystems(user))
-                .map(system -> ((SystemOverview) system).getId()).
+        DataResult<ShortSystemInfo> dr = SystemManager.systemListShort(user, null);
+        dr.elaborate();
+        Set<Long> systems = Arrays.stream(dr.toArray())
+                .map(system -> ((ShortSystemInfo) system).getId()).
                 collect(Collectors.toSet());
         List<Server> servers = ServerFactory.lookupByIdsAndOrg(systems, user.getOrg());
         List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(servers)

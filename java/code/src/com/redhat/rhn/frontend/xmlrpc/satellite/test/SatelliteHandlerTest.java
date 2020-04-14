@@ -16,14 +16,27 @@ package com.redhat.rhn.frontend.xmlrpc.satellite.test;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.frontend.xmlrpc.satellite.SatelliteHandler;
+import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.Map;
 
 public class SatelliteHandlerTest extends BaseHandlerTestCase {
 
-    private SatelliteHandler handler = new SatelliteHandler();
+    private SystemQuery systemQuery = new SaltService();
+    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
+            regularMinionBootstrapper,
+            sshMinionBootstrapper
+    );
+    private SatelliteHandler handler = new SatelliteHandler(new ProxyHandler(xmlRpcSystemHelper));
 
     public void testListProxies() throws Exception {
         Server server = ServerFactoryTest.createTestProxyServer(admin, false);

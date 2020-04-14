@@ -62,6 +62,7 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -162,15 +163,15 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
                 will(returnValue(Optional.of(mockResult)));
         }});
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+        SystemEntitlementManager sem = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock)
+                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock))
         );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         ServerFactory.save(server);
-        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
+        sem.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
         ActivationKey ak = createActivationKey(admin);
         ImageProfile prof = createKiwiImageProfile("myprofile", ak, admin);
 

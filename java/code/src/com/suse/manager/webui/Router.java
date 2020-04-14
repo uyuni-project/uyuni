@@ -23,7 +23,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.kubernetes.KubernetesManager;
-import com.suse.manager.virtualization.VirtManager;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.DownloadController;
@@ -56,7 +56,11 @@ import com.suse.manager.webui.controllers.channels.ChannelsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.login.LoginController;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import org.apache.http.HttpStatus;
@@ -85,13 +89,16 @@ public class Router implements SparkApplication {
 
         TaskomaticApi taskomaticApi = new TaskomaticApi();
         SystemQuery systemQuery = SaltService.INSTANCE;
+        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
         KubernetesManager kubernetesManager = new KubernetesManager(systemQuery);
-        VirtManager virtManager = new VirtManager(systemQuery);
+        VirtManager virtManager = new VirtManagerSalt(saltApi);
+        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
 
         SystemsController systemsController = new SystemsController(systemQuery);
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
         NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
-        MinionsAPI minionsAPI = new MinionsAPI(systemQuery);
+        MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper);
         StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
         FormulaController formulaController = new FormulaController(systemQuery);
 

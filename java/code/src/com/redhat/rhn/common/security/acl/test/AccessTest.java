@@ -35,6 +35,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.Date;
@@ -321,9 +322,10 @@ public class AccessTest extends BaseTestCaseWithUser {
     }
 
     public void testIsVirtual() throws Exception {
+        SaltService saltService = new SaltService();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(new SaltService())
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
         );
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();

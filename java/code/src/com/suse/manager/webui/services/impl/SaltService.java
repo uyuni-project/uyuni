@@ -15,10 +15,10 @@
 package com.suse.manager.webui.services.impl;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.messaging.JavaMailException;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -26,14 +26,13 @@ import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.reactor.PGEventStream;
-import com.suse.manager.reactor.SaltReactor;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
+import com.suse.manager.utils.MailHelper;
 import com.suse.manager.utils.MinionServerUtils;
-import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.PoolCapabilitiesJson;
-import com.suse.manager.virtualization.PoolDefinition;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.iface.RedhatProductInfo;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import com.suse.manager.webui.services.impl.runner.MgrKiwiImageRunner;
@@ -43,6 +42,7 @@ import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -73,8 +73,10 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.datatypes.target.Target;
 import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.errors.SaltError;
+import com.suse.salt.netapi.event.EventListener;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
@@ -104,7 +106,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -122,14 +123,16 @@ import java.util.stream.Stream;
 /**
  * Singleton class acting as a service layer for accessing the salt API.
  */
-public class SaltService implements SystemQuery {
+public class SaltService implements SystemQuery, SaltApi {
 
     private final Batch defaultBatch;
 
     /**
      * Singleton instance of this class
      */
-    public static final SystemQuery INSTANCE = new SaltService();
+    private static final SaltService INSTANCE_SALT_SERVICE = new SaltService();
+    public static final SystemQuery INSTANCE = INSTANCE_SALT_SERVICE;
+    public static final SaltApi INSTANCE_SALT_API = INSTANCE_SALT_SERVICE;
 
     // Logger
     private static final Logger LOG = Logger.getLogger(SaltService.class);
@@ -160,8 +163,6 @@ public class SaltService implements SystemQuery {
 
     private static final String CLEANUP_MINION_SALT_STATE = "cleanup_minion";
     protected static final String MINION_UNREACHABLE_ERROR = "minion_unreachable";
-
-    private SaltReactor reactor = null;
 
     /**
      * Enum of all the available status for Salt keys.
@@ -199,13 +200,6 @@ public class SaltService implements SystemQuery {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public void setReactor(SaltReactor reactorIn) {
-        this.reactor = reactorIn;
-    }
-
-    /**
      * Synchronously executes a salt function on a single minion.
      * If a SaltException is thrown, re-throw a RuntimeException.
      *
@@ -233,73 +227,6 @@ public class SaltService implements SystemQuery {
         catch (SaltException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
-        LocalCall<Map<String, JsonElement>> call =
-                new LocalCall<>("virt.all_capabilities", Optional.empty(), Optional.empty(),
-                        new TypeToken<Map<String, JsonElement>>() { });
-
-        return callSync(call, minionId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, JsonObject> getNetworks(String minionId) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        LocalCall<Map<String, JsonElement>> call =
-                new LocalCall<>("virt.network_info", Optional.empty(), Optional.of(args),
-                        new TypeToken<Map<String, JsonElement>>() { });
-
-        Optional<Map<String, JsonElement>> nets = callSync(call, minionId);
-        Map<String, JsonElement> result = nets.orElse(new HashMap<String, JsonElement>());
-
-        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
-        return result.entrySet().stream()
-                .filter(entry -> entry.getValue().isJsonObject())
-                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<PoolDefinition> getPoolDefinition(String minionId, String poolName) {
-        Map<String, JsonObject> infos = getPools(minionId);
-
-        Map<String, Object> args = new LinkedHashMap<>();
-        args.put("name", poolName);
-        LocalCall<String> call =
-                new LocalCall<>("virt.pool_get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
-
-        Optional<String> result = callSync(call, minionId);
-        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> {
-            PoolDefinition pool = PoolDefinition.parse(xml);
-            if (pool != null) {
-                pool.setAutostart(infos.get(poolName).get("autostart").getAsInt() == 1);
-            }
-            return pool;
-        });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        args.put("vm_", domainName);
-        LocalCall<String> call =
-                new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
-
-        Optional<String> result = callSync(call, minionId);
-        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
     }
 
     /**
@@ -542,15 +469,81 @@ public class SaltService implements SystemQuery {
                 .orElseThrow(() -> new RuntimeException("no wheel results"));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public EventStream getEventStream() throws SaltException {
+    // Reconnecting time (in seconds) to Salt event bus
+    private static final int DELAY_TIME_SECONDS = 5;
+
+    private EventStream eventStream;
+
+    private synchronized void eventStreamClosed() {
+        eventStream = null;
+    }
+
+    private synchronized EventStream createOrGetEventStream() {
+
+        int retries = 0;
+
+        while (eventStream == null || eventStream.isEventStreamClosed()) {
+            retries++;
+            try {
+                eventStream = createEventStream();
+                eventStream.addEventListener(new EventListener() {
+                    @Override
+                    public void notify(com.suse.salt.netapi.datatypes.Event event) {
+                    }
+
+                    @Override
+                    public void eventStreamClosed(int code, String phrase) {
+                        SaltService.this.eventStreamClosed();
+                    }
+                });
+                if (eventStream.isEventStreamClosed()) {
+                    eventStream = null;
+                }
+
+                if (retries > 1) {
+                    LOG.warn("Successfully connected to the Salt event bus after " +
+                            (retries - 1) + " retries.");
+                }
+                else {
+                    LOG.info("Successfully connected to the Salt event bus");
+                }
+            }
+            catch (SaltException e) {
+                try {
+                    LOG.error("Unable to connect: " + e + ", retrying in " +
+                            DELAY_TIME_SECONDS + " seconds.");
+                    Thread.sleep(1000 * DELAY_TIME_SECONDS);
+                    if (retries == 1) {
+                        MailHelper.withSmtp().sendAdminEmail("Cannot connect to salt event bus",
+                                "salt-api daemon is not responding. Check the status of " +
+                                        "salt-api daemon and (re)-start it if needed\n\n" +
+                                        "This is the only notification you will receive.");
+                    }
+                }
+                catch (JavaMailException javaMailException) {
+                    LOG.error("Error sending email: " + javaMailException.getMessage());
+                }
+                catch (InterruptedException e1) {
+                    LOG.error("Interrupted during sleep: " + e1);
+                }
+            }
+        }
+        return eventStream;
+    }
+
+    private EventStream createEventStream() throws SaltException {
         if (ConfigDefaults.get().isPostgresql()) {
             return new PGEventStream();
         }
         Token token = adaptException(SALT_CLIENT.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE));
         return SALT_CLIENT.events(token, 0, 0, 0);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public EventStream getEventStream() {
+        return createOrGetEventStream();
     }
 
     /**
@@ -612,7 +605,7 @@ public class SaltService implements SystemQuery {
             try {
                 results.putAll(
                         completableAsyncCall(call, target,
-                        reactor.getEventStream(), cancel).orElseGet(Collections::emptyMap));
+                        getEventStream(), cancel).orElseGet(Collections::emptyMap));
             }
             catch (SaltException e) {
                 throw new RuntimeException(e);
@@ -620,48 +613,6 @@ public class SaltService implements SystemQuery {
         }
 
         return results;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Optional<PoolCapabilitiesJson> getPoolCapabilities(String minionId) {
-        LocalCall<PoolCapabilitiesJson> call =
-                new LocalCall<>("virt.pool_capabilities", Optional.empty(), Optional.empty(),
-                        new TypeToken<PoolCapabilitiesJson>() { });
-
-        return callSync(call, minionId);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, JsonObject> getPools(String minionId) {
-        Map<String, Object> args = new LinkedHashMap<>();
-        LocalCall<Map<String, JsonElement>> call =
-                new LocalCall<>("virt.pool_info", Optional.empty(), Optional.of(args),
-                        new TypeToken<Map<String, JsonElement>>() { });
-
-        Optional<Map<String, JsonElement>> pools = callSync(call, minionId);
-        Map<String, JsonElement> result = pools.orElse(new HashMap<String, JsonElement>());
-
-        // Workaround: Filter out the entries that don't match since we may get a retcode=0 one.
-        return result.entrySet().stream()
-                .filter(entry -> entry.getValue().isJsonObject())
-                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> entry.getValue().getAsJsonObject()));
-    }
-
-    @Override
-    public Map<String, Map<String, JsonObject>> getVolumes(String minionId) {
-        List<?> args = Arrays.asList(null, null);
-        LocalCall<Map<String, Map<String, JsonObject>>> call =
-                new LocalCall<>("virt.volume_infos", Optional.of(args), Optional.empty(),
-                        new TypeToken<Map<String, Map<String, JsonObject>>>() { });
-
-        Optional<Map<String, Map<String, JsonObject>>> volumes = callSync(call, minionId);
-        return volumes.orElse(new HashMap<String, Map<String, JsonObject>>());
     }
 
     /**
@@ -676,16 +627,6 @@ public class SaltService implements SystemQuery {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void updateLibvirtEngine(MinionServer minion) {
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
-        callSync(State.apply(Collections.singletonList("virt.engine-events"),
-                Optional.of(pillar)), minion.getMinionId());
-    }
 
     /**
      * {@inheritDoc}
@@ -724,7 +665,7 @@ public class SaltService implements SystemQuery {
             String target, CompletableFuture<GenericError> cancel) {
         try {
             return completableAsyncCall(Match.glob(target), new Glob(target),
-                    reactor.getEventStream(), cancel).orElseGet(Collections::emptyMap);
+                    getEventStream(), cancel).orElseGet(Collections::emptyMap);
         }
         catch (SaltException e) {
             throw new RuntimeException(e);
@@ -1026,9 +967,29 @@ public class SaltService implements SystemQuery {
     /**
      * {@inheritDoc}
      */
-    public Optional<Map<String, ApplyResult>> applyState(
+    private Optional<Map<String, ApplyResult>> applyState(
             String minionId, String state) {
         return callSync(State.apply(Arrays.asList(state), Optional.empty()), minionId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Optional<RedhatProductInfo> redhatProductInfo(String minionId) {
+        return callSync(State.apply(Arrays.asList("packages.redhatproductinfo"), Optional.empty()), minionId)
+                .map(result -> {
+                    Optional<String> centosReleaseContent = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
+                    Optional<String> rhelReleaseContent = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_REDHAT_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
+                    Optional<String> whatProvidesRes = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
+
+                    return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent, whatProvidesRes);
+                });
     }
 
     /**
