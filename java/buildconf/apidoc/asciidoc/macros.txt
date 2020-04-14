@@ -20,38 +20,38 @@
 * #type("array") "$key" - $desc
 #end
 #macro(prop_array_end)
-// no end needed
+
 #end
 #macro(struct_begin $type)
 * #type("struct") - $type
 #end
 #macro(struct_end)
-// no end needed
+
 #end
 #macro(struct_desc $type $desc)
 * #type("struct") - $type $desc
 #end
 #macro(struct_desc_end)
-// no end needed
+
 #end
 #macro(array_begin)
 * #type("array"):
 #end
 #macro(array_end)
-// no end needed
+
 #end
 #macro(array_desc $type $desc)
 * #type("array") $type - $desc
 #end
 #macro(array_desc_end)
-// no end needed
+
 #end
 #macro(array_single $type $desc)
 * #type("array"):
 ** $type - $desc
 #end
 #macro(options)
-// no end needed
+
 #end
 #macro(item $item)
 * $item
@@ -60,7 +60,7 @@
 * $item - $desc
 #end
 #macro(options_end)
-// no end needed
+
 #end
 #macro(param $type $value)
 * #type($type) $value
@@ -75,10 +75,10 @@
 * #type('int') - 1 on success, exception thrown otherwise.
 #end
 #macro(itemlist)
-// no end needed
+
 #end
 #macro(itemlist_end)
-// no end needed
+
 #end
 #macro(paragraph)
  
