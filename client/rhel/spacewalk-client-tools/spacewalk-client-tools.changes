@@ -1,3 +1,4 @@
+- Use 'int' instead of 'long' on rhn_check for both Python 2 and 3
 - Do not crash 'mgr-update-status' because 'long' type is not defined in Python 3
 - add workaround for uptime overflow to spacewalk-update-status as well (bsc#1165921)
 
