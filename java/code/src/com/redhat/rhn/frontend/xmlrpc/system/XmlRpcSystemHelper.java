@@ -42,18 +42,17 @@ import java.util.stream.Stream;
  */
 public class XmlRpcSystemHelper {
 
-    // private instance
-    private static XmlRpcSystemHelper helper = new XmlRpcSystemHelper();
-
-    // private constructor
-    private XmlRpcSystemHelper() {
-    }
+    private final RegularMinionBootstrapper regularMinionBootstrapper;
+    private final SSHMinionBootstrapper sshMinionBootstrapper;
 
     /**
-     * @return Returns the running instance of this helper class
+     * @param regularMinionBootstrapperIn bootstrapper for regular minions
+     * @param sshMinionBootstrapperIn bootstrapper for ssh minions
      */
-    public static XmlRpcSystemHelper getInstance() {
-        return helper;
+    public XmlRpcSystemHelper(RegularMinionBootstrapper regularMinionBootstrapperIn,
+                              SSHMinionBootstrapper sshMinionBootstrapperIn) {
+        regularMinionBootstrapper = regularMinionBootstrapperIn;
+        sshMinionBootstrapper = sshMinionBootstrapperIn;
     }
 
     /**
@@ -132,11 +131,11 @@ public class XmlRpcSystemHelper {
             throws BootstrapException {
         BootstrapResult result = Stream.of(saltSSH).map(ssh -> {
             if (ssh) {
-                return SSHMinionBootstrapper.getInstance().bootstrap(input, user,
+                return sshMinionBootstrapper.bootstrap(input, user,
                         ContactMethodUtil.getSSHMinionDefault());
             }
             else {
-                return RegularMinionBootstrapper.getInstance().bootstrap(input, user,
+                return regularMinionBootstrapper.bootstrap(input, user,
                         ContactMethodUtil.getRegularMinionDefault());
             }
         }).findAny().orElseThrow(() -> new BootstrapException(

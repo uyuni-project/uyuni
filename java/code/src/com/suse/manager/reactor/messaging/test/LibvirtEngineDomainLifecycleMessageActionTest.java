@@ -33,9 +33,9 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
 import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.VirtManager;
+import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.parser.JsonParser;
@@ -57,7 +57,6 @@ import java.util.stream.Collectors;
  */
 public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTestCaseWithUser {
 
-    private SaltService saltServiceMock;
     private Server host;
     private VirtManager virtManager;
     private String guid = "b99a81764f40498d8e612f6ade654fe2";
@@ -74,7 +73,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         setImposteriser(ClassImposteriser.INSTANCE);
 
-        saltServiceMock = new SaltService() {
+        virtManager = new TestVirtManager() {
 
             @Override
             public Optional<Map<String, JsonElement>> getCapabilities(String minionId) {
@@ -98,10 +97,8 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock)
+                new SystemEntitler(new SaltService(), virtManager)
         );
-
-        virtManager = new VirtManager(saltServiceMock);
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         host.getGuests().iterator().next().setUuid(guid);
@@ -141,14 +138,12 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
     @SuppressWarnings("unchecked")
     public void testShutdownTransient() throws Exception {
-        SystemQuery saltServiceMock = new SaltService() {
+        VirtManager virtManager = new TestVirtManager() {
             @Override
             public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
                 return Optional.empty();
             }
         };
-
-        VirtManager virtManager = new VirtManager(saltServiceMock);
         Optional<EngineEvent> event = EngineEvent.parse(getEngineEvent("virtevents.guest.shutdown.json", Collections.emptyMap()));
         AbstractLibvirtEngineMessage message = AbstractLibvirtEngineMessage.create(event.get());
 

@@ -120,21 +120,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(ChannelSoftwareHandler.class);
     private final TaskomaticApi taskomaticApi;
-    /**
-     * Default constructor.
-     */
-    public ChannelSoftwareHandler() {
-        this(new TaskomaticApi());
-    }
+    private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
     /**
      * Set the {@link TaskomaticApi} instance to use, only for unit tests.
      *
      * @param taskomaticApiIn the {@link TaskomaticApi}
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
      */
-    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn) {
-        super();
+    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         taskomaticApi = taskomaticApiIn;
+        xmlRpcSystemHelper = xmlRpcSystemHelperIn;
     }
 
     /**
@@ -1157,7 +1153,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public Object[] listSystemChannels(User loggedInUser, Integer sid)
         throws FaultException {
-        Server server = XmlRpcSystemHelper.getInstance().lookupServer(loggedInUser, sid);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
 
         DataResult<Map<String, Object>> dr = SystemManager.channelsForServer(server);
         return dr.toArray();
@@ -1190,7 +1186,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     @Deprecated
     public int setSystemChannels(User loggedInUser, Integer sid,
             List<String> channelLabels) throws FaultException {
-        Server server = XmlRpcSystemHelper.getInstance().lookupServer(loggedInUser, sid);
+        Server server = xmlRpcSystemHelper.lookupServer(loggedInUser, sid);
         List<Channel> channels = new ArrayList<Channel>();
         log.debug("setSystemChannels()");
 
@@ -2057,7 +2053,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
                 childChannelIds.add(channel.getId().intValue());
             }
         }
-        SystemHandler sysHandler = new SystemHandler();
+        SystemHandler sysHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper);
         if (base != null) {
 
             sysHandler.setBaseChannel(loggedInUser, sid,

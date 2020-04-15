@@ -23,8 +23,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.virtualization.VirtManager;
 import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 
 import java.util.List;

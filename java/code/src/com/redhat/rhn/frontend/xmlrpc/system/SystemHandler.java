@@ -194,24 +194,19 @@ public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
     private final TaskomaticApi taskomaticApi;
+    private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
     private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
-
-    /**
-     * Default constructor.
-     */
-    public SystemHandler() {
-        this(new TaskomaticApi());
-    }
 
     /**
      * Set the {@link TaskomaticApi} instance to use, only for unit tests.
      *
      * @param taskomaticApiIn the {@link TaskomaticApi}
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
      */
-    public SystemHandler(TaskomaticApi taskomaticApiIn) {
-        super();
+    public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
         taskomaticApi = taskomaticApiIn;
+        xmlRpcSystemHelper = xmlRpcSystemHelperIn;
     }
 
     /**
@@ -783,7 +778,7 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Map<String, Object>> listActiveSystemsDetails(
             User loggedInUser, List<Integer> serverIds) throws FaultException {
-        List<Server> servers = XmlRpcSystemHelper.getInstance().lookupServers(
+        List<Server> servers = xmlRpcSystemHelper.lookupServers(
                 loggedInUser, serverIds);
         List<Map<String, Object>> ret = new ArrayList<Map<String, Object>>();
         for (Server server : servers) {
@@ -2752,7 +2747,7 @@ public class SystemHandler extends BaseHandler {
      * corresponding to sid cannot be found.
      */
     private Server lookupServer(User user, Integer sid) throws NoSuchSystemException {
-        return XmlRpcSystemHelper.getInstance().lookupServer(user, sid);
+        return xmlRpcSystemHelper.lookupServer(user, sid);
     }
 
     /**
@@ -6935,7 +6930,7 @@ public class SystemHandler extends BaseHandler {
             String sshPassword, String activationKey, boolean saltSSH) {
         BootstrapHostsJson input = new BootstrapHostsJson(
                 host, sshPort, sshUser, sshPassword, activationKey, null);
-        return XmlRpcSystemHelper.getInstance().bootstrap(user, input, saltSSH);
+        return xmlRpcSystemHelper.bootstrap(user, input, saltSSH);
     }
 
     /**
@@ -6966,7 +6961,7 @@ public class SystemHandler extends BaseHandler {
             String sshPassword, String activationKey, Integer proxyId, boolean saltSSH) {
         BootstrapHostsJson input = new BootstrapHostsJson(
                 host, sshPort, sshUser, sshPassword, activationKey, proxyId.longValue());
-        return XmlRpcSystemHelper.getInstance().bootstrap(user, input, saltSSH);
+        return xmlRpcSystemHelper.bootstrap(user, input, saltSSH);
     }
 
     /**

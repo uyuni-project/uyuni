@@ -34,6 +34,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 
@@ -53,7 +54,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock)
+                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock))
         );
     }
 

@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.controllers.test;
 
-import static org.hamcrest.Matchers.containsString;
-
 import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -30,12 +28,12 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
-import com.suse.manager.virtualization.GuestDefinition;
-import com.suse.manager.virtualization.VirtManager;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.VirtualNetsController;
+import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.VirtualNetworkInfoJson;
 
@@ -46,7 +44,7 @@ import java.util.*;
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
     private TaskomaticApi taskomaticMock;
-    private SaltService saltServiceMock;
+    private VirtManager virtManager;
     private Server host;
     private static final Gson GSON = new GsonBuilder().create();
 
@@ -64,7 +62,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             ignoring(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        saltServiceMock = new SaltService() {
+        virtManager = new TestVirtManager() {
             @Override
             public void updateLibvirtEngine(MinionServer minion) {
             }
@@ -81,7 +79,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock)
+                new SystemEntitler(new SaltService(), virtManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
@@ -89,9 +87,6 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
     }
 
     public void testData() throws Exception {
-
-        VirtManager virtManager =  new VirtManager(saltServiceMock);
-
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         String json = virtualNetsController.data(getRequestWithCsrf(
                 "/manager/api/systems/details/virtualization/nets/:sid/data", host.getId()), response, user);

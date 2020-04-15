@@ -47,6 +47,15 @@ import java.util.Set;
  */
 public class SnapshotHandler extends BaseHandler {
 
+    private final XmlRpcSystemHelper xmlRpcSystemHelper;
+
+    /**
+     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     */
+    public SnapshotHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+        xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+    }
+
     /**
      * List the snapshots for a given system that were created on or between
      * the dates specified.
@@ -283,7 +292,7 @@ public class SnapshotHandler extends BaseHandler {
      * corresponding to sid cannot be found.
      */
     private Server lookupServer(User user, Integer sid) throws NoSuchSystemException {
-        return XmlRpcSystemHelper.getInstance().lookupServer(user, sid);
+        return xmlRpcSystemHelper.lookupServer(user, sid);
     }
 
     private ServerSnapshot lookupSnapshot(User user, Integer snapId)
