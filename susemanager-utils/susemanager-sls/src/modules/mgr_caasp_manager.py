@@ -120,3 +120,20 @@ def add_node(skuba_cluster_path, node_name, role, target, timeout=DEFAULT_TIMEOU
         'retcode': skuba_proc.process.returncode,
     }
     return ret
+
+
+def upgrade_cluster(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
+    skuba_proc = _call_skuba(skuba_cluster_path, "cluster upgrade plan")
+    if skuba_proc.process.returncode != 0:
+        error_msg = "Unexpected error {} at skuba when upgrading the cluster: {}".format(
+                skuba_proc.process.returncode,
+                salt.utils.stringutils.to_str(skuba_proc.stderr))
+        log.error(error_msg)
+
+    ret = {
+        'stdout': salt.utils.stringutils.to_str(skuba_proc.stdout),
+        'stderr': salt.utils.stringutils.to_str(skuba_proc.stderr),
+        'success': not skuba_proc.process.returncode,
+        'retcode': skuba_proc.process.returncode,
+    }
+    return ret
