@@ -48,3 +48,8 @@ def remove_node(provider_module, params):
 def upgrade_cluster(provider_module, params):
     fun = _get_provider_fun(provider_module, 'upgrade_cluster')
     return fun(**params)
+
+
+def create_cluster(provider_module, params):
+    fun = _get_provider_fun(provider_module, 'create_cluster')
+    return fun(**params)
