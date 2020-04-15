@@ -45,6 +45,18 @@ def _call_skuba(skuba_cluster_path, cmd_args, timeout=DEFAULT_TIMEOUT, **kwargs)
         raise CommandExecutionError(error_msg)
 
 
+def _sanitize_skuba_output_values(items):
+    ret = []
+    for i in items:
+        if i.lower() == 'no':
+            ret.append(False)
+        elif i.lower() == 'yes':
+            ret.append(True)
+        else:
+            ret.append(i)
+    return ret
+
+
 def list_nodes(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
     skuba_proc = _call_skuba(skuba_cluster_path, "cluster status")
     if skuba_proc.process.returncode != 0 or skuba_proc.stderr:
@@ -58,14 +70,14 @@ def list_nodes(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
 
     ret = {}
     try:
-        headers = [x.strip().lower() for x in skuba_proc_lines[0].split('  ') if x]
-        name_idx = headers.index('name')
-        headers.remove('name')
-        for line in skuba_proc_lines[1:]:
-            items = [x.strip() for x in line.split('  ') if x]
-            node_name = items.pop(name_idx)
-            node_zip = zip(headers, items)
-            ret[node_name] = dict(node_zip)
+      headers = [x.strip().lower() for x in skuba_proc_lines[0].split('  ') if x]
+      name_idx = headers.index('name')
+      headers.remove('name')
+      for line in skuba_proc_lines[1:]:
+          items = [x.strip() for x in line.split('  ') if x]
+          node_name = items.pop(name_idx)
+          node_zip = zip(headers, _sanitize_skuba_output_values(items))
+          ret[node_name] = dict(node_zip)
     except Exception as exc:
         error_msg = "Unexpected error while parsing skuba output: {}".format(exc)
         log.error(error_msg)
