@@ -760,6 +760,23 @@ And(/^I register "([^*]*)" as traditional client with activation key "([^*]*)"$/
   node.run(command2, true, 500, 'root')
 end
 
+When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
+  steps %(
+    When I follow the left menu "Systems > Overview"
+    And I wait until I see the name of "#{host}", refreshing the page
+    And I follow this "#{host}" link
+  )
+  if get_client_type(host) == 'traditional'
+    get_target(host).run('rhn_check -vvv')
+  else
+    steps %(
+      And I wait until event "Hardware List Refresh" is completed
+      And I wait until event "Apply states" is completed
+      And I wait until event "Package List Refresh" is completed
+    )
+  end
+end
+
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
   command = "spacecmd -u admin -p admin system_list"
   system_name = get_system_name(host)

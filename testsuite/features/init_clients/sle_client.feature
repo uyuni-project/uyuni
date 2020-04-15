@@ -1,4 +1,4 @@
-# Copyright (c) 2015 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Register a traditional client
@@ -7,7 +7,9 @@ Feature: Register a traditional client
   I want to create, parametrize and run boostrap script from proxy
 
   Scenario: Register a traditional client
+    Given I am authorized
     When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
+    And I wait until onboarding is completed for "sle_client"
     Then I should see "sle_client" via spacecmd
 
   Scenario: Check registration values
