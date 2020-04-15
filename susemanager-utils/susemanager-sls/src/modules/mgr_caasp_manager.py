@@ -5,13 +5,17 @@ SUSE Manager CaaSP Cluster Manager module for Salt
 '''
 from __future__ import absolute_import
 
-from salt.exceptions import CommandExecutionError
 
 import logging
+import os
 import subprocess
 import salt.utils.path
 import salt.utils.stringutils
 import salt.utils.timed_subprocess
+
+from salt.utils.dictupdate import merge_list
+from salt.exceptions import CommandExecutionError
+
 
 log = logging.getLogger(__name__)
 
@@ -138,4 +142,67 @@ def upgrade_cluster(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
         'success': not skuba_proc.process.returncode,
         'retcode': skuba_proc.process.returncode,
     }
+    return ret
+
+
+def cluster_init(name, cluster_path, target, timeout=DEFAULT_TIMEOUT, **kwargs):
+    cmd_args = "cluster init --control-plane {} {}".format(target, name)
+    skuba_proc = _call_skuba(cluster_path, cmd_args)
+    if skuba_proc.process.returncode != 0:
+        error_msg = "Unexpected error {} at skuba when initializing the cluster: {}".format(
+                skuba_proc.process.returncode,
+                salt.utils.stringutils.to_str(skuba_proc.stderr))
+        log.error(error_msg)
+
+    ret = {
+        'stdout': salt.utils.stringutils.to_str(skuba_proc.stdout),
+        'stderr': salt.utils.stringutils.to_str(skuba_proc.stderr),
+        'success': not skuba_proc.process.returncode,
+        'retcode': skuba_proc.process.returncode,
+    }
+    return ret
+
+
+def first_master_bootstrap(node_name, skuba_cluster_path, target, timeout=DEFAULT_TIMEOUT, **kwargs):
+    cmd_args = "node bootstrap --target {}  {}".format(target, node_name)
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
+    if skuba_proc.process.returncode != 0:
+        error_msg = "Unexpected error {} at skuba when bootstrapping the node: {}".format(
+                skuba_proc.process.returncode,
+                salt.utils.stringutils.to_str(skuba_proc.stderr))
+        log.error(error_msg)
+
+    ret = {
+        'stdout': salt.utils.stringutils.to_str(skuba_proc.stdout),
+        'stderr': salt.utils.stringutils.to_str(skuba_proc.stderr),
+        'success': not skuba_proc.process.returncode,
+        'retcode': skuba_proc.process.returncode,
+    }
+    return ret
+
+
+def create_cluster(cluster_name, cluster_path, first_node_name, target, load_balancer=None, timeout=DEFAULT_TIMEOUT, **kwargs):
+    ret = cluster_init(name=cluster_name,
+                       cluster_path=cluster_path,
+                       target=load_balancer if load_balancer else target,
+                       timeout=timeout,
+                       **kwargs)
+
+    if not ret['success']:
+        return ret
+
+    ret = merge_list(ret, first_master_bootstrap(node_name=first_node_name,
+                                                 skuba_cluster_path=os.path.join(cluster_path, cluster_name),
+                                                 target=target,
+                                                 timeout=timeout,
+                                                 **kwargs))
+
+    if isinstance(ret['stdout'], list):
+        ret['stdout'] = ''.join(ret['stdout'])
+    if isinstance(ret['stderr'], list):
+        ret['stderr'] = ''.join(ret['stderr'])
+
+    ret['success'] = ret['success'][1]
+    ret['retcode'] = ret['retcode'][1]
+
     return ret
