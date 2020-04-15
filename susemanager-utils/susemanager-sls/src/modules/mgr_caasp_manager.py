@@ -52,6 +52,8 @@ def _sanitize_skuba_output_values(items):
             ret.append(False)
         elif i.lower() == 'yes':
             ret.append(True)
+        elif i.lower() == '<none>':
+            ret.append(None)
         else:
             ret.append(i)
     return ret
