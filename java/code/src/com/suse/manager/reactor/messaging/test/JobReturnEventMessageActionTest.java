@@ -100,6 +100,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,7 +128,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private TaskomaticApi taskomaticApi;
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
-    private Path metadataDirOfficial;
+    protected Path metadataDirOfficial;
+
 
     @Override
     public void setUp() throws Exception {
@@ -140,10 +142,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new SystemUnentitler(),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock))
         );
-
         metadataDirOfficial = Files.createTempDirectory("meta");
-        FormulaFactory.setDataDir(tmpSaltRoot.toString());
-        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString() + File.separator);
+        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
+        Path systemLockDir = metadataDirOfficial.resolve("system-lock");
+        Path systemLockFile = Paths.get(systemLockDir.toString(),  "form.yml");
+        Files.createDirectories(systemLockDir);
+        Files.createFile(systemLockFile);
+
     }
 
     /**
