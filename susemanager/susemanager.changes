@@ -1,5 +1,9 @@
+-------------------------------------------------------------------
+Thu Apr 16 00:35:45 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
 - Add dbus-1-glib to SLE12SP5 x86_64 to allow onboarding of AWS Cloud SLE12SP5
-  clients (they do not have it by defaul anymore)
+  clients (they do not have it by default anymore)
 
 -------------------------------------------------------------------
 Mon Apr 13 09:37:12 CEST 2020 - jgonzalez@suse.com
