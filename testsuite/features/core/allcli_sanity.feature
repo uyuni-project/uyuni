@@ -37,7 +37,8 @@ Feature: Sanity checks
     And "ubuntu_ssh_minion" should communicate with the server
 
   Scenario: The external resources can be reached
-    Then it should be possible to reach the download site
+    Then it should be possible to reach the test packages
+    And it should be possible to reach the build sources
     And it should be possible to reach the container profiles
     And it should be possible to reach the test suite profiles
     And it should be possible to reach the portus registry

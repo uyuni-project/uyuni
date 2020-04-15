@@ -20,20 +20,34 @@ Then(/^"([^"]*)" should communicate with the server$/) do |host|
   $server.run("ping -c1 #{node.full_hostname}")
 end
 
-Then(/^it should be possible to reach the (.*)$/) do |resource|
-  url = case resource
-        when 'download site'
-    'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
-        when 'container profiles'
-    'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
-        when 'test suite profiles'
-    'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
-        when 'portus registry'
-    'https://portus.mgr.suse.de:5000'
-        when 'other registry'
-    'https://registry.mgr.suse.de:443'
-        end
-  $server.run("curl -k #{url} -o /dev/null") # --fail option does not work as expected
+Then(/^it should be possible to reach the test packages$/) do
+  url = 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/x86_64/orion-dummy-1.1-1.1.x86_64.rpm'
+  $server.run("curl --insecure --location #{url} --output /dev/null")
+end
+
+Then(/^it should be possible to reach the build sources$/) do
+  url = 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP4/x86_64/product/media.1/products.key'
+  $server.run("curl --insecure --location #{url} --output /dev/null")
+end
+
+Then(/^it should be possible to reach the container profiles$/) do
+  url = 'https://gitlab.suse.de/galaxy/suse-manager-containers/blob/master/test-profile/Dockerfile'
+  $server.run("curl --insecure --location #{url} --output /dev/null")
+end
+
+Then(/^it should be possible to reach the test suite profiles$/) do
+  url = 'https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/profiles/Docker/Dockerfile'
+  $server.run("curl --insecure --location #{url} --output /dev/null")
+end
+
+Then(/^it should be possible to reach the portus registry$/) do
+  url = 'https://portus.mgr.suse.de:5000'
+  $server.run("curl --insecure --location #{url} --output /dev/null")
+end
+
+Then(/^it should be possible to reach the other registry$/) do
+  url = 'https://registry.mgr.suse.de:443'
+  $server.run("curl --insecure --location #{url} --output /dev/null")
 end
 
 # Channels
