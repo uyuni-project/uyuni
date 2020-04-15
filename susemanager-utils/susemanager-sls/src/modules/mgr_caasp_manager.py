@@ -56,15 +56,16 @@ def list_nodes(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
 
     skuba_proc_lines = salt.utils.stringutils.to_str(skuba_proc.stdout).splitlines()
 
-    ret = []
+    ret = {}
     try:
-      headers = [x.strip().lower() for x in skuba_proc_lines[0].split('  ') if x]
-      for line in skuba_proc_lines[1:]:
-        new_entry = {}
-        items = [x.strip() for x in line.split('  ') if x]
-        for idx in range(len(items)):
-           new_entry[headers[idx]] = items[idx]
-        ret.append(new_entry)
+        headers = [x.strip().lower() for x in skuba_proc_lines[0].split('  ') if x]
+        name_idx = headers.index('name')
+        headers.remove('name')
+        for line in skuba_proc_lines[1:]:
+            items = [x.strip() for x in line.split('  ') if x]
+            node_name = items.pop(name_idx)
+            node_zip = zip(headers, items)
+            ret[node_name] = dict(node_zip)
     except Exception as exc:
         error_msg = "Unexpected error while parsing skuba output: {}".format(exc)
         log.error(error_msg)
