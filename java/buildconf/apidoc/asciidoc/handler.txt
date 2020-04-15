@@ -16,8 +16,6 @@ $handler.desc
 
 $handler.name
 
-'''
-
 #foreach( $call in $handler.calls )
 
 [#apidoc-${handler.name.replaceAll('\.', '_')}-$call.id]
@@ -58,7 +56,5 @@ $call.returnDoc
 #if($call.sinceAvailable)
 Available since API version: $call.sinceVersion
 #end
-
-'''
 
 #end
