@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 __virtualname__ = 'caasp'
 
-DEFAULT_TIMEOUT = 120
+DEFAULT_TIMEOUT = 1200
 
 
 def __virtual__():
