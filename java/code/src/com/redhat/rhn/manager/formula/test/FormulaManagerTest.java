@@ -80,7 +80,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         MockConnection.clear();
         saltServiceMock = mock(SaltService.class);
         manager.setSystemQuery(saltServiceMock);
-        manager.setSaltService(saltServiceMock);
         metadataDir = Files.createTempDirectory("metadata");
         createMetadataFiles();
     }

@@ -92,6 +92,9 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -107,7 +110,6 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
 import org.hibernate.type.IntegerType;
@@ -116,6 +118,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -158,7 +161,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);
         tmpSaltRoot = Files.createTempDirectory("salt");
+        metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
+        FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
         SystemManager.mockSaltService(saltServiceMock);
         context().checking(new Expectations() {
             {
@@ -171,6 +176,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 new SystemUnentitler(),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService))
         );
+        createMetadataFiles();
     }
 
     @Override
@@ -192,11 +198,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             Path prometheusFile = Paths.get(prometheusDir.toString(),  "form.yml");
             Files.createDirectories(prometheusDir);
             Files.createFile(prometheusFile);
-            try (InputStream src = this.getClass().getResourceAsStream("prometheus/pillar.example");
-                 OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
-            ) {
-                IOUtils.copy(src, dst);
-            }
 
             // test-formula files
             Path testFormulaDir = metadataDirOfficial.resolve("test-formula");
