@@ -98,8 +98,20 @@ def list_nodes(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
     return ret
 
 
-def remove_node(skuba_cluster_path, node_name, timeout=DEFAULT_TIMEOUT, **kwargs):
+def remove_node(skuba_cluster_path,
+                node_name,
+                drain_timeout=None,
+                verbosity=None,
+                timeout=DEFAULT_TIMEOUT,
+                **kwargs):
+
     cmd_args = "node remove {}".format(node_name)
+
+    if drain_timeout:
+        cmd_args += " --drain-timeout {}".format(drain_timeout)
+    if verbosity:
+        cmd_args += " --verbosity {}".format(verbosity)
+
     skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when removing a node: {}".format(
@@ -116,8 +128,31 @@ def remove_node(skuba_cluster_path, node_name, timeout=DEFAULT_TIMEOUT, **kwargs
     return ret
 
 
-def add_node(skuba_cluster_path, node_name, role, target, timeout=DEFAULT_TIMEOUT, **kwargs):
+def add_node(skuba_cluster_path,
+             node_name,
+             role,
+             target,
+             ignore_preflight_errors=None,
+             port=None,
+             sudo=None,
+             user=None,
+             verbosity=None,
+             timeout=DEFAULT_TIMEOUT,
+             **kwargs):
+
     cmd_args = "node join --role {} --target {} {}".format(role, target, node_name)
+
+    if ignore_preflight_errors:
+        cmd_args += " --ignore-preflight-errors {}".format(ignore_preflight_errors)
+    if port:
+        cmd_args += " --port {}".format(port)
+    if sudo:
+        cmd_args += " --sudo"
+    if user:
+        cmd_args += " --user {}".format(user)
+    if verbosity:
+        cmd_args += " --verbosity {}".format(verbosity)
+
     skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when adding a new node: {}".format(
@@ -134,8 +169,17 @@ def add_node(skuba_cluster_path, node_name, role, target, timeout=DEFAULT_TIMEOU
     return ret
 
 
-def upgrade_cluster(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
-    skuba_proc = _call_skuba(skuba_cluster_path, "cluster upgrade plan")
+def upgrade_cluster(skuba_cluster_path,
+                    verbosity=None,
+                    timeout=DEFAULT_TIMEOUT,
+                    **kwargs):
+
+    cmd_args = "cluster upgrade {}".format("plan" if plan else "apply")
+
+    if verbosity:
+        cmd_args += " --verbosity {}".format(verbosity)
+
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when upgrading the cluster: {}".format(
                 skuba_proc.process.returncode,
@@ -151,8 +195,51 @@ def upgrade_cluster(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
     return ret
 
 
-def cluster_init(name, cluster_path, target, timeout=DEFAULT_TIMEOUT, **kwargs):
+def upgrade_node(skuba_cluster_path,
+                 verbosity=None,
+                 timeout=DEFAULT_TIMEOUT,
+                 plan=False,
+                 **kwargs):
+
+    cmd_args = "node upgrade {}".format("plan" if plan else "apply")
+
+    if verbosity:
+        cmd_args += " --verbosity {}".format(verbosity)
+
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
+    if skuba_proc.process.returncode != 0:
+        error_msg = "Unexpected error {} at skuba when upgrading the node: {}".format(
+                skuba_proc.process.returncode,
+                salt.utils.stringutils.to_str(skuba_proc.stderr))
+        log.error(error_msg)
+
+    ret = {
+        'stdout': salt.utils.stringutils.to_str(skuba_proc.stdout),
+        'stderr': salt.utils.stringutils.to_str(skuba_proc.stderr),
+        'success': not skuba_proc.process.returncode,
+        'retcode': skuba_proc.process.returncode,
+    }
+    return ret
+
+
+def cluster_init(name,
+                 cluster_path,
+                 target,
+                 cloud_provider=None,
+                 strict_capability_defaults=False,
+                 verbosity=None,
+                 timeout=DEFAULT_TIMEOUT,
+                 **kwargs):
+
     cmd_args = "cluster init --control-plane {} {}".format(target, name)
+
+    if cloud_provider:
+        cmd_args += " --cloud-provider {}".format(cloud_provider)
+    if strict_capability_defaults:
+        cmd_args += " --strict-capability-defaults"
+    if verbosity:
+        cmd_args += " --verbosity {}".format(verbosity)
+
     skuba_proc = _call_skuba(cluster_path, cmd_args)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when initializing the cluster: {}".format(
@@ -169,8 +256,30 @@ def cluster_init(name, cluster_path, target, timeout=DEFAULT_TIMEOUT, **kwargs):
     return ret
 
 
-def first_master_bootstrap(node_name, skuba_cluster_path, target, timeout=DEFAULT_TIMEOUT, **kwargs):
-    cmd_args = "node bootstrap --target {}  {}".format(target, node_name)
+def master_bootstrap(node_name,
+                     skuba_cluster_path,
+                     target,
+                     ignore_preflight_errors=None,
+                     port=None,
+                     sudo=None,
+                     user=None,
+                     verbosity=None,
+                     timeout=DEFAULT_TIMEOUT,
+                     **kwargs):
+
+    cmd_args = "node bootstrap --target {} {}".format(target, node_name)
+
+    if ignore_preflight_errors:
+        cmd_args += " --ignore-preflight-errors {}".format(ignore_preflight_errors)
+    if port:
+        cmd_args += " --port {}".format(port)
+    if sudo:
+        cmd_args += " --sudo"
+    if user:
+        cmd_args += " --user {}".format(user)
+    if verbosity:
+        cmd_args += " --verbosity {}".format(verbosity)
+
     skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when bootstrapping the node: {}".format(
@@ -187,21 +296,33 @@ def first_master_bootstrap(node_name, skuba_cluster_path, target, timeout=DEFAUL
     return ret
 
 
-def create_cluster(cluster_name, cluster_path, first_node_name, target, load_balancer=None, timeout=DEFAULT_TIMEOUT, **kwargs):
+def create_cluster(cluster_name,
+                   cluster_path,
+                   first_node_name,
+                   target,
+                   cloud_provider=None,
+                   strict_capability_defaults=False,
+                   load_balancer=None,
+                   verbosity=None,
+                   timeout=DEFAULT_TIMEOUT,
+                   **kwargs):
+
     ret = cluster_init(name=cluster_name,
                        cluster_path=cluster_path,
                        target=load_balancer if load_balancer else target,
+                       verbosity=verbosity,
                        timeout=timeout,
                        **kwargs)
 
     if not ret['success']:
         return ret
 
-    ret = merge_list(ret, first_master_bootstrap(node_name=first_node_name,
-                                                 skuba_cluster_path=os.path.join(cluster_path, cluster_name),
-                                                 target=target,
-                                                 timeout=timeout,
-                                                 **kwargs))
+    ret = merge_list(ret, master_bootstrap(node_name=first_node_name,
+                                           skuba_cluster_path=os.path.join(cluster_path, cluster_name),
+                                           target=target,
+                                           verbosity=verbosity,
+                                           timeout=timeout,
+                                           **kwargs))
 
     # Join multiple 'stdout' and 'stderr' outputs
     # after mergint the two output dicts
