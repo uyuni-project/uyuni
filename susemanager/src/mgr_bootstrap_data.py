@@ -202,6 +202,53 @@ ENHANCE12SP1 = [
     "python-setuptools",
 ]
 
+# This is in fact only required for now for AWS SLE12SP5 x86_64 images,
+# as they do not have dbus-1-glib installed
+ENHANCE12SP5_X86 = [
+    "dbus-1-glib",
+    "girepository-1_0",
+    "libcairo2",
+    "libdatrie1",
+    "libdrm2",
+    "libdrm_amdgpu1",
+    "libdrm_intel1",
+    "libdrm_nouveau2",
+    "libdrm_radeon1",
+    "libgbm1",
+    "libgirepository-1_0-1",
+    "libgobject-2_0-0",
+    "libgraphite2-3",
+    "libharfbuzz0",
+    "libLLVM7",
+    "libpango-1_0-0",
+    "libpciaccess0",
+    "libpixman-1-0",
+    "libthai0",
+    "libthai-data",
+    "libX11-xcb1",
+    "libxcb-dri2-0",
+    "libxcb-dri3-0",
+    "libxcb-glx0",
+    "libxcb-present0",
+    "libxcb-render0",
+    "libxcb-shm0",
+    "libxcb-sync1",
+    "libxcb-xfixes0",
+    "libXdamage1",
+    "libXfixes3",
+    "libXft2",
+    "libXrender1",
+    "libxshmfence1",
+    "libXxf86vm1",
+    "Mesa",
+    "Mesa-dri",
+    "Mesa-libEGL1",
+    "Mesa-libGL1",
+    "Mesa-libglapi0",
+    "python-gobject",
+    "typelib-1_0-Pango-1_0",
+]
+
 RES6 = [
     "salt",
     "salt-minion",
@@ -774,11 +821,11 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-12-SP5-x86_64' : {
-        'PDID' : 1878, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : 1878, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + ENHANCE12SP5_X86 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLES4SAP-12-SP5-x86_64' : {
-        'PDID' : 1880, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : 1880, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + ENHANCE12SP5_X86 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLES4SAP-12-SP5-ppc64le' : {
@@ -786,7 +833,7 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE4HPC-12-SP5-x86_64' : {
-        'PDID' : 1873, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + PKGLIST12_X86_ARM,
+        'PDID' : 1873, 'PKGLIST' : PKGLIST12 + ONLYSLE12 + ENHANCE12SP1 + ENHANCE12SP5_X86 + PKGLIST12_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE4HPC-12-SP5-aarch64' : {
