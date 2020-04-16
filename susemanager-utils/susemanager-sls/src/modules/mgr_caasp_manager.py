@@ -9,9 +9,14 @@ from __future__ import absolute_import
 import logging
 import os
 import subprocess
-import salt.utils.path
+
 import salt.utils.stringutils
 import salt.utils.timed_subprocess
+
+try:
+    from salt.utils.path import which
+except ImportError:
+    from salt.utils import which
 
 from salt.utils.dictupdate import merge_list
 from salt.exceptions import CommandExecutionError
@@ -28,7 +33,7 @@ def __virtual__():
     '''
     This module is always enabled while 'skuba' CLI tools is available.
     '''
-    return __virtualname__ if salt.utils.path.which('skuba') else (False, 'skuba is not available')
+    return __virtualname__ if which('skuba') else (False, 'skuba is not available')
 
 
 def _call_skuba(skuba_cluster_path, cmd_args, timeout=DEFAULT_TIMEOUT, **kwargs):
