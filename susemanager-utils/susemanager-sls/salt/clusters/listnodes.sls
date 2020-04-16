@@ -1,5 +1,5 @@
 {%- if pillar.get('ssh_auth_sock', False) %}
-ssh_agent_socket:
+mgr_ssh_agent_socket_clusters_listnodes:
   environ.setenv:
     - name: SSH_AUTH_SOCK
     - value: {{ pillar['ssh_auth_sock'] }}
@@ -17,7 +17,7 @@ mgr_cluster_list_nodes:
       - module: sync_modules
    {%- endif %}
    {%- if pillar.get('ssh_auth_sock', False) %}
-      - environ: ssh_agent_socket
+      - environ: mgr_ssh_agent_socket_clusters_listnodes
    {%- endif %}
 
 include:
