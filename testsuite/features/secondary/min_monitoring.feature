@@ -8,7 +8,7 @@ Feature: Monitor SUMA environment with Prometheus on a normal minion
   I want to enable Prometheus exporters
 
   Scenario: Pre-requisite: enable Prometheus exporters repository on the minion
-    When I enable repository "tools_additional_repo" on this "sle_minion"
+    When I "enable" Prometheus exporter repository on this "sle_minion"
     And I run "zypper -n ref" on "sle_minion"
 
   Scenario: Apply Prometheus and Prometheus exporter formulas
@@ -70,4 +70,4 @@ Feature: Monitor SUMA environment with Prometheus on a normal minion
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Cleanup: disable Prometheus exporters repository
-    And I disable repository "tools_additional_repo" on this "sle_minion" without error control
+    And I "disable" Prometheus exporter repository on this "sle_minion" without error control

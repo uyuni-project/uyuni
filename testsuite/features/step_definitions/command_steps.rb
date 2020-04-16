@@ -1215,3 +1215,12 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
   _result, code = node.run("grep #{key} /etc/salt/minion.d/susemanager.conf", fatal = false)
   raise if code.zero?
 end
+
+# Enable/disable repository for monitoring exporters
+When(/^I "([^"]*)" Prometheus exporter repository on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
+  repo_name = 'tools_additional_repo'
+  if $product == 'Uyuni'
+    repo_name = 'tools_pool_repo'
+  end
+  step %(I #{action} repository "#{repo_name}" on this "#{host}"#{error_control})
+end
