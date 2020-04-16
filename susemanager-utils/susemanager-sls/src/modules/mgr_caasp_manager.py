@@ -81,14 +81,15 @@ def list_nodes(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
 
     ret = {}
     try:
-      headers = [x.strip().lower() for x in skuba_proc_lines[0].split('  ') if x]
-      name_idx = headers.index('name')
-      headers.remove('name')
-      for line in skuba_proc_lines[1:]:
-          items = [x.strip() for x in line.split('  ') if x]
-          node_name = items.pop(name_idx)
-          node_zip = zip(headers, _sanitize_skuba_output_values(items))
-          ret[node_name] = dict(node_zip)
+        # The first line of skuba output are the headers
+        headers = [x.strip().lower() for x in skuba_proc_lines[0].split('  ') if x]
+        name_idx = headers.index('name')
+        headers.remove('name')
+        for line in skuba_proc_lines[1:]:
+            items = [x.strip() for x in line.split('  ') if x]
+            node_name = items.pop(name_idx)
+            node_zip = zip(headers, _sanitize_skuba_output_values(items))
+            ret[node_name] = dict(node_zip)
     except Exception as exc:
         error_msg = "Unexpected error while parsing skuba output: {}".format(exc)
         log.error(error_msg)
@@ -202,11 +203,15 @@ def create_cluster(cluster_name, cluster_path, first_node_name, target, load_bal
                                                  timeout=timeout,
                                                  **kwargs))
 
+    # Join multiple 'stdout' and 'stderr' outputs
+    # after mergint the two output dicts
     if isinstance(ret['stdout'], list):
         ret['stdout'] = ''.join(ret['stdout'])
     if isinstance(ret['stderr'], list):
         ret['stderr'] = ''.join(ret['stderr'])
 
+    # We only need the latest 'success' and 'retcode'
+    # values after merging the two output dicts.
     ret['success'] = ret['success'][1]
     ret['retcode'] = ret['retcode'][1]
 
