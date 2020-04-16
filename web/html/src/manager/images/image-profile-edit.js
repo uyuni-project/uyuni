@@ -236,13 +236,9 @@ class CreateImageProfile extends React.Component {
     return Network.get("/rhn/manager/api/cm/imagestores/type/" + type, "application/json").promise
       .then((data) => {
 
-        let model = this.state.model;
-        let storeUri = undefined;
-        if(type === "os_image") {
-          // Preselect store for the static OS Image store
-          model = Object.assign({}, this.state.model, {imageStore: data[0] && data[0].label});
-          storeUri = data[0] && data[0].uri;
-        }
+        // Preselect store after retrieval
+        const model = Object.assign({}, this.state.model, {imageStore: data[0] && data[0].label});
+        const storeUri = data[0] && data[0].uri;
 
         this.setState({
           imageStores: data,
