@@ -180,7 +180,7 @@ def upgrade_cluster(skuba_cluster_path,
                     timeout=DEFAULT_TIMEOUT,
                     **kwargs):
 
-    cmd_args = "cluster upgrade {}".format("plan" if plan else "apply")
+    cmd_args = "cluster upgrade plan"
 
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
