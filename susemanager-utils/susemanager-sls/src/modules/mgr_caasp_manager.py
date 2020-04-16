@@ -316,6 +316,8 @@ def create_cluster(cluster_name,
     ret = cluster_init(name=cluster_name,
                        cluster_path=cluster_path,
                        target=load_balancer if load_balancer else target,
+                       cloud_provider=cloud_provider,
+                       strict_capability_defaults=strict_capability_defaults,
                        verbosity=verbosity,
                        timeout=timeout,
                        **kwargs)
