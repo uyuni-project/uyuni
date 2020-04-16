@@ -36,7 +36,11 @@ def __virtual__():
     return __virtualname__ if which('skuba') else (False, 'skuba is not available')
 
 
-def _call_skuba(skuba_cluster_path, cmd_args, timeout=DEFAULT_TIMEOUT, **kwargs):
+def _call_skuba(skuba_cluster_path,
+                cmd_args,
+                timeout=DEFAULT_TIMEOUT,
+                **kwargs):
+
     log.debug("Calling Skuba CLI: 'skuba {}' - Timeout: {}".format(cmd_args, timeout))
     try:
         skuba_proc = salt.utils.timed_subprocess.TimedProc(
@@ -68,7 +72,9 @@ def _sanitize_skuba_output_values(items):
     return ret
 
 
-def list_nodes(skuba_cluster_path, timeout=DEFAULT_TIMEOUT, **kwargs):
+def list_nodes(skuba_cluster_path,
+               timeout=DEFAULT_TIMEOUT,
+               **kwargs):
     skuba_proc = _call_skuba(skuba_cluster_path, "cluster status")
     if skuba_proc.process.returncode != 0 or skuba_proc.stderr:
         error_msg = "Unexpected error {} at skuba when listing nodes: {}".format(
