@@ -1315,6 +1315,15 @@ public class KickstartData {
     }
 
     /**
+     * Get the list of possible name of the kickstart packages this KS could use.
+     * @return List of kickstart packages like auto-kickstart-ks-rhel-i386-as-4
+     */
+    public List<String> getKickstartPackageNames() {
+        return ConfigDefaults.get().getKickstartPackageNames();
+
+    }
+
+    /**
      * @return Returns if the post scripts should be logged.
      */
     public Boolean getPostLog() {

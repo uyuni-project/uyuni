@@ -811,6 +811,16 @@ SELECT CP.package_id, CP.name_id, CP.evr_id, CP.package_arch_id
     </query>
 </mode>
 
+<mode name="latest_packages_equal">
+        <query params="cid, names">
+            SELECT CP.package_id, CP.name_id, CP.evr_id, CP.package_arch_id
+            FROM rhnPackageName PN, rhnChannelNewestPackage CP
+            WHERE CP.channel_id = :cid
+            AND CP.name_id = PN.id
+            AND PN.name SIMILAR TO :names
+        </query>
+</mode>
+
 <mode name="contentsrc_for_org" class="com.redhat.rhn.frontend.dto.ContentSourceDto">
   <query params="org_id">
     SELECT CS.id, CS.label,
@@ -847,6 +857,17 @@ SELECT CP.package_id, CP.name_id, CP.evr_id
    AND PN.name like :name
     </query>
 </mode>
+
+<mode name="latest_packages_similar_to">
+        <query params="cid, names">
+            SELECT CP.package_id, CP.name_id, CP.evr_id
+            FROM rhnPackageName PN, rhnChannelNewestPackage CP
+            WHERE CP.channel_id = :cid
+            AND CP.name_id = PN.id
+            AND PN.name SIMILAR TO :names
+       </query>
+</mode>
+
 
 <mode name="channel_with_package">
     <query params="parent, package, org_id">

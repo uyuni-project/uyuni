@@ -245,7 +245,7 @@ public class KickstartHelper {
 
     /**
      *
-     * @param orgIdIn Org Id
+     * @param orgIn Org Id
      * @return Default Kickstart Data for Org
      */
     private KickstartData getOrgDefaultProfile(Org orgIn) {
@@ -468,7 +468,7 @@ public class KickstartHelper {
             List<Map<String, Object>> kspackages =
                     ChannelManager.listLatestPackagesLike(
                     current.getId(),
-                    ksdata.getKickstartPackageName());
+                    ksdata.getKickstartPackageNames());
             //found it, this channel is good.
             if (kspackages.size() > 0) {
                 return true;

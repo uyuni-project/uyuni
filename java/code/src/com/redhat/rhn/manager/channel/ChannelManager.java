@@ -1275,6 +1275,33 @@ public class ChannelManager extends BaseManager {
     }
 
     /**
+     * List the latest packages equal in the passed in Channel and names of packages
+     *
+     * @param channelId to lookup package against
+     * @param packageNames list of package names to check
+     * @return List containing Maps of "CP.package_id, CP.name_id, CP.evr_id"
+     */
+    public static List<Map<String, Object>> listLatestPackagesEqual(Long channelId,
+                                                                    List<String> packageNames) {
+        if (log.isDebugEnabled()) {
+            log.debug("listLatestPackagesEqual: " +
+                    channelId + " pn: " + packageNames);
+        }
+        SelectMode m = ModeFactory.getMode("Channel_queries",
+                "latest_packages_equal");
+
+        StringBuilder pnames = new StringBuilder();
+        pnames.append("(");
+        pnames.append(packageNames.stream().map(String::trim).collect(Collectors.joining("|")));
+        pnames.append(")");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cid", channelId);
+        params.put("names", pnames.toString());
+        return m.execute(params);
+
+    }
+
+    /**
      * List the latest packages in a channel *like* the given package name.
      *
      * @param channelId to lookup package against
@@ -1298,6 +1325,30 @@ public class ChannelManager extends BaseManager {
         params.put("name", pname.toString());
         return m.execute(params);
 
+    }
+    /**
+     * List the latest packages in a channel *like* the given list of package names.
+     *
+     * @param channelId to lookup package against
+     * @param packageNames List of packageName to check
+     * @return List containing Maps of "CP.package_id, CP.name_id, CP.evr_id"
+     */
+    public static List<Map<String, Object>> listLatestPackagesLike(Long channelId,
+                                                                   List<String> packageNames) {
+        if (log.isDebugEnabled()) {
+            log.debug("listLatestPackagesLike() cid: " +
+                    channelId + " packageNames : " + packageNames);
+        }
+        SelectMode m = ModeFactory.getMode("Channel_queries",
+                "latest_packages_similar_to");
+        StringBuilder pnames = new StringBuilder();
+        pnames.append("%(");
+        pnames.append(packageNames.stream().map(String::trim).collect(Collectors.joining("|")));
+        pnames.append(")%");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cid", channelId);
+        params.put("names", pnames.toString());
+        return m.execute(params);
     }
 
     /**
