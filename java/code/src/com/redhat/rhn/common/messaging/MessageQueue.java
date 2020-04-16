@@ -54,8 +54,6 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
-import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -331,9 +329,5 @@ public class MessageQueue {
         // Deploy configuration files
         MessageQueue.registerAction(new SsmConfigFilesAction(),
                                     SsmConfigFilesEvent.class);
-
-        // Handle changes of channel assignments on minions
-        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(),
-                ChannelsChangedEventMessage.class);
     }
 }
