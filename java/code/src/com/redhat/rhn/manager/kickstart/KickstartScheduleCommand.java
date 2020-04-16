@@ -1065,8 +1065,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         // check for package among channels the server is subscribed to.
         // If one is found, return
-        Map<String, Long> pkgToInstall = findKickstartPackageToInstall(
-                hostServer, serverChannelIds);
+        Map<String, Long> pkgToInstall = findKickstartPackageToInstall(serverChannelIds);
         if (pkgToInstall != null) {
             this.packagesToInstall.add(pkgToInstall);
             log.debug("    packagesToInstall: " + packagesToInstall);
@@ -1077,7 +1076,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         // If one is found, subscribe channel and return
         Set<Long> subscribableChannelIds = SystemManager.subscribableChannelIds(
                 hostServer.getId(), this.user.getId(), hostServer.getBaseChannel().getId());
-        pkgToInstall = findKickstartPackageToInstall(hostServer, subscribableChannelIds);
+        pkgToInstall = findKickstartPackageToInstall(subscribableChannelIds);
 
         if (pkgToInstall != null) {
             this.packagesToInstall.add(pkgToInstall);
@@ -1107,18 +1106,16 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * Looks for the package name among the specified channels and, if it is found,
      * it returns the highest available version in Map form.
      *
-     * @param server the server
      * @param channelIds channels the server could be subscribed to
      * @return a ValidationError or null
      */
-    public Map<String, Long> findKickstartPackageToInstall(Server server,
-            Collection<Long> channelIds) {
+    public Map<String, Long> findKickstartPackageToInstall(Collection<Long> channelIds) {
         List<Map<String, Long>> results = new LinkedList<Map<String, Long>>();
 
         for (Long chnnelId : channelIds) {
-            log.debug("    Checking on:" + chnnelId + " for: " + getKickstartPackageName());
+            log.debug("    Checking on:" + chnnelId + " for: " + getKickstartPackageNames());
             List<Map<String, Object>> packages = ChannelManager.listLatestPackagesEqual(
-                    chnnelId, getKickstartPackageName());
+                    chnnelId, getKickstartPackageNames());
             log.debug("    size: " + packages.size());
 
             for (Map<String, Object> aPackage : packages) {
@@ -1151,11 +1148,11 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     }
 
     /**
-     * Return the kickstart package name for this kickstart action.
-     * @return kickstart package name
+     * Return the list of possible kickstart packages names for this kickstart action.
+     * @return list of kickstart packages names
      */
-    public String getKickstartPackageName() {
-        return this.ksdata.getKickstartPackageName();
+    public List<String> getKickstartPackageNames() {
+        return this.ksdata.getKickstartPackageNames();
     }
 
     // Check to make sure up2date is 2.9.0

@@ -113,6 +113,10 @@ public class ConfigDefaults {
 
 
     private static final String DEFAULT_KICKSTART_PACKAGE_NAME = "spacewalk-koan";
+
+    //Comma separated names of possible kickstart packages
+    private static final String POSSIBLE_KICKSTART_PACKAGE_NAMES = "spacewalk-koan,salt";
+
     private static final String KICKSTART_PACKAGE_NAME = "kickstart_package";
 
     public static final String MOUNT_POINT = "mount_point";
@@ -406,6 +410,15 @@ public class ConfigDefaults {
     public String getKickstartPackageName() {
         return StringUtils.defaultIfEmpty(Config.get().getString(KICKSTART_PACKAGE_NAME),
                 DEFAULT_KICKSTART_PACKAGE_NAME).trim();
+    }
+
+    /**
+     * Returns the list of default kickstart packages names
+     * @return the list of default kickstart packages names
+     */
+    public List<String> getKickstartPackageNames() {
+        List<String> packageNames = Config.get().getList(KICKSTART_PACKAGE_NAME);
+        return packageNames.isEmpty() ?  Arrays.asList(POSSIBLE_KICKSTART_PACKAGE_NAMES.split(",")) : packageNames;
     }
 
     /**

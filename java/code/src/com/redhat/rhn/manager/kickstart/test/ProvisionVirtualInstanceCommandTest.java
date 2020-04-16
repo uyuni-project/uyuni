@@ -36,7 +36,7 @@ public class ProvisionVirtualInstanceCommandTest extends BaseKickstartCommandTes
         ProvisionVirtualInstanceCommand cmd = new
             ProvisionVirtualInstanceCommand(server.getId(), this.ksdata.getId(), user,
                     new Date(), "localhost");
-        assertEquals(cmd.getKickstartPackageName(), "spacewalk-koan");
+        assertContains(cmd.getKickstartPackageNames(), "spacewalk-koan");
     }
 
 }
