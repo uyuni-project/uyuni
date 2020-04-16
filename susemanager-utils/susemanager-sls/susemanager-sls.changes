@@ -1,3 +1,5 @@
+- Cluster Awareness: Introduce generic SLS files for Cluster Management
+  and CaaSP Cluster Provider custom Salt module.
 - Add virtual volume delete action
 
 -------------------------------------------------------------------
