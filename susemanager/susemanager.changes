@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Apr 16 11:39:54 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
 - Use python3-M2Crypto for all SLE15 versions and openSUSE Leap 15.1
   bootstrap repositories
 
