@@ -1,3 +1,5 @@
+- add missing packages to OES2018-SP1-x86_64 target for bootstrap data (bsc#1169144)
+
 -------------------------------------------------------------------
 Thu Apr 16 11:39:54 CEST 2020 - jgonzalez@suse.com
 
