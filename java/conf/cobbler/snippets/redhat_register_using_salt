@@ -1,9 +1,56 @@
-# begin Red Hat management server registration
-wget http://$redhat_management_server/pub/bootstrap/bootstrap.sh
-key=$redhat_management_key
-if [ -f /tmp/key ]; then
-    key=`cat /tmp/key`,\$key
+# begin SUSE Manager registration
+<script>
+    <filename>uyuni-minion.sh</filename>
+    <source>
+        <![CDATA[
+cat <<EOF >"/etc/salt/minion.d/susemanager.conf"
+master: $redhat_management_server
+
+EOF
+#if $varExists('registration_key') or $varExists('redhat_management_key')
+cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
+grains:
+    susemanager:
+EOF
+#end if
+#if $varExists('redhat_management_key')
+cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
+        management_key: "$redhat_management_key"
+EOF
+#end if
+#if $varExists('registration_key')
+cat <<EOF >>"/etc/salt/minion.d/susemanager.conf"
+        activation_key: "$registration_key"
+EOF
+#end if
+
+#if not $varExists('dont_register')
+# if you don't want to register, set the 'dont_register' variable
+
+systemctl restart salt-minion
+systemctl enable salt-minion
+#end if
+
+#if not $varExists('dont_disable_automatic_onlineupdate')
+YAOU_SYSCFGFILE="/etc/sysconfig/automatic_online_update"
+if [ -f "$YAOU_SYSCFGFILE" ]; then
+  echo "* Disable YAST automatic online update."
+  sed -i 's/^ *AOU_ENABLE_CRONJOB.*/AOU_ENABLE_CRONJOB="false"/' "$YAOU_SYSCFGFILE"
+  for D in /etc/cron.*; do
+    test -L $D/opensuse.org-online_update && rm $D/opensuse.org-online_update
+  done
 fi
-sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=\$key' bootstrap.sh
-sh bootstrap.sh
-# end Red Hat management server registration
+#end if
+
+#if not $varExists('dont_disable_local_repos')
+echo "* Disable all repos not provided by SUSE Manager Server."
+zypper ms -d --all
+zypper ms -e --medium-type plugin
+zypper mr -d --all
+zypper mr -e --medium-type plugin
+#end if
+
+        ]]>
+    </source>
+</script>
+# end SUSE Manager registration
