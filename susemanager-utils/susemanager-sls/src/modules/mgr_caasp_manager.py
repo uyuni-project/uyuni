@@ -229,7 +229,7 @@ def upgrade_node(skuba_cluster_path,
 
 
 def cluster_init(name,
-                 cluster_path,
+                 base_path,
                  target,
                  cloud_provider=None,
                  strict_capability_defaults=False,
@@ -246,7 +246,7 @@ def cluster_init(name,
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
-    skuba_proc = _call_skuba(cluster_path, cmd_args)
+    skuba_proc = _call_skuba(base_path, cmd_args)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when initializing the cluster: {}".format(
                 skuba_proc.process.returncode,
@@ -302,8 +302,8 @@ def master_bootstrap(node_name,
     return ret
 
 
-def create_cluster(cluster_name,
-                   cluster_path,
+def create_cluster(name,
+                   base_path,
                    first_node_name,
                    target,
                    cloud_provider=None,
@@ -313,8 +313,8 @@ def create_cluster(cluster_name,
                    timeout=DEFAULT_TIMEOUT,
                    **kwargs):
 
-    ret = cluster_init(name=cluster_name,
-                       cluster_path=cluster_path,
+    ret = cluster_init(name=name,
+                       base_path=base_path,
                        target=load_balancer if load_balancer else target,
                        cloud_provider=cloud_provider,
                        strict_capability_defaults=strict_capability_defaults,
@@ -326,7 +326,7 @@ def create_cluster(cluster_name,
         return ret
 
     ret = merge_list(ret, master_bootstrap(node_name=first_node_name,
-                                           skuba_cluster_path=os.path.join(cluster_path, cluster_name),
+                                           skuba_cluster_path=os.path.join(base_path, name),
                                            target=target,
                                            verbosity=verbosity,
                                            timeout=timeout,
