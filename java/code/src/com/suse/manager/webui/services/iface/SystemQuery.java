@@ -436,7 +436,7 @@ public interface SystemQuery {
      *
      * @param path the path of file to be removed
      * @throws IllegalStateException if the given path is not absolute
-     * @return todo
+     * @return Optional with true if the file deletion succeeded.
      */
     Optional<Boolean> removeFile(Path path);
 }

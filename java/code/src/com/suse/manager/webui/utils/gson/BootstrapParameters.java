@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import static com.suse.manager.webui.utils.gson.BootstrapHostsJson.AuthMethod;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -27,33 +29,56 @@ public class BootstrapParameters {
     private Optional<Integer> port;
     private String user;
     private Optional<String> password;
-    private Optional<String> privateKey = Optional.empty();
-    private Optional<String> privateKeyPassphrase = Optional.empty();
+    private Optional<String> privateKey;
+    private Optional<String> privateKeyPassphrase;
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
     private Optional<Long> proxyId;
 
     /**
-     * For testing purposes.
+     * Create {@link BootstrapParameters} for password authentication.
      *
      * @param hostIn host
      * @param portIn port
      * @param userIn user
      * @param passwordIn password
+     * @param activationKeysIn activation keys
+     * @param ignoreHostKeysIn ignore hostIn keys?
+     * @param proxyIdIn proxy id
+     */
+    public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn, Optional<String> passwordIn,
+            List<String> activationKeysIn, boolean ignoreHostKeysIn, Optional<Long> proxyIdIn) {
+        this.host = hostIn;
+        this.port = portIn;
+        this.user = userIn;
+        this.password = passwordIn;
+        this.privateKey = Optional.empty();
+        this.privateKeyPassphrase = Optional.empty();
+        this.activationKeys = activationKeysIn;
+        this.ignoreHostKeys = ignoreHostKeysIn;
+        this.proxyId = proxyIdIn;
+    }
+
+    /**
+     * Create {@link BootstrapParameters} for ssh-key authentication.
+     *
+     * @param hostIn host
+     * @param portIn port
+     * @param userIn user
      * @param privateKeyIn SSH private key as string in PEM format
      * @param privateKeyPwdIn SSH private key passphrase
      * @param activationKeysIn activation keys
      * @param ignoreHostKeysIn ignore hostIn keys?
      * @param proxyIdIn proxy id
      */
-    public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn, Optional<String> passwordIn,
-            Optional<String> privateKeyIn, Optional<String> privateKeyPwdIn, List<String> activationKeysIn,
-            boolean ignoreHostKeysIn, Optional<Long> proxyIdIn) {
+    public BootstrapParameters(String hostIn, Optional<Integer> portIn, String userIn, String privateKeyIn,
+            Optional<String> privateKeyPwdIn, List<String> activationKeysIn, boolean ignoreHostKeysIn,
+            Optional<Long> proxyIdIn) {
         this.host = hostIn;
         this.port = portIn;
         this.user = userIn;
-        this.password = passwordIn;
-        this.privateKey = privateKeyIn;
+        this.password = Optional.empty();
+        this.privateKey = Optional.of(privateKeyIn);
         this.privateKeyPassphrase = privateKeyPwdIn;
         this.activationKeys = activationKeysIn;
         this.ignoreHostKeys = ignoreHostKeysIn;
@@ -64,11 +89,22 @@ public class BootstrapParameters {
      * Create bootstrap parameters based on the JSON input.
      *
      * @param json JSON input
+     * @return the bootstrap parameters
      */
-    public BootstrapParameters(BootstrapHostsJson json) {
-        this(json.getHost(), json.getPortInteger(), json.getUser(), json.maybeGetPassword(), json.getPrivKey(),
-                json.getPrivKeyPwd(), json.getActivationKeys(), json.getIgnoreHostKeys(),
-                Optional.ofNullable(json.getProxy()));
+    public static BootstrapParameters createFromJson(BootstrapHostsJson json) {
+        final BootstrapHostsJson.AuthMethod authMethod = json.maybeGetAuthMethod().orElse(AuthMethod.PASSWORD);
+        switch (authMethod) {
+            case PASSWORD:
+                return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
+                        json.maybeGetPassword(), json.getActivationKeys(), json.getIgnoreHostKeys(),
+                        Optional.ofNullable(json.getProxy()));
+            case SSH_KEY:
+                return new BootstrapParameters(json.getHost(), json.getPortInteger(), json.getUser(),
+                        json.getPrivKey(), json.maybeGetPrivKeyPwd(), json.getActivationKeys(),
+                        json.getIgnoreHostKeys(), Optional.ofNullable(json.getProxy()));
+            default:
+                throw new UnsupportedOperationException("Unsupported auth method " + authMethod);
+        }
     }
 
     /**

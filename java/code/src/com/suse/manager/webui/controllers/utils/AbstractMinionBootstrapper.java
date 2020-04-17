@@ -54,6 +54,8 @@ public abstract class AbstractMinionBootstrapper {
 
     protected final SystemQuery systemQuery;
 
+    private static final int KEY_LENGTH_LIMIT = 1_000_000;
+
     private static final Logger LOG = Logger.getLogger(AbstractMinionBootstrapper.class);
 
     /**
@@ -66,21 +68,20 @@ public abstract class AbstractMinionBootstrapper {
 
     /**
      * Bootstrap a regular salt minion system (as in master-minion).
-     * @param input data about the bootstrapped system
+     * @param params data about the bootstrapped system
      * @param user user performing the procedure
      * @param defaultContactMethod contact method to use in case the activation
      *                             key does not specify any other
      * @return map containing success flag and error messages.
      */
-    public BootstrapResult bootstrap(BootstrapHostsJson input, User user,
-                                     String defaultContactMethod) {
-        List<String> errMessages = validateBootstrap(input);
+    public BootstrapResult bootstrap(BootstrapParameters params, User user, String defaultContactMethod) {
+        List<String> errMessages = validateBootstrap(params);
         if (!errMessages.isEmpty()) {
             return new BootstrapResult(false, Optional.empty(),
                     errMessages.toArray(new String[errMessages.size()]));
         }
 
-        return bootstrapInternal(createBootstrapParams(input), user, defaultContactMethod);
+        return bootstrapInternal(params, user, defaultContactMethod);
     }
 
     /**
@@ -89,8 +90,8 @@ public abstract class AbstractMinionBootstrapper {
      * @param input json input
      * @return bootstrap parameters
      */
-    protected BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
-        return new BootstrapParameters(input);
+    public BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
+        return BootstrapParameters.createFromJson(input);
     }
 
     /**
@@ -186,10 +187,10 @@ public abstract class AbstractMinionBootstrapper {
 
     /**
      * Implementation-specific Validation of the json input.
-     * @param input the json input
+     * @param params the bootstrap params
      * @return the result of the validation
      */
-    protected abstract List<String> validateJsonInput(BootstrapHostsJson input);
+    protected abstract List<String> validateParamsPerContactMethod(BootstrapParameters params);
 
     /**
      * Implementation-specific salt state modules that should be applied during bootstrap.
@@ -252,27 +253,31 @@ public abstract class AbstractMinionBootstrapper {
                         .orElseGet(() -> "No result for " + host));
     }
 
-    private List<String> validateBootstrap(BootstrapHostsJson input) {
-        List<String> errors = validateJsonInput(input);
+    private List<String> validateBootstrap(BootstrapParameters params) {
+        List<String> errors = validateParamsPerContactMethod(params);
         if (!errors.isEmpty()) {
             return errors;
         }
 
-        Optional<String> activationKeyErrorMessage = input.getFirstActivationKey()
+        if (params.getPrivateKey().map(pk -> pk.length() > KEY_LENGTH_LIMIT).orElse(false)) {
+            return Collections.singletonList("Key string is too long.");
+        }
+
+        Optional<String> activationKeyErrorMessage = params.getFirstActivationKey()
                 .flatMap(this::validateActivationKey);
         if (activationKeyErrorMessage.isPresent()) {
             return Collections.singletonList(activationKeyErrorMessage.get());
         }
 
-        if (systemQuery.keyExists(input.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
+        if (systemQuery.keyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
             return Collections.singletonList("A salt key for this" +
-                    " host (" + input.getHost() +
+                    " host (" + params.getHost() +
                     ") seems to already exist, please check!");
         }
 
-        return MinionServerFactory.findByMinionId(input.getHost())
+        return MinionServerFactory.findByMinionId(params.getHost())
                 .map(m -> Collections.singletonList("A system '" +
-                        m.getName() + "' with minion id " + input.getHost() +
+                        m.getName() + "' with minion id " + params.getHost() +
                         " seems to already exist,  please check!"))
                 .orElseGet(Collections::emptyList);
     }
@@ -295,10 +300,7 @@ public abstract class AbstractMinionBootstrapper {
         return validateContactMethod(activationKey.getContactMethod());
     }
 
-    protected abstract Optional<String> validateContactMethod(
-            ContactMethod desiredContactMethod);
-
-
+    protected abstract Optional<String> validateContactMethod(ContactMethod desiredContactMethod);
 
     /**
      * Representation of the status of bootstrap and possibly error messages.

@@ -15,11 +15,11 @@
 package com.suse.manager.webui.utils.gson;
 
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,61 +33,42 @@ public class BootstrapHostsJson {
     private String port = "22";
     private String user = "root";
     private String password;
-    private Optional<String> privKey = empty();
-    private Optional<String> privKeyPwd = empty();
+    private AuthMethod authMethod;
+    private String privKey;
+    private String privKeyPwd;
     private List<String> activationKeys;
     private boolean ignoreHostKeys;
     private Long proxy;
 
     /**
+     * Authentication method for bootstrapping
+     */
+    public enum AuthMethod {
+        PASSWORD,
+        SSH_KEY;
+
+        /**
+         * Create an {@link AuthMethod} from string
+         *
+         * @param val the string
+         * @return the {@link AuthMethod}
+         */
+        public static AuthMethod parse(String val) {
+            switch (val.toLowerCase()) {
+                case "password":
+                    return PASSWORD;
+                case "ssh-key":
+                    return SSH_KEY;
+                default:
+                    throw new IllegalArgumentException(String.format("Can't convert '%s' to auth method enum.", val));
+            }
+        }
+    }
+
+    /**
      * Default constructor.
      */
-    public BootstrapHostsJson() {
-    }
-
-    /**
-     * Constructor to be used for bootstrapping systems with SSH password via API.
-     *
-     * @param hostIn target host
-     * @param portIn SSH port
-     * @param userIn SSH user
-     * @param passwordIn SSH password
-     * @param activationKey activation key
-     * @param proxyIn system ID of proxy server to use
-     */
-    public BootstrapHostsJson(String hostIn, Integer portIn, String userIn,
-                              String passwordIn, String activationKey, Long proxyIn) {
-        host = hostIn;
-        port = String.valueOf(portIn);
-        user = userIn;
-        password = passwordIn;
-        activationKeys = StringUtils.isEmpty(activationKey) ? Collections.emptyList() : Arrays.asList(activationKey);
-        proxy = proxyIn;
-        ignoreHostKeys = true;
-    }
-
-    /**
-     * Constructor to be used for bootstrapping systems with SSH private key via API.
-     *
-     * @param hostIn target host
-     * @param portIn SSH port
-     * @param userIn SSH user
-     * @param privKeyIn SSH private key in PEM format
-     * @param privKeyPwdIn SSH private key passphrase (empty/null string = no passphrase)
-     * @param activationKey activation key
-     * @param proxyIn system ID of proxy server to use
-     */
-    public BootstrapHostsJson(String hostIn, Integer portIn, String userIn,
-            String privKeyIn, String privKeyPwdIn, String activationKey, Long proxyIn) {
-        host = hostIn;
-        port = String.valueOf(portIn);
-        user = userIn;
-        privKey = Optional.of(privKeyIn);
-        privKeyPwd = StringUtils.isEmpty(privKeyPwdIn) ? empty() : Optional.of(privKeyPwdIn);
-        activationKeys = StringUtils.isEmpty(activationKey) ? Collections.emptyList() : Arrays.asList(activationKey);
-        proxy = proxyIn;
-        ignoreHostKeys = true;
-    }
+    public BootstrapHostsJson() { }
 
     /**
      * @return the host
@@ -111,6 +92,15 @@ public class BootstrapHostsJson {
     }
 
     /**
+     * Gets the authMethod.
+     *
+     * @return authMethod
+     */
+    public AuthMethod getAuthMethod() {
+        return authMethod;
+    }
+
+    /**
      * @return the password
      */
     public String getPassword() {
@@ -122,7 +112,7 @@ public class BootstrapHostsJson {
      *
      * @return privKey
      */
-    public Optional<String> getPrivKey() {
+    public String getPrivKey() {
         return privKey;
     }
 
@@ -131,7 +121,7 @@ public class BootstrapHostsJson {
      *
      * @return privKeyPwd
      */
-    public Optional<String> getPrivKeyPwd() {
+    public String getPrivKeyPwd() {
         return privKeyPwd;
     }
 
@@ -179,14 +169,45 @@ public class BootstrapHostsJson {
     }
 
     /**
+     * Helper method to return the auth method as an Optional&lt;String&gt;.
+     *
+     * @return auth method wrapped in Optional, or empty Optional if auth method is empty.
+     */
+    public Optional<AuthMethod> maybeGetAuthMethod() {
+        return ofNullable(authMethod);
+    }
+
+    /**
      * Helper method to return the password as an Optional&lt;String&gt;.
      *
      * @return password wrapped in Optional, or empty Optional if password is empty.
      */
     public Optional<String> maybeGetPassword() {
-        if (StringUtils.isEmpty(password)) {
+        return maybeGetString(getPassword());
+    }
+
+    /**
+     * Helper method to return the ssh private key as an Optional&lt;String&gt;.
+     *
+     * @return optional of ssh private key
+     */
+    public Optional<String> maybeGetPrivKey() {
+        return maybeGetString(getPrivKey());
+    }
+
+    /**
+     * Helper method to return the ssh private key passphrase as an Optional&lt;String&gt;.
+     *
+     * @return optional of ssh private key passphrase
+     */
+    public Optional<String> maybeGetPrivKeyPwd() {
+        return maybeGetString(getPrivKeyPwd());
+    }
+
+    private static Optional<String> maybeGetString(String str) {
+        if (StringUtils.isEmpty(str)) {
             return empty();
         }
-        return Optional.of(password);
+        return of(str);
     }
 }

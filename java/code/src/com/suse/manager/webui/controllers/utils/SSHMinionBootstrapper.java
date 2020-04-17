@@ -68,8 +68,8 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     }
 
     @Override
-    protected List<String> validateJsonInput(BootstrapHostsJson input) {
-        return InputValidator.INSTANCE.validateBootstrapSSHManagedInput(input);
+    protected List<String> validateParamsPerContactMethod(BootstrapParameters params) {
+        return InputValidator.INSTANCE.validateBootstrapSSHManagedInput(params);
     }
 
     @Override
@@ -97,8 +97,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
     @Override
     protected BootstrapResult bootstrapInternal(BootstrapParameters params, User user,
                                                 String defaultContactMethod) {
-        BootstrapResult result = super.bootstrapInternal(params, user,
-                defaultContactMethod);
+        BootstrapResult result = super.bootstrapInternal(params, user, defaultContactMethod);
         LOG.info("salt-ssh system bootstrap success: " + result.isSuccess() +
                 ", proceeding with registration.");
         String minionId = params.getHost();
@@ -133,14 +132,15 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
      * @return the bootstrap parameters
      */
     @Override
-    protected BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
-        String user = input.getUser();
-        if (StringUtils.isEmpty(user)) {
-            user = getSSHUser();
+    public BootstrapParameters createBootstrapParams(BootstrapHostsJson input) {
+        final BootstrapParameters params = BootstrapParameters.createFromJson(input);
+        if (StringUtils.isEmpty(input.getUser())) {
+            params.setUser(getSSHUser());
         }
-        return new BootstrapParameters(input.getHost(),
-                Optional.of(SSH_PUSH_PORT), user, input.maybeGetPassword(), input.getPrivKey(), input.getPrivKeyPwd(),
-                input.getActivationKeys(), input.getIgnoreHostKeys(), Optional.ofNullable(input.getProxy()));
+
+        params.setPort(Optional.of(SSH_PUSH_PORT));
+
+        return params;
     }
 
     @Override

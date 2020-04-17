@@ -25,7 +25,7 @@ import com.suse.manager.webui.controllers.utils.AbstractMinionBootstrapper.Boots
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -122,24 +122,21 @@ public class XmlRpcSystemHelper {
      * Bootstrap a system for management via either Salt (minion/master) or Salt SSH.
      *
      * @param user the current user
-     * @param input input parameters
+     * @param params bootstrap parameters
      * @param saltSSH manage system with Salt SSH
      * @return 1 on success, 0 on failure
      * @throws BootstrapException if any error occurs
      */
-    public int bootstrap(User user, BootstrapHostsJson input, boolean saltSSH)
+    public int bootstrap(User user, BootstrapParameters params, boolean saltSSH)
             throws BootstrapException {
         BootstrapResult result = Stream.of(saltSSH).map(ssh -> {
             if (ssh) {
-                return sshMinionBootstrapper.bootstrap(input, user,
-                        ContactMethodUtil.getSSHMinionDefault());
+                return sshMinionBootstrapper.bootstrap(params, user, ContactMethodUtil.getSSHMinionDefault());
             }
             else {
-                return regularMinionBootstrapper.bootstrap(input, user,
-                        ContactMethodUtil.getRegularMinionDefault());
+                return regularMinionBootstrapper.bootstrap(params, user, ContactMethodUtil.getRegularMinionDefault());
             }
-        }).findAny().orElseThrow(() -> new BootstrapException(
-                "No result for " + input.getHost()));
+        }).findAny().orElseThrow(() -> new BootstrapException("No result for " + params.getHost()));
 
         // Determine the result, throw BootstrapException in case of failure
         if (!result.isSuccess()) {

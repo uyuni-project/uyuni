@@ -14,8 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.Collections.singletonList;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.FaultException;
@@ -159,7 +161,8 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
+import com.suse.manager.webui.utils.gson.BootstrapParameters;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
@@ -6971,8 +6974,11 @@ public class SystemHandler extends BaseHandler {
      */
     public int bootstrap(User user, String host, Integer sshPort, String sshUser,
             String sshPassword, String activationKey, boolean saltSSH) {
-        BootstrapHostsJson input = new BootstrapHostsJson(host, sshPort, sshUser, sshPassword, activationKey, null);
-        return xmlRpcSystemHelper.bootstrap(user, input, saltSSH);
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                true, empty());
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
     /**
@@ -7006,9 +7012,10 @@ public class SystemHandler extends BaseHandler {
      */
     public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
             String sshPrivKey, String sshPrivKeyPass, String activationKey, boolean saltSSH) {
-        BootstrapHostsJson input = new BootstrapHostsJson(
-                host, sshPort, sshUser, sshPrivKey, sshPrivKeyPass, activationKey, null);
-        return xmlRpcSystemHelper.bootstrap(user, input, saltSSH);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, true, empty());
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
     /**
@@ -7039,9 +7046,11 @@ public class SystemHandler extends BaseHandler {
      */
     public int bootstrap(User user, String host, Integer sshPort, String sshUser,
             String sshPassword, String activationKey, Integer proxyId, boolean saltSSH) {
-        BootstrapHostsJson input = new BootstrapHostsJson(
-                host, sshPort, sshUser, sshPassword, activationKey, proxyId.longValue());
-        return xmlRpcSystemHelper.bootstrap(user, input, saltSSH);
+        Optional<String> maybePassword = maybeString(sshPassword);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, maybePassword, activationKeys,
+                true, of(proxyId.longValue()));
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
     /**
@@ -7077,9 +7086,10 @@ public class SystemHandler extends BaseHandler {
      */
     public int bootstrapWithPrivateSshKey(User user, String host, Integer sshPort, String sshUser,
             String sshPrivKey, String sshPrivKeyPass, String activationKey, Integer proxyId, boolean saltSSH) {
-        BootstrapHostsJson input = new BootstrapHostsJson(
-                host, sshPort, sshUser, sshPrivKey, sshPrivKeyPass, activationKey, proxyId.longValue());
-        return xmlRpcSystemHelper.bootstrap(user, input, saltSSH);
+        List<String> activationKeys = maybeActivationKeys(activationKey);
+        BootstrapParameters params = new BootstrapParameters(host, of(sshPort), sshUser, sshPrivKey,
+                maybeString(sshPrivKeyPass), activationKeys, true, of(proxyId.longValue()));
+        return xmlRpcSystemHelper.bootstrap(user, params, saltSSH);
     }
 
     /**
@@ -7144,4 +7154,13 @@ public class SystemHandler extends BaseHandler {
     public TaskomaticApi getTaskomaticApi() {
         return taskomaticApi;
     }
+
+    private static Optional<String> maybeString(String sshPassword) {
+        return StringUtils.isEmpty(sshPassword) ? empty() : of(sshPassword);
+    }
+
+    private static List<String> maybeActivationKeys(String activationKey) {
+        return StringUtils.isEmpty(activationKey) ? Collections.emptyList() : List.of(activationKey);
+    }
+
 }
