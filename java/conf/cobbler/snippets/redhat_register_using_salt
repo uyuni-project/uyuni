@@ -5,6 +5,10 @@
         <![CDATA[
 cat <<EOF >"/etc/salt/minion.d/susemanager.conf"
 master: $redhat_management_server
+server_id_use_crc: adler32
+enable_legacy_startup_events: False
+enable_fqdns_grains: False
+mine_enabled: False
 
 EOF
 #if $varExists('registration_key') or $varExists('redhat_management_key')
