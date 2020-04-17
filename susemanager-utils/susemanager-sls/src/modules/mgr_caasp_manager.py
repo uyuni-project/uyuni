@@ -75,7 +75,7 @@ def _sanitize_skuba_output_values(items):
 def list_nodes(skuba_cluster_path,
                timeout=DEFAULT_TIMEOUT,
                **kwargs):
-    skuba_proc = _call_skuba(skuba_cluster_path, "cluster status")
+    skuba_proc = _call_skuba(skuba_cluster_path, "cluster status", timeout=timeout)
     if skuba_proc.process.returncode != 0 or skuba_proc.stderr:
         error_msg = "Unexpected error {} at skuba when listing nodes: {}".format(
                 skuba_proc.process.returncode,
@@ -118,7 +118,7 @@ def remove_node(skuba_cluster_path,
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
-    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args, timeout=timeout)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when removing a node: {}".format(
                 skuba_proc.process.returncode,
@@ -159,7 +159,7 @@ def add_node(skuba_cluster_path,
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
-    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args, timeout=timeout)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when adding a new node: {}".format(
                 skuba_proc.process.returncode,
@@ -185,7 +185,7 @@ def upgrade_cluster(skuba_cluster_path,
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
-    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args, timeout=timeout)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when upgrading the cluster: {}".format(
                 skuba_proc.process.returncode,
@@ -212,7 +212,7 @@ def upgrade_node(skuba_cluster_path,
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
-    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args, timeout=timeout)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when upgrading the node: {}".format(
                 skuba_proc.process.returncode,
@@ -246,7 +246,7 @@ def cluster_init(name,
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
-    skuba_proc = _call_skuba(base_path, cmd_args)
+    skuba_proc = _call_skuba(base_path, cmd_args, timeout=timeout)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when initializing the cluster: {}".format(
                 skuba_proc.process.returncode,
@@ -286,7 +286,7 @@ def master_bootstrap(node_name,
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
-    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args)
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args, timeout=timeout)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when bootstrapping the node: {}".format(
                 skuba_proc.process.returncode,
