@@ -12,6 +12,10 @@ html, body {
   outline: none!important;
 }
 
+a {
+  color: @susemanager-link;
+}
+
 header {
   position: fixed;
   top: 0;
@@ -25,10 +29,10 @@ header {
   padding: 12px 10px;
   background: @spacewalk-header;
   a {
-    color: @spacewalk-gray-light;
+    color: @susemanager-text-header;
   }
   a:hover {
-    color: @spacewalk-gray-light;
+    color: @susemanager-text-header;
   }
   img {
     float: left;
@@ -36,7 +40,7 @@ header {
 }
 
 footer {
-  border-top: 1px solid @spacewalk-blue-light;
+  border-top: 1px solid @spacewalk-footer-border;
   background: @spacewalk-footer;
   padding: 3px 12px;
   color: @spacewalk-footer-text;
@@ -69,7 +73,7 @@ footer {
   }
 
   div.wrapper {
-    background: url('/img/susemanager/logo-footer.png') no-repeat right center;
+    background: url('/img/susemanager/suse-logo-02.png') no-repeat right center;
     background-size: auto 20px;
     min-height: 28px;
     padding-right: 55px!important;
@@ -142,15 +146,15 @@ section {
     position: fixed;
     #nav nav ul.level1 {
       overflow-y: auto !important;
-      scrollbar-color: rgba(173,216,230,0.5) transparent;
+      scrollbar-color: rgba(200, 200, 200, 0.5) transparent;
       scrollbar-width: thin;
       &::-webkit-scrollbar {
         width: 7px;
       }
       &::-webkit-scrollbar-thumb {
         border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 6px rgba(173,216,230,0.5);
-        background: rgba(173,216,230,0.5);
+        -webkit-box-shadow: inset 0 0 6px rgba(200, 200, 200, 0.5);
+        background: rgba(200, 200, 200, 0.5);
       }
     }
   }
@@ -158,10 +162,10 @@ section {
   /* fixing margins in the 1st and last columns */
   section {
     .make-xs-column(10);
-    padding-left:2em;
-    padding-right: 2em;
+    padding-left:4em;
+    padding-right: 4em;
     padding-top: 0;
-    padding-bottom: 2em;
+    padding-bottom: 4em;
     overflow-y: auto!important;
     float: right;
   }
@@ -235,7 +239,7 @@ header, nav.navbar-pf {
   .box-wrapper {
     position: absolute;
     top: 100%;
-    background-color: @spacewalk-blue;
+    background-color: @eos-pine;
     border-radius: 0px 2px 2px 2px;
     z-index: 1000;
     box-shadow: 0px 4px 4px 0px @spacewalk-gray;
@@ -379,12 +383,12 @@ header, nav.navbar-pf {
       vertical-align: top;
     }
     input {
-      background-color: @spacewalk-blue;
-      border-color: @spacewalk-blue-light;
+      background-color: @spacewalk-aside;
+      border-color: @eos-gray-light-2;
       border-style: solid;
       border-radius: 0;
       border-width: 0 0 1px 0;
-      color: @spacewalk-gray-light;
+      color: @eos-gray-dark-2;
       padding-right: 3em;
       height: 3em;
     }
@@ -401,7 +405,7 @@ header, nav.navbar-pf {
       margin-right: 1em;
       padding: 0;
     }
-    .clear:hover {
+    .input-right-icon:hover {
       color: @spacewalk-aside-menu-search-clear-hover;
     }
   }
@@ -418,7 +422,7 @@ header, nav.navbar-pf {
         display: block;
         div {
           a {
-            padding: 4px 10px;
+            padding: 6px 10px;
           }
         }
       }
@@ -429,17 +433,19 @@ header, nav.navbar-pf {
       }
       // active
       li.active > .nodeLink {
-        color: @susemanager-green;
+        color: @susemanager-green-dark;
       }
       li.active > .leafLink {
-        background-color: @spacewalk-aside-menu-active;
+        background-color: @susemanager-aside-menu-active;
         border-radius: 0 2px 2px 0;
+        margin-right: 10px;
+        color: @susemanager-aside-menu-active-text;
       }
       // nodeLink and leafLink
       div.nodeLink,
       div.leafLink {
-        color: @spacewalk-gray-light;
-        border-left: 3px solid transparent;
+        color: @susemanager-text-menu;
+        border-left: 5px solid transparent;
         a {
           display: block;
           color: inherit;
@@ -454,7 +460,7 @@ header, nav.navbar-pf {
       div.nodeLink {
         position: relative;
         > i {
-          font-size: 1.3em;
+          font-size: 1.2em;
           vertical-align: text-bottom;
         }
         > i.submenuIcon {
@@ -467,33 +473,27 @@ header, nav.navbar-pf {
           display: inline-block;
         }
         > a:hover {
-          color: @spacewalk-gray-light;
+          color: @susemanager-text-menu;
         }
-      }
-      div.nodeLink:hover {
-        color: @spacewalk-aside-menu-active;
       }
     }
     /* First Level */
     > ul {
-      padding-top: 10px;
-      padding-bottom: 10px;
-      padding-right: 10px;
       > li {
         > div {
           > a {
-            padding: 8px 2px;
+            padding: 10px 4px;
           }
         }
         > div.nodeLink {
-          padding-left: 0.8em;
+          padding-left: 1em;
           > i.submenuIcon {
             top: 0.6em;
           }
         }
         /* Second Level */
         > ul {
-          padding-bottom: 10px;
+          padding-bottom: 25px;
           > li {
             > div {
               > a {
@@ -505,7 +505,7 @@ header, nav.navbar-pf {
               > li {
                 > div {
                   > a {
-                    padding-left: 5em;
+                    padding-left: 4.4em;
                   }
                 }
               }
@@ -552,7 +552,7 @@ header, nav.navbar-pf {
       a {
         display: block;
         border: 0px;
-        color: #428bca;
+        color: @susemanager-link;
         padding: 2px 20px;
       }
     }
@@ -609,7 +609,7 @@ header, nav.navbar-pf {
   display: inline-block;
   width: 5em;
   border: 1px solid #dddddd;
-  background-color: @spacewalk-gray-light-background;
+  background-color: @eos-gray-light-2;
 }
 .view-systems-registered{
   .input-sm;
@@ -941,7 +941,7 @@ i.spacewalk-help-link {
       border: none;
       padding: 6px 12px 1px;
       display: inline-block;
-      color: @spacewalk-blue-light;
+      color: @spacewalk-blue;
       font-size: 1.1em;
       border-width: 0 0 5px 0;
       border-style: solid;
@@ -951,7 +951,7 @@ i.spacewalk-help-link {
     a:hover {
       background: inherit;
       border-width: 0 0 3px 0;
-      border-color: @susemanager-green;
+      border-color: @eos-gray;
       padding-bottom: 3px;
     }
   }
