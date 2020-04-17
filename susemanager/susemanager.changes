@@ -1,3 +1,4 @@
+- add missing packages to OES2018-SP1-x86_64 target for bootstrap data (bsc#1169144)
 - Add dbus-1-glib to SLE12SP5 x86_64 to allow onboarding of AWS Cloud SLE12SP5
   clients (they do not have it by defaul anymore)
 - add package redhat-rpm-config to bootstrap repo for RH and CentOS systems (bsc#1168069)
