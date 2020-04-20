@@ -112,7 +112,7 @@ class BuildImage extends React.Component {
   }
 
   changeProfile(id) {
-    const model = this.state.model;
+    const model = Object.assign({}, this.state.model);
     model.profileId = id;
     this.setState({model: model});
 
