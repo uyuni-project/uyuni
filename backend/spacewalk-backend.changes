@@ -1,3 +1,6 @@
+- Enable extra HTTP headers support for "spacewalk-repo-sync".
+- Add missing Zypper plugin to deal with ULN repositories.
+
 -------------------------------------------------------------------
 Mon Apr 13 09:32:22 CEST 2020 - jgonzalez@suse.com
 
