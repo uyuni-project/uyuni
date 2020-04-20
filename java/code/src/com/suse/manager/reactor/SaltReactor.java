@@ -130,9 +130,6 @@ public class SaltReactor {
                 LibvirtEngineDomainLifecycleMessage.class);
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);
-        // Handle changes of channel assignments on minions
-        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(systemQuery),
-                ChannelsChangedEventMessage.class);
 
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 

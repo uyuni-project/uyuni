@@ -47,7 +47,7 @@ import org.apache.struts.action.ActionMapping;
 public class ChannelActionTest extends RhnBaseTestCase {
 
     public void testPublish() throws Exception {
-        MessageQueue.configureDefaultActions();
+        MessageQueue.configureDefaultActions(new SaltService());
 
         ChannelAction action = new ChannelAction();
 
