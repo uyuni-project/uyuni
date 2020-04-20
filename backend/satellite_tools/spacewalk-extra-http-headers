@@ -13,7 +13,7 @@ except:
 
 from zypp_plugin import Plugin
 
-REPOSYNC_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/headers.conf'
+REPOSYNC_EXTRA_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/extra_headers.conf'
 
 
 class SpacewalkExtraHTTPHeaders(Plugin):
@@ -28,10 +28,10 @@ class SpacewalkExtraHTTPHeaders(Plugin):
         """
         try:
             self.http_headers = {}
-            # Get custom HTTP Headers configuration from /etc/rhn/spacewalk-repo-sync/headers.conf
-            if os.path.isfile(REPOSYNC_HTTP_HEADERS_CONF):
+            # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
+            if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
                 http_headers_cfg = configparser.ConfigParser()
-                http_headers_cfg.read_file(open(REPOSYNC_HTTP_HEADERS_CONF))
+                http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
                 section_name = None
 
                 if http_headers_cfg.has_section(headers['repo_name']):

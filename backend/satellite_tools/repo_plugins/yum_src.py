@@ -68,7 +68,7 @@ ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
 REPOSYNC_ZYPPER_ROOT = os.path.join(SPACEWALK_LIB, "reposync/root")
 REPOSYNC_ZYPPER_RPMDB_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, 'var/lib/rpm')
 REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
-REPOSYNC_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/headers.conf'
+REPOSYNC_EXTRA_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/extra_headers.conf'
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
 
@@ -451,10 +451,10 @@ class ContentSource:
                 if zypper_cfg.has_option(section_name, 'proxy_password'):
                     self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
 
-        # Get custom HTTP Headers configuration from /etc/rhn/spacewalk-repo-sync/headers.conf
-        if os.path.isfile(REPOSYNC_HTTP_HEADERS_CONF):
+        # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
+        if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
             http_headers_cfg = configparser.ConfigParser()
-            http_headers_cfg.read_file(open(REPOSYNC_HTTP_HEADERS_CONF))
+            http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
             section_name = None
 
             if http_headers_cfg.has_section(self.name):
