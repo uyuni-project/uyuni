@@ -1,3 +1,5 @@
+- Fix custom info values input in image profile edit form (bsc#1169773)
+
 -------------------------------------------------------------------
 Thu Apr 23 10:27:31 CEST 2020 - jgonzalez@suse.com
 
