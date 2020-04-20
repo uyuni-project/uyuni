@@ -54,6 +54,9 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -265,8 +268,10 @@ public class MessageQueue {
     /**
      * Configures default messaging actions needed by RHN
      * This method should be called directly after <code>startMessaging</code>.
+     *
+     * @param systemQuery instance for gathering data from a system
      */
-    public static void configureDefaultActions() {
+    public static void configureDefaultActions(SystemQuery systemQuery) {
         // Register the Actions for the Events
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
@@ -329,5 +334,9 @@ public class MessageQueue {
         // Deploy configuration files
         MessageQueue.registerAction(new SsmConfigFilesAction(),
                                     SsmConfigFilesEvent.class);
+
+        // Handle changes of channel assignments on minions
+        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(systemQuery),
+                ChannelsChangedEventMessage.class);
     }
 }

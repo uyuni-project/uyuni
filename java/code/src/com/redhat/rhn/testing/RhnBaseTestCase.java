@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.util.Collection;
 import java.util.Date;
 
+import com.suse.manager.webui.services.impl.SaltService;
 import junit.framework.ComparisonFailure;
 import junit.framework.TestCase;
 
@@ -56,7 +57,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      */
     public RhnBaseTestCase() {
         super();
-        MessageQueue.configureDefaultActions();
+        MessageQueue.configureDefaultActions(new SaltService());
     }
 
     /**
