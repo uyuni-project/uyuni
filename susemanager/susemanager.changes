@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Apr 20 14:11:37 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.11-1
 - Require python3-tornado only for SLE15/SLE15SP1/openSUSE Leap 15.1 (bsc#1169865)
 - add missing packages to OES2018-SP1-x86_64 target for bootstrap data (bsc#1169144)
 
