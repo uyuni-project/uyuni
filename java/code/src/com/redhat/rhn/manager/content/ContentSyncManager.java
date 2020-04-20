@@ -1561,7 +1561,7 @@ public class ContentSyncManager {
 
                                 if (!entry.getUpdateTag()
                                         .equals(Optional.ofNullable(prodRepoLink.getUpdateTag()))) {
-                                    log.error("updatetag changed from '" +
+                                    log.debug("updatetag changed from '" +
                                             prodRepoLink.getUpdateTag() +
                                             "' to '" + entry.getUpdateTag() +
                                             "' but its not allowed to change.");
