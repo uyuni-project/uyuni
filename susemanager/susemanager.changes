@@ -1,4 +1,23 @@
+-------------------------------------------------------------------
+Mon Apr 20 14:11:37 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.11-1
 - Require python3-tornado only for SLE15/SLE15SP1/openSUSE Leap 15.1 (bsc#1169865)
+- add missing packages to OES2018-SP1-x86_64 target for bootstrap data (bsc#1169144)
+
+-------------------------------------------------------------------
+Thu Apr 16 11:39:54 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
+- Use python3-M2Crypto for all SLE15 versions and openSUSE Leap 15.1
+  bootstrap repositories
+
+-------------------------------------------------------------------
+Thu Apr 16 00:35:45 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
+- Add dbus-1-glib to SLE12SP5 x86_64 to allow onboarding of AWS Cloud SLE12SP5
+  clients (they do not have it by default anymore)
 
 -------------------------------------------------------------------
 Mon Apr 13 09:37:12 CEST 2020 - jgonzalez@suse.com
