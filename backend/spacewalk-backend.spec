@@ -235,6 +235,8 @@ Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
 %if 0%{?suse_version}
+Requires(pre):  libzypp(plugin:system) >= 0
+Requires:       zypp-plugin-python
 Requires:       apache2-prefork
 %endif
 %if 0%{?fedora} || 0%{?rhel}
@@ -328,6 +330,13 @@ sed -i 's/#DOCUMENTROOT#/\/srv\/www\/htdocs/' $RPM_BUILD_ROOT%{rhnconfigdefaults
 %endif
 
 install -m 755 satellite_tools/mgr-update-pkg-extra-tags $RPM_BUILD_ROOT%{_prefix}/lib/susemanager/bin/
+
+## Install Zypper plugins only on SUSE machines
+%if 0%{?suse_version}
+install -Dd -m 0750 % $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver
+%{__install} satellite_tools/spacewalk-uln-resolver $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
+%{__install} satellite_tools/spacewalk-extra-http-headers $RPM_BUILD_ROOT%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
+%endif
 
 %check
 make -f Makefile.backend PYTHONPATH=$RPM_BUILD_ROOT%{python3_sitelib}:$RPM_BUILD_ROOT%{python3_sitelib}/uyuni/common-libs PYTHON_BIN=python3 test
@@ -639,6 +648,8 @@ fi
 %attr(755,root,root) %{_bindir}/mgr-sign-metadata-ctl
 %attr(755,root,root) %{_bindir}/spacewalk-diskcheck
 %attr(755,root,root) %{_prefix}/lib/susemanager/bin/mgr-update-pkg-extra-tags
+%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-uln-resolver
+%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
 %{python3rhnroot}/satellite_tools/contentRemove.py*
 %{python3rhnroot}/satellite_tools/SequenceServer.py*
 %{python3rhnroot}/satellite_tools/messages.py*
