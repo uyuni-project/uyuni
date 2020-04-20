@@ -1,3 +1,5 @@
+- Use python3-M2Crypto for all SLE15 versions and openSUSE Leap 15.1
+  bootstrap repositories
 - Add dbus-1-glib to SLE12SP5 x86_64 to allow onboarding of AWS Cloud SLE12SP5
   clients (they do not have it by defaul anymore)
 
