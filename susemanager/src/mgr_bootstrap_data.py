@@ -407,12 +407,15 @@ PKGLIST15 = [
     "python3-requests",
     "python3-simplejson",
     "python3-six",
-    "python3-tornado",
     "python3-urllib3",
     "timezone",
     "salt",
     "python3-salt",
     "salt-minion",
+]
+
+PKGLIST15SP0SP1_SALT = [
+    "python3-tornado",
 ]
 
 PKGLIST15_X86_ARM = [
@@ -827,35 +830,35 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-15-aarch64' : {
-        'PDID' : [1589, 1709], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'PDID' : [1589, 1709], 'PKGLIST' : PKGLIST15 + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-ppc64le' : {
-        'PDID' : [1588, 1710], 'PKGLIST' : PKGLIST15 + PKGLIST15_PPC,
+        'PDID' : [1588, 1710], 'PKGLIST' : PKGLIST15 + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-s390x' : {
-        'PDID' : [1587, 1711], 'PKGLIST' : PKGLIST15 + PKGLIST15_Z,
+        'PDID' : [1587, 1711], 'PKGLIST' : PKGLIST15 + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-x86_64' : {
-        'PDID' : [1576, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'PDID' : [1576, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-SP1-aarch64' : {
-        'PDID' : [1769, 1709], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'PDID' : [1769, 1709], 'PKGLIST' : PKGLIST15 + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-ppc64le' : {
-        'PDID' : [1770, 1710], 'PKGLIST' : PKGLIST15 + PKGLIST15_PPC,
+        'PDID' : [1770, 1710], 'PKGLIST' : PKGLIST15 + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-s390x' : {
-        'PDID' : [1771, 1711], 'PKGLIST' : PKGLIST15 + PKGLIST15_Z,
+        'PDID' : [1771, 1711], 'PKGLIST' : PKGLIST15 + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP1-x86_64' : {
-        'PDID' : [1772, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15_X86_ARM,
+        'PDID' : [1772, 1712], 'PKGLIST' : PKGLIST15 + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
     'SLE-15-SP2-aarch64' : {
