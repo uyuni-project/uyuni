@@ -312,6 +312,8 @@ install -m 644 rhn-conf/signing.cnf $RPM_BUILD_ROOT%{rhnconf}/signing.conf
 install -m 644 satellite_tools/spacewalk-diskcheck.service $RPM_BUILD_ROOT/%{_unitdir}
 install -m 644 satellite_tools/spacewalk-diskcheck.timer $RPM_BUILD_ROOT/%{_unitdir}
 
+install -m 644 satellite_tools/ulnauth.py $RPM_BUILD_ROOT/%{python3rhnroot}/satellite_tools
+
 %find_lang %{name}-server
 
 %if 0%{?is_opensuse}
@@ -667,6 +669,7 @@ fi
 %{python3rhnroot}/satellite_tools/reposync.py*
 %{python3rhnroot}/satellite_tools/constants.py*
 %{python3rhnroot}/satellite_tools/download.py*
+%{python3rhnroot}/satellite_tools/ulnauth.py*
 %dir %{python3rhnroot}/satellite_tools/disk_dumper
 %{python3rhnroot}/satellite_tools/disk_dumper/__init__.py*
 %{python3rhnroot}/satellite_tools/disk_dumper/iss.py*
