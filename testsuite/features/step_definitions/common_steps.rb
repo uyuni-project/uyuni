@@ -643,9 +643,10 @@ When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run("salt-key -y --accept=pxeboot.example.org")
 end
 
-When(/^I bootstrap traditional client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the proxy$/) do |host, key|
-  # Preparation of bootstrap script for traditional client
-  cmd = "mgr-bootstrap --traditional &&
+When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the proxy$/) do |client_type, host, key|
+  # Preparation of bootstrap script for different types of clients
+  client = client_type == 'traditional' ? '--traditional' : ''
+  cmd = "mgr-bootstrap #{client} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
@@ -654,13 +655,13 @@ When(/^I bootstrap traditional client "([^"]*)" using bootstrap script with acti
   output, code = $proxy.run(cmd)
   raise "Key: #{key} not included" unless output.include? key
   # Run bootstrap script and check for result
-  trad = 'bootstrap-traditional.exp'
-  source = File.dirname(__FILE__) + '/../upload_files/' + trad
-  dest = '/tmp/' + trad
+  boostrap_script = 'bootstrap-general.exp'
+  source = File.dirname(__FILE__) + '/../upload_files/' + boostrap_script
+  dest = '/tmp/' + boostrap_script
   return_code = file_inject($proxy, source, dest)
   raise 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
-  output, code = $proxy.run("expect -f /tmp/#{trad} #{system_name}")
+  output, code = $proxy.run("expect -f /tmp/#{boostrap_script} #{system_name}")
   raise 'Bootstrapp didn\'t finish properly' unless output.include? '-bootstrap complete-'
 end
 
@@ -831,10 +832,10 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
 end
 
 Then(/^I should see "([^"]*)" via spacecmd$/) do |host|
-  $server.run("spacecmd -u admin -p admin clear_caches")
   command = "spacecmd -u admin -p admin system_list"
   system_name = get_system_name(host)
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "system #{system_name} is not in the list yet") do
+    $server.run("spacecmd -u admin -p admin clear_caches")
     result, code = $server.run(command, false)
     break if result.include? system_name
     sleep 1
