@@ -55,7 +55,6 @@ public class ImageBuildAction extends Action {
 
     @Override
     public String getHistoryDetails(Server server, User currentUser) {
-        // LocalizationService ls = LocalizationService.getInstance();
         StringBuilder retval = new StringBuilder();
         retval.append("</br>");
         if (getDetails() != null) {
@@ -64,7 +63,6 @@ public class ImageBuildAction extends Action {
                     retval.append("Results:");
                     retval.append("</br>");
                     retval.append("<pre>");
-                    retval.append("");
                     retval.append("</pre>");
                 }
             }
