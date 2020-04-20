@@ -1,3 +1,5 @@
+- Require python3-tornado only for SLE15/SLE15SP1/openSUSE Leap 15.1 (bsc#1169865)
+
 -------------------------------------------------------------------
 Mon Apr 13 09:37:12 CEST 2020 - jgonzalez@suse.com
 
