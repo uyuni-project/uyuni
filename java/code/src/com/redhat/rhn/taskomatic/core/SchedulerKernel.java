@@ -61,7 +61,7 @@ public class SchedulerKernel {
     private String dataSourceConfigPath = "org.quartz.jobStore.dataSource";
     private String dataSourcePrefix = "org.quartz.dataSource";
     private String defaultDataSource = "rhnDs";
-    public static final SystemQuery systemQuery = SaltService.INSTANCE;
+    public static final SystemQuery SYSTEM_QUERY = SaltService.INSTANCE;
 
 
     /**
@@ -142,7 +142,7 @@ public class SchedulerKernel {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }
         MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions(systemQuery);
+        MessageQueue.configureDefaultActions(SYSTEM_QUERY);
         try {
             SchedulerKernel.scheduler.start();
             initializeAllSatSchedules();
