@@ -216,13 +216,13 @@ Feature: PXE boot a Retail terminal
     And I select "swap" in first partition flags field
     And I press "Add Item" in partitions section
     And I enter "p2" in second partition id field
-    And I enter "/" in second mount point field
-    And I enter the image name in second OS image field
+    And I enter "/data" in second mount point field
+    And I select "xfs" in second filesystem format field
+    And I enter "secret-password" in second partition password field
     And I press "Add Item" in partitions section
     And I enter "p3" in third partition id field
-    And I enter "/data" in third mount point field
-    And I select "xfs" in third filesystem format field
-    And I enter "secret-password" in third partition password field
+    And I enter "/" in third mount point field
+    And I enter the image name in third OS image field
     And I click on "Save Formula"
     Then I should see a "Formula saved" text
 
@@ -531,6 +531,18 @@ Feature: PXE boot a Retail terminal
     And the "saltboot" formula should be unchecked
     And the "tftpd" formula should be unchecked
     And the "vsftpd" formula should be unchecked
+
+@proxy
+@private_net
+@pxeboot_minion
+  Scenario: Cleanup: reset to proper branch ID for pxeboot
+    # Branch ID was changed by mass import yaml file
+    Given I am on the Systems overview page of this "proxy"
+    When I follow "Formulas" in the content area
+    And I follow first "Branch Network" in the content area
+    And I enter "example" in branch id field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
 
 @proxy
 @private_net
