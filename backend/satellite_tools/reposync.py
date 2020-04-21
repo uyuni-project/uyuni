@@ -109,10 +109,13 @@ def send_mail(sync_type="Repo"):
         headers = {
             'Subject': _("%s sync. report from %s") % (sync_type, host_label),
         }
+        comp = CFG.getComponent()
+        initCFG('web')
         sndr = "root@%s" % host_label
         if CFG.default_mail_from:
             sndr = CFG.default_mail_from
         rhnMail.send(headers, body, sender=sndr)
+        initCFG(comp)
     else:
         print((_("+++ email requested, but there is nothing to send +++")))
 
