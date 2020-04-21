@@ -29,6 +29,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -4945,7 +4946,12 @@ public class SystemHandler extends BaseHandler {
                     // Handle monitoring enablement
                     server.asMinionServer().ifPresent(minion -> {
                         if (EntitlementManager.MONITORING.equals(ent)) {
-                            FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
+                            try {
+                                FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
+                            }
+                            catch (IOException | ValidatorException e) {
+                                log.error("Error enabling monitoring: " + e.getMessage());
+                            }
                         }
                     });
                 }
@@ -5013,7 +5019,12 @@ public class SystemHandler extends BaseHandler {
             // Handle monitoring disablement
             server.asMinionServer().ifPresent(minion -> {
                 if (EntitlementManager.MONITORING.equals(ent)) {
-                    FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
+                    try {
+                        FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
+                    }
+                    catch (IOException e) {
+                        log.error("Error disabling monitoring: " + e.getMessage());
+                    }
                 }
             });
         }
