@@ -437,7 +437,7 @@ public class ImageProfileController {
      * @return a JSON string of the list of activation keys
      */
     public static String getActivationKeys(Request req, Response res, User user) {
-        return getActivationKeysAsJson(user);
+        return json(res, getActivationKeyNames(user));
     }
 
     /**
