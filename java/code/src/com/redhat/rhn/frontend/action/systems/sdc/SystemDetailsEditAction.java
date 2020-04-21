@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.systems.sdc;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -46,6 +47,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.util.LabelValueBean;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -287,7 +289,13 @@ public class SystemDetailsEditAction extends RhnAction {
                     // Handle monitoring enablement
                     s.asMinionServer().ifPresent(minion -> {
                         if (EntitlementManager.MONITORING.equals(e)) {
-                            FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
+                            try {
+                                FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
+                            }
+                            catch (IOException | ValidatorException ex) {
+                                log.error("Error enabling monitoring: " + ex.getMessage());
+                                createErrorMessage(request, "system.entitle.formula_error", null);
+                            }
                         }
                     });
                 }
@@ -303,7 +311,13 @@ public class SystemDetailsEditAction extends RhnAction {
                 // Handle monitoring disablement
                 s.asMinionServer().ifPresent(minion -> {
                     if (EntitlementManager.MONITORING.equals(e)) {
-                        FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
+                        try {
+                            FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
+                        }
+                        catch (IOException ioe) {
+                            log.error("Error disabling monitoring: " + ioe.getMessage());
+                            createErrorMessage(request, "system.entitle.formula_error", null);
+                        }
                     }
                 });
             }
