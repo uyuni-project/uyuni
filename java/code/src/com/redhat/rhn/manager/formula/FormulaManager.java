@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.formula;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -352,44 +353,34 @@ public class FormulaManager {
     /**
      * Configure system for monitoring when the entitlement is added.
      * @param minion the MinionServer to be configured for monitoring
+     * @throws IOException if an IO error occurs while saving the data
+     * @throws ValidatorException if a formula is not present (unchecked)
      */
-    public void enableMonitoringOnEntitlementAdd(MinionServer minion) {
-        try {
-            // Assign the monitoring formula to the system unless it belongs to a group having monitoring enabled
-            if (!FormulaFactory.isMemberOfGroupHavingMonitoring(minion)) {
-                List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
-                if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
-                    formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
-                    FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
-                }
+    public void enableMonitoringOnEntitlementAdd(MinionServer minion) throws IOException, ValidatorException {
+        // Assign the monitoring formula to the system unless it belongs to a group having monitoring enabled
+        if (!FormulaFactory.isMemberOfGroupHavingMonitoring(minion)) {
+            List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
+            if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
+                formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
+                FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
             }
-        }
-        catch (UnsupportedOperationException | IOException e) {
-            // FIXME: error handling
-            // LOG.error("Error assigning formula: " + e.getMessage(), e);
-            // result.addError(new ValidatorError("system.entitle.formula_error"));
         }
     }
 
     /**
      * Configure the monitoring formula for cleanup (disable exporters) if needed.
      * @param minion the MinionServer to be configured for monitoring cleanup
+     * @throws IOException if an IO error occurs while saving the data
      */
-    public void disableMonitoringOnEntitlementRemoval(MinionServer minion) {
+    public void disableMonitoringOnEntitlementRemoval(MinionServer minion) throws IOException {
         if (this.isMonitoringCleanupNeeded(minion)) {
-            try {
-                // Get the current data and set all exporters to disabled
-                String minionId = minion.getMinionId();
-                Map<String, Object> data = FormulaFactory
-                        .getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId)
-                        .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));
-                FormulaFactory.saveServerFormulaData(
-                        FormulaFactory.disableMonitoring(data), minionId, PROMETHEUS_EXPORTERS);
-            }
-            catch (UnsupportedOperationException | IOException e) {
-                // FIXME: error handling
-                // LOG.warn("Exception on saving formula data: " + e.getMessage());
-            }
+            // Get the current data and set all exporters to disabled
+            String minionId = minion.getMinionId();
+            Map<String, Object> data = FormulaFactory
+                    .getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId)
+                    .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));
+            FormulaFactory.saveServerFormulaData(
+                    FormulaFactory.disableMonitoring(data), minionId, PROMETHEUS_EXPORTERS);
         }
     }
 

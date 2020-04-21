@@ -756,11 +756,17 @@ public class SystemManager extends BaseManager {
     public static void removeServersFromServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
         ServerFactory.removeServersFromGroup(servers, serverGroup);
         snapshotServers(servers, "Group membership alteration");
+
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
             for (Server server : servers) {
                 systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.MONITORING);
                 server.asMinionServer().ifPresent(minion -> {
-                    FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
+                    try {
+                        FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
+                    }
+                    catch (IOException e) {
+                        log.error("Error disabling monitoring: " + e.getMessage());
+                    }
                 });
             }
         }
