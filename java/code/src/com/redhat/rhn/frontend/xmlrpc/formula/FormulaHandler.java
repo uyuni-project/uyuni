@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaUtil;
@@ -43,6 +44,18 @@ import com.redhat.rhn.manager.formula.InvalidFormulaException;
  * @xmlrpc.doc Provides methods to access and modify formulas.
  */
 public class FormulaHandler extends BaseHandler {
+
+    private FormulaManager formulaManager;
+
+    /**
+     * Instantiates a new formula handler.
+     *
+     * @param formulaManagerIn the formula manager
+     */
+    public FormulaHandler(FormulaManager formulaManagerIn) {
+        super();
+        this.formulaManager = formulaManagerIn;
+    }
 
     /**
      * List all installed formulas.
@@ -203,6 +216,27 @@ public class FormulaHandler extends BaseHandler {
     }
 
     /**
+     * Get the save data for the passed formula applied to the systems whose IDs match with the passed systems IDs
+     * and all of the groups those systems are member of
+     *
+     * @param loggedInUser The current user
+     * @param systemIds The system IDs
+     * @param formulaName formula name
+     * @return a list containing the saved data for the passed formula and the passed system IDs.
+     *
+     * @xmlrpc.doc Return the list of formulas a server and all his groups have.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "formulaName")
+     * @xmlrpc.param  #array_single("long", "systemIds")
+     * @xmlrpc.returntype #array() $FormulaDataSerialized #array_end()
+     */
+    public List<FormulaData> getCombinedFormulaDataByServerIds(User loggedInUser, String formulaName,
+            List<Long> systemIds) {
+        return this.formulaManager.getCombinedFormulaDataForSystems(loggedInUser, systemIds, formulaName);
+    }
+
+    /**
      * Get the saved data for the specific formula against specific group
      *
      * @param loggedInUser user
@@ -303,4 +337,5 @@ public class FormulaHandler extends BaseHandler {
         }
         return 1;
     }
+
 }

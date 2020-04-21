@@ -72,6 +72,7 @@ import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
@@ -141,7 +142,7 @@ public class HandlerFactory {
         factory.addHandler("contentmanagement", new ContentManagementHandler());
         factory.addHandler("distchannel", new DistChannelHandler());
         factory.addHandler("errata", new ErrataHandler());
-        factory.addHandler("formula", new FormulaHandler());
+        factory.addHandler("formula", new FormulaHandler(FormulaManager.getInstance()));
         factory.addHandler("image.store", new ImageStoreHandler());
         factory.addHandler("image.profile", new ImageProfileHandler());
         factory.addHandler("image", new ImageInfoHandler());
