@@ -37,10 +37,10 @@ import types
 import urlgrabber
 
 try:
-    from urllib import urlencode, unquote
+    from urllib import urlencode, unquote, quote
     from urlparse import urlsplit, urlparse, urlunparse
 except:
-    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse, unquote
+    from urllib.parse import urlsplit, urlencode, urlparse, urlunparse, unquote, quote
 
 import xml.etree.ElementTree as etree
 
@@ -68,6 +68,7 @@ ZYPP_SOLV_CACHE_PATH = os.path.join(ZYPP_CACHE_PATH, 'solv')
 REPOSYNC_ZYPPER_ROOT = os.path.join(SPACEWALK_LIB, "reposync/root")
 REPOSYNC_ZYPPER_RPMDB_PATH = os.path.join(REPOSYNC_ZYPPER_ROOT, 'var/lib/rpm')
 REPOSYNC_ZYPPER_CONF = '/etc/rhn/spacewalk-repo-sync/zypper.conf'
+REPOSYNC_EXTRA_HTTP_HEADERS_CONF = '/etc/rhn/spacewalk-repo-sync/extra_headers.conf'
 
 RPM_PUBKEY_VERSION_RELEASE_RE = re.compile(r'^gpg-pubkey-([0-9a-fA-F]+)-([0-9a-fA-F]+)')
 
@@ -450,6 +451,23 @@ class ContentSource:
                 if zypper_cfg.has_option(section_name, 'proxy_password'):
                     self.proxy_pass = zypper_cfg.get(section_name, 'proxy_password')
 
+        # Get extra HTTP headers configuration from /etc/rhn/spacewalk-repo-sync/extra_headers.conf
+        if os.path.isfile(REPOSYNC_EXTRA_HTTP_HEADERS_CONF):
+            http_headers_cfg = configparser.ConfigParser()
+            http_headers_cfg.read_file(open(REPOSYNC_EXTRA_HTTP_HEADERS_CONF))
+            section_name = None
+
+            if http_headers_cfg.has_section(self.name):
+                section_name = self.name
+            elif http_headers_cfg.has_section(channel_label):
+                section_name = channel_label
+            elif http_headers_cfg.has_section('main'):
+                section_name = 'main'
+
+            if section_name:
+                for hdr in http_headers_cfg[section_name]:
+                    self.http_headers[hdr] = http_headers_cfg.get(section_name, option=hdr)
+
         self._authenticate(url)
 
         # Make sure baseurl ends with / and urljoin will work correctly
@@ -567,7 +585,9 @@ repo_gpgcheck={gpgcheck}
 type=rpm-md
 '''
         if uln_repo:
-           _url = 'plugin:spacewalk-uln-resolver?url={}'.format(self._url_orig)
+           _url = 'plugin:spacewalk-uln-resolver?url={}'.format(zypp_repo_url)
+        elif self.http_headers:
+           _url = 'plugin:spacewalk-extra-http-headers?url={}&repo_name={}&channel_label={}'.format(quote(zypp_repo_url), self.name, self.channel_label)
         else:
            _url = zypp_repo_url if not mirrorlist else os.path.join(repo.root, 'mirrorlist.txt')
 
