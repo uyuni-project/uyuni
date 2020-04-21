@@ -32,6 +32,8 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
@@ -42,6 +44,8 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.action.MinionActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -85,6 +89,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
 
     @Override
     public void setUp() throws Exception {
@@ -118,7 +124,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
-        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper);
+        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager);
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -167,7 +174,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
 
-        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper);
+        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager);
 
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
@@ -217,7 +225,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
-        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper);
+        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager);
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
@@ -266,7 +275,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
-        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper);
+        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager);
         context().checking(new Expectations() {{
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -315,7 +325,8 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionManager.setTaskomaticApi(taskomaticMock);
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
-        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper);
+        SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager);
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)

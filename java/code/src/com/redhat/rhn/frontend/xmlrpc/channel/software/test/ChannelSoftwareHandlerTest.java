@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
@@ -55,6 +56,7 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -94,6 +96,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
+    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
     private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
     private ErrataHandler errataHandler = new ErrataHandler();
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
@@ -103,6 +107,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 
@@ -279,7 +284,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Integer sid = server.getId().intValue();
         int rc = csh.setSystemChannels(admin, sid, labels);
 
-        server = (Server) reload(server);
+        server = reload(server);
 
         // now verify
         assertEquals(1, rc);
@@ -315,7 +320,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         int result = csh.setSystemChannels(admin,
                 server.getId().intValue(), channelsToSubscribe);
 
-        server = (Server) reload(server);
+        server = reload(server);
 
         assertEquals(1, result);
         assertEquals(1, server.getChannels().size());
@@ -328,7 +333,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         result = csh.setSystemChannels(admin,
                 server.getId().intValue(), channelsToSubscribe);
 
-        server = (Server) reload(server);
+        server = reload(server);
 
         assertEquals(1, result);
         Channel subscribed = server.getChannels().iterator().next();
@@ -346,7 +351,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
-        server = (Server) reload(server);
+        server = reload(server);
         //make sure servers channel subscriptions weren't changed
         assertEquals(1, result);
         subscribed = server.getChannels().iterator().next();
@@ -463,7 +468,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         String label = c.getLabel();
-        c = (Channel) reload(c);
+        c = reload(c);
 
         try {
             assertEquals(1, csh.delete(admin, label));
@@ -485,7 +490,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, admin);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, admin);
-        cClone2 = (Channel) reload(cClone2);
+        cClone2 = reload(cClone2);
 
         assertEquals(1, csh.delete(admin, cClone2.getLabel()));
         assertNotNull(reload(c));
@@ -500,7 +505,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, admin);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, admin);
-        cClone1 = (Channel) reload(cClone1);
+        cClone1 = reload(cClone1);
         try {
             csh.delete(admin, cClone1.getLabel());
             fail();
@@ -882,7 +887,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         int id = handler.clone(admin, original.getLabel(), details, false);
         Channel chan = ChannelFactory.lookupById((long) id);
-        chan = (Channel) TestUtils.reload(chan);
+        chan = TestUtils.reload(chan);
         assertNotNull(chan);
         assertEquals(label, chan.getLabel());
         assertEquals(1, chan.getPackages().size());
@@ -913,7 +918,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         int id = handler.clone(admin, original.getLabel(), details, false);
         Channel chan = ChannelFactory.lookupById((long) id);
-        chan = (Channel) TestUtils.reload(chan);
+        chan = TestUtils.reload(chan);
         assertNotNull(chan);
         assertEquals(label, chan.getLabel());
         assertEquals(1, chan.getPackages().size());
@@ -944,7 +949,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         int id = handler.clone(admin, original.getLabel(), details, true);
         Channel chan = ChannelFactory.lookupById((long) id);
-        chan = (Channel) TestUtils.reload(chan);
+        chan = TestUtils.reload(chan);
 
 
         assertNotNull(chan);
@@ -969,8 +974,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         mergeFrom.addPackage(packTwo);
         mergeTo.addPackage(packOne);
 
-        mergeFrom = (Channel) TestUtils.saveAndReload(mergeFrom);
-        mergeTo = (Channel) TestUtils.saveAndReload(mergeTo);
+        mergeFrom = TestUtils.saveAndReload(mergeFrom);
+        mergeTo = TestUtils.saveAndReload(mergeTo);
 
         Object[] list =  handler.mergePackages(admin, mergeFrom.getLabel(),
                 mergeTo.getLabel());
@@ -1170,9 +1175,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Integer sid = server.getId().intValue();
 
         Date earliest = new Date();
-        SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper);
+        SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager);
         long actionId = systemHandler.scheduleChangeChannels(admin, sid, base.getLabel(),
-                Arrays.asList(child1.getLabel(),child2.getLabel()), earliest);
+                Arrays.asList(child1.getLabel(), child2.getLabel()), earliest);
 
         Action action = ActionFactory.lookupById(actionId);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
@@ -1209,9 +1215,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Integer sid = server.getId().intValue();
 
         Date earliest = new Date();
-        SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper);
+        SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager);
         long actionId = systemHandler.scheduleChangeChannels(admin, sid, base.getLabel(),
-                Arrays.asList(child1.getLabel(),child2.getLabel()), earliest);
+                Arrays.asList(child1.getLabel(), child2.getLabel()), earliest);
         Action action = ActionFactory.lookupById(actionId);
         assertTrue(action instanceof SubscribeChannelsAction);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;

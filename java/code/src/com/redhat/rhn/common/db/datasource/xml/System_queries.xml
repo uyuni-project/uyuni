@@ -454,6 +454,19 @@ SELECT ES.id, S.name, 1 as selectable
     <elaborator name="entitlements"/>
 </mode>
 
+<mode name="systems_visible_to_user_with_entitlement">
+  <query params="user_id, entitlement_label">
+    SELECT S.id, S.name
+    FROM rhnServer S
+      JOIN rhnUserServerPerms USP ON (S.id = USP.server_id)
+      JOIN rhnServerGroupMembers SGM ON (SGM.server_id = S.id)
+      JOIN rhnServerGroup SG ON (SG.id = SGM.server_group_id)
+      JOIN rhnServerGroupType SGT ON (SG.group_type = SGT.id)
+    WHERE USP.user_id = :user_id
+      AND SGT.label = :entitlement_label
+  </query>
+</mode>
+
 <mode name="xmlrpc_visible_to_user" class="com.redhat.rhn.frontend.dto.ShortSystemInfo">
   <query params="user_id">
 select * from (

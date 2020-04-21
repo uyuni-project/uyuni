@@ -17,12 +17,14 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.CallableMode;
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
@@ -59,6 +61,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
@@ -71,8 +74,9 @@ import javax.persistence.criteria.Root;
  */
 public class ServerFactory extends HibernateFactory {
 
-    private static ServerFactory singleton = new ServerFactory();
     private static Logger log = Logger.getLogger(ServerFactory.class);
+
+    public static final ServerFactory SINGLETON = new ServerFactory();
 
     private ServerFactory() {
         super();
@@ -105,7 +109,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void removeCustomDataValues(Server server) {
         for (Object value : server.getCustomDataValues()) {
-            singleton.removeObject(value);
+            SINGLETON.removeObject(value);
         }
         server.getCustomDataValues().clear();
     }
@@ -120,7 +124,7 @@ public class ServerFactory extends HibernateFactory {
         CustomDataValue value = server.getCustomDataValue(key);
         server.getCustomDataValues().remove(value);
         if (value != null) {
-            singleton.removeObject(value);
+            SINGLETON.removeObject(value);
         }
     }
 
@@ -132,7 +136,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<CustomDataValue> lookupCustomDataValues(CustomDataKey key) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("key", key);
-        return singleton.listObjectsByNamedQuery(
+        return SINGLETON.listObjectsByNamedQuery(
                 "CustomDataValue.findByKey", params);
     }
 
@@ -144,7 +148,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<MinionServer> listMinionsByChannel(long cid) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("cid", cid);
-        return singleton.listObjectsByNamedQuery(
+        return SINGLETON.listObjectsByNamedQuery(
                 "Server.listMinionsByChannel", params);
     }
 
@@ -173,7 +177,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<Device> lookupStorageDevicesByServer(Server s) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server", s);
-        return singleton.listObjectsByNamedQuery(
+        return SINGLETON.listObjectsByNamedQuery(
                 "Device.findStorageByServer", params);
     }
 
@@ -442,7 +446,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
 
-        List<Object[]> result = (singleton.listObjectsByNamedQuery("Server.findUnscheduledErrataByServerIds",
+        List<Object[]> result = (SINGLETON.listObjectsByNamedQuery("Server.findUnscheduledErrataByServerIds",
                 params, serverIds, "serverIds"));
 
         return result.stream().collect(
@@ -462,7 +466,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> lookupByIdsAndOrg(Set<Long> serverIds, Org org) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("orgId", org.getId());
-        return singleton.listObjectsByNamedQuery("Server.findByIdsAndOrgId", params, serverIds, "serverIds");
+        return SINGLETON.listObjectsByNamedQuery("Server.findByIdsAndOrgId", params, serverIds, "serverIds");
     }
 
     /**
@@ -472,7 +476,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Long> findNonZypperTradClientsIds(Set<Long> ids) {
         Map<String, Object> params = new HashMap<String, Object>();
-        return singleton.listObjectsByNamedQuery("Server.findNonZypperTradClientsIds", params, ids,
+        return SINGLETON.listObjectsByNamedQuery("Server.findNonZypperTradClientsIds", params, ids,
                 "serverIds");
     }
 
@@ -486,7 +490,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", id);
         params.put("orgId", orgIn.getId());
-        return (Server) singleton.lookupObjectByNamedQuery(
+        return (Server) SINGLETON.lookupObjectByNamedQuery(
                 "Server.findByIdandOrgId", params);
     }
 
@@ -502,6 +506,26 @@ public class ServerFactory extends HibernateFactory {
         parameters.put("orgId", user.getOrg().getId());
 
         return findByIds(serverIds, "Server.findByIdsAndOrgId", "serverIds", parameters);
+    }
+
+    /**
+     * Returns list of the ID information of all systems visible to user and are entitled with the passed entitlement.
+     * @param user the logged in user.
+     * @param entitlement the entitlement.
+     *
+     * @return list of system IDs.
+     */
+    public List<SystemIDInfo> lookupSystemsVisibleToUserWithEntitlement(User user, String entitlement) {
+        SelectMode mode = ModeFactory.getMode("System_queries", "systems_visible_to_user_with_entitlement", Map.class);
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", user.getId());
+        params.put("entitlement_label", entitlement);
+
+        DataResult<Map<String, Object>> dr = mode.execute(params);
+
+        return dr.stream().map(m -> new SystemIDInfo((Long) m.get("id"), (String) m.get("name")))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -574,7 +598,7 @@ public class ServerFactory extends HibernateFactory {
             PackageEvrFactory.lookupOrCreatePackageEvr(ss.getVersion());
         }
 
-        singleton.saveObject(serverIn);
+        SINGLETON.saveObject(serverIn);
         updateServerPerms(serverIn);
     }
 
@@ -583,7 +607,7 @@ public class ServerFactory extends HibernateFactory {
      * @param pathIn ServerPath to be stored in database.
      */
     public static void save(ServerPath pathIn) {
-        singleton.saveObject(pathIn);
+        SINGLETON.saveObject(pathIn);
     }
 
     /**
@@ -591,7 +615,7 @@ public class ServerFactory extends HibernateFactory {
      * @param productIn product to store in database
      */
     public static void save(InstalledProduct productIn) {
-        singleton.saveObject(productIn);
+        SINGLETON.saveObject(productIn);
     }
 
     /**
@@ -599,7 +623,7 @@ public class ServerFactory extends HibernateFactory {
      * @param keyIn the key to save
      */
     public static void saveCustomKey(CustomDataKey keyIn) {
-        singleton.saveObject(keyIn);
+        SINGLETON.saveObject(keyIn);
     }
 
     /**
@@ -615,10 +639,10 @@ public class ServerFactory extends HibernateFactory {
         List<CustomDataValue> values = lookupCustomDataValues(keyIn);
         for (Iterator itr = values.iterator(); itr.hasNext();) {
             CustomDataValue value = (CustomDataValue) itr.next();
-            singleton.removeObject(value);
+            SINGLETON.removeObject(value);
         }
 
-        singleton.removeObject(keyIn);
+        SINGLETON.removeObject(keyIn);
     }
 
     /**
@@ -628,7 +652,7 @@ public class ServerFactory extends HibernateFactory {
     public static void deproxify(Server server) {
         if (server.getProxyInfo() != null) {
             ProxyInfo info = server.getProxyInfo();
-            singleton.removeObject(info);
+            SINGLETON.removeObject(info);
             server.setProxyInfo(null);
         }
     }
@@ -678,7 +702,7 @@ public class ServerFactory extends HibernateFactory {
     public static ServerArch lookupServerArchByName(String name) {
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
-        List<ServerArch> archs = singleton.listObjectsByNamedQuery(
+        List<ServerArch> archs = SINGLETON.listObjectsByNamedQuery(
                 "ServerArch.findByName",
                 params);
         if (archs != null && archs.size() > 0) {
@@ -725,7 +749,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", server.getId());
         params.put("org_id", server.getOrg().getId());
-        return singleton.listObjectsByNamedQuery("Server.lookupAdministrators",
+        return SINGLETON.listObjectsByNamedQuery("Server.lookupAdministrators",
                 params);
     }
 
@@ -737,7 +761,7 @@ public class ServerFactory extends HibernateFactory {
     public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
         Map<String, Object> params = new HashMap<>();
         params.put("server_arch_id", serverArch.getId());
-        return (ChannelArch) singleton.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
+        return (ChannelArch) SINGLETON.lookupObjectByNamedQuery("ServerArch.findCompatibleChannelArch",
                 params, true);
     }
 
@@ -766,7 +790,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", user.getId());
         params.put("orgId", user.getOrg().getId());
-        List<Number> ids = singleton.listObjectsByNamedQuery(
+        List<Number> ids = SINGLETON.listObjectsByNamedQuery(
                 "Server.listProxies", params);
         List<Server> servers = new ArrayList(ids.size());
         for (Number id : ids) {
@@ -803,7 +827,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", user.getId());
         params.put("label", RhnSetDecl.SYSTEMS.getLabel());
-        return singleton.listObjectsByNamedQuery("Server.findInSet", params);
+        return SINGLETON.listObjectsByNamedQuery("Server.findInSet", params);
     }
 
     /**
@@ -813,7 +837,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of config enabled systems
      */
     public static List<Server> listConfigEnabledSystems() {
-        return singleton.listObjectsByNamedQuery(
+        return SINGLETON.listObjectsByNamedQuery(
                 "Server.listConfigEnabledSystems", Collections.EMPTY_MAP);
     }
 
@@ -825,7 +849,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<String> listFqdns(Long sid) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
-        return singleton.listObjectsByNamedQuery("Server.listFqdns", params);
+        return SINGLETON.listObjectsByNamedQuery("Server.listFqdns", params);
     }
 
     /**
@@ -836,7 +860,7 @@ public class ServerFactory extends HibernateFactory {
     public static Optional<Server> findByFqdn(String name) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("name", name);
-        return Optional.ofNullable((Server) singleton
+        return Optional.ofNullable((Server) SINGLETON
                 .lookupObjectByNamedQuery("Server.findByFqdn", params));
     }
 
@@ -847,7 +871,7 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of config-diff enabled systems
      */
     public static List<Server> listConfigDiffEnabledSystems() {
-        return singleton.listObjectsByNamedQuery(
+        return SINGLETON.listObjectsByNamedQuery(
                 "Server.listConfigDiffEnabledSystems", Collections.EMPTY_MAP);
     }
 
@@ -881,16 +905,16 @@ public class ServerFactory extends HibernateFactory {
         if ((startDate != null) && (endDate != null)) {
             params.put("start_date", startDate);
             params.put("end_date", endDate);
-            snaps = singleton.listObjectsByNamedQuery(
+            snaps = SINGLETON.listObjectsByNamedQuery(
                     "ServerSnapshot.findBetweenDates", params);
         }
         else if (startDate != null) {
             params.put("start_date", startDate);
-            snaps = singleton.listObjectsByNamedQuery(
+            snaps = SINGLETON.listObjectsByNamedQuery(
                     "ServerSnapshot.findAfterDate", params);
         }
         else {
-            snaps = singleton.listObjectsByNamedQuery(
+            snaps = SINGLETON.listObjectsByNamedQuery(
                     "ServerSnapshot.findForServer", params);
         }
         return snaps;
@@ -904,7 +928,7 @@ public class ServerFactory extends HibernateFactory {
     public static ServerSnapshot lookupSnapshotById(Integer id) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("snapId", Long.valueOf(id));
-        return (ServerSnapshot) singleton.lookupObjectByNamedQuery(
+        return (ServerSnapshot) SINGLETON.lookupObjectByNamedQuery(
                 "ServerSnapshot.findById", params);
     }
 
@@ -916,7 +940,7 @@ public class ServerFactory extends HibernateFactory {
     public static ServerSnapshot lookupLatestForServer(Server server) {
         Map params = new HashMap();
         params.put("sid", server);
-        return (ServerSnapshot) singleton.lookupObjectByNamedQuery(
+        return (ServerSnapshot) SINGLETON.lookupObjectByNamedQuery(
                 "ServerSnapshot.findLatestForServer", params);
     }
 
@@ -925,7 +949,7 @@ public class ServerFactory extends HibernateFactory {
      * @param snapshotIn snapshot to save
      */
     public static void saveSnapshot(ServerSnapshot snapshotIn) {
-        singleton.saveObject(snapshotIn);
+        SINGLETON.saveObject(snapshotIn);
     }
 
     /**
@@ -1031,7 +1055,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<SnapshotTag> getSnapshotTags(ServerSnapshot snap) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("snap", snap);
-        return singleton.listObjectsByNamedQuery("ServerSnapshot.findTags", params);
+        return SINGLETON.listObjectsByNamedQuery("ServerSnapshot.findTags", params);
     }
 
     /**
@@ -1041,7 +1065,7 @@ public class ServerFactory extends HibernateFactory {
      * @return list of system ids that are linux systems
      */
     public static List<Long> listLinuxSystems(Collection<Long> systemIds) {
-        return singleton.listObjectsByNamedQuery("Server.listRedHatSystems",
+        return SINGLETON.listObjectsByNamedQuery("Server.listRedHatSystems",
                 new HashMap(), systemIds, "sids");
     }
 
@@ -1136,7 +1160,7 @@ public class ServerFactory extends HibernateFactory {
      * @return available contact methods
      */
     public static List<ContactMethod> listContactMethods() {
-        return singleton.listObjectsByNamedQuery("ContactMethod.findAll", null, true);
+        return SINGLETON.listObjectsByNamedQuery("ContactMethod.findAll", null, true);
     }
 
     /**
@@ -1147,7 +1171,7 @@ public class ServerFactory extends HibernateFactory {
     public static ContactMethod findContactMethodById(Long id) {
         Map params = new HashMap();
         params.put("id", id);
-        return (ContactMethod) singleton.lookupObjectByNamedQuery(
+        return (ContactMethod) SINGLETON.lookupObjectByNamedQuery(
                 "ContactMethod.findById", params, true);
     }
 
@@ -1200,7 +1224,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("serverIds", serverIds);
         params.put("errataIds", errataIds);
-        List<Object[]> result = singleton.listObjectsByNamedQuery(
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery(
                 "Server.listErrataNamesForServers", params);
         return result.stream().collect(
             // Group by server id
@@ -1244,7 +1268,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<>();
         params.put("serverIds", serverIds);
         params.put("errataIds", errataIds);
-        List<Object[]> result = singleton.listObjectsByNamedQuery(
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery(
                 "Server.listNewestPkgsForServerErrata", params);
 
         return result.stream().collect(
@@ -1262,7 +1286,7 @@ public class ServerFactory extends HibernateFactory {
      * @param networkInterfaceIn the interface to save
      */
     public static void saveNetworkInterface(NetworkInterface networkInterfaceIn) {
-        singleton.saveObject(networkInterfaceIn);
+        SINGLETON.saveObject(networkInterfaceIn);
     }
 
 
@@ -1309,7 +1333,7 @@ public class ServerFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("channel_id", channelId);
-        return singleton.listObjectsByNamedQuery(
+        return SINGLETON.listObjectsByNamedQuery(
                 "Server.findServerInSSMByChannel", params);
 
     }
