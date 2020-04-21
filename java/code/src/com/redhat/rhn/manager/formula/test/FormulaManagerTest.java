@@ -17,18 +17,22 @@ package com.redhat.rhn.manager.formula.test;
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.InvalidFormulaException;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -247,6 +251,41 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveServerFormulas(minion.getMinionId(), Arrays.asList(PROMETHEUS_EXPORTERS));
         FormulaFactory.saveServerFormulaData(formulaData, minion.getMinionId(), PROMETHEUS_EXPORTERS);
         assertTrue(manager.isMonitoringCleanupNeeded(minion));
+    }
+
+    public void testGetCombinedFormulaDataForSystems() throws Exception {
+        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
+
+        Map<String, Object> formulaData = new HashMap<>();
+        formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
+        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
+        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
+
+        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+
+        // Server should have a monitoring entitlement after being added to the group
+        SystemManager.addServerToServerGroup(server, group);
+        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+
+        List<FormulaData> combinedPrometheusExportersFormulas = this.manager
+                .getCombinedFormulaDataForSystems(user, Arrays.asList(server.getId()), PROMETHEUS_EXPORTERS);
+
+        assertNotNull(combinedPrometheusExportersFormulas);
+        assertEquals(combinedPrometheusExportersFormulas.size(), 1);
+
+        FormulaData combinedFormulaData = combinedPrometheusExportersFormulas.get(0);
+
+        assertEquals(combinedFormulaData.getSystemID(), server.getId());
+        assertEquals(combinedFormulaData.getMinionID(), server.getMinionId());
+        assertNotNull(combinedFormulaData.getFormulaValues().get("postgres_exporter"));
+        assertNotNull(combinedFormulaData.getFormulaValues().get("apache_exporter"));
+        assertNotNull(combinedFormulaData.getFormulaValues().get("node_exporter"));
     }
 
     // Copy the pillar.example file to a temp dir used as metadata directory (in FormulaFactory)
