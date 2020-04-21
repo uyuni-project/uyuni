@@ -115,6 +115,16 @@ ORDER BY UPPER(NAME)
   <elaborator name="visible_to_user_overview_fast" />
 </mode>
 
+<mode name="managed_system_groups_by_system">
+  <query>
+    SELECT S.id AS system_id, SG.id AS group_id, SG.name AS group_name
+    FROM rhnServer S
+      JOIN rhnServerGroupMembers SGM ON (SGM.server_id = S.id)
+      JOIN rhnServerGroup SG ON (SG.id = SGM.server_group_id)
+    WHERE S.id IN (%s)
+      AND SG.group_type IS NULL
+  </query>
+</mode>
 
 <mode name="visible_to_system">
   <query params="sid, org_id, user_id">

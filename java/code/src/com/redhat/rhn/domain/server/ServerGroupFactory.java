@@ -16,8 +16,12 @@ package com.redhat.rhn.domain.server;
 
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.DuplicateObjectException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
@@ -32,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -41,7 +46,7 @@ import java.util.Optional;
 public class ServerGroupFactory extends HibernateFactory {
 
     public static final String NULL_DESCRIPTION = "none";
-    private static final ServerGroupFactory SINGLETON = new ServerGroupFactory();
+    public static final ServerGroupFactory SINGLETON = new ServerGroupFactory();
     private static Logger log = Logger.getLogger(ServerGroupFactory.class);
 
     @Override
@@ -371,5 +376,20 @@ public class ServerGroupFactory extends HibernateFactory {
         params.put("sgid", sg.getId());
         params.put("threshold", threshold);
         return  SINGLETON.listObjectsByNamedQuery(query, params);
+    }
+
+    /**
+     * Lookup the managed system groups a set of systems are member of, given their system IDs.
+     *
+     * @param systemIDs the system IDs
+     * @return a map containing the managed system group information for each group the passed systems are member of
+     */
+    public Map<Long, List<SystemGroupID>> lookupManagedSystemGroupsForSystems(List<Long> systemIDs) {
+        SelectMode mode = ModeFactory.getMode("SystemGroup_queries", "managed_system_groups_by_system", Map.class);
+        return ((DataResult<Map<String, Object>>) mode.execute(systemIDs)).stream()
+                .collect(Collectors.groupingBy(m -> (Long) m.get("system_id"),
+                        Collectors.mapping(
+                                m -> new SystemGroupID((Long) m.get("group_id"), (String) m.get("group_name")),
+                                Collectors.toList())));
     }
 }
