@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
@@ -278,21 +279,36 @@ public class RegistrationUtils {
                 )
         );
 
-        // this is needed for "special" cases like RES6 that has multiple architectures in one product, or in case an
-        // activation key specifies a base channel for an incorrect arch
-        Set<Channel> compatibleChannels = unfilteredChannels.stream()
-                .filter(c -> c.getChannelArch().getCompatibleServerArches().contains(server.getServerArch()))
-                .collect(toSet());
+        server.setChannels(
+                filterCompatibleChannelsForServerArch(server.getServerArch(), unfilteredChannels, activationKey));
+    }
 
-        Channel assignedBaseChannel = server.getBaseChannel();
-        if (assignedBaseChannel != null && compatibleChannels.stream()
-                .filter(channel -> channel.isBaseChannel())
-                .anyMatch(baseChannel -> !baseChannel.equals(assignedBaseChannel))) {
-            // if base channel is going to be changed, we reset all current assignments
-            server.getChannels().clear();
-        }
+    /**
+     * Given a set of channels, filter those channels that are compatible with the passed serverArch.
+     * If an activationKey is passed, the base channel of the activationKey is used if it's compatible with the passed
+     * serverArch.
+     *
+     * NOTE: this is needed for "special" cases like RES6 that has multiple architectures in one product, or in case an
+     * activation key specifies a base channel for an incorrect arch.
+     *
+     * @param serverArch the serverArch
+     * @param channels the channels to be filtered
+     * @param activationKey the activationKey
+     * @return a set of compatible channels
+     */
+    private static Set<Channel> filterCompatibleChannelsForServerArch(ServerArch serverArch, Set<Channel> channels,
+            Optional<ActivationKey> activationKey) {
+        Map<Boolean, List<Channel>> compatibleChannels =
+                channels.stream().filter(c -> c.getChannelArch().getCompatibleServerArches().contains(serverArch))
+                        .collect(partitioningBy(c -> c.isBaseChannel()));
 
-        server.setChannels(compatibleChannels);
+        Optional<Channel> activationKeyBaseChannel = activationKey.flatMap(ak -> ofNullable(ak.getBaseChannel()));
+
+        Stream<Channel> compatibleBaseChannels =
+                Opt.fold(activationKeyBaseChannel, () -> compatibleChannels.get(true).stream(),
+                        bc -> compatibleChannels.get(true).stream().filter(c -> bc.getId().equals(c.getId())));
+
+        return Stream.concat(compatibleBaseChannels, compatibleChannels.get(false).stream()).collect(toSet());
     }
 
     private static Set<Channel> findChannelsForProducts(Set<SUSEProduct> suseProducts, String minionId) {
