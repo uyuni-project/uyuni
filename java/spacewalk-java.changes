@@ -1,3 +1,5 @@
+- avoid multiple base channels when onboarding minions (bsc#1167871)
+
 -------------------------------------------------------------------
 Thu Apr 23 10:25:13 CEST 2020 - jgonzalez@suse.com
 
