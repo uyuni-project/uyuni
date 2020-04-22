@@ -13,8 +13,8 @@ require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
 
-## codecoverage gem
-SimpleCov.start
+## code coverage analysis
+# SimpleCov.start
 
 server = ENV['SERVER']
 
