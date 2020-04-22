@@ -1055,7 +1055,8 @@ class RepoSync(object):
         log(0, '')
         log(0, '  Importing packages to DB:')
 
-        to_process_batches = [to_process[i:i + self.import_batch_size] for i in range(0, len(to_process), self.import_batch_size)]
+        twisted_batch_indexes = self.twisted_batch_indexes(len(to_process), self.import_batch_size)
+        to_process_batches = [[to_process[twisted_index] for twisted_index in twisted_batch] for twisted_batch in twisted_batch_indexes]
 
         affected_channels = []
         with multiprocessing.Pool(processes=max(os.cpu_count() * 2, 32), maxtasksperchild=1) as pool:
@@ -1101,6 +1102,44 @@ class RepoSync(object):
         self._normalize_orphan_vendor_packages()
         return failed_packages
 
+    def twisted_batch_indexes(self, total_size, batch_size):
+        """Assume a list of total_size elements, and consider the following two possible divisions of its elements: per "batch" or per "chunk".
+        Batches are contiguous sub-lists of the original list with batch_size elements each (and there's batch_count=total_size/batch_size of them).
+        Example with total_size = 12 and batch_size = 3, thus batch_count = 4:
+
+        List:    [ 0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11 ]
+        Batches: [[0,   1,   2], [3,   4,   5], [6,   7,   8], [9,  10,  11]]
+
+        Chunks are contiguous sub-lists as well, but have batch_count instead of batch_size elements each. Example:
+
+        Chunks:  [[0,   1,   2,   3], [4,   5,   6,   7], [8,   9,  10,  11]]
+
+        This function returns sub-lists of the same size of batches, each with elements sampled from every chunk. Example:
+
+        Twisted: [[0,   4,   8], [1,   5,   9], [2,   6,  10], [3,   7,  11]]
+
+        Intuitively, this rearranges elements across batches so that each batch contains a "sample" of elements from "all over" the original list -
+        in particular, from every chunk.
+        """
+        # integer division rounded up
+        batch_count = (total_size + batch_size - 1) // batch_size
+
+        # compute element indexes in all batches
+        batches = [[batch_size * batch_index + element_index for element_index in range(0, batch_size)] for batch_index
+                   in range(0, batch_count)]
+
+        # twist elements across batches. Specifically: the n-th element in a batch has to be picked from the n-th chunk
+        twisted_batches = [[self.twisted_index(batches[i][j], batch_count, batch_size) for j in range(0, batch_size)] for i in
+                           range(0, batch_count)]
+
+        # discard elements greater than total_size (those were created because we rounded up earlier)
+        return [[twisted_batches[i][j] for j in range(0, batch_size) if twisted_batches[i][j] < total_size] for i in
+                  range(0, batch_count)]
+
+    def twisted_index(self, i, batch_count, batch_size):
+        batch_index = i // batch_size
+        element_index = i % batch_size
+        return batch_count * element_index + batch_index
 
     def import_package_batch(self, to_process, to_disassociate, is_non_local_repo, batch_index, batch_count):
         # Prepare SQL statements
