@@ -217,7 +217,7 @@ public class PackageFactory extends HibernateFactory {
      * @param pn to query by
      * @return List of Package objects if found
      */
-    public static List listPackagesByPackageName(PackageName pn) {
+    public static List<Package> listPackagesByPackageName(PackageName pn) {
         Session session = HibernateFactory.getSession();
 
         return session.getNamedQuery("Package.findByPackageName").setParameter("packageName",
