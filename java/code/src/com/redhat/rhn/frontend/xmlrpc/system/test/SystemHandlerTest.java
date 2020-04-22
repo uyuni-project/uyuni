@@ -25,11 +25,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import org.apache.commons.lang3.StringUtils;
@@ -2734,6 +2740,123 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = (Server) getMockedHandler().getDetails(admin, minion.getId().intValue());
 
         assertEquals(minion.getMinionId(), server.getMinionId());
+    }
+
+    /**
+     * Test different states of packages
+     * @throws Exception
+     */
+    public void testUpdatePackageState() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(admin);
+        server.addChannel(baseChannel);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        Package pkg = PackageTest.createTestPackage(admin.getOrg());
+        server.getBaseChannel().addPackage(pkg);
+        TestUtils.saveAndFlush(pkg);
+
+        SystemHandler systemHandler = getMockedHandler();
+
+        // Installed 'Latest'(state = 0 & versionConstraint = 0)
+        int  result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 0);
+        assertEquals(1,result);
+        Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
+        Set<PackageState> pstates = sstate.get().getPackageStates();
+        assertEquals(1, pstates.size());
+        for (PackageState pst : pstates) {
+            if (pst.getName().equals(pkg.getPackageName())) {
+                assertEquals(PackageStates.INSTALLED, pst.getPackageState());
+                assertEquals(VersionConstraints.LATEST, pst.getVersionConstraint());
+            }
+            else {
+                assertTrue("unexpected package state", false);
+            }
+        }
+
+        // Installed 'Any'(state =0 versionConstraint = 1)
+        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 1);
+        assertEquals(1,result);
+        sstate = StateFactory.latestStateRevision(server);
+        pstates = sstate.get().getPackageStates();
+        assertEquals(1, pstates.size());
+        for (PackageState pst : pstates) {
+            if (pst.getName().equals(pkg.getPackageName())) {
+                assertEquals(PackageStates.INSTALLED, pst.getPackageState());
+                assertEquals(VersionConstraints.ANY, pst.getVersionConstraint());
+            }
+            else {
+                assertTrue("unexpected package state", false);
+            }
+        }
+
+        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
+        assertEquals(1,result);
+        sstate = StateFactory.latestStateRevision(server);
+        pstates = sstate.get().getPackageStates();
+        assertEquals(1, pstates.size());
+        for (PackageState pst : pstates) {
+            if (pst.getName().equals(pkg.getPackageName())) {
+                assertEquals(PackageStates.REMOVED, pst.getPackageState());
+            }
+            else {
+                assertTrue("unexpected package state", false);
+            }
+        }
+
+        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
+        assertEquals(1,result);
+        sstate = StateFactory.latestStateRevision(server);
+        pstates = sstate.get().getPackageStates();
+        assertEquals(0, pstates.size());
+
+    }
+
+    /**
+     * Test the validation part of SystemHandler.updatePackageState
+     * @throws Exception
+     */
+    public void testUpdatePackageValidation() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin);
+        SystemHandler systemHandler = getMockedHandler();
+
+        try {
+            int actionId = systemHandler.updatePackageState(admin, server.getId().intValue(), "", 2, 1);
+            fail("Should throw UnsupportedOperationException");
+        }
+        catch (UnsupportedOperationException e) {
+            assertEquals("System not managed with Salt: " + server.getId(), e.getMessage());
+        }
+        // IllegalArgumentException in case of invalid package name
+        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(admin);
+
+        // IllegalArgumentException in case of invalid state
+        try {
+            int actionId = systemHandler.updatePackageState(admin, minionServer.getId().intValue(), "test-package", 3, 1);
+            fail("Should throw IllegalArgumentException");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Invalid package state", e.getMessage());
+        }
+        // IllegalArgumentException in case of invalid version constraint
+        try {
+            int actionId = systemHandler.updatePackageState(admin, minionServer.getId().intValue(), "test-package", 2, 4);
+            fail("Should throw IllegalArgumentException");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Invalid version constraint", e.getMessage());
+        }
+
+        try {
+            int actionId = systemHandler.updatePackageState(admin, minionServer.getId().intValue(), "--", 2, 1);
+            fail("Should throw IllegalArgumentException");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("No such package exists", e.getMessage());
+        }
     }
 
     private SystemHandler getMockedHandler() throws Exception {
