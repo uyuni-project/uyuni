@@ -280,62 +280,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
     }
 
-    public void testAddPackageToState() throws Exception {
-        // Create test packages and a server
-        Package pkg1 = PackageTest.createTestPackage(user.getOrg());
-        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-
-        // Create a server state revision
-        ServerStateRevision serverState = new ServerStateRevision();
-        serverState.setServer(server);
-        serverState.setCreator(user);
-
-        // Add config channels
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "foo", "foo");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "bar", "bar");
-
-        serverState.getConfigChannels().add(channel1);
-        serverState.getConfigChannels().add(channel2);
-
-        // Add a package state and save: pkg1 -> REMOVED
-        PackageState packageState = new PackageState();
-        packageState.setStateRevision(serverState);
-        packageState.setName(pkg1.getPackageName());
-        packageState.setPackageState(PackageStates.REMOVED);
-        serverState.addPackageState(packageState);
-        StateFactory.save(serverState);
-        long id = serverState.getId();
-
-        List<Package> pkgs = new ArrayList<>();
-        pkgs.add(pkg1);
-        pkgs.add(pkg2);
-        StateFactory.addPackagesToNewStateRevision(server, Optional.of(user.getId()),
-                pkgs);
-
-        // Verify: Latest package states contain only pkg1 -> REMOVED and
-        // pkg2 -> INSTALLED - latest
-        Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
-        assertFalse(id == sstate.get().getId());
-        Set<PackageState> pstates = sstate.get().getPackageStates();
-        assertEquals(2, pstates.size());
-        for (PackageState pst : pstates) {
-            if (pst.getName().equals(pkg1.getPackageName())) {
-                assertEquals(PackageStates.REMOVED, pst.getPackageState());
-            }
-            else if (pst.getName().equals(pkg2.getPackageName())) {
-                assertEquals(PackageStates.INSTALLED, pst.getPackageState());
-                assertEquals(VersionConstraints.LATEST, pst.getVersionConstraint());
-            }
-            else {
-                assertTrue("unexpected package state", false);
-            }
-        }
-
-        assertContains(sstate.get().getConfigChannels(), channel1);
-        assertContains(sstate.get().getConfigChannels(), channel2);
-    }
-
     public void testLatestConfigChannels() throws Exception {
         // Create revision 1
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
