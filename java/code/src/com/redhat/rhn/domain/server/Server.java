@@ -36,6 +36,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.utils.Opt;
 import java.net.IDN;
 import java.sql.Timestamp;
@@ -126,6 +127,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String machineId;
     private String hostname;
     private boolean payg;
+    private MaintenanceSchedule maintenanceSchedule;
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -2108,6 +2110,28 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setPayg(boolean paygIn) {
         payg = paygIn;
+    }
+
+    /**
+     * @return the maintenance schedule
+     */
+    protected MaintenanceSchedule getMaintenanceSchedule() {
+        return maintenanceSchedule;
+    }
+
+    /**
+     * @return the maintenance schedule as optional
+     */
+    public Optional<MaintenanceSchedule> getMaintenanceScheduleOpt() {
+        return Optional.ofNullable(maintenanceSchedule);
+    }
+
+    /**
+     * Set the Maintenance Schedule
+     * @param scheduleIn the schedule
+     */
+    public void setMaintenanceSchedule(MaintenanceSchedule scheduleIn) {
+        maintenanceSchedule = scheduleIn;
     }
 
     /**
