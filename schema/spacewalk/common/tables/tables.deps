@@ -153,7 +153,8 @@ rhnRegTokenPackages            :: rhnRegToken rhnPackageName
 
 rhnSatelliteInfo               :: rhnServer
 rhnServer                      :: rhnServerArch web_contact web_customer \
-                                  rhnProvisionState suseServerContactMethod
+                                  rhnProvisionState suseServerContactMethod \
+                                  suseMaintenanceSchedule
 rhnServerAction                :: rhnServer rhnAction rhnActionStatus
 rhnServerActionPackageResult   :: rhnActionPackage
 rhnServerActionScriptResult    :: rhnActionScript rhnServer
