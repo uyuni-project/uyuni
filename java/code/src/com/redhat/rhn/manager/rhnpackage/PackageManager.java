@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -408,6 +409,16 @@ public class PackageManager extends BaseManager {
      */
     public static Package lookupByIdAndUser(Long id, User user) {
         return PackageFactory.lookupByIdAndUser(id, user);
+    }
+
+    /**
+     * Finds a package by using name
+     * @param name The package name
+     * @return A Package object
+     */
+    public static Optional<Package> lookupByName(PackageName name) {
+        List<Package> packages = PackageFactory.listPackagesByPackageName(name);
+        return packages.stream().findFirst();
     }
 
     /**

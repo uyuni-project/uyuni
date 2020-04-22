@@ -73,6 +73,11 @@ import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -154,6 +159,8 @@ import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import java.io.BufferedReader;
 import java.io.File;
@@ -7000,6 +7007,68 @@ public class SystemHandler extends BaseHandler {
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
         }
+    }
+    /**
+     * Update the package state of a given system(High state would be needed to actually install/remove the package)
+     *
+     * @param loggedInUser The current user
+     * @param sid The system id of the target system
+     * @param packageName name of the package
+     * @param state state of the package (0 = installed, 1= removed, 2 = unmanaged)
+     * @param versionConstraint latest version should be installed or any (0 = latest, 1= any)
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc  Update the package state of a given system
+     *                          (High state would be needed to actually install/remove the package)
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param_desc("string", "packageName", "Name of the package")
+     * @xmlrpc.param #param_desc("int", "state", "0 = installed, 1 = removed, 2 = unmanaged ")
+     * @xmlrpc.param #param_desc("int", "versionConstraint", "0 = latest, 1 = any ")
+     * @xmlrpc.returntype 1 on success, exception on failure
+     */
+    public int updatePackageState(User loggedInUser, Integer sid, String packageName, Integer state,
+                                  Integer versionConstraint) {
+        try {
+            //validation
+            MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
+                    .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + sid));
+            PackageStates vPkgState = PackageStates.byId(state)
+                    .orElseThrow(()-> new IllegalArgumentException("Invalid package state"));
+            VersionConstraints vVersionConstraint = VersionConstraints.byId(versionConstraint)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid version constraint"));
+            Package pkg = PackageManager.lookupByName(PackageManager.lookupPackageName(packageName))
+                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));
+
+            //update the state
+            ServerStateRevision stateRev = StateRevisionService.INSTANCE.cloneLatest(minion, loggedInUser, true, true);
+            Set<PackageState> pkgStates = stateRev.getPackageStates();
+
+            boolean isAvailable = SystemManager.hasPackageAvailable(minion, pkg.getPackageName().getId()
+                    , pkg.getPackageArch().getId(), pkg.getPackageEvr().getId());
+            if (isAvailable && (vPkgState == PackageStates.INSTALLED || vPkgState == PackageStates.REMOVED)) {
+                pkgStates.removeIf(ps -> ps.getName().equals(pkg.getPackageName()));
+                PackageState packageState = new PackageState();
+                packageState.setStateRevision(stateRev);
+                packageState.setPackageState(vPkgState);
+                packageState.setVersionConstraint(vVersionConstraint);
+                packageState.setName(pkg.getPackageName());
+                packageState.setEvr(pkg.getPackageEvr());
+                packageState.setArch(pkg.getPackageArch());
+                pkgStates.add(packageState);
+            }
+            //Only remove in case of unmanaged state
+            else {
+                pkgStates.removeIf(ps -> ps.getName().equals(pkg.getPackageName()));
+            }
+            StateFactory.save(stateRev);
+            StatesAPI.generateServerPackageState(minion);
+
+            return 1;
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
+       }
     }
 
     /**
