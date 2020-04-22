@@ -11,7 +11,7 @@ Below is the list of Ruby gems used by the testsuite. It may change over time as
 * ```yaml``` enables to use files in YAML format<br /> More specifically, to run lists of Cucumber features stored in YAML format
 * ```rake``` enables to use Rakefiles, the Ruby equivalent of Makefiles<br /> Here, to run the cucumber testsuite with the right command line arguments
 * ```minitest``` is a framework for unit testing
-* ```simplecov``` allows to analyze code coverage of the testsuite
+* ```simplecov``` allows to analyze code coverage of the testsuite <strong>Disabled by default</strong>
 * ```pp``` offers pretty-print of Ruby objects
 * ```timeout``` enables to interrupt long-running blocks of code
 
