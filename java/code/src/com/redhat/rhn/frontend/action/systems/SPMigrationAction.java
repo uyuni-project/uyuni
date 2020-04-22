@@ -513,6 +513,7 @@ public class SPMigrationAction extends RhnAction {
                 .collect(Collectors.toSet());
 
         if (baseChannelSet.size() != 1) {
+            logger.debug((baseChannelSet.isEmpty() ? "No " : "Multiple ") + "matching base channels found");
             return TARGET;
         }
 
@@ -524,20 +525,26 @@ public class SPMigrationAction extends RhnAction {
 
         Server server = ctx.lookupAndBindServer();
         Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
-        Optional<SUSEProductSet> targetProductSet = getMigrationTargets(
+        List<SUSEProductSet> targetProductSet = getMigrationTargets(
                 request,
                 installedProducts,
                 server.getServerArch().getCompatibleChannelArch(),
                 ctx.getCurrentUser()
-        ).stream().filter(productSet -> productSet.getBaseProduct().equals(baseProduct)).findFirst();
+        ).stream().filter(productSet -> productSet.getBaseProduct().equals(baseProduct)).collect(Collectors.toList());
 
         if (targetProductSet.isEmpty()) {
+            logger.debug("No valid migration target found");
             return TARGET;
         }
+        else if (targetProductSet.size() > 1) {
+            logger.warn("Multiple migration targets found: " + targetProductSet.toString());
+        }
+        else {
+            request.setAttribute(ADDON_PRODUCTS, targetProductSet.get(0).getAddonProducts());
+        }
 
-        request.setAttribute(TARGET_PRODUCTS, targetProductSet.get());
-        request.setAttribute(BASE_PRODUCT, targetProductSet.get().getBaseProduct());
-        request.setAttribute(ADDON_PRODUCTS, targetProductSet.get().getAddonProducts());
+        request.setAttribute(TARGET_PRODUCTS, targetProductSet.get(0));
+        request.setAttribute(BASE_PRODUCT, targetProductSet.get(0).getBaseProduct());
 
         request.setAttribute(BASE_CHANNEL, baseChannel);
         request.setAttribute(CHILD_CHANNELS, childChannels);
