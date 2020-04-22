@@ -22,6 +22,7 @@ try:
     from cStringIO import OutputType
 except:
     from io import StringIO as OutputType
+from io import BytesIO
 from spacewalk.common.rhnConfig import CFG, initCFG
 
 initCFG("tftpsync")
@@ -102,7 +103,7 @@ def application(environ, start_response):
                 tf.write(file_content)
                 tf.close()
                 os.rename(tfname, rfname)
-            elif isinstance(tfpointer, OutputType):
+            elif isinstance(tfpointer, OutputType) or isinstance(tfpointer, BytesIO):
                 tf = open(tfname, 'wb')
                 tf.write(form.getvalue('file'))
                 tf.close()

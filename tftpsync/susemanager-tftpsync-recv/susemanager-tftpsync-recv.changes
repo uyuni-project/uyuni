@@ -1,3 +1,5 @@
+- Do not produce 500 errors with empty and UTF files (bsc#1167265)
+
 -------------------------------------------------------------------
 Mon Apr 13 09:30:48 CEST 2020 - jgonzalez@suse.com
 
