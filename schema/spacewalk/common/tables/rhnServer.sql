@@ -56,6 +56,10 @@ CREATE TABLE rhnServer
     machine_id          VARCHAR(256),
     hostname            VARCHAR(128),
     payg                CHAR(1) DEFAULT ('N') NOT NULL,
+    maintenance_schedule_id NUMERIC
+                            CONSTRAINT rhn_server_mtsched_id_fk
+                                REFERENCES suseMaintenanceSchedule (id)
+                                ON DELETE SET NULL,
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
     modified            TIMESTAMPTZ
