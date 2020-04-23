@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Apr 23 10:27:57 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.23-1
 - Require python3-tornado only for SLE15/SLE15SP1/openSUSE Leap 15.1 (bsc#1169865)
 - Use python3-M2Crypto for all SLE15 versions and openSUSE Leap 15.1
   bootstrap repositories
