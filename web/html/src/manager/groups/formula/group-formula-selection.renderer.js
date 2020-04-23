@@ -12,7 +12,8 @@ const SpaRenderer  = require("core/spa/spa-renderer").default;
 export const renderer = (renderId, {groupId, warningMessage}) => {
 
   const messageTexts = {
-    "formulas_saved": <p>{t("Formula saved. Apply the ")}<a
+    "formulas_saved": <p>{t("Formula saved. Edit configuration options " +
+      "in the enabled formulas and apply the ")}<a
       href={'/rhn/manager/groups/details/highstate?sgid=' +
         groupId}>{t("Highstate")}</a>{t(" for the changes to take effect.")}
     </p>,
