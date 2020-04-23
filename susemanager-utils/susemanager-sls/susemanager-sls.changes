@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Apr 23 10:33:05 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.25-1
 - Fix virt.deleted state dependency
 - remove key grains only when file and grain exists (bsc#1167237)
 - cleanup key grains after usage
