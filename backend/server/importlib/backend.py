@@ -102,7 +102,7 @@ class Backend:
 
         sql = """
             WITH
-              wanted (name, version) AS (
+              wanted (ordering, name, version) AS (
                 VALUES %s
               ),
               missing AS (
@@ -114,20 +114,21 @@ class Backend:
                   WHERE rhnPackageCapability.id IS NULL
               )
               INSERT INTO rhnPackageCapability(id, name, version)
-                SELECT *
+                SELECT id, name, version
                   FROM missing
+                  ORDER BY ordering
                 ON CONFLICT DO NOTHING
         """
-        wanted = [(key[0], None if key[1] == '' else key[1]) for key in capabilityHash.keys()]
+        wanted = [(i, key[0], None if key[1] == '' else key[1]) for i, key in enumerate(sorted(capabilityHash.keys()))]
         h = self.dbmodule.prepare(sql)
         h.execute_values(sql, wanted, fetch=False)
 
         sql = """
             WITH
-              wanted (name, version) AS (
+              wanted (ordering, name, version) AS (
                 VALUES %s
               )
-              SELECT wanted.*, rhnPackageCapability.id
+              SELECT wanted.name, wanted.version, rhnPackageCapability.id
                 FROM wanted
                 JOIN rhnPackageCapability
                   ON rhnPackageCapability.name = wanted.name
@@ -147,7 +148,7 @@ class Backend:
             return
 
         sql = """
-            WITH wanted (name, time, text) AS (
+            WITH wanted (ordering, name, time, text) AS (
               VALUES %s
             ),
             missing AS (
@@ -160,19 +161,20 @@ class Backend:
                 WHERE rhnPackageChangeLogData.id IS NULL
             )
             INSERT INTO rhnPackageChangeLogData(id, name, time, text)
-              SELECT *
+              SELECT id, name, time, text
                 FROM missing
+                ORDER BY ordering
               ON CONFLICT DO NOTHING
         """
-        values = [(key[0], datetime.strptime(key[1], '%Y-%m-%d %H:%M:%S'), key[2]) for key in changelogHash.keys()]
+        values = [(i, key[0], datetime.strptime(key[1], '%Y-%m-%d %H:%M:%S'), key[2]) for i, key in enumerate(sorted(changelogHash.keys()))]
         h = self.dbmodule.prepare(sql)
         h.execute_values(sql, values, fetch=False)
 
         sql = """
-            WITH wanted (name, time, text) AS (
+            WITH wanted (ordering, name, time, text) AS (
               VALUES %s
             )
-            SELECT wanted.*, rhnPackageChangeLogData.id
+            SELECT wanted.name, wanted.time, wanted.text, rhnPackageChangeLogData.id
               FROM wanted
               JOIN rhnPackageChangeLogData
                   ON rhnPackageChangeLogData.name = wanted.name
@@ -611,7 +613,7 @@ class Backend:
             return
         sql = "select LOOKUP_PACKAGE_NAME(:name) id from dual"
         h = self.dbmodule.prepare(sql)
-        for k in list(nameHash.keys()):
+        for k in sorted(nameHash.keys()):
             h.execute(name=k)
             nameHash[k] = h.fetchone_dict()['id']
 
@@ -666,7 +668,7 @@ class Backend:
     def lookupEVRs(self, evrHash):
         sql = "select LOOKUP_EVR(:epoch, :version, :release) id from dual"
         h = self.dbmodule.prepare(sql)
-        for evr in list(evrHash.keys()):
+        for evr in sorted(evrHash.keys(), key=lambda x: (x[0] if x[0] != '' else None, x[1], x[2])):
             epoch, version, release = evr
             if epoch == '' or epoch is None:
                 epoch = None
@@ -682,11 +684,11 @@ class Backend:
             return
 
         sql = """
-            WITH wanted (checksum_type, checksum) AS (
+            WITH wanted (ordering, checksum_type, checksum) AS (
               VALUES %s
             ),
             missing AS (
-              SELECT nextval('rhnchecksum_seq') AS id, rhnChecksumType.id AS checksum_type_id, wanted.checksum
+              SELECT nextval('rhnchecksum_seq') AS id, rhnChecksumType.id AS checksum_type_id, wanted.*
                 FROM wanted
                   JOIN rhnChecksumType ON wanted.checksum_type = rhnChecksumType.label
                   LEFT JOIN rhnChecksum
@@ -695,11 +697,12 @@ class Backend:
                 WHERE rhnChecksum.id IS NULL
             )
             INSERT INTO rhnChecksum(id, checksum_type_id, checksum)
-              SELECT *
+              SELECT id, checksum_type_id, checksum
                 FROM missing
+                ORDER BY ordering
               ON CONFLICT DO NOTHING
         """
-        values = [(key[0], key[1]) for key in checksumHash.keys() if key[1] != '']
+        values = [(i, key[0], key[1]) for i, key in enumerate(sorted(checksumHash.keys())) if key[1] != '']
 
         if not values:
             return
@@ -709,7 +712,7 @@ class Backend:
 
 
         sql = """
-          WITH wanted (checksum_type, checksum) AS (
+        WITH wanted (ordering, checksum_type, checksum) AS (
             VALUES %s
           )
           SELECT wanted.checksum_type, wanted.checksum, rhnChecksum.id
