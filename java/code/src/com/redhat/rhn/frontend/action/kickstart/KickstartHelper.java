@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -521,10 +522,9 @@ public class KickstartHelper {
         if (ksdata.isRhel3() || ksdata.isRhel4()) {
             packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL34));
         }
-        // TODO: do we actually need this?
-        //add a '*' at the end because the auto kickstart is a prefix
-        packages.add(ksdata.getKickstartPackageName() + "*");
-
+        String autoKickStartPackages = ksdata.getKickstartPackageNames().stream().map(String::trim)
+                .collect(Collectors.joining("|"));
+        packages.add(autoKickStartPackages);
         //Now convert the list to a delimited string.
         String delimiter = LocalizationService.getInstance().getMessage("list delimiter");
         return StringUtils.join(packages.toArray(), delimiter);
