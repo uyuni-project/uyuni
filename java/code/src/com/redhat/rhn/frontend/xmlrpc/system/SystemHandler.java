@@ -7068,6 +7068,26 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * List possible migration targets for given system
+     * @param loggedInUser The current user
+     * @param serverId Server ID
+     * @return Array of migration targets for given system
+     *
+     * @xmlrpc.doc List possible migration targets for a system
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $PackageStateSerializer
+     *      #array_end()
+     */
+    public Set<PackageState> listPackageState(User loggedInUser, Integer serverId) {
+        MinionServer minion = SystemManager.lookupByIdAndUser(serverId.longValue(), loggedInUser).asMinionServer()
+                .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + serverId));
+        return StateFactory.latestPackageStates(minion).orElse(Collections.EMPTY_SET);
+    }
+
+    /**
      * Only needed for unit tests.
      * @return the {@link TaskomaticApi} instance used by this class
      */

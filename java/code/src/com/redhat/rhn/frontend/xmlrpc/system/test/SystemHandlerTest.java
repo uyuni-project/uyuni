@@ -2750,8 +2750,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         Channel baseChannel = ChannelTestUtils.createBaseChannel(admin);
         server.addChannel(baseChannel);
-        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
-        Date scheduleDate = new Date();
 
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
         server.getBaseChannel().addPackage(pkg);
@@ -2902,6 +2900,25 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         catch (IllegalArgumentException e) {
             assertEquals("No such package exists", e.getMessage());
         }
+    }
+
+    /**
+     * Test the SystemHandler.listPackageState method
+     * @throws Exception
+     */
+    public void testListPackageState() throws Exception {
+        MinionServer server =MinionServerFactoryTest.createTestMinionServer(admin);
+        Package pkg = PackageTest.createTestPackage(admin.getOrg());
+
+        SystemHandler systemHandler = getMockedHandler();
+
+        int  result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 0);
+        assertEquals(1,result);
+        Set<PackageState> packageStates = systemHandler.listPackageState(admin, server.getId().intValue());
+        assertNotEmpty(packageStates);
+        assertEquals(1, packageStates.size());
+        assertTrue(PackageStates.REMOVED.id() == packageStates.iterator().next().getPackageStateTypeId());
+        assertTrue(VersionConstraints.LATEST.id() == packageStates.iterator().next().getVersionConstraintId());
     }
 
     private SystemHandler getMockedHandler() throws Exception {
