@@ -117,7 +117,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         Channel rhel5BaseChan = ChannelTestUtils.createTestChannel(user);
         Channel rhel5ToolsChan = ChannelTestUtils.createChildChannel(user, rhel5BaseChan);
         PackageManagerTest.addKickstartPackageToChannel(
-                ConfigDefaults.get().getKickstartPackageName(), rhel5ToolsChan);
+                ConfigDefaults.get().getKickstartPackageNames().get(0), rhel5ToolsChan);
         return rhel5BaseChan;
     }
 

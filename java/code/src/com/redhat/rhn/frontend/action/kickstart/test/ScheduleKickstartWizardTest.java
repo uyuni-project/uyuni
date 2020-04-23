@@ -74,7 +74,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         s.addChannel(c);
 
         PackageManagerTest.addPackageToSystemAndChannel(
-                ConfigDefaults.get().getKickstartPackageName(), s, c);
+                ConfigDefaults.get().getKickstartPackageNames().get(0), s, c);
 
         PackageManagerTest.
             addUp2dateToSystemAndChannel(user, s,
