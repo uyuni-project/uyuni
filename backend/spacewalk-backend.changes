@@ -1,3 +1,4 @@
+- reposync speedup fixes
 - use default sender address from web namespace
 - Enable extra HTTP headers support for "spacewalk-repo-sync".
 - Add missing Zypper plugin to deal with ULN repositories.

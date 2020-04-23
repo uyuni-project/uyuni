@@ -39,14 +39,14 @@ class DateType:
 
 
 # An Item is just an extension for a dictionary
-class Item(UserDict):
+class Item(dict):
 
     """
     First level object, that stores information in a hash-like structure
     """
 
     def __init__(self, attributes=None):
-        UserDict.__init__(self, attributes)
+        dict.__init__(self, attributes)
 
     def populate(self, hash):
         self.update(hash)
@@ -54,7 +54,7 @@ class Item(UserDict):
 
     def __repr__(self):
         return "[<%s instance; attributes=%s]" % (str(self.__class__),
-                                                  str(self.data))
+                                                  dict.__repr__(self))
 
 # BaseInformation is an Item with a couple of other features (an id, an ignored
 # flag, diff information)

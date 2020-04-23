@@ -41,6 +41,13 @@ class Sequence:
             return ret
         return int(ret['id'])
 
+    def next_many(self, n):
+        sql = "SELECT sequence_nextval('%s') FROM generate_series(1, %s)" % (self.__seq, n)
+        cursor = self.__db.prepare(sql)
+        cursor.execute()
+        result = cursor.fetchall()
+        return [r[0] for r in result]
+
     def __call__(self):
         return self.next()
 
