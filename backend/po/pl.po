@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 14:32+0100\n"
+"POT-Creation-Date: 2020-04-23 10:15+0200\n"
 "PO-Revision-Date: 2018-03-16 04:50+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
@@ -16,19 +16,288 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2)\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/apacheAuth.py:67
+#: ../server/apacheAuth.py:66
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr "niepełny token uwierzytelnienia pośrednika: %s"
 
-#: ../server/apacheAuth.py:85
+#: ../server/apacheAuth.py:84
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
 msgstr "Wysłany podpis pośrednika %s nie zgadza się z naszym %s."
 
-#: ../server/apacheAuth.py:120
+#: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
 msgstr "odmówiono uwierzytelnienia pośrednika"
+
+#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/xmlrpc/registration.py:215
+#: ../server/handlers/xmlrpc/registration.py:1168
+#: ../server/handlers/xmlrpc/registration.py:1307
+#, python-format
+msgid ""
+"\n"
+"                   %s Account has been deactivated on this server.\n"
+"                   Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"                   Konto %s zostało dezaktywowane na tym serwerze.\n"
+"                   Proszę skontaktować się z administratorem organizacji po "
+"więcej pomocy."
+
+#: ../server/handlers/applet/applet.py:78
+msgid "Your system was not found in the RHN database"
+msgstr "Nie odnaleziono systemu w bazie danych usługi RHN"
+
+#: ../server/handlers/sat/auth.py:45
+msgid "ISS is disabled on this satellite."
+msgstr "W tej usłudze Satellite wyłączono ISS."
+
+#: ../server/handlers/sat/auth.py:50
+#, python-format
+msgid "Server \"%s\" is not enabled for ISS."
+msgstr "Nie włączono serwera „%s” dla ISS."
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Oczekiwano nazwy pakietu, nie: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "Oczekiwano pakietu, nie: %s"
+
+#: ../server/handlers/xmlrpc/proxy.py:65
+#, python-format
+msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
+msgstr "Usługa Spacewalk Proxy nie jest włączona dla profilu serwera: „%s”"
+
+#: ../server/handlers/xmlrpc/proxy.py:85
+msgid "Invalid session key"
+msgstr "Nieprawidłowy klucz sesji"
+
+#: ../server/handlers/xmlrpc/proxy.py:93
+msgid "This server ID no longer exists"
+msgstr "Ten identyfikator serwera już nie istnieje"
+
+#: ../server/handlers/xmlrpc/queue.py:433
+#, python-format
+msgid "Invalid action value type %s (%s)"
+msgstr "Nieprawidłowy typ wartości działania %s (%s)"
+
+#: ../server/handlers/xmlrpc/queue.py:464
+#, python-format
+msgid "Action %s does not belong to server %s"
+msgstr "Działanie %s nie należy do serwera %s"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Nieprawidłowa para system_id/action_id."
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Nieprawidłowa wartość %s (%s)"
+
+#: ../server/handlers/xmlrpc/registration.py:194
+msgid "Required data missing"
+msgstr "Brak wymaganych danych"
+
+#: ../server/handlers/xmlrpc/registration.py:198
+msgid "Required members missing"
+msgstr "Brak wymaganych członków"
+
+#: ../server/handlers/xmlrpc/registration.py:207
+msgid "Attempt to register a system to an invalid username"
+msgstr "Próba zarejestrowania systemu do nieprawidłowej nazwy użytkownika"
+
+#: ../server/handlers/xmlrpc/registration.py:839
+msgid "Invalid system release version requested"
+msgstr "Zażądano nieprawidłowej wersji wydania systemu"
+
+#: ../server/handlers/xmlrpc/registration.py:1063
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgstr ""
+
+#: ../server/handlers/xmlrpc/registration.py:1115
+msgid "Red Hat Satellite Welcome Message"
+msgstr "Komunikat powitalny usługi Red Hat Satellite"
+
+#: ../server/handlers/xmlrpc/registration.py:1125
+msgid "Red Hat Satellite Privacy Statement"
+msgstr "Oświadczenie o prywatności usługi Red Hat Satellite"
+
+#: ../server/handlers/xmlrpc/registration.py:1146
+msgid "Expected a dictionary as a product argument"
+msgstr "Oczekiwano słownika jako parametr produktu"
+
+#: ../server/handlers/xmlrpc/registration.py:1374
+#, python-format
+msgid "Invalid value '%s' for %s (%s)"
+msgstr "Nieprawidłowa wartość „%s” dla %s (%s)"
+
+#: ../server/importlib/userAuth.py:98
+msgid "You are not authorized to manage packages in the null org"
+msgstr "Brak upoważnienia do zarządzania pakietami w pustej organizacji"
+
+#: ../server/importlib/userAuth.py:103
+#, python-format
+msgid "You are not allowed to manage packages in the %s org"
+msgstr "Użytkownik nie może zarządzać pakietami w organizacji %s"
+
+#: ../server/importlib/userAuth.py:121
+msgid "You are not allowed to perform administrative tasks"
+msgstr "Użytkownik nie może wykonywać zadań administracyjnych"
+
+#: ../server/importlib/userAuth.py:144
+#, python-format
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "Użytkownik nie może zarządzać kanałem %s lub ten kanał nie istnieje"
+
+#: ../server/importlib/userAuth.py:204
+#, fuzzy, python-format
+msgid ""
+"\n"
+"               %s Account has been deactivated on this server.\n"
+"               Please contact your Org administrator for more help."
+msgstr ""
+"\n"
+"                   Konto %s zostało dezaktywowane na tym serwerze.\n"
+"                   Proszę skontaktować się z administratorem organizacji po "
+"więcej pomocy."
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Proszę wykonać polecenie rhn_register jako root na tym kliencie"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Usługa jest niedostępna dla profilu systemu: „%s”"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Zażądano nieprawidłowego pakietu RPM %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Nie odnaleziono pakietu"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Architektura „%s” jest nieobsługiwana"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Token „%s” ma przydzielony więcej niż jeden kanał podstawowy"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Sprzeczne kanały podstawowe"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Dodanie serwera do grupy %s się nie powiodło"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Osiągnięto maksymalne użycie %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Nakładanie tokenów ponownej rejestracji na stos z różnymi podstawowymi "
+"ważnościami jest nieobsługiwane"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Nie można odnaleźć tokenu „%s”"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Tokeny z niepasujących organizacji"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Niepasująca sesja kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Nakładanie tokenów ponownej rejestracji na stos jest nieobsługiwane"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "Nieprawidłowe połączenie nazwy użytkownika i hasła"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "Nazwa użytkownika „%s” nie została zastrzeżona"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Nie podano adresu e-mail"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "nazwa użytkownika musi mieć mniej niż %d znaków"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "nazwa użytkownika to „%s”, nieprawidłowy znak „%s”"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Proszę ograniczyć adres e-mail do %s znaków"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "hasło musi mieć co najmniej %d znaków"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "Hasło musi być krótsze niż %d znaków"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "hasło zawiera znak „%s”"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "Nie można rejestrować nazw użytkowników kończących się znakiem %s"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -53,261 +322,12 @@ msgstr ""
 "Podczas wykonywania „%s”: przechwycono\n"
 "%s: %s\n"
 
-#: ../server/apacheRequest.py:602
+#: ../server/apacheRequest.py:606
 #, python-format
 msgid "Invalid URI %s"
 msgstr "Nieprawidłowy adres URI %s"
 
-#: ../server/handlers/applet/applet.py:78
-msgid "Your system was not found in the RHN database"
-msgstr "Nie odnaleziono systemu w bazie danych usługi RHN"
-
-#: ../server/handlers/sat/auth.py:45
-msgid "ISS is disabled on this satellite."
-msgstr "W tej usłudze Satellite wyłączono ISS."
-
-#: ../server/handlers/sat/auth.py:50
-#, python-format
-msgid "Server \"%s\" is not enabled for ISS."
-msgstr "Nie włączono serwera „%s” dla ISS."
-
-#: ../server/handlers/xmlrpc/errata.py:62
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Oczekiwano nazwy pakietu, nie: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:113
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Oczekiwano pakietu, nie: %s"
-
-#: ../server/handlers/xmlrpc/proxy.py:63
-#, python-format
-msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "Usługa Spacewalk Proxy nie jest włączona dla profilu serwera: „%s”"
-
-#: ../server/handlers/xmlrpc/proxy.py:83
-msgid "Invalid session key"
-msgstr "Nieprawidłowy klucz sesji"
-
-#: ../server/handlers/xmlrpc/proxy.py:91
-msgid "This server ID no longer exists"
-msgstr "Ten identyfikator serwera już nie istnieje"
-
-#: ../server/handlers/xmlrpc/queue.py:434
-#, python-format
-msgid "Invalid action value type %s (%s)"
-msgstr "Nieprawidłowy typ wartości działania %s (%s)"
-
-#: ../server/handlers/xmlrpc/queue.py:459
-#, python-format
-msgid "Action %s does not belong to server %s"
-msgstr "Działanie %s nie należy do serwera %s"
-
-#: ../server/handlers/xmlrpc/scap.py:89
-msgid "Invalid system_id/action_id pair."
-msgstr "Nieprawidłowa para system_id/action_id."
-
-#: ../server/handlers/xmlrpc/up2date.py:234
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Nieprawidłowa wartość %s (%s)"
-
-#: ../server/handlers/xmlrpc/registration.py:204
-msgid "Required data missing"
-msgstr "Brak wymaganych danych"
-
-#: ../server/handlers/xmlrpc/registration.py:208
-msgid "Required members missing"
-msgstr "Brak wymaganych członków"
-
-#: ../server/handlers/xmlrpc/registration.py:217
-msgid "Attempt to register a system to an invalid username"
-msgstr "Próba zarejestrowania systemu do nieprawidłowej nazwy użytkownika"
-
-#: ../server/handlers/xmlrpc/registration.py:225
-#, python-format
-msgid ""
-"\n"
-"                   %s Account has been deactivated on this server.\n"
-"                   Please contact your Org administrator for more help."
-msgstr ""
-"\n"
-"                   Konto %s zostało dezaktywowane na tym serwerze.\n"
-"                   Proszę skontaktować się z administratorem organizacji po "
-"więcej pomocy."
-
-#: ../server/handlers/xmlrpc/registration.py:829
-msgid "Invalid system release version requested"
-msgstr "Zażądano nieprawidłowej wersji wydania systemu"
-
-#: ../server/handlers/xmlrpc/registration.py:1061
-msgid "Red Hat Satellite Welcome Message"
-msgstr "Komunikat powitalny usługi Red Hat Satellite"
-
-#: ../server/handlers/xmlrpc/registration.py:1071
-msgid "Red Hat Satellite Privacy Statement"
-msgstr "Oświadczenie o prywatności usługi Red Hat Satellite"
-
-#: ../server/handlers/xmlrpc/registration.py:1092
-msgid "Expected a dictionary as a product argument"
-msgstr "Oczekiwano słownika jako parametr produktu"
-
-#: ../server/handlers/xmlrpc/registration.py:1302
-#, python-format
-msgid "Invalid value '%s' for %s (%s)"
-msgstr "Nieprawidłowa wartość „%s” dla %s (%s)"
-
-#: ../server/importlib/userAuth.py:98
-msgid "You are not authorized to manage packages in the null org"
-msgstr "Brak upoważnienia do zarządzania pakietami w pustej organizacji"
-
-#: ../server/importlib/userAuth.py:103
-#, python-format
-msgid "You are not allowed to manage packages in the %s org"
-msgstr "Użytkownik nie może zarządzać pakietami w organizacji %s"
-
-#: ../server/importlib/userAuth.py:121
-msgid "You are not allowed to perform administrative tasks"
-msgstr "Użytkownik nie może wykonywać zadań administracyjnych"
-
-#: ../server/importlib/userAuth.py:144
-#, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr "Użytkownik nie może zarządzać kanałem %s lub ten kanał nie istnieje"
-
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Proszę wykonać polecenie rhn_register jako root na tym kliencie"
-
-#: ../server/rhnHandler.py:75
-#, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Usługa jest niedostępna dla profilu systemu: „%s”"
-
-#: ../server/rhnPackage.py:46 ../server/rhnPackage.py:81
-#: ../server/rhnPackage.py:101 ../server/rhnPackage.py:152
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Zażądano nieprawidłowego pakietu RPM %s"
-
-#: ../server/rhnPackage.py:106
-msgid "Package not found"
-msgstr "Nie odnaleziono pakietu"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Architektura „%s” jest nieobsługiwana"
-
-#: ../server/rhnServer/server_token.py:77
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Token „%s” ma przydzielony więcej niż jeden kanał podstawowy"
-
-#: ../server/rhnServer/server_token.py:79
-msgid "Conflicting base channels"
-msgstr "Sprzeczne kanały podstawowe"
-
-#: ../server/rhnServer/server_token.py:189
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Dodanie serwera do grupy %s się nie powiodło"
-
-#: ../server/rhnServer/server_token.py:502
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Osiągnięto maksymalne użycie %s"
-
-#: ../server/rhnServer/server_token.py:733
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Nakładanie tokenów ponownej rejestracji na stos z różnymi podstawowymi "
-"ważnościami jest nieobsługiwane"
-
-#: ../server/rhnServer/server_token.py:787
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Nie można odnaleźć tokenu „%s”"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:819
-msgid "Tokens from mismatching orgs"
-msgstr "Tokeny z niepasujących organizacji"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:829
-msgid "Kickstart session mismatch"
-msgstr "Niepasująca sesja kickstart"
-
-#: ../server/rhnServer/server_token.py:849
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Nakładanie tokenów ponownej rejestracji na stos jest nieobsługiwane"
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "Nieprawidłowe połączenie nazwy użytkownika i hasła"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:468
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Nazwa użytkownika „%s” nie została zastrzeżona"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:474
-msgid "E-mail address not specified"
-msgstr "Nie podano adresu e-mail"
-
-#: ../server/rhnUser.py:510
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
-
-#: ../server/rhnUser.py:513
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "nazwa użytkownika musi mieć mniej niż %d znaków"
-
-#: ../server/rhnUser.py:524
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "nazwa użytkownika to „%s”, nieprawidłowy znak „%s”"
-
-#: ../server/rhnUser.py:543
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Proszę ograniczyć adres e-mail do %s znaków"
-
-#: ../server/rhnUser.py:624
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "hasło musi mieć co najmniej %d znaków"
-
-#: ../server/rhnUser.py:627
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Hasło musi być krótsze niż %d znaków"
-
-#: ../server/rhnUser.py:645
-#, python-format
-msgid "password contains character `%s'"
-msgstr "hasło zawiera znak „%s”"
-
-#: ../server/rhnUser.py:652
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
-
-#: ../server/rhnUser.py:663
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Nie można rejestrować nazw użytkowników kończących się znakiem %s"
-
-#: ../server/rhnChannel.py:1938
+#: ../server/rhnChannel.py:1992
 #, python-format
 msgid ""
 "Your account does not have access to any channels matching "
@@ -316,7 +336,7 @@ msgstr ""
 "Konto nie ma dostępu do żadnych kanałów pasujących do (wydanie: "
 "„%(release)s”, architektura: „%(arch)s”)%(www_activation)s"
 
-#: ../server/rhnChannel.py:1948
+#: ../server/rhnChannel.py:2002
 msgid ""
 "\n"
 "If you have a registration number, please register with it first at http://"
@@ -328,7 +348,7 @@ msgstr ""
 "redhat.com/apps/activate/ i spróbować ponownie.\n"
 "\n"
 
-#: ../server/rhnChannel.py:1958
+#: ../server/rhnChannel.py:2012
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
 msgstr "Niewystarczające uprawnienia subskrypcji dla wydania (%s, %s"
@@ -337,12 +357,12 @@ msgstr "Niewystarczające uprawnienia subskrypcji dla wydania (%s, %s"
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2222 ../server/rhnChannel.py:2233
-#: ../server/rhnChannel.py:2248
+#: ../server/rhnChannel.py:2276 ../server/rhnChannel.py:2287
+#: ../server/rhnChannel.py:2302
 msgid "System Registered but Inactive"
 msgstr "Zarejestrowano system, ale nie jest aktywny"
 
-#: ../server/rhnChannel.py:2223
+#: ../server/rhnChannel.py:2277
 #, python-format
 msgid ""
 "\n"
@@ -366,7 +386,7 @@ msgstr ""
 "\n"
 "…aby aktywować produkt."
 
-#: ../server/rhnChannel.py:2234
+#: ../server/rhnChannel.py:2288
 #, python-format
 msgid ""
 "\n"
@@ -382,7 +402,7 @@ msgstr ""
 "ponieważ nie jest subskrybowany do podstawowego kanału.\n"
 "Proszę skontaktować się z administratorem organizacji po pomoc.\n"
 
-#: ../server/rhnChannel.py:2241
+#: ../server/rhnChannel.py:2295
 #, python-format
 msgid ""
 "\n"
@@ -398,7 +418,7 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnChannel.py:2249
+#: ../server/rhnChannel.py:2303
 #, python-format
 msgid ""
 "\n"
@@ -497,13 +517,12 @@ msgid "Unsupported server architecture."
 msgstr "Nieobsługiwana architektura serwera."
 
 #: ../common/rhnException.py:73
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "\n"
 "     The anonymous server functionality is no longer available.\n"
 "\n"
-"     Please re-register this system by running rhn_register\n"
-"     as root.\n"
+"     Please re-register this system by running mgr_register as root.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
 "     select \"Subscription Management\" to enable the service for this "
@@ -522,19 +541,19 @@ msgstr ""
 "     wybrać „Zarządzanie subskrypcją”, aby włączyć usługę dla tego systemu.\n"
 "     "
 
-#: ../common/rhnException.py:82
+#: ../common/rhnException.py:81
 msgid "Record not available in the database."
 msgstr "Wpis jest niedostępny w bazie danych."
 
-#: ../common/rhnException.py:83
+#: ../common/rhnException.py:82
 msgid "Invalid value for entry."
 msgstr "Nieprawidłowa wartość wpisu."
 
-#: ../common/rhnException.py:84
-#, python-format
+#: ../common/rhnException.py:83
+#, fuzzy, python-format
 msgid ""
 "\n"
-"     This system does not have a valid entitlement for Red Hat Satellite.\n"
+"     This system does not have a valid entitlement for SUSE Manager.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
 "     select \"Subscription Management\" to enable the service for this "
@@ -549,47 +568,47 @@ msgstr ""
 "     wybrać „Zarządzanie subskrypcją”, aby włączyć usługę dla tego systemu.\n"
 "     "
 
-#: ../common/rhnException.py:90
+#: ../common/rhnException.py:89
 msgid "Channel error"
 msgstr "Błąd kanału"
 
-#: ../common/rhnException.py:91
+#: ../common/rhnException.py:90
 msgid "Client session token is invalid."
 msgstr "Nieprawidłowy token sesji klienta."
 
-#: ../common/rhnException.py:92
+#: ../common/rhnException.py:91
 msgid "Client session token has expired."
 msgstr "Token sesji klienta wygasł."
 
-#: ../common/rhnException.py:93
+#: ../common/rhnException.py:92
 msgid "You are not authorized to retrieve the requested object."
 msgstr "Brak upoważnienia do pobierania żądanego obiektu."
 
-#: ../common/rhnException.py:94
+#: ../common/rhnException.py:93
 msgid "Invalid action"
 msgstr "Nieprawidłowe działanie"
 
-#: ../common/rhnException.py:95
+#: ../common/rhnException.py:94
 msgid "You are not allowed to perform administrative tasks on this system."
 msgstr "Użytkownik nie może wykonywać zadań administracyjnych w tym systemie."
 
-#: ../common/rhnException.py:97
+#: ../common/rhnException.py:96
 msgid "The system is already subscribed to the specified channel."
 msgstr "Ten system już subskrybuje podany kanał."
 
-#: ../common/rhnException.py:98
+#: ../common/rhnException.py:97
 msgid "The system is not currently subscribed to the specified channel."
 msgstr "Ten system obecnie nie subskrybuje podanego kanału."
 
-#: ../common/rhnException.py:99
+#: ../common/rhnException.py:98
 msgid "The specified channel does not exist."
 msgstr "Podany kanał nie istnieje."
 
-#: ../common/rhnException.py:100
+#: ../common/rhnException.py:99
 msgid "Invalid channel version."
 msgstr "Nieprawidłowa wersja kanału."
 
-#: ../common/rhnException.py:101
+#: ../common/rhnException.py:100
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -611,7 +630,7 @@ msgstr ""
 "     musi zostać zmieniona.\n"
 "     "
 
-#: ../common/rhnException.py:109
+#: ../common/rhnException.py:108
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -633,7 +652,7 @@ msgstr ""
 "     subskrybować konto.\n"
 "     "
 
-#: ../common/rhnException.py:117
+#: ../common/rhnException.py:116
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -647,20 +666,30 @@ msgstr ""
 "     Architektura pakietu nie jest obsługiwana przez\n"
 "     "
 
-#: ../common/rhnException.py:122
+#: ../common/rhnException.py:121
 msgid "Invalid RPM header"
 msgstr "Nieprawidłowy nagłówek pakietu RPM"
 
+#: ../common/rhnException.py:122
+msgid ""
+"\n"
+"    This system is already registered as a Salt Minion. If you want to "
+"register it as a traditional client\n"
+"    please delete it first via the web UI or API and then register it using "
+"the traditional tools.\n"
+"    "
+msgstr ""
+
 #. For the uploading tools
-#: ../common/rhnException.py:124
+#: ../common/rhnException.py:127
 msgid "Invalid information uploaded to the server"
 msgstr "Do serwera wysłano nieprawidłowe informacje"
 
-#: ../common/rhnException.py:125
+#: ../common/rhnException.py:128
 msgid "Error uploading network interfaces configuration."
 msgstr "Błąd podczas wysyłania konfiguracji interfejsów sieciowych."
 
-#: ../common/rhnException.py:126
+#: ../common/rhnException.py:129
 msgid ""
 "\n"
 "     Package Upload Failed due to uniqueness constraint violation.\n"
@@ -675,11 +704,12 @@ msgstr ""
 "     nie istnieje już na serwerze\n"
 "     "
 
-#: ../common/rhnException.py:131
+#: ../common/rhnException.py:134
+#, fuzzy
 msgid ""
 "\n"
 "     The --force rhnpush option is disabled on this server.\n"
-"     Please contact your Satellite administrator for more help.\n"
+"     Please contact your SUSE Manager administrator for more help.\n"
 "     "
 msgstr ""
 "\n"
@@ -689,7 +719,7 @@ msgstr ""
 "     "
 
 #. 60-70: token errors
-#: ../common/rhnException.py:137
+#: ../common/rhnException.py:140
 msgid ""
 "\n"
 "     The activation token specified could not be found on the server.\n"
@@ -701,21 +731,21 @@ msgstr ""
 "     Proszę spróbować ponownie za pomocą prawidłowego klucza.\n"
 "     "
 
-#: ../common/rhnException.py:141
+#: ../common/rhnException.py:144
 msgid "Too many systems registered using this registration token"
 msgstr "Za pomocą tego tokenu rejestracji zarejestrowano za dużo systemów"
 
-#: ../common/rhnException.py:142
+#: ../common/rhnException.py:145
 msgid "Token contains invalid, obsoleted or insufficient settings"
 msgstr ""
 "Token zawiera nieprawidłowe, przestarzałe lub niewystarczające ustawienia"
 
-#: ../common/rhnException.py:143
+#: ../common/rhnException.py:146
 msgid "Conflicting activation tokens"
 msgstr "Sprzeczne tokeny aktywacji"
 
 #. 70-80: channel subscription errors
-#: ../common/rhnException.py:146
+#: ../common/rhnException.py:149
 msgid ""
 "\n"
 "     No matching base channel found for your system.\n"
@@ -725,7 +755,7 @@ msgstr ""
 "     Nie odnaleziono pasującego kanału podstawowego dla systemu.\n"
 "     "
 
-#: ../common/rhnException.py:149
+#: ../common/rhnException.py:152
 msgid ""
 "\n"
 "     You do not have subscription permission to the designated channel.\n"
@@ -739,88 +769,92 @@ msgstr ""
 "informacji.\n"
 "     "
 
-#: ../common/rhnException.py:154
+#: ../common/rhnException.py:157
 msgid "You can not unsubscribe from base channel."
 msgstr "Nie można zrezygnować z subskrypcji podstawowego kanału."
 
-#: ../common/rhnException.py:155
-msgid "Satellite or Proxy channel can not be subscribed."
+#: ../common/rhnException.py:158
+#, fuzzy
+msgid "SUSE Manager or Proxy channel can not be subscribed."
 msgstr "Nie można subskrybować kanału Satellite lub Proxy."
 
 #. 80-90: server group errors
-#: ../common/rhnException.py:158
+#: ../common/rhnException.py:161
 msgid "There was an error while trying to join the system to its groups"
 msgstr "Wystąpił błąd podczas próby dołączenia systemu do jego grup"
 
 #. 90-100: entitlement errors
-#: ../common/rhnException.py:161
+#: ../common/rhnException.py:164
 msgid "Unable to entitle system"
 msgstr "Nie można upoważnić systemu"
 
 #. 100-109: e-mail and uuid related faults
-#: ../common/rhnException.py:164
+#: ../common/rhnException.py:167
 msgid "Maximum e-mail length violation."
 msgstr "Naruszono maksymalną długość adresu e-mail."
 
-#: ../common/rhnException.py:165
+#: ../common/rhnException.py:168
 msgid "This system has been previously registered."
 msgstr "Ten system został poprzednio zarejestrowany."
 
-#: ../common/rhnException.py:166
+#: ../common/rhnException.py:169
 msgid "Invalid username"
 msgstr "Nieprawidłowa nazwa użytkownika"
 
 #. 140-159 applet errors
-#: ../common/rhnException.py:169
+#: ../common/rhnException.py:172
 msgid "Unable to look up server"
 msgstr "Nie można odnaleźć serwera"
 
 #. 160-179: OSAD errors
-#: ../common/rhnException.py:172
+#: ../common/rhnException.py:175
 msgid "Required argument is missing"
 msgstr "Brak wymaganego parametru"
 
 #. 600-699: RHEL5+ EN errors
-#: ../common/rhnException.py:175
+#: ../common/rhnException.py:178
 msgid "No entitlement information tied to hardware"
 msgstr "Brak informacji o ważności powiązanych z tym sprzętem"
 
-#: ../common/rhnException.py:176
+#: ../common/rhnException.py:179
 msgid "Installation number is not entitling"
 msgstr "Numer instalacji nie jest ważny"
 
 #. 700-799: Additional user input verification errors.
-#: ../common/rhnException.py:179
+#: ../common/rhnException.py:182
 msgid "Maximum username length violation"
 msgstr "Naruszono maksymalną długość nazwy użytkownika"
 
-#: ../common/rhnException.py:180
+#: ../common/rhnException.py:183
 msgid "Maximum password length violation"
 msgstr "Naruszono maksymalną długość hasła"
 
-#: ../common/rhnException.py:181
+#: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
 msgstr "Ten użytkownik ma dostęp do API tylko do odczytu. Odmowa działania."
 
-#: ../common/rhnException.py:183
+#: ../common/rhnException.py:186
 msgid "System Name cannot be less than 1 character"
 msgstr "Nazwa systemu nie może być krótsza niż 1 znak"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
-#: ../common/rhnException.py:187
-msgid "Spacewalk Proxy error."
+#: ../common/rhnException.py:190
+#, fuzzy
+msgid "SUSE Manager Proxy error."
 msgstr "Błąd usługi Spacewalk Proxy."
 
-#: ../common/rhnException.py:188
-msgid "Spacewalk Proxy unable to login."
+#: ../common/rhnException.py:191
+#, fuzzy
+msgid "SUSE Manager Proxy unable to login."
 msgstr "Nie można zalogować usługi Spacewalk Proxy."
 
-#. issued by a Red Hat Server/Satellite to the proxy
-#: ../common/rhnException.py:190
+#. issued by a SUSE Manager Server/Satellite to the proxy
+#: ../common/rhnException.py:193
+#, fuzzy
 msgid ""
 "\n"
-"     Spacewalk Proxy system ID does not match a Spacewalk Proxy Server\n"
+"     SUSE Manager Proxy system ID does not match a Spacewalk Proxy Server\n"
 "     in the database.\n"
 "     "
 msgstr ""
@@ -830,19 +864,22 @@ msgstr ""
 "     w bazie danych.\n"
 "     "
 
-#: ../common/rhnException.py:194
-msgid "Spacewalk Proxy session token is invalid."
+#: ../common/rhnException.py:197
+#, fuzzy
+msgid "SUSE Manager Proxy session token is invalid."
 msgstr "Token sesji usługi Spacewalk Proxy jest nieprawidłowy."
 
-#: ../common/rhnException.py:195
-msgid "Spacewalk Proxy session token has expired."
+#: ../common/rhnException.py:198
+#, fuzzy
+msgid "SUSE Manager Proxy session token has expired."
 msgstr "Token sesji usługi Spacewalk Proxy wygasł."
 
 #. 2000-2999: Red Hat Satellite specific errors:
-#: ../common/rhnException.py:199
+#: ../common/rhnException.py:202
+#, fuzzy
 msgid ""
 "\n"
-"      user creation is not allowed via rhn_register;\n"
+"      user creation is not allowed via mgr_register;\n"
 "     please contact your sysadmin to have your account created.\n"
 "     "
 msgstr ""
@@ -853,11 +890,12 @@ msgstr ""
 "konta.\n"
 "     "
 
-#: ../common/rhnException.py:203
+#: ../common/rhnException.py:206
+#, fuzzy
 msgid ""
 "\n"
-"     This satellite server is not allowed to use Inter Satellite Sync on "
-"this satellite\n"
+"     This SUSE Manager server is not allowed to use Inter Server Sync on "
+"this server\n"
 "     "
 msgstr ""
 "\n"
@@ -865,10 +903,11 @@ msgstr ""
 "usłudze Satellite\n"
 "     "
 
-#: ../common/rhnException.py:206
+#: ../common/rhnException.py:209
+#, fuzzy
 msgid ""
 "\n"
-"     Inter Satellite Sync is disabled on this satellite.\n"
+"     Inter Server Sync is disabled on this SUSE Manager Server.\n"
 "     "
 msgstr ""
 "\n"
@@ -876,172 +915,173 @@ msgstr ""
 "     "
 
 #. 3000-3999: XML dumper errors:
-#: ../common/rhnException.py:211
+#: ../common/rhnException.py:214
 msgid "Invalid datatype passed"
 msgstr "Przekazano nieprawidłowy typ danych"
 
-#: ../common/rhnException.py:212
+#: ../common/rhnException.py:215
 msgid "Unable to retrieve channel"
 msgstr "Nie można pobrać kanału"
 
-#: ../common/rhnException.py:213
+#: ../common/rhnException.py:216
 msgid "Unable to retrieve package"
 msgstr "Nie można pobrać pakietu"
 
-#: ../common/rhnException.py:214
+#: ../common/rhnException.py:217
 msgid "Unable to retrieve erratum"
 msgstr "Nie można pobrać poprawki"
 
-#: ../common/rhnException.py:215
+#: ../common/rhnException.py:218
 msgid "File is missing"
 msgstr "Brak pliku"
 
-#: ../common/rhnException.py:216
+#: ../common/rhnException.py:219
 msgid "Function retrieval error"
 msgstr "Błąd pobierania funkcji"
 
-#: ../common/rhnException.py:217
+#: ../common/rhnException.py:220
 msgid "Function execution error"
 msgstr "Błąd wykonywania funkcji"
 
-#: ../common/rhnException.py:218
+#: ../common/rhnException.py:221
 msgid "Missing version string"
 msgstr "Brak ciągu wersji"
 
-#: ../common/rhnException.py:219
+#: ../common/rhnException.py:222
 msgid "Invalid version string"
 msgstr "Nieprawidłowy ciąg wersji"
 
-#: ../common/rhnException.py:220
+#: ../common/rhnException.py:223
 msgid "Mismatching versions"
 msgstr "Niepasujące wersje"
 
-#: ../common/rhnException.py:221
+#: ../common/rhnException.py:224
 msgid "Invalid channel version"
 msgstr "Nieprawidłowa wersja kanału"
 
-#: ../common/rhnException.py:222
+#: ../common/rhnException.py:225
 msgid "No comps file for channel"
 msgstr "Brak pliku comps dla kanału"
 
-#: ../common/rhnException.py:223
+#: ../common/rhnException.py:226
 msgid "Unable to retrieve comps file"
 msgstr "Nie można pobrać pliku comps"
 
 #. 4000 - 4999: config management errors
-#: ../common/rhnException.py:226
+#: ../common/rhnException.py:229
 msgid "Configuration action missing"
 msgstr "Brak działania konfiguracji"
 
-#: ../common/rhnException.py:227
+#: ../common/rhnException.py:230
 msgid "File too large"
 msgstr "Plik jest za duży"
 
-#: ../common/rhnException.py:228
+#: ../common/rhnException.py:231
 msgid "File contains binary data"
 msgstr "Plik zawiera binarne dane"
 
-#: ../common/rhnException.py:229
+#: ../common/rhnException.py:232
 msgid "Configuration channel is not empty"
 msgstr "Kanał konfiguracji nie jest pusty"
 
-#: ../common/rhnException.py:230
+#: ../common/rhnException.py:233
 msgid "Permission error"
 msgstr "Błąd uprawnień"
 
-#: ../common/rhnException.py:231
+#: ../common/rhnException.py:234
 msgid "Content missing for configuration file"
 msgstr "Brak treści pliku konfiguracji"
 
-#: ../common/rhnException.py:232
+#: ../common/rhnException.py:235
 msgid "Template delimiters not specified"
 msgstr "Nie podano separatorów szablonu"
 
-#: ../common/rhnException.py:233
+#: ../common/rhnException.py:236
 msgid "Configuration channel does not exist"
 msgstr "Kanał konfiguracji nie istnieje"
 
-#: ../common/rhnException.py:234
+#: ../common/rhnException.py:237
 msgid "Configuration channel already exists"
 msgstr "Kanał konfiguracji już istnieje"
 
-#: ../common/rhnException.py:235
+#: ../common/rhnException.py:238
 msgid "File missing from configuration channel"
 msgstr "Brak pliku z kanału konfiguracji"
 
-#: ../common/rhnException.py:236
+#: ../common/rhnException.py:239
 msgid "Different revision of this file is uploaded"
 msgstr "Inna wersja tego pliku została wysłana"
 
-#: ../common/rhnException.py:237
+#: ../common/rhnException.py:240
 msgid "File already uploaded to configuration channel"
 msgstr "Już wysłano plik do kanału konfiguracji"
 
-#: ../common/rhnException.py:238
+#: ../common/rhnException.py:241
 msgid "File size exceeds remaining quota space"
 msgstr "Rozmiar pliku przekracza pozostałe miejsce przydziału"
 
-#: ../common/rhnException.py:239
+#: ../common/rhnException.py:242
 msgid "Full path of file must be specified"
 msgstr "Należy podać pełną ścieżkę do pliku"
 
-#: ../common/rhnException.py:240
+#: ../common/rhnException.py:243
 msgid "Invalid revision number"
 msgstr "Nieprawidłowy numer wersji"
 
-#: ../common/rhnException.py:241
+#: ../common/rhnException.py:244
 msgid "Cannot compare files of different file type"
 msgstr "Nie można porównywać plików różnego typu"
 
 #. 5000 - 5999: client content uploading errors
 #. 5000 - 5099: crash reporting errors
-#: ../common/rhnException.py:245
+#: ../common/rhnException.py:248
 msgid "Crash information is invalid or incomplete"
 msgstr "Informacje o awarii są nieprawidłowe lub niepełne"
 
-#: ../common/rhnException.py:246
+#: ../common/rhnException.py:249
 msgid "Crash file information is invalid or incomplete"
 msgstr "Plik z informacjami o awarii jest nieprawidłowy lub niepełny"
 
-#: ../common/rhnException.py:247
+#: ../common/rhnException.py:250
 msgid "Error composing crash directory path"
 msgstr "Błąd podczas składania ścieżki do katalogu awarii"
 
-#: ../common/rhnException.py:248
+#: ../common/rhnException.py:251
 msgid "Error composing crash file path"
 msgstr "Błąd podczas składania ścieżki do pliku awarii"
 
-#: ../common/rhnException.py:249 ../common/rhnException.py:256
+#: ../common/rhnException.py:252 ../common/rhnException.py:259
 msgid "Invalid content encoding"
 msgstr "Nieprawidłowe kodowanie treści"
 
-#: ../common/rhnException.py:250
+#: ../common/rhnException.py:253
 msgid "Invalid crash name"
 msgstr "Nieprawidłowa nazwa awarii"
 
-#: ../common/rhnException.py:251
+#: ../common/rhnException.py:254
 msgid "Crash reporting is disabled for this organization"
 msgstr "Zgłaszanie awarii jest wyłączone dla tej organizacji"
 
 #. 5100 - 5199: scap results reporting error
-#: ../common/rhnException.py:253
+#: ../common/rhnException.py:256
 msgid "SCAP results file transfer is invalid or incomplete"
 msgstr "Przesyłanie pliku wyników SCAP jest nieprawidłowe lub niepełne"
 
-#: ../common/rhnException.py:254
+#: ../common/rhnException.py:257
 msgid "Error composing directory path for detailed SCAP results"
 msgstr ""
 "Błąd podczas składania ścieżki do katalogu dla szczegółowych wyników SCAP"
 
-#: ../common/rhnException.py:255
+#: ../common/rhnException.py:258
 msgid "Error composing file path for detailed SCAP results"
 msgstr "Błąd podczas składania ścieżki do pliku dla szczegółowych wyników SCAP"
 
-#: ../common/rhnException.py:303
+#: ../common/rhnException.py:306
+#, fuzzy
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
-"     persists please enter a bug report at bugzilla.redhat.com.\n"
+"     persists please enter a bug report at scc.suse.com.\n"
 "     If you choose to submit the bug report, please be sure to include\n"
 "     details of what you were trying to do when this error occurred and\n"
 "     details on how to reproduce this problem.\n"
@@ -1053,7 +1093,7 @@ msgstr ""
 "     o próbowanym działaniu, kiedy wystąpił błąd i informacje o sposobie\n"
 "     powtórzenia tego problemu.\n"
 
-#: ../common/rhnException.py:355
+#: ../common/rhnException.py:358
 #, python-format
 msgid ""
 "Error Message:\n"
@@ -1062,17 +1102,17 @@ msgstr ""
 "Komunikat o błędzie:\n"
 "    %s\n"
 
-#: ../common/rhnException.py:357
+#: ../common/rhnException.py:360
 #, python-format
 msgid "Error Class Code: %s\n"
 msgstr "Kod klasy błędu: %s\n"
 
-#: ../common/rhnException.py:360
+#: ../common/rhnException.py:363
 #, python-format
 msgid "Error Class Info: %s\n"
 msgstr "Informacje o klasie błędu: %s\n"
 
-#: ../common/rhnException.py:362
+#: ../common/rhnException.py:365
 #, python-format
 msgid "Explanation: %s"
 msgstr "Wyjaśnienie: %s"
