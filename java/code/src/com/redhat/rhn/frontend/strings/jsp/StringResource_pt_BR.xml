@@ -14559,7 +14559,7 @@ o &lt;strong&gt;Guia de Administração de Sistemas Red Hat Enterprise Li
         <target>Nenhuma tarefa pode ser realizada até que haja arquivos de configuração neste canal de configuração.</target>
       </trans-unit>
       <trans-unit id="deploytask.error.badmode">
-        <source>Unrecognized deployment task - please contact Red Hat support.</source>
+        <source>Unrecognized deployment task - please contact SUSE support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>

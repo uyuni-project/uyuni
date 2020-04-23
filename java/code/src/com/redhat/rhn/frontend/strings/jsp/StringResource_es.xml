@@ -14560,7 +14560,7 @@ Esto puede tener algún efecto en los archivos de configuración que se implemen
         <target>Ninguna tarea puede llevarse a cabo hasta que no haya archivos de configuración en este canal de configuración.</target>
       </trans-unit>
       <trans-unit id="deploytask.error.badmode">
-        <source>Unrecognized deployment task - please contact Red Hat support.</source>
+        <source>Unrecognized deployment task - please contact SUSE support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>

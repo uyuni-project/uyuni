@@ -13046,7 +13046,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="deploytask.error.badmode">
-        <source>Unrecognized deployment task - please contact Red Hat support.</source>
+        <source>Unrecognized deployment task - please contact SUSE support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>

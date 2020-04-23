@@ -14179,7 +14179,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>설정 채널에 설정 파일이 있을 때 작업이 실행될 수 있음.</target>
       </trans-unit>
       <trans-unit id="deploytask.error.badmode">
-        <source>Unrecognized deployment task - please contact Red Hat support.</source>
+        <source>Unrecognized deployment task - please contact SUSE support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>

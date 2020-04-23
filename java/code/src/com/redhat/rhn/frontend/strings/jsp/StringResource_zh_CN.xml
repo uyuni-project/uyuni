@@ -14563,7 +14563,7 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         <target>只有当这个配置频道里有配置文件时，才能执行任务。</target>
       </trans-unit>
       <trans-unit id="deploytask.error.badmode">
-        <source>Unrecognized deployment task - please contact Red Hat support.</source>
+        <source>Unrecognized deployment task - please contact SUSE support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>

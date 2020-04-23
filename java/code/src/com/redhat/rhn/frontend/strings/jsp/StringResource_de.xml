@@ -14554,7 +14554,7 @@ Anschließend wird das nicht-chroot Post-Skript ausgeführt, und zuletzt das Pos
         <target>Es können keine Aufgaben ausgeführt werden, bevor nicht Konfigurationsdateien in diesem Konfigurations-Channel existieren.</target>
       </trans-unit>
       <trans-unit id="deploytask.error.badmode">
-        <source>Unrecognized deployment task - please contact Red Hat support.</source>
+        <source>Unrecognized deployment task - please contact SUSE support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
