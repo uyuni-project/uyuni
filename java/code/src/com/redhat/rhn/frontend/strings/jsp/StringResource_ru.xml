@@ -14529,7 +14529,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <target>Задачи не могут быть выполнены, пока в этом канале есть файлы конфигурации.</target>
       </trans-unit>
       <trans-unit id="deploytask.error.badmode">
-        <source>Unrecognized deployment task - please contact Red Hat support.</source>
+        <source>Unrecognized deployment task - please contact SUSE support.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
@@ -22611,22 +22611,6 @@ given channel.</source>
         the customer's individual systems connect to a locally hosted Proxy.
         The Proxy aggregates data and performs some tasks locally, communicating with the central @@PRODUCT_NAME@@ servers.
         All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.5_8">
-        <source>About Red Hat Satellite 5.8</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.5_8summary">
-        <source>
-        Uniquely for Red Hat Satellite 5.8, this version has been re-tooled to communicate with the successor to the
-        Red Hat Network (RHN) - the Red Hat Customer Portal and Content Delivery Network (CDN).
-        Red Hat Satellite 5.8 now synchronizes content exclusively from the CDN, and no content is synchronized from RHN.
-        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
