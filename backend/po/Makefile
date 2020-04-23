@@ -21,7 +21,8 @@ MSGFMT		= msgfmt --statistics --verbose
 POFILES		= $(wildcard *.po)
 MOFILES		= $(patsubst %.po,%.mo,$(POFILES))
 SRCFILES	= $(shell find ../server -name \*.py) \
-		  $(shell find ../common -name \*.py)
+		  $(shell find ../common -name \*.py) \
+		  $(shell find ../satellite_tools -name \*.py)
 
 all:: $(MOFILES)
 
