@@ -7166,29 +7166,25 @@ public class SystemHandler extends BaseHandler {
                     .orElseThrow(()-> new IllegalArgumentException("Invalid package state"));
             VersionConstraints vVersionConstraint = VersionConstraints.byId(versionConstraint)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid version constraint"));
-            Package pkg = PackageManager.lookupByName(PackageManager.lookupPackageName(packageName))
-                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));
+            PackageName pkgName = Optional.ofNullable(PackageManager.lookupPackageName(packageName))
+                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));;
 
             //update the state
             ServerStateRevision stateRev = StateRevisionService.INSTANCE.cloneLatest(minion, loggedInUser, true, true);
             Set<PackageState> pkgStates = stateRev.getPackageStates();
 
-            boolean isAvailable = SystemManager.hasPackageAvailable(minion, pkg.getPackageName().getId()
-                    , pkg.getPackageArch().getId(), pkg.getPackageEvr().getId());
-            if (isAvailable && (vPkgState == PackageStates.INSTALLED || vPkgState == PackageStates.REMOVED)) {
-                pkgStates.removeIf(ps -> ps.getName().equals(pkg.getPackageName()));
+            boolean isAvailable = SystemManager.hasPackageAvailable(minion, pkgName.getId());
+            if ((isAvailable && vPkgState == PackageStates.INSTALLED) || vPkgState == PackageStates.REMOVED) {
+                pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
                 PackageState packageState = new PackageState();
                 packageState.setStateRevision(stateRev);
                 packageState.setPackageState(vPkgState);
                 packageState.setVersionConstraint(vVersionConstraint);
-                packageState.setName(pkg.getPackageName());
-                packageState.setEvr(pkg.getPackageEvr());
-                packageState.setArch(pkg.getPackageArch());
+                packageState.setName(pkgName);
                 pkgStates.add(packageState);
             }
-            //Only remove in case of unmanaged state
-            else {
-                pkgStates.removeIf(ps -> ps.getName().equals(pkg.getPackageName()));
+            else if (vPkgState == PackageStates.PURGED){ // using PERGED flag for unmanged here for now.
+                pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
             }
             StateFactory.save(stateRev);
             StatesAPI.generateServerPackageState(minion);

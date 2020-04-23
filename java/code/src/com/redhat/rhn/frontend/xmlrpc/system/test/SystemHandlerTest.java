@@ -2783,10 +2783,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     /**
-     * Test different states of packages
+     * Test different states of packages when package is available in assigned channel to system
      * @throws Exception
      */
-    public void testUpdatePackageState() throws Exception {
+    public void testUpdatePackageStateWhenPackageAvailable() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         Channel baseChannel = ChannelTestUtils.createBaseChannel(admin);
         server.addChannel(baseChannel);
@@ -2853,6 +2853,51 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         pstates = sstate.get().getPackageStates();
         assertEquals(0, pstates.size());
 
+    }
+
+    /**
+     * Test different states of packages when package is Not available in assigned channel to system
+     * @throws Exception
+     */
+    public void testUpdatePackageStateWhenPackageNotAvailable() throws Exception {
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(admin);
+        server.addChannel(baseChannel);
+        int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
+        Date scheduleDate = new Date();
+
+        Package pkg = PackageTest.createTestPackage(admin.getOrg());
+
+        SystemHandler systemHandler = getMockedHandler();
+
+        // Installed 'Latest'(state = 0 & versionConstraint = 0)
+        int  result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 0);
+        assertEquals(1,result);
+        Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
+        Set<PackageState> pstates = sstate.get().getPackageStates();
+        assertEquals(0, pstates.size());
+
+        // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
+        assertEquals(1,result);
+        sstate = StateFactory.latestStateRevision(server);
+        pstates = sstate.get().getPackageStates();
+        assertEquals(1, pstates.size());
+        for (PackageState pst : pstates) {
+            if (pst.getName().equals(pkg.getPackageName())) {
+                assertEquals(PackageStates.REMOVED, pst.getPackageState());
+            }
+            else {
+                assertTrue("unexpected package state", false);
+            }
+        }
+
+        // Unmanaged (state =2 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
+        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 2, 1);
+        assertEquals(1,result);
+        sstate = StateFactory.latestStateRevision(server);
+        pstates = sstate.get().getPackageStates();
+        assertEquals(0, pstates.size());
     }
 
     /**

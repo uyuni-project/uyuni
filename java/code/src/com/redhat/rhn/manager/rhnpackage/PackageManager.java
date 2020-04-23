@@ -412,16 +412,6 @@ public class PackageManager extends BaseManager {
     }
 
     /**
-     * Finds a package by using name
-     * @param name The package name
-     * @return A Package object
-     */
-    public static Optional<Package> lookupByName(PackageName name) {
-        List<Package> packages = PackageFactory.listPackagesByPackageName(name);
-        return packages.stream().findFirst();
-    }
-
-    /**
      * Returns a dataResult containing all of the packages available to an
      * errata. Picks the right query depending on whether or not the errata
      * is published.
