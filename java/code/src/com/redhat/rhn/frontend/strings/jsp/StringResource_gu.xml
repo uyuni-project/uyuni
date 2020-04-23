@@ -21535,22 +21535,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="help.jsp.about.5_8">
-        <source>About Red Hat Satellite 5.8</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="help.jsp.about.5_8summary">
-        <source>
-        Uniquely for Red Hat Satellite 5.8, this version has been re-tooled to communicate with the successor to the
-        Red Hat Network (RHN) - the Red Hat Customer Portal and Content Delivery Network (CDN).
-        Red Hat Satellite 5.8 now synchronizes content exclusively from the CDN, and no content is synchronized from RHN.
-        </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/help/about</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="help.jsp.helpdesk">
         <source>Welcome to the Help Desk</source>
         <target>Help Desk માં સ્વાગત છે</target>
