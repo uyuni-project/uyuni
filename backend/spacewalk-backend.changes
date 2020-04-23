@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Apr 23 10:18:05 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.31-1
 - validate cached package entries on ISS slave (bsc#1159184)
 - Do not break when syncing Oracle 7 yum channel (bsc#1158463)
 - Always use the same RPM database when running "spacewalk-repo-sync"
