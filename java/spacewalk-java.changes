@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Apr 23 10:25:13 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.32-1
 - hide message about changed Update Tag change (bsc#1169109)
 - refresh pillar after channel change
 - Use 'changes' field if 'pchanges' field doesn't exist (bsc#1159202)
