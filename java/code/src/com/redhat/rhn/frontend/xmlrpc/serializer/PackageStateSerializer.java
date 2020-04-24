@@ -30,7 +30,7 @@ import java.io.Writer;
  *
  * @xmlrpc.doc
  *
- * #struct("p")
+ * #struct_begin("packagestate")
  *     #prop("int", "id")
  *     #prop("string", "name")
  *     #prop_desc("int",  "state_revision_id", "State revision Id")
