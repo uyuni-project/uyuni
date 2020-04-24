@@ -38,6 +38,8 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -54,6 +56,11 @@ import com.redhat.rhn.domain.server.ServerLock;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.BootstrapSystemOverview;
@@ -88,7 +95,9 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.utils.Opt;
@@ -2706,23 +2715,6 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Is the package with nameId available in the provided server's subscribed channels
-     * @param server the server
-     * @param nameId the name id
-     * @return true if available, false otherwise
-     */
-    public static boolean hasPackageAvailable(Server server, Long nameId) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("server_id", server.getId());
-        params.put("nid", nameId);
-        String mode = "has_package_available_with_name";
-        SelectMode m =
-                ModeFactory.getMode("System_queries", mode);
-        DataResult toReturn = m.execute(params);
-        return toReturn.size() > 0;
-    }
-
-    /**
      * Gets the list of proxies that the given system connects
      * through in order to reach the server.
      * @param sid The id of the server in question
@@ -3485,4 +3477,41 @@ public class SystemManager extends BaseManager {
 
     }
 
+    /**
+     * Update the package state of a given system
+     * the {@link UpdateBaseChannelCommand} and {@link UpdateChildChannelsCommand}.
+     *
+     * @param user the user updating the package state
+     * @param minion the server for which to update the package state
+     * @param pkgName package Name
+     * @param pkgState {@link PackageStates} state of the package (0 = installed, 1= removed, 2 = unmanaged)
+     * @param versionConstraint {@link VersionConstraints} (0 = latest, 1= any)
+     */
+    public static void updatePackageState(User user, MinionServer minion, PackageName pkgName,
+                                          PackageStates pkgState, VersionConstraints versionConstraint) {
+        //update the state
+        ServerStateRevision stateRev = StateRevisionService.INSTANCE.cloneLatest(minion, user, true, true);
+        Set<PackageState> pkgStates = stateRev.getPackageStates();
+        boolean isAvailable = PackageFactory.hasPackageAvailable(minion, pkgName.getId());
+
+        if (!isAvailable && pkgState == PackageStates.INSTALLED) {
+            throw new IllegalArgumentException(pkgName.getName() + " :not available in assigned channels of " +
+                    minion.getId());
+        }
+        else if ((isAvailable && pkgState == PackageStates.INSTALLED) || pkgState == PackageStates.REMOVED) {
+            pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
+            PackageState packageState = new PackageState();
+            packageState.setStateRevision(stateRev);
+            packageState.setPackageState(pkgState);
+            packageState.setVersionConstraint(versionConstraint);
+            packageState.setName(pkgName);
+            pkgStates.add(packageState);
+        }
+        else if (pkgState == PackageStates.PURGED) { // using PERGED flag for unmanged here for now.
+            pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
+        }
+
+        StateFactory.save(stateRev);
+        StatesAPI.generateServerPackageState(minion);
+    }
 }
