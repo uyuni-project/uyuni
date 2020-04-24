@@ -430,10 +430,10 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Package p = null;
         PackageName pn = PackageFactory.lookupOrCreatePackageByName("up2date");
         if (pn != null) {
-            List packages = PackageFactory.listPackagesByPackageName(pn);
-            Iterator i = packages.iterator();
+            List<Package> packages = PackageFactory.listPackagesByPackageName(pn);
+            Iterator<Package> i = packages.iterator();
             while (i.hasNext()) {
-                Package innerp = (Package) i.next();
+                Package innerp = i.next();
                 PackageEvr evr = innerp.getPackageEvr();
                 if (evr != null &&
                         evr.getVersion().equals(version)) {

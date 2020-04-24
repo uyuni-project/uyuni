@@ -28,8 +28,6 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerArch;
@@ -52,7 +50,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -124,13 +121,7 @@ public class RegistrationUtils {
             LOG.error("Error generating Salt files for minion '" + minionId + "':" + e.getMessage());
         }
 
-        // Get the product packages from subscribed channels and install them.
-        List<Package> prodPkgs = PackageFactory.findMissingProductPackagesOnServer(minion.getId());
-        StateFactory.addPackagesToNewStateRevision(minion, creator.map(User::getId), prodPkgs);
-
         LOG.info("Finished minion registration: " + minionId);
-
-        StatesAPI.generateServerPackageState(minion);
 
         // Should we apply the highstate?
         boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();

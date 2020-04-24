@@ -17,16 +17,9 @@ package com.redhat.rhn.domain.state;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
-
-import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.services.StateRevisionService;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.DetachedCriteria;
@@ -36,11 +29,8 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Factory class for working with states.
@@ -255,44 +245,5 @@ public class StateFactory extends HibernateFactory {
             }
         }
         return usage;
-    }
-
-    /**
-     * Create a new ServerStateRevision and add the given packages
-     * to the new created state (installed, latest) if they are not yet
-     * part of the state.
-     *
-     * @param server the minion
-     * @param eventUserId the creator of the state
-     * @param pkgs list of packages to add to the state
-     */
-    public static void addPackagesToNewStateRevision(MinionServer server,
-            Optional<Long> eventUserId, List<Package> pkgs) {
-        Optional<User> eventUser = eventUserId.map(UserFactory::lookupById);
-        Optional<User> creatorUser = Optional.ofNullable(server.getCreator());
-        User orgUser = UserFactory.findRandomOrgAdmin(server.getOrg());
-
-        User user = eventUser.orElse(creatorUser.orElse(orgUser));
-
-        ServerStateRevision state = StateRevisionService.INSTANCE
-                .cloneLatest(server, user, true, true);
-
-        Set<PackageState> pkgStates = state.getPackageStates();
-        Map<PackageName, PackageState> lookup = pkgStates.stream()
-                .collect(Collectors.toMap(PackageState::getName, Function.identity()));
-
-        pkgs.stream()
-            .filter(pkg -> !lookup.containsKey(pkg.getPackageName()))
-            .map(pkg -> {
-                PackageState packageState = new PackageState();
-                packageState.setStateRevision(state);
-                packageState.setName(pkg.getPackageName());
-                packageState.setPackageState(PackageStates.INSTALLED);
-                packageState.setVersionConstraint(VersionConstraints.LATEST);
-                return packageState;
-            })
-            .forEach(state::addPackageState);
-        StateFactory.save(state);
-        StatesAPI.generateServerPackageState(server);
     }
 }
