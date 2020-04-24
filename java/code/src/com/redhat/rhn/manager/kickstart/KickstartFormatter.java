@@ -60,10 +60,9 @@ public class KickstartFormatter {
 
 
     private static final String REDHAT_REGISTER_SNIPPET = "spacewalk/redhat_register";
-    private static final String POST_REACTIVATION_SNIPPET =
-                                                    "spacewalk/post_reactivation_key";
-    private static final String POST_DELETION_SNIPPET =
-                                        "spacewalk/post_delete_system";
+    private static final String REDHAT_REGISTER_USING_SALT_SNIPPET = "spacewalk/redhat_register_using_salt";
+    private static final String POST_REACTIVATION_SNIPPET = "spacewalk/post_reactivation_key";
+    private static final String POST_DELETION_SNIPPET = "spacewalk/post_delete_system";
     private static final String KEEP_SYSTEM_ID_SNIPPET = "spacewalk/keep_system_id";
     private static final String DEFAULT_MOTD = "spacewalk/default_motd";
 
@@ -798,11 +797,18 @@ public class KickstartFormatter {
         }
 
         addCobblerSnippet(retval, DEFAULT_MOTD);
-        addCobblerSnippet(retval, REDHAT_REGISTER_SNIPPET);
+
+        if (ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
+            addCobblerSnippet(retval, REDHAT_REGISTER_USING_SALT_SNIPPET);
+        }
+        else {
+            addCobblerSnippet(retval, REDHAT_REGISTER_SNIPPET);
+            retval.append(NEWLINE);
+            retval.append(RHNCHECK + NEWLINE);
+        }
+
         retval.append("# end cobbler snippet" + NEWLINE);
 
-        retval.append(NEWLINE);
-        retval.append(RHNCHECK + NEWLINE);
         addLogEnd(retval, RHN_LOG_FILE, "");
 
         addEnd(retval);

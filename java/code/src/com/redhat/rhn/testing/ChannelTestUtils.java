@@ -102,7 +102,7 @@ public class ChannelTestUtils {
         PackageManagerTest.addPackageToChannel(
                 ChannelManager.RHN_VIRT_HOST_PACKAGE_NAME, rhnTools);
         PackageManagerTest.addPackageToChannel(
-                ConfigDefaults.get().getKickstartPackageName(), rhnTools);
+                ConfigDefaults.get().getKickstartPackageNames().get(0), rhnTools);
 
 
         Channel rhelVirt =

@@ -113,9 +113,10 @@ public class ConfigDefaults {
 
     public static final String REPOMD_CACHE_MOUNT_POINT = "repomd_cache_mount_point";
 
+    //Comma separated names of possible kickstart packages
+    private static final String POSSIBLE_KICKSTART_PACKAGE_NAMES = "spacewalk-koan,salt";
 
-    private static final String DEFAULT_KICKSTART_PACKAGE_NAME = "spacewalk-koan";
-    private static final String KICKSTART_PACKAGE_NAME = "kickstart_package";
+    private static final String KICKSTART_PACKAGE_NAMES = "kickstart_packages";
 
     public static final String MOUNT_POINT = "mount_point";
     public static final String KICKSTART_MOUNT_POINT = "kickstart_mount_point";
@@ -313,6 +314,12 @@ public class ConfigDefaults {
      */
     public static final String SINGLE_SIGN_ON_ENABLED = "java.sso";
 
+    /**
+     * List of distributions for which use salt for registration in kickstart
+     */
+    public static final String SALT_ENABLED_KICKSTART_INSTALL_TYPES = "salt_enabled_kickstart_install_types";
+
+
     private ConfigDefaults() {
     }
 
@@ -389,14 +396,13 @@ public class ConfigDefaults {
         return mount;
     }
 
-
     /**
-     * Returns the default kickstart package name
-     * @return the default kickstart package name
+     * Returns the list of default kickstart packages names
+     * @return the list of default kickstart packages names
      */
-    public String getKickstartPackageName() {
-        return StringUtils.defaultIfEmpty(Config.get().getString(KICKSTART_PACKAGE_NAME),
-                DEFAULT_KICKSTART_PACKAGE_NAME).trim();
+    public List<String> getKickstartPackageNames() {
+        List<String> packageNames = Config.get().getList(KICKSTART_PACKAGE_NAMES);
+        return packageNames.isEmpty() ?  Arrays.asList(POSSIBLE_KICKSTART_PACKAGE_NAMES.split(",")) : packageNames;
     }
 
     /**
@@ -976,5 +982,15 @@ public class ConfigDefaults {
     public boolean isSingleSignOnEnabled() {
         return Config.get().getBoolean(SINGLE_SIGN_ON_ENABLED);
     }
+
+    /**
+     * Returns list of install type labels for which use salt for registration in kickstart profile.
+     * @return list of distributions
+     */
+    public List<String> getUserSelectedSaltInstallTypeLabels() {
+        return Config.get().getList(SALT_ENABLED_KICKSTART_INSTALL_TYPES);
+    }
+
+
 
 }

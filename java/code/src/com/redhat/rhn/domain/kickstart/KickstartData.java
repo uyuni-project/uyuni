@@ -1306,11 +1306,11 @@ public class KickstartData {
     }
 
     /**
-     * Get the name of the kickstart package this KS will use.
-     * @return String kickstart package like auto-kickstart-ks-rhel-i386-as-4
+     * Get the list of possible name of the kickstart packages this KS could use.
+     * @return List of kickstart packages like auto-kickstart-ks-rhel-i386-as-4
      */
-    public String getKickstartPackageName() {
-        return ConfigDefaults.get().getKickstartPackageName();
+    public List<String> getKickstartPackageNames() {
+        return ConfigDefaults.get().getKickstartPackageNames();
 
     }
 
