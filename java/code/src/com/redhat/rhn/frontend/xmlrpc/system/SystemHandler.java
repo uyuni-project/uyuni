@@ -81,7 +81,6 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -172,9 +171,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.cobbler.SystemRecord;
 
-import com.suse.manager.webui.controllers.StatesAPI;
-import com.suse.manager.webui.services.StateRevisionService;
-import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7167,28 +7163,10 @@ public class SystemHandler extends BaseHandler {
             VersionConstraints vVersionConstraint = VersionConstraints.byId(versionConstraint)
                     .orElseThrow(() -> new IllegalArgumentException("Invalid version constraint"));
             PackageName pkgName = Optional.ofNullable(PackageManager.lookupPackageName(packageName))
-                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));;
+                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));
 
             //update the state
-            ServerStateRevision stateRev = StateRevisionService.INSTANCE.cloneLatest(minion, loggedInUser, true, true);
-            Set<PackageState> pkgStates = stateRev.getPackageStates();
-
-            boolean isAvailable = SystemManager.hasPackageAvailable(minion, pkgName.getId());
-            if ((isAvailable && vPkgState == PackageStates.INSTALLED) || vPkgState == PackageStates.REMOVED) {
-                pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
-                PackageState packageState = new PackageState();
-                packageState.setStateRevision(stateRev);
-                packageState.setPackageState(vPkgState);
-                packageState.setVersionConstraint(vVersionConstraint);
-                packageState.setName(pkgName);
-                pkgStates.add(packageState);
-            }
-            else if (vPkgState == PackageStates.PURGED){ // using PERGED flag for unmanged here for now.
-                pkgStates.removeIf(ps -> ps.getName().equals(pkgName));
-            }
-            StateFactory.save(stateRev);
-            StatesAPI.generateServerPackageState(minion);
-
+           SystemManager.updatePackageState(loggedInUser, minion, pkgName, vPkgState, vVersionConstraint);
             return 1;
         }
         catch (LookupException e) {

@@ -2869,17 +2869,19 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SystemHandler systemHandler = getMockedHandler();
 
         // Installed 'Latest'(state = 0 & versionConstraint = 0)
-        int  result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 0);
-        assertEquals(1,result);
-        Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
-        Set<PackageState> pstates = sstate.get().getPackageStates();
-        assertEquals(0, pstates.size());
+        try {
+            systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 0, 0);
+            fail("Should throw UnsupportedOperationException");
+        }
+        catch (IllegalArgumentException e) {
+            assertContains(e.getMessage(), "not available in assigned channels");
+        }
 
         // Removed (state =1 while versionConstraint = doesn't matter as wouldn't be used but still has to be 0 or 1 or validation fails)
-        result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
+        int result = systemHandler.updatePackageState(admin, server.getId().intValue(), pkg.getPackageName().getName(), 1, 1);
         assertEquals(1,result);
-        sstate = StateFactory.latestStateRevision(server);
-        pstates = sstate.get().getPackageStates();
+        Optional<ServerStateRevision> sstate = StateFactory.latestStateRevision(server);
+        Set<PackageState>  pstates = sstate.get().getPackageStates();
         assertEquals(1, pstates.size());
         for (PackageState pst : pstates) {
             if (pst.getName().equals(pkg.getPackageName())) {
