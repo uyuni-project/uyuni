@@ -23,6 +23,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -1389,6 +1390,10 @@ public class SaltServerActionService {
 
                         }
                         pillar.put("repo", repocontent);
+
+                        // Add custom info values
+                        pillar.put("customvalues", profile.getCustomDataValues().stream()
+                                .collect(toMap(v -> v.getKey().getLabel(), v -> v.getValue())));
                     });
 
                     profile.asKiwiProfile().ifPresent(kiwiProfile -> {

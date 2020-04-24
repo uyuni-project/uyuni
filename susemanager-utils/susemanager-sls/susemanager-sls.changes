@@ -1,3 +1,4 @@
+- Pass image profile custom info values as Docker buildargs during image build
 - Cluster Awareness: Introduce generic SLS files for Cluster Management
   and CaaSP Cluster Provider custom Salt module.
 - Add virtual volume delete action
