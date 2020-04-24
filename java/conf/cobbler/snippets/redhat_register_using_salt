@@ -1,8 +1,4 @@
 # begin SUSE Manager registration
-<script>
-    <filename>uyuni-minion.sh</filename>
-    <source>
-        <![CDATA[
 cat <<EOF >"/etc/salt/minion.d/susemanager.conf"
 master: $redhat_management_server
 server_id_use_crc: adler32
@@ -54,7 +50,4 @@ zypper mr -d --all
 zypper mr -e --medium-type plugin
 #end if
 
-        ]]>
-    </source>
-</script>
 # end SUSE Manager registration
