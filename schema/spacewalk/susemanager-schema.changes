@@ -1,3 +1,4 @@
+- added an index to improve reposync performance
 - Update schema for virtual volume delete action
 
 -------------------------------------------------------------------
