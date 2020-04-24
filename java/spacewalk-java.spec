@@ -733,6 +733,7 @@ install -m 644 conf/cobbler/snippets/keep_system_id  $RPM_BUILD_ROOT%{spacewalks
 install -m 644 conf/cobbler/snippets/post_reactivation_key  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_reactivation_key
 install -m 644 conf/cobbler/snippets/post_delete_system  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/post_delete_system
 install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register
+install -m 644 conf/cobbler/snippets/redhat_register_using_salt    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/redhat_register_using_salt
 install -m 644 conf/cobbler/snippets/minion_script    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/minion_script
 install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register
 install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_register_script
@@ -982,6 +983,7 @@ fi
 %config %{spacewalksnippetsdir}/post_reactivation_key
 %config %{spacewalksnippetsdir}/post_delete_system
 %config %{spacewalksnippetsdir}/redhat_register
+%config %{spacewalksnippetsdir}/redhat_register_using_salt
 %config %{spacewalksnippetsdir}/minion_script
 %config %{spacewalksnippetsdir}/sles_register
 %config %{spacewalksnippetsdir}/sles_register_script

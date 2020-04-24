@@ -231,13 +231,11 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_4));
 
-        assertEquals("spacewalk-koan",
-                ksdata.getKickstartPackageName());
+        assertContains(ksdata.getKickstartPackageNames(), "spacewalk-koan");
         ksdata.getKickstartDefaults().getKstree().setInstallType(KickstartFactory.
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_5));
 
-        assertEquals("spacewalk-koan",
-                ksdata.getKickstartPackageName());
+        assertContains(ksdata.getKickstartPackageNames(),"spacewalk-koan");
 
     }
 
@@ -339,7 +337,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                         user, new Date(), "rhn.webdev.redhat.com");
 
         PackageManagerTest.addPackageToSystemAndChannel(
-                ConfigDefaults.get().getKickstartPackageName(), server, c);
+                ConfigDefaults.get().getKickstartPackageNames().get(0), server, c);
         // ksdata.getKsdefault().getKstree().setChannel(c);
         cmd.setProfileType(profileType);
         cmd.setServerProfileId(otherServerId);

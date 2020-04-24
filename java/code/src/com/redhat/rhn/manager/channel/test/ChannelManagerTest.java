@@ -590,7 +590,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel base = ChannelTestUtils.createTestChannel(user);
         Channel tools = ChannelTestUtils.createChildChannel(user, base);
         PackageManagerTest.addKickstartPackageToChannel(
-                ConfigDefaults.get().getKickstartPackageName(), tools);
+                ConfigDefaults.get().getKickstartPackageNames().get(0), tools);
 
         Channel lookup = ChannelManager.getToolsChannel(base, user);
         assertEquals(tools.getId(), lookup.getId());

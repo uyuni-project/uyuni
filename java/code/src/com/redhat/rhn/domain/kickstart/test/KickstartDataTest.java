@@ -394,7 +394,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
            addPackages(c, KickstartFormatter.FRESH_PKG_NAMES_RHEL34);
        }
        PackageManagerTest.addPackageToChannel(
-               ConfigDefaults.get().getKickstartPackageName() + "testy", c);
+               ConfigDefaults.get().getKickstartPackageNames().get(0) + "testy", c);
        PackageManagerTest.addPackageToChannel(
                KickstartData.LEGACY_KICKSTART_PACKAGE_NAME +
                    KickstartableTreeTest.TEST_BOOT_PATH, c);
