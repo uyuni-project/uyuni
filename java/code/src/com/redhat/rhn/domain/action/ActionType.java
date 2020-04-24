@@ -30,6 +30,7 @@ public class ActionType implements Serializable {
     private String name;
     private Character triggersnapshot;
     private Character unlockedonly;
+    private boolean maintenancemodeonly;
 
     /**
      * @return Returns the id.
@@ -102,6 +103,22 @@ public class ActionType implements Serializable {
     }
 
     /**
+     * @return return maintenance mode only
+     */
+    public boolean isMaintenancemodeonly() {
+        return maintenancemodeonly;
+    }
+
+    /**
+     * Set maintenance mode only flag
+     *
+     * @param maintenancemodeonlyIn maintenance mode only
+     */
+    public void setMaintenancemodeonly(boolean maintenancemodeonlyIn) {
+        this.maintenancemodeonly = maintenancemodeonlyIn;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public boolean equals(Object o) {
@@ -115,6 +132,7 @@ public class ActionType implements Serializable {
                                   .append(this.getTriggersnapshot(),
                                           other.getTriggersnapshot())
                                   .append(this.getUnlockedonly(), other.getUnlockedonly())
+                                  .append(this.isMaintenancemodeonly(), other.isMaintenancemodeonly())
                                   .isEquals();
     }
 
@@ -139,6 +157,7 @@ public class ActionType implements Serializable {
                                     .append(getLabel())
                                     .append(getTriggersnapshot())
                                     .append(getUnlockedonly())
+                                    .append(isMaintenancemodeonly())
                                     .toHashCode();
     }
 }
