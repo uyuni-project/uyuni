@@ -19,6 +19,11 @@ mgr_buildimage:
     - buildargs:
         repo: "{{ pillar.get('repo') }}"
         cert: "{{ pillar.get('cert') }}"
+{%- if pillar.get('customvalues') is defined %}
+{%- for key, value in pillar.get('customvalues').items() %}
+        {{key}}: "{{value}}"
+{%- endfor %}
+{%- endif %}
     - require:
       - module: mgr_registries_login
 
@@ -45,6 +50,11 @@ mgr_buildimage:
     - buildargs:
         repo: "{{ pillar.get('repo') }}"
         cert: "{{ pillar.get('cert') }}"
+{%- if pillar.get('customvalues') is defined %}
+{%- for key, value in pillar.get('customvalues').items() %}
+        {{key}}: "{{value}}"
+{%- endfor %}
+{%- endif %}
     - require:
       - module: mgr_registries_login
 
