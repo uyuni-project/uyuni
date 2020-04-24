@@ -1288,7 +1288,7 @@ public class ChannelManager extends BaseManager {
                     channelId + " pn: " + packageNames);
         }
         SelectMode m = ModeFactory.getMode("Channel_queries",
-                "latest_packages_equal");
+                "latest_packages_similar_to");
 
         StringBuilder pnames = new StringBuilder();
         pnames.append("(");
