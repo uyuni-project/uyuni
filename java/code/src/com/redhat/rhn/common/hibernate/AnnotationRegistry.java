@@ -66,6 +66,9 @@ import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
 import com.suse.manager.model.clusters.Cluster;
 
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.manager.model.maintenance.MaintenanceCalendar;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -136,7 +139,8 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(GroupRecurringAction.class);
         ANNOTATION_CLASSES.add(OrgRecurringAction.class);
         ANNOTATION_CLASSES.add(Cluster.class);
-
+        ANNOTATION_CLASSES.add(MaintenanceSchedule.class);
+        ANNOTATION_CLASSES.add(MaintenanceCalendar.class);
     }
 
     /**
