@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -75,8 +74,6 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
             log.error("Server with id " + serverId + " not found.");
             return;
         }
-        List<Package> prodPkgs =
-                PackageFactory.findMissingProductPackagesOnServer(serverId);
         Optional<MinionServer> optMinion = s.asMinionServer();
         optMinion.ifPresent(minion -> {
             // This code acts only on salt minions
@@ -96,10 +93,6 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
                                     .collect(Collectors.toList()) :
                             Collections.emptyList()
                     );
-
-            // add product packages to package state
-            StateFactory.addPackagesToNewStateRevision(minion,
-                    Optional.ofNullable(event.getUserId()), prodPkgs);
 
             // push the changed pillar data to the minion
             systemQuery.refreshPillar(new MinionList(minion.getMinionId()));
@@ -123,6 +116,8 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
         if (!optMinion.isPresent()) {
             try {
                 // This code acts only on traditional systems
+                List<Package> prodPkgs =
+                        PackageFactory.findMissingProductPackagesOnServer(serverId);
                 if (event.getUserId() != null) {
                     User user = UserFactory.lookupById(event.getUserId());
                     ActionManager.schedulePackageInstall(user, prodPkgs, s, new Date());

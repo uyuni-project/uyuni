@@ -79,6 +79,10 @@ import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
@@ -7129,6 +7133,46 @@ public class SystemHandler extends BaseHandler {
             throw new TaskomaticApiException(e.getMessage());
         }
     }
+    /**
+     * Update the package state of a given system(High state would be needed to actually install/remove the package)
+     *
+     * @param loggedInUser The current user
+     * @param sid The system id of the target system
+     * @param packageName name of the package
+     * @param state state of the package (0 = installed, 1= removed, 2 = unmanaged)
+     * @param versionConstraint latest version should be installed or any (0 = latest, 1= any)
+     * @return 1 on success, 0 on failure
+     *
+     * @xmlrpc.doc  Update the package state of a given system
+     *                          (High state would be needed to actually install/remove the package)
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param_desc("string", "packageName", "Name of the package")
+     * @xmlrpc.param #param_desc("int", "state", "0 = installed, 1 = removed, 2 = unmanaged ")
+     * @xmlrpc.param #param_desc("int", "versionConstraint", "0 = latest, 1 = any ")
+     * @xmlrpc.returntype 1 on success, exception on failure
+     */
+    public int updatePackageState(User loggedInUser, Integer sid, String packageName, Integer state,
+                                  Integer versionConstraint) {
+        try {
+            //validation
+            MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
+                    .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + sid));
+            PackageStates vPkgState = PackageStates.byId(state)
+                    .orElseThrow(()-> new IllegalArgumentException("Invalid package state"));
+            VersionConstraints vVersionConstraint = VersionConstraints.byId(versionConstraint)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid version constraint"));
+            PackageName pkgName = Optional.ofNullable(PackageManager.lookupPackageName(packageName))
+                    .orElseThrow(() -> new IllegalArgumentException("No such package exists"));
+
+            //update the state
+           SystemManager.updatePackageState(loggedInUser, minion, pkgName, vPkgState, vVersionConstraint);
+            return 1;
+        }
+        catch (LookupException e) {
+            throw new NoSuchSystemException(e);
+       }
+    }
 
     /**
      * Return a map from Salt minion IDs to System IDs.
@@ -7144,6 +7188,26 @@ public class SystemHandler extends BaseHandler {
      */
     public Map<String, Long> getMinionIdMap(User loggedInUser) {
         return ServerFactory.getMinionIdMap(loggedInUser.getId());
+    }
+
+    /**
+     * List possible migration targets for given system
+     * @param loggedInUser The current user
+     * @param serverId Server ID
+     * @return Array of migration targets for given system
+     *
+     * @xmlrpc.doc List possible migration targets for a system
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.returntype
+     *      #array_begin()
+     *           $PackageStateSerializer
+     *      #array_end()
+     */
+    public Set<PackageState> listPackageState(User loggedInUser, Integer serverId) {
+        MinionServer minion = SystemManager.lookupByIdAndUser(serverId.longValue(), loggedInUser).asMinionServer()
+                .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + serverId));
+        return StateFactory.latestPackageStates(minion).orElse(Collections.EMPTY_SET);
     }
 
     /**

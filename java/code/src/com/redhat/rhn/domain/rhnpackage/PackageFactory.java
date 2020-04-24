@@ -217,7 +217,7 @@ public class PackageFactory extends HibernateFactory {
      * @param pn to query by
      * @return List of Package objects if found
      */
-    public static List listPackagesByPackageName(PackageName pn) {
+    public static List<Package> listPackagesByPackageName(PackageName pn) {
         Session session = HibernateFactory.getSession();
 
         return session.getNamedQuery("Package.findByPackageName").setParameter("packageName",
@@ -651,4 +651,22 @@ public class PackageFactory extends HibernateFactory {
                 "Package.findMissingProductPackagesOnServer", params);
         return pkgs;
     }
+
+    /**
+     * Is the package with nameId available in the provided server's subscribed channels
+     * @param server the server
+     * @param nameId the name id
+     * @return true if available, false otherwise
+     */
+    public static boolean hasPackageAvailable(Server server, Long nameId) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("server_id", server.getId());
+        params.put("nid", nameId);
+        String mode = "has_package_available_with_name";
+        SelectMode m =
+                ModeFactory.getMode("System_queries", mode);
+        DataResult toReturn = m.execute(params);
+        return toReturn.size() > 0;
+    }
+
 }

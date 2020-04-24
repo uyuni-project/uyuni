@@ -1,3 +1,4 @@
+- Added a new API end point to manage package state (bsc#1169520)
 - avoid multiple base channels when onboarding minions (bsc#1167871)
 - Remember settings after Service Pack Migration dry-run
 
