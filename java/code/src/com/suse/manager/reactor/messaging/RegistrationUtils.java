@@ -240,6 +240,8 @@ public class RegistrationUtils {
                     if (server.getBaseChannel() != null) {
                         return server.getChannels();
                     }
+                    // otherwise identify the product installed on the server
+                    // and assign to it basic/common channels for its products installed
                     Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
                     return findChannelsForProducts(suseProducts, minionId);
                 },
@@ -248,28 +250,25 @@ public class RegistrationUtils {
                         // ActivationKey without base channel (SUSE Manager Default)
                         () -> {
                             Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
-                            return findChannelsForProducts(suseProducts, minionId);
+                            Set<Channel> channelsForProducts = findChannelsForProducts(suseProducts, minionId);
+                            Optional<Channel> baseChannel = channelsForProducts.stream()
+                                    .filter(c -> c.isBaseChannel()).findFirst();
+                            if (baseChannel.isPresent()) {
+                                // assign the identified base channel and activation key channels related
+                                // to that base channel only
+                                return Stream.concat(
+                                        Stream.of(baseChannel.get()),
+                                        ak.getChannels().stream()
+                                                .filter(c -> c.getParentChannel().getId()
+                                                        .equals(baseChannel.get().getId())))
+                                        .collect(toSet());
+                            }
+                            else {
+                                return emptySet();
+                            }
                         },
-                        baseChannel -> Opt.fold(
-                                SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()),
-                                () -> {
-                                    // ActivationKey with custom channel
-                                    return Stream.concat(
-                                            Stream.of(baseChannel),
-                                            ak.getChannels().stream()
-                                    ).collect(toSet());
-                                },
-                                baseProduct -> {
-                                    // ActivationKey with vendor or cloned vendor channel
-                                    return Stream.concat(
-                                            lookupRequiredChannelsForProduct(baseProduct),
-                                            ak.getChannels().stream()
-                                                    .filter(c -> c.getParentChannel() != null &&
-                                                            c.getParentChannel().getId().equals(baseChannel.getId()))
-                                    ).collect(toSet());
-
-                                }
-                        )
+                        // assign base channel and activation key channels selected only
+                        baseChannel -> Stream.concat(Stream.of(baseChannel), ak.getChannels().stream()).collect(toSet())
                 )
         );
 
