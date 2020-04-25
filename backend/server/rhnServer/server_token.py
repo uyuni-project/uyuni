@@ -319,7 +319,7 @@ def deploy_configs_if_needed(server):
     log_debug(4, "scheduled activation key config deploy")
 
     h = rhnSQL.prepare(_query_add_revision_to_action)
-    # XXX should use executemany() or execute_bulk
+    # XXX should use executemany()
     for revision_id in list(revisions.values()):
         log_debug(5, action_id, revision_id)
         h.execute(server_id=server_id,
@@ -413,7 +413,7 @@ def token_config_channels(server, tokens_obj):
     if config_channels:
         h = rhnSQL.prepare(_query_set_server_config_channels)
 
-        h.execute_bulk({
+        h.executemany(**{
             'server_id': [server_id] * len(config_channels),
             'config_channel_id': [c['config_channel_id'] for c in config_channels],
             'position': [c['position'] for c in config_channels],

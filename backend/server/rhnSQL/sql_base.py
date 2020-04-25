@@ -156,7 +156,7 @@ class Cursor:
         Call with keyword arguments mapping to ordered lists.
         i.e. cursor.executemany(id=[1, 2], name=["Bill", "Mary"])
         """
-        return self._execute_wrapper(self._executemany, *p, **kw)
+        self._execute_wrapper(self._executemany, *p, **kw)
 
     def execute_values(self, sql, argslist, template=None, page_size=1000, fetch=True):
         """
@@ -164,35 +164,6 @@ class Cursor:
         chunks. Use a %s placeholder where the VALUE list goes.
         """
         return self._execute_wrapper(self._execute_values, sql, argslist, template, page_size, fetch)
-
-    def execute_bulk(self, dict, chunk_size=100):
-        """
-        Uses executemany but chops the incoming dict into chunks for each
-        call.
-
-        When attempting to execute bulk operations with a lot of rows in the
-        arrays,
-        Oracle may occasionally lock (probably the oracle client library).
-        I noticed this previously with the import code. -- misa
-        This function executes bulk operations in smaller chunks
-        dict is supposed to be the dictionary that we normally apply to
-        statement.execute.
-        """
-        ret = 0
-        start_chunk = 0
-        while 1:
-            subdict = {}
-            for k, arr in list(dict.items()):
-                subarr = arr[start_chunk:start_chunk + chunk_size]
-                if not subarr:
-                    # Nothing more to do here - we exhausted the array(s)
-                    return ret
-                subdict[k] = subarr
-            ret = ret + self.executemany(**subdict)
-            start_chunk = start_chunk + chunk_size
-
-        # Should never reach this point
-        return ret
 
     def _execute_wrapper(self, function, *p, **kw):
         """

@@ -54,7 +54,7 @@ def upload(server_id, action_id, data={}):
 
     failure_table = rhnSQL.Table('rhnConfigFileFailure', 'label')
     h = rhnSQL.prepare(_query_mark_upload_files)
-    # We don't do execute_bulk here, since we want to know if each update has
+    # We don't do executemany here, since we want to know if each update has
     # actually touched a row
 
     reason_map = {'missing_files': 'missing',
@@ -124,7 +124,7 @@ def mtime_upload(server_id, action_id, data={}):
     num_paths = len(paths)
 
     h = rhnSQL.prepare(_query_create_action_config_filename)
-    h.execute_bulk({
+    h.executemany(**{
         'action_id': [action_id] * num_paths,
         'server_id': [server_id] * num_paths,
         'path': paths,
@@ -227,7 +227,7 @@ def _mark_missing_diff_files(server_id, action_id, missing_files):
     failure_ids = [failure_id] * len(ids)
 
     h = rhnSQL.prepare(_query_mark_failed_diff_files)
-    h.execute_bulk({
+    h.executemany(**{
         'action_config_revision_id': ids,
         'failure_id': failure_ids,
     })
@@ -307,4 +307,4 @@ def _disable_old_diffs(server_id):
         return
 
     h = rhnSQL.prepare(_query_delete_old_diffs)
-    h.execute_bulk({'action_config_revision_id': old_acr_ids})
+    h.executemany(**{'action_config_revision_id': old_acr_ids})

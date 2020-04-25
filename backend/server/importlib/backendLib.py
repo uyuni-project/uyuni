@@ -267,7 +267,6 @@ class TableUpdate(BaseTableLookup):
         BaseTableLookup.__init__(self, table, dbmodule)
         self.queryTemplate = "update %s set %s where %s"
         self.fields = list(self.table.getFields().keys())
-        self.count = 1000
         # Fields minus pks
         self.otherfields = []
         # BLOBs cannot be PKs, and have to be updated differently
@@ -348,7 +347,7 @@ class TableUpdate(BaseTableLookup):
                     # Nothing to do
                     continue
                 statement = self._getCachedQuery(key)
-                executeStatement(statement, val, self.count)
+                statement.executemany(**val)
 
         if not self.blob_fields:
             return
@@ -394,7 +393,6 @@ class TableDelete(TableLookup):
     def __init__(self, table, dbmodule):
         TableLookup.__init__(self, table, dbmodule)
         self.queryTemplate = "delete from %s where %s"
-        self.count = 1000
 
     def query(self, values):
         # Build the values hash
@@ -425,67 +423,34 @@ class TableDelete(TableLookup):
                 # Nothing to do
                 continue
             statement = self._getCachedQuery(key)
-            executeStatement(statement, val, self.count)
+            statement.executemany(**val)
 
 
 class TableInsert(TableUpdate):
 
     def __init__(self, table, dbmodule):
         TableUpdate.__init__(self, table, dbmodule)
-        self.queryTemplate = "insert into %s (%s) values (%s)"
-        self.count = 1000
+        self.queryTemplate = "insert into %s (%s) values %%s"
 
         self.insert_fields = self.pks + self.otherfields + self.blob_fields
-        self.insert_values = [':%s' % x for x in self.pks + self.otherfields + self.blob_fields]
 
     def _buildQuery(self, key):
-        q = self.queryTemplate % (self.table.name,
-                                  ', '.join(self.insert_fields),
-                                  ', '.join(self.insert_values))
+        q = self.queryTemplate % (self.table.name, ', '.join(self.insert_fields))
         return q
 
     def query(self, values):
         if self.blob_fields:
-            chunksize = 1
             blob_map = {}
             for f in self.blob_fields:
                 blob_map[f] = f
         else:
-            chunksize = self.count
             blob_map = None
 
         # Do the insert
         statement = self._getCachedQuery(None, blob_map=blob_map)
-        executeStatement(statement, values, chunksize)
-
-
-def executeStatement(statement, valuesHash, chunksize):
-    # Executes a statement with chunksize values at the time
-    if not valuesHash:
-        # Empty hash
-        return
-    count = 0
-    while 1:
-        tempdict = {}
-        for k, vals in list(valuesHash.items()):
-            if not vals:
-                # Empty
-                break
-            if chunksize > 1:
-                tempdict[k] = vals[:chunksize]
-            else:
-                tempdict[k] = vals[0]
-            del vals[:chunksize]
-        if not tempdict:
-            # Empty dictionary: we're done
-            break
-        # Now execute it
-        if chunksize > 1:
-            count += statement.executemany(**tempdict)
-        else:
-            count += statement.execute(**tempdict)
-    return count
-
+        l = len(values[self.insert_fields[0]])
+        value_list = [[values[f][i] for f in self.insert_fields] for i in range(l)]
+        statement.execute_values(self._buildQuery(None), value_list, fetch=False, page_size=10_000)
 
 def sanitizeValue(value, datatype):
     if isinstance(datatype, DBstring):

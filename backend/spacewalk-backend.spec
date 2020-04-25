@@ -101,7 +101,7 @@ the Spacewalk backend modules.
 %package sql-postgresql
 Summary:        Postgresql backend for Spacewalk
 Group:          System/Management
-Requires:       python3-psycopg2 >= 2.0.14-2
+Requires:       python3-psycopg2 >= 2.8.4
 Provides:       %{name}-sql-virtual = %{version}-%{release}
 
 %description sql-postgresql

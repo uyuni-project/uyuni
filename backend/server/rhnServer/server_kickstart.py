@@ -672,7 +672,7 @@ def terminate_kickstart_sessions(server_id):
     }
     # Terminate pending actions
     log_debug(4, "Terminating sessions", params)
-    h.execute_bulk(params)
+    h.executemany(**params)
 
     # Invalidate pending actions
     for action_id in action_ids:

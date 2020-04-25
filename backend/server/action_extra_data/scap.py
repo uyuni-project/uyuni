@@ -116,9 +116,7 @@ def _create_rresult(testresult_id, result_label):
 
 def _store_idents(data):
     h = rhnSQL.prepare(_query_insert_identmap)
-    rowcount = h.execute_bulk(data)
-    log_debug(5, "Inserted xccdf_ruleresults rows:", rowcount)
-
+    h.executemany(**data)
 
 def _get_text(node):
     rc = []

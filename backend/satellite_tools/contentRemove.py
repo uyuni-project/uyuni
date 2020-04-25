@@ -483,11 +483,7 @@ def _delete_srpms(srcPackageIds):
         from rhnPackageSource
         where id = :id
     """)
-    count = h.executemany(id=srcPackageIds)
-    if not count:
-        count = 0
-    log_debug(2, "Successfully deleted %s/%s source package ids" % (
-        count, len(srcPackageIds)))
+    h.executemany(id=srcPackageIds)
 
 
 def _delete_rpms(packageIds):
@@ -532,15 +528,10 @@ def _delete_rpm_group(packageIds):
     deleteStatement = "delete from %s where package_id = :package_id"
     for table in references:
         h = rhnSQL.prepare(deleteStatement % table)
-        count = h.executemany(package_id=packageIds)
-        log_debug(3, "Deleted from %s: %d rows" % (table, count))
+        h.executemany(package_id=packageIds)
     deleteStatement = "delete from rhnPackage where id = :package_id"
     h = rhnSQL.prepare(deleteStatement)
-    count = h.executemany(package_id=packageIds)
-    if count:
-        log_debug(2, "DELETED package id %s" % str(packageIds))
-    else:
-        log_error("No such package id %s" % str(packageIds))
+    h.executemany(package_id=packageIds)
     rhnSQL.commit()
 
 

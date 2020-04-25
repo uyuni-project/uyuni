@@ -127,7 +127,7 @@ class RhnSQLDatabaseTests(unittest.TestCase):
             'id': ids,
             'name': names,
         }
-        cursor.execute_bulk(d)
+        cursor.executemany(**d)
 
         query = rhnSQL.prepare("SELECT * FROM %s WHERE id >= 1000 ORDER BY ID"
                                % self.temp_table)
