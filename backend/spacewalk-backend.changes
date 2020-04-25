@@ -1,4 +1,4 @@
-- reposync speedup fixes
+- reposync speedup fixes, which require psycopg2 to be at least version 2.8.4
 - use default sender address from web namespace
 - Enable extra HTTP headers support for "spacewalk-repo-sync".
 - Add missing Zypper plugin to deal with ULN repositories.
