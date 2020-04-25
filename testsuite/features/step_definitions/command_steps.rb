@@ -220,14 +220,6 @@ When(/^I make sure no spacewalk\-repo\-sync is executing, excepted the ones need
   end
 end
 
-Then(/^"([^"]*)" package should have been stored$/) do |pkg|
-  $server.run("find /var/spacewalk/packages -name #{pkg}")
-end
-
-Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
-  $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}")
-end
-
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   arch = 'x86_64'
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
