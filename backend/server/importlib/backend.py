@@ -17,6 +17,7 @@
 #
 
 import copy
+from datetime import datetime
 import string
 import sys
 
@@ -95,47 +96,95 @@ class Backend:
                                     % format)
         sth.execute()
 
-    # Note: postgres-specific implementation overrides this in PostgresBackend
     def processCapabilities(self, capabilityHash):
-        h = self.dbmodule.prepare("select lookup_package_capability(:name, :version) as id from dual")
-        for name, version in list(capabilityHash.keys()):
-            ver = version
-            if version is None or version == '':
-                ver = None
-            h.execute(name=name, version=ver)
-            row = h.fetchone_dict()
-            capabilityHash[(name, version)] = row['id']
+        if not capabilityHash:
+            return
+
+        sql = """
+            WITH
+              wanted (name, version) AS (
+                VALUES %s
+              ),
+              missing AS (
+                SELECT nextval('rhn_pkg_capability_id_seq') AS id, wanted.*
+                  FROM wanted
+                  LEFT JOIN rhnPackageCapability
+                    ON rhnPackageCapability.name = wanted.name
+                      AND rhnPackageCapability.version IS NOT DISTINCT FROM wanted.version
+                  WHERE rhnPackageCapability.id IS NULL
+              )
+              INSERT INTO rhnPackageCapability(id, name, version)
+                SELECT *
+                  FROM missing
+                ON CONFLICT DO NOTHING
+        """
+        wanted = [(key[0], None if key[1] == '' else key[1]) for key in capabilityHash.keys()]
+        h = self.dbmodule.prepare(sql)
+        h.execute_values(sql, wanted, fetch=False)
+
+        sql = """
+            WITH
+              wanted (name, version) AS (
+                VALUES %s
+              )
+              SELECT wanted.*, rhnPackageCapability.id
+                FROM wanted
+                JOIN rhnPackageCapability
+                  ON rhnPackageCapability.name = wanted.name
+                    AND rhnPackageCapability.version IS NOT DISTINCT FROM wanted.version
+        """
+        h = self.dbmodule.prepare(sql)
+        capabilities = h.execute_values(sql, wanted)
+
+        for capability in capabilities:
+            capabilityHash[(capability[0], capability[1] or '')] = capability[2]
 
     def processChangeLog(self, changelogHash):
         if CFG.has_key('package_import_skip_changelog') and CFG.package_import_skip_changelog:
             return
-        sql = "select id from rhnPackageChangeLogData where name = :name and time = :time and text = :text"
-        h = self.dbmodule.prepare(sql)
-        toinsert = [[], [], [], []]
-        for name, time, text in list(changelogHash.keys()):
-            val = {}
-            _buildExternalValue(val, {'name': name, 'time': time, 'text': text}, self.tables['rhnPackageChangeLogData'])
-            h.execute(name=val['name'], time=val['time'], text=val['text'])
-            row = h.fetchone_dict()
-            if row:
-                changelogHash[(name, time, text)] = row['id']
-                continue
 
-            id = self.sequences['rhnPackageChangeLogData'].next()
-            changelogHash[(name, time, text)] = id
-
-            toinsert[0].append(id)
-            toinsert[1].append(val['name'])
-            toinsert[2].append(val['time'])
-            toinsert[3].append(val['text'])
-
-        if not toinsert[0]:
-            # Nothing to do
+        if not changelogHash:
             return
 
-        sql = "insert into rhnPackageChangeLogData (id, name, time, text) values (:id, :name, :time, :text)"
+        sql = """
+            WITH wanted (name, time, text) AS (
+              VALUES %s
+            ),
+            missing AS (
+              SELECT nextval('rhn_pkg_cld_id_seq') AS id, wanted.*
+                FROM wanted
+                LEFT JOIN rhnPackageChangeLogData
+                    ON rhnPackageChangeLogData.name = wanted.name
+                      AND rhnPackageChangeLogData.time = wanted.time
+                      AND rhnPackageChangeLogData.text = wanted.text
+                WHERE rhnPackageChangeLogData.id IS NULL
+            )
+            INSERT INTO rhnPackageChangeLogData(id, name, time, text)
+              SELECT *
+                FROM missing
+              ON CONFLICT DO NOTHING
+        """
+        values = [(key[0], datetime.strptime(key[1], '%Y-%m-%d %H:%M:%S'), key[2]) for key in changelogHash.keys()]
         h = self.dbmodule.prepare(sql)
-        h.executemany(id=toinsert[0], name=toinsert[1], time=toinsert[2], text=toinsert[3])
+        h.execute_values(sql, values, fetch=False)
+
+        sql = """
+            WITH wanted (name, time, text) AS (
+              VALUES %s
+            )
+            SELECT wanted.*, rhnPackageChangeLogData.id
+              FROM wanted
+              JOIN rhnPackageChangeLogData
+                  ON rhnPackageChangeLogData.name = wanted.name
+                    AND rhnPackageChangeLogData.time = wanted.time
+                    AND rhnPackageChangeLogData.text = wanted.text
+        """
+        h = self.dbmodule.prepare(sql)
+        changelogs = h.execute_values(sql, values)
+
+        for changelog in changelogs:
+            changelogHash[(changelog[0], changelog[1].strftime('%Y-%m-%d %H:%M:%S'), changelog[2])] = changelog[3]
+
 
     def processSuseProductFiles(self, prodfileHash):
         sql = """
@@ -628,19 +677,53 @@ class Backend:
             if row:
                 evrHash[evr] = row['id']
 
-    # Note: postgres-specific implementation overrides this in PostgresBackend
     def lookupChecksums(self, checksumHash):
         if not checksumHash:
             return
-        sql = "select lookup_checksum(:ctype, :csum) id from dual"
+
+        sql = """
+            WITH wanted (checksum_type, checksum) AS (
+              VALUES %s
+            ),
+            missing AS (
+              SELECT nextval('rhnchecksum_seq') AS id, rhnChecksumType.id AS checksum_type_id, wanted.checksum
+                FROM wanted
+                  JOIN rhnChecksumType ON wanted.checksum_type = rhnChecksumType.label
+                  LEFT JOIN rhnChecksum
+                    ON rhnChecksum.checksum_type_id = rhnChecksumType.id
+                      AND rhnChecksum.checksum = wanted.checksum
+                WHERE rhnChecksum.id IS NULL
+            )
+            INSERT INTO rhnChecksum(id, checksum_type_id, checksum)
+              SELECT *
+                FROM missing
+              ON CONFLICT DO NOTHING
+        """
+        values = [(key[0], key[1]) for key in checksumHash.keys() if key[1] != '']
+
+        if not values:
+            return
+
         h = self.dbmodule.prepare(sql)
-        for k in list(checksumHash.keys()):
-            ctype, csum = k
-            if csum != '':
-                h.execute(ctype=ctype, csum=csum)
-                row = h.fetchone_dict()
-                if row:
-                    checksumHash[k] = row['id']
+        r = h.execute_values(sql, values, fetch=False)
+
+
+        sql = """
+          WITH wanted (checksum_type, checksum) AS (
+            VALUES %s
+          )
+          SELECT wanted.checksum_type, wanted.checksum, rhnChecksum.id
+            FROM wanted
+              JOIN rhnChecksumType ON wanted.checksum_type = rhnChecksumType.label
+              JOIN rhnChecksum
+                ON rhnChecksum.checksum_type_id = rhnChecksumType.id
+                  AND rhnChecksum.checksum = wanted.checksum
+        """
+        h = self.dbmodule.prepare(sql)
+        checksums = h.execute_values(sql, values)
+
+        for checksum in checksums:
+            checksumHash[(checksum[0], checksum[1])] = checksum[2]
 
     def lookupChecksumTypes(self, checksumTypeHash):
         if not checksumTypeHash:
@@ -1003,8 +1086,7 @@ class Backend:
         channel_ids = [x[1] for x in errata_channel_ids]
         timeouts = [timeout] * len(errata_ids)
         hdel.executemany(errata_id=errata_ids)
-        return h.executemany(errata_id=errata_ids, channel_id=channel_ids,
-                             timeout=timeouts)
+        h.executemany(errata_id=errata_ids, channel_id=channel_ids, timeout=timeouts)
 
     def processChannels(self, channels, base_channels):
         childTables = [
