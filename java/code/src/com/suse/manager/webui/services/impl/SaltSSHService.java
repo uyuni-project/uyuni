@@ -546,9 +546,11 @@ public class SaltSSHService {
                         remotePortForwarding(bootstrapProxyPath, contactMethod));
 
         // private key handling just for bootstrap
-        Optional<Path> tmpKeyFileAbsolutePath = parameters.getPrivateKey().map(key -> createTempKeyFile(key));
+        Optional<Path> tmpKeyFileAbsolutePath = parameters.getPrivateKey().map(key -> createTempKeyFilePath());
 
         try {
+            tmpKeyFileAbsolutePath.ifPresent(p -> parameters.getPrivateKey().ifPresent(k ->
+                    SaltService.INSTANCE.storeSshKeyFile(p, k)));
             SaltRoster roster = new SaltRoster();
             roster.addHost(parameters.getHost(),
                     parameters.getUser(),
@@ -576,11 +578,10 @@ public class SaltSSHService {
         }
     }
 
-    private Path createTempKeyFile(String privateKeyContents) {
+    // create temp key absolute path
+    private Path createTempKeyFilePath() {
         String fileName = "boostrapKeyTmp-" + UUID.randomUUID();
-        Path fileAbsolutePath = Path.of(SSH_TEMP_BOOTSTRAP_KEY_DIR).resolve(fileName).toAbsolutePath();
-        SaltService.INSTANCE.storeSshKeyFile(fileAbsolutePath, privateKeyContents);
-        return fileAbsolutePath;
+        return Path.of(SSH_TEMP_BOOTSTRAP_KEY_DIR).resolve(fileName).toAbsolutePath();
     }
 
     private void cleanUpTempKeyFile(Path path) {
