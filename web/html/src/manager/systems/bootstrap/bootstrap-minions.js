@@ -216,6 +216,9 @@ class BootstrapMinions extends React.Component {
                      <label className="col-md-3 control-label">{t("SSH Private Key")}:</label>
                      <div className="col-md-6">
                          <input name="privKeyFile" className="form-control" type="file" onChange={this.privKeyFileChanged}/>
+                         <div className="help-block">
+                           <i className="fa fa-exclamation-triangle"/>{t("The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure")}
+                         </div>
                      </div>
                  </div>
                  <div className="form-group">
