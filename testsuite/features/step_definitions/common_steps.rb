@@ -1191,4 +1191,3 @@ When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   target.run("cp #{auth_keys_sav_path} #{auth_keys_path}")
   target.run("rm #{auth_keys_sav_path}")
 end
-
