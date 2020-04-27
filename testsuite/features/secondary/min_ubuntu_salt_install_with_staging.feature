@@ -53,7 +53,7 @@ Feature: Install a package on the Ubuntu minion with staging enabled
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
     And I wait until the package "orion-dummy_1.1" has been cached on this "ubuntu_minion"
-    And I wait for "orion-dummy-1.1" to be installed on this "ubuntu_minion"
+    And I wait for "orion-dummy-1.1" to be installed on "ubuntu_minion"
 
   # Scenario: Install patch in the future and check for staging on Ubuntu minion
   # Untested because we don't have patches for Ubuntu
