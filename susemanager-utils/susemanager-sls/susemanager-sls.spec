@@ -87,6 +87,8 @@ cp src/modules/udevdb.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgractionchains.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_info.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
 
 %check
