@@ -1162,21 +1162,17 @@ When(/^I click the "([^\"]*)" recurring action (.*?) button$/) do |action_name, 
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
-
-# todo is this the right place?
-# common constants for SSH bootstrap with SSH key auth test
-key_filename = 'id_rsa_bootstrap-passphrase_linux.pub'
-## authorized_keys paths on the client
-auth_keys_path = '/root/.ssh/authorized_keys'
-auth_keys_sav_path = '/root/.ssh/authorized_keys.sav'
-
 When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
+  # authorized_keys paths on the client
+  auth_keys_path = '/root/.ssh/authorized_keys'
+  auth_keys_sav_path = '/root/.ssh/authorized_keys.sav'
   target = get_target(host)
   _, ret_code = target.run("cp #{auth_keys_path} #{auth_keys_sav_path}")
   raise 'error backing up authorized_keys on host' if ret_code.nonzero?
 end
 
 And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
+  key_filename = 'id_rsa_bootstrap-passphrase_linux.pub'
   target = get_target(host)
   ret_code = file_inject(
     target,
@@ -1188,6 +1184,9 @@ And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/
 end
 
 When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
+  # authorized_keys paths on the client
+  auth_keys_path = '/root/.ssh/authorized_keys'
+  auth_keys_sav_path = '/root/.ssh/authorized_keys.sav'
   target = get_target(host)
   target.run("cp #{auth_keys_sav_path} #{auth_keys_path}")
   target.run("rm #{auth_keys_sav_path}")
