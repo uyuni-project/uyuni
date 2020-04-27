@@ -117,4 +117,4 @@ Feature: Register a Salt minion via Bootstrap-script
   Scenario: Cleanup: check that the minion is now a build host after script-bootstrap
     Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "[Container Build Host]" text
-    Then I should see a "[OS Image Build Host]" text
+    And I should see a "[OS Image Build Host]" text

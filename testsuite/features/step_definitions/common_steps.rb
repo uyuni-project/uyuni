@@ -1180,7 +1180,7 @@ And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/
     '/tmp/' + key_filename
   )
   target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", true, 500, 'root')
-  raise 'error copying ssh pubkey to host' if ret_code.nonzero?
+  raise 'Error copying ssh pubkey to host' if ret_code.nonzero?
 end
 
 When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|

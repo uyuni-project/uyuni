@@ -1,9 +1,9 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Be able to bootstrap a Salt minion via the GUI using SSH key
+Feature: Bootstrap a Salt minion via the GUI using SSH key
 
-  Scenario: Delete SLES minion system profile before bootstrap test
+  Scenario: Delete SLES minion system profile before bootstrap with SSH key test
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -16,7 +16,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI using SSH key
     When I backup the SSH authorized_keys file of host "sle_minion"
     And I add pre-generated SSH public key to authorized_keys of host "sle_minion"
   
-  Scenario: Bootstrap a SLES minion using SSH Key with wrong passphrase
+  Scenario: Bootstrap a SLES minion using SSH key with wrong passphrase
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
@@ -29,7 +29,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI using SSH key
     And I click on "Bootstrap"
     And I wait until I see "Permission denied, no authentication information" text
 
-  Scenario: Bootstrap a SLES minion using SSH Key
+  Scenario: Bootstrap a SLES minion using SSH key
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
@@ -43,7 +43,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI using SSH key
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
 
-  Scenario: Check new minion bootstrapped with SSH Key in System Overview page
+  Scenario: Check new minion bootstrapped with SSH key in System Overview page
     Given I am authorized
     When I go to the minion onboarding page
     Then I should see a "accepted" text
@@ -56,17 +56,17 @@ Feature: Be able to bootstrap a Salt minion via the GUI using SSH key
     Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "Default" text
   
-  Scenario: Cleanup authorized keys
+  Scenario: Cleanup: restore authorized keys
     When I restore the SSH authorized_keys file of host "sle_minion"
 
-  Scenario: Cleanup: turn the SLES minion into a container build host after bootstrap with SSH Key
+  Scenario: Cleanup: turn the SLES minion into a container build host after bootstrap with SSH key
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
     And I check "container_build_host"
     And I click on "Update Properties"
 
-  Scenario: Cleanup: turn the SLES minion into a OS image build host after bootstrap with SSH Key
+  Scenario: Cleanup: turn the SLES minion into a OS image build host after bootstrap with SSH key
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Details" in the content area
     And I follow "Properties" in the content area
@@ -77,7 +77,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI using SSH key
     And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
     And I should see a "System properties changed" text
 
-  Scenario: Cleanup: apply the highstate to build host after bootstrap with SSH Key
+  Scenario: Cleanup: apply the highstate to build host after bootstrap with SSH key
     Given I am on the Systems overview page of this "sle_minion"
     When I wait until no Salt job is running on "sle_minion"
     And I enable repositories before installing Docker
@@ -86,7 +86,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI using SSH key
     And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle_minion"
     And I disable repositories after installing Docker
 
-  Scenario: Cleanup: check that the minion is now a build host after bootstrap with SSH Key
+  Scenario: Cleanup: check that the minion is now a build host after bootstrap with SSH key
     Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "[Container Build Host]" text
-    Then I should see a "[OS Image Build Host]" text
+    And I should see a "[OS Image Build Host]" text
