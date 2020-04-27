@@ -50,6 +50,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -122,6 +123,8 @@ public class RegistrationUtils {
         }
 
         LOG.info("Finished minion registration: " + minionId);
+
+        StatesAPI.generateServerPackageState(minion);
 
         // Should we apply the highstate?
         boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
