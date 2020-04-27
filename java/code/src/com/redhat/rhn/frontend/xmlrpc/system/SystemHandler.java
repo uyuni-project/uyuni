@@ -7022,7 +7022,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "packageName", "Name of the package")
      * @xmlrpc.param #param_desc("int", "state", "0 = installed, 1 = removed, 2 = unmanaged ")
      * @xmlrpc.param #param_desc("int", "versionConstraint", "0 = latest, 1 = any ")
-     * @xmlrpc.returntype 1 on success, exception on failure
+     * @xmlrpc.returntype #return_int_success()
      */
     public int updatePackageState(User loggedInUser, Integer sid, String packageName, Integer state,
                                   Integer versionConstraint) {
@@ -7056,7 +7056,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.returntype
-     *      #array_begin()
+     *      #array()
      *           $PackageStateSerializer
      *      #array_end()
      */
