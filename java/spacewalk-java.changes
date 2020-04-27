@@ -7,7 +7,6 @@
 Thu Apr 23 10:25:13 CEST 2020 - jgonzalez@suse.com
 
 - version 4.0.32-1
->>>>>>> 5baf21ad1dc... Avoid multiple base channels when onboarding minions (bsc#1167871)
 - hide message about changed Update Tag change (bsc#1169109)
 - Web UI: Implement bootstrapping minions using an SSH private key
 - add virtual volume delete action
