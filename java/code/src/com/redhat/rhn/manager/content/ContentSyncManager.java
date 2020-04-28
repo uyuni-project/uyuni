@@ -997,6 +997,9 @@ public class ContentSyncManager {
      * @throws URISyntaxException in case of an error
      */
     public String buildRepoFileUrl(String url, SCCRepository repo) throws URISyntaxException {
+        if (url.contains("mirrorlist")) {
+            return url;
+        }
         URI uri = new URI(url);
         String relFile = "/repodata/repomd.xml";
 
