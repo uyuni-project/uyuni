@@ -1,3 +1,5 @@
+- uyuni-common-libs obsoletes python3-spacewalk-usix and
+  python3-spacewalk-backend-libs (bsc#1170684)
 - reposync speedup fixes
 
 -------------------------------------------------------------------

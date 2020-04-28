@@ -82,6 +82,8 @@ Requires:       python3-base
 Requires:       python3-libs
 %endif
 
+Obsoletes:      python3-spacewalk-usix
+Obsoletes:      python3-spacewalk-backend-libs
 
 %description -n python3-%{name}
 Python 3 libraries required by both Uyuni server and client tools.
