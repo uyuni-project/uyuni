@@ -102,6 +102,8 @@ public class KickstartData {
         {"partitions", "raids", "logvols", "volgroups", "include",
         "repo", "custom", "custom_partition"};
 
+    private final String DEFAULT_KICKSTART_PACKAGE_FOR_TRADITIONAL = "spacewalk-koan";
+
     private static final List<String> ADANCED_OPTIONS = Arrays.asList(advancedOptions);
 
     /**
@@ -1313,6 +1315,15 @@ public class KickstartData {
         return ConfigDefaults.get().getKickstartPackageNames();
 
     }
+
+    /**
+     * Get the kickstart package name for the traditional type system('management' entitlement)
+     * @return the kickstart package name for the traditional type system
+     */
+    public String getKickstartPackageNameForTraditional() {
+        return DEFAULT_KICKSTART_PACKAGE_FOR_TRADITIONAL;
+    }
+
 
     /**
      * @return Returns if the post scripts should be logged.
