@@ -306,7 +306,7 @@ class Cursor(sql_base.Cursor):
             raise sql_base.SQLSchemaError(error_code, e.pgerror, e)
         except psycopg2.ProgrammingError:
             e = sys.exc_info()[1]
-            raise sql_base.SQLStatementPrepareError(self.dbh, e.pgerror, self.sql)
+            raise sql_base.SQLStatementPrepareError(str(self.dbh), e.pgerror, self.sql)
         except KeyError:
             e = sys.exc_info()[1]
             raise sql_base.SQLError("Unable to bound the following variable(s): %s"

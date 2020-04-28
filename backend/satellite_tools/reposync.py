@@ -34,6 +34,7 @@ import gzip
 from dateutil.tz import tzutc
 import gettext
 import errno
+import multiprocessing
 
 from rhn.connections import idn_puny_to_unicode
 
@@ -70,7 +71,7 @@ default_log_location = '/var/log/rhn/'
 relative_comps_dir = 'rhn/comps'
 relative_modules_dir = 'rhn/modules'
 checksum_cache_filename = 'reposync/checksum_cache'
-default_import_batch_size = 50
+default_import_batch_size = 20
 
 errata_typemap = {
     'security': 'Security Advisory',
@@ -1053,18 +1054,109 @@ class RepoSync(object):
         log2background(0, "Importing packages started.")
         log(0, '')
         log(0, '  Importing packages to DB:')
-        progress_bar = ProgressBarLogger("               Importing packages:    ", to_download_count)
 
+        twisted_batch_indexes = self.twisted_batch_indexes(len(to_process), self.import_batch_size)
+        to_process_batches = [[to_process[twisted_index] for twisted_index in twisted_batch] for twisted_batch in twisted_batch_indexes]
+
+        affected_channels = []
+        with multiprocessing.Pool(processes=max(os.cpu_count() * 2, 32), maxtasksperchild=1) as pool:
+            results = [pool.apply_async(self.import_package_batch, args=[to_process_batch, to_disassociate, is_non_local_repo, i, len(to_process_batches)])
+                       for i, to_process_batch in enumerate(to_process_batches)]
+
+            for i, result in enumerate(results):
+                affected_channels_batch, failed_packages_batch, all_packages, processed_batch = result.get()
+                affected_channels += affected_channels_batch
+                failed_packages += failed_packages_batch
+                self.all_packages.update(all_packages)
+                for j, processed in enumerate(processed_batch):
+                    to_process[twisted_batch_indexes[i][j]] = processed
+
+        if affected_channels:
+            errataCache.schedule_errata_cache_update(affected_channels)
+        log2background(0, "Importing packages finished.")
+
+        # Disassociate packages
+        for (checksum_type, checksum) in to_disassociate:
+            if to_disassociate[(checksum_type, checksum)]:
+                self.disassociate_package(checksum_type, checksum)
+        # Do not re-link if nothing was marked to link
+        if any([to_link for (pack, to_download, to_link) in to_process]):
+            log(0, '')
+            log(0, "  Linking packages to the channel.")
+            # Packages to append to channel
+            import_batches = list(self.chunks(
+                [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link],
+                1000))
+            count = 0
+            for import_batch in import_batches:
+                backend = SQLBackend()
+                caller = "server.app.yumreposync"
+                importer = ChannelPackageSubscription(import_batch,
+                                                      backend, caller=caller, repogen=False)
+                importer.run()
+                backend.commit()
+                del importer.batch
+                count += len(import_batch)
+                log(0, "    {} packages linked".format(count))
+            self.regen = True
+        self._normalize_orphan_vendor_packages()
+        return failed_packages
+
+    def twisted_batch_indexes(self, total_size, batch_size):
+        """Assume a list of total_size elements, and consider the following two possible divisions of its elements: per "batch" or per "chunk".
+        Batches are contiguous sub-lists of the original list with batch_size elements each (and there's batch_count=total_size/batch_size of them).
+        Example with total_size = 12 and batch_size = 3, thus batch_count = 4:
+
+        List:    [ 0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11 ]
+        Batches: [[0,   1,   2], [3,   4,   5], [6,   7,   8], [9,  10,  11]]
+
+        Chunks are contiguous sub-lists as well, but have batch_count instead of batch_size elements each. Example:
+
+        Chunks:  [[0,   1,   2,   3], [4,   5,   6,   7], [8,   9,  10,  11]]
+
+        This function returns sub-lists of the same size of batches, each with elements sampled from every chunk. Example:
+
+        Twisted: [[0,   4,   8], [1,   5,   9], [2,   6,  10], [3,   7,  11]]
+
+        Intuitively, this rearranges elements across batches so that each batch contains a "sample" of elements from "all over" the original list -
+        in particular, from every chunk.
+        """
+        # integer division rounded up
+        batch_count = (total_size + batch_size - 1) // batch_size
+
+        # compute element indexes in all batches
+        batches = [[batch_size * batch_index + element_index for element_index in range(0, batch_size)] for batch_index
+                   in range(0, batch_count)]
+
+        # twist elements across batches. Specifically: the n-th element in a batch has to be picked from the n-th chunk
+        twisted_batches = [[self.twisted_index(batches[i][j], batch_count, batch_size) for j in range(0, batch_size)] for i in
+                           range(0, batch_count)]
+
+        # discard elements greater than total_size (those were created because we rounded up earlier)
+        return [[twisted_batches[i][j] for j in range(0, batch_size) if twisted_batches[i][j] < total_size] for i in
+                  range(0, batch_count)]
+
+    def twisted_index(self, i, batch_count, batch_size):
+        batch_index = i // batch_size
+        element_index = i % batch_size
+        return batch_count * element_index + batch_index
+
+    def import_package_batch(self, to_process, to_disassociate, is_non_local_repo, batch_index, batch_count):
         # Prepare SQL statements
+        rhnSQL.closeDB(committing=False, closing=False)
+        rhnSQL.initDB()
         h_delete_package_queue = rhnSQL.prepare("""delete from rhnPackageFileDeleteQueue where path = :path""")
         backend = SQLBackend()
-
         mpm_bin_batch = importLib.Collection()
         mpm_src_batch = importLib.Collection()
         affected_channels = []
         upload_caller = "server.app.uploadPackage"
 
+        to_download_count = sum(p[1] for p in to_process)
         import_count = 0
+        failed_packages = 0
+        all_packages = set()
+
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
             if not to_download:
@@ -1125,7 +1217,7 @@ class RepoSync(object):
                 pack.epoch = pack.a_pkg.header['epoch']
                 pack.a_pkg = None
 
-                self.all_packages.add((pack.checksum_type, pack.checksum))
+                all_packages.add((pack.checksum_type, pack.checksum))
 
                 # Downloaded pkg checksum matches with pkg already in channel, no need to disassociate from channel
                 if (pack.checksum_type, pack.checksum) in to_disassociate:
@@ -1154,7 +1246,6 @@ class RepoSync(object):
                     del mpm_src_batch
                     mpm_src_batch = importLib.Collection()
 
-                progress_bar.log(True, None)
             except KeyboardInterrupt:
                 raise
             except rhnSQL.SQLError:
@@ -1167,7 +1258,6 @@ class RepoSync(object):
                 if self.fail:
                     raise
                 to_process[index] = (pack, False, False)
-                progress_bar.log(False, None)
             finally:
                 if is_non_local_repo and stage_path:
                     if os.path.exists(stage_path):
@@ -1182,36 +1272,10 @@ class RepoSync(object):
                             else:
                                 raise exc
             pack.clear_header()
-        if affected_channels:
-            errataCache.schedule_errata_cache_update(affected_channels)
-        log2background(0, "Importing packages finished.")
 
-        # Disassociate packages
-        for (checksum_type, checksum) in to_disassociate:
-            if to_disassociate[(checksum_type, checksum)]:
-                self.disassociate_package(checksum_type, checksum)
-        # Do not re-link if nothing was marked to link
-        if any([to_link for (pack, to_download, to_link) in to_process]):
-            log(0, '')
-            log(0, "  Linking packages to the channel.")
-            # Packages to append to channel
-            import_batches = list(self.chunks(
-                [self.associate_package(pack) for (pack, to_download, to_link) in to_process if to_link],
-                1000))
-            count = 0
-            for import_batch in import_batches:
-                backend = SQLBackend()
-                caller = "server.app.yumreposync"
-                importer = ChannelPackageSubscription(import_batch,
-                                                      backend, caller=caller, repogen=False)
-                importer.run()
-                backend.commit()
-                del importer.batch
-                count += len(import_batch)
-                log(0, "    {} packages linked".format(count))
-            self.regen = True
-        self._normalize_orphan_vendor_packages()
-        return failed_packages
+        rhnSQL.closeDB()
+        log(0, "  Package batch #{} of {} completed...".format(batch_index + 1, batch_count))
+        return affected_channels, failed_packages, all_packages, to_process
 
     def show_packages(self, plug, source_id):
 
