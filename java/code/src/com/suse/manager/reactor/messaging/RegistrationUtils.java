@@ -249,24 +249,34 @@ public class RegistrationUtils {
                         () -> {
                             Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
                             Set<Channel> channelsForProducts = findChannelsForProducts(suseProducts, minionId);
-                            Optional<Channel> baseChannel = channelsForProducts.stream()
-                                    .filter(c -> c.isBaseChannel()).findFirst();
-                            if (baseChannel.isPresent()) {
-                                // assign the identified base channel and activation key channels related
-                                // to that base channel only
-                                return Stream.concat(
-                                        Stream.of(baseChannel.get()),
-                                        ak.getChannels().stream()
-                                                .filter(c -> c.getParentChannel().getId()
-                                                        .equals(baseChannel.get().getId())))
-                                        .collect(toSet());
-                            }
-                            else {
+                            Set<Channel> baseChannels = channelsForProducts.stream()
+                                    .filter(c -> c.isBaseChannel())
+                                    .collect(toSet());
+                            if (baseChannels.isEmpty()) {
                                 return emptySet();
                             }
+                            else {
+                                Channel baseChannel = baseChannels.stream().findFirst().get();
+                                // assign the identified base channel, all mandatory channels
+                                // and all and only other channels selected within the activation key
+                                return Stream.concat(
+                                        Stream.concat(
+                                                Stream.of(baseChannel),
+                                                mandatoryChannelsByBaseChannel(baseChannel)),
+                                        ak.getChannels().stream()
+                                                .filter(c -> c.getParentChannel() != null &&
+                                                        c.getParentChannel().getId().equals(baseChannel.getId())))
+                                        .collect(toSet());
+                            }
                         },
-                        // assign base channel and activation key channels selected only
-                        baseChannel -> Stream.concat(Stream.of(baseChannel), ak.getChannels().stream()).collect(toSet())
+                        // assign base channel, all mandatory channels and all and only activation key channels selected
+                        baseChannel ->
+                                Stream.concat(
+                                    Stream.of(baseChannel),
+                                    Stream.concat(
+                                            mandatoryChannelsByBaseChannel(baseChannel),
+                                            ak.getChannels().stream())
+                                ).collect(toSet())
                 )
         );
 
@@ -410,5 +420,26 @@ public class RegistrationUtils {
                             stream
                     );
                 }).orElseGet(Stream::empty);
+    }
+
+    /**
+     * Returns a Stream of mandatory channels for a certain product, given its base channel in input
+     *
+     * @param baseChannel the product base channel
+     * @return the Stream of mandatory channels
+     */
+    private static Stream<Channel> mandatoryChannelsByBaseChannel(Channel baseChannel) {
+        if (!baseChannel.isBaseChannel()) {
+            return Stream.empty();
+        }
+
+        // identify the product by the base channel name
+        SUSEProduct baseProduct = SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()).get();
+        return baseProduct.getSuseProductChannels().stream()
+                .filter(pc -> pc.isMandatory())
+                .map(SUSEProductChannel::getChannel)
+                // filter out channels with different base than the given one
+                .filter(c -> c.getParentChannel() == null ||
+                        c.getParentChannel().getLabel().equals(baseChannel.getLabel()));
     }
 }
