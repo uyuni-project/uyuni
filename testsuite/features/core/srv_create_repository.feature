@@ -45,34 +45,34 @@ Feature: Add a repository to a channel
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Test-Channel-x86_64." text
 
-  Scenario: Add a test repository for i586
-    Given I am authorized as "testing" with password "testing"
-    When I follow the left menu "Software > Manage > Repositories"
-    And I follow "Create Repository"
-    And I enter "Test-Repository-i586" as "label"
-    And I enter "file:///srv/www/htdocs/pub/TestRepoRpmUpdates/" as "url"
-    And I uncheck "metadataSigned"
-    And I click on "Create Repository"
-    Then I should see a "Repository created successfully" text
-
-  Scenario: Add the repository to the i586 channel
-    Given I am authorized as "testing" with password "testing"
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Channel-i586"
-    And I follow "Repositories" in the content area
-    And I select the "Test-Repository-i586" repo
-    And I click on "Update Repositories"
-    Then I should see a "Test-Channel-i586 repository information was successfully updated" text
-
-  Scenario: Synchronize the repository in the i586 channel
-    Given I am authorized as "testing" with password "testing"
-    When I disable source package syncing
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Channel-i586"
-    And I follow "Repositories" in the content area
-    And I follow "Sync"
-    And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled for Test-Channel-i586." text
+#  Scenario: Add a test repository for i586
+#    Given I am authorized as "testing" with password "testing"
+#    When I follow the left menu "Software > Manage > Repositories"
+#    And I follow "Create Repository"
+#    And I enter "Test-Repository-i586" as "label"
+#    And I enter "file:///srv/www/htdocs/pub/TestRepoRpmUpdates/" as "url"
+#    And I uncheck "metadataSigned"
+#    And I click on "Create Repository"
+#    Then I should see a "Repository created successfully" text
+#
+#  Scenario: Add the repository to the i586 channel
+#    Given I am authorized as "testing" with password "testing"
+#    When I follow the left menu "Software > Manage > Channels"
+#    And I follow "Test-Channel-i586"
+#    And I follow "Repositories" in the content area
+#    And I select the "Test-Repository-i586" repo
+#    And I click on "Update Repositories"
+#    Then I should see a "Test-Channel-i586 repository information was successfully updated" text
+#
+#  Scenario: Synchronize the repository in the i586 channel
+#    Given I am authorized as "testing" with password "testing"
+#    When I disable source package syncing
+#    When I follow the left menu "Software > Manage > Channels"
+#    And I follow "Test-Channel-i586"
+#    And I follow "Repositories" in the content area
+#    And I follow "Sync"
+#    And I click on "Sync Now"
+#    Then I should see a "Repository sync scheduled for Test-Channel-i586." text
 
 @ubuntu_minion
   Scenario: Add a test repository for Ubuntu
