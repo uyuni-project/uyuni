@@ -1,3 +1,5 @@
+- Fix activation keys request error in image import page (bsc#1170046)
+- Fix custom info values input in image profile edit form (bsc#1169773)
 - Add check for non-existing formulas when assigning formulas to a system/group
 - Add check for non-existing formulas in xmlrpc calls
 - Use salt for registration for selected install types (bsc#1164836)
