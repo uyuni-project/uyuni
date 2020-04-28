@@ -282,6 +282,11 @@
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
+    <attribute>
+      <name>checkboxText</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
   </tag>
   <tag>
     <name>radiocolumn</name>
