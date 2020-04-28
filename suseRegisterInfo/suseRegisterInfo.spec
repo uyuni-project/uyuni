@@ -37,7 +37,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 %endif
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
-Requires:       perl
+Requires:       perl-base
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires:       e2fsprogs
 %endif
