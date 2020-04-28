@@ -294,6 +294,7 @@ public class MenuTree {
                 .addChild(new MenuItem("Action Chains").withPrimaryUrl("/rhn/schedule/ActionChains.do")
                     .withAltUrl("/rhn/schedule/ActionChain.do"))
                 .addChild(new MenuItem("Recurring States").withPrimaryUrl("/rhn/manager/schedule/recurring-states"))
+                .addChild(new MenuItem("Maintenance Schedules").withPrimaryUrl("/rhn/manager/schedule/maintenance-schedules"))
                 );
 
             // Users
