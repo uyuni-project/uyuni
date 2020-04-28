@@ -236,13 +236,9 @@ class CreateImageProfile extends React.Component {
     return Network.get("/rhn/manager/api/cm/imagestores/type/" + type, "application/json").promise
       .then((data) => {
 
-        let model = this.state.model;
-        let storeUri = undefined;
-        if(type === "os_image") {
-          // Preselect store for the static OS Image store
-          model = Object.assign({}, this.state.model, {imageStore: data[0] && data[0].label});
-          storeUri = data[0] && data[0].uri;
-        }
+        // Preselect store after retrieval
+        const model = Object.assign({}, this.state.model, {imageStore: data[0] && data[0].label});
+        const storeUri = data[0] && data[0].uri;
 
         this.setState({
           imageStores: data,
@@ -274,7 +270,7 @@ class CreateImageProfile extends React.Component {
     switch (type) {
     case "dockerfile":
       typeInputs.push(
-        <Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/Containers">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Text key="path" name="path" label={t("Dockerfile URL")} required hint={<span>Git URL pointing to the directory containing the Dockerfile<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/dockerfile</em><br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/Containers">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(false)
@@ -282,7 +278,7 @@ class CreateImageProfile extends React.Component {
       break;
     case "kiwi":
       typeInputs.push(
-        <Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files.<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em>.<br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/OSImage">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
+        <Text key="path" name="path" label={t("Config URL")} required hint={<span>Git URL pointing to the directory containing the Kiwi config files<br/>Example: <em>https://mygit.com#&lt;branchname&gt;:path/to/kiwi/config</em><br />See also the <a href="https://github.com/SUSE/manager-build-profiles/tree/master/OSImage">SUSE Manager templates repository</a> for some out-of-the-box working examples.</span>} labelClass="col-md-3" divClass="col-md-6"/>
       );
       typeInputs.push(
         this.renderTokenSelect(true)
@@ -356,14 +352,19 @@ class CreateImageProfile extends React.Component {
     const select = <FormGroup>
       <Label className="col-md-3" name={t("Custom Info Values")}/>
       <div className="col-md-6">
-        <select value="0" onChange={(e) => this.addCustomData(e.target.value)} className="form-control">
-          <option key="0" disabled="disabled">{t("Create additional custom info values")}</option>
+        <select value="" onChange={(e) => this.addCustomData(e.target.value)}
+          className="form-control">
+          <option key="0" value="" disabled="disabled">{t("Select a custom info key")}</option>
           {
             customDataKeys
               .filter(k => !Object.keys(this.state.customData).includes(k.label))
               .map(k => <option key={k.label} value={k.label}>{ k.label }</option>)
           }
         </select>
+        <div className="help-block">
+          These key-value pairs will be added to the build command as 'buildarg' values<br/>
+          <a href={"/rhn/systems/customdata/CustomDataList.do"} target="_blank">{t("Create additional custom info keys")}</a>
+        </div>
       </div>
     </FormGroup>;
 
