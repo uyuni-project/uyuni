@@ -1,3 +1,4 @@
+- Add hint to edit formulas before applying state (bsc#1168805)
 - Fix custom info values input in image profile edit form (bsc#1169773)
 - Web UI: Implement bootstrapping minions using an SSH private key
 
