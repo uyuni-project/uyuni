@@ -17,6 +17,7 @@
 - features/secondary/trad_centos_client.feature
 - features/secondary/min_ubuntu_salt.feature
 - features/secondary/minssh_bootstrap_xmlrpc.feature
+- features/secondary/min_bootstrap_ssh_key.feature
 - features/secondary/min_bootstrap_script.feature
 - features/secondary/min_activationkey.feature
 - features/secondary/trad_migrate_to_minion.feature

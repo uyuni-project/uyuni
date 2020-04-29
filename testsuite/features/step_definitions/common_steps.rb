@@ -1161,3 +1161,33 @@ When(/^I click the "([^\"]*)" recurring action (.*?) button$/) do |action_name, 
   xpath = "//td[contains(text(), '#{action_name}')]/ancestor::tr[contains(@class, 'list-row-even')]/td/div/button/#{button}"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
+
+When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
+  # authorized_keys paths on the client
+  auth_keys_path = '/root/.ssh/authorized_keys'
+  auth_keys_sav_path = '/root/.ssh/authorized_keys.sav'
+  target = get_target(host)
+  _, ret_code = target.run("cp #{auth_keys_path} #{auth_keys_sav_path}")
+  raise 'error backing up authorized_keys on host' if ret_code.nonzero?
+end
+
+And(/^I add pre\-generated SSH public key to authorized_keys of host "([^"]*)"$/) do |host|
+  key_filename = 'id_rsa_bootstrap-passphrase_linux.pub'
+  target = get_target(host)
+  ret_code = file_inject(
+    target,
+    File.dirname(__FILE__) + '/../upload_files/ssh_keypair/' + key_filename,
+    '/tmp/' + key_filename
+  )
+  target.run("cat /tmp/#{key_filename} >> /root/.ssh/authorized_keys", true, 500, 'root')
+  raise 'Error copying ssh pubkey to host' if ret_code.nonzero?
+end
+
+When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
+  # authorized_keys paths on the client
+  auth_keys_path = '/root/.ssh/authorized_keys'
+  auth_keys_sav_path = '/root/.ssh/authorized_keys.sav'
+  target = get_target(host)
+  target.run("cp #{auth_keys_sav_path} #{auth_keys_path}")
+  target.run("rm #{auth_keys_sav_path}")
+end

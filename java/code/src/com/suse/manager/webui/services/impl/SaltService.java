@@ -1214,15 +1214,8 @@ public class SaltService implements SystemQuery, SaltApi {
         callSync(createFile).orElseThrow(() -> new IllegalStateException("Can't create SSH priv key file " + path));
 
         // this might not be needed, the file is created with sane perms already
-        String desiredMode = "0600";
-        RunnerCall<String> setMode = MgrRunner.setFileMode(absolutePath, desiredMode);
-        String mode = callSync(setMode)
-                .orElseThrow(() -> new IllegalStateException("Can't set mode for SSH priv key file " + path));
-
-        if (!mode.equals(desiredMode)) {
-            throw new IllegalStateException(
-                    String.format("Invalid mode '%s' for SSH Key private file '%s'", path, mode));
-        }
+        RunnerCall<String> setMode = MgrRunner.setFileMode(absolutePath, "0600");
+        callSync(setMode).orElseThrow(() -> new IllegalStateException("Can't set mode for SSH priv key file " + path));
     }
 
     /**
