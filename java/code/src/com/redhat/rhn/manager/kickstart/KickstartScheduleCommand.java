@@ -1103,9 +1103,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
     }
 
     /**
-     * Looks for the package name among the specified channels and, if it is found,
-     * it returns the highest available version in Map form.
-     *
+     * Looks for the kickstart package name for the traditional system ('management' entitlement) among the
+     * specified channels and, if it is found, it returns the highest available version in Map form.
      * @param channelIds channels the server could be subscribed to
      * @return a ValidationError or null
      */
@@ -1113,9 +1112,9 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         List<Map<String, Long>> results = new LinkedList<Map<String, Long>>();
 
         for (Long chnnelId : channelIds) {
-            log.debug("    Checking on:" + chnnelId + " for: " + getKickstartPackageNames());
+            log.debug("    Checking on:" + chnnelId + " for: " + this.ksdata.getKickstartPackageNameForTraditional());
             List<Map<String, Object>> packages = ChannelManager.listLatestPackagesEqual(
-                    chnnelId, getKickstartPackageNames());
+                    chnnelId, this.ksdata.getKickstartPackageNameForTraditional());
             log.debug("    size: " + packages.size());
 
             for (Map<String, Object> aPackage : packages) {
