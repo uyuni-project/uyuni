@@ -68,6 +68,20 @@ if [ -d /srv/tftpboot ]; then
     chmod 750 /srv/tftpboot
     chown wwwrun:tftp /srv/tftpboot
 fi
+if [ -f /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew ]; then
+    PARENT_FQDN=$( egrep -m1 "^proxy.rhn_parent[[:space:]]*=" /etc/rhn/rhn.conf | sed 's/^proxy.rhn_parent[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
+    if [ -z "$PARENT_FQDN" ]; then
+            echo "Could not determine SUSE Manager Parent Hostname! Got /etc/rhn/rhn.conf vanished?" >&2;
+            exit 1;
+    fi;
+
+    SUMA_IP=$( host $PARENT_FQDN | awk '{ print $4 }' )
+
+    sed -i "s/^[[:space:]]*Allow from[[:space:]].*$/        Allow from $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew
+    sed -i "s/^[[:space:]#]*Require ip[[:space:]].*$/        Require ip $SUMA_IP/" /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew
+
+    mv /etc/apache2/conf.d/susemanager-tftpsync-recv.conf.rpmnew /etc/apache2/conf.d/susemanager-tftpsync-recv.conf
+fi
 
 %files
 %defattr(-,wwwrun,root,-)
