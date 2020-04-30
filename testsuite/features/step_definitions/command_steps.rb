@@ -827,7 +827,6 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   end
 end
 
-# rubocop:disable Metrics/BlockLength
 When(/^I configure the proxy$/) do
   # prepare the settings file
   settings = "RHN_PARENT=#{$server.ip}\n" \
@@ -856,17 +855,8 @@ When(/^I configure the proxy$/) do
   filename = File.basename(path)
   cmd = "configure-proxy.sh --non-interactive --rhn-user=admin --rhn-password=admin --answer-file=#{filename}"
   proxy_timeout = 600
-  return_code = 0
-  # WORKAROUND bsc#1138952
-  # Wrap the shell command inside a begin block to catch the exception
-  begin
-    return_code = $proxy.run(cmd, true, proxy_timeout, 'root')
-  rescue StandardError => e
-    puts "Catched exception (see bsc#1138952): #{e}"
-    return_code
-  end
+  $proxy.run(cmd, true, proxy_timeout, 'root')
 end
-# rubocop:enable Metrics/BlockLength
 
 Then(/^The metadata buildtime from package "(.*?)" match the one in the rpm on "(.*?)"$/) do |pkg, host|
   # for testing buildtime of generated metadata - See bsc#1078056
