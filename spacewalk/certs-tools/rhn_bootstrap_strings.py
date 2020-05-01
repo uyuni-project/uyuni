@@ -590,7 +590,7 @@ elif [ "$INSTALLER" == apt ]; then
 	local VERCOMPS=(${{VERSION/\./ }}) # split into an array 18.04 -> (18 04)
         A_CLIENT_CODE_MAJOR_VERSION=${{VERCOMPS[0]}}
         # Ubuntu only
-        if [ "${{BASE}}" == "Ubuntu" ]; then
+        if [ "${{BASE}}" == "ubuntu" ]; then
             A_CLIENT_CODE_MINOR_VERSION=$((${{VERCOMPS[1]}} + 0)) # convert "04" -> 4
         fi
         A_CLIENT_VARIANT_ID="${{VARIANT_ID:-unknown}}"
