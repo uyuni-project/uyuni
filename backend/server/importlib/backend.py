@@ -119,7 +119,8 @@ class Backend:
                   ORDER BY ordering
                 ON CONFLICT DO NOTHING
         """
-        wanted = [(i, key[0], None if key[1] == '' else key[1]) for i, key in enumerate(sorted(capabilityHash.keys()))]
+        sorted_capabilities = sorted(capabilityHash.keys(), key=lambda k:(k[0], k[1] or ''))
+        wanted = [(i, key[0], None if key[1] == '' else key[1]) for i, key in enumerate(sorted_capabilities)]
         h = self.dbmodule.prepare(sql)
         h.execute_values(sql, wanted, fetch=False)
 
@@ -668,7 +669,7 @@ class Backend:
     def lookupEVRs(self, evrHash):
         sql = "select LOOKUP_EVR(:epoch, :version, :release) id from dual"
         h = self.dbmodule.prepare(sql)
-        for evr in sorted(evrHash.keys(), key=lambda x: (x[0] if x[0] != '' else None, x[1], x[2])):
+        for evr in sorted(evrHash.keys(), key=lambda k: (str(k[0] or 0), k[1], k[2])):
             epoch, version, release = evr
             if epoch == '' or epoch is None:
                 epoch = None
@@ -702,7 +703,8 @@ class Backend:
                 ORDER BY ordering
               ON CONFLICT DO NOTHING
         """
-        values = [(i, key[0], key[1]) for i, key in enumerate(sorted(checksumHash.keys())) if key[1] != '']
+        sorted_checksums = sorted(checksumHash.keys(), key=lambda k:(k[0], k[1] or ''))
+        values = [(i, key[0], key[1]) for i, key in enumerate(sorted_checksums) if key[1] != '']
 
         if not values:
             return
