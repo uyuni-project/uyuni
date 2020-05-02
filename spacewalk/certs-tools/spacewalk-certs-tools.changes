@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri May 1 09:43:41 CEST 2020 - bogner@b1-systems.de
+
+- Fix OS detection for Ubuntu in bootstrap script
+
+-------------------------------------------------------------------
 Mon Apr 13 09:33:21 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.7-1
