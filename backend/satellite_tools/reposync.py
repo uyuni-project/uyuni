@@ -1059,7 +1059,7 @@ class RepoSync(object):
         to_process_batches = [[to_process[twisted_index] for twisted_index in twisted_batch] for twisted_batch in twisted_batch_indexes]
 
         affected_channels = []
-        with multiprocessing.Pool(processes=max(os.cpu_count() * 2, 32), maxtasksperchild=1) as pool:
+        with multiprocessing.Pool(processes=min(os.cpu_count() * 2, 32), maxtasksperchild=1) as pool:
             results = [pool.apply_async(self.import_package_batch, args=[to_process_batch, to_disassociate, is_non_local_repo, i, len(to_process_batches)])
                        for i, to_process_batch in enumerate(to_process_batches)]
 
