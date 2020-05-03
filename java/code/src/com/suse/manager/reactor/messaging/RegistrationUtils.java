@@ -434,8 +434,12 @@ public class RegistrationUtils {
         }
 
         // identify the product by the base channel name
-        SUSEProduct baseProduct = SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()).get();
-        return baseProduct.getSuseProductChannels().stream()
+        Optional<SUSEProduct> baseProduct = SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel());
+        if (baseProduct.isEmpty()) {
+            return Stream.empty();
+        }
+
+        return baseProduct.get().getSuseProductChannels().stream()
                 .filter(pc -> pc.isMandatory())
                 .map(SUSEProductChannel::getChannel)
                 // filter out channels with different base than the given one
