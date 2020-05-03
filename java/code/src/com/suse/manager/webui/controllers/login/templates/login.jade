@@ -22,6 +22,8 @@ html
             script(src='/javascript/less.js')
         else
             link(rel='stylesheet', href='/css/spacewalk.css?cb=#{webBuildtimestamp}')
+        //import eos-icons
+        link(rel='stylesheet' href='/css/eos-icons/dist/css/eos-icons.css?cb=#{webBuildtimestamp}')
         script(src='/javascript/loggerhead.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/frontend-log.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')

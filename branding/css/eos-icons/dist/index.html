@@ -1,0 +1,6340 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>eos-icons demo page</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400" rel="stylesheet">
+  <style>
+    body {
+      background: #fff;
+      color: #141823;
+      font-size: 16px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    .container {
+      padding: 16px;
+    }
+
+    header {
+      background: #fe673a;
+      margin-bottom: 2em;
+      position: fixed;
+      top: 0px;
+      width: 100%;
+    }
+
+    .icons-container {
+      margin-top: 120px;
+    }
+
+    h1,
+    footer {
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin: 0px;
+      color: white;
+    }
+
+    h2 small {
+      font-size: 0.5em;
+    }
+
+    h3 {
+      text-align: center;
+    }
+
+    .two-columns {
+      -webkit-column-count: 2;
+      -moz-column-count: 2;
+      column-count: 2;
+    }
+
+    .icons__item,
+    .icons__item i {
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .icons__item:hover {
+      color: #fe673a;
+    }
+
+    .icons__item {
+      display: inline-block;
+      margin-bottom: 3em;
+      width: 200px;
+    }
+
+    .icons__item i {
+      font-size: 48px;
+    }
+
+    .how-to-use,
+    .how-to-use-animated {
+      background: #333;
+      bottom: 44px;
+      position: fixed;
+      width: 100%;
+    }
+
+    footer {
+      background: #ededed;
+      bottom: 0px;
+      color: #999;
+      font-size: 14px;
+      position: fixed;
+      width: 100%;
+    }
+
+    .text-white {
+      color: white
+    }
+
+    pre {
+      background: #dedede;
+      padding: 16px;
+    }
+
+    .pull-right {
+      float: right;
+    }
+
+    #close-code-snippet,
+    #close-code-snippet-animated {
+      cursor: pointer;
+    }
+
+    .eos-logo-color-gradients {
+      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff890a+0,ff420a+50,bc0289+100 */
+      background: #ff890a;
+      background: -moz-linear-gradient(-45deg, #ff890a 0%, #ff420a 50%, #bc0289 100%);
+      background: -webkit-linear-gradient(-45deg, #ff890a 0%, #ff420a 50%, #bc0289 100%);
+      background: linear-gradient(135deg, #ff890a 0%, #ff420a 50%, #bc0289 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff890a', endColorstr='#bc0289', GradientType=1);
+    }
+
+    .toolbar {
+      padding: 10px;
+    }
+
+    .version {
+      font-size: 12px;
+    }
+
+    .extended-version-wrap {
+      margin-bottom: 10px;
+      display: flex;
+      margin: 0 0 30px 60px;
+    }
+
+    .extended-version-wrap a {
+      padding: 10px 14px;
+      background: #e6e6e6;
+      border-radius: 5px;
+      color: #1f1f1f;
+      text-decoration: none;
+      border: 1px solid #d0d0d0;
+    }
+
+    #icons-animated img {
+      width: 48px;
+    }
+  </style>
+  <link rel="stylesheet" type="text/css" href="css/eos-icons.css">
+</head>
+
+<body>
+  <header class='eos-logo-color-gradients'>
+    <div class='container two-columns'>
+      <h1>
+        EOS Icons
+      </h1>
+      <div class='pull-right toolbar'>
+        <span class='text-white'>Try different sizes: </span>
+        <button class='change-size' data-size='18'>18px</button>
+        <button class='change-size' data-size='24'>24px</button>
+        <button class='change-size' data-size='36'>36px</button>
+        <button class='change-size' data-size='48'>48px</button>
+      </div>
+    </div>
+  </header>
+  <div class='container icons-container'>
+    <div id="icons">
+      
+      <div class="icons__item" data-name="abstract_incomplete">
+        <i class="eos-icons">abstract_incomplete</i>
+        <br>
+        abstract_incomplete
+      </div>
+      
+      <div class="icons__item" data-name="abstract_instance">
+        <i class="eos-icons">abstract_instance</i>
+        <br>
+        abstract_instance
+      </div>
+      
+      <div class="icons__item" data-name="abstract">
+        <i class="eos-icons">abstract</i>
+        <br>
+        abstract
+      </div>
+      
+      <div class="icons__item" data-name="action_chains">
+        <i class="eos-icons">action_chains</i>
+        <br>
+        action_chains
+      </div>
+      
+      <div class="icons__item" data-name="activate_subscriptions">
+        <i class="eos-icons">activate_subscriptions</i>
+        <br>
+        activate_subscriptions
+      </div>
+      
+      <div class="icons__item" data-name="admin">
+        <i class="eos-icons">admin</i>
+        <br>
+        admin
+      </div>
+      
+      <div class="icons__item" data-name="api">
+        <i class="eos-icons">api</i>
+        <br>
+        api
+      </div>
+      
+      <div class="icons__item" data-name="application_incomplete">
+        <i class="eos-icons">application_incomplete</i>
+        <br>
+        application_incomplete
+      </div>
+      
+      <div class="icons__item" data-name="application_instance">
+        <i class="eos-icons">application_instance</i>
+        <br>
+        application_instance
+      </div>
+      
+      <div class="icons__item" data-name="application_window">
+        <i class="eos-icons">application_window</i>
+        <br>
+        application_window
+      </div>
+      
+      <div class="icons__item" data-name="application">
+        <i class="eos-icons">application</i>
+        <br>
+        application
+      </div>
+      
+      <div class="icons__item" data-name="autoinstallation">
+        <i class="eos-icons">autoinstallation</i>
+        <br>
+        autoinstallation
+      </div>
+      
+      <div class="icons__item" data-name="background_tasks">
+        <i class="eos-icons">background_tasks</i>
+        <br>
+        background_tasks
+      </div>
+      
+      <div class="icons__item" data-name="bootstrapping">
+        <i class="eos-icons">bootstrapping</i>
+        <br>
+        bootstrapping
+      </div>
+      
+      <div class="icons__item" data-name="cleanup">
+        <i class="eos-icons">cleanup</i>
+        <br>
+        cleanup
+      </div>
+      
+      <div class="icons__item" data-name="cloud_controller_manager">
+        <i class="eos-icons">cloud_controller_manager</i>
+        <br>
+        cloud_controller_manager
+      </div>
+      
+      <div class="icons__item" data-name="cluster_role_binding">
+        <i class="eos-icons">cluster_role_binding</i>
+        <br>
+        cluster_role_binding
+      </div>
+      
+      <div class="icons__item" data-name="cluster_role">
+        <i class="eos-icons">cluster_role</i>
+        <br>
+        cluster_role
+      </div>
+      
+      <div class="icons__item" data-name="collocation">
+        <i class="eos-icons">collocation</i>
+        <br>
+        collocation
+      </div>
+      
+      <div class="icons__item" data-name="config_map">
+        <i class="eos-icons">config_map</i>
+        <br>
+        config_map
+      </div>
+      
+      <div class="icons__item" data-name="configuration_file">
+        <i class="eos-icons">configuration_file</i>
+        <br>
+        configuration_file
+      </div>
+      
+      <div class="icons__item" data-name="constraint">
+        <i class="eos-icons">constraint</i>
+        <br>
+        constraint
+      </div>
+      
+      <div class="icons__item" data-name="container">
+        <i class="eos-icons">container</i>
+        <br>
+        container
+      </div>
+      
+      <div class="icons__item" data-name="content_lifecycle_management">
+        <i class="eos-icons">content_lifecycle_management</i>
+        <br>
+        content_lifecycle_management
+      </div>
+      
+      <div class="icons__item" data-name="counting">
+        <i class="eos-icons">counting</i>
+        <br>
+        counting
+      </div>
+      
+      <div class="icons__item" data-name="critical_bug">
+        <i class="eos-icons">critical_bug</i>
+        <br>
+        critical_bug
+      </div>
+      
+      <div class="icons__item" data-name="cronjob">
+        <i class="eos-icons">cronjob</i>
+        <br>
+        cronjob
+      </div>
+      
+      <div class="icons__item" data-name="csv_file">
+        <i class="eos-icons">csv_file</i>
+        <br>
+        csv_file
+      </div>
+      
+      <div class="icons__item" data-name="daemon_set">
+        <i class="eos-icons">daemon_set</i>
+        <br>
+        daemon_set
+      </div>
+      
+      <div class="icons__item" data-name="daemon">
+        <i class="eos-icons">daemon</i>
+        <br>
+        daemon
+      </div>
+      
+      <div class="icons__item" data-name="deploy">
+        <i class="eos-icons">deploy</i>
+        <br>
+        deploy
+      </div>
+      
+      <div class="icons__item" data-name="dns">
+        <i class="eos-icons">dns</i>
+        <br>
+        dns
+      </div>
+      
+      <div class="icons__item" data-name="endpoints_connected">
+        <i class="eos-icons">endpoints_connected</i>
+        <br>
+        endpoints_connected
+      </div>
+      
+      <div class="icons__item" data-name="endpoints_disconnected">
+        <i class="eos-icons">endpoints_disconnected</i>
+        <br>
+        endpoints_disconnected
+      </div>
+      
+      <div class="icons__item" data-name="endpoints">
+        <i class="eos-icons">endpoints</i>
+        <br>
+        endpoints
+      </div>
+      
+      <div class="icons__item" data-name="enhancement">
+        <i class="eos-icons">enhancement</i>
+        <br>
+        enhancement
+      </div>
+      
+      <div class="icons__item" data-name="file_system">
+        <i class="eos-icons">file_system</i>
+        <br>
+        file_system
+      </div>
+      
+      <div class="icons__item" data-name="inbound">
+        <i class="eos-icons">inbound</i>
+        <br>
+        inbound
+      </div>
+      
+      <div class="icons__item" data-name="ingress">
+        <i class="eos-icons">ingress</i>
+        <br>
+        ingress
+      </div>
+      
+      <div class="icons__item" data-name="ip">
+        <i class="eos-icons">ip</i>
+        <br>
+        ip
+      </div>
+      
+      <div class="icons__item" data-name="job">
+        <i class="eos-icons">job</i>
+        <br>
+        job
+      </div>
+      
+      <div class="icons__item" data-name="kubelet">
+        <i class="eos-icons">kubelet</i>
+        <br>
+        kubelet
+      </div>
+      
+      <div class="icons__item" data-name="master">
+        <i class="eos-icons">master</i>
+        <br>
+        master
+      </div>
+      
+      <div class="icons__item" data-name="miscellaneous">
+        <i class="eos-icons">miscellaneous</i>
+        <br>
+        miscellaneous
+      </div>
+      
+      <div class="icons__item" data-name="modified_date">
+        <i class="eos-icons">modified_date</i>
+        <br>
+        modified_date
+      </div>
+      
+      <div class="icons__item" data-name="molecules">
+        <i class="eos-icons">molecules</i>
+        <br>
+        molecules
+      </div>
+      
+      <div class="icons__item" data-name="move">
+        <i class="eos-icons">move</i>
+        <br>
+        move
+      </div>
+      
+      <div class="icons__item" data-name="multistate">
+        <i class="eos-icons">multistate</i>
+        <br>
+        multistate
+      </div>
+      
+      <div class="icons__item" data-name="namespace">
+        <i class="eos-icons">namespace</i>
+        <br>
+        namespace
+      </div>
+      
+      <div class="icons__item" data-name="network_file_system">
+        <i class="eos-icons">network_file_system</i>
+        <br>
+        network_file_system
+      </div>
+      
+      <div class="icons__item" data-name="network_policy">
+        <i class="eos-icons">network_policy</i>
+        <br>
+        network_policy
+      </div>
+      
+      <div class="icons__item" data-name="network">
+        <i class="eos-icons">network</i>
+        <br>
+        network
+      </div>
+      
+      <div class="icons__item" data-name="node">
+        <i class="eos-icons">node</i>
+        <br>
+        node
+      </div>
+      
+      <div class="icons__item" data-name="organisms">
+        <i class="eos-icons">organisms</i>
+        <br>
+        organisms
+      </div>
+      
+      <div class="icons__item" data-name="organization">
+        <i class="eos-icons">organization</i>
+        <br>
+        organization
+      </div>
+      
+      <div class="icons__item" data-name="outbound">
+        <i class="eos-icons">outbound</i>
+        <br>
+        outbound
+      </div>
+      
+      <div class="icons__item" data-name="package_upgrade">
+        <i class="eos-icons">package_upgrade</i>
+        <br>
+        package_upgrade
+      </div>
+      
+      <div class="icons__item" data-name="package">
+        <i class="eos-icons">package</i>
+        <br>
+        package
+      </div>
+      
+      <div class="icons__item" data-name="packages">
+        <i class="eos-icons">packages</i>
+        <br>
+        packages
+      </div>
+      
+      <div class="icons__item" data-name="patch_fixes">
+        <i class="eos-icons">patch_fixes</i>
+        <br>
+        patch_fixes
+      </div>
+      
+      <div class="icons__item" data-name="patterns">
+        <i class="eos-icons">patterns</i>
+        <br>
+        patterns
+      </div>
+      
+      <div class="icons__item" data-name="persistent_volume">
+        <i class="eos-icons">persistent_volume</i>
+        <br>
+        persistent_volume
+      </div>
+      
+      <div class="icons__item" data-name="pin">
+        <i class="eos-icons">pin</i>
+        <br>
+        pin
+      </div>
+      
+      <div class="icons__item" data-name="pod_autoscaler">
+        <i class="eos-icons">pod_autoscaler</i>
+        <br>
+        pod_autoscaler
+      </div>
+      
+      <div class="icons__item" data-name="pod_security">
+        <i class="eos-icons">pod_security</i>
+        <br>
+        pod_security
+      </div>
+      
+      <div class="icons__item" data-name="pod">
+        <i class="eos-icons">pod</i>
+        <br>
+        pod
+      </div>
+      
+      <div class="icons__item" data-name="primitive">
+        <i class="eos-icons">primitive</i>
+        <br>
+        primitive
+      </div>
+      
+      <div class="icons__item" data-name="product_classes">
+        <i class="eos-icons">product_classes</i>
+        <br>
+        product_classes
+      </div>
+      
+      <div class="icons__item" data-name="product_subscriptions">
+        <i class="eos-icons">product_subscriptions</i>
+        <br>
+        product_subscriptions
+      </div>
+      
+      <div class="icons__item" data-name="products">
+        <i class="eos-icons">products</i>
+        <br>
+        products
+      </div>
+      
+      <div class="icons__item" data-name="project">
+        <i class="eos-icons">project</i>
+        <br>
+        project
+      </div>
+      
+      <div class="icons__item" data-name="proxy">
+        <i class="eos-icons">proxy</i>
+        <br>
+        proxy
+      </div>
+      
+      <div class="icons__item" data-name="quota">
+        <i class="eos-icons">quota</i>
+        <br>
+        quota
+      </div>
+      
+      <div class="icons__item" data-name="replica_set">
+        <i class="eos-icons">replica_set</i>
+        <br>
+        replica_set
+      </div>
+      
+      <div class="icons__item" data-name="replica">
+        <i class="eos-icons">replica</i>
+        <br>
+        replica
+      </div>
+      
+      <div class="icons__item" data-name="repositories">
+        <i class="eos-icons">repositories</i>
+        <br>
+        repositories
+      </div>
+      
+      <div class="icons__item" data-name="role_binding">
+        <i class="eos-icons">role_binding</i>
+        <br>
+        role_binding
+      </div>
+      
+      <div class="icons__item" data-name="route">
+        <i class="eos-icons">route</i>
+        <br>
+        route
+      </div>
+      
+      <div class="icons__item" data-name="sandbox">
+        <i class="eos-icons">sandbox</i>
+        <br>
+        sandbox
+      </div>
+      
+      <div class="icons__item" data-name="secure_data">
+        <i class="eos-icons">secure_data</i>
+        <br>
+        secure_data
+      </div>
+      
+      <div class="icons__item" data-name="service_instance">
+        <i class="eos-icons">service_instance</i>
+        <br>
+        service_instance
+      </div>
+      
+      <div class="icons__item" data-name="service_plan">
+        <i class="eos-icons">service_plan</i>
+        <br>
+        service_plan
+      </div>
+      
+      <div class="icons__item" data-name="service">
+        <i class="eos-icons">service</i>
+        <br>
+        service
+      </div>
+      
+      <div class="icons__item" data-name="snapshot_rollback">
+        <i class="eos-icons">snapshot_rollback</i>
+        <br>
+        snapshot_rollback
+      </div>
+      
+      <div class="icons__item" data-name="software">
+        <i class="eos-icons">software</i>
+        <br>
+        software
+      </div>
+      
+      <div class="icons__item" data-name="state">
+        <i class="eos-icons">state</i>
+        <br>
+        state
+      </div>
+      
+      <div class="icons__item" data-name="stateful_set">
+        <i class="eos-icons">stateful_set</i>
+        <br>
+        stateful_set
+      </div>
+      
+      <div class="icons__item" data-name="storage_class">
+        <i class="eos-icons">storage_class</i>
+        <br>
+        storage_class
+      </div>
+      
+      <div class="icons__item" data-name="subscription_management">
+        <i class="eos-icons">subscription_management</i>
+        <br>
+        subscription_management
+      </div>
+      
+      <div class="icons__item" data-name="subscriptions_created">
+        <i class="eos-icons">subscriptions_created</i>
+        <br>
+        subscriptions_created
+      </div>
+      
+      <div class="icons__item" data-name="symlink">
+        <i class="eos-icons">symlink</i>
+        <br>
+        symlink
+      </div>
+      
+      <div class="icons__item" data-name="system_group">
+        <i class="eos-icons">system_group</i>
+        <br>
+        system_group
+      </div>
+      
+      <div class="icons__item" data-name="system_image">
+        <i class="eos-icons">system_image</i>
+        <br>
+        system_image
+      </div>
+      
+      <div class="icons__item" data-name="system_ok">
+        <i class="eos-icons">system_ok</i>
+        <br>
+        system_ok
+      </div>
+      
+      <div class="icons__item" data-name="system_re_registered">
+        <i class="eos-icons">system_re_registered</i>
+        <br>
+        system_re_registered
+      </div>
+      
+      <div class="icons__item" data-name="system_warning">
+        <i class="eos-icons">system_warning</i>
+        <br>
+        system_warning
+      </div>
+      
+      <div class="icons__item" data-name="templates">
+        <i class="eos-icons">templates</i>
+        <br>
+        templates
+      </div>
+      
+      <div class="icons__item" data-name="terminal">
+        <i class="eos-icons">terminal</i>
+        <br>
+        terminal
+      </div>
+      
+      <div class="icons__item" data-name="timeout">
+        <i class="eos-icons">timeout</i>
+        <br>
+        timeout
+      </div>
+      
+      <div class="icons__item" data-name="troubleshooting">
+        <i class="eos-icons">troubleshooting</i>
+        <br>
+        troubleshooting
+      </div>
+      
+      <div class="icons__item" data-name="trusted_organization">
+        <i class="eos-icons">trusted_organization</i>
+        <br>
+        trusted_organization
+      </div>
+      
+      <div class="icons__item" data-name="virtual_guest">
+        <i class="eos-icons">virtual_guest</i>
+        <br>
+        virtual_guest
+      </div>
+      
+      <div class="icons__item" data-name="virtual_host_manager">
+        <i class="eos-icons">virtual_host_manager</i>
+        <br>
+        virtual_host_manager
+      </div>
+      
+      <div class="icons__item" data-name="virtual_space">
+        <i class="eos-icons">virtual_space</i>
+        <br>
+        virtual_space
+      </div>
+      
+      <div class="icons__item" data-name="volume_binding">
+        <i class="eos-icons">volume_binding</i>
+        <br>
+        volume_binding
+      </div>
+      
+      <div class="icons__item" data-name="volume">
+        <i class="eos-icons">volume</i>
+        <br>
+        volume
+      </div>
+      
+      <div class="icons__item" data-name="workload">
+        <i class="eos-icons">workload</i>
+        <br>
+        workload
+      </div>
+      
+      <div class="icons__item" data-name="3d_rotation">
+        <i class="eos-icons">3d_rotation</i>
+        <br>
+        3d_rotation
+      </div>
+      
+      <div class="icons__item" data-name="ac_unit">
+        <i class="eos-icons">ac_unit</i>
+        <br>
+        ac_unit
+      </div>
+      
+      <div class="icons__item" data-name="access_alarm">
+        <i class="eos-icons">access_alarm</i>
+        <br>
+        access_alarm
+      </div>
+      
+      <div class="icons__item" data-name="access_time">
+        <i class="eos-icons">access_time</i>
+        <br>
+        access_time
+      </div>
+      
+      <div class="icons__item" data-name="accessibility">
+        <i class="eos-icons">accessibility</i>
+        <br>
+        accessibility
+      </div>
+      
+      <div class="icons__item" data-name="accessible">
+        <i class="eos-icons">accessible</i>
+        <br>
+        accessible
+      </div>
+      
+      <div class="icons__item" data-name="account_balance_wallet">
+        <i class="eos-icons">account_balance_wallet</i>
+        <br>
+        account_balance_wallet
+      </div>
+      
+      <div class="icons__item" data-name="account_balance">
+        <i class="eos-icons">account_balance</i>
+        <br>
+        account_balance
+      </div>
+      
+      <div class="icons__item" data-name="account_box">
+        <i class="eos-icons">account_box</i>
+        <br>
+        account_box
+      </div>
+      
+      <div class="icons__item" data-name="account_circle">
+        <i class="eos-icons">account_circle</i>
+        <br>
+        account_circle
+      </div>
+      
+      <div class="icons__item" data-name="adb">
+        <i class="eos-icons">adb</i>
+        <br>
+        adb
+      </div>
+      
+      <div class="icons__item" data-name="add_a_photo">
+        <i class="eos-icons">add_a_photo</i>
+        <br>
+        add_a_photo
+      </div>
+      
+      <div class="icons__item" data-name="add_alarm">
+        <i class="eos-icons">add_alarm</i>
+        <br>
+        add_alarm
+      </div>
+      
+      <div class="icons__item" data-name="add_alert">
+        <i class="eos-icons">add_alert</i>
+        <br>
+        add_alert
+      </div>
+      
+      <div class="icons__item" data-name="add_box">
+        <i class="eos-icons">add_box</i>
+        <br>
+        add_box
+      </div>
+      
+      <div class="icons__item" data-name="add_circle_outline">
+        <i class="eos-icons">add_circle_outline</i>
+        <br>
+        add_circle_outline
+      </div>
+      
+      <div class="icons__item" data-name="add_circle">
+        <i class="eos-icons">add_circle</i>
+        <br>
+        add_circle
+      </div>
+      
+      <div class="icons__item" data-name="add_location">
+        <i class="eos-icons">add_location</i>
+        <br>
+        add_location
+      </div>
+      
+      <div class="icons__item" data-name="add_shopping_cart">
+        <i class="eos-icons">add_shopping_cart</i>
+        <br>
+        add_shopping_cart
+      </div>
+      
+      <div class="icons__item" data-name="add_to_photos">
+        <i class="eos-icons">add_to_photos</i>
+        <br>
+        add_to_photos
+      </div>
+      
+      <div class="icons__item" data-name="add_to_queue">
+        <i class="eos-icons">add_to_queue</i>
+        <br>
+        add_to_queue
+      </div>
+      
+      <div class="icons__item" data-name="add">
+        <i class="eos-icons">add</i>
+        <br>
+        add
+      </div>
+      
+      <div class="icons__item" data-name="adjust">
+        <i class="eos-icons">adjust</i>
+        <br>
+        adjust
+      </div>
+      
+      <div class="icons__item" data-name="airline_seat_flat_angled">
+        <i class="eos-icons">airline_seat_flat_angled</i>
+        <br>
+        airline_seat_flat_angled
+      </div>
+      
+      <div class="icons__item" data-name="airline_seat_flat">
+        <i class="eos-icons">airline_seat_flat</i>
+        <br>
+        airline_seat_flat
+      </div>
+      
+      <div class="icons__item" data-name="airline_seat_individual_suite">
+        <i class="eos-icons">airline_seat_individual_suite</i>
+        <br>
+        airline_seat_individual_suite
+      </div>
+      
+      <div class="icons__item" data-name="airline_seat_legroom_extra">
+        <i class="eos-icons">airline_seat_legroom_extra</i>
+        <br>
+        airline_seat_legroom_extra
+      </div>
+      
+      <div class="icons__item" data-name="airline_seat_legroom_normal">
+        <i class="eos-icons">airline_seat_legroom_normal</i>
+        <br>
+        airline_seat_legroom_normal
+      </div>
+      
+      <div class="icons__item" data-name="airline_seat_legroom_reduced">
+        <i class="eos-icons">airline_seat_legroom_reduced</i>
+        <br>
+        airline_seat_legroom_reduced
+      </div>
+      
+      <div class="icons__item" data-name="airline_seat_recline_extra">
+        <i class="eos-icons">airline_seat_recline_extra</i>
+        <br>
+        airline_seat_recline_extra
+      </div>
+      
+      <div class="icons__item" data-name="airline_seat_recline_normal">
+        <i class="eos-icons">airline_seat_recline_normal</i>
+        <br>
+        airline_seat_recline_normal
+      </div>
+      
+      <div class="icons__item" data-name="airplanemode_active">
+        <i class="eos-icons">airplanemode_active</i>
+        <br>
+        airplanemode_active
+      </div>
+      
+      <div class="icons__item" data-name="airplanemode_inactive">
+        <i class="eos-icons">airplanemode_inactive</i>
+        <br>
+        airplanemode_inactive
+      </div>
+      
+      <div class="icons__item" data-name="airplay">
+        <i class="eos-icons">airplay</i>
+        <br>
+        airplay
+      </div>
+      
+      <div class="icons__item" data-name="airport_shuttle">
+        <i class="eos-icons">airport_shuttle</i>
+        <br>
+        airport_shuttle
+      </div>
+      
+      <div class="icons__item" data-name="alarm_off">
+        <i class="eos-icons">alarm_off</i>
+        <br>
+        alarm_off
+      </div>
+      
+      <div class="icons__item" data-name="alarm_on">
+        <i class="eos-icons">alarm_on</i>
+        <br>
+        alarm_on
+      </div>
+      
+      <div class="icons__item" data-name="alarm">
+        <i class="eos-icons">alarm</i>
+        <br>
+        alarm
+      </div>
+      
+      <div class="icons__item" data-name="album">
+        <i class="eos-icons">album</i>
+        <br>
+        album
+      </div>
+      
+      <div class="icons__item" data-name="all_inclusive">
+        <i class="eos-icons">all_inclusive</i>
+        <br>
+        all_inclusive
+      </div>
+      
+      <div class="icons__item" data-name="all_out">
+        <i class="eos-icons">all_out</i>
+        <br>
+        all_out
+      </div>
+      
+      <div class="icons__item" data-name="android">
+        <i class="eos-icons">android</i>
+        <br>
+        android
+      </div>
+      
+      <div class="icons__item" data-name="announcement">
+        <i class="eos-icons">announcement</i>
+        <br>
+        announcement
+      </div>
+      
+      <div class="icons__item" data-name="apps">
+        <i class="eos-icons">apps</i>
+        <br>
+        apps
+      </div>
+      
+      <div class="icons__item" data-name="archive">
+        <i class="eos-icons">archive</i>
+        <br>
+        archive
+      </div>
+      
+      <div class="icons__item" data-name="arrow_back">
+        <i class="eos-icons">arrow_back</i>
+        <br>
+        arrow_back
+      </div>
+      
+      <div class="icons__item" data-name="arrow_downward">
+        <i class="eos-icons">arrow_downward</i>
+        <br>
+        arrow_downward
+      </div>
+      
+      <div class="icons__item" data-name="arrow_drop_down_circle">
+        <i class="eos-icons">arrow_drop_down_circle</i>
+        <br>
+        arrow_drop_down_circle
+      </div>
+      
+      <div class="icons__item" data-name="arrow_drop_down">
+        <i class="eos-icons">arrow_drop_down</i>
+        <br>
+        arrow_drop_down
+      </div>
+      
+      <div class="icons__item" data-name="arrow_drop_up">
+        <i class="eos-icons">arrow_drop_up</i>
+        <br>
+        arrow_drop_up
+      </div>
+      
+      <div class="icons__item" data-name="arrow_forward">
+        <i class="eos-icons">arrow_forward</i>
+        <br>
+        arrow_forward
+      </div>
+      
+      <div class="icons__item" data-name="arrow_upward">
+        <i class="eos-icons">arrow_upward</i>
+        <br>
+        arrow_upward
+      </div>
+      
+      <div class="icons__item" data-name="art_track">
+        <i class="eos-icons">art_track</i>
+        <br>
+        art_track
+      </div>
+      
+      <div class="icons__item" data-name="aspect_ratio">
+        <i class="eos-icons">aspect_ratio</i>
+        <br>
+        aspect_ratio
+      </div>
+      
+      <div class="icons__item" data-name="assessment">
+        <i class="eos-icons">assessment</i>
+        <br>
+        assessment
+      </div>
+      
+      <div class="icons__item" data-name="assignment_ind">
+        <i class="eos-icons">assignment_ind</i>
+        <br>
+        assignment_ind
+      </div>
+      
+      <div class="icons__item" data-name="assignment_late">
+        <i class="eos-icons">assignment_late</i>
+        <br>
+        assignment_late
+      </div>
+      
+      <div class="icons__item" data-name="assignment_return">
+        <i class="eos-icons">assignment_return</i>
+        <br>
+        assignment_return
+      </div>
+      
+      <div class="icons__item" data-name="assignment_returned">
+        <i class="eos-icons">assignment_returned</i>
+        <br>
+        assignment_returned
+      </div>
+      
+      <div class="icons__item" data-name="assignment_turned_in">
+        <i class="eos-icons">assignment_turned_in</i>
+        <br>
+        assignment_turned_in
+      </div>
+      
+      <div class="icons__item" data-name="assignment">
+        <i class="eos-icons">assignment</i>
+        <br>
+        assignment
+      </div>
+      
+      <div class="icons__item" data-name="assistant_photo">
+        <i class="eos-icons">assistant_photo</i>
+        <br>
+        assistant_photo
+      </div>
+      
+      <div class="icons__item" data-name="assistant">
+        <i class="eos-icons">assistant</i>
+        <br>
+        assistant
+      </div>
+      
+      <div class="icons__item" data-name="attach_file">
+        <i class="eos-icons">attach_file</i>
+        <br>
+        attach_file
+      </div>
+      
+      <div class="icons__item" data-name="attach_money">
+        <i class="eos-icons">attach_money</i>
+        <br>
+        attach_money
+      </div>
+      
+      <div class="icons__item" data-name="attachment">
+        <i class="eos-icons">attachment</i>
+        <br>
+        attachment
+      </div>
+      
+      <div class="icons__item" data-name="audiotrack">
+        <i class="eos-icons">audiotrack</i>
+        <br>
+        audiotrack
+      </div>
+      
+      <div class="icons__item" data-name="autorenew">
+        <i class="eos-icons">autorenew</i>
+        <br>
+        autorenew
+      </div>
+      
+      <div class="icons__item" data-name="av_timer">
+        <i class="eos-icons">av_timer</i>
+        <br>
+        av_timer
+      </div>
+      
+      <div class="icons__item" data-name="backspace">
+        <i class="eos-icons">backspace</i>
+        <br>
+        backspace
+      </div>
+      
+      <div class="icons__item" data-name="backup">
+        <i class="eos-icons">backup</i>
+        <br>
+        backup
+      </div>
+      
+      <div class="icons__item" data-name="battery_alert">
+        <i class="eos-icons">battery_alert</i>
+        <br>
+        battery_alert
+      </div>
+      
+      <div class="icons__item" data-name="battery_charging_20">
+        <i class="eos-icons">battery_charging_20</i>
+        <br>
+        battery_charging_20
+      </div>
+      
+      <div class="icons__item" data-name="battery_full">
+        <i class="eos-icons">battery_full</i>
+        <br>
+        battery_full
+      </div>
+      
+      <div class="icons__item" data-name="battery_unknown">
+        <i class="eos-icons">battery_unknown</i>
+        <br>
+        battery_unknown
+      </div>
+      
+      <div class="icons__item" data-name="beach_access">
+        <i class="eos-icons">beach_access</i>
+        <br>
+        beach_access
+      </div>
+      
+      <div class="icons__item" data-name="beenhere">
+        <i class="eos-icons">beenhere</i>
+        <br>
+        beenhere
+      </div>
+      
+      <div class="icons__item" data-name="block">
+        <i class="eos-icons">block</i>
+        <br>
+        block
+      </div>
+      
+      <div class="icons__item" data-name="bluetooth_connected">
+        <i class="eos-icons">bluetooth_connected</i>
+        <br>
+        bluetooth_connected
+      </div>
+      
+      <div class="icons__item" data-name="bluetooth_disabled">
+        <i class="eos-icons">bluetooth_disabled</i>
+        <br>
+        bluetooth_disabled
+      </div>
+      
+      <div class="icons__item" data-name="bluetooth_searching">
+        <i class="eos-icons">bluetooth_searching</i>
+        <br>
+        bluetooth_searching
+      </div>
+      
+      <div class="icons__item" data-name="bluetooth">
+        <i class="eos-icons">bluetooth</i>
+        <br>
+        bluetooth
+      </div>
+      
+      <div class="icons__item" data-name="blur_circular">
+        <i class="eos-icons">blur_circular</i>
+        <br>
+        blur_circular
+      </div>
+      
+      <div class="icons__item" data-name="blur_linear">
+        <i class="eos-icons">blur_linear</i>
+        <br>
+        blur_linear
+      </div>
+      
+      <div class="icons__item" data-name="blur_off">
+        <i class="eos-icons">blur_off</i>
+        <br>
+        blur_off
+      </div>
+      
+      <div class="icons__item" data-name="blur_on">
+        <i class="eos-icons">blur_on</i>
+        <br>
+        blur_on
+      </div>
+      
+      <div class="icons__item" data-name="book">
+        <i class="eos-icons">book</i>
+        <br>
+        book
+      </div>
+      
+      <div class="icons__item" data-name="bookmark_border">
+        <i class="eos-icons">bookmark_border</i>
+        <br>
+        bookmark_border
+      </div>
+      
+      <div class="icons__item" data-name="bookmark">
+        <i class="eos-icons">bookmark</i>
+        <br>
+        bookmark
+      </div>
+      
+      <div class="icons__item" data-name="border_all">
+        <i class="eos-icons">border_all</i>
+        <br>
+        border_all
+      </div>
+      
+      <div class="icons__item" data-name="border_bottom">
+        <i class="eos-icons">border_bottom</i>
+        <br>
+        border_bottom
+      </div>
+      
+      <div class="icons__item" data-name="border_clear">
+        <i class="eos-icons">border_clear</i>
+        <br>
+        border_clear
+      </div>
+      
+      <div class="icons__item" data-name="border_color">
+        <i class="eos-icons">border_color</i>
+        <br>
+        border_color
+      </div>
+      
+      <div class="icons__item" data-name="border_horizontal">
+        <i class="eos-icons">border_horizontal</i>
+        <br>
+        border_horizontal
+      </div>
+      
+      <div class="icons__item" data-name="border_inner">
+        <i class="eos-icons">border_inner</i>
+        <br>
+        border_inner
+      </div>
+      
+      <div class="icons__item" data-name="border_left">
+        <i class="eos-icons">border_left</i>
+        <br>
+        border_left
+      </div>
+      
+      <div class="icons__item" data-name="border_outer">
+        <i class="eos-icons">border_outer</i>
+        <br>
+        border_outer
+      </div>
+      
+      <div class="icons__item" data-name="border_right">
+        <i class="eos-icons">border_right</i>
+        <br>
+        border_right
+      </div>
+      
+      <div class="icons__item" data-name="border_style">
+        <i class="eos-icons">border_style</i>
+        <br>
+        border_style
+      </div>
+      
+      <div class="icons__item" data-name="border_top">
+        <i class="eos-icons">border_top</i>
+        <br>
+        border_top
+      </div>
+      
+      <div class="icons__item" data-name="border_vertical">
+        <i class="eos-icons">border_vertical</i>
+        <br>
+        border_vertical
+      </div>
+      
+      <div class="icons__item" data-name="branding_watermark">
+        <i class="eos-icons">branding_watermark</i>
+        <br>
+        branding_watermark
+      </div>
+      
+      <div class="icons__item" data-name="brightness_1">
+        <i class="eos-icons">brightness_1</i>
+        <br>
+        brightness_1
+      </div>
+      
+      <div class="icons__item" data-name="brightness_2">
+        <i class="eos-icons">brightness_2</i>
+        <br>
+        brightness_2
+      </div>
+      
+      <div class="icons__item" data-name="brightness_3">
+        <i class="eos-icons">brightness_3</i>
+        <br>
+        brightness_3
+      </div>
+      
+      <div class="icons__item" data-name="brightness_4">
+        <i class="eos-icons">brightness_4</i>
+        <br>
+        brightness_4
+      </div>
+      
+      <div class="icons__item" data-name="brightness_auto">
+        <i class="eos-icons">brightness_auto</i>
+        <br>
+        brightness_auto
+      </div>
+      
+      <div class="icons__item" data-name="brightness_high">
+        <i class="eos-icons">brightness_high</i>
+        <br>
+        brightness_high
+      </div>
+      
+      <div class="icons__item" data-name="brightness_low">
+        <i class="eos-icons">brightness_low</i>
+        <br>
+        brightness_low
+      </div>
+      
+      <div class="icons__item" data-name="brightness_medium">
+        <i class="eos-icons">brightness_medium</i>
+        <br>
+        brightness_medium
+      </div>
+      
+      <div class="icons__item" data-name="broken_image">
+        <i class="eos-icons">broken_image</i>
+        <br>
+        broken_image
+      </div>
+      
+      <div class="icons__item" data-name="brush">
+        <i class="eos-icons">brush</i>
+        <br>
+        brush
+      </div>
+      
+      <div class="icons__item" data-name="bubble_chart">
+        <i class="eos-icons">bubble_chart</i>
+        <br>
+        bubble_chart
+      </div>
+      
+      <div class="icons__item" data-name="bug_report">
+        <i class="eos-icons">bug_report</i>
+        <br>
+        bug_report
+      </div>
+      
+      <div class="icons__item" data-name="build">
+        <i class="eos-icons">build</i>
+        <br>
+        build
+      </div>
+      
+      <div class="icons__item" data-name="burst_mode">
+        <i class="eos-icons">burst_mode</i>
+        <br>
+        burst_mode
+      </div>
+      
+      <div class="icons__item" data-name="business_center">
+        <i class="eos-icons">business_center</i>
+        <br>
+        business_center
+      </div>
+      
+      <div class="icons__item" data-name="business">
+        <i class="eos-icons">business</i>
+        <br>
+        business
+      </div>
+      
+      <div class="icons__item" data-name="cached">
+        <i class="eos-icons">cached</i>
+        <br>
+        cached
+      </div>
+      
+      <div class="icons__item" data-name="cake">
+        <i class="eos-icons">cake</i>
+        <br>
+        cake
+      </div>
+      
+      <div class="icons__item" data-name="call_end">
+        <i class="eos-icons">call_end</i>
+        <br>
+        call_end
+      </div>
+      
+      <div class="icons__item" data-name="call_made">
+        <i class="eos-icons">call_made</i>
+        <br>
+        call_made
+      </div>
+      
+      <div class="icons__item" data-name="call_merge">
+        <i class="eos-icons">call_merge</i>
+        <br>
+        call_merge
+      </div>
+      
+      <div class="icons__item" data-name="call_missed_outgoing">
+        <i class="eos-icons">call_missed_outgoing</i>
+        <br>
+        call_missed_outgoing
+      </div>
+      
+      <div class="icons__item" data-name="call_missed">
+        <i class="eos-icons">call_missed</i>
+        <br>
+        call_missed
+      </div>
+      
+      <div class="icons__item" data-name="call_received">
+        <i class="eos-icons">call_received</i>
+        <br>
+        call_received
+      </div>
+      
+      <div class="icons__item" data-name="call_split">
+        <i class="eos-icons">call_split</i>
+        <br>
+        call_split
+      </div>
+      
+      <div class="icons__item" data-name="call_to_action">
+        <i class="eos-icons">call_to_action</i>
+        <br>
+        call_to_action
+      </div>
+      
+      <div class="icons__item" data-name="call">
+        <i class="eos-icons">call</i>
+        <br>
+        call
+      </div>
+      
+      <div class="icons__item" data-name="camera_alt">
+        <i class="eos-icons">camera_alt</i>
+        <br>
+        camera_alt
+      </div>
+      
+      <div class="icons__item" data-name="camera_enhance">
+        <i class="eos-icons">camera_enhance</i>
+        <br>
+        camera_enhance
+      </div>
+      
+      <div class="icons__item" data-name="camera_front">
+        <i class="eos-icons">camera_front</i>
+        <br>
+        camera_front
+      </div>
+      
+      <div class="icons__item" data-name="camera_rear">
+        <i class="eos-icons">camera_rear</i>
+        <br>
+        camera_rear
+      </div>
+      
+      <div class="icons__item" data-name="camera_roll">
+        <i class="eos-icons">camera_roll</i>
+        <br>
+        camera_roll
+      </div>
+      
+      <div class="icons__item" data-name="camera">
+        <i class="eos-icons">camera</i>
+        <br>
+        camera
+      </div>
+      
+      <div class="icons__item" data-name="cancel">
+        <i class="eos-icons">cancel</i>
+        <br>
+        cancel
+      </div>
+      
+      <div class="icons__item" data-name="card_giftcard">
+        <i class="eos-icons">card_giftcard</i>
+        <br>
+        card_giftcard
+      </div>
+      
+      <div class="icons__item" data-name="card_membership">
+        <i class="eos-icons">card_membership</i>
+        <br>
+        card_membership
+      </div>
+      
+      <div class="icons__item" data-name="card_travel">
+        <i class="eos-icons">card_travel</i>
+        <br>
+        card_travel
+      </div>
+      
+      <div class="icons__item" data-name="casino">
+        <i class="eos-icons">casino</i>
+        <br>
+        casino
+      </div>
+      
+      <div class="icons__item" data-name="cast_connected">
+        <i class="eos-icons">cast_connected</i>
+        <br>
+        cast_connected
+      </div>
+      
+      <div class="icons__item" data-name="cast">
+        <i class="eos-icons">cast</i>
+        <br>
+        cast
+      </div>
+      
+      <div class="icons__item" data-name="center_focus_strong">
+        <i class="eos-icons">center_focus_strong</i>
+        <br>
+        center_focus_strong
+      </div>
+      
+      <div class="icons__item" data-name="center_focus_weak">
+        <i class="eos-icons">center_focus_weak</i>
+        <br>
+        center_focus_weak
+      </div>
+      
+      <div class="icons__item" data-name="change_history">
+        <i class="eos-icons">change_history</i>
+        <br>
+        change_history
+      </div>
+      
+      <div class="icons__item" data-name="chat_bubble_outline">
+        <i class="eos-icons">chat_bubble_outline</i>
+        <br>
+        chat_bubble_outline
+      </div>
+      
+      <div class="icons__item" data-name="chat_bubble">
+        <i class="eos-icons">chat_bubble</i>
+        <br>
+        chat_bubble
+      </div>
+      
+      <div class="icons__item" data-name="chat">
+        <i class="eos-icons">chat</i>
+        <br>
+        chat
+      </div>
+      
+      <div class="icons__item" data-name="check_box_outline_blank">
+        <i class="eos-icons">check_box_outline_blank</i>
+        <br>
+        check_box_outline_blank
+      </div>
+      
+      <div class="icons__item" data-name="check_box">
+        <i class="eos-icons">check_box</i>
+        <br>
+        check_box
+      </div>
+      
+      <div class="icons__item" data-name="check_circle">
+        <i class="eos-icons">check_circle</i>
+        <br>
+        check_circle
+      </div>
+      
+      <div class="icons__item" data-name="check">
+        <i class="eos-icons">check</i>
+        <br>
+        check
+      </div>
+      
+      <div class="icons__item" data-name="child_care">
+        <i class="eos-icons">child_care</i>
+        <br>
+        child_care
+      </div>
+      
+      <div class="icons__item" data-name="child_friendly">
+        <i class="eos-icons">child_friendly</i>
+        <br>
+        child_friendly
+      </div>
+      
+      <div class="icons__item" data-name="chrome_reader_mode">
+        <i class="eos-icons">chrome_reader_mode</i>
+        <br>
+        chrome_reader_mode
+      </div>
+      
+      <div class="icons__item" data-name="class">
+        <i class="eos-icons">class</i>
+        <br>
+        class
+      </div>
+      
+      <div class="icons__item" data-name="clear_all">
+        <i class="eos-icons">clear_all</i>
+        <br>
+        clear_all
+      </div>
+      
+      <div class="icons__item" data-name="close">
+        <i class="eos-icons">close</i>
+        <br>
+        close
+      </div>
+      
+      <div class="icons__item" data-name="closed_caption">
+        <i class="eos-icons">closed_caption</i>
+        <br>
+        closed_caption
+      </div>
+      
+      <div class="icons__item" data-name="cloud_circle">
+        <i class="eos-icons">cloud_circle</i>
+        <br>
+        cloud_circle
+      </div>
+      
+      <div class="icons__item" data-name="cloud_done">
+        <i class="eos-icons">cloud_done</i>
+        <br>
+        cloud_done
+      </div>
+      
+      <div class="icons__item" data-name="cloud_download">
+        <i class="eos-icons">cloud_download</i>
+        <br>
+        cloud_download
+      </div>
+      
+      <div class="icons__item" data-name="cloud_off">
+        <i class="eos-icons">cloud_off</i>
+        <br>
+        cloud_off
+      </div>
+      
+      <div class="icons__item" data-name="cloud_queue">
+        <i class="eos-icons">cloud_queue</i>
+        <br>
+        cloud_queue
+      </div>
+      
+      <div class="icons__item" data-name="cloud_upload">
+        <i class="eos-icons">cloud_upload</i>
+        <br>
+        cloud_upload
+      </div>
+      
+      <div class="icons__item" data-name="cloud">
+        <i class="eos-icons">cloud</i>
+        <br>
+        cloud
+      </div>
+      
+      <div class="icons__item" data-name="code">
+        <i class="eos-icons">code</i>
+        <br>
+        code
+      </div>
+      
+      <div class="icons__item" data-name="collections_bookmark">
+        <i class="eos-icons">collections_bookmark</i>
+        <br>
+        collections_bookmark
+      </div>
+      
+      <div class="icons__item" data-name="collections">
+        <i class="eos-icons">collections</i>
+        <br>
+        collections
+      </div>
+      
+      <div class="icons__item" data-name="color_lens">
+        <i class="eos-icons">color_lens</i>
+        <br>
+        color_lens
+      </div>
+      
+      <div class="icons__item" data-name="colorize">
+        <i class="eos-icons">colorize</i>
+        <br>
+        colorize
+      </div>
+      
+      <div class="icons__item" data-name="comment">
+        <i class="eos-icons">comment</i>
+        <br>
+        comment
+      </div>
+      
+      <div class="icons__item" data-name="compare_arrows">
+        <i class="eos-icons">compare_arrows</i>
+        <br>
+        compare_arrows
+      </div>
+      
+      <div class="icons__item" data-name="compare">
+        <i class="eos-icons">compare</i>
+        <br>
+        compare
+      </div>
+      
+      <div class="icons__item" data-name="computer">
+        <i class="eos-icons">computer</i>
+        <br>
+        computer
+      </div>
+      
+      <div class="icons__item" data-name="confirmation_number">
+        <i class="eos-icons">confirmation_number</i>
+        <br>
+        confirmation_number
+      </div>
+      
+      <div class="icons__item" data-name="contact_mail">
+        <i class="eos-icons">contact_mail</i>
+        <br>
+        contact_mail
+      </div>
+      
+      <div class="icons__item" data-name="contact_phone">
+        <i class="eos-icons">contact_phone</i>
+        <br>
+        contact_phone
+      </div>
+      
+      <div class="icons__item" data-name="contacts">
+        <i class="eos-icons">contacts</i>
+        <br>
+        contacts
+      </div>
+      
+      <div class="icons__item" data-name="content_copy">
+        <i class="eos-icons">content_copy</i>
+        <br>
+        content_copy
+      </div>
+      
+      <div class="icons__item" data-name="content_cut">
+        <i class="eos-icons">content_cut</i>
+        <br>
+        content_cut
+      </div>
+      
+      <div class="icons__item" data-name="content_paste">
+        <i class="eos-icons">content_paste</i>
+        <br>
+        content_paste
+      </div>
+      
+      <div class="icons__item" data-name="control_point_duplicate">
+        <i class="eos-icons">control_point_duplicate</i>
+        <br>
+        control_point_duplicate
+      </div>
+      
+      <div class="icons__item" data-name="control_point">
+        <i class="eos-icons">control_point</i>
+        <br>
+        control_point
+      </div>
+      
+      <div class="icons__item" data-name="copyright">
+        <i class="eos-icons">copyright</i>
+        <br>
+        copyright
+      </div>
+      
+      <div class="icons__item" data-name="create_new_folder">
+        <i class="eos-icons">create_new_folder</i>
+        <br>
+        create_new_folder
+      </div>
+      
+      <div class="icons__item" data-name="create">
+        <i class="eos-icons">create</i>
+        <br>
+        create
+      </div>
+      
+      <div class="icons__item" data-name="credit_card">
+        <i class="eos-icons">credit_card</i>
+        <br>
+        credit_card
+      </div>
+      
+      <div class="icons__item" data-name="crop_16_9">
+        <i class="eos-icons">crop_16_9</i>
+        <br>
+        crop_16_9
+      </div>
+      
+      <div class="icons__item" data-name="crop_3_2">
+        <i class="eos-icons">crop_3_2</i>
+        <br>
+        crop_3_2
+      </div>
+      
+      <div class="icons__item" data-name="crop_5_4">
+        <i class="eos-icons">crop_5_4</i>
+        <br>
+        crop_5_4
+      </div>
+      
+      <div class="icons__item" data-name="crop_7_5">
+        <i class="eos-icons">crop_7_5</i>
+        <br>
+        crop_7_5
+      </div>
+      
+      <div class="icons__item" data-name="crop_din">
+        <i class="eos-icons">crop_din</i>
+        <br>
+        crop_din
+      </div>
+      
+      <div class="icons__item" data-name="crop_free">
+        <i class="eos-icons">crop_free</i>
+        <br>
+        crop_free
+      </div>
+      
+      <div class="icons__item" data-name="crop_landscape">
+        <i class="eos-icons">crop_landscape</i>
+        <br>
+        crop_landscape
+      </div>
+      
+      <div class="icons__item" data-name="crop_original">
+        <i class="eos-icons">crop_original</i>
+        <br>
+        crop_original
+      </div>
+      
+      <div class="icons__item" data-name="crop_portrait">
+        <i class="eos-icons">crop_portrait</i>
+        <br>
+        crop_portrait
+      </div>
+      
+      <div class="icons__item" data-name="crop_rotate">
+        <i class="eos-icons">crop_rotate</i>
+        <br>
+        crop_rotate
+      </div>
+      
+      <div class="icons__item" data-name="crop_square">
+        <i class="eos-icons">crop_square</i>
+        <br>
+        crop_square
+      </div>
+      
+      <div class="icons__item" data-name="crop">
+        <i class="eos-icons">crop</i>
+        <br>
+        crop
+      </div>
+      
+      <div class="icons__item" data-name="dashboard">
+        <i class="eos-icons">dashboard</i>
+        <br>
+        dashboard
+      </div>
+      
+      <div class="icons__item" data-name="data_usage">
+        <i class="eos-icons">data_usage</i>
+        <br>
+        data_usage
+      </div>
+      
+      <div class="icons__item" data-name="date_range">
+        <i class="eos-icons">date_range</i>
+        <br>
+        date_range
+      </div>
+      
+      <div class="icons__item" data-name="dehaze">
+        <i class="eos-icons">dehaze</i>
+        <br>
+        dehaze
+      </div>
+      
+      <div class="icons__item" data-name="delete_forever">
+        <i class="eos-icons">delete_forever</i>
+        <br>
+        delete_forever
+      </div>
+      
+      <div class="icons__item" data-name="delete_sweep">
+        <i class="eos-icons">delete_sweep</i>
+        <br>
+        delete_sweep
+      </div>
+      
+      <div class="icons__item" data-name="delete">
+        <i class="eos-icons">delete</i>
+        <br>
+        delete
+      </div>
+      
+      <div class="icons__item" data-name="description">
+        <i class="eos-icons">description</i>
+        <br>
+        description
+      </div>
+      
+      <div class="icons__item" data-name="desktop_mac">
+        <i class="eos-icons">desktop_mac</i>
+        <br>
+        desktop_mac
+      </div>
+      
+      <div class="icons__item" data-name="desktop_windows">
+        <i class="eos-icons">desktop_windows</i>
+        <br>
+        desktop_windows
+      </div>
+      
+      <div class="icons__item" data-name="details">
+        <i class="eos-icons">details</i>
+        <br>
+        details
+      </div>
+      
+      <div class="icons__item" data-name="developer_board">
+        <i class="eos-icons">developer_board</i>
+        <br>
+        developer_board
+      </div>
+      
+      <div class="icons__item" data-name="developer_mode">
+        <i class="eos-icons">developer_mode</i>
+        <br>
+        developer_mode
+      </div>
+      
+      <div class="icons__item" data-name="device_hub">
+        <i class="eos-icons">device_hub</i>
+        <br>
+        device_hub
+      </div>
+      
+      <div class="icons__item" data-name="devices_other">
+        <i class="eos-icons">devices_other</i>
+        <br>
+        devices_other
+      </div>
+      
+      <div class="icons__item" data-name="devices">
+        <i class="eos-icons">devices</i>
+        <br>
+        devices
+      </div>
+      
+      <div class="icons__item" data-name="dialer_sip">
+        <i class="eos-icons">dialer_sip</i>
+        <br>
+        dialer_sip
+      </div>
+      
+      <div class="icons__item" data-name="dialpad">
+        <i class="eos-icons">dialpad</i>
+        <br>
+        dialpad
+      </div>
+      
+      <div class="icons__item" data-name="directions_bike">
+        <i class="eos-icons">directions_bike</i>
+        <br>
+        directions_bike
+      </div>
+      
+      <div class="icons__item" data-name="directions_boat">
+        <i class="eos-icons">directions_boat</i>
+        <br>
+        directions_boat
+      </div>
+      
+      <div class="icons__item" data-name="directions_bus">
+        <i class="eos-icons">directions_bus</i>
+        <br>
+        directions_bus
+      </div>
+      
+      <div class="icons__item" data-name="directions_car">
+        <i class="eos-icons">directions_car</i>
+        <br>
+        directions_car
+      </div>
+      
+      <div class="icons__item" data-name="directions_railway">
+        <i class="eos-icons">directions_railway</i>
+        <br>
+        directions_railway
+      </div>
+      
+      <div class="icons__item" data-name="directions_run">
+        <i class="eos-icons">directions_run</i>
+        <br>
+        directions_run
+      </div>
+      
+      <div class="icons__item" data-name="directions_subway">
+        <i class="eos-icons">directions_subway</i>
+        <br>
+        directions_subway
+      </div>
+      
+      <div class="icons__item" data-name="directions_transit">
+        <i class="eos-icons">directions_transit</i>
+        <br>
+        directions_transit
+      </div>
+      
+      <div class="icons__item" data-name="directions_walk">
+        <i class="eos-icons">directions_walk</i>
+        <br>
+        directions_walk
+      </div>
+      
+      <div class="icons__item" data-name="directions">
+        <i class="eos-icons">directions</i>
+        <br>
+        directions
+      </div>
+      
+      <div class="icons__item" data-name="disc_full">
+        <i class="eos-icons">disc_full</i>
+        <br>
+        disc_full
+      </div>
+      
+      <div class="icons__item" data-name="do_not_disturb_alt">
+        <i class="eos-icons">do_not_disturb_alt</i>
+        <br>
+        do_not_disturb_alt
+      </div>
+      
+      <div class="icons__item" data-name="do_not_disturb_off">
+        <i class="eos-icons">do_not_disturb_off</i>
+        <br>
+        do_not_disturb_off
+      </div>
+      
+      <div class="icons__item" data-name="do_not_disturb_on">
+        <i class="eos-icons">do_not_disturb_on</i>
+        <br>
+        do_not_disturb_on
+      </div>
+      
+      <div class="icons__item" data-name="do_not_disturb">
+        <i class="eos-icons">do_not_disturb</i>
+        <br>
+        do_not_disturb
+      </div>
+      
+      <div class="icons__item" data-name="dock">
+        <i class="eos-icons">dock</i>
+        <br>
+        dock
+      </div>
+      
+      <div class="icons__item" data-name="domain">
+        <i class="eos-icons">domain</i>
+        <br>
+        domain
+      </div>
+      
+      <div class="icons__item" data-name="done_all">
+        <i class="eos-icons">done_all</i>
+        <br>
+        done_all
+      </div>
+      
+      <div class="icons__item" data-name="done">
+        <i class="eos-icons">done</i>
+        <br>
+        done
+      </div>
+      
+      <div class="icons__item" data-name="donut_large">
+        <i class="eos-icons">donut_large</i>
+        <br>
+        donut_large
+      </div>
+      
+      <div class="icons__item" data-name="donut_small">
+        <i class="eos-icons">donut_small</i>
+        <br>
+        donut_small
+      </div>
+      
+      <div class="icons__item" data-name="drafts">
+        <i class="eos-icons">drafts</i>
+        <br>
+        drafts
+      </div>
+      
+      <div class="icons__item" data-name="drag_handle">
+        <i class="eos-icons">drag_handle</i>
+        <br>
+        drag_handle
+      </div>
+      
+      <div class="icons__item" data-name="drive_eta">
+        <i class="eos-icons">drive_eta</i>
+        <br>
+        drive_eta
+      </div>
+      
+      <div class="icons__item" data-name="dvr">
+        <i class="eos-icons">dvr</i>
+        <br>
+        dvr
+      </div>
+      
+      <div class="icons__item" data-name="edit_location">
+        <i class="eos-icons">edit_location</i>
+        <br>
+        edit_location
+      </div>
+      
+      <div class="icons__item" data-name="edit">
+        <i class="eos-icons">edit</i>
+        <br>
+        edit
+      </div>
+      
+      <div class="icons__item" data-name="eject">
+        <i class="eos-icons">eject</i>
+        <br>
+        eject
+      </div>
+      
+      <div class="icons__item" data-name="email">
+        <i class="eos-icons">email</i>
+        <br>
+        email
+      </div>
+      
+      <div class="icons__item" data-name="enhanced_encryption">
+        <i class="eos-icons">enhanced_encryption</i>
+        <br>
+        enhanced_encryption
+      </div>
+      
+      <div class="icons__item" data-name="equalizer">
+        <i class="eos-icons">equalizer</i>
+        <br>
+        equalizer
+      </div>
+      
+      <div class="icons__item" data-name="error_outline">
+        <i class="eos-icons">error_outline</i>
+        <br>
+        error_outline
+      </div>
+      
+      <div class="icons__item" data-name="error">
+        <i class="eos-icons">error</i>
+        <br>
+        error
+      </div>
+      
+      <div class="icons__item" data-name="euro_symbol">
+        <i class="eos-icons">euro_symbol</i>
+        <br>
+        euro_symbol
+      </div>
+      
+      <div class="icons__item" data-name="ev_station">
+        <i class="eos-icons">ev_station</i>
+        <br>
+        ev_station
+      </div>
+      
+      <div class="icons__item" data-name="event_available">
+        <i class="eos-icons">event_available</i>
+        <br>
+        event_available
+      </div>
+      
+      <div class="icons__item" data-name="event_busy">
+        <i class="eos-icons">event_busy</i>
+        <br>
+        event_busy
+      </div>
+      
+      <div class="icons__item" data-name="event_note">
+        <i class="eos-icons">event_note</i>
+        <br>
+        event_note
+      </div>
+      
+      <div class="icons__item" data-name="event_seat">
+        <i class="eos-icons">event_seat</i>
+        <br>
+        event_seat
+      </div>
+      
+      <div class="icons__item" data-name="event">
+        <i class="eos-icons">event</i>
+        <br>
+        event
+      </div>
+      
+      <div class="icons__item" data-name="exit_to_app">
+        <i class="eos-icons">exit_to_app</i>
+        <br>
+        exit_to_app
+      </div>
+      
+      <div class="icons__item" data-name="explicit">
+        <i class="eos-icons">explicit</i>
+        <br>
+        explicit
+      </div>
+      
+      <div class="icons__item" data-name="explore">
+        <i class="eos-icons">explore</i>
+        <br>
+        explore
+      </div>
+      
+      <div class="icons__item" data-name="exposure_neg_1">
+        <i class="eos-icons">exposure_neg_1</i>
+        <br>
+        exposure_neg_1
+      </div>
+      
+      <div class="icons__item" data-name="exposure_neg_2">
+        <i class="eos-icons">exposure_neg_2</i>
+        <br>
+        exposure_neg_2
+      </div>
+      
+      <div class="icons__item" data-name="exposure_plus_1">
+        <i class="eos-icons">exposure_plus_1</i>
+        <br>
+        exposure_plus_1
+      </div>
+      
+      <div class="icons__item" data-name="exposure_plus_2">
+        <i class="eos-icons">exposure_plus_2</i>
+        <br>
+        exposure_plus_2
+      </div>
+      
+      <div class="icons__item" data-name="exposure_zero">
+        <i class="eos-icons">exposure_zero</i>
+        <br>
+        exposure_zero
+      </div>
+      
+      <div class="icons__item" data-name="exposure">
+        <i class="eos-icons">exposure</i>
+        <br>
+        exposure
+      </div>
+      
+      <div class="icons__item" data-name="extension">
+        <i class="eos-icons">extension</i>
+        <br>
+        extension
+      </div>
+      
+      <div class="icons__item" data-name="face">
+        <i class="eos-icons">face</i>
+        <br>
+        face
+      </div>
+      
+      <div class="icons__item" data-name="fast_forward">
+        <i class="eos-icons">fast_forward</i>
+        <br>
+        fast_forward
+      </div>
+      
+      <div class="icons__item" data-name="fast_rewind">
+        <i class="eos-icons">fast_rewind</i>
+        <br>
+        fast_rewind
+      </div>
+      
+      <div class="icons__item" data-name="favorite_border">
+        <i class="eos-icons">favorite_border</i>
+        <br>
+        favorite_border
+      </div>
+      
+      <div class="icons__item" data-name="favorite">
+        <i class="eos-icons">favorite</i>
+        <br>
+        favorite
+      </div>
+      
+      <div class="icons__item" data-name="featured_play_list">
+        <i class="eos-icons">featured_play_list</i>
+        <br>
+        featured_play_list
+      </div>
+      
+      <div class="icons__item" data-name="featured_video">
+        <i class="eos-icons">featured_video</i>
+        <br>
+        featured_video
+      </div>
+      
+      <div class="icons__item" data-name="feedback">
+        <i class="eos-icons">feedback</i>
+        <br>
+        feedback
+      </div>
+      
+      <div class="icons__item" data-name="fiber_dvr">
+        <i class="eos-icons">fiber_dvr</i>
+        <br>
+        fiber_dvr
+      </div>
+      
+      <div class="icons__item" data-name="fiber_manual_record">
+        <i class="eos-icons">fiber_manual_record</i>
+        <br>
+        fiber_manual_record
+      </div>
+      
+      <div class="icons__item" data-name="fiber_new">
+        <i class="eos-icons">fiber_new</i>
+        <br>
+        fiber_new
+      </div>
+      
+      <div class="icons__item" data-name="fiber_pin">
+        <i class="eos-icons">fiber_pin</i>
+        <br>
+        fiber_pin
+      </div>
+      
+      <div class="icons__item" data-name="fiber_smart_record">
+        <i class="eos-icons">fiber_smart_record</i>
+        <br>
+        fiber_smart_record
+      </div>
+      
+      <div class="icons__item" data-name="file_download">
+        <i class="eos-icons">file_download</i>
+        <br>
+        file_download
+      </div>
+      
+      <div class="icons__item" data-name="file_upload">
+        <i class="eos-icons">file_upload</i>
+        <br>
+        file_upload
+      </div>
+      
+      <div class="icons__item" data-name="filter_1">
+        <i class="eos-icons">filter_1</i>
+        <br>
+        filter_1
+      </div>
+      
+      <div class="icons__item" data-name="filter_2">
+        <i class="eos-icons">filter_2</i>
+        <br>
+        filter_2
+      </div>
+      
+      <div class="icons__item" data-name="filter_3">
+        <i class="eos-icons">filter_3</i>
+        <br>
+        filter_3
+      </div>
+      
+      <div class="icons__item" data-name="filter_4">
+        <i class="eos-icons">filter_4</i>
+        <br>
+        filter_4
+      </div>
+      
+      <div class="icons__item" data-name="filter_5">
+        <i class="eos-icons">filter_5</i>
+        <br>
+        filter_5
+      </div>
+      
+      <div class="icons__item" data-name="filter_6">
+        <i class="eos-icons">filter_6</i>
+        <br>
+        filter_6
+      </div>
+      
+      <div class="icons__item" data-name="filter_7">
+        <i class="eos-icons">filter_7</i>
+        <br>
+        filter_7
+      </div>
+      
+      <div class="icons__item" data-name="filter_8">
+        <i class="eos-icons">filter_8</i>
+        <br>
+        filter_8
+      </div>
+      
+      <div class="icons__item" data-name="filter_9_plus">
+        <i class="eos-icons">filter_9_plus</i>
+        <br>
+        filter_9_plus
+      </div>
+      
+      <div class="icons__item" data-name="filter_9">
+        <i class="eos-icons">filter_9</i>
+        <br>
+        filter_9
+      </div>
+      
+      <div class="icons__item" data-name="filter_b_and_w">
+        <i class="eos-icons">filter_b_and_w</i>
+        <br>
+        filter_b_and_w
+      </div>
+      
+      <div class="icons__item" data-name="filter_center_focus">
+        <i class="eos-icons">filter_center_focus</i>
+        <br>
+        filter_center_focus
+      </div>
+      
+      <div class="icons__item" data-name="filter_drama">
+        <i class="eos-icons">filter_drama</i>
+        <br>
+        filter_drama
+      </div>
+      
+      <div class="icons__item" data-name="filter_frames">
+        <i class="eos-icons">filter_frames</i>
+        <br>
+        filter_frames
+      </div>
+      
+      <div class="icons__item" data-name="filter_hdr">
+        <i class="eos-icons">filter_hdr</i>
+        <br>
+        filter_hdr
+      </div>
+      
+      <div class="icons__item" data-name="filter_list">
+        <i class="eos-icons">filter_list</i>
+        <br>
+        filter_list
+      </div>
+      
+      <div class="icons__item" data-name="filter_none">
+        <i class="eos-icons">filter_none</i>
+        <br>
+        filter_none
+      </div>
+      
+      <div class="icons__item" data-name="filter_tilt_shift">
+        <i class="eos-icons">filter_tilt_shift</i>
+        <br>
+        filter_tilt_shift
+      </div>
+      
+      <div class="icons__item" data-name="filter_vintage">
+        <i class="eos-icons">filter_vintage</i>
+        <br>
+        filter_vintage
+      </div>
+      
+      <div class="icons__item" data-name="filter">
+        <i class="eos-icons">filter</i>
+        <br>
+        filter
+      </div>
+      
+      <div class="icons__item" data-name="find_in_page">
+        <i class="eos-icons">find_in_page</i>
+        <br>
+        find_in_page
+      </div>
+      
+      <div class="icons__item" data-name="find_replace">
+        <i class="eos-icons">find_replace</i>
+        <br>
+        find_replace
+      </div>
+      
+      <div class="icons__item" data-name="fingerprint">
+        <i class="eos-icons">fingerprint</i>
+        <br>
+        fingerprint
+      </div>
+      
+      <div class="icons__item" data-name="first_page">
+        <i class="eos-icons">first_page</i>
+        <br>
+        first_page
+      </div>
+      
+      <div class="icons__item" data-name="fitness_center">
+        <i class="eos-icons">fitness_center</i>
+        <br>
+        fitness_center
+      </div>
+      
+      <div class="icons__item" data-name="flag">
+        <i class="eos-icons">flag</i>
+        <br>
+        flag
+      </div>
+      
+      <div class="icons__item" data-name="flare">
+        <i class="eos-icons">flare</i>
+        <br>
+        flare
+      </div>
+      
+      <div class="icons__item" data-name="flash_auto">
+        <i class="eos-icons">flash_auto</i>
+        <br>
+        flash_auto
+      </div>
+      
+      <div class="icons__item" data-name="flash_off">
+        <i class="eos-icons">flash_off</i>
+        <br>
+        flash_off
+      </div>
+      
+      <div class="icons__item" data-name="flash_on">
+        <i class="eos-icons">flash_on</i>
+        <br>
+        flash_on
+      </div>
+      
+      <div class="icons__item" data-name="flight_land">
+        <i class="eos-icons">flight_land</i>
+        <br>
+        flight_land
+      </div>
+      
+      <div class="icons__item" data-name="flight_takeoff">
+        <i class="eos-icons">flight_takeoff</i>
+        <br>
+        flight_takeoff
+      </div>
+      
+      <div class="icons__item" data-name="flip_to_back">
+        <i class="eos-icons">flip_to_back</i>
+        <br>
+        flip_to_back
+      </div>
+      
+      <div class="icons__item" data-name="flip_to_front">
+        <i class="eos-icons">flip_to_front</i>
+        <br>
+        flip_to_front
+      </div>
+      
+      <div class="icons__item" data-name="flip">
+        <i class="eos-icons">flip</i>
+        <br>
+        flip
+      </div>
+      
+      <div class="icons__item" data-name="folder_open">
+        <i class="eos-icons">folder_open</i>
+        <br>
+        folder_open
+      </div>
+      
+      <div class="icons__item" data-name="folder_shared">
+        <i class="eos-icons">folder_shared</i>
+        <br>
+        folder_shared
+      </div>
+      
+      <div class="icons__item" data-name="folder_special">
+        <i class="eos-icons">folder_special</i>
+        <br>
+        folder_special
+      </div>
+      
+      <div class="icons__item" data-name="folder">
+        <i class="eos-icons">folder</i>
+        <br>
+        folder
+      </div>
+      
+      <div class="icons__item" data-name="font_download">
+        <i class="eos-icons">font_download</i>
+        <br>
+        font_download
+      </div>
+      
+      <div class="icons__item" data-name="format_align_center">
+        <i class="eos-icons">format_align_center</i>
+        <br>
+        format_align_center
+      </div>
+      
+      <div class="icons__item" data-name="format_align_justify">
+        <i class="eos-icons">format_align_justify</i>
+        <br>
+        format_align_justify
+      </div>
+      
+      <div class="icons__item" data-name="format_align_left">
+        <i class="eos-icons">format_align_left</i>
+        <br>
+        format_align_left
+      </div>
+      
+      <div class="icons__item" data-name="format_align_right">
+        <i class="eos-icons">format_align_right</i>
+        <br>
+        format_align_right
+      </div>
+      
+      <div class="icons__item" data-name="format_bold">
+        <i class="eos-icons">format_bold</i>
+        <br>
+        format_bold
+      </div>
+      
+      <div class="icons__item" data-name="format_clear">
+        <i class="eos-icons">format_clear</i>
+        <br>
+        format_clear
+      </div>
+      
+      <div class="icons__item" data-name="format_color_fill">
+        <i class="eos-icons">format_color_fill</i>
+        <br>
+        format_color_fill
+      </div>
+      
+      <div class="icons__item" data-name="format_color_reset">
+        <i class="eos-icons">format_color_reset</i>
+        <br>
+        format_color_reset
+      </div>
+      
+      <div class="icons__item" data-name="format_color_text">
+        <i class="eos-icons">format_color_text</i>
+        <br>
+        format_color_text
+      </div>
+      
+      <div class="icons__item" data-name="format_indent_decrease">
+        <i class="eos-icons">format_indent_decrease</i>
+        <br>
+        format_indent_decrease
+      </div>
+      
+      <div class="icons__item" data-name="format_indent_increase">
+        <i class="eos-icons">format_indent_increase</i>
+        <br>
+        format_indent_increase
+      </div>
+      
+      <div class="icons__item" data-name="format_italic">
+        <i class="eos-icons">format_italic</i>
+        <br>
+        format_italic
+      </div>
+      
+      <div class="icons__item" data-name="format_line_spacing">
+        <i class="eos-icons">format_line_spacing</i>
+        <br>
+        format_line_spacing
+      </div>
+      
+      <div class="icons__item" data-name="format_list_bulleted">
+        <i class="eos-icons">format_list_bulleted</i>
+        <br>
+        format_list_bulleted
+      </div>
+      
+      <div class="icons__item" data-name="format_list_numbered">
+        <i class="eos-icons">format_list_numbered</i>
+        <br>
+        format_list_numbered
+      </div>
+      
+      <div class="icons__item" data-name="format_paint">
+        <i class="eos-icons">format_paint</i>
+        <br>
+        format_paint
+      </div>
+      
+      <div class="icons__item" data-name="format_quote">
+        <i class="eos-icons">format_quote</i>
+        <br>
+        format_quote
+      </div>
+      
+      <div class="icons__item" data-name="format_shapes">
+        <i class="eos-icons">format_shapes</i>
+        <br>
+        format_shapes
+      </div>
+      
+      <div class="icons__item" data-name="format_size">
+        <i class="eos-icons">format_size</i>
+        <br>
+        format_size
+      </div>
+      
+      <div class="icons__item" data-name="format_strikethrough">
+        <i class="eos-icons">format_strikethrough</i>
+        <br>
+        format_strikethrough
+      </div>
+      
+      <div class="icons__item" data-name="format_textdirection_l_to_r">
+        <i class="eos-icons">format_textdirection_l_to_r</i>
+        <br>
+        format_textdirection_l_to_r
+      </div>
+      
+      <div class="icons__item" data-name="format_textdirection_r_to_l">
+        <i class="eos-icons">format_textdirection_r_to_l</i>
+        <br>
+        format_textdirection_r_to_l
+      </div>
+      
+      <div class="icons__item" data-name="format_underlined">
+        <i class="eos-icons">format_underlined</i>
+        <br>
+        format_underlined
+      </div>
+      
+      <div class="icons__item" data-name="forum">
+        <i class="eos-icons">forum</i>
+        <br>
+        forum
+      </div>
+      
+      <div class="icons__item" data-name="forward_10">
+        <i class="eos-icons">forward_10</i>
+        <br>
+        forward_10
+      </div>
+      
+      <div class="icons__item" data-name="forward_30">
+        <i class="eos-icons">forward_30</i>
+        <br>
+        forward_30
+      </div>
+      
+      <div class="icons__item" data-name="forward_5">
+        <i class="eos-icons">forward_5</i>
+        <br>
+        forward_5
+      </div>
+      
+      <div class="icons__item" data-name="forward">
+        <i class="eos-icons">forward</i>
+        <br>
+        forward
+      </div>
+      
+      <div class="icons__item" data-name="free_breakfast">
+        <i class="eos-icons">free_breakfast</i>
+        <br>
+        free_breakfast
+      </div>
+      
+      <div class="icons__item" data-name="fullscreen_exit">
+        <i class="eos-icons">fullscreen_exit</i>
+        <br>
+        fullscreen_exit
+      </div>
+      
+      <div class="icons__item" data-name="fullscreen">
+        <i class="eos-icons">fullscreen</i>
+        <br>
+        fullscreen
+      </div>
+      
+      <div class="icons__item" data-name="functions">
+        <i class="eos-icons">functions</i>
+        <br>
+        functions
+      </div>
+      
+      <div class="icons__item" data-name="g_translate">
+        <i class="eos-icons">g_translate</i>
+        <br>
+        g_translate
+      </div>
+      
+      <div class="icons__item" data-name="gamepad">
+        <i class="eos-icons">gamepad</i>
+        <br>
+        gamepad
+      </div>
+      
+      <div class="icons__item" data-name="games">
+        <i class="eos-icons">games</i>
+        <br>
+        games
+      </div>
+      
+      <div class="icons__item" data-name="gavel">
+        <i class="eos-icons">gavel</i>
+        <br>
+        gavel
+      </div>
+      
+      <div class="icons__item" data-name="gesture">
+        <i class="eos-icons">gesture</i>
+        <br>
+        gesture
+      </div>
+      
+      <div class="icons__item" data-name="get_app">
+        <i class="eos-icons">get_app</i>
+        <br>
+        get_app
+      </div>
+      
+      <div class="icons__item" data-name="gif">
+        <i class="eos-icons">gif</i>
+        <br>
+        gif
+      </div>
+      
+      <div class="icons__item" data-name="golf_course">
+        <i class="eos-icons">golf_course</i>
+        <br>
+        golf_course
+      </div>
+      
+      <div class="icons__item" data-name="gps_fixed">
+        <i class="eos-icons">gps_fixed</i>
+        <br>
+        gps_fixed
+      </div>
+      
+      <div class="icons__item" data-name="gps_not_fixed">
+        <i class="eos-icons">gps_not_fixed</i>
+        <br>
+        gps_not_fixed
+      </div>
+      
+      <div class="icons__item" data-name="gps_off">
+        <i class="eos-icons">gps_off</i>
+        <br>
+        gps_off
+      </div>
+      
+      <div class="icons__item" data-name="grade">
+        <i class="eos-icons">grade</i>
+        <br>
+        grade
+      </div>
+      
+      <div class="icons__item" data-name="gradient">
+        <i class="eos-icons">gradient</i>
+        <br>
+        gradient
+      </div>
+      
+      <div class="icons__item" data-name="grain">
+        <i class="eos-icons">grain</i>
+        <br>
+        grain
+      </div>
+      
+      <div class="icons__item" data-name="graphic_eq">
+        <i class="eos-icons">graphic_eq</i>
+        <br>
+        graphic_eq
+      </div>
+      
+      <div class="icons__item" data-name="grid_off">
+        <i class="eos-icons">grid_off</i>
+        <br>
+        grid_off
+      </div>
+      
+      <div class="icons__item" data-name="grid_on">
+        <i class="eos-icons">grid_on</i>
+        <br>
+        grid_on
+      </div>
+      
+      <div class="icons__item" data-name="group_add">
+        <i class="eos-icons">group_add</i>
+        <br>
+        group_add
+      </div>
+      
+      <div class="icons__item" data-name="group_work">
+        <i class="eos-icons">group_work</i>
+        <br>
+        group_work
+      </div>
+      
+      <div class="icons__item" data-name="group">
+        <i class="eos-icons">group</i>
+        <br>
+        group
+      </div>
+      
+      <div class="icons__item" data-name="hd">
+        <i class="eos-icons">hd</i>
+        <br>
+        hd
+      </div>
+      
+      <div class="icons__item" data-name="hdr_off">
+        <i class="eos-icons">hdr_off</i>
+        <br>
+        hdr_off
+      </div>
+      
+      <div class="icons__item" data-name="hdr_on">
+        <i class="eos-icons">hdr_on</i>
+        <br>
+        hdr_on
+      </div>
+      
+      <div class="icons__item" data-name="hdr_strong">
+        <i class="eos-icons">hdr_strong</i>
+        <br>
+        hdr_strong
+      </div>
+      
+      <div class="icons__item" data-name="hdr_weak">
+        <i class="eos-icons">hdr_weak</i>
+        <br>
+        hdr_weak
+      </div>
+      
+      <div class="icons__item" data-name="headset_mic">
+        <i class="eos-icons">headset_mic</i>
+        <br>
+        headset_mic
+      </div>
+      
+      <div class="icons__item" data-name="headset">
+        <i class="eos-icons">headset</i>
+        <br>
+        headset
+      </div>
+      
+      <div class="icons__item" data-name="healing">
+        <i class="eos-icons">healing</i>
+        <br>
+        healing
+      </div>
+      
+      <div class="icons__item" data-name="hearing">
+        <i class="eos-icons">hearing</i>
+        <br>
+        hearing
+      </div>
+      
+      <div class="icons__item" data-name="help_outline">
+        <i class="eos-icons">help_outline</i>
+        <br>
+        help_outline
+      </div>
+      
+      <div class="icons__item" data-name="help">
+        <i class="eos-icons">help</i>
+        <br>
+        help
+      </div>
+      
+      <div class="icons__item" data-name="high_quality">
+        <i class="eos-icons">high_quality</i>
+        <br>
+        high_quality
+      </div>
+      
+      <div class="icons__item" data-name="highlight_off">
+        <i class="eos-icons">highlight_off</i>
+        <br>
+        highlight_off
+      </div>
+      
+      <div class="icons__item" data-name="highlight">
+        <i class="eos-icons">highlight</i>
+        <br>
+        highlight
+      </div>
+      
+      <div class="icons__item" data-name="history">
+        <i class="eos-icons">history</i>
+        <br>
+        history
+      </div>
+      
+      <div class="icons__item" data-name="home">
+        <i class="eos-icons">home</i>
+        <br>
+        home
+      </div>
+      
+      <div class="icons__item" data-name="hot_tub">
+        <i class="eos-icons">hot_tub</i>
+        <br>
+        hot_tub
+      </div>
+      
+      <div class="icons__item" data-name="hotel">
+        <i class="eos-icons">hotel</i>
+        <br>
+        hotel
+      </div>
+      
+      <div class="icons__item" data-name="hourglass_empty">
+        <i class="eos-icons">hourglass_empty</i>
+        <br>
+        hourglass_empty
+      </div>
+      
+      <div class="icons__item" data-name="hourglass_full">
+        <i class="eos-icons">hourglass_full</i>
+        <br>
+        hourglass_full
+      </div>
+      
+      <div class="icons__item" data-name="http">
+        <i class="eos-icons">http</i>
+        <br>
+        http
+      </div>
+      
+      <div class="icons__item" data-name="https">
+        <i class="eos-icons">https</i>
+        <br>
+        https
+      </div>
+      
+      <div class="icons__item" data-name="image_aspect_ratio">
+        <i class="eos-icons">image_aspect_ratio</i>
+        <br>
+        image_aspect_ratio
+      </div>
+      
+      <div class="icons__item" data-name="image">
+        <i class="eos-icons">image</i>
+        <br>
+        image
+      </div>
+      
+      <div class="icons__item" data-name="import_contacts">
+        <i class="eos-icons">import_contacts</i>
+        <br>
+        import_contacts
+      </div>
+      
+      <div class="icons__item" data-name="import_export">
+        <i class="eos-icons">import_export</i>
+        <br>
+        import_export
+      </div>
+      
+      <div class="icons__item" data-name="important_devices">
+        <i class="eos-icons">important_devices</i>
+        <br>
+        important_devices
+      </div>
+      
+      <div class="icons__item" data-name="inbox">
+        <i class="eos-icons">inbox</i>
+        <br>
+        inbox
+      </div>
+      
+      <div class="icons__item" data-name="indeterminate_check_box">
+        <i class="eos-icons">indeterminate_check_box</i>
+        <br>
+        indeterminate_check_box
+      </div>
+      
+      <div class="icons__item" data-name="info_outline">
+        <i class="eos-icons">info_outline</i>
+        <br>
+        info_outline
+      </div>
+      
+      <div class="icons__item" data-name="info">
+        <i class="eos-icons">info</i>
+        <br>
+        info
+      </div>
+      
+      <div class="icons__item" data-name="input">
+        <i class="eos-icons">input</i>
+        <br>
+        input
+      </div>
+      
+      <div class="icons__item" data-name="insert_chart">
+        <i class="eos-icons">insert_chart</i>
+        <br>
+        insert_chart
+      </div>
+      
+      <div class="icons__item" data-name="insert_comment">
+        <i class="eos-icons">insert_comment</i>
+        <br>
+        insert_comment
+      </div>
+      
+      <div class="icons__item" data-name="insert_drive_file">
+        <i class="eos-icons">insert_drive_file</i>
+        <br>
+        insert_drive_file
+      </div>
+      
+      <div class="icons__item" data-name="insert_emoticon">
+        <i class="eos-icons">insert_emoticon</i>
+        <br>
+        insert_emoticon
+      </div>
+      
+      <div class="icons__item" data-name="insert_invitation">
+        <i class="eos-icons">insert_invitation</i>
+        <br>
+        insert_invitation
+      </div>
+      
+      <div class="icons__item" data-name="insert_link">
+        <i class="eos-icons">insert_link</i>
+        <br>
+        insert_link
+      </div>
+      
+      <div class="icons__item" data-name="insert_photo">
+        <i class="eos-icons">insert_photo</i>
+        <br>
+        insert_photo
+      </div>
+      
+      <div class="icons__item" data-name="invert_colors_off">
+        <i class="eos-icons">invert_colors_off</i>
+        <br>
+        invert_colors_off
+      </div>
+      
+      <div class="icons__item" data-name="invert_colors">
+        <i class="eos-icons">invert_colors</i>
+        <br>
+        invert_colors
+      </div>
+      
+      <div class="icons__item" data-name="iso">
+        <i class="eos-icons">iso</i>
+        <br>
+        iso
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_arrow_down">
+        <i class="eos-icons">keyboard_arrow_down</i>
+        <br>
+        keyboard_arrow_down
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_arrow_left">
+        <i class="eos-icons">keyboard_arrow_left</i>
+        <br>
+        keyboard_arrow_left
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_arrow_right">
+        <i class="eos-icons">keyboard_arrow_right</i>
+        <br>
+        keyboard_arrow_right
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_arrow_up">
+        <i class="eos-icons">keyboard_arrow_up</i>
+        <br>
+        keyboard_arrow_up
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_backspace">
+        <i class="eos-icons">keyboard_backspace</i>
+        <br>
+        keyboard_backspace
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_capslock">
+        <i class="eos-icons">keyboard_capslock</i>
+        <br>
+        keyboard_capslock
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_hide">
+        <i class="eos-icons">keyboard_hide</i>
+        <br>
+        keyboard_hide
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_return">
+        <i class="eos-icons">keyboard_return</i>
+        <br>
+        keyboard_return
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_tab">
+        <i class="eos-icons">keyboard_tab</i>
+        <br>
+        keyboard_tab
+      </div>
+      
+      <div class="icons__item" data-name="keyboard_voice">
+        <i class="eos-icons">keyboard_voice</i>
+        <br>
+        keyboard_voice
+      </div>
+      
+      <div class="icons__item" data-name="keyboard">
+        <i class="eos-icons">keyboard</i>
+        <br>
+        keyboard
+      </div>
+      
+      <div class="icons__item" data-name="kitchen">
+        <i class="eos-icons">kitchen</i>
+        <br>
+        kitchen
+      </div>
+      
+      <div class="icons__item" data-name="label_outline">
+        <i class="eos-icons">label_outline</i>
+        <br>
+        label_outline
+      </div>
+      
+      <div class="icons__item" data-name="label">
+        <i class="eos-icons">label</i>
+        <br>
+        label
+      </div>
+      
+      <div class="icons__item" data-name="landscape">
+        <i class="eos-icons">landscape</i>
+        <br>
+        landscape
+      </div>
+      
+      <div class="icons__item" data-name="language">
+        <i class="eos-icons">language</i>
+        <br>
+        language
+      </div>
+      
+      <div class="icons__item" data-name="laptop_chromebook">
+        <i class="eos-icons">laptop_chromebook</i>
+        <br>
+        laptop_chromebook
+      </div>
+      
+      <div class="icons__item" data-name="laptop_mac">
+        <i class="eos-icons">laptop_mac</i>
+        <br>
+        laptop_mac
+      </div>
+      
+      <div class="icons__item" data-name="laptop_windows">
+        <i class="eos-icons">laptop_windows</i>
+        <br>
+        laptop_windows
+      </div>
+      
+      <div class="icons__item" data-name="laptop">
+        <i class="eos-icons">laptop</i>
+        <br>
+        laptop
+      </div>
+      
+      <div class="icons__item" data-name="last_page">
+        <i class="eos-icons">last_page</i>
+        <br>
+        last_page
+      </div>
+      
+      <div class="icons__item" data-name="launch">
+        <i class="eos-icons">launch</i>
+        <br>
+        launch
+      </div>
+      
+      <div class="icons__item" data-name="layers_clear">
+        <i class="eos-icons">layers_clear</i>
+        <br>
+        layers_clear
+      </div>
+      
+      <div class="icons__item" data-name="layers">
+        <i class="eos-icons">layers</i>
+        <br>
+        layers
+      </div>
+      
+      <div class="icons__item" data-name="leak_add">
+        <i class="eos-icons">leak_add</i>
+        <br>
+        leak_add
+      </div>
+      
+      <div class="icons__item" data-name="leak_remove">
+        <i class="eos-icons">leak_remove</i>
+        <br>
+        leak_remove
+      </div>
+      
+      <div class="icons__item" data-name="lens">
+        <i class="eos-icons">lens</i>
+        <br>
+        lens
+      </div>
+      
+      <div class="icons__item" data-name="library_add">
+        <i class="eos-icons">library_add</i>
+        <br>
+        library_add
+      </div>
+      
+      <div class="icons__item" data-name="library_books">
+        <i class="eos-icons">library_books</i>
+        <br>
+        library_books
+      </div>
+      
+      <div class="icons__item" data-name="library_music">
+        <i class="eos-icons">library_music</i>
+        <br>
+        library_music
+      </div>
+      
+      <div class="icons__item" data-name="lightbulb_outline">
+        <i class="eos-icons">lightbulb_outline</i>
+        <br>
+        lightbulb_outline
+      </div>
+      
+      <div class="icons__item" data-name="line_style">
+        <i class="eos-icons">line_style</i>
+        <br>
+        line_style
+      </div>
+      
+      <div class="icons__item" data-name="line_weight">
+        <i class="eos-icons">line_weight</i>
+        <br>
+        line_weight
+      </div>
+      
+      <div class="icons__item" data-name="linear_scale">
+        <i class="eos-icons">linear_scale</i>
+        <br>
+        linear_scale
+      </div>
+      
+      <div class="icons__item" data-name="link">
+        <i class="eos-icons">link</i>
+        <br>
+        link
+      </div>
+      
+      <div class="icons__item" data-name="linked_camera">
+        <i class="eos-icons">linked_camera</i>
+        <br>
+        linked_camera
+      </div>
+      
+      <div class="icons__item" data-name="list">
+        <i class="eos-icons">list</i>
+        <br>
+        list
+      </div>
+      
+      <div class="icons__item" data-name="live_help">
+        <i class="eos-icons">live_help</i>
+        <br>
+        live_help
+      </div>
+      
+      <div class="icons__item" data-name="live_tv">
+        <i class="eos-icons">live_tv</i>
+        <br>
+        live_tv
+      </div>
+      
+      <div class="icons__item" data-name="local_activity">
+        <i class="eos-icons">local_activity</i>
+        <br>
+        local_activity
+      </div>
+      
+      <div class="icons__item" data-name="local_atm">
+        <i class="eos-icons">local_atm</i>
+        <br>
+        local_atm
+      </div>
+      
+      <div class="icons__item" data-name="local_bar">
+        <i class="eos-icons">local_bar</i>
+        <br>
+        local_bar
+      </div>
+      
+      <div class="icons__item" data-name="local_cafe">
+        <i class="eos-icons">local_cafe</i>
+        <br>
+        local_cafe
+      </div>
+      
+      <div class="icons__item" data-name="local_car_wash">
+        <i class="eos-icons">local_car_wash</i>
+        <br>
+        local_car_wash
+      </div>
+      
+      <div class="icons__item" data-name="local_convenience_store">
+        <i class="eos-icons">local_convenience_store</i>
+        <br>
+        local_convenience_store
+      </div>
+      
+      <div class="icons__item" data-name="local_dining">
+        <i class="eos-icons">local_dining</i>
+        <br>
+        local_dining
+      </div>
+      
+      <div class="icons__item" data-name="local_drink">
+        <i class="eos-icons">local_drink</i>
+        <br>
+        local_drink
+      </div>
+      
+      <div class="icons__item" data-name="local_florist">
+        <i class="eos-icons">local_florist</i>
+        <br>
+        local_florist
+      </div>
+      
+      <div class="icons__item" data-name="local_gas_station">
+        <i class="eos-icons">local_gas_station</i>
+        <br>
+        local_gas_station
+      </div>
+      
+      <div class="icons__item" data-name="local_grocery_store">
+        <i class="eos-icons">local_grocery_store</i>
+        <br>
+        local_grocery_store
+      </div>
+      
+      <div class="icons__item" data-name="local_hospital">
+        <i class="eos-icons">local_hospital</i>
+        <br>
+        local_hospital
+      </div>
+      
+      <div class="icons__item" data-name="local_laundry_service">
+        <i class="eos-icons">local_laundry_service</i>
+        <br>
+        local_laundry_service
+      </div>
+      
+      <div class="icons__item" data-name="local_library">
+        <i class="eos-icons">local_library</i>
+        <br>
+        local_library
+      </div>
+      
+      <div class="icons__item" data-name="local_mall">
+        <i class="eos-icons">local_mall</i>
+        <br>
+        local_mall
+      </div>
+      
+      <div class="icons__item" data-name="local_movies">
+        <i class="eos-icons">local_movies</i>
+        <br>
+        local_movies
+      </div>
+      
+      <div class="icons__item" data-name="local_offer">
+        <i class="eos-icons">local_offer</i>
+        <br>
+        local_offer
+      </div>
+      
+      <div class="icons__item" data-name="local_parking">
+        <i class="eos-icons">local_parking</i>
+        <br>
+        local_parking
+      </div>
+      
+      <div class="icons__item" data-name="local_pharmacy">
+        <i class="eos-icons">local_pharmacy</i>
+        <br>
+        local_pharmacy
+      </div>
+      
+      <div class="icons__item" data-name="local_phone">
+        <i class="eos-icons">local_phone</i>
+        <br>
+        local_phone
+      </div>
+      
+      <div class="icons__item" data-name="local_pizza">
+        <i class="eos-icons">local_pizza</i>
+        <br>
+        local_pizza
+      </div>
+      
+      <div class="icons__item" data-name="local_play">
+        <i class="eos-icons">local_play</i>
+        <br>
+        local_play
+      </div>
+      
+      <div class="icons__item" data-name="local_post_office">
+        <i class="eos-icons">local_post_office</i>
+        <br>
+        local_post_office
+      </div>
+      
+      <div class="icons__item" data-name="local_printshop">
+        <i class="eos-icons">local_printshop</i>
+        <br>
+        local_printshop
+      </div>
+      
+      <div class="icons__item" data-name="local_see">
+        <i class="eos-icons">local_see</i>
+        <br>
+        local_see
+      </div>
+      
+      <div class="icons__item" data-name="local_shipping">
+        <i class="eos-icons">local_shipping</i>
+        <br>
+        local_shipping
+      </div>
+      
+      <div class="icons__item" data-name="local_taxi">
+        <i class="eos-icons">local_taxi</i>
+        <br>
+        local_taxi
+      </div>
+      
+      <div class="icons__item" data-name="location_city">
+        <i class="eos-icons">location_city</i>
+        <br>
+        location_city
+      </div>
+      
+      <div class="icons__item" data-name="location_disabled">
+        <i class="eos-icons">location_disabled</i>
+        <br>
+        location_disabled
+      </div>
+      
+      <div class="icons__item" data-name="location_off">
+        <i class="eos-icons">location_off</i>
+        <br>
+        location_off
+      </div>
+      
+      <div class="icons__item" data-name="location_on">
+        <i class="eos-icons">location_on</i>
+        <br>
+        location_on
+      </div>
+      
+      <div class="icons__item" data-name="location_searching">
+        <i class="eos-icons">location_searching</i>
+        <br>
+        location_searching
+      </div>
+      
+      <div class="icons__item" data-name="lock_open">
+        <i class="eos-icons">lock_open</i>
+        <br>
+        lock_open
+      </div>
+      
+      <div class="icons__item" data-name="lock_outline">
+        <i class="eos-icons">lock_outline</i>
+        <br>
+        lock_outline
+      </div>
+      
+      <div class="icons__item" data-name="lock">
+        <i class="eos-icons">lock</i>
+        <br>
+        lock
+      </div>
+      
+      <div class="icons__item" data-name="looks_3">
+        <i class="eos-icons">looks_3</i>
+        <br>
+        looks_3
+      </div>
+      
+      <div class="icons__item" data-name="looks_4">
+        <i class="eos-icons">looks_4</i>
+        <br>
+        looks_4
+      </div>
+      
+      <div class="icons__item" data-name="looks_5">
+        <i class="eos-icons">looks_5</i>
+        <br>
+        looks_5
+      </div>
+      
+      <div class="icons__item" data-name="looks_6">
+        <i class="eos-icons">looks_6</i>
+        <br>
+        looks_6
+      </div>
+      
+      <div class="icons__item" data-name="looks_one">
+        <i class="eos-icons">looks_one</i>
+        <br>
+        looks_one
+      </div>
+      
+      <div class="icons__item" data-name="looks_two">
+        <i class="eos-icons">looks_two</i>
+        <br>
+        looks_two
+      </div>
+      
+      <div class="icons__item" data-name="looks">
+        <i class="eos-icons">looks</i>
+        <br>
+        looks
+      </div>
+      
+      <div class="icons__item" data-name="loop">
+        <i class="eos-icons">loop</i>
+        <br>
+        loop
+      </div>
+      
+      <div class="icons__item" data-name="loupe">
+        <i class="eos-icons">loupe</i>
+        <br>
+        loupe
+      </div>
+      
+      <div class="icons__item" data-name="low_priority">
+        <i class="eos-icons">low_priority</i>
+        <br>
+        low_priority
+      </div>
+      
+      <div class="icons__item" data-name="loyalty">
+        <i class="eos-icons">loyalty</i>
+        <br>
+        loyalty
+      </div>
+      
+      <div class="icons__item" data-name="mail_outline">
+        <i class="eos-icons">mail_outline</i>
+        <br>
+        mail_outline
+      </div>
+      
+      <div class="icons__item" data-name="map">
+        <i class="eos-icons">map</i>
+        <br>
+        map
+      </div>
+      
+      <div class="icons__item" data-name="markunread_mailbox">
+        <i class="eos-icons">markunread_mailbox</i>
+        <br>
+        markunread_mailbox
+      </div>
+      
+      <div class="icons__item" data-name="memory">
+        <i class="eos-icons">memory</i>
+        <br>
+        memory
+      </div>
+      
+      <div class="icons__item" data-name="menu">
+        <i class="eos-icons">menu</i>
+        <br>
+        menu
+      </div>
+      
+      <div class="icons__item" data-name="merge_type">
+        <i class="eos-icons">merge_type</i>
+        <br>
+        merge_type
+      </div>
+      
+      <div class="icons__item" data-name="message">
+        <i class="eos-icons">message</i>
+        <br>
+        message
+      </div>
+      
+      <div class="icons__item" data-name="mic_none">
+        <i class="eos-icons">mic_none</i>
+        <br>
+        mic_none
+      </div>
+      
+      <div class="icons__item" data-name="mic_off">
+        <i class="eos-icons">mic_off</i>
+        <br>
+        mic_off
+      </div>
+      
+      <div class="icons__item" data-name="mic">
+        <i class="eos-icons">mic</i>
+        <br>
+        mic
+      </div>
+      
+      <div class="icons__item" data-name="mms">
+        <i class="eos-icons">mms</i>
+        <br>
+        mms
+      </div>
+      
+      <div class="icons__item" data-name="mode_comment">
+        <i class="eos-icons">mode_comment</i>
+        <br>
+        mode_comment
+      </div>
+      
+      <div class="icons__item" data-name="mode_edit">
+        <i class="eos-icons">mode_edit</i>
+        <br>
+        mode_edit
+      </div>
+      
+      <div class="icons__item" data-name="monetization_on">
+        <i class="eos-icons">monetization_on</i>
+        <br>
+        monetization_on
+      </div>
+      
+      <div class="icons__item" data-name="money_off">
+        <i class="eos-icons">money_off</i>
+        <br>
+        money_off
+      </div>
+      
+      <div class="icons__item" data-name="monochrome_photos">
+        <i class="eos-icons">monochrome_photos</i>
+        <br>
+        monochrome_photos
+      </div>
+      
+      <div class="icons__item" data-name="mood_bad">
+        <i class="eos-icons">mood_bad</i>
+        <br>
+        mood_bad
+      </div>
+      
+      <div class="icons__item" data-name="mood">
+        <i class="eos-icons">mood</i>
+        <br>
+        mood
+      </div>
+      
+      <div class="icons__item" data-name="more_horiz">
+        <i class="eos-icons">more_horiz</i>
+        <br>
+        more_horiz
+      </div>
+      
+      <div class="icons__item" data-name="more_vert">
+        <i class="eos-icons">more_vert</i>
+        <br>
+        more_vert
+      </div>
+      
+      <div class="icons__item" data-name="more">
+        <i class="eos-icons">more</i>
+        <br>
+        more
+      </div>
+      
+      <div class="icons__item" data-name="motorcycle">
+        <i class="eos-icons">motorcycle</i>
+        <br>
+        motorcycle
+      </div>
+      
+      <div class="icons__item" data-name="mouse">
+        <i class="eos-icons">mouse</i>
+        <br>
+        mouse
+      </div>
+      
+      <div class="icons__item" data-name="move_to_inbox">
+        <i class="eos-icons">move_to_inbox</i>
+        <br>
+        move_to_inbox
+      </div>
+      
+      <div class="icons__item" data-name="movie_creation">
+        <i class="eos-icons">movie_creation</i>
+        <br>
+        movie_creation
+      </div>
+      
+      <div class="icons__item" data-name="movie_filter">
+        <i class="eos-icons">movie_filter</i>
+        <br>
+        movie_filter
+      </div>
+      
+      <div class="icons__item" data-name="movie">
+        <i class="eos-icons">movie</i>
+        <br>
+        movie
+      </div>
+      
+      <div class="icons__item" data-name="multiline_chart">
+        <i class="eos-icons">multiline_chart</i>
+        <br>
+        multiline_chart
+      </div>
+      
+      <div class="icons__item" data-name="music_note">
+        <i class="eos-icons">music_note</i>
+        <br>
+        music_note
+      </div>
+      
+      <div class="icons__item" data-name="music_video">
+        <i class="eos-icons">music_video</i>
+        <br>
+        music_video
+      </div>
+      
+      <div class="icons__item" data-name="my_location">
+        <i class="eos-icons">my_location</i>
+        <br>
+        my_location
+      </div>
+      
+      <div class="icons__item" data-name="nature_people">
+        <i class="eos-icons">nature_people</i>
+        <br>
+        nature_people
+      </div>
+      
+      <div class="icons__item" data-name="nature">
+        <i class="eos-icons">nature</i>
+        <br>
+        nature
+      </div>
+      
+      <div class="icons__item" data-name="navigation">
+        <i class="eos-icons">navigation</i>
+        <br>
+        navigation
+      </div>
+      
+      <div class="icons__item" data-name="near_me">
+        <i class="eos-icons">near_me</i>
+        <br>
+        near_me
+      </div>
+      
+      <div class="icons__item" data-name="network_cell">
+        <i class="eos-icons">network_cell</i>
+        <br>
+        network_cell
+      </div>
+      
+      <div class="icons__item" data-name="network_check">
+        <i class="eos-icons">network_check</i>
+        <br>
+        network_check
+      </div>
+      
+      <div class="icons__item" data-name="network_locked">
+        <i class="eos-icons">network_locked</i>
+        <br>
+        network_locked
+      </div>
+      
+      <div class="icons__item" data-name="network_wifi">
+        <i class="eos-icons">network_wifi</i>
+        <br>
+        network_wifi
+      </div>
+      
+      <div class="icons__item" data-name="new_releases">
+        <i class="eos-icons">new_releases</i>
+        <br>
+        new_releases
+      </div>
+      
+      <div class="icons__item" data-name="next_week">
+        <i class="eos-icons">next_week</i>
+        <br>
+        next_week
+      </div>
+      
+      <div class="icons__item" data-name="nfc">
+        <i class="eos-icons">nfc</i>
+        <br>
+        nfc
+      </div>
+      
+      <div class="icons__item" data-name="no_encryption">
+        <i class="eos-icons">no_encryption</i>
+        <br>
+        no_encryption
+      </div>
+      
+      <div class="icons__item" data-name="no_sim">
+        <i class="eos-icons">no_sim</i>
+        <br>
+        no_sim
+      </div>
+      
+      <div class="icons__item" data-name="not_interested">
+        <i class="eos-icons">not_interested</i>
+        <br>
+        not_interested
+      </div>
+      
+      <div class="icons__item" data-name="note_add">
+        <i class="eos-icons">note_add</i>
+        <br>
+        note_add
+      </div>
+      
+      <div class="icons__item" data-name="note">
+        <i class="eos-icons">note</i>
+        <br>
+        note
+      </div>
+      
+      <div class="icons__item" data-name="notifications_active">
+        <i class="eos-icons">notifications_active</i>
+        <br>
+        notifications_active
+      </div>
+      
+      <div class="icons__item" data-name="notifications_none">
+        <i class="eos-icons">notifications_none</i>
+        <br>
+        notifications_none
+      </div>
+      
+      <div class="icons__item" data-name="notifications_off">
+        <i class="eos-icons">notifications_off</i>
+        <br>
+        notifications_off
+      </div>
+      
+      <div class="icons__item" data-name="notifications_paused">
+        <i class="eos-icons">notifications_paused</i>
+        <br>
+        notifications_paused
+      </div>
+      
+      <div class="icons__item" data-name="notifications">
+        <i class="eos-icons">notifications</i>
+        <br>
+        notifications
+      </div>
+      
+      <div class="icons__item" data-name="offline_pin">
+        <i class="eos-icons">offline_pin</i>
+        <br>
+        offline_pin
+      </div>
+      
+      <div class="icons__item" data-name="ondemand_video">
+        <i class="eos-icons">ondemand_video</i>
+        <br>
+        ondemand_video
+      </div>
+      
+      <div class="icons__item" data-name="opacity">
+        <i class="eos-icons">opacity</i>
+        <br>
+        opacity
+      </div>
+      
+      <div class="icons__item" data-name="open_in_browser">
+        <i class="eos-icons">open_in_browser</i>
+        <br>
+        open_in_browser
+      </div>
+      
+      <div class="icons__item" data-name="open_in_new">
+        <i class="eos-icons">open_in_new</i>
+        <br>
+        open_in_new
+      </div>
+      
+      <div class="icons__item" data-name="open_with">
+        <i class="eos-icons">open_with</i>
+        <br>
+        open_with
+      </div>
+      
+      <div class="icons__item" data-name="pages">
+        <i class="eos-icons">pages</i>
+        <br>
+        pages
+      </div>
+      
+      <div class="icons__item" data-name="pageview">
+        <i class="eos-icons">pageview</i>
+        <br>
+        pageview
+      </div>
+      
+      <div class="icons__item" data-name="palette">
+        <i class="eos-icons">palette</i>
+        <br>
+        palette
+      </div>
+      
+      <div class="icons__item" data-name="pan_tool">
+        <i class="eos-icons">pan_tool</i>
+        <br>
+        pan_tool
+      </div>
+      
+      <div class="icons__item" data-name="panorama_fish_eye">
+        <i class="eos-icons">panorama_fish_eye</i>
+        <br>
+        panorama_fish_eye
+      </div>
+      
+      <div class="icons__item" data-name="panorama_horizontal">
+        <i class="eos-icons">panorama_horizontal</i>
+        <br>
+        panorama_horizontal
+      </div>
+      
+      <div class="icons__item" data-name="panorama_vertical">
+        <i class="eos-icons">panorama_vertical</i>
+        <br>
+        panorama_vertical
+      </div>
+      
+      <div class="icons__item" data-name="panorama_wide_angle">
+        <i class="eos-icons">panorama_wide_angle</i>
+        <br>
+        panorama_wide_angle
+      </div>
+      
+      <div class="icons__item" data-name="panorama">
+        <i class="eos-icons">panorama</i>
+        <br>
+        panorama
+      </div>
+      
+      <div class="icons__item" data-name="party_mode">
+        <i class="eos-icons">party_mode</i>
+        <br>
+        party_mode
+      </div>
+      
+      <div class="icons__item" data-name="pause_circle_filled">
+        <i class="eos-icons">pause_circle_filled</i>
+        <br>
+        pause_circle_filled
+      </div>
+      
+      <div class="icons__item" data-name="pause_circle_outline">
+        <i class="eos-icons">pause_circle_outline</i>
+        <br>
+        pause_circle_outline
+      </div>
+      
+      <div class="icons__item" data-name="pause">
+        <i class="eos-icons">pause</i>
+        <br>
+        pause
+      </div>
+      
+      <div class="icons__item" data-name="payment">
+        <i class="eos-icons">payment</i>
+        <br>
+        payment
+      </div>
+      
+      <div class="icons__item" data-name="people_outline">
+        <i class="eos-icons">people_outline</i>
+        <br>
+        people_outline
+      </div>
+      
+      <div class="icons__item" data-name="people">
+        <i class="eos-icons">people</i>
+        <br>
+        people
+      </div>
+      
+      <div class="icons__item" data-name="perm_camera_mic">
+        <i class="eos-icons">perm_camera_mic</i>
+        <br>
+        perm_camera_mic
+      </div>
+      
+      <div class="icons__item" data-name="perm_contact_calendar">
+        <i class="eos-icons">perm_contact_calendar</i>
+        <br>
+        perm_contact_calendar
+      </div>
+      
+      <div class="icons__item" data-name="perm_data_setting">
+        <i class="eos-icons">perm_data_setting</i>
+        <br>
+        perm_data_setting
+      </div>
+      
+      <div class="icons__item" data-name="perm_device_information">
+        <i class="eos-icons">perm_device_information</i>
+        <br>
+        perm_device_information
+      </div>
+      
+      <div class="icons__item" data-name="perm_media">
+        <i class="eos-icons">perm_media</i>
+        <br>
+        perm_media
+      </div>
+      
+      <div class="icons__item" data-name="perm_phone_msg">
+        <i class="eos-icons">perm_phone_msg</i>
+        <br>
+        perm_phone_msg
+      </div>
+      
+      <div class="icons__item" data-name="perm_scan_wifi">
+        <i class="eos-icons">perm_scan_wifi</i>
+        <br>
+        perm_scan_wifi
+      </div>
+      
+      <div class="icons__item" data-name="person_add">
+        <i class="eos-icons">person_add</i>
+        <br>
+        person_add
+      </div>
+      
+      <div class="icons__item" data-name="person_outline">
+        <i class="eos-icons">person_outline</i>
+        <br>
+        person_outline
+      </div>
+      
+      <div class="icons__item" data-name="person_pin_circle">
+        <i class="eos-icons">person_pin_circle</i>
+        <br>
+        person_pin_circle
+      </div>
+      
+      <div class="icons__item" data-name="person_pin">
+        <i class="eos-icons">person_pin</i>
+        <br>
+        person_pin
+      </div>
+      
+      <div class="icons__item" data-name="person">
+        <i class="eos-icons">person</i>
+        <br>
+        person
+      </div>
+      
+      <div class="icons__item" data-name="personal_video">
+        <i class="eos-icons">personal_video</i>
+        <br>
+        personal_video
+      </div>
+      
+      <div class="icons__item" data-name="pets">
+        <i class="eos-icons">pets</i>
+        <br>
+        pets
+      </div>
+      
+      <div class="icons__item" data-name="phone_android">
+        <i class="eos-icons">phone_android</i>
+        <br>
+        phone_android
+      </div>
+      
+      <div class="icons__item" data-name="phone_bluetooth_speaker">
+        <i class="eos-icons">phone_bluetooth_speaker</i>
+        <br>
+        phone_bluetooth_speaker
+      </div>
+      
+      <div class="icons__item" data-name="phone_forwarded">
+        <i class="eos-icons">phone_forwarded</i>
+        <br>
+        phone_forwarded
+      </div>
+      
+      <div class="icons__item" data-name="phone_in_talk">
+        <i class="eos-icons">phone_in_talk</i>
+        <br>
+        phone_in_talk
+      </div>
+      
+      <div class="icons__item" data-name="phone_iphone">
+        <i class="eos-icons">phone_iphone</i>
+        <br>
+        phone_iphone
+      </div>
+      
+      <div class="icons__item" data-name="phone_locked">
+        <i class="eos-icons">phone_locked</i>
+        <br>
+        phone_locked
+      </div>
+      
+      <div class="icons__item" data-name="phone_missed">
+        <i class="eos-icons">phone_missed</i>
+        <br>
+        phone_missed
+      </div>
+      
+      <div class="icons__item" data-name="phone_paused">
+        <i class="eos-icons">phone_paused</i>
+        <br>
+        phone_paused
+      </div>
+      
+      <div class="icons__item" data-name="phone">
+        <i class="eos-icons">phone</i>
+        <br>
+        phone
+      </div>
+      
+      <div class="icons__item" data-name="phonelink_erase">
+        <i class="eos-icons">phonelink_erase</i>
+        <br>
+        phonelink_erase
+      </div>
+      
+      <div class="icons__item" data-name="phonelink_lock">
+        <i class="eos-icons">phonelink_lock</i>
+        <br>
+        phonelink_lock
+      </div>
+      
+      <div class="icons__item" data-name="phonelink_off">
+        <i class="eos-icons">phonelink_off</i>
+        <br>
+        phonelink_off
+      </div>
+      
+      <div class="icons__item" data-name="phonelink_ring">
+        <i class="eos-icons">phonelink_ring</i>
+        <br>
+        phonelink_ring
+      </div>
+      
+      <div class="icons__item" data-name="phonelink_setup">
+        <i class="eos-icons">phonelink_setup</i>
+        <br>
+        phonelink_setup
+      </div>
+      
+      <div class="icons__item" data-name="phonelink">
+        <i class="eos-icons">phonelink</i>
+        <br>
+        phonelink
+      </div>
+      
+      <div class="icons__item" data-name="photo_album">
+        <i class="eos-icons">photo_album</i>
+        <br>
+        photo_album
+      </div>
+      
+      <div class="icons__item" data-name="photo_filter">
+        <i class="eos-icons">photo_filter</i>
+        <br>
+        photo_filter
+      </div>
+      
+      <div class="icons__item" data-name="photo_library">
+        <i class="eos-icons">photo_library</i>
+        <br>
+        photo_library
+      </div>
+      
+      <div class="icons__item" data-name="photo_size_select_actual">
+        <i class="eos-icons">photo_size_select_actual</i>
+        <br>
+        photo_size_select_actual
+      </div>
+      
+      <div class="icons__item" data-name="photo_size_select_large">
+        <i class="eos-icons">photo_size_select_large</i>
+        <br>
+        photo_size_select_large
+      </div>
+      
+      <div class="icons__item" data-name="photo_size_select_small">
+        <i class="eos-icons">photo_size_select_small</i>
+        <br>
+        photo_size_select_small
+      </div>
+      
+      <div class="icons__item" data-name="photo">
+        <i class="eos-icons">photo</i>
+        <br>
+        photo
+      </div>
+      
+      <div class="icons__item" data-name="picture_as_pdf">
+        <i class="eos-icons">picture_as_pdf</i>
+        <br>
+        picture_as_pdf
+      </div>
+      
+      <div class="icons__item" data-name="picture_in_picture_alt">
+        <i class="eos-icons">picture_in_picture_alt</i>
+        <br>
+        picture_in_picture_alt
+      </div>
+      
+      <div class="icons__item" data-name="picture_in_picture">
+        <i class="eos-icons">picture_in_picture</i>
+        <br>
+        picture_in_picture
+      </div>
+      
+      <div class="icons__item" data-name="pie_chart_outlined">
+        <i class="eos-icons">pie_chart_outlined</i>
+        <br>
+        pie_chart_outlined
+      </div>
+      
+      <div class="icons__item" data-name="pie_chart">
+        <i class="eos-icons">pie_chart</i>
+        <br>
+        pie_chart
+      </div>
+      
+      <div class="icons__item" data-name="pin_drop">
+        <i class="eos-icons">pin_drop</i>
+        <br>
+        pin_drop
+      </div>
+      
+      <div class="icons__item" data-name="place">
+        <i class="eos-icons">place</i>
+        <br>
+        place
+      </div>
+      
+      <div class="icons__item" data-name="play_arrow">
+        <i class="eos-icons">play_arrow</i>
+        <br>
+        play_arrow
+      </div>
+      
+      <div class="icons__item" data-name="play_circle_filled">
+        <i class="eos-icons">play_circle_filled</i>
+        <br>
+        play_circle_filled
+      </div>
+      
+      <div class="icons__item" data-name="play_circle_outline">
+        <i class="eos-icons">play_circle_outline</i>
+        <br>
+        play_circle_outline
+      </div>
+      
+      <div class="icons__item" data-name="play_for_work">
+        <i class="eos-icons">play_for_work</i>
+        <br>
+        play_for_work
+      </div>
+      
+      <div class="icons__item" data-name="playlist_add_check">
+        <i class="eos-icons">playlist_add_check</i>
+        <br>
+        playlist_add_check
+      </div>
+      
+      <div class="icons__item" data-name="playlist_add">
+        <i class="eos-icons">playlist_add</i>
+        <br>
+        playlist_add
+      </div>
+      
+      <div class="icons__item" data-name="playlist_play">
+        <i class="eos-icons">playlist_play</i>
+        <br>
+        playlist_play
+      </div>
+      
+      <div class="icons__item" data-name="plus_one">
+        <i class="eos-icons">plus_one</i>
+        <br>
+        plus_one
+      </div>
+      
+      <div class="icons__item" data-name="poll">
+        <i class="eos-icons">poll</i>
+        <br>
+        poll
+      </div>
+      
+      <div class="icons__item" data-name="polymer">
+        <i class="eos-icons">polymer</i>
+        <br>
+        polymer
+      </div>
+      
+      <div class="icons__item" data-name="pool">
+        <i class="eos-icons">pool</i>
+        <br>
+        pool
+      </div>
+      
+      <div class="icons__item" data-name="portable_wifi_off">
+        <i class="eos-icons">portable_wifi_off</i>
+        <br>
+        portable_wifi_off
+      </div>
+      
+      <div class="icons__item" data-name="portrait">
+        <i class="eos-icons">portrait</i>
+        <br>
+        portrait
+      </div>
+      
+      <div class="icons__item" data-name="power_input">
+        <i class="eos-icons">power_input</i>
+        <br>
+        power_input
+      </div>
+      
+      <div class="icons__item" data-name="power_settings_new">
+        <i class="eos-icons">power_settings_new</i>
+        <br>
+        power_settings_new
+      </div>
+      
+      <div class="icons__item" data-name="power">
+        <i class="eos-icons">power</i>
+        <br>
+        power
+      </div>
+      
+      <div class="icons__item" data-name="pregnant_woman">
+        <i class="eos-icons">pregnant_woman</i>
+        <br>
+        pregnant_woman
+      </div>
+      
+      <div class="icons__item" data-name="present_to_all">
+        <i class="eos-icons">present_to_all</i>
+        <br>
+        present_to_all
+      </div>
+      
+      <div class="icons__item" data-name="print">
+        <i class="eos-icons">print</i>
+        <br>
+        print
+      </div>
+      
+      <div class="icons__item" data-name="priority_high">
+        <i class="eos-icons">priority_high</i>
+        <br>
+        priority_high
+      </div>
+      
+      <div class="icons__item" data-name="public">
+        <i class="eos-icons">public</i>
+        <br>
+        public
+      </div>
+      
+      <div class="icons__item" data-name="publish">
+        <i class="eos-icons">publish</i>
+        <br>
+        publish
+      </div>
+      
+      <div class="icons__item" data-name="query_builder">
+        <i class="eos-icons">query_builder</i>
+        <br>
+        query_builder
+      </div>
+      
+      <div class="icons__item" data-name="question_answer">
+        <i class="eos-icons">question_answer</i>
+        <br>
+        question_answer
+      </div>
+      
+      <div class="icons__item" data-name="queue_music">
+        <i class="eos-icons">queue_music</i>
+        <br>
+        queue_music
+      </div>
+      
+      <div class="icons__item" data-name="queue_play_next">
+        <i class="eos-icons">queue_play_next</i>
+        <br>
+        queue_play_next
+      </div>
+      
+      <div class="icons__item" data-name="queue">
+        <i class="eos-icons">queue</i>
+        <br>
+        queue
+      </div>
+      
+      <div class="icons__item" data-name="radio_button_checked">
+        <i class="eos-icons">radio_button_checked</i>
+        <br>
+        radio_button_checked
+      </div>
+      
+      <div class="icons__item" data-name="radio_button_unchecked">
+        <i class="eos-icons">radio_button_unchecked</i>
+        <br>
+        radio_button_unchecked
+      </div>
+      
+      <div class="icons__item" data-name="radio">
+        <i class="eos-icons">radio</i>
+        <br>
+        radio
+      </div>
+      
+      <div class="icons__item" data-name="rate_review">
+        <i class="eos-icons">rate_review</i>
+        <br>
+        rate_review
+      </div>
+      
+      <div class="icons__item" data-name="receipt">
+        <i class="eos-icons">receipt</i>
+        <br>
+        receipt
+      </div>
+      
+      <div class="icons__item" data-name="recent_actors">
+        <i class="eos-icons">recent_actors</i>
+        <br>
+        recent_actors
+      </div>
+      
+      <div class="icons__item" data-name="record_voice_over">
+        <i class="eos-icons">record_voice_over</i>
+        <br>
+        record_voice_over
+      </div>
+      
+      <div class="icons__item" data-name="redeem">
+        <i class="eos-icons">redeem</i>
+        <br>
+        redeem
+      </div>
+      
+      <div class="icons__item" data-name="redo">
+        <i class="eos-icons">redo</i>
+        <br>
+        redo
+      </div>
+      
+      <div class="icons__item" data-name="refresh">
+        <i class="eos-icons">refresh</i>
+        <br>
+        refresh
+      </div>
+      
+      <div class="icons__item" data-name="remove_circle_outline">
+        <i class="eos-icons">remove_circle_outline</i>
+        <br>
+        remove_circle_outline
+      </div>
+      
+      <div class="icons__item" data-name="remove_circle">
+        <i class="eos-icons">remove_circle</i>
+        <br>
+        remove_circle
+      </div>
+      
+      <div class="icons__item" data-name="remove_from_queue">
+        <i class="eos-icons">remove_from_queue</i>
+        <br>
+        remove_from_queue
+      </div>
+      
+      <div class="icons__item" data-name="remove_red_eye">
+        <i class="eos-icons">remove_red_eye</i>
+        <br>
+        remove_red_eye
+      </div>
+      
+      <div class="icons__item" data-name="remove_shopping_cart">
+        <i class="eos-icons">remove_shopping_cart</i>
+        <br>
+        remove_shopping_cart
+      </div>
+      
+      <div class="icons__item" data-name="remove">
+        <i class="eos-icons">remove</i>
+        <br>
+        remove
+      </div>
+      
+      <div class="icons__item" data-name="reorder">
+        <i class="eos-icons">reorder</i>
+        <br>
+        reorder
+      </div>
+      
+      <div class="icons__item" data-name="repeat_one">
+        <i class="eos-icons">repeat_one</i>
+        <br>
+        repeat_one
+      </div>
+      
+      <div class="icons__item" data-name="repeat">
+        <i class="eos-icons">repeat</i>
+        <br>
+        repeat
+      </div>
+      
+      <div class="icons__item" data-name="replay_10">
+        <i class="eos-icons">replay_10</i>
+        <br>
+        replay_10
+      </div>
+      
+      <div class="icons__item" data-name="replay_30">
+        <i class="eos-icons">replay_30</i>
+        <br>
+        replay_30
+      </div>
+      
+      <div class="icons__item" data-name="replay_5">
+        <i class="eos-icons">replay_5</i>
+        <br>
+        replay_5
+      </div>
+      
+      <div class="icons__item" data-name="replay">
+        <i class="eos-icons">replay</i>
+        <br>
+        replay
+      </div>
+      
+      <div class="icons__item" data-name="reply_all">
+        <i class="eos-icons">reply_all</i>
+        <br>
+        reply_all
+      </div>
+      
+      <div class="icons__item" data-name="reply">
+        <i class="eos-icons">reply</i>
+        <br>
+        reply
+      </div>
+      
+      <div class="icons__item" data-name="report_problem">
+        <i class="eos-icons">report_problem</i>
+        <br>
+        report_problem
+      </div>
+      
+      <div class="icons__item" data-name="report">
+        <i class="eos-icons">report</i>
+        <br>
+        report
+      </div>
+      
+      <div class="icons__item" data-name="restaurant_menu">
+        <i class="eos-icons">restaurant_menu</i>
+        <br>
+        restaurant_menu
+      </div>
+      
+      <div class="icons__item" data-name="restaurant">
+        <i class="eos-icons">restaurant</i>
+        <br>
+        restaurant
+      </div>
+      
+      <div class="icons__item" data-name="restore_page">
+        <i class="eos-icons">restore_page</i>
+        <br>
+        restore_page
+      </div>
+      
+      <div class="icons__item" data-name="restore">
+        <i class="eos-icons">restore</i>
+        <br>
+        restore
+      </div>
+      
+      <div class="icons__item" data-name="ring_volume">
+        <i class="eos-icons">ring_volume</i>
+        <br>
+        ring_volume
+      </div>
+      
+      <div class="icons__item" data-name="room_service">
+        <i class="eos-icons">room_service</i>
+        <br>
+        room_service
+      </div>
+      
+      <div class="icons__item" data-name="room">
+        <i class="eos-icons">room</i>
+        <br>
+        room
+      </div>
+      
+      <div class="icons__item" data-name="rotate_90_degrees_ccw">
+        <i class="eos-icons">rotate_90_degrees_ccw</i>
+        <br>
+        rotate_90_degrees_ccw
+      </div>
+      
+      <div class="icons__item" data-name="rotate_left">
+        <i class="eos-icons">rotate_left</i>
+        <br>
+        rotate_left
+      </div>
+      
+      <div class="icons__item" data-name="rotate_right">
+        <i class="eos-icons">rotate_right</i>
+        <br>
+        rotate_right
+      </div>
+      
+      <div class="icons__item" data-name="rounded_corner">
+        <i class="eos-icons">rounded_corner</i>
+        <br>
+        rounded_corner
+      </div>
+      
+      <div class="icons__item" data-name="router">
+        <i class="eos-icons">router</i>
+        <br>
+        router
+      </div>
+      
+      <div class="icons__item" data-name="rowing">
+        <i class="eos-icons">rowing</i>
+        <br>
+        rowing
+      </div>
+      
+      <div class="icons__item" data-name="rss_feed">
+        <i class="eos-icons">rss_feed</i>
+        <br>
+        rss_feed
+      </div>
+      
+      <div class="icons__item" data-name="rv_hookup">
+        <i class="eos-icons">rv_hookup</i>
+        <br>
+        rv_hookup
+      </div>
+      
+      <div class="icons__item" data-name="satellite">
+        <i class="eos-icons">satellite</i>
+        <br>
+        satellite
+      </div>
+      
+      <div class="icons__item" data-name="save">
+        <i class="eos-icons">save</i>
+        <br>
+        save
+      </div>
+      
+      <div class="icons__item" data-name="scanner">
+        <i class="eos-icons">scanner</i>
+        <br>
+        scanner
+      </div>
+      
+      <div class="icons__item" data-name="schedule">
+        <i class="eos-icons">schedule</i>
+        <br>
+        schedule
+      </div>
+      
+      <div class="icons__item" data-name="school">
+        <i class="eos-icons">school</i>
+        <br>
+        school
+      </div>
+      
+      <div class="icons__item" data-name="screen_lock_landscape">
+        <i class="eos-icons">screen_lock_landscape</i>
+        <br>
+        screen_lock_landscape
+      </div>
+      
+      <div class="icons__item" data-name="screen_lock_portrait">
+        <i class="eos-icons">screen_lock_portrait</i>
+        <br>
+        screen_lock_portrait
+      </div>
+      
+      <div class="icons__item" data-name="screen_lock_rotation">
+        <i class="eos-icons">screen_lock_rotation</i>
+        <br>
+        screen_lock_rotation
+      </div>
+      
+      <div class="icons__item" data-name="screen_rotation">
+        <i class="eos-icons">screen_rotation</i>
+        <br>
+        screen_rotation
+      </div>
+      
+      <div class="icons__item" data-name="screen_share">
+        <i class="eos-icons">screen_share</i>
+        <br>
+        screen_share
+      </div>
+      
+      <div class="icons__item" data-name="sd_card">
+        <i class="eos-icons">sd_card</i>
+        <br>
+        sd_card
+      </div>
+      
+      <div class="icons__item" data-name="sd_storage">
+        <i class="eos-icons">sd_storage</i>
+        <br>
+        sd_storage
+      </div>
+      
+      <div class="icons__item" data-name="search">
+        <i class="eos-icons">search</i>
+        <br>
+        search
+      </div>
+      
+      <div class="icons__item" data-name="security">
+        <i class="eos-icons">security</i>
+        <br>
+        security
+      </div>
+      
+      <div class="icons__item" data-name="select_all">
+        <i class="eos-icons">select_all</i>
+        <br>
+        select_all
+      </div>
+      
+      <div class="icons__item" data-name="send">
+        <i class="eos-icons">send</i>
+        <br>
+        send
+      </div>
+      
+      <div class="icons__item" data-name="sentiment_dissatisfied">
+        <i class="eos-icons">sentiment_dissatisfied</i>
+        <br>
+        sentiment_dissatisfied
+      </div>
+      
+      <div class="icons__item" data-name="sentiment_neutral">
+        <i class="eos-icons">sentiment_neutral</i>
+        <br>
+        sentiment_neutral
+      </div>
+      
+      <div class="icons__item" data-name="sentiment_satisfied">
+        <i class="eos-icons">sentiment_satisfied</i>
+        <br>
+        sentiment_satisfied
+      </div>
+      
+      <div class="icons__item" data-name="sentiment_very_dissatisfied">
+        <i class="eos-icons">sentiment_very_dissatisfied</i>
+        <br>
+        sentiment_very_dissatisfied
+      </div>
+      
+      <div class="icons__item" data-name="sentiment_very_satisfied">
+        <i class="eos-icons">sentiment_very_satisfied</i>
+        <br>
+        sentiment_very_satisfied
+      </div>
+      
+      <div class="icons__item" data-name="settings_applications">
+        <i class="eos-icons">settings_applications</i>
+        <br>
+        settings_applications
+      </div>
+      
+      <div class="icons__item" data-name="settings_backup_restore">
+        <i class="eos-icons">settings_backup_restore</i>
+        <br>
+        settings_backup_restore
+      </div>
+      
+      <div class="icons__item" data-name="settings_bluetooth">
+        <i class="eos-icons">settings_bluetooth</i>
+        <br>
+        settings_bluetooth
+      </div>
+      
+      <div class="icons__item" data-name="settings_brightness">
+        <i class="eos-icons">settings_brightness</i>
+        <br>
+        settings_brightness
+      </div>
+      
+      <div class="icons__item" data-name="settings_cell">
+        <i class="eos-icons">settings_cell</i>
+        <br>
+        settings_cell
+      </div>
+      
+      <div class="icons__item" data-name="settings_ethernet">
+        <i class="eos-icons">settings_ethernet</i>
+        <br>
+        settings_ethernet
+      </div>
+      
+      <div class="icons__item" data-name="settings_input_antenna">
+        <i class="eos-icons">settings_input_antenna</i>
+        <br>
+        settings_input_antenna
+      </div>
+      
+      <div class="icons__item" data-name="settings_input_component">
+        <i class="eos-icons">settings_input_component</i>
+        <br>
+        settings_input_component
+      </div>
+      
+      <div class="icons__item" data-name="settings_input_hdmi">
+        <i class="eos-icons">settings_input_hdmi</i>
+        <br>
+        settings_input_hdmi
+      </div>
+      
+      <div class="icons__item" data-name="settings_input_svideo">
+        <i class="eos-icons">settings_input_svideo</i>
+        <br>
+        settings_input_svideo
+      </div>
+      
+      <div class="icons__item" data-name="settings_overscan">
+        <i class="eos-icons">settings_overscan</i>
+        <br>
+        settings_overscan
+      </div>
+      
+      <div class="icons__item" data-name="settings_phone">
+        <i class="eos-icons">settings_phone</i>
+        <br>
+        settings_phone
+      </div>
+      
+      <div class="icons__item" data-name="settings_power">
+        <i class="eos-icons">settings_power</i>
+        <br>
+        settings_power
+      </div>
+      
+      <div class="icons__item" data-name="settings_remote">
+        <i class="eos-icons">settings_remote</i>
+        <br>
+        settings_remote
+      </div>
+      
+      <div class="icons__item" data-name="settings_system_daydream">
+        <i class="eos-icons">settings_system_daydream</i>
+        <br>
+        settings_system_daydream
+      </div>
+      
+      <div class="icons__item" data-name="settings_voice">
+        <i class="eos-icons">settings_voice</i>
+        <br>
+        settings_voice
+      </div>
+      
+      <div class="icons__item" data-name="settings">
+        <i class="eos-icons">settings</i>
+        <br>
+        settings
+      </div>
+      
+      <div class="icons__item" data-name="share">
+        <i class="eos-icons">share</i>
+        <br>
+        share
+      </div>
+      
+      <div class="icons__item" data-name="shop_two">
+        <i class="eos-icons">shop_two</i>
+        <br>
+        shop_two
+      </div>
+      
+      <div class="icons__item" data-name="shop">
+        <i class="eos-icons">shop</i>
+        <br>
+        shop
+      </div>
+      
+      <div class="icons__item" data-name="shopping_basket">
+        <i class="eos-icons">shopping_basket</i>
+        <br>
+        shopping_basket
+      </div>
+      
+      <div class="icons__item" data-name="shopping_cart">
+        <i class="eos-icons">shopping_cart</i>
+        <br>
+        shopping_cart
+      </div>
+      
+      <div class="icons__item" data-name="short_text">
+        <i class="eos-icons">short_text</i>
+        <br>
+        short_text
+      </div>
+      
+      <div class="icons__item" data-name="show_chart">
+        <i class="eos-icons">show_chart</i>
+        <br>
+        show_chart
+      </div>
+      
+      <div class="icons__item" data-name="shuffle">
+        <i class="eos-icons">shuffle</i>
+        <br>
+        shuffle
+      </div>
+      
+      <div class="icons__item" data-name="signal_cellular_no_sim">
+        <i class="eos-icons">signal_cellular_no_sim</i>
+        <br>
+        signal_cellular_no_sim
+      </div>
+      
+      <div class="icons__item" data-name="signal_cellular_null">
+        <i class="eos-icons">signal_cellular_null</i>
+        <br>
+        signal_cellular_null
+      </div>
+      
+      <div class="icons__item" data-name="signal_cellular_off">
+        <i class="eos-icons">signal_cellular_off</i>
+        <br>
+        signal_cellular_off
+      </div>
+      
+      <div class="icons__item" data-name="signal_wifi_off">
+        <i class="eos-icons">signal_wifi_off</i>
+        <br>
+        signal_wifi_off
+      </div>
+      
+      <div class="icons__item" data-name="sim_card_alert">
+        <i class="eos-icons">sim_card_alert</i>
+        <br>
+        sim_card_alert
+      </div>
+      
+      <div class="icons__item" data-name="sim_card">
+        <i class="eos-icons">sim_card</i>
+        <br>
+        sim_card
+      </div>
+      
+      <div class="icons__item" data-name="skip_next">
+        <i class="eos-icons">skip_next</i>
+        <br>
+        skip_next
+      </div>
+      
+      <div class="icons__item" data-name="skip_previous">
+        <i class="eos-icons">skip_previous</i>
+        <br>
+        skip_previous
+      </div>
+      
+      <div class="icons__item" data-name="slideshow">
+        <i class="eos-icons">slideshow</i>
+        <br>
+        slideshow
+      </div>
+      
+      <div class="icons__item" data-name="slow_motion_video">
+        <i class="eos-icons">slow_motion_video</i>
+        <br>
+        slow_motion_video
+      </div>
+      
+      <div class="icons__item" data-name="smartphone">
+        <i class="eos-icons">smartphone</i>
+        <br>
+        smartphone
+      </div>
+      
+      <div class="icons__item" data-name="smoke_free">
+        <i class="eos-icons">smoke_free</i>
+        <br>
+        smoke_free
+      </div>
+      
+      <div class="icons__item" data-name="smoking_rooms">
+        <i class="eos-icons">smoking_rooms</i>
+        <br>
+        smoking_rooms
+      </div>
+      
+      <div class="icons__item" data-name="sms_failed">
+        <i class="eos-icons">sms_failed</i>
+        <br>
+        sms_failed
+      </div>
+      
+      <div class="icons__item" data-name="sms">
+        <i class="eos-icons">sms</i>
+        <br>
+        sms
+      </div>
+      
+      <div class="icons__item" data-name="snooze">
+        <i class="eos-icons">snooze</i>
+        <br>
+        snooze
+      </div>
+      
+      <div class="icons__item" data-name="sort_by_alpha">
+        <i class="eos-icons">sort_by_alpha</i>
+        <br>
+        sort_by_alpha
+      </div>
+      
+      <div class="icons__item" data-name="sort">
+        <i class="eos-icons">sort</i>
+        <br>
+        sort
+      </div>
+      
+      <div class="icons__item" data-name="spa">
+        <i class="eos-icons">spa</i>
+        <br>
+        spa
+      </div>
+      
+      <div class="icons__item" data-name="space_bar">
+        <i class="eos-icons">space_bar</i>
+        <br>
+        space_bar
+      </div>
+      
+      <div class="icons__item" data-name="speaker_group">
+        <i class="eos-icons">speaker_group</i>
+        <br>
+        speaker_group
+      </div>
+      
+      <div class="icons__item" data-name="speaker_notes_off">
+        <i class="eos-icons">speaker_notes_off</i>
+        <br>
+        speaker_notes_off
+      </div>
+      
+      <div class="icons__item" data-name="speaker_notes">
+        <i class="eos-icons">speaker_notes</i>
+        <br>
+        speaker_notes
+      </div>
+      
+      <div class="icons__item" data-name="speaker_phone">
+        <i class="eos-icons">speaker_phone</i>
+        <br>
+        speaker_phone
+      </div>
+      
+      <div class="icons__item" data-name="speaker">
+        <i class="eos-icons">speaker</i>
+        <br>
+        speaker
+      </div>
+      
+      <div class="icons__item" data-name="spellcheck">
+        <i class="eos-icons">spellcheck</i>
+        <br>
+        spellcheck
+      </div>
+      
+      <div class="icons__item" data-name="star_border">
+        <i class="eos-icons">star_border</i>
+        <br>
+        star_border
+      </div>
+      
+      <div class="icons__item" data-name="star_half">
+        <i class="eos-icons">star_half</i>
+        <br>
+        star_half
+      </div>
+      
+      <div class="icons__item" data-name="star">
+        <i class="eos-icons">star</i>
+        <br>
+        star
+      </div>
+      
+      <div class="icons__item" data-name="stars">
+        <i class="eos-icons">stars</i>
+        <br>
+        stars
+      </div>
+      
+      <div class="icons__item" data-name="stay_current_landscape">
+        <i class="eos-icons">stay_current_landscape</i>
+        <br>
+        stay_current_landscape
+      </div>
+      
+      <div class="icons__item" data-name="stay_current_portrait">
+        <i class="eos-icons">stay_current_portrait</i>
+        <br>
+        stay_current_portrait
+      </div>
+      
+      <div class="icons__item" data-name="stop_screen_share">
+        <i class="eos-icons">stop_screen_share</i>
+        <br>
+        stop_screen_share
+      </div>
+      
+      <div class="icons__item" data-name="stop">
+        <i class="eos-icons">stop</i>
+        <br>
+        stop
+      </div>
+      
+      <div class="icons__item" data-name="storage">
+        <i class="eos-icons">storage</i>
+        <br>
+        storage
+      </div>
+      
+      <div class="icons__item" data-name="store_mall_directory">
+        <i class="eos-icons">store_mall_directory</i>
+        <br>
+        store_mall_directory
+      </div>
+      
+      <div class="icons__item" data-name="store">
+        <i class="eos-icons">store</i>
+        <br>
+        store
+      </div>
+      
+      <div class="icons__item" data-name="straighten">
+        <i class="eos-icons">straighten</i>
+        <br>
+        straighten
+      </div>
+      
+      <div class="icons__item" data-name="streetview">
+        <i class="eos-icons">streetview</i>
+        <br>
+        streetview
+      </div>
+      
+      <div class="icons__item" data-name="strikethrough_s">
+        <i class="eos-icons">strikethrough_s</i>
+        <br>
+        strikethrough_s
+      </div>
+      
+      <div class="icons__item" data-name="style">
+        <i class="eos-icons">style</i>
+        <br>
+        style
+      </div>
+      
+      <div class="icons__item" data-name="subdirectory_arrow_left">
+        <i class="eos-icons">subdirectory_arrow_left</i>
+        <br>
+        subdirectory_arrow_left
+      </div>
+      
+      <div class="icons__item" data-name="subdirectory_arrow_right">
+        <i class="eos-icons">subdirectory_arrow_right</i>
+        <br>
+        subdirectory_arrow_right
+      </div>
+      
+      <div class="icons__item" data-name="subject">
+        <i class="eos-icons">subject</i>
+        <br>
+        subject
+      </div>
+      
+      <div class="icons__item" data-name="subscriptions">
+        <i class="eos-icons">subscriptions</i>
+        <br>
+        subscriptions
+      </div>
+      
+      <div class="icons__item" data-name="subtitles">
+        <i class="eos-icons">subtitles</i>
+        <br>
+        subtitles
+      </div>
+      
+      <div class="icons__item" data-name="subway">
+        <i class="eos-icons">subway</i>
+        <br>
+        subway
+      </div>
+      
+      <div class="icons__item" data-name="supervisor_account">
+        <i class="eos-icons">supervisor_account</i>
+        <br>
+        supervisor_account
+      </div>
+      
+      <div class="icons__item" data-name="surround_sound">
+        <i class="eos-icons">surround_sound</i>
+        <br>
+        surround_sound
+      </div>
+      
+      <div class="icons__item" data-name="swap_calls">
+        <i class="eos-icons">swap_calls</i>
+        <br>
+        swap_calls
+      </div>
+      
+      <div class="icons__item" data-name="swap_horiz">
+        <i class="eos-icons">swap_horiz</i>
+        <br>
+        swap_horiz
+      </div>
+      
+      <div class="icons__item" data-name="swap_vert">
+        <i class="eos-icons">swap_vert</i>
+        <br>
+        swap_vert
+      </div>
+      
+      <div class="icons__item" data-name="swap_vertical_circle">
+        <i class="eos-icons">swap_vertical_circle</i>
+        <br>
+        swap_vertical_circle
+      </div>
+      
+      <div class="icons__item" data-name="switch_camera">
+        <i class="eos-icons">switch_camera</i>
+        <br>
+        switch_camera
+      </div>
+      
+      <div class="icons__item" data-name="switch_video">
+        <i class="eos-icons">switch_video</i>
+        <br>
+        switch_video
+      </div>
+      
+      <div class="icons__item" data-name="sync_disabled">
+        <i class="eos-icons">sync_disabled</i>
+        <br>
+        sync_disabled
+      </div>
+      
+      <div class="icons__item" data-name="sync_problem">
+        <i class="eos-icons">sync_problem</i>
+        <br>
+        sync_problem
+      </div>
+      
+      <div class="icons__item" data-name="sync">
+        <i class="eos-icons">sync</i>
+        <br>
+        sync
+      </div>
+      
+      <div class="icons__item" data-name="system_update_alt">
+        <i class="eos-icons">system_update_alt</i>
+        <br>
+        system_update_alt
+      </div>
+      
+      <div class="icons__item" data-name="system_update">
+        <i class="eos-icons">system_update</i>
+        <br>
+        system_update
+      </div>
+      
+      <div class="icons__item" data-name="tab_unselected">
+        <i class="eos-icons">tab_unselected</i>
+        <br>
+        tab_unselected
+      </div>
+      
+      <div class="icons__item" data-name="tab">
+        <i class="eos-icons">tab</i>
+        <br>
+        tab
+      </div>
+      
+      <div class="icons__item" data-name="tablet_android">
+        <i class="eos-icons">tablet_android</i>
+        <br>
+        tablet_android
+      </div>
+      
+      <div class="icons__item" data-name="tablet_mac">
+        <i class="eos-icons">tablet_mac</i>
+        <br>
+        tablet_mac
+      </div>
+      
+      <div class="icons__item" data-name="tablet">
+        <i class="eos-icons">tablet</i>
+        <br>
+        tablet
+      </div>
+      
+      <div class="icons__item" data-name="tag_faces">
+        <i class="eos-icons">tag_faces</i>
+        <br>
+        tag_faces
+      </div>
+      
+      <div class="icons__item" data-name="tap_and_play">
+        <i class="eos-icons">tap_and_play</i>
+        <br>
+        tap_and_play
+      </div>
+      
+      <div class="icons__item" data-name="terrain">
+        <i class="eos-icons">terrain</i>
+        <br>
+        terrain
+      </div>
+      
+      <div class="icons__item" data-name="text_fields">
+        <i class="eos-icons">text_fields</i>
+        <br>
+        text_fields
+      </div>
+      
+      <div class="icons__item" data-name="text_format">
+        <i class="eos-icons">text_format</i>
+        <br>
+        text_format
+      </div>
+      
+      <div class="icons__item" data-name="textsms">
+        <i class="eos-icons">textsms</i>
+        <br>
+        textsms
+      </div>
+      
+      <div class="icons__item" data-name="texture">
+        <i class="eos-icons">texture</i>
+        <br>
+        texture
+      </div>
+      
+      <div class="icons__item" data-name="theaters">
+        <i class="eos-icons">theaters</i>
+        <br>
+        theaters
+      </div>
+      
+      <div class="icons__item" data-name="thumb_down">
+        <i class="eos-icons">thumb_down</i>
+        <br>
+        thumb_down
+      </div>
+      
+      <div class="icons__item" data-name="thumb_up">
+        <i class="eos-icons">thumb_up</i>
+        <br>
+        thumb_up
+      </div>
+      
+      <div class="icons__item" data-name="thumbs_up_down">
+        <i class="eos-icons">thumbs_up_down</i>
+        <br>
+        thumbs_up_down
+      </div>
+      
+      <div class="icons__item" data-name="time_to_leave">
+        <i class="eos-icons">time_to_leave</i>
+        <br>
+        time_to_leave
+      </div>
+      
+      <div class="icons__item" data-name="timelapse">
+        <i class="eos-icons">timelapse</i>
+        <br>
+        timelapse
+      </div>
+      
+      <div class="icons__item" data-name="timeline">
+        <i class="eos-icons">timeline</i>
+        <br>
+        timeline
+      </div>
+      
+      <div class="icons__item" data-name="timer_10">
+        <i class="eos-icons">timer_10</i>
+        <br>
+        timer_10
+      </div>
+      
+      <div class="icons__item" data-name="timer_3">
+        <i class="eos-icons">timer_3</i>
+        <br>
+        timer_3
+      </div>
+      
+      <div class="icons__item" data-name="timer_off">
+        <i class="eos-icons">timer_off</i>
+        <br>
+        timer_off
+      </div>
+      
+      <div class="icons__item" data-name="timer">
+        <i class="eos-icons">timer</i>
+        <br>
+        timer
+      </div>
+      
+      <div class="icons__item" data-name="title">
+        <i class="eos-icons">title</i>
+        <br>
+        title
+      </div>
+      
+      <div class="icons__item" data-name="toc">
+        <i class="eos-icons">toc</i>
+        <br>
+        toc
+      </div>
+      
+      <div class="icons__item" data-name="today">
+        <i class="eos-icons">today</i>
+        <br>
+        today
+      </div>
+      
+      <div class="icons__item" data-name="toll">
+        <i class="eos-icons">toll</i>
+        <br>
+        toll
+      </div>
+      
+      <div class="icons__item" data-name="tonality">
+        <i class="eos-icons">tonality</i>
+        <br>
+        tonality
+      </div>
+      
+      <div class="icons__item" data-name="touch_app">
+        <i class="eos-icons">touch_app</i>
+        <br>
+        touch_app
+      </div>
+      
+      <div class="icons__item" data-name="toys">
+        <i class="eos-icons">toys</i>
+        <br>
+        toys
+      </div>
+      
+      <div class="icons__item" data-name="track_changes">
+        <i class="eos-icons">track_changes</i>
+        <br>
+        track_changes
+      </div>
+      
+      <div class="icons__item" data-name="traffic">
+        <i class="eos-icons">traffic</i>
+        <br>
+        traffic
+      </div>
+      
+      <div class="icons__item" data-name="train">
+        <i class="eos-icons">train</i>
+        <br>
+        train
+      </div>
+      
+      <div class="icons__item" data-name="tram">
+        <i class="eos-icons">tram</i>
+        <br>
+        tram
+      </div>
+      
+      <div class="icons__item" data-name="transfer_within_a_station">
+        <i class="eos-icons">transfer_within_a_station</i>
+        <br>
+        transfer_within_a_station
+      </div>
+      
+      <div class="icons__item" data-name="transform">
+        <i class="eos-icons">transform</i>
+        <br>
+        transform
+      </div>
+      
+      <div class="icons__item" data-name="translate">
+        <i class="eos-icons">translate</i>
+        <br>
+        translate
+      </div>
+      
+      <div class="icons__item" data-name="trending_down">
+        <i class="eos-icons">trending_down</i>
+        <br>
+        trending_down
+      </div>
+      
+      <div class="icons__item" data-name="trending_flat">
+        <i class="eos-icons">trending_flat</i>
+        <br>
+        trending_flat
+      </div>
+      
+      <div class="icons__item" data-name="trending_up">
+        <i class="eos-icons">trending_up</i>
+        <br>
+        trending_up
+      </div>
+      
+      <div class="icons__item" data-name="tune">
+        <i class="eos-icons">tune</i>
+        <br>
+        tune
+      </div>
+      
+      <div class="icons__item" data-name="turned_in_not">
+        <i class="eos-icons">turned_in_not</i>
+        <br>
+        turned_in_not
+      </div>
+      
+      <div class="icons__item" data-name="turned_in">
+        <i class="eos-icons">turned_in</i>
+        <br>
+        turned_in
+      </div>
+      
+      <div class="icons__item" data-name="tv">
+        <i class="eos-icons">tv</i>
+        <br>
+        tv
+      </div>
+      
+      <div class="icons__item" data-name="unarchive">
+        <i class="eos-icons">unarchive</i>
+        <br>
+        unarchive
+      </div>
+      
+      <div class="icons__item" data-name="undo">
+        <i class="eos-icons">undo</i>
+        <br>
+        undo
+      </div>
+      
+      <div class="icons__item" data-name="unfold_less">
+        <i class="eos-icons">unfold_less</i>
+        <br>
+        unfold_less
+      </div>
+      
+      <div class="icons__item" data-name="unfold_more">
+        <i class="eos-icons">unfold_more</i>
+        <br>
+        unfold_more
+      </div>
+      
+      <div class="icons__item" data-name="update">
+        <i class="eos-icons">update</i>
+        <br>
+        update
+      </div>
+      
+      <div class="icons__item" data-name="usb">
+        <i class="eos-icons">usb</i>
+        <br>
+        usb
+      </div>
+      
+      <div class="icons__item" data-name="verified_user">
+        <i class="eos-icons">verified_user</i>
+        <br>
+        verified_user
+      </div>
+      
+      <div class="icons__item" data-name="vertical_align_bottom">
+        <i class="eos-icons">vertical_align_bottom</i>
+        <br>
+        vertical_align_bottom
+      </div>
+      
+      <div class="icons__item" data-name="vertical_align_center">
+        <i class="eos-icons">vertical_align_center</i>
+        <br>
+        vertical_align_center
+      </div>
+      
+      <div class="icons__item" data-name="vertical_align_top">
+        <i class="eos-icons">vertical_align_top</i>
+        <br>
+        vertical_align_top
+      </div>
+      
+      <div class="icons__item" data-name="vibration">
+        <i class="eos-icons">vibration</i>
+        <br>
+        vibration
+      </div>
+      
+      <div class="icons__item" data-name="video_call">
+        <i class="eos-icons">video_call</i>
+        <br>
+        video_call
+      </div>
+      
+      <div class="icons__item" data-name="video_label">
+        <i class="eos-icons">video_label</i>
+        <br>
+        video_label
+      </div>
+      
+      <div class="icons__item" data-name="video_library">
+        <i class="eos-icons">video_library</i>
+        <br>
+        video_library
+      </div>
+      
+      <div class="icons__item" data-name="videocam_off">
+        <i class="eos-icons">videocam_off</i>
+        <br>
+        videocam_off
+      </div>
+      
+      <div class="icons__item" data-name="videocam">
+        <i class="eos-icons">videocam</i>
+        <br>
+        videocam
+      </div>
+      
+      <div class="icons__item" data-name="videogame_asset">
+        <i class="eos-icons">videogame_asset</i>
+        <br>
+        videogame_asset
+      </div>
+      
+      <div class="icons__item" data-name="view_agenda">
+        <i class="eos-icons">view_agenda</i>
+        <br>
+        view_agenda
+      </div>
+      
+      <div class="icons__item" data-name="view_array">
+        <i class="eos-icons">view_array</i>
+        <br>
+        view_array
+      </div>
+      
+      <div class="icons__item" data-name="view_carousel">
+        <i class="eos-icons">view_carousel</i>
+        <br>
+        view_carousel
+      </div>
+      
+      <div class="icons__item" data-name="view_column">
+        <i class="eos-icons">view_column</i>
+        <br>
+        view_column
+      </div>
+      
+      <div class="icons__item" data-name="view_comfy">
+        <i class="eos-icons">view_comfy</i>
+        <br>
+        view_comfy
+      </div>
+      
+      <div class="icons__item" data-name="view_compact">
+        <i class="eos-icons">view_compact</i>
+        <br>
+        view_compact
+      </div>
+      
+      <div class="icons__item" data-name="view_day">
+        <i class="eos-icons">view_day</i>
+        <br>
+        view_day
+      </div>
+      
+      <div class="icons__item" data-name="view_headline">
+        <i class="eos-icons">view_headline</i>
+        <br>
+        view_headline
+      </div>
+      
+      <div class="icons__item" data-name="view_list">
+        <i class="eos-icons">view_list</i>
+        <br>
+        view_list
+      </div>
+      
+      <div class="icons__item" data-name="view_module">
+        <i class="eos-icons">view_module</i>
+        <br>
+        view_module
+      </div>
+      
+      <div class="icons__item" data-name="view_quilt">
+        <i class="eos-icons">view_quilt</i>
+        <br>
+        view_quilt
+      </div>
+      
+      <div class="icons__item" data-name="view_stream">
+        <i class="eos-icons">view_stream</i>
+        <br>
+        view_stream
+      </div>
+      
+      <div class="icons__item" data-name="view_week">
+        <i class="eos-icons">view_week</i>
+        <br>
+        view_week
+      </div>
+      
+      <div class="icons__item" data-name="vignette">
+        <i class="eos-icons">vignette</i>
+        <br>
+        vignette
+      </div>
+      
+      <div class="icons__item" data-name="visibility_off">
+        <i class="eos-icons">visibility_off</i>
+        <br>
+        visibility_off
+      </div>
+      
+      <div class="icons__item" data-name="visibility">
+        <i class="eos-icons">visibility</i>
+        <br>
+        visibility
+      </div>
+      
+      <div class="icons__item" data-name="voice_chat">
+        <i class="eos-icons">voice_chat</i>
+        <br>
+        voice_chat
+      </div>
+      
+      <div class="icons__item" data-name="voicemail">
+        <i class="eos-icons">voicemail</i>
+        <br>
+        voicemail
+      </div>
+      
+      <div class="icons__item" data-name="volume_down">
+        <i class="eos-icons">volume_down</i>
+        <br>
+        volume_down
+      </div>
+      
+      <div class="icons__item" data-name="volume_mute">
+        <i class="eos-icons">volume_mute</i>
+        <br>
+        volume_mute
+      </div>
+      
+      <div class="icons__item" data-name="volume_off">
+        <i class="eos-icons">volume_off</i>
+        <br>
+        volume_off
+      </div>
+      
+      <div class="icons__item" data-name="volume_up">
+        <i class="eos-icons">volume_up</i>
+        <br>
+        volume_up
+      </div>
+      
+      <div class="icons__item" data-name="vpn_key">
+        <i class="eos-icons">vpn_key</i>
+        <br>
+        vpn_key
+      </div>
+      
+      <div class="icons__item" data-name="vpn_lock">
+        <i class="eos-icons">vpn_lock</i>
+        <br>
+        vpn_lock
+      </div>
+      
+      <div class="icons__item" data-name="wallpaper">
+        <i class="eos-icons">wallpaper</i>
+        <br>
+        wallpaper
+      </div>
+      
+      <div class="icons__item" data-name="warning">
+        <i class="eos-icons">warning</i>
+        <br>
+        warning
+      </div>
+      
+      <div class="icons__item" data-name="watch_later">
+        <i class="eos-icons">watch_later</i>
+        <br>
+        watch_later
+      </div>
+      
+      <div class="icons__item" data-name="watch">
+        <i class="eos-icons">watch</i>
+        <br>
+        watch
+      </div>
+      
+      <div class="icons__item" data-name="wb_auto">
+        <i class="eos-icons">wb_auto</i>
+        <br>
+        wb_auto
+      </div>
+      
+      <div class="icons__item" data-name="wb_incandescent">
+        <i class="eos-icons">wb_incandescent</i>
+        <br>
+        wb_incandescent
+      </div>
+      
+      <div class="icons__item" data-name="wb_iridescent">
+        <i class="eos-icons">wb_iridescent</i>
+        <br>
+        wb_iridescent
+      </div>
+      
+      <div class="icons__item" data-name="wb_sunny">
+        <i class="eos-icons">wb_sunny</i>
+        <br>
+        wb_sunny
+      </div>
+      
+      <div class="icons__item" data-name="wc">
+        <i class="eos-icons">wc</i>
+        <br>
+        wc
+      </div>
+      
+      <div class="icons__item" data-name="web_asset">
+        <i class="eos-icons">web_asset</i>
+        <br>
+        web_asset
+      </div>
+      
+      <div class="icons__item" data-name="web">
+        <i class="eos-icons">web</i>
+        <br>
+        web
+      </div>
+      
+      <div class="icons__item" data-name="weekend">
+        <i class="eos-icons">weekend</i>
+        <br>
+        weekend
+      </div>
+      
+      <div class="icons__item" data-name="whatshot">
+        <i class="eos-icons">whatshot</i>
+        <br>
+        whatshot
+      </div>
+      
+      <div class="icons__item" data-name="widgets">
+        <i class="eos-icons">widgets</i>
+        <br>
+        widgets
+      </div>
+      
+      <div class="icons__item" data-name="wifi_lock">
+        <i class="eos-icons">wifi_lock</i>
+        <br>
+        wifi_lock
+      </div>
+      
+      <div class="icons__item" data-name="wifi_tethering">
+        <i class="eos-icons">wifi_tethering</i>
+        <br>
+        wifi_tethering
+      </div>
+      
+      <div class="icons__item" data-name="wifi">
+        <i class="eos-icons">wifi</i>
+        <br>
+        wifi
+      </div>
+      
+      <div class="icons__item" data-name="work">
+        <i class="eos-icons">work</i>
+        <br>
+        work
+      </div>
+      
+      <div class="icons__item" data-name="wrap_text">
+        <i class="eos-icons">wrap_text</i>
+        <br>
+        wrap_text
+      </div>
+      
+      <div class="icons__item" data-name="youtube_searched_for">
+        <i class="eos-icons">youtube_searched_for</i>
+        <br>
+        youtube_searched_for
+      </div>
+      
+      <div class="icons__item" data-name="zoom_in">
+        <i class="eos-icons">zoom_in</i>
+        <br>
+        zoom_in
+      </div>
+      
+      <div class="icons__item" data-name="zoom_out_map">
+        <i class="eos-icons">zoom_out_map</i>
+        <br>
+        zoom_out_map
+      </div>
+      
+      <div class="icons__item" data-name="zoom_out">
+        <i class="eos-icons">zoom_out</i>
+        <br>
+        zoom_out
+      </div>
+      
+    </div>
+    <div id="icons-animated">
+
+      <h3>Animated icons</h3>
+      <div class="icons__item" data-name="loading">
+        <img class='eos-icons eos-icon-animated' src='../animated-svg/loading.svg'>
+        <br />
+        loading
+      </div>
+
+      <div class="icons__item" data-name="installing">
+        <img class='eos-icons eos-icon-animated' src='../animated-svg/installing.svg'>
+        <br>
+        installing
+      </div>
+    </div>
+  </div>
+
+  <div id="how-to-use" class='how-to-use'>
+    <div class='container'>
+      <h2 class='text-white'>
+        How to use it:
+        <small id='close-code-snippet' class='pull-right'>X Close</small>
+      </h2>
+      
+      <pre><code>&lt;i class=&quot;eos-icons&quot;&gt;<span id="name2">icon_name</span>&lt;/i&gt;</code></pre>
+      
+    </div>
+  </div>
+
+  <div id="how-to-use" class='how-to-use-animated'>
+    <div class='container'>
+      <h2 class='text-white'>
+        How to use it:
+        <small id='close-code-snippet-animated' class='pull-right'>X Close</small>
+      </h2>
+
+      <div id='animatedIconDemo'></div>
+    </div>
+  </div>
+  <footer>
+    <div class='container'>
+      Download from gitlab at <a href="https://gitlab.com/SUSE-UIUX/eos-icons">EOS icons</a>.
+      Thanks to <a href="https://github.com/sapegin/grunt-webfont">grunt-webfont</a>.
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var showCodeSnippet = false
+      var iconName
+
+      //hide code snippet by default
+      document.getElementsByClassName('how-to-use')[0].style.visibility = 'hidden'
+      document.getElementsByClassName('how-to-use-animated')[0].style.visibility = 'hidden'
+
+      document.getElementById('icons').onclick = function (e) {
+        e = e || window.event;
+        iconName = e.target.getAttribute('data-name') || e.target.parentNode.getAttribute('data-name');
+        document.getElementById('name2').innerHTML = iconName;
+
+        if (iconName) {
+          showCodeSnippet = true
+          console.log('something selected')
+          document.getElementsByClassName('how-to-use')[0].style.visibility = 'visible'
+          document.getElementsByClassName('how-to-use-animated')[0].style.visibility = 'hidden'
+        }
+      }
+
+      document.getElementById('icons-animated').onclick = function (e) {
+        e = e || window.event;
+        iconName = e.target.getAttribute('data-name') || e.target.parentNode.getAttribute('data-name');
+        iconDemo = '<pre><code>&lt;i class=&quoteos-icons eos-icon-' + iconName + '&quot;&gt;' + '&lt;/i&gt;</code></pre>';
+        document.getElementById('animatedIconDemo').innerHTML = iconDemo;
+        if (iconName) {
+          showCodeSnippet = true
+          console.log(iconName)
+          document.getElementsByClassName('how-to-use-animated')[0].style.visibility = 'visible'
+        }
+      }
+
+      document.getElementById('close-code-snippet').onclick = function (e) {
+        showCodeSnippet = false
+        iconName = ''
+        document.getElementsByClassName('how-to-use')[0].style.visibility = 'hidden'
+        document.getElementsByClassName('how-to-use-animated')[0].style.visibility = 'hidden'
+      }
+
+      document.getElementById('close-code-snippet-animated').onclick = function (e) {
+        showCodeSnippet = false
+        iconName = ''
+        document.getElementsByClassName('how-to-use-animated')[0].style.visibility = 'hidden'
+        document.getElementsByClassName('how-to-use')[0].style.visibility = 'hidden'
+      }
+
+      var buttonsSizes = document.getElementsByClassName('change-size')
+      for (i = 0; i < buttonsSizes.length; i++) {
+        buttonsSizes[i].onclick = function (e) {
+          e = e || window.event;
+          iconSize = e.target.getAttribute('data-size')
+
+          for (i = 0; i < document.getElementsByClassName('eos-icons').length; i++) {
+            document.getElementsByClassName('eos-icons')[i].style.fontSize = iconSize + 'px';
+          }
+          for (i = 0; i < document.getElementsByClassName('eos-icon-animated').length; i++) {
+            document.getElementsByClassName('eos-icon-animated')[i].style.width = iconSize + 'px';
+          }
+        }
+      }
+
+    })();
+  </script>
+</body>
+
+</html>

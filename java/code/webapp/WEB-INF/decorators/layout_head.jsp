@@ -25,7 +25,7 @@
     <c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
 
 
-<!-- import default fonts/icons styles -->
+    <!-- import default fonts/icons styles -->
     <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css?cb=${cb_version}" />
     <!-- import custom fonts/icons styles -->
     <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css?cb=${cb_version}" />
@@ -45,6 +45,9 @@
     <rhn:require acl="not is(development_environment)">
       <link rel="stylesheet" href="/css/spacewalk.css?cb=${cb_version}" />
     </rhn:require>
+
+    <!-- import eos-icons -->
+    <link rel="stylesheet" href="/css/eos-icons/dist/css/eos-icons.css?cb=${cb_version}" />
 
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
