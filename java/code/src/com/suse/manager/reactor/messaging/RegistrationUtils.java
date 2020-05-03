@@ -44,6 +44,7 @@ import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -262,7 +263,7 @@ public class RegistrationUtils {
                                 return Stream.concat(
                                         Stream.concat(
                                                 Stream.of(baseChannel),
-                                                mandatoryChannelsByBaseChannel(baseChannel)),
+                                                ChannelsUtils.mandatoryChannelsByBaseChannel(baseChannel)),
                                         ak.getChannels().stream()
                                                 .filter(c -> c.getParentChannel() != null &&
                                                         c.getParentChannel().getId().equals(baseChannel.getId())))
@@ -274,7 +275,7 @@ public class RegistrationUtils {
                                 Stream.concat(
                                     Stream.of(baseChannel),
                                     Stream.concat(
-                                            mandatoryChannelsByBaseChannel(baseChannel),
+                                            ChannelsUtils.mandatoryChannelsByBaseChannel(baseChannel),
                                             ak.getChannels().stream())
                                 ).collect(toSet())
                 )
@@ -420,30 +421,5 @@ public class RegistrationUtils {
                             stream
                     );
                 }).orElseGet(Stream::empty);
-    }
-
-    /**
-     * Returns a Stream of mandatory channels for a certain product, given its base channel in input
-     *
-     * @param baseChannel the product base channel
-     * @return the Stream of mandatory channels
-     */
-    private static Stream<Channel> mandatoryChannelsByBaseChannel(Channel baseChannel) {
-        if (!baseChannel.isBaseChannel()) {
-            return Stream.empty();
-        }
-
-        // identify the product by the base channel name
-        Optional<SUSEProduct> baseProduct = SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel());
-        if (baseProduct.isEmpty()) {
-            return Stream.empty();
-        }
-
-        return baseProduct.get().getSuseProductChannels().stream()
-                .filter(pc -> pc.isMandatory())
-                .map(SUSEProductChannel::getChannel)
-                // filter out channels with different base than the given one
-                .filter(c -> c.getParentChannel() == null ||
-                        c.getParentChannel().getLabel().equals(baseChannel.getLabel()));
     }
 }
