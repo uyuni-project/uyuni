@@ -1,3 +1,5 @@
+- Fix OS detection for Ubuntu in bootstrap script
+
 -------------------------------------------------------------------
 Mon Apr 13 09:33:21 CEST 2020 - jgonzalez@suse.com
 
