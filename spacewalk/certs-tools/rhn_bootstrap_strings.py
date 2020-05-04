@@ -664,7 +664,7 @@ elif [ "$INSTALLER" == apt ]; then
 	        apt-get purge salt-common
 	        rm -rf /etc/salt/minion.d/
         fi
-        apt-get --yes install $A_MISSING
+        apt-get --yes install --no-install-recommends $A_MISSING
 
         for P in $A_MISSING; do
             check_deb_pkg_installed "$P" || {{
@@ -674,7 +674,7 @@ elif [ "$INSTALLER" == apt ]; then
         done
     fi
     # try update main packages for registration from any repo which is available
-    apt-get --yes install --only-upgrade salt-common salt-minion ||:
+    apt-get --yes install --no-install-recommends --only-upgrade salt-common salt-minion ||:
 
     # remove bootstrap repo
     rm -f $CLIENT_REPO_FILE

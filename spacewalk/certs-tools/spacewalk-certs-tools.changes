@@ -1,3 +1,4 @@
+- On Debian-like systems, install only required dependencies when installing salt
 - Fix OS detection for Ubuntu in bootstrap script
 
 -------------------------------------------------------------------

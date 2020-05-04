@@ -131,6 +131,7 @@ trust_suse_manager_tools_deb_gpg_key:
 salt-minion-package:
   pkg.latest:
     - name: salt-minion
+    - install_recommends: False
     - require:
       - file: bootstrap_repo
 
