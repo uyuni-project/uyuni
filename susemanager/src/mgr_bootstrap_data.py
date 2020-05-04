@@ -538,6 +538,20 @@ PKGLISTUBUNTU1804 = [
     "dmidecode",
 ]
 
+PKGLISTUBUNTU2004 = [
+    "dctrl-tools",
+    "libnorm1",
+    "libpgm-5.2-0",
+    "libzmq5",
+    "python3-crypto",
+    "python3-dateutil",
+    "python3-msgpack",
+    "python3-psutil",
+    "python3-zmq",
+    "salt-common",
+    "salt-minion",
+]
+
 PKGLISTDEBIAN9 = [
     "dctrl-tools",
     "apt-transport-https",
@@ -1140,6 +1154,11 @@ DATA = {
     'ubuntu-18.04-amd64-uyuni' : {
         'BASECHANNEL' : 'ubuntu-18.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU1804,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-20.04-amd64-uyuni' : {
+        'BASECHANNEL' : 'ubuntu-20.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU2004,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/20/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian9-amd64' : {
