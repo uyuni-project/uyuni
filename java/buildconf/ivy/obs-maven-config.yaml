@@ -328,3 +328,8 @@ artifacts:
     package: hamcrest
     jar: hamcrest/library
     repository: Leap
+  - artifact: ical4j
+    package: ical4j
+    rpm: ical4j-[0-9.]+
+    jar: ical4j
+    repository: Uyuni_Other
