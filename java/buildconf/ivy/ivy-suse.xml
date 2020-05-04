@@ -38,6 +38,7 @@
         <dependency org="suse" name="httpclient" rev="4.5" />
         <dependency org="suse" name="httpcore" rev="4.4.1" />
         <dependency org="suse" name="httpcore-nio" rev="4.4.1" />
+        <dependency org="suse" name="ical4j" rev="3.0.18" />
         <dependency org="suse" name="jade4j" rev="1.0.7" />
         <dependency org="suse" name="jaf" rev="1.1.1" />
         <dependency org="suse" name="jakarta-persistence-api" rev="2.2.2" />
