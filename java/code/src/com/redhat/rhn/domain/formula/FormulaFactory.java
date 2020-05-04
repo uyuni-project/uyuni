@@ -518,9 +518,10 @@ public class FormulaFactory {
      * @param selectedFormulas the new selected formulas to save
      * @param org the org, the group belongs to
      * @throws IOException if an IOException occurs while saving the data
+     * @throws ValidatorException if a formula is not present (unchecked)
      */
-    public static synchronized void saveGroupFormulas(Long groupId,
-            List<String> selectedFormulas, Org org) throws IOException {
+    public static synchronized void saveGroupFormulas(Long groupId, List<String> selectedFormulas, Org org)
+            throws IOException, ValidatorException {
         validateFormulaPresence(selectedFormulas);
         saveFormulaOrder();
         File dataFile = new File(getGroupDataFile());
@@ -614,9 +615,10 @@ public class FormulaFactory {
      * @param minionId the minion id
      * @param selectedFormulas the new selected formulas to save
      * @throws IOException if an IOException occurs while saving the data
+     * @throws ValidatorException if a formula is not present (unchecked)
      */
     public static synchronized void saveServerFormulas(String minionId, List<String> selectedFormulas)
-            throws IOException {
+            throws IOException, ValidatorException {
         validateFormulaPresence(selectedFormulas);
         saveFormulaOrder();
         File dataFile = new File(getServerDataFile());
