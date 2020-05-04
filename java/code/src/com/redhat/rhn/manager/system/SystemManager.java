@@ -94,7 +94,6 @@ import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -756,18 +755,9 @@ public class SystemManager extends BaseManager {
     public static void removeServersFromServerGroup(Collection<Server> servers, ServerGroup serverGroup) {
         ServerFactory.removeServersFromGroup(servers, serverGroup);
         snapshotServers(servers, "Group membership alteration");
-
         if (FormulaFactory.hasMonitoringDataEnabled(serverGroup)) {
             for (Server server : servers) {
                 systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.MONITORING);
-                server.asMinionServer().ifPresent(minion -> {
-                    try {
-                        FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
-                    }
-                    catch (IOException e) {
-                        log.error("Error disabling monitoring: " + e.getMessage());
-                    }
-                });
             }
         }
     }

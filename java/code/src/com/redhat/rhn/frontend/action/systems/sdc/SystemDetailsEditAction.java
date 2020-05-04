@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.systems.sdc;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -33,7 +32,6 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
@@ -47,7 +45,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.util.LabelValueBean;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -285,19 +282,6 @@ public class SystemDetailsEditAction extends RhnAction {
                                 "system.entitle.added." + e.getLabel() + ".nodoc",
                                 s.getId().toString());
                     }
-
-                    // Handle monitoring enablement
-                    s.asMinionServer().ifPresent(minion -> {
-                        if (EntitlementManager.MONITORING.equals(e)) {
-                            try {
-                                FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
-                            }
-                            catch (IOException | ValidatorException ex) {
-                                log.error("Error enabling monitoring: " + ex.getMessage());
-                                createErrorMessage(request, "system.entitle.formula_error", null);
-                            }
-                        }
-                    });
                 }
             }
             else if ((daForm.get(e.getLabel()) == null ||
@@ -307,19 +291,6 @@ public class SystemDetailsEditAction extends RhnAction {
                 systemEntitlementManager.removeServerEntitlement(s, e);
 
                 needsSnapshot = true;
-
-                // Handle monitoring disablement
-                s.asMinionServer().ifPresent(minion -> {
-                    if (EntitlementManager.MONITORING.equals(e)) {
-                        try {
-                            FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
-                        }
-                        catch (IOException ioe) {
-                            log.error("Error disabling monitoring: " + ioe.getMessage());
-                            createErrorMessage(request, "system.entitle.formula_error", null);
-                        }
-                    }
-                });
             }
         }
 

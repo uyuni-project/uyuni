@@ -16,7 +16,6 @@
 package com.suse.manager.reactor.messaging;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -36,8 +35,6 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -56,7 +53,6 @@ import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -66,7 +62,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import org.apache.log4j.Logger;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
@@ -210,19 +205,6 @@ public class RegistrationUtils {
                 }
                 if (vr.getErrors().size() > 0) {
                     LOG.error(vr.getErrors().toString());
-                }
-                else {
-                    // Handle monitoring enablement
-                    server.asMinionServer().ifPresent(minion -> {
-                        if (EntitlementManager.MONITORING.equals(e)) {
-                            try {
-                                FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
-                            }
-                            catch (IOException | ValidatorException ex) {
-                                LOG.error("Error enabling monitoring: " + ex.getMessage());
-                            }
-                        }
-                    });
                 }
             }
         });
