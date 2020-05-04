@@ -1733,6 +1733,41 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Get the addresses and hostname for a given list of system
+     * @param loggedInUser The current user
+     * @param systemIDs the IDs of the systems
+     * @return Returns a list of maps containing the systems IP addresses and hostname
+     * @throws FaultException A FaultException is thrown if the systems cannot be found.
+     *
+     * @xmlrpc.doc Get the addresses and hostname for a given list of systems.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param  #array_single("int", "serverIds")
+     * @xmlrpc.returntype
+     *   #array()
+     *     #struct("network info")
+     *       #prop_desc("string", "ip", "IPv4 address of server")
+     *       #prop_desc("string", "ip6", "IPv6 address of server")
+     *       #prop_desc("string", "hostname", "Hostname of server")
+     *     #struct_end()
+     *   #array_end()
+     */
+    public List<Map<String, Object>> getNetworkForSystems(User loggedInUser, List<Integer> systemIDs)
+            throws FaultException {
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<Server> servers = this.xmlRpcSystemHelper.lookupServers(loggedInUser, systemIDs);
+
+        for (Server server : servers) {
+            Map<String, Object> network = new HashMap<String, Object>();
+            network.put("system_id", server.getId());
+            network.put("ip", StringUtils.defaultString(server.getIpAddress()));
+            network.put("ip6", StringUtils.defaultString(server.getIp6Address()));
+            network.put("hostname", StringUtils.defaultString(server.getHostname()));
+            result.add(network);
+        }
+        return result;
+    }
+
+    /**
      * Get a list of network devices for a given server.
      * @param loggedInUser The current user
      * @param sid The id of the server in question
