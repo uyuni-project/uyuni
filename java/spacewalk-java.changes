@@ -1,3 +1,6 @@
+- New API endpoint for retrieving combined formula data for a list of systems
+- New API endpoint for retrieving network information for a list of system
+- New API endpoint for retrieving system groups information for systems with a given entitlement
 - Improve performance for States view in SystemGroups detail view (bsc#1158752)
 - prevent race condition on metadata generation (bsc#1170197)
 - Make automatic system locking for cluster node (CaaSP) user configurable
