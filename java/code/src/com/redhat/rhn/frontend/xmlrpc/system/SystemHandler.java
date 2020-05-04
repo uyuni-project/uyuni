@@ -23,7 +23,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -140,7 +139,6 @@ import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
@@ -4900,19 +4898,6 @@ public class SystemHandler extends BaseHandler {
                 if (vr.getErrors().size() > 0) {
                     throw new InvalidEntitlementException();
                 }
-                else {
-                    // Handle monitoring enablement
-                    server.asMinionServer().ifPresent(minion -> {
-                        if (EntitlementManager.MONITORING.equals(ent)) {
-                            try {
-                                FormulaManager.getInstance().enableMonitoringOnEntitlementAdd(minion);
-                            }
-                            catch (IOException | ValidatorException e) {
-                                log.error("Error enabling monitoring: " + e.getMessage());
-                            }
-                        }
-                    });
-                }
             }
             else {
                 throw new InvalidEntitlementException();
@@ -4973,18 +4958,6 @@ public class SystemHandler extends BaseHandler {
             }
             systemEntitlementManager.removeServerEntitlement(server, ent);
             needsSnapshot = true;
-
-            // Handle monitoring disablement
-            server.asMinionServer().ifPresent(minion -> {
-                if (EntitlementManager.MONITORING.equals(ent)) {
-                    try {
-                        FormulaManager.getInstance().disableMonitoringOnEntitlementRemoval(minion);
-                    }
-                    catch (IOException e) {
-                        log.error("Error disabling monitoring: " + e.getMessage());
-                    }
-                }
-            });
         }
 
         // process base entitlements at the end
