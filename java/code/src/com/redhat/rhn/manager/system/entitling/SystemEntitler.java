@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.system.entitling;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.Channel;
@@ -35,15 +36,18 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +63,7 @@ public class SystemEntitler {
 
     private SystemQuery systemQuery;
     private VirtManager virtManager;
+    private MonitoringManager monitoringManager;
 
     /**
      * @param systemQueryIn instance for gathering data from a system.
@@ -67,6 +72,7 @@ public class SystemEntitler {
     public SystemEntitler(SystemQuery systemQueryIn, VirtManager virtManagerIn) {
         this.systemQuery = systemQueryIn;
         this.virtManager = virtManagerIn;
+        this.monitoringManager = new FormulaMonitoringManager();
     }
 
     /**
@@ -124,6 +130,16 @@ public class SystemEntitler {
             if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
                     !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
                 this.updateLibvirtEngine(minion);
+            }
+
+            if (EntitlementManager.MONITORING.equals(ent)) {
+                try {
+                    monitoringManager.enableMonitoring(minion);
+                }
+                catch (ValidatorException | IOException e) {
+                    LOG.error("Error enabling monitoring: " + e.getMessage(), e);
+                    result.addError(new ValidatorError("system.entitle.formula_error"));
+                }
             }
         });
 

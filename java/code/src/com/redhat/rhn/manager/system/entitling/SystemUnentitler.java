@@ -15,13 +15,21 @@
 
 package com.redhat.rhn.manager.system.entitling;
 
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
+
+import com.suse.manager.webui.services.iface.MonitoringManager;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,6 +41,7 @@ public class SystemUnentitler {
     private static final Logger LOG = Logger.getLogger(SystemUnentitler.class);
 
     public static final SystemUnentitler INSTANCE = new SystemUnentitler();
+    private MonitoringManager monitoringManager = new FormulaMonitoringManager();
 
     /**
      * Removes all the entitlements related to a server.
@@ -62,6 +71,19 @@ public class SystemUnentitler {
         }
         else {
             unentitleServer(server, ent);
+        }
+
+        if (EntitlementManager.MONITORING.equals(ent)) {
+            server.asMinionServer().ifPresent(s -> {
+                ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
+
+                try {
+                    monitoringManager.disableMonitoring(s);
+                }
+                catch (ValidatorException | IOException e) {
+                    LOG.warn("Error disabling monitoring: " + e.getMessage());
+                }
+            });
         }
     }
 
