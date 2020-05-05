@@ -317,7 +317,7 @@ public class ActionFactory extends HibernateFactory {
     public static boolean doesServerHaveKickstartScheduled(Long serverId) {
         Session session = HibernateFactory.getSession();
         Query query =
-                session.getNamedQuery("ServerAction.findPendingKickstartsForServer");
+                session.getNamedQuery("ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "kickstart.initiate");
         List retval = query.list();
@@ -333,7 +333,7 @@ public class ActionFactory extends HibernateFactory {
     public static Action isMigrationScheduledForServer(Long serverId) {
         Action ret = null;
         Query query = HibernateFactory.getSession().getNamedQuery(
-                "ServerAction.findPendingKickstartsForServer");
+                "ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "distupgrade.upgrade");
         List<ServerAction> list = query.list();
