@@ -15,10 +15,15 @@
 package com.suse.manager.maintenance;
 
 import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
+import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.download.DownloadException;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
@@ -32,10 +37,13 @@ import org.apache.http.StatusLine;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -300,5 +308,104 @@ public class MaintenanceManager {
     protected void manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
             List<String> scheduleStrategy) {
         // TODO: implement it
+    }
+
+    /**
+     * Assign {@link MaintenanceSchedule} to given set of {@link Server}s.
+     *
+     * @param user the user
+     * @param schedule the {@link MaintenanceSchedule}
+     * @param systemIds the set of {@link Server} IDs
+     * @throws PermissionException if the user does not have access to given servers
+     * @throws IllegalArgumentException if systems have pending maintenance-only actions
+     * @return the number of involved {@link Server}s
+     */
+    public int assignScheduleToSystems(User user, MaintenanceSchedule schedule, Set<Long> systemIds) {
+        ensureOrgAdmin(user);
+        ensureSystemsAccessible(user, systemIds);
+        ensureScheduleAccessible(user, schedule);
+
+        Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(systemIds);
+        if (!withMaintenanceActions.isEmpty()) {
+            throw new IllegalArgumentException("Systems have pending maintenance-only actions:" +
+                    withMaintenanceActions);
+        }
+
+        return ServerFactory.setMaintenanceScheduleToSystems(schedule, systemIds);
+    }
+
+    /**
+     * Retract {@link MaintenanceSchedule} from given set of {@link Server}s.
+     *
+     * @param user the user
+     * @param systemIds the set of {@link Server} IDs
+     * @throws PermissionException if the user does not have access to given servers
+     * @return the number of involved {@link Server}s
+     */
+    public int retractScheduleFromSystems(User user, Set<Long> systemIds) {
+        ensureOrgAdmin(user);
+        ensureSystemsAccessible(user, systemIds);
+
+        return ServerFactory.setMaintenanceScheduleToSystems(null, systemIds);
+    }
+
+    /**
+     * List {@link Server} IDs with given schedule
+     *
+     * @param user the user
+     * @param schedule the schedule
+     * @return the {@link Server} IDS with given schedule
+     */
+    public List<Long> listSystemIdsWithSchedule(User user, MaintenanceSchedule schedule) {
+        ensureOrgAdmin(user);
+        ensureScheduleAccessible(user, schedule);
+
+        List systemIds = getSession().createQuery(
+                "SELECT s.id from Server s " +
+                        "WHERE s.maintenanceSchedule = :schedule")
+                .setParameter("schedule", schedule)
+                .list();
+
+        ensureSystemsAccessible(user, systemIds);
+
+        return systemIds;
+    }
+
+    /**
+     * Ensures that given user has access to given systems
+     *
+     * @param user the user
+     * @param systemIds the {@link Server} IDs
+     * @throws PermissionException if the user does not have access
+     */
+    private void ensureSystemsAccessible(User user, Collection<Long> systemIds) {
+        if (!SystemManager.areSystemsAvailableToUser(user.getId(), new ArrayList<>(systemIds))) {
+            throw new PermissionException(String.format("User '%s' can't access systems.", user));
+        }
+    }
+
+    /**
+     * Ensures that given user has access to given {@link MaintenanceSchedule}
+     *
+     * @param user the user
+     * @param schedule the {@link MaintenanceSchedule}
+     * @throws PermissionException if the user does not have access
+     */
+    private void ensureScheduleAccessible(User user, MaintenanceSchedule schedule) {
+        if (!user.getOrg().equals(schedule.getOrg())) {
+            throw new PermissionException(String.format("User '%s' can't access schedule '%s'.", user, schedule));
+        }
+    }
+
+    /**
+     * Ensures that given user has the Org admin role
+     *
+     * @param user the user
+     * @throws PermissionException if the user does not have Org admin role
+     */
+    private static void ensureOrgAdmin(User user) {
+        if (!user.hasRole(ORG_ADMIN)) {
+            throw new PermissionException(ORG_ADMIN);
+        }
     }
 }
