@@ -436,8 +436,9 @@ public abstract class HibernateFactory {
      * @param obj to be reloaded
      * @return Object found if not, null
      * @throws HibernateException if something bad happens.
+     * @param <T> the entity type
      */
-    public static Object reload(Object obj) throws HibernateException {
+    public static <T> T reload(T obj) throws HibernateException {
         // assertNotNull(obj);
         ClassMetadata cmd = connectionManager.getMetadata(obj);
         Serializable id = cmd.getIdentifier(obj, (SessionImplementor) getSession());
@@ -452,7 +453,7 @@ public abstract class HibernateFactory {
          * session.get is set to not return the proxy class, so that is what we'll use.
          */
         // assertNotSame(obj, result);
-        return session.get(obj.getClass(), id);
+        return (T) session.get(obj.getClass(), id);
     }
 
     /**
