@@ -14,10 +14,13 @@
  */
 package com.suse.manager.xmlrpc.maintenance;
 
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
@@ -29,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Maintenance Schedule XMLRPC Handler
@@ -324,5 +328,92 @@ public class MaintenanceHandler extends BaseHandler {
         Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(loggedInUser, label);
         mm.remove(calendar.orElseThrow(() -> new EntityNotExistsFaultException(label)));
         return 1;
+    }
+
+    /**
+     * Assign schedule with given name to systems with given IDs
+     *
+     * @param loggedInUser the user
+     * @param scheduleName the schedule name
+     * @param systemIds the system IDs
+     * @return the number of involved systems
+     *
+     * @xmlrpc.doc Assign schedule with given name to systems with given IDs.
+     * Throws a PermissionCheckFailureException when some of the systems are not accessible by the user.
+     * Throws a InvalidParameterException when some of the systems have pending actions that are not allowed in the
+     * maintenance mode.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "scheduleName", "The schedule name")
+     * @xmlrpc.param #array_single("int", "system IDs")
+     * @xmlrpc.returntype #array_single("int", "number of involved systems")
+     */
+    public Integer assignScheduleToSystems(User loggedInUser, String scheduleName, List<Integer> systemIds) {
+        ensureOrgAdmin(loggedInUser);
+        MaintenanceSchedule schedule = mm
+                .lookupMaintenanceScheduleByUserAndName(loggedInUser, scheduleName)
+                .orElseThrow(() -> new EntityNotExistsFaultException(scheduleName));
+
+        Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
+        try {
+            return mm.assignScheduleToSystems(loggedInUser, schedule, longIds);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidParameterException(e.getMessage());
+        }
+    }
+
+    /**
+     * Retract schedule with given name from systems with given IDs
+     *
+     * @param loggedInUser the user
+     * @param systemIds the system IDs
+     * @return the number of involved systems
+     *
+     * @xmlrpc.doc Retract schedule with given name from systems with given IDs
+     * Throws a PermissionCheckFailureException when some of the systems are not accessible by the user.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #array_single("int", "system IDs")
+     * @xmlrpc.returntype #array_single("int", "number of involved systems")
+     */
+    public Integer retractScheduleFromSystems(User loggedInUser, List<Integer> systemIds) {
+        ensureOrgAdmin(loggedInUser);
+
+        Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
+        try {
+            return mm.retractScheduleFromSystems(loggedInUser, longIds);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
+    }
+
+    /**
+     * List IDs of systems that have given schedule assigned
+     *
+     * @param loggedInUser the user
+     * @param scheduleName the schedule name
+     * @return the IDs of systems that have given schedule assigned
+     *
+     * @xmlrpc.doc List IDs of systems that have given schedule assigned
+     * Throws a PermissionCheckFailureException when some of the systems are not accessible by the user.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "scheduleName", "The schedule name")
+     * @xmlrpc.returntype #array_single("int", "system IDs")
+    */
+    public List<Long> listSystemsWithSchedule(User loggedInUser, String scheduleName) {
+        ensureOrgAdmin(loggedInUser);
+        MaintenanceSchedule schedule = mm
+                .lookupMaintenanceScheduleByUserAndName(loggedInUser, scheduleName)
+                .orElseThrow(() -> new EntityNotExistsFaultException(scheduleName));
+
+        try {
+            return mm.listSystemIdsWithSchedule(loggedInUser, schedule);
+        }
+        catch (PermissionException e) {
+            throw new PermissionCheckFailureException(e);
+        }
     }
 }
