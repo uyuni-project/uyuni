@@ -1,3 +1,4 @@
+- XMLRPC: Assign/retract maintenance schedule to/from systems
 - Pass image profile custom info values as Docker buildargs during image build
 - Fix activation keys request error in image import page (bsc#1170046)
 - Fix custom info values input in image profile edit form (bsc#1169773)
