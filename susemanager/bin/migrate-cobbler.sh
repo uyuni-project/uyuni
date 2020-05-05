@@ -16,6 +16,7 @@ do
             sed -e "s;/var/lib/rhn/kickstarts;;g" \
                 -e "s/kickstart/autoinstall/" \
                 -e "s/ks_meta/autoinstall_meta/" \
+                -e "s;/srv/www/cobbler/ks_mirror;/srv/www/cobbler/distro_mirror;g" \
                 -e "s/ksmeta/autoinstall_meta/" \
                 -e "s/kopts/kernel_options/" \
                 -e "s/kopts_post/kernel_options_post/" \
@@ -23,6 +24,18 @@ do
         done
     fi
 done
+
+# directory name has changed with new cobbler; safe original directory even if it should be empty after install
+mv /srv/www/cobbler/distro_mirror /srv/www/cobbler/distro_mirror.install
+mv /srv/www/cobbler/ks_mirror /srv/www/cobbler/distro_mirror
+
+if [ -d /srv/www/cobbler/links ] && [ ! -z "$(ls /srv/www/cobbler/links)" ]; then
+    for LINK in /srv/www/cobbler/links/*
+    do
+        NEWTARGET=$(readlink $LINK | sed -e "s/ks_mirror/distro_mirror/")
+        ln -sf $NEWTARGET $LINK
+    done
+fi
 
 if [ -d /var/lib/rhn/kickstarts/upload ] && [ ! -z "$(ls /var/lib/rhn/kickstarts/upload)" ]; then
     mkdir -p /var/lib/cobbler/templates/upload

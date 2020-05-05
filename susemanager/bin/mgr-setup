@@ -385,6 +385,13 @@ upgrade_schema() {
 copy_remote_files() {
     SUMAFILES="/etc/salt
                /root/ssl-build
+               /srv/www/cobbler/images
+               /srv/www/cobbler/ks_mirror
+               /srv/www/cobbler/links
+               /srv/www/cobbler/localmirror
+               /srv/www/cobbler/pub
+               /srv/www/cobbler/rendered
+               /srv/www/cobbler/repo_mirror
                /srv/formula_metadata
                /srv/pillar
                /srv/salt
