@@ -1,3 +1,4 @@
+- Make automatic system locking for cluster node (CaaSP) user configurable
 - Assign Activation Key channels only (bsc#1166516)
 - Pass image profile custom info values as Docker buildargs during image build
 - Fix activation keys request error in image import page (bsc#1170046)
