@@ -288,6 +288,7 @@ public class MaintenanceHandler extends BaseHandler {
      * Refresh the calendar data using the configured URL
      * @param loggedInUser user
      * @param label the calendar label
+     * @return 1 on success
      *
      * @xmlrpc.doc Refresh Maintenance Calendar Data using the configured URL
      * @xmlrpc.param #session_key()
