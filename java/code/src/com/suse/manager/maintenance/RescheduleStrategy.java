@@ -40,5 +40,5 @@ public interface RescheduleStrategy {
      * @param schedule the schedule where the server actions needs to apply to
      * @return true on success, otherwise false
      */
-    public boolean reschedule(User user, Map<Action, List<Server>> actionServer, MaintenanceSchedule schedule);
+    boolean reschedule(User user, Map<Action, List<Server>> actionServer, MaintenanceSchedule schedule);
 }
