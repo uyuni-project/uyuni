@@ -1,3 +1,4 @@
+- do not cache metadata of the bootstrap repositories (bsc#1171169)
 - move vital proxy templates to a safe place outside of docu (bsc#1166284)
 
 -------------------------------------------------------------------
