@@ -1,3 +1,4 @@
+- XMLRPC: Assign/retract maintenance schedule to/from systems
 - Add virtual network Start, Stop and Delete actions
 - Add virtual network list page
 - update default product tree tag and set Beta tag again
