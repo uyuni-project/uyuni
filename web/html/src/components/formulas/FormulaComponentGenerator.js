@@ -269,7 +269,9 @@ export function text(txt) {
         return "";
     }
     // replace variables
-    txt = txt.replace(/\${productName}/g, Utils.getProductName());
+    if (typeof txt === 'string' || txt instanceof String) {
+      txt = txt.replace(/\${productName}/g, Utils.getProductName());
+    }
     return txt;
 }
 
