@@ -277,7 +277,8 @@ public class SUSEProductFactory extends HibernateFactory {
             Channel channel = ChannelFactory.lookupByLabel(channelLabel);
             Channel baseChannel = Optional.ofNullable(channel.getParentChannel()).orElse(channel);
 
-            SUSEProductChannel baseProductChannel = findSyncProductChannelByLabel(baseChannel.getLabel()).get();
+            SUSEProductChannel baseProductChannel = findSyncProductChannelByLabel(baseChannel.getLabel())
+                    .orElseThrow(() -> new IllegalStateException("No product channel found for " + baseChannel));
             Stream<SUSEProductChannel> suseProductChannelStream = findSyncedMandatoryChannels(
                         suseProductChannel.getProduct(),
                         baseProductChannel.getProduct(),
