@@ -55,7 +55,6 @@ public class MaintenanceHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "maintenance schedule names")
      */
     public List<String> listScheduleNames(User loggedInUser) {
-        ensureOrgAdmin(loggedInUser);
         return mm.listScheduleNamesByUser(loggedInUser);
     }
 
@@ -76,7 +75,6 @@ public class MaintenanceHandler extends BaseHandler {
      * #array_end()
      */
     public MaintenanceSchedule getScheduleDetails(User loggedInUser, String name) {
-        ensureOrgAdmin(loggedInUser);
         return mm.lookupMaintenanceScheduleByUserAndName(loggedInUser, name)
                 .orElseThrow(() -> new EntityNotExistsFaultException(name));
     }
@@ -180,7 +178,6 @@ public class MaintenanceHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "maintenance calendar labels")
      */
     public List<String> listCalendarLabels(User loggedInUser) {
-        ensureOrgAdmin(loggedInUser);
         return mm.listCalendarLabelsByUser(loggedInUser);
     }
 
@@ -201,7 +198,6 @@ public class MaintenanceHandler extends BaseHandler {
      * #array_end()
      */
     public MaintenanceCalendar getCalendarDetails(User loggedInUser, String label) {
-        ensureOrgAdmin(loggedInUser);
         return mm.lookupCalendarByUserAndLabel(loggedInUser, label)
                 .orElseThrow(() -> new EntityNotExistsFaultException(label));
     }
