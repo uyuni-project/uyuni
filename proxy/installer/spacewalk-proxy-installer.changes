@@ -1,3 +1,5 @@
+- do not cache metadata of the bootstrap repositories (bsc#1171169)
+
 -------------------------------------------------------------------
 Thu Apr 23 10:25:49 CEST 2020 - jgonzalez@suse.com
 
