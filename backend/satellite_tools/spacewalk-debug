@@ -62,7 +62,6 @@ while [ ${#} -ne 0 ]; do
             MAX_LOG_AGE=$1
             ;;
         --no-reports)
-            shift
             NO_REPORTS=1
             ;;
         --*)
