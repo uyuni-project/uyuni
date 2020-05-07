@@ -115,6 +115,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @param loggedInUser the user
      * @param name schedule name
      * @param details values to update
+     * @param rescheduleStrategy list of strategy module names
      * @return the changed Maintenance Schedule
      *
      * @xmlrpc.doc Update a Maintenance Schedule
@@ -130,12 +131,17 @@ public class MaintenanceHandler extends BaseHandler {
      *           #options_end()
      *         #prop_desc("string", "calendar", "new calendar label")
      *     #struct_end()
-     * @xmlrpc.returntype
-     * #array_begin()
-     * $MaintenanceScheduleSerializer
-     * #array_end()
+     * @xmlrpc.param #array_begin()
+     *                 #prop_desc("string", "rescheduleStrategy", "Available:")
+     *                   #options()
+     *                     #item_desc("Cancel", "Cancel actions which are outside of the maintenance windows")
+     *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
+     *                   #options_end()
+     *               #array_end()
+     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
      */
-    public MaintenanceSchedule updateSchedule(User loggedInUser, String name, Map<String, String> details) {
+    public boolean updateSchedule(User loggedInUser, String name, Map<String, String> details,
+            List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
 
         // confirm that the user only provided valid keys in the map
@@ -146,7 +152,8 @@ public class MaintenanceHandler extends BaseHandler {
         validateMap(validKeys, details);
 
         try {
-            return mm.updateMaintenanceSchedule(loggedInUser, name, details);
+            return mm.updateMaintenanceSchedule(loggedInUser, name, details,
+                    mm.mapRescheduleStrategyStrings(rescheduleStrategy));
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -269,6 +276,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @param loggedInUser the user
      * @param label calendar label
      * @param details values which should be updated
+     * @param rescheduleStrategy list of strategy module names
      * @return the changed Maintenance Calendar
      *
      * @xmlrpc.doc Update a Maintenance Calendar
@@ -279,12 +287,17 @@ public class MaintenanceHandler extends BaseHandler {
      *         #prop_desc("string", "label", "new Calendar Label")
      *         #prop_desc("string", "ical", "new ical Calendar data")
      *     #struct_end()
-     * @xmlrpc.returntype
-     * #array_begin()
-     * $MaintenanceCalendarSerializer
-     * #array_end()
+     * @xmlrpc.param #array_begin()
+     *                 #prop_desc("string", "rescheduleStrategy", "Available:")
+     *                   #options()
+     *                     #item_desc("Cancel", "Cancel actions which are outside of the maintenance windows")
+     *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
+     *                   #options_end()
+     *               #array_end()
+     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
      */
-    public MaintenanceCalendar updateCalendar(User loggedInUser, String label, Map<String, String> details) {
+    public boolean updateCalendar(User loggedInUser, String label, Map<String, String> details,
+            List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
 
         // confirm that the user only provided valid keys in the map
@@ -294,7 +307,8 @@ public class MaintenanceHandler extends BaseHandler {
         validateMap(validKeys, details);
 
         try {
-            return mm.updateCalendar(loggedInUser, label, details);
+            return mm.updateCalendar(loggedInUser, label, details,
+                    mm.mapRescheduleStrategyStrings(rescheduleStrategy));
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -305,18 +319,25 @@ public class MaintenanceHandler extends BaseHandler {
      * Refresh the calendar data using the configured URL
      * @param loggedInUser user
      * @param label the calendar label
+     * @param rescheduleStrategy list of strategy module names
      * @return 1 on success
      *
      * @xmlrpc.doc Refresh Maintenance Calendar Data using the configured URL
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Maintenance Calendar Label")
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.param #array_begin()
+     *                 #prop_desc("string", "rescheduleStrategy", "Available:")
+     *                   #options()
+     *                     #item_desc("Cancel", "Cancel actions which are outside of the maintenance windows")
+     *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
+     *                   #options_end()
+     *               #array_end()
+     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
      */
-    public int refreshCalendar(User loggedInUser, String label) {
+    public boolean refreshCalendar(User loggedInUser, String label, List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
         try {
-            mm.refreshCalendar(loggedInUser, label);
-            return 1;
+            return mm.refreshCalendar(loggedInUser, label, mm.mapRescheduleStrategyStrings(rescheduleStrategy));
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
