@@ -74,7 +74,7 @@ public class MaintenanceManager {
      * Save a MaintenanceSchedule
      * @param schedule the schedule
      */
-    public void save(MaintenanceSchedule schedule) {
+    protected void save(MaintenanceSchedule schedule) {
         getSession().save(schedule);
     }
 
@@ -82,7 +82,9 @@ public class MaintenanceManager {
      * Remove a MaintenanceSchedule
      * @param schedule the schedule
      */
-    public void remove(MaintenanceSchedule schedule) {
+    public void remove(User user, MaintenanceSchedule schedule) {
+        ensureOrgAdmin(user);
+        ensureScheduleAccessible(user, schedule);
         getSession().remove(schedule);
     }
 
@@ -90,7 +92,7 @@ public class MaintenanceManager {
      * Save a MaintenanceCalendar
      * @param calendar the calendar
      */
-    public void save(MaintenanceCalendar calendar) {
+    protected void save(MaintenanceCalendar calendar) {
         getSession().save(calendar);
     }
 
@@ -98,7 +100,9 @@ public class MaintenanceManager {
      * Remove a MaintenanceCalendar
      * @param calendar the calendar
      */
-    public void remove(MaintenanceCalendar calendar) {
+    public void remove(User user, MaintenanceCalendar calendar) {
+        ensureOrgAdmin(user);
+        ensureCalendarAccessible(user, calendar);
         getSession().remove(calendar);
     }
 
@@ -139,6 +143,7 @@ public class MaintenanceManager {
      */
     public MaintenanceSchedule createMaintenanceSchedule(User user, String name, ScheduleType type,
             Optional<MaintenanceCalendar> calendar) {
+        ensureOrgAdmin(user);
         MaintenanceSchedule ms = new MaintenanceSchedule();
         ms.setOrg(user.getOrg());
         ms.setName(name);
@@ -156,6 +161,7 @@ public class MaintenanceManager {
      * @return the updated MaintenanceSchedule
      */
     public MaintenanceSchedule updateMaintenanceSchedule(User user, String name, Map<String, String> details) {
+        ensureOrgAdmin(user);
         MaintenanceSchedule schedule = lookupMaintenanceScheduleByUserAndName(user, name)
                 .orElseThrow(() -> new EntityNotExistsException(name));
         if (details.containsKey("name")) {
@@ -172,7 +178,7 @@ public class MaintenanceManager {
             schedule.setCalendar(calendar);
         }
         save(schedule);
-        manageAffectedScheduledActions(user, schedule, Collections.EMPTY_LIST);
+        manageAffectedScheduledActions(user, schedule, Collections.emptyList());
         return schedule;
     }
 
@@ -181,6 +187,7 @@ public class MaintenanceManager {
      * @param user the user
      * @return a list of Calendar labels
      */
+    @SuppressWarnings("unchecked")
     public List<String> listCalendarLabelsByUser(User user) {
         return getSession()
             .createQuery("SELECT label FROM MaintenanceCalendar WHERE org = :org")
@@ -194,6 +201,7 @@ public class MaintenanceManager {
      * @param label the label of the calendar
      * @return Optional Maintenance Calendar
      */
+    @SuppressWarnings("unchecked")
     public Optional<MaintenanceCalendar> lookupCalendarByUserAndLabel(User user, String label) {
         return getSession().createNamedQuery("MaintenanceCalendar.lookupByUserAndName")
                 .setParameter("orgId", user.getOrg().getId())
@@ -208,6 +216,7 @@ public class MaintenanceManager {
      * @return the created Maintenance Calendar
      */
     public MaintenanceCalendar createMaintenanceCalendar(User user, String label, String ical) {
+        ensureOrgAdmin(user);
         MaintenanceCalendar mc = new MaintenanceCalendar();
         mc.setOrg(user.getOrg());
         mc.setLabel(label);
@@ -225,6 +234,7 @@ public class MaintenanceManager {
      */
     public MaintenanceCalendar createMaintenanceCalendarWithUrl(User user, String label, String url)
             throws DownloadException {
+        ensureOrgAdmin(user);
         MaintenanceCalendar mc = new MaintenanceCalendar();
         mc.setOrg(user.getOrg());
         mc.setLabel(label);
@@ -242,6 +252,7 @@ public class MaintenanceManager {
      * @return the updated MaintenanceCalendar
      */
     public MaintenanceCalendar updateCalendar(User user, String label, Map<String, String> details) {
+        ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
                 .orElseThrow(() -> new EntityNotExistsException(label));
         if (details.containsKey("label")) {
@@ -257,7 +268,7 @@ public class MaintenanceManager {
         }
         save(calendar);
         listSchedulesByUserAndCalendar(user, calendar).forEach(schedule ->
-            manageAffectedScheduledActions(user, schedule, Collections.EMPTY_LIST));
+            manageAffectedScheduledActions(user, schedule, Collections.emptyList()));
         return calendar;
     }
 
@@ -268,13 +279,14 @@ public class MaintenanceManager {
      * @throws EntityNotExistsException when calendar or url does not exist
      */
     public void refreshCalendar(User user, String label) {
+        ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
                 .orElseThrow(() -> new EntityNotExistsException(label));
         calendar.setIcal(fetchCalendarData(
                 calendar.getUrlOpt().orElseThrow(() -> new EntityNotExistsException("url"))));
         save(calendar);
         listSchedulesByUserAndCalendar(user, calendar).forEach(schedule ->
-            manageAffectedScheduledActions(user, schedule, Collections.EMPTY_LIST));
+            manageAffectedScheduledActions(user, schedule, Collections.emptyList()));
     }
 
     @SuppressWarnings("unchecked")
@@ -392,6 +404,19 @@ public class MaintenanceManager {
     private void ensureScheduleAccessible(User user, MaintenanceSchedule schedule) {
         if (!user.getOrg().equals(schedule.getOrg())) {
             throw new PermissionException(String.format("User '%s' can't access schedule '%s'.", user, schedule));
+        }
+    }
+
+    /**
+     * Ensures that given user has access to given {@link MaintenanceCalendar}
+     *
+     * @param user the user
+     * @param schedule the {@link MaintenanceCalendar}
+     * @throws PermissionException if the user does not have access
+     */
+    private void ensureCalendarAccessible(User user, MaintenanceCalendar calendar) {
+        if (!user.getOrg().equals(calendar.getOrg())) {
+            throw new PermissionException(String.format("User '%s' can't access calendar '%s'.", user, calendar));
         }
     }
 
