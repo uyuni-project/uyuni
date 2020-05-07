@@ -162,7 +162,7 @@ public class MaintenanceHandler extends BaseHandler {
     public int deleteSchedule(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
         Optional<MaintenanceSchedule> schedule = mm.lookupMaintenanceScheduleByUserAndName(loggedInUser, name);
-        mm.remove(schedule.orElseThrow(() -> new EntityNotExistsFaultException(name)));
+        mm.remove(loggedInUser, schedule.orElseThrow(() -> new EntityNotExistsFaultException(name)));
         return 1;
     }
 
@@ -322,7 +322,7 @@ public class MaintenanceHandler extends BaseHandler {
     public int deleteCalendar(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
         Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(loggedInUser, label);
-        mm.remove(calendar.orElseThrow(() -> new EntityNotExistsFaultException(label)));
+        mm.remove(loggedInUser, calendar.orElseThrow(() -> new EntityNotExistsFaultException(label)));
         return 1;
     }
 
