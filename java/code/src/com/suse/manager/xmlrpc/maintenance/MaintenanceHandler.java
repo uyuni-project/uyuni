@@ -17,10 +17,12 @@ package com.suse.manager.xmlrpc.maintenance;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.manager.EntityExistsException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
@@ -98,8 +100,13 @@ public class MaintenanceHandler extends BaseHandler {
      */
     public MaintenanceSchedule createSchedule(User loggedInUser, String name, String type) {
         ensureOrgAdmin(loggedInUser);
-        return mm.createMaintenanceSchedule(loggedInUser, name, ScheduleType.lookupByLabel(type),
-                Optional.empty());
+        try {
+            return mm.createMaintenanceSchedule(loggedInUser, name, ScheduleType.lookupByLabel(type),
+                    Optional.empty());
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
     }
 
     /**
@@ -221,7 +228,12 @@ public class MaintenanceHandler extends BaseHandler {
      */
     public MaintenanceCalendar createCalendar(User loggedInUser, String label, String ical) {
         ensureOrgAdmin(loggedInUser);
-        return mm.createMaintenanceCalendar(loggedInUser, label, ical);
+        try {
+            return mm.createMaintenanceCalendar(loggedInUser, label, ical);
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
     }
 
     /**
@@ -243,7 +255,12 @@ public class MaintenanceHandler extends BaseHandler {
      */
     public MaintenanceCalendar createCalendarWithUrl(User loggedInUser, String label, String url) {
         ensureOrgAdmin(loggedInUser);
-        return mm.createMaintenanceCalendarWithUrl(loggedInUser, label, url);
+        try {
+            return mm.createMaintenanceCalendarWithUrl(loggedInUser, label, url);
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
     }
 
     /**
