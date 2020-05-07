@@ -26,6 +26,7 @@ fi
 BASE_DIR=/tmp
 IS_SUSE=0
 NO_REPORTS=0
+NO_COMPRESSION=0
 MAX_LOG_AGE=10
 if [ -f /etc/SuSE-release ]; then
     IS_SUSE=1
@@ -41,9 +42,10 @@ usage() {
     echo
     echo "  OPTIONS:"
     echo "    --help                Display usage and exit"
-    echo "    --dir                 Destination directory for the tarball ($BASE_DIR)"
+    echo "    --dir                 Destination directory ($BASE_DIR)"
     echo "    --log-age             Set the maximum age (in days) for extracted logs ($MAX_LOG_AGE)"
     echo "    --no-reports          Do not run spacewalk-report. Useful if spacewalk-debug takes too long"
+    echo "    --no-compression      Do not compress spacewalk-debug destination folder"
     exit $1
 }
 
@@ -64,6 +66,9 @@ while [ ${#} -ne 0 ]; do
         --no-reports)
             NO_REPORTS=1
             ;;
+        --no-compression)
+            NO_COMPRESSION=1
+            ;;
         --*)
             echo "Unknown option $arg (use --help)"
             exit 1
@@ -81,10 +86,13 @@ if [ ! -d "$BASE_DIR" ]; then
     [ $? != 0 ] && echo "Unable to create directory $BASE_DIR" && exit 1
 fi
 
+# clean any previous run
+rm -rf $BASE_DIR/spacewalk-debug/*
+
 # Make sure BASE_DIR is not relative
 BASE_DIR=$(cd $BASE_DIR && pwd)
 
-DIR=$BASE_DIR/spacewalk-debug-$$/spacewalk-debug
+DIR=$BASE_DIR/spacewalk-debug
 TARBALL=$BASE_DIR/spacewalk-debug.tar.bz2
 
 /bin/mkdir -p $DIR
@@ -129,6 +137,8 @@ elif [ -d /etc/apache2 ]; then
 fi
 cp -fapRd /etc/rhn $DIR/conf/rhn
 cp -fapRd /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
+# exclude schema upgrade files, as they are packaged
+rm -r $DIR/conf/rhn/sysconfig/rhn/schema-upgrade
 
 # there might be backups of rhn.conf so clean them up as well (bsc#1146419)
 find $DIR/conf/rhn -name rhn.conf -exec sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' {} \;
@@ -438,21 +448,27 @@ if [ "$MAX_LOG_AGE" -eq "$MAX_LOG_AGE" 2>/dev/null ]; then
         done
 fi
 
-echo "    * creating tarball (may take some time): $TARBALL"
-# 209620 - satellite-debug creates world readable output
-# set tarball premissions *before* writing data
 # exclude private keys
-install -m 600 /dev/null $TARBALL
-tar -cjf $TARBALL \
-    -C $(dirname $DIR) \
-    --exclude "*PRIVATE*" \
-    --exclude "server.key*" \
-    --exclude "server.pem*" \
-    --exclude "rhn-org-httpd-ssl*" \
-    $(basename $DIR)
+find $DIR -name "*PRIVATE*" -delete
+find $DIR -name "server.key*" -delete
+find $DIR -name "server.pem*" -delete
+find $DIR -name "rhn-org-httpd-ssl*" -delete
 
-echo "    * removing temporary debug tree"
-rm -Rf $(echo $DIR | sed -e 's/\/[^\/]*$//g')
+# fix permissions
+chmod -R 700 $DIR
 
-echo
-echo "Debug dump created, stored in $TARBALL"
+if [ $NO_COMPRESSION -eq 1 ] ; then
+  echo
+  echo "Debug dump created, stored in $DIR"
+else
+  echo "    * creating tarball (may take some time): $TARBALL"
+  # set tarball premissions *before* writing data
+  install -m 600 /dev/null $TARBALL
+  tar -cjf $TARBALL \
+      -C $(dirname $DIR) \
+      $(basename $DIR)
+
+  echo "    * removing temporary debug tree"
+  rm -Rf echo $DIR
+  echo "Debug dump created, stored in $TARBALL"
+fi
