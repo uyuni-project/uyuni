@@ -5,6 +5,7 @@ import {DateTime} from "components/input/DateTime";
 import {Radio} from "components/input/Radio";
 import {Select} from "components/input/Select";
 import {Form} from "components/input/Form";
+import AppStreamsForm from "./appstreams/appstreams";
 import type {FilterFormType} from "../shared/type/filter.type";
 import type {ClmFilterOptionType, FilterMatcherType} from "../shared/business/filters.enum";
 import {clmFilterOptions, findClmFilterByKey, getClmFiltersOptions} from "../shared/business/filters.enum";
@@ -279,19 +280,7 @@ const FilterForm = (props: Props) => {
         {
           clmFilterOptions.STREAM.key === props.filter.type &&
           <>
-            <Text
-              name={'moduleName'}
-              label={t("Module Name")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-            />
-            <Text
-              name={'moduleStream'}
-              label={t("Stream")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
+            <AppStreamsForm/>
             <input type="hidden" name="rule" value="deny"/>
           </>
         }
