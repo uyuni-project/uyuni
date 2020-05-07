@@ -20,13 +20,17 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -36,18 +40,34 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
 
 import java.io.File;
+import java.io.StringReader;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.model.Calendar;
+
 
 public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
     private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
     private static final String KDE_ICS = "maintenance-windows-kde.ics";
+    private static final String KDE2_ICS = "maintenance-windows-kde-2.ics";
     private static final String EXCHANGE_ICS = "maintenance-windows-exchange.ics";
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        TestUtils.saveAndFlush(user);
+    }
 
     public void testCreateSchedule() throws Exception {
         MaintenanceManager mm = MaintenanceManager.instance();
@@ -146,7 +166,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Map<String, String> details = new HashMap<>();
         details.put("url", "http://dummy.domain.top/exchange");
 
-        mm.updateCalendar(user, "testcalendar", details);
+        mm.updateCalendar(user, "testcalendar", details, Collections.emptyList());
 
         dbCal = mm.lookupCalendarByUserAndLabel(user, "testcalendar").orElseThrow(() -> new RuntimeException("Cannot find testcalendar"));
         assertEquals(user.getOrg(), dbCal.getOrg());
@@ -158,7 +178,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Map<String, String> sDetails = new HashMap<>();
         sDetails.put("type", "multi");
 
-        mm.updateMaintenanceSchedule(user, "test server", sDetails);
+        mm.updateMaintenanceSchedule(user, "test server", sDetails, Collections.emptyList());
 
         dbScheduleOpt = mm.lookupMaintenanceScheduleByUserAndName(user, "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
@@ -281,6 +301,53 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertExceptionThrown(
                 () -> mm.listSystemIdsWithSchedule(user2, schedule1),
                 PermissionException.class);
+    }
+
+    public void testActionInMaintenanceWindow() throws Exception {
+        File icalKde = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
+        File icalKde2 = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  KDE2_ICS).getAbsolutePath()).getPath());
+        MaintenanceManager mm = new MaintenanceManager() {
+            @Override
+            protected String fetchCalendarData(String url) {
+                return FileUtils.readStringFromFile(icalKde2.getAbsolutePath());
+            }
+        };
+
+        MaintenanceCalendar mc = mm.createMaintenanceCalendar(user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
+        MaintenanceSchedule ms = mm.createMaintenanceSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
+
+        Server server = ServerTestUtils.createTestSystem(user);
+
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        ZonedDateTime start = ZonedDateTime.parse("2020-04-21T09:00:00+01:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        action.setEarliestAction(Date.from(start.toInstant()));
+
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+
+        action.addServerAction(serverAction);
+        ActionManager.storeAction(action);
+
+        StringReader sin = new StringReader(FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
+        CalendarBuilder builder = new CalendarBuilder();
+        Calendar calendar = null;
+        calendar = builder.build(sin);
+
+        assertFalse(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
+
+        start = ZonedDateTime.parse("2020-04-20T09:00:00+01:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        action.setEarliestAction(Date.from(start.toInstant()));
+        ActionManager.storeAction(action);
+        assertTrue(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
+
+        // icalKde2 has an EXDATE 20200420 set
+        sin = new StringReader(FileUtils.readStringFromFile(icalKde2.getAbsolutePath()));
+        builder = new CalendarBuilder();
+        calendar = null;
+        calendar = builder.build(sin);
+        assertFalse(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
     }
 
     private void assertExceptionThrown(Runnable body, Class exceptionClass) {
