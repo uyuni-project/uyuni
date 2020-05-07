@@ -430,8 +430,8 @@ class MLLibmodAPI:
             "modules": []
         }
         self._proc.index_modules()
+        mobj: Dict = {}
         for m_name in self._proc._mod_index.get_module_names():
-            mobj: Dict = {}
             mod = self._proc._mod_index.get_module(m_name)
             d_mod = mod.get_defaults()
             if d_mod is not None:
@@ -439,7 +439,8 @@ class MLLibmodAPI:
                     "default": d_mod.get_default_stream(),
                     "streams": d_mod.get_streams_with_default_profiles(),
                 }
-                modules["modules"].append(mobj)
+
+        modules["modules"].append(mobj)
         return modules
 
     def _function__list_packages(self) -> Dict[str, List[str]]:
