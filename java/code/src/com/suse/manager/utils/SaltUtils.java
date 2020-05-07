@@ -177,7 +177,7 @@ public class SaltUtils {
 
     public static final SaltUtils INSTANCE = new SaltUtils();
 
-    public static final String CAASP_PRODUCT_IDENTIFIER = "caasp";
+    public static final String CAASP_PATTERN_IDENTIFIER = "patterns-caasp-Node";
     public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
@@ -1236,8 +1236,7 @@ public class SaltUtils {
     }
 
     private void enableMinionSystemLockForSpecialNodes(MinionServer server) {
-        if (server.getInstalledProducts().stream()
-                .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PRODUCT_IDENTIFIER))) {
+        if (server.getPackages().stream().anyMatch(p -> p.getName().getName().contains(CAASP_PATTERN_IDENTIFIER))) {
             // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
             Map<String, Object> data = new HashMap<>();
             data.put("minion_blackout", true);
