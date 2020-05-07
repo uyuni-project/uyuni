@@ -756,7 +756,8 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIn you want to limit the list of Actions to
      * @return List of ServerAction objects
      */
-    public static List listServerActionsForServer(Server serverIn) {
+    @SuppressWarnings("unchecked")
+    public static List<ServerAction> listServerActionsForServer(Server serverIn) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server", serverIn);
         return singleton.listObjectsByNamedQuery(
@@ -769,7 +770,8 @@ public class ActionFactory extends HibernateFactory {
      * @param statusList to filter the ServerActoins by
      * @return List of ServerAction objects
      */
-    public static List listServerActionsForServer(Server serverIn, List<ActionStatus> statusList) {
+    public static List<ServerAction> listServerActionsForServer(Server serverIn,
+            List<ActionStatus> statusList) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server", serverIn);
         params.put("statusList", statusList);
