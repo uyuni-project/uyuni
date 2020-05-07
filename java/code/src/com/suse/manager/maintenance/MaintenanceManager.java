@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.SystemManager;
 
@@ -53,7 +54,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
@@ -165,6 +165,7 @@ public class MaintenanceManager {
     public MaintenanceSchedule createMaintenanceSchedule(User user, String name, ScheduleType type,
             Optional<MaintenanceCalendar> calendar) {
         ensureOrgAdmin(user);
+        ensureScheduleNotExists(user, name);
         MaintenanceSchedule ms = new MaintenanceSchedule();
         ms.setOrg(user.getOrg());
         ms.setName(name);
@@ -238,6 +239,7 @@ public class MaintenanceManager {
      */
     public MaintenanceCalendar createMaintenanceCalendar(User user, String label, String ical) {
         ensureOrgAdmin(user);
+        ensureCalendarNotExists(user, label);
         MaintenanceCalendar mc = new MaintenanceCalendar();
         mc.setOrg(user.getOrg());
         mc.setLabel(label);
@@ -256,6 +258,7 @@ public class MaintenanceManager {
     public MaintenanceCalendar createMaintenanceCalendarWithUrl(User user, String label, String url)
             throws DownloadException {
         ensureOrgAdmin(user);
+        ensureCalendarNotExists(user, label);
         MaintenanceCalendar mc = new MaintenanceCalendar();
         mc.setOrg(user.getOrg());
         mc.setLabel(label);
@@ -530,4 +533,31 @@ public class MaintenanceManager {
             throw new PermissionException(ORG_ADMIN);
         }
     }
+
+    /**
+     * Ensures that the Maintenance Schedule does not exists yet
+     *
+     * @param user the user
+     * @param name the schedule name
+     * @throws EntityExistsException if a schedule with this name already exists
+     */
+    private void ensureScheduleNotExists(User user, String name) {
+        if (listScheduleNamesByUser(user).contains(name)) {
+            throw new EntityExistsException(String.format("Maintenance Schedule '%s' already exists", name));
+        }
+    }
+
+    /**
+     * Ensures that the Maintenance Calendar does not exists yet
+     *
+     * @param user the user
+     * @param name the calendar label
+     * @throws EntityExistsException if a calendar with this label already exists
+     */
+    private void ensureCalendarNotExists(User user, String label) {
+        if (listCalendarLabelsByUser(user).contains(label)) {
+            throw new EntityExistsException(String.format("Maintenance Calendar '%s' already exists", label));
+        }
+    }
+
 }
