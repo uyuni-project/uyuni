@@ -30,6 +30,7 @@ public class ModulemdApiResponse {
     private String exception;
     private ModulePackagesResponse modulePackages;
     private ListPackagesResponse listPackages;
+    private ListModulesResponse listModules;
     private ModulemdExceptionDataResponse data;
 
     public int getErrorCode() {
@@ -46,6 +47,10 @@ public class ModulemdApiResponse {
 
     public ListPackagesResponse getListPackages() {
         return listPackages;
+    }
+
+    public ListModulesResponse getListModules() {
+        return listModules;
     }
 
     public ModulemdExceptionDataResponse getData() {
