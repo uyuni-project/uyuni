@@ -19,6 +19,10 @@ import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.download.DownloadException;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -28,29 +32,46 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
 import com.suse.manager.utils.HttpHelper;
+import com.suse.utils.Opt;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
+import org.apache.log4j.Logger;
 
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.data.ParserException;
+import net.fortuna.ical4j.filter.Filter;
+import net.fortuna.ical4j.filter.HasPropertyRule;
+import net.fortuna.ical4j.filter.PeriodRule;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.DateTime;
+import net.fortuna.ical4j.model.Period;
+import net.fortuna.ical4j.model.component.CalendarComponent;
+import net.fortuna.ical4j.model.property.Summary;
 
 /**
  * MaintenanceManager
  */
 public class MaintenanceManager {
+    private static Logger log = Logger.getLogger(MaintenanceManager.class);
 
     private static volatile MaintenanceManager instance = null;
 
@@ -315,9 +336,87 @@ public class MaintenanceManager {
         }
     }
 
-    protected void manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
-            List<String> scheduleStrategy) {
-        // TODO: implement it
+    protected boolean manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
+            List<RescheduleStrategy> scheduleStrategy) {
+        List<Long> systemIdsUsingSchedule = listSystemIdsWithSchedule(user, schedule);
+        if (systemIdsUsingSchedule.isEmpty()) {
+            return true;
+        }
+        Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(
+                new HashSet<Long>(systemIdsUsingSchedule));
+        if (withMaintenanceActions.isEmpty()) {
+            return true;
+        }
+        List<Server> servers = ServerFactory.lookupByIdsAndOrg(withMaintenanceActions, user.getOrg());
+
+        Optional<Calendar> calendarOpt = Opt.fold(schedule.getCalendarOpt(),
+                () -> Optional.empty(),
+                c -> {
+                    StringReader sin = new StringReader(c.getIcal());
+                    CalendarBuilder builder = new CalendarBuilder();
+                    Calendar calendar = null;
+                    try {
+                        calendar = builder.build(sin);
+                    }
+                    catch (IOException | ParserException e) {
+                        log.error("Unable to build the calendar: " + c.getLabel(), e);
+                    }
+                    return Optional.ofNullable(calendar);
+                });
+
+        List<ActionStatus> pending = new LinkedList<>();
+        pending.add(ActionFactory.STATUS_PICKED_UP);
+        pending.add(ActionFactory.STATUS_QUEUED);
+
+        Map<Action, List<Server>> actionsForServerToReschedule = servers.stream()
+            .flatMap(s -> ActionFactory.listServerActionsForServer(s, pending).stream())
+            .filter(sa -> sa.getParentAction().getActionType().isMaintenancemodeOnly())
+            .filter(Opt.fold(calendarOpt,
+                    () -> (sa -> true),
+                    c -> (sa -> {
+                        return !isActionInMaintenanceWindow(sa.getParentAction(), schedule, calendarOpt);
+                    })))
+            .collect(Collectors.groupingBy(ServerAction::getParentAction,
+                    Collectors.mapping(ServerAction::getServer, Collectors.toList())));
+
+        for (RescheduleStrategy s : scheduleStrategy) {
+            if (s.reschedule(user, actionsForServerToReschedule, schedule)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isActionInMaintenanceWindow(Action action, MaintenanceSchedule schedule, Optional<Calendar> calendarOpt) {
+        if (!calendarOpt.isPresent()) {
+            return false;
+        }
+
+        Period p = new Period( new DateTime(action.getEarliestAction()), java.time.Duration.ofSeconds(1));
+        ArrayList<Predicate<Component>> rules = new ArrayList<Predicate<Component>>();
+        rules.add(new PeriodRule<Component>(p));
+
+        if (schedule.getScheduleType().equals(ScheduleType.MULTI)) {
+            Summary summary = new Summary(schedule.getName());
+            HasPropertyRule<Component> propertyRule = new HasPropertyRule<Component>(summary);
+            rules.add(propertyRule);
+        }
+        Predicate<CalendarComponent> comArr[] = new Predicate[rules.size()];
+        comArr = rules.toArray(comArr);
+
+        Filter<CalendarComponent> filter = new Filter<CalendarComponent>(comArr, Filter.MATCH_ALL);
+
+        Collection<CalendarComponent> events = filter.filter(calendarOpt.get().getComponents(Component.VEVENT));
+        if (!events.isEmpty()) {
+            if (log.isDebugEnabled()) {
+                events.stream().forEach(cc -> log.debug(
+                        String.format("Action '%s' inside of maintenance window in '%s': '%s'",
+                                action, schedule.getName(), cc)));
+            }
+            return true;
+        }
+        log.debug(String.format("Action '%s' outside of maintenance window '%s'", action, schedule.getName()));
+        return false;
     }
 
     /**
