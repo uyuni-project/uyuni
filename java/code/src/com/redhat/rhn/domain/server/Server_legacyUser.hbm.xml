@@ -586,7 +586,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <query name="Server.filterSystemsWithPendingMaintenanceOnlyActions">
         <![CDATA[SELECT sa.server.id FROM ServerAction sa
                         WHERE sa.server.id IN (:systemIds)
-                          AND sa.parentAction.actionType.maintenancemodeonly = true
+                          AND sa.parentAction.actionType.maintenancemodeOnly = true
                           AND status in ( 0, 1 )]]>
     </query>
 
