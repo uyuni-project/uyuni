@@ -38,6 +38,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -173,24 +174,22 @@ public class ProxyHandler extends BaseHandler {
                 .PROXY_CHANNEL_FAMILY_LABEL,
                 null);
 
-        List<String> returnList = new ArrayList<String>();
 
         if (proxyFamily == null ||
                 proxyFamily.getChannels() == null ||
                 proxyFamily.getChannels().isEmpty()) {
-            return returnList;
+            return Collections.emptyList();
         }
 
         /* We search for a proxy channel whose parent channel is our server's basechannel.
          * This will be the channel we attempt to subscribe the server to.
          */
-        for (Channel proxyChan : proxyFamily.getChannels()) {
-            if (proxyChan.getProduct() != null &&
-                proxyChan.getParentChannel().equals(server.getBaseChannel())) {
-                returnList.add(proxyChan.getProduct().getVersion());
-            }
-        }
-        return returnList;
+        Channel baseChannel = server.getBaseChannel();
+        return proxyFamily.getChannels().stream()
+                .filter(p -> p.getProduct() != null)
+                .filter(p -> baseChannel.equals(p.getParentChannel()) || baseChannel.equals(p))
+                .map(p -> p.getProduct().getVersion())
+                .collect(toList());
     }
 
     /**

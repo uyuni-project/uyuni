@@ -1,3 +1,4 @@
+- Fix nullpointer exception during proxy registration (bsc#1171287)
 - Assign Activation Key channels only (bsc#1166516)
 - prevent race condition on metadata generation (bsc#1170197)
 - New API endpoint for retrieving combined formula data for a list of systems
