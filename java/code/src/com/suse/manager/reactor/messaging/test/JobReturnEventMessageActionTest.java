@@ -600,7 +600,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Prepare test objects: minion server, products and action
         Config.get().setBoolean(ConfigDefaults.AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED, "true");
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+        minion.setMinionId("caasp-worker-orion-cluster-1.openstack.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
 
         context().checking(new Expectations() {{
@@ -614,14 +614,13 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         // Setup an event message from file contents
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("packages.profileupdate.caasp.json", action.getId()));
+                getJobReturnEvent("packages.profileupdate.caasp-node.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
         messageAction.execute(message);
 
-        assertTrue(minion.getInstalledProducts().stream().anyMatch(
-                p -> p.getName().equalsIgnoreCase(SaltUtils.CAASP_PRODUCT_IDENTIFIER)));
+        assertTrue(minion.getPackages().stream().anyMatch(p -> p.getName().getName().contains(SaltUtils.CAASP_PATTERN_IDENTIFIER)));
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
@@ -640,10 +639,50 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Prepare test objects: minion server, products and action
         Config.get().setBoolean(ConfigDefaults.AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED, "false");
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("minionsles12-suma3pg.vagrant.local");
+        minion.setMinionId("caasp-worker-orion-cluster-1.openstack.local");
+        SUSEProductTestUtils.createVendorSUSEProducts();
+
+        context().checking(new Expectations() {{  }});
+
+        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
+
+        Action action = ActionFactoryTest.createAction(
+                user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
+        action.addServerAction(ActionFactoryTest.createServerAction(minion, action));
+        HibernateFactory.getSession().flush();
+        // Setup an event message from file contents
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("packages.profileupdate.caasp-node.json", action.getId()));
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        assertTrue(minion.getPackages().stream().anyMatch(
+                p -> p.getName().getName().contains(SaltUtils.CAASP_PATTERN_IDENTIFIER)));
+        assertTrue(action.getServerActions().stream()
+                .filter(serverAction -> serverAction.getServer().equals(minion))
+                .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
+        assertEquals(List.of("system-lock"), FormulaFactory.getFormulasByMinionId(minion.getMinionId()));
+        assertEquals(false, ViewHelper.INSTANCE.formulaValueEquals(minion, "system-lock",
+                "minion_blackout", "false"));
+    }
+
+    /**
+     * Test the processing of packages.profileupdate job return event in the case where the system has installed CaaSP
+     * management and it should not be locked via Salt formula
+     *
+     * @throws Exception in case of an error
+     */
+    public void testPackagesProfileUpdateWithCaaSPManagement() throws Exception {
+        // Prepare test objects: minion server, products and action
+        Config.get().setBoolean(ConfigDefaults.AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED, "true");
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMinionId("orion-caasp-deployer.openstack.local");
         SUSEProductTestUtils.createVendorSUSEProducts();
 
         context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
         SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
@@ -653,20 +692,20 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         // Setup an event message from file contents
         Optional<JobReturnEvent> event = JobReturnEvent.parse(
-                getJobReturnEvent("packages.profileupdate.caasp.json", action.getId()));
+                getJobReturnEvent("packages.profileupdate.caasp-management.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
         messageAction.execute(message);
 
-        assertTrue(minion.getInstalledProducts().stream().anyMatch(
-                p -> p.getName().equalsIgnoreCase(SaltUtils.CAASP_PRODUCT_IDENTIFIER)));
+        assertFalse(minion.getPackages().stream().anyMatch(
+                p -> p.getName().getName().contains(SaltUtils.CAASP_PATTERN_IDENTIFIER)));
+        assertTrue(minion.getPackages().stream().anyMatch(
+                p -> p.getName().getName().contains("patterns-caasp-Management")));
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertEquals(List.of("system-lock"), FormulaFactory.getFormulasByMinionId(minion.getMinionId()));
-        assertEquals(false, ViewHelper.INSTANCE.formulaValueEquals(minion, "system-lock",
-                "minion_blackout", "false"));
+        assertTrue( FormulaFactory.getFormulasByMinionId(minion.getMinionId()).isEmpty());
     }
 
     public void testHardwareProfileUpdateX86NoDmi()  throws Exception {
