@@ -12,10 +12,12 @@ type LoadingProps = {
 }
 
 const _SIZES = {
-  S: "12px",
+  XS: "12px",
+  S: "18px",
   M: "24px",
-  L: "36px",
-  XL: "48px"
+  L: "30px",
+  XL: "36px",
+  XXL: "48px",
 };
 
 export function Loading({ withBorders, text, title, size } : LoadingProps) {

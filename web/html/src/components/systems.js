@@ -2,7 +2,7 @@
 'use strict';
 
 const React = require("react");
-const IconTag = require("./icontag").IconTag;
+const Icon = require("./icon").Icon;
 
 function statusDisplay(system, isAdmin) {
   const sid = system['systemId'];
@@ -55,11 +55,11 @@ function statusDisplay(system, isAdmin) {
 
   var locked = "";
   if (system['locked'] == 1) {
-    locked = <IconTag type='system-locked' title={t('System Locked')}/>;
+    locked = <Icon type='system-locked' title={t('System Locked')} />;
   }
   return (
     <div>
-      <a href={url}><IconTag type={iconType} title={t(iconTitle)}/></a>
+      <a href={url}><Icon type={iconType} title={t(iconTitle)} /></a>
       {locked}
     </div>
   );

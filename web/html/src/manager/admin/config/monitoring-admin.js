@@ -7,7 +7,7 @@ import {Button, AsyncButton} from 'components/buttons';
 import Network from 'utils/network';
 import {Messages, Utils as MessagesUtils} from 'components/messages';
 import {Utils} from 'utils/functions';
-import {IconTag as Icon} from 'components/icontag';
+import {Icon} from 'components/icon';
 import withPageWrapper from 'components/general/with-page-wrapper';
 import useMonitoringApi from './use-monitoring-api.js';
 import './monitoring-admin.css';
@@ -69,7 +69,7 @@ const ExporterIcon = (props : {status: ?boolean, name: string, message: ?string}
       type = "item-disabled";
       tooltip = null;
     }
-    return <Icon type={type} className="fa-1-5x" title={ tooltip }/>;
+    return <Icon type={type} size="L" title={ tooltip } />;
 }
 
 const ExporterItem = (props: {name: string, status: boolean, message: ?string}) => {
@@ -90,7 +90,7 @@ const ExportersList = (props : {exporters: {[string]: boolean}, messages: {[stri
 
 const ListPlaceholderItem = (props) => {
   return <li className="placeholder-item">
-    <Icon type="item-disabled" className="fa-1-5x"/>
+    <Icon type="item-disabled" size="L"/>
     <div/>
     </li>;
 }
@@ -121,7 +121,7 @@ const ExportersMessages = (props: {messages: {[string]: string}}) => {
       return (<ul style={{listStyle: 'none', paddingLeft: '0px'}}>
         { keys.filter(key => props.messages[key] !== "restart").map(key => 
           <li key={key}>
-            <Icon type="system-warn" className="fa-1-5x"/>{ msgMap[key + "_msg_" + props.messages[key]] }
+            <Icon type="system-warn" size="L" />{ msgMap[key + "_msg_" + props.messages[key]] }
           </li>)  
         }
         </ul>);
@@ -258,7 +258,7 @@ const MonitoringAdmin = (props) => {
                 }
                 {
                   restartNeeded ? 
-                    <div><Icon type="system-reboot" className="text-warning fa-1-5x"/>
+                    <div><Icon type="system-reboot" styleClass="text-warning" size="L" />
                       <a href="/rhn/admin/config/Restart.do?">{ t("Restarting") }</a>
                       { t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.") }
                     </div> :
