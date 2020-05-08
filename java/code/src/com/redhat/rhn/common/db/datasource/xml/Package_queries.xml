@@ -1970,6 +1970,7 @@ ORDER BY P.package_arch_id DESC
                 (select cp.package_id as id from rhnChannelPackage cp left join rhnPackageRepoData rd on cp.package_id = rd.package_id
                         where cp.channel_id = :cid
                           and rd.package_id is null)
+        ON CONFLICT DO NOTHING
    </query>
 </write-mode>
 
