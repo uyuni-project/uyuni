@@ -1,3 +1,4 @@
+- Correctly set action to failed in case of Salt errors on execution (bsc#1169604)
 - Fix saving image profile custom info values with XMLRPC (bsc#1171526)
 - Fix nullpointer exception during proxy registration (bsc#1171287)
 - Assign Activation Key channels only (bsc#1166516)
