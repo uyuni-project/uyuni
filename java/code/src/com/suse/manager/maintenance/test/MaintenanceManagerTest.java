@@ -20,6 +20,7 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -34,7 +35,9 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.maintenance.CancelRescheduleStrategy;
 import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.maintenance.RescheduleStrategy;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
@@ -46,6 +49,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -61,6 +65,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     private static final String KDE_ICS = "maintenance-windows-kde.ics";
     private static final String KDE2_ICS = "maintenance-windows-kde-2.ics";
     private static final String EXCHANGE_ICS = "maintenance-windows-exchange.ics";
+    private static final String EXCHANGE_MULTI1_ICS = "maintenance-windows-multi-exchange-1.ics";
+    private static final String EXCHANGE_MULTI2_ICS = "maintenance-windows-multi-exchange-2.ics";
 
     @Override
     public void setUp() throws Exception {
@@ -260,6 +266,10 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertExceptionThrown(
                 () -> mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId(), sys2.getId())),
                 IllegalArgumentException.class);
+
+        // assign an action not tied to maintenance mode
+        Action allowedAction = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sys2, "2020-04-13T08:15:00+01:00");
+        assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys2.getId())));
     }
 
     /**
@@ -348,6 +358,84 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         calendar = null;
         calendar = builder.build(sin);
         assertFalse(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
+    }
+
+    public void testScheduleChangeMultiWithCancel() throws Exception {
+        File icalExM1 = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  EXCHANGE_MULTI1_ICS).getAbsolutePath()).getPath());
+        File icalExM2 = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
+
+        /* setup test environment */
+        Server sapServer = ServerTestUtils.createTestSystem(user);
+        Server coreServer = ServerTestUtils.createTestSystem(user);
+
+        MaintenanceManager mm = new MaintenanceManager();
+        MaintenanceCalendar mcal = mm.createMaintenanceCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceSchedule sapSchedule = mm.createMaintenanceSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
+        MaintenanceSchedule coreSchedule = mm.createMaintenanceSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
+
+        mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()));
+        mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()));
+
+        Action sapAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+01:00"); //moved
+        Action sapActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T08:15:00+01:00"); //moved
+        Action sapAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+01:00"); //stay
+        Action sapAction3 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-30T09:15:00+01:00"); //wrong window (Core)
+        Action coreAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+01:00"); //stay
+        Action coreActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-05-21T09:15:00+01:00"); //moved
+        Action coreAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+01:00"); //moved
+        Action coreAction3 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-27T08:15:00+01:00"); //wrong window (SAP)
+
+        List sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
+        List coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
+
+        assertEquals(4, sapActionsBefore.size());
+        assertEquals(4, coreActionsBefore.size());
+
+        /* update the calendar */
+        Map<String, String> details = new HashMap<>();
+        details.put("ical", FileUtils.readStringFromFile(icalExM2.getAbsolutePath()));
+
+        List<RescheduleStrategy> rescheduleStrategy = new LinkedList<>();
+        rescheduleStrategy.add(new CancelRescheduleStrategy());
+
+        mm.updateCalendar(user, "multicalendar", details, rescheduleStrategy);
+
+        /* check results */
+        List<Action> sapActionsAfter = ActionFactory.listActionsForServer(user, sapServer);
+        List<Action> coreActionsAfter = ActionFactory.listActionsForServer(user, coreServer);
+
+        assertEquals(2, sapActionsAfter.size());
+        assertEquals(2, coreActionsAfter.size());
+
+        assertEquals(1, sapActionsAfter.stream().filter(a -> a.equals(sapAction2)).count());
+        assertEquals(1, sapActionsAfter.stream().filter(a -> a.equals(sapActionEx)).count()); //Action not tied to maintenance mode
+
+        assertEquals(1, coreActionsAfter.stream().filter(a -> a.equals(coreAction1)).count());
+        assertEquals(1, coreActionsAfter.stream().filter(a -> a.equals(coreActionEx)).count()); //Action not tied to maintenance mode
+
+    }
+
+    /**
+     * Create an Errata Action for the given server at a specific point in time
+     *
+     * @param server the server
+     * @param datetime time template for earliest action. Example: "2020-04-21T09:00:00+01:00"
+     * @return the Action
+     * @throws Exception
+     */
+    private Action createActionForServerAt(ActionType type, Server server, String datetime) throws Exception {
+        Action action = ActionFactoryTest.createAction(user, type);
+        ZonedDateTime start = ZonedDateTime.parse(datetime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        action.setEarliestAction(Date.from(start.toInstant()));
+
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+
+        action.addServerAction(serverAction);
+        ActionManager.storeAction(action);
+        return action;
     }
 
     private void assertExceptionThrown(Runnable body, Class exceptionClass) {
