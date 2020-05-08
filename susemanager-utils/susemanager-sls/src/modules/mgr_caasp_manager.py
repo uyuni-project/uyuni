@@ -8,7 +8,12 @@ from __future__ import absolute_import
 
 import logging
 import os
+import os.path
 import subprocess
+from urllib3.exceptions import HTTPError
+from kubernetes.client.rest import ApiException
+import kubernetes
+import kubernetes.client
 
 import salt.utils.stringutils
 import salt.utils.timed_subprocess
@@ -100,6 +105,21 @@ def list_nodes(skuba_cluster_path,
         error_msg = "Unexpected error while parsing skuba output: {}".format(exc)
         log.error(error_msg)
         raise CommandExecutionError(error_msg)
+
+    # The following is a hack to enrich skuba result with the machine-id of every node
+    # We need to query k8s API to retrieve the machine-id
+    kubernetes.config.load_kube_config(skuba_cluster_path + os.path.sep + 'admin.conf')
+    try:
+        kubeapi_response = kubernetes.client.CoreV1Api().list_node()
+        for node in kubeapi_response.items:
+            if node.metadata.name in ret.keys():
+                ret[node.metadata.name]['machine-id'] = node.status.node_info.machine_id
+            else:
+                error_msg = "Node returned from Kubernetes API not known to skuba: {}".format(node.metadata.name)
+                log.error(error_msg)
+    except (ApiException, HTTPError) as exc:
+        error_msg = "Exception while querying k8s API: {}".format(exc)
+        log.error(error_msg)
 
     return ret
 
