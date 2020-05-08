@@ -1,3 +1,4 @@
+- Remove suseRegisterInfo package only if it's plain client (bsc#1171262)
 - On Debian-like systems, install only required dependencies when installing salt
 - Enable support for bootstrapping Ubuntu 20.04 LTS
 - Pass image profile custom info values as Docker buildargs during image build
