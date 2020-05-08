@@ -125,14 +125,19 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
 
-        saltServerActionService = new SaltServerActionService(systemQuery);
-        saltServerActionService.setSkipCommandScriptPerms(true);
+        saltServerActionService = createSaltServerActionService(systemQuery);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
                 new SystemEntitler(systemQuery, virtManager, new FormulaMonitoringManager())
         );
 
         sshPushSystemMock = mock(SystemSummary.class);
+    }
+
+    private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery) {
+        SaltServerActionService service = new SaltServerActionService(systemQuery);
+        service.setSkipCommandScriptPerms(true);
+        return service;
     }
 
     public void testPackageUpdate() throws Exception {
@@ -541,7 +546,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 throw new RuntimeException();
             }
         };
-        return new SaltServerActionService(systemQuery);
+        return createSaltServerActionService(systemQuery);
     }
 
     /**
@@ -579,7 +584,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 return Optional.of(new JsonObject());
             }
         };
-        saltServerActionService = new SaltServerActionService(systemQuery);
+        saltServerActionService = createSaltServerActionService(systemQuery);
 
         saltServerActionService.executeSSHAction(prereq, minion);
         assertEquals(STATUS_COMPLETED, prereqServerAction.getStatus());
@@ -702,7 +707,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 return Optional.empty();
             }
         };
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery);
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
@@ -728,19 +733,19 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 throw new RuntimeException();
             }
         };
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery);
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
         try {
             saltServerActionService.executeSSHAction(action, minion);
         } catch (RuntimeException e) {
-            // expected
-            assertEquals(STATUS_FAILED, serverAction.getStatus());
-            assertTrue(serverAction.getResultMsg().startsWith("Error calling Salt: "));
-            return;
+            fail("Runtime exception should not have been thrown.");
         }
-        fail("Runtime exception should have been thrown.");
+
+        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertTrue(serverAction.getResultMsg().startsWith("Error calling Salt: "));
     }
+
 
     /**
      * Tests that a successful execution of a reboot action will move this action to the
@@ -756,7 +761,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 return Optional.of(new JsonObject());
             }
         };
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery);
 
         Action action = createRebootAction(new Date(1L));
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);

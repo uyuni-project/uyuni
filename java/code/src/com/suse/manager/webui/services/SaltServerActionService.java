@@ -2068,7 +2068,7 @@ public class SaltServerActionService {
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Error calling Salt: " + e.getMessage());
                     sa.setCompletionTime(new Date());
-                    throw e;
+                    return;
                 }
 
                 if (!result.isPresent()) {
