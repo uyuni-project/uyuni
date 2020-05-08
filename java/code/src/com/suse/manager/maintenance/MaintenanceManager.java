@@ -391,7 +391,24 @@ public class MaintenanceManager {
 
         Map<Action, List<Server>> actionsForServerToReschedule = servers.stream()
             .flatMap(s -> ActionFactory.listServerActionsForServer(s, pending).stream())
-            .filter(sa -> sa.getParentAction().getActionType().isMaintenancemodeOnly())
+            .filter(sa -> {
+                Action a = sa.getParentAction();
+                if (a.getPrerequisite() != null) {
+                    // skip actions not first in a chain
+                    return false;
+                }
+                if (a.getActionType().isMaintenancemodeOnly()) {
+                    // test them, when they require maintenance mode
+                    return true;
+                }
+                if (ActionFactory.lookupDependentActions(a)
+                        .anyMatch(da -> da.getActionType().isMaintenancemodeOnly())) {
+                    // check actions where a depended action in the chain requires
+                    // maintenance mode
+                    return true;
+                }
+                return false;
+            })
             .filter(Opt.fold(calendarOpt,
                     () -> (sa -> true),
                     c -> (sa -> {
