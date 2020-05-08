@@ -23,6 +23,7 @@ const ImageViewPackages = require("./image-view-packages").ImageViewPackages;
 const ImageViewRuntime = require("./image-view-runtime").ImageViewRuntime;
 const DateTime = require("components/datetime").DateTime;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
+const {Loading} = require("components/utils/Loading");
 
 /* global isAdmin, isRuntimeInfoEnabled */
 
@@ -429,7 +430,7 @@ class ImageViewList extends React.Component {
 
   renderRuntimeIcon(row) {
     if (!this.props.gotRuntimeInfo) {
-      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
+      return <Loading text={t("Waiting for update ...")} />;
     }
 
     let icon = <span>-</span>;
@@ -470,7 +471,7 @@ class ImageViewList extends React.Component {
 
   renderInstances(row) {
     if (!this.props.gotRuntimeInfo) {
-      return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
+      return <Loading title={t("Waiting for update ...")} />;
     }
 
     let totalCount = 0;

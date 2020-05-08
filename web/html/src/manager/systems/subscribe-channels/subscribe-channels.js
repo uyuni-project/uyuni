@@ -14,6 +14,7 @@ const {Toggler} = require("components/toggler");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("components/links");
 const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
+const {Loading} = require("components/utils/Loading");
 
 import type JsonResult from "utils/network";
 import type {ActionChain} from "components/action-schedule";
@@ -542,8 +543,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                                   ? this.state.dependencyDataAvailable === true
                                       ? <span><i className="fa fa-exclamation-triangle fa-1-5x" title={t("No child channels available.")}/>
                                       {t("No child channels available.")}</span>
-                                      : <span><i className="fa fa-spinner fa-spin fa-1-5x" title={t("Loading...")}/>
-                                      {t("Loading...")}</span>
+                                      : <Loading text={t("Loading..")} />
                                   : undefined
                               }
                             </div>

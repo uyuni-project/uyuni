@@ -12,6 +12,7 @@ const { Form } = require('components/input/Form');
 const { DateTime: InputDateTime } = require('components/input/DateTime');
 const Functions = require("utils/functions");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
+const {Loading} = require("components/utils/Loading");
 
 /* global isAdmin, localTime, timezone */
 
@@ -117,7 +118,7 @@ class ImageInfo extends React.Component {
 
   renderInstances(data) {
     if (!this.props.gotRuntimeInfo) {
-        return <i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/>;
+        return <Loading title={t("Waiting for update ...")} />;
     }
 
     let totalCount = 0;
@@ -148,7 +149,7 @@ class ImageInfo extends React.Component {
 
   renderRuntime(data) {
     if(!this.props.gotRuntimeInfo) {
-      return <span><i className="fa fa-circle-o-notch fa-spin fa-1-5x" title={t("Waiting for update ...")}/></span>;
+      return <Loading title={t("Waiting for update ...")} />;
     }
 
     let elm = <span> - </span>;

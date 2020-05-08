@@ -61,7 +61,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
 
   renderChildChannels = (loadingChildren: boolean, availableChannels: availableChannelsType): Node =>  {
     return loadingChildren ?
-      <Loading text='Loading child channels..' />
+      <Loading text={t('Loading child channels..')} />
       : availableChannels.map(g => {
           const base = g.base;
           const channels = g.children.sort((c1, c2) => c1.name.localeCompare(c2.name));
@@ -112,7 +112,7 @@ class ActivationKeyChannels extends React.Component<ActivationKeyChannelsProps, 
             if (loading) {
               return (
                 <div className='form-group'>
-                  <Loading text='Loading..' />
+                  <Loading text={t('Loading..')} />
                 </div>
               )
             }
