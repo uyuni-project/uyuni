@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2011-03-04 16:08+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Slovak (http://www.transifex.com/projects/p/fedora/language/"
-"sk/)\n"
+"PO-Revision-Date: 2020-05-11 07:59+0000\n"
+"Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -166,7 +167,7 @@ msgstr ""
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Prosím, spustite rhn_register ako správca systému na tomto klientovi"
 
 #: ../server/rhnHandler.py:75
 #, python-format
