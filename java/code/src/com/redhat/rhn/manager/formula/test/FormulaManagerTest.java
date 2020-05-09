@@ -85,6 +85,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
         manager.setSystemQuery(saltServiceMock);
         metadataDir = Files.createTempDirectory("metadata");
+        FormulaFactory.setDataDir(tmpSaltRoot.toString());
+        FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
         createMetadataFiles();
     }
 
