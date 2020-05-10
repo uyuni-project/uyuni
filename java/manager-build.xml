@@ -452,6 +452,8 @@
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
         <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java" />
+        <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java" />
+        <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java" />
       </fileset>
       <excludepackage name="**/*" />
     </javadoc>
