@@ -110,6 +110,37 @@ public class MaintenanceHandler extends BaseHandler {
     }
 
     /**
+     * Create a new Maintenance Schedule
+     *
+     * @param loggedInUser the user
+     * @param name schedule name
+     * @param type schedule type
+     * @param calendar maintenance calendar label
+     * @return the new Maintenance Schedule
+     *
+     * @xmlrpc.doc Create a new Maintenance Schedule
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "name", "Maintenance Schedule Name")
+     * @xmlrpc.param #param_desc("string", "type", "Schedule type: single, multi")
+     * @xmlrpc.param #param_desc("string", "calendar", "Maintenance Calendar Label")
+     * @xmlrpc.returntype
+     * #array_begin()
+     * $MaintenanceScheduleSerializer
+     * #array_end()
+     */
+    public MaintenanceSchedule createSchedule(User loggedInUser, String name, String type,
+            String calendar) {
+        ensureOrgAdmin(loggedInUser);
+        try {
+            return mm.createMaintenanceSchedule(loggedInUser, name, ScheduleType.lookupByLabel(type),
+                    mm.lookupCalendarByUserAndLabel(loggedInUser, calendar));
+        }
+        catch (EntityExistsException e) {
+            throw new EntityExistsFaultException(e);
+        }
+    }
+
+    /**
      * Update a Maintenance Schedule
      *
      * @param loggedInUser the user
