@@ -1390,6 +1390,9 @@ public class ServerFactory extends HibernateFactory {
      * @return only the IDs if systems with pending maintenance-only actions
      */
     public static Set<Long> filterSystemsWithPendingMaintOnlyActions(Set<Long> systemIds) {
+        if (systemIds.isEmpty()) {
+            return new HashSet<Long>();
+        }
         return new HashSet<>(HibernateFactory.getSession()
                 .getNamedQuery("Server.filterSystemsWithPendingMaintenanceOnlyActions")
                 .setParameter("systemIds", systemIds)
@@ -1404,6 +1407,9 @@ public class ServerFactory extends HibernateFactory {
      * @return number of involved {@link Server}s
      */
     public static int setMaintenanceScheduleToSystems(MaintenanceSchedule schedule, Set<Long> systemIds) {
+        if (systemIds.isEmpty()) {
+            return 0;
+        }
         return HibernateFactory.getSession()
                 .getNamedQuery("Server.setMaintenanceScheduleToSystems")
                 .setParameter("schedule", schedule)
