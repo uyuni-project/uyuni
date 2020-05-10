@@ -103,6 +103,7 @@ BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
+BuildRequires:  ical4j
 BuildRequires:  jade4j
 BuildRequires:  jaf
 BuildRequires:  %{apache_commons_discovery}
@@ -176,6 +177,7 @@ Requires:       google-gson >= 2.2.4
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
+Requires:       ical4j
 Requires:       jade4j
 Requires:       %{apache_commons_digester}
 Requires:       java >= %{java_version}
@@ -677,6 +679,7 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 %{jardir}/httpcore.jar
 %{jardir}/httpcore-nio.jar
 %{jardir}/httpasyncclient.jar
+%{jardir}/ical4j.jar
 %{jardir}/jade4j.jar
 %{jardir}/jose4j.jar
 %{jardir}/netty*.jar
