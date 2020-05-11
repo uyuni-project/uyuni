@@ -1642,7 +1642,7 @@ public class ErrataManager extends BaseManager {
             }
         }
 
-        ChannelFactory.addClonedErrataToChannel(eids, toCid);
+        ChannelFactory.addErrataToChannel(eids, toCid);
 
         // for things like errata email and auto errata updates
         for (Long eid : eids) {
