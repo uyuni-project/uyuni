@@ -2277,27 +2277,30 @@ public class ErrataManager extends BaseManager {
         // let's avoid deadlocks please
         ChannelFactory.lock(channel);
 
-        for (Long eid : list) {
-            Errata errata = ErrataFactory.lookupById(eid);
-            // we merge custom errata directly (non Redhat and cloned)
-            if (errata.getOrg() != null) {
-                ErrataCacheManager.addErrataRefreshing(cids, eid);
-            }
-            else {
-                List<Errata> clones = lookupPublishedByOriginal(user, errata);
-                if (clones.size() == 0) {
-                    log.debug("Cloning errata");
-                    var publishedId = HibernateFactory.doWithoutAutoFlushing(() -> PublishErrataHelper.cloneErrataFaster(eid, user.getOrg()));
-                    ErrataCacheManager.addErrataRefreshing(cids, publishedId);
+        HibernateFactory.doWithoutAutoFlushing(() -> {
+            for (Long eid : list) {
+                Errata errata = ErrataFactory.lookupById(eid);
+                // we merge custom errata directly (non Redhat and cloned)
+                if (errata.getOrg() != null) {
+                    ErrataCacheManager.addErrataRefreshing(cids, eid);
                 }
                 else {
-                    log.debug("Re-publishing clone");
-                    Errata firstClone = clones.get(0);
+                    List<Errata> clones = lookupPublishedByOriginal(user, errata);
+                    if (clones.size() == 0) {
+                        log.debug("Cloning errata");
+                        var publishedId = PublishErrataHelper.cloneErrataFaster(eid, user.getOrg());
+                        ErrataCacheManager.addErrataRefreshing(cids, publishedId);
+                    }
+                    else {
+                        log.debug("Re-publishing clone");
+                        Errata firstClone = clones.get(0);
 
-                    ErrataCacheManager.addErrataRefreshing(cids, firstClone.getId());
+                        ErrataCacheManager.addErrataRefreshing(cids, firstClone.getId());
+                    }
                 }
             }
-        }
+        });
+
         // Trigger channel repodata re-generation
         if (list.size() > 0 && requestRepodataRegen) {
             channel.setLastModified(new Date());
