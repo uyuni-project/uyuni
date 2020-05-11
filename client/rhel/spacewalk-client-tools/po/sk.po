@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-23 14:33+0100\n"
-"PO-Revision-Date: 2020-05-11 07:59+0000\n"
+"PO-Revision-Date: 2020-05-14 22:19+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/sk/>\n"
@@ -623,6 +623,8 @@ msgid ""
 "Tip: Red Hat values your privacy: http://www.redhat.com/legal/"
 "privacy_statement.html"
 msgstr ""
+"Tip: Red Hat si cení vaše súkromie: http://www.redhat.com/legal/"
+"privacy_statement.html"
 
 #: ../src/up2date_client/rhnreg_constants.py:73
 msgid "Take me back to the registration"
@@ -638,20 +640,24 @@ msgid ""
 "Are you sure you don't want to connect your system to Red Hat Satellite? "
 "You'll miss out on the benefits of a Red Hat Enterprise Linux subscription:\n"
 msgstr ""
+"Naozaj nechcete pripojiť svoj systém k Red Hat Satellite? Prídete o výhody "
+"predplatného Red Hat Enterprise Linux:\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:79
 msgid ""
 "You will not be able to take advantage of these subscription privileges "
 "without connecting your system to Red Hat Satellite.\n"
 msgstr ""
+"Nebudete môcť využívať tieto výhody predplatného bez pripojenia vášho "
+"systému k Red Hat Satellite.\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
 msgid "Take me back to the setup process."
-msgstr ""
+msgstr "Vrátiť sa späť do procesu nastavenia."
 
 #: ../src/up2date_client/rhnreg_constants.py:82
 msgid "I'll register later."
-msgstr ""
+msgstr "Zaregistrujem sa neskôr."
 
 #. Info Window
 #: ../src/up2date_client/rhnreg_constants.py:85 ../data/gui.glade.h:5
@@ -665,6 +671,8 @@ msgid ""
 "Please enter your login information for the %s Red Hat Network Satellite:\n"
 "\n"
 msgstr ""
+"Prosím, zadajte svoje prihlasovacie údaje pre %s Red Hat Network Satellite:\n"
+"\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
 msgid "Red Hat Login:"
@@ -684,10 +692,12 @@ msgid ""
 "Tip: Forgot your login or password?  Contact your Satellite's Organization "
 "Administrator."
 msgstr ""
+"Tip: Zabudli ste svoje prihlasovacie meno alebo heslo?  Kontaktujte "
+"administrátora Satellite vašej organizácie."
 
 #: ../src/up2date_client/rhnreg_constants.py:93
 msgid "Please enter a desired login."
-msgstr ""
+msgstr "Prosím, zadajte požadované prihlasovacie meno."
 
 #: ../src/up2date_client/rhnreg_constants.py:94
 msgid "Please enter and verify a password."
@@ -697,11 +707,11 @@ msgstr "Musíte zadať a overiť heslo."
 #: ../src/up2date_client/rhnreg_constants.py:97 ../data/gui.glade.h:6
 #: ../data/rh_register.glade.h:142
 msgid "Operating System Release Version"
-msgstr ""
+msgstr "Verzia vydania operačného systému"
 
 #: ../src/up2date_client/rhnreg_constants.py:98
 msgid "Operating System version:"
-msgstr ""
+msgstr "Verzia operačného systému:"
 
 #: ../src/up2date_client/rhnreg_constants.py:99
 msgid " Minor Release: "
