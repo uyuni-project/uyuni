@@ -360,6 +360,8 @@ When(/^I select the hostname of "([^"]*)" from "([^"]*)"$/) do |host, hostname|
     step %(I select "#{$proxy.full_hostname}" from "#{hostname}")
   when 'sle_minion'
     step %(I select "#{$minion.full_hostname}" from "#{hostname}")
+  when 'build_host'
+    step %(I select "#{$build_host.full_hostname}" from "#{hostname}")
   end
 end
 

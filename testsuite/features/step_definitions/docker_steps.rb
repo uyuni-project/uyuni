@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC.
+# Copyright (c) 2017-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'xmlrpc/client'
@@ -9,17 +9,17 @@ require 'timeout'
 # container operations
 cont_op = XMLRPCImageTest.new(ENV['SERVER'])
 
-# retrieve minion id, needed for scheduleImageBuild call
-def retrieve_minion_id
+# retrieve build host id, needed for scheduleImageBuild call
+def retrieve_build_host_id
   sysrpc = XMLRPCSystemTest.new(ENV['SERVER'])
   sysrpc.login('admin', 'admin')
   systems = sysrpc.list_systems
   refute_nil(systems)
-  minion_id = systems
-              .select { |s| s['name'] == $minion.full_hostname }
-              .map { |s| s['id'] }.first
-  refute_nil(minion_id, "Minion #{$minion.full_hostname} is not yet registered?")
-  minion_id
+  build_host_id = systems
+                  .select { |s| s['name'] == $build_host.full_hostname }
+                  .map { |s| s['id'] }.first
+  refute_nil(build_host_id, "Build host #{$build_host.full_hostname} is not yet registered?")
+  build_host_id
 end
 
 When(/^I navigate to images webpage$/) do
@@ -62,7 +62,7 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
     end
   end
   # don't run this for sles11 (docker feature is not there)
-  ck_container_imgs(timeout, count) unless sle11family?($minion)
+  ck_container_imgs(timeout, count) unless sle11family?($build_host)
 end
 
 When(/^I check the first image$/) do
@@ -73,20 +73,20 @@ When(/^I schedule the build of image "([^"]*)" via XML-RPC calls$/) do |image|
   cont_op.login('admin', 'admin')
   # empty by default
   version_build = ''
-  build_hostid = retrieve_minion_id
+  build_host_id = retrieve_build_host_id
   now = DateTime.now
   date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
-  cont_op.schedule_image_build(image, version_build, build_hostid, date_build)
+  cont_op.schedule_image_build(image, version_build, build_host_id, date_build)
 end
 
 When(/^I schedule the build of image "([^"]*)" with version "([^"]*)" via XML-RPC calls$/) do |image, version|
   cont_op.login('admin', 'admin')
   # empty by default
   version_build = version
-  build_hostid = retrieve_minion_id
+  build_host_id = retrieve_build_host_id
   now = DateTime.now
   date_build = XMLRPC::DateTime.new(now.year, now.month, now.day, now.hour, now.min, now.sec)
-  cont_op.schedule_image_build(image, version_build, build_hostid, date_build)
+  cont_op.schedule_image_build(image, version_build, build_host_id, date_build)
 end
 
 When(/^I delete the image "([^"]*)" with version "([^"]*)" via XML-RPC calls$/) do |image_name_todel, version|

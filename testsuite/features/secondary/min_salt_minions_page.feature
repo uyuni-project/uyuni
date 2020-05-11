@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Management of minion keys
@@ -94,35 +94,3 @@ Feature: Management of minion keys
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
-
-  Scenario: Cleanup: turn the SLES minion into a container build host after new bootstrap
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "container_build_host"
-    And I click on "Update Properties"
-
-  Scenario: Cleanup: turn the SLES minion into a OS image build host after new bootstrap
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "osimage_build_host"
-    And I click on "Update Properties"
-    Then I should see a "OS Image Build Host type has been applied." text
-    And I should see a "Note: This action will not result in state application" text
-    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
-    And I should see a "System properties changed" text
-
-  Scenario: Cleanup: apply the highstate to build host after new bootstrap
-    Given I am on the Systems overview page of this "sle_minion"
-    When I wait until no Salt job is running on "sle_minion"
-    And I enable repositories before installing Docker
-    And I apply highstate on "sle_minion"
-    And I wait until "docker" service is active on "sle_minion"
-    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle_minion"
-    And I disable repositories after installing Docker
-
-  Scenario: Cleanup: check that the minion is now a build host after new bootstrap
-    Given I am on the Systems overview page of this "sle_minion"
-    Then I should see a "[Container Build Host]" text
-    Then I should see a "[OS Image Build Host]" text

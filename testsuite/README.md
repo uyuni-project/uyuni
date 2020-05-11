@@ -11,7 +11,7 @@ Apart from Cucumber, the testsuite relies on a number of [software components](d
 
 # Running the testsuite
 
-You can run the SUSE Manager testsuite [with sumaform](https://github.com/moio/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
+You can run the SUSE Manager testsuite [with sumaform](https://github.com/uyuni-project/sumaform/blob/master/README_ADVANCED.md#cucumber-testsuite).
 
 If you want to run the testsuite for [Uyuni](https://www.uyuni-project.org), nothing special needs to be done. The testuite will autodetect it.
 
