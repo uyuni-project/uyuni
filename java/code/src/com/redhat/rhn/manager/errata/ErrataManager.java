@@ -235,7 +235,7 @@ public class ErrataManager extends BaseManager {
         //if we're publishing the errata but not pushing packages
         //  We need to add cache entries for ones that are already in the channel
         //  and associated to the errata
-        ErrataCacheManager.insertCacheForChannelErrata(channelIds, errata.getId());
+        ErrataCacheManager.addErrataRefreshing(channelIds, errata.getId());
 
 
         //Save the errata
@@ -2281,20 +2281,20 @@ public class ErrataManager extends BaseManager {
             Errata errata = ErrataFactory.lookupById(eid);
             // we merge custom errata directly (non Redhat and cloned)
             if (errata.getOrg() != null) {
-                ErrataCacheManager.insertCacheForChannelErrata(cids, eid);
+                ErrataCacheManager.addErrataRefreshing(cids, eid);
             }
             else {
                 List<Errata> clones = lookupPublishedByOriginal(user, errata);
                 if (clones.size() == 0) {
                     log.debug("Cloning errata");
                     var publishedId = HibernateFactory.doWithoutAutoFlushing(() -> PublishErrataHelper.cloneErrataFaster(eid, user.getOrg()));
-                    ErrataCacheManager.insertCacheForChannelErrata(cids, publishedId);
+                    ErrataCacheManager.addErrataRefreshing(cids, publishedId);
                 }
                 else {
                     log.debug("Re-publishing clone");
                     Errata firstClone = clones.get(0);
 
-                    ErrataCacheManager.insertCacheForChannelErrata(cids, firstClone.getId());
+                    ErrataCacheManager.addErrataRefreshing(cids, firstClone.getId());
                 }
             }
         }
