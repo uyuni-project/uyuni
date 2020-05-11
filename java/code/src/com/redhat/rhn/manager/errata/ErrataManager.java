@@ -17,6 +17,13 @@
  */
 package com.redhat.rhn.manager.errata;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -72,11 +79,10 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+
 import com.suse.manager.utils.MinionServerUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import redstone.xmlrpc.XmlRpcClient;
-import redstone.xmlrpc.XmlRpcFault;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -97,12 +103,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Stream.concat;
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * ErrataManager is the singleton class used to provide business operations
@@ -2288,7 +2290,8 @@ public class ErrataManager extends BaseManager {
                 List<Errata> clones = lookupPublishedByOriginal(user, errata);
                 if (clones.size() == 0) {
                     log.debug("Cloning errata");
-                    Errata published = PublishErrataHelper.cloneErrataFast(errata, user.getOrg());
+                    var publishedId = HibernateFactory.doWithoutAutoFlushing(() -> PublishErrataHelper.cloneErrataFaster(eid, user.getOrg()));
+                    Errata published = ErrataFactory.lookupById(publishedId);
                     published.setChannels(channelSet);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, published);
                     published.addChannelNotification(channel, new Date());
