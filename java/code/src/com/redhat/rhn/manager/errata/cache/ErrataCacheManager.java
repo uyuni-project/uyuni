@@ -26,10 +26,12 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
+import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -274,6 +276,7 @@ public class ErrataCacheManager extends HibernateFactory {
             ChannelFactory.addErrataToChannel(new HashSet<Long>() {{ add(errataId); }}, cid);
             List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errataId);
             ErrataCacheManager.insertCacheForChannelPackages(cid, errataId, pids);
+            ErrataManager.replaceChannelNotifications(errataId, cid, new Date());
         }
     }
 
