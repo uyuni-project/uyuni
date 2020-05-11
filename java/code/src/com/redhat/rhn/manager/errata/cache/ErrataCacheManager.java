@@ -264,13 +264,12 @@ public class ErrataCacheManager extends HibernateFactory {
      *updates the errata caches for the channels passed in.
      * @param channelIdsToUpdate - channel IDs (Long) that need their errata
      * caches updated
-     * @param errata the errata to update the cache for
+     * @param errataId ID of the errata to update the cache for. Assumes the errata is published
      */
-    public static void insertCacheForChannelErrata(
-            List<Long> channelIdsToUpdate, Errata errata) {
+    public static void insertCacheForChannelErrata(List<Long> channelIdsToUpdate, Long errataId) {
         for (Long cid : channelIdsToUpdate) {
-            List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errata.getId());
-            ErrataCacheManager.insertCacheForChannelPackages(cid, errata.getId(), pids);
+            List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errataId);
+            ErrataCacheManager.insertCacheForChannelPackages(cid, errataId, pids);
         }
     }
 
