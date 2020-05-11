@@ -239,9 +239,7 @@ public class ErrataManager extends BaseManager {
         //if we're publishing the errata but not pushing packages
         //  We need to add cache entries for ones that are already in the channel
         //  and associated to the errata
-        List<Long> list = new ArrayList<Long>();
-        list.addAll(channelIds);
-        ErrataCacheManager.insertCacheForChannelErrata(list, errata.getId());
+        ErrataCacheManager.insertCacheForChannelErrata(channelIds, errata.getId());
 
 
         //Save the errata
