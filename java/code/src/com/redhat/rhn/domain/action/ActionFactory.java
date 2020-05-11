@@ -743,7 +743,7 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIn you want to limit the list of Actions to
      * @return List of Action objects
      */
-    public static List listActionsForServer(User user, Server serverIn) {
+    public static List<Action> listActionsForServer(User user, Server serverIn) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("orgId", user.getOrg().getId());
         params.put("server", serverIn);
