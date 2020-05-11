@@ -398,10 +398,10 @@ public interface Errata {
     /**
      * Add a new notification for this errata
      * in specified channel
-     * @param channelIn affected channel
+     * @param channelId affected channel ID
      * @param dateIn The notify date
      */
-    void addChannelNotification(Channel channelIn, Date dateIn);
+    void addChannelNotification(long channelId, Date dateIn);
 
     /**
      * List errata notifications that are queued
