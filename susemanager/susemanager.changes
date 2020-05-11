@@ -1,3 +1,5 @@
+- migrate cobbler configs for ks_mirror -> distro_mirror rename (bsc#1169209)
+
 -------------------------------------------------------------------
 Thu Apr 23 10:27:57 CEST 2020 - jgonzalez@suse.com
 
