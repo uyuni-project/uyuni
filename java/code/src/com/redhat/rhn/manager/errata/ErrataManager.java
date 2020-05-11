@@ -2296,8 +2296,6 @@ public class ErrataManager extends BaseManager {
                     Errata firstClone = clones.get(0);
 
                     ErrataCacheManager.insertCacheForChannelErrata(cids, firstClone.getId());
-
-                    updateSearchIndex();
                 }
             }
         }
@@ -2307,5 +2305,8 @@ public class ErrataManager extends BaseManager {
             ChannelFactory.save(channel);
             ChannelManager.queueChannelChange(channel.getLabel(), "java::cloneErrata", "Errata cloned");
         }
+
+        // update search index via XMLRPC
+        updateSearchIndex();
     }
 }
