@@ -230,10 +230,8 @@ public class ErrataManager extends BaseManager {
         while (itr.hasNext()) {
             Long channelId = (Long) itr.next();
             Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
-            if (channel != null) {
-                errata.addChannel(channel);
-                errata.addChannelNotification(channel, new Date());
-            }
+            errata.addChannel(channel);
+            errata.addChannelNotification(channel, new Date());
         }
 
         //if we're publishing the errata but not pushing packages
