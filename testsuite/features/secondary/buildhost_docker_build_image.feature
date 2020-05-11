@@ -4,6 +4,7 @@
 # Basic images do not contain zypper nor the name of the server,
 # so the inspect functionality is not tested here.
 
+@buildhost
 Feature: Build container images
 
   Scenario: Create a simple image profile without activation key
@@ -45,7 +46,7 @@ Feature: Build container images
     And I click on "create-btn"
 
   Scenario: Build the images with and without activation key
-    Given I am on the Systems overview page of this "sle_minion"
+    Given I am on the Systems overview page of this "build_host"
     When I schedule the build of image "suse_key" via XML-RPC calls
     And I wait at most 500 seconds until event "Image Build suse_key scheduled by admin" is completed
     And I schedule the build of image "suse_simple" via XML-RPC calls
@@ -77,7 +78,7 @@ Feature: Build container images
     When I navigate to images build webpage
     And I select "suse_real_key" from "profileId"
     And I enter "GUI_BUILT_IMAGE" as "version"
-    And I select the hostname of "sle_minion" from "buildHostId"
+    And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "GUI_BUILT_IMAGE" text
 
@@ -86,7 +87,7 @@ Feature: Build container images
     When I navigate to images build webpage
     And I select "suse_real_key" from "profileId"
     And I enter "GUI_DOCKERADMIN" as "version"
-    And I select the hostname of "sle_minion" from "buildHostId"
+    And I select the hostname of "build_host" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "GUI_DOCKERADMIN" text
 
@@ -99,7 +100,7 @@ Feature: Build container images
     And I delete the image "suse_real_key" with version "GUI_DOCKERADMIN" via XML-RPC calls
 
   Scenario: Cleanup: kill stale image build jobs
-    When I kill remaining Salt jobs on "sle_minion"
+    When I kill remaining Salt jobs on "build_host"
 
   Scenario: Cleanup: delete all profiles
     Given I am authorized as "admin" with password "admin"
