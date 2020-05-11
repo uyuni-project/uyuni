@@ -230,7 +230,7 @@ public class ErrataManager extends BaseManager {
         while (itr.hasNext()) {
             Long channelId = (Long) itr.next();
             ChannelManager.lookupByIdAndUser(channelId, user);
-            errata.replaceChannelNotifications(channelId, new Date());
+            ErrataManager.replaceChannelNotifications(errata.getId(), channelId, new Date());
         }
 
         //if we're publishing the errata but not pushing packages
@@ -1743,6 +1743,18 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
+     * Replaces any existing notifications pending for an errata and channel with
+     * a new one for the specified channel
+     * @param errataId the errata ID
+     * @param channelId affected channel ID
+     * @param dateIn The notify date
+     */
+    public static void replaceChannelNotifications(long errataId, long channelId, Date dateIn) {
+        clearErrataChannelNotifications(errataId, channelId);
+        addErrataNotification(errataId, channelId, dateIn);
+    }
+
+    /**
      * List queued errata notifications
      * @param e the errata
      * @return list of maps
@@ -2275,7 +2287,7 @@ public class ErrataManager extends BaseManager {
             // we merge custom errata directly (non Redhat and cloned)
             if (errata.getOrg() != null) {
                 ErrataCacheManager.insertCacheForChannelErrata(cids, eid);
-                errata.replaceChannelNotifications(channelId, new Date());
+                ErrataManager.replaceChannelNotifications(eid, channelId, new Date());
             }
             else {
                 Set<Channel> channelSet = new HashSet<>();
@@ -2287,7 +2299,7 @@ public class ErrataManager extends BaseManager {
                     var publishedId = HibernateFactory.doWithoutAutoFlushing(() -> PublishErrataHelper.cloneErrataFaster(eid, user.getOrg()));
                     Errata published = ErrataFactory.lookupById(publishedId);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, publishedId);
-                    published.replaceChannelNotifications(channelId, new Date());
+                    ErrataManager.replaceChannelNotifications(publishedId, channelId, new Date());
                 }
                 else {
                     log.debug("Re-publishing clone");

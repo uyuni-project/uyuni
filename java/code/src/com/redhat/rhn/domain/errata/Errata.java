@@ -396,14 +396,6 @@ public interface Errata {
     void addNotification(Date dateIn);
 
     /**
-     * Replaces any existing notifications pending for this errata and channel with
-     * a new one for the specified channel
-     * @param channelId affected channel ID
-     * @param dateIn The notify date
-     */
-    void replaceChannelNotifications(long channelId, Date dateIn);
-
-    /**
      * List errata notifications that are queued
      * @return list of maps with channel_id and time
      */
