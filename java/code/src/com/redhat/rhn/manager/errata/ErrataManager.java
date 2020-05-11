@@ -2288,7 +2288,6 @@ public class ErrataManager extends BaseManager {
                 if (clones.size() == 0) {
                     log.debug("Cloning errata");
                     var publishedId = HibernateFactory.doWithoutAutoFlushing(() -> PublishErrataHelper.cloneErrataFaster(eid, user.getOrg()));
-                    Errata published = ErrataFactory.lookupById(publishedId);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, publishedId);
                 }
                 else {
