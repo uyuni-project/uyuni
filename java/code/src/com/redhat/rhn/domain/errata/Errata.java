@@ -396,12 +396,12 @@ public interface Errata {
     void addNotification(Date dateIn);
 
     /**
-     * Add a new notification for this errata
-     * in specified channel
+     * Replaces any existing notifications pending for this errata and channel with
+     * a new one for the specified channel
      * @param channelId affected channel ID
      * @param dateIn The notify date
      */
-    void addChannelNotification(long channelId, Date dateIn);
+    void replaceChannelNotifications(long channelId, Date dateIn);
 
     /**
      * List errata notifications that are queued
