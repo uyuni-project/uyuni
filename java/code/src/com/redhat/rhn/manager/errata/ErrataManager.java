@@ -229,8 +229,8 @@ public class ErrataManager extends BaseManager {
 
         while (itr.hasNext()) {
             Long channelId = (Long) itr.next();
-            Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
-            errata.addChannelNotification(channel, new Date());
+            ChannelManager.lookupByIdAndUser(channelId, user);
+            errata.addChannelNotification(channelId, new Date());
         }
 
         //if we're publishing the errata but not pushing packages
@@ -1680,15 +1680,15 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Send errata notifications for a particular errata and channel
-     * @param e the errata to send notifications about
-     * @param chan the channel with which to decide which systems
+     * @param errataId the errata ID to send notifications about
+     * @param channelId the channel ID with which to decide which systems
      *       and users to send errata for
      * @param date  the date
      */
-    public static void addErrataNotification(Errata e, Channel chan, Date date) {
+    public static void addErrataNotification(long errataId, long channelId, Date date) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("cid", chan.getId());
-        params.put("eid", e.getId());
+        params.put("cid", channelId);
+        params.put("eid", errataId);
         java.sql.Date newDate = new java.sql.Date(date.getTime());
         params.put("datetime", newDate);
         WriteMode m = ModeFactory.getWriteMode(
@@ -1730,13 +1730,13 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Delete all errata notifications for an errata in specified channel
-     * @param e the errata to clear notifications for
-     * @param c affected channel
+     * @param errataId the errata ID to clear notifications for
+     * @param channelId affected channel ID
      */
-    public static void clearErrataChannelNotifications(Errata e, Channel c) {
+    public static void clearErrataChannelNotifications(long errataId, long channelId) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("eid", e.getId());
-        params.put("cid", c.getId());
+        params.put("eid", errataId);
+        params.put("cid", channelId);
         WriteMode m = ModeFactory.getWriteMode(
                 "Errata_queries",  "clear_errata_channel_notification");
         m.executeUpdate(params);
@@ -2275,7 +2275,7 @@ public class ErrataManager extends BaseManager {
             // we merge custom errata directly (non Redhat and cloned)
             if (errata.getOrg() != null) {
                 ErrataCacheManager.insertCacheForChannelErrata(cids, eid);
-                errata.addChannelNotification(channel, new Date());
+                errata.addChannelNotification(channelId, new Date());
             }
             else {
                 Set<Channel> channelSet = new HashSet<>();
@@ -2287,7 +2287,7 @@ public class ErrataManager extends BaseManager {
                     var publishedId = HibernateFactory.doWithoutAutoFlushing(() -> PublishErrataHelper.cloneErrataFaster(eid, user.getOrg()));
                     Errata published = ErrataFactory.lookupById(publishedId);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, publishedId);
-                    published.addChannelNotification(channel, new Date());
+                    published.addChannelNotification(channelId, new Date());
                 }
                 else {
                     log.debug("Re-publishing clone");
