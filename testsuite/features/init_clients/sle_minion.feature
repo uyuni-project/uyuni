@@ -62,42 +62,6 @@ Feature: Be able to bootstrap a Salt minion via the GUI
   Scenario: Detect latest Salt changes on the SLES minion
     When I query latest Salt changes on "sle_minion"
 
-  Scenario: Turn the SLES minion into a container build host
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "container_build_host"
-    And I click on "Update Properties"
-    Then I should see a "Container Build Host type has been applied." text
-    And I should see a "Note: This action will not result in state application" text
-    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
-    And I should see a "System properties changed" text
-
-  Scenario: Turn the SLES minion into a OS image build host
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Details" in the content area
-    And I follow "Properties" in the content area
-    And I check "osimage_build_host"
-    And I click on "Update Properties"
-    Then I should see a "OS Image Build Host type has been applied." text
-    And I should see a "Note: This action will not result in state application" text
-    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
-    And I should see a "System properties changed" text
-
-  Scenario: Apply the highstate to build host
-    Given I am on the Systems overview page of this "sle_minion"
-    When I wait until no Salt job is running on "sle_minion"
-    And I enable repositories before installing Docker
-    And I apply highstate on "sle_minion"
-    And I wait until "docker" service is active on "sle_minion"
-    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle_minion"
-    And I disable repositories after installing Docker
-
-  Scenario: Check that the minion is now a build host
-    Given I am on the Systems overview page of this "sle_minion"
-    Then I should see a "[Container Build Host]" text
-    Then I should see a "[OS Image Build Host]" text
-
   Scenario: Check events history for failures on SLES minion
     Given I am on the Systems overview page of this "sle_minion"
     Then I check for failed events on history event page

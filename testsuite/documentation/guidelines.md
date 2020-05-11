@@ -61,6 +61,7 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
    * "proxy": feature testing proxy side
    * "min": feature testing SLES minions (not SSH)
    * "minssh": feature testing SSH SLES minions
+   * "buildhost": feature using Kiwi and Docker build host
    * "ubuntu": feature testing Ubuntu
    * "centos": feature testing CentOS (should become "rhes" in the future when we start using Extended Support images)
    * "trad": feature testing traditional client
