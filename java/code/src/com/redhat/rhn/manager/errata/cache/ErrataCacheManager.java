@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
 import org.apache.log4j.Logger;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -266,7 +267,7 @@ public class ErrataCacheManager extends HibernateFactory {
      * caches updated
      * @param errataId ID of the errata to update the cache for. Assumes the errata is published
      */
-    public static void insertCacheForChannelErrata(List<Long> channelIdsToUpdate, Long errataId) {
+    public static void insertCacheForChannelErrata(Collection<Long> channelIdsToUpdate, Long errataId) {
         for (Long cid : channelIdsToUpdate) {
             List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errataId);
             ErrataCacheManager.insertCacheForChannelPackages(cid, errataId, pids);
