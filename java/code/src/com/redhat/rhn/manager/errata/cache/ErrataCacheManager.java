@@ -21,6 +21,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -30,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -269,6 +271,7 @@ public class ErrataCacheManager extends HibernateFactory {
      */
     public static void insertCacheForChannelErrata(Collection<Long> channelIdsToUpdate, Long errataId) {
         for (Long cid : channelIdsToUpdate) {
+            ChannelFactory.addErrataToChannel(new HashSet<Long>() { { add(errataId); } }, cid);
             List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errataId);
             ErrataCacheManager.insertCacheForChannelPackages(cid, errataId, pids);
         }

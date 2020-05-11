@@ -230,7 +230,6 @@ public class ErrataManager extends BaseManager {
         while (itr.hasNext()) {
             Long channelId = (Long) itr.next();
             Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
-            errata.addChannel(channel);
             errata.addChannelNotification(channel, new Date());
         }
 
@@ -2275,7 +2274,6 @@ public class ErrataManager extends BaseManager {
             Errata errata = ErrataFactory.lookupById(eid);
             // we merge custom errata directly (non Redhat and cloned)
             if (errata.getOrg() != null) {
-                errata.addChannel(channel);
                 ErrataCacheManager.insertCacheForChannelErrata(cids, eid);
                 errata.addChannelNotification(channel, new Date());
             }
@@ -2288,7 +2286,6 @@ public class ErrataManager extends BaseManager {
                     log.debug("Cloning errata");
                     var publishedId = HibernateFactory.doWithoutAutoFlushing(() -> PublishErrataHelper.cloneErrataFaster(eid, user.getOrg()));
                     Errata published = ErrataFactory.lookupById(publishedId);
-                    published.setChannels(channelSet);
                     ErrataCacheManager.insertCacheForChannelErrata(cids, publishedId);
                     published.addChannelNotification(channel, new Date());
                 }
