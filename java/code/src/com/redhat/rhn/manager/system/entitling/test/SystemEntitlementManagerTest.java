@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -54,7 +55,8 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock))
+                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
+                        new FormulaMonitoringManager())
         );
     }
 

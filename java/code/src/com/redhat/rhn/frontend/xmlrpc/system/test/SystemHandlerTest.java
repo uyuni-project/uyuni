@@ -142,6 +142,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
@@ -1882,7 +1883,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
@@ -1912,7 +1913,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SaltService saltService = new SaltService();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
