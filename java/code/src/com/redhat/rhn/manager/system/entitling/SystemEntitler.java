@@ -36,7 +36,6 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.channel.MultipleChannelsWithPackageException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -68,11 +67,13 @@ public class SystemEntitler {
     /**
      * @param systemQueryIn instance for gathering data from a system.
      * @param virtManagerIn instance for managing virtual machines.
+     * @param monitoringManagerIn instance for handling monitoring configuration.
      */
-    public SystemEntitler(SystemQuery systemQueryIn, VirtManager virtManagerIn) {
+    public SystemEntitler(SystemQuery systemQueryIn, VirtManager virtManagerIn,
+            MonitoringManager monitoringManagerIn) {
         this.systemQuery = systemQueryIn;
         this.virtManager = virtManagerIn;
-        this.monitoringManager = new FormulaMonitoringManager();
+        this.monitoringManager = monitoringManagerIn;
     }
 
     /**
