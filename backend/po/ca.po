@@ -6,15 +6,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2018-03-16 10:53+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Catalan\n"
+"PO-Revision-Date: 2020-05-14 22:19+0000\n"
+"Last-Translator: David Medina <medipas@gmail.com>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/>"
+"\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -166,7 +167,7 @@ msgstr ""
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Si us plau, executeu rhn_register com a arrel en aquest client."
 
 #: ../server/rhnHandler.py:75
 #, python-format
