@@ -5,15 +5,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-23 14:35+0100\n"
-"PO-Revision-Date: 2018-03-16 11:07+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Catalan\n"
+"PO-Revision-Date: 2020-05-14 22:19+0000\n"
+"Last-Translator: David Medina <medipas@gmail.com>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-abrt/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/bin/spacewalk-abrt:39
 msgid "Upload content of the specified problem directory"
@@ -26,9 +27,8 @@ msgstr ""
 "especificat"
 
 #: ../src/bin/spacewalk-abrt:43
-#, fuzzy
 msgid "Synchronize missing problem directories"
-msgstr "Sincronitza els directoris dels problemes restants"
+msgstr "Sincronitza els directoris dels problemes que falten"
 
 #: ../src/bin/spacewalk-abrt:48
 #, python-format
@@ -55,3 +55,5 @@ msgid ""
 "This system does not seem to be registered, use `rhn_register` before using "
 "this command."
 msgstr ""
+"Sembla que aquest sistema no està registrat, useu \"rhn_register\" abans d’"
+"usar aquesta ordre."
