@@ -268,7 +268,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 IllegalArgumentException.class);
 
         // assign an action not tied to maintenance mode
-        Action allowedAction = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sys2, "2020-04-13T08:15:00+01:00");
+        Action allowedAction = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sys2, "2020-04-13T08:15:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys2.getId())));
     }
 
@@ -331,7 +331,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server server = ServerTestUtils.createTestSystem(user);
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
-        ZonedDateTime start = ZonedDateTime.parse("2020-04-21T09:00:00+01:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        ZonedDateTime start = ZonedDateTime.parse("2020-04-21T09:00:00+02:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         action.setEarliestAction(Date.from(start.toInstant()));
 
         ServerAction serverAction = ServerActionTest.createServerAction(server, action);
@@ -347,7 +347,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         assertFalse(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
 
-        start = ZonedDateTime.parse("2020-04-20T09:00:00+01:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        start = ZonedDateTime.parse("2020-04-20T09:00:00+02:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         action.setEarliestAction(Date.from(start.toInstant()));
         ActionManager.storeAction(action);
         assertTrue(mm.isActionInMaintenanceWindow(action, ms, Optional.ofNullable(calendar)));
@@ -378,14 +378,14 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()));
         mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()));
 
-        Action sapAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+01:00"); //moved
-        Action sapActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T08:15:00+01:00"); //moved
-        Action sapAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+01:00"); //stay
-        Action sapAction3 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-30T09:15:00+01:00"); //wrong window (Core)
-        Action coreAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+01:00"); //stay
-        Action coreActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-05-21T09:15:00+01:00"); //moved
-        Action coreAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+01:00"); //moved
-        Action coreAction3 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-27T08:15:00+01:00"); //wrong window (SAP)
+        Action sapAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+        Action sapActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+        Action sapAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
+        Action sapAction3 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-30T09:15:00+02:00"); //wrong window (Core)
+        Action coreAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
+        Action coreActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+        Action coreAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+        Action coreAction3 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-27T08:15:00+02:00"); //wrong window (SAP)
 
         List sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
         List coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
