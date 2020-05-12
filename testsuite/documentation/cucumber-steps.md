@@ -42,6 +42,8 @@ Possible values are currently:
 | CentOS Salt minion or traditional client | ```$ceos_minion``` | ```$CENTOSMINION``` | ```"ceos_minion"```, ```"ceos_traditional_client"```, or ```"ceos_ssh_minion"``` | ```"minion"``` |
 | Ubuntu minion | ```$ubuntu_minion``` | ```$UBUNTUMINION``` | ```"ubuntu_minion"``` or ```"ubuntu_ssh_minion"``` | ```"minion"``` |
 | PXE-Boot minion |  None | ```$PXEBOOT_MAC``` | ```"pxeboot_minion"``` | ```"pxeboot"``` |
+| KVM virtual host minion | ```$kvm_server``` | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"``` | ```"virthost"``` |
+| Xen virtual host minion | ```$xen_server``` | ```$VIRTHOST_XEN_URL``` and ```$VIRTHOST_XEN_PASSWORD``` | ```"xen_server"``` | ```"virthost"``` |
 
 These names are such for historical reasons and might be made better in the future.
 
