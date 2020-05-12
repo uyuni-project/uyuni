@@ -20,7 +20,6 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -37,6 +36,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.maintenance.CancelRescheduleStrategy;
 import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.maintenance.RescheduleResult;
 import com.suse.manager.maintenance.RescheduleStrategy;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
@@ -417,6 +417,111 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
     }
 
+    public void testScheduleChangeMultiWithActionChain() throws Exception {
+        File icalExM1 = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  EXCHANGE_MULTI1_ICS).getAbsolutePath()).getPath());
+        File icalExM2 = new File(TestUtils.findTestData(
+                new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
+
+        /* setup test environment */
+        Server sapServer = ServerTestUtils.createTestSystem(user);
+        Server coreServer = ServerTestUtils.createTestSystem(user);
+
+        MaintenanceManager mm = new MaintenanceManager();
+        MaintenanceCalendar mcal = mm.createMaintenanceCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceSchedule sapSchedule = mm.createMaintenanceSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
+        MaintenanceSchedule coreSchedule = mm.createMaintenanceSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
+
+        mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()));
+        mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()));
+
+        // Action Chain which start inside of the window, but has parts outside of the window
+        // Expected Result: No change
+        Action sapAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T09:59:00+02:00"); //stay (MW end at 10am)
+        Action sapAction2 = createActionForServerAt(ActionFactory.TYPE_REBOOT, sapServer, "2020-04-27T10:01:00+02:00", sapAction1); //stay (MW end at 10am)
+
+        // Action Chain which start with an action not tied to a maintenance window
+        // Expected Result: Cancel all Actions
+        Action sapAction3 = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T09:59:00+02:00"); //moved
+        Action sapAction4 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00", sapAction3); //moved
+
+        List<Action> sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
+        assertEquals(4, sapActionsBefore.size());
+
+        // Action Chain which is inside of a Window but the window gets moved.
+        // Expected Result: Cancel all Actions
+        Action coreAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+        Action coreAction2 = createActionForServerAt(ActionFactory.TYPE_REBOOT, coreServer, "2020-05-21T09:16:00+02:00", coreAction1); //moved
+
+        // Action Chain which start with an action not tied to a maintenance window
+        // Expected Result: No change
+        Action coreAction3 = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-04-30T11:59:30+02:00"); //stay
+        Action coreAction4 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T13:01:00+02:00", coreAction3); //stay
+
+        List<Action> coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
+        assertEquals(4, coreActionsBefore.size());
+
+
+        /* update the calendar */
+        Map<String, String> details = new HashMap<>();
+        details.put("ical", FileUtils.readStringFromFile(icalExM2.getAbsolutePath()));
+
+        List<RescheduleStrategy> rescheduleStrategy = new LinkedList<>();
+        rescheduleStrategy.add(new CancelRescheduleStrategy());
+
+        List<RescheduleResult> upResult = mm.updateCalendar(user, "multicalendar", details, rescheduleStrategy);
+
+        /* check results */
+        List<Action> sapActionsAfter = ActionFactory.listActionsForServer(user, sapServer);
+        assertEquals(2, sapActionsAfter.size()); // First chain should be unchanged, second should be removed.
+        assertContains(sapActionsAfter, sapAction1);
+        assertContains(sapActionsAfter, sapAction2);
+
+        List<Action> coreActionsAfter = ActionFactory.listActionsForServer(user, coreServer);
+        assertContains(coreActionsAfter, coreAction3);
+        assertContains(coreActionsAfter, coreAction4);
+        assertEquals(2, coreActionsAfter.size()); // First chain should be canceled, second stay
+
+        assertEquals(2, upResult.size());
+        for (RescheduleResult r : upResult) {
+            if (r.getScheduleName().equals("SAP Maintenance Window")) {
+                assertEquals("Cancel", r.getStrategy());
+                assertContains(r.getActionsServers().get(sapAction3), sapServer);
+                // depending actions from a chain are not part of the result
+            }
+            else if (r.getScheduleName().equals("Core Server Window")) {
+                assertEquals("Cancel", r.getStrategy());
+                assertContains(r.getActionsServers().get(coreAction1), coreServer);
+                // depending actions from a chain are not part of the result
+            }
+        }
+    }
+
+    /**
+     * Create an Errata Action for the given server at a specific point in time
+     *
+     * @param type action type
+     * @param server the server
+     * @param datetime time template for earliest action. Example: "2020-04-21T09:00:00+01:00"
+     * @param prerequisite dependend action
+     * @return the Action
+     * @throws Exception
+     */
+    private Action createActionForServerAt(ActionType type, Server server, String datetime,
+            Action prerequisite) throws Exception {
+        Action action = ActionFactoryTest.createAction(user, type);
+        action.setPrerequisite(prerequisite);
+        ZonedDateTime start = ZonedDateTime.parse(datetime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        action.setEarliestAction(Date.from(start.toInstant()));
+
+        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
+
+        action.addServerAction(serverAction);
+        ActionManager.storeAction(action);
+        return ActionFactory.lookupById(action.getId());
+    }
+
     /**
      * Create an Errata Action for the given server at a specific point in time
      *
@@ -426,16 +531,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      * @throws Exception
      */
     private Action createActionForServerAt(ActionType type, Server server, String datetime) throws Exception {
-        Action action = ActionFactoryTest.createAction(user, type);
-        ZonedDateTime start = ZonedDateTime.parse(datetime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        action.setEarliestAction(Date.from(start.toInstant()));
-
-        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-
-        action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
-        return action;
+        return createActionForServerAt(type, server, datetime, null);
     }
 
     private void assertExceptionThrown(Runnable body, Class exceptionClass) {
