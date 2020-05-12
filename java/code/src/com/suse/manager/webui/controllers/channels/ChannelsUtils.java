@@ -16,13 +16,16 @@ package com.suse.manager.webui.controllers.channels;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
-
 import com.suse.manager.webui.utils.gson.ChannelsJson;
-
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Useful channels methods for web apis
@@ -58,4 +61,28 @@ public class ChannelsUtils {
         return ChannelFactory.listSubscribableBaseChannels(user);
     }
 
+    /**
+     * Returns a Stream of mandatory channels for a certain product, given its base channel in input
+     *
+     * @param baseChannel the product base channel
+     * @return the Stream of mandatory channels
+     */
+    public static Stream<Channel> mandatoryChannelsByBaseChannel(Channel baseChannel) {
+        if (!baseChannel.isBaseChannel()) {
+            return Stream.empty();
+        }
+
+        // identify the product by the base channel name
+        Optional<SUSEProduct> baseProduct = SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel());
+        if (baseProduct.isEmpty()) {
+            return Stream.empty();
+        }
+
+        return baseProduct.get().getSuseProductChannels().stream()
+                .filter(pc -> pc.isMandatory())
+                .map(SUSEProductChannel::getChannel)
+                // filter out channels with different base than the given one
+                .filter(c -> c.getParentChannel() == null ||
+                        c.getParentChannel().getLabel().equals(baseChannel.getLabel()));
+    }
 }

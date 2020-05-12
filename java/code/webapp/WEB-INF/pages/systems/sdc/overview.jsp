@@ -217,17 +217,20 @@
         </div>
         <div class="panel-body">
           <c:if test="${system.baseChannel != null}">
+            <h4>Base Channel</h4>
             <ul class="channel-list">
-            <li>
-              <a href="/rhn/channels/ChannelDetail.do?cid=${baseChannel['id']}"><c:out value="${baseChannel['name']}" /></a>
-            </li>
+              <li>
+                <a href="/rhn/channels/ChannelDetail.do?cid=${baseChannel['id']}"><c:out value="${baseChannel['name']}" /></a>
+              </li>
+            </ul>
 
-            <c:forEach items="${childChannels}" var="childChannel">
-            <li class="child-channel">
-              <a href="/rhn/channels/ChannelDetail.do?cid=${childChannel['id']}"><c:out value="${childChannel['name']}" /></a>
-            </li>
-            </c:forEach>
-
+            <h4>Child Channels</h4>
+            <ul class="channel-list">
+              <c:forEach items="${childChannels}" var="childChannel">
+              <li class="child-channel">
+                <a href="/rhn/channels/ChannelDetail.do?cid=${childChannel['id']}"><c:out value="${childChannel['name']}" /></a>
+              </li>
+              </c:forEach>
             </ul>
           </c:if>
         </div>

@@ -15,12 +15,6 @@
 
 package com.suse.manager.reactor.messaging;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toSet;
-
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -46,19 +40,17 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
+import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -68,6 +60,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.apache.log4j.Logger;
+
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Common registration logic that can be used from multiple places
@@ -240,6 +239,8 @@ public class RegistrationUtils {
                     if (server.getBaseChannel() != null) {
                         return server.getChannels();
                     }
+                    // otherwise identify the product installed on the server
+                    // and assign to it basic/common channels for its products installed
                     Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
                     return findChannelsForProducts(suseProducts, minionId);
                 },
@@ -248,28 +249,35 @@ public class RegistrationUtils {
                         // ActivationKey without base channel (SUSE Manager Default)
                         () -> {
                             Set<SUSEProduct> suseProducts = identifyProduct(systemQuery, server, grains);
-                            return findChannelsForProducts(suseProducts, minionId);
+                            Set<Channel> channelsForProducts = findChannelsForProducts(suseProducts, minionId);
+                            Set<Channel> baseChannels = channelsForProducts.stream()
+                                    .filter(c -> c.isBaseChannel())
+                                    .collect(toSet());
+                            if (baseChannels.isEmpty()) {
+                                return emptySet();
+                            }
+                            else {
+                                Channel baseChannel = baseChannels.stream().findFirst().get();
+                                // assign the identified base channel, all mandatory channels
+                                // and all and only other channels selected within the activation key
+                                return Stream.concat(
+                                        Stream.concat(
+                                                Stream.of(baseChannel),
+                                                ChannelsUtils.mandatoryChannelsByBaseChannel(baseChannel)),
+                                        ak.getChannels().stream()
+                                                .filter(c -> c.getParentChannel() != null &&
+                                                        c.getParentChannel().getId().equals(baseChannel.getId())))
+                                        .collect(toSet());
+                            }
                         },
-                        baseChannel -> Opt.fold(
-                                SUSEProductFactory.findProductByChannelLabel(baseChannel.getLabel()),
-                                () -> {
-                                    // ActivationKey with custom channel
-                                    return Stream.concat(
-                                            Stream.of(baseChannel),
-                                            ak.getChannels().stream()
-                                    ).collect(toSet());
-                                },
-                                baseProduct -> {
-                                    // ActivationKey with vendor or cloned vendor channel
-                                    return Stream.concat(
-                                            lookupRequiredChannelsForProduct(baseProduct),
-                                            ak.getChannels().stream()
-                                                    .filter(c -> c.getParentChannel() != null &&
-                                                            c.getParentChannel().getId().equals(baseChannel.getId()))
-                                    ).collect(toSet());
-
-                                }
-                        )
+                        // assign base channel, all mandatory channels and all and only activation key channels selected
+                        baseChannel ->
+                                Stream.concat(
+                                    Stream.of(baseChannel),
+                                    Stream.concat(
+                                            ChannelsUtils.mandatoryChannelsByBaseChannel(baseChannel),
+                                            ak.getChannels().stream())
+                                ).collect(toSet())
                 )
         );
 

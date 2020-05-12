@@ -39,8 +39,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
   }
 
   componentDidMount = () => {
-    !this.state.collapsed
-        && this.props.fetchMandatoryChannelsByChannelIds({base: this.props.base, channels: this.props.channels})
+    this.props.fetchMandatoryChannelsByChannelIds({base: this.props.base, channels: this.props.channels});
   };
 
   handleChannelChange = (event: SyntheticInputEvent<*>) => {
@@ -79,16 +78,8 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
     }
   };
 
-  toggleChannelVisibility = ({onShow}: {onShow: Function})  => {
-    const prevState = this.state;
-    this.setState(
-      {collapsed: !this.state.collapsed},
-      () => {
-        if (prevState.collapsed != this.state.collapsed && !this.state.collapsed) {
-          onShow();
-        }
-      }
-    );
+  toggleChannelVisibility = () => {
+    this.setState({collapsed: !this.state.collapsed});
   };
 
   areRecommendedChildrenSelected = () : boolean => {
@@ -113,14 +104,14 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
           const mandatoryChannelsForBaseId: ?Set<number> = this.props.base && this.props.requiredChannelsResult.requiredChannels.get(this.props.base.id);
 
           const isMandatory = mandatoryChannelsForBaseId && mandatoryChannelsForBaseId.has(c.id);
-          const isDisabled = isMandatory && this.props.selectedChannelsIds.includes(c.id);
+          const isDisabled = isMandatory;
           return (
             <div key={c.id} className='checkbox'>
               <input type='checkbox'
                      value={c.id}
                      id={'child_' + c.id}
                      name='childChannels'
-                     checked={this.props.selectedChannelsIds.includes(c.id)}
+                     checked={isMandatory || this.props.selectedChannelsIds.includes(c.id)}
                      disabled={isDisabled}
                      onChange={(event) => this.handleChannelChange(event)}
               />
@@ -128,7 +119,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
                 // add an hidden carbon-copy of the disabled input since the disabled one will not be included in the form submit
                 isDisabled ?
                   <input type='checkbox' value={c.id} name='childChannels'
-                         hidden='hidden' checked={this.props.selectedChannelsIds.includes(c.id)} readOnly={true}/>
+                         hidden='hidden' checked={isMandatory || this.props.selectedChannelsIds.includes(c.id)} readOnly={true}/>
                   : null
               }
               <label title={toolTip} htmlFor={"child_" + c.id}>{c.name}</label>
@@ -161,10 +152,7 @@ class ChildChannels extends React.Component<ChildChannelsProps, ChildChannelsSta
 
     return (
       <div className='child-channels-block'>
-        <h4 className='pointer'
-            onClick={() => this.toggleChannelVisibility({
-                onShow: () => this.props.fetchMandatoryChannelsByChannelIds({base: this.props.base, channels: this.props.channels})
-              })} >
+        <h4 className='pointer' onClick={() => this.toggleChannelVisibility()}>
           <i className={'fa ' + (this.state.collapsed ? 'fa-angle-right' : 'fa-angle-down')} />
           {this.props.base.name}
         </h4>

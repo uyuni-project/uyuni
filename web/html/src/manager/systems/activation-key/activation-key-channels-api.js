@@ -73,7 +73,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
 
   fetchActivationKeyChannels = () => {
     let future: Promise<void>;
-    if (this.props.activationKeyId != -1) {
+    if (this.props.activationKeyId && this.props.activationKeyId != -1) {
       this.setState({loading: true});
 
       future = Network.get(`/rhn/manager/api/activation-keys/${this.props.activationKeyId}/channels`)
