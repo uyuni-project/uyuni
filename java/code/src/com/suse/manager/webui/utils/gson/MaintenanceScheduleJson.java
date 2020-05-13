@@ -1,55 +1,87 @@
 package com.suse.manager.webui.utils.gson;
 
-import com.redhat.rhn.domain.org.Org;
-
-import com.suse.manager.model.maintenance.MaintenanceCalendar;
-import com.suse.manager.model.maintenance.MaintenanceSchedule;
-
 public class MaintenanceScheduleJson {
 
-    private Long id;
-    private Org org;
-    private String name;
-    private MaintenanceSchedule.ScheduleType scheduleType;
-    private MaintenanceCalendar calendar;
+    private Long scheduleId;
+    private String scheduleName;
+    private String scheduleType;
 
-    public Long getId() {
-        return id;
+    private Long calendarId;
+    private String calendarName;
+    private String calendarUrl;
+    private String calendarData;
+    private boolean calendarAdded;
+    private String calendarType;
+
+    public Long getScheduleId() {
+        return scheduleId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setScheduleId(Long scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
-    public Org getOrg() {
-        return org;
+    public String getScheduleName() {
+        return scheduleName;
     }
 
-    public void setOrg(Org org) {
-        this.org = org;
+    public void setScheduleName(String scheduleName) {
+        this.scheduleName = scheduleName;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public MaintenanceSchedule.ScheduleType getScheduleType() {
+    public String getScheduleType() {
         return scheduleType;
     }
 
-    public void setScheduleType(MaintenanceSchedule.ScheduleType scheduleType) {
+    public void setScheduleType(String scheduleType) {
         this.scheduleType = scheduleType;
     }
 
-    public MaintenanceCalendar getCalendar() {
-        return calendar;
+    public Long getCalendarId() {
+        return calendarId;
     }
 
-    public void setCalendar(MaintenanceCalendar calendar) {
-        this.calendar = calendar;
+    public void setCalendarId(Long calendarId) {
+        this.calendarId = calendarId;
+    }
+
+    public String getCalendarName() {
+        return calendarName;
+    }
+
+    public void setCalendarName(String calendarName) {
+        this.calendarName = calendarName;
+    }
+
+    public String getCalendarData() {
+        return calendarData;
+    }
+
+    public void setCalendarData(String calendarData) {
+        this.calendarData = calendarData;
+    }
+
+    public String getCalendarUrl() {
+        return calendarUrl;
+    }
+
+    public void setCalendarUrl(String calendarUrl) {
+        this.calendarUrl = calendarUrl;
+    }
+
+    public boolean isCalendarAdded() {
+        return calendarAdded;
+    }
+
+    public void setCalendarAdded(boolean calendarAdded) {
+        this.calendarAdded = calendarAdded;
+    }
+
+    public String getCalendarType() {
+        return calendarType;
+    }
+
+    public void setCalendarType(String calendarType) {
+        this.calendarType = calendarType;
     }
 }
