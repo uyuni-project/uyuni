@@ -752,7 +752,10 @@ When(/^I disable repositories after installing Docker$/) do
     puts $minion.run("zypper mr --disable #{repos}")
   end
 
-  $minion.run('zypper -n --gpg-auto-import-keys ref')
+  # Refresh is only necessary when some repos are enabled
+  if $minion.run('zypper lr').contains? 'Yes'
+    $minion.run('zypper -n --gpg-auto-import-keys ref')
+  end
 end
 
 When(/^I enable repositories before installing branch server$/) do
