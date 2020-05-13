@@ -20,6 +20,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 
@@ -66,10 +67,12 @@ public class ChannelsApiController {
                     .collect(Collectors.toSet()));
         }
 
-        List<ChannelsJson> jsonChannelsFiltered = getPossibleBaseChannels(user).stream()
-                .map(base -> generateChannelJson(base, user))
-                .filter(c -> !filterOutIds.contains(c.getBase().getId()))
-                .collect(Collectors.toList());
+        List<ChannelsJson> jsonChannelsFiltered = HibernateFactory.doWithoutAutoFlushing(() ->
+                getPossibleBaseChannels(user).stream()
+                    .map(base -> generateChannelJson(base, user))
+                    .filter(c -> !filterOutIds.contains(c.getBase().getId()))
+                    .collect(Collectors.toList())
+        );
 
         return json(res, ResultJson.success(jsonChannelsFiltered));
     }
