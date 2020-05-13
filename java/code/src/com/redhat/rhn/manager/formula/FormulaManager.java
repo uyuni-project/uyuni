@@ -370,18 +370,18 @@ public class FormulaManager {
         Map<Long, Map<String, Object>> groupsFormulaData = getGroupsFormulaData(groupIDs, formulaName);
 
         return minionIDs.stream().map(mID -> getCombinedFormulaDataForSystem(mID,
-                managedGroupsPerServer.get(mID.getServerId()), groupsFormulaData, formulaName))
+                Optional.ofNullable(managedGroupsPerServer.get(mID.getServerId())), groupsFormulaData, formulaName))
                 .collect(Collectors.toList());
     }
 
     private FormulaData getCombinedFormulaDataForSystem(MinionIds minionID,
-            List<SystemGroupID> managedSystemGroups, Map<Long, Map<String, Object>> groupsFormulaData,
+            Optional<List<SystemGroupID>> managedSystemGroups, Map<Long, Map<String, Object>> groupsFormulaData,
             String formulaName) {
         Map<String, Object> combinedFormulaData = new HashMap<>();
 
-        for (SystemGroupID group : managedSystemGroups) {
-            combinedFormulaData.putAll(groupsFormulaData.getOrDefault(group.getGroupID(), Collections.emptyMap()));
-        }
+        managedSystemGroups.ifPresent(groups -> groups.forEach(group -> combinedFormulaData
+                .putAll(groupsFormulaData.getOrDefault(group.getGroupID(), Collections.emptyMap()))));
+
         combinedFormulaData.putAll(FormulaFactory.getFormulaValuesByNameAndMinionId(formulaName, minionID.getMinionId())
                 .orElse(Collections.emptyMap()));
 
