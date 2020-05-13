@@ -12,28 +12,30 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2011-03-04 16:08+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Portuguese (Brazil) <trans-pt_br@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2020-05-14 21:47+0000\n"
+"Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
+"Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
+"backend/pt_BR/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
 msgid "incomplete proxy authentication token: %s"
-msgstr ""
+msgstr "token de autenticação de proxy incompleto: %s"
 
 #: ../server/apacheAuth.py:84
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
+msgstr "A assinatura de proxy enviada %s não corresponde à nossa %s."
 
 #: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
-msgstr ""
+msgstr "autenticação de proxy recusada"
 
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
@@ -45,118 +47,125 @@ msgid ""
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"                   A conta %s foi desativada neste servidor.\n"
+"                   Entre em contato com o administrador da organização para "
+"obter mais ajuda."
 
 #: ../server/handlers/applet/applet.py:78
 msgid "Your system was not found in the RHN database"
-msgstr ""
+msgstr "Seu sistema não foi encontrado no banco de dados RHN"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this satellite."
-msgstr ""
+msgstr "O ISS está desativado neste satélite."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
 msgid "Server \"%s\" is not enabled for ISS."
-msgstr ""
+msgstr "O servidor \"%s\" não está ativado para o ISS."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
 msgid "Expected a package name, not: %s"
-msgstr ""
+msgstr "Esperado um nome de pacote, não: %s"
 
 #: ../server/handlers/xmlrpc/errata.py:115
 #, python-format
 msgid "Expected a package, not: %s"
-msgstr ""
+msgstr "Esperado um pacote, não: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr ""
+msgstr "Serviço Spacewalk Proxy não ativado para o perfil do servidor: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
-msgstr ""
+msgstr "Chave de sessão inválida"
 
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "Esse ID de servidor não existe mais"
 
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr ""
+msgstr "Tipo de valor de ação inválido%s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:464
 #, python-format
 msgid "Action %s does not belong to server %s"
-msgstr ""
+msgstr "A ação %s não pertence ao servidor %s"
 
 #: ../server/handlers/xmlrpc/scap.py:104
 msgid "Invalid system_id/action_id pair."
-msgstr ""
+msgstr "Par system_id / action_id inválido."
 
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
-msgstr ""
+msgstr "Valor inválido %s (%s)"
 
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
-msgstr ""
+msgstr "Dados necessários ausentes"
 
 #: ../server/handlers/xmlrpc/registration.py:198
 msgid "Required members missing"
-msgstr ""
+msgstr "Membros necessários ausentes"
 
 #: ../server/handlers/xmlrpc/registration.py:207
 msgid "Attempt to register a system to an invalid username"
-msgstr ""
+msgstr "Tentativa de registrar um sistema para um nome de usuário inválido"
 
 #: ../server/handlers/xmlrpc/registration.py:839
 msgid "Invalid system release version requested"
-msgstr ""
+msgstr "Versão de lançamento do sistema solicitada inválida"
 
 #: ../server/handlers/xmlrpc/registration.py:1063
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Não foi possível encontrar uma interface de rede válida, ipaddr e ip6addr "
+"não encontrados."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
 msgid "Red Hat Satellite Welcome Message"
-msgstr ""
+msgstr "Mensagem de Boas-vindas do Red Hat Satellite"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
 msgid "Red Hat Satellite Privacy Statement"
-msgstr ""
+msgstr "Declaração de Privacidade do Red Hat Satellite"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
-msgstr ""
+msgstr "Esperado um dicionário como argumento do produto"
 
 #: ../server/handlers/xmlrpc/registration.py:1374
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
-msgstr ""
+msgstr "Valor inválido '%s' para %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
-msgstr ""
+msgstr "Você não está autorizado a gerenciar pacotes na organização nula"
 
 #: ../server/importlib/userAuth.py:103
 #, python-format
 msgid "You are not allowed to manage packages in the %s org"
-msgstr ""
+msgstr "Você não tem permissão para gerenciar pacotes na organização %s"
 
 #: ../server/importlib/userAuth.py:121
 msgid "You are not allowed to perform administrative tasks"
-msgstr ""
+msgstr "Você não tem permissão para executar tarefas administrativas"
 
 #: ../server/importlib/userAuth.py:144
 #, python-format
 msgid ""
 "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr ""
+"Você não tem permissão para gerenciar o canal %s, ou esse canal não existe"
 
 #: ../server/importlib/userAuth.py:204
 #, python-format
@@ -165,139 +174,145 @@ msgid ""
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"               A conta %s foi desativada neste servidor.\n"
+"               Entre em contato com o administrador da organização para "
+"obter mais ajuda."
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Por favor, execute rhn_register como root neste cliente"
 
 #: ../server/rhnHandler.py:75
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
-msgstr ""
+msgstr "Serviço não ativado para o perfil do sistema: \"%s\""
 
 #: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
 #: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
 #, python-format
 msgid "Invalid RPM package %s requested"
-msgstr ""
+msgstr "Pacote RPM inválido %s solicitado"
 
 #: ../server/rhnPackage.py:112
 msgid "Package not found"
-msgstr ""
+msgstr "Pacote não encontrado"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr ""
+msgstr "A arquitetura `%s' não é suportada"
 
 #: ../server/rhnServer/server_token.py:78
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr ""
+msgstr "O token `%s' possui mais de um canal base atribuído"
 
 #: ../server/rhnServer/server_token.py:80
 msgid "Conflicting base channels"
-msgstr ""
+msgstr "Canais básicos conflitantes"
 
 #: ../server/rhnServer/server_token.py:190
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr ""
+msgstr "Falha ao adicionar servidor ao grupo %s"
 
 #: ../server/rhnServer/server_token.py:503
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr ""
+msgstr "Contagem máxima de uso de %s atingida"
 
 #: ../server/rhnServer/server_token.py:744
 msgid ""
 "Stacking of re-registration tokens with different base entitlements is not "
 "supported"
 msgstr ""
+"O empilhamento de tokens de recadastramento com diferentes direitos de base "
+"não é suportado"
 
 #: ../server/rhnServer/server_token.py:811
 #, python-format
 msgid "Could not find token '%s'"
-msgstr ""
+msgstr "Não foi possível encontrar o token '%s'"
 
 #. Cannot use activation keys from different orgs
 #: ../server/rhnServer/server_token.py:843
 msgid "Tokens from mismatching orgs"
-msgstr ""
+msgstr "Tokens de organizações incompatíveis"
 
 #. Two tokens with different kickstart sessions
 #: ../server/rhnServer/server_token.py:853
 msgid "Kickstart session mismatch"
-msgstr ""
+msgstr "Incompatibilidade de sessão do Kickstart"
 
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
-msgstr ""
+msgstr "O empilhamento de tokens de re-registro não é suportado"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
-msgstr ""
+msgstr "Combinação de nome de usuário/senha inválido"
 
 #. nope, not reserved either
 #: ../server/rhnUser.py:467
 #, python-format
 msgid "Username `%s' has not been reserved"
-msgstr ""
+msgstr "O nome de usuário `%s 'não foi reservado"
 
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:473
 msgid "E-mail address not specified"
-msgstr ""
+msgstr "Endereço de email não especificado"
 
 #: ../server/rhnUser.py:509
 #, python-format
 msgid "username should be at least %d characters"
-msgstr ""
+msgstr "o nome de usuário deve ter pelo menos %d caracteres"
 
 #: ../server/rhnUser.py:512
 #, python-format
 msgid "username should be less than %d characters"
-msgstr ""
+msgstr "o nome de usuário deve ter menos de %d caracteres"
 
 #: ../server/rhnUser.py:523
 #, python-format
 msgid "username = `%s', invalid character `%s'"
-msgstr ""
+msgstr "nome de usuário = `%s', caractere inválido`%s'"
 
 #: ../server/rhnUser.py:542
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr ""
+msgstr "Por favor limite seu endereço de e-mail a %s caracteres"
 
 #: ../server/rhnUser.py:623
 #, python-format
 msgid "password must be at least %d characters"
-msgstr ""
+msgstr "a senha deve ter pelo menos %d caracteres"
 
 #: ../server/rhnUser.py:626
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr ""
+msgstr "A senha deve ter menos de %d caracteres"
 
 #: ../server/rhnUser.py:644
 #, python-format
 msgid "password contains character `%s'"
-msgstr ""
+msgstr "a senha contém o caractere `%s '"
 
 #: ../server/rhnUser.py:651
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr ""
+msgstr "o nome de usuário deve ter pelo menos %d caracteres"
 
 #: ../server/rhnUser.py:662
 #, python-format
 msgid "Cannot register usernames ending with %s"
-msgstr ""
+msgstr "Não é possível registrar nomes de usuário que terminem com %s"
 
 #: ../server/apacheRequest.py:59
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr ""
+msgstr "Solicitação inválida recebida (%s)."
 
 #: ../server/apacheRequest.py:120
 #, python-format
@@ -305,6 +320,8 @@ msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
+"SEGUINTE MENSAGEM IMPORTANTE:\n"
+"%s"
 
 #: ../server/apacheRequest.py:149
 #, python-format
@@ -312,11 +329,13 @@ msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
+"Durante a execução de '%s': capturado\n"
+"%s : %s\n"
 
 #: ../server/apacheRequest.py:606
 #, python-format
 msgid "Invalid URI %s"
-msgstr ""
+msgstr "URI %s inválida"
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -324,6 +343,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
+"Sua conta não tem acesso a nenhum canal correspondente (release ='%(release)"
+"s', arch='%(arch)s')%(www_activation)s"
 
 #: ../server/rhnChannel.py:2002
 msgid ""
@@ -332,11 +353,15 @@ msgid ""
 "www.redhat.com/apps/activate/ and then try again.\n"
 "\n"
 msgstr ""
+"\n"
+"Se você tiver um número de registro, registre-se primeiro em "
+"http://www.redhat.com/apps/activate/ e tente novamente.\n"
+"\n"
 
 #: ../server/rhnChannel.py:2012
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr ""
+msgstr "Permissões de assinatura insuficientes para liberação (%s, %s"
 
 #. Various messages that can be reused
 #.
@@ -345,7 +370,7 @@ msgstr ""
 #: ../server/rhnChannel.py:2276 ../server/rhnChannel.py:2287
 #: ../server/rhnChannel.py:2302
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Sistema Registrado, mas Inativo"
 
 #: ../server/rhnChannel.py:2277
 #, python-format
@@ -360,6 +385,16 @@ msgid ""
 "\n"
 "...to activate your product."
 msgstr ""
+"\n"
+"Combinação de liberação de arquitetura e sistema operacional inválida (%s, "
+"%s).\n"
+"Seu sistema foi registrado, mas não receberá atualizações\n"
+"porque não está inscrito em um canal. Se você ainda não\n"
+"ativou seu produto para manutenção, visite nosso site em:\n"
+"\n"
+"       http://www.redhat.com/apps/activate/\n"
+"\n"
+"... para ativar seu produto."
 
 #: ../server/rhnChannel.py:2288
 #, python-format
@@ -370,6 +405,13 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
+"\n"
+"Combinação de liberação de arquitetura e sistema operacional inválida (%s, "
+"%s).\n"
+"Seu sistema foi registrado, mas não receberá atualizações\n"
+"porque não pôde ser inscrito em um canal base.\n"
+"Por favor entre em contato com o administrador da organização para obter "
+"assistência.\n"
 
 #: ../server/rhnChannel.py:2295
 #, python-format
@@ -380,6 +422,12 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Este sistema foi registrado com sucesso, mas ainda não tem direito\n"
+"  para servir.  Para autorizar esse sistema a fazer serviço, faça login no "
+"site em:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2303
 #, python-format
@@ -391,87 +439,93 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
+"\n"
+"  Este sistema foi registrado com sucesso, mas nenhum direito ao serviço\n"
+"  estavam disponíveis.  Para autorizar esse sistema a fazer serviço, faça "
+"login no site em:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
 msgid "This does not appear to be a valid username."
-msgstr ""
+msgstr "Este não parece ser um nome de usuário válido."
 
 #: ../common/rhnException.py:54
 msgid "Invalid username and password combination."
-msgstr ""
+msgstr "Combinação de nome de usuário e senha inválida."
 
 #: ../common/rhnException.py:55
 msgid "This login is already taken, or the password is incorrect."
-msgstr ""
+msgstr "Este login já foi realizado ou a senha está incorreta."
 
 #: ../common/rhnException.py:56
 msgid "Permission denied."
-msgstr ""
+msgstr "Permissão negada."
 
 #: ../common/rhnException.py:57
 msgid "Object not found."
-msgstr ""
+msgstr "Objeto não encontrado."
 
 #: ../common/rhnException.py:58
 msgid "Invalid System Digital ID."
-msgstr ""
+msgstr "ID digital do sistema inválido."
 
 #: ../common/rhnException.py:59
 msgid "Invalid System Credentials."
-msgstr ""
+msgstr "Credenciais do sistema inválidas."
 
 #: ../common/rhnException.py:60
 msgid "Could not retrieve user data from database."
-msgstr ""
+msgstr "Não foi possível recuperar os dados do usuário do banco de dados."
 
 #: ../common/rhnException.py:61
 msgid "Valid username required."
-msgstr ""
+msgstr "Nome de usuário válido necessário."
 
 #: ../common/rhnException.py:62
 msgid "Valid password required."
-msgstr ""
+msgstr "Senha válida necessária."
 
 #: ../common/rhnException.py:63
 msgid "Minimum username length violation."
-msgstr ""
+msgstr "Violação mínima do comprimento do nome de usuário."
 
 #: ../common/rhnException.py:64
 msgid "Minimum password length violation."
-msgstr ""
+msgstr "Violação mínima do comprimento da senha."
 
 #: ../common/rhnException.py:65
 msgid "The username contains invalid characters."
-msgstr ""
+msgstr "O nome de usuário contém caracteres inválidos."
 
 #: ../common/rhnException.py:66
 msgid "File not found."
-msgstr ""
+msgstr "Arquivo não encontrado."
 
 #: ../common/rhnException.py:67
 msgid "Architecture and OS version combination is not supported."
-msgstr ""
+msgstr "A combinação de arquitetura e versão do SO não é suportada."
 
 #: ../common/rhnException.py:68
 msgid "Could not retrieve system data from database."
-msgstr ""
+msgstr "Não foi possível recuperar os dados do sistema do banco de dados."
 
 #: ../common/rhnException.py:69
 msgid "Invalid arguments passed to function."
-msgstr ""
+msgstr "Argumentos inválidos transmitidos para a função."
 
 #: ../common/rhnException.py:70
 msgid "Unable to retrieve requested entry."
-msgstr ""
+msgstr "Não foi possível recuperar a entrada solicitada."
 
 #: ../common/rhnException.py:71
 msgid "Could not update database entry."
-msgstr ""
+msgstr "Não foi possível atualizar a entrada do banco de dados."
 
 #: ../common/rhnException.py:72
 msgid "Unsupported server architecture."
-msgstr ""
+msgstr "Arquitetura de servidor não suportada."
 
 #: ../common/rhnException.py:73
 #, python-format
@@ -486,14 +540,25 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     A funcionalidade do servidor anônimo não está mais disponível.\n"
+"\n"
+"     Por favor, registre novamente este sistema executando mgr_register como "
+"root.\n"
+"     Por favor visite https://%(hostname)s/rhn/systems/SystemEntitlements."
+"do\n"
+"     ou faça login em https://%(hostname)s, e na guia \"Visão geral\",\n"
+"     selecione \"Gerenciamento de assinatura\" para ativar o serviço para "
+"este sistema.\n"
+"     "
 
 #: ../common/rhnException.py:81
 msgid "Record not available in the database."
-msgstr ""
+msgstr "Registro não disponível no banco de dados."
 
 #: ../common/rhnException.py:82
 msgid "Invalid value for entry."
-msgstr ""
+msgstr "Valor inválido para entrada."
 
 #: ../common/rhnException.py:83
 #, python-format
@@ -506,46 +571,55 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     Este sistema não possui um direito válido para o SUSE Manager.\n"
+"     Por favor visite https://%(hostname)s/rhn/systems/SystemEntitlements."
+"do\n"
+"     ou faça login em https://%(hostname)s, e na guia \"Visão geral\",\n"
+"     selecione \"Gerenciamento de assinatura\" para ativar o serviço para "
+"este sistema.\n"
+"     "
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
-msgstr ""
+msgstr "Erro no canal"
 
 #: ../common/rhnException.py:90
 msgid "Client session token is invalid."
-msgstr ""
+msgstr "O token da sessão do cliente é inválido."
 
 #: ../common/rhnException.py:91
 msgid "Client session token has expired."
-msgstr ""
+msgstr "O token da sessão do cliente expirou."
 
 #: ../common/rhnException.py:92
 msgid "You are not authorized to retrieve the requested object."
-msgstr ""
+msgstr "Você não está autorizado a recuperar o objeto solicitado."
 
 #: ../common/rhnException.py:93
 msgid "Invalid action"
-msgstr ""
+msgstr "Ação inválida"
 
 #: ../common/rhnException.py:94
 msgid "You are not allowed to perform administrative tasks on this system."
 msgstr ""
+"Você não tem permissão para executar tarefas administrativas neste sistema."
 
 #: ../common/rhnException.py:96
 msgid "The system is already subscribed to the specified channel."
-msgstr ""
+msgstr "O sistema já está inscrito no canal especificado."
 
 #: ../common/rhnException.py:97
 msgid "The system is not currently subscribed to the specified channel."
-msgstr ""
+msgstr "O sistema não está atualmente inscrito no canal especificado."
 
 #: ../common/rhnException.py:98
 msgid "The specified channel does not exist."
-msgstr ""
+msgstr "O canal especificado não existe."
 
 #: ../common/rhnException.py:99
 msgid "Invalid channel version."
-msgstr ""
+msgstr "Versão do canal inválida."
 
 #: ../common/rhnException.py:100
 msgid ""
@@ -574,6 +648,13 @@ msgid ""
 "     subscribed to your account.\n"
 "     "
 msgstr ""
+"\n"
+"     Limites de associação ao grupo do sistema excedidos.\n"
+"     As configurações atuais da sua conta não permitem adicionar outro\n"
+"     perfil do sistema. Verifique com o administrador da organização\n"
+"     para modificar o número máximo de perfis do sistema que podem ser\n"
+"     inscrito na sua conta.\n"
+"     "
 
 #: ../common/rhnException.py:116
 msgid ""
@@ -583,10 +664,15 @@ msgid ""
 "     The architecture of the package is not supported by\n"
 "     "
 msgstr ""
+"\n"
+"     Arquitetura inválida.\n"
+"\n"
+"     A arquitetura do pacote não é suportada por\n"
+"     "
 
 #: ../common/rhnException.py:121
 msgid "Invalid RPM header"
-msgstr ""
+msgstr "Cabeçalho RPM inválido"
 
 #: ../common/rhnException.py:122
 msgid ""
