@@ -256,10 +256,11 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testGetCombinedFormulaDataForSystems() throws Exception {
+        // minion with only group formulas
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        assertFalse(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));
 
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
@@ -272,22 +273,46 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
 
         // Server should have a monitoring entitlement after being added to the group
-        SystemManager.addServerToServerGroup(server, group);
-        assertTrue(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+        SystemManager.addServerToServerGroup(minion, group);
+        assertTrue(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));
 
         List<FormulaData> combinedPrometheusExportersFormulas = this.manager
-                .getCombinedFormulaDataForSystems(user, Arrays.asList(server.getId()), PROMETHEUS_EXPORTERS);
+                .getCombinedFormulaDataForSystems(user, Arrays.asList(minion.getId()), PROMETHEUS_EXPORTERS);
 
         assertNotNull(combinedPrometheusExportersFormulas);
         assertEquals(combinedPrometheusExportersFormulas.size(), 1);
 
         FormulaData combinedFormulaData = combinedPrometheusExportersFormulas.get(0);
 
-        assertEquals(combinedFormulaData.getSystemID(), server.getId());
-        assertEquals(combinedFormulaData.getMinionID(), server.getMinionId());
+        assertEquals(combinedFormulaData.getSystemID(), minion.getId());
+        assertEquals(combinedFormulaData.getMinionID(), minion.getMinionId());
         assertNotNull(combinedFormulaData.getFormulaValues().get("postgres_exporter"));
         assertNotNull(combinedFormulaData.getFormulaValues().get("apache_exporter"));
         assertNotNull(combinedFormulaData.getFormulaValues().get("node_exporter"));
+
+        // minion with only system formulas with no group formula
+        minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
+        Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
+
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+        manager.saveServerFormulaData(user,minion.getId(), formulaName, contents);
+
+        combinedPrometheusExportersFormulas = this.manager
+                .getCombinedFormulaDataForSystems(user, Arrays.asList(minion.getId()), formulaName);
+
+        assertNotNull(combinedPrometheusExportersFormulas);
+        assertEquals(combinedPrometheusExportersFormulas.size(), 1);
+
+        combinedFormulaData = combinedPrometheusExportersFormulas.get(0);
+
+        assertEquals(combinedFormulaData.getSystemID(), minion.getId());
+        assertEquals(combinedFormulaData.getMinionID(), minion.getMinionId());
+        assertNotNull(combinedFormulaData.getFormulaValues().get(formulaName));
     }
 
     // Copy the pillar.example file to a temp dir used as metadata directory (in FormulaFactory)
