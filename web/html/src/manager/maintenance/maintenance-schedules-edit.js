@@ -5,11 +5,12 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 const AsyncButton = require("components/buttons").AsyncButton;
 const Button = require("components/buttons").Button;
-const {Combobox} = require("components/combobox");
-const { Form } = require('components/input/Form');
+const { Combobox } = require("components/combobox");
 const { InnerPanel } = require("components/panels/InnerPanel");
+const { Form } = require('components/input/Form');
 const { Text } = require('components/input/Text');
 const { Radio } = require('components/input/Radio');
+const { Check } = require('components/input/Check');
 
 class MaintenanceSchedulesEdit extends React.Component {
     constructor(props) {
@@ -25,11 +26,12 @@ class MaintenanceSchedulesEdit extends React.Component {
             /* TODO: States to add */
             scheduleName: "",
             calendarName: "",
-            type: "single",
-            hover: false,
-            icalData: undefined,
-            icalFileName: "",
-            view: "existing"
+            scheduleType: "single",
+            calendarData: undefined,
+            calendarAdded: false,
+            fileName: "",
+            view: "existing",
+            hover: false
         };
 
         if(this.isEdit()) {
@@ -49,26 +51,39 @@ class MaintenanceSchedulesEdit extends React.Component {
 
     onEdit = () => {
         return this.props.onEdit({
+            scheduleId: this.state.scheduleId,
             scheduleName: this.state.scheduleName,
+            scheduleType: this.state.scheduleType,
+            calendarAdded: this.state.calendarAdded,
+            calendarType: this.state.view,
+            calendarId: this.state.calendarId,
             calendarName: this.state.calendarName,
-            type: this.state.type,
-            view: this.state.view,
-            icalData: this.state.icalData,
-            url: this.state.icalFileName
+            calendarData: this.state.calendarData,
+            calendarUrl: this.state.calendarUrl
         });
     };
 
     onFormChanged = (model) => {
         this.setState({
             scheduleName: model.scheduleName,
+            scheduleType: model.scheduleType,
             calendarName: model.calendarName || this.state.calendarName,
-            type: model.type || this.state.type
+            calendarAdded: model.calendarAdded
         });
     };
 
+    setModel = () => {
+        return {
+            scheduleName: this.state.scheduleName,
+            scheduleType: this.state.scheduleType,
+            calendarName: this.state.calendarName,
+            calendarAdded: this.state.calendarAdded,
+        }
+    }
+
     onFileDestChanged = (event) => {
         this.setState({
-            icalFileName: event.target.value
+            fileName: event.target.value
         });
     };
 
@@ -80,36 +95,37 @@ class MaintenanceSchedulesEdit extends React.Component {
         reader.onload = (e) => this.icalFileLoaded(e.target.result);
         reader.readAsText(event.target.files[0]);
         this.setState({
-            icalFileName: event.target.files[0].name
+            fileName: event.target.files[0].name
         });
     };
 
     onIcalFileRemove = () => {
         this.setState({
-            icalData: undefined,
-            icalFileName: ""
+            calendarData: undefined,
+            calendarUrl: undefined,
+            fileName: ""
         });
     };
 
     handleFileAttach = () => {
-        this.state.icalFileName === "" ?
+        this.state.fileName === "" ?
             document.getElementById("ical-data-upload").click()
-            : this.getDataFromURL(this.state.icalFileName);
-    }
-
-    getDataFromURL = (url) => {
-        fetch(url).then(response => {
-            response.text().then(data => {
-                this.setState({
-                    icalData: data
-                })
-            });
-        });
+            : this.setState({calendarUrl: this.state.fileName}) //this.getDataFromURL(this.state.fileName);
     };
+
+    // getDataFromURL = (url) => {
+    //     fetch(url).then(response => {
+    //         response.text().then(data => {
+    //             this.setState({
+    //                 calendarData: data
+    //             })
+    //         });
+    //     });
+    // };
 
     icalFileLoaded = (fileString) => {
         this.setState({
-            icalData: fileString,
+            calendarData: fileString,
             icalLoading: false
         });
     };
@@ -146,9 +162,17 @@ class MaintenanceSchedulesEdit extends React.Component {
         const hover = this.state.hover ? {cursor: "pointer"} : {};
         return (
             <InnerPanel title={t("Schedule Maintenance Window")} icon="spacewalk-icon-salt" buttonsLeft={buttonsLeft} buttons={buttons} >
-                <Form onChange={this.onFormChanged}
-                      model={{scheduleName: this.state.scheduleName, calendarName: this.state.calendarName, type: this.state.type}}>
+                <Form onChange={this.onFormChanged} model={this.setModel}>
                     <Text name="scheduleName" required type="text" label={t("Schedule Name")} labelClass="col-sm-3" divClass="col-sm-6" />
+                    <Radio name="scheduleType" inline={true} label={t('Type')} labelClass="col-md-3" divClass="col-md-6"
+                           items={[
+                               {label: <b>{t('Single')}</b>, value: 'single'},
+                               {label: <b>{t('Multi')}</b>, value: 'multi'},
+                           ]}
+                    />
+                    <Check name="calendarAdded" label={<b>{t("Add calendar")}</b>} divClass="col-md-6 col-md-offset-3" />
+                    {/* TODO: Render reschedule strategy picker */}
+                    {this.state.calendarAdded &&
                     <div className="panel panel-default">
                         <div className="panel-heading">
                             <h3>{t("Select calendar")}</h3>
@@ -157,20 +181,29 @@ class MaintenanceSchedulesEdit extends React.Component {
                             <div className="spacewalk-content-nav" id="config-channels-tabs">
                                 <ul className="nav nav-tabs">
                                     <li className={this.state.view === 'existing' || this.state.view === '' ? 'active' : ''}>
-                                        <a onClick={() => this.setView('existing')} style={hover} onMouseEnter={this.onToggleHover} onMouseLeave={this.onToggleHover}>{t("Select existing")}</a>
+                                        <a onClick={() => this.setView('existing')} style={hover}
+                                           onMouseEnter={this.onToggleHover}
+                                           onMouseLeave={this.onToggleHover}>{t("Select existing")}</a>
                                     </li>
                                     <li className={this.state.view === 'new' ? 'active' : ''}>
-                                        <a onClick={() => this.setView('new')} style={hover} onMouseEnter={this.onToggleHover} onMouseLeave={this.onToggleHover}>{t("Create new")}</a>
+                                        <a onClick={() => this.setView('new')} style={hover}
+                                           onMouseEnter={this.onToggleHover}
+                                           onMouseLeave={this.onToggleHover}>{t("Create new")}</a>
                                     </li>
                                 </ul>
                             </div>
                             {this.state.view === "new" ?
                                 <div className="form-horizontal">
-                                    <Text name="calendarName" required type="text" label={t("Calendar Name")} labelClass="col-md-3" divClass="col-md-6" />
+                                    <Text name="calendarName" required type="text" label={t("Calendar Name")}
+                                          labelClass="col-md-3" divClass="col-md-6"/>
                                     <div className="form-group">
                                         <label className="col-md-3 control-label">{t("Calendar data")}:</label>
                                         <div className="col-md-4">
-                                            <input type="text" className="form-control" value={this.state.icalFileName} disabled={this.state.icalData} onChange={this.onFileDestChanged} />
+                                            <input type="text" className="form-control"
+                                                   placeholder={t("Enter Url to ical file or...")}
+                                                   value={this.state.fileName}
+                                                   disabled={this.state.calendarData || this.state.calendarUrl}
+                                                   onChange={this.onFileDestChanged}/>
                                         </div>
                                         <div className="col-md-1">
                                             <Button id="ical-upload-btn" className="btn-default" text={t("Attach file")}
@@ -194,16 +227,11 @@ class MaintenanceSchedulesEdit extends React.Component {
                                             />
                                         </div>
                                     </div>
-                                    <Radio name="type" inline={true} label={t('Type')} labelClass="col-md-3" divClass="col-md-6"
-                                           items={[
-                                               {label: <b>{t('Single')}</b>, value: 'single'},
-                                               {label: <b>{t('Multi')}</b>, value: 'multi'},
-                                           ]}
-                                    />
                                 </div>
                             }
                         </div>
                     </div>
+                    }
                 </Form>
                 <input type="file" id="ical-data-upload" style={{display: "none"}} onChange={this.onIcalFileAttach}/>
             </InnerPanel>
