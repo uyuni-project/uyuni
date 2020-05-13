@@ -251,7 +251,7 @@ public class ServerFactory extends HibernateFactory {
     public static Map<String, Long> getMinionIdMap(Long id) {
         var params = new HashMap<String, Object>();
         params.put("user_id", id);
-        List<Object[]> result = singleton.listObjectsByNamedQuery("Server.listMinionIdMappings", params);
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listMinionIdMappings", params);
         return result.stream().collect(toMap(
                 row -> (String)(row[0]),
                 row -> (Long)(row[1]))
@@ -1377,7 +1377,7 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> listOrgSystems(long orgId) {
         Map<String, Object> params = new HashMap<>();
         params.put("orgId", orgId);
-        return singleton.listObjectsByNamedQuery(
+        return SINGLETON.listObjectsByNamedQuery(
                 "Server.listOrgSystems", params);
     }
 }
