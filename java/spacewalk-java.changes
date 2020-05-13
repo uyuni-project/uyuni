@@ -1,3 +1,4 @@
+- Fix software channel list coloring
 - apply highstate when add-on system types should be applied to the
   system on bootstrapping (bsc#1172190)
 - configure HTTP timeouts via rhn.conf
