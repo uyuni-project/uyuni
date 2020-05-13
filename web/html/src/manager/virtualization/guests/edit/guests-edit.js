@@ -7,10 +7,9 @@ const { hot } = require('react-hot-loader');
 const React = require('react');
 const _isEqual = require('lodash/isEqual');
 const { TopPanel } = require('components/panels/TopPanel');
-const MessagesUtils = require('components/messages').Utils;
 const { Loading } = require('components/loading/loading');
 const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
-const { GuestProperties } = require('../guest-properties');
+const { GuestProperties } = require('../GuestProperties');
 const GuestNicsPanel = require('../properties/guest-nics-panel');
 const DiskUtils = require('../properties/disk-utils');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
@@ -102,8 +101,7 @@ class GuestsEdit extends React.Component<Props> {
                   const onSubmit = properties => onAction('update', [this.props.guestUuid],
                     GuestsEdit.getRequestParameterFromModel(properties, initialModel));
                   const messages = [].concat(definitionMessages, actionMessages)
-                    .filter(item => item)
-                    .map(item => MessagesUtils.error(item));
+                    .filter(item => item);
                   const guestName = definition !== null ? definition.name : '';
                   return (
                     <TopPanel title={guestName} icon="fa spacewalk-icon-virtual-guest">
