@@ -248,8 +248,8 @@ def upgrade_node(skuba_cluster_path,
     return ret
 
 
-def cluster_init(name,
-                 base_path,
+def cluster_init(cluster_name,
+                 cluster_basedir,
                  target,
                  cloud_provider=None,
                  strict_capability_defaults=False,
@@ -257,7 +257,7 @@ def cluster_init(name,
                  timeout=DEFAULT_TIMEOUT,
                  **kwargs):
 
-    cmd_args = "cluster init --control-plane {} {}".format(target, name)
+    cmd_args = "cluster init --control-plane {} {}".format(target, cluster_name)
 
     if cloud_provider:
         cmd_args += " --cloud-provider {}".format(cloud_provider)
@@ -266,7 +266,7 @@ def cluster_init(name,
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
-    skuba_proc = _call_skuba(base_path, cmd_args, timeout=timeout)
+    skuba_proc = _call_skuba(cluster_basedir, cmd_args, timeout=timeout)
     if skuba_proc.process.returncode != 0:
         error_msg = "Unexpected error {} at skuba when initializing the cluster: {}".format(
                 skuba_proc.process.returncode,
@@ -322,8 +322,8 @@ def master_bootstrap(node_name,
     return ret
 
 
-def create_cluster(name,
-                   base_path,
+def create_cluster(cluster_name,
+                   cluster_basedir,
                    first_node_name,
                    target,
                    cloud_provider=None,
@@ -333,8 +333,8 @@ def create_cluster(name,
                    timeout=DEFAULT_TIMEOUT,
                    **kwargs):
 
-    ret = cluster_init(name=name,
-                       base_path=base_path,
+    ret = cluster_init(cluster_name=cluster_name,
+                       cluster_basedir=cluster_basedir,
                        target=load_balancer if load_balancer else target,
                        cloud_provider=cloud_provider,
                        strict_capability_defaults=strict_capability_defaults,
@@ -346,7 +346,7 @@ def create_cluster(name,
         return ret
 
     ret = merge_list(ret, master_bootstrap(node_name=first_node_name,
-                                           skuba_cluster_path=os.path.join(base_path, name),
+                                           skuba_cluster_path=os.path.join(cluster_basedir, cluster_name),
                                            target=target,
                                            verbosity=verbosity,
                                            timeout=timeout,
