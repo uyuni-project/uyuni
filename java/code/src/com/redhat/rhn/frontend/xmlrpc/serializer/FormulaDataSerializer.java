@@ -30,8 +30,8 @@ import redstone.xmlrpc.XmlRpcSerializer;
 *
 * @xmlrpc.doc
 *
-* #struct("formula_data")
-*     #prop("long", "system_id")
+* #struct_begin("formula_data")
+*     #prop("int", "system_id")
 *     #prop("string", "minion_id")
 *     #prop("struct with saved formula values", "formula_values")
 * #struct_end()

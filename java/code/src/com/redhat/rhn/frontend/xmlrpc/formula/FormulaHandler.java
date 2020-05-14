@@ -228,8 +228,11 @@ public class FormulaHandler extends BaseHandler {
      *
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "formulaName")
-     * @xmlrpc.param #array_single("long", "systemId")
-     * @xmlrpc.returntype #array() $FormulaDataSerializer #array_end()
+     * @xmlrpc.param #array_single("int", "systemID")
+     * @xmlrpc.returntype
+     *   #array_begin()
+     *     $FormulaDataSerializer
+     *   #array_end()
      */
     public List<FormulaData> getCombinedFormulaDataByServerIds(User loggedInUser, String formulaName,
             List<Long> systemIds) {
