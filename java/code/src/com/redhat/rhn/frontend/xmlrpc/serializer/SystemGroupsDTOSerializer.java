@@ -35,14 +35,14 @@ import redstone.xmlrpc.XmlRpcSerializer;
 *
 * @xmlrpc.doc
 *
-* #struct("system")
-*     #prop("int", "id")
-*     #prop_array_begin("system_groups")
-*       #struct("system_group")
-*         #prop_desc("id", "int", "system group ID")
-*         #prop_desc("name", "string", "system group name")
-*       #struct_end()
-*     #prop_array_end()
+* #struct_begin("system")
+*   #prop_desc("int", "id", "system ID")
+*   #prop_array_begin("system_groups")
+*     #struct_begin("system_group")
+*       #prop_desc("int", "id", "system group ID")
+*       #prop_desc("string", "name", "system group name")
+*     #struct_end()
+*   #prop_array_end()
 * #struct_end()
 */
 public class SystemGroupsDTOSerializer extends RhnXmlRpcCustomSerializer {

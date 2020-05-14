@@ -1782,13 +1782,14 @@ public class SystemHandler extends BaseHandler {
      *
      * @xmlrpc.doc Get the addresses and hostname for a given list of systems.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param  #array_single("int", "serverIds")
+     * @xmlrpc.param #array_single("int", "systemIDs")
      * @xmlrpc.returntype
-     *   #array()
-     *     #struct("network info")
-     *       #prop_desc("string", "ip", "IPv4 address of server")
-     *       #prop_desc("string", "ip6", "IPv6 address of server")
-     *       #prop_desc("string", "hostname", "Hostname of server")
+     *   #array_begin()
+     *     #struct_begin("network info")
+     *       #prop_desc("int", "system_id", "ID of the system")
+     *       #prop_desc("string", "ip", "IPv4 address of system")
+     *       #prop_desc("string", "ip6", "IPv6 address of system")
+     *       #prop_desc("string", "hostname", "Hostname of system")
      *     #struct_end()
      *   #array_end()
      */
@@ -7267,11 +7268,14 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.doc Returns the groups information a system is member of, for all the systems visible to the passed user
      * and that are entitled with the passed entitlement.
      * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype #array() $SystemGroupsDTOSerializer #array_end()
+     * @xmlrpc.param #param("string", "entitlement")
+     * @xmlrpc.returntype
+     *   #array_begin()
+     *     $SystemGroupsDTOSerializer
+     *   #array_end()
      */
     public List<SystemGroupsDTO> listSystemGroupsForSystemsWithEntitlement(User loggedInUser, String entitlement) {
-        return this.systemManager.retrieveSystemGroupsForSystemsWithEntitlementAndUser(loggedInUser,
-                entitlement);
+        return this.systemManager.retrieveSystemGroupsForSystemsWithEntitlementAndUser(loggedInUser, entitlement);
     }
 
     /**
