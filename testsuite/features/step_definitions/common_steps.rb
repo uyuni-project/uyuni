@@ -753,7 +753,7 @@ When(/^I disable repositories after installing Docker$/) do
   end
 
   # Refresh is only necessary when some repos are enabled
-  if $minion.run('zypper lr').contains? 'Yes'
+  if $minion.run('zypper lr -E').include? '| Yes'
     $minion.run('zypper -n --gpg-auto-import-keys ref')
   end
 end
