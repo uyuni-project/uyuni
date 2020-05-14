@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-05-14 21:47+0000\n"
-"Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
+"PO-Revision-Date: 2020-05-14 22:19+0000\n"
+"Last-Translator: Luiz Fernando Ranghetti <elchevive68@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "backend/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -181,7 +181,7 @@ msgstr ""
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr "Por favor, execute rhn_register como root neste cliente"
+msgstr "Execute rhn_register como root neste cliente"
 
 #: ../server/rhnHandler.py:75
 #, python-format
