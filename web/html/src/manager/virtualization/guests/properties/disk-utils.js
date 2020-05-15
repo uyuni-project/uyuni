@@ -11,12 +11,8 @@ export function getRequestParams(model: Object, index: number): Object {
     model[`disk${index}_source_size`] !== '' ? { size: model[`disk${index}_source_size`] } : {},
     model[`disk${index}_source_template`] !== '' ? { template: model[`disk${index}_source_template`] } : {},
     model[`disk${index}_format`] !== '' ? { format: model[`disk${index}_format`] } : {},
+    model[`disk${index}_source_file`] !== '' ? { source_file: model[`disk${index}_source_file`] } : {},
   );
-
-  if (model[`disk${index}_source_file`] !== undefined) {
-    const sourceFile = model[`disk${index}_source_file`] !== '' ? model[`disk${index}_source_file`] : null;
-    source = { source_file: sourceFile };
-  }
 
   return Object.assign({},
   {
@@ -52,7 +48,7 @@ export function getModelFromDefinition(definition: Object) {
             ),
             volume: (() => ({
               [`disk${index}_source_pool`]: disk.source ? disk.source.pool : '',
-              [`disk${index}_source_volume`]: disk.source ? disk.source.volume : '',
+              [`disk${index}_source_file`]: disk.source ? disk.source.volume : '',
             })),
           };
 
