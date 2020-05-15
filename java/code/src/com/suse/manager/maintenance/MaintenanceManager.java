@@ -187,7 +187,7 @@ public class MaintenanceManager {
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return the updated MaintenanceSchedule
      */
-    public boolean updateMaintenanceSchedule(User user, String name, Map<String, String> details,
+    public RescheduleResult updateMaintenanceSchedule(User user, String name, Map<String, String> details,
             List<RescheduleStrategy> rescheduleStrategy) {
         ensureOrgAdmin(user);
         MaintenanceSchedule schedule = lookupMaintenanceScheduleByUserAndName(user, name)
@@ -281,7 +281,7 @@ public class MaintenanceManager {
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return true when the update was successfull, otherwise false
      */
-    public boolean updateCalendar(User user, String label, Map<String, String> details,
+    public List<RescheduleResult> updateCalendar(User user, String label, Map<String, String> details,
             List<RescheduleStrategy> rescheduleStrategy) {
         ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
@@ -298,13 +298,16 @@ public class MaintenanceManager {
             calendar.setIcal(fetchCalendarData(details.get("url")));
         }
         save(calendar);
+        List<RescheduleResult> result = new LinkedList<>();
         for (MaintenanceSchedule schedule: listSchedulesByUserAndCalendar(user, calendar)) {
-            if (!manageAffectedScheduledActions(user, schedule, rescheduleStrategy)) {
+            RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
+            if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
-                return false;
+                return new LinkedList<>();
             }
+            result.add(r);
         }
-        return true;
+        return result;
     }
 
     /**
@@ -315,20 +318,24 @@ public class MaintenanceManager {
      * @return true when refresh was successful, otherwise false
      * @throws EntityNotExistsException when calendar or url does not exist
      */
-    public boolean refreshCalendar(User user, String label, List<RescheduleStrategy> rescheduleStrategy) {
+    public List<RescheduleResult> refreshCalendar(User user, String label,
+            List<RescheduleStrategy> rescheduleStrategy) {
         ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
                 .orElseThrow(() -> new EntityNotExistsException(label));
         calendar.setIcal(fetchCalendarData(
                 calendar.getUrlOpt().orElseThrow(() -> new EntityNotExistsException("url"))));
         save(calendar);
+        List<RescheduleResult> result = new LinkedList<>();
         for (MaintenanceSchedule schedule: listSchedulesByUserAndCalendar(user, calendar)) {
-            if (!manageAffectedScheduledActions(user, schedule, rescheduleStrategy)) {
+            RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
+            if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
-                return false;
+                return new LinkedList<>();
             }
+            result.add(r);
         }
-        return true;
+        return result;
     }
 
     @SuppressWarnings("unchecked")
@@ -357,16 +364,16 @@ public class MaintenanceManager {
         }
     }
 
-    protected boolean manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
+    protected RescheduleResult manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
             List<RescheduleStrategy> scheduleStrategy) {
         List<Long> systemIdsUsingSchedule = listSystemIdsWithSchedule(user, schedule);
         if (systemIdsUsingSchedule.isEmpty()) {
-            return true;
+            return new RescheduleResult(schedule.getName(), true);
         }
         Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(
                 new HashSet<Long>(systemIdsUsingSchedule));
         if (withMaintenanceActions.isEmpty()) {
-            return true;
+            return new RescheduleResult(schedule.getName(), true);
         }
         List<Server> servers = ServerFactory.lookupByIdsAndOrg(withMaintenanceActions, user.getOrg());
 
@@ -421,7 +428,7 @@ public class MaintenanceManager {
             for (RescheduleStrategy s : scheduleStrategy) {
                 RescheduleResult result = s.reschedule(user, actionsForServerToReschedule, schedule);
                 if (result.isSuccess()) {
-                    return true;
+                    return result;
                 }
             }
             log.info("Rescheduling failed: no strategy succeeded");
@@ -431,7 +438,7 @@ public class MaintenanceManager {
         }
         HibernateFactory.rollbackTransaction();
         HibernateFactory.closeSession();
-        return false;
+        return new RescheduleResult(schedule.getName(), false);
     }
 
     /**
@@ -457,6 +464,7 @@ public class MaintenanceManager {
             HasPropertyRule<Component> propertyRule = new HasPropertyRule<Component>(summary);
             rules.add(propertyRule);
         }
+        @SuppressWarnings("unchecked")
         Predicate<CalendarComponent>[] comArr = new Predicate[rules.size()];
         comArr = rules.toArray(comArr);
 
@@ -525,7 +533,8 @@ public class MaintenanceManager {
         ensureOrgAdmin(user);
         ensureScheduleAccessible(user, schedule);
 
-        List systemIds = getSession().createQuery(
+        @SuppressWarnings("unchecked")
+        List<Long> systemIds = getSession().createQuery(
                 "SELECT s.id from Server s " +
                         "WHERE s.maintenanceSchedule = :schedule")
                 .setParameter("schedule", schedule)
