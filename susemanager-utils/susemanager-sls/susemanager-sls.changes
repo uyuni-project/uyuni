@@ -1,3 +1,5 @@
+- Fix failing "Hardware Refresh" actions because wrong "instance_id" reported
+  from minion due a captive portal on the network (bsc#1171491)
 - Remove suseRegisterInfo package only if it's plain client (bsc#1171262)
 - On Debian-like systems, install only required dependencies when installing salt
 - Enable support for bootstrapping Ubuntu 20.04 LTS
