@@ -127,7 +127,7 @@ public class MaintenanceManager {
     private Set<MaintenanceSchedule> listSystemSchedulesNotMachingDate(Set<Long> systemIds, Date date) {
         return listSchedulesOfSystems(systemIds).stream()
                 .filter(schedule -> {
-                    Collection<CalendarComponent> events = getEventsInTime(date, schedule, schedule.getCalendarOpt()
+                    Collection<CalendarComponent> events = getScheduleEventsAtDate(date, schedule, schedule.getCalendarOpt()
                             .flatMap(c -> parseCalendar(c)));
                     return events.isEmpty();
                 })
@@ -515,7 +515,7 @@ public class MaintenanceManager {
      */
     public boolean isActionInMaintenanceWindow(Action action, MaintenanceSchedule schedule,
             Optional<Calendar> calendarOpt) {
-        Collection<CalendarComponent> events = getEventsInTime(action.getEarliestAction(), schedule, calendarOpt);
+        Collection<CalendarComponent> events = getScheduleEventsAtDate(action.getEarliestAction(), schedule, calendarOpt);
 
         if (!events.isEmpty()) {
             if (log.isDebugEnabled()) {
@@ -529,7 +529,7 @@ public class MaintenanceManager {
         return false;
     }
 
-    private Collection<CalendarComponent> getEventsInTime(
+    private Collection<CalendarComponent> getScheduleEventsAtDate(
             Date date, MaintenanceSchedule schedule, Optional<Calendar> calendarOpt) {
         if (calendarOpt.isEmpty()) {
             return emptySet();
