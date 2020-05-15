@@ -40,9 +40,9 @@ public class NotInMaintenanceModeException extends FaultException {
      * @param date the scheduling date
      */
     public NotInMaintenanceModeException(Set<MaintenanceSchedule> schedules, Date date) {
-        super(1334,
-                "not_in_maintenance",
-                String.format("Schedules '%s' are not matching date %s ",
+        super(11334,
+                "notInMaintenance",
+                String.format("Systems assigned to these schedules (%s) do not have a maintenance window at %s" ,
                         scheduleNames(schedules), date));
     }
 
