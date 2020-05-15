@@ -47,6 +47,7 @@ log = logging.getLogger(__name__)
 
 def __virtual__():
     global INSTANCE_ID
+    log.debug("Checking if minion is running in the public cloud")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(0.1)
     result = sock.connect_ex((INTERNAL_API_IP, 80))
@@ -133,7 +134,11 @@ def instance_id():
     global INSTANCE_ID
     ret = {}
     if _is_valid_instance_id(INSTANCE_ID):
+        log.debug("This minion is running in the public cloud. Adding instance_id to grains: {}".format(INSTANCE_ID))
         ret['instance_id'] = INSTANCE_ID
+    else:
+        log.error("The obtained public cloud instance id doesn't seems correct: {}".format(INSTANCE_ID))
+        log.error("Skipping")
     return ret
 
 def is_payg_instance():
