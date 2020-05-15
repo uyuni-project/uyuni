@@ -47,6 +47,7 @@ log = logging.getLogger(__name__)
 
 def __virtual__():
     global INSTANCE_ID
+    log.debug("Checking if minion is running in the public cloud")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(0.1)
     result = sock.connect_ex((INTERNAL_API_IP, 80))
@@ -92,24 +93,52 @@ def __virtual__():
     for i in results:
         api_ret.update(i)
 
-    if api_ret['amazon'].get('status', 0) == 200 and "instance-id" in api_ret['amazon']['body']:
+    if _is_valid_endpoint(api_ret['amazon'], 'instance-id'):
         INSTANCE_ID = http.query(os.path.join(HOST, AMAZON_URL_PATH, 'instance-id'), raise_error=False)['body']
         return True
-    elif api_ret['azure'].get('status', 0) == 200 and "vmId" in api_ret['azure']['body']:
+    elif _is_valid_endpoint(api_ret['azure'], 'vmId'):
         INSTANCE_ID = http.query(os.path.join(HOST, AZURE_URL_PATH, 'vmId') + AZURE_API_ARGS, header_dict={"Metadata":"true"}, raise_error=False)['body']
         return True
-    elif api_ret['google'].get('status', 0) == 200 and "id" in api_ret['google']['body']:
+    elif _is_valid_endpoint(api_ret['google'], 'id'):
         INSTANCE_ID = http.query(os.path.join(HOST, GOOGLE_URL_PATH, 'id'), header_dict={"Metadata-Flavor": "Google"}, raise_error=False)['body']
         return True
 
     return False
 
 
+def _is_valid_endpoint(response, tag):
+    if not response.get('status', 0) == 200:
+        return False
+    elif not tag in response.get('body', ''):
+        return False
+    elif ' ' in response.get('body', ''):
+        return False
+    else:
+        return True
+
+
+def _is_valid_instance_id(id_str):
+    if not id_str:
+        return False
+    if os.linesep in id_str:
+        return False
+    elif ' ' in id_str:
+        return False
+    elif len(id_str) > 128:
+        return False
+    else:
+        return True
+
+
 def instance_id():
     global INSTANCE_ID
     ret = {}
-    if INSTANCE_ID:
+    if _is_valid_instance_id(INSTANCE_ID):
+        log.debug("This minion is running in the public cloud. Adding instance_id to grains: {}".format(INSTANCE_ID))
         ret['instance_id'] = INSTANCE_ID
+    else:
+        log.error("The obtained public cloud instance id doesn't seems correct: {}".format(INSTANCE_ID))
+        log.error("Skipping")
     return ret
 
 def is_payg_instance():
