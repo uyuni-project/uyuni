@@ -25,6 +25,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.EntityExistsException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.maintenance.RescheduleResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
@@ -171,7 +172,7 @@ public class MaintenanceHandler extends BaseHandler {
      *               #array_end()
      * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
      */
-    public boolean updateSchedule(User loggedInUser, String name, Map<String, String> details,
+    public RescheduleResult updateSchedule(User loggedInUser, String name, Map<String, String> details,
             List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
 
@@ -327,7 +328,7 @@ public class MaintenanceHandler extends BaseHandler {
      *               #array_end()
      * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
      */
-    public boolean updateCalendar(User loggedInUser, String label, Map<String, String> details,
+    public List<RescheduleResult> updateCalendar(User loggedInUser, String label, Map<String, String> details,
             List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
 
@@ -365,7 +366,7 @@ public class MaintenanceHandler extends BaseHandler {
      *               #array_end()
      * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
      */
-    public boolean refreshCalendar(User loggedInUser, String label, List<String> rescheduleStrategy) {
+    public List<RescheduleResult> refreshCalendar(User loggedInUser, String label, List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
         try {
             return mm.refreshCalendar(loggedInUser, label, mm.mapRescheduleStrategyStrings(rescheduleStrategy));
