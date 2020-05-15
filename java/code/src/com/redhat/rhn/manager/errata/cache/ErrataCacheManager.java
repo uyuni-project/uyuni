@@ -33,7 +33,6 @@ import org.apache.log4j.Logger;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -274,7 +273,7 @@ public class ErrataCacheManager extends HibernateFactory {
      */
     public static void addErrataRefreshing(Collection<Long> channelIdsToUpdate, Long errataId) {
         for (Long cid : channelIdsToUpdate) {
-            ChannelFactory.addErrataToChannel(new HashSet<Long>() { { add(errataId); } }, cid);
+            ChannelFactory.addErrataToChannel(Set.of(errataId), cid);
             List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errataId);
             ErrataCacheManager.insertCacheForChannelPackages(cid, errataId, pids);
             ErrataManager.replaceChannelNotifications(errataId, cid, new Date());
