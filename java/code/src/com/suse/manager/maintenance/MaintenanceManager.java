@@ -377,20 +377,7 @@ public class MaintenanceManager {
         }
         List<Server> servers = ServerFactory.lookupByIdsAndOrg(withMaintenanceActions, user.getOrg());
 
-        Optional<Calendar> calendarOpt = Opt.fold(schedule.getCalendarOpt(),
-                () -> Optional.empty(),
-                c -> {
-                    StringReader sin = new StringReader(c.getIcal());
-                    CalendarBuilder builder = new CalendarBuilder();
-                    Calendar calendar = null;
-                    try {
-                        calendar = builder.build(sin);
-                    }
-                    catch (IOException | ParserException e) {
-                        log.error("Unable to build the calendar: " + c.getLabel(), e);
-                    }
-                    return Optional.ofNullable(calendar);
-                });
+        Optional<Calendar> calendarOpt = schedule.getCalendarOpt().flatMap(c -> parseCalendar(c));
 
         List<ActionStatus> pending = new LinkedList<>();
         pending.add(ActionFactory.STATUS_PICKED_UP);
@@ -441,6 +428,19 @@ public class MaintenanceManager {
         return new RescheduleResult(schedule.getName(), false);
     }
 
+    private Optional<Calendar> parseCalendar(MaintenanceCalendar calendarIn) {
+        StringReader sin = new StringReader(calendarIn.getIcal());
+        CalendarBuilder builder = new CalendarBuilder();
+        Calendar calendar = null;
+        try {
+            calendar = builder.build(sin);
+        }
+        catch (IOException | ParserException e) {
+            log.error("Unable to build the calendar: " + calendarIn.getLabel(), e);
+        }
+        return Optional.ofNullable(calendar);
+    }
+
     /**
      * Check if provided action is inside of a maintenance window
      *
@@ -467,8 +467,8 @@ public class MaintenanceManager {
 
     private Collection<CalendarComponent> getEventsInTime(
             Date date, MaintenanceSchedule schedule, Optional<Calendar> calendarOpt) {
-        if (!calendarOpt.isPresent()) {
-            emptySet();
+        if (calendarOpt.isEmpty()) {
+            return emptySet();
         }
 
         Period p = new Period(new DateTime(date), java.time.Duration.ofSeconds(1));
