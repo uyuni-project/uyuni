@@ -451,26 +451,8 @@ public class MaintenanceManager {
      */
     public boolean isActionInMaintenanceWindow(Action action, MaintenanceSchedule schedule,
             Optional<Calendar> calendarOpt) {
-        if (!calendarOpt.isPresent()) {
-            return false;
-        }
+        Collection<CalendarComponent> events = getEventsInTime(action.getEarliestAction(), schedule, calendarOpt);
 
-        Period p = new Period(new DateTime(action.getEarliestAction()), java.time.Duration.ofSeconds(1));
-        ArrayList<Predicate<Component>> rules = new ArrayList<Predicate<Component>>();
-        rules.add(new PeriodRule<Component>(p));
-
-        if (schedule.getScheduleType().equals(ScheduleType.MULTI)) {
-            Summary summary = new Summary(schedule.getName());
-            HasPropertyRule<Component> propertyRule = new HasPropertyRule<Component>(summary);
-            rules.add(propertyRule);
-        }
-        @SuppressWarnings("unchecked")
-        Predicate<CalendarComponent>[] comArr = new Predicate[rules.size()];
-        comArr = rules.toArray(comArr);
-
-        Filter<CalendarComponent> filter = new Filter<CalendarComponent>(comArr, Filter.MATCH_ALL);
-
-        Collection<CalendarComponent> events = filter.filter(calendarOpt.get().getComponents(Component.VEVENT));
         if (!events.isEmpty()) {
             if (log.isDebugEnabled()) {
                 events.stream().forEach(cc -> log.debug(
@@ -481,6 +463,30 @@ public class MaintenanceManager {
         }
         log.debug(String.format("Action '%s' outside of maintenance window '%s'", action, schedule.getName()));
         return false;
+    }
+
+    private Collection<CalendarComponent> getEventsInTime(
+            Date date, MaintenanceSchedule schedule, Optional<Calendar> calendarOpt) {
+        if (!calendarOpt.isPresent()) {
+            emptySet();
+        }
+
+        Period p = new Period(new DateTime(date), java.time.Duration.ofSeconds(1));
+        ArrayList<Predicate<Component>> rules = new ArrayList<>();
+        rules.add(new PeriodRule<>(p));
+
+        if (schedule.getScheduleType().equals(ScheduleType.MULTI)) {
+            Summary summary = new Summary(schedule.getName());
+            HasPropertyRule<Component> propertyRule = new HasPropertyRule<>(summary);
+            rules.add(propertyRule);
+        }
+        @SuppressWarnings("unchecked")
+        Predicate<CalendarComponent>[] comArr = new Predicate[rules.size()];
+        comArr = rules.toArray(comArr);
+
+        Filter<CalendarComponent> filter = new Filter<>(comArr, Filter.MATCH_ALL);
+
+        return filter.filter(calendarOpt.get().getComponents(Component.VEVENT));
     }
 
     /**
