@@ -245,7 +245,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test the behavior when user tries to assign a schedule to a system, that has already some offending actions
+     * Test the behavior when user tries to assign a schedule to a system, that has already some maintenance actions
      * pending.
      *
      * @throws Exception
@@ -519,6 +519,23 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      */
     private Action createActionForServerAt(ActionType type, Server server, String datetime) throws Exception {
         return createActionForServerAt(type, server, datetime, null);
+    }
+
+    public void testListSystemsSchedules() throws Exception {
+        user.addPermanentRole(ORG_ADMIN);
+        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceSchedule schedule = mm.createMaintenanceSchedule(
+                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+
+        Server withSchedule = MinionServerFactoryTest.createTestMinionServer(user);
+        Server withoutSchedule = MinionServerFactoryTest.createTestMinionServer(user);
+
+        mm.assignScheduleToSystems(user, schedule, Set.of(withSchedule.getId()));
+
+        assertEquals(
+                Set.of(schedule),
+                mm.listSchedulesOfSystems(Set.of(withSchedule.getId(), withoutSchedule.getId()))
+        );
     }
 
     private void assertExceptionThrown(Runnable body, Class exceptionClass) {
