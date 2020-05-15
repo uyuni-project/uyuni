@@ -92,23 +92,47 @@ def __virtual__():
     for i in results:
         api_ret.update(i)
 
-    if api_ret['amazon'].get('status', 0) == 200 and "instance-id" in api_ret['amazon']['body']:
+    if _is_valid_endpoint(api_ret['amazon'], 'instance-id'):
         INSTANCE_ID = http.query(os.path.join(HOST, AMAZON_URL_PATH, 'instance-id'), raise_error=False)['body']
         return True
-    elif api_ret['azure'].get('status', 0) == 200 and "vmId" in api_ret['azure']['body']:
+    elif _is_valid_endpoint(api_ret['azure'], 'vmId'):
         INSTANCE_ID = http.query(os.path.join(HOST, AZURE_URL_PATH, 'vmId') + AZURE_API_ARGS, header_dict={"Metadata":"true"}, raise_error=False)['body']
         return True
-    elif api_ret['google'].get('status', 0) == 200 and "id" in api_ret['google']['body']:
+    elif _is_valid_endpoint(api_ret['google'], 'id'):
         INSTANCE_ID = http.query(os.path.join(HOST, GOOGLE_URL_PATH, 'id'), header_dict={"Metadata-Flavor": "Google"}, raise_error=False)['body']
         return True
 
     return False
 
 
+def _is_valid_endpoint(response, tag):
+    if not response.get('status', 0) == 200:
+        return False
+    elif not tag in response.get('body', ''):
+        return False
+    elif ' ' in response.get('body', ''):
+        return False
+    else:
+        return True
+
+
+def _is_valid_instance_id(id_str):
+    if not id_str:
+        return False
+    if os.linesep in id_str:
+        return False
+    elif ' ' in id_str:
+        return False
+    elif len(id_str) > 128:
+        return False
+    else:
+        return True
+
+
 def instance_id():
     global INSTANCE_ID
     ret = {}
-    if INSTANCE_ID:
+    if _is_valid_instance_id(INSTANCE_ID):
         ret['instance_id'] = INSTANCE_ID
     return ret
 
