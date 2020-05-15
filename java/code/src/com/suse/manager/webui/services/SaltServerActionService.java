@@ -1634,12 +1634,10 @@ public class SaltServerActionService {
                             if (disk.getSourceFile() != null || disk.getDevice().equals("cdrom")) {
                                 diskData.put("source_file", disk.getSourceFile() != null ? disk.getSourceFile() : "");
                             }
-                            else {
-                                diskData.put("pool", disk.getPool());
-                                diskData.put("image", disk.getTemplate());
-                                if (disk.getSize() != 0) {
-                                    diskData.put("size", disk.getSize() * 1024);
-                                }
+                            diskData.put("pool", disk.getPool());
+                            diskData.put("image", disk.getTemplate());
+                            if (disk.getSize() != 0) {
+                                diskData.put("size", disk.getSize() * 1024);
                             }
                             diskData.put("model", disk.getBus());
                             diskData.put("device", disk.getDevice());

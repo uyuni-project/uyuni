@@ -75,8 +75,8 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
         }
       </Select>
       <Select
-        key={`disk${props.index}_source_volume`}
-        name={`disk${props.index}_source_volume`}
+        key={`disk${props.index}_source_file`}
+        name={`disk${props.index}_source_file`}
         label={t('Source Volume')}
         labelClass="col-md-3"
         divClass="col-md-6"
