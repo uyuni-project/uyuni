@@ -135,7 +135,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         if (ConfigDefaults.get().isMetadataSigningEnabled()) {
             chanProps.put("gpgcheck", chan.isGPGCheck() ? "1" : "0");
             // three state field. yes, no or default
-            chanProps.put("repo_gpgcheck", "default");
+            chanProps.put("repo_gpgcheck", "0");
             chanProps.put("pkg_gpgcheck", "default");
         }
         else {
