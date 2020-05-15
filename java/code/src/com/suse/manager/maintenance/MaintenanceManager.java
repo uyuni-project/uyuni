@@ -575,7 +575,7 @@ public class MaintenanceManager {
      * Ensures that given user has access to given {@link MaintenanceCalendar}
      *
      * @param user the user
-     * @param schedule the {@link MaintenanceCalendar}
+     * @param calendar the {@link MaintenanceCalendar}
      * @throws PermissionException if the user does not have access
      */
     private void ensureCalendarAccessible(User user, MaintenanceCalendar calendar) {
