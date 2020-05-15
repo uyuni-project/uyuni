@@ -17,6 +17,7 @@ package com.suse.manager.maintenance;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,18 +25,33 @@ import java.util.stream.Collectors;
 public class RescheduleResult {
 
     private String strategy;
+    private String scheduleName;
     private Map<Action, List<Server>> actionsServers;
     private boolean success;
 
     /**
      * Constructor
      * @param rescheduleType result for type
+     * @param scheduleNameIn the name of the affected Maintenance Schedule
      * @param actionsServersIn actions with the affected servers
      */
-    public RescheduleResult(String rescheduleType, Map<Action, List<Server>> actionsServersIn) {
+    public RescheduleResult(String rescheduleType, String scheduleNameIn, Map<Action, List<Server>> actionsServersIn) {
         strategy = rescheduleType;
+        scheduleName = scheduleNameIn;
         actionsServers = actionsServersIn;
         success = false;
+    }
+
+    /**
+     * Constructor
+     * @param successIn set result success
+     * @param scheduleNameIn the name of the affected Maintenance Schedule
+     */
+    public RescheduleResult(String scheduleNameIn, boolean successIn) {
+        strategy = "";
+        scheduleName = scheduleNameIn;
+        actionsServers = new HashMap<Action, List<Server>>();
+        success = successIn;
     }
 
     /**
@@ -50,6 +66,20 @@ public class RescheduleResult {
      */
     public String getMessage() {
         return this.toString();
+    }
+
+    /**
+     * @return the schedule name
+     */
+    public String getScheduleName() {
+        return scheduleName;
+    }
+
+    /**
+     * @return rescheduled Actions and affected Servers
+     */
+    public Map<Action, List<Server>> getActionsServers() {
+        return actionsServers;
     }
 
     /**
@@ -77,6 +107,14 @@ public class RescheduleResult {
      * {@inheritDoc}
      */
     public String toString() {
+        if (actionsServers.isEmpty()) {
+            if (success) {
+                return "Nothing to reschedule";
+            }
+            else {
+                return "Rescheduling failed: rollback the update";
+            }
+        }
         return actionsServers.keySet().stream()
             .map(action -> {
                 String serverNames = actionsServers.get(action).stream()
@@ -90,6 +128,7 @@ public class RescheduleResult {
                             serverNames);
                 }
                 else {
+                    // TODO: check if this can be reached at all
                     return String.format(
                             "Unable to handle Action '%s' using '%s' reschedule strategy " +
                             "for the following server: '%s'",
