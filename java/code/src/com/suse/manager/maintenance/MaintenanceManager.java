@@ -424,12 +424,13 @@ public class MaintenanceManager {
                     return true;
                 }
             }
+            log.info("Rescheduling failed: no strategy succeeded");
         }
         catch (RescheduleException e) {
             log.info("Rescheduling failed: " + e.getMessage());
-            HibernateFactory.rollbackTransaction();
-            HibernateFactory.closeSession();
         }
+        HibernateFactory.rollbackTransaction();
+        HibernateFactory.closeSession();
         return false;
     }
 
