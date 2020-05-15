@@ -16,6 +16,8 @@ package com.suse.manager.maintenance;
 
 import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -23,6 +25,7 @@ import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -48,6 +51,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,6 +96,66 @@ public class MaintenanceManager {
         }
         return instance;
     }
+
+    /**
+     * Check if an action of given type can be scheduled at given date for given systems.
+     * If some systems have a {@link MaintenanceSchedule} and are outside of their maintenance windows,
+     * throw the {@link NotInMaintenanceModeException} that bears the offending schedules.
+     *
+     * @param systemIds the system IDs to check
+     * @param date the schedule date of the action
+     * @param actionType the type of action
+     * @throws NotInMaintenanceModeException when some systems are outside of maintenance window
+     */
+    public void checkMaintenanceWindows(Set<Long> systemIds, Date date, ActionType actionType) {
+        if (actionType.isMaintenancemodeOnly()) {
+            Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMachingDate(systemIds, date);
+            if (!offendingSchedules.isEmpty()) {
+                throw new NotInMaintenanceModeException(offendingSchedules, date);
+            }
+        }
+    }
+
+    /**
+     * List {@link MaintenanceSchedule}s which are assigned to given systems and which do NOT match given date
+     * (no maintenance windows in given date).
+     *
+     * @param systemIds the system IDs to check
+     * @param date the schedule date of the action
+     * @return set of {@link MaintenanceSchedule}s
+     */
+    private Set<MaintenanceSchedule> listSystemSchedulesNotMachingDate(Set<Long> systemIds, Date date) {
+        return listSchedulesOfSystems(systemIds).stream()
+                .filter(schedule -> {
+                    Collection<CalendarComponent> events = getEventsInTime(date, schedule, schedule.getCalendarOpt()
+                            .flatMap(c -> parseCalendar(c)));
+                    return events.isEmpty();
+                })
+                .collect(toSet());
+    }
+
+    /**
+     * List {@link MaintenanceSchedule}s assigned to given systems.
+     *
+     * @param systemIds the IDs of systems
+     * @return the {@link MaintenanceSchedule}s assigned to given systems
+     */
+    public Set<MaintenanceSchedule> listSchedulesOfSystems(Set<Long> systemIds) {
+        if (systemIds.isEmpty()) {
+            return emptySet();
+        }
+
+        return (Set<MaintenanceSchedule>) HibernateFactory.getSession()
+                .createQuery(
+                        "SELECT s.maintenanceSchedule " +
+                                "FROM Server s " +
+                                "WHERE s.maintenanceSchedule IS NOT NULL " +
+                                "AND s.id IN (:systemIds)")
+                .setParameter("systemIds", systemIds)
+                .stream()
+                .collect(toSet());
+    }
+
 
     /**
      * Save a MaintenanceSchedule
