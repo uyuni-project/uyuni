@@ -40,6 +40,8 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -1379,5 +1381,33 @@ public class ServerFactory extends HibernateFactory {
         params.put("orgId", orgId);
         return SINGLETON.listObjectsByNamedQuery(
                 "Server.listOrgSystems", params);
+    }
+
+    /**
+     * Filter systems with pending maintenance-only actions
+     *
+     * @param systemIds the system IDs
+     * @return only the IDs if systems with pending maintenance-only actions
+     */
+    public static Set<Long> filterSystemsWithPendingMaintOnlyActions(Set<Long> systemIds) {
+        return new HashSet<>(HibernateFactory.getSession()
+                .getNamedQuery("Server.filterSystemsWithPendingMaintenanceOnlyActions")
+                .setParameter("systemIds", systemIds)
+                .list());
+    }
+
+    /**
+     * Assign the given {@link MaintenanceSchedule} to set of {@link Server}s
+     *
+     * @param schedule the {@link MaintenanceSchedule}
+     * @param systemIds the set of {@link Server} IDs
+     * @return number of involved {@link Server}s
+     */
+    public static int setMaintenanceScheduleToSystems(MaintenanceSchedule schedule, Set<Long> systemIds) {
+        return HibernateFactory.getSession()
+                .getNamedQuery("Server.setMaintenanceScheduleToSystems")
+                .setParameter("schedule", schedule)
+                .setParameter("systemIds", systemIds)
+                .executeUpdate();
     }
 }
