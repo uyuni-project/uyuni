@@ -68,5 +68,11 @@ Feature: Sanity checks
     And it should be possible to reach the build sources
     And it should be possible to reach the container profiles
     And it should be possible to reach the test suite profiles
-    And it should be possible to reach the portus registry
-    And it should be possible to reach the other registry
+
+@auth_registry
+  Scenario: The registry with authentication is healthy
+    Then it should be possible to reach the authenticated registry
+
+@no_auth_registry
+  Scenario: The registry without authentication is healthy
+    Then it should be possible to reach the not authenticated registry
