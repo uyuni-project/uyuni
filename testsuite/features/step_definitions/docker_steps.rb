@@ -147,7 +147,7 @@ When(/^I list image store types and image stores via XML-RPC$/) do
 
   registry_list = cont_op.list_image_stores
   raise "Label #{registry_list[0]['label']} is different than 'galaxy-registry'" unless registry_list[0]['label'] == 'galaxy-registry'
-  raise "URI #{registry_list[0]['uri']} is different than 'registry.mgr.suse.de'" unless registry_list[0]['uri'] == 'registry.mgr.suse.de'
+  raise "URI #{registry_list[0]['uri']} is different than '#{$no_auth_registry}'" unless registry_list[0]['uri'] == $no_auth_registry.to_s
 end
 
 When(/^I set and get details of image store via XML-RPC$/) do
