@@ -3,14 +3,16 @@
 
 Feature: Advanced content management
 
+@no_auth_registry
   Scenario: Create an image store as Docker admin
     Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Stores"
     And I follow "Create"
     And I enter "docker_admin" as "label"
-    And I enter "registry.mgr.suse.de" as "uri"
+    And I enter the URI of the registry as "uri"
     And I click on "create-btn"
 
+@no_auth_registry
   Scenario: Create a profile as Docker admin
     Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Profiles"
@@ -21,6 +23,7 @@ Feature: Advanced content management
     And I enter "Docker/serverhost" relative to profiles as "path"
     And I click on "create-btn"
 
+@no_auth_registry
   Scenario: Create a user without rights nor roles
     Given I am on the active Users page
     When I follow "Create User"
@@ -36,6 +39,7 @@ Feature: Advanced content management
     And I should see a "norole" link
     And I should see a "normal user" text
 
+@no_auth_registry
   Scenario: Cleanup: remove Docker profile
     Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Profiles"
@@ -44,6 +48,7 @@ Feature: Advanced content management
     And I click on the red confirmation button
     And I should see a "Image profile has been deleted." text
 
+@no_auth_registry
   Scenario: Cleanup: remove image store
     Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Stores"
@@ -52,6 +57,7 @@ Feature: Advanced content management
     And I click on the red confirmation button
     And I should see a "Image store has been deleted." text
 
+@no_auth_registry
   Scenario: Cleanup: delete no role user
     Given I am on the active Users page
     When I follow "norole"
