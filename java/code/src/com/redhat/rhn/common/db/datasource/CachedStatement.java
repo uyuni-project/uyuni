@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.FlushModeType;
 
 /**
  * A cached set of query/elaborator strings and the parameterMap hash maps.
@@ -908,7 +909,9 @@ public class CachedStatement implements Serializable {
      */
     private <T> T doWithStolenConnection(ReturningWork<T> work) throws HibernateException {
         Session session = HibernateFactory.getSession();
-        session.flush();
+        if (session.getFlushMode().equals(FlushModeType.AUTO)) {
+            session.flush();
+        }
         return session.doReturningWork(work);
     }
 
