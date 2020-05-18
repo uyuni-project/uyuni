@@ -196,10 +196,10 @@ def add_node(skuba_cluster_path,
     return ret
 
 
-def upgrade_cluster(skuba_cluster_path,
-                    verbosity=None,
-                    timeout=DEFAULT_TIMEOUT,
-                    **kwargs):
+def _upgrade_cluster_plan(skuba_cluster_path,
+                          verbosity=None,
+                          timeout=DEFAULT_TIMEOUT,
+                          **kwargs):
 
     cmd_args = "cluster upgrade plan"
 
@@ -222,20 +222,139 @@ def upgrade_cluster(skuba_cluster_path,
     return ret
 
 
-def upgrade_node(skuba_cluster_path,
-                 verbosity=None,
-                 timeout=DEFAULT_TIMEOUT,
-                 plan=False,
-                 **kwargs):
+def upgrade_cluster(skuba_cluster_path,
+                    verbosity=None,
+                    timeout=DEFAULT_TIMEOUT,
+                    plan=False,
+                    **kwargs):
 
-    cmd_args = "node upgrade {}".format("plan" if plan else "apply")
+    if plan:
+        return _upgrade_cluster_plan(skuba_cluster_path=skuba_cluster_path,
+                                     verbosity=verbosity,
+                                     timeout=timeout,
+                                     **kwargs)
+
+    # Perform the cluster upgrade.
+    # In all nodes:
+    # 1. Upgrade addons
+    # 2. Upgrade all nodes
+    # 3. Upgrade addons
+    ret = {
+        'success' : True,
+        'retcode' : 0,
+        'stage0_upgrade_addons': {},
+        'stage1_upgrade_nodes': {},
+        'stage2_upgrade_addons': {},
+    }
+
+    ret['stage0_upgrade_addons'] = upgrade_addons(skuba_cluster_path=skuba_cluster_path,
+                                          verbosity=verbosity,
+                                          timeout=timeout,
+                                          plan=plan,
+                                          **kwargs)
+
+    if not ret['stage0_upgrade_addons']['success']:
+        ret['success'] = False
+        return ret
+
+    nodes = list_nodes(skuba_cluster_path=skuba_cluster_path,
+                       timeout=timeout,
+                       **kwargs)
+
+    for node in nodes:
+        if not nodes[node]['internal-ips']:
+            log.error('No internal-ips defined for node: {}. Cannot proceed upgrading this node!'.format(node))
+            continue
+
+        ret['stage1_upgrade_nodes'][node] = upgrade_node(skuba_cluster_path=skuba_cluster_path,
+                                                 target=nodes[node]['internal-ips'][0],
+                                                 verbosity=verbosity,
+                                                 timeout=timeout,
+                                                 plan=plan,
+                                                 **kwargs)
+
+        if not ret['stage1_upgrade_nodes'][node]['success']:
+            ret['success'] = False
+
+    ret['stage2_upgrade_addons'] = upgrade_addons(skuba_cluster_path=skuba_cluster_path,
+                                          verbosity=verbosity,
+                                          timeout=timeout,
+                                          plan=plan,
+                                          **kwargs)
+
+    if not ret['stage2_upgrade_addons']['success']:
+        ret['success'] = False
+
+    if not ret['success']:
+        ret['retcode'] = 1
+
+    return ret
+
+
+def upgrade_addons(skuba_cluster_path,
+                   verbosity=None,
+                   timeout=DEFAULT_TIMEOUT,
+                   plan=False,
+                   **kwargs):
+
+    cmd_args = "addon upgrade {}".format("plan" if plan else "apply")
 
     if verbosity:
         cmd_args += " --verbosity {}".format(verbosity)
 
     skuba_proc = _call_skuba(skuba_cluster_path, cmd_args, timeout=timeout)
     if skuba_proc.process.returncode != 0:
-        error_msg = "Unexpected error {} at skuba when upgrading the node: {}".format(
+        error_msg = "Unexpected error {} at skuba when upgrading addons: {}".format(
+                skuba_proc.process.returncode,
+                salt.utils.stringutils.to_str(skuba_proc.stderr))
+        log.error(error_msg)
+
+    ret = {
+        'stdout': salt.utils.stringutils.to_str(skuba_proc.stdout),
+        'stderr': salt.utils.stringutils.to_str(skuba_proc.stderr),
+        'success': not skuba_proc.process.returncode,
+        'retcode': skuba_proc.process.returncode,
+    }
+    return ret
+
+
+def upgrade_node(skuba_cluster_path,
+                 node_name=None,
+                 target=None,
+                 port=None,
+                 sudo=None,
+                 user=None,
+                 verbosity=None,
+                 timeout=DEFAULT_TIMEOUT,
+                 plan=False,
+                 **kwargs):
+
+    if plan and not node_name:
+        error_msg = "The 'node_name' argument is required if plan=True"
+        log.error(error_msg)
+        raise CommandExecutionError(error_msg)
+    elif not plan and not target:
+        error_msg = "The 'target' argument is required without plan=True"
+        log.error(error_msg)
+        raise CommandExecutionError(error_msg)
+
+    if plan:
+        cmd_args = "node upgrade plan {}".format(node_name)
+    else:
+        cmd_args = "node upgrade apply --target {}".format(target)
+
+    if port:
+        cmd_args += " --port {}".format(port)
+    if sudo:
+        cmd_args += " --sudo"
+    if user:
+        cmd_args += " --user {}".format(user)
+    if verbosity:
+        cmd_args += " --verbosity {}".format(verbosity)
+
+    skuba_proc = _call_skuba(skuba_cluster_path, cmd_args, timeout=timeout)
+    if skuba_proc.process.returncode != 0:
+        error_msg = "Unexpected error {} at skuba when upgrading node: {}".format(
                 skuba_proc.process.returncode,
                 salt.utils.stringutils.to_str(skuba_proc.stderr))
         log.error(error_msg)
