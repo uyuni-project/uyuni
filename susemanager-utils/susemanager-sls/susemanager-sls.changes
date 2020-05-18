@@ -7,6 +7,7 @@
 - Cluster Awareness: Introduce generic SLS files for Cluster Management
   and CaaSP Cluster Provider custom Salt module.
 - Add virtual volume delete action
+- Ubuntu no longer shows removed packages as installed (bsc#1171461)
 
 -------------------------------------------------------------------
 Mon Apr 13 09:37:50 CEST 2020 - jgonzalez@suse.com
