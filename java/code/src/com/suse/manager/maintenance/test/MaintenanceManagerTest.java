@@ -20,7 +20,6 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -37,6 +36,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.maintenance.CancelRescheduleStrategy;
 import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.maintenance.RescheduleResult;
 import com.suse.manager.maintenance.RescheduleStrategy;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
@@ -484,7 +484,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         List<RescheduleStrategy> rescheduleStrategy = new LinkedList<>();
         rescheduleStrategy.add(new CancelRescheduleStrategy());
 
-        mm.updateCalendar(user, "multicalendar", details, rescheduleStrategy);
+        List<RescheduleResult> upResult = mm.updateCalendar(user, "multicalendar", details, rescheduleStrategy);
 
         /* check results */
         List<Action> sapActionsAfter = ActionFactory.listActionsForServer(user, sapServer);
@@ -498,6 +498,21 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, coreActionsAfter.size()); // First chain should be canceled, second stay
     }
 
+        assertEquals(2, upResult.size());
+        for (RescheduleResult r : upResult) {
+            if (r.getScheduleName().equals("SAP Maintenance Window")) {
+                assertEquals("Cancel", r.getStrategy());
+                assertContains(r.getActionsServers().get(sapAction3), sapServer);
+                // depending actions from a chain are not part of the result
+                //assertContains(r.getActionsServers().get(sapAction4), sapServer);
+            }
+            else if (r.getScheduleName().equals("Core Server Window")) {
+                assertEquals("Cancel", r.getStrategy());
+                assertContains(r.getActionsServers().get(coreAction1), coreServer);
+                // depending actions from a chain are not part of the result
+                //assertContains(r.getActionsServers().get(coreAction2), coreServer);
+            }
+        }
     }
 
     public void testListSystemsSchedules() throws Exception {
