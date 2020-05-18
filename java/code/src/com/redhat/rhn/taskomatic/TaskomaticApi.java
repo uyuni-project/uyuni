@@ -220,6 +220,18 @@ public class TaskomaticApi {
         return (Date) invoke("tasko.scheduleSingleSatBunchRun", bunchName, params);
     }
 
+        /**
+     * Creates a new single gatherer schedule
+     * @param user shall be org admin
+     * @param params parameters for the bunch
+     * @return date of the first schedule
+     * @throws TaskomaticApiException if there was an error
+     */
+    public Date scheduleGathererRefresh(User user, Map<String, String> params) throws TaskomaticApiException {
+        ensureOrgAdminRole(user);
+        return (Date) invoke("tasko.scheduleSingleSatBunchRun", "gatherer-matcher-bunch", params);
+    }
+
     /**
      * Validates user has sat admin role
      * @param user shall be sat admin
