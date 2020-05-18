@@ -2,6 +2,7 @@
 'use strict';
 
 import React from "react";
+import {Icon} from "components/icon";
 
 $.fn.datepicker.dates['en_US'] = {
     days:      [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',],
@@ -191,13 +192,13 @@ export class DateTimePicker extends React.Component<DateTimePickerProps> {
             <div className="input-group">
             {!this.state.hideDate && [
                 <span className="input-group-addon" data-picker-type="date" onClick={this.toggleDatepicker.bind(this)}>
-                    &nbsp;<i className="fa fa-calendar"></i>
+                    &nbsp;<Icon type="calendar" size="S" />
                 </span>,
                 <DatePicker id={this.props.id ? this.props.id + "_date" : null} key="date" onDateChanged={date => this.onDateChanged(date)} onToggle={this.onToggleDate.bind(this)} open={this.state.dateOpen} value={this.props.value} />
             ]}
             {!this.state.hideTime && [
                 <span className="input-group-addon" data-picker-type="time" onClick={this.toggleTimepicker.bind(this)}>
-                    &nbsp;<i className="fa fa-clock-o"></i>
+                    &nbsp;<Icon type="clock" size="S" />
                 </span>,
                 <TimePicker id={this.props.id ? this.props.id + "_time" : null} key="time" onTimeChanged={date => this.onTimeChanged(date)} onToggle={this.onToggleTime.bind(this)} open={this.state.timeOpen} value={this.props.value} />,
                 <span className="input-group-addon">

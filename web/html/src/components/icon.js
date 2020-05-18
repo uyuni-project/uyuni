@@ -29,6 +29,12 @@ export function Icon({ withBorders, type, title, size, styleClass } : IconProps)
 
   // https://icons.eosdesignsystem.com/cheatsheet
   const icons = {
+    // self-explaining key for the desired picture
+    "calendar": "event_note",
+    "clock": "access_time",
+    "arrow-right": "arrow_forward",
+
+    // self-explaining key for the topic usage
     "action-failed": "cancel",
     "action-ok": "check_circle",
     "action-pending": "access_time",
