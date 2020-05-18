@@ -1,3 +1,4 @@
+- Enable support for bootstrapping CentOS/Oracle Linux 6, 7 and 8 on Uyuni and SUSE Manager
 - Enable support for bootstrapping Ubuntu 20.04 LTS
 - migrate cobbler configs for ks_mirror -> distro_mirror rename (bsc#1169209)
 
