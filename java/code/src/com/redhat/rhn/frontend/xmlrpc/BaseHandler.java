@@ -55,6 +55,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.maintenance.NotInMaintenanceModeException;
+
 /**
  * A basic xmlrpc handler class.  Uses reflection + an arbitrary algorithm
  * to call the appropriate method on a subclass.  So, an xmlrpc call to
@@ -175,6 +177,9 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             }
             else if (t instanceof OverlappingFileLockException) {
                 throw new XmlRpcFault(-1, "Operation already running. Please try later again.");
+            }
+            else if (t instanceof NotInMaintenanceModeException) {
+                throw new XmlRpcFault(11334, t.getMessage());
             }
 
             // If it isn't a FaultException that caused this, we still need to
