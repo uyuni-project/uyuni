@@ -323,6 +323,23 @@ def master_bootstrap(node_name,
     return ret
 
 
+def _join_return_dicts(ret1, ret2):
+    ret = merge_list(ret1, ret2)
+
+    # Join multiple 'stdout' and 'stderr' outputs
+    # after merging the two output dicts
+    if isinstance(ret['stdout'], list):
+        ret['stdout'] = ''.join(ret['stdout'])
+    if isinstance(ret['stderr'], list):
+        ret['stderr'] = ''.join(ret['stderr'])
+
+    # We only need the latest 'success' and 'retcode'
+    # values after merging the two output dicts.
+    ret['success'] = ret['success'][1]
+    ret['retcode'] = ret['retcode'][1]
+
+    return ret
+
 def create_cluster(cluster_name,
                    cluster_basedir,
                    first_node_name,
@@ -346,23 +363,11 @@ def create_cluster(cluster_name,
     if not ret['success']:
         return ret
 
-    ret = merge_list(ret, master_bootstrap(node_name=first_node_name,
-                                           skuba_cluster_path=os.path.join(cluster_basedir, cluster_name),
-                                           target=target,
-                                           verbosity=verbosity,
-                                           timeout=timeout,
-                                           **kwargs))
-
-    # Join multiple 'stdout' and 'stderr' outputs
-    # after mergint the two output dicts
-    if isinstance(ret['stdout'], list):
-        ret['stdout'] = ''.join(ret['stdout'])
-    if isinstance(ret['stderr'], list):
-        ret['stderr'] = ''.join(ret['stderr'])
-
-    # We only need the latest 'success' and 'retcode'
-    # values after merging the two output dicts.
-    ret['success'] = ret['success'][1]
-    ret['retcode'] = ret['retcode'][1]
+    ret = _join_return_dicts(ret, master_bootstrap(node_name=first_node_name,
+                                                   skuba_cluster_path=os.path.join(cluster_basedir, cluster_name),
+                                                   target=target,
+                                                   verbosity=verbosity,
+                                                   timeout=timeout,
+                                                   **kwargs))
 
     return ret
