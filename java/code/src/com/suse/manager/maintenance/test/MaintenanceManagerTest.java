@@ -381,17 +381,15 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Action sapAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
-        Action sapAction3 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-30T09:15:00+02:00"); //wrong window (Core)
         Action coreAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
         Action coreActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-05-21T09:15:00+02:00"); //moved
         Action coreAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
-        Action coreAction3 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-27T08:15:00+02:00"); //wrong window (SAP)
 
         List sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
         List coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
 
-        assertEquals(4, sapActionsBefore.size());
-        assertEquals(4, coreActionsBefore.size());
+        assertEquals(3, sapActionsBefore.size());
+        assertEquals(3, coreActionsBefore.size());
 
         /* update the calendar */
         Map<String, String> details = new HashMap<>();
@@ -481,7 +479,6 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertContains(coreActionsAfter, coreAction3);
         assertContains(coreActionsAfter, coreAction4);
         assertEquals(2, coreActionsAfter.size()); // First chain should be canceled, second stay
-
     }
 
     /**
