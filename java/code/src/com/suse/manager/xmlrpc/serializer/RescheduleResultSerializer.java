@@ -85,7 +85,8 @@ public class RescheduleResultSerializer extends RhnXmlRpcCustomSerializer {
             if (action.getPrerequisite() != null) {
                 a.put("prerequisite", action.getPrerequisite().getId());
             }
-            a.put("affected_system_ids", result.getActionsServers().get(action).stream().collect(Collectors.toList()));
+            a.put("affected_system_ids", result.getActionsServers().get(action).stream()
+                    .map(s -> s.getId()).collect(Collectors.toList()));
             a.put("details", StringUtil.toPlainText(action.getFormatter().getNotes()));
             actions.add(a);
         }
