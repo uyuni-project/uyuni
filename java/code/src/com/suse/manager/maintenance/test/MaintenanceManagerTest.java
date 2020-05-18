@@ -494,7 +494,6 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertContains(coreActionsAfter, coreAction3);
         assertContains(coreActionsAfter, coreAction4);
         assertEquals(2, coreActionsAfter.size()); // First chain should be canceled, second stay
-    }
 
         assertEquals(2, upResult.size());
         for (RescheduleResult r : upResult) {
@@ -502,14 +501,13 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 assertEquals("Cancel", r.getStrategy());
                 assertContains(r.getActionsServers().get(sapAction3), sapServer);
                 // depending actions from a chain are not part of the result
-                //assertContains(r.getActionsServers().get(sapAction4), sapServer);
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
                 assertEquals("Cancel", r.getStrategy());
                 assertContains(r.getActionsServers().get(coreAction1), coreServer);
                 // depending actions from a chain are not part of the result
-                //assertContains(r.getActionsServers().get(coreAction2), coreServer);
             }
+        }
     }
 
     public void testListSystemsSchedules() throws Exception {
@@ -527,6 +525,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 Set.of(schedule),
                 mm.listSchedulesOfSystems(Set.of(withSchedule.getId(), withoutSchedule.getId()))
         );
+    }
+
     private void assertExceptionThrown(Runnable body, Class exceptionClass) {
         try {
             body.run();
