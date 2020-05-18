@@ -17,13 +17,6 @@
  */
 package com.redhat.rhn.manager.errata;
 
-import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
-import static java.util.stream.Stream.concat;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -79,10 +72,11 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-
 import com.suse.manager.utils.MinionServerUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcFault;
 
 import java.io.File;
 import java.sql.Timestamp;
@@ -103,8 +97,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import redstone.xmlrpc.XmlRpcClient;
-import redstone.xmlrpc.XmlRpcFault;
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.concat;
 
 /**
  * ErrataManager is the singleton class used to provide business operations
@@ -229,13 +227,19 @@ public class ErrataManager extends BaseManager {
 
         while (itr.hasNext()) {
             Long channelId = (Long) itr.next();
-            ChannelManager.lookupByIdAndUser(channelId, user);
+            Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
+            if (channel != null) {
+                errata.addChannel(channel);
+                errata.addChannelNotification(channel, new Date());
+            }
         }
 
         //if we're publishing the errata but not pushing packages
         //  We need to add cache entries for ones that are already in the channel
         //  and associated to the errata
-        ErrataCacheManager.addErrataRefreshing(channelIds, errata.getId());
+        List<Long> list = new ArrayList<Long>();
+        list.addAll(channelIds);
+        ErrataCacheManager.insertCacheForChannelErrata(list, errata);
 
 
         //Save the errata
@@ -1638,7 +1642,7 @@ public class ErrataManager extends BaseManager {
             }
         }
 
-        ChannelFactory.addErrataToChannel(eids, toCid);
+        ChannelFactory.addClonedErrataToChannel(eids, toCid);
 
         // for things like errata email and auto errata updates
         for (Long eid : eids) {
@@ -1679,15 +1683,15 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Send errata notifications for a particular errata and channel
-     * @param errataId the errata ID to send notifications about
-     * @param channelId the channel ID with which to decide which systems
+     * @param e the errata to send notifications about
+     * @param chan the channel with which to decide which systems
      *       and users to send errata for
      * @param date  the date
      */
-    public static void addErrataNotification(long errataId, long channelId, Date date) {
+    public static void addErrataNotification(Errata e, Channel chan, Date date) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("cid", channelId);
-        params.put("eid", errataId);
+        params.put("cid", chan.getId());
+        params.put("eid", e.getId());
         java.sql.Date newDate = new java.sql.Date(date.getTime());
         params.put("datetime", newDate);
         WriteMode m = ModeFactory.getWriteMode(
@@ -1729,28 +1733,16 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Delete all errata notifications for an errata in specified channel
-     * @param errataId the errata ID to clear notifications for
-     * @param channelId affected channel ID
+     * @param e the errata to clear notifications for
+     * @param c affected channel
      */
-    public static void clearErrataChannelNotifications(long errataId, long channelId) {
+    public static void clearErrataChannelNotifications(Errata e, Channel c) {
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("eid", errataId);
-        params.put("cid", channelId);
+        params.put("eid", e.getId());
+        params.put("cid", c.getId());
         WriteMode m = ModeFactory.getWriteMode(
                 "Errata_queries",  "clear_errata_channel_notification");
         m.executeUpdate(params);
-    }
-
-    /**
-     * Replaces any existing notifications pending for an errata and channel with
-     * a new one for the specified channel
-     * @param errataId the errata ID
-     * @param channelId affected channel ID
-     * @param dateIn The notify date
-     */
-    public static void replaceChannelNotifications(long errataId, long channelId, Date dateIn) {
-        clearErrataChannelNotifications(errataId, channelId);
-        addErrataNotification(errataId, channelId, dateIn);
     }
 
     /**
@@ -2269,46 +2261,49 @@ public class ErrataManager extends BaseManager {
      */
     public static void cloneErrata(Long channelId, Collection<Long> errataToClone, boolean requestRepodataRegen,
             User user) {
-        Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
-
+        Channel channel = ChannelFactory.lookupById(channelId);
+        if (channel == null) {
+            log.error("Failed to clone errata " + errataToClone + " Didn't find channel with id: " +
+                    channelId.toString());
+            return;
+        }
         Collection<Long> list = errataToClone;
         List<Long> cids = new ArrayList<Long>();
         cids.add(channel.getId());
         // let's avoid deadlocks please
         ChannelFactory.lock(channel);
 
-        HibernateFactory.doWithoutAutoFlushing(() -> {
-            for (Long eid : list) {
-                Errata errata = ErrataFactory.lookupById(eid);
-                // we merge custom errata directly (non Redhat and cloned)
-                if (errata.getOrg() != null) {
-                    ErrataCacheManager.addErrataRefreshing(cids, eid);
+        for (Long eid : list) {
+            Errata errata = ErrataFactory.lookupById(eid);
+            // we merge custom errata directly (non Redhat and cloned)
+            if (errata.getOrg() != null) {
+                errata.addChannel(channel);
+                ErrataCacheManager.insertCacheForChannelErrata(cids, errata);
+                errata.addChannelNotification(channel, new Date());
+            }
+            else {
+                Set<Channel> channelSet = new HashSet<>();
+                channelSet.add(channel);
+
+                List<Errata> clones = lookupPublishedByOriginal(user, errata);
+                if (clones.size() == 0) {
+                    log.debug("Cloning errata");
+                    Errata published = PublishErrataHelper.cloneErrataFast(errata, user.getOrg());
+                    published.setChannels(channelSet);
+                    ErrataCacheManager.insertCacheForChannelErrata(cids, published);
+                    published.addChannelNotification(channel, new Date());
                 }
                 else {
-                    List<Errata> clones = lookupPublishedByOriginal(user, errata);
-                    if (clones.size() == 0) {
-                        log.debug("Cloning errata");
-                        var publishedId = PublishErrataHelper.cloneErrataFaster(eid, user.getOrg());
-                        ErrataCacheManager.addErrataRefreshing(cids, publishedId);
-                    }
-                    else {
-                        log.debug("Re-publishing clone");
-                        Errata firstClone = clones.get(0);
-
-                        ErrataCacheManager.addErrataRefreshing(cids, firstClone.getId());
-                    }
+                    log.debug("Re-publishing clone");
+                    publish(clones.get(0), cids, user);
                 }
             }
-        });
-
+        }
         // Trigger channel repodata re-generation
         if (list.size() > 0 && requestRepodataRegen) {
             channel.setLastModified(new Date());
             ChannelFactory.save(channel);
             ChannelManager.queueChannelChange(channel.getLabel(), "java::cloneErrata", "Errata cloned");
         }
-
-        // update search index via XMLRPC
-        updateSearchIndex();
     }
 }

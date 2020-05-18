@@ -21,17 +21,13 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
-import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.log4j.Logger;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -265,18 +261,16 @@ public class ErrataCacheManager extends HibernateFactory {
     }
 
     /**
-     * Adds specified errata to a set of channels, inserting appropriate cache entries and replacing channel
-     * notifications.
+     *updates the errata caches for the channels passed in.
      * @param channelIdsToUpdate - channel IDs (Long) that need their errata
      * caches updated
-     * @param errataId ID of the errata to update the cache for. Assumes the errata is published
+     * @param errata the errata to update the cache for
      */
-    public static void addErrataRefreshing(Collection<Long> channelIdsToUpdate, Long errataId) {
+    public static void insertCacheForChannelErrata(
+            List<Long> channelIdsToUpdate, Errata errata) {
         for (Long cid : channelIdsToUpdate) {
-            ChannelFactory.addErrataToChannel(Set.of(errataId), cid);
-            List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errataId);
-            ErrataCacheManager.insertCacheForChannelPackages(cid, errataId, pids);
-            ErrataManager.replaceChannelNotifications(errataId, cid, new Date());
+            List<Long> pids = ErrataFactory.listErrataChannelPackages(cid, errata.getId());
+            ErrataCacheManager.insertCacheForChannelPackages(cid, errata.getId(), pids);
         }
     }
 

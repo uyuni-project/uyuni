@@ -1274,7 +1274,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param eids List of eids to add mappings for
      * @param cid channel id we're cloning into
      */
-    public static void addErrataToChannel(Set<Long> eids, Long cid) {
+    public static void addClonedErrataToChannel(Set<Long> eids, Long cid) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
                 "add_cloned_erratum_to_channel");
         Map<String, Object> params = new HashMap<String, Object>();
