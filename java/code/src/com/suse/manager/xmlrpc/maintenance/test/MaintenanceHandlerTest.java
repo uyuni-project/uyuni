@@ -76,16 +76,12 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
                 admin, ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
                 admin, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
-        Action sapAction3 = MaintenanceTestUtils.createActionForServerAt(
-                admin, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-30T09:15:00+02:00"); //wrong window (Core)
         Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
                 admin, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
         Action coreActionEx = MaintenanceTestUtils.createActionForServerAt(
                 admin, ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-05-21T09:15:00+02:00"); //moved
         Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
                 admin, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
-        Action coreAction3 = MaintenanceTestUtils.createActionForServerAt(
-                admin, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-27T08:15:00+02:00"); //wrong window (SAP)
 
         /* update the calendar */
         Map<String, String> details = new HashMap<>();
