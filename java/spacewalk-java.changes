@@ -1,4 +1,3 @@
-- improve Content Lifecycle Management build and promotion performance (bsc#1159226)
 - Fix saving image profile custom info values with XMLRPC (bsc#1171526)
 - New API endpoint for retrieving combined formula data for a list of systems
 - New API endpoint for retrieving network information for a list of system

@@ -14,10 +14,6 @@
  */
 package com.redhat.rhn.manager.channel;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
@@ -106,6 +102,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 
 /**
  * ChannelManager
@@ -2930,13 +2930,5 @@ public class ChannelManager extends BaseManager {
             break;
         }
         return cType;
-    }
-
-    /**
-     * Analyzes the rhnChannelPackage table, useful to update statistics after massive changes.
-     */
-    public static void analyzeChannelPackages() {
-        var m = ModeFactory.getCallableMode("Channel_queries", "analyze_channel_packages");
-        m.execute(new HashMap<>(), new HashMap<>());
     }
 }

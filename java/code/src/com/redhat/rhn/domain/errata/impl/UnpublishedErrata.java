@@ -26,7 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Errata - Class representation of the table rhnErrataTmp.
+ * Errata - Class representation of the table rhnErrata.
+ * @version $Rev: 51306 $
  */
 public class UnpublishedErrata extends AbstractErrata {
 

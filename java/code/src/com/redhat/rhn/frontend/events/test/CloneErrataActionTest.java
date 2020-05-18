@@ -84,7 +84,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
 
         // run CloneErrataAction
         Collection<Long> errataIds = new LinkedList<Long>() { { add(errata.getId()); } };
-        CloneErrataEvent event = new CloneErrataEvent(cloned, errataIds, admin);
+        CloneErrataEvent event = new CloneErrataEvent(cloned, errataIds, user);
         new CloneErrataAction().execute(event);
 
         // new errata should be in cloned channel, new repository metadata
