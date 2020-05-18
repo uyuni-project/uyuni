@@ -1,3 +1,4 @@
+- fixed bug where in scheduling a vhm refresh would result in a permission error for org admins
 - Validate CLM projects on build/promote with XMLRPC
 - Fix nullpointer exception during proxy registration (bsc#1171287)
 - improve Content Lifecycle Management build and promotion performance (bsc#1159226)
