@@ -1484,8 +1484,7 @@ public class ActionManager extends BaseManager {
      * @param serverIds server IDs
      */
     public static void scheduleForExecution(Action action, Set<Long> serverIds) {
-        MaintenanceManager.instance()
-                .checkMaintenanceWindows(serverIds, action.getEarliestAction(), action.getActionType());
+        MaintenanceManager.instance().checkMaintenanceWindows(serverIds, action);
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("status_id", ActionFactory.STATUS_QUEUED.getId());

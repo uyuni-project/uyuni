@@ -25,7 +25,6 @@ import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -98,20 +97,24 @@ public class MaintenanceManager {
     }
 
     /**
-     * Check if an action of given type can be scheduled at given date for given systems.
+     * Check if an action can be scheduled at given date for given systems.
+     *
      * If some systems have a {@link MaintenanceSchedule} and are outside of their maintenance windows,
      * throw the {@link NotInMaintenanceModeException} that bears the offending schedules.
      *
      * @param systemIds the system IDs to check
-     * @param date the schedule date of the action
-     * @param actionType the type of action
+     * @param action the action
      * @throws NotInMaintenanceModeException when some systems are outside of maintenance window
      */
-    public void checkMaintenanceWindows(Set<Long> systemIds, Date date, ActionType actionType) {
-        if (actionType.isMaintenancemodeOnly()) {
-            Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMachingDate(systemIds, date);
+    public void checkMaintenanceWindows(Set<Long> systemIds, Action action) {
+        Date scheduleDate = action.getEarliestAction();
+
+        // we only take maintenance-mode-only actions and actions that don't have prerequisite
+        // (first actions in action choins) into account
+        if (action.getActionType().isMaintenancemodeOnly() && action.getPrerequisite() == null) {
+            Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMachingDate(systemIds, scheduleDate);
             if (!offendingSchedules.isEmpty()) {
-                throw new NotInMaintenanceModeException(offendingSchedules, date);
+                throw new NotInMaintenanceModeException(offendingSchedules, scheduleDate);
             }
         }
     }
