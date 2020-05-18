@@ -1,3 +1,4 @@
+- Implement CaaSP cluster upgrade procedure in cluster provider module.
 - handle GPG check flags different for yum/dnf (bsc#1171859)
 - Enable bootstrapping for Oracle Linux 6, 7 and 8
 - Set YAML loader to fix deprecation warnings
