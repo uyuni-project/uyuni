@@ -1,3 +1,4 @@
+- fixed bug where in scheduling a vhm refresh would result in a permission error for org admins
 - Make automatic system locking for cluster node (CaaSP) user configurable
 - Speed up getAllChannels api call (bsc#1153234)
 - improve Content Lifecycle Management build and promotion performance (bsc#1159226)
