@@ -127,8 +127,8 @@ public class MaintenanceManager {
     private Set<MaintenanceSchedule> listSystemSchedulesNotMachingDate(Set<Long> systemIds, Date date) {
         return listSchedulesOfSystems(systemIds).stream()
                 .filter(schedule -> {
-                    Collection<CalendarComponent> events = getScheduleEventsAtDate(date, schedule, schedule.getCalendarOpt()
-                            .flatMap(c -> parseCalendar(c)));
+                    Collection<CalendarComponent> events = getScheduleEventsAtDate(date, schedule, schedule
+                            .getCalendarOpt().flatMap(c -> parseCalendar(c)));
                     return events.isEmpty();
                 })
                 .collect(toSet());
@@ -515,7 +515,8 @@ public class MaintenanceManager {
      */
     public boolean isActionInMaintenanceWindow(Action action, MaintenanceSchedule schedule,
             Optional<Calendar> calendarOpt) {
-        Collection<CalendarComponent> events = getScheduleEventsAtDate(action.getEarliestAction(), schedule, calendarOpt);
+        Collection<CalendarComponent> events = getScheduleEventsAtDate(action.getEarliestAction(), schedule,
+                calendarOpt);
 
         if (!events.isEmpty()) {
             if (log.isDebugEnabled()) {
@@ -683,7 +684,7 @@ public class MaintenanceManager {
      * Ensures that the Maintenance Calendar does not exists yet
      *
      * @param user the user
-     * @param name the calendar label
+     * @param label the calendar label
      * @throws EntityExistsException if a calendar with this label already exists
      */
     private void ensureCalendarNotExists(User user, String label) {
