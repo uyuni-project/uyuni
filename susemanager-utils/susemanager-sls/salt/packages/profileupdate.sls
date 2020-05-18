@@ -2,7 +2,7 @@ packages:
   module.run:
     - name: pkg.info_installed
     - kwargs: {
-          attr: 'arch,epoch,version,release,install_date_time_t',
+          attr: 'status,arch,epoch,version,release,install_date_time_t',
 {%- if grains.get('__suse_reserved_pkg_all_versions_support', False) %}
           errors: report,
           all_versions: true
