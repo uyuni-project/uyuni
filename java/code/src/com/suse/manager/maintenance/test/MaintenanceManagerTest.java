@@ -268,7 +268,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 IllegalArgumentException.class);
 
         // assign an action not tied to maintenance mode
-        Action allowedAction = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sys2, "2020-04-13T08:15:00+02:00");
+        Action allowedAction = MaintenanceTestUtils
+                .createActionForServerAt(user, ActionFactory.TYPE_VIRTUALIZATION_START, sys2, "2020-04-13T08:15:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys2.getId())));
     }
 
@@ -378,12 +379,20 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()));
         mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()));
 
-        Action sapAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
-        Action sapActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T08:15:00+02:00"); //moved
-        Action sapAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
-        Action coreAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
-        Action coreActionEx = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-05-21T09:15:00+02:00"); //moved
-        Action coreAction2 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+        Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+        Action sapActionEx = MaintenanceTestUtils.createActionForServerAt(
+        Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
+        Action sapAction3 = MaintenanceTestUtils.createActionForServerAt(
+        Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
+        Action coreActionEx = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+        Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+        Action coreAction3 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-27T08:15:00+02:00"); //wrong window (SAP)
 
         List sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
         List coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
@@ -435,26 +444,34 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         // Action Chain which start inside of the window, but has parts outside of the window
         // Expected Result: No change
-        Action sapAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T09:59:00+02:00"); //stay (MW end at 10am)
-        Action sapAction2 = createActionForServerAt(ActionFactory.TYPE_REBOOT, sapServer, "2020-04-27T10:01:00+02:00", sapAction1); //stay (MW end at 10am)
+        Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T09:59:00+02:00"); //stay (MW end at 10am)
+        Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_REBOOT, sapServer, "2020-04-27T10:01:00+02:00", sapAction1); //stay (MW end at 10am)
 
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: Cancel all Actions
-        Action sapAction3 = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T09:59:00+02:00"); //moved
-        Action sapAction4 = createActionForServerAt(ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00", sapAction3); //moved
+        Action sapAction3 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_VIRTUALIZATION_START, sapServer, "2020-04-13T09:59:00+02:00"); //moved
+        Action sapAction4 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00", sapAction3); //moved
 
         List<Action> sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
         assertEquals(4, sapActionsBefore.size());
 
         // Action Chain which is inside of a Window but the window gets moved.
         // Expected Result: Cancel all Actions
-        Action coreAction1 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
-        Action coreAction2 = createActionForServerAt(ActionFactory.TYPE_REBOOT, coreServer, "2020-05-21T09:16:00+02:00", coreAction1); //moved
+        Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+        Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_REBOOT, coreServer, "2020-05-21T09:16:00+02:00", coreAction1); //moved
 
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: No change
-        Action coreAction3 = createActionForServerAt(ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-04-30T11:59:30+02:00"); //stay
-        Action coreAction4 = createActionForServerAt(ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T13:01:00+02:00", coreAction3); //stay
+        Action coreAction3 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_VIRTUALIZATION_START, coreServer, "2020-04-30T11:59:30+02:00"); //stay
+        Action coreAction4 = MaintenanceTestUtils.createActionForServerAt(
+                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T13:01:00+02:00", coreAction3); //stay
 
         List<Action> coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
         assertEquals(4, coreActionsBefore.size());
@@ -481,41 +498,6 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertEquals(2, coreActionsAfter.size()); // First chain should be canceled, second stay
     }
 
-    /**
-     * Create an Errata Action for the given server at a specific point in time
-     *
-     * @param type action type
-     * @param server the server
-     * @param datetime time template for earliest action. Example: "2020-04-21T09:00:00+01:00"
-     * @param prerequisite dependend action
-     * @return the Action
-     * @throws Exception
-     */
-    private Action createActionForServerAt(ActionType type, Server server, String datetime,
-            Action prerequisite) throws Exception {
-        Action action = ActionFactoryTest.createAction(user, type);
-        action.setPrerequisite(prerequisite);
-        ZonedDateTime start = ZonedDateTime.parse(datetime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        action.setEarliestAction(Date.from(start.toInstant()));
-
-        ServerAction serverAction = ServerActionTest.createServerAction(server, action);
-        serverAction.setStatus(ActionFactory.STATUS_QUEUED);
-
-        action.addServerAction(serverAction);
-        ActionManager.storeAction(action);
-        return ActionFactory.lookupById(action.getId());
-    }
-
-    /**
-     * Create an Errata Action for the given server at a specific point in time
-     *
-     * @param server the server
-     * @param datetime time template for earliest action. Example: "2020-04-21T09:00:00+01:00"
-     * @return the Action
-     * @throws Exception
-     */
-    private Action createActionForServerAt(ActionType type, Server server, String datetime) throws Exception {
-        return createActionForServerAt(type, server, datetime, null);
     }
 
     public void testListSystemsSchedules() throws Exception {
@@ -533,8 +515,6 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 Set.of(schedule),
                 mm.listSchedulesOfSystems(Set.of(withSchedule.getId(), withoutSchedule.getId()))
         );
-    }
-
     private void assertExceptionThrown(Runnable body, Class exceptionClass) {
         try {
             body.run();
