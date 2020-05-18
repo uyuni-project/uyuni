@@ -114,6 +114,7 @@ def list_nodes(skuba_cluster_path,
         for node in kubeapi_response.items:
             if node.metadata.name in ret.keys():
                 ret[node.metadata.name]['machine-id'] = node.status.node_info.machine_id
+                ret[node.metadata.name]['internal-ips'] = list(map(lambda x: x.address, filter(lambda x: x.type == "InternalIP", node.status.addresses)))
             else:
                 error_msg = "Node returned from Kubernetes API not known to skuba: {}".format(node.metadata.name)
                 log.error(error_msg)
