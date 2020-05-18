@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.channels.OverlappingFileLockException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,7 +34,6 @@ import org.hibernate.HibernateException;
 import redstone.xmlrpc.XmlRpcFault;
 import redstone.xmlrpc.XmlRpcInvocationHandler;
 
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.ClientCertificateDigester;
 import com.redhat.rhn.common.client.InvalidCertificateException;
@@ -54,8 +52,6 @@ import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.manager.system.SystemManager;
-
-import com.suse.manager.maintenance.NotInMaintenanceModeException;
 
 /**
  * A basic xmlrpc handler class.  Uses reflection + an arbitrary algorithm
@@ -150,9 +146,9 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             throw new XmlRpcFault(-1, "unhandled internal exception");
         }
         catch (InvocationTargetException e) {
-            Throwable t = e.getCause();
+            Throwable cause = e.getCause();
             log.error("Error calling method: ", e);
-            log.error("Caused by: ", t);
+            log.error("Caused by: ", cause);
 
             /*
              * HACK: this should really be handled by SessionFilter.doFilter,
@@ -169,29 +165,8 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 log.error("Additional error during rollback", he);
             }
 
-            // This works because FaultException extends XmlRpcFault, so
-            // we are telling the XMLRPC library to send a fault to the client.
-            if (t instanceof FaultException) {
-                FaultException fe = (FaultException)t;
-                throw new XmlRpcFault(fe.getErrorCode(), fe.getMessage());
-            }
-            else if (t instanceof OverlappingFileLockException) {
-                throw new XmlRpcFault(-1, "Operation already running. Please try later again.");
-            }
-            else if (t instanceof NotInMaintenanceModeException) {
-                throw new XmlRpcFault(11334, t.getMessage());
-            }
-
-            // If it isn't a FaultException that caused this, we still need to
-            // send something to the client.
-            Throwable cause = e.getCause();
-            // If we can get the cause of the exception, then display the message
-            if (cause != null) {
-                throw new XmlRpcFault(-1, "unhandled internal exception: " +
-                      cause.getLocalizedMessage());
-            }
-            // Otherwise, throw the generic unhandled internal exception
-            throw new XmlRpcFault(-1, "unhandled internal exception");
+            // handle the exception based on the cause
+            throw ExceptionTranslator.translateException(cause);
         }
         finally {
             if (session != null) {
