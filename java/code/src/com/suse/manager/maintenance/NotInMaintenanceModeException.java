@@ -15,8 +15,6 @@
 
 package com.suse.manager.maintenance;
 
-import com.redhat.rhn.FaultException;
-
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
 import java.util.Date;
@@ -31,7 +29,7 @@ import java.util.stream.Collectors;
  *
  * This exception also serves as a XMLRPC Fault
  */
-public class NotInMaintenanceModeException extends FaultException {
+public class NotInMaintenanceModeException extends RuntimeException {
 
     /**
      * Standard constructor
@@ -40,10 +38,8 @@ public class NotInMaintenanceModeException extends FaultException {
      * @param date the scheduling date
      */
     public NotInMaintenanceModeException(Set<MaintenanceSchedule> schedules, Date date) {
-        super(11334,
-                "notInMaintenance",
-                String.format("Systems assigned to these schedules (%s) do not have a maintenance window at %s" ,
-                        scheduleNames(schedules), date));
+        super(String.format("Systems assigned to these schedules (%s) do not have a maintenance window at %s" ,
+                scheduleNames(schedules), date));
     }
 
     private static String scheduleNames(Set<MaintenanceSchedule> schedulesIn) {
