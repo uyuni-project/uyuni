@@ -16,6 +16,8 @@ package com.suse.manager.maintenance;
 
 import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
@@ -48,6 +50,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,6 +95,70 @@ public class MaintenanceManager {
         }
         return instance;
     }
+
+    /**
+     * Check if an action can be scheduled at given date for given systems.
+     *
+     * If some systems have a {@link MaintenanceSchedule} and are outside of their maintenance windows,
+     * throw the {@link NotInMaintenanceModeException} that bears the offending schedules.
+     *
+     * @param systemIds the system IDs to check
+     * @param action the action
+     * @throws NotInMaintenanceModeException when some systems are outside of maintenance window
+     */
+    public void checkMaintenanceWindows(Set<Long> systemIds, Action action) {
+        Date scheduleDate = action.getEarliestAction();
+
+        // we only take maintenance-mode-only actions and actions that don't have prerequisite
+        // (first actions in action choins) into account
+        if (action.getActionType().isMaintenancemodeOnly() && action.getPrerequisite() == null) {
+            Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMachingDate(systemIds, scheduleDate);
+            if (!offendingSchedules.isEmpty()) {
+                throw new NotInMaintenanceModeException(offendingSchedules, scheduleDate);
+            }
+        }
+    }
+
+    /**
+     * List {@link MaintenanceSchedule}s which are assigned to given systems and which do NOT match given date
+     * (no maintenance windows in given date).
+     *
+     * @param systemIds the system IDs to check
+     * @param date the schedule date of the action
+     * @return set of {@link MaintenanceSchedule}s
+     */
+    private Set<MaintenanceSchedule> listSystemSchedulesNotMachingDate(Set<Long> systemIds, Date date) {
+        return listSchedulesOfSystems(systemIds).stream()
+                .filter(schedule -> {
+                    Collection<CalendarComponent> events = getScheduleEventsAtDate(date, schedule, schedule
+                            .getCalendarOpt().flatMap(c -> parseCalendar(c)));
+                    return events.isEmpty();
+                })
+                .collect(toSet());
+    }
+
+    /**
+     * List {@link MaintenanceSchedule}s assigned to given systems.
+     *
+     * @param systemIds the IDs of systems
+     * @return the {@link MaintenanceSchedule}s assigned to given systems
+     */
+    public Set<MaintenanceSchedule> listSchedulesOfSystems(Set<Long> systemIds) {
+        if (systemIds.isEmpty()) {
+            return emptySet();
+        }
+
+        return (Set<MaintenanceSchedule>) HibernateFactory.getSession()
+                .createQuery(
+                        "SELECT s.maintenanceSchedule " +
+                                "FROM Server s " +
+                                "WHERE s.maintenanceSchedule IS NOT NULL " +
+                                "AND s.id IN (:systemIds)")
+                .setParameter("systemIds", systemIds)
+                .stream()
+                .collect(toSet());
+    }
+
 
     /**
      * Save a MaintenanceSchedule
@@ -377,20 +444,7 @@ public class MaintenanceManager {
         }
         List<Server> servers = ServerFactory.lookupByIdsAndOrg(withMaintenanceActions, user.getOrg());
 
-        Optional<Calendar> calendarOpt = Opt.fold(schedule.getCalendarOpt(),
-                () -> Optional.empty(),
-                c -> {
-                    StringReader sin = new StringReader(c.getIcal());
-                    CalendarBuilder builder = new CalendarBuilder();
-                    Calendar calendar = null;
-                    try {
-                        calendar = builder.build(sin);
-                    }
-                    catch (IOException | ParserException e) {
-                        log.error("Unable to build the calendar: " + c.getLabel(), e);
-                    }
-                    return Optional.ofNullable(calendar);
-                });
+        Optional<Calendar> calendarOpt = schedule.getCalendarOpt().flatMap(c -> parseCalendar(c));
 
         List<ActionStatus> pending = new LinkedList<>();
         pending.add(ActionFactory.STATUS_PICKED_UP);
@@ -441,6 +495,19 @@ public class MaintenanceManager {
         return new RescheduleResult(schedule.getName(), false);
     }
 
+    private Optional<Calendar> parseCalendar(MaintenanceCalendar calendarIn) {
+        StringReader sin = new StringReader(calendarIn.getIcal());
+        CalendarBuilder builder = new CalendarBuilder();
+        Calendar calendar = null;
+        try {
+            calendar = builder.build(sin);
+        }
+        catch (IOException | ParserException e) {
+            log.error("Unable to build the calendar: " + calendarIn.getLabel(), e);
+        }
+        return Optional.ofNullable(calendar);
+    }
+
     /**
      * Check if provided action is inside of a maintenance window
      *
@@ -451,26 +518,9 @@ public class MaintenanceManager {
      */
     public boolean isActionInMaintenanceWindow(Action action, MaintenanceSchedule schedule,
             Optional<Calendar> calendarOpt) {
-        if (!calendarOpt.isPresent()) {
-            return false;
-        }
+        Collection<CalendarComponent> events = getScheduleEventsAtDate(action.getEarliestAction(), schedule,
+                calendarOpt);
 
-        Period p = new Period(new DateTime(action.getEarliestAction()), java.time.Duration.ofSeconds(1));
-        ArrayList<Predicate<Component>> rules = new ArrayList<Predicate<Component>>();
-        rules.add(new PeriodRule<Component>(p));
-
-        if (schedule.getScheduleType().equals(ScheduleType.MULTI)) {
-            Summary summary = new Summary(schedule.getName());
-            HasPropertyRule<Component> propertyRule = new HasPropertyRule<Component>(summary);
-            rules.add(propertyRule);
-        }
-        @SuppressWarnings("unchecked")
-        Predicate<CalendarComponent>[] comArr = new Predicate[rules.size()];
-        comArr = rules.toArray(comArr);
-
-        Filter<CalendarComponent> filter = new Filter<CalendarComponent>(comArr, Filter.MATCH_ALL);
-
-        Collection<CalendarComponent> events = filter.filter(calendarOpt.get().getComponents(Component.VEVENT));
         if (!events.isEmpty()) {
             if (log.isDebugEnabled()) {
                 events.stream().forEach(cc -> log.debug(
@@ -481,6 +531,30 @@ public class MaintenanceManager {
         }
         log.debug(String.format("Action '%s' outside of maintenance window '%s'", action, schedule.getName()));
         return false;
+    }
+
+    private Collection<CalendarComponent> getScheduleEventsAtDate(
+            Date date, MaintenanceSchedule schedule, Optional<Calendar> calendarOpt) {
+        if (calendarOpt.isEmpty()) {
+            return emptySet();
+        }
+
+        Period p = new Period(new DateTime(date), java.time.Duration.ofSeconds(1));
+        ArrayList<Predicate<Component>> rules = new ArrayList<>();
+        rules.add(new PeriodRule<>(p));
+
+        if (schedule.getScheduleType().equals(ScheduleType.MULTI)) {
+            Summary summary = new Summary(schedule.getName());
+            HasPropertyRule<Component> propertyRule = new HasPropertyRule<>(summary);
+            rules.add(propertyRule);
+        }
+        @SuppressWarnings("unchecked")
+        Predicate<CalendarComponent>[] comArr = new Predicate[rules.size()];
+        comArr = rules.toArray(comArr);
+
+        Filter<CalendarComponent> filter = new Filter<>(comArr, Filter.MATCH_ALL);
+
+        return filter.filter(calendarOpt.get().getComponents(Component.VEVENT));
     }
 
     /**
@@ -575,7 +649,7 @@ public class MaintenanceManager {
      * Ensures that given user has access to given {@link MaintenanceCalendar}
      *
      * @param user the user
-     * @param schedule the {@link MaintenanceCalendar}
+     * @param calendar the {@link MaintenanceCalendar}
      * @throws PermissionException if the user does not have access
      */
     private void ensureCalendarAccessible(User user, MaintenanceCalendar calendar) {
@@ -613,7 +687,7 @@ public class MaintenanceManager {
      * Ensures that the Maintenance Calendar does not exists yet
      *
      * @param user the user
-     * @param name the calendar label
+     * @param label the calendar label
      * @throws EntityExistsException if a calendar with this label already exists
      */
     private void ensureCalendarNotExists(User user, String label) {

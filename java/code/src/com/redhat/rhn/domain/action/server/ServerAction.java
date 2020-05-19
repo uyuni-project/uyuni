@@ -20,11 +20,14 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.server.Server;
 
+import com.suse.manager.maintenance.MaintenanceManager;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Class representation of the table rhnServerAction.
@@ -149,11 +152,33 @@ public class ServerAction extends ActionChild implements Serializable {
 
     /**
      * Sets the Server associated with this ServerAction record
+     * Checks if the Action scheduled date fits in Maintenance windows, if system has any Maintenance schedule assigned.
+     *
      * @param serverIn The server to set.
      */
     public void setServer(Server serverIn) {
+        Action parentAction = getParentAction();
+        if (parentAction != null) {
+            MaintenanceManager.instance().checkMaintenanceWindows(Set.of(serverIn.getId()), parentAction);
+        }
         this.server = serverIn;
         this.setServerId(serverIn.getId());
+    }
+
+    /**
+     *
+     * Sets the parent Action associated with this ServerAction record.
+     * Checks if the Action scheduled date fits in Maintenance windows, if system has any Maintenance schedule assigned.
+     *
+     * @param parentActionIn The parentAction to set.
+     */
+    @Override
+    public void setParentAction(Action parentActionIn) {
+        if (server != null) {
+            MaintenanceManager.instance().checkMaintenanceWindows(Set.of(server.getId()), parentActionIn);
+        }
+
+        super.setParentAction(parentActionIn);
     }
 
     /**
