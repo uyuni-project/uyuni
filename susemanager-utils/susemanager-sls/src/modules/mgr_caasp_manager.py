@@ -234,8 +234,7 @@ def upgrade_cluster(skuba_cluster_path,
                                      timeout=timeout,
                                      **kwargs)
 
-    # Perform the cluster upgrade.
-    # In all nodes:
+    # Perform the cluster upgrade procedure.
     # 1. Upgrade addons
     # 2. Upgrade all nodes
     # 3. Upgrade addons
@@ -248,10 +247,10 @@ def upgrade_cluster(skuba_cluster_path,
     }
 
     ret['stage0_upgrade_addons'] = upgrade_addons(skuba_cluster_path=skuba_cluster_path,
-                                          verbosity=verbosity,
-                                          timeout=timeout,
-                                          plan=plan,
-                                          **kwargs)
+                                                  verbosity=verbosity,
+                                                  timeout=timeout,
+                                                  plan=plan,
+                                                  **kwargs)
 
     if not ret['stage0_upgrade_addons']['success']:
         ret['success'] = False
@@ -267,20 +266,20 @@ def upgrade_cluster(skuba_cluster_path,
             continue
 
         ret['stage1_upgrade_nodes'][node] = upgrade_node(skuba_cluster_path=skuba_cluster_path,
-                                                 target=nodes[node]['internal-ips'][0],
-                                                 verbosity=verbosity,
-                                                 timeout=timeout,
-                                                 plan=plan,
-                                                 **kwargs)
+                                                         target=nodes[node]['internal-ips'][0],
+                                                         verbosity=verbosity,
+                                                         timeout=timeout,
+                                                         plan=plan,
+                                                         **kwargs)
 
         if not ret['stage1_upgrade_nodes'][node]['success']:
             ret['success'] = False
 
     ret['stage2_upgrade_addons'] = upgrade_addons(skuba_cluster_path=skuba_cluster_path,
-                                          verbosity=verbosity,
-                                          timeout=timeout,
-                                          plan=plan,
-                                          **kwargs)
+                                                  verbosity=verbosity,
+                                                  timeout=timeout,
+                                                  plan=plan,
+                                                  **kwargs)
 
     if not ret['stage2_upgrade_addons']['success']:
         ret['success'] = False
