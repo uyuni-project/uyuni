@@ -26,6 +26,7 @@ except ImportError:
     from io import StringIO
 
 # rhn imports:
+from rhn.i18n import sstr
 from spacewalk.common.usix import raise_with_tb
 from spacewalk.common import rhnLib
 from spacewalk.common.rhnConfig import CFG
@@ -98,7 +99,7 @@ def _prepLogMsg(msg, cleanYN=0, notimeYN=0, shortYN=0):
                 msg = '%s %s' % (' ' * len(_timeString1()), msg)
             else:
                 msg = '%s %s' % (_timeString1(), msg)
-    return msg
+    return sstr(msg)
 
 
 def log2disk(level, msg, cleanYN=0, notimeYN=0):
