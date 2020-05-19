@@ -121,7 +121,8 @@ class MaintenanceSchedules extends React.Component {
     }
 
     deleteSchedule(item) {
-        return Network.del("/rhn/manager/api/maintenance/" + item.scheduleId + "/delete")
+        /* TODO: schedule name in url fine? Or id better? */
+        return Network.del("/rhn/manager/api/maintenance/" + item.scheduleName + "/delete")
             .promise.then((_) => {
                 this.setState({
                     messages: MessagesUtils.info("Schedule \'" + item.scheduleName + "\' has been deleted.")

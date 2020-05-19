@@ -71,6 +71,7 @@ public class MaintenanceController {
         get("/manager/api/maintenance", withUser(MaintenanceController::list));
         get("/manager/api/maintenance/calendar", withUser(MaintenanceController::getCalendarNames));
         post("/manager/api/maintenance/save", withUser(MaintenanceController::save));
+        Spark.delete("/manager/api/maintenance/:name/delete", withUser(MaintenanceController::delete));
     }
 
     /**
@@ -174,7 +175,15 @@ public class MaintenanceController {
     }
 
     public static String delete(Request request, Response response, User user) {
-        return  "";
+        String name = request.params("name");
+        Optional<MaintenanceSchedule> schedule = mm.lookupMaintenanceScheduleByUserAndName(user, name);
+        if (schedule.isPresent()) {
+            mm.remove(user, schedule.get());
+        }
+        else {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST);
+        }
+        return  json(response, ResultJson.success());
     }
 
     private static List<MaintenanceScheduleJson> schedulesToJson(List<MaintenanceSchedule> schedules) {
