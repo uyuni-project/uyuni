@@ -63,23 +63,9 @@ class MaintenanceSchedulesList extends React.Component {
                                 <Column
                                     columnClass="text-center"
                                     headerClass="text-center"
-                                    columnKey="column2"
+                                    columnKey="calendarName"
                                     header={t('Calendar')}
                                     cell={(row) => row.calendarName}
-                                />
-                                <Column
-                                    columnClass="text-center"
-                                    headerClass="text-center"
-                                    columnKey="column3"
-                                    header={t('Column3')}
-                                    cell={(row) => row.column3}
-                                />
-                                <Column
-                                    columnClass="text-center"
-                                    headerClass="text-center"
-                                    columnKey="column4"
-                                    header={t('Column4')}
-                                    cell={(row) => row.column4}
                                 />
                                 <Column
                                     columnClass="text-right"
