@@ -6,6 +6,7 @@ const {Button} = require("components/buttons");
 const {ModalButton} = require("components/dialog/ModalButton");
 const {DeleteDialog} = require("components/dialog/DeleteDialog");
 const { TopPanel } = require('components/panels/TopPanel');
+const {Messages} = require("components/messages");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
 class MaintenanceSchedulesDetails extends React.Component {
@@ -26,20 +27,16 @@ class MaintenanceSchedulesDetails extends React.Component {
                     <table className="table">
                         <tbody>
                         <tr>
-                            <td>{t("Detail 1")}</td>
-                            <td>{t(data.detail1)}</td>
+                            <td>{t("Schedule Name")}</td>
+                            <td>{t(data.scheduleName)}</td>
                         </tr>
                         <tr>
-                            <td>{t("Detail2")}:</td>
-                            <td>{t(data.detail2)}</td>
+                            <td>{t("Assigned Calendar")}:</td>
+                            <td>{t(data.calendarName)}</td>
                         </tr>
                         <tr>
-                            <td>{t("Detail3")}:</td>
-                            <td>{t(data.detail3)}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("Detail4")}:</td>
-                            <td>{data.detail4}</td>
+                            <td>{t("Url")}:</td>
+                            <td>{t(data.scheduleUrl)}</td>
                         </tr>
                         </tbody>
                     </table>
