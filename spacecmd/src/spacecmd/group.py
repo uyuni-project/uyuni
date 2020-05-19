@@ -65,7 +65,7 @@ def do_group_addsystems(self, args):
 
     if not args:
         self.help_group_addsystems()
-        return
+        return 1
 
     group_name = args.pop(0)
 
@@ -85,6 +85,9 @@ def do_group_addsystems(self, args):
     if system_ids:
         self.client.systemgroup.addOrRemoveSystems(self.session, group_name,
                                                    system_ids, True)
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -114,7 +117,7 @@ def do_group_removesystems(self, args):
 
     if not args:
         self.help_group_removesystems()
-        return
+        return 1
 
     group_name = args.pop(0)
 
@@ -143,8 +146,10 @@ def do_group_removesystems(self, args):
                                                    group_name,
                                                    system_ids,
                                                    False)
+        return 0
     else:
         print("No systems found")
+        return 1
 
 ####################
 
@@ -171,6 +176,8 @@ def do_group_create(self, args):
 
     self.client.systemgroup.create(self.session, name, description)
 
+    return 0
+
 ####################
 
 
@@ -190,16 +197,18 @@ def do_group_delete(self, args):
 
     if not args:
         self.help_group_delete()
-        return
+        return 1
 
     groups = args
 
     self.do_group_details('', True)
     if not self.user_confirm('Delete these groups [y/N]:'):
-        return
+        return 1
 
     for group in groups:
         self.client.systemgroup.delete(self.session, group)
+
+    return 0
 
 ####################
 
@@ -227,7 +236,7 @@ def do_group_backup(self, args):
 
     if not args:
         self.help_group_backup()
-        return
+        return 1
 
     groups = args
     if len(args) and args[0] == 'ALL':
@@ -248,7 +257,7 @@ def do_group_backup(self, args):
             os.makedirs(outputpath_base)
     except OSError:
         logging.error('Could not create output directory: %s', outputpath_base)
-        return
+        return 1
 
     for group in groups:
         print("Backup Group: %s" % group)
@@ -258,6 +267,8 @@ def do_group_backup(self, args):
         fh = open(outputpath, 'w')
         fh.write(details['description'])
         fh.close()
+
+    return 0
 
 ####################
 
@@ -295,7 +306,7 @@ def do_group_restore(self, args):
         groups = args[1:] or ["ALL"]
     else:
         self.help_group_restore()
-        return
+        return 1
 
     inputdir = os.path.abspath(inputdir)
     logging.debug("Input Directory: %s" % (inputdir))
@@ -309,11 +320,11 @@ def do_group_restore(self, args):
                 files[d_item] = inputdir + "/" + d_item
     else:
         logging.error("Restore dir %s does not exits or is not a directory" % inputdir)
-        return
+        return 1
 
     if not files:
         logging.error("Restore dir %s has no restore items" % inputdir)
-        return
+        return 1
 
     missing_groups = 0
     if groups and next(iter(groups)) != 'ALL':
@@ -323,7 +334,7 @@ def do_group_restore(self, args):
                 missing_groups += 1
     if missing_groups:
         logging.error("Found %s missing groups, terminating", missing_groups)
-        return
+        return 1
 
     for groupname in self.do_group_list('', True):
         details = self.client.systemgroup.getDetails(self.session, groupname)
@@ -357,6 +368,8 @@ def do_group_restore(self, args):
         else:
             logging.info("Creating new group %s" % groupname)
             self.client.systemgroup.create(self.session, groupname, details)
+
+    return 0
 
 ####################
 
@@ -395,7 +408,7 @@ def do_group_listsystems(self, args, doreturn=False):
 
     if len(args) != 1:
         self.help_group_listsystems()
-        return
+        return 1
 
     group = args[0]
 
@@ -411,6 +424,9 @@ def do_group_listsystems(self, args, doreturn=False):
     else:
         if systems:
             print('\n'.join(sorted(systems)))
+            return 0
+        else:
+            return 1
 
 ####################
 
@@ -431,7 +447,7 @@ def do_group_details(self, args, short=False):
 
     if not args:
         self.help_group_details()
-        return
+        return 1
 
     add_separator = False
 
@@ -441,7 +457,7 @@ def do_group_details(self, args, short=False):
             systems = [stm.get('profile_name') for stm in self.client.systemgroup.listSystems(self.session, group)]
         except xmlrpclib.Fault:
             logging.warning('The group "%s" is invalid' % group)
-            return
+            return 1
 
         if add_separator:
             print(self.SEPARATOR)
@@ -457,3 +473,5 @@ def do_group_details(self, args, short=False):
             print('Members')
             print('-------')
             print('\n'.join(sorted(systems)))
+
+    return 0
