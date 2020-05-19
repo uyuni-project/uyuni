@@ -1453,6 +1453,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception
      */
     public void testSetMaintenanceWindowToSystems() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
         MaintenanceSchedule schedule = MaintenanceManager.instance().createMaintenanceSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 

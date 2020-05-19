@@ -62,11 +62,14 @@ public class ServerActionTest extends RhnBaseTestCase {
         assertTrue(sa.equals(sa2));
 
         Server one = ServerFactory.createServer();
+        one.setId(10001L);
         sa.setServer(one);
         assertFalse(sa.equals(sa2));
         assertFalse(sa2.equals(sa));
 
-        sa2.setServer(ServerFactory.createServer());
+        Server two = ServerFactory.createServer();
+        two.setId(10001L); // same ID
+        sa2.setServer(two);
         assertTrue(sa.equals(sa2));
 
         one.setName("foo");
@@ -77,6 +80,7 @@ public class ServerActionTest extends RhnBaseTestCase {
 
         Action parent = new Action();
         parent.setId(243L);
+        parent.setActionType(ActionFactory.TYPE_APPLY_STATES);
         sa.setParentAction(parent);
         assertFalse(sa.equals(sa2));
 
