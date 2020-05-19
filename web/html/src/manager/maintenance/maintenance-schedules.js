@@ -66,6 +66,17 @@ class MaintenanceSchedules extends React.Component {
             }).catch(this.handleResponseError);
     };
 
+    getCalendarNames = () => {
+      const endpoint = "/rhn/manager/api/maintenance/calendar";
+      return Network.get(endpoint, "application/json").promise
+          .then(calendarNames => {
+              this.setState({
+                  /* TODO: Is there a prettier way to turn Array into ComboboxItem? */
+                  calendarNames: Array.from(Array(calendarNames.length).keys()).map(id => ({id: Number(id), text: calendarNames[id]}))
+              });
+          }).catch(this.handleResponseError);
+    };
+
     getScheduleDetails(row, action) {
         this.setState({selected: row, action: action});
     }
@@ -77,6 +88,7 @@ class MaintenanceSchedules extends React.Component {
 
     handleEditAction(row) {
         this.getScheduleDetails(row, "edit");
+        this.getCalendarNames();
         history.pushState(null, null, "#/edit/" + row.scheduleId);
     }
 
@@ -117,10 +129,10 @@ class MaintenanceSchedules extends React.Component {
                 this.handleForwardAction();
             })
             .catch(data => {
-                const taskoErrorMsg = MessagesUtils.error(
+                const errorMsg = MessagesUtils.error(
                     t("Error when deleting the schedule"));
-                let messages = (data && data.status === 503)
-                    ? taskoErrorMsg
+                let messages = (data && data.status === 400)
+                    ? errorMsg
                     : Network.responseErrorMessage(jqXHR);
                 this.setState({
                     messages: messages
@@ -135,6 +147,9 @@ class MaintenanceSchedules extends React.Component {
                 history.pushState(null, null, loc.pathname + loc.search);
             });
         } else {
+            if (action === "create") {
+                this.getCalendarNames();
+            }
             this.setState({
                 action: action
             });
@@ -167,7 +182,8 @@ class MaintenanceSchedules extends React.Component {
                     />
                     : (this.state.action === 'edit' && this.state.selected) ||
                     this.state.action === 'create' ?
-                        <MaintenanceSchedulesEdit schedule={this.state.selected}
+                        <MaintenanceSchedulesEdit calendarNames={this.state.calendarNames}
+                                                  schedule={this.state.selected}
                                                   onEdit={this.updateSchedule}
                                                   onActionChanged={this.handleForwardAction}
                         />
