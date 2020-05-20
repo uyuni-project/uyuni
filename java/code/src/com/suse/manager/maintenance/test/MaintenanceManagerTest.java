@@ -420,6 +420,12 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, coreActionsAfter.stream().filter(a -> a.equals(coreAction1)).count());
         assertEquals(1, coreActionsAfter.stream().filter(a -> a.equals(coreActionEx)).count()); //Action not tied to maintenance mode
 
+        /* remove the calendar */
+        mcal = mm.lookupCalendarByUserAndLabel(user, "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
+        List<RescheduleResult> results = mm.remove(user, mcal, false);
+        assertEquals(1, results.size());
+        assertFalse(results.get(0).isSuccess());
+        assertEquals("SAP Maintenance Window", results.get(0).getScheduleName());
     }
 
     public void testScheduleChangeMultiWithActionChain() throws Exception {
@@ -506,6 +512,32 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 assertEquals("Cancel", r.getStrategy());
                 assertContains(r.getActionsServers().get(coreAction1), coreServer);
                 // depending actions from a chain are not part of the result
+            }
+        }
+
+        /* remove the calendar */
+        mcal = mm.lookupCalendarByUserAndLabel(user, "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
+        List<RescheduleResult> results = mm.remove(user, mcal, true);
+        assertEquals(2, results.size());
+        for (RescheduleResult r : results) {
+            assertTrue(r.isSuccess());
+            if (r.getScheduleName().equals("SAP Maintenance Window")) {
+                r.getActionsServers().keySet().forEach(a -> {
+                    assertEquals(ActionFactory.TYPE_ERRATA, a.getActionType());
+                    assertEquals(sapAction1, a);
+                    r.getActionsServers().get(a).forEach(s -> {
+                        assertEquals(sapServer.getId(), s.getId());
+                    });
+                });
+            }
+            else if (r.getScheduleName().equals("Core Server Window")) {
+                r.getActionsServers().keySet().forEach(a -> {
+                    assertEquals(ActionFactory.TYPE_VIRTUALIZATION_START, a.getActionType());
+                    assertEquals(coreAction3, a);
+                    r.getActionsServers().get(a).forEach(s -> {
+                        assertEquals(coreServer.getId(), s.getId());
+                    });
+                });
             }
         }
     }
