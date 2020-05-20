@@ -156,11 +156,15 @@ public class ServerAction extends ActionChild implements Serializable {
      *
      * @param serverIn The server to set.
      */
-    public void setServer(Server serverIn) {
+    public void setServerWithCheck(Server serverIn) {
         Action parentAction = getParentAction();
         if (parentAction != null) {
             MaintenanceManager.instance().checkMaintenanceWindows(Set.of(serverIn.getId()), parentAction);
         }
+        setServer(serverIn);
+    }
+
+    private void setServer(Server serverIn) {
         this.server = serverIn;
         this.setServerId(serverIn.getId());
     }
@@ -172,12 +176,22 @@ public class ServerAction extends ActionChild implements Serializable {
      *
      * @param parentActionIn The parentAction to set.
      */
-    @Override
-    public void setParentAction(Action parentActionIn) {
+    public void setParentActionWithCheck(Action parentActionIn) {
         if (server != null) {
             MaintenanceManager.instance().checkMaintenanceWindows(Set.of(server.getId()), parentActionIn);
         }
 
+        setParentAction(parentActionIn);
+    }
+
+    /**
+    *
+    * Sets the parent Action associated with this ServerAction record.
+    *
+    * @param parentActionIn The parentAction to set.
+    */
+    @Override
+    public void setParentAction(Action parentActionIn) {
         super.setParentAction(parentActionIn);
     }
 
