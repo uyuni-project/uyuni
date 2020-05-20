@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 20 11:06:24 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.7-1
 - Fix failing "Hardware Refresh" actions because wrong "instance_id" reported
   from minion due a captive portal on the network (bsc#1171491)
 - Remove suseRegisterInfo package only if it's plain client (bsc#1171262)
