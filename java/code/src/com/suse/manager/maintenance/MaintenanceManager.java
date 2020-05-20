@@ -345,6 +345,7 @@ public class MaintenanceManager {
      * @param label the label for the calendar
      * @param url URL pointing to the Calendar Data
      * @return the created Maintenance Calendar
+     * @throws DownloadException when fetching data from url failed
      */
     public MaintenanceCalendar createMaintenanceCalendarWithUrl(User user, String label, String url)
             throws DownloadException {
@@ -366,9 +367,10 @@ public class MaintenanceManager {
      * @param details the details which should be updated (ical, url)
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return true when the update was successfull, otherwise false
+     * @throws DownloadException when fetching data from url failed
      */
     public List<RescheduleResult> updateCalendar(User user, String label, Map<String, String> details,
-            List<RescheduleStrategy> rescheduleStrategy) {
+            List<RescheduleStrategy> rescheduleStrategy) throws DownloadException {
         ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
                 .orElseThrow(() -> new EntityNotExistsException(label));
@@ -399,9 +401,10 @@ public class MaintenanceManager {
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return true when refresh was successful, otherwise false
      * @throws EntityNotExistsException when calendar or url does not exist
+     * @throws DownloadException when fetching data from url failed
      */
     public List<RescheduleResult> refreshCalendar(User user, String label,
-            List<RescheduleStrategy> rescheduleStrategy) {
+            List<RescheduleStrategy> rescheduleStrategy) throws EntityNotExistsException, DownloadException {
         ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
                 .orElseThrow(() -> new EntityNotExistsException(label));
