@@ -52,8 +52,6 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
-import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,6 +61,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.apache.log4j.Logger;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptySet;
