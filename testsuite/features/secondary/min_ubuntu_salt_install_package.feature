@@ -1,10 +1,10 @@
 # Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Install and upgrade package on the Ubuntu minion via Salt through the UI
+Feature: Install and upgrade package on the Ubuntu SSH minion via Salt through the UI
 
 @ubuntu_minion
-  Scenario: Pre-requisite: install virgo-dummy-1.0 package on Ubuntu minion
+  Scenario: Pre-requisite: install virgo-dummy-1.0 package on Ubuntu SSH minion
     When I enable repository "test_repo_deb_pool" on this "ubuntu_ssh_minion"
     And I run "apt update" on "ubuntu_ssh_minion" with logging
     And I remove package "andromeda-dummy" from this "ubuntu_ssh_minion"
@@ -18,7 +18,7 @@ Feature: Install and upgrade package on the Ubuntu minion via Salt through the U
     And I wait until package "andromeda-dummy" is removed from "ubuntu_ssh_minion" via spacecmd
 
 @ubuntu_minion
-  Scenario: Install a package on the minion
+  Scenario: Install a package on the Ubuntu SSH minion
     Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     And I follow "Software" in the content area
     And I follow "Install"
@@ -30,7 +30,7 @@ Feature: Install and upgrade package on the Ubuntu minion via Salt through the U
     Then Deb package "andromeda-dummy" with version "2.0" should be installed on "ubuntu_ssh_minion"
 
 @ubuntu_minion
-  Scenario: Update a package on the minion
+  Scenario: Update a package on the Ubuntu SSH minion
     Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     And I follow "Software" in the content area
     And I follow "Upgrade" in the content area
@@ -42,7 +42,7 @@ Feature: Install and upgrade package on the Ubuntu minion via Salt through the U
     Then Deb package "virgo-dummy" with version "2.0" should be installed on "ubuntu_ssh_minion"
 
 @ubuntu_minion
-  Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Ubuntu minion
+  Scenario: Cleanup: remove virgo-dummy and andromeda-dummy packages from Ubuntu SSH minion
     Given I am authorized as "admin" with password "admin"
     And I remove package "andromeda-dummy" from this "ubuntu_ssh_minion"
     And I remove package "virgo-dummy" from this "ubuntu_ssh_minion"
