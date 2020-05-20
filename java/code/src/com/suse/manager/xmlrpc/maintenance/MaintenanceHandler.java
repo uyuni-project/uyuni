@@ -15,6 +15,7 @@
 package com.suse.manager.xmlrpc.maintenance;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
@@ -29,6 +30,7 @@ import com.suse.manager.maintenance.RescheduleResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
+import com.suse.manager.xmlrpc.DownloadFaultException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -298,6 +300,9 @@ public class MaintenanceHandler extends BaseHandler {
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
         }
+        catch (DownloadException d) {
+            throw new DownloadFaultException(url, d);
+        }
     }
 
     /**
@@ -346,6 +351,13 @@ public class MaintenanceHandler extends BaseHandler {
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
         }
+        catch (DownloadException d) {
+            Optional.ofNullable(details.get("url")).ifPresent(
+                    url -> {
+                        throw new DownloadFaultException(url, d);
+                    });
+            throw new DownloadFaultException(d);
+        }
     }
 
     /**
@@ -377,6 +389,9 @@ public class MaintenanceHandler extends BaseHandler {
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (DownloadException d) {
+            throw new DownloadFaultException(d);
         }
     }
 
