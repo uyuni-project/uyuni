@@ -23,7 +23,7 @@ baseurl={{protocol}}://{{hostname}}:{{port}}/rhn/manager/download/{{ chan }}?{{ 
 {%- endif %}
 type={{ args['type'] }}
 gpgcheck={{ args['gpgcheck'] }}
-repo_gpgcheck={{ args['repo_gpgcheck'] }}
+repo_gpgcheck=0
 pkg_gpgcheck={{ args['pkg_gpgcheck'] }}
 {%- endif %}
 
