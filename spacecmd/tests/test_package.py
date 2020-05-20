@@ -512,7 +512,7 @@ class TestSCPackage:
 
         assert not shell.client.packages.removePackage.called
         assert mprint.called
-        assert out is None
+        assert out is 1
         assert shell.client.channel.software.listPackagesWithoutChannel.called
 
         assert_expect(mprint.call_args_list, "No packages were removed")
@@ -537,7 +537,7 @@ class TestSCPackage:
 
         assert shell.client.packages.removePackage.called
         assert mprint.called
-        assert out is None
+        assert out is 0
         assert shell.client.channel.software.listPackagesWithoutChannel.called
 
         exp = [
