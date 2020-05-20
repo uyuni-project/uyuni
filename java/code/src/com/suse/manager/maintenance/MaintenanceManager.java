@@ -273,7 +273,7 @@ public class MaintenanceManager {
      * Update a MaintenanceSchedule
      * @param user the user
      * @param name the schedule name
-     * @param details values which should be changed (name, type, calendar)
+     * @param details values which should be changed (type, calendar)
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return the updated MaintenanceSchedule
      */
@@ -282,10 +282,6 @@ public class MaintenanceManager {
         ensureOrgAdmin(user);
         MaintenanceSchedule schedule = lookupMaintenanceScheduleByUserAndName(user, name)
                 .orElseThrow(() -> new EntityNotExistsException(name));
-        if (details.containsKey("name")) {
-            // TODO: should the identifier really be changeable?
-            schedule.setName(details.get("name"));
-        }
         if (details.containsKey("type")) {
             schedule.setScheduleType(ScheduleType.lookupByLabel(details.get("type")));
         }
@@ -367,7 +363,7 @@ public class MaintenanceManager {
      * Update a MaintenanceCalendar
      * @param user the user
      * @param label the calendar label
-     * @param details the details which should be updated (label, ical, url)
+     * @param details the details which should be updated (ical, url)
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return true when the update was successfull, otherwise false
      */
@@ -376,10 +372,6 @@ public class MaintenanceManager {
         ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
                 .orElseThrow(() -> new EntityNotExistsException(label));
-        if (details.containsKey("label")) {
-            // TODO: should the identifier really be changeable?
-            calendar.setLabel(details.get("label"));
-        }
         if (details.containsKey("ical")) {
             calendar.setIcal(details.get("ical"));
         }

@@ -155,7 +155,6 @@ public class MaintenanceHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "name", "Maintenance Schedule Name")
      * @xmlrpc.param
      *     #struct_begin("Maintenance Schedule Details")
-     *         #prop_desc("string", "name", "new Schedule Name")
      *         #prop_desc("string", "type", "new Schedule Type")
      *           #options()
      *               #item("single")
@@ -178,7 +177,6 @@ public class MaintenanceHandler extends BaseHandler {
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
-        validKeys.add("name");
         validKeys.add("type");
         validKeys.add("calendar");
         validateMap(validKeys, details);
@@ -316,8 +314,8 @@ public class MaintenanceHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "label", "Maintenance Calendar Label")
      * @xmlrpc.param
      *     #struct_begin("Maintenance Calendar Details")
-     *         #prop_desc("string", "label", "new Calendar Label")
      *         #prop_desc("string", "ical", "new ical Calendar data")
+     *         #prop_desc("string", "url", "new Calendar URL")
      *     #struct_end()
      * @xmlrpc.param #array_begin()
      *                 #prop_desc("string", "rescheduleStrategy", "Available:")
@@ -337,7 +335,7 @@ public class MaintenanceHandler extends BaseHandler {
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
-        validKeys.add("label");
+        validKeys.add("url");
         validKeys.add("ical");
         validateMap(validKeys, details);
 
