@@ -8,12 +8,16 @@ from __future__ import absolute_import
 
 import logging
 import os
-import os.path
 import subprocess
-from urllib3.exceptions import HTTPError
-from kubernetes.client.rest import ApiException
-import kubernetes
-import kubernetes.client
+
+try:
+    from urllib3.exceptions import HTTPError
+    from kubernetes.client.rest import ApiException
+    import kubernetes
+    import kubernetes.client
+    HAS_KUBE_LIBS = True
+except ImportError:
+    HAS_KUBE_LIBS = False
 
 import salt.utils.stringutils
 import salt.utils.timed_subprocess
@@ -38,7 +42,12 @@ def __virtual__():
     '''
     This module is always enabled while 'skuba' CLI tools is available.
     '''
-    return __virtualname__ if which('skuba') else (False, 'skuba is not available')
+    if not which('skuba'):
+        return (False, 'skuba is not available')
+    elif not HAS_KUBE_LIBS:
+        return (False, 'kubernetes python library not found')
+    else:
+        return __virtualname__
 
 
 def _call_skuba(skuba_cluster_path,
