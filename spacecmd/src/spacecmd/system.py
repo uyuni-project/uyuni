@@ -1756,7 +1756,7 @@ def do_system_delete(self, args):
 
     if not system_ids:
         logging.warning('No systems to delete')
-        return
+        return 1
 
     # make the column the right size
     colsize = max_length([self.get_system_name(s) for s in system_ids])
@@ -1772,7 +1772,7 @@ def do_system_delete(self, args):
               (self.get_system_name(system_id).ljust(colsize), system_id))
 
     if not self.user_confirm('Delete these systems [y/N]:'):
-        return
+        return 1
 
     logging.debug("System IDs to remove: %s", system_ids)
     logging.debug("System names to IDs: %s", systems)
@@ -1792,6 +1792,7 @@ def do_system_delete(self, args):
     save_cache(self.ssm_cache_file, self.ssm)
     logging.debug("SSM cache saved")
 
+    return 0
 
 ####################
 
