@@ -424,7 +424,6 @@ def do_group_listsystems(self, args, doreturn=False):
     else:
         if systems:
             print('\n'.join(sorted(systems)))
-        else:
 
 ####################
 
