@@ -111,8 +111,8 @@ class RPCClient:
         """
         if RPCClient.__instance__ is None:
             plr: Optional[Dict[str, Any]] = __pillar__ or {}
-            if "xmlrpc" not in (plr or {}).keys():
-                plr = pillar
+            if "uyuni" not in (plr or {}).keys() or "xmlrpc" not in (plr or {}).get("uyuni", {}).keys():
+                 plr = pillar
 
             if "xmlrpc" in (plr or {}).get("uyuni", {}):
                 rpc_conf = (plr or {})["uyuni"]["xmlrpc"] or {}
