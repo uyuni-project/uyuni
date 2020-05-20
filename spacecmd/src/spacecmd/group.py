@@ -408,7 +408,7 @@ def do_group_listsystems(self, args, doreturn=False):
 
     if len(args) != 1:
         self.help_group_listsystems()
-        return 1
+        return
 
     group = args[0]
 
@@ -424,9 +424,7 @@ def do_group_listsystems(self, args, doreturn=False):
     else:
         if systems:
             print('\n'.join(sorted(systems)))
-            return 0
         else:
-            return 1
 
 ####################
 

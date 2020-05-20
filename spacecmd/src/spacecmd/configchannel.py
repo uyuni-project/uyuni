@@ -55,8 +55,6 @@ def do_configchannel_list(self, args, doreturn=False):
         if channels:
             print('\n'.join(channels))
 
-    return 0
-
 ####################
 
 
@@ -379,7 +377,7 @@ def do_configchannel_details(self, args):
 
     if not args:
         self.help_configchannel_details()
-        return 1
+        return
 
     add_separator = False
 
