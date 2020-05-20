@@ -556,8 +556,8 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         sa.setRemainingTries(10L);
         sa.setCreated(new Date());
         sa.setModified(new Date());
-        sa.setServer(newS);
-        sa.setParentAction(newA);
+        sa.setServerWithCheck(newS);
+        sa.setParentActionWithCheck(newA);
         return sa;
     }
 }

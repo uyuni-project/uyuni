@@ -150,14 +150,14 @@ public class PackageActionTest extends RhnBaseTestCase {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(10L);
-        sa.setServer(srvr);
+        sa.setServerWithCheck(srvr);
         log.debug("Creating PackageRemoveAction.");
         PackageAction pra = (PackageAction) ActionFactory.createAction(
                     ActionFactory.TYPE_PACKAGES_REMOVE);
         pra.setOrg(user.getOrg());
         pra.setName("Package Removal");
         pra.addServerAction(sa);
-        sa.setParentAction(pra);
+        sa.setParentActionWithCheck(pra);
         log.debug("Committing PackageRemoveAction.");
         ActionFactory.save(pra);
 
