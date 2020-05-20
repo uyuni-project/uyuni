@@ -381,19 +381,24 @@ public class MaintenanceHandler extends BaseHandler {
      *
      * @param loggedInUser the user
      * @param label calendar label
+     * @param cancelScheduledActions cancel actions of affected schedules
      * @throws EntityNotExistsFaultException when Maintenance Calendar does not exist
      * @return number of removed objects
      *
      * @xmlrpc.doc Remove a Maintenance Calendar
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Maintenance Calendar Label")
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.param #param_desc("boolean", "cancelScheduledActions", "Cancel Actions of affected Schedules")
+     * @xmlrpc.returntype
+     *     #array_begin()
+     *       $RescheduleResultSerializer
+     *     #array_end()
      */
-    public int deleteCalendar(User loggedInUser, String label) {
+    public List<RescheduleResult> deleteCalendar(User loggedInUser, String label, boolean cancelScheduledActions) {
         ensureOrgAdmin(loggedInUser);
         Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(loggedInUser, label);
-        mm.remove(loggedInUser, calendar.orElseThrow(() -> new EntityNotExistsFaultException(label)));
-        return 1;
+        return mm.remove(loggedInUser, calendar.orElseThrow(() -> new EntityNotExistsFaultException(label)),
+                cancelScheduledActions);
     }
 
     /**
