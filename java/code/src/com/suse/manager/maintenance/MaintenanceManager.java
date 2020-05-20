@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -189,13 +190,35 @@ public class MaintenanceManager {
 
     /**
      * Remove a MaintenanceCalendar
+     *
+     * When a calendar is removed, depending schedules loose all Maintenance Windows.
+     * This require to cancel all pending actions or let the removal fail.
+     *
      * @param user the user
      * @param calendar the calendar
+     * @param cancelScheduledActions cancel scheduled actions
+     * @return List of results
      */
-    public void remove(User user, MaintenanceCalendar calendar) {
+    public List<RescheduleResult> remove(User user, MaintenanceCalendar calendar, boolean cancelScheduledActions) {
         ensureOrgAdmin(user);
         ensureCalendarAccessible(user, calendar);
+        List<RescheduleResult> result = new LinkedList<>();
+        List<MaintenanceSchedule> schedules = listSchedulesByUserAndCalendar(user, calendar);
         getSession().remove(calendar);
+        for (MaintenanceSchedule schedule: schedules) {
+            schedule.setCalendar(null);
+            List<RescheduleStrategy> strategy = new LinkedList<>();
+            if (cancelScheduledActions) {
+                strategy = Collections.singletonList(new CancelRescheduleStrategy());
+            }
+            RescheduleResult r = manageAffectedScheduledActions(user, schedule, strategy);
+            if (!r.isSuccess()) {
+                // in case of false, update failed and we had a DB rollback
+                return Collections.singletonList(r);
+            }
+            result.add(r);
+        }
+        return result;
     }
 
     /**
