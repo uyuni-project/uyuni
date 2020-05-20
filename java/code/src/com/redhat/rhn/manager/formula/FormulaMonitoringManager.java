@@ -66,7 +66,7 @@ public class FormulaMonitoringManager implements MonitoringManager {
      * @param server the given server
      * @return true if cleanup is needed, false otherwise
      */
-    private boolean isMonitoringCleanupNeeded(MinionServer server) {
+    public boolean isMonitoringCleanupNeeded(MinionServer server) {
         return FormulaFactory.getFormulasByMinionId(server.getMinionId()).contains(PROMETHEUS_EXPORTERS) ||
                 FormulaFactory.isMemberOfGroupHavingMonitoring(server);
     }
