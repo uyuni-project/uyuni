@@ -259,8 +259,8 @@ public class ActionFactory extends HibernateFactory {
         sa.setCreated(new Date());
         sa.setModified(new Date());
         sa.setStatus(STATUS_QUEUED);
-        sa.setServer(server);
-        sa.setParentAction(parent);
+        sa.setServerWithCheck(server);
+        sa.setParentActionWithCheck(parent);
         sa.setRemainingTries(5L); //arbitrary number from perl
         parent.addServerAction(sa);
     }
