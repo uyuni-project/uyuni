@@ -144,13 +144,13 @@ def do_schedule_cancel(self, args):
 
     if not args:
         self.help_schedule_cancel()
-        return
+        return 1
 
     # cancel all actions
     if '.*' in args:
         if not self.user_confirm('Cancel all pending actions [y/N]:'):
             logging.info("All pending actions left untouched")
-            return
+            return 1
 
         actions = self.client.schedule.listInProgressActions(self.session)
         strings = [a.get('id') for a in actions]
@@ -177,6 +177,8 @@ def do_schedule_cancel(self, args):
 
     print('Canceled %i action(s)' % len(actions))
 
+    return 0
+
 ####################
 
 
@@ -200,7 +202,7 @@ def do_schedule_reschedule(self, args):
 
     if not args:
         self.help_schedule_reschedule()
-        return
+        return 1
 
     failed_actions = self.client.schedule.listFailedActions(self.session)
     failed_actions = [a.get('id') for a in failed_actions]
@@ -210,7 +212,7 @@ def do_schedule_reschedule(self, args):
     # reschedule all failed actions
     if '.*' in args:
         if not self.user_confirm('Reschedule all failed actions [y/N]:'):
-            return
+            return 1
         to_reschedule = failed_actions
     else:
         # use the list of action IDs passed in
@@ -228,9 +230,12 @@ def do_schedule_reschedule(self, args):
 
     if not to_reschedule:
         logging.warning('No failed actions to reschedule')
+        return 1
     else:
         self.client.schedule.rescheduleActions(self.session, to_reschedule, True)
         print('Rescheduled %i action(s)' % len(to_reschedule))
+
+    return 0
 
 ####################
 
@@ -247,7 +252,7 @@ def do_schedule_details(self, args):
 
     if not args:
         self.help_schedule_details()
-        return
+        return 1
     else:
         action_id = args[0]
 
@@ -255,7 +260,7 @@ def do_schedule_details(self, args):
         action_id = int(action_id)
     except ValueError:
         logging.warning('The ID "%s" is invalid' % action_id)
-        return
+        return 1
 
     completed = self.client.schedule.listCompletedSystems(self.session, action_id)
     failed = self.client.schedule.listFailedSystems(self.session, action_id)
@@ -294,6 +299,9 @@ def do_schedule_details(self, args):
                 print(s.get('server_name'))
     else:
         logging.error('No action found with the ID "%s"' % action_id)
+        return 1
+
+    return 0
 
 ####################
 
@@ -310,13 +318,13 @@ def do_schedule_getoutput(self, args):
 
     if not args:
         self.help_schedule_getoutput()
-        return
+        return 1
 
     try:
         action_id = int(args[0])
     except ValueError:
         logging.error('"%s" is not a valid action ID' % str(args[0]))
-        return
+        return 1
 
     script_results = None
     try:
@@ -369,6 +377,9 @@ def do_schedule_getoutput(self, args):
                 print(action.get('message'))
         else:
             logging.error("No systems found")
+            return 1
+
+    return 0
 
 ####################
 
