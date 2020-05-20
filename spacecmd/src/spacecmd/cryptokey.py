@@ -140,7 +140,7 @@ def do_cryptokey_delete(self, args):
         for key in keys:
             self.client.kickstart.keys.delete(self.session, key)
         return 0
-    else
+    else:
         return 1
 
 ####################
