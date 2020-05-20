@@ -14,9 +14,6 @@
  */
 package com.redhat.rhn.manager.formula;
 
-import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
-
-import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -318,16 +315,6 @@ public class FormulaManager {
     }
 
     /**
-     * Check for a given server if cleanup is needed on removal of the monitoring entitlement.
-     * @param server the given server
-     * @return true if cleanup is needed, false otherwise
-     */
-    public boolean isMonitoringCleanupNeeded(MinionServer server) {
-        return FormulaFactory.getFormulasByMinionId(server.getMinionId()).contains(PROMETHEUS_EXPORTERS) ||
-                FormulaFactory.isMemberOfGroupHavingMonitoring(server);
-    }
-
-    /**
      * Get formula Layout by name
      * @param formulaName formulaName
      * @return the lay out definition if exist else empty map
@@ -347,40 +334,6 @@ public class FormulaManager {
         if (!enabledFormulas.contains(formulaName)) {
             enabledFormulas.add(formulaName);
             FormulaFactory.saveServerFormulas(minionId, enabledFormulas);
-        }
-    }
-
-    /**
-     * Configure system for monitoring when the entitlement is added.
-     * @param minion the MinionServer to be configured for monitoring
-     * @throws IOException if an IO error occurs while saving the data
-     * @throws ValidatorException if a formula is not present (unchecked)
-     */
-    public void enableMonitoringOnEntitlementAdd(MinionServer minion) throws IOException, ValidatorException {
-        // Assign the monitoring formula to the system unless it belongs to a group having monitoring enabled
-        if (!FormulaFactory.isMemberOfGroupHavingMonitoring(minion)) {
-            List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
-            if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
-                formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
-                FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
-            }
-        }
-    }
-
-    /**
-     * Configure the monitoring formula for cleanup (disable exporters) if needed.
-     * @param minion the MinionServer to be configured for monitoring cleanup
-     * @throws IOException if an IO error occurs while saving the data
-     */
-    public void disableMonitoringOnEntitlementRemoval(MinionServer minion) throws IOException {
-        if (this.isMonitoringCleanupNeeded(minion)) {
-            // Get the current data and set all exporters to disabled
-            String minionId = minion.getMinionId();
-            Map<String, Object> data = FormulaFactory
-                    .getFormulaValuesByNameAndMinionId(PROMETHEUS_EXPORTERS, minionId)
-                    .orElse(FormulaFactory.getPillarExample(PROMETHEUS_EXPORTERS));
-            FormulaFactory.saveServerFormulaData(
-                    FormulaFactory.disableMonitoring(data), minionId, PROMETHEUS_EXPORTERS);
         }
     }
 
