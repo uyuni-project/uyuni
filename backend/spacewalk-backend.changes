@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 20 10:53:18 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
 - reposync speedup fixes, which require psycopg2 to be at least version 2.8.4
 - use default sender address from web namespace
 - Enable extra HTTP headers support for "spacewalk-repo-sync".
