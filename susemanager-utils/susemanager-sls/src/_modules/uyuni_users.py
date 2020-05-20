@@ -116,7 +116,7 @@ class RPCClient:
 
             if "xmlrpc" in (plr or {}).get("uyuni", {}):
                 rpc_conf = (plr or {})["uyuni"]["xmlrpc"] or {}
-                RPCClient.__instance__ = RPCClient(rpc_conf.get("url", "https://localhost/rpc/api"),
+                RPCClient.__instance__ = RPCClient("https://localhost/rpc/api",
                                                    rpc_conf.get("user", ""), rpc_conf.get("password", ""))
                 RPCClient.__instance__.token = RPCClient.load_session()
             else:
@@ -146,6 +146,11 @@ class RPCClient:
                 log.debug("Calling RPC method %s", method)
                 return getattr(self.conn, method)(*args)
             except Exception as exc:
+                """
+                TODO We should check if the exception was case by an invalid token before go for a second attempt
+                Error could happen because the session token was invalid
+                Call a second time with a new session token  
+                """
                 log.debug("Fall back to the second try due to %s", str(exc))
                 self.get_token(refresh=True)
                 try:
@@ -663,6 +668,22 @@ def __virtual__():
     """
 
     return __virtualname__
+
+
+def get_user(name):
+    return UyuniUser().get_user(name=name)
+
+
+def get_all_users():
+    return UyuniUser().get_all_users()
+
+
+def create_user(uid, password, email, first_name=None, last_name=None):
+    return UyuniUser().create(uid=uid, password=password, email=email, first_name=first_name, last_name=last_name)
+
+
+def delete_user(name):
+    return UyuniUser().delete(name=name)
 
 
 def create_org(name, admin_login, first_name, last_name, email, admin_password=None, admin_prefix="Mr.", pam=False):
