@@ -170,7 +170,7 @@ public class MaintenanceHandler extends BaseHandler {
      *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
      *                   #options_end()
      *               #array_end()
-     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
+     * @xmlrpc.returntype $RescheduleResultSerializer
      */
     public RescheduleResult updateSchedule(User loggedInUser, String name, Map<String, String> details,
             List<String> rescheduleStrategy) {
@@ -326,7 +326,10 @@ public class MaintenanceHandler extends BaseHandler {
      *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
      *                   #options_end()
      *               #array_end()
-     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
+     * @xmlrpc.returntype
+     *     #array_begin()
+     *       $RescheduleResultSerializer
+     *     #array_end()
      */
     public List<RescheduleResult> updateCalendar(User loggedInUser, String label, Map<String, String> details,
             List<String> rescheduleStrategy) {
@@ -364,7 +367,10 @@ public class MaintenanceHandler extends BaseHandler {
      *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
      *                   #options_end()
      *               #array_end()
-     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
+     * @xmlrpc.returntype
+     *     #array_begin()
+     *       $RescheduleResultSerializer
+     *     #array_end()
      */
     public List<RescheduleResult> refreshCalendar(User loggedInUser, String label, List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);

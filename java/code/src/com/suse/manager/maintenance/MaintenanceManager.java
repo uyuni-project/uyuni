@@ -393,7 +393,7 @@ public class MaintenanceManager {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
             if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
-                return new LinkedList<>();
+                return Collections.singletonList(r);
             }
             result.add(r);
         }
@@ -421,7 +421,7 @@ public class MaintenanceManager {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
             if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
-                return new LinkedList<>();
+                return Collections.singletonList(r);
             }
             result.add(r);
         }
