@@ -308,6 +308,15 @@ Then(/^I execute spacewalk-debug on the server$/) do
   end
 end
 
+Then(/^I get logfiles from "([^"]*)"$/) do |target|
+  `mkdir logs` unless Dir.exists?('logs')
+  node = get_target(target)
+  _out, code = node.run("tar cfvJ /tmp/#{target}-logs.tar.xz /var/log/")
+  raise 'Generate log archive failed' unless code.zero?
+  return_code = file_extract(node, "/tmp/#{target}-logs.tar.xz", 'logs/')
+  raise 'File extraction failed' unless return_code.zero?
+end
+
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
   step %(file "/etc/zypp/repos.d/susemanager\:channels.repo" should exist on "#{host}")
 end
