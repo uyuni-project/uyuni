@@ -37,92 +37,34 @@ class RPCClient:
     RPC Client
     """
     __instance__: Optional["RPCClient"] = None
-    __instance_path__: str = "/var/cache/salt/minion/uyuni.rpc.s"
 
-    def __init__(self, url: str, user: str, password: str):
+    def __init__(self, user: str = None, password: str = None, url: str = "https://localhost/rpc/api"):
         """
         XML-RPC client interface.
 
-        :param url: URL of the remote host
         :param user: username for the XML-RPC endpoints
         :param password: password credentials for the XML-RPC endpoints
+        :param url: URL of the remote host
         """
-        if self.__instance__ is not None:
-            raise UyuniUsersException("Object already instantiated. Use init() method instead.")
 
         ctx: ssl.SSLContext = ssl.create_default_context()
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
 
         self.conn = xmlrpc.client.ServerProxy(url, context=ctx)
-        self._user: str = user
-        self._password: str = password
-        self.token: Optional[str] = None
-
-    def save_session(self) -> bool:
-        """
-        Save session of the RPC
-
-        :return: boolean, True on success
-        """
-        os.makedirs(os.path.dirname(RPCClient.__instance_path__), exist_ok=True)
-        with open(RPCClient.__instance_path__, 'wb') as fh:
-            try:
-                fh.write(str(self.get_token()).encode())
-                log.debug("Wrote RPC session to %s", RPCClient.__instance_path__)
-                ret = True
-            except OSError as exc:
-                ret = False
-                log.error("Unable to serialise RPC client: %s", exc)
-            except Exception as exc:
-               ret = False
-               log.error("Unhandled error while serialising RPC client object: %s", exc)
-
-        return ret
-
-    @staticmethod
-    def load_session() -> Optional[str]:
-        """
-        Read previously saved RPC session token from the disk.
-        If this is not possible, None is returned.
-
-        :return: string or None
-        """
-        obj: Optional[str] = None
-        try:
-            with open(RPCClient.__instance_path__, 'rb') as fh:
-                try:
-                    data: bytes = fh.read()
-                    if data:
-                        obj = data.decode()
-                except Exception as exc:
-                    log.debug("Unable to load saved RPC session: %s", exc)
-        except FileNotFoundError:
-            log.debug("No previously saved RPC session")
-
-        return obj
-
-    @staticmethod
-    def init(pillar: Optional[Dict[str, Any]] = None):
-        """
-        Create new instance
-
-        :return:
-        """
-        if RPCClient.__instance__ is None:
-            plr: Optional[Dict[str, Any]] = __pillar__ or {}
-            if "uyuni" not in (plr or {}).keys() or "xmlrpc" not in (plr or {}).get("uyuni", {}).keys():
-                 plr = pillar
-
-            if "xmlrpc" in (plr or {}).get("uyuni", {}):
-                rpc_conf = (plr or {})["uyuni"]["xmlrpc"] or {}
-                RPCClient.__instance__ = RPCClient("https://localhost/rpc/api",
-                                                   rpc_conf.get("user", ""), rpc_conf.get("password", ""))
-                RPCClient.__instance__.token = RPCClient.load_session()
+        if user is None or password is None:
+            # if user or password not set, fallback for default super user defined on pillar data
+            if "xmlrpc" in (__pillar__ or {}).get("uyuni", {}):
+                rpc_conf = (__pillar__ or {})["uyuni"]["xmlrpc"] or {}
+                self._user: str = rpc_conf.get("user", "")
+                self._password: str = rpc_conf.get("password", "")
             else:
                 raise UyuniUsersException("Unable to find Pillar configuration for Uyuni XML-RPC API")
+        else:
+            self._user: str = user
+            self._password: str = password
 
-        return RPCClient.__instance__
+        self.token: Optional[str] = None
 
     def get_token(self, refresh: bool = False) -> Optional[str]:
         """
@@ -130,12 +72,17 @@ class RPCClient:
 
         :return:
         """
+        log.warning("context: %s", __context__)
         if self.token is None or refresh:
             try:
-                self.token = self.conn.auth.login(self._user, self._password)
-                self.save_session()
+                auth_token_key = "uyuni.auth_token_" + self._user
+                if not auth_token_key in __context__:
+                    __context__[auth_token_key] = self.conn.auth.login(self._user, self._password)
             except Exception as exc:
                 log.error("Unable to login to the Uyuni server: %s", exc)
+            self.token = __context__[auth_token_key]
+
+            log.warning(__context__)
 
         return self.token
 
@@ -144,17 +91,15 @@ class RPCClient:
         if self.token is not None:
             try:
                 log.debug("Calling RPC method %s", method)
-                return getattr(self.conn, method)(*args)
+                return getattr(self.conn, method)(*((self.get_token(),) + args))
             except Exception as exc:
                 """
-                TODO We should check if the exception was case by an invalid token before go for a second attempt
                 Error could happen because the session token was invalid
-                Call a second time with a new session token  
+                Call a second time with a new session token
                 """
-                log.debug("Fall back to the second try due to %s", str(exc))
-                self.get_token(refresh=True)
+                log.warning("Fall back to the second try due to %s", str(exc))
                 try:
-                    return getattr(self.conn, method)(*((self.get_token(),) + args[1:]))
+                    return getattr(self.conn, method)(*((self.get_token(refresh=True),) + args))
                 except Exception as exc:
                     log.error("Unable to call RPC function: %s", str(exc))
                     raise UyuniUsersException(exc)
@@ -166,8 +111,9 @@ class UyuniRemoteObject:
     """
     RPC client
     """
-    def __init__(self, pillar: Optional[Dict[str, Any]] = None):
-        self.client: RPCClient = RPCClient.init(pillar=pillar or __pillar__)
+
+    def __init__(self, user: str = None, password: str = None):
+        self.client: RPCClient = RPCClient(user=user, password=password)
 
     def get_proto_return(self, exc: Exception = None) -> Dict[str, Any]:
         """
@@ -186,13 +132,22 @@ class UyuniUser(UyuniRemoteObject):
     """
     CRUD operation on users.
     """
+
     def get_user(self, name: str) -> Dict[str, Any]:
         """
         Get existing user data from the Uyuni.
 
         :return:
         """
-        return self.client("user.getDetails", self.client.get_token(), name)
+        return self.client("user.getDetails", name)
+
+    def get_user_roles(self, name: str) -> Dict[str, Any]:
+        """
+        Get existing user data from the Uyuni.
+
+        :return:
+        """
+        return self.client("user.listRoles", name)
 
     def get_all_users(self):
         """
@@ -200,7 +155,7 @@ class UyuniUser(UyuniRemoteObject):
 
         :return:
         """
-        return self.client("user.listUsers", self.client.get_token())
+        return self.client("user.listUsers")
 
     def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
         """
@@ -220,8 +175,36 @@ class UyuniUser(UyuniRemoteObject):
             log.debug("Not all parameters has been specified")
             log.error("Email should be specified when create user")
         else:
-            ret = self.client("user.create", self.client.get_token(), uid, password, first_name, last_name, email)
+            ret = self.client("user.create", uid, password, first_name, last_name, email)
             log.debug("User has been created")
+
+        return bool(ret)
+
+    def update(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
+        """
+        Update user in Uyuni.
+
+        :param uid: desired login name, safe to use if login name is already in use
+        :param password: desired password for the user
+        :param email: valid email address
+        :param first_name: First name
+        :param last_name: Second name
+
+        :return: boolean
+        """
+        log.debug("Updating user to Uyuni")
+        if not email:
+            ret = 0
+            log.debug("Not all parameters has been specified")
+            log.error("Email should be specified when create user")
+        else:
+            ret = self.client("user.setDetails", uid, {
+                "password": password,
+                "first_name": first_name,
+                "last_name": last_name,
+                "email": email
+            })
+            log.debug("User has been updated")
 
         return bool(ret)
 
@@ -234,7 +217,7 @@ class UyuniUser(UyuniRemoteObject):
         :return: boolean, True if user has been deleted successfully.
         """
         try:
-            ret = bool(self.client("user.delete", self.client.get_token(), name))
+            ret = bool(self.client("user.delete", name))
         except UyuniUsersException as exc:
             log.error('Unable to delete user "%s": %s', name, str(exc))
             ret = False
@@ -249,6 +232,7 @@ class UyuniOrg(UyuniRemoteObject):
     """
     CRUD operations on orgs
     """
+
     def get_orgs(self) -> Dict[str, Union[int, str, bool]]:
         """
         List all orgs.
@@ -325,6 +309,7 @@ class UyuniTrust(UyuniRemoteObject):
     """
     CRUD operations to trusts.
     """
+
     def __init__(self, org_name: str, pillar: Optional[Dict[str, Any]] = None):
         """
 
@@ -492,6 +477,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
     """
     Provides methods to access and modify system groups.
     """
+
     def get(self, name: str) -> Dict[str, Union[int, str]]:
         """
         Retrieve details of a ServerGroup.
@@ -546,6 +532,7 @@ class UyuniChildMasterIntegration(UyuniRemoteObject):
         """
         Minion data matcher.
         """
+
         def _get_key_fingerprint(self, minion_id: str) -> str:
             """
             Get minion key fingerprint.
@@ -670,20 +657,32 @@ def __virtual__():
     return __virtualname__
 
 
-def get_user(name):
-    return UyuniUser().get_user(name=name)
+def get_user(name, password=None, org_admin_username=None, org_admin_password=None):
+    return UyuniUser(org_admin_username if password is None else name,
+                     org_admin_password if password is None else password).get_user(name=name)
 
 
-def get_all_users():
-    return UyuniUser().get_all_users()
+def get_user_roles(name, password=None, org_admin_username=None, org_admin_password=None):
+    return UyuniUser(org_admin_username if password is None else name,
+                     org_admin_password if password is None else password).get_user_roles(name=name)
 
 
-def create_user(uid, password, email, first_name=None, last_name=None):
-    return UyuniUser().create(uid=uid, password=password, email=email, first_name=first_name, last_name=last_name)
+def get_all_users(org_username=None, org_password=None):
+    return UyuniUser(org_username, org_password).get_all_users()
 
 
-def delete_user(name):
-    return UyuniUser().delete(name=name)
+def create_user(uid, password, email, first_name=None, last_name=None, org_admin_user=None, org_admin_password=None):
+    return UyuniUser(org_admin_user, org_admin_password).create(uid=uid, password=password, email=email,
+                                                                first_name=first_name, last_name=last_name)
+
+
+def update_user(uid, password, email, first_name=None, last_name=None, org_admin_user=None, org_admin_password=None):
+    return UyuniUser(org_admin_user, org_admin_password).update(uid=uid, password=password, email=email,
+                                                                first_name=first_name, last_name=last_name)
+
+
+def delete_user(name, org_admin_user=None, org_admin_password=None):
+    return UyuniUser(org_admin_user, org_admin_password).delete(name=name)
 
 
 def create_org(name, admin_login, first_name, last_name, email, admin_password=None, admin_prefix="Mr.", pam=False):
