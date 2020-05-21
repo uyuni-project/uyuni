@@ -14,3 +14,27 @@ Feature: Debug SUSE Manager after the testsuite has run
 
   Scenario: Check salt event log for failures on server
     Then the salt event log on server should contain no failures
+
+@sle_client
+  Scenario: Get client logs
+    Then I get logfiles from "sle_client"
+
+@sle_minion
+  Scenario: Get client logs
+    Then I get logfiles from "sle_minion"
+
+@centos_minion
+  Scenario: Get client logs
+    Then I get logfiles from "ceos_minion"
+
+@ubuntu_minion
+  Scenario: Get client logs
+    Then I get logfiles from "ubuntu_minion"
+
+@ssh_minion
+  Scenario: Get client logs
+    Then I get logfiles from "ssh_minion"
+
+@proxy
+  Scenario: Get client logs
+    Then I get logfiles from "proxy"
