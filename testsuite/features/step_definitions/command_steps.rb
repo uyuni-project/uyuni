@@ -270,8 +270,9 @@ Then(/^I get logfiles from "([^"]*)"$/) do |target|
   _out, code = node.run("journalctl > /var/log/messages")
   _out, code = node.run("tar cfvJ /tmp/#{target}-logs.tar.xz /var/log/")
   raise 'Generate log archive failed' unless code.zero?
-  return_code = file_extract(node, "/tmp/#{target}-logs.tar.xz", 'logs/')
-  raise 'File extraction failed' unless return_code.zero?
+  cmd = "echo | scp -o StrictHostKeyChecking=no root@#{node.ip}:/tmp/#{target}-logs.tar.xz ./logs/ 2>&1"
+  command_output = `#{cmd}`
+  raise "Download logfiles failed: #{command_output}" unless $CHILD_STATUS.success?
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
