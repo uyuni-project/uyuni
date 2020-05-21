@@ -265,8 +265,9 @@ Then(/^I execute spacewalk-debug on the server$/) do
 end
 
 Then(/^I get logfiles from "([^"]*)"$/) do |target|
-  `mkdir logs` unless Dir.exists?('logs')
+  `mkdir logs` unless Dir.exist?('logs')
   node = get_target(target)
+  _out, code = node.run("journalctl > /var/log/messages")
   _out, code = node.run("tar cfvJ /tmp/#{target}-logs.tar.xz /var/log/")
   raise 'Generate log archive failed' unless code.zero?
   return_code = file_extract(node, "/tmp/#{target}-logs.tar.xz", 'logs/')
