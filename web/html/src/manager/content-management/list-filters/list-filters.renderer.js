@@ -4,6 +4,7 @@ import "./list-filters.css";
 import {RolesProvider} from "core/auth/roles-context";
 import {UserLocalizationProvider} from "core/user-localization/user-localization-context";
 import SpaRenderer from "core/spa/spa-renderer";
+import {MessagesContainer} from 'components/toastr/toastr';
 
 export const renderer = (id, {filters, projectLabel, openFilterId, flashMessage}) => {
 
@@ -15,6 +16,7 @@ export const renderer = (id, {filters, projectLabel, openFilterId, flashMessage}
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <UserLocalizationProvider>
+        <MessagesContainer/>
         <ListFilters
           filters={filtersJson}
           openFilterId={openFilterId}
