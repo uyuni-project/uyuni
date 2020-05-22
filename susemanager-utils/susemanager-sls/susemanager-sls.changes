@@ -1,3 +1,4 @@
+- Set YAML loader to fix deprecation warnings
 - Fix failing "Hardware Refresh" actions because wrong "instance_id" reported
   from minion due a captive portal on the network (bsc#1171491)
 - Ubuntu no longer shows removed packages as installed (bsc#1171461)
