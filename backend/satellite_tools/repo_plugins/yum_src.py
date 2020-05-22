@@ -548,7 +548,7 @@ class ContentSource:
         self.zypposync = ZyppoSync(root=repo.root)
         zypp_repo_url = self._prep_zypp_repo_url(self.url)
 
-        mirrorlist = self._get_mirror_list(repo, zypp_repo_url)
+        mirrorlist = self._get_mirror_list(repo, self.url)
         if mirrorlist:
             repo.baseurl = mirrorlist
         repo.urls = repo.baseurl
