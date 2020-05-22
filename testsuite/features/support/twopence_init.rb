@@ -14,38 +14,47 @@ warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
 warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
 warn 'XEN server minion IP address or domain name variable empty' if ENV['VIRTHOST_XEN_URL'].nil?
 
+# Preserve FQDN before initialization
+$named_nodes = {}
+
+def twopence_init(target)
+  init_target = Twopence.init(target)
+  $named_nodes[init_target.hash] = target.split(':')[1]
+  init_target
+end
+
 # Define common twopence objects
-$proxy = Twopence.init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
-$server = Twopence.init("ssh:#{ENV['SERVER']}")
-$kvm_server = Twopence.init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
-$xen_server = Twopence.init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
+$proxy = twopence_init("ssh:#{ENV['PROXY']}") if ENV['PROXY']
+$server = twopence_init("ssh:#{ENV['SERVER']}")
+$kvm_server = twopence_init("ssh:#{ENV['VIRTHOST_KVM_URL']}") if ENV['VIRTHOST_KVM_URL'] && ENV['VIRTHOST_KVM_PASSWORD']
+$xen_server = twopence_init("ssh:#{ENV['VIRTHOST_XEN_URL']}") if ENV['VIRTHOST_XEN_URL'] && ENV['VIRTHOST_XEN_PASSWORD']
 
 nodes = [$server, $proxy, $kvm_server, $xen_server]
 
 if $qam_test
   # Define twopence objects for QAM environment
-  $sle11sp4_minion = Twopence.init("ssh:#{ENV['SLE11SP4_MINION']}") if ENV['SLE11SP4_MINION']
-  $sle11sp4_ssh_minion = Twopence.init("ssh:#{ENV['SLE11SP4_SSHMINION']}") if ENV['SLE11SP4_SSHMINION']
-  $sle11sp4_client = Twopence.init("ssh:#{ENV['SLE11SP4_CLIENT']}") if ENV['SLE11SP4_CLIENT']
-  $sle12sp4_minion = Twopence.init("ssh:#{ENV['SLE12SP4_MINION']}") if ENV['SLE12SP4_MINION']
-  $sle12sp4_ssh_minion = Twopence.init("ssh:#{ENV['SLE12SP4_SSHMINION']}") if ENV['SLE12SP4_SSHMINION']
-  $sle12sp4_client = Twopence.init("ssh:#{ENV['SLE12SP4_CLIENT']}") if ENV['SLE12SP4_CLIENT']
-  $sle15_minion = Twopence.init("ssh:#{ENV['SLE15_MINION']}") if ENV['SLE15_MINION']
-  $sle15_ssh_minion = Twopence.init("ssh:#{ENV['SLE15_SSHMINION']}") if ENV['SLE15_SSHMINION']
-  $sle15_client = Twopence.init("ssh:#{ENV['SLE15_CLIENT']}") if ENV['SLE15_CLIENT']
-  $sle15sp1_minion = Twopence.init("ssh:#{ENV['SLE15SP1_MINION']}") if ENV['SLE15SP1_MINION']
-  $sle15sp1_ssh_minion = Twopence.init("ssh:#{ENV['SLE15SP1_SSHMINION']}") if ENV['SLE15SP1_SSHMINION']
-  $sle15sp1_client = Twopence.init("ssh:#{ENV['SLE15SP1_CLIENT']}") if ENV['SLE15SP1_CLIENT']
-  $ceos6_minion = Twopence.init("ssh:#{ENV['CENTOS6_MINION']}") if ENV['CENTOS6_MINION']
-  $ceos6_ssh_minion = Twopence.init("ssh:#{ENV['CENTOS6_SSHMINION']}") if ENV['CENTOS6_SSHMINION']
-  $ceos6_client = Twopence.init("ssh:#{ENV['CENTOS6_CLIENT']}") if ENV['CENTOS6_CLIENT']
-  $ceos7_minion = Twopence.init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
-  $ceos7_ssh_minion = Twopence.init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
-  $ceos7_client = Twopence.init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
-  $ubuntu1604_minion = Twopence.init("ssh:#{ENV['UBUNTU1604_MINION']}") if ENV['UBUNTU1604_MINION']
-  $ubuntu1604_ssh_minion = Twopence.init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
-  $ubuntu1804_minion = Twopence.init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
-  $ubuntu1804_ssh_minion = Twopence.init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
+  $sle11sp4_minion = twopence_init("ssh:#{ENV['SLE11SP4_MINION']}") if ENV['SLE11SP4_MINION']
+  $sle11sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE11SP4_SSHMINION']}") if ENV['SLE11SP4_SSHMINION']
+  $sle11sp4_client = twopence_init("ssh:#{ENV['SLE11SP4_CLIENT']}") if ENV['SLE11SP4_CLIENT']
+  $sle12sp4_minion = twopence_init("ssh:#{ENV['SLE12SP4_MINION']}") if ENV['SLE12SP4_MINION']
+  $sle12sp4_ssh_minion = twopence_init("ssh:#{ENV['SLE12SP4_SSHMINION']}") if ENV['SLE12SP4_SSHMINION']
+  $sle12sp4_client = twopence_init("ssh:#{ENV['SLE12SP4_CLIENT']}") if ENV['SLE12SP4_CLIENT']
+  $sle15_minion = twopence_init("ssh:#{ENV['SLE15_MINION']}") if ENV['SLE15_MINION']
+  $sle15_ssh_minion = twopence_init("ssh:#{ENV['SLE15_SSHMINION']}") if ENV['SLE15_SSHMINION']
+  $sle15_client = twopence_init("ssh:#{ENV['SLE15_CLIENT']}") if ENV['SLE15_CLIENT']
+  $sle15sp1_minion = twopence_init("ssh:#{ENV['SLE15SP1_MINION']}") if ENV['SLE15SP1_MINION']
+  $sle15sp1_ssh_minion = twopence_init("ssh:#{ENV['SLE15SP1_SSHMINION']}") if ENV['SLE15SP1_SSHMINION']
+  $sle15sp1_client = twopence_init("ssh:#{ENV['SLE15SP1_CLIENT']}") if ENV['SLE15SP1_CLIENT']
+  $ceos6_minion = twopence_init("ssh:#{ENV['CENTOS6_MINION']}") if ENV['CENTOS6_MINION']
+  $ceos6_ssh_minion = twopence_init("ssh:#{ENV['CENTOS6_SSHMINION']}") if ENV['CENTOS6_SSHMINION']
+  $ceos6_client = twopence_init("ssh:#{ENV['CENTOS6_CLIENT']}") if ENV['CENTOS6_CLIENT']
+  $ceos7_minion = twopence_init("ssh:#{ENV['CENTOS7_MINION']}") if ENV['CENTOS7_MINION']
+  $ceos7_ssh_minion = twopence_init("ssh:#{ENV['CENTOS7_SSHMINION']}") if ENV['CENTOS7_SSHMINION']
+  $ceos7_client = twopence_init("ssh:#{ENV['CENTOS7_CLIENT']}") if ENV['CENTOS7_CLIENT']
+  $ubuntu1604_minion = twopence_init("ssh:#{ENV['UBUNTU1604_MINION']}") if ENV['UBUNTU1604_MINION']
+  $ubuntu1604_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1604_SSHMINION']}") if ENV['UBUNTU1604_SSHMINION']
+  $ubuntu1804_minion = twopence_init("ssh:#{ENV['UBUNTU1804_MINION']}") if ENV['UBUNTU1804_MINION']
+  $ubuntu1804_ssh_minion = twopence_init("ssh:#{ENV['UBUNTU1804_SSHMINION']}") if ENV['UBUNTU1804_SSHMINION']
   # As we share core features for QAM and QA environments, we share also those vm twopence objects
   $minion = $sle12sp4_minion
   $ssh_minion = $sle12sp4_ssh_minion
@@ -63,11 +72,11 @@ if $qam_test
             $client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
 else
   # Define twopence objects for QA environment
-  $minion = Twopence.init("ssh:#{ENV['MINION']}") if ENV['MINION']
-  $ssh_minion = Twopence.init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
-  $client = Twopence.init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
-  $ceos_minion = Twopence.init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
-  $ubuntu_minion = Twopence.init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
+  $minion = twopence_init("ssh:#{ENV['MINION']}") if ENV['MINION']
+  $ssh_minion = twopence_init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
+  $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
+  $ceos_minion = twopence_init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
+  $ubuntu_minion = twopence_init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
   nodes += [$client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
 end
 
@@ -84,14 +93,16 @@ nodes.each do |node|
   next if node.nil?
 
   hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  raise "Cannot get hostname for node. Response code: #{code}" if code.nonzero? || hostname.empty?
+  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero?
+  raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
   node.init_hostname(hostname)
 
   fqdn, _local, _remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-  raise "No fully qualified domain name for node. Response code: #{code}" if code.nonzero? || fqdn.empty?
+  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero?
+  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
   node.init_full_hostname(fqdn)
 
-  puts "Determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $qam_test
+  puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $qam_test
 end
 
 # Initialize IP address or domain name
