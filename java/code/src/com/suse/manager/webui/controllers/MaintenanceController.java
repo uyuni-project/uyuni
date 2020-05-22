@@ -84,7 +84,7 @@ public class MaintenanceController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView maintenanceSchedules(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/maintenance-schedules.jade");
+        return new ModelAndView(new HashMap<>(), "templates/schedule/maintenance-windows.jade");
     }
 
     public static String list(Request request, Response response, User user) {
