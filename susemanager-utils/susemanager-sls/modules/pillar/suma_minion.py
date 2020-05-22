@@ -80,7 +80,7 @@ def ext_pillar(minion_id, *args):
     for static_pillar in MANAGER_STATIC_PILLAR:
         static_pillar_filename = os.path.join(MANAGER_STATIC_PILLAR_DATA_PATH, static_pillar)
         try:
-            ret.update(yaml.load(open('{0}.yml'.format(static_pillar_filename)).read()))
+            ret.update(yaml.load(open('{0}.yml'.format(static_pillar_filename)).read(), Loader=yaml.FullLoader))
         except Exception as exc:
             log.error('Error accessing "{0}": {1}'.format(static_pillar_filename, exc))
 
@@ -88,7 +88,7 @@ def ext_pillar(minion_id, *args):
     for global_pillar in MANAGER_GLOBAL_PILLAR:
         global_pillar_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, global_pillar)
         try:
-            ret.update(yaml.load(open('{0}.yml'.format(global_pillar_filename)).read()))
+            ret.update(yaml.load(open('{0}.yml'.format(global_pillar_filename)).read(), Loader=yaml.FullLoader))
         except Exception as exc:
             log.error('Error accessing "{0}": {1}'.format(global_pillar_filename, exc))
 
@@ -98,7 +98,7 @@ def ext_pillar(minion_id, *args):
         data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, minion_pillar_filename_prefix + suffix)
         if os.path.exists(data_filename):
             try:
-                ret.update(yaml.load(open(data_filename).read()))
+                ret.update(yaml.load(open(data_filename).read(), Loader=yaml.FullLoader))
             except Exception as error:
                 log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
 
@@ -187,7 +187,7 @@ def load_formula_pillar(minion_id, group_id, formula_name):
     system_filename = os.path.join(FORMULAS_DATA_PATH, "pillar", "{id}_{name}.json".format(id=minion_id, name=formula_name))
 
     try:
-        layout = yaml.load(open(layout_filename).read())
+        layout = yaml.load(open(layout_filename).read(), Loader=yaml.FullLoader)
         group_data = json.load(open(group_filename)) if group_filename is not None and os.path.isfile(group_filename) else {}
         system_data = json.load(open(system_filename)) if os.path.isfile(system_filename) else {}
     except Exception as error:
@@ -297,7 +297,7 @@ def image_pillars(minion_id):
         if os.path.isfile(pillar_path) and pillar.endswith('.sls'):
             try:
                 with open(pillar_path) as p:
-                    ret = salt.utils.dictupdate.merge(ret, yaml.load(p.read()), strategy='recurse')
+                    ret = salt.utils.dictupdate.merge(ret, yaml.load(p.read(), Loader=yaml.FullLoader), strategy='recurse')
             except Exception as error:
                 log.error('Error loading data for image "{image}": {message}'.format(image=pillar.path(), message=str(error)))
 
