@@ -20,6 +20,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 
@@ -46,6 +47,8 @@ public class ChannelsApiController {
     public static void initRoutes() {
         get("/manager/api/channels",
                 withUser(ChannelsApiController::getAllChannels));
+        get("/manager/api/channels/modular",
+                withUser(ChannelsApiController::getModularChannels));
     }
 
     /**
@@ -74,5 +77,21 @@ public class ChannelsApiController {
         return json(res, ResultJson.success(jsonChannelsFiltered));
     }
 
+    /**
+     * Get existing modular channels for a user in a channel id to channel label map
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the current user
+     * @return the json response
+     */
+    public static String getModularChannels(Request req, Response res, User user) {
+        List<ChannelsJson.ChannelJson> jsonChannels = user.getOrg().getAccessibleChannels().stream()
+                .filter(Channel::isModular)
+                .map(ChannelsJson.ChannelJson::new)
+                .collect(Collectors.toList());
+
+        return json(res, ResultJson.success(jsonChannels));
+    }
 
 }

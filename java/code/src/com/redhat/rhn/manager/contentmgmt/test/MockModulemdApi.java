@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.contentmgmt.modulemd.ConflictingStreamsException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.Module;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleNotFoundException;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulePackagesResponse;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModuleStreams;
 import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.modulemd.RepositoryNotModularException;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -39,14 +40,15 @@ import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -59,17 +61,15 @@ public class MockModulemdApi extends ModulemdApi {
     private static final String MOUNT_POINT_PATH = Config.get().getString(ConfigDefaults.MOUNT_POINT);
 
     @Override
-    public Map<String, List<Module>> getAllModulesInChannel(Channel channel)
+    public Map<String, ModuleStreams> getAllModulesInChannel(Channel channel)
             throws RepositoryNotModularException {
         // Dummy call to trigger RepositoryNotModular exception:
         getMetadataPath(channel);
-        // Mock list
-        return Stream.of(
-                new Module("postgresql", "9.6"),
-                new Module("postgresql",  "10"),
-                new Module("perl", "5.26"),
-                new Module("perl", "5.24")
-        ).collect(Collectors.groupingBy(Module::getName));
+        // Mock map
+        Map<String, ModuleStreams> moduleStreamsMap = new HashMap<>();
+        moduleStreamsMap.put("postgresql", new ModuleStreams("10", Arrays.asList("10", "9.6")));
+        moduleStreamsMap.put("perl", new ModuleStreams("5.26", Arrays.asList("5.26", "5.24")));
+        return moduleStreamsMap;
     }
 
     /**
