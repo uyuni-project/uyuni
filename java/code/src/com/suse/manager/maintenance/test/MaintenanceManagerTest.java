@@ -425,7 +425,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         List<RescheduleResult> results = mm.remove(user, mcal, false);
         assertEquals(1, results.size());
         assertFalse(results.get(0).isSuccess());
-        assertEquals("SAP Maintenance Window", results.get(0).getScheduleName());
+        // we remove the schedules ordered by name
+        assertEquals("Core Server Window", results.get(0).getScheduleName());
     }
 
     public void testScheduleChangeMultiWithActionChain() throws Exception {
