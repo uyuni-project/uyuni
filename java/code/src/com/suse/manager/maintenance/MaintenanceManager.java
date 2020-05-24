@@ -426,7 +426,7 @@ public class MaintenanceManager {
     @SuppressWarnings("unchecked")
     private List<MaintenanceSchedule> listSchedulesByUserAndCalendar(User user, MaintenanceCalendar calendar) {
         return getSession()
-                .createQuery("from MaintenanceSchedule WHERE org = :org and calendar = :calendar")
+                .createQuery("from MaintenanceSchedule WHERE org = :org and calendar = :calendar ORDER BY name ASC")
                 .setParameter("org", user.getOrg())
                 .setParameter("calendar", calendar).getResultList();
     }
