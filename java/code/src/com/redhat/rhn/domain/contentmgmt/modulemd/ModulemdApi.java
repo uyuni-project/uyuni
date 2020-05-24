@@ -49,10 +49,11 @@ public class ModulemdApi {
      * Get all defined modules in a channel's metadata
      *
      * @param channel the modular channel
-     * @return a map of module name to module/stream objects
+     * @return a map of module name to stream lists
      */
-    public Map<String, List<Module>> getAllModulesInChannel(Channel channel) {
-        throw new UnsupportedOperationException();
+    public Map<String, ModuleStreams> getAllModulesInChannel(Channel channel) {
+        ModulemdApiResponse res = callSync(ModulemdApiRequest.listModulesRequest(getMetadataPath(channel)));
+        return res.getListModules().getModules();
     }
 
     /**

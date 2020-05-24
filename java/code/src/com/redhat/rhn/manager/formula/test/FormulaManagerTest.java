@@ -41,16 +41,11 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Json;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -217,44 +212,6 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
-    /**
-     * Test the conditions in FormulaManager.isMonitoringCleanupNeeded().
-     * @throws Exception
-     */
-    public void testIsMonitoringCleanupNeeded() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        FormulaFactory.setMetadataDirOfficial(metadataDir.toString() + File.separator);
-
-        // No group or system level assignment of the `prometheus-exporters` Formula
-        assertFalse(manager.isMonitoringCleanupNeeded(minion));
-
-        // Create a group level assignment of the Formula
-        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(minion, group);
-        FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
-
-        // Save data that enables monitoring
-        Map<String, Object> formulaData = new HashMap<>();
-        formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
-        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
-        assertTrue(manager.isMonitoringCleanupNeeded(minion));
-
-        // Save data that disables monitoring
-        formulaData.put("node_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
-        assertFalse(manager.isMonitoringCleanupNeeded(minion));
-
-        // Create a system level assignment of the Formula
-        FormulaFactory.saveServerFormulas(minion.getMinionId(), Arrays.asList(PROMETHEUS_EXPORTERS));
-        FormulaFactory.saveServerFormulaData(formulaData, minion.getMinionId(), PROMETHEUS_EXPORTERS);
-        assertTrue(manager.isMonitoringCleanupNeeded(minion));
-    }
-
     public void testGetCombinedFormulaDataForSystems() throws Exception {
         // minion with only group formulas
         User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
@@ -319,19 +276,14 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     private void createMetadataFiles() {
         try {
             Path prometheusDir = metadataDir.resolve("prometheus-exporters");
-            Path prometheusFile = Paths.get(prometheusDir.toString(),  "form.yml");
             Files.createDirectories(prometheusDir);
+            Path prometheusFile = Paths.get(prometheusDir.toString(),  "form.yml");
             Files.createFile(prometheusFile);
+
             Path testFormulaDir = metadataDir.resolve("dhcpd");
             Files.createDirectories(testFormulaDir);
             Path testFormulaFile = Paths.get(testFormulaDir.toString(), "form.yml");
             Files.createFile(testFormulaFile);
-            try (
-                InputStream src = this.getClass().getResourceAsStream("prometheus-exporters-pillar.example");
-                OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
-            ) {
-                IOUtils.copy(src, dst);
-            }
         }
         catch (IOException e) {
             e.printStackTrace();

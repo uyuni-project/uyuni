@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 20 11:02:46 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
 - upgrade kind-of - CVE-2019-20149
 - upgrade jquery - CVE-2020-11023
 - upgrade yarn to 1.22.4

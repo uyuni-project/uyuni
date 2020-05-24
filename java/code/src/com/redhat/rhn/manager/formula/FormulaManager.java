@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.manager.formula;
 
-import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
-
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -314,16 +312,6 @@ public class FormulaManager {
      */
     public boolean hasGroupFormulaAssigned(String formulaName, Long groupId) {
         return FormulaFactory.getFormulasByGroupId(groupId).contains(formulaName);
-    }
-
-    /**
-     * Check for a given server if cleanup is needed on removal of the monitoring entitlement.
-     * @param server the given server
-     * @return true if cleanup is needed, false otherwise
-     */
-    public boolean isMonitoringCleanupNeeded(MinionServer server) {
-        return FormulaFactory.getFormulasByMinionId(server.getMinionId()).contains(PROMETHEUS_EXPORTERS) ||
-                FormulaFactory.isMemberOfGroupHavingMonitoring(server);
     }
 
     /**

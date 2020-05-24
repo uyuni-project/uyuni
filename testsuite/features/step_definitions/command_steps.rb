@@ -150,7 +150,7 @@ When(/^I apply highstate on "([^"]*)"$/) do |host|
     cmd = 'runuser -u salt -- salt-ssh --priv=/srv/susemanager/salt/salt_ssh/mgr_ssh_id'
     extra_cmd = '-i --roster-file=/tmp/roster_tests -w -W'
     $server.run("printf '#{system_name}:\n  host: #{system_name}\n  user: root\n  passwd: linux\n' > /tmp/roster_tests")
-  elsif host.include? 'minion'
+  elsif host.include? 'minion' or host.include? 'build_host'
     cmd = 'salt'
     extra_cmd = ''
   end
@@ -306,6 +306,17 @@ Then(/^I execute spacewalk-debug on the server$/) do
   unless $CHILD_STATUS.success?
     raise "Execute command failed: #{$ERROR_INFO}: #{command_output}"
   end
+end
+
+Then(/^I get logfiles from "([^"]*)"$/) do |target|
+  `mkdir logs` unless Dir.exist?('logs')
+  node = get_target(target)
+  _out, code = node.run("journalctl > /var/log/messages")
+  _out, code = node.run("tar cfvJ /tmp/#{target}-logs.tar.xz /var/log/")
+  raise 'Generate log archive failed' unless code.zero?
+  cmd = "echo | scp -o StrictHostKeyChecking=no root@#{node.ip}:/tmp/#{target}-logs.tar.xz ./logs/ 2>&1"
+  command_output = `#{cmd}`
+  raise "Download logfiles failed: #{command_output}" unless $CHILD_STATUS.success?
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|

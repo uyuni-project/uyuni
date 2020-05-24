@@ -56,6 +56,27 @@ Inside of the testsuite, the scenarios that are tagged with
 are executed only if the minion is available.
 
 
+### Testing with a Docker and Kiwi build host
+
+Using a Docker and Kiwi build host with the testsuite is not mandatory.
+
+If you do not want such a machine, do not define `BUILD_HOST` environment
+variable before you run the testsuite. That's all.
+
+If you want a Docker and Kiwi build host, make this variable point to the machine
+that will be the build host:
+```bash
+export BUILD_HOST=my_build_host.example.com
+```
+and then run the testsuite.
+
+Inside of the testsuite, the scenarios that are tagged with
+```
+@buildhost
+```
+are executed only if the Docker and Kiwi build host is available.
+
+
 ### Testing with a SSH minion
 
 Using a SSH minion with the testsuite is not mandatory.
