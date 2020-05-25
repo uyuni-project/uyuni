@@ -1,3 +1,4 @@
+- Enable bootstrapping for Oracle Linux 6, 7 and 8
 - Set YAML loader to fix deprecation warnings
 
 -------------------------------------------------------------------
