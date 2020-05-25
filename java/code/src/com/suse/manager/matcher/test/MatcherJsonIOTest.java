@@ -6,6 +6,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.CPU;
@@ -17,12 +18,14 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -38,6 +41,7 @@ import com.suse.matcher.json.SystemJson;
 import com.suse.matcher.json.VirtualizationGroupJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 
+import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
@@ -242,6 +246,13 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
 
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         Server hostServer = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         // let's set some base product to our systems (otherwise lifecycle subscriptions aren't reported)
         InstalledProduct instProd = createInstalledProduct("SLES", "12.1", "0", "x86_64", true);
@@ -275,6 +286,13 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
 
         Server hostServer = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         // monitoring is only compatible with certain architectures. make sure we use one of them:
@@ -450,6 +468,13 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testVirtualHostManagersToJson() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+
         Server virtualHost1 = ServerTestUtils.createVirtHostWithGuests(2, systemEntitlementManager);
         Server virtualHost2 = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualHostManager vhm = VirtualHostManagerFactory.getInstance()
