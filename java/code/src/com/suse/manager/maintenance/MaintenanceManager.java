@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -775,6 +776,70 @@ public class MaintenanceManager {
         }
         log.debug(String.format("Action '%s' outside of maintenance window '%s'", action, schedule.getName()));
         return false;
+    }
+
+    private Collection<CalendarComponent> getCalendarForNow(MaintenanceSchedule ms) {
+        return ms.getCalendarOpt()
+                .map(cal -> getScheduleEventsAtDate(new Date(), ms, parseCalendar(cal)))
+                .orElse(Collections.emptyList());
+    }
+
+    /**
+     * Check if system is in maintenance mode
+     *
+     * @param server the server to check
+     * @return true when the action is inside of a maintenance window, otherwise falsegg
+     */
+    public static boolean checkIfInMaintenanceMode(MinionServer server) {
+        MaintenanceManager mm = MaintenanceManager.instance();
+        return server.getMaintenanceScheduleOpt()
+                .map(schedule -> !mm.getCalendarForNow(schedule)
+                .isEmpty())
+                .orElse(true);
+    }
+
+    /**
+     * Log the number of servers skipped and if debugging is enabled list the server ids
+     *
+     * @param servers the list of servers to log
+     */
+    public static void logSkippedMinions(List<MinionServer> servers) {
+       log.warn("Skipping action for " + servers.size() + " minions.");
+       if (log.isDebugEnabled()) {
+          String serverNames = servers.stream()
+          .map(m -> m.getId().toString())
+          .collect(Collectors.joining(","));
+          log.debug("Skipped minion ids: " + serverNames);
+       }
+    }
+
+    /**
+     * Given a list of minions, sorts by maintenance mode status, logs skipped minions
+     *
+     * @param minions servers to check
+     * @return List of minions in maintenance mode
+     */
+    public static List<Long> systemIdsMaintenanceMode(List<MinionServer> minions) {
+        MaintenanceManager mm = MaintenanceManager.instance();
+        Set<MaintenanceSchedule> schedulesInMaintMode = minions.stream()
+                .flatMap(minion -> minion.getMaintenanceScheduleOpt().stream())
+                .distinct()
+                .filter(sched -> !mm.getCalendarForNow(sched).isEmpty())
+                .collect(Collectors.toSet());
+
+        List<Long> minionsInMaintMode = minions.stream()
+                .filter(minion -> minion.getMaintenanceScheduleOpt()
+                .map(sched -> schedulesInMaintMode.contains(sched)) // keep minions that have maintenance mode
+                .orElse(true)) // or that have no maintenance schedule whatsoever
+                .map(minion -> minion.getId())
+                .collect(toList());
+
+         List<MinionServer> logList = minions.stream()
+                 .filter(m -> !minionsInMaintMode.contains(m.getId()))
+                 .collect(Collectors.toList());
+         logSkippedMinions(logList);
+
+         return minionsInMaintMode;
     }
 
     private Collection<CalendarComponent> getScheduleEventsAtDate(
