@@ -1,7 +1,6 @@
-# Copyright (c) 2018-2020 SUSE LLC
+# Copyright (c) 2018 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@buildhost
 Feature: Build image with authenticated registry
 
   Scenario: Create an authenticated image store as Docker admin
@@ -28,7 +27,7 @@ Feature: Build image with authenticated registry
     When I navigate to images build webpage
     And I select "portus_profile" from "profileId"
     And I enter "latest" as "version"
-    And I select the hostname of "build_host" from "buildHostId"
+    And I select the hostname of "sle_minion" from "buildHostId"
     And I click on "submit-btn"
     Then I wait until I see "portus_profile" text
     # Verify the status of images in the authenticated image store
@@ -55,4 +54,4 @@ Feature: Build image with authenticated registry
     When I delete the image "portus_profile" with version "latest" via XML-RPC calls
 
   Scenario: Cleanup: kill stale portus image build jobs
-    When I kill remaining Salt jobs on "build_host"
+    When I kill remaining Salt jobs on "sle_minion"
