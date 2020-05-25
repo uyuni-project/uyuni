@@ -20,12 +20,12 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.maintenance.MaintenanceManager;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Used to run a scheduled Recurring Highstate Apply action
@@ -57,9 +57,8 @@ public class RecurringStateApplyJob extends RhnJavaJob {
     }
 
     private void scheduleAction(JobExecutionContext context, RecurringAction action) {
-        List<Long> minionIds = action.computeMinions().stream()
-                .map(m -> m.getId())
-                .collect(Collectors.toList());
+        List<Long> minionIds = MaintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
+
         try {
             ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
                     Optional.of(action.isTestMode()), context.getFireTime(), null);
