@@ -735,9 +735,9 @@ public class ActionManager extends BaseManager {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(5L);
-        sa.setServer(server);
+        sa.setServerWithCheck(server);
 
-        sa.setParentAction(action);
+        sa.setParentActionWithCheck(action);
         action.addServerAction(sa);
 
         return action;
@@ -1155,9 +1155,9 @@ public class ActionManager extends BaseManager {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServer(server);
+        sa.setServerWithCheck(server);
         action.addServerAction(sa);
-        sa.setParentAction(action);
+        sa.setParentActionWithCheck(action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1529,10 +1529,10 @@ public class ActionManager extends BaseManager {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServer(srvr);
+        sa.setServerWithCheck(srvr);
 
         action.addServerAction(sa);
-        sa.setParentAction(action);
+        sa.setParentActionWithCheck(action);
 
         return action;
     }
@@ -1737,10 +1737,10 @@ public class ActionManager extends BaseManager {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServer(srvr);
+        sa.setServerWithCheck(srvr);
 
         action.addServerAction(sa);
-        sa.setParentAction(action);
+        sa.setParentActionWithCheck(action);
 
         ActionFactory.save(action);
 

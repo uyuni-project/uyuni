@@ -38,6 +38,7 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
 import com.suse.manager.utils.HttpHelper;
 import com.suse.utils.Opt;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
@@ -50,6 +51,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -189,13 +191,35 @@ public class MaintenanceManager {
 
     /**
      * Remove a MaintenanceCalendar
+     *
+     * When a calendar is removed, depending schedules loose all Maintenance Windows.
+     * This require to cancel all pending actions or let the removal fail.
+     *
      * @param user the user
      * @param calendar the calendar
+     * @param cancelScheduledActions cancel scheduled actions
+     * @return List of results
      */
-    public void remove(User user, MaintenanceCalendar calendar) {
+    public List<RescheduleResult> remove(User user, MaintenanceCalendar calendar, boolean cancelScheduledActions) {
         ensureOrgAdmin(user);
         ensureCalendarAccessible(user, calendar);
+        List<RescheduleResult> result = new LinkedList<>();
+        List<MaintenanceSchedule> schedules = listSchedulesByUserAndCalendar(user, calendar);
         getSession().remove(calendar);
+        for (MaintenanceSchedule schedule: schedules) {
+            schedule.setCalendar(null);
+            List<RescheduleStrategy> strategy = new LinkedList<>();
+            if (cancelScheduledActions) {
+                strategy = Collections.singletonList(new CancelRescheduleStrategy());
+            }
+            RescheduleResult r = manageAffectedScheduledActions(user, schedule, strategy);
+            if (!r.isSuccess()) {
+                // in case of false, update failed and we had a DB rollback
+                return Collections.singletonList(r);
+            }
+            result.add(r);
+        }
+        return result;
     }
 
     /**
@@ -250,7 +274,7 @@ public class MaintenanceManager {
      * Update a MaintenanceSchedule
      * @param user the user
      * @param name the schedule name
-     * @param details values which should be changed (name, type, calendar)
+     * @param details values which should be changed (type, calendar)
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return the updated MaintenanceSchedule
      */
@@ -259,17 +283,16 @@ public class MaintenanceManager {
         ensureOrgAdmin(user);
         MaintenanceSchedule schedule = lookupMaintenanceScheduleByUserAndName(user, name)
                 .orElseThrow(() -> new EntityNotExistsException(name));
-        if (details.containsKey("name")) {
-            // TODO: should the identifier really be changeable?
-            schedule.setName(details.get("name"));
-        }
         if (details.containsKey("type")) {
             schedule.setScheduleType(ScheduleType.lookupByLabel(details.get("type")));
         }
         if (details.containsKey("calendar")) {
-            MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, details.get("calendar"))
-                .orElseThrow(() -> new EntityNotExistsException(details.get("calendar")));
-
+            String label = details.get("calendar");
+            MaintenanceCalendar calendar = null;
+            if (!StringUtils.isBlank(label)) {
+                calendar = lookupCalendarByUserAndLabel(user, label)
+                        .orElseThrow(() -> new EntityNotExistsException(label));
+            }
             schedule.setCalendar(calendar);
         }
         save(schedule);
@@ -326,6 +349,7 @@ public class MaintenanceManager {
      * @param label the label for the calendar
      * @param url URL pointing to the Calendar Data
      * @return the created Maintenance Calendar
+     * @throws DownloadException when fetching data from url failed
      */
     public MaintenanceCalendar createMaintenanceCalendarWithUrl(User user, String label, String url)
             throws DownloadException {
@@ -344,19 +368,16 @@ public class MaintenanceManager {
      * Update a MaintenanceCalendar
      * @param user the user
      * @param label the calendar label
-     * @param details the details which should be updated (label, ical, url)
+     * @param details the details which should be updated (ical, url)
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return true when the update was successfull, otherwise false
+     * @throws DownloadException when fetching data from url failed
      */
     public List<RescheduleResult> updateCalendar(User user, String label, Map<String, String> details,
-            List<RescheduleStrategy> rescheduleStrategy) {
+            List<RescheduleStrategy> rescheduleStrategy) throws DownloadException {
         ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
                 .orElseThrow(() -> new EntityNotExistsException(label));
-        if (details.containsKey("label")) {
-            // TODO: should the identifier really be changeable?
-            calendar.setLabel(details.get("label"));
-        }
         if (details.containsKey("ical")) {
             calendar.setIcal(details.get("ical"));
         }
@@ -370,7 +391,7 @@ public class MaintenanceManager {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
             if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
-                return new LinkedList<>();
+                return Collections.singletonList(r);
             }
             result.add(r);
         }
@@ -384,9 +405,10 @@ public class MaintenanceManager {
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return true when refresh was successful, otherwise false
      * @throws EntityNotExistsException when calendar or url does not exist
+     * @throws DownloadException when fetching data from url failed
      */
     public List<RescheduleResult> refreshCalendar(User user, String label,
-            List<RescheduleStrategy> rescheduleStrategy) {
+            List<RescheduleStrategy> rescheduleStrategy) throws EntityNotExistsException, DownloadException {
         ensureOrgAdmin(user);
         MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, label)
                 .orElseThrow(() -> new EntityNotExistsException(label));
@@ -398,7 +420,7 @@ public class MaintenanceManager {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
             if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
-                return new LinkedList<>();
+                return Collections.singletonList(r);
             }
             result.add(r);
         }
@@ -408,7 +430,7 @@ public class MaintenanceManager {
     @SuppressWarnings("unchecked")
     private List<MaintenanceSchedule> listSchedulesByUserAndCalendar(User user, MaintenanceCalendar calendar) {
         return getSession()
-                .createQuery("from MaintenanceSchedule WHERE org = :org and calendar = :calendar")
+                .createQuery("from MaintenanceSchedule WHERE org = :org and calendar = :calendar ORDER BY name ASC")
                 .setParameter("org", user.getOrg())
                 .setParameter("calendar", calendar).getResultList();
     }

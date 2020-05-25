@@ -15,6 +15,7 @@
 package com.suse.manager.xmlrpc.maintenance;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
@@ -29,6 +30,7 @@ import com.suse.manager.maintenance.RescheduleResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
+import com.suse.manager.xmlrpc.DownloadFaultException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -155,7 +157,6 @@ public class MaintenanceHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "name", "Maintenance Schedule Name")
      * @xmlrpc.param
      *     #struct_begin("Maintenance Schedule Details")
-     *         #prop_desc("string", "name", "new Schedule Name")
      *         #prop_desc("string", "type", "new Schedule Type")
      *           #options()
      *               #item("single")
@@ -170,7 +171,7 @@ public class MaintenanceHandler extends BaseHandler {
      *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
      *                   #options_end()
      *               #array_end()
-     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
+     * @xmlrpc.returntype $RescheduleResultSerializer
      */
     public RescheduleResult updateSchedule(User loggedInUser, String name, Map<String, String> details,
             List<String> rescheduleStrategy) {
@@ -178,7 +179,6 @@ public class MaintenanceHandler extends BaseHandler {
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
-        validKeys.add("name");
         validKeys.add("type");
         validKeys.add("calendar");
         validateMap(validKeys, details);
@@ -300,6 +300,9 @@ public class MaintenanceHandler extends BaseHandler {
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
         }
+        catch (DownloadException d) {
+            throw new DownloadFaultException(url, d);
+        }
     }
 
     /**
@@ -316,8 +319,8 @@ public class MaintenanceHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "label", "Maintenance Calendar Label")
      * @xmlrpc.param
      *     #struct_begin("Maintenance Calendar Details")
-     *         #prop_desc("string", "label", "new Calendar Label")
      *         #prop_desc("string", "ical", "new ical Calendar data")
+     *         #prop_desc("string", "url", "new Calendar URL")
      *     #struct_end()
      * @xmlrpc.param #array_begin()
      *                 #prop_desc("string", "rescheduleStrategy", "Available:")
@@ -326,7 +329,10 @@ public class MaintenanceHandler extends BaseHandler {
      *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
      *                   #options_end()
      *               #array_end()
-     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
+     * @xmlrpc.returntype
+     *     #array_begin()
+     *       $RescheduleResultSerializer
+     *     #array_end()
      */
     public List<RescheduleResult> updateCalendar(User loggedInUser, String label, Map<String, String> details,
             List<String> rescheduleStrategy) {
@@ -334,7 +340,7 @@ public class MaintenanceHandler extends BaseHandler {
 
         // confirm that the user only provided valid keys in the map
         Set<String> validKeys = new HashSet<String>();
-        validKeys.add("label");
+        validKeys.add("url");
         validKeys.add("ical");
         validateMap(validKeys, details);
 
@@ -344,6 +350,13 @@ public class MaintenanceHandler extends BaseHandler {
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (DownloadException d) {
+            Optional.ofNullable(details.get("url")).ifPresent(
+                    url -> {
+                        throw new DownloadFaultException(url, d);
+                    });
+            throw new DownloadFaultException(d);
         }
     }
 
@@ -364,7 +377,10 @@ public class MaintenanceHandler extends BaseHandler {
      *                     #item_desc("Fail", "Let update fail. The calendar stay untouched")
      *                   #options_end()
      *               #array_end()
-     * @xmlrpc.returntype #param("boolean", "True on success, otherwise False")
+     * @xmlrpc.returntype
+     *     #array_begin()
+     *       $RescheduleResultSerializer
+     *     #array_end()
      */
     public List<RescheduleResult> refreshCalendar(User loggedInUser, String label, List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
@@ -374,6 +390,9 @@ public class MaintenanceHandler extends BaseHandler {
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
         }
+        catch (DownloadException d) {
+            throw new DownloadFaultException(d);
+        }
     }
 
     /**
@@ -381,19 +400,24 @@ public class MaintenanceHandler extends BaseHandler {
      *
      * @param loggedInUser the user
      * @param label calendar label
+     * @param cancelScheduledActions cancel actions of affected schedules
      * @throws EntityNotExistsFaultException when Maintenance Calendar does not exist
      * @return number of removed objects
      *
      * @xmlrpc.doc Remove a Maintenance Calendar
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "label", "Maintenance Calendar Label")
-     * @xmlrpc.returntype #return_int_success()
+     * @xmlrpc.param #param_desc("boolean", "cancelScheduledActions", "Cancel Actions of affected Schedules")
+     * @xmlrpc.returntype
+     *     #array_begin()
+     *       $RescheduleResultSerializer
+     *     #array_end()
      */
-    public int deleteCalendar(User loggedInUser, String label) {
+    public List<RescheduleResult> deleteCalendar(User loggedInUser, String label, boolean cancelScheduledActions) {
         ensureOrgAdmin(loggedInUser);
         Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(loggedInUser, label);
-        mm.remove(loggedInUser, calendar.orElseThrow(() -> new EntityNotExistsFaultException(label)));
-        return 1;
+        return mm.remove(loggedInUser, calendar.orElseThrow(() -> new EntityNotExistsFaultException(label)),
+                cancelScheduledActions);
     }
 
     /**
