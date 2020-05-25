@@ -25,6 +25,7 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
@@ -93,8 +94,11 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         MaintenanceManager mm = MaintenanceManager.instance();
         MaintenanceSchedule schedule = mm.createMaintenanceSchedule(user, "test-schedule-2", SINGLE, empty());
 
-        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
-        Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer sys2 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        assertTrue(MaintenanceManager.checkIfInMaintenanceMode(sys1));
+        assertTrue(MaintenanceManager.checkIfInMaintenanceMode(sys2));
 
         mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
 
@@ -125,8 +129,9 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         MaintenanceCalendar mc = mm.createMaintenanceCalendar(user, "testcalendar", calString);
         MaintenanceSchedule schedule = mm.createMaintenanceSchedule(user, "test-schedule-2", SINGLE, of(mc));
 
-        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
+        assertTrue(MaintenanceManager.checkIfInMaintenanceMode(sys1));
 
         try {
             ActionChainManager.scheduleApplyStates(user, List.of(sys1.getId()), empty(), new Date(12345), null);
