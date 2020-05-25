@@ -705,6 +705,62 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
   end
 end
 
+When(/^I enable repositories before installing Docker$/) do
+  os_version, os_family = get_os_version($build_host)
+
+  # Distribution
+  repos = "os_pool_repo os_update_repo"
+  puts $build_host.run("zypper mr --enable #{repos}")
+
+  # Tools
+  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+  puts $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+
+  # Development
+  # (we do not install Python 2 repositories in this branch
+  #  because they are not needed anymore starting with version 4.1)
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = "devel_pool_repo devel_updates_repo"
+    puts $build_host.run("zypper mr --enable #{repos}")
+  end
+
+  # Containers
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/
+    repos = "containers_pool_repo containers_updates_repo"
+    puts $build_host.run("zypper mr --enable #{repos}")
+  end
+
+  $build_host.run('zypper -n --gpg-auto-import-keys ref')
+end
+
+When(/^I disable repositories after installing Docker$/) do
+  os_version, os_family = get_os_version($build_host)
+
+  # Distribution
+  repos = "os_pool_repo os_update_repo"
+  puts $build_host.run("zypper mr --disable #{repos}")
+
+  # Tools
+  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+  puts $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+
+  # Development
+  # (we do not install Python 2 repositories in this branch
+  #  because they are not needed anymore starting with version 4.1)
+  if os_family =~ /^sles/ && os_version =~ /^15/
+    repos = "devel_pool_repo devel_updates_repo"
+    puts $build_host.run("zypper mr --disable #{repos}")
+  end
+
+  # Containers
+  unless os_family =~ /^opensuse/ || os_version =~ /^11/
+    repos = "containers_pool_repo containers_updates_repo"
+    puts $build_host.run("zypper mr --disable #{repos}")
+  end
+
+  $build_host.run('zypper -n --gpg-auto-import-keys ref')
+end
+
 When(/^I enable repositories before installing branch server$/) do
   os_version, os_family = get_os_version($proxy)
 
