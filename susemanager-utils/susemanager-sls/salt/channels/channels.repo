@@ -15,13 +15,15 @@ autorefresh={{ args['autorefresh'] }}
 {%- if grains['os_family'] == 'RedHat' %}
 baseurl={{protocol}}://{{hostname}}:{{port}}/rhn/manager/download/{{ chan }}
 susemanager_token={{ args['token'] }}
+gpgcheck={{ 1 if args['gpgcheck'] == "1" or args['pkg_gpgcheck'] != "0" else 0 }}
+repo_gpgcheck={{ args['gpgcheck'] }}
 {%- else %}
 baseurl={{protocol}}://{{hostname}}:{{port}}/rhn/manager/download/{{ chan }}?{{ args['token'] }}
-{%- endif %}
-type={{ args['type'] }}
 gpgcheck={{ args['gpgcheck'] }}
 repo_gpgcheck={{ args['repo_gpgcheck'] }}
 pkg_gpgcheck={{ args['pkg_gpgcheck'] }}
+{%- endif %}
+type={{ args['type'] }}
 {%- endif %}
 
 {% endfor %}
