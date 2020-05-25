@@ -38,6 +38,7 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
 import com.suse.manager.utils.HttpHelper;
 import com.suse.utils.Opt;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
@@ -286,9 +287,12 @@ public class MaintenanceManager {
             schedule.setScheduleType(ScheduleType.lookupByLabel(details.get("type")));
         }
         if (details.containsKey("calendar")) {
-            MaintenanceCalendar calendar = lookupCalendarByUserAndLabel(user, details.get("calendar"))
-                .orElseThrow(() -> new EntityNotExistsException(details.get("calendar")));
-
+            String label = details.get("calendar");
+            MaintenanceCalendar calendar = null;
+            if (!StringUtils.isBlank(label)) {
+                calendar = lookupCalendarByUserAndLabel(user, label)
+                        .orElseThrow(() -> new EntityNotExistsException(label));
+            }
             schedule.setCalendar(calendar);
         }
         save(schedule);
