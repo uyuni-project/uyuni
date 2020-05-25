@@ -1,10 +1,11 @@
-# Copyright (c) 2019-2020 SUSE LLC
+# Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #
 # 1) delete SLES minion and register again with bootstrap script
 # 2) subscribe minion to a base channels
 # 3) install and remove a package
+# 4) cleanup: re-add build host entitlements
 
 @sle_minion
 Feature: Register a Salt minion via Bootstrap-script
@@ -81,3 +82,39 @@ Feature: Register a Salt minion via Bootstrap-script
   Scenario: Cleanup: remove package from script-bootstrapped SLES minion
    When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
    Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
+
+  Scenario: Cleanup: turn the SLES minion into a container build host after script-bootstrap
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Details" in the content area
+    And I follow "Properties" in the content area
+    And I check "container_build_host"
+    And I click on "Update Properties"
+    Then I should see a "Container Build Host type has been applied." text
+    And I should see a "Note: This action will not result in state application" text
+    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
+    And I should see a "System properties changed" text
+
+  Scenario: Cleanup: turn the SLES minion into a OS image build host after script-bootstrap
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Details" in the content area
+    And I follow "Properties" in the content area
+    And I check "osimage_build_host"
+    And I click on "Update Properties"
+    Then I should see a "OS Image Build Host type has been applied." text
+    And I should see a "Note: This action will not result in state application" text
+    And I should see a "To apply the state, either use the states page or run state.highstate from the command line." text
+    And I should see a "System properties changed" text
+
+  Scenario: Cleanup: apply the highstate to build host after script-bootstrap
+    Given I am on the Systems overview page of this "sle_minion"
+    When I wait until no Salt job is running on "sle_minion"
+    And I enable repositories before installing Docker
+    And I apply highstate on "sle_minion"
+    And I wait until "docker" service is active on "sle_minion"
+    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle_minion"
+    And I disable repositories after installing Docker
+
+  Scenario: Cleanup: check that the minion is now a build host after script-bootstrap
+    Given I am on the Systems overview page of this "sle_minion"
+    Then I should see a "[Container Build Host]" text
+    Then I should see a "[OS Image Build Host]" text

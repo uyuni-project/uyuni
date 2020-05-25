@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2020 SUSE LLC
+# Copyright (c) 2010-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -114,10 +114,6 @@ end
 
 Before('@ssh_minion') do
   skip_this_scenario unless $ssh_minion
-end
-
-Before('@buildhost') do
-  skip_this_scenario unless $build_host
 end
 
 Before('@virthost_kvm') do

@@ -61,7 +61,6 @@ Avoid reinventing function names and variables. Cucumber is all about human-read
    * "proxy": feature testing proxy side
    * "min": feature testing SLES minions (not SSH)
    * "minssh": feature testing SSH SLES minions
-   * "buildhost": feature using Kiwi and Docker build host
    * "minkvm": feature testing KVM host SLES minions
    * "minxen": feature testing Xen host SLES minions
    * "ubuntu": feature testing Ubuntu
