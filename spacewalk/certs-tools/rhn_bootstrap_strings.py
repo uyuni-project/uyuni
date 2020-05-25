@@ -374,6 +374,9 @@ if [ "$INSTALLER" == yum ]; then
         if [ -L /usr/share/doc/sles_es-release ]; then
             BASE="res"
             VERSION=6
+        elif [ -f /etc/oracle-release ]; then
+            grep -v '^#' /etc/oracle-release | grep -q '\(Oracle\)' && BASE="oracle"
+            VERSION=`grep -v '^#' /etc/oracle-release | grep -Po '(?<=release )\d+'`
         elif [ -f /etc/centos-release ]; then
             grep -v '^#' /etc/centos-release | grep -q '\(CentOS\)' && BASE="centos"
             VERSION=`grep -v '^#' /etc/centos-release | grep -Po '(?<=release )\d+'`
