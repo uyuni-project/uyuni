@@ -9,7 +9,7 @@
 #   java.kiwi_os_image_building_enabled = true
 # which means "Enable Kiwi OS Image building"
 
-@buildhost
+@sle_minion
 Feature: Build OS images
 
   Scenario: Create an OS image profile with activation key
@@ -31,11 +31,11 @@ Feature: Build OS images
     Given I am authorized as "kiwikiwi" with password "kiwikiwi"
     When I navigate to images build webpage
     And I select "suse_os_image" from "profileId"
-    And I select the hostname of "build_host" from "buildHostId"
+    And I select the hostname of "sle_minion" from "buildHostId"
     And I click on "submit-btn"
 
   Scenario: Check the OS image built as Kiwi image administrator
-    Given I am on the Systems overview page of this "build_host"
+    Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "[OS Image Build Host]" text
     When I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
     And I wait at most 300 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
