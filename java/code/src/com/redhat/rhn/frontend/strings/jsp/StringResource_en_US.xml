@@ -21661,6 +21661,15 @@ given channel.</source>
       <trans-unit id="Formula">
         <source>Formula</source>
       </trans-unit>
+      <trans-unit id="Maintenance Windows">
+        <source>Maintenance Windows</source>
+      </trans-unit>
+      <trans-unit id="Schedules">
+        <source>Schedules</source>
+      </trans-unit>
+      <trans-unit id="Calendars">
+        <source>Calendars</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
