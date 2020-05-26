@@ -65,7 +65,7 @@ public class MaintenanceController {
      * @param jade the template engine
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/schedule/maintenance-schedules",
+        get("/manager/schedule/maintenance/schedules",
                 withUserPreferences(withCsrfToken(withUser(MaintenanceController::maintenanceSchedules))),
                 jade);
         get("/manager/api/maintenance", withUser(MaintenanceController::list));
@@ -84,7 +84,9 @@ public class MaintenanceController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView maintenanceSchedules(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/maintenance-windows.jade");
+        Map<String, String> params = new HashMap<>();
+        params.put("type", "schedule");
+        return new ModelAndView(params, "templates/schedule/maintenance-windows.jade");
     }
 
     public static String list(Request request, Response response, User user) {
