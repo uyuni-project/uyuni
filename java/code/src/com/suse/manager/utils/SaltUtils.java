@@ -62,6 +62,7 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -1336,9 +1337,9 @@ public class SaltUtils {
         // see schema/spacewalk/common/tables/rhnServerPackage.sql
         sb.append(p.getName().getName());
         sb.append("-");
-        sb.append(p.getEvr().toString());
+        sb.append(p.getEvr().toUniversalEvrString());
         sb.append(".");
-        sb.append(Optional.ofNullable(p.getArch()).map(a -> a.getName()).orElse("unknown"));
+        sb.append(Optional.ofNullable(p.getArch()).map(PackageArch::toUniversalArchString).orElse("unknown"));
 
         return sb.toString();
     }
@@ -1361,8 +1362,8 @@ public class SaltUtils {
                 new PackageEvr(
                         info.getEpoch().orElse(null),
                         info.getVersion().get(),
-                        info.getRelease().orElse("0")
-                ).toString()
+                        info.getRelease().orElse("X")
+                ).toUniversalEvrString()
         );
         sb.append(".");
         sb.append(info.getArchitecture().get());
