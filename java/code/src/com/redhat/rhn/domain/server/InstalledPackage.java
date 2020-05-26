@@ -21,9 +21,11 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  *
@@ -190,5 +192,15 @@ public class InstalledPackage implements Serializable, Comparable<InstalledPacka
             return -1;
         }
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("name", Optional.of(name).map(PackageName::getName).orElse(null))
+            .append("evr", evr)
+            .append("archLabel", Optional.of(arch).map(PackageArch::getLabel).orElse(null))
+            .append("serverId", Optional.of(server).map(Server::getId).orElse(null))
+            .toString();
     }
 }
