@@ -1,3 +1,3 @@
 export default {
-  'maintenance/maintenance-schedules': () => import('./maintenance-schedules'),
+  'maintenance/maintenance-windows': () => import('./maintenance-windows'),
 }

@@ -1,6 +1,6 @@
 include /templates/common.jade
 
-#maintenance-schedules
+#maintenance-windows
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
@@ -11,5 +11,5 @@ script(type='text/javascript').
 +userPreferences
 
 script(type='text/javascript').
-    spaImportReactPage('maintenance/maintenance-schedules')
-        .then(function (module) { module.renderer('maintenance-schedules') });
+    spaImportReactPage('maintenance/maintenance-windows')
+        .then(function (module) { module.renderer('maintenance-windows') });
