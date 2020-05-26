@@ -1200,4 +1200,11 @@ ORDER BY CC.modified DESC
         VALUES(:original_id, :channel_id)
     </query>
 </write-mode>
+
+<callable-mode name="analyze_channel_packages">
+    <query>
+    ANALYZE rhnChannelPackage
+    </query>
+</callable-mode>
+
 </datasource_modes>
