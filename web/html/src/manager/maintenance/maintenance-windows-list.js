@@ -10,7 +10,7 @@ const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
 const {Column} = require("components/table/Column");
 const {Table} = require("components/table/Table");
 
-class MaintenanceSchedulesList extends React.Component {
+class MaintenanceWindowsList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -113,5 +113,5 @@ class MaintenanceSchedulesList extends React.Component {
 }
 
 module.exports = {
-    MaintenanceSchedulesList: MaintenanceSchedulesList
+    MaintenanceWindowsList: MaintenanceWindowsList
 };

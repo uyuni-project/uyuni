@@ -12,7 +12,7 @@ const { Text } = require('components/input/Text');
 const { Radio } = require('components/input/Radio');
 const { Check } = require('components/input/Check');
 
-class MaintenanceSchedulesEdit extends React.Component {
+class MaintenanceWindowsEdit extends React.Component {
     constructor(props) {
         super(props);
 
@@ -250,5 +250,5 @@ class MaintenanceSchedulesEdit extends React.Component {
 }
 
 module.exports = {
-    MaintenanceSchedulesEdit: MaintenanceSchedulesEdit
+    MaintenanceWindowsEdit: MaintenanceWindowsEdit
 };

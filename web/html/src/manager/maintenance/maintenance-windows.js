@@ -5,9 +5,9 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 const Messages = require("components/messages").Messages;
 const Network = require("utils/network");
-const {MaintenanceSchedulesDetails} = require("./maintenance-schedules-details");
-const {MaintenanceSchedulesList} = require("./maintenance-schedules-list");
-const {MaintenanceSchedulesEdit} =  require("./maintenance-schedules-edit");
+const {MaintenanceWindowsDetails} = require("./maintenance-windows-details");
+const {MaintenanceWindowsList} = require("./maintenance-windows-list");
+const {MaintenanceWindowsEdit} =  require("./maintenance-windows-edit");
 const MessagesUtils = require("components/messages").Utils;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
@@ -25,7 +25,7 @@ function getHashAction() {
     return match ? match[1] : undefined;
 }
 
-class MaintenanceSchedules extends React.Component {
+class MaintenanceWindows extends React.Component {
 
     constructor(props) {
         super(props);
@@ -176,20 +176,20 @@ class MaintenanceSchedules extends React.Component {
             <div>
                 {messages}
                 { (this.state.action === 'details' && this.state.selected) ?
-                    <MaintenanceSchedulesDetails data={this.state.selected}
+                    <MaintenanceWindowsDetails data={this.state.selected}
                                             onCancel={this.handleForwardAction}
                                             onEdit={this.handleEditAction}
                                             onDelete={this.deleteSchedule}
                     />
                     : (this.state.action === 'edit' && this.state.selected) ||
                     this.state.action === 'create' ?
-                        <MaintenanceSchedulesEdit calendarNames={this.state.calendarNames}
+                        <MaintenanceWindowsEdit calendarNames={this.state.calendarNames}
                                                   schedule={this.state.selected}
                                                   onEdit={this.updateSchedule}
                                                   onActionChanged={this.handleForwardAction}
                         />
                         :
-                        <MaintenanceSchedulesList data={this.state.schedules}
+                        <MaintenanceWindowsList data={this.state.schedules}
                                              onActionChanged={this.handleForwardAction}
                                              onToggleActive={this.toggleActive}
                                              onSelect={this.handleDetailsAction}
@@ -203,6 +203,6 @@ class MaintenanceSchedules extends React.Component {
 }
 
 export const renderer = () => SpaRenderer.renderNavigationReact(
-    <MaintenanceSchedules/>,
-    document.getElementById('maintenance-schedules')
+    <MaintenanceWindows/>,
+    document.getElementById('maintenance-windows')
 );
