@@ -1317,16 +1317,21 @@ public class ChannelFactory extends HibernateFactory {
      * @return vendor content source if it exists
      */
     public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
-        String [] parts = repoUrl.split("\\?");
-        String repoUrlPrefix = parts[0];
         Criteria criteria = getSession().createCriteria(ContentSource.class);
         criteria.add(Restrictions.isNull("org"));
-        if (parts.length > 1) {
-            criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?',
-                MatchMode.START));
+        if (repoUrl.contains("mirrorlist.centos.org")) {
+            criteria.add(Restrictions.eq("sourceUrl", repoUrl));
         }
         else {
-            criteria.add(Restrictions.eq("sourceUrl", repoUrlPrefix));
+            String [] parts = repoUrl.split("\\?");
+            String repoUrlPrefix = parts[0];
+            if (parts.length > 1) {
+                criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?',
+                        MatchMode.START));
+            }
+            else {
+                criteria.add(Restrictions.eq("sourceUrl", repoUrlPrefix));
+            }
         }
         return (ContentSource) criteria.uniqueResult();
     }

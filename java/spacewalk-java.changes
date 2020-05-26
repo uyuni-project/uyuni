@@ -2,6 +2,12 @@
 - Implement module picker controls for CLM AppStream filters
 
 -------------------------------------------------------------------
+Tue May 26 11:22:02 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
+- handle centos urls that contain repo target in query string (bsc#1171996)
+
+-------------------------------------------------------------------
 Wed May 20 10:55:24 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.9-1
