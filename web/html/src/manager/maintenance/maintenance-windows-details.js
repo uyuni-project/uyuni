@@ -9,7 +9,7 @@ const { TopPanel } = require('components/panels/TopPanel');
 const {Messages} = require("components/messages");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
-class MaintenanceSchedulesDetails extends React.Component {
+class MaintenanceWindowsDetails extends React.Component {
 
     constructor(props) {
         super(props);
@@ -94,5 +94,5 @@ class MaintenanceSchedulesDetails extends React.Component {
 }
 
 module.exports = {
-    MaintenanceSchedulesDetails: MaintenanceSchedulesDetails
+    MaintenanceWindowsDetails: MaintenanceWindowsDetails
 };

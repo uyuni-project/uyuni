@@ -19,7 +19,7 @@ import Groups from "./groups";
 import Highstate from "./state";
 import Images from "./images";
 import Login from "./login";
-import MaintenanceSchedules from "./maintenance";
+import MaintenanceWindows from "./maintenance";
 import Minion from "./minion";
 import Notifications from "./notifications";
 import Organizations from "./organizations";
@@ -39,7 +39,7 @@ const pages = {
   ...Highstate,
   ...Images,
   ...Login,
-  ...MaintenanceSchedules,
+  ...MaintenanceWindows,
   ...Minion,
   ...Notifications,
   ...Organizations,
