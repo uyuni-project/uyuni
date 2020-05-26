@@ -58,8 +58,8 @@
     "react-dom": "^16.8.6",
     "react-hot-loader": "^4.12.9",
     "react-select": "^3.0.8",
+    "react-toastify": "^6.0.5",
     "senna": "^2.7.8",
-    "toastr": "^2.1.4",
     "use-immer": "^0.3.0"
   },
   "resolutions": {
