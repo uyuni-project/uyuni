@@ -1359,4 +1359,12 @@ public class ChannelFactory extends HibernateFactory {
     public static void save(ProductName productName) {
         singleton.saveObject(productName);
     }
+
+    /**
+     * Analyzes the rhnChannelPackage table, useful to update statistics after massive changes.
+     */
+    public static void analyzeChannelPackages() {
+        var m = ModeFactory.getCallableMode("Channel_queries", "analyze_channel_packages");
+        m.execute(new HashMap<>(), new HashMap<>());
+    }
 }

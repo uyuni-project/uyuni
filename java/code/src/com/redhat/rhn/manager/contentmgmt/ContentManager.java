@@ -851,7 +851,7 @@ public class ContentManager {
         alignErrata(src, tgt, errataFilters, user);
 
         // a lot was inserted into rhnChannelPackage at this point. Make sure stats are up-to-date before continuing
-        ChannelManager.analyzeChannelPackages();
+        ChannelFactory.analyzeChannelPackages();
 
         // update the channel newest packages cache
         ChannelFactory.refreshNewestPackageCache(tgt, "java::alignPackages");
