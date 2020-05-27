@@ -54,7 +54,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
         addDispatchCall("errataconfirm.jsp.confirm");
 
-        addRequestParameter(DatePicker.USE_DATE, "true");
+        addRequestParameter(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.DATE.asString());
         // Create System
         Server server = ServerFactoryTest.createTestServer(user, true);
 

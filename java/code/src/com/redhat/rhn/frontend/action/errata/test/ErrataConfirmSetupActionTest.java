@@ -41,7 +41,7 @@ public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
         // Create Errata
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         request.addParameter("eid", e.getId().toString());
-        request.addParameter(DatePicker.USE_DATE, "true");
+        request.addParameter(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.DATE.asString());
 
         //Create a System
         Server server = ServerFactoryTest.createTestServer(user, true);
