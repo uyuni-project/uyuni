@@ -20,6 +20,7 @@ import org.apache.struts.action.DynaActionForm;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -65,7 +66,40 @@ public class DatePicker {
      * Typical form field when dealing with a date picker.
      * @see com.redhat.rhn.frontend.struts.StrutsDelegate
      */
-    public static final String USE_DATE = "use_date";
+    public static final String SCHEDULE_TYPE = "schedule_type"; // date/action_chain/maintenance_window
+
+    public enum ScheduleType {
+        DATE("date"),
+        ACTION_CHAIN("action_chain"),
+        MAINTENANCE_WINDOW("maintenance_window");
+
+        private String type;
+
+        ScheduleType(String typeIn) {
+            type = typeIn;
+        }
+
+        /**
+         * Gets the type.
+         *
+         * @return type
+         */
+        public String asString() {
+            return type;
+        }
+
+        /**
+         * Lookup {@link ScheduleType} based on string value
+         * @param s the string value
+         * @return the {@link ScheduleType}
+         */
+        public static ScheduleType lookupByString(String s) {
+            return Arrays.stream(values())
+                    .filter(v -> v.type.equals(s))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Unsupported type " + s));
+        }
+    }
 
     //
     // Names of the subfields for the date picker

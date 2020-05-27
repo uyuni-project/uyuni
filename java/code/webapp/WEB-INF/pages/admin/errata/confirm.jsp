@@ -44,7 +44,7 @@
                     </rhn:column>
                 </rhn:listdisplay>
                 <html:hidden property="eid" value="${param.eid}" />
-                <rhn:hidden name="use_date" value="true" />
+                <rhn:hidden name="schedule_type" value="date" />
             </rhn:list>
         </html:form>
     </body>

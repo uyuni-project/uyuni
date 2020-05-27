@@ -7,7 +7,7 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-sm-3 control-label">
-                <input type="radio" name="use_date" value="true" checked="checked" id="schedule-by-date"/>
+                <input type="radio" name="schedule_type" value="date" checked="checked" id="schedule-by-date"/>
                 <label for="schedule-by-date"><bean:message key="schedule.jsp.at"/></label>
             </div>
             <div class="col-sm-6">
@@ -19,6 +19,9 @@
         <div class="form-group">
             <div class="col-sm-3 control-label">
                 <input type="radio" name="use_date" value="false" id="schedule-by-action-chain"/>
+        <div class="form-group">
+            <div class="col-sm-3 control-label">
+                <input type="radio" name="schedule_type" value="action_chain" id="schedule-by-action-chain"/>
                 <label for="schedule-by-action-chain"><bean:message key="schedule-options.action-chain"/></label>
             </div>
             <div class="col-sm-6">

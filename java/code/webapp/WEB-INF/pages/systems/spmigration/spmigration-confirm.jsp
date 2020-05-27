@@ -48,7 +48,7 @@
 
   <html:form method="post" action="/systems/details/SPMigration.do?sid=${system.id}">
     <hr />
-    <rhn:hidden name="use_date" value="true" />
+    <rhn:hidden name="schedule_type" value="date" />
     <div class="form-horizontal">
       <div class="form-group">
         <label class="col-sm-3 control-label"><bean:message key="confirm.jsp.than"/></label>
