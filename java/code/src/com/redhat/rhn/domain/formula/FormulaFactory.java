@@ -299,10 +299,9 @@ public class FormulaFactory {
      * @param minionId the minionId
      * @param formulaName the name of the formula
      * @throws IOException if an IOException occurs while saving the data
-     * @throws UnsupportedOperationException if the server is not a salt minion
      */
-    public static void saveServerFormulaData(Map<String, Object> formData, String minionId,
-            String formulaName) throws IOException, UnsupportedOperationException {
+    public static void saveServerFormulaData(Map<String, Object> formData, String minionId, String formulaName)
+            throws IOException {
         // Add the monitoring entitlement if at least one of the exporters is enabled
         if (PROMETHEUS_EXPORTERS.equals(formulaName)) {
             MinionServerFactory.findByMinionId(minionId).ifPresent(s -> {
@@ -519,9 +518,10 @@ public class FormulaFactory {
      * @param selectedFormulas the new selected formulas to save
      * @param org the org, the group belongs to
      * @throws IOException if an IOException occurs while saving the data
+     * @throws ValidatorException if a formula is not present (unchecked)
      */
-    public static synchronized void saveGroupFormulas(Long groupId,
-            List<String> selectedFormulas, Org org) throws IOException {
+    public static synchronized void saveGroupFormulas(Long groupId, List<String> selectedFormulas, Org org)
+            throws IOException, ValidatorException {
         validateFormulaPresence(selectedFormulas);
         saveFormulaOrder();
         File dataFile = new File(getGroupDataFile());
@@ -615,11 +615,10 @@ public class FormulaFactory {
      * @param minionId the minion id
      * @param selectedFormulas the new selected formulas to save
      * @throws IOException if an IOException occurs while saving the data
-     * @throws UnsupportedOperationException in case serverId does not represent a minion
+     * @throws ValidatorException if a formula is not present (unchecked)
      */
-    public static synchronized void saveServerFormulas(String minionId,
-            List<String> selectedFormulas) throws IOException,
-            UnsupportedOperationException {
+    public static synchronized void saveServerFormulas(String minionId, List<String> selectedFormulas)
+            throws IOException, ValidatorException {
         validateFormulaPresence(selectedFormulas);
         saveFormulaOrder();
         File dataFile = new File(getServerDataFile());

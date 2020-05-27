@@ -14,12 +14,6 @@
  */
 package com.suse.manager.reactor.test;
 
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
-import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
-import static java.util.Collections.emptyMap;
-import static java.util.Collections.singletonMap;
-
 import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -69,30 +63,23 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import com.suse.manager.webui.services.iface.RedhatProductInfo;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
+import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
+import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Grains;
-import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
-
-import org.apache.commons.io.FileUtils;
-import org.jmock.Expectations;
-import org.jmock.lib.legacy.ClassImposteriser;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -109,6 +96,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import org.apache.commons.io.FileUtils;
+import org.jmock.Expectations;
+import org.jmock.lib.legacy.ClassImposteriser;
+
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
+import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
+import static java.util.Collections.singletonMap;
 
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.
@@ -820,8 +815,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             HashSet<Channel> channels = new HashSet<>();
 
             // Child channels for auto-selected product must be added
+            // --> base + mandatories + activation key selected channels
             channels.add(baseChannelX8664);
-            baseChannelX8664.getAccessibleChildrenFor(user)
+            ChannelsUtils.mandatoryChannelsByBaseChannel(baseChannelX8664)
+                    .forEach(channel -> channels.add(channel));
+            ActivationKeyFactory.lookupByKey(key).getChannels().stream()
+                    .filter(c -> c.getParentChannel().getId().equals(baseChannelX8664.getId()))
                     .forEach(channel -> channels.add(channel));
             assertEquals(channels, minion.getChannels());
             assertTrue(minion.getFqdns().isEmpty());

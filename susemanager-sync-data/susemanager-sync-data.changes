@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed May 20 11:07:01 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.4-1
+- add centos/oraclelinux 6-8 
+- add SLE Live Patching (Z-Series) and SLES LTSS 12 SP3 ARM64
+
+-------------------------------------------------------------------
 Wed Mar 11 11:03:53 CET 2020 - jgonzalez@suse.com
 
 - version 4.1.3-1

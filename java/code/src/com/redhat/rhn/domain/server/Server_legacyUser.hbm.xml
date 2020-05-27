@@ -434,7 +434,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </sql-query>
 
-
+    <sql-query name="Server.findSimpleMinionsByServerIds">
+        <![CDATA[
+            SELECT m.server_id, m.minion_id
+            FROM suseMinionInfo m
+            WHERE m.server_id IN (:serverIds)
+        ]]>
+    </sql-query>
+    
     <sql-query name="Server.lookupAdministrators">
         <![CDATA[select {wc.*}
                                                 from WEB_CONTACT wc
@@ -571,5 +578,5 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 JOIN rhnSet rset ON rset.element = s.id AND rset.user_id = :user_id AND rset.label = 'system_list'
         ]]>
     </sql-query>
-
+    
 </hibernate-mapping>

@@ -140,7 +140,7 @@ def find_delete_from_proxies(tftpbootdir, settings, lcache='/var/lib/cobbler', l
         if delete_from_proxies(relpath, settings, logger):
             changed = True
             del_paths.append(path)
-            logger.info("Delete successfull")
+            logger.info("Delete successful")
         else:
             logger.info("Delete failed")
 
@@ -208,7 +208,7 @@ def check_push(fn, tftpbootdir, settings, lcache='/var/lib/cobbler', logger=None
         if sync_to_proxies(fn, tftpbootdir, format, settings, logger):
             db[fn] = (mtime,key)
             simplejson.dump(db, open(dbfile,'w'))
-            logger.info("Push successfull")
+            logger.info("Push successful")
         else:
             logger.info("Push failed")
 

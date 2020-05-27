@@ -8,10 +8,12 @@ from re import match
 from sys import exit
 import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 
 PRJ = 'systemsmanagement:Uyuni:Master'
 PACKAGES = ['patterns-uyuni', 'uyuni-docs_en',
             'release-notes-uyuni', 'release-notes-uyuni-proxy']
+PRODUCTS = ['Uyuni-Server', 'Uyuni-Proxy']
 CONFIG = '%s/../web/conf/rhn_web.conf' % dirname(realpath(__file__))
 
 
@@ -23,8 +25,8 @@ def get_webui_version(conf):
         return config.get('section', 'web.version.uyuni')
 
 
-def obs_get_package_ver(args, project, package):
-    url = "{0}/source/{1}/{2}/{2}.spec".format(args.apiurl, project, package)
+def obs_get_file(args, file_path):
+    url = "{0}/source/{1}".format(args.apiurl, file_path)
     user = args.user
     password = args.password
     password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
@@ -37,10 +39,21 @@ def obs_get_package_ver(args, project, package):
     charset = resource.headers.get_content_charset()
     if charset is None:
         charset = 'utf-8'
-    for line in resource.read().decode(charset).split('\n'):
+    return resource.read().decode(charset)
+
+
+def obs_get_package_ver(args, project, package):
+    file_path = "{0}/{1}/{1}.spec".format(project, package)
+    for line in obs_get_file(args, file_path).split('\n'):
         version = match('^Version:\s*(\S+)$', line)
         if version:
             return version.group(1)
+
+
+def obs_get_product_ver(args, project, product):
+    file_path = "{0}/000product/{1}.product".format(project, product)
+    root = ET.fromstring(obs_get_file(args, file_path))
+    return root.find("./products/product/[name='%s']/version" % product).text
 
 
 def parse_arguments():
@@ -85,12 +98,21 @@ webui_version = get_webui_version(CONFIG)
 print_info("WebUI version from the config file is '%s'" % webui_version)
 
 error = False
+
 for package in PACKAGES:
     package_ver = obs_get_package_ver(args, PRJ, package)
     if package_ver == webui_version:
         print_ok("{} version ({}) is OK".format(package, package_ver))
     else:
         print_error("{} version ({}) is WRONG".format(package, package_ver))
+        error = True
+
+for product in PRODUCTS:
+    product_ver = obs_get_product_ver(args, PRJ, product)
+    if product_ver == webui_version:
+        print_ok("Product definition {} version ({}) is OK".format(product, product_ver))
+    else:
+        print_error("Product definition {} version ({}) is WRONG".format(product, product_ver))
         error = True
 
 exit(error)

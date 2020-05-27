@@ -93,6 +93,16 @@ public class ChannelsJson {
         }
 
         /**
+         * Instantiates a new Channel json from a Channel object
+         *
+         * @param channel the channel object
+         */
+        public ChannelJson(Channel channel) {
+            this(channel.getId(), channel.getLabel(), channel.getName(), channel.isCustom(), false,
+                    channel.isCloned(), channel.getChannelArch().getLabel());
+        }
+
+        /**
          * @return the id
          */
         public Long getId() {

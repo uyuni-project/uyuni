@@ -17,18 +17,22 @@ package com.redhat.rhn.manager.formula.test;
 import static com.redhat.rhn.domain.formula.FormulaFactory.PROMETHEUS_EXPORTERS;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.InvalidFormulaException;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
+import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -37,16 +41,11 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Json;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.cobbler.test.MockConnection;
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -81,6 +80,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         saltServiceMock = mock(SaltService.class);
         manager.setSystemQuery(saltServiceMock);
         metadataDir = Files.createTempDirectory("metadata");
+        FormulaFactory.setDataDir(tmpSaltRoot.toString());
+        FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
         createMetadataFiles();
     }
 
@@ -211,61 +212,78 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
-    /**
-     * Test the conditions in FormulaManager.isMonitoringCleanupNeeded().
-     * @throws Exception
-     */
-    public void testIsMonitoringCleanupNeeded() throws Exception {
+    public void testGetCombinedFormulaDataForSystems() throws Exception {
+        // minion with only group formulas
+        User user = UserTestUtils.findNewUser(TestStatics.TESTUSER, TestStatics.TESTORG);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        FormulaFactory.setMetadataDirOfficial(metadataDir.toString() + File.separator);
+        minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        assertFalse(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));
 
-        // No group or system level assignment of the `prometheus-exporters` Formula
-        assertFalse(manager.isMonitoringCleanupNeeded(minion));
-
-        // Create a group level assignment of the Formula
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        SystemManager.addServerToServerGroup(minion, group);
         FormulaFactory.saveGroupFormulas(group.getId(), Arrays.asList(PROMETHEUS_EXPORTERS), user.getOrg());
 
-        // Save data that enables monitoring
         Map<String, Object> formulaData = new HashMap<>();
         formulaData.put("node_exporter", Collections.singletonMap("enabled", true));
-        formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
-        assertTrue(manager.isMonitoringCleanupNeeded(minion));
-
-        // Save data that disables monitoring
-        formulaData.put("node_exporter", Collections.singletonMap("enabled", false));
         formulaData.put("postgres_exporter", Collections.singletonMap("enabled", false));
-        formulaData.put("apache_exporter", Collections.singletonMap("enabled", false));
-        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
-        assertFalse(manager.isMonitoringCleanupNeeded(minion));
 
-        // Create a system level assignment of the Formula
-        FormulaFactory.saveServerFormulas(minion.getMinionId(), Arrays.asList(PROMETHEUS_EXPORTERS));
-        FormulaFactory.saveServerFormulaData(formulaData, minion.getMinionId(), PROMETHEUS_EXPORTERS);
-        assertTrue(manager.isMonitoringCleanupNeeded(minion));
+        FormulaFactory.saveGroupFormulaData(formulaData, group.getId(), user.getOrg(), PROMETHEUS_EXPORTERS);
+
+        // Server should have a monitoring entitlement after being added to the group
+        SystemManager.addServerToServerGroup(minion, group);
+        assertTrue(SystemManager.hasEntitlement(minion.getId(), EntitlementManager.MONITORING));
+
+        List<FormulaData> combinedPrometheusExportersFormulas = this.manager
+                .getCombinedFormulaDataForSystems(user, Arrays.asList(minion.getId()), PROMETHEUS_EXPORTERS);
+
+        assertNotNull(combinedPrometheusExportersFormulas);
+        assertEquals(combinedPrometheusExportersFormulas.size(), 1);
+
+        FormulaData combinedFormulaData = combinedPrometheusExportersFormulas.get(0);
+
+        assertEquals(combinedFormulaData.getSystemID(), minion.getId());
+        assertEquals(combinedFormulaData.getMinionID(), minion.getMinionId());
+        assertNotNull(combinedFormulaData.getFormulaValues().get("postgres_exporter"));
+        assertNotNull(combinedFormulaData.getFormulaValues().get("apache_exporter"));
+        assertNotNull(combinedFormulaData.getFormulaValues().get("node_exporter"));
+
+        // minion with only system formulas with no group formula
+        minion = MinionServerFactoryTest.createTestMinionServer(user);
+
+        String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
+        Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
+
+        FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
+        context().checking(new Expectations() {{
+            allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
+        }});
+        manager.saveServerFormulaData(user,minion.getId(), formulaName, contents);
+
+        combinedPrometheusExportersFormulas = this.manager
+                .getCombinedFormulaDataForSystems(user, Arrays.asList(minion.getId()), formulaName);
+
+        assertNotNull(combinedPrometheusExportersFormulas);
+        assertEquals(combinedPrometheusExportersFormulas.size(), 1);
+
+        combinedFormulaData = combinedPrometheusExportersFormulas.get(0);
+
+        assertEquals(combinedFormulaData.getSystemID(), minion.getId());
+        assertEquals(combinedFormulaData.getMinionID(), minion.getMinionId());
+        assertNotNull(combinedFormulaData.getFormulaValues().get(formulaName));
     }
 
     // Copy the pillar.example file to a temp dir used as metadata directory (in FormulaFactory)
     private void createMetadataFiles() {
         try {
             Path prometheusDir = metadataDir.resolve("prometheus-exporters");
-            Path prometheusFile = Paths.get(prometheusDir.toString(),  "form.yml");
             Files.createDirectories(prometheusDir);
+            Path prometheusFile = Paths.get(prometheusDir.toString(),  "form.yml");
             Files.createFile(prometheusFile);
+
             Path testFormulaDir = metadataDir.resolve("dhcpd");
             Files.createDirectories(testFormulaDir);
             Path testFormulaFile = Paths.get(testFormulaDir.toString(), "form.yml");
             Files.createFile(testFormulaFile);
-            try (
-                InputStream src = this.getClass().getResourceAsStream("prometheus-exporters-pillar.example");
-                OutputStream dst = new FileOutputStream(prometheusDir.resolve("pillar.example").toFile())
-            ) {
-                IOUtils.copy(src, dst);
-            }
         }
         catch (IOException e) {
             e.printStackTrace();

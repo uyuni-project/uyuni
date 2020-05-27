@@ -1,3 +1,10 @@
+- Enable bootstrapp scripts for Oracle Linux 6, 7 and 8
+
+-------------------------------------------------------------------
+Wed May 20 10:54:23 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
+- On Debian-like systems, install only required dependencies when installing salt
 - Fix OS detection for Ubuntu in bootstrap script
 
 -------------------------------------------------------------------

@@ -1,3 +1,13 @@
+- replace toastr javascript library with react-toastify
+- Implement module picker controls for CLM AppStream filters
+
+-------------------------------------------------------------------
+Wed May 20 10:58:46 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
+- Fix Formula Form page not rendered because of javascript error (bsc#1171728)
+- Fix formula with form rendering with non-string values
+- auto select recommended and mandatory channels by default (bsc#1162843)
 - Add hint to edit formulas before applying state (bsc#1168805)
 - Fix custom info values input in image profile edit form (bsc#1169773)
 - Web UI: Implement bootstrapping minions using an SSH private key

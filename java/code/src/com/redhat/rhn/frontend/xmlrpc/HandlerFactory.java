@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
 import com.redhat.rhn.frontend.xmlrpc.api.ApiHandler;
@@ -70,6 +72,9 @@ import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
@@ -113,6 +118,8 @@ public class HandlerFactory {
     public static HandlerFactory getDefaultHandlerFactory() {
         HandlerFactory factory = new HandlerFactory();
         TaskomaticApi taskomaticApi = new TaskomaticApi();
+        SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
         SystemQuery systemQuery = SaltService.INSTANCE;
         RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
         SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
@@ -136,7 +143,7 @@ public class HandlerFactory {
         factory.addHandler("contentmanagement", new ContentManagementHandler());
         factory.addHandler("distchannel", new DistChannelHandler());
         factory.addHandler("errata", new ErrataHandler());
-        factory.addHandler("formula", new FormulaHandler());
+        factory.addHandler("formula", new FormulaHandler(FormulaManager.getInstance()));
         factory.addHandler("image.store", new ImageStoreHandler());
         factory.addHandler("image.profile", new ImageProfileHandler());
         factory.addHandler("image", new ImageInfoHandler());
@@ -163,7 +170,8 @@ public class HandlerFactory {
         factory.addHandler("sync.master", new MasterHandler());
         factory.addHandler("sync.slave", new SlaveHandler());
         factory.addHandler("sync.content", new ContentSyncHandler());
-        factory.addHandler("system", new SystemHandler(taskomaticApi, xmlRpcSystemHelper));
+        factory.addHandler("system", new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager));
         factory.addHandler("system.config", new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper));
         factory.addHandler("system.crash", new CrashHandler(xmlRpcSystemHelper));
         factory.addHandler("system.custominfo", new CustomInfoHandler());

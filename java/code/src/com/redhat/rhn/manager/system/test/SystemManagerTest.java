@@ -40,6 +40,8 @@ import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.dto.SystemGroupID;
+import com.redhat.rhn.domain.dto.SystemGroupsDTO;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
@@ -67,6 +69,7 @@ import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.test.CPUTest;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -85,6 +88,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
@@ -149,6 +153,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     protected Path tmpSaltRoot;
     protected Path metadataDirOfficial;
     private SystemEntitlementManager systemEntitlementManager;
+    private SystemManager systemManager;
 
     @Override
     public void setUp() throws Exception {
@@ -174,8 +179,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         SaltService saltService = new SaltService();
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService))
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
+        this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
         createMetadataFiles();
     }
 
@@ -1603,5 +1609,30 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // Remove server from group, entitlement should be removed
         SystemManager.removeServersFromServerGroup(Arrays.asList(server), group);
         assertFalse(SystemManager.hasEntitlement(server.getId(), EntitlementManager.MONITORING));
+    }
+
+    public void testRetrieveSystemGroupsForSystemsWithEntitlementAndUser() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser", "testOrg" + this.getClass().getSimpleName());
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        SystemManager.addServerToServerGroup(server, group);
+
+        List<SystemGroupsDTO> systemGroupsDTOs = this.systemManager
+                .retrieveSystemGroupsForSystemsWithEntitlementAndUser(user, EntitlementManager.SALT.getLabel());
+
+        assertNotNull(systemGroupsDTOs);
+        assertEquals(systemGroupsDTOs.size(), 1);
+
+        SystemGroupsDTO systemGroupsDTO = systemGroupsDTOs.get(0);
+        assertEquals(systemGroupsDTO.getSystemID(), server.getId());
+        assertEquals(systemGroupsDTO.getSystemGroups().size(), 2);
+
+        SystemGroupID systemGroupIDInfo = systemGroupsDTO.getSystemGroups().stream()
+                .filter(s -> s.getGroupID().equals(group.getId())).findFirst().get();
+        assertEquals(systemGroupIDInfo.getGroupID(), group.getId());
+        assertEquals(systemGroupIDInfo.getGroupName(), group.getName());
     }
 }

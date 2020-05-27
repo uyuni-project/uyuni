@@ -1,3 +1,24 @@
+- Clarify the behavior of the checkbox system list, when it adds systems to ssm
+- Implement module picker controls for CLM AppStream filters
+
+-------------------------------------------------------------------
+Tue May 26 11:22:02 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
+- handle centos urls that contain repo target in query string (bsc#1171996)
+
+-------------------------------------------------------------------
+Wed May 20 10:55:24 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
+- Fix saving image profile custom info values with XMLRPC (bsc#1171526)
+- New API endpoint for retrieving combined formula data for a list of systems
+- New API endpoint for retrieving network information for a list of system
+- New API endpoint for retrieving system groups information for systems with a given entitlement
+- Improve performance for States view in SystemGroups detail view (bsc#1158752)
+- prevent race condition on metadata generation (bsc#1170197)
+- Make automatic system locking for cluster node (CaaSP) user configurable
+- Assign Activation Key channels only (bsc#1166516)
 - Pass image profile custom info values as Docker buildargs during image build
 - Fix activation keys request error in image import page (bsc#1170046)
 - Fix custom info values input in image profile edit form (bsc#1169773)

@@ -35,6 +35,9 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.dto.SystemGroupID;
+import com.redhat.rhn.domain.dto.SystemGroupsDTO;
+import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -52,6 +55,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerLock;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -152,8 +156,19 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCAP = "scap.xccdf_eval";
 
     private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private ServerFactory serverFactory;
+    private ServerGroupFactory serverGroupFactory;
 
-    private SystemManager() {
+    /**
+     * Instantiates a new system manager.
+     *
+     * @param serverFactoryIn the server factory in
+     * @param serverGroupFactoryIn the server group factory in
+     */
+    public SystemManager(ServerFactory serverFactoryIn, ServerGroupFactory serverGroupFactoryIn) {
+        super();
+        this.serverFactory = serverFactoryIn;
+        this.serverGroupFactory = serverGroupFactoryIn;
     }
 
     /**
@@ -162,6 +177,29 @@ public class SystemManager extends BaseManager {
      */
     public static void mockSaltService(SaltService mockedSaltService) {
         saltServiceInstance = mockedSaltService;
+    }
+
+    /**
+     * Retrieves the groups information a system is member of, for all the systems
+     * visible to the passed user and that are entitled with the passed entitlement
+     *
+     * @param user the user
+     * @param entitlement the entitlement
+     * @return the list of SystemGroupsInfo
+     */
+    public List<SystemGroupsDTO> retrieveSystemGroupsForSystemsWithEntitlementAndUser(User user, String entitlement) {
+        List<SystemIDInfo> systemIDInfos =
+                this.serverFactory.lookupSystemsVisibleToUserWithEntitlement(user, entitlement);
+
+        List<Long> systemIDs = systemIDInfos.stream().map(SystemIDInfo::getSystemID).collect(Collectors.toList());
+
+        Map<Long, List<SystemGroupID>> managedGroupsPerServer =
+                this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
+
+        return systemIDInfos.stream()
+                .map(s -> new SystemGroupsDTO(s.getSystemID(),
+                        managedGroupsPerServer.getOrDefault(s.getSystemID(), new ArrayList<>())))
+                .collect(Collectors.toList());
     }
 
     /**

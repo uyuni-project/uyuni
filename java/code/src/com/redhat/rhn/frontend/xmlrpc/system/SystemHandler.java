@@ -45,6 +45,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
+import com.redhat.rhn.domain.dto.SystemGroupsDTO;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -207,17 +208,24 @@ public class SystemHandler extends BaseHandler {
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
 
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager;
+    private SystemManager systemManager;
 
     /**
-     * Set the {@link TaskomaticApi} instance to use, only for unit tests.
+     * Instantiates a new system handler.
      *
-     * @param taskomaticApiIn the {@link TaskomaticApi}
-     * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     * @param taskomaticApiIn the taskomatic api
+     * @param xmlRpcSystemHelperIn the xml rpc system helper
+     * @param systemEntitlementManagerIn the system entitlement manager
+     * @param systemManagerIn the system manager
      */
-    public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
-        taskomaticApi = taskomaticApiIn;
-        xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+    public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
+            SystemEntitlementManager systemEntitlementManagerIn,
+            SystemManager systemManagerIn) {
+        this.taskomaticApi = taskomaticApiIn;
+        this.xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+        this.systemEntitlementManager = systemEntitlementManagerIn;
+        this.systemManager = systemManagerIn;
     }
 
     /**
@@ -1763,6 +1771,42 @@ public class SystemHandler extends BaseHandler {
         network.put("hostname", StringUtils.defaultString(hostname));
 
         return network;
+    }
+
+    /**
+     * Get the addresses and hostname for a given list of system
+     * @param loggedInUser The current user
+     * @param systemIDs the IDs of the systems
+     * @return Returns a list of maps containing the systems IP addresses and hostname
+     * @throws FaultException A FaultException is thrown if the systems cannot be found.
+     *
+     * @xmlrpc.doc Get the addresses and hostname for a given list of systems.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #array_single("int", "systemIDs")
+     * @xmlrpc.returntype
+     *   #array_begin()
+     *     #struct_begin("network info")
+     *       #prop_desc("int", "system_id", "ID of the system")
+     *       #prop_desc("string", "ip", "IPv4 address of system")
+     *       #prop_desc("string", "ip6", "IPv6 address of system")
+     *       #prop_desc("string", "hostname", "Hostname of system")
+     *     #struct_end()
+     *   #array_end()
+     */
+    public List<Map<String, Object>> getNetworkForSystems(User loggedInUser, List<Integer> systemIDs)
+            throws FaultException {
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<Server> servers = this.xmlRpcSystemHelper.lookupServers(loggedInUser, systemIDs);
+
+        for (Server server : servers) {
+            Map<String, Object> network = new HashMap<String, Object>();
+            network.put("system_id", server.getId());
+            network.put("ip", StringUtils.defaultString(server.getIpAddress()));
+            network.put("ip6", StringUtils.defaultString(server.getIp6Address()));
+            network.put("hostname", StringUtils.defaultString(server.getHostname()));
+            result.add(network);
+        }
+        return result;
     }
 
     /**
@@ -7208,6 +7252,30 @@ public class SystemHandler extends BaseHandler {
         MinionServer minion = SystemManager.lookupByIdAndUser(serverId.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(() -> new UnsupportedOperationException("System not managed with Salt: " + serverId));
         return StateFactory.latestPackageStates(minion).orElse(Collections.EMPTY_SET);
+    }
+
+    /**
+     * Gets the groups information a system is member of, for all the systems visible to the passed user and that are
+     * entitled with the passed entitlement
+     *
+     * @param loggedInUser The current user
+     * @param entitlement The entitlement
+     * @return ta list of SystemGroupsInfo
+     *
+     * @throws FaultException A FaultException is thrown if a valid user can not
+     * be found from the passed in session key
+     *
+     * @xmlrpc.doc Returns the groups information a system is member of, for all the systems visible to the passed user
+     * and that are entitled with the passed entitlement.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "entitlement")
+     * @xmlrpc.returntype
+     *   #array_begin()
+     *     $SystemGroupsDTOSerializer
+     *   #array_end()
+     */
+    public List<SystemGroupsDTO> listSystemGroupsForSystemsWithEntitlement(User loggedInUser, String entitlement) {
+        return this.systemManager.retrieveSystemGroupsForSystemsWithEntitlementAndUser(loggedInUser, entitlement);
     }
 
     /**

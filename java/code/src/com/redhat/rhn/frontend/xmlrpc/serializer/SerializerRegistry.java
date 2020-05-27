@@ -61,6 +61,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(SystemSearchResultSerializer.class);
         SERIALIZER_CLASSES.add(SystemOverviewSerializer.class);
         SERIALIZER_CLASSES.add(ShortSystemInfoSerializer.class);
+        SERIALIZER_CLASSES.add(SystemGroupsDTOSerializer.class);
+        SERIALIZER_CLASSES.add(FormulaDataSerializer.class);
         SERIALIZER_CLASSES.add(EmptySystemProfileSerializer.class);
         SERIALIZER_CLASSES.add(UserSerializer.class);
         SERIALIZER_CLASSES.add(KickstartTreeSerializer.class);

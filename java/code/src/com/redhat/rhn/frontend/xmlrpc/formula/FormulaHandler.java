@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaUtil;
@@ -43,6 +44,18 @@ import com.redhat.rhn.manager.formula.InvalidFormulaException;
  * @xmlrpc.doc Provides methods to access and modify formulas.
  */
 public class FormulaHandler extends BaseHandler {
+
+    private FormulaManager formulaManager;
+
+    /**
+     * Instantiates a new formula handler.
+     *
+     * @param formulaManagerIn the formula manager
+     */
+    public FormulaHandler(FormulaManager formulaManagerIn) {
+        super();
+        this.formulaManager = formulaManagerIn;
+    }
 
     /**
      * List all installed formulas.
@@ -134,7 +147,7 @@ public class FormulaHandler extends BaseHandler {
                     loggedInUser.getOrg());
         }
         catch (ValidatorException e) {
-            throw new ValidatorException(e.getMessage());
+            throw new ValidationException(e.getMessage(), e);
         }
         catch (IOException e) {
             throw new IOFaultException(e);
@@ -169,7 +182,7 @@ public class FormulaHandler extends BaseHandler {
             throw new PermissionException(LocalizationService.getInstance().getMessage("formula.accessdenied"));
         }
         catch (ValidatorException e) {
-            throw new ValidatorException(e.getMessage());
+            throw new ValidationException(e.getMessage(), e);
         }
         catch (IOException e) {
             throw new IOFaultException(e);
@@ -200,6 +213,30 @@ public class FormulaHandler extends BaseHandler {
         FormulaManager manager = FormulaManager.getInstance();
         Map<String, Object> savedData = manager.getSystemFormulaData(loggedInUser, formulaName, systemId.longValue());
         return savedData;
+    }
+
+    /**
+     * Get the save data for the passed formula applied to the systems whose IDs match with the passed systems IDs
+     * and all of the groups those systems are member of
+     *
+     * @param loggedInUser The current user
+     * @param systemIds The system IDs
+     * @param formulaName formula name
+     * @return a list containing the saved data for the passed formula and the passed system IDs.
+     *
+     * @xmlrpc.doc Return the list of formulas a server and all his groups have.
+     *
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param("string", "formulaName")
+     * @xmlrpc.param #array_single("int", "systemID")
+     * @xmlrpc.returntype
+     *   #array_begin()
+     *     $FormulaDataSerializer
+     *   #array_end()
+     */
+    public List<FormulaData> getCombinedFormulaDataByServerIds(User loggedInUser, String formulaName,
+            List<Long> systemIds) {
+        return this.formulaManager.getCombinedFormulaDataForSystems(loggedInUser, systemIds, formulaName);
     }
 
     /**
@@ -303,4 +340,5 @@ public class FormulaHandler extends BaseHandler {
         }
         return 1;
     }
+
 }

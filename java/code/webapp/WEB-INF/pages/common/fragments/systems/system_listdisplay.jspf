@@ -26,8 +26,12 @@
     <c:if test = "${empty notSelectable}">
         <rl:decorator name="SelectableDecorator"/>
         <rl:selectablecolumn value="${current.id}"
+                width="75"
+                checkboxText="<span class='span-ssm-marg'>SSM</spank>"
                 selected="${current.selected}"
-                disabled="${not current.selectable}"/>
+                disabled="${not current.selectable}"
+                />
+                
         <c:if test="${empty noAddToSsm}">
             <rl:decorator name="AddToSsmDecorator"/>
         </c:if>

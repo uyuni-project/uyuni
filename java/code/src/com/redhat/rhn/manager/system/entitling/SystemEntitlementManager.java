@@ -17,6 +17,8 @@ package com.redhat.rhn.manager.system.entitling;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.impl.SaltService;
 
@@ -27,7 +29,8 @@ public class SystemEntitlementManager {
 
     public static final SystemEntitlementManager INSTANCE = new SystemEntitlementManager(
             SystemUnentitler.INSTANCE,
-            new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API))
+            new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
+                    new FormulaMonitoringManager())
     );
 
     private SystemUnentitler systemUnentitler;

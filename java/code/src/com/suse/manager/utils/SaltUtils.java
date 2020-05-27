@@ -18,6 +18,7 @@ package com.suse.manager.utils;
 import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -86,8 +87,8 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
@@ -181,7 +182,7 @@ public class SaltUtils {
 
     public static final SaltUtils INSTANCE = new SaltUtils();
 
-    public static final String CAASP_PRODUCT_IDENTIFIER = "caasp";
+    public static final String CAASP_PATTERN_IDENTIFIER = "patterns-caasp-Node";
     public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
@@ -1247,13 +1248,14 @@ public class SaltUtils {
         // Trigger update of errata cache for this server
         ErrataManager.insertErrataCacheTask(server);
 
-        // For special nodes: enable minion blackout (= locking) via pillar
-        enableMinionSystemLockForSpecialNodes(server);
+        if (ConfigDefaults.get().isAutomaticSystemLockForClusterNodesEnabled()) {
+            // For special nodes: enable minion blackout (= locking) via pillar
+            enableMinionSystemLockForSpecialNodes(server);
+        }
     }
 
     private void enableMinionSystemLockForSpecialNodes(MinionServer server) {
-        if (server.getInstalledProducts().stream()
-                .anyMatch(p -> p.getName().equalsIgnoreCase(CAASP_PRODUCT_IDENTIFIER))) {
+        if (server.getPackages().stream().anyMatch(p -> p.getName().getName().contains(CAASP_PATTERN_IDENTIFIER))) {
             // Minion blackout is only enabled for nodes that have installed the `caasp-*` package
             Map<String, Object> data = new HashMap<>();
             data.put("minion_blackout", true);

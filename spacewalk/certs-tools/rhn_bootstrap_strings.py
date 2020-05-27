@@ -374,6 +374,9 @@ if [ "$INSTALLER" == yum ]; then
         if [ -L /usr/share/doc/sles_es-release ]; then
             BASE="res"
             VERSION=6
+        elif [ -f /etc/oracle-release ]; then
+            grep -v '^#' /etc/oracle-release | grep -q '\(Oracle\)' && BASE="oracle"
+            VERSION=`grep -v '^#' /etc/oracle-release | grep -Po '(?<=release )\d+'`
         elif [ -f /etc/centos-release ]; then
             grep -v '^#' /etc/centos-release | grep -q '\(CentOS\)' && BASE="centos"
             VERSION=`grep -v '^#' /etc/centos-release | grep -Po '(?<=release )\d+'`
@@ -664,7 +667,7 @@ elif [ "$INSTALLER" == apt ]; then
 	        apt-get purge salt-common
 	        rm -rf /etc/salt/minion.d/
         fi
-        apt-get --yes install $A_MISSING
+        apt-get --yes install --no-install-recommends $A_MISSING
 
         for P in $A_MISSING; do
             check_deb_pkg_installed "$P" || {{
@@ -674,7 +677,7 @@ elif [ "$INSTALLER" == apt ]; then
         done
     fi
     # try update main packages for registration from any repo which is available
-    apt-get --yes install --only-upgrade salt-common salt-minion ||:
+    apt-get --yes install --no-install-recommends --only-upgrade salt-common salt-minion ||:
 
     # remove bootstrap repo
     rm -f $CLIENT_REPO_FILE

@@ -116,6 +116,10 @@
     "name" : "SUSE Linux Enterprise Live Patching PPC"
   },
   {
+    "label" : "SLE-LP-Z",
+    "name" : "SUSE Linux Enterprise Live Patching (Z-Series)"
+  },
+  {
     "label" : "SLE-M-T",
     "name" : "SUSE Manager Tools"
   },
@@ -182,6 +186,10 @@
   {
     "label" : "SLES12-SP2-LTSS-Z",
     "name" : "SUSE Linux Enterprise Server LTSS 12 SP2 Z-Series"
+  },
+  {
+    "label" : "SLES12-SP3-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 ARM64"
   },
   {
     "label" : "SLES12-SP3-LTSS-PPC",

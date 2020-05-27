@@ -540,6 +540,20 @@ PKGLISTUBUNTU1804 = [
     "python3-gnupg",
 ]
 
+PKGLISTUBUNTU2004 = [
+    "dctrl-tools",
+    "libnorm1",
+    "libpgm-5.2-0",
+    "libzmq5",
+    "python3-crypto",
+    "python3-dateutil",
+    "python3-msgpack",
+    "python3-psutil",
+    "python3-zmq",
+    "salt-common",
+    "salt-minion",
+]
+
 PKGLISTDEBIAN9 = [
     "dctrl-tools",
     "apt-transport-https",
@@ -1093,16 +1107,52 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/2/bootstrap/'
     },
     'centos-6-x86_64' : {
-        'BASECHANNEL' : 'centos6-x86_64', 'PKGLIST' : RES6,
+        'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
     },
     'centos-7-x86_64' : {
-        'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7,
+        'PDID' : [-12, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
     },
     'centos-8-x86_64' : {
+        'PDID' : [-13, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+    },
+    'centos-6-x86_64-uyuni' : {
+        'BASECHANNEL' : 'centos6-x86_64', 'PKGLIST' : RES6,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
+    },
+    'centos-7-x86_64-uyuni' : {
+        'BASECHANNEL' : 'centos7-x86_64', 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/centos/7/bootstrap/'
+    },
+    'centos-8-x86_64-uyuni' : {
         'BASECHANNEL' : 'centos8-x86_64', 'PKGLIST' : RES8,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/8/bootstrap/'
+    },
+    'oracle-6-x86_64' : {
+        'PDID' : [-15, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/6/bootstrap/'
+    },
+    'oracle-7-x86_64' : {
+        'PDID' : [-14, 1683], 'BETAPDID' : [2065], 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
+    },
+    'oracle-8-x86_64' : {
+        'PDID' : [-17, 2007], 'BETAPDID' : [2066], 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
+    },
+    'oracle-6-x86_64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux6-x86_64', 'PKGLIST' : RES6,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/6/bootstrap/'
+    },
+    'oracle-7-x86_64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux7-x86_64', 'PKGLIST' : RES7,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/7/bootstrap/'
+    },
+    'oracle-8-x86_64-uyuni' : {
+        'BASECHANNEL' : 'oraclelinux8-x86_64', 'PKGLIST' : RES8,
+        'DEST' : '/srv/www/htdocs/pub/repositories/oracle/8/bootstrap/'
     },
     'RHEL6-x86_64' : {
         'PDID' : [-5, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
@@ -1142,6 +1192,11 @@ DATA = {
     'ubuntu-18.04-amd64-uyuni' : {
         'BASECHANNEL' : 'ubuntu-18.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU1804,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-20.04-amd64-uyuni' : {
+        'BASECHANNEL' : 'ubuntu-20.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU2004,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/20/4/bootstrap/',
         'TYPE' : 'deb'
     },
     'debian9-amd64' : {
