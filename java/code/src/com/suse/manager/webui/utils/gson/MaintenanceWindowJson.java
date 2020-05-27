@@ -1,6 +1,8 @@
 package com.suse.manager.webui.utils.gson;
 
-public class MaintenanceScheduleJson {
+import java.util.List;
+
+public class MaintenanceWindowJson {
 
     private Long scheduleId;
     private String scheduleName;
@@ -10,8 +12,8 @@ public class MaintenanceScheduleJson {
     private String calendarName;
     private String calendarUrl;
     private String calendarData;
-    private boolean calendarAdded;
-    private String calendarType;
+
+    List<String> scheduleNames;
 
     public Long getScheduleId() {
         return scheduleId;
@@ -69,19 +71,11 @@ public class MaintenanceScheduleJson {
         this.calendarUrl = calendarUrl;
     }
 
-    public boolean isCalendarAdded() {
-        return calendarAdded;
+    public List<String> getScheduleNames() {
+        return scheduleNames;
     }
 
-    public void setCalendarAdded(boolean calendarAdded) {
-        this.calendarAdded = calendarAdded;
-    }
-
-    public String getCalendarType() {
-        return calendarType;
-    }
-
-    public void setCalendarType(String calendarType) {
-        this.calendarType = calendarType;
+    public void setScheduleNames(List<String> scheduleNames) {
+        this.scheduleNames = scheduleNames;
     }
 }
