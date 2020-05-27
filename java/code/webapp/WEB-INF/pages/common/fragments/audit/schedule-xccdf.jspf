@@ -37,7 +37,7 @@
         <c:choose>
             <c:when test="${readonly == 'true'}">
                 <c:out value="${localizedDate}"/>
-                <html:hidden property="use_date" value="true" />
+                <html:hidden property="schedule_type" value="date" />
                 <%@ include file="/WEB-INF/pages/common/fragments/date-picker-hidden.jspf" %>
             </c:when>
             <c:otherwise>

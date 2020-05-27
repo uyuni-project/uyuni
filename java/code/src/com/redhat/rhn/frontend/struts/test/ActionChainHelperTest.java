@@ -56,7 +56,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
 
         assertNull(ActionChainHelper.readActionChain(form, user));
 
-        formMap.put(DatePicker.USE_DATE, false);
+        formMap.put(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.ACTION_CHAIN.asString());
         formMap.put(ActionChainHelper.LABEL_PROPERTY_NAME, chain.getLabel());
 
         ActionChain retrievedChain = ActionChainHelper.readActionChain(form, user);

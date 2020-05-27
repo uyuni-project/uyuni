@@ -26,7 +26,7 @@
   <rhn:hidden name="submitted" value="true"/>
   <rhn:hidden name="params" value="${param.params}"/>
   <rhn:hidden name="path" value="${param.path}"/>
-  <rhn:hidden name="use_date" value="true"/>
+  <rhn:hidden name="schedule_type" value="date"/>
   <rhn:hidden name="date_year" value="${param.date_year}"/>
   <rhn:hidden name="date_month" value="${param.date_month}"/>
   <rhn:hidden name="date_day" value="${param.date_day}"/>

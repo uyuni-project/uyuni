@@ -77,7 +77,7 @@
                 <rl:column headerkey="erratalist.jsp.updated">${current.updateDate}</rl:column>
             </rl:list>
             <html:hidden property="sid" value="${param.sid}" />
-            <rhn:hidden name="use_date" value="true" />
+            <rhn:hidden name="schedule_type" value="date" />
         </rl:listset>
     </body>
 </html>
