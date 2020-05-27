@@ -37,6 +37,8 @@ if [ -d /srv/www/cobbler/links ] && [ ! -z "$(ls /srv/www/cobbler/links)" ]; the
     done
 fi
 
+awk '(p&&index($0," - ")!=1){p=0}/^proxies:/{p=1}(p){print}' /etc/cobbler/settings.old >> /etc/cobbler/settings
+
 if [ -d /var/lib/rhn/kickstarts/upload ] && [ ! -z "$(ls /var/lib/rhn/kickstarts/upload)" ]; then
     mkdir -p /var/lib/cobbler/templates/upload
     cp -a /var/lib/rhn/kickstarts/upload/* /var/lib/cobbler/templates/upload

@@ -424,6 +424,9 @@ copy_remote_files() {
     echo "`date +"%H:%M:%S"`   Copy /root/.ssh ..."
     rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/.ssh/ /root/.ssh.new >> $RSYNC_LOG
 
+    echo "`date +"%H:%M:%S"`   Copy /etc/cobbler/settings ..."
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/etc/cobbler/settings /etc/cobbler/settings.old >> $RSYNC_LOG
+
     echo "`date +"%H:%M:%S"`   Copy certificates ..."
     scp -i $KEYFILE -p root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
     scp -i $KEYFILE -p root@$SATELLITE_IP:$SERVER_CRT /etc/apache2/ssl.crt/server.crt

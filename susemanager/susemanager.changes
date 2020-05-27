@@ -1,3 +1,4 @@
+- migrate proxy list in cobbler settings (bsc#1169536)
 - Make systemd services and timers enablement really quiet
 
 -------------------------------------------------------------------
