@@ -1,27 +1,50 @@
 <%@ page pageEncoding="iso-8859-1" contentType="text/html;charset=utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
 <script type="text/javascript" src="/javascript/schedule-options.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
 <div class="spacewalk-scheduler">
     <div class="form-horizontal">
+        <c:choose>
+            <%-- When there are multiple schedules, we don not display date picker nor the maint. window picker --%>
+            <c:when test="${maintenanceWindowsMultiSchedules}">
+                 <div class="alert alert-info">
+                     <bean:message key="schedule.jsp.multiple_maintenance_schedules" />
+                 </div>
+            </c:when>
+
+            <c:otherwise>
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">
+                        <input type="radio" name="schedule_type" value="date" id="schedule-by-date"
+                               ${maintenanceWindows == null ? "checked" : "disabled"} />
+                        <label for="schedule-by-date"><bean:message key="schedule.jsp.at"/></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
+                            <jsp:param name="greyOut" value="${maintenanceWindows != null}"/>
+                            <jsp:param name="widget" value="date"/>
+                        </jsp:include>
+                    </div>
+                </div>
+
+                <c:if test="${maintenanceWindows != null}">
+                    <div class="form-group">
+                        <div class="col-sm-3 control-label">
+                            <input type="radio" name="schedule_type" value="maintenance_window" />
+                            <label for="schedule-by-maintenance-window"><bean:message key="schedule.jsp.maint-window"/></label>
+                        </div>
+                        <jsp:include page="/WEB-INF/pages/common/fragments/maintenance-window-picker.jsp" />
+                    </div>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
         <div class="form-group">
             <div class="col-sm-3 control-label">
-                <input type="radio" name="schedule_type" value="date" checked="checked" id="schedule-by-date"/>
-                <label for="schedule-by-date"><bean:message key="schedule.jsp.at"/></label>
-            </div>
-            <div class="col-sm-6">
-                <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
-                    <jsp:param name="widget" value="date"/>
-                </jsp:include>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-3 control-label">
-                <input type="radio" name="use_date" value="false" id="schedule-by-action-chain"/>
-        <div class="form-group">
-            <div class="col-sm-3 control-label">
-                <input type="radio" name="schedule_type" value="action_chain" id="schedule-by-action-chain"/>
+                <input type="radio" name="schedule_type" value="action_chain" id="schedule-by-action-chain"
+                    ${maintenanceWindowsMultiSchedules ? "checked" : ""}
+                />
                 <label for="schedule-by-action-chain"><bean:message key="schedule-options.action-chain"/></label>
             </div>
             <div class="col-sm-6">
