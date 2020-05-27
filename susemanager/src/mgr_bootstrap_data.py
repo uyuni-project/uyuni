@@ -495,7 +495,7 @@ PKGLISTUBUNTU1804 = [
     "libjs-underscore",
     "libnorm1",
     "libpgm-5.2-0",
-    "libpython-stdlib",
+    "libpython3.6-stdlib",
     "libpython3.6-minimal",
     "libpython3.6-stdlib",
     "libsodium23",
@@ -537,6 +537,7 @@ PKGLISTUBUNTU1804 = [
     "iso-codes",
     "python-apt-common",
     "python3-distro",
+    "python3-gnupg",
 ]
 
 PKGLISTDEBIAN9 = [
