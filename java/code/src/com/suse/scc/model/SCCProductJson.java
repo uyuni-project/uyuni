@@ -187,6 +187,22 @@ public class SCCProductJson {
         }
 
         /**
+         * @return the release stage
+         */
+        public ReleaseStage getReleaseStage() {
+            return releaseStage;
+        }
+
+        /**
+         * @param releaseStageIn the release stage
+         * @return the builder
+         */
+        public SCCProductJsonBuilder setReleaseStage(ReleaseStage releaseStageIn) {
+            this.releaseStage = releaseStageIn;
+            return this;
+        }
+
+        /**
          * @return the friendly name
          */
         public String getFriendlyName() {
