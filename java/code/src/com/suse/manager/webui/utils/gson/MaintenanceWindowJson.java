@@ -1,81 +1,193 @@
+/**
+ * Copyright (c) 2020 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
 package com.suse.manager.webui.utils.gson;
 
 import java.util.List;
 
+/**
+ * JSON representation of the Maintenance Window scheduling
+ */
 public class MaintenanceWindowJson {
 
+    /** schedule ID */
     private Long scheduleId;
+
+    /** Name of the schedule */
     private String scheduleName;
+
+    /** Type of the schedule
+     * Either SINGLE or MULTI
+     */
     private String scheduleType;
 
+    /** calendar ID */
     private Long calendarId;
+
+    /** The name of the calendar */
     private String calendarName;
+
+    /** The url to the ical file */
     private String calendarUrl;
+
+    /** The calendars ical data */
     private String calendarData;
 
-    List<String> scheduleNames;
+    /** List of schedule names used by a calendar */
+    private List<String> scheduleNames;
 
+    /**
+     * Gets the id of the schedule
+     *
+     * @return the scheduleId
+     */
     public Long getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(Long scheduleId) {
-        this.scheduleId = scheduleId;
+    /**
+     * Sets the id of the schedule
+     *
+     * @param scheduleIdIn the scheduleId
+     */
+    public void setScheduleId(Long scheduleIdIn) {
+        this.scheduleId = scheduleIdIn;
     }
 
+    /**
+     * Gets the name of the schedule
+     *
+     * @return the scheduleName
+     */
     public String getScheduleName() {
         return scheduleName;
     }
 
-    public void setScheduleName(String scheduleName) {
-        this.scheduleName = scheduleName;
+    /**
+     * Sets the name of the schedule
+     *
+     * @param scheduleNameIn the scheduleName
+     */
+    public void setScheduleName(String scheduleNameIn) {
+        this.scheduleName = scheduleNameIn;
     }
 
+    /**
+     * Gets the type of the schedule
+     *
+     * @return the scheduleType
+     */
     public String getScheduleType() {
         return scheduleType;
     }
 
-    public void setScheduleType(String scheduleType) {
-        this.scheduleType = scheduleType;
+    /**
+     * Sets the type of the schedule
+     *
+     * @param scheduleTypeIn the scheduleType
+     */
+    public void setScheduleType(String scheduleTypeIn) {
+        this.scheduleType = scheduleTypeIn;
     }
 
+    /**
+     * Gets the id of the calendar
+     *
+     * @return the calendarId
+     */
     public Long getCalendarId() {
         return calendarId;
     }
 
-    public void setCalendarId(Long calendarId) {
-        this.calendarId = calendarId;
+    /**
+     * Sets the id of the calendar
+     *
+     * @param calendarIdIn the calendarId
+     */
+    public void setCalendarId(Long calendarIdIn) {
+        this.calendarId = calendarIdIn;
     }
 
+    /**
+     * Gets the name of the calendar
+     *
+     * @return the calendarName
+     */
     public String getCalendarName() {
         return calendarName;
     }
 
-    public void setCalendarName(String calendarName) {
-        this.calendarName = calendarName;
+    /**
+     * Sets the name of the calendar
+     *
+     * @param calendarNameIn the calendarName
+     */
+    public void setCalendarName(String calendarNameIn) {
+        this.calendarName = calendarNameIn;
     }
 
+    /**
+     * Gets the ical data of the calendar
+     *
+     * @return the calendarData
+     */
     public String getCalendarData() {
         return calendarData;
     }
 
-    public void setCalendarData(String calendarData) {
-        this.calendarData = calendarData;
+    /**
+     * Sets the ical data of the calendar
+     *
+     * @param calendarDataIn the calendarData
+     */
+    public void setCalendarData(String calendarDataIn) {
+        this.calendarData = calendarDataIn;
     }
 
+    /**
+     * Gets the url to the ical file
+     *
+     * @return the calendarUrl
+     */
     public String getCalendarUrl() {
         return calendarUrl;
     }
 
-    public void setCalendarUrl(String calendarUrl) {
-        this.calendarUrl = calendarUrl;
+    /**
+     * Sets the url to the ical file
+     *
+     * @param calendarUrlIn the calendarUrl
+     */
+    public void setCalendarUrl(String calendarUrlIn) {
+        this.calendarUrl = calendarUrlIn;
     }
 
+    /**
+     * Gets a list of schedule names using a calendar object
+     *
+     * @return the list of scheduleNames
+     */
     public List<String> getScheduleNames() {
         return scheduleNames;
     }
 
-    public void setScheduleNames(List<String> scheduleNames) {
-        this.scheduleNames = scheduleNames;
+    /**
+     * Sets a list of schedule names using a calendar object
+     *
+     * @param scheduleNamesIn the list of scheduleNames
+     */
+    public void setScheduleNames(List<String> scheduleNamesIn) {
+        this.scheduleNames = scheduleNamesIn;
     }
 }
