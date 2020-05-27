@@ -442,6 +442,21 @@ public class MaintenanceManager {
     }
 
     /**
+     * List Schedule names that use given calendar
+     * @param user the user
+     * @param calendar the calendar
+     * @return a list of schedule names
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> listScheduleNamesByCalendar(User user, MaintenanceCalendar calendar) {
+        return getSession()
+            .createQuery("SELECT name FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar")
+            .setParameter("org", user.getOrg())
+            .setParameter("calendar", calendar)
+            .list();
+    }
+
+    /**
      * Lookup Maintenance Calendar by User and Label
      * @param user the user
      * @param label the label of the calendar
