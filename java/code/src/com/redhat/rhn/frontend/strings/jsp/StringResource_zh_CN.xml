@@ -5899,6 +5899,18 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target>非虚拟系统</target>
       </trans-unit>
+      <trans-unit id="systemlist.jsp.isproxy">
+        <source>Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/Overview</context>
+          <context context-type="sourcefile">/rhn/systems/SystemList</context>
+          <context context-type="sourcefile">/rhn/systems/OutOfDate</context>
+          <context context-type="sourcefile">/rhn/systems/Unentitled</context>
+          <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
+          <context context-type="sourcefile">/rhn/systems/Proxy</context>
+          <context context-type="sourcefile">/rhn/systems/@@PRODUCT_NAME@@</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="systemlist.jsp.up2date">
         <source>System is up to date</source>
         <context-group name="ctx">
@@ -13577,6 +13589,12 @@ kickstart 前脚本的内容可以在 &lt;strong&gt;《红帽企业版 Linux 系
         <trans-unit id="system.event.pending.canceled">
           <source>{0} system event(s) canceled.</source>
           <target>已取消 {0} 系统事件。</target>
+        </trans-unit>
+        <trans-unit id="system.event.spmigration.notification">
+          <source>&lt;strong&gt;Reload&lt;/strong&gt; the page after the action completed successfully to schedule the full migration.</source>
+        </trans-unit>
+        <trans-unit id="system.event.spmigration.rescheduleDryRun">
+          <source>Run migration</source>
         </trans-unit>
       </group>
       <!-- System events legend -->
@@ -25376,6 +25394,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.update-salt-package-needed">
         <source>The installed &lt;strong&gt;Salt&lt;/strong&gt; package version on this system is out of date. Please update the package to the latest version before you start a Service Pack migration.</source>
+      </trans-unit>
+      <trans-unit id="spmigration.jsp.error.missing-successor-extensions">
+        <source>There is no migration available for this system. For some of the installed extensions no successor could be found:</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.title">
         <source>Service Pack Migration - Confirm</source>
