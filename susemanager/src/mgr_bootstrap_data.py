@@ -510,7 +510,6 @@ PKGLISTUBUNTU1804 = [
     "python3-crypto",
     "python3-cryptography",
     "python3-dateutil",
-    "python3-enum34",
     "python3-idna",
     "python3-jinja2",
     "python3-markupsafe",
