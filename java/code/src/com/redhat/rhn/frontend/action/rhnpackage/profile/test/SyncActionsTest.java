@@ -14,8 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.profile.test;
 
-import java.util.Set;
-
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -32,6 +30,8 @@ import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import java.util.Set;
 
 /**
  * @author mmccune
@@ -91,7 +91,6 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
         addRequestParameter(RequestContext.SID, s1.getId().toString());
         addRequestParameter(RequestContext.SID + "_1", s2.getId().toString());
         addRequestParameter("time", String.valueOf(System.currentTimeMillis()));
-        addRequestParameter("use_date", Boolean.FALSE.toString());
         setRequestPathInfo("/systems/details/packages/profiles/SyncSystemsSubmit");
 
         addDispatchCall("schedulesync.jsp.schedulesync");
