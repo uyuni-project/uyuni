@@ -17,9 +17,15 @@ package com.suse.manager.maintenance;
 import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptySet;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.action.Action;
@@ -34,23 +40,27 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.HttpHelper;
 import com.suse.utils.Opt;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Triple;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
 import org.apache.http.StatusLine;
 import org.apache.log4j.Logger;
 
-import com.suse.manager.model.maintenance.MaintenanceCalendar;
-
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,6 +73,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
@@ -71,8 +82,10 @@ import net.fortuna.ical4j.filter.HasPropertyRule;
 import net.fortuna.ical4j.filter.PeriodRule;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
+import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Period;
+import net.fortuna.ical4j.model.PeriodList;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.fortuna.ical4j.model.property.Summary;
 
@@ -98,6 +111,111 @@ public class MaintenanceManager {
             }
         }
         return instance;
+    }
+
+    /**
+     * Given the systems, return upcoming maintenance windows.
+     *
+     * The windows are returned as a list of triples consisting of:
+     * - window start date as a human-readable string
+     * - window end date as a human-readable string
+     * - start date as number of milliseconds since the epoch
+     *
+     * The formatting is done by {@link LocalizationService}.
+     *
+     * The upper limit of returned maintenance windows is currently hardcoded to 10.
+     *
+     * If given systems do not have any maint. <b>schedules</b> assigned, return an empty optional.
+     * If given systems have different maint. schedules assigned, throw an exception.
+     * Otherwise return list of maintenance windows (the list can be empty, if the schedule does not contain
+     * any upcoming maintenance windows).
+     *
+     * @param systemIds the system ids
+     * @return the optional upcoming maintenance windows
+     * @throws IllegalStateException if two or more systems have different maint. schedules assigned
+     */
+    public Optional<List<Triple<String, String, Long>>> calculateUpcomingMaintenanceWindows(Set<Long> systemIds)
+            throws IllegalStateException {
+        Set<MaintenanceSchedule> schedules = MaintenanceManager.instance().listSchedulesOfSystems(systemIds);
+        // if there are no schedules, there are no maintenance windows
+        if (schedules.isEmpty()) {
+            return empty();
+        }
+
+        // there are multiple schedules for systems, we throw an exception
+        if (schedules.size() > 1) {
+            String scheduleIds = schedules.stream().map(s -> s.getId().toString()).collect(joining(","));
+            throw new IllegalStateException("Multiple schedules: " + scheduleIds);
+        }
+
+        MaintenanceSchedule schedule = schedules.iterator().next();
+        Optional<String> multiScheduleName = getScheduleNameForMulti(schedule);
+
+        Stream<Pair<Instant, Instant>> periodStream = schedule.getCalendarOpt()
+                .flatMap(c -> parseCalendar(c))
+                .map(c -> calculateUpcomingPeriods(c, multiScheduleName, Instant.now(), 10))
+                .orElseGet(Stream::empty);
+
+        List<Triple<String, String, Long>> result = periodStream
+                .map(p -> Triple.of(
+                        LocalizationService.getInstance().formatDate(p.getLeft()),
+                        LocalizationService.getInstance().formatDate(p.getRight()),
+                        p.getLeft().toEpochMilli()))
+                .collect(toList());
+        return of(result);
+    }
+
+    /**
+     * Convenience method: return schedule name if the schedule type is MULTI, return empty otherwise
+     * @param schedule the schedule
+     * @return optional of schedule name
+     */
+    private static Optional<String> getScheduleNameForMulti(MaintenanceSchedule schedule) {
+        if (schedule.getScheduleType() == ScheduleType.MULTI) {
+            return of(schedule.getName());
+        }
+        return empty();
+    }
+
+    /**
+     * Calculate upcoming maintenance windows starting from given date based on calendar and optional filter name
+     * (in case we're dealing with MULTI calendar and want to filter only events we're interested in).
+     *
+     * The algorithm only checks maintenance windows within roughly a year and a month since the startDate.
+     *
+     * @param calendar the {@link Calendar}
+     * @param eventName for MULTI calendars: only deal with events with this name, filter out the rest
+     * @param startDate the start date
+     * @param limit upper limit of maintenance windows to return
+     * @return the list of upcoming maintenance windows
+     */
+    public Stream<Pair<Instant, Instant>> calculateUpcomingPeriods(Calendar calendar, Optional<String> eventName, Instant startDate,
+            int limit) {
+        ComponentList<CalendarComponent> allEvents = calendar.getComponents(Component.VEVENT);
+
+        Collection<CalendarComponent> filteredEvents = eventName.map(name -> {
+            Predicate<CalendarComponent> summary = c -> c.getProperty("SUMMARY").equals(name);
+            Predicate<CalendarComponent>[] ps = new Predicate[]{summary};
+            Filter<CalendarComponent> filter = new Filter<>(ps, Filter.MATCH_ALL);
+            return filter.filter(allEvents);
+        }).orElse(allEvents);
+
+        // we will look a year and month to the future
+        Period period = new Period(new DateTime(startDate.toEpochMilli()), Duration.ofDays(365 + 31));
+
+        List<PeriodList> periodLists = filteredEvents.stream()
+                .map(c -> c.calculateRecurrenceSet(period))
+                .filter(l -> !l.isEmpty())
+                .collect(toList());
+
+        Stream<Pair<Instant, Instant>> sortedLimited = periodLists.stream()
+                .map(pl -> pl.stream())
+                .reduce(Stream.empty(), Stream::concat)
+                .sorted()
+                .limit(limit)
+                .map(p -> Pair.of(p.getStart().toInstant(), p.getRangeEnd().toInstant()));
+
+        return sortedLimited;
     }
 
     /**
@@ -509,7 +627,7 @@ public class MaintenanceManager {
                         return !isActionInMaintenanceWindow(sa.getParentAction(), schedule, calendarOpt);
                     })))
             .collect(Collectors.groupingBy(ServerAction::getParentAction,
-                    Collectors.mapping(ServerAction::getServer, Collectors.toList())));
+                    Collectors.mapping(ServerAction::getServer, toList())));
 
         try {
             for (RescheduleStrategy s : scheduleStrategy) {
@@ -529,16 +647,27 @@ public class MaintenanceManager {
     }
 
     private Optional<Calendar> parseCalendar(MaintenanceCalendar calendarIn) {
-        StringReader sin = new StringReader(calendarIn.getIcal());
+        return parseCalendar(new StringReader(calendarIn.getIcal()));
+    }
+
+    /**
+     * Read calendar using given reader and parse it
+     *
+     * Public for testing.
+     *
+     * @param calendarReader the reader
+     * @return the parsed calendar or empty, if there was a problem parsing the calendar
+     */
+    public Optional<Calendar> parseCalendar(Reader calendarReader) {
         CalendarBuilder builder = new CalendarBuilder();
         Calendar calendar = null;
         try {
-            calendar = builder.build(sin);
+            calendar = builder.build(calendarReader);
         }
         catch (IOException | ParserException e) {
-            log.error("Unable to build the calendar: " + calendarIn.getLabel(), e);
+            log.error("Unable to build the calendar from reader: " + calendarReader, e);
         }
-        return Optional.ofNullable(calendar);
+        return ofNullable(calendar);
     }
 
     /**
