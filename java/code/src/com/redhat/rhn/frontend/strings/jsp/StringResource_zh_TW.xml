@@ -25297,7 +25297,7 @@ given channel.</source>
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
       </trans-unit>
       <trans-unit id="sdc.channels.info.change">
-        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems or added to the package states on Salt managed systems.</source>
+        <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems. On salt managed systems please apply a highstate as soon as possible.</source>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state">
         <source>Create configuration file</source>
