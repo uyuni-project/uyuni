@@ -61,7 +61,7 @@
 
     <rhn:hidden name="packagesDecl" value="${requestScope.packagesDecl}" />
     <rhn:hidden name="cid" value="${param.cid}" />
-    <rhn:hidden name="use_date" value="true" />
+    <rhn:hidden name="schedule_type" value="date" />
 
 </rl:listset>
 
