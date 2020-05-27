@@ -33,6 +33,7 @@ import java.util.List;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.CONTAINS;
 import static com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher.EQUALS;
@@ -117,7 +118,7 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
      */
     final void attachModularFilter(String value) {
         FilterCriteria criteria = new FilterCriteria(EQUALS, "module_stream", value);
-        ContentFilter filter = manager.createFilter(TestUtils.randomString(), DENY, MODULE, criteria, user);
+        ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, user);
         manager.attachFilter("cplabel", filter.getId(), user);
     }
 }

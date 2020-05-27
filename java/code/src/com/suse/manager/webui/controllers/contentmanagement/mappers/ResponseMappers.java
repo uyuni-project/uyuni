@@ -24,10 +24,9 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
 import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
-import com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator;
-import com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator;
 import com.suse.manager.webui.controllers.contentmanagement.response.EnvironmentResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.FilterResponse;
 import com.suse.manager.webui.controllers.contentmanagement.response.ProjectFilterResponse;
@@ -44,7 +43,6 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +53,9 @@ import java.util.stream.Collectors;
  * Utility class to map db entities into view response beans
  */
 public class ResponseMappers {
+
+    // The modulemd API to use with the content project validator
+    private static final ModulemdApi MODULEMD_API = new ModulemdApi();
 
     private ResponseMappers() { }
 
@@ -153,8 +154,7 @@ public class ResponseMappers {
         project.setFilters(mapProjectFilterFromDB(projectDB.getProjectFilters()));
         project.setEnvironments(mapEnvironmentsFromDB(envsDB));
 
-        ContentProjectValidator projectValidator = new ContentProjectValidator(projectDB,
-                Arrays.asList(new ModularSourcesValidator(), new ModularDependencyValidator()));
+        ContentProjectValidator projectValidator = new ContentProjectValidator(projectDB, MODULEMD_API);
         project.setProjectMessages(mapProjectMessagesFromDB(projectValidator.validate()));
 
         return project;
