@@ -31,7 +31,7 @@ import com.google.gson.GsonBuilder;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
-import com.suse.manager.webui.utils.gson.MaintenanceScheduleJson;
+import com.suse.manager.webui.utils.gson.MaintenanceWindowJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -197,17 +197,16 @@ public class MaintenanceController {
         return  json(response, ResultJson.success());
     }
 
-    private static List<MaintenanceScheduleJson> schedulesToJson(List<MaintenanceSchedule> schedules) {
+    private static List<MaintenanceWindowJson> schedulesToJson(List<MaintenanceSchedule> schedules) {
         return schedules.stream().map(MaintenanceController::scheduleToJson).collect(Collectors.toList());
     }
 
-    private static MaintenanceScheduleJson scheduleToJson(MaintenanceSchedule schedule) {
-        MaintenanceScheduleJson json = new MaintenanceScheduleJson();
+    private static MaintenanceWindowJson scheduleToJson(MaintenanceSchedule schedule) {
+        MaintenanceWindowJson json = new MaintenanceWindowJson();
 
         json.setScheduleId(schedule.getId());
         json.setScheduleName(schedule.getName());
         json.setScheduleType(schedule.getScheduleType().toString());
-
         schedule.getCalendarOpt().ifPresent(maintenanceCalendar -> {
             json.setCalendarId(maintenanceCalendar.getId());
             json.setCalendarName(maintenanceCalendar.getLabel());
