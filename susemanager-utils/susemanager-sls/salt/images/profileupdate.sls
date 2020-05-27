@@ -41,6 +41,18 @@ mgr_image_remove:
       - "{{ pillar.get('imagename') }}"
     - force: False
 
+{% if 'docker.logout' in salt %}
+
+mgr_registries_logout:
+  mgrcompat.module_run:
+    - name: docker.logout
+    - registries: {{ pillar.get('docker-registries', {}).keys() | list }}
+    - require:
+      - mgrcompat: mgr_registries_login_inspect
+      - mgrcompat: mgr_image_profileupdate
+
+{% endif %}
+
 {% else %}
 
 mgr_registries_login_inspect:
