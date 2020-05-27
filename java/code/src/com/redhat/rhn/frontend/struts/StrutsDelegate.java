@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
@@ -318,6 +319,22 @@ public class StrutsDelegate {
     }
 
     /**
+     * Convenience method to read schedule date from the maintenance window selector or from the date picker
+     * (if maint. window is not selected).
+     *
+     * See readMaintenanceWindowDate and readDatePicker.
+     *
+     * @param dynaActionForm the form
+     * @param datePickerName the datepicker name
+     * @param yearDirection the year direction parameter of the datepicker
+     * @return the schedule date from the maintenance window selector or from the date picker
+     */
+    public Date readScheduleDate(DynaActionForm dynaActionForm, String datePickerName, int yearDirection) {
+        return readMaintenanceWindowDate(dynaActionForm)
+                .orElseGet(() -> readDatePicker(dynaActionForm, datePickerName, yearDirection));
+    }
+
+    /**
      * Reads the earliest date from a form populated by a datepicker.
      * Your dyna action picker must either be a struts datePickerForm, or
      * possess all of datePickerForm's fields.
@@ -339,6 +356,26 @@ public class StrutsDelegate {
             return p.getDate();
         }
         return new Date();
+    }
+
+    /**
+     * Reads the date from selected maintenance window and returns it,
+     * if scheduling by maintenance window was selected in the form.
+     *
+     * Otherwise return an empty optional.
+     *
+     * @param form the form
+     * @return Optional with selected maintenance window or empty
+     */
+    public Optional<Date> readMaintenanceWindowDate(DynaActionForm form) {
+        String scheduleType = (String) form.getMap().get(DatePicker.SCHEDULE_TYPE);
+        String maintenanceWindow = (String) form.getMap().get("maintenance_window");
+        if (DatePicker.ScheduleType.MAINTENANCE_WINDOW.asString().equals(scheduleType) &&
+                StringUtils.isNotEmpty(maintenanceWindow)) {
+            long maintWindowStart = Long.parseLong(maintenanceWindow);
+            return Optional.of(new Date(maintWindowStart));
+        }
+        return Optional.empty();
     }
 
     /**
