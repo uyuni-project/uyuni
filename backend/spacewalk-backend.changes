@@ -1,3 +1,4 @@
+- Prevent failure when syncing from RHEL CDN due extra params (bsc#1171885)
 - use default sender address from web namespace
 
 -------------------------------------------------------------------
