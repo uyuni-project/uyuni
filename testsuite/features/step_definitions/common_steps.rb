@@ -281,7 +281,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   if host.include?('client') or host.include?('ceos') or host.include?('ubuntu')
     node.run('rhn_check -vvv', true, 500, 'root')
     client_refresh_metadata
-  elsif host.include?('minion') or host.include?('server') or host.include?('proxy')
+  elsif host.include?('minion') or host.include?('server') or host.include?('proxy') or host.include?('build_host')
     node.run_until_ok('zypper --non-interactive refresh -s')
   else
     raise "The host #{host} has not yet a implementation for that step"
@@ -643,25 +643,31 @@ When(/^I accept key of pxeboot minion in the Salt master$/) do
   $server.run("salt-key -y --accept=pxeboot.example.org")
 end
 
-When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the proxy$/) do |client_type, host, key|
+When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script with activation key "([^"]*)" from the (server|proxy)$/) do |client_type, host, key, target_type|
   # Preparation of bootstrap script for different types of clients
   client = client_type == 'traditional' ? '--traditional' : ''
+  # Use server if proxy is not defined as proxy is not mandatory
+  target = $proxy
+  if target_type.include? 'server' or $proxy.nil?
+    puts 'WARN: Bootstrapping to server, because proxy is not defined.' unless target_type.include? 'server'
+    target = $server
+  end
   cmd = "mgr-bootstrap #{client} &&
   sed -i s\'/^exit 1//\' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   sed -i '/^ACTIVATION_KEYS=/c\\ACTIVATION_KEYS=#{key}' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   chmod 644 /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT &&
   sed -i '/^ORG_GPG_KEY=/c\\ORG_GPG_KEY=RHN-ORG-TRUSTED-SSL-CERT' /srv/www/htdocs/pub/bootstrap/bootstrap.sh &&
   cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh"
-  output, code = $proxy.run(cmd)
+  output, = target.run(cmd)
   raise "Key: #{key} not included" unless output.include? key
   # Run bootstrap script and check for result
   boostrap_script = 'bootstrap-general.exp'
   source = File.dirname(__FILE__) + '/../upload_files/' + boostrap_script
   dest = '/tmp/' + boostrap_script
-  return_code = file_inject($proxy, source, dest)
+  return_code = file_inject(target, source, dest)
   raise 'File injection failed' unless return_code.zero?
   system_name = get_system_name(host)
-  output, code = $proxy.run("expect -f /tmp/#{boostrap_script} #{system_name}")
+  output, = target.run("expect -f /tmp/#{boostrap_script} #{system_name}")
   raise 'Bootstrapp didn\'t finish properly' unless output.include? '-bootstrap complete-'
 end
 
@@ -700,61 +706,56 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
 end
 
 When(/^I enable repositories before installing Docker$/) do
-  os_version, os_family = get_os_version($minion)
+  os_version, os_family = get_os_version($build_host)
 
   # Distribution
   repos = "os_pool_repo os_update_repo"
-  puts $minion.run("zypper mr --enable #{repos}")
+  puts $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
-  repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+  puts $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
   # Development
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = "devel_pool_repo devel_updates_repo"
-    puts $minion.run("zypper mr --enable #{repos}")
+    puts $build_host.run("zypper mr --enable #{repos}")
   end
 
   # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
-    puts $minion.run("zypper mr --enable #{repos}")
+    puts $build_host.run("zypper mr --enable #{repos}")
   end
 
-  $minion.run('zypper -n --gpg-auto-import-keys ref')
+  $build_host.run('zypper -n --gpg-auto-import-keys ref')
 end
 
 When(/^I disable repositories after installing Docker$/) do
-  os_version, os_family = get_os_version($minion)
+  os_version, os_family = get_os_version($build_host)
 
   # Distribution
   repos = "os_pool_repo os_update_repo"
-  puts $minion.run("zypper mr --disable #{repos}")
+  puts $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
-  repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+  puts $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
   # Development
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
     repos = "devel_pool_repo devel_updates_repo"
-    puts $minion.run("zypper mr --disable #{repos}")
+    puts $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
-    puts $minion.run("zypper mr --disable #{repos}")
-  end
-
-  # Refresh is only necessary when some repos are enabled
-  if $minion.run('zypper -x lr -E').include? '</repo>'
-    $minion.run('zypper -n --gpg-auto-import-keys ref')
+    puts $build_host.run("zypper mr --disable #{repos}")
   end
 end
 

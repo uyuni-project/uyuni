@@ -636,11 +636,11 @@ do_migration() {
     ssh -i $KEYFILE root@$SATELLITE_IP "systemctl is-enabled osa-dispatcher > /dev/null 2>&1"
     if [ $? -eq 0 ]; then
         echo "Enable osa-dispatcher..."
-        systemctl --quiet enable osa-dispatcher
+        systemctl --quiet enable osa-dispatcher 2>&1
     else
         echo "Disable osa-dispatcher..."
-        systemctl --quiet disable osa-dispatcher
-        systemctl --quiet disable jabberd
+        systemctl --quiet disable osa-dispatcher 2>&1
+        systemctl --quiet disable jabberd 2>&1
     fi
 
     cleanup_hostname
@@ -835,12 +835,12 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
 
             # explicitly enable OSA dispatcher as it's no longer part of spacewalk.target
             echo "Enable osa-dispatcher..."
-            systemctl --quiet enable jabberd
-            systemctl --quiet enable osa-dispatcher
+            systemctl --quiet enable jabberd 2>&1
+            systemctl --quiet enable osa-dispatcher 2>&1
 
             systemctl restart postgresql
             /usr/sbin/spacewalk-service start
-            systemctl --quiet enable spacewalk-diskcheck.timer
+            systemctl --quiet enable spacewalk-diskcheck.timer 2>&1
             systemctl start spacewalk-diskcheck.timer
         fi
     fi
@@ -859,7 +859,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         else
             echo "firewalld not installed" >&2
         fi
-        systemctl --quiet enable slpd
+        systemctl --quiet enable slpd 2>&1
         systemctl start slpd
     fi
 fi

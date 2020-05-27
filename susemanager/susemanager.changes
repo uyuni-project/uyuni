@@ -1,4 +1,11 @@
 - migrate proxy list in cobbler settings (bsc#1169536)
+- Make systemd services and timers enablement really quiet
+
+-------------------------------------------------------------------
+Wed May 20 11:01:49 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.12-1
+- Enable support for bootstrapping CentOS/Oracle Linux 6, 7 and 8 on Uyuni and SUSE Manager
 - Enable support for bootstrapping Ubuntu 20.04 LTS
 - migrate cobbler configs for ks_mirror -> distro_mirror rename (bsc#1169209)
 

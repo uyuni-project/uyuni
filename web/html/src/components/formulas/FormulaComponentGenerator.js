@@ -269,7 +269,9 @@ export function text(txt) {
         return "";
     }
     // replace variables
-    txt = txt.replace(/\${productName}/g, Utils.getProductName());
+    if (typeof txt === 'string' || txt instanceof String) {
+      txt = txt.replace(/\${productName}/g, Utils.getProductName());
+    }
     return txt;
 }
 
@@ -747,7 +749,7 @@ export class FormulaFormContextProvider extends React.Component {
 
         const recurOnVals = (value) => {
             return Object.entries(value)
-                .map(([nestedName, nestedVal]) => [nestedName, adjustNestedDefault(element.$prototype[nestedName], nestedVal)])
+                .map(([nestedName, nestedVal]) => [nestedName, this.adjustNestedDefault(element.$prototype[nestedName], nestedVal)])
                 .reduce((acc, entry) => {
                     acc[entry[0]] = entry[1];
                     return acc;

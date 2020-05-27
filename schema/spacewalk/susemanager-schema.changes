@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed May 20 11:05:12 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.7-1
 - fix the place for the virtualization pool actions schema upgrade scripts
 - added an index to improve reposync performance
 - Update schema for virtual volume delete action

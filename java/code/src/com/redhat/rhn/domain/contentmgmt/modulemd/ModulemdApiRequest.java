@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.contentmgmt.modulemd;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,11 +60,11 @@ public class ModulemdApiRequest {
     /**
      * Instantiate payload for a 'list_modules' call
      *
-     * @param paths module metadata paths
+     * @param path a single module metadata path
      * @return the request payload to call the API with
      */
-    public static ModulemdApiRequest listModulesRequest(List<String> paths) {
-        return new ModulemdApiRequest(LIST_MODULES, paths, null);
+    public static ModulemdApiRequest listModulesRequest(String path) {
+        return new ModulemdApiRequest(LIST_MODULES, Collections.singletonList(path), null);
     }
 
     public String getFunction() {

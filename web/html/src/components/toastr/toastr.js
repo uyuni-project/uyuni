@@ -1,45 +1,63 @@
-import toastr from "toastr";
-import  "toastr/build/toastr.css";
+// @flow
+import * as React from 'react';
+import {ToastContainer, toast, cssTransition} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import  "./toastr.css";
 
-
-toastr.options = {
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-top-full-width",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "1200",
-  "hideDuration": "500",
-  "timeOut": "6000",
-  "extendedTimeOut": "4000",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
+type OptionalParams = {
+  autoHide: boolean
 }
 
-function setOptionsToPersist(toastrIn) {
-  toastrIn.options.timeOut = 0;
-  toastrIn.options.extendedTimeOut = 0;
+type MessagesContainerProps = {
 }
 
-export function showSuccessToastr(message, optionalParams = {autoHide: true}) {
-  if (!optionalParams.autoHide) {
-    setOptionsToPersist(toastr);
+const FadeTransition = cssTransition({
+  enter: 'toast-enter',
+  exit: 'toast-exit',
+  duration: 0
+});
+
+export function showSuccessToastr(message: string|React.Node, optionalParams: OptionalParams = {autoHide: true}) {
+  const notify = () => toast.success(message, {
+    autoClose: optionalParams.autoHide
+    });
+  notify();
+}
+
+export function showWarningToastr(message: string|React.Node, optionalParams: OptionalParams = {autoHide: true}) {
+  const notify = () => toast.warning(message, {
+    autoClose: optionalParams.autoHide
+    });
+  notify();
+}
+
+export function showErrorToastr(message: string|React.Node|Error, optionalParams: OptionalParams = {autoHide: true}) {
+  if (message instanceof Error) {
+    message = (message: Error).toString();
   }
-  toastr.success(message)
+  const notify = () => toast.error(message, {
+    autoClose: optionalParams.autoHide
+    });
+  notify();
 }
 
-export function showErrorToastr(message, optionalParams = {autoHide: true}) {
-  if (!optionalParams.autoHide) {
-    setOptionsToPersist(toastr);
-  }
-  toastr.error(message)
+export function showInfoToastr(message: string|React.Node, optionalParams: OptionalParams = {autoHide: true}) {
+  const notify = () => toast.info(message, {
+    autoClose: optionalParams.autoHide,
+    });
+  notify();
 }
 
-export function showInfoToastr(message, optionalParams = {autoHide: true}) {
-  if (!optionalParams.autoHide) {
-    setOptionsToPersist(toastr);
-  }
-  toastr.info(message)
+export const MessagesContainer = (props: MessagesContainerProps) => {
+  return <ToastContainer
+    position="top-center"
+    autoClose={6000}
+    hideProgressBar={true}
+    closeOnClick={true}
+    pauseOnHover={true}
+    draggable={false}
+    progress="undefined"
+    closeButton={false}
+    transition={FadeTransition}
+  />
 }

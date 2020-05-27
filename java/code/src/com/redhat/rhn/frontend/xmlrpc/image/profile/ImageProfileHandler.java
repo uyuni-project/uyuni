@@ -371,10 +371,9 @@ public class ImageProfileHandler extends BaseHandler {
             // Create or update the key
             profileVal.setValue(val);
             profileVal.setLastModifier(loggedInUser);
+            ImageProfileFactory.save(profileVal);
         });
 
-        // Save changes
-        ImageProfileFactory.save(profile);
         return 1;
     }
 

@@ -54,6 +54,7 @@ public class SelectableColumnTag extends TagSupport {
     private String listName;
     private String rhnSet;
     private String hideDisabled;
+    private String checkboxText;
 
     /**
      * Sets the column width
@@ -119,6 +120,13 @@ public class SelectableColumnTag extends TagSupport {
         hideDisabled = expr;
     }
 
+    /**
+     * setter for checkboxTextIn
+     * @param checkboxTextIn "true" if we should hide disabled checkboxes, else we show them
+     */
+    public void setCheckboxText(String checkboxTextIn) {
+        checkboxText = checkboxTextIn;
+    }
 
     /**
      * {@inheritDoc}
@@ -223,6 +231,9 @@ public class SelectableColumnTag extends TagSupport {
                                 getIgnorableParentIds());
         ListTagUtil.write(pageContext, script);
         ListTagUtil.write(pageContext, "\" />");
+        if (checkboxText != null) {
+            ListTagUtil.write(pageContext, checkboxText);
+        }
     }
     private void renderCheckbox() throws JspException {
         render(valueExpr);
