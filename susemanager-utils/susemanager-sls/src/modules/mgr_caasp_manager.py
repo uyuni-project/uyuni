@@ -10,15 +10,6 @@ import logging
 import os
 import subprocess
 
-try:
-    from urllib3.exceptions import HTTPError
-    from kubernetes.client.rest import ApiException
-    import kubernetes
-    import kubernetes.client
-    HAS_KUBE_LIBS = True
-except ImportError:
-    HAS_KUBE_LIBS = False
-
 import salt.utils.stringutils
 import salt.utils.timed_subprocess
 
@@ -40,12 +31,12 @@ DEFAULT_TIMEOUT = 1200
 
 def __virtual__():
     '''
-    This module is always enabled while 'skuba' CLI tools is available.
+    This module requires that 'skuba' and 'kubectl' CLI tools are available.
     '''
     if not which('skuba'):
-        return (False, 'skuba is not available')
-    elif not HAS_KUBE_LIBS:
-        return (False, 'kubernetes python library not found')
+        return (False, 'skuba is not available in the minion')
+    if not which('kubectl'):
+        return (False, 'kubectl is not available in the minion')
     else:
         return __virtualname__
 
@@ -68,6 +59,32 @@ def _call_skuba(skuba_cluster_path,
         return skuba_proc
     except Exception as exc:
         error_msg = "Unexpected error while calling skuba: {}".format(exc)
+        log.error(error_msg)
+        raise CommandExecutionError(error_msg)
+
+
+def _call_kubectl(kubectl_config_path,
+                  cmd_args,
+                  timeout=DEFAULT_TIMEOUT,
+                  **kwargs):
+
+    newenv = os.environ
+    newenv['KUBECONFIG'] = os.path.join(kubectl_config_path, 'admin.conf')
+
+    log.debug("Calling kubectl CLI: 'kubectl {}' - KUBECONFIG: {} - Timeout: {}".format(cmd_args, newenv['KUBECONFIG'], timeout))
+    try:
+        kubectl_proc = salt.utils.timed_subprocess.TimedProc(
+            ["kubectl"] + cmd_args.split(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            timeout=timeout,
+            cwd=kubectl_config_path,
+            env=newenv,
+        )
+        kubectl_proc.run()
+        return kubectl_proc
+    except Exception as exc:
+        error_msg = "Unexpected error while calling kubectl: {}".format(exc)
         log.error(error_msg)
         raise CommandExecutionError(error_msg)
 
@@ -116,20 +133,27 @@ def list_nodes(skuba_cluster_path,
         raise CommandExecutionError(error_msg)
 
     # The following is a hack to enrich skuba result with the machine-id of every node
-    # We need to query k8s API to retrieve the machine-id
-    kubernetes.config.load_kube_config(skuba_cluster_path + os.path.sep + 'admin.conf')
-    try:
-        kubeapi_response = kubernetes.client.CoreV1Api().list_node()
-        for node in kubeapi_response.items:
-            if node.metadata.name in ret.keys():
-                ret[node.metadata.name]['machine-id'] = node.status.node_info.machine_id
-                ret[node.metadata.name]['internal-ips'] = list(map(lambda x: x.address, filter(lambda x: x.type == "InternalIP", node.status.addresses)))
-            else:
-                error_msg = "Node returned from Kubernetes API not known to skuba: {}".format(node.metadata.name)
-                log.error(error_msg)
-    except (ApiException, HTTPError) as exc:
-        error_msg = "Exception while querying k8s API: {}".format(exc)
+    # We need to query kubectl to retrieve the machine-id
+    kubectl_proc = _call_kubectl(skuba_cluster_path, "get nodes -o json", timeout=timeout)
+    if kubectl_proc.process.returncode != 0 or kubectl_proc.stderr:
+        error_msg = "Unexpected error {} at kubectl when getting nodes: {}".format(
+                kubectl_proc.process.returncode,
+                salt.utils.stringutils.to_str(kubectl_proc.stderr))
         log.error(error_msg)
+        raise CommandExecutionError(error_msg)
+
+    kubectl_response = salt.utils.yaml.safe_load(kubectl_proc.stdout)
+
+    for node in kubectl_response.get('items', []):
+        node_name = node['metadata']['name']
+        if node_name in ret.keys():
+            ret[node_name]['machine-id'] = node['status']['nodeInfo']['machineID']
+            ret[node_name]['internal-ips'] = list(map(lambda x: x['address'],
+                                                  filter(lambda x: x['type'] == "InternalIP",
+                                                         node['status']['addresses'])))
+        else:
+            error_msg = "Node returned from Kubernetes API not known to skuba: {}".format(node.metadata.name)
+            log.error(error_msg)
 
     return ret
 
