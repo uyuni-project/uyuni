@@ -1,3 +1,4 @@
+- Log out of Docker registries after image build (bsc#1165572)
 - Prevent "module.run" deprecation warnings by using custom mgrcompat module
 - Prevent stuck Hardware Refresh actions on Salt 2016.11.10 based SSH minions (bsc#1173169)
 
