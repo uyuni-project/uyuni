@@ -71,7 +71,7 @@ public class ActionChainHelper {
      * @return the action chain
      */
     public static ActionChain readActionChain(DynaActionForm form, User user) {
-        if (Boolean.FALSE.equals(form.get(DatePicker.USE_DATE))) {
+        if (DatePicker.ScheduleType.ACTION_CHAIN.asString().equals(form.get(DatePicker.SCHEDULE_TYPE))) {
             String label = sanitizeLabel((String) form.get(LABEL_PROPERTY_NAME));
 
             if (!StringUtils.isBlank(label)) {
