@@ -37,6 +37,7 @@ import java.util.Date;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.ERRATUM;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.PACKAGE;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
@@ -402,21 +403,21 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
         // Filter by module name only
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule1");
-        ContentFilter filter = contentManager.createFilter("mymodule-filter-1", DENY, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("mymodule-filter-1", ALLOW, MODULE, criteria, user);
         assertTrue(filter.test(module1));
         assertTrue(filter.test(module2));
         assertFalse(filter.test(module3));
 
         // Filter by module:stream
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule1:mystream1");
-        filter = contentManager.createFilter("mymodule-filter-2", DENY, MODULE, criteria, user);
+        filter = contentManager.createFilter("mymodule-filter-2", ALLOW, MODULE, criteria, user);
         assertTrue(filter.test(module1));
         assertFalse(filter.test(module2));
         assertFalse(filter.test(module3));
 
         // Filter by stream name only. Should not match anything
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mystream1");
-        filter = contentManager.createFilter("mymodule-filter-3", DENY, MODULE, criteria, user);
+        filter = contentManager.createFilter("mymodule-filter-3", ALLOW, MODULE, criteria, user);
         assertFalse(filter.test(module1));
         assertFalse(filter.test(module2));
         assertFalse(filter.test(module3));

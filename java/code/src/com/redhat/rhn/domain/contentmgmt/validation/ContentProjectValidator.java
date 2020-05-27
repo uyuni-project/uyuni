@@ -16,7 +16,9 @@
 package com.redhat.rhn.domain.contentmgmt.validation;
 
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
+import com.redhat.rhn.domain.contentmgmt.modulemd.ModulemdApi;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,18 @@ public class ContentProjectValidator {
 
     private ContentProject project;
     private List<ContentValidator> validators;
+
+    /**
+     * Initialize a new content project validator with the default list of validators
+     *
+     * When initialized, all available validators will be enabled by default.
+     *
+     * @param projectIn the content project to be validated
+     * @param modulemdApiIn the Modulemd API to be used with appstream related validators
+     */
+    public ContentProjectValidator(ContentProject projectIn, ModulemdApi modulemdApiIn) {
+        this(projectIn, Arrays.asList(new ModularSourcesValidator(), new ModularDependencyValidator(modulemdApiIn)));
+    }
 
     /**
      * Initialize a new content project validator with a list of validators

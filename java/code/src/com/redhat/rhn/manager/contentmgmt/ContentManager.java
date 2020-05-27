@@ -455,6 +455,11 @@ public class ContentManager {
         lookupFilterByNameAndOrg(name, user).ifPresent(cp -> {
             throw new EntityExistsException(cp);
         });
+
+        if (ContentFilter.EntityType.MODULE.equals(entityType) && ContentFilter.Rule.DENY.equals(rule)) {
+            // DENY rule is not applicable for module filters
+            throw new IllegalArgumentException("DENY rule is not applicable to appstream filters.");
+        }
         return ContentProjectFactory.createFilter(name, rule, entityType, criteria, user);
     }
     // todo check behavior consistency with other crud methods
@@ -586,8 +591,24 @@ public class ContentManager {
         ensureOrgAdmin(user);
         ContentProject project = lookupProject(projectLabel, user)
                 .orElseThrow(() -> new EntityNotExistsException(projectLabel));
+        buildProject(project, message, async, user);
+    }
+
+    /**
+     * Build a {@link ContentProject}
+     *
+     * @param project the project
+     * @param message the optional message
+     * @param async run the time-expensive operations asynchronously? (in the test code it is useful to run them
+     * synchronously)
+     * @param user the user
+     * @throws EntityNotExistsException if Project does not exist
+     * @throws ContentManagementException when there are no Environments in the Project
+     */
+    public void buildProject(ContentProject project, Optional<String> message, boolean async, User user) {
+        ensureOrgAdmin(user);
         ContentEnvironment firstEnv = project.getFirstEnvironmentOpt()
-                .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + projectLabel +
+                .orElseThrow(() -> new ContentManagementException("Cannot publish  project: " + project.getLabel() +
                         " with no environments."));
         // 1st or 2nd Environments is BUILDING -> FORBID another build as it could affect the build in progress
         if (isEnvironmentBuilding(of(firstEnv)) || isEnvironmentBuilding(firstEnv.getNextEnvironmentOpt())) {

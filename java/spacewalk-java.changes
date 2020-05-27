@@ -1,3 +1,4 @@
+- Validate CLM projects on build/promote with XMLRPC
 - Fix nullpointer exception during proxy registration (bsc#1171287)
 - improve Content Lifecycle Management build and promotion performance (bsc#1159226)
 - fix info text about package installation on channel change (bsc#1171684)
