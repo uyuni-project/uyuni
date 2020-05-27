@@ -974,6 +974,7 @@
       <form-property name="date_am_pm"  type="java.lang.Integer"/>
       <form-property name="submitted"   type="java.lang.Boolean" />
       <form-property name="action_chain"   type="java.lang.String" />
+      <form-property name="maintenance_window"   type="java.lang.String" />
     </form-bean>
 
     <form-bean name="deleteSystemGroupForm"
@@ -1136,6 +1137,7 @@
         <form-property name="date_minute" type="java.lang.Integer"/>
         <form-property name="date_am_pm" type="java.lang.Integer"/>
         <form-property name="action_chain"   type="java.lang.String" />
+        <form-property name="maintenance_window"   type="java.lang.String" />
     </form-bean>
 
     <form-bean name="ErrataAffectedListForm" type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -1151,6 +1153,7 @@
         <form-property name="date_minute" type="java.lang.Integer"/>
         <form-property name="date_am_pm" type="java.lang.Integer"/>
         <form-property name="action_chain"   type="java.lang.String" />
+        <form-property name="maintenance_window"   type="java.lang.String" />
     </form-bean>
 
     <form-bean name="forgotCredentialsForm"
