@@ -30,7 +30,7 @@ class MaintenanceWindows extends React.Component {
     constructor(props) {
         super(props);
 
-        ["deleteSchedule", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError", "updateSchedule"]
+        ["delete", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError", "update"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
@@ -40,6 +40,7 @@ class MaintenanceWindows extends React.Component {
 
     componentDidMount() {
         this.updateView(getHashAction(), getHashId());
+        type === "schedule" && this.getCalendarNames();
         window.addEventListener("popstate", () => {
             this.updateView(getHashAction(), getHashId());
         });
@@ -55,7 +56,7 @@ class MaintenanceWindows extends React.Component {
     }
 
     getMaintenanceSchedules = () => {
-        const endpoint = "/rhn/manager/api/maintenance";
+        const endpoint = "/rhn/manager/api/maintenance/" + type + "/list";
         return Network.get(endpoint, "application/json").promise
             .then(schedules => {
                 this.setState({
@@ -77,19 +78,26 @@ class MaintenanceWindows extends React.Component {
           }).catch(this.handleResponseError);
     };
 
-    getScheduleDetails(row, action) {
-        this.setState({selected: row, action: action});
+    getDetails(row, action) {
+        const endpoint = "/rhn/manager/api/maintenance/" + type + "/" +
+            (type === "schedule" ? row.scheduleName : row.calendarName) + "/details";
+        return Network.get(endpoint, "application/json").promise
+            .then(item => {
+                this.setState({
+                    selected: item,
+                    action: action
+                });
+                history.pushState(null, null, "#/" + action + "/" +
+                    (type === "schedule" ? item.scheduleId : item.calendarId));
+            }).catch(this.handleResponseError);
     }
 
     handleDetailsAction(row) {
-        this.getScheduleDetails(row, "details");
-        history.pushState(null, null, "#/details/" + row.scheduleId);
+        this.getDetails(row, "details");
     }
 
     handleEditAction(row) {
-        this.getScheduleDetails(row, "edit");
-        this.getCalendarNames();
-        history.pushState(null, null, "#/edit/" + row.scheduleId);
+        this.getDetails(row, "edit");
     }
 
     toggleActive(schedule) {
@@ -99,13 +107,15 @@ class MaintenanceWindows extends React.Component {
         this.updateSchedule(schedule);
     }
 
-    updateSchedule(schedule) {
+    update(item) {
         return Network.post(
-            "/rhn/manager/api/maintenance/save",
-            JSON.stringify(schedule),
+            "/rhn/manager/api/maintenance/" + type + "/save",
+            JSON.stringify(item),
             "application/json"
         ).promise.then((_) => {
-            const successMsg = <span>{t("Schedule successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
+            const successMsg = <span>{t(
+                (type === "schedule" ? "Schedule " : "Calendar ") +
+                "successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
             const msgs = this.state.messages.concat(MessagesUtils.info(successMsg));
 
             while (msgs.length > messagesCounterLimit) {
@@ -120,18 +130,23 @@ class MaintenanceWindows extends React.Component {
         }).catch(this.handleResponseError);
     }
 
-    deleteSchedule(item) {
+    delete(item) {
         /* TODO: schedule name in url fine? Or id better? */
-        return Network.del("/rhn/manager/api/maintenance/" + item.scheduleName + "/delete")
+        return Network.del("/rhn/manager/api/maintenance/" + type + "/" +
+            (type === "schedule" ? item.scheduleName : item.calendarName) + "/delete")
             .promise.then((_) => {
                 this.setState({
-                    messages: MessagesUtils.info("Schedule \'" + item.scheduleName + "\' has been deleted.")
+                    messages: MessagesUtils.info(
+                        (type === "schedule" ? "Schedule " : "Calendar ") +
+                        "\'" + (type === "schedule" ? item.scheduleName : item.calendarName) +
+                        "\' has been deleted."
+                    )
                 });
                 this.handleForwardAction();
             })
             .catch(data => {
                 const errorMsg = MessagesUtils.error(
-                    t("Error when deleting the schedule"));
+                    t("Error when deleting the " + type));
                 let messages = (data && data.status === 400)
                     ? errorMsg
                     : Network.responseErrorMessage(jqXHR);
@@ -148,9 +163,6 @@ class MaintenanceWindows extends React.Component {
                 history.pushState(null, null, loc.pathname + loc.search);
             });
         } else {
-            if (action === "create") {
-                this.getCalendarNames();
-            }
             this.setState({
                 action: action
             });
@@ -179,13 +191,13 @@ class MaintenanceWindows extends React.Component {
                     <MaintenanceWindowsDetails data={this.state.selected}
                                             onCancel={this.handleForwardAction}
                                             onEdit={this.handleEditAction}
-                                            onDelete={this.deleteSchedule}
+                                            onDelete={this.delete}
                     />
                     : (this.state.action === 'edit' && this.state.selected) ||
                     this.state.action === 'create' ?
                         <MaintenanceWindowsEdit calendarNames={this.state.calendarNames}
                                                   schedule={this.state.selected}
-                                                  onEdit={this.updateSchedule}
+                                                  onEdit={this.update}
                                                   onActionChanged={this.handleForwardAction}
                         />
                         :
@@ -194,7 +206,7 @@ class MaintenanceWindows extends React.Component {
                                              onToggleActive={this.toggleActive}
                                              onSelect={this.handleDetailsAction}
                                              onEdit={this.handleEditAction}
-                                             onDelete={this.deleteSchedule}
+                                             onDelete={this.delete}
                         />
                 }
             </div>
