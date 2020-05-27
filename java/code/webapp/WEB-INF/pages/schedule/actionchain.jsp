@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <rhn:hidden name="use_date" value="true"/>
+                    <rhn:hidden name="schedule_type" value="date"/>
                     <html:hidden property="dispatch" value="${rhn:localize('actionchain.jsp.saveandschedule')}"/>
                     <rhn:csrf/>
                     <rhn:submitted/>
