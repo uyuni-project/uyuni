@@ -312,13 +312,13 @@ Given(/^I am on the SUSE Products page$/) do
   )
 end
 
-# access the multi-clients/minions
+# access the clients
 Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   steps %(
     Given I am on the Systems page
     When I follow "#{system_name}"
-    And I wait until I see "#{system_name}" text
+    And I wait until I see "System Status" text
   )
 end
 
