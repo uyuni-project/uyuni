@@ -102,7 +102,7 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable, 
 
                 // Load the date selected by the user
                 DynaActionForm form = (DynaActionForm) actionForm;
-                Date earliest = getStrutsDelegate().readDatePicker(form, "date",
+                Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
 
                 // Load the action chain by the user

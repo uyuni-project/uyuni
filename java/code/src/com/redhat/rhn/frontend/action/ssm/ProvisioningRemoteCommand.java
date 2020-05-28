@@ -188,7 +188,7 @@ public class ProvisioningRemoteCommand extends RhnAction implements
         if (form.get("submitted") != null) {
             User user = new RequestContext(request).getCurrentUser();
             Date scheduleDate = this.getStrutsDelegate()
-                    .readDatePicker(form, "date", DatePicker.YEAR_RANGE_POSITIVE);
+                    .readScheduleDate(form, "date", DatePicker.YEAR_RANGE_POSITIVE);
             ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
 
             boolean formValid = true;

@@ -111,8 +111,7 @@ public class ErrataListConfirmAction extends RhnAction implements
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
 
-        Date earliest = getStrutsDelegate().readDatePicker(formIn,
-                "date", DatePicker.YEAR_RANGE_POSITIVE);
+        Date earliest = getStrutsDelegate().readScheduleDate(formIn, "date", YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain(formIn, user);
 
         // Is taskomatic running?

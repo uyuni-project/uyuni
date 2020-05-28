@@ -140,8 +140,7 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable, Mai
         // Get the errata IDs
         Set<Long> errataList = set.getElementValues();
         if (server != null && !errataList.isEmpty()) {
-            Date earliest = getStrutsDelegate().readDatePicker(form, "date",
-                DatePicker.YEAR_RANGE_POSITIVE);
+            Date earliest = getStrutsDelegate().readScheduleDate(form, "date", YEAR_RANGE_POSITIVE);
             ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
             List<Long> serverIds = Arrays.asList(server.getId());
             List<Long> errataIds = new ArrayList<Long>(errataList);
