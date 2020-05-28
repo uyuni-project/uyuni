@@ -37,12 +37,14 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.NotInMaintenanceModeException;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.File;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -155,6 +157,26 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
 
         try {
             ActionManager.scheduleHardwareRefreshAction(user, sys1, new Date(12345));
+        }
+        catch (NotInMaintenanceModeException e) {
+            fail("NoMaintenanceWindowException should NOT have been thrown.");
+        }
+    }
+
+    /**
+     * Tests scheduling a just a channel state (part of channel change which should be allowed)
+     */
+    public void testScheduleChannelChangeNoMaintWindow() throws Exception {
+        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceSchedule schedule = mm.createMaintenanceSchedule(user, "test-schedule-3", SINGLE, empty());
+
+        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
+
+        try {
+            ActionManager.scheduleApplyStates(user, Collections.singletonList(sys1.getId()),
+                    Collections.singletonList(ApplyStatesEventMessage.CHANNELS), new Date(12345));
         }
         catch (NotInMaintenanceModeException e) {
             fail("NoMaintenanceWindowException should NOT have been thrown.");
