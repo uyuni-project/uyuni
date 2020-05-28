@@ -126,7 +126,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
                         update);
             }
 
-            update.setEarliestAction(getStrutsDelegate().readDatePicker(form, "date",
+            update.setEarliestAction(getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE));
             ActionManager.storeAction(update);
             try {
