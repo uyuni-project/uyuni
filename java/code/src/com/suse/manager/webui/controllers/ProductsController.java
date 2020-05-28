@@ -15,10 +15,17 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.reflect.TypeToken;
+import static com.redhat.rhn.common.hibernate.HibernateFactory.doWithoutAutoFlushing;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.SCCRefreshLock;
 import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
@@ -33,16 +40,14 @@ import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
-import com.suse.manager.model.products.Extension;
+
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.model.products.ChannelJson;
+import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
 import org.apache.log4j.Logger;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.template.jade.JadeTemplateEngine;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,14 +57,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-import static spark.Spark.get;
-import static spark.Spark.post;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing backend code for the Products
@@ -272,17 +273,19 @@ public class ProductsController {
      * @return the collection of Mandatory Channels in a JSON format
      */
     public static String getMandatoryChannels(Request request, Response response, User user) {
-        List<Long> channelIdList = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
-        Map<Long, List<Long>> result = channelIdList.stream().collect(Collectors.toMap(
-                channelId -> channelId,
-                channelId -> SUSEProductFactory.findSyncedMandatoryChannels(
-                        ChannelFactory.lookupById(channelId).getLabel())
+        return doWithoutAutoFlushing(() -> {
+            List<Long> channelIdList = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
+            Map<Long, List<Long>> result = channelIdList.stream().collect(Collectors.toMap(
+                    channelId -> channelId,
+                    channelId -> SUSEProductFactory.findSyncedMandatoryChannels(
+                            ChannelFactory.lookupById(channelId).getLabel())
                             .map(channel -> channel.getId())
                             .collect(Collectors.toList())
-        ));
-
-         return json(response, ResultJson.success(result));
+            ));
+            return json(response, ResultJson.success(result));
+        });
     }
+
     /**
      * Returns JSON data for the SUSE products
      *
@@ -304,7 +307,7 @@ public class ProductsController {
 
             List<Product> jsonProducts = TimeUtils.logTime(log, "build ui tree",
                     () -> products.stream().map(syncProduct -> {
-                SUSEProduct rootProduct = HibernateFactory.doWithoutAutoFlushing(
+                SUSEProduct rootProduct = doWithoutAutoFlushing(
                         () -> SUSEProductFactory.lookupByProductId(syncProduct.getId()));
                 HashSet<Extension> rootExtensions = new HashSet<>();
 
@@ -334,10 +337,10 @@ public class ProductsController {
                     for (MgrSyncProductDto ext : syncProduct.getExtensions()) {
                         long extProductId = ext.getId();
                         SUSEProduct extProduct =
-                                        HibernateFactory.doWithoutAutoFlushing(() -> SUSEProductFactory
+                                        doWithoutAutoFlushing(() -> SUSEProductFactory
                                                 .lookupByProductId(extProductId));
                         List<SUSEProduct> allBaseProductsOf =
-                                HibernateFactory.doWithoutAutoFlushing(() -> SUSEProductFactory
+                                doWithoutAutoFlushing(() -> SUSEProductFactory
                                         .findAllBaseProductsOf(extProduct, rootProduct));
                         if (allBaseProductsOf.isEmpty()) {
                             rootExtensions.add(extensionByProductId.get(extProductId));
