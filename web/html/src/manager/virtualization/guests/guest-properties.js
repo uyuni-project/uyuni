@@ -11,7 +11,7 @@ const Validation = require('components/validation');
 const MessagesUtils = require('components/messages').Utils;
 const { Loading } = require('components/utils/Loading');
 const { guestNicsPanel } = require('./properties/guest-nics-panel');
-const { guestDisksPanel } = require('./properties/guest-disks-panel');
+const { GuestDisksPanel } = require('./properties/GuestDisksPanel');
 const { GuestPropertiesForm } = require('./properties/guest-properties-form');
 const { GuestPropertiesTraditional } = require('./properties/guest-properties-traditional');
 const { VirtualizationDomainsCapsApi } = require('./virtualization-domains-caps-api');
@@ -187,7 +187,11 @@ class GuestProperties extends React.Component<Props> {
                                         </Select>)
                                       }
                                     </Panel>,
-                                    guestDisksPanel(model, changeModel, pools, caps),
+                                    <GuestDisksPanel
+                                      changeModel={changeModel}
+                                      pools={pools}
+                                      caps={caps}
+                                    />,
                                     guestNicsPanel(model, changeModel, networks),
                                     <Panel key="graphics" title={t('Graphics')} headingLevel="h2">
                                       <Select
