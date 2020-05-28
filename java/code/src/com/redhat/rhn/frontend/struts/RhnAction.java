@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringEscapeUtils;

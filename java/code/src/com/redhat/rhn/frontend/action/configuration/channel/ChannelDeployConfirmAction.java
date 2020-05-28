@@ -14,17 +14,22 @@
  */
 package com.redhat.rhn.frontend.action.configuration.channel;
 
+import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
+
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -52,7 +57,7 @@ import javax.servlet.http.HttpServletResponse;
  * ChannelDeployConfirmAction
  * @version $Rev$
  */
-public class ChannelDeployConfirmAction extends RhnAction {
+public class ChannelDeployConfirmAction extends RhnAction implements MaintenanceWindowsAware {
 
     /**
      * ${@inheritDoc}
@@ -81,12 +86,16 @@ public class ChannelDeployConfirmAction extends RhnAction {
 
     private ActionForward prepareToLeave(ActionMapping mapping, HttpServletRequest req,
             ConfigChannel cc, DynaActionForm dForm, String forwardLabel) {
-        DatePicker picker = getStrutsDelegate().
-            prepopulateDatePicker(req, dForm, "date", DatePicker.YEAR_RANGE_POSITIVE);
+        DatePicker picker = getStrutsDelegate().prepopulateDatePicker(req, dForm, "date", YEAR_RANGE_POSITIVE);
         req.setAttribute("date", picker);
+
+        RequestContext ctx = new RequestContext(req);
+        RhnSet systems = RhnSetDecl.CONFIG_CHANNEL_DEPLOY_SYSTEMS.get(ctx.getCurrentUser());
+        Set systemIds = buildIds(systems);
+        populateMaintenanceWindows(req, systemIds);
         ActionChainHelper.prepopulateActionChains(req);
 
-        ConfigActionHelper.setupRequestAttributes(new RequestContext(req), cc);
+        ConfigActionHelper.setupRequestAttributes(ctx, cc);
         Map m = makeParamMap(req);
         return getStrutsDelegate().forwardParams(mapping.findForward(forwardLabel), m);
     }
@@ -210,4 +219,10 @@ public class ChannelDeployConfirmAction extends RhnAction {
         return s;
     }
 
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+    }
 }

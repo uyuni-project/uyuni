@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.BaseListAction;
@@ -30,13 +31,14 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.List;
+import java.util.Set;
 
 
 /**
  * FileListConfirmSetupAction, for sdc configuration
  * @version $Rev$
  */
-public class FileListConfirmSetupAction extends BaseListAction {
+public abstract class FileListConfirmSetupAction extends BaseListAction implements MaintenanceWindowsAware {
     public static final String SELECT_ALL = "selectall";
     /**
      * {@inheritDoc}
@@ -62,6 +64,9 @@ public class FileListConfirmSetupAction extends BaseListAction {
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(ctxt.getRequest(),
                 (DynaActionForm) form, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ctxt.getRequest().setAttribute("date", picker);
+
+        Set<Long> systemIds = Set.of(ctxt.lookupServer().getId());
+        populateMaintenanceWindows(ctxt.getRequest(), systemIds);
         ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
     }
 

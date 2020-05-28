@@ -14,10 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.configuration.ssm;
 
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_UPDATE;
+import static com.redhat.rhn.manager.rhnset.RhnSetDecl.SYSTEMS;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
+import com.redhat.rhn.frontend.dto.ConfigSystemDto;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -30,6 +36,8 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.DynaActionForm;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
  * EnableListAction
  * @version $Rev$
  */
-public class EnableListAction extends RhnListAction {
+public class EnableListAction extends RhnListAction implements MaintenanceWindowsAware {
 
     /**
      * {@inheritDoc}
@@ -70,6 +78,9 @@ public class EnableListAction extends RhnListAction {
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, dynaForm,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
 
+        Set<Long> systemIds = getSystemIds(user);
+        populateMaintenanceWindows(request, systemIds);
+
         request.setAttribute("date", picker);
 
         Map params = request.getParameterMap();
@@ -77,10 +88,24 @@ public class EnableListAction extends RhnListAction {
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD), params);
     }
 
+    private Set<Long> getSystemIds(User user) {
+        DataResult<ConfigSystemDto> sysDtos = ConfigurationManager.getInstance()
+                .listNonManagedSystemsInSetElaborate(user, SYSTEMS.getLabel());
+        return sysDtos.stream()
+                .map(dto -> dto.getId())
+                .collect(Collectors.toSet());
+    }
+
     protected DataResult getDataResult(User user, PageControl pcIn) {
-        String setLabel = RhnSetDecl.SYSTEMS.getLabel();
+        String setLabel = SYSTEMS.getLabel();
         ConfigurationManager cm = ConfigurationManager.getInstance();
         return cm.listNonManagedSystemsInSet(user, pcIn, setLabel);
     }
 
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (TYPE_PACKAGES_UPDATE.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+    }
 }
