@@ -44,7 +44,7 @@ export function GuestDisksPanel(props: Props) : React.Node {
 
     props.changeModel(Object.assign(formContext.model, {
       [`disk${index}_editable`]: true,
-      [`disk${index}_type`]: 'file',
+      [`disk${index}_type`]: 'volume',
       [`disk${index}_device`]: 'disk',
       [`disk${index}_bus`]: preferredBusses.length > 0 ? preferredBusses[0] : busTypes[0],
       [`disk${index}_source_pool`]: props.pools.find(item => item.name === 'default') ? 'default' : first_pool,
@@ -61,7 +61,7 @@ export function GuestDisksPanel(props: Props) : React.Node {
   };
 
   const allDisks = getOrderedItemsFromModel(formContext.model, 'disk')
-  const onlyHandledDisks = allDisks.every(index => formContext.model[`disk${index}_type`] === 'file');
+  const onlyHandledDisks = allDisks.every(index => ['file', 'volume'].includes(formContext.model[`disk${index}_type`]));
   return (
     <>
       {
@@ -84,7 +84,6 @@ export function GuestDisksPanel(props: Props) : React.Node {
               index={index}
               domainCaps={props.caps}
               pools={props.pools}
-              changeModel={props.changeModel}
               onlyHandledDisks={onlyHandledDisks}
             />
         }

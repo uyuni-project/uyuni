@@ -164,7 +164,6 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
      * Class describing the JSON disk data
      */
     public class DiskData {
-        private String type;
         private String device;
         private String template;
         private long size = 0;
@@ -173,20 +172,6 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
 
         @SerializedName("source_file")
         private String sourceFile;
-
-        /**
-         * @return Returns the type.
-         */
-        public String getType() {
-            return type;
-        }
-
-        /**
-         * @param typeIn The type to set.
-         */
-        public void setType(String typeIn) {
-            type = typeIn;
-        }
 
         /**
          * @return Returns the device.
