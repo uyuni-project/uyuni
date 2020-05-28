@@ -73,7 +73,7 @@ public class SyncProfilesSetupAction extends RhnAction implements Listable {
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
 
         if (requestContext.wasDispatched("schedulesync.jsp.schedulesync")) {
-            Date time = getStrutsDelegate().readDatePicker(dynaForm, "date",
+            Date time = getStrutsDelegate().readScheduleDate(dynaForm, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
             Map syncParam = new HashMap();
             syncParam.put(RequestContext.SID, sid);

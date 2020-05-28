@@ -325,7 +325,7 @@ public class SPMigrationAction extends RhnAction {
             channelIDs.add(targetBaseChannel);
 
             // Schedule the dist upgrade action
-            Date earliest = getStrutsDelegate().readDatePicker(form, "date",
+            Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
             Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
                     server, targetProductSet, channelIDs, dryRun, earliest);

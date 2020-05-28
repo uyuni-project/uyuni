@@ -187,8 +187,7 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
 
         // Load the date selected by the user
         DynaActionForm form = (DynaActionForm) formIn;
-        Date earliest = getStrutsDelegate().readDatePicker(form, "date",
-            DatePicker.YEAR_RANGE_POSITIVE);
+        Date earliest = getStrutsDelegate().readScheduleDate(form, "date", YEAR_RANGE_POSITIVE);
 
         // Load the Action Chain, if any
         ActionChain actionChain = ActionChainHelper.readActionChain(form, user);

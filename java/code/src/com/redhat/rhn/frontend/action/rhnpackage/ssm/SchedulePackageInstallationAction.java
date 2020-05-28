@@ -97,7 +97,7 @@ public class SchedulePackageInstallationAction extends RhnListAction implements
                 // Load data from the web components
                 User user = requestContext.getCurrentUser();
                 Date earliest = getStrutsDelegate()
-                        .readDatePicker((DynaActionForm) actionForm, "date",
+                        .readScheduleDate((DynaActionForm) actionForm, "date",
                                 DatePicker.YEAR_RANGE_POSITIVE);
                 ActionChain actionChain = ActionChainHelper.readActionChain(f, user);
                 Long cid = requestContext.getRequiredParam(RequestContext.CID);

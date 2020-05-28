@@ -101,7 +101,7 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
 
         //get the earliest date for package actions.
         DynaActionForm form = (DynaActionForm) formIn;
-        Date earliest = getStrutsDelegate().readDatePicker(form, "date",
+        Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
 
         try {

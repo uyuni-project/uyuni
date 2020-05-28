@@ -81,8 +81,7 @@ public class SsmScheduleXccdfConfirmAction extends BaseSsmScheduleXccdfAction {
                     context.getCurrentUser(),
                     (String) form.get(PATH),
                     (String) form.get(PARAMS),
-                    getStrutsDelegate().readDatePicker(form, DATE,
-                            DatePicker.YEAR_RANGE_POSITIVE));
+                    getStrutsDelegate().readScheduleDate(form, DATE, DatePicker.YEAR_RANGE_POSITIVE));
         }
         catch (MissingEntitlementException e) {
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
