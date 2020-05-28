@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_PACKAGES_VERIFY;
+
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -37,9 +40,11 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.events.SsmVerifyPackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -50,6 +55,7 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
@@ -59,7 +65,7 @@ import org.apache.log4j.Logger;
  * Handles the display and capturing of scheduling package verifications for systems in
  * the SSM.
  */
-public class SchedulePackageVerifyAction extends RhnAction implements Listable {
+public class SchedulePackageVerifyAction extends RhnAction implements Listable, MaintenanceWindowsAware {
 
     /** Logger instance */
     private static Logger log = Logger.getLogger(SchedulePackageVerifyAction.class);
@@ -136,6 +142,8 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable {
         request.setAttribute("date", picker);
 
         // Prepopulate the Action Chain selector
+        Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(requestContext.getCurrentUser()));
+        populateMaintenanceWindows(request, systemIds);
         ActionChainHelper.prepopulateActionChains(request);
 
         return actionMapping.findForward(RhnHelper.DEFAULT_FORWARD);
@@ -172,4 +180,10 @@ public class SchedulePackageVerifyAction extends RhnAction implements Listable {
         return results;
     }
 
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (TYPE_PACKAGES_VERIFY.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+    }
 }

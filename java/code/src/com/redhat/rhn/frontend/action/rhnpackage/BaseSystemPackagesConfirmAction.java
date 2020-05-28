@@ -15,15 +15,20 @@
 
 package com.redhat.rhn.frontend.action.rhnpackage;
 
+import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -57,7 +62,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author paji
  * BaseSystemPackagesAction
  */
-public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
+public abstract class BaseSystemPackagesConfirmAction extends RhnAction implements MaintenanceWindowsAware {
     /** Logger instance */
     private static Logger log = Logger.getLogger(BaseSystemPackagesConfirmAction.class);
 
@@ -104,10 +109,11 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
 
         DynaActionForm dynaForm = (DynaActionForm) formIn;
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, dynaForm,
-                "date", DatePicker.YEAR_RANGE_POSITIVE);
+                "date", YEAR_RANGE_POSITIVE);
         request.setAttribute("date", picker);
 
         ActionChainHelper.prepopulateActionChains(request);
+        populateMaintenanceWindows(request, Set.of(server.getId()));
 
         request.setAttribute("system", server);
         requestContext.copyParamToAttributes(RequestContext.SID);
@@ -124,6 +130,18 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
 
     }
 
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (getActionType().isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+    }
+
+    /**
+     * Return the {@link ActionType} of the backend action executed by this struts action.
+     * @return the {@link ActionType}
+     */
+    protected abstract ActionType getActionType();
 
     private List<PackageListItem> getDataResult(HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);

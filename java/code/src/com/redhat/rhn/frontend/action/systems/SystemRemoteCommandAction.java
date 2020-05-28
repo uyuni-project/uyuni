@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.action.systems;
 
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_SCRIPT_RUN;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,9 +41,12 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.util.StringUtil.ScriptCheckResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -55,7 +60,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
  *
  * @author Bo Maryniuk {@literal <bo@suse.de>}
  */
-public class SystemRemoteCommandAction extends RhnAction {
+public class SystemRemoteCommandAction extends RhnAction implements MaintenanceWindowsAware {
     /** Logger instance */
     private static Logger log = Logger.getLogger(SystemRemoteCommandAction.class);
 
@@ -344,6 +349,7 @@ public class SystemRemoteCommandAction extends RhnAction {
         // End the page
         request.setAttribute("date", this.getStrutsDelegate().prepopulateDatePicker(
                 request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
+        populateMaintenanceWindows(request, Set.of(server.getId()));
         ActionChainHelper.prepopulateActionChains(request);
         request.setAttribute("system", server);
 
@@ -356,5 +362,12 @@ public class SystemRemoteCommandAction extends RhnAction {
                 mapping.findForward(RhnHelper.DEFAULT_FORWARD),
                 RequestContext.SID, server.getId().toString()
                 );
+    }
+
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (TYPE_SCRIPT_RUN.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
     }
 }
