@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.server.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.Server;
@@ -78,7 +79,7 @@ public class ServerActionTest extends RhnBaseTestCase {
         sa2.setServerWithCheck(one);
         assertTrue(sa.equals(sa2));
 
-        Action parent = new Action();
+        Action parent = new ApplyStatesAction();
         parent.setId(243L);
         parent.setActionType(ActionFactory.TYPE_APPLY_STATES);
         sa.setParentActionWithCheck(parent);
