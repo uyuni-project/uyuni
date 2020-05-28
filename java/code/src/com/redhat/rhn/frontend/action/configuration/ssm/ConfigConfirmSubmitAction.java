@@ -215,7 +215,6 @@ public class ConfigConfirmSubmitAction extends RhnListDispatchAction {
             return new Date();
         }
         DynaActionForm form = (DynaActionForm) formIn;
-        return getStrutsDelegate().readDatePicker(form, "date",
-                DatePicker.YEAR_RANGE_POSITIVE);
+        return getStrutsDelegate().readScheduleDate(form, "date", DatePicker.YEAR_RANGE_POSITIVE);
     }
 }
