@@ -1274,7 +1274,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param eids List of eids to add mappings for
      * @param cid channel id we're cloning into
      */
-    public static void addClonedErrataToChannel(Set<Long> eids, Long cid) {
+    public static void addErrataToChannel(Set<Long> eids, Long cid) {
         WriteMode m = ModeFactory.getWriteMode("Channel_queries",
                 "add_cloned_erratum_to_channel");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -1358,5 +1358,13 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static void save(ProductName productName) {
         singleton.saveObject(productName);
+    }
+
+    /**
+     * Analyzes the rhnChannelPackage table, useful to update statistics after massive changes.
+     */
+    public static void analyzeChannelPackages() {
+        var m = ModeFactory.getCallableMode("Channel_queries", "analyze_channel_packages");
+        m.execute(new HashMap<>(), new HashMap<>());
     }
 }
