@@ -70,7 +70,7 @@ public class SyncSystemsSetupAction extends RhnAction implements Listable<Packag
         DynaActionForm dynaForm = (DynaActionForm) formIn;
 
         if (requestContext.wasDispatched("schedulesync.jsp.schedulesync")) {
-            Date time = getStrutsDelegate().readDatePicker(dynaForm, "date",
+            Date time = getStrutsDelegate().readScheduleDate(dynaForm, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
             Map<String, Object> syncParam = new HashMap<>();
             syncParam.put(RequestContext.SID, sid);

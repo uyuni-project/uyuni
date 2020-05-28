@@ -72,7 +72,7 @@ public class SystemRebootAction extends RhnAction implements MaintenanceWindowsA
         Server server = SystemManager.lookupByIdAndUser(sid, user);
 
         if (isSubmitted(form)) {
-            Date earliest = getStrutsDelegate().readDatePicker(form, "date",
+            Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
             ActionChain actionChain = ActionChainHelper.readActionChain(form, user);
             try {

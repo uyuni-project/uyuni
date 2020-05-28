@@ -80,7 +80,7 @@ public class EnableSubmitAction extends RhnListDispatchAction {
 
         //get the earliest schedule for package install actions.
         DynaActionForm form = (DynaActionForm) formIn;
-        Date earliest = getStrutsDelegate().readDatePicker(form, "date",
+        Date earliest = getStrutsDelegate().readScheduleDate(form, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
         try {
             ConfigurationManager.getInstance().enableSystems(set, user, earliest);
