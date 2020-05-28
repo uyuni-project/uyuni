@@ -26,6 +26,7 @@ import org.jdom.input.SAXBuilder;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -247,10 +248,11 @@ public class GuestDefinition {
      * Create a new VM definition from a libvirt XML description.
      *
      * @param xmlDef libvirt XML domain definition
+     * @param vmInfo output of virt.vm_info to be merged with the XML guest definition
      * @return parsed definition or {@code null}
      */
     @SuppressWarnings("unchecked")
-    public static GuestDefinition parse(String xmlDef) {
+    public static GuestDefinition parse(String xmlDef, Optional<VmInfoJson> vmInfo) {
         GuestDefinition def = null;
         SAXBuilder builder = new SAXBuilder();
         builder.setValidation(false);
@@ -275,7 +277,7 @@ public class GuestDefinition {
             def.interfaces = ((List<Element>)devices.getChildren("interface")).stream()
                     .map(node -> GuestInterfaceDef.parse(node)).collect(Collectors.toList());
             def.disks = ((List<Element>)devices.getChildren("disk")).stream()
-                    .map(node -> GuestDiskDef.parse(node)).collect(Collectors.toList());
+                    .map(node -> GuestDiskDef.parse(node, vmInfo)).collect(Collectors.toList());
         }
         catch (Exception e) {
             LOG.error("failed to parse libvirt XML definition: " + e.getMessage());

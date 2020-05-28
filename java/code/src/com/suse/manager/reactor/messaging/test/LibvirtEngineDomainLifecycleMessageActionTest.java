@@ -93,7 +93,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
             public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
                 return SaltTestUtils.<String>getSaltResponse(
                         "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", Collections.emptyMap(), null)
-                        .map(GuestDefinition::parse);
+                        .map(xml -> GuestDefinition.parse(xml, Optional.empty()));
             }
         };
 
