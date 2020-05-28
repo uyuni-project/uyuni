@@ -97,31 +97,54 @@
         <div class="panel-body">
             <form action="/rhn/schedule/ActionChain.do?id=${param.id}" method="post" class="schedule">
             <div class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-sm-12">
-                        <p>
-                            <bean:message key="actionchain.jsp.schedulesummary"/>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <rhn:hidden name="schedule_type" value="date"/>
-                    <html:hidden property="dispatch" value="${rhn:localize('actionchain.jsp.saveandschedule')}"/>
-                    <rhn:csrf/>
-                    <rhn:submitted/>
-                    <div class="col-md-offset-3 col-md-6">
-                        <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
-                            <jsp:param name="widget" value="date"/>
-                        </jsp:include>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-3 col-md-6">
-                        <button type="button" class="btn btn-success" id="save-and-schedule">
-                            <bean:message key="actionchain.jsp.saveandschedule"/>
-                        </button>
-                    </div>
-                </div>
+                <html:hidden property="dispatch" value="${rhn:localize('actionchain.jsp.saveandschedule')}"/>
+                <rhn:csrf/>
+                <rhn:submitted/>
+
+                <c:choose>
+                    <%-- When there are multiple schedules, we don not display date picker nor the maint. window picker --%>
+                    <c:when test="${maintenanceWindowsMultiSchedules}">
+                         <div class="alert alert-info">
+                             <bean:message key="schedule.jsp.multiple_maintenance_schedules" />
+                         </div>
+                    </c:when>
+
+                    <c:otherwise>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <p>
+                                    <bean:message key="actionchain.jsp.schedulesummary"/>
+                                </p>
+                            </div>
+                        </div>
+                        <c:choose>
+                            <%-- When there are no maintenance windows, display the usual date picker --%>
+                            <c:when test="${maintenanceWindows == null}">
+                                <rhn:hidden name="schedule_type" value="date"/>
+                                <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-6">
+                                        <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
+                                            <jsp:param name="widget" value="date"/>
+                                        </jsp:include>
+                                    </div>
+                                </div>
+                            </c:when>
+
+                            <c:otherwise>
+                                <rhn:hidden name="schedule_type" value="maintenance_window" />
+                                <div class="col-md-3"> </div>
+                                <jsp:include page="/WEB-INF/pages/common/fragments/maintenance-window-picker.jsp" />
+                            </c:otherwise>
+                        </c:choose>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-6">
+                                <button type="button" class="btn btn-success" id="save-and-schedule">
+                                    <bean:message key="actionchain.jsp.saveandschedule"/>
+                                </button>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
             </form>
         </div>
