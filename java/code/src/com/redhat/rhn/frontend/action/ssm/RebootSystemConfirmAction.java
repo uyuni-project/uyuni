@@ -106,7 +106,7 @@ public class RebootSystemConfirmAction extends RhnAction
         User user = context.getCurrentUser();
         RhnSet set = getSetDecl().get(user);
 
-        Date earliest = getStrutsDelegate().readDatePicker(formIn,
+        Date earliest = getStrutsDelegate().readScheduleDate(formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain(formIn, user);
 

@@ -120,8 +120,7 @@ public class ActionChainEditAction extends RhnAction {
      */
     private ActionForward schedule(ActionMapping mapping, HttpServletRequest request,
         DynaActionForm form, ActionChain actionChain) {
-        Date date = getStrutsDelegate().readDatePicker(form, DATE_ATTRIBUTE,
-            DatePicker.YEAR_RANGE_POSITIVE);
+        Date date = getStrutsDelegate().readScheduleDate(form, DATE_ATTRIBUTE, DatePicker.YEAR_RANGE_POSITIVE);
         try {
             ActionChainFactory.schedule(actionChain, date);
             ActionMessages messages = new ActionMessages();
