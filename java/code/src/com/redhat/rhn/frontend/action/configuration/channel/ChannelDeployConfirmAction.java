@@ -161,8 +161,7 @@ public class ChannelDeployConfirmAction extends RhnAction implements Maintenance
             return false;
         }
         Set systemIds = buildIds(systems);
-        Date datePicked = getStrutsDelegate().readDatePicker(form, "date",
-                DatePicker.YEAR_RANGE_POSITIVE);
+        Date datePicked = getStrutsDelegate().readScheduleDate(form, "date", YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain(form, usr);
 
         Map m = ConfigurationManager.getInstance().
