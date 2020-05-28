@@ -23,8 +23,8 @@ import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.virtualization.GuestDefinition;
-
 import com.suse.manager.webui.services.iface.VirtManager;
+
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -123,7 +123,8 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                                     updatedDef.get().getMaxMemory() :
                                     vm.getTotalMemory();
                             VirtualInstanceManager.updateGuestVirtualInstanceProperties(
-                                    vm, name, state, cpuCount, memory);
+                                    vm, name, "updated".equals(message.getDetail()) ? vm.getState() : state,
+                                    cpuCount, memory);
                         });
                     }
                 }
