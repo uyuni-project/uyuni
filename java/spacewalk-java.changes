@@ -1,3 +1,4 @@
+- Implement maintenance windows in struts
 - XMLRPC: Assign/retract maintenance schedule to/from systems
 - Refresh virtualization pages only on events
 - fix up2date detection on RH8 when salt-minion is used for registration
