@@ -9,18 +9,28 @@ const { TopPanel } = require('components/panels/TopPanel');
 const {Messages} = require("components/messages");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
+const scheduleTypeToString = (type) => {
+    switch (type) {
+        case "MULTI":
+            return "Multi";
+        case "SINGLE":
+            return "Single";
+    }
+    return null;
+}
+
 class MaintenanceWindowsDetails extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
+            calendarData: this.props.data.calendarData,
             messages: [],
         };
     }
 
-    showScheduleDetails(data) {
-
+    renderScheduleDetails(data) {
         return (
             <BootstrapPanel title={t("Schedule Details")}>
                 <div className="table-responsive">
@@ -35,9 +45,36 @@ class MaintenanceWindowsDetails extends React.Component {
                             <td>{t(data.calendarName)}</td>
                         </tr>
                         <tr>
+                            <td>{t("Schedule Type")}:</td>
+                            <td>{t(scheduleTypeToString(data.scheduleType))}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </BootstrapPanel>
+        );
+    }
+
+    renderCalendarDetails(data) {
+        return (
+            <BootstrapPanel title={t("Schedule Details")}>
+                <div className="table-responsive">
+                    <table className="table">
+                        <tbody>
+                        <tr>
+                            <td>{t("Calendar Name")}</td>
+                            <td>{t(data.calendarName)}</td>
+                        </tr>
+                        <tr>
+                            <td>{t("Used by schedule")}:</td>
+                            <td>{t(data.scheduleNames)}</td>
+                        </tr>
+                        {data.calendarUrl &&
+                        <tr>
                             <td>{t("Url")}:</td>
                             <td>{t(data.scheduleUrl)}</td>
                         </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -81,7 +118,22 @@ class MaintenanceWindowsDetails extends React.Component {
             >
                 { this.state.messages ?
                     <Messages items={this.state.messages}/> : null }
-                {this.showScheduleDetails(this.props.data)}
+                {type === "schedule" ? this.renderScheduleDetails(this.props.data)
+                    : this.renderCalendarDetails(this.props.data)}
+                {this.props.data.calendarData &&
+                <div className="panel panel-default">
+                    <div className="panel-heading">
+                        <h4>
+                            {this.props.data.calendarName}
+                        </h4>
+                    </div>
+                    <div className="panel-body">
+                        <pre>
+                            {this.props.data.calendarData}
+                        </pre>
+                    </div>
+                </div>
+                }
                 <DeleteDialog id="delete-modal"
                               title={t("Delete maintenance schedule")}
                               content={t("Are you sure you want to delete the selected item? \n" +
