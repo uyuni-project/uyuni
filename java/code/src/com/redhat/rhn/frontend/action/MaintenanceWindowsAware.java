@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,27 +12,29 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.frontend.action.configuration.sdc;
 
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+package com.redhat.rhn.frontend.action;
+
 
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
- * ImportFileConfirmAction, for sdc configuration
- * @version $Rev$
+ * This interface marks Struts actions that undergo maintenance windows.
  */
-public class ImportFileConfirmAction extends FileListConfirmSetupAction {
+public interface MaintenanceWindowsAware {
 
-    protected RhnSetDecl getSetDecl() {
-        return RhnSetDecl.CONFIG_IMPORT_FILE_NAMES;
-    }
+    /**
+     * Populate maintenance windows to the request, if it's needed.
+     *
+     * Struts actions implementing this interface should call the populateMaintenanceWindows method
+     * on populating date picker.
+     *
+     * @param request the {@link HttpServletRequest}
+     * @param systemIds the set of IDs of involved systems
+     */
+    void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds);
 
-    @Override
-    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        // no-op
-    }
 }
+
