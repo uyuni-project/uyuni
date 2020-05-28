@@ -1,3 +1,4 @@
+- Implement maintenance windows in struts
 - XMLRPC: Assign/retract maintenance schedule to/from systems
 - improve speed of Content Lifecycle Management channel list loading (bsc#1153234)
 - Avoid traceback with AssertionError: Failed to update row (bsc#1172558)
