@@ -15,7 +15,9 @@
 package com.redhat.rhn.frontend.action.ssm;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,11 +32,14 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -42,6 +47,7 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
@@ -51,7 +57,7 @@ import org.apache.log4j.Logger;
  * Confirm reboot of given systems
  */
 public class RebootSystemConfirmAction extends RhnAction
-    implements Listable<SystemOverview> {
+    implements Listable<SystemOverview>, MaintenanceWindowsAware {
 
     /** Logger instance */
     private static Logger log = Logger.getLogger(RebootSystemConfirmAction.class);
@@ -79,6 +85,9 @@ public class RebootSystemConfirmAction extends RhnAction
         getStrutsDelegate().prepopulateDatePicker(request,
                 (DynaActionForm) formIn, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ActionChainHelper.prepopulateActionChains(request);
+
+        Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(new RequestContext(request).getCurrentUser()));
+        populateMaintenanceWindows(request, systemIds);
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
@@ -139,5 +148,12 @@ public class RebootSystemConfirmAction extends RhnAction
     public List<SystemOverview> getResult(RequestContext context) {
         return SystemManager.inSet(context.getCurrentUser(),
               getSetDecl().getLabel());
+    }
+
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (ActionFactory.TYPE_REBOOT.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
     }
 }
