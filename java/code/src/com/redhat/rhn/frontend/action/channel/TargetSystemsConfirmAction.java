@@ -18,10 +18,11 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -54,6 +55,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_SUBSCRIBE_CHANNELS;
 import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
@@ -62,7 +64,7 @@ import static java.util.Collections.singleton;
  * TargetSystemsConfirmAction
  * @version $Rev$
  */
-public class TargetSystemsConfirmAction extends RhnAction implements Listable {
+public class TargetSystemsConfirmAction extends RhnAction implements Listable, MaintenanceWindowsAware {
 
     private static final Logger LOG = Logger.getLogger(TargetSystemsConfirmAction.class);
 
@@ -91,12 +93,13 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable {
         request.setAttribute("cid", chan.getId());
         request.setAttribute("date", this.getStrutsDelegate().prepopulateDatePicker(
                 request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
+        Set<Long> systemIds = TargetSystemsAction.getSetDecl(chan).get(user).getElementValues();
+        populateMaintenanceWindows(request, systemIds);
         ActionChainHelper.prepopulateActionChains(request);
 
         if (helper.isDispatched()) {
-            RhnSet set = TargetSystemsAction.getSetDecl(chan).get(user);
-            List<Server> servers = new ArrayList<Server>();
-            for (Long id : set.getElementValues()) {
+            List<Server> servers = new ArrayList<>();
+            for (Long id : systemIds) {
                 Server s  = SystemManager.lookupByIdAndUser(id, user);
                 servers.add(s);
             }
@@ -171,4 +174,10 @@ public class TargetSystemsConfirmAction extends RhnAction implements Listable {
         return SystemManager.inSet(user, TargetSystemsAction.getSetDecl(chan).getLabel());
     }
 
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (TYPE_SUBSCRIBE_CHANNELS.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+    }
 }

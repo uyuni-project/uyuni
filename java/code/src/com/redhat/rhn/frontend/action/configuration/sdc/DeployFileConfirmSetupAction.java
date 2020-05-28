@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,27 +12,26 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.frontend.action.configuration.sdc;
 
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_CONFIGFILES_DEPLOY;
+
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
- * ImportFileConfirmAction, for sdc configuration
- * @version $Rev$
+ * DeployFileConfirmSetupAction, for sdc configuration
  */
-public class ImportFileConfirmAction extends FileListConfirmSetupAction {
-
-    protected RhnSetDecl getSetDecl() {
-        return RhnSetDecl.CONFIG_IMPORT_FILE_NAMES;
-    }
+public class DeployFileConfirmSetupAction extends FileListConfirmSetupAction {
 
     @Override
     public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
-        // no-op
+        if (TYPE_CONFIGFILES_DEPLOY.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
     }
 }
