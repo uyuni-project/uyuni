@@ -61,11 +61,18 @@ public class VirtManagerSalt implements VirtManager {
     public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("vm_", domainName);
+
+        LocalCall<Map<String, VmInfoJson>> vmInfoCall =
+                new LocalCall<>("virt.vm_info", Optional.empty(), Optional.of(args),
+                        new TypeToken<Map<String, VmInfoJson>>() { });
+        Optional<Map<String, VmInfoJson>> vmInfo = saltApi.callSync(vmInfoCall, minionId);
+
         LocalCall<String> call =
                 new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
 
         Optional<String> result = saltApi.callSync(call, minionId);
-        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
+        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml,
+                vmInfo.map(data -> data.get(domainName))));
     }
 
     /**
