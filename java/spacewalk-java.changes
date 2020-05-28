@@ -1,3 +1,4 @@
+- fix info text about package installation on channel change (bsc#1171684)
 - Clarify the behavior of the checkbox system list, when it adds systems to ssm
 - Implement module picker controls for CLM AppStream filters
 
