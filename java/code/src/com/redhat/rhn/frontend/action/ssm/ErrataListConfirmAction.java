@@ -14,9 +14,15 @@
  */
 package com.redhat.rhn.frontend.action.ssm;
 
+import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_ERRATA;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,15 +35,15 @@ import org.apache.struts.action.DynaActionForm;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.action.SetLabels;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
-import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmErrataEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -55,7 +61,7 @@ import org.apache.log4j.Logger;
  * Confirm application of errata to systems in SSM.
  */
 public class ErrataListConfirmAction extends RhnAction implements
-        Listable<ErrataOverview> {
+        Listable<ErrataOverview>, MaintenanceWindowsAware {
 
     /** Logger instance */
     private static Logger log = Logger.getLogger(ErrataListConfirmAction.class);
@@ -80,12 +86,22 @@ public class ErrataListConfirmAction extends RhnAction implements
             return handleDispatch(mapping, (DynaActionForm) formIn, request);
         }
 
-        getStrutsDelegate().prepopulateDatePicker(request,
-                (DynaActionForm) formIn, "date", DatePicker.YEAR_RANGE_POSITIVE);
+        getStrutsDelegate().prepopulateDatePicker(request, (DynaActionForm) formIn, "date", YEAR_RANGE_POSITIVE);
+
+        Set<Long> systemIds = new HashSet<>(getSystemIds(request));
+        populateMaintenanceWindows(request, systemIds);
 
         ActionChainHelper.prepopulateActionChains(request);
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+    }
+
+    private List<Long> getSystemIds(HttpServletRequest request) {
+        RequestContext context = new RequestContext(request);
+        User user = context.getCurrentUser();
+        return SystemManager.inSet(user, SetLabels.SYSTEM_LIST).stream()
+                .map(s -> s.getId())
+                .collect(Collectors.toList());
     }
 
     private ActionForward handleDispatch(
@@ -108,11 +124,7 @@ public class ErrataListConfirmAction extends RhnAction implements
             return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
         }
 
-        List<SystemOverview> systems = SystemManager.inSet(user, SetLabels.SYSTEM_LIST);
-        List<Long> serverIds = new ArrayList<Long>(systems.size());
-        for (SystemOverview s : systems) {
-            serverIds.add(s.getId());
-        }
+        List<Long> serverIds = getSystemIds(request);
 
         RhnSet erratas = getSetDecl().get(context.getCurrentUser());
         List<Long> errataIds = new ArrayList<Long>(erratas.size());
@@ -153,5 +165,12 @@ public class ErrataListConfirmAction extends RhnAction implements
     public List<ErrataOverview> getResult(RequestContext context) {
         return ErrataManager.lookupSelectedErrataInSystemSet(context.getCurrentUser(),
                 getSetDecl().getLabel());
+    }
+
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (TYPE_ERRATA.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
     }
 }
