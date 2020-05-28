@@ -49,6 +49,18 @@
       <alias name='ide0-0-0'/>
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
+    <disk type='network' device='disk'>
+      <driver name='qemu' type='raw' cache='none' io='native'/>
+      <source protocol='rbd' name='libvirt-pool/test-vol'>
+        <host name='ses1.tf.local'/>
+        <host name='ses2.tf.local'/>
+        <auth username='libvirt'>
+          <secret type='ceph' usage='pool_test-ses'/>
+        </auth>
+      </source>
+      <target dev='vdb' bus='virtio'/>
+      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
+    </disk>
     <controller type='usb' index='0' model='ich9-ehci1'>
       <alias name='usb'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x7'/>

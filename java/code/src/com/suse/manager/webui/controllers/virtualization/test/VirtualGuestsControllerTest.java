@@ -37,6 +37,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.reactor.messaging.test.SaltTestUtils;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
+import com.suse.manager.virtualization.VmInfoJson;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
@@ -104,9 +105,14 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
             @Override
             public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
+                Optional<Map<String, VmInfoJson>> vmInfo = SaltTestUtils.<Map<String, VmInfoJson>>getSaltResponse(
+                        "/com/suse/manager/webui/controllers/virtualization/test/virt.vm.info.json",
+                        Collections.emptyMap(),
+                        new TypeToken<Map<String, VmInfoJson>>() { });
                 return SaltTestUtils.<String>getSaltResponse(
                         "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", Collections.emptyMap(), null)
-                        .map(GuestDefinition::parse);
+                        .map(xml -> GuestDefinition.parse(xml,
+                                vmInfo.map(data -> data.get(domainName))));
             }
         };
 
@@ -118,6 +124,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, systemEntitlementManager);
         host.asMinionServer().get().setMinionId("testminion.local");
         host.getGuests().iterator().next().setUuid(guid);
+        host.getGuests().iterator().next().setName("sles12sp2");
 
         virtualGuestsController = new VirtualGuestsController(virtManager);
 
@@ -307,7 +314,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("network", def.getInterfaces().get(0).getType());
         assertEquals("default", def.getInterfaces().get(0).getSource());
 
-        assertEquals(2, def.getDisks().size());
+        assertEquals(3, def.getDisks().size());
         assertEquals("file", def.getDisks().get(0).getType());
         assertEquals("disk", def.getDisks().get(0).getDevice());
         assertEquals("qcow2", def.getDisks().get(0).getFormat());
@@ -321,6 +328,14 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         assertEquals("hda", def.getDisks().get(1).getTarget());
         assertEquals("ide", def.getDisks().get(1).getBus());
         assertEquals(null, def.getDisks().get(1).getSource());
+
+        assertEquals("volume", def.getDisks().get(2).getType());
+        assertEquals("disk", def.getDisks().get(2).getDevice());
+        assertEquals("raw", def.getDisks().get(2).getFormat());
+        assertEquals("vdb", def.getDisks().get(2).getTarget());
+        assertEquals("virtio", def.getDisks().get(2).getBus());
+        assertEquals("ses-pool", def.getDisks().get(2).getSource().get("pool"));
+        assertEquals("test-vol", def.getDisks().get(2).getSource().get("volume"));
     }
 
     /**
