@@ -347,9 +347,9 @@ public class ActionChainFactory extends HibernateFactory {
                 Action action = entry.getAction();
 
                 log.debug("Scheduling Action " + action + " to server " + server);
-                ActionFactory.addServerToAction(server.getId(), action);
                 action.setPrerequisite(latest.get(server));
                 action.setEarliestAction(dateInOrder);
+                ActionFactory.addServerToAction(server.getId(), action);
 
                 // Increment 'earliest' time by a millisecond for each chain action in
                 // order to sort them correctly for display
