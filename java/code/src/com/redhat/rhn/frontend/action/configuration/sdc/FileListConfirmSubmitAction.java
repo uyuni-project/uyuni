@@ -108,7 +108,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         //The channel to which files will be uploaded
         ConfigChannel sandbox = server.getSandboxOverride();
         //The earliest time to perform the action.
-        Date earliest = getStrutsDelegate().readDatePicker((DynaActionForm)formIn,
+        Date earliest = getStrutsDelegate().readScheduleDate((DynaActionForm)formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
         try {
             ConfigUploadAction upload = (ConfigUploadAction)ActionManager
@@ -182,7 +182,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         servers.add(sid);
 
         //create the action
-        Date earliest = getStrutsDelegate().readDatePicker((DynaActionForm)form,
+        Date earliest = getStrutsDelegate().readScheduleDate((DynaActionForm)form,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
         ActionChain actionChain = ActionChainHelper.readActionChain((DynaActionForm) form,
             user);

@@ -604,7 +604,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         String scheduleAsap = form.getString("scheduleAsap");
         Date scheduleTime = null;
         if (scheduleAsap != null && scheduleAsap.equals("false")) {
-            scheduleTime = getStrutsDelegate().readDatePicker(form, "date",
+            scheduleTime = getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
         }
         else {

@@ -184,8 +184,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
 
         //The earliest time to perform the action.
         DynaActionForm dynaActionForm = (DynaActionForm)formIn;
-        Date earliest = getStrutsDelegate().readDatePicker(dynaActionForm, "date",
-            DatePicker.YEAR_RANGE_POSITIVE);
+        Date earliest = getStrutsDelegate().readScheduleDate(dynaActionForm, "date", YEAR_RANGE_POSITIVE);
 
         //The action chain to append this action to, if any
         ActionChain actionChain = ActionChainHelper.readActionChain(dynaActionForm, user);
@@ -253,7 +252,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction implemen
         Long sid = requestContext.getRequiredParam("sid");
         params.put("sid", sid);
         getStrutsDelegate().rememberDatePicker(params, (DynaActionForm)formIn,
-                "date", DatePicker.YEAR_RANGE_POSITIVE);
+                "date", YEAR_RANGE_POSITIVE);
     }
 
     /**

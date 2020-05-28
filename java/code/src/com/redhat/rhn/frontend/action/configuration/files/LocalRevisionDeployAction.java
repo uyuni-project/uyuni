@@ -139,7 +139,7 @@ public class LocalRevisionDeployAction extends RhnAction {
     protected void submitDeploy(DynaActionForm form, ConfigRevision cr,
             Server srv, User u) {
         Date datePicked = getStrutsDelegate().
-           readDatePicker(form, "date", DatePicker.YEAR_RANGE_POSITIVE);
+           readScheduleDate(form, "date", DatePicker.YEAR_RANGE_POSITIVE);
         Set file = new HashSet();
         file.add(cr.getConfigFile().getId());
         Set system = new HashSet();
