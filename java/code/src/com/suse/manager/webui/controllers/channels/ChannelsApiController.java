@@ -14,13 +14,13 @@
  */
 package com.suse.manager.webui.controllers.channels;
 
+import static com.redhat.rhn.common.hibernate.HibernateFactory.doWithoutAutoFlushing;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.generateChannelJson;
 import static com.suse.manager.webui.controllers.channels.ChannelsUtils.getPossibleBaseChannels;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.user.User;
 
@@ -58,24 +58,24 @@ public class ChannelsApiController {
      * @return the json response
      */
     public static String getAllChannels(Request req, Response res, User user) {
-        Boolean filterClm = Boolean.parseBoolean(req.queryParams("filterClm"));
-        Set<Long> filterOutIds = new HashSet<>();
-        if (filterClm) {
-            // filtering Content Lifecycle Management target channels
-            filterOutIds.addAll(ContentProjectFactory.listSoftwareEnvironmentTarget().stream()
-                    .map(tgt -> tgt.getChannel().getId())
-                    .collect(Collectors.toSet()));
-        }
+        return doWithoutAutoFlushing(() -> {
+            Boolean filterClm = Boolean.parseBoolean(req.queryParams("filterClm"));
+            Set<Long> filterOutIds = new HashSet<>();
+            if (filterClm) {
+                // filtering Content Lifecycle Management target channels
+                filterOutIds.addAll(ContentProjectFactory.listSoftwareEnvironmentTarget().stream()
+                        .map(tgt -> tgt.getChannel().getId())
+                        .collect(Collectors.toSet()));
+            }
 
-        List<ChannelsJson> jsonChannelsFiltered = HibernateFactory.doWithoutAutoFlushing(() ->
-                getPossibleBaseChannels(user).stream()
-                    .map(base -> generateChannelJson(base, user))
-                    .filter(c -> !filterOutIds.contains(c.getBase().getId()))
-                    .collect(Collectors.toList())
-        );
+            List<ChannelsJson> jsonChannelsFiltered =
+                    getPossibleBaseChannels(user).stream()
+                            .map(base -> generateChannelJson(base, user))
+                            .filter(c -> !filterOutIds.contains(c.getBase().getId()))
+                            .collect(Collectors.toList()
+            );
 
-        return json(res, ResultJson.success(jsonChannelsFiltered));
+            return json(res, ResultJson.success(jsonChannelsFiltered));
+        });
     }
-
-
 }
