@@ -14,13 +14,17 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_REBOOT;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -37,6 +41,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +49,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * SystemRebootAction handles the interaction of the system reboot.
  */
-public class SystemRebootAction extends RhnAction {
+public class SystemRebootAction extends RhnAction implements MaintenanceWindowsAware {
     /** Logger instance */
     private static Logger log = Logger.getLogger(SystemRebootAction.class);
 
@@ -103,6 +108,7 @@ public class SystemRebootAction extends RhnAction {
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, form,
             "date", DatePicker.YEAR_RANGE_POSITIVE);
         request.setAttribute("date", picker);
+        populateMaintenanceWindows(request, Set.of(server.getId()));
         ActionChainHelper.prepopulateActionChains(request);
 
         request.setAttribute(RequestContext.SID, sid);
@@ -111,5 +117,12 @@ public class SystemRebootAction extends RhnAction {
         SdcHelper.ssmCheck(request, server.getId(), user);
 
         return getStrutsDelegate().forwardParams(mapping.findForward(forward), params);
+    }
+
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (TYPE_REBOOT.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
     }
 }
