@@ -541,7 +541,6 @@ public class VirtualGuestsController {
         if (data.getDisks() != null) {
             context.put(VirtualizationCreateAction.DISKS, data.getDisks().stream().map(disk -> {
                 VirtualizationCreateActionDiskDetails details = new VirtualizationCreateActionDiskDetails();
-                details.setType(disk.getType());
                 details.setDevice(disk.getDevice());
                 details.setTemplate(disk.getTemplate());
                 details.setSize(disk.getSize());

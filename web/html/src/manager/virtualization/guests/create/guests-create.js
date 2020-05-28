@@ -54,7 +54,7 @@ class GuestsCreate extends React.Component<Props, State> {
     memory: 1024,
     vcpu: 1,
     disk0_editable: true,
-    disk0_type: 'file',
+    disk0_type: 'volume',
     disk0_device: 'disk',
     network0_type: 'network',
     graphicsType: 'vnc',

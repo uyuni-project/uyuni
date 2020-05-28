@@ -23,27 +23,12 @@ public class VirtualizationCreateActionDiskDetails {
 
     private Long id;
     private VirtualizationCreateAction action;
-    private String type;
     private String device;
     private String template;
     private long size = 0;
     private String bus;
     private String pool;
     private String sourceFile;
-
-    /**
-     * @return Returns the disk type (file, network, etc).
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param typeIn The type to set.
-     */
-    public void setType(String typeIn) {
-        type = typeIn;
-    }
 
     /**
      * @return Returns the device (disk, cdrom, floppy, lun).
@@ -162,8 +147,7 @@ public class VirtualizationCreateActionDiskDetails {
         boolean result = false;
         if (other instanceof VirtualizationCreateActionDiskDetails) {
             VirtualizationCreateActionDiskDetails otherDisk = (VirtualizationCreateActionDiskDetails) other;
-            result = Objects.equals(getType(), otherDisk.getType()) &&
-                    Objects.equals(getDevice(), otherDisk.getDevice()) &&
+            result = Objects.equals(getDevice(), otherDisk.getDevice()) &&
                     Objects.equals(getTemplate(), otherDisk.getTemplate()) &&
                     getSize() == otherDisk.getSize() &&
                     Objects.equals(getBus(), otherDisk.getBus()) &&
@@ -175,6 +159,6 @@ public class VirtualizationCreateActionDiskDetails {
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, device, template, size, bus, pool, sourceFile);
+        return Objects.hash(device, template, size, bus, pool, sourceFile);
     }
 }

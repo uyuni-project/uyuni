@@ -11,7 +11,6 @@ type Props = {
   index: number,
   domainCaps: Object,
   pools: Array<Object>,
-  changeModel: Function,
   onlyHandledDisks: boolean,
 }
 
@@ -20,37 +19,12 @@ export function GuestDiskFields(props: Props) : React.Node {
 
   const sourceType = formContext.model[`disk${props.index}_type`];
   const device = formContext.model[`disk${props.index}_device`] || 'disk';
-
-  // We can't assign a disk image, size or pool to a cdrom
-  if (device === 'cdrom') {
-    return [];
-  }
-
   const busTypes = props.domainCaps
     ? props.domainCaps.devices.disk.bus
       .filter(bus => (device === 'floppy' && bus === 'fdc') || (device !== 'floppy' && bus !== 'fdc'))
     : [];
   const preferredBusses = ['virtio', 'xen'].filter(type => busTypes.includes(type));
   const first_pool = props.pools.length > 0 ? props.pools[0].name : '';
-
-  const handleDiskTypeChange = (index: number, value: string, changeModel: Function) => {
-    const sourceProperties = {
-      file: { pool: undefined, template: undefined },
-    };
-
-    // Make sure we have the needed disk properties for the newly selected field type
-    const newProperties = sourceProperties[value];
-    const modelNewItems = Object.keys(newProperties).reduce((res, key) => {
-      if (!Object.keys(formContext.model).includes(`disk${index}_source_${key}`)) {
-        return Object.assign(res, { [`disk${index}_source_${key}`]: newProperties[key] });
-      }
-      return res;
-    }, { });
-
-    if (Object.keys(modelNewItems).length !== 0) {
-      changeModel(Object.assign(formContext.model, modelNewItems));
-    }
-  }
 
   return (
     <>
@@ -69,19 +43,6 @@ export function GuestDiskFields(props: Props) : React.Node {
             <option key="disk" value="disk">{t('Disk')}</option>
             <option key="cdrom" value="cdrom">{t('CDROM')}</option>
             <option key="floppy" value="floppy">{t('Floppy')}</option>
-          </Select>,
-          <Select
-            key={`disk${props.index}_type`}
-            name={`disk${props.index}_type`}
-            required
-            label={t('Source type')}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            onChange={(name, value) => handleDiskTypeChange(props.index, value, props.changeModel)}
-            disabled={!props.onlyHandledDisks}
-            defaultValue="file"
-          >
-            <option key="file" value="file">{t('File')}</option>
           </Select>,
           <Select
             key={`disk${props.index}_source_pool`}
@@ -125,7 +86,7 @@ export function GuestDiskFields(props: Props) : React.Node {
         />
       }
       {
-        sourceType !== "file"
+        !["file", "volume"].includes(sourceType)
         && (
           <Messages items={MessagesUtils.warning(`Unhandled disk type: ${sourceType}`)} />
         )
