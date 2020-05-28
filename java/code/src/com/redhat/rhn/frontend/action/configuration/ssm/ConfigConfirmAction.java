@@ -16,10 +16,14 @@ package com.redhat.rhn.frontend.action.configuration.ssm;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 import com.redhat.rhn.frontend.struts.BaseListAction;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -27,11 +31,16 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.DynaActionForm;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * DiffConfirmAction
  * @version $Rev$
  */
-public class ConfigConfirmAction extends BaseListAction {
+public class ConfigConfirmAction extends BaseListAction implements MaintenanceWindowsAware {
 
     /**
      * {@inheritDoc}
@@ -63,11 +72,28 @@ public class ConfigConfirmAction extends BaseListAction {
             return; //no date picker on diff page
         }
 
-
         DynaActionForm dynaForm = (DynaActionForm) formIn;
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(ctxt.getRequest(),
                 dynaForm, "date", DatePicker.YEAR_RANGE_POSITIVE);
         ctxt.getRequest().setAttribute("date", picker);
+
+        Set<Long> systems = getSystemIds(ctxt, ActionFactory.TYPE_CONFIGFILES_DEPLOY);
+        populateMaintenanceWindows(ctxt.getRequest(), systems);
         ActionChainHelper.prepopulateActionChains(ctxt.getRequest());
+    }
+
+    private Set<Long> getSystemIds(RequestContext ctxt, ActionType actionType) {
+        ConfigurationManager cm = ConfigurationManager.getInstance();
+        return cm.listSystemsForConfigAction(ctxt.getCurrentUser(), null, actionType.getLabel()).stream()
+                .map(dto -> dto.getId())
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        // we only handle 'deploy' actions here. for 'diff' actions, we early return at the beginning of processForm
+        if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
     }
 }

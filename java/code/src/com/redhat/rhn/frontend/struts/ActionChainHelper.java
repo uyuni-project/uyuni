@@ -91,8 +91,7 @@ public class ActionChainHelper {
         log.debug("Prepopulating Action Chains");
         List<Map<String, String>> result = new LinkedList<Map<String, String>>();
         User u = new RequestContext(request).getCurrentUser();
-        List<ActionChain> actionChains = ActionChainFactory
-            .getActionChainsByModificationDate(u);
+        List<ActionChain> actionChains = ActionChainFactory.getActionChainsByModificationDate(u);
 
         for (ActionChain actionChain : actionChains) {
             populateActionChain(result, actionChain.getLabel());

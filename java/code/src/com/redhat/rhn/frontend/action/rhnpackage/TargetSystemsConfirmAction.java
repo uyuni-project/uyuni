@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,10 +40,13 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -58,7 +62,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
  * Confirm that you want to schedule package installation
  * @author sherr
  */
-public class TargetSystemsConfirmAction extends RhnAction {
+public class TargetSystemsConfirmAction extends RhnAction implements MaintenanceWindowsAware {
 
     /** Logger instance */
     private static Logger log = Logger.getLogger(TargetSystemsConfirmAction.class);
@@ -93,6 +97,8 @@ public class TargetSystemsConfirmAction extends RhnAction {
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
         request.setAttribute("date", picker);
 
+        Set<Long> systemIds = items.stream().map(dto -> dto.getId()).collect(Collectors.toSet());
+        populateMaintenanceWindows(request, systemIds);
         ActionChainHelper.prepopulateActionChains(request);
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI() + "?pid=" +
@@ -197,5 +203,12 @@ public class TargetSystemsConfirmAction extends RhnAction {
         params.put("pid", pid);
         getStrutsDelegate().rememberDatePicker(params, (DynaActionForm) formIn, "date",
                 DatePicker.YEAR_RANGE_POSITIVE);
+    }
+
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (ActionFactory.TYPE_PACKAGES_UPDATE.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
     }
 }

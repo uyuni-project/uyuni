@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.action.ActionChainManager;
@@ -67,5 +69,10 @@ public class VerifyConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     @Override
     protected String getHeaderKey() {
         return "verifyconfirm.jsp.header";
+    }
+
+    @Override
+    protected ActionType getActionType() {
+        return ActionFactory.TYPE_PACKAGES_VERIFY;
     }
 }

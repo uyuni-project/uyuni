@@ -14,12 +14,18 @@
  */
 package com.redhat.rhn.frontend.action.systems;
 
+import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
+import static com.redhat.rhn.domain.action.ActionFactory.TYPE_ERRATA;
+
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -30,6 +36,8 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
+import com.suse.manager.maintenance.MaintenanceManager;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -54,7 +62,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ErrataConfirmSetupAction
  */
-public class ErrataConfirmSetupAction extends RhnAction implements Listable {
+public class ErrataConfirmSetupAction extends RhnAction implements Listable, MaintenanceWindowsAware {
 
     /** Logger instance */
     private static Logger log = Logger.getLogger(ErrataConfirmSetupAction.class);
@@ -81,7 +89,9 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
 
         //Setup the datepicker widget
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request,
-                (DynaActionForm)formIn, "date", DatePicker.YEAR_RANGE_POSITIVE);
+                (DynaActionForm)formIn, "date", YEAR_RANGE_POSITIVE);
+
+        populateMaintenanceWindows(request, Set.of(server.getId()));
 
         //Setup the Action Chain widget
         ActionChainHelper.prepopulateActionChains(request);
@@ -216,4 +226,10 @@ public class ErrataConfirmSetupAction extends RhnAction implements Listable {
                     ErrataSetupAction.getSetDecl(sid).getLabel(), null);
     }
 
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (TYPE_ERRATA.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+    }
 }

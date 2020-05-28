@@ -14,16 +14,21 @@
  */
 package com.redhat.rhn.frontend.action.rhnpackage.ssm;
 
+import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.events.SsmRemovePackagesEvent;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
@@ -34,6 +39,7 @@ import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
@@ -48,6 +54,7 @@ import org.apache.struts.action.DynaActionForm;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,7 +67,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class SchedulePackageRemoveAction extends RhnListAction implements
-        Listable<Map<String, Object>> {
+        Listable<Map<String, Object>>, MaintenanceWindowsAware {
 
     private static Logger log = Logger.getLogger(SchedulePackageRemoveAction.class);
 
@@ -96,6 +103,9 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         DatePicker picker = getStrutsDelegate().prepopulateDatePicker(request, dynaForm,
             "date", DatePicker.YEAR_RANGE_POSITIVE);
         request.setAttribute("date", picker);
+
+        Set<Long> systemIds = new HashSet<>(SsmManager.listServerIds(requestContext.getCurrentUser()));
+        populateMaintenanceWindows(request, systemIds);
 
         // Pre-populate the Action Chain selector
         ActionChainHelper.prepopulateActionChains(request);
@@ -210,5 +220,12 @@ public class SchedulePackageRemoveAction extends RhnListAction implements
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
     }
 
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        if (ActionFactory.TYPE_PACKAGES_REMOVE.isMaintenancemodeOnly()) {
+            MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
+        }
+
+    }
 }
 

@@ -4171,7 +4171,7 @@
         scope="request"
         name="datePickerForm"
         input="/WEB-INF/pages/configuration/sdc/deployfileconfirm.jsp"
-        type="com.redhat.rhn.frontend.action.configuration.sdc.FileListConfirmSetupAction"
+        type="com.redhat.rhn.frontend.action.configuration.sdc.DeployFileConfirmSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="acls"
                       value="system_feature(ftr_config);client_capable(configfiles.deploy)"/>
@@ -4233,7 +4233,7 @@
         scope="request"
         name="datePickerForm"
         input="/WEB-INF/pages/configuration/sdc/difffileconfirm.jsp"
-        type="com.redhat.rhn.frontend.action.configuration.sdc.FileListConfirmSetupAction"
+        type="com.redhat.rhn.frontend.action.configuration.sdc.DiffFileConfirmSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="acls"
                       value="system_feature(ftr_config);client_capable(configfiles.diff)"/>
