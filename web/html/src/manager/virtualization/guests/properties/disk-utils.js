@@ -52,13 +52,15 @@ export function getModelFromDefinition(definition: Object) {
             })),
           };
 
+          const editable = disk.device === "cdrom" ? {[`disk${index}_editable`]: true} : {};
+
           return Object.assign(result, {
             [`disk${index}_type`]: disk.type,
             [`disk${index}_device`]: disk.device,
             [`disk${index}_target`]: disk.target,
             [`disk${index}_bus`]: disk.bus,
             [`disk${index}_format`]: disk.format,
-          }, sourceToModel[disk.type]());
+          }, sourceToModel[disk.type](), editable);
         }
         return result;
       },
