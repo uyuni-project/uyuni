@@ -1641,7 +1641,6 @@ public class SaltServerActionService {
                             }
                             diskData.put("model", disk.getBus());
                             diskData.put("device", disk.getDevice());
-                            diskData.put("type", disk.getType());
 
                             return diskData;
                         }).collect(Collectors.toList()));
