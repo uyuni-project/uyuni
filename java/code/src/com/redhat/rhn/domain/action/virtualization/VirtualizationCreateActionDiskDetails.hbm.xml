@@ -19,6 +19,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="bus" type="string" column="bus"/>
         <property name="pool" type="string" column="pool"/>
         <property name="sourceFile" type="string" column="source_file"/>
+        <property name="format" type="string" column="format"/>
 
         <many-to-one name="action" column="action_id"
                 class="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction"

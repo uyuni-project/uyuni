@@ -109,6 +109,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
+
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
@@ -139,6 +140,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -1628,7 +1630,7 @@ public class SaltServerActionService {
                                 diskName = String.format("disk-%d", i);
                             }
                             diskData.put("name", diskName);
-                            diskData.put("format", "qcow2");
+                            diskData.put("format", disk.getFormat());
                             if (disk.getSourceFile() != null || disk.getDevice().equals("cdrom")) {
                                 diskData.put("source_file", disk.getSourceFile() != null ? disk.getSourceFile() : "");
                             }
