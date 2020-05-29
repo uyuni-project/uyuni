@@ -169,6 +169,7 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
         private long size = 0;
         private String bus;
         private String pool;
+        private String format;
 
         @SerializedName("source_file")
         private String sourceFile;
@@ -255,6 +256,20 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
          */
         public void setPool(String poolIn) {
             pool = poolIn;
+        }
+
+        /**
+         * @return the disk format
+         */
+        public String getFormat() {
+            return format;
+        }
+
+        /**
+         * @param formatIn the disk format
+         */
+        public void setFormat(String formatIn) {
+            format = formatIn;
         }
     }
 

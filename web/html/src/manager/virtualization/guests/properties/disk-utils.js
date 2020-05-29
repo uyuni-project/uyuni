@@ -10,6 +10,7 @@ export function getRequestParams(model: Object, index: number): Object {
     { pool: model[`disk${index}_source_pool`] },
     model[`disk${index}_source_size`] !== '' ? { size: model[`disk${index}_source_size`] } : {},
     model[`disk${index}_source_template`] !== '' ? { template: model[`disk${index}_source_template`] } : {},
+    model[`disk${index}_format`] !== '' ? { format: model[`disk${index}_format`] } : {},
   );
 
   if (model[`disk${index}_source_file`] !== undefined) {
@@ -60,6 +61,7 @@ export function getModelFromDefinition(definition: Object) {
             [`disk${index}_device`]: disk.device,
             [`disk${index}_target`]: disk.target,
             [`disk${index}_bus`]: disk.bus,
+            [`disk${index}_format`]: disk.format,
           }, sourceToModel[disk.type]());
         }
         return result;

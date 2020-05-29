@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Text } from 'components/input/Text';
+import { Select } from 'components/input/Select';
 import { FormContext } from 'components/input/Form';
 
 type Props = {
@@ -15,6 +16,11 @@ type Props = {
 export function GuestDiskFileFields(props: Props) : React.Node {
   const formContext = React.useContext(FormContext);
 
+  const pool_options = ((props.poolCaps.pool_types.find(item => item.name === "dir") || {})
+                                  .options || {}).volume;
+  const isCdrom = formContext.model[`disk${props.index}_device`] === "cdrom";
+  const format_values = pool_options.targetFormatType.filter(format => format === "raw" || !isCdrom) || [];
+  const default_format = isCdrom ? "raw" : "qcow2";
   return (
     <>
       <Text
@@ -24,6 +30,21 @@ export function GuestDiskFileFields(props: Props) : React.Node {
         labelClass="col-md-3"
         divClass="col-md-6"
       />
+      {!isCdrom &&
+        <Select
+          key={`disk${props.index}_format`}
+          name={`disk${props.index}_format`}
+          label={t('Format')}
+          labelClass="col-md-3"
+          divClass="col-md-6"
+          disabled={!props.onlyHandledDisks || !Object.keys(formContext.model).includes(`disk${props.index}_editable`)}
+          defaultValue={default_format}
+        >
+          {
+            format_values.map(opt => <option key={opt} value={opt}>{opt}</option>)
+          }
+        </Select>
+      }
     </>
   );
 }
