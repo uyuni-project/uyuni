@@ -68,7 +68,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -547,6 +546,7 @@ public class VirtualGuestsController {
                 details.setBus(disk.getBus());
                 details.setPool(disk.getPool());
                 details.setSourceFile(disk.getSourceFile());
+                details.setFormat(disk.getFormat());
                 return details;
             }).collect(Collectors.toList()));
         }

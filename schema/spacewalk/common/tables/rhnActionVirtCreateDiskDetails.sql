@@ -22,6 +22,7 @@ CREATE TABLE rhnActionVirtCreateDiskDetails
     template             VARCHAR2(256),
     size                 NUMBER,
     bus                  VARCHAR2(10),
+    format               VARCHAR2(10),
     pool                 VARCHAR2(256),
     source_file          VARCHAR2(1024),
     idx                  NUMBER,

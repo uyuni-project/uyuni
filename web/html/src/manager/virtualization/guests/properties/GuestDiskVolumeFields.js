@@ -20,8 +20,36 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
 
   const selected_pool = props.pools.find(pool => pool.name === formContext.model[`disk${props.index}_source_pool`]);
 
+  const getPoolFormats = (pool_obj: Object) : {default: string, formats: Array<string>} => {
+    if (!pool_obj) {
+      return {default: "", formats: []};
+    }
+    const pool_options = ((props.poolCaps.pool_types.find(item => item.name === pool_obj.type) || {})
+                                    .options || {}).volume || {};
+    const format_values = pool_options.targetFormatType || [];
+    const default_format = format_values.includes("qcow2") ? "qcow2" : pool_options.default_format;
+
+    return {
+      default: default_format,
+      formats: format_values,
+    };
+  }
+
+  const { default: default_format, formats: format_values } = getPoolFormats(selected_pool);
+
+  const onPoolChange = (name: string, value: string) => {
+    const new_pool = props.pools.find(pool => pool.name === value);
+    const { default: new_default, formats: new_formats } = getPoolFormats(new_pool);
+
+    const old_format = formContext.model[`disk${props.index}_format`];
+    if (!new_formats.includes(old_format)) {
+      formContext.setModelValue(`disk${props.index}_format`, new_default);
+    }
+  }
+
   const onVolumeChange = (name: string, value: string) => {
     if (value) {
+      formContext.setModelValue(`disk${props.index}_format`, undefined);
       formContext.setModelValue(`disk${props.index}_source_size`, undefined);
       formContext.setModelValue(`disk${props.index}_source_template`, undefined);
     }
@@ -40,6 +68,7 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
         disabled={!props.onlyHandledDisks || !Object.keys(formContext.model).includes(`disk${props.index}_editable`) }
         required
         defaultValue={props.pools.find(pool => pool.name === 'default') ? 'default' : first_pool}
+        onChange={onPoolChange}
       >
         {
           props.pools.map(k => <option key={k.name} value={k.name}>{k.name}</option>)
@@ -84,6 +113,19 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
           />
         </>
       }
+      <Select
+        key={`disk${props.index}_format`}
+        name={`disk${props.index}_format`}
+        label={t('Format')}
+        labelClass="col-md-3"
+        divClass="col-md-6"
+        disabled={!props.onlyHandledDisks || !Object.keys(formContext.model).includes(`disk${props.index}_editable`) || volume}
+        defaultValue={default_format}
+      >
+        {
+          format_values.map(opt => <option key={opt} value={opt}>{opt}</option>)
+        }
+      </Select>
     </>
   );
 }

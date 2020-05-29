@@ -29,6 +29,7 @@ public class VirtualizationCreateActionDiskDetails {
     private String bus;
     private String pool;
     private String sourceFile;
+    private String format;
 
     /**
      * @return Returns the device (disk, cdrom, floppy, lun).
@@ -142,6 +143,20 @@ public class VirtualizationCreateActionDiskDetails {
         sourceFile = sourceFileIn;
     }
 
+    /**
+     * @return the disk format
+     */
+    public String getFormat() {
+        return format;
+    }
+
+    /**
+     * @param formatIn the disk format
+     */
+    public void setFormat(String formatIn) {
+        format = formatIn;
+    }
+
     @Override
     public boolean equals(Object other) {
         boolean result = false;
@@ -152,13 +167,14 @@ public class VirtualizationCreateActionDiskDetails {
                     getSize() == otherDisk.getSize() &&
                     Objects.equals(getBus(), otherDisk.getBus()) &&
                     Objects.equals(getPool(), otherDisk.getPool()) &&
-                    Objects.equals(getSourceFile(), otherDisk.getSourceFile());
+                    Objects.equals(getSourceFile(), otherDisk.getSourceFile()) &&
+                    Objects.equals(getFormat(), otherDisk.getFormat());
         }
         return result;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(device, template, size, bus, pool, sourceFile);
+        return Objects.hash(device, template, size, bus, pool, sourceFile, format);
     }
 }

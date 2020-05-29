@@ -1559,7 +1559,7 @@ public class SaltServerActionService {
                                 diskName = String.format("disk-%d", i);
                             }
                             diskData.put("name", diskName);
-                            diskData.put("format", "qcow2");
+                            diskData.put("format", disk.getFormat());
                             if (disk.getSourceFile() != null || disk.getDevice().equals("cdrom")) {
                                 diskData.put("source_file", disk.getSourceFile() != null ? disk.getSourceFile() : "");
                             }
