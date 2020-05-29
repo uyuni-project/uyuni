@@ -10,4 +10,4 @@
                 scope. The bean should be DatePickerBean
 --%>
 <c:set value="${requestScope[param.widget]}" var="picker"/>
-<rhn:datepicker data="${picker}"/>
+<rhn:datepicker data="${picker}" greyOut="${param.greyOut}" />
