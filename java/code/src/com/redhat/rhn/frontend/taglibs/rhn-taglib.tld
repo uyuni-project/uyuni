@@ -64,6 +64,12 @@
             <rtexprvalue>true</rtexprvalue>
             <type>com.redhat.rhn.common.util.DatePicker</type>
         </attribute>
+        <attribute>
+            <name>greyOut</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
     </tag>
 
     <tag>
