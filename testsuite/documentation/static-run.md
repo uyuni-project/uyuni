@@ -17,6 +17,7 @@ Set up the following environment variables:
 * `PROXY` the SUSE Manager proxy (don't declare this variable if there is no proxy)
 * `CLIENT` the traditional client
 * `MINION` the Salt minion
+* `BUILD_HOST` the Docker and Kiwi build host
 * `SSHMINION` the SSH-managed Salt minion
 * `CENTOSMINION` the CentOS Salt minion
 * `UBUNTUMINION` the Ubuntu Salt minion
@@ -26,9 +27,10 @@ To run all standard tests, from the controller:
 
 ```console
 export SERVER="${PREFIX}suma3pg.tf.local"
-export CLIENT="${PREFIX}clisles12sp3.tf.local"
-export MINION="${PREFIX}minsles12sp3.tf.local"
-export SSHMINION="${PREFIX}minsles12sp3ssh.tf.local"
+export CLIENT="${PREFIX}cli-sles15.tf.local"
+export MINION="${PREFIX}min-sles15.tf.local"
+export BUILD_HOST="${PREFIX}min-build.tf.local"
+export SSHMINION="${PREFIX}minssh-sles15.tf.local"
 export CENTOSMINION="${PREFIX}mincentos7.tf.local"
 export UBUNTUMINION="${PREFIX}min-ubuntu.tf.local"
 run-testsuite

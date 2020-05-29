@@ -20,6 +20,7 @@
 - features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature
 - features/init_clients/ubuntu_ssh_minion.feature
+- features/init_clients/buildhost_bootstrap.feature
 # these features sync real channels (last core features)
 - features/reposync/srv_sync_channels.feature
 - features/reposync/core_srv_setup_wizard.feature
@@ -46,7 +47,7 @@
 - features/secondary/min_docker_auth_registry.feature
 - features/secondary/srv_docker_advanced_content_management.feature
 - features/secondary/srv_docker_cve_audit.feature
-- features/secondary/min_osimage_build_image.feature
+- features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/min_salt_install_package.feature
 - features/secondary/srv_power_management.feature
 - features/secondary/srv_datepicker.feature

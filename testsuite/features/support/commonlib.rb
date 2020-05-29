@@ -63,7 +63,7 @@ end
 # this is a safety net only, the best thing to do is to not start the reposync at all
 def compute_list_to_leave_running
   do_not_kill = []
-  [$minion, $sshminion].each do |node|
+  [$minion, $build_host, $sshminion].each do |node|
     next if node.nil?
     os_version, os_family = get_os_version(node)
     if os_family == 'sles' && os_version == '12SP4'

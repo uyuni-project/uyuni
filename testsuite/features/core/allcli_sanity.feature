@@ -16,6 +16,11 @@ Feature: Sanity checks
     Then "sle_minion" should have a FQDN
     And "sle_minion" should communicate with the server
 
+@buildhost
+  Scenario: The build host is healthy
+    Then "build_host" should have a FQDN
+    And "build_host" should communicate with the server
+
 @ssh_minion
   Scenario: The SSH minion is healthy
     Then "ssh_minion" should have a FQDN
