@@ -281,7 +281,7 @@ When(/^I refresh the metadata for "([^"]*)"$/) do |host|
   if host.include?('client') or host.include?('ceos') or host.include?('ubuntu')
     node.run('rhn_check -vvv', true, 500, 'root')
     client_refresh_metadata
-  elsif host.include?('minion') or host.include?('server') or host.include?('proxy')
+  elsif host.include?('minion') or host.include?('server') or host.include?('proxy') or host.include?('build_host')
     node.run_until_ok('zypper --non-interactive refresh -s')
   else
     raise "The host #{host} has not yet a implementation for that step"
@@ -670,55 +670,57 @@ When(/^I enable SUSE Manager tools repositories on "([^"]*)"$/) do |host|
 end
 
 When(/^I enable repositories before installing Docker$/) do
-  os_version, os_family = get_os_version($minion)
+  os_version, os_family = get_os_version($build_host)
 
   # Distribution
   repos = "os_pool_repo os_update_repo"
-  puts $minion.run("zypper mr --enable #{repos}")
+  puts $build_host.run("zypper mr --enable #{repos}")
 
   # Tools
-  repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  puts $minion.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
+  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+  puts $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
-  # Development and Python 2
+  # Development
+  # (we do not install Python 2 repositories in this branch
+  #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo python2_pool_repo python2_updates_repo"
-    puts $minion.run("zypper mr --enable #{repos}")
+    repos = "devel_pool_repo devel_updates_repo"
+    puts $build_host.run("zypper mr --enable #{repos}")
   end
 
   # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
-    puts $minion.run("zypper mr --enable #{repos}")
+    puts $build_host.run("zypper mr --enable #{repos}")
   end
 
-  $minion.run('zypper -n --gpg-auto-import-keys ref')
+  $build_host.run('zypper -n --gpg-auto-import-keys ref')
 end
 
 When(/^I disable repositories after installing Docker$/) do
-  os_version, os_family = get_os_version($minion)
+  os_version, os_family = get_os_version($build_host)
 
   # Distribution
   repos = "os_pool_repo os_update_repo"
-  puts $minion.run("zypper mr --disable #{repos}")
+  puts $build_host.run("zypper mr --disable #{repos}")
 
   # Tools
-  repos, _code = $minion.run('zypper lr | grep "tools" | cut -d"|" -f2')
-  puts $minion.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
+  repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
+  puts $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
-  # Development and Python 2
+  # Development
+  # (we do not install Python 2 repositories in this branch
+  #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo python2_pool_repo python2_updates_repo"
-    puts $minion.run("zypper mr --disable #{repos}")
+    repos = "devel_pool_repo devel_updates_repo"
+    puts $build_host.run("zypper mr --disable #{repos}")
   end
 
   # Containers
   unless os_family =~ /^opensuse/ || os_version =~ /^11/
     repos = "containers_pool_repo containers_updates_repo"
-    puts $minion.run("zypper mr --disable #{repos}")
+    puts $build_host.run("zypper mr --disable #{repos}")
   end
-
-  $minion.run('zypper -n --gpg-auto-import-keys ref')
 end
 
 When(/^I enable repositories before installing branch server$/) do

@@ -11,5 +11,5 @@
 - features/init_clients/sle_ssh_minion.feature
 - features/init_clients/centos_ssh_minion.feature
 - features/init_clients/ubuntu_ssh_minion.feature
-
+- features/init_clients/buildhost_bootstrap.feature
 ## Post run Core - Initialize clients END ##

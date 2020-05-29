@@ -8,6 +8,7 @@ raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
 warn 'Client IP address or domain name variable empty' if ENV['CLIENT'].nil?
 warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
+warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
 warn 'CentOS minion IP address or domain name variable empty' if ENV['CENTOSMINION'].nil?
 warn 'SSH minion IP address or domain name variable empty' if ENV['SSHMINION'].nil?
 warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
@@ -73,11 +74,12 @@ if $qam_test
 else
   # Define twopence objects for QA environment
   $minion = twopence_init("ssh:#{ENV['MINION']}") if ENV['MINION']
+  $build_host = twopence_init("ssh:#{ENV['BUILD_HOST']}") if ENV['BUILD_HOST']
   $ssh_minion = twopence_init("ssh:#{ENV['SSHMINION']}") if ENV['SSHMINION']
   $client = twopence_init("ssh:#{ENV['CLIENT']}") if ENV['CLIENT']
   $ceos_minion = twopence_init("ssh:#{ENV['CENTOSMINION']}") if ENV['CENTOSMINION']
   $ubuntu_minion = twopence_init("ssh:#{ENV['UBUNTUMINION']}") if ENV['UBUNTUMINION']
-  nodes += [$client, $minion, $ceos_minion, $ubuntu_minion, $ssh_minion]
+  nodes += [$client, $minion, $build_host, $ceos_minion, $ubuntu_minion, $ssh_minion]
 end
 
 # Lavanda library module extension
@@ -199,6 +201,7 @@ $node_by_host = { 'server'                => $server,
                   'ubuntu_ssh_minion'     => $ubuntu_minion,
                   'ssh_minion'            => $ssh_minion,
                   'sle_minion'            => $minion,
+                  'build_host'            => $build_host,
                   'sle_client'            => $client,
                   'kvm_server'            => $kvm_server,
                   'xen_server'            => $xen_server,
