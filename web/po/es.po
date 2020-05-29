@@ -5,33 +5,36 @@
 #
 #: ../html/src/manager/content-management/list-filters/list-filters.js:90
 #: ../html/src/utils/network.js:55
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-01-17 09:32+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2020-06-16 05:14+0000\n"
+"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:524
 msgid "remaining"
-msgstr ""
+msgstr "restante"
 
 #: ../html/javascript/spacewalk-essentials.js:544
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
 msgstr ""
+"El navegador Internet Explorer no está soportado. Se recomienda Firefox, "
+"Chrome o Edge"
 
 #: ../html/src/components/action-schedule.js:36
 msgid "new action chain"
-msgstr ""
+msgstr "nueva cadena de acciones"
 
 #: ../html/src/components/action-schedule.js:102
 msgid "Earliest:"
@@ -39,19 +42,19 @@ msgstr ""
 
 #: ../html/src/components/action-schedule.js:111
 msgid "Add to:"
-msgstr ""
+msgstr "Añadir a:"
 
 #: ../html/src/components/config-channels.js:26
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "Canal de estados de configuración"
 
 #: ../html/src/components/config-channels.js:29
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "Canal de configuración normal"
 
 #: ../html/src/components/config-channels.js:54
 msgid "Configuration Channel: {0}"
-msgstr ""
+msgstr "Canal de configuración: {0}"
 
 #: ../html/src/components/config-channels.js:58
 #: ../html/src/manager/images/image-profiles.js:159
