@@ -48,7 +48,7 @@ def complete_package_details(self, text, line, beg, end):
 def do_package_details(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args.replace('\\', '\\\\'), arg_parser)
 
     if not args:
         self.help_package_details()
@@ -178,7 +178,7 @@ def complete_package_remove(self, text, line, beg, end):
 def do_package_remove(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args.replace('\\', '\\\\'), arg_parser)
 
     if not args:
         self.help_package_remove()
@@ -275,7 +275,7 @@ def complete_package_listinstalledsystems(self, text, line, beg, end):
 def do_package_listinstalledsystems(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args.replace('\\', '\\\\'), arg_parser)
 
     if not args:
         self.help_package_listinstalledsystems()
@@ -322,7 +322,7 @@ def complete_package_listerrata(self, text, line, beg, end):
 def do_package_listerrata(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args.replace('\\', '\\\\'), arg_parser)
 
     if not args:
         self.help_package_listerrata()
@@ -364,7 +364,7 @@ def help_package_listdependencies(self):
 def do_package_listdependencies(self, args):
     arg_parser = get_argument_parser()
 
-    (args, _options) = parse_command_arguments(args, arg_parser)
+    (args, _options) = parse_command_arguments(args.replace('\\', '\\\\'), arg_parser)
 
     if not args:
         self.help_package_listdependencies()
