@@ -30,6 +30,36 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I restart salt-minion on "xen_server"
 
 @virthost_xen
+  Scenario: Enable the virtualization host formula for Xen
+    Given I am on the Systems overview page of this "xen_server"
+    When I follow "Formulas" in the content area
+    Then I should see a "Choose formulas" text
+    And I should see a "Virtualization" text
+    When I check the "virtualization-host" formula
+    And I click on "Save"
+    Then the "virtualization-host" formula should be checked
+
+@virthost_xen
+  Scenario: Parametrize the Xen virtualization host
+    Given I am on the Systems overview page of this "xen_server"
+    When I follow "Formulas" in the content area
+    And I follow first "Virtualization Host" in the content area
+    And I select "Xen" from "hypervisor"
+    And I enter "192.168.124.1" in virtual network IPv4 address field
+    And I enter "192.168.124.2" in first IPv4 address for DHCP field
+    And I enter "192.168.124.254" in last IPv4 address for DHCP field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+
+@virthost_xen
+  Scenario: Apply the Xen virtualization host formula via the highstate
+    Given I am on the Systems overview page of this "xen_server"
+    When I follow "States" in the content area
+    And I click on "Apply Highstate"
+    And I wait until event "Apply highstate scheduled by admin" is completed
+    Then service "libvirtd" is enabled on "xen_server"
+
+@virthost_xen
   Scenario: Prepare a Xen test virtual machine and list it
     Given I am on the "Virtualization" page of this "xen_server"
     When I delete default virtual network on "xen_server"
