@@ -47,6 +47,9 @@ public class MaintenanceWindowJson {
     /** List of schedule names used by a calendar */
     private List<String> scheduleNames;
 
+    /** The reschedule strategy */
+    private String strategy;
+
     /**
      * Gets the id of the schedule
      *
@@ -189,5 +192,23 @@ public class MaintenanceWindowJson {
      */
     public void setScheduleNames(List<String> scheduleNamesIn) {
         this.scheduleNames = scheduleNamesIn;
+    }
+
+    /**
+     * Gets the reschedule strategy
+     *
+     * @return the reschedule strategy
+     */
+    public String getRescheduleStrategy() {
+        return strategy;
+    }
+
+    /**
+     * Sets the reschedule strategy
+     *
+     * @param strategyIn the reschedule strategy
+     */
+    public void setRescheduleStrategy(String strategyIn) {
+        this.strategy = strategyIn;
     }
 }
