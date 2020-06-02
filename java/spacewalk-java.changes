@@ -1,3 +1,5 @@
+- apply highstate when add-on system types should be applied to the
+  system on bootstrapping (bsc#1172190)
 - fixed bug where in scheduling a vhm refresh would result in a permission error for org admins
 - Make automatic system locking for cluster node (CaaSP) user configurable
 - Speed up getAllChannels api call (bsc#1153234)
