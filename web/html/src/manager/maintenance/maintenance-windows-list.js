@@ -9,7 +9,7 @@ const ModalButton = require("components/dialog/ModalButton").ModalButton;
 const DeleteDialog = require("components/dialog/DeleteDialog").DeleteDialog;
 const {Column} = require("components/table/Column");
 const {Form} = require("components/input/Form");
-const {Check} = require("components/input/Check")
+const {Check} = require("components/input/Check");
 const {Table} = require("components/table/Table");
 
 class MaintenanceWindowsList extends React.Component {
@@ -18,8 +18,7 @@ class MaintenanceWindowsList extends React.Component {
         super(props);
 
         this.state = {
-            deleteStrategy: false,
-            itemsToDelete: []
+            itemToDelete: {}
         };
     }
 
@@ -30,9 +29,14 @@ class MaintenanceWindowsList extends React.Component {
     }
 
     setCheck = (model) => {
-        this.setState({
-            deleteStrategy: model.deleteStrategy
-        });
+        model.strategy === "" && (model.strategy = false);
+        this.setState(model);
+    };
+
+    addStrategy = () => {
+        const item = this.state.itemToDelete;
+        item.strategy = (this.state.strategy ? "Cancel" : "Fail");
+        return item;
     };
 
     renderScheduleTable() {
@@ -90,7 +94,7 @@ class MaintenanceWindowsList extends React.Component {
                           content={t("Are you sure you want to delete the selected item? \n" +
                               "Deleting the schedule will unassign all systems from this schedule.")}
                           onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
-                          onClosePopUp={() => this.selectToDelete(null)}
+                          onClosePopUp={() => this.selectToDelete({})}
             />
         </div>
     }
@@ -148,14 +152,14 @@ class MaintenanceWindowsList extends React.Component {
             <DeleteDialog id="delete-modal"
                           title={t("Delete maintenance calendar")}
                           content={
-                                  <Form onChange={this.setCheck} model={{deleteStrategy: this.state.deleteStrategy}}>
+                                  <Form model={{strategy: this.state.strategy}} onChange={this.setCheck}>
                                       <div>{t("Are you sure you want to delete the selected item?")}</div>
                                       <div>{t("Deleting this calendar will unassign all schedules from this calendar.")}</div>
-                                      <Check name="deleteStrategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
+                                      <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
                                   </Form>
                           }
-                          onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
-                          onClosePopUp={() => this.selectToDelete(null)}
+                          onConfirm={() => this.props.onDelete(this.addStrategy())}
+                          onClosePopUp={() => this.selectToDelete({})}
             />
         </div>
     }
