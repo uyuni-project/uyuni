@@ -58,6 +58,8 @@ def do_custominfo_createkey(self, args):
                                             key,
                                             description)
 
+    return 0
+
 ####################
 
 
@@ -77,7 +79,7 @@ def do_custominfo_deletekey(self, args):
 
     if not args:
         self.help_custominfo_deletekey()
-        return
+        return 1
 
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys('', True), args)
@@ -86,16 +88,18 @@ def do_custominfo_deletekey(self, args):
 
     if not keys:
         logging.error("No keys matched argument %s" % args)
-        return
+        return 1
 
     # Print the keys prior to the confirmation
     print('\n'.join(sorted(keys)))
 
     if not self.user_confirm('Delete these keys [y/N]:'):
-        return
+        return 1
 
     for key in keys:
         self.client.system.custominfo.deleteKey(self.session, key)
+
+    return 0
 
 ####################
 
@@ -134,7 +138,7 @@ def do_custominfo_details(self, args):
 
     if not args:
         self.help_custominfo_details()
-        return
+        return 1
 
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys('', True), args)
@@ -143,7 +147,7 @@ def do_custominfo_details(self, args):
 
     if not keys:
         logging.error("No keys matched argument '{}'.".format(", ".join(args)))
-        return
+        return 1
 
     add_separator = False
 
@@ -163,6 +167,8 @@ def do_custominfo_details(self, args):
             print('Description:  %s' % (details.get('description') or "N/A"))
             print('Modified:     %s' % (details.get('last_modified') or "N/A"))
             print('System Count: %i' % (details.get('system_count') or 0))
+
+    return 0
 
 ####################
 
@@ -195,3 +201,5 @@ def do_custominfo_updatekey(self, args):
     self.client.system.custominfo.updateKey(self.session,
                                             key,
                                             description)
+
+    return 0

@@ -72,7 +72,7 @@ def do_repo_details(self, args):
 
     if not args:
         self.help_repo_details()
-        return
+        return 1
 
     # allow globbing of repo names
     repos = filter_results(self.do_repo_list('', True), args)
@@ -94,6 +94,8 @@ def do_repo_details(self, args):
         print('Repository SSL Client Certificate: %s' % (details.get('sslCertDesc') or "None"))
         print('Repository SSL Client Key:         %s' % (details.get('sslKeyDesc') or "None"))
 
+    return 0
+
 ####################
 
 
@@ -113,13 +115,15 @@ def do_repo_listfilters(self, args):
 
     if not args:
         self.help_repo_listfilters()
-        return
+        return 1
 
     filters = \
         self.client.channel.software.listRepoFilters(self.session, args[0])
 
     for f in filters:
         print("%s%s" % (f.get('flag'), f.get('filter')))
+
+    return 0
 
 ####################
 
@@ -141,7 +145,7 @@ def do_repo_addfilters(self, args):
 
     if not args:
         self.help_repo_addfilters()
-        return
+        return 1
 
     repo = args[0]
 
@@ -151,12 +155,14 @@ def do_repo_addfilters(self, args):
 
         if not (flag == '+' or flag == '-'):
             logging.error('Each filter must start with + or -')
-            return
+            return 1
 
         self.client.channel.software.addRepoFilter(self.session,
                                                    repo,
                                                    {'filter': repofilter,
                                                     'flag': flag})
+
+    return 0
 
 ####################
 
@@ -176,7 +182,7 @@ def do_repo_removefilters(self, args):
 
     if not args:
         self.help_repo_removefilters()
-        return
+        return 1
 
     repo = args[0]
 
@@ -186,12 +192,14 @@ def do_repo_removefilters(self, args):
 
         if not (flag == '+' or flag == '-'):
             logging.error('Each filter must start with + or -')
-            return
+            return 1
 
         self.client.channel.software.removeRepoFilter(self.session,
                                                       repo,
                                                       {'filter': repofilter,
                                                        'flag': flag})
+
+    return 0
 
 ####################
 
@@ -211,7 +219,7 @@ def do_repo_setfilters(self, args):
 
     if not args:
         self.help_repo_setfilters()
-        return
+        return 1
 
     repo = args[0]
 
@@ -223,11 +231,13 @@ def do_repo_setfilters(self, args):
 
         if not (flag == '+' or flag == '-'):
             logging.error('Each filter must start with + or -')
-            return
+            return 1
 
         filters.append({'filter': repofilter, 'flag': flag})
 
     self.client.channel.software.setRepoFilters(self.session, repo, filters)
+
+    return 0
 
 ####################
 
@@ -248,10 +258,12 @@ def do_repo_clearfilters(self, args):
 
     if not args:
         self.help_repo_clearfilters()
-        return
+        return 1
 
     if self.user_confirm('Remove these filters [y/N]:'):
         self.client.channel.software.clearRepoFilters(self.session, args[0])
+
+    return 0
 
 ####################
 
@@ -272,7 +284,7 @@ def do_repo_delete(self, args):
 
     if not args:
         self.help_repo_delete()
-        return
+        return 1
 
     # allow globbing of repo names
     repos = filter_results(self.do_repo_list('', True), args)
@@ -287,6 +299,8 @@ def do_repo_delete(self, args):
                 self.client.channel.software.removeRepo(self.session, repo)
             except xmlrpclib.Fault:
                 logging.error('Failed to remove repo %s' % repo)
+
+    return 0
 
 ####################
 
@@ -326,11 +340,11 @@ def do_repo_create(self, args):
     else:
         if not options.name:
             logging.error('A name is required')
-            return
+            return 1
 
         if not options.url:
             logging.error('A URL is required')
-            return
+            return 1
 
         if not options.type:
             options.type = 'yum'
@@ -342,6 +356,8 @@ def do_repo_create(self, args):
                                             options.ca,
                                             options.cert,
                                             options.key)
+
+    return 0
 
 ####################
 
@@ -364,18 +380,20 @@ def do_repo_rename(self, args):
 
     if len(args) != 2:
         self.help_repo_rename()
-        return
+        return 1
 
     try:
         details = self.client.channel.software.getRepoDetails(self.session, args[0])
         oldname = details.get('id')
     except xmlrpclib.Fault:
         logging.error('Could not find repo %s' % args[0])
-        return False
+        return 1
 
     newname = args[1]
 
     self.client.channel.software.updateRepoLabel(self.session, oldname, newname)
+
+    return 0
 
 ####################
 
@@ -398,12 +416,14 @@ def do_repo_updateurl(self, args):
 
     if len(args) != 2:
         self.help_repo_updateurl()
-        return
+        return 1
 
     name = args[0]
     url = args[1]
 
     self.client.channel.software.updateRepoUrl(self.session, name, url)
+
+    return 0
 
 
 def help_repo_updatessl(self):
@@ -432,10 +452,12 @@ def do_repo_updatessl(self, args):
     else:
         if not options.name:
             logging.error('A name is required')
-            return
+            return 1
 
     self.client.channel.software.updateRepoSsl(self.session,
                                                options.name,
                                                options.ca,
                                                options.cert,
                                                options.key)
+
+    return 0

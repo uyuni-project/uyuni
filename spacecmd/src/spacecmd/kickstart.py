@@ -136,18 +136,18 @@ def do_kickstart_create(self, args):
     else:
         if not options.name:
             logging.error('The Kickstart name is required')
-            return
+            return 1
 
         if not options.distribution:
             logging.error('The distribution is required')
-            return
+            return 1
 
         if not options.virt_type:
             options.virt_type = 'none'
 
         if not options.root_password:
             logging.error('A root password is required')
-            return
+            return 1
 
     # leave this blank to use the default server
     host = ''
@@ -158,6 +158,8 @@ def do_kickstart_create(self, args):
                                         options.distribution,
                                         host,
                                         options.root_password)
+
+    return 0
 
 ####################
 
@@ -181,7 +183,7 @@ def do_kickstart_delete(self, args):
 
     if len(args) < 1:
         self.help_kickstart_delete()
-        return
+        return 1
 
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list('', True)
@@ -191,7 +193,7 @@ def do_kickstart_delete(self, args):
     if not labels:
         logging.error("No valid kickstart labels passed as arguments!")
         self.help_kickstart_delete()
-        return
+        return 1
 
     for label in labels:
         if not label in all_labels:
@@ -200,6 +202,8 @@ def do_kickstart_delete(self, args):
 
         if self.user_confirm("Delete profile %s [y/N]:" % label):
             self.client.kickstart.deleteProfile(self.session, label)
+
+    return 0
 
 ####################
 
@@ -535,7 +539,7 @@ def do_kickstart_getcontents(self, args):
 
     if not args:
         self.help_kickstart_getcontents()
-        return
+        return 1
 
     profile = args[0]
 
@@ -548,6 +552,8 @@ def do_kickstart_getcontents(self, args):
             print(kickstart.encode('UTF8'))
         except UnicodeDecodeError:
             print(kickstart)
+
+    return 0
 
 ####################
 
@@ -569,12 +575,14 @@ def do_kickstart_rename(self, args):
 
     if len(args) != 2:
         self.help_kickstart_rename()
-        return
+        return 1
 
     oldname = args[0]
     newname = args[1]
 
     self.client.kickstart.renameProfile(self.session, oldname, newname)
+
+    return 0
 
 ####################
 
@@ -646,6 +654,8 @@ def do_kickstart_addcryptokeys(self, args):
                                                  profile,
                                                  keys)
 
+    return 0
+
 ####################
 
 
@@ -677,7 +687,7 @@ def do_kickstart_removecryptokeys(self, args):
 
     if len(args) < 2:
         self.help_kickstart_removecryptokeys()
-        return
+        return 1
 
     profile = args[0]
     keys = args[1:]
@@ -685,6 +695,8 @@ def do_kickstart_removecryptokeys(self, args):
     self.client.kickstart.profile.system.removeKeys(self.session,
                                                     profile,
                                                     keys)
+
+    return 0
 
 ####################
 
@@ -761,6 +773,8 @@ def do_kickstart_addactivationkeys(self, args):
                                                             profile,
                                                             key)
 
+    return 0
+
 ####################
 
 
@@ -793,18 +807,20 @@ def do_kickstart_removeactivationkeys(self, args):
 
     if len(args) < 2:
         self.help_kickstart_removeactivationkeys()
-        return
+        return 1
 
     profile = args[0]
     keys = args[1:]
 
     if not self.user_confirm('Remove these keys [y/N]:'):
-        return
+        return 1
 
     for key in keys:
         self.client.kickstart.profile.keys.removeActivationKey(self.session,
                                                                profile,
                                                                key)
+
+    return 0
 
 ####################
 
@@ -830,12 +846,14 @@ def do_kickstart_enableconfigmanagement(self, args):
 
     if not args:
         self.help_kickstart_enableconfigmanagement()
-        return
+        return 1
 
     profile = args[0]
 
     self.client.kickstart.profile.system.enableConfigManagement(
         self.session, profile)
+
+    return 0
 
 ####################
 
@@ -861,12 +879,14 @@ def do_kickstart_disableconfigmanagement(self, args):
 
     if not args:
         self.help_kickstart_disableconfigmanagement()
-        return
+        return 1
 
     profile = args[0]
 
     self.client.kickstart.profile.system.disableConfigManagement(
         self.session, profile)
+
+    return 0
 
 ####################
 
@@ -892,12 +912,14 @@ def do_kickstart_enableremotecommands(self, args):
 
     if not args:
         self.help_kickstart_enableremotecommands()
-        return
+        return 1
 
     profile = args[0]
 
     self.client.kickstart.profile.system.enableRemoteCommands(self.session,
                                                               profile)
+
+    return 0
 
 ####################
 
@@ -922,12 +944,14 @@ def do_kickstart_disableremotecommands(self, args):
 
     if not args:
         self.help_kickstart_disableremotecommands()
-        return
+        return 1
 
     profile = args[0]
 
     self.client.kickstart.profile.system.disableRemoteCommands(self.session,
                                                                profile)
+
+    return 0
 
 ####################
 
@@ -953,7 +977,7 @@ def do_kickstart_setlocale(self, args):
 
     if len(args) != 2:
         self.help_kickstart_setlocale()
-        return
+        return 1
 
     profile = args[0]
     locale = args[1]
@@ -965,6 +989,8 @@ def do_kickstart_setlocale(self, args):
                                                    profile,
                                                    locale,
                                                    utc)
+
+    return 0
 
 ####################
 
@@ -992,7 +1018,7 @@ def do_kickstart_setselinux(self, args):
 
     if len(args) != 2:
         self.help_kickstart_setselinux()
-        return
+        return 1
 
     profile = args[0]
     mode = args[1]
@@ -1000,6 +1026,8 @@ def do_kickstart_setselinux(self, args):
     self.client.kickstart.profile.system.setSELinux(self.session,
                                                     profile,
                                                     mode)
+
+    return 0
 
 ####################
 
@@ -1024,7 +1052,7 @@ def do_kickstart_setpartitions(self, args):
 
     if not args:
         self.help_kickstart_setpartitions()
-        return
+        return 1
 
     profile = args[0]
 
@@ -1042,13 +1070,15 @@ def do_kickstart_setpartitions(self, args):
 
     print(partitions)
     if not self.user_confirm():
-        return
+        return 1
 
     lines = partitions.split('\n')
 
     self.client.kickstart.profile.system.setPartitioningScheme(self.session,
                                                                profile,
                                                                lines)
+
+    return 0
 
 ####################
 
@@ -1075,7 +1105,7 @@ def do_kickstart_setdistribution(self, args):
 
     if len(args) != 2:
         self.help_kickstart_setdistribution()
-        return
+        return 1
 
     profile = args[0]
     distribution = args[1]
@@ -1083,6 +1113,8 @@ def do_kickstart_setdistribution(self, args):
     self.client.kickstart.profile.setKickstartTree(self.session,
                                                    profile,
                                                    distribution)
+
+    return 0
 
 ####################
 
@@ -1106,7 +1138,7 @@ def do_kickstart_enablelogging(self, args):
 
     if not args:
         self.help_kickstart_enablelogging()
-        return
+        return 1
 
     profile = args[0]
 
@@ -1114,6 +1146,8 @@ def do_kickstart_enablelogging(self, args):
                                              profile,
                                              True,
                                              True)
+
+    return 0
 
 ####################
 
@@ -1137,7 +1171,7 @@ def do_kickstart_addvariable(self, args):
 
     if len(args) < 3:
         self.help_kickstart_addvariable()
-        return
+        return 1
 
     profile = args[0]
     key = args[1]
@@ -1151,6 +1185,8 @@ def do_kickstart_addvariable(self, args):
     self.client.kickstart.profile.setVariables(self.session,
                                                profile,
                                                variables)
+
+    return 0
 
 ####################
 
@@ -1185,7 +1221,7 @@ def do_kickstart_updatevariable(self, args):
 
     if len(args) < 3:
         self.help_kickstart_updatevariable()
-        return
+        return 1
 
     return self.do_kickstart_addvariable(' '.join(args))
 
@@ -1222,7 +1258,7 @@ def do_kickstart_removevariables(self, args):
 
     if len(args) < 2:
         self.help_kickstart_removevariables()
-        return
+        return 1
 
     profile = args[0]
     keys = args[1:]
@@ -1237,6 +1273,8 @@ def do_kickstart_removevariables(self, args):
     self.client.kickstart.profile.setVariables(self.session,
                                                profile,
                                                variables)
+
+    return 0
 
 ####################
 
@@ -1261,7 +1299,7 @@ def do_kickstart_listvariables(self, args):
 
     if not args:
         self.help_kickstart_listvariables()
-        return
+        return 1
 
     profile = args[0]
 
@@ -1270,6 +1308,8 @@ def do_kickstart_listvariables(self, args):
 
     for v in variables:
         print('%s = %s' % (v, variables[v]))
+
+    return 0
 
 ####################
 
@@ -1295,7 +1335,7 @@ def do_kickstart_addoption(self, args):
 
     if len(args) < 2:
         self.help_kickstart_addoption()
-        return
+        return 1
 
     profile = args[0]
     key = args[1]
@@ -1324,7 +1364,8 @@ def do_kickstart_addoption(self, args):
                                                          advanced)
     else:
         logging.warning('%s needs to be set as a custom option' % key)
-        return
+
+    return 0
 
 ####################
 
@@ -1358,7 +1399,7 @@ def do_kickstart_removeoptions(self, args):
 
     if len(args) < 2:
         self.help_kickstart_removeoptions()
-        return
+        return 1
 
     profile = args[0]
     keys = args[1:]
@@ -1376,6 +1417,8 @@ def do_kickstart_removeoptions(self, args):
     self.client.kickstart.profile.setAdvancedOptions(self.session,
                                                      profile,
                                                      advanced)
+
+    return 0
 
 ####################
 
@@ -1400,7 +1443,7 @@ def do_kickstart_listoptions(self, args):
 
     if not args:
         self.help_kickstart_listoptions()
-        return
+        return 1
 
     profile = args[0]
 
@@ -1410,6 +1453,8 @@ def do_kickstart_listoptions(self, args):
     for o in sorted(options, key=itemgetter('name')):
         if o.get('arguments'):
             print('%s %s' % (o.get('name'), o.get('arguments')))
+
+    return 0
 
 ####################
 
@@ -1434,7 +1479,7 @@ def do_kickstart_listcustomoptions(self, args):
 
     if not args:
         self.help_kickstart_listcustomoptions()
-        return
+        return 1
 
     profile = args[0]
 
@@ -1444,6 +1489,8 @@ def do_kickstart_listcustomoptions(self, args):
     for o in options:
         if 'arguments' in o:
             print(o.get('arguments'))
+
+    return 0
 
 ####################
 
@@ -1468,7 +1515,7 @@ def do_kickstart_setcustomoptions(self, args):
 
     if not args:
         self.help_kickstart_setcustomoptions()
-        return
+        return 1
 
     profile = args[0]
 
@@ -1492,6 +1539,8 @@ def do_kickstart_setcustomoptions(self, args):
     self.client.kickstart.profile.setCustomOptions(self.session,
                                                    profile,
                                                    new_options)
+
+    return 0
 
 ####################
 
@@ -1537,7 +1586,7 @@ def do_kickstart_addchildchannels(self, args):
 
     if len(args) < 2:
         self.help_kickstart_addchildchannels()
-        return
+        return 1
 
     profile = args[0]
     new_channels = args[1:]
@@ -1550,6 +1599,8 @@ def do_kickstart_addchildchannels(self, args):
     self.client.kickstart.profile.setChildChannels(self.session,
                                                    profile,
                                                    channels)
+
+    return 0
 
 ####################
 
@@ -1578,7 +1629,7 @@ def do_kickstart_removechildchannels(self, args):
 
     if len(args) < 2:
         self.help_kickstart_removechildchannels()
-        return
+        return 1
 
     profile = args[0]
     to_remove = args[1:]
@@ -1593,6 +1644,8 @@ def do_kickstart_removechildchannels(self, args):
     self.client.kickstart.profile.setChildChannels(self.session,
                                                    profile,
                                                    channels)
+
+    return 0
 
 ####################
 
@@ -1656,7 +1709,7 @@ def do_kickstart_addfilepreservations(self, args):
 
     if not args:
         self.help_kickstart_addfilepreservations()
-        return
+        return 1
 
     profile = args[0]
     files = args[1:]
@@ -1664,6 +1717,8 @@ def do_kickstart_addfilepreservations(self, args):
     self.client.kickstart.profile.system.addFilePreservations(self.session,
                                                               profile,
                                                               files)
+
+    return 0
 
 ####################
 
@@ -1702,13 +1757,15 @@ def do_kickstart_removefilepreservations(self, args):
 
     if len(args) < 2:
         self.help_kickstart_removefilepreservations()
-        return
+        return 1
 
     profile = args[0]
     files = args[1:]
 
     self.client.kickstart.profile.system.removeFilePreservations(
         self.session, profile, files)
+
+    return 0
 
 ####################
 
@@ -1768,13 +1825,15 @@ def do_kickstart_addpackages(self, args):
 
     if not len(args) >= 2:
         self.help_kickstart_addpackages()
-        return
+        return 1
 
     profile = args[0]
     packages = args[1:]
 
     self.client.kickstart.profile.software.appendToSoftwareList(
         self.session, profile, packages)
+
+    return 0
 
 ####################
 
@@ -1803,7 +1862,7 @@ def do_kickstart_removepackages(self, args):
 
     if len(args) < 2:
         self.help_kickstart_removepackages()
-        return
+        return 1
 
     profile = args[0]
     to_remove = args[1:]
@@ -1818,6 +1877,8 @@ def do_kickstart_removepackages(self, args):
     self.client.kickstart.profile.software.setSoftwareList(self.session,
                                                            profile,
                                                            packages)
+
+    return 0
 
 ####################
 
@@ -1839,7 +1900,7 @@ def do_kickstart_listscripts(self, args):
 
     if not args:
         self.help_kickstart_listscripts()
-        return
+        return 1
 
     profile = args[0]
 
@@ -1861,6 +1922,8 @@ def do_kickstart_listscripts(self, args):
         print('Contents')
         print('--------')
         print(script.get('contents'))
+
+    return 0
 
 ####################
 
@@ -1934,15 +1997,15 @@ def do_kickstart_addscript(self, args):
     else:
         if not options.profile:
             logging.error('The Kickstart name is required')
-            return
+            return 1
 
         if not options.file:
             logging.error('A filename is required')
-            return
+            return 1
 
         if not options.execution_time:
             logging.error('The execution time is required')
-            return
+            return 1
 
         if not options.chroot:
             options.chroot = False
@@ -1966,7 +2029,7 @@ def do_kickstart_addscript(self, args):
     print(options.contents)
 
     if not self.user_confirm():
-        return
+        return 1
 
     self.client.kickstart.profile.addScript(self.session,
                                             options.profile,
@@ -1975,6 +2038,8 @@ def do_kickstart_addscript(self, args):
                                             options.execution_time,
                                             options.chroot,
                                             options.template)
+
+    return 0
 
 ####################
 
@@ -1998,7 +2063,7 @@ def do_kickstart_removescript(self, args):
 
     if not args:
         self.help_kickstart_removescript()
-        return
+        return 1
 
     profile = args[0]
 
@@ -2025,11 +2090,13 @@ def do_kickstart_removescript(self, args):
                 logging.error('Invalid script ID')
 
     if not self.user_confirm('Remove this script [y/N]:'):
-        return
+        return 1
 
     self.client.kickstart.profile.removeScript(self.session,
                                                profile,
                                                script_id)
+
+    return 0
 
 ####################
 
@@ -2069,15 +2136,17 @@ def do_kickstart_clone(self, args):
 
         if not options.name:
             logging.error('The Kickstart name is required')
-            return
+            return 1
 
         if not options.clonename:
             logging.error('The Kickstart clone name is required')
-            return
+            return 1
 
     self.client.kickstart.cloneProfile(self.session,
                                        options.name,
                                        options.clonename)
+
+    return 0
 
 ####################
 
@@ -2220,7 +2289,7 @@ def do_kickstart_export(self, args):
         if not profiles:
             logging.error("Error, no valid kickstart profile passed, " +
                           "check name is  correct with spacecmd kickstart_list")
-            return
+            return 1
         if not filename:
             # No filename arg, so we try to do something sensible:
             # If we are exporting exactly one ks, we default to ksname.json
@@ -2247,11 +2316,13 @@ def do_kickstart_export(self, args):
     if os.path.isfile(filename):
         if not self.user_confirm("File %s exists, " % filename +
                                  "confirm overwrite file? (y/n)"):
-            return
+            return 1
     if json_dump_to_file(ksdetails_list, filename) != True:
         logging.error("Error saving exported kickstart profiles to file" %
                       filename)
-        return
+        return 1
+
+    return 0
 
 ####################
 
@@ -2269,18 +2340,20 @@ def do_kickstart_importjson(self, args):
     if not args:
         logging.error("Error, no filename passed")
         self.help_kickstart_import()
-        return
+        return 1
 
     for filename in args:
         logging.debug("Passed filename do_kickstart_import %s" % filename)
         ksdetails_list = json_read_from_file(filename)
         if not ksdetails_list:
             logging.error("Error, could not read json data from %s" % filename)
-            return
+            return 1
         for ksdetails in ksdetails_list:
             if self.import_kickstart_fromdetails(ksdetails) != True:
                 logging.error("Error importing kickstart %s" %
                               ksdetails['name'])
+
+    return 0
 
 # create a new ks based on the dict from export_kickstart_getdetails
 
@@ -2524,7 +2597,7 @@ def do_kickstart_getupdatetype(self, args):
 
     if len(args) < 1:
         self.help_kickstart_getupdatetype()
-        return
+        return 1
 
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list('', True)
@@ -2534,7 +2607,7 @@ def do_kickstart_getupdatetype(self, args):
     if not labels:
         logging.error("No valid kickstart labels passed as arguments!")
         self.help_kickstart_getupdatetype()
-        return
+        return 1
 
     for label in labels:
         if not label in all_labels:
@@ -2547,6 +2620,8 @@ def do_kickstart_getupdatetype(self, args):
             print(updatetype)
         elif len(labels) > 1:
             print(label, ":", updatetype)
+
+    return 0
 
 ####################
 
@@ -2588,7 +2663,7 @@ def do_kickstart_setupdatetype(self, args):
     if not labels:
         logging.error("No valid kickstart labels passed as arguments!")
         self.help_kickstart_setupdatetype()
-        return
+        return 1
 
     for label in labels:
         if not label in all_labels:
@@ -2596,6 +2671,8 @@ def do_kickstart_setupdatetype(self, args):
             continue
 
         self.client.kickstart.profile.setUpdateType(self.session, label, options.update_type)
+
+    return 0
 
 ####################
 
@@ -2618,7 +2695,7 @@ def do_kickstart_getsoftwaredetails(self, args):
 
     if len(args) < 1:
         self.help_kickstart_getsoftwaredetails()
-        return
+        return 1
 
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list('', True)
@@ -2628,7 +2705,7 @@ def do_kickstart_getsoftwaredetails(self, args):
     if not labels:
         logging.error("No valid kickstart labels passed as arguments!")
         self.help_kickstart_getsoftwaredetails()
-        return
+        return 1
 
     for label in labels:
         if not label in all_labels:
@@ -2645,6 +2722,8 @@ def do_kickstart_getsoftwaredetails(self, args):
             print("noBase:          %s" % software_details.get("noBase"))
             print("ignoreMissing:   %s" % software_details.get("ignoreMissing"))
             print('')
+
+    return 0
 
 ####################
 
@@ -2683,20 +2762,20 @@ def do_kickstart_setsoftwaredetails(self, args):
 
     if length < 1 or length not in [3, 5]:
         self.help_kickstart_setsoftwaredetails()
-        return
+        return 1
 
     if args[0] not in self.do_kickstart_list('', True):
         print("Selected profile does not exist")
-        return
+        return 1
     if args[1] not in kspkginfo or args[2] not in mode:
         print("Enter valid input")
         self.help_kickstart_setsoftwaredetails()
-        return
+        return 1
     if length==5:
         if (args[3] not in kspkginfo or args[4] not in mode) or args[1] == args[3]:
             print("Enter valid input")
             self.help_kickstart_setsoftwaredetails()
-            return
+            return 1
 
     args[2] = string_to_bool(args[2])
     if length == 5:
@@ -2719,3 +2798,5 @@ def do_kickstart_setsoftwaredetails(self, args):
     self.client.kickstart.profile.software.setSoftwareDetails(self.session,
                                                               profile,
                                                               kspkginfo)
+
+    return 0

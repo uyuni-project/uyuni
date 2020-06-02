@@ -60,7 +60,7 @@ def do_package_details(self, args):
 
     if not packages:
         logging.warning('No packages found')
-        return
+        return 1
 
     add_separator = False
 
@@ -105,6 +105,8 @@ def do_package_details(self, args):
             print('-----------------------')
             print('\n'.join(sorted([c.get('label') for c in channels])))
             print('')
+
+    return 0
 
 ####################
 
@@ -172,21 +174,21 @@ def do_package_remove(self, args):
 
     if not args:
         self.help_package_remove()
-        return
+        return 1
 
     packages = args
 
     to_remove = filter_results(self.get_package_names(True), packages)
 
     if not to_remove:
-        return
+        return 1
 
     print('Packages')
     print('--------')
     print('\n'.join(sorted(to_remove)))
 
     if not self.user_confirm('Remove these packages [y/N]:'):
-        return
+        return 1
 
     for package in to_remove:
         for package_id in self.get_package_id(package):
@@ -197,6 +199,8 @@ def do_package_remove(self, args):
 
     # regenerate the package cache after removing these packages
     self.generate_package_cache(True)
+
+    return 0
 
 ####################
 
@@ -232,20 +236,23 @@ def do_package_removeorphans(self, args):
 
     if not packages:
         logging.warning('No orphaned packages')
-        return
+        return 1
 
     print('Packages')
     print('--------')
     print('\n'.join(sorted(build_package_names(packages))))
 
     if not self.user_confirm('Remove these packages [y/N]:'):
-        return
+        return 1
 
     for package in packages:
         try:
             self.client.packages.removePackage(self.session, package.get('id'))
         except xmlrpclib.Fault:
             logging.error('Failed to remove package ID %i' % package.get('id'))
+            return 1
+
+    return 0
 
 ####################
 
@@ -266,7 +273,7 @@ def do_package_listinstalledsystems(self, args):
 
     if not args:
         self.help_package_listinstalledsystems()
-        return
+        return 1
 
     packages = []
     for package in args:
@@ -274,7 +281,7 @@ def do_package_listinstalledsystems(self, args):
 
     if not packages:
         logging.warning('No packages found')
-        return
+        return 1
 
     add_separator = False
 
@@ -293,6 +300,8 @@ def do_package_listinstalledsystems(self, args):
 
         if systems:
             print('\n'.join(sorted(['%s : %s' % (s.get('name'), s.get('id')) for s in systems])))
+
+    return 0
 
 ####################
 
@@ -313,7 +322,7 @@ def do_package_listerrata(self, args):
 
     if not args:
         self.help_package_listerrata()
-        return
+        return 1
 
     packages = []
     for package in args:
@@ -321,7 +330,7 @@ def do_package_listerrata(self, args):
 
     if not packages:
         logging.warning('No packages found')
-        return
+        return 1
 
     add_separator = False
 
@@ -340,6 +349,8 @@ def do_package_listerrata(self, args):
             if errata:
                 print('\n'.join(sorted([e.get('advisory') for e in errata])))
 
+    return 0
+
 ####################
 
 
@@ -355,7 +366,7 @@ def do_package_listdependencies(self, args):
 
     if not args:
         self.help_package_listdependencies()
-        return
+        return 1
 
     packages = []
     for package in args:
@@ -363,7 +374,7 @@ def do_package_listdependencies(self, args):
 
     if not packages:
         logging.warning('No packages found')
-        return
+        return 1
 
     add_separator = False
 
@@ -384,3 +395,5 @@ def do_package_listdependencies(self, args):
                 print('Dependency: %s Type: %s Modifier: %s' % \
                       (dep['dependency'], dep['dependency_type'], dep['dependency_modifier']))
             print(self.SEPARATOR)
+
+    return 0

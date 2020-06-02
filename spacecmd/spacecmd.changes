@@ -1,3 +1,6 @@
+- use defined return values for spacecmd methods so scripts can
+  check for failure (bsc#1171687)
+
 -------------------------------------------------------------------
 Fri Feb 28 11:40:49 CET 2020 - jgonzalez@suse.com
 
