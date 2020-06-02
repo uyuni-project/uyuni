@@ -342,7 +342,7 @@ Style/ConstantVisibility:
 # Configuration parameters: Notice, AutocorrectNotice.
 Style/Copyright:
   Enabled: false
-  
+
 # Offense count: 11
 # Configuration parameters: AllowCoercion.
 Style/DateTime:
