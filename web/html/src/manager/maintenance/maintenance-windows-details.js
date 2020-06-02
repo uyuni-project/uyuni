@@ -7,6 +7,8 @@ const {ModalButton} = require("components/dialog/ModalButton");
 const {DeleteDialog} = require("components/dialog/DeleteDialog");
 const { TopPanel } = require('components/panels/TopPanel');
 const {Messages} = require("components/messages");
+const {Form} = require("components/input/Form");
+const {Check} = require("components/input/Check");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
 const scheduleTypeToString = (type) => {
@@ -30,6 +32,17 @@ class MaintenanceWindowsDetails extends React.Component {
         };
     }
 
+    setCheck = (model) => {
+        model.strategy === "" && (model.strategy = false);
+        this.setState(model);
+    };
+
+    addStrategy = () => {
+        const item = this.props.data;
+        item.strategy = (this.state.strategy ? "Cancel" : "Fail");
+        return item;
+    };
+
     renderScheduleDetails(data) {
         return (
             <BootstrapPanel title={t("Schedule Details")}>
@@ -51,6 +64,12 @@ class MaintenanceWindowsDetails extends React.Component {
                         </tbody>
                     </table>
                 </div>
+                <DeleteDialog id="delete-modal"
+                              title={t("Delete maintenance schedule")}
+                              content={t("Are you sure you want to delete the selected item? \n" +
+                                  "Deleting the schedule will unassign all systems from this schedule.")}
+                              onConfirm={() => this.props.onDelete(this.props.data)}
+                />
             </BootstrapPanel>
         );
     }
@@ -78,6 +97,17 @@ class MaintenanceWindowsDetails extends React.Component {
                         </tbody>
                     </table>
                 </div>
+                <DeleteDialog id="delete-modal"
+                              title={t("Delete maintenance calendar")}
+                              content={
+                                  <Form model={{strategy: this.state.strategy}} onChange={this.setCheck}>
+                                      <div>{t("Are you sure you want to delete the selected item?")}</div>
+                                      <div>{t("Deleting this calendar will unassign all schedules from this calendar.")}</div>
+                                      <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
+                                  </Form>
+                              }
+                              onConfirm={() => this.props.onDelete(this.addStrategy())}
+                />
             </BootstrapPanel>
         );
     }
@@ -134,12 +164,7 @@ class MaintenanceWindowsDetails extends React.Component {
                     </div>
                 </div>
                 }
-                <DeleteDialog id="delete-modal"
-                              title={t("Delete maintenance schedule")}
-                              content={t("Are you sure you want to delete the selected item? \n" +
-                                  "Deleting the schedule will unassign all systems from this schedule.")}
-                              onConfirm={() => this.props.onDelete(this.props.data)}
-                />
+
             </TopPanel>
         );
     }

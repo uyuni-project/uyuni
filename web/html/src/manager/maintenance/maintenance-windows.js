@@ -132,8 +132,9 @@ class MaintenanceWindows extends React.Component {
 
     delete(item) {
         /* TODO: schedule name in url fine? Or id better? */
-        return Network.del("/rhn/manager/api/maintenance/" + type + "/" +
-            (type === "schedule" ? item.scheduleName : item.calendarName) + "/delete")
+        return Network.del("/rhn/manager/api/maintenance/" + type + "/delete",
+            JSON.stringify(item),
+            "application/json")
             .promise.then((_) => {
                 this.setState({
                     messages: MessagesUtils.info(

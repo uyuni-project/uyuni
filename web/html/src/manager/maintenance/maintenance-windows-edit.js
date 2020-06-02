@@ -18,11 +18,7 @@ class MaintenanceWindowsEdit extends React.Component {
         super(props);
 
         this.state = {
-            /* Reschedule strategy. false == 'FAIL', true == 'CANCEL' */
-            strategy: false,
             fileName: "",
-            scheduleType: "SINGLE",
-            calendarAdded: type !== "schedule",
             selectedCalendar: 0
         };
 
@@ -44,7 +40,9 @@ class MaintenanceWindowsEdit extends React.Component {
     };
 
     setCalendarName = () => {
-        return (this.state.calendarAdded && this.state.calendarName) ? this.state.calendarName : "<None>";
+        return type === "schedule" ?
+            ((this.state.calendarAdded && this.state.calendarName) ? this.state.calendarName : "<None>")
+            : this.state.calendarName;
     };
 
     isEdit = () => {
@@ -59,19 +57,16 @@ class MaintenanceWindowsEdit extends React.Component {
             calendarId: this.state.calendarId,
             calendarName: this.setCalendarName(),
             calendarData: this.state.calendarData,
-            calendarUrl: this.state.calendarUrl
+            calendarUrl: this.state.calendarUrl,
+            /* Reschedule strategy. false == 'FAIL', true == 'CANCEL' */
+            strategy: this.state.strategy ? "Cancel" : "Fail"
         });
     };
 
     onFormChanged = (model) => {
-        this.setState({
-            scheduleName: model.scheduleName,
-            scheduleType: model.scheduleType,
-            calendarName: model.calendarName || this.state.calendarName,
-            strategy: !this.state.strategy
-        });
+        model.strategy === "" && (model.strategy = false);
+        this.setState(model);
     };
-
 
     onFileDestChanged = (event) => {
         this.setState({
@@ -130,7 +125,7 @@ class MaintenanceWindowsEdit extends React.Component {
             <Form onChange={this.onFormChanged} model={model}>
                 <Text name="scheduleName" required type="text" label={t("Schedule Name")}
                       labelClass="col-sm-3" divClass="col-sm-6" />
-                <Radio name="scheduleType" inline={true} label={t('Type')} labelClass="col-md-3" divClass="col-md-6"
+                <Radio defaultValue="SINGLE" name="scheduleType" inline={true} label={t('Type')} labelClass="col-md-3" divClass="col-md-6"
                        items={[
                            {label: <b>{t('Single')}</b>, value: 'SINGLE'},
                            {label: <b>{t('Multi')}</b>, value: 'MULTI'},
@@ -217,7 +212,10 @@ class MaintenanceWindowsEdit extends React.Component {
     render() {
         const buttons = [
             <div className="btn-group pull-right">
-                <AsyncButton action={this.onEdit} defaultType="btn-success" text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")} />
+                <AsyncButton action={this.onEdit} defaultType="btn-success"
+                             text={(this.isEdit() ? t("Update ") : t("Create ")) +
+                             (type === "schedule" ? t("Schedule") : t("Calendar"))}
+                />
             </div>
         ];
         const buttonsLeft = [
