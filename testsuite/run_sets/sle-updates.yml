@@ -20,7 +20,7 @@
 - features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature
 - features/init_clients/ubuntu_ssh_minion.feature
-- features/init_clients/sle_buildhost.feature
+- features/init_clients/buildhost_bootstrap.feature
 # these features sync real channels (last core features)
 - features/reposync/srv_sync_channels.feature
 - features/reposync/core_srv_setup_wizard.feature
