@@ -128,7 +128,8 @@ public class RegistrationUtils {
         StatesAPI.generateServerPackageState(minion);
 
         // Should we apply the highstate?
-        boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
+        boolean applyHighstate = activationKey.isPresent() && (activationKey.get().getDeployConfigs() ||
+                activationKey.get().getEntitlements().stream().anyMatch(e -> !e.isBase()));
 
         // Apply initial states asynchronously
         List<String> statesToApply = new ArrayList<>();
