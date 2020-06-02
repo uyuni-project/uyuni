@@ -342,7 +342,7 @@ Style/ConstantVisibility:
 # Configuration parameters: Notice, AutocorrectNotice.
 Style/Copyright:
   Enabled: false
-
+  
 # Offense count: 11
 # Configuration parameters: AllowCoercion.
 Style/DateTime:
@@ -539,6 +539,9 @@ Style/RedundantInterpolation:
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
 
+Style/RedundantRegexpEscape:
+  Enabled: false
+  
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, AllowInnerSlashes.
