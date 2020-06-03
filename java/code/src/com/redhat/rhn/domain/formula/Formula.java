@@ -24,6 +24,7 @@ public class Formula {
     private String name;
     private String description;
     private String group;
+    private boolean locked;
 
     /**
      * Default constructor
@@ -40,6 +41,7 @@ public class Formula {
     public void setMetadata(Map<String, Object> metadata) {
         description = (String) metadata.getOrDefault("description", "");
         group = (String) metadata.getOrDefault("group", "");
+        locked = "cluster-provider".equals(metadata.getOrDefault("type", ""));
     }
 
     /**
@@ -61,5 +63,12 @@ public class Formula {
      */
     public String getGroup() {
         return group;
+    }
+
+    /**
+     * @param nameIn to set
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 }
