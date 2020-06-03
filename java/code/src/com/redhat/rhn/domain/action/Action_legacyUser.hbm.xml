@@ -521,6 +521,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         class="com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails"
                         outer-join="false" cascade="all" constrained="false" property-ref="parentAction"/>
         </subclass>
+
+        <subclass name="com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction"
+                  lazy="true" discriminator-value="515">
+            <join table="rhnActionClusterGroupRefreshNodes">
+                <key column="action_id"/>
+                <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster"/>
+            </join>
+        </subclass>
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>

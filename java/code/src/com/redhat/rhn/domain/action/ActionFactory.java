@@ -23,6 +23,10 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
+import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
+import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
+import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
@@ -479,7 +483,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_SUBSCRIBE_CHANNELS)) {
             retval = new SubscribeChannelsAction();
         }
-
+        else if (typeIn.equals(TYPE_CLUSTER_GROUP_REFRESH_NODES)) {
+            retval = new ClusterGroupRefreshNodesAction();
+        }
         else {
             retval = new Action();
         }
@@ -1324,5 +1330,12 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_VIRTUALIZATION_VOLUME_DELETE =
             lookupActionTypeByLabel("virt.volume_delete");
+
+    /**
+     * The constant representing "Refresh cluster group nodes" [ID:515]
+     */
+    public static final ActionType TYPE_CLUSTER_GROUP_REFRESH_NODES =
+            lookupActionTypeByLabel("cluster.group_refresh_nodes");
+
 }
 

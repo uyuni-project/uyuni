@@ -400,6 +400,11 @@ public class SaltServerActionService {
             return virtVolumeDeleteAction(minions,
                     deleteAction.getPoolName(), deleteAction.getVolumeName());
         }
+        else if (ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES.equals(actionType)) {
+            ClusterGroupRefreshNodesAction clusterAction =
+                    (ClusterGroupRefreshNodesAction)actionIn;
+            return clusterRefreshNodesAction(clusterAction);
+        }
         else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Action type " +
@@ -1904,6 +1909,29 @@ public class SaltServerActionService {
         ret.remove(null);
 
         return ret;
+    }
+
+
+    private Map<LocalCall<?>, List<MinionSummary>> clusterRefreshNodesAction(
+            ClusterGroupRefreshNodesAction clusterAction) {
+        Cluster cluster = clusterAction.getCluster();
+
+        Optional<Map<String, Object>> settingsFormulaData = formulaManager
+                .getClusterFormulaData(cluster, "settings");
+        if (settingsFormulaData.isEmpty()) {
+            throw new RuntimeException("No settings formula data for cluster " + cluster.getLabel());
+        }
+
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("cluster_type", cluster.getProvider());
+        pillar.put("params", settingsFormulaData.get());
+        clusterManager.getStateHooks(cluster.getProvider())
+                .ifPresent(hooks ->
+                        pillar.put("state_hooks", hooks));
+
+        LocalCall<?> call = State.apply(Arrays.asList("clusters.listnodes"), Optional.of(pillar));
+
+        return Collections.singletonMap(call, Arrays.asList(new MinionSummary(cluster.getManagementNode())));
     }
 
     /**

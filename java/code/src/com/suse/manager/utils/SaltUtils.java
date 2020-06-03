@@ -189,6 +189,7 @@ public class SaltUtils {
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
     private SystemQuery systemQuery = SaltService.INSTANCE;
+    private ClusterManager clusterManager = ClusterManager.instance();
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -683,11 +684,38 @@ public class SaltUtils {
             // Intentionally don't get only the comment since the changes value could be interesting
             serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES)) {
+            handleClusterGroupRefreshNodes(serverAction, jsonResult, action);
+        }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
     }
 
+    private void handleClusterGroupRefreshNodes(ServerAction serverAction, JsonElement jsonResult, Action action) {
+        ClusterGroupRefreshNodesAction clusterAction = (ClusterGroupRefreshNodesAction)action;
+        Cluster cluster = clusterAction.getCluster();
+
+        // remove existing nodes from cluster, except the management node
+        List<Server> nodesToRemove = cluster.getGroup().getServers().stream()
+                .filter(s -> !s.getId().equals(cluster.getManagementNode().getId()))
+                .collect(Collectors.toList());
+        ServerGroupManager.getInstance().removeServers(cluster.getGroup(), nodesToRemove);
+
+        // add new nodes if matching registered systems are found
+        List<ClusterNode> clusterNodes = new ArrayList<>();
+        Json.GSON.fromJson(jsonResult, ClusterOperationsSlsResult.class)
+                .listNodesResult().getChanges().getRet()
+                .forEach((k, v) -> clusterNodes.add(new ClusterNode(k, v)));
+        clusterManager.matchClusterNodes(clusterNodes);
+
+        List<Server> matchedMinions = clusterNodes.stream()
+                .filter(n -> n.getServer().isPresent())
+                .map(n -> n.getServer().get())
+                .collect(Collectors.toList());
+
+        ServerGroupManager.getInstance().addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
+    }
     /**
      * Return the path where scripts from Remote Commands Actions are stored.
      * @param scriptActionId the ID of the ScriptAction
