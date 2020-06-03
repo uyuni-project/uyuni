@@ -9389,6 +9389,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="notification.stateapplyfailed">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
       </trans-unit>
+      <trans-unit id="cluster.join_precondition_package_name">
+        <source>Package {0} not found in subscribed channels</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
