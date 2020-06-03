@@ -67,6 +67,8 @@ def do_errata_summary(self, args):
     map(print_errata_summary, sorted(self.all_errata.values(),
                                      key=itemgetter('advisory_name')))
 
+    return 0
+
 ####################
 
 
@@ -93,7 +95,7 @@ def do_errata_apply(self, args, only_systems=None):
 
     if not args:
         self.help_errata_apply()
-        return
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -148,7 +150,7 @@ def do_errata_apply(self, args, only_systems=None):
 
     if not systems:
         logging.warning('No patches to apply')
-        return
+        return 1
 
     # a summary of which errata we're going to apply
     print('Errata             Systems')
@@ -158,7 +160,7 @@ def do_errata_apply(self, args, only_systems=None):
     print('Start Time: %s' % options.start_time)
 
     if (is_interactive(options) and not self.user_confirm('Apply these patches [y/N]:')) or not self.options.yes:
-        return
+        return 1
 
     # if the API supports it, try to schedule multiple systems for one erratum
     # in order to reduce the number of actions scheduled
@@ -219,6 +221,8 @@ def do_errata_apply(self, args, only_systems=None):
             logging.info('Scheduled %i patches for %s' %
                          (len(errata_to_apply), system))
 
+    return 0
+
 ####################
 
 
@@ -238,7 +242,7 @@ def do_errata_listaffectedsystems(self, args):
 
     if not args:
         self.help_errata_listaffectedsystems()
-        return
+        return 1
 
     # allow globbing and searching via arguments
     errata_list = self.expand_errata(args)
@@ -255,6 +259,8 @@ def do_errata_listaffectedsystems(self, args):
 
             print('%s:' % erratum)
             print('\n'.join(sorted([s.get('name') for s in systems])))
+
+    return 0
 
 ####################
 
@@ -275,7 +281,7 @@ def do_errata_listcves(self, args):
 
     if not args:
         self.help_errata_listcves()
-        return
+        return 1
 
     # allow globbing and searching via arguments
     errata_list = self.expand_errata(args)
@@ -295,8 +301,10 @@ def do_errata_listcves(self, args):
                     print('%s:' % erratum)
 
                 print('\n'.join(sorted(cves)))
+        return 0
     else:
         print("No errata has been found")
+        return 1
 
 ####################
 
@@ -314,7 +322,7 @@ def do_errata_findbycve(self, args):
     cve_list, _options = parse_command_arguments(args, get_argument_parser())
     if not cve_list:
         self.help_errata_findbycve()
-        return
+        return 1
 
     logging.debug("Got CVE list %s" % cve_list)
     add_separator = False
@@ -330,6 +338,8 @@ def do_errata_findbycve(self, args):
         if errata:
             for e in errata:
                 print("%s" % e.get('advisory_name'))
+
+    return 0
 
 ####################
 
@@ -350,7 +360,7 @@ def do_errata_details(self, args):
 
     if not args:
         self.help_errata_details()
-        return
+        return 1
 
     # allow globbing and searching via arguments
     errata_list = self.expand_errata(args)
@@ -422,6 +432,8 @@ def do_errata_details(self, args):
         print('-----------------')
         print('\n'.join(sorted(build_package_names(packages))))
 
+    return 0
+
 ####################
 
 
@@ -441,14 +453,14 @@ def do_errata_delete(self, args):
 
     if not args:
         self.help_errata_delete()
-        return
+        return 1
 
     # allow globbing and searching via arguments
     errata = self.expand_errata(args)
 
     if not errata:
         logging.warning('No patches to delete')
-        return
+        return 1
 
     print('Erratum            Channels')
     print('-------            --------')
@@ -459,7 +471,7 @@ def do_errata_delete(self, args):
         print('%s    %s' % (erratum.ljust(20), str(len(channels)).rjust(3)))
 
     if not self.options.yes and not self.user_confirm('Delete these patches [y/N]:'):
-        return
+        return 1
 
     for erratum in errata:
         self.client.errata.delete(self.session, erratum)
@@ -467,6 +479,8 @@ def do_errata_delete(self, args):
     logging.info('Deleted %i patches' % len(errata))
 
     self.generate_errata_cache(True)
+
+    return 0
 
 ####################
 
@@ -492,7 +506,7 @@ def do_errata_publish(self, args):
 
     if len(args) < 2:
         self.help_errata_publish()
-        return
+        return 1
 
     # allow globbing and searching via arguments
     errata = self.expand_errata(args[0])
@@ -501,15 +515,17 @@ def do_errata_publish(self, args):
 
     if not errata:
         logging.warning('No patches to publish')
-        return
+        return 1
 
     print('\n'.join(sorted(errata)))
 
     if not self.options.yes and not self.user_confirm('Publish these patches [y/N]:'):
-        return
+        return 1
 
     for erratum in errata:
         self.client.errata.publish(self.session, erratum, channels)
+
+    return 0
 
 ####################
 

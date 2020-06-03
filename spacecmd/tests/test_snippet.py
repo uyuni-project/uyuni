@@ -289,7 +289,7 @@ class TestSCSnippets:
 
         out = snippet.do_snippet_update(shell, "")
         assert shell.help_snippet_update.called
-        assert out is None
+        assert out is 1
 
     def test_snippet_update_args(self, shell):
         """
@@ -319,7 +319,7 @@ class TestSCSnippets:
 
         assert not shell.client.kickstart.snippet.delete.called
         assert shell.help_snippet_delete.called
-        assert out is None
+        assert out is 1
 
     def test_snippet_delete_args(self, shell):
         """
@@ -333,7 +333,7 @@ class TestSCSnippets:
 
         assert shell.client.kickstart.snippet.delete.called
         assert not shell.help_snippet_delete.called
-        assert out is None
+        assert out is 0
         assert shell.client.kickstart.snippet.delete.call_args_list[0][0][0] == shell.session
         assert shell.client.kickstart.snippet.delete.call_args_list[0][0][1] == "some-snippet"
 
@@ -349,4 +349,4 @@ class TestSCSnippets:
 
         assert not shell.client.kickstart.snippet.delete.called
         assert not shell.help_snippet_delete.called
-        assert out is None
+        assert out is 1

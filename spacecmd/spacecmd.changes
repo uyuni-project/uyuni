@@ -1,4 +1,6 @@
 - fix escaping of package names (bsc#1171281)
+- use defined return values for spacecmd methods so scripts can
+  check for failure (bsc#1171687)
 
 -------------------------------------------------------------------
 Mon Feb 17 12:39:00 CET 2020 - jgonzalez@suse.com

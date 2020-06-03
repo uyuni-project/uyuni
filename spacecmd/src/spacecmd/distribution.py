@@ -58,7 +58,7 @@ def do_distribution_create(self, args, update=False):
             options.name = args[0]
         elif not options.name:
             logging.error('The name of the distribution is required')
-            return
+            return 1
 
     if is_interactive(options):
         if not update:
@@ -101,19 +101,19 @@ def do_distribution_create(self, args, update=False):
     else:
         if not options.name:
             logging.error('A name is required')
-            return
+            return 1
 
         if not options.path:
             logging.error('A path is required')
-            return
+            return 1
 
         if not options.base_channel:
             logging.error('A base channel is required')
-            return
+            return 1
 
         if not options.install_type:
             logging.error('An install type is required')
-            return
+            return 1
 
     if update:
         self.client.kickstart.tree.update(self.session,
@@ -127,6 +127,8 @@ def do_distribution_create(self, args, update=False):
                                           options.path,
                                           options.base_channel,
                                           options.install_type)
+
+    return 0
 
 ####################
 
@@ -174,7 +176,7 @@ def do_distribution_delete(self, args):
 
     if not args:
         self.help_distribution_delete()
-        return
+        return 1
 
     # allow globbing of distribution names
     dists = filter_results(self.do_distribution_list('', True), args)
@@ -183,7 +185,7 @@ def do_distribution_delete(self, args):
 
     if not dists:
         logging.error("No distributions matched argument %s" % args)
-        return
+        return 1
 
     # Print the distributions prior to the confirmation
     print('\n'.join(sorted(dists)))
@@ -191,6 +193,8 @@ def do_distribution_delete(self, args):
     if self.user_confirm('Delete distribution tree(s) [y/N]:'):
         for d in dists:
             self.client.kickstart.tree.delete(self.session, d)
+
+    return 0
 
 ####################
 
@@ -211,7 +215,7 @@ def do_distribution_details(self, args):
 
     if not args:
         self.help_distribution_details()
-        return
+        return 1
 
     # allow globbing of distribution names
     dists = filter_results(self.do_distribution_list('', True), args)
@@ -220,7 +224,7 @@ def do_distribution_details(self, args):
 
     if not dists:
         logging.error("No distributions matched argument %s" % args)
-        return
+        return 1
 
     add_separator = False
 
@@ -238,6 +242,8 @@ def do_distribution_details(self, args):
         print('Name:    %s' % details.get('label'))
         print('Path:    %s' % details.get('abs_path'))
         print('Channel: %s' % channel.get('label'))
+
+    return 0
 
 ####################
 
@@ -260,12 +266,14 @@ def do_distribution_rename(self, args):
 
     if len(args) != 2:
         self.help_distribution_rename()
-        return
+        return 1
 
     oldname = args[0]
     newname = args[1]
 
     self.client.kickstart.tree.rename(self.session, oldname, newname)
+
+    return 0
 
 ####################
 

@@ -1069,7 +1069,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         ContentEnvironment env = contentManager.createEnvironment(cp.getLabel(), empty(), "fst", "first env", "desc", false, user);
         assertEquals(Long.valueOf(0), env.getVersion());
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
-        ContentFilter filter = contentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
         Channel channel = createPopulatedChannel();
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
@@ -1104,7 +1104,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // build with filters
         Package pack = channel.getPackages().iterator().next();
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "nevr", pack.getNameEvr());
-        ContentFilter filter = contentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
@@ -1123,7 +1123,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // build with unmatching filters
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:notexists");
-        ContentFilter filter = contentManager.createFilter("my-filter-1", ContentFilter.Rule.DENY, EntityType.MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
         try {
             contentManager.buildProject("cplabel", empty(), false, user);
@@ -1137,7 +1137,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // build with matching filters
         criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
-        filter = contentManager.createFilter("my-filter-2", ContentFilter.Rule.DENY, EntityType.MODULE, criteria, user);
+        filter = contentManager.createFilter("my-filter-2", Rule.ALLOW, EntityType.MODULE, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
@@ -1158,7 +1158,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
 
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "module_stream", "postgresql:10");
-        ContentFilter filter = contentManager.createFilter("my-filter-1", ContentFilter.Rule.DENY, EntityType.MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter-1", Rule.ALLOW, EntityType.MODULE, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         Channel targetChannel = env.getTargets().get(0).asSoftwareTarget().get().getChannel();
@@ -1187,7 +1187,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // build with filters
         Package pack = channel.getPackages().iterator().next();
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "nevra", pack.getNameEvra());
-        ContentFilter filter = contentManager.createFilter("my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getPackageCount());
@@ -1208,7 +1208,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // build with filters
         FilterCriteria criteria = new FilterCriteria(Matcher.EQUALS, "advisory_name", erratum.getAdvisoryName());
-        ContentFilter filter = contentManager.createFilter("my-filter", ContentFilter.Rule.DENY, EntityType.ERRATUM, criteria, user);
+        ContentFilter filter = contentManager.createFilter("my-filter", Rule.DENY, EntityType.ERRATUM, criteria, user);
         contentManager.attachFilter("cplabel", filter.getId(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(0, env.getTargets().get(0).asSoftwareTarget().get().getChannel().getErrataCount());

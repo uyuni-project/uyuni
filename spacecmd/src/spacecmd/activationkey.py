@@ -61,12 +61,14 @@ def do_activationkey_addpackages(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_addpackages()
-        return
+        return 1
 
     key = args.pop(0)
     packages = [{'name': a} for a in args]
 
     self.client.activationkey.addPackages(self.session, key, packages)
+
+    return 0
 
 ####################
 
@@ -97,12 +99,14 @@ def do_activationkey_removepackages(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_removepackages()
-        return
+        return 1
 
     key = args.pop(0)
     packages = [{'name': a} for a in args]
 
     self.client.activationkey.removePackages(self.session, key, packages)
+
+    return 0
 
 ####################
 
@@ -130,7 +134,7 @@ def do_activationkey_addgroups(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_addgroups()
-        return
+        return 1
 
     key = args.pop(0)
 
@@ -140,6 +144,8 @@ def do_activationkey_addgroups(self, args):
         groups.append(details.get('id'))
 
     self.client.activationkey.addServerGroups(self.session, key, groups)
+
+    return 0
 
 ####################
 
@@ -176,7 +182,7 @@ def do_activationkey_removegroups(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_removegroups()
-        return
+        return 1
 
     key = args.pop(0)
 
@@ -186,6 +192,8 @@ def do_activationkey_removegroups(self, args):
         groups.append(details.get('id'))
 
     self.client.activationkey.removeServerGroups(self.session, key, groups)
+
+    return 0
 
 ####################
 
@@ -213,7 +221,7 @@ def do_activationkey_addentitlements(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_addentitlements()
-        return
+        return 1
 
     key = args.pop(0)
     entitlements = args
@@ -221,6 +229,8 @@ def do_activationkey_addentitlements(self, args):
     self.client.activationkey.addEntitlements(self.session,
                                               key,
                                               entitlements)
+
+    return 0
 
 ####################
 
@@ -251,7 +261,7 @@ def do_activationkey_removeentitlements(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_removeentitlements()
-        return
+        return 1
 
     key = args.pop(0)
     entitlements = args
@@ -259,6 +269,8 @@ def do_activationkey_removeentitlements(self, args):
     self.client.activationkey.removeEntitlements(self.session,
                                                  key,
                                                  entitlements)
+
+    return 0
 
 ####################
 
@@ -303,12 +315,14 @@ def do_activationkey_addchildchannels(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_addchildchannels()
-        return
+        return 1
 
     key = args.pop(0)
     channels = args
 
     self.client.activationkey.addChildChannels(self.session, key, channels)
+
+    return 0
 
 ####################
 
@@ -338,7 +352,7 @@ def do_activationkey_removechildchannels(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_removechildchannels()
-        return
+        return 1
 
     key = args.pop(0)
     channels = args
@@ -346,6 +360,8 @@ def do_activationkey_removechildchannels(self, args):
     self.client.activationkey.removeChildChannels(self.session,
                                                   key,
                                                   channels)
+
+    return 0
 
 ####################
 
@@ -367,7 +383,7 @@ def do_activationkey_listchildchannels(self, args):
 
     if not args:
         self.help_activationkey_listchildchannels()
-        return
+        return 1
 
     key = args[0]
 
@@ -375,6 +391,8 @@ def do_activationkey_listchildchannels(self, args):
 
     if details.get('child_channel_labels'):
         print('\n'.join(sorted(details.get('child_channel_labels'))))
+
+    return 0
 
 ####################
 
@@ -396,13 +414,15 @@ def do_activationkey_listbasechannel(self, args):
 
     if not args:
         self.help_activationkey_listbasechannel()
-        return
+        return 1
 
     key = args[0]
 
     details = self.client.activationkey.getDetails(self.session, key)
 
     print(details.get('base_channel_label'))
+
+    return 0
 
 ####################
 
@@ -424,7 +444,7 @@ def do_activationkey_listgroups(self, args):
 
     if not args:
         self.help_activationkey_listgroups()
-        return
+        return 1
 
     key = args[0]
 
@@ -434,6 +454,8 @@ def do_activationkey_listgroups(self, args):
         group_details = self.client.systemgroup.getDetails(self.session,
                                                            group)
         print(group_details.get('name'))
+
+    return 0
 
 ####################
 
@@ -455,7 +477,7 @@ def do_activationkey_listentitlements(self, args):
 
     if not args:
         self.help_activationkey_listentitlements()
-        return
+        return 1
 
     key = args[0]
 
@@ -463,6 +485,8 @@ def do_activationkey_listentitlements(self, args):
 
     if details.get('entitlements'):
         print('\n'.join(details.get('entitlements')))
+
+    return 0
 
 ####################
 
@@ -484,7 +508,7 @@ def do_activationkey_listpackages(self, args):
 
     if not args:
         self.help_activationkey_listpackages()
-        return
+        return 1
 
     key = args[0]
 
@@ -495,6 +519,8 @@ def do_activationkey_listpackages(self, args):
             print('%s.%s' % (package['name'], package['arch']))
         else:
             print(package['name'])
+
+    return 0
 
 ####################
 
@@ -516,7 +542,7 @@ def do_activationkey_listconfigchannels(self, args):
 
     if not args:
         self.help_activationkey_listconfigchannels()
-        return
+        return 1
 
     key = args[0]
 
@@ -528,6 +554,8 @@ def do_activationkey_listconfigchannels(self, args):
 
     if channels:
         print('\n'.join(channels))
+
+    return 0
 
 ####################
 
@@ -560,7 +588,7 @@ def do_activationkey_addconfigchannels(self, args):
 
     if len(args) < 2:
         self.help_activationkey_addconfigchannels()
-        return
+        return 1
 
     key = [args.pop(0)]
     channels = args
@@ -581,6 +609,8 @@ def do_activationkey_addconfigchannels(self, args):
                                                 key,
                                                 channels,
                                                 options.top)
+
+    return 0
 
 ####################
 
@@ -612,7 +642,7 @@ def do_activationkey_removeconfigchannels(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_removeconfigchannels()
-        return
+        return 1
 
     key = [args.pop(0)]
     channels = args
@@ -620,6 +650,8 @@ def do_activationkey_removeconfigchannels(self, args):
     self.client.activationkey.removeConfigChannels(self.session,
                                                    key,
                                                    channels)
+
+    return 0
 
 ####################
 
@@ -642,7 +674,7 @@ def do_activationkey_setconfigchannelorder(self, args):
 
     if len(args) != 1:
         self.help_activationkey_setconfigchannelorder()
-        return
+        return 1
 
     key = args[0]
 
@@ -664,6 +696,8 @@ def do_activationkey_setconfigchannelorder(self, args):
     self.client.activationkey.setConfigChannels(self.session,
                                                 [key],
                                                 new_channels)
+
+    return 0
 
 ####################
 
@@ -741,6 +775,8 @@ def do_activationkey_create(self, args):
 
     logging.info('Created activation key %s' % new_key)
 
+    return 0
+
 ####################
 
 
@@ -760,7 +796,7 @@ def do_activationkey_delete(self, args):
 
     if not args:
         self.help_activationkey_delete()
-        return
+        return 1
 
     # allow globbing of activationkey names
     keys = filter_results(self.do_activationkey_list('', True), args)
@@ -769,17 +805,19 @@ def do_activationkey_delete(self, args):
 
     if not keys:
         logging.error("No keys matched argument %s" % args)
-        return
+        return 1
 
     # Print the keys prior to the confimation
     print('\n'.join(sorted(keys)))
 
     if not self.user_confirm('Delete activation key(s) [y/N]:'):
-        return
+        return 1
 
     for key in keys:
         logging.debug("Deleting key %s" % key)
         self.client.activationkey.delete(self.session, key)
+
+    return 0
 
 ####################
 
@@ -804,6 +842,8 @@ def do_activationkey_list(self, args, doreturn=False):
         if keys:
             print('\n'.join(sorted(keys)))
 
+    return 0
+
 ####################
 
 
@@ -823,7 +863,7 @@ def do_activationkey_listsystems(self, args):
 
     if not args:
         self.help_activationkey_listsystems()
-        return
+        return 1
 
     key = args[0]
 
@@ -833,12 +873,14 @@ def do_activationkey_listsystems(self, args):
                                                            key)
     except xmlrpclib.Fault:
         logging.warning('%s is not a valid activation key' % key)
-        return
+        return 1
 
     systems = sorted([s.get('hostname') for s in systems])
 
     if systems:
         print('\n'.join(systems))
+
+    return 0
 
 ####################
 
@@ -957,11 +999,13 @@ def do_activationkey_enableconfigdeployment(self, args):
 
     if not args:
         self.help_activationkey_enableconfigdeployment()
-        return
+        return 1
 
     for key in args:
         logging.debug('Enabling config file deployment for %s' % key)
         self.client.activationkey.enableConfigDeployment(self.session, key)
+
+    return 0
 
 ####################
 
@@ -984,11 +1028,13 @@ def do_activationkey_disableconfigdeployment(self, args):
 
     if not args:
         self.help_activationkey_disableconfigdeployment()
-        return
+        return 1
 
     for key in args:
         logging.debug('Disabling config file deployment for %s' % key)
         self.client.activationkey.disableConfigDeployment(self.session, key)
+
+    return 0
 
 ####################
 
@@ -1015,7 +1061,7 @@ def do_activationkey_setbasechannel(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_setbasechannel()
-        return
+        return 1
 
     key = args.pop(0)
     channel = args[0]
@@ -1036,6 +1082,8 @@ def do_activationkey_setbasechannel(self, args):
         details['usage_limit'] = -1
 
     self.client.activationkey.setDetails(self.session, key, details)
+
+    return 0
 
 ####################
 
@@ -1063,7 +1111,7 @@ def do_activationkey_setusagelimit(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_setusagelimit()
-        return
+        return 1
 
     key = args.pop(0)
     usage_limit = -1
@@ -1077,7 +1125,7 @@ def do_activationkey_setusagelimit(self, args):
             logging.error("Couldn't convert argument %s to an integer" %
                           args[0])
             self.help_activationkey_setusagelimit()
-            return
+            return 1
 
     current_details = self.client.activationkey.getDetails(self.session,
                                                            key)
@@ -1089,6 +1137,8 @@ def do_activationkey_setusagelimit(self, args):
                current_details.get('universal_default')}
 
     self.client.activationkey.setDetails(self.session, key, details)
+
+    return 0
 
 ####################
 
@@ -1110,7 +1160,7 @@ def do_activationkey_setuniversaldefault(self, args):
 
     if not args:
         self.help_activationkey_setuniversaldefault()
-        return
+        return 1
 
     key = args.pop(0)
 
@@ -1130,6 +1180,8 @@ def do_activationkey_setuniversaldefault(self, args):
         details['usage_limit'] = -1
 
     self.client.activationkey.setDetails(self.session, key, details)
+
+    return 0
 
 ####################
 
@@ -1216,7 +1268,7 @@ def do_activationkey_export(self, args):
 
         if not keys:
             logging.error("Invalid activation key passed")
-            return
+            return 1
 
         if not filename:
             # No filename arg, so we try to do something sensible:
@@ -1241,11 +1293,13 @@ def do_activationkey_export(self, args):
     if os.path.isfile(filename):
         if not self.user_confirm("File %s exists, confirm overwrite file? (y/n)" %
                                  filename):
-            return
+            return 1
 
     if json_dump_to_file(keydetails_list, filename) != True:
         logging.error("Failed to save exported keys to file: {}".format(filename))
-        return
+        return 1
+
+    return 0
 
 ####################
 
@@ -1263,7 +1317,7 @@ def do_activationkey_import(self, args):
     if not args:
         logging.error("No filename passed")
         self.help_activationkey_import()
-        return
+        return 1
 
     for filename in args:
         logging.debug("Passed filename do_activationkey_import %s" % filename)
@@ -1271,12 +1325,15 @@ def do_activationkey_import(self, args):
 
         if not keydetails_list:
             logging.error("Could not read json data from %s" % filename)
-            return
+            return 1
 
         for keydetails in keydetails_list:
             if self.import_activationkey_fromdetails(keydetails) != True:
                 logging.error("Failed to import key %s" %
                               keydetails['key'])
+                return 1
+
+    return 0
 
 # create a new key based on the dict from export_activationkey_getdetails
 
@@ -1408,16 +1465,16 @@ def do_activationkey_clone(self, args):
         if not options.clonename and not options.regex:
             logging.error("Error - must specify either -c or -x options!")
             self.help_activationkey_clone()
-            return
+            return 1
 
     if options.clonename in allkeys:
         logging.error("Key %s already exists" % options.clonename)
-        return
+        return 1
 
     if not args:
         logging.error("Error no activationkey to clone passed!")
         self.help_activationkey_clone()
-        return
+        return 1
 
     logging.debug("Got args=%s %d" % (args, len(args)))
     # allow globbing of configchannel channel names
@@ -1520,6 +1577,9 @@ def do_activationkey_clone(self, args):
         if self.import_activationkey_fromdetails(keydetails) != True:
             logging.error("Failed to clone %s to %s" %
                           (ak, keydetails['key']))
+            return 1
+
+    return 0
 
 ####################
 # activationkey helper
@@ -1623,7 +1683,7 @@ def do_activationkey_disable(self, args):
 
     if not len(args) >= 1:
         self.help_activationkey_disable()
-        return
+        return 1
 
     keys = filter_results(self.do_activationkey_list('', True), args)
 
@@ -1631,6 +1691,8 @@ def do_activationkey_disable(self, args):
 
     for akey in keys:
         self.client.activationkey.setDetails(self.session, akey, details)
+
+    return 0
 
 ####################
 
@@ -1655,7 +1717,7 @@ def do_activationkey_enable(self, args):
 
     if not len(args) >= 1:
         self.help_activationkey_enable()
-        return
+        return 1
 
     keys = filter_results(self.do_activationkey_list('', True), args)
 
@@ -1663,6 +1725,8 @@ def do_activationkey_enable(self, args):
 
     for akey in keys:
         self.client.activationkey.setDetails(self.session, akey, details)
+
+    return 0
 
 ####################
 
@@ -1687,7 +1751,7 @@ def do_activationkey_setdescription(self, args):
 
     if not len(args) >= 2:
         self.help_activationkey_setdescription()
-        return
+        return 1
 
     akey = args.pop(0)
     description = ' '.join(args)
@@ -1695,6 +1759,8 @@ def do_activationkey_setdescription(self, args):
     details = {'description': description}
 
     self.client.activationkey.setDetails(self.session, akey, details)
+
+    return 0
 
 ####################
 
@@ -1722,9 +1788,11 @@ def do_activationkey_setcontactmethod(self, args):
 
     if not len(args) == 2:
         self.help_activationkey_setcontactmethod()
-        return
+        return 1
 
     details = {'contact_method': args.pop()}
     akey = args.pop()
 
     self.client.activationkey.setDetails(self.session, akey, details)
+
+    return 0

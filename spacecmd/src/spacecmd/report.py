@@ -67,6 +67,9 @@ def do_report_inactivesystems(self, args):
         for s in sorted(systems, key=itemgetter('name')):
             print('%s  %s  %s' % (s.get('id'), s.get('name').ljust(max_size),
                                   s.get('last_checkin')))
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -92,6 +95,9 @@ def do_report_outofdatesystems(self, args):
         for system in sorted(report):
             print('%s       %s' %
                   (system.ljust(max_size), str(report[system]).rjust(3)))
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -107,6 +113,9 @@ def do_report_ungroupedsystems(self, args):
 
     if systems:
         print('\n'.join(sorted(systems)))
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -153,8 +162,10 @@ def do_report_errata(self, args):
         for erratum in sorted(report):
             print('%s        %s' %
                   (erratum.ljust(max_size), str(report[erratum]).rjust(3)))
+        return 0
     elif partial_errata:
         print("No errata found for '{}'".format(args))
+        return 1
 
 ####################
 
@@ -179,6 +190,10 @@ def do_report_ipaddresses(self, args):
             systems = self.expand_systems(args)
     else:
         systems = self.get_system_names()
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     report = {}
     for system in systems:
@@ -212,6 +227,9 @@ def do_report_ipaddresses(self, args):
                   (system.ljust(system_max_size),
                    report[system]['hostname'].ljust(hostname_max_size),
                    report[system]['ip'].ljust(15).strip()))
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -237,6 +255,10 @@ def do_report_kernels(self, args):
     else:
         systems = self.get_system_names()
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     report = {}
     for system in systems:
         system_id = self.get_system_id(system)
@@ -257,6 +279,9 @@ def do_report_kernels(self, args):
 
         for system in sorted(report):
             print('%s  %s' % (system.ljust(system_max_size), report[system]))
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -352,3 +377,4 @@ def do_report_duplicates(self, args):
 
                 if len(dupes_by_hostname) > 1:
                     print('')
+    return 0

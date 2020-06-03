@@ -23,19 +23,24 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource.Type;
+import com.redhat.rhn.domain.contentmgmt.validation.ContentProjectValidator;
+import com.redhat.rhn.domain.contentmgmt.validation.ContentValidationMessage;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.ContentManagementFaultException;
+import com.redhat.rhn.frontend.xmlrpc.ContentValidationFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.redhat.rhn.common.util.StringUtil.nullIfEmpty;
 import static java.util.Optional.empty;
@@ -51,7 +56,23 @@ import static java.util.Optional.ofNullable;
  */
 public class ContentManagementHandler extends BaseHandler {
 
-    private final ContentManager contentManager = new ContentManager();
+    private final ContentManager contentManager;
+
+    /**
+     * Initialize a handler specifying a content manager instance.
+     */
+    public ContentManagementHandler() {
+        contentManager = new ContentManager();
+    }
+
+    /**
+     * Initialize a handler specifying a content manager instance. Mainly used for testing.
+     *
+     * @param contentManagerIn the content manager instance
+     */
+    public ContentManagementHandler(ContentManager contentManagerIn) {
+        contentManager = contentManagerIn;
+    }
 
     /**
      * List Content Projects visible to user
@@ -537,22 +558,30 @@ public class ContentManagementHandler extends BaseHandler {
      * #paragraph()
      * Package filtering:
      * #itemlist()
-     *   #item("by name - field:name; matchers:contains or matches")
-     *   #item("by name, epoch, version, release and architecture - field:nevr or nevra; matcher:equals")
+     *   #item("by name - field: name; matchers: contains or matches")
+     *   #item("by name, epoch, version, release and architecture - field: nevr or nevra; matcher: equals")
      *  #itemlist_end()
      * #paragraph_end()
      * #paragraph()
      * Errata/Patch filtering:
      * #itemlist()
-     *   #item("by advisory name - field:advisory_name; matcher:equals or matches")
-     *   #item("by type - field:advisory_type (e.g. 'Security Advisory'); matcher:equals")
-     *   #item("by synopsis - field:synopsis; matcher:equals, contains or matches")
-     *   #item("by keyword - field:keyword; matcher:contains")
-     *   #item("by date - field:issue_date; matcher:greater or greatereq")
-     *   #item("by affected package name - field:package_name; matcher:contains_pkg_name or matches_pkg_name")
-     *   #item("by affected package with version - field:package_nevr; matcher:contains_pkg_lt_evr, contains_pkg_le_evr,
-     *   contains_pkg_eq_evr, contains_pkg_ge_evr or contains_pkg_gt_evr")
+     *   #item("by advisory name - field: advisory_name; matcher: equals or matches")
+     *   #item("by type - field: advisory_type (e.g. 'Security Advisory'); matcher: equals")
+     *   #item("by synopsis - field: synopsis; matcher: equals, contains or matches")
+     *   #item("by keyword - field: keyword; matcher: contains")
+     *   #item("by date - field: issue_date; matcher: greater or greatereq")
+     *   #item("by affected package name - field: package_name; matcher: contains_pkg_name or matches_pkg_name")
+     *   #item("by affected package with version - field: package_nevr; matcher: contains_pkg_lt_evr,
+     *   contains_pkg_le_evr, contains_pkg_eq_evr, contains_pkg_ge_evr or contains_pkg_gt_evr")
      * #itemlist_end()
+     * #paragraph_end()
+     * #paragraph()
+     * Appstream module/stream filtering:
+     * #itemlist()
+     *   #item("by module name, stream - field: module_stream; matcher: equals; value: modulaneme:stream
+     * #itemlist_end()
+     * Note: Only 'allow' rule is supported for appstream filters.
+     * #paragraph_end()
      *
      * Note: The 'matches' matcher works on Java regular expressions.
      *
@@ -578,7 +607,12 @@ public class ContentManagementHandler extends BaseHandler {
                 () -> new InvalidArgsException("criteria must be specified")
         );
 
-        return contentManager.createFilter(name, ruleObj, entityTypeObj, criteriaObj, loggedInUser);
+        try {
+            return contentManager.createFilter(name, ruleObj, entityTypeObj, criteriaObj, loggedInUser);
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidArgsException(e.getMessage());
+        }
     }
 
     /**
@@ -631,6 +665,9 @@ public class ContentManagementHandler extends BaseHandler {
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
+        }
+        catch (IllegalArgumentException e) {
+            throw new InvalidArgsException(e.getMessage());
         }
     }
 
@@ -765,11 +802,13 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int buildProject(User loggedInUser, String projectLabel) {
         ensureOrgAdmin(loggedInUser);
+
+        // Validate the project for build
+        ContentProject project = lookupProject(loggedInUser, projectLabel);
+        validateContentProject(project);
+
         try {
-            contentManager.buildProject(projectLabel, empty(), true, loggedInUser);
-        }
-        catch (EntityNotExistsException e) {
-            throw new EntityExistsFaultException(e);
+            contentManager.buildProject(project, empty(), true, loggedInUser);
         }
         catch (ContentManagementException e) {
             throw new ContentManagementFaultException(e);
@@ -795,11 +834,13 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int buildProject(User loggedInUser, String projectLabel, String message) {
         ensureOrgAdmin(loggedInUser);
+
+        // Validate the project for build
+        ContentProject project = lookupProject(loggedInUser, projectLabel);
+        validateContentProject(project);
+
         try {
-            contentManager.buildProject(projectLabel, of(message), true, loggedInUser);
-        }
-        catch (EntityNotExistsException e) {
-            throw new EntityExistsFaultException(e);
+            contentManager.buildProject(project, of(message), true, loggedInUser);
         }
         catch (ContentManagementException e) {
             throw new ContentManagementFaultException(e);
@@ -825,6 +866,11 @@ public class ContentManagementHandler extends BaseHandler {
      */
     public int promoteProject(User loggedInUser, String projectLabel, String envLabel) {
         ensureOrgAdmin(loggedInUser);
+
+        // Validate the project for promote
+        ContentProject project = lookupProject(loggedInUser, projectLabel);
+        validateContentProject(project);
+
         try {
             contentManager.promoteProject(projectLabel, envLabel, true, loggedInUser);
         }
@@ -835,5 +881,29 @@ public class ContentManagementHandler extends BaseHandler {
             throw new ContentManagementFaultException(e);
         }
         return 1;
+    }
+
+    /**
+     * Validates a content project for build/promote
+     *
+     * The validation fails only in case of an error. Info and warning messages are ignored since the build/promote
+     * operation can still be performed.
+     *
+     * @param project the {@link ContentProject} instance
+     * @throws ContentValidationFaultException when validation fails with messages
+     */
+    private void validateContentProject(ContentProject project) throws ContentValidationFaultException {
+        ContentProjectValidator projectValidator = new ContentProjectValidator(project,
+                contentManager.getModulemdApi());
+
+        // Join all error messages in a new line
+        String validationError = projectValidator.validate().stream()
+                .filter(m -> ContentValidationMessage.TYPE_ERROR.equals(m.getType()))
+                .map(ContentValidationMessage::getMessage)
+                .collect(Collectors.joining(System.lineSeparator()));
+
+        if (StringUtils.isNotEmpty(validationError)) {
+            throw new ContentValidationFaultException(validationError);
+        }
     }
 }
