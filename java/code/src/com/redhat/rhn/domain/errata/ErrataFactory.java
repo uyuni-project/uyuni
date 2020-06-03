@@ -772,19 +772,11 @@ public class ErrataFactory extends HibernateFactory {
         Session session = null;
         List<Errata> retval = null;
         try {
-            //look for a published errata first
             session = HibernateFactory.getSession();
             retval = session.getNamedQuery("PublishedErrata.findByAdvisory")
                     .setParameter("advisory", advisoryId)
                     .setParameter("org", org)
                     .getResultList();
-
-            if (retval == null) {
-                retval = session.getNamedQuery("UnpublishedErrata.findByAdvisory")
-                        .setParameter("advisory", advisoryId)
-                        .setParameter("org", org)
-                        .getResultList();
-            }
         }
         catch (HibernateException e) {
 
