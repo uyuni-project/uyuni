@@ -664,8 +664,7 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Returns a list of CVEs applicable to the errata with the given advisory name. CVEs may be associated
-     * only with published errata.
+     * Returns a list of CVEs applicable to the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the list of CVEs of both of them.
      * @param loggedInUser The current user
@@ -677,8 +676,7 @@ public class ErrataHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of
      * <a href="http://cve.mitre.org/" target="_blank">CVE</a>s
-     * applicable to the errata with the given advisory name. CVEs may be associated
-     * only with published errata.
+     * applicable to the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the list of CVEs of both of them.
      * @xmlrpc.param #session_key()
