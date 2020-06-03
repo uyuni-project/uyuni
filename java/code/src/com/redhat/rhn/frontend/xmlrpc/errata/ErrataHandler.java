@@ -207,9 +207,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("int", "id")
      *          #prop("string", "issue_date")
      *          #prop("string", "update_date")
-     *          #prop_desc("string", "last_modified_date", "This date is only included for
-     *          published erratum and it represents the last time the erratum was
-     *          modified.")
+     *          #prop_desc("string", "last_modified_date", "last time the erratum was modified.")
      *          #prop("string", "synopsis")
      *          #prop("int", "release")
      *          #prop("string", "type")
