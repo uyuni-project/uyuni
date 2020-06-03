@@ -95,6 +95,15 @@ bootstrap_repo:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
 {%- endif %}
 
+{%- if not grains['os_family'] == 'Debian' %}
+{%- if salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
+mgr_trust_customer_gpg_key:
+  cmd.run:
+    - name: rpm --import https://{{ salt['pillar.get']('mgr_server') }}/pub/mgr-gpg-pub.key
+    - runas: root
+{%- endif %}
+{%- endif %}
+
 {%- if grains['os_family'] == 'RedHat' %}
 trust_suse_manager_tools_rhel_gpg_key:
   cmd.run:
