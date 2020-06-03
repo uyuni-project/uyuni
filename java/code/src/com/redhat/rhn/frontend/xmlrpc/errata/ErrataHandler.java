@@ -1303,13 +1303,13 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Publishes an existing (unpublished) errata to a set of channels
+     * Publishes an existing errata to a set of channels
      * @param loggedInUser The current user
      * @param advisory The advisory Name of the errata to publish
      * @param channelLabels List of channels to publish the errata to
      * @return the published errata
      *
-     * @xmlrpc.doc Publish an existing (unpublished) errata to a set of channels.
+     * @xmlrpc.doc Publish an existing errata to a set of channels.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
@@ -1324,7 +1324,7 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Publishes an existing (unpublished) cloned errata to a set of cloned channels
+     * Publishes an existing cloned errata to a set of cloned channels
      * according to its original erratum
      * @param loggedInUser The current user
      * @param advisory The advisory Name of the errata to publish
@@ -1332,7 +1332,7 @@ public class ErrataHandler extends BaseHandler {
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return the published errata
      *
-     * @xmlrpc.doc Publishes an existing (unpublished) cloned errata to a set of cloned
+     * @xmlrpc.doc Publishes an existing cloned errata to a set of cloned
      * channels according to its original erratum
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
@@ -1406,7 +1406,7 @@ public class ErrataHandler extends BaseHandler {
 
     /**
      * private helper method to publish the errata
-     * @param errata the Unpublished errata to publish
+     * @param errata the errata to publish
      * @param channels A list of channel objects
      * @return The published Errata
      */
