@@ -486,6 +486,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_CLUSTER_GROUP_REFRESH_NODES)) {
             retval = new ClusterGroupRefreshNodesAction();
         }
+        else if (typeIn.equals(TYPE_CLUSTER_JOIN_NODE)) {
+            retval = new ClusterJoinNodeAction();
+        }
         else {
             retval = new Action();
         }
@@ -1337,5 +1340,10 @@ public class ActionFactory extends HibernateFactory {
     public static final ActionType TYPE_CLUSTER_GROUP_REFRESH_NODES =
             lookupActionTypeByLabel("cluster.group_refresh_nodes");
 
+    /**
+     * The constant representing "Join node to cluster" [ID:516]
+     */
+    public static final ActionType TYPE_CLUSTER_JOIN_NODE =
+            lookupActionTypeByLabel("cluster.join_node");
 }
 

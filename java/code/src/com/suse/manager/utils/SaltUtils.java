@@ -15,9 +15,12 @@
 
 package com.suse.manager.utils;
 
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -28,6 +31,12 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.cluster.BaseClusterAction;
+import com.redhat.rhn.domain.action.cluster.ClusterActionCommand;
+import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
+import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
+import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
+import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -62,6 +71,7 @@ import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -78,9 +88,13 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.clusters.ClusterNode;
+import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.hardware.CpuArchUtil;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
@@ -92,6 +106,7 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.YamlHelper;
+import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeDryRunSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeOldSlsResult;
 import com.suse.manager.webui.utils.salt.custom.DistUpgradeSlsResult;
@@ -103,6 +118,7 @@ import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ImagesProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.KernelLiveVersionInfo;
+import com.suse.manager.webui.utils.salt.custom.MgrClustersResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageBuildSlsResult;
 import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.Openscap;
@@ -124,13 +140,7 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -145,6 +155,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -161,6 +172,9 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
 /**
  * SaltUtils
@@ -687,6 +701,9 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES)) {
             handleClusterGroupRefreshNodes(serverAction, jsonResult, action);
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_JOIN_NODE)) {
+            handleClusterJoinNode(serverAction, jsonResult, action);
+        }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
@@ -716,6 +733,87 @@ public class SaltUtils {
 
         ServerGroupManager.getInstance().addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
     }
+
+    private void handleClusterJoinNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
+        ClusterJoinNodeAction clusterAction = (ClusterJoinNodeAction)action;
+        handleClusterAction(serverAction, jsonResult,
+                "module_|-mgr_cluster_add_node_*_|-mgrclusters.add_node_|-run", action,
+                clusterAction, true);
+    }
+
+    private void handleClusterAction(ServerAction serverAction, JsonElement jsonResult, String resulMatch,
+                                     Action action, BaseClusterAction clusterAction, boolean scheduleGroupRefresh) {
+        try {
+            Map<String, StateApplyResult<RetOpt<JsonElement>>> stateApplyResult = Json.GSON.fromJson(jsonResult,
+                    new TypeToken<Map<String, StateApplyResult<RetOpt<JsonElement>>>>() {
+                    }.getType());
+            var allNodesResults = stateApplyResult.entrySet().stream()
+                    .filter(e -> stateNameMatches(resulMatch, e.getKey()))
+                    .map(e -> {
+                        var stateRes = e.getValue();
+                        return e.getValue().getChanges().getRetOpt()
+                            .map(jsonRet -> {
+                                MgrClustersResult result = Json.GSON.fromJson(jsonRet,
+                                        MgrClustersResult.class);
+                                return new Tuple2<>(result.isSuccess(), formatClusterActionOutput(jsonRet));
+                            })
+                                .orElseGet(() -> new Tuple2<>(false, stateRes.getComment()));
+                    })
+                    .reduce(new Tuple2<>(true, ""),
+                            (partial, tuple) ->
+                                    new Tuple2<>(partial.getA() && tuple.getA(), // success
+                                            String.join("\n---\n", partial.getB(), tuple.getB()))); // resultMsg
+            serverAction.setResultMsg(allNodesResults.getB());
+            if (allNodesResults.getA()) {
+                // refresh cluster group after add/remove node
+                if (scheduleGroupRefresh) {
+                    scheduleClusterRefresh(action, clusterAction);
+                }
+                serverAction.setStatus(ActionFactory.STATUS_COMPLETED);
+            }
+            else {
+                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            }
+        }
+        catch (JsonSyntaxException e) {
+            serverAction.setResultMsg("Error parsing minion response: " + jsonResult);
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            return;
+        }
+    }
+
+    private boolean stateNameMatches(String resultMatch, String resultKey) {
+        return FilenameUtils.wildcardMatch(resultKey, resultMatch);
+    }
+
+    private String formatClusterActionOutput(JsonElement result) {
+        JsonObject json = result.getAsJsonObject();
+        StringBuilder ret = new StringBuilder();
+        ret.append("retcode: " + json.get("retcode").getAsString() + "\n\n");
+        ret.append("stdout:\n" + json.get("stdout").getAsString() + "\n");
+        ret.append("stderr:\n" + json.get("stderr").getAsString() + "\n");
+        return ret.toString();
+    }
+
+    private void scheduleClusterRefresh(Action action, BaseClusterAction clusterAction) {
+        ClusterActionCommand<ClusterGroupRefreshNodesAction> cmd =
+                new ClusterActionCommand(Optional.of(action.getSchedulerUser()),
+                        action.getOrg(),
+                        new Date(),
+                        null,
+                        ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES,
+                        clusterAction.getCluster().getManagementNode(),
+                        clusterAction.getCluster(),
+                        clusterAction.getCluster().getGroup().getName(),
+                        null);
+        try {
+            cmd.store();
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error(e);
+        }
+    }
+
     /**
      * Return the path where scripts from Remote Commands Actions are stored.
      * @param scriptActionId the ID of the ScriptAction

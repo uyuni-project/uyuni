@@ -37,6 +37,11 @@ import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
+import com.redhat.rhn.domain.action.cluster.BaseClusterModifyNodesAction;
+import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
+import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
+import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
+import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -57,6 +62,7 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
@@ -73,7 +79,6 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -99,27 +104,26 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
@@ -131,6 +135,10 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -211,6 +219,8 @@ public class SaltServerActionService {
     private SystemQuery systemQuery;
     private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
     private SaltUtils saltUtils = SaltUtils.INSTANCE;
+    private FormulaManager formulaManager = FormulaManager.getInstance();
+    private ClusterManager clusterManager = ClusterManager.instance();
     private boolean skipCommandScriptPerms;
 
     /**
@@ -404,6 +414,11 @@ public class SaltServerActionService {
             ClusterGroupRefreshNodesAction clusterAction =
                     (ClusterGroupRefreshNodesAction)actionIn;
             return clusterRefreshNodesAction(clusterAction);
+        }
+        else if (ActionFactory.TYPE_CLUSTER_JOIN_NODE.equals(actionType)) {
+            ClusterJoinNodeAction clusterAction =
+                    (ClusterJoinNodeAction)actionIn;
+            return clusterJoinNodeAction(clusterAction);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1930,6 +1945,41 @@ public class SaltServerActionService {
                         pillar.put("state_hooks", hooks));
 
         LocalCall<?> call = State.apply(Arrays.asList("clusters.listnodes"), Optional.of(pillar));
+
+        return Collections.singletonMap(call, Arrays.asList(new MinionSummary(cluster.getManagementNode())));
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> clusterJoinNodeAction(ClusterJoinNodeAction clusterAction) {
+        return clusterModifyAction(clusterAction, "clusters.addnode");
+    }
+
+
+    private Map<LocalCall<?>, List<MinionSummary>> clusterModifyAction(
+            BaseClusterModifyNodesAction clusterAction, String state) {
+        Cluster cluster = clusterAction.getCluster();
+
+        Optional<Map<String, Object>> settingsFormulaData = formulaManager
+                .getClusterFormulaData(cluster, "settings");
+        if (settingsFormulaData.isEmpty()) {
+            throw new RuntimeException("No settings formula data for cluster " + cluster.getLabel());
+        }
+
+        Optional<Map<String, Object>> actionPillar = Optional.ofNullable(
+                clusterManager.deserializeJsonParams(clusterAction.getJsonParams()));
+
+        Map<String, Object> params = new HashMap<>();
+        params.putAll(settingsFormulaData.get());
+        actionPillar.ifPresent(ap -> params.putAll(ap));
+
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("cluster_type", cluster.getProvider());
+        pillar.put("params", params);
+        clusterManager.getStateHooks(cluster.getProvider())
+                .ifPresent(hooks ->
+                        pillar.put("state_hooks", hooks));
+
+        LocalCall<?> call = State.apply(Arrays.asList(state), Optional.of(pillar),
+                Optional.of(true), Optional.empty(), ClusterOperationsSlsResult.class);
 
         return Collections.singletonMap(call, Arrays.asList(new MinionSummary(cluster.getManagementNode())));
     }
