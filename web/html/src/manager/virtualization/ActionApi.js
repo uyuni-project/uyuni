@@ -4,6 +4,8 @@ import * as React from 'react';
 import * as Network from 'utils/network';
 import { Utils as MessagesUtils } from 'components/messages';
 
+import type {MessageType} from 'components/messages';
+
 type Props = {
   /** URL path part with @ACTION@ as action placeholder. */
   urlTemplate: string,
@@ -11,7 +13,7 @@ type Props = {
    * Function rendering the children taking an object parameter with
    * an onAction and a messages property
    */
-  children: ({onAction: (urlModifier: (string) => string, action: string, parameters: Object) => void, messages: Array<React.Node>}) => React.Node,
+  children: ({onAction: (urlModifier: (string) => string, action: string, parameters: Object) => void, messages: Array<MessageType>}) => React.Node,
   /**
    * URL of the page to show after the action has been successfully performed.
    * If undefined, the page is not redirected at all.
@@ -23,7 +25,7 @@ type Props = {
 
 /** Helper component offering an API to run a POST HTTP resquest */
 export function ActionApi(props: Props) {
-  const [messages, setMessages] = React.useState([]);
+  const [messages, setMessages] = React.useState<Array<MessageType>>([]);
 
   const onAction = (urlModifier: (string) => string, action: string, parameters: Object) => {
     Network.post(urlModifier(props.urlTemplate),

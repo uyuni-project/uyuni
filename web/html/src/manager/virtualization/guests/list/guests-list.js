@@ -17,6 +17,8 @@ import { Utils as GuestsListUtils } from './guests-list.utils';
 import { ActionConfirm } from 'components/dialog/ActionConfirm';
 import { ActionStatus } from 'components/action/ActionStatus';
 
+import type { MessageType } from 'components/messages';
+
 declare var userPrefPageSize: number;
 
 type Props = {
@@ -30,7 +32,7 @@ type Props = {
 export function GuestsList(props: Props) {
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [selected, setSelected] = React.useState(undefined);
-  const [errors, setErrors] = React.useState([]);
+  const [errors, setErrors] = React.useState<Array<string>>([]);
 
   const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
                                                                   props.serverId, props.saltEntitled);
@@ -116,7 +118,7 @@ export function GuestsList(props: Props) {
     );
   }
 
-  const getCreationActionMessages = (): React.Node => {
+  const getCreationActionMessages = (): Array<MessageType> => {
     return Object.keys(actionsResults)
       .filter(key => key.startsWith("new-") && actionsResults[key].type === "virt.create")
       .flatMap(key => {

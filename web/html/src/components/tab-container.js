@@ -65,5 +65,6 @@ const TabLabel = (props) =>
 ;
 
 module.exports = {
-    TabContainer : TabContainer
+    TabContainer : TabContainer,
+    TabLabel: TabLabel
 }

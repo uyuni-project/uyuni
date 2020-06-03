@@ -1,16 +1,22 @@
+// @flow
 /* eslint-disable */
 "use strict";
 
-const Functions = require("../utils/functions.js");
-const MessagesUtils = require("../components/messages.js").Utils;
+import Functions from '../utils/functions';
+import {Messages, Utils as MessagesUtils} from '../components/messages';
+
+import type {Cancelable} from "../utils/functions";
+import type {MessageType} from 'components/messages';
+
+declare var csrfToken: string;
 
 export type JsonResult<T> = {
   success: boolean,
-  messages: List<String>,
+  messages: Array<String>,
   data: T
 }
 
-function request(url, type, headers, data, contentType, processData = true) {
+function request(url: string, type:  "GET" | "POST" | "DELETE" | "PUT", headers, data: any, contentType: string, processData: boolean = true) : Cancelable {
    const a = $.ajax({
          url: url,
          data: data,
@@ -28,37 +34,42 @@ function request(url, type, headers, data, contentType, processData = true) {
    return Functions.Utils.cancelable(Promise.resolve(a), () => a.abort());
 }
 
-function post(url, data, contentType, processData = true) {
+function post(url: string, data: any, contentType: string, processData: boolean = true): Cancelable {
     return request(url, "POST", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
 }
 
-function del(url, data, contentType, processData = true) {
+function del(url: string, data: any, contentType: string, processData: boolean = true): Cancelable {
     return request(url, "DELETE", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
 }
 
-function put(url, data, contentType, processData = true) {
+function put(url: string, data: any, contentType: string, processData: boolean = true): Cancelable {
     return request(url, "PUT", { "X-CSRF-Token": csrfToken }, data, contentType, processData);
 }
 
-function get(url, contentType) {
+function get(url: string, contentType: string = "application/json"): Cancelable {
     return request(url, "GET", {}, {}, contentType);
 }
 
-function errorMessageByStatus(status) {
+function errorMessageByStatus(status: number): Array<string> {
     if (status === 401) {
         return [t("Session expired, please reload the page.")];
     } else if (status === 403) {
         return [t("Authorization error, please reload the page or try to logout/login again.")];
+    } else if (status === 404) {
+        return [t("Resource not found.")];
     } else if (status >= 500) {
         return [t("Server error, please check log files.")];
     } else {
-      return [t("")];
+      return [t("HTTP Error code " + status)];
     }
 }
 
-function responseErrorMessage(jqXHR, messageMapFunc = null) {
+type MapFuncType = (string, string) => ?string;
+type jqXHR = {status: number, statusText: string, responseText: string, responseJSON: any};
+
+function responseErrorMessage(jqXHR: Error | jqXHR , messageMapFunc: ?MapFuncType = null): MessageType {
    if (jqXHR instanceof Error) {
-     console.log("Error: " + jqXHR);
+     console.log("Error: " + jqXHR.toString());
      throw jqXHR;
    } else {
      console.log("Error: " + jqXHR.status + " " + jqXHR.statusText + ", response text: " + jqXHR.responseText);
@@ -67,10 +78,10 @@ function responseErrorMessage(jqXHR, messageMapFunc = null) {
    if (jqXHR.responseJSON && jqXHR.responseJSON.messages &&
         Array.isArray(jqXHR.responseJSON.messages) &&
         jqXHR.responseJSON.messages.length > 0) {
-      let msgs;
+      let msgs : Array<string>;
       if (messageMapFunc) {
         msgs = jqXHR.responseJSON.messages.map(msg => {
-            let m = messageMapFunc(jqXHR.status, msg);
+            let m = messageMapFunc(jqXHR.status.toString(), msg);
             return m ? m : msg;
         })
       } else {
@@ -87,11 +98,11 @@ function responseErrorMessage(jqXHR, messageMapFunc = null) {
    }
 }
 
-module.exports = {
-    get: get,
-    post: post,
-    put: put,
-    del: del,
-    errorMessageByStatus: errorMessageByStatus,
-    responseErrorMessage: responseErrorMessage
-}
+export {
+    get,
+    post,
+    put,
+    del,
+    errorMessageByStatus,
+    responseErrorMessage
+};

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import PropTypes  from 'prop-types';
 import React from "react";
-import { Button } from "../buttons";
+import { AsyncButton, Button } from "../buttons";
 import { Dialog } from "./Dialog";
 
 /**
@@ -13,16 +13,31 @@ import { Dialog } from "./Dialog";
  */
 export function DangerDialog(props) {
     const buttons = <div>
-        <Button
-            className="btn-danger"
-            text={props.submitText}
-            title={props.submitText}
-            icon={props.submitIcon}
-            handler={() => {
-                if(props.onConfirm) props.onConfirm(props.item);
-                $('#' + props.id).modal('hide');
-            }}
-        />
+        {props.onConfirmAsync ?
+            <AsyncButton
+                text={props.submitText}
+                title={props.submitText}
+                icon={props.submitIcon}
+                defaultType="btn-danger"
+                action={() => {
+                    props.onConfirmAsync(true);
+                    $('#' + props.id).modal('hide');
+                }}
+            /> : null
+        }
+        {props.onConfirm ?
+            <Button
+                defaultType="btn-danger"
+                text={props.submitText}
+                title={props.submitText}
+                icon={props.submitIcon}
+                handler={() => {
+                    props.onConfirm(props.item);
+                    $('#' + props.id).modal('hide');
+                }}
+            /> : null
+        }
+
         <Button
             className="btn-default"
             text={t("Cancel")}
@@ -54,6 +69,7 @@ DangerDialog.propTypes = {
     content: PropTypes.node,
     item: PropTypes.object,
     onConfirm: PropTypes.func,
+    onConfirmAsync: PropTypes.func,
     submitText: PropTypes.string,
     submitIcon: PropTypes.string,
 };

@@ -7,7 +7,7 @@ import type {ProjectMessageType} from '../../type/project.type';
 
 type ValidationMessagesType = {
   panelClass: string,
-  messages: ?React.Element<'ul'>
+  messages: ?React.Node
 }
 
 const msgClassMap = {

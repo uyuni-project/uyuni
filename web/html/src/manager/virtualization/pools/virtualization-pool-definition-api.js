@@ -1,7 +1,9 @@
 // @flow
 import * as React from 'react';
-import Network from 'utils/network';
+import * as Network from 'utils/network';
 import * as Messages from 'components/messages';
+
+import type {MessageType} from 'components/messages';
 
 type Props = {
   /** Virtual host server ID */
@@ -9,12 +11,12 @@ type Props = {
   /** Name of the pool for which to get the defintion*/
   poolName: string,
   /** Children function rendering the content depending on the request result */
-  children: ({definition: Object, messages: React.Node}) => React.Node,
+  children: ({definition: Object, messages: Array<MessageType>}) => React.Node,
 };
 
 /** Component calling the Uyuni REST API to get the XML definition of a virtual storage pool */
 export function VirtualizationPoolDefinitionApi(props: Props) {
-  const [messages, setMessages] = React.useState([]);
+  const [messages, setMessages] = React.useState<Array<MessageType>>([]);
   const [definition, setDefinition] = React.useState(null);
 
   React.useEffect(() => {

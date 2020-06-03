@@ -1,16 +1,19 @@
+// @flow
 /* eslint-disable */
-import React  from "react";
+import * as React from "react";
 
 type Severity = "info" | "success" | "warning" | "error";
 
 export type MessageType = {
   severity: Severity,
-  text: React.Node
+  text: string |
+    React.Node |
+    Array<React.Node | string> // TODO only for compatibility, deprecate it
 }
 
 type Props = {
   /** Message objects to display */
-  items: Array<MessageType>
+  items: Array<MessageType> | MessageType
 }
 
 /**
@@ -43,25 +46,49 @@ type Props = {
  * <Messages items={Utils.info("My info message.")}/>
  * ```
  */
-export const Messages = (props: Props) => {
-    const _classNames = {
-        "error": "danger",
-        "success": "success",
-        "info": "info",
-        "warning": "warning",
-    }
-
-    var msgs = props.items.map((item, index) =>
-      <div key={"msg" + index} className={'alert alert-' + _classNames[item.severity]}>
-        {item.text}
-      </div>
-    );
-
-    return (<div key={"messages-pop-up"}>{msgs}</div>);
+const _classNames = {
+    "error": "danger",
+    "success": "success",
+    "info": "info",
+    "warning": "warning",
 }
 
-function msg(severityIn: Severity, ...textIn: Array<React.Node>) {
-    return textIn.map(function(txt) {return {severity: severityIn, text: textIn}});
+export class Messages extends React.Component<Props> {
+
+
+    static info(text: string | React.Node): MessageType {
+      return msg("info", text);
+    }
+
+    static success(text: string | React.Node): MessageType {
+      return msg("success", text);
+    }
+
+    static error(text: string | React.Node): MessageType {
+      return msg("error", text);
+    }
+
+    static warning(text: string | React.Node): MessageType {
+      return msg("warning", text);
+    }
+
+    render() {
+        const items: Array<MessageType> = Array.isArray(this.props.items) ? this.props.items : [this.props.items];
+
+        var msgs = items.map((item, index) =>
+          <div key={"msg" + index} className={'alert alert-' + _classNames[item.severity]}>
+            { Array.isArray(item.text) ? 
+              item.text.map(txt => <div>{txt}</div>): item.text }
+          </div>
+        );
+
+        return (<div key={"messages-pop-up"}>{msgs}</div>);
+    }
+
+}
+
+function msg(severityIn: Severity, textIn: string | React.Node | Array<string | React.Node>): MessageType {
+    return {severity: severityIn, text: textIn};
 }
 
 /**
@@ -71,16 +98,16 @@ function msg(severityIn: Severity, ...textIn: Array<React.Node>) {
  * of the `Messages` component.
  */
 export const Utils = {
-  info: function (textIn: React.Node) {
-    return msg("info", textIn);
+  info: function (textIn: string | React.Node | Array<string | React.Node>): MessageType {
+    return msg("info", textIn)
   },
-  success: function (textIn: React.Node) {
+  success: function (textIn: string | React.Node | Array<string | React.Node>): MessageType {
     return msg("success", textIn);
   },
-  warning: function (textIn: React.Node) {
+  warning: function (textIn: string | React.Node | Array<string | React.Node>): MessageType {
     return msg("warning", textIn);
   },
-  error: function (textIn: React.Node) {
+  error: function (textIn: string | React.Node | Array<string | React.Node>): MessageType {
     return msg("error", textIn);
   }
 }

@@ -1,7 +1,7 @@
 // @flow
 
 import {useState} from 'react';
-import Network from '../../../../utils/network';
+import * as Network from 'utils/network';
 
 type Props = {
   resource: string,

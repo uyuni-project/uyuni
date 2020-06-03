@@ -2,9 +2,11 @@
 import * as React from 'react';
 import { ActionApi } from '../ActionApi';
 
+import type {MessageType} from 'components/messages';
+
 type Props = {
   hostid: string,
-  children: ({onAction: (action: string, poolNames?: Array<string>, Object, volumes?: {string: Array<string>}) => void, messages: Array<React.Node>} => React.Node),
+  children: ({onAction: (action: string, poolNames?: Array<string>, Object, volumes?: {string: Array<string>}) => void, messages: Array<MessageType>} => React.Node),
   bounce?: string,
   callback?: Function,
 };

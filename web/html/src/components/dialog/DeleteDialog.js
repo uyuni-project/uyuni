@@ -19,6 +19,7 @@ export function DeleteDialog(props) {
           content={props.content}
           item={props.item}
           onConfirm={props.onConfirm}
+          onConfirmAsync={props.onConfirmAsync}
           submitText={t("Delete")}
           submitIcon="fa-trash"
           />
@@ -32,5 +33,6 @@ DeleteDialog.propTypes = {
     title: PropTypes.string,
     content: PropTypes.node,
     item: PropTypes.object,
-    onConfirm: PropTypes.func
+    onConfirm: PropTypes.func,
+    onConfirmAsync: PropTypes.func
 };

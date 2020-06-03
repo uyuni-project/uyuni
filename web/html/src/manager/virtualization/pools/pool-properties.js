@@ -21,12 +21,14 @@ import Functions from 'utils/functions';
 import { VirtualizationPoolCapsApi } from './virtualization-pools-capabilities-api';
 import * as FieldsData from './properties/fields-data';
 
+import type {MessageType} from 'components/messages';
+
 type Props = {
   serverId: string,
   submitText: string,
   submit: (Object) => void,
   initialModel: ?Object,
-  messages: Array<React.Node>,
+  messages: Array<MessageType>,
   localTime: string,
   timezone: string,
   actionChains: Array<ActionChain>,

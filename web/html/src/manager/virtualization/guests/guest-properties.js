@@ -1,6 +1,7 @@
 // @flow
 
 import type { ActionChain } from 'components/action-schedule';
+import type { MessageType } from 'components/messages';
 
 const React = require('react');
 const { Panel } = require('components/panels/Panel');
@@ -22,7 +23,7 @@ type Props = {
   submitText: string,
   submit: Function,
   initialModel: ?Object,
-  messages: Array<String>,
+  messages: Array<MessageType>,
   localTime: string,
   timezone: string,
   actionChains: Array<ActionChain>,

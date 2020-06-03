@@ -4,7 +4,7 @@ import React, {useEffect} from 'react';
 import {Panel} from 'components/panels/Panel';
 import {HelpLink} from 'components/utils/HelpLink';
 import {Button, AsyncButton} from 'components/buttons';
-import Network from 'utils/network';
+import * as Network from 'utils/network';
 import {Messages, Utils as MessagesUtils} from 'components/messages';
 import {Utils} from 'utils/functions';
 import {IconTag as Icon} from 'components/icontag';
@@ -150,11 +150,11 @@ const MonitoringAdmin = (props) => {
         return;
       }
       changeStatus(enable)
-        .then((result) => {
+        .then((result: any) => {
           if (result.success) {
             setMessages(MessagesUtils.success(msgMap[result.message]));
           } else {
-            setMessages(MessagesUtils.error(msgMap[result.message]));
+            setMessages(MessagesUtils.error(result.message in msgMap ? msgMap[result.message] : result.message));
           }
         })
         .catch(handleResponseError);
@@ -210,7 +210,7 @@ const MonitoringAdmin = (props) => {
     }
     return (
     <div className="responsive-wizard">
-      <Messages items={messages}/>
+      {messages && <Messages items={messages}/>}
       <div className="spacewalk-toolbar-h1">
         <div className="spacewalk-toolbar"></div>
         <h1>
