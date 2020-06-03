@@ -116,6 +116,7 @@ def help_clear(self):
 
 def do_clear(self, args):
     os.system('clear')
+    return 0
 
 ####################
 
@@ -129,6 +130,7 @@ def do_clear_caches(self, args):
     self.clear_system_cache()
     self.clear_package_cache()
     self.clear_errata_cache()
+    return 0
 
 ####################
 
@@ -140,6 +142,7 @@ def help_get_apiversion(self):
 
 def do_get_apiversion(self, args):
     print(self.client.api.getVersion())
+    return 0
 
 ####################
 
@@ -151,6 +154,7 @@ def help_get_serverversion(self):
 
 def do_get_serverversion(self, args):
     print(self.client.api.systemVersion())
+    return 0
 
 
 ####################
@@ -164,6 +168,7 @@ def help_list_proxies(self):
 def do_list_proxies(self, args):
     proxies = self.client.satellite.listProxies(self.session)
     print(proxies)
+    return 0
 
 ####################
 
@@ -176,8 +181,10 @@ def help_get_session(self):
 def do_get_session(self, args):
     if self.session:
         print(self.session)
+        return 0
     else:
         logging.error('No session found')
+        return 1
 
 ####################
 
@@ -197,6 +204,7 @@ def help_history(self):
 def do_history(self, args):
     for i in range(1, readline.get_current_history_length()):
         print('%s  %s' % (str(i).rjust(4), readline.get_history_item(i)))
+    return 0
 
 ####################
 
@@ -213,6 +221,8 @@ def do_toggle_confirmations(self, args):
     else:
         self.options.yes = True
         logging.warning('Confirmation messages are DISABLED!')
+
+    return 0
 
 ####################
 
@@ -407,6 +417,7 @@ def do_logout(self, args):
     self.current_user = ''
     self.server = ''
     self.do_clear_caches('')
+    return 0
 
 ####################
 
@@ -419,8 +430,10 @@ def help_whoami(self):
 def do_whoami(self, args):
     if self.current_user:
         print(self.current_user)
+        return 0
     else:
         logging.warning("You are not logged in")
+        return 1
 
 ####################
 
@@ -433,8 +446,10 @@ def help_whoamitalkingto(self):
 def do_whoamitalkingto(self, args):
     if self.server:
         print(self.server)
+        return 0
     else:
         logging.warning('Yourself')
+        return 1
 
 ####################
 

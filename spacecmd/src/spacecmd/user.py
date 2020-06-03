@@ -87,23 +87,23 @@ def do_user_create(self, args):
     else:
         if not options.username:
             logging.error('A username is required')
-            return
+            return 1
 
         if not options.first_name:
             logging.error('A first name is required')
-            return
+            return 1
 
         if not options.last_name:
             logging.error('A last name is required')
-            return
+            return 1
 
         if not options.email:
             logging.error('An email address is required')
-            return
+            return 1
 
         if not options.password and not options.pam:
             logging.error('A password is required')
-            return
+            return 1
 
         if options.pam:
             options.pam = 1
@@ -122,6 +122,8 @@ def do_user_create(self, args):
                             options.last_name,
                             options.email,
                             options.pam)
+
+    return 0
 
 ####################
 
@@ -142,12 +144,15 @@ def do_user_delete(self, args):
 
     if len(args) != 1:
         self.help_user_delete()
-        return
+        return 1
 
     name = args[0]
 
     if self.user_confirm('Delete this user [y/N]:'):
         self.client.user.delete(self.session, name)
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -168,11 +173,13 @@ def do_user_disable(self, args):
 
     if len(args) != 1:
         self.help_user_disable()
-        return
+        return 1
 
     name = args[0]
 
     self.client.user.disable(self.session, name)
+
+    return 0
 
 ####################
 
@@ -193,11 +200,13 @@ def do_user_enable(self, args):
 
     if len(args) != 1:
         self.help_user_enable()
-        return
+        return 1
 
     name = args[0]
 
     self.client.user.enable(self.session, name)
+
+    return 0
 
 ####################
 
@@ -259,12 +268,14 @@ def do_user_addrole(self, args):
 
     if len(args) != 2:
         self.help_user_addrole()
-        return
+        return 1
 
     user = args[0]
     role = args[1]
 
     self.client.user.addRole(self.session, user, role)
+
+    return 0
 
 ####################
 
@@ -292,12 +303,14 @@ def do_user_removerole(self, args):
 
     if len(args) != 2:
         self.help_user_removerole()
-        return
+        return 1
 
     user = args[0]
     role = args[1]
 
     self.client.user.removeRole(self.session, user, role)
+
+    return 0
 
 ####################
 
@@ -318,7 +331,7 @@ def do_user_details(self, args):
 
     if not args:
         self.help_user_details()
-        return
+        return 1
 
     add_separator = False
 
@@ -374,6 +387,8 @@ def do_user_details(self, args):
             print('--------------')
             print('\n'.join(sorted([g.get('name') for g in default_groups])))
 
+    return 0
+
 ####################
 
 
@@ -400,7 +415,7 @@ def do_user_addgroup(self, args):
 
     if len(args) < 2:
         self.help_user_addgroup()
-        return
+        return 1
 
     user = args.pop(0)
     groups = args
@@ -409,6 +424,8 @@ def do_user_addgroup(self, args):
                                              user,
                                              groups,
                                              False)
+
+    return 0
 
 ####################
 
@@ -436,7 +453,7 @@ def do_user_adddefaultgroup(self, args):
 
     if len(args) < 2:
         self.help_user_adddefaultgroup()
-        return
+        return 1
 
     user = args.pop(0)
     groups = args
@@ -444,6 +461,8 @@ def do_user_adddefaultgroup(self, args):
     self.client.user.addDefaultSystemGroups(self.session,
                                             user,
                                             groups)
+
+    return 0
 
 ####################
 
@@ -474,7 +493,7 @@ def do_user_removegroup(self, args):
 
     if len(args) < 2:
         self.help_user_removegroup()
-        return
+        return 1
 
     user = args.pop(0)
     groups = args
@@ -483,6 +502,8 @@ def do_user_removegroup(self, args):
                                                 user,
                                                 groups,
                                                 True)
+
+    return 0
 
 ####################
 
@@ -514,7 +535,7 @@ def do_user_removedefaultgroup(self, args):
 
     if len(args) < 2:
         self.help_user_removedefaultgroup()
-        return
+        return 1
 
     user = args.pop(0)
     groups = args
@@ -522,6 +543,8 @@ def do_user_removedefaultgroup(self, args):
     self.client.user.removeDefaultSystemGroups(self.session,
                                                user,
                                                groups)
+
+    return 0
 
 ####################
 
@@ -549,12 +572,14 @@ def do_user_setfirstname(self, args):
 
     if len(args) != 2:
         self.help_user_setfirstname()
-        return
+        return 1
 
     user = args.pop(0)
     details = {'first_name': args.pop(0)}
 
     self.client.user.setDetails(self.session, user, details)
+
+    return 0
 
 ####################
 
@@ -582,12 +607,14 @@ def do_user_setlastname(self, args):
 
     if len(args) != 2:
         self.help_user_setlastname()
-        return
+        return 1
 
     user = args.pop(0)
     details = {'last_name': args.pop(0)}
 
     self.client.user.setDetails(self.session, user, details)
+
+    return 0
 
 ####################
 
@@ -615,12 +642,14 @@ def do_user_setemail(self, args):
 
     if len(args) != 2:
         self.help_user_setemail()
-        return
+        return 1
 
     user = args.pop(0)
     details = {'email': args.pop(0)}
 
     self.client.user.setDetails(self.session, user, details)
+
+    return 0
 
 ####################
 
@@ -648,7 +677,7 @@ def do_user_setprefix(self, args):
 
     if len(args) > 2:
         self.help_user_setprefix()
-        return
+        return 1
 
     user = args.pop(0)
     if not args:
@@ -661,6 +690,8 @@ def do_user_setprefix(self, args):
         details = {'prefix': args.pop(0)}
 
     self.client.user.setDetails(self.session, user, details)
+
+    return 0
 
 ####################
 
@@ -688,9 +719,11 @@ def do_user_setpassword(self, args):
 
     if len(args) != 2:
         self.help_user_setpassword()
-        return
+        return 1
 
     user = args.pop(0)
     details = {'password': args.pop(0)}
 
     self.client.user.setDetails(self.session, user, details)
+
+    return 0

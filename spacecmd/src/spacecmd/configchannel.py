@@ -371,7 +371,7 @@ def do_configchannel_details(self, args):
 
     if not args:
         self.help_configchannel_details()
-        return
+        return 1
 
     add_separator = False
 

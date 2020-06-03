@@ -92,27 +92,27 @@ def do_org_create(self, args):
     else:
         if not options.org_name:
             logging.error('An organization name is required')
-            return
+            return 1
 
         if not options.username:
             logging.error('A username is required')
-            return
+            return 1
 
         if not options.first_name:
             logging.error('A first name is required')
-            return
+            return 1
 
         if not options.last_name:
             logging.error('A last name is required')
-            return
+            return 1
 
         if not options.email:
             logging.error('An email address is required')
-            return
+            return 1
 
         if not options.password:
             logging.error('A password is required')
-            return
+            return 1
 
         if not options.pam:
             options.pam = False
@@ -133,6 +133,8 @@ def do_org_create(self, args):
                            options.email,
                            options.pam)
 
+    return 0
+
 ####################
 
 
@@ -152,13 +154,15 @@ def do_org_delete(self, args):
 
     if len(args) != 1:
         self.help_org_delete()
-        return
+        return 1
 
     name = args[0]
     org_id = self.get_org_id(name)
 
     if self.user_confirm('Delete this organization [y/N]:'):
         self.client.org.delete(self.session, org_id)
+
+    return 0
 
 ####################
 
@@ -179,12 +183,14 @@ def do_org_rename(self, args):
 
     if len(args) != 2:
         self.help_org_rename()
-        return
+        return 1
 
     org_id = self.get_org_id(args[0])
     new_name = args[1]
 
     self.client.org.updateName(self.session, org_id, new_name)
+
+    return 0
 
 ####################
 
@@ -205,12 +211,14 @@ def do_org_addtrust(self, args):
 
     if len(args) != 2:
         self.help_org_addtrust()
-        return
+        return 1
 
     your_org_id = self.get_org_id(args[0])
     org_to_trust_id = self.get_org_id(args[1])
 
     self.client.org.trusts.addTrust(self.session, your_org_id, org_to_trust_id)
+
+    return 0
 
 ####################
 
@@ -231,7 +239,7 @@ def do_org_removetrust(self, args):
 
     if len(args) != 2:
         self.help_org_removetrust()
-        return
+        return 1
 
     your_org_id = self.get_org_id(args[0])
     trusted_org_id = self.get_org_id(args[1])
@@ -249,11 +257,13 @@ def do_org_removetrust(self, args):
         print('None')
 
     if not self.user_confirm('Remove this trust [y/N]:'):
-        return
+        return 1
 
     self.client.org.trusts.removeTrust(self.session,
                                        your_org_id,
                                        trusted_org_id)
+
+    return 0
 
 ####################
 
@@ -274,7 +284,7 @@ def do_org_trustdetails(self, args):
 
     if not args:
         self.help_org_trustdetails()
-        return
+        return 1
 
     trusted_org = args[0]
     org_id = self.get_org_id(trusted_org)
@@ -299,6 +309,8 @@ def do_org_trustdetails(self, args):
     print('-----------------')
     if provided:
         print('\n'.join(sorted([c.get('name') for c in provided])))
+
+    return 0
 
 ####################
 
@@ -337,7 +349,7 @@ def do_org_listtrusts(self, args):
 
     if not args:
         self.help_org_listtrusts()
-        return
+        return 1
 
     org_id = self.get_org_id(args[0])
 
@@ -346,6 +358,8 @@ def do_org_listtrusts(self, args):
     for trust in sorted(trusts, key=itemgetter('orgName')):
         if trust.get('trustEnabled'):
             print(trust.get('orgName'))
+
+    return 0
 
 ####################
 
@@ -366,13 +380,15 @@ def do_org_listusers(self, args):
 
     if not args:
         self.help_org_listusers()
-        return
+        return 1
 
     org_id = self.get_org_id(args[0])
 
     users = self.client.org.listUsers(self.session, org_id)
 
     print('\n'.join(sorted([u.get('login') for u in users])))
+
+    return 0
 
 ####################
 
@@ -393,7 +409,7 @@ def do_org_details(self, args):
 
     if not args:
         self.help_org_details()
-        return
+        return 1
 
     name = args[0]
 
@@ -416,3 +432,5 @@ def do_org_details(self, args):
 
 
     (args, _options) = parse_command_arguments(args, arg_parser)
+
+    return 0
