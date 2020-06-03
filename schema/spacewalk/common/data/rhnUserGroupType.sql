@@ -59,5 +59,10 @@ insert into rhnUserGroupType (id, label, name) values (
 	'Image Administrator'
 );
 
-commit;
+insert into rhnUserGroupType (id, label, name) values (
+	sequence_nextval('rhn_usergroup_type_seq'),
+	'cluster_admin',
+	'Cluster Administrator'
+);
 
+commit;

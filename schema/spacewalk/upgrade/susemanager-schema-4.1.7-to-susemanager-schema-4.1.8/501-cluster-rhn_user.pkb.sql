@@ -1,5 +1,3 @@
--- oracle equivalent source sha1 98b987747d62806810341a5c56981bf16069c68e
---
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -8,10 +6,10 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
+-- in this software or its documentation.
 --
 
 -- create schema rhn_user;
@@ -55,7 +53,7 @@ create or replace
 	    return 1;
     	end if;
 
-	-- config_admin and channel_admin are automatically implied for org admins	
+	-- config_admin and channel_admin are automatically implied for org admins
 	if role_in = 'config_admin' and rhn_user.check_role(user_id_in, 'org_admin') = 1
 	then
 	    return 1;
@@ -89,7 +87,7 @@ create or replace
     	select org_id into org_id_out
 	  from web_contact
 	 where id = user_id_in;
-	 
+
 	return org_id_out;
     end;
 $$ language plpgsql;

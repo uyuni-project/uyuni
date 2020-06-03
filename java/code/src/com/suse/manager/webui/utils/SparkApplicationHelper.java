@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
@@ -22,26 +24,20 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-
 import com.suse.manager.webui.Languages;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.apache.http.HttpStatus;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import de.neuland.jade4j.JadeConfiguration;
+import org.apache.http.HttpStatus;
 import spark.ModelAndView;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.jade.JadeTemplateEngine;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods to integrate Spark with SUSE Manager's infrastructure.
@@ -172,6 +168,28 @@ public class SparkApplicationHelper {
      */
     public static TemplateViewRoute withImageAdmin(TemplateViewRouteWithUser route) {
         return withRole(route, RoleFactory.IMAGE_ADMIN);
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be an
+     * Cluster Admin, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static Route withClusterAdmin(RouteWithUser route) {
+        return withRole(route, RoleFactory.CLUSTER_ADMIN);
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be an
+     * Cluster Admin, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withClusterAdmin(TemplateViewRouteWithUser route) {
+        return withRole(route, RoleFactory.CLUSTER_ADMIN);
     }
 
     /**
