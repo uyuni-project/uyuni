@@ -67,15 +67,15 @@ def do_cryptokey_create(self, args):
     else:
         if not options.type:
             logging.error('The key type is required')
-            return
+            return 1
 
         if not options.description:
             logging.error('A description is required')
-            return
+            return 1
 
         if not options.file:
             logging.error('A file containing the key is required')
-            return
+            return 1
 
     # read the file the user specified
     if options.file:
@@ -83,7 +83,7 @@ def do_cryptokey_create(self, args):
 
     if not options.contents:
         logging.error('No contents of the file')
-        return
+        return 1
 
     # translate the key type to what the server expects
     if re.match('G', options.type, re.I):
@@ -92,12 +92,14 @@ def do_cryptokey_create(self, args):
         options.type = 'SSL'
     else:
         logging.error('Invalid key type')
-        return
+        return 1
 
     self.client.kickstart.keys.create(self.session,
                                       options.description,
                                       options.type,
                                       options.contents)
+
+    return 0
 
 ####################
 
@@ -120,7 +122,7 @@ def do_cryptokey_delete(self, args):
 
     if not args:
         self.help_cryptokey_delete()
-        return
+        return 1
 
     # allow globbing of cryptokey names
     keys = filter_results(self.do_cryptokey_list('', True), args)
@@ -129,7 +131,7 @@ def do_cryptokey_delete(self, args):
 
     if not keys:
         logging.error("No keys matched argument %s" % args)
-        return
+        return 1
 
     # Print the keys prior to the confirmation
     print('\n'.join(sorted(keys)))
@@ -137,6 +139,9 @@ def do_cryptokey_delete(self, args):
     if self.user_confirm('Delete key(s) [y/N]:'):
         for key in keys:
             self.client.kickstart.keys.delete(self.session, key)
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -175,7 +180,7 @@ def do_cryptokey_details(self, args):
 
     if not args:
         self.help_cryptokey_details()
-        return
+        return 1
 
     # allow globbing of cryptokey names
     keys = filter_results(self.do_cryptokey_list('', True), args)
@@ -184,7 +189,7 @@ def do_cryptokey_details(self, args):
 
     if not keys:
         logging.error("No keys matched argument %s" % args)
-        return
+        return 1
 
     add_separator = False
 
@@ -194,7 +199,7 @@ def do_cryptokey_details(self, args):
                                                             key)
         except xmlrpclib.Fault:
             logging.warning('%s is not a valid crypto key' % key)
-            return
+            return 1
 
         if add_separator:
             print(self.SEPARATOR)
@@ -205,3 +210,5 @@ def do_cryptokey_details(self, args):
 
         print('')
         print(details.get('content'))
+
+    return 0

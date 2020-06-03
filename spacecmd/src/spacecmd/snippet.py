@@ -67,7 +67,7 @@ def do_snippet_details(self, args):
 
     if not args:
         self.help_snippet_details()
-        return
+        return 1
 
     add_separator = False
 
@@ -94,6 +94,8 @@ def do_snippet_details(self, args):
 
         print('')
         print(snippet.get('contents'))
+
+    return 0
 
 ####################
 
@@ -139,11 +141,11 @@ def do_snippet_create(self, args, update_name=''):
     else:
         if not options.name:
             logging.error('A name is required for the snippet')
-            return
+            return 1
 
         if not options.file:
             logging.error('A file is required')
-            return
+            return 1
 
     if options.file:
         contents = read_file(options.file)
@@ -158,6 +160,8 @@ def do_snippet_create(self, args, update_name=''):
         self.client.kickstart.snippet.createOrUpdate(self.session,
                                                      options.name,
                                                      contents)
+
+    return 0
 
 ####################
 
@@ -178,7 +182,7 @@ def do_snippet_update(self, args):
 
     if not args:
         self.help_snippet_update()
-        return
+        return 1
 
     return self.do_snippet_create('', update_name=args[0])
 
@@ -201,9 +205,12 @@ def do_snippet_delete(self, args):
 
     if not args:
         self.help_snippet_delete()
-        return
+        return 1
 
     snippet = args[0]
 
     if self.user_confirm('Remove this snippet [y/N]:'):
         self.client.kickstart.snippet.delete(self.session, snippet)
+        return 0
+    else:
+        return 1

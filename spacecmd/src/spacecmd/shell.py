@@ -232,7 +232,11 @@ class SpacewalkShell(Cmd):
                     for i in cmdresult:
                         print(i)
             except TypeError:
+                # catch methods returning undefined results at least in debug mode
+                logging.debug('Undefined return code from \"%s\"', cmd)
                 pass
+
+        return cmdresult
 
     # update the prompt with the SSM size
     # pylint: disable=arguments-differ
