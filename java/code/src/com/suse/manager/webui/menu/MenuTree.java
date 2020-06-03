@@ -14,9 +14,6 @@
  */
 package com.suse.manager.webui.menu;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
-
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
@@ -31,6 +28,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.PageContext;
 
 /**
  * The UI Menu Tree.
@@ -53,6 +53,7 @@ public class MenuTree {
         adminRoles.put("satellite", checkAcl(user, "user_role(satellite_admin)"));
         adminRoles.put("activationKey", checkAcl(user, "user_role(activation_key_admin)"));
         adminRoles.put("image", checkAcl(user, "user_role(image_admin)"));
+        adminRoles.put("clusters", checkAcl(user, "user_role(cluster_admin)"));
 
         MenuItemList nodes = new MenuItemList();
 
@@ -168,6 +169,11 @@ public class MenuTree {
                 .addChild(new MenuItem("Virtual Host Managers").withPrimaryUrl("/rhn/manager/vhms")
                     .withDir("/rhn/manager/vhms")
                     .withVisibility(adminRoles.get("org"))));
+
+            // Clusters
+            nodes.add(new MenuItem("clusters.nav.title").withIcon("spacewalk-icon-clusters")
+                    .addChild(new MenuItem("clusters.nav.overview").withPrimaryUrl("/rhn/manager/clusters"))
+                    .addChild(new MenuItem("clusters.nav.add").withPrimaryUrl("/rhn/manager/clusters/add")));
 
             // Salt
             nodes.add(new MenuItem("Salt").withIcon("spacewalk-icon-salt")

@@ -8483,6 +8483,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="cluster_admin">
+        <source>Cluster Administrator</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="satellite.expired">
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
@@ -8581,6 +8587,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.nav.filters">
         <source>Filters</source>
+      </trans-unit>
+      <trans-unit id="clusters.nav.title">
+        <source>Clusters</source>
+      </trans-unit>
+      <trans-unit id="clusters.nav.overview">
+        <source>Overview</source>
+      </trans-unit>
+      <trans-unit id="clusters.nav.add">
+        <source>Add</source>
       </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound">
         <source>Module '{0}' not found.</source>
