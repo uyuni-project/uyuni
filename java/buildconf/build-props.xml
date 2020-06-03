@@ -144,10 +144,10 @@
              regexp ${jmock-jars} strutstest" / -->
 
   <!-- SUSE extra dependencies: build and runtime -->
-  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpclient httpcore httpasyncclient httpcore-nio simpleclient simpleclient_common simpleclient_servlet simpleclient_httpserver pgjdbc-ng spy netty-common netty-buffer netty-resolver netty-transport netty-codec netty-handler netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api" />
+  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpclient httpcore httpasyncclient httpcore-nio simpleclient simpleclient_common simpleclient_servlet simpleclient_httpserver pgjdbc-ng spy netty-common netty-buffer netty-resolver netty-transport netty-codec netty-handler netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api commons-jexl" />
 
   <!-- SUSE extra dependencies: runtime only -->
-  <property name="suse-runtime-jars" value="commons-jexl ${commons-lang} concurrentlinkedhashmap-lru
+  <property name="suse-runtime-jars" value="${commons-lang} concurrentlinkedhashmap-lru
       httpcore slf4j/api slf4j/log4j12" />
 
   <property name="install.build.jar.dependencies"
@@ -168,7 +168,7 @@
              jcommon stringtree-json postgresql-jdbc
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec quartz
              ${suse-common-jars} velocity
-             concurrent simple-core snakeyaml simple-xml" />
+             concurrent simple-core snakeyaml simple-xml commons-jexl " />
 
   <property name="dist.jar.dependencies"
       value="antlr objectweb-asm/asm bcel c3p0 ${cglib-jar}
