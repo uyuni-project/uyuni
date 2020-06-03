@@ -147,7 +147,7 @@ public class FormulaHandler extends BaseHandler {
                     loggedInUser.getOrg());
         }
         catch (ValidatorException e) {
-            throw new ValidatorException(e.getMessage());
+            throw new ValidationException(e.getMessage(), e);
         }
         catch (IOException e) {
             throw new IOFaultException(e);
@@ -182,7 +182,7 @@ public class FormulaHandler extends BaseHandler {
             throw new PermissionException(LocalizationService.getInstance().getMessage("formula.accessdenied"));
         }
         catch (ValidatorException e) {
-            throw new ValidatorException(e.getMessage());
+            throw new ValidationException(e.getMessage(), e);
         }
         catch (IOException e) {
             throw new IOFaultException(e);

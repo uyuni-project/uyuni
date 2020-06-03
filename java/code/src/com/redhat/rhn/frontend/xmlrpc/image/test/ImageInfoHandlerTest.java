@@ -52,6 +52,7 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -165,7 +166,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         }});
         SystemEntitlementManager sem = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock))
+                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
+                        new FormulaMonitoringManager())
         );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);

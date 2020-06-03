@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.systems.entitlements.SystemEntitlementsSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -69,7 +70,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         saltServiceMock = context.mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock))
+                new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
+                        new FormulaMonitoringManager())
         );
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());

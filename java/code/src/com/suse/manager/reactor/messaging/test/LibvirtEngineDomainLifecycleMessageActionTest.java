@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -97,7 +98,7 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(),
-                new SystemEntitler(new SaltService(), virtManager)
+                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager())
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);

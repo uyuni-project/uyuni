@@ -22,7 +22,6 @@ import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
@@ -42,6 +41,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.log4j.Logger;
@@ -62,14 +62,18 @@ public class SystemEntitler {
 
     private SystemQuery systemQuery;
     private VirtManager virtManager;
+    private MonitoringManager monitoringManager;
 
     /**
      * @param systemQueryIn instance for gathering data from a system.
      * @param virtManagerIn instance for managing virtual machines.
+     * @param monitoringManagerIn instance for handling monitoring configuration.
      */
-    public SystemEntitler(SystemQuery systemQueryIn, VirtManager virtManagerIn) {
+    public SystemEntitler(SystemQuery systemQueryIn, VirtManager virtManagerIn,
+            MonitoringManager monitoringManagerIn) {
         this.systemQuery = systemQueryIn;
         this.virtManager = virtManagerIn;
+        this.monitoringManager = monitoringManagerIn;
     }
 
     /**
@@ -131,18 +135,10 @@ public class SystemEntitler {
 
             if (EntitlementManager.MONITORING.equals(ent)) {
                 try {
-                    // Assign the monitoring formula to the system
-                    // unless the system belongs to a group having monitoring already enabled
-                    if (!FormulaFactory.isMemberOfGroupHavingMonitoring(server)) {
-                        List<String> formulas = FormulaFactory.getFormulasByMinionId(minion.getMinionId());
-                        if (!formulas.contains(FormulaFactory.PROMETHEUS_EXPORTERS)) {
-                            formulas.add(FormulaFactory.PROMETHEUS_EXPORTERS);
-                            FormulaFactory.saveServerFormulas(minion.getMinionId(), formulas);
-                        }
-                    }
+                    monitoringManager.enableMonitoring(minion);
                 }
-                catch (UnsupportedOperationException | ValidatorException | IOException e) {
-                    LOG.error("Error assigning formula: " + e.getMessage(), e);
+                catch (ValidatorException | IOException e) {
+                    LOG.error("Error enabling monitoring: " + e.getMessage(), e);
                     result.addError(new ValidatorError("system.entitle.formula_error"));
                 }
             }
