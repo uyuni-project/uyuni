@@ -164,6 +164,8 @@ def do_system_list(self, args, doreturn=False):
         if self.get_system_names():
             print('\n'.join(sorted(['%s : %s' % (v, k) for k, v in self.get_system_names_ids().items()])))
 
+    return 0
+
 ####################
 
 
@@ -192,13 +194,17 @@ def do_system_reboot(self, args):
 
     if not args:
         self.help_system_reboot()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -221,7 +227,7 @@ def do_system_reboot(self, args):
     print('\n'.join(sorted(systems)))
 
     if not self.user_confirm('Reboot these systems [y/N]:'):
-        return
+        return 1
 
     for system in systems:
         system_id = self.get_system_id(system)
@@ -229,6 +235,8 @@ def do_system_reboot(self, args):
             continue
 
         self.client.system.scheduleReboot(self.session, system_id, options.start_time)
+
+    return 0
 
 ####################
 
@@ -252,7 +260,7 @@ def do_system_search(self, args, doreturn=False):
 
     if len(args) != 1:
         self.help_system_search()
-        return
+        return 1
 
     query = args[0]
 
@@ -327,6 +335,8 @@ def do_system_search(self, args, doreturn=False):
                     print('%s  %s' % (s[0].ljust(max_size),
                                       str(s[1]).strip()))
 
+    return 0
+
 ####################
 
 
@@ -365,7 +375,7 @@ def do_system_runscript(self, args):
 
     if not args:
         self.help_system_runscript()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -375,7 +385,7 @@ def do_system_runscript(self, args):
 
     if not systems:
         logging.warning('No systems selected')
-        return
+        return 1
 
     if is_interactive(options):
         options.user = prompt_user('User [root]:')
@@ -395,7 +405,7 @@ def do_system_runscript(self, args):
                 options.timeout = 600
         except ValueError:
             logging.error('Invalid timeout')
-            return
+            return 1
 
         options.start_time = prompt_user('Start Time [now]:')
         options.start_time = parse_time_input(options.start_time)
@@ -418,7 +428,7 @@ def do_system_runscript(self, args):
 
         if not script_contents:
             logging.error('No script provided')
-            return
+            return 1
     else:
         if not options.user:
             options.user = 'root'
@@ -437,7 +447,7 @@ def do_system_runscript(self, args):
 
         if not options.file:
             logging.error('A script file is required')
-            return
+            return 1
 
         script_contents = read_file(options.file)
         keep_script_file = True
@@ -461,7 +471,7 @@ def do_system_runscript(self, args):
 
     # have the user confirm
     if not self.user_confirm():
-        return
+        return 1
 
     scheduled = 0
 
@@ -514,6 +524,7 @@ def do_system_runscript(self, args):
             except xmlrpclib.Fault as detail:
                 logging.debug(detail)
                 logging.error('Failed to schedule %s' % system)
+                return 1
 
     logging.info('Scheduled: %i system(s)' % scheduled)
 
@@ -523,6 +534,9 @@ def do_system_runscript(self, args):
             os.remove(options.file)
         except OSError:
             logging.error('Could not remove %s' % options.file)
+            return 1
+
+    return 0
 
 ####################
 
@@ -544,7 +558,7 @@ def do_system_listhardware(self, args):
 
     if not args:
         self.help_system_listhardware()
-        return
+        return 1
 
     add_separator = False
 
@@ -553,6 +567,10 @@ def do_system_listhardware(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -656,6 +674,8 @@ def do_system_listhardware(self, args):
                 print('Class:       %s' % device.get('device_class'))
                 print('Bus:         %s' % device.get('bus'))
 
+    return 0
+
 ####################
 
 
@@ -689,7 +709,7 @@ def do_system_installpackage(self, args):
 
     if len(args) < 2:
         self.help_system_installpackage()
-        return
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -711,6 +731,10 @@ def do_system_installpackage(self, args):
         args.pop(0)
     else:
         systems = self.expand_systems(args.pop(0))
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     packages_to_install = args
 
@@ -759,7 +783,7 @@ def do_system_installpackage(self, args):
 
     if not jobs:
         logging.warning('No packages to install')
-        return
+        return 1
 
     add_separator = False
 
@@ -789,7 +813,7 @@ def do_system_installpackage(self, args):
     print('Start Time: %s' % options.start_time)
 
     if not self.user_confirm('Install these packages [y/N]:'):
-        return
+        return 1
 
     scheduled = 0
     for system_id in jobs:
@@ -804,6 +828,8 @@ def do_system_installpackage(self, args):
             logging.error('Failed to schedule %s' % self.get_system_name(system_id))
 
     logging.info('Scheduled %i system(s)' % scheduled)
+
+    return 0
 
 ####################
 
@@ -838,7 +864,7 @@ def do_system_removepackage(self, args):
 
     if len(args) < 2:
         self.help_system_removepackage()
-        return
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -860,6 +886,10 @@ def do_system_removepackage(self, args):
         args.pop(0)
     else:
         systems = self.expand_systems(args.pop(0))
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     package_list = args
 
@@ -899,13 +929,13 @@ def do_system_removepackage(self, args):
             print(self.get_package_name(package))
 
     if not jobs:
-        return
+        return 1
 
     print('')
     print('Start Time: %s' % options.start_time)
 
     if not self.user_confirm('Remove these packages [y/N]:'):
-        return
+        return 1
 
     scheduled = 0
     for system in jobs:
@@ -925,6 +955,8 @@ def do_system_removepackage(self, args):
             logging.error('Failed to schedule %s' % system)
 
     logging.info('Scheduled %i system(s)' % scheduled)
+
+    return 0
 
 ####################
 
@@ -963,7 +995,7 @@ def do_system_upgradepackage(self, args):
 
     if len(args) < 2:
         self.help_system_upgradepackage()
-        return
+        return 1
 
     # install and upgrade for individual packages are the same
     if not '.*' in args[1:]:
@@ -990,6 +1022,10 @@ def do_system_upgradepackage(self, args):
     else:
         systems = self.expand_systems(args.pop(0))
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     # make a dictionary of each system and the package IDs to install
     jobs = {}
     for system in sorted(systems):
@@ -1008,7 +1044,7 @@ def do_system_upgradepackage(self, args):
             logging.warning('No upgrades available for %s' % system)
 
     if not jobs:
-        return
+        return 1
 
     add_separator = False
 
@@ -1036,7 +1072,7 @@ def do_system_upgradepackage(self, args):
     print('Start Time: %s' % options.start_time)
 
     if not self.user_confirm('Upgrade these packages [y/N]:'):
-        return
+        return 1
 
     scheduled = 0
     for system in jobs:
@@ -1053,6 +1089,8 @@ def do_system_upgradepackage(self, args):
             logging.error('Failed to schedule %s' % system)
 
     logging.info('Scheduled %i system(s)' % scheduled)
+
+    return 0
 
 ####################
 
@@ -1075,7 +1113,7 @@ def do_system_listupgrades(self, args):
 
     if not args:
         self.help_system_listupgrades()
-        return
+        return 1
 
     add_separator = False
 
@@ -1084,6 +1122,10 @@ def do_system_listupgrades(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -1117,6 +1159,8 @@ def do_system_listupgrades(self, args):
                 'arch': package['to_arch']
             }))
 
+    return 0
+
 ####################
 
 
@@ -1139,7 +1183,7 @@ def do_system_listinstalledpackages(self, args):
 
     if not args:
         self.help_system_listinstalledpackages()
-        return
+        return 1
 
     add_separator = False
 
@@ -1148,6 +1192,10 @@ def do_system_listinstalledpackages(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -1166,6 +1214,8 @@ def do_system_listinstalledpackages(self, args):
             print('')
 
         print('\n'.join(build_package_names(packages)))
+
+    return 0
 
 ####################
 
@@ -1188,7 +1238,7 @@ def do_system_listconfigchannels(self, args):
 
     if not args:
         self.help_system_listconfigchannels()
-        return
+        return 1
 
     add_separator = False
 
@@ -1197,6 +1247,10 @@ def do_system_listconfigchannels(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -1219,6 +1273,8 @@ def do_system_listconfigchannels(self, args):
             continue
 
         print('\n'.join([c.get('label') for c in channels]))
+
+    return 0
 
 ####################
 
@@ -1281,7 +1337,7 @@ def do_system_listconfigfiles(self, args):
 
     if not args:
         self.help_system_listconfigfiles()
-        return
+        return 1
 
     add_separator = False
 
@@ -1290,6 +1346,10 @@ def do_system_listconfigfiles(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -1336,9 +1396,11 @@ def do_system_listconfigfiles(self, args):
             else:
                 logging.error("Error, unexpected channel type label %s" %
                               f['channel_type']['label'])
-                return
+                return 1
 
         self.print_configfiles(options.quiet, toprint)
+
+    return 0
 
 ####################
 
@@ -1443,12 +1505,12 @@ def do_system_addconfigfile(self, args, update_path=''):
     else:
         logging.error("Must choose system-sandbox or locally-managed option")
         self.help_system_addconfigfile()
-        return
+        return 1
 
     if not options.system:
         logging.error("Must provide system")
         self.help_system_addconfigfile()
-        return
+        return 1
 
     system_id = self.get_system_id(options.system)
     logging.debug("Got ID %s for system %s" % (system_id, options.system))
@@ -1473,6 +1535,8 @@ def do_system_addconfigfile(self, args, update_path=''):
             self.client.system.config.createOrUpdatePath(self.session,
                                                          system_id, options.path, options.directory, file_info,
                                                          localopt)
+
+    return 0
 
 ####################
 
@@ -1507,7 +1571,7 @@ def do_system_addconfigchannels(self, args):
 
     if len(args) < 2:
         self.help_system_addconfigchannels()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -1515,6 +1579,10 @@ def do_system_addconfigchannels(self, args):
         args.pop(0)
     else:
         systems = self.expand_systems(args.pop(0))
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     channels = args
 
@@ -1536,6 +1604,8 @@ def do_system_addconfigchannels(self, args):
                                           system_ids,
                                           channels,
                                           options.top)
+
+    return 0
 
 ####################
 
@@ -1564,7 +1634,7 @@ def do_system_removeconfigchannels(self, args):
 
     if len(args) < 2:
         self.help_system_removeconfigchannels()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -1573,6 +1643,10 @@ def do_system_removeconfigchannels(self, args):
     else:
         systems = self.expand_systems(args.pop(0))
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     channels = args
 
     system_ids = [self.get_system_id(s) for s in systems]
@@ -1580,6 +1654,8 @@ def do_system_removeconfigchannels(self, args):
     self.client.system.config.removeChannels(self.session,
                                              system_ids,
                                              channels)
+
+    return 0
 
 ####################
 
@@ -1602,13 +1678,17 @@ def do_system_setconfigchannelorder(self, args):
 
     if not args:
         self.help_system_setconfigchannelorder()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args.pop(0))
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     # get the current configuration channels from the first system
     # in the list
@@ -1628,13 +1708,15 @@ def do_system_setconfigchannelorder(self, args):
         print('[%i] %s' % (i, new_channel))
 
     if not self.user_confirm():
-        return
+        return 1
 
     system_ids = [self.get_system_id(s) for s in systems]
 
     self.client.system.config.setChannels(self.session,
                                           system_ids,
                                           new_channels)
+
+    return 0
 
 ####################
 
@@ -1664,7 +1746,7 @@ def do_system_deployconfigfiles(self, args):
 
     if not args:
         self.help_system_deployconfigfiles()
-        return
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -1685,7 +1767,8 @@ def do_system_deployconfigfiles(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        return
+        logging.warning('No systems selected')
+        return 1
 
     print('')
     print('Start Time: %s' % options.start_time)
@@ -1696,7 +1779,7 @@ def do_system_deployconfigfiles(self, args):
 
     message = 'Deploy ALL configuration files to these systems [y/N]:'
     if not self.user_confirm(message):
-        return
+        return 1
 
     system_ids = [self.get_system_id(s) for s in systems]
 
@@ -1705,6 +1788,8 @@ def do_system_deployconfigfiles(self, args):
                                         options.start_time)
 
     logging.info('Scheduled deployment for %i system(s)' % len(system_ids))
+
+    return 0
 
 ####################
 
@@ -1736,7 +1821,7 @@ def do_system_delete(self, args):
 
     if not args:
         self.help_system_delete()
-        return
+        return 1
 
     system_ids = []
 
@@ -1756,7 +1841,7 @@ def do_system_delete(self, args):
 
     if not system_ids:
         logging.warning('No systems to delete')
-        return
+        return 1
 
     # make the column the right size
     colsize = max_length([self.get_system_name(s) for s in system_ids])
@@ -1772,7 +1857,7 @@ def do_system_delete(self, args):
               (self.get_system_name(system_id).ljust(colsize), system_id))
 
     if not self.user_confirm('Delete these systems [y/N]:'):
-        return
+        return 1
 
     logging.debug("System IDs to remove: %s", system_ids)
     logging.debug("System names to IDs: %s", systems)
@@ -1792,6 +1877,7 @@ def do_system_delete(self, args):
     save_cache(self.ssm_cache_file, self.ssm)
     logging.debug("SSM cache saved")
 
+    return 0
 
 ####################
 
@@ -1814,7 +1900,7 @@ def do_system_lock(self, args):
 
     if not args:
         self.help_system_lock()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -1822,12 +1908,18 @@ def do_system_lock(self, args):
     else:
         systems = self.expand_systems(args)
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in sorted(systems):
         system_id = self.get_system_id(system)
         if not system_id:
             continue
 
         self.client.system.setLockStatus(self.session, system_id, True)
+
+    return 0
 
 ####################
 
@@ -1850,7 +1942,7 @@ def do_system_unlock(self, args):
 
     if not args:
         self.help_system_unlock()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -1858,12 +1950,18 @@ def do_system_unlock(self, args):
     else:
         systems = self.expand_systems(args)
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in sorted(systems):
         system_id = self.get_system_id(system)
         if not system_id:
             continue
 
         self.client.system.setLockStatus(self.session, system_id, False)
+
+    return 0
 
 ####################
 
@@ -1885,17 +1983,17 @@ def do_system_rename(self, args):
 
     if len(args) != 2:
         self.help_system_rename()
-        return
+        return 1
 
     (old_name, new_name) = args
 
     system_id = self.get_system_id(old_name)
     if not system_id:
-        return
+        return 1
 
     print('%s (%s) -> %s' % (old_name, system_id, new_name))
     if not self.user_confirm():
-        return
+        return 1
 
     self.client.system.setProfileName(self.session,
                                       system_id,
@@ -1908,6 +2006,8 @@ def do_system_rename(self, args):
     if old_name in self.ssm:
         self.ssm.remove(old_name)
         self.ssm.append(new_name)
+
+    return 0
 
 ####################
 
@@ -1930,13 +2030,17 @@ def do_system_listcustomvalues(self, args):
 
     if not args:
         self.help_system_listcustomvalues()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     add_separator = False
 
@@ -1958,6 +2062,8 @@ def do_system_listcustomvalues(self, args):
 
         for v in values:
             print('%s = %s' % (v, values[v]))
+
+    return 0
 
 ####################
 
@@ -1988,7 +2094,7 @@ def do_system_addcustomvalue(self, args):
 
     if len(args) < 3:
         self.help_system_addcustomvalue()
-        return
+        return 1
 
     key = args[0]
     value = args[1]
@@ -1999,6 +2105,10 @@ def do_system_addcustomvalue(self, args):
     else:
         systems = self.expand_systems(args[2:])
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in systems:
         system_id = self.get_system_id(system)
         if not system_id:
@@ -2007,6 +2117,8 @@ def do_system_addcustomvalue(self, args):
         self.client.system.setCustomValues(self.session,
                                            system_id,
                                            {key: value})
+
+    return 0
 
 ####################
 
@@ -2036,7 +2148,7 @@ def do_system_updatecustomvalue(self, args):
 
     if len(args) < 3:
         self.help_system_updatecustomvalue()
-        return
+        return 1
 
     return self.do_system_addcustomvalue(args)
 
@@ -2067,7 +2179,7 @@ def do_system_removecustomvalues(self, args):
 
     if len(args) < 2:
         self.help_system_removecustomvalues()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -2075,10 +2187,14 @@ def do_system_removecustomvalues(self, args):
     else:
         systems = self.expand_systems(args)
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     keys = args[1:]
 
     if not self.user_confirm('Delete these values [y/N]:'):
-        return
+        return 1
 
     for system in systems:
         system_id = self.get_system_id(system)
@@ -2088,6 +2204,8 @@ def do_system_removecustomvalues(self, args):
         self.client.system.deleteCustomValues(self.session,
                                               system_id,
                                               keys)
+
+    return 0
 
 ####################
 
@@ -2116,13 +2234,17 @@ def do_system_addnote(self, args):
 
     if len(args) < 1:
         self.help_system_addnote()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     if is_interactive(options):
         options.subject = prompt_user('Subject of the Note:', noblank=True)
@@ -2132,11 +2254,11 @@ def do_system_addnote(self, args):
     else:
         if not options.subject:
             logging.error('A subject is required')
-            return
+            return 1
 
         if not options.body:
             logging.error('A body is required')
-            return
+            return 1
 
     for system in systems:
         system_id = self.get_system_id(system)
@@ -2147,6 +2269,8 @@ def do_system_addnote(self, args):
                                    system_id,
                                    options.subject,
                                    options.body)
+
+    return 0
 
 ####################
 
@@ -2169,7 +2293,7 @@ def do_system_deletenotes(self, args):
 
     if not args:
         self.help_system_listnotes()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -2177,6 +2301,10 @@ def do_system_deletenotes(self, args):
         args.pop(0)
     else:
         systems = self.expand_systems(args.pop(0))
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     note_ids = args
 
@@ -2202,6 +2330,8 @@ def do_system_deletenotes(self, args):
                 # deleteNote does not throw an exception
                 self.client.system.deleteNote(self.session, system_id, note_id)
 
+    return 0
+
 ####################
 
 
@@ -2223,13 +2353,17 @@ def do_system_listnotes(self, args):
 
     if not args:
         self.help_system_listnotes()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     add_separator = False
 
@@ -2253,6 +2387,8 @@ def do_system_listnotes(self, args):
             print(n['note'])
             print('')
 
+    return 0
+
 ####################
 
 ####################
@@ -2275,13 +2411,17 @@ def do_system_listfqdns(self, args):
 
     if not len(args):
         self.help_system_listfqdns()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     add_separator = False
 
@@ -2302,6 +2442,8 @@ def do_system_listfqdns(self, args):
 
         for f in fqdns:
             print(f)
+
+    return 0
 
 ####################
 
@@ -2326,7 +2468,7 @@ def do_system_setbasechannel(self, args):
 
     if len(args) != 2:
         self.help_system_setbasechannel()
-        return
+        return 1
 
     new_channel = args.pop()
 
@@ -2335,6 +2477,10 @@ def do_system_setbasechannel(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     add_separator = False
 
@@ -2355,7 +2501,7 @@ def do_system_setbasechannel(self, args):
         print('New Base Channel: %s' % new_channel)
 
     if not self.user_confirm():
-        return
+        return 1
 
     for system in systems:
         system_id = self.get_system_id(system)
@@ -2365,6 +2511,8 @@ def do_system_setbasechannel(self, args):
         self.client.system.setBaseChannel(self.session,
                                           system_id,
                                           new_channel)
+
+    return 0
 
 ####################
 
@@ -2395,17 +2543,21 @@ def do_system_schedulechangechannels(self, args):
     # pdb.set_trace()
     if len(args) < 1:
         self.help_system_schedulechangechannels()
-        return
+        return 1
 
     if not options.base:
         logging.error('A base channel is required')
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     if not options.start_time:
         options.start_time = parse_time_input('now')
@@ -2438,7 +2590,7 @@ def do_system_schedulechangechannels(self, args):
         print('New Child channels %s' % ', '.join(childChannels))
 
     if not self.user_confirm():
-        return
+        return 1
 
     for system in systems:
         system_id = self.get_system_id(system)
@@ -2451,6 +2603,8 @@ def do_system_schedulechangechannels(self, args):
                                           childChannels,
                                           options.start_time)
         print('Scheduled action id: %s' % actionId)
+
+    return 0
 
 ####################
 
@@ -2472,7 +2626,7 @@ def do_system_listbasechannel(self, args):
 
     if not args:
         self.help_system_listbasechannel()
-        return
+        return 1
 
     add_separator = False
 
@@ -2481,6 +2635,10 @@ def do_system_listbasechannel(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -2499,6 +2657,8 @@ def do_system_listbasechannel(self, args):
                                                         system_id)
 
         print(channel.get('label'))
+
+    return 0
 
 ####################
 
@@ -2521,7 +2681,7 @@ def do_system_listchildchannels(self, args):
 
     if not args:
         self.help_system_listchildchannels()
-        return
+        return 1
 
     add_separator = False
 
@@ -2530,6 +2690,10 @@ def do_system_listchildchannels(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -2548,6 +2712,8 @@ def do_system_listchildchannels(self, args):
                                                            system_id)
 
         print('\n'.join(sorted([c.get('label') for c in channels])))
+
+    return 0
 
 ####################
 
@@ -2570,6 +2736,7 @@ def complete_system_addchildchannels(self, text, line, beg, end):
 
 def do_system_addchildchannels(self, args):
     self.manipulate_child_channels(args)
+    return 0
 
 ####################
 
@@ -2589,6 +2756,8 @@ def do_system_listcrashedsystems(self, args):
         res_crash = self.client.system.crash.listSystemCrashes(self.session, s['id'])
         if res_crash:
             print("%d : %s : %s" % (len(res_crash), s['id'], s['name']))
+
+    return 0
 
 ######
 
@@ -2631,13 +2800,15 @@ def do_system_deletecrashes(self, args):
 
     confirm = prompt_user(prompt_string)
     if re.match('n', confirm, re.I):
-        return
+        return 1
 
     for s_id in sys_id:
         list_crash = self.client.system.crash.listSystemCrashes(self.session, int(s_id))
         for crash in list_crash:
             print_msg("Deleting crash with id %s from system %s." % (crash['id'], s_id), options.verbose)
             self.client.system.crash.deleteCrash(self.session, int(crash['id']))
+
+    return 0
 
 #######
 
@@ -2657,7 +2828,7 @@ def do_system_listcrashesbysystem(self, args):
     if not options.sysid:
         print("# System id must be provided.")
         print("usage: system_listcrashesbysystem -i sys_id")
-        return
+        return 1
 
     l_crashes = self.client.system.crash.listSystemCrashes(self.session, int(options.sysid))
     print('')
@@ -2667,6 +2838,7 @@ def do_system_listcrashesbysystem(self, args):
     for cr in l_crashes:
         print("| %s  | %s" % (cr['id'], cr['crash']))
 
+    return 0
 
 #######
 
@@ -2688,7 +2860,7 @@ def do_system_getcrashfiles(self, args):
     if not options.crashid:
         print("# Crash id must be provided.")
         print("usage: system_getcrashfiles -c crash_id [--dest_folder=/tmp/crash_files] [--verbose]")
-        return
+        return 1
 
     if not options.verbose:
         options.verbose = "&>/dev/null"
@@ -2716,6 +2888,8 @@ def do_system_getcrashfiles(self, args):
     print("# All files we downloaded to %s." % options.dest_folder)
     print('')
 
+    return 0
+
 ####################
 
 
@@ -2737,6 +2911,7 @@ def complete_system_removechildchannels(self, text, line, beg, end):
 
 def do_system_removechildchannels(self, args):
     self.manipulate_child_channels(args, True)
+    return 0
 
 ####################
 
@@ -2759,7 +2934,7 @@ def do_system_details(self, args, short=False):
 
     if not args:
         self.help_system_details()
-        return
+        return 1
 
     add_separator = False
 
@@ -2768,6 +2943,10 @@ def do_system_details(self, args, short=False):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -2885,6 +3064,8 @@ def do_system_details(self, args, short=False):
                 if group.get('subscribed') == 1:
                     print(group.get('system_group_name'))
 
+    return 0
+
 ####################
 
 
@@ -2906,7 +3087,7 @@ def do_system_listerrata(self, args):
 
     if not args:
         self.help_system_listerrata()
-        return
+        return 1
 
     add_separator = False
 
@@ -2915,6 +3096,10 @@ def do_system_listerrata(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -2933,6 +3118,8 @@ def do_system_listerrata(self, args):
                                                       system_id)
 
         print_errata_list(errata)
+
+    return 0
 
 ####################
 
@@ -2970,7 +3157,7 @@ def do_system_applyerrata(self, args):
 
     if len(args) < 2:
         self.help_system_applyerrata()
-        return
+        return 1
 
     # use the systems applyed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -2979,11 +3166,15 @@ def do_system_applyerrata(self, args):
     else:
         systems = self.expand_systems(args.pop(0))
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     # allow globbing and searching of errata
     errata_list = self.expand_errata(args)
 
     if not errata_list or not systems:
-        return
+        return 1
 
     # reconstruct options so we can pass them to do_errata_apply
     opts = []
@@ -3013,13 +3204,17 @@ def do_system_listevents(self, args):
 
     if not args:
         self.help_system_listevents()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     add_separator = False
 
@@ -3043,6 +3238,8 @@ def do_system_listevents(self, args):
             print('Completed: %s' % e.get('completed'))
             print('Details:   %s' % e.get('details'))
 
+    return 0
+
 ####################
 
 
@@ -3064,7 +3261,7 @@ def do_system_listentitlements(self, args):
 
     if not args:
         self.help_system_listentitlements()
-        return
+        return 1
 
     add_separator = False
 
@@ -3073,6 +3270,10 @@ def do_system_listentitlements(self, args):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     for system in sorted(systems):
         system_id = self.get_system_id(system)
@@ -3090,6 +3291,8 @@ def do_system_listentitlements(self, args):
                                                           system_id)
 
         print('\n'.join(sorted(entitlements)))
+
+    return 0
 
 ####################
 
@@ -3117,7 +3320,7 @@ def do_system_addentitlements(self, args):
 
     if len(args) < 2:
         self.help_system_addentitlements()
-        return
+        return 1
 
     entitlement = args.pop()
 
@@ -3132,6 +3335,10 @@ def do_system_addentitlements(self, args):
     else:
         systems = self.expand_systems(args)
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in systems:
         system_id = self.get_system_id(system)
         if not system_id:
@@ -3140,6 +3347,8 @@ def do_system_addentitlements(self, args):
         self.client.system.addEntitlements(self.session,
                                            system_id,
                                            [entitlement])
+
+    return 0
 
 ####################
 
@@ -3167,7 +3376,7 @@ def do_system_removeentitlement(self, args):
 
     if len(args) < 2:
         self.help_system_removeentitlement()
-        return
+        return 1
 
     entitlement = args.pop()
 
@@ -3182,6 +3391,10 @@ def do_system_removeentitlement(self, args):
     else:
         systems = self.expand_systems(args)
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in systems:
         system_id = self.get_system_id(system)
         if not system_id:
@@ -3190,6 +3403,8 @@ def do_system_removeentitlement(self, args):
         self.client.system.removeEntitlements(self.session,
                                               system_id,
                                               [entitlement])
+
+    return 0
 
 ####################
 
@@ -3208,6 +3423,8 @@ def do_system_listpackageprofiles(self, args, doreturn=False):
     else:
         if profiles:
             print('\n'.join(sorted(profiles)))
+
+    return 0
 
 ####################
 
@@ -3234,12 +3451,12 @@ def do_system_deletepackageprofile(self, args):
 
     if not args:
         self.help_system_deletepackageprofile()
-        return
+        return 1
 
     label = args[0]
 
     if not self.user_confirm('Delete this profile [y/N]:'):
-        return
+        return 1
 
     all_profiles = self.client.system.listPackageProfiles(self.session)
 
@@ -3250,9 +3467,11 @@ def do_system_deletepackageprofile(self, args):
 
     if not profile_id:
         logging.warning('%s is not a valid profile' % label)
-        return
+        return 1
 
     self.client.system.deletePackageProfile(self.session, profile_id)
+
+    return 0
 
 ####################
 
@@ -3282,11 +3501,11 @@ def do_system_createpackageprofile(self, args):
 
     if len(args) != 1:
         self.help_system_createpackageprofile()
-        return
+        return 1
 
     system_id = self.get_system_id(args[0])
     if not system_id:
-        return
+        return 1
 
     if is_interactive(options):
         options.name = prompt_user('Profile Label:', noblank=True)
@@ -3294,11 +3513,11 @@ def do_system_createpackageprofile(self, args):
     else:
         if not options.name:
             logging.error('A profile name is required')
-            return
+            return 1
 
         if not options.description:
             logging.error('A profile description is required')
-            return
+            return 1
 
     self.client.system.createPackageProfile(self.session,
                                             system_id,
@@ -3306,6 +3525,8 @@ def do_system_createpackageprofile(self, args):
                                             options.description)
 
     logging.info("Created package profile '%s'" % options.name)
+
+    return 0
 
 ####################
 
@@ -3336,7 +3557,7 @@ def do_system_comparepackageprofile(self, args):
 
     if len(args) < 2:
         self.help_system_comparepackageprofile()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
@@ -3344,6 +3565,10 @@ def do_system_comparepackageprofile(self, args):
         args.pop(0)
     else:
         systems = self.expand_systems(args[:-1])
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     profile = args[-1]
 
@@ -3365,6 +3590,8 @@ def do_system_comparepackageprofile(self, args):
         print('%s:' % system)
         self.print_package_comparison(results)
 
+    return 0
+
 ####################
 
 
@@ -3384,7 +3611,7 @@ def do_system_comparepackages(self, args):
 
     if len(args) != 2:
         self.help_system_comparepackages()
-        return
+        return 1
 
     this_system = self.get_system_id(args[0])
     other_system = self.get_system_id(args[1])
@@ -3394,6 +3621,8 @@ def do_system_comparepackages(self, args):
                                                  other_system)
 
     self.print_package_comparison(results)
+
+    return 0
 
 ####################
 
@@ -3420,7 +3649,7 @@ def do_system_syncpackages(self, args):
 
     if len(args) != 2:
         self.help_system_syncpackages()
-        return
+        return 1
 
     (source, target) = args
 
@@ -3428,7 +3657,7 @@ def do_system_syncpackages(self, args):
     target_id = self.get_system_id(target)
 
     if not source_id or not target_id:
-        return
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -3449,7 +3678,7 @@ def do_system_syncpackages(self, args):
     print('Start Time: %s' % options.start_time)
 
     if not self.user_confirm('Sync packages [y/N]:'):
-        return
+        return 1
 
     # get package IDs
     packages = self.client.system.listPackages(self.session, source_id)
@@ -3470,6 +3699,9 @@ def do_system_syncpackages(self, args):
                                                       source_id,
                                                       package_ids,
                                                       options.start_time)
+
+    return 0
+
 ####################
 
 
@@ -3604,13 +3836,17 @@ def do_system_comparewithchannel(self, args):
 
     if not args:
         self.help_system_comparewithchannel()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     channel_latest = {}
     for system in sorted(systems):
@@ -3649,7 +3885,7 @@ def do_system_comparewithchannel(self, args):
                               % system)
                 logging.error("Please subscribe to a channel, or specify a" +
                               "channel to compare with")
-                return
+                return 1
             logging.debug("base channel %s for %s" % (basech['name'], system))
             childch = self.client.system.listSubscribedChildChannels(
                 self.session, system_id)
@@ -3701,6 +3937,8 @@ def do_system_comparewithchannel(self, args):
         self.print_comparison_withchannel(channelnewer, systemnewer,
                                           channelmissing, latestpkgs)
 
+    return 0
+
 ####################
 
 
@@ -3729,7 +3967,7 @@ def do_system_schedulehardwarerefresh(self, args):
 
     if not args:
         self.help_system_schedulehardwarerefresh()
-        return
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -3749,6 +3987,10 @@ def do_system_schedulehardwarerefresh(self, args):
     else:
         systems = self.expand_systems(args)
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in systems:
         system_id = self.get_system_id(system)
         if not system_id:
@@ -3757,6 +3999,8 @@ def do_system_schedulehardwarerefresh(self, args):
         self.client.system.scheduleHardwareRefresh(self.session,
                                                    system_id,
                                                    options.start_time)
+
+    return 0
 
 ####################
 
@@ -3785,7 +4029,7 @@ def do_system_schedulepackagerefresh(self, args):
 
     if not args:
         self.help_system_schedulepackagerefresh()
-        return
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -3805,6 +4049,10 @@ def do_system_schedulepackagerefresh(self, args):
     else:
         systems = self.expand_systems(args)
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in systems:
         system_id = self.get_system_id(system)
         if not system_id:
@@ -3813,6 +4061,8 @@ def do_system_schedulepackagerefresh(self, args):
         self.client.system.schedulePackageRefresh(self.session,
                                                   system_id,
                                                   options.start_time)
+
+    return 0
 
 ####################
 
@@ -3840,12 +4090,16 @@ def do_system_show_packageversion(self, args):
 
     if len(args) != 2:
         self.help_system_show_packageversion()
-        return
+        return 1
 
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     print("Package\tVersion\tRelease\tEpoch\tArch\tSystem")
     print("==============================================")
@@ -3860,6 +4114,8 @@ def do_system_show_packageversion(self, args):
             if pkg.get('name') == searchpkg:
                 print("%s\t%s\t%s\t%s\t%s\t%s" % (pkg.get('name'), pkg.get('version'), pkg.get('release'),
                                                   pkg.get('epoch'), pkg.get('arch_label'), system))
+
+    return 0
 
 ####################
 
@@ -3888,7 +4144,7 @@ def do_system_setcontactmethod(self, args):
 
     if len(args) < 2:
         self.help_system_setcontactmethod()
-        return
+        return 1
 
     contact_method = args.pop()
     details = {'contact_method': contact_method}
@@ -3899,13 +4155,20 @@ def do_system_setcontactmethod(self, args):
     else:
         systems = self.expand_systems(args)
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in sorted(systems):
         system_id = self.get_system_id(system)
         if not system_id:
             continue
 
         self.client.system.setDetails(self.session, system_id, details)
-        ####################
+
+    return 0
+
+####################
 
 
 def help_system_scheduleapplyconfigchannels(self):
@@ -3930,7 +4193,7 @@ def do_system_scheduleapplyconfigchannels(self, args):
 
     if not args:
         self.help_system_scheduleapplyconfigchannels()
-        return
+        return 1
 
     # get the start time option
     # skip the prompt if we are running with --yes
@@ -3951,7 +4214,8 @@ def do_system_scheduleapplyconfigchannels(self, args):
         systems = self.expand_systems(args)
 
     if not systems:
-        return
+        logging.warning('No systems selected')
+        return 1
 
     print('')
     print('Start Time: %s' % options.start_time)
@@ -3962,7 +4226,7 @@ def do_system_scheduleapplyconfigchannels(self, args):
 
     message = 'Schedule applying config channels to these systems [y/N]:'
     if not self.user_confirm(message):
-        return
+        return 1
 
     system_ids = [self.get_system_id(s) for s in systems]
 
@@ -3970,4 +4234,7 @@ def do_system_scheduleapplyconfigchannels(self, args):
                                                                     system_ids,
                                                                     options.start_time, False)
     print('Scheduled action id: %s' % actionId)
-    ####################
+
+    return 0
+
+####################
