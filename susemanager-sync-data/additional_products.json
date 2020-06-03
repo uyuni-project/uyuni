@@ -93,7 +93,7 @@
         "repositories" : [
             {
                 "id" : -203,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/x86_64/",
                 "name" : "oraclelinux8",
                 "distro_target" : "x86_64",
                 "description" : "Oracle Linux 8",
@@ -103,7 +103,7 @@
             },
             {
                 "id" : -204,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/",
                 "name" : "oraclelinux8-appstream",
                 "distro_target" : "x86_64",
                 "description" : "Oracle Linux 8 AppStream",
@@ -113,7 +113,7 @@
             },
             {
                 "id" : -205,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL8/addons/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/addons/x86_64/",
                 "name" : "oraclelinux8-addons",
                 "distro_target" : "x86_64",
                 "description" : "Addons for Oracle Linux 8",
@@ -123,7 +123,7 @@
             },
             {
                 "id" : -206,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL8/codeready/builder/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/codeready/builder/x86_64/",
                 "name" : "oraclelinux8-codereadybuilder",
                 "distro_target" : "x86_64",
                 "description" : "Latest CodeReady Builder packages for Oracle Linux 8",
@@ -133,7 +133,7 @@
             },
             {
                 "id" : -207,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL8/developer/UEKR6/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/developer/UEKR6/x86_64/",
                 "name" : "oraclelinux8-developer-uek-r6",
                 "distro_target" : "x86_64",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 8",
@@ -143,7 +143,7 @@
             },
             {
                 "id" : -208,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL8/developer/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/developer/x86_64/",
                 "name" : "oraclelinux8-developer",
                 "distro_target" : "x86_64",
                 "description" : "Packages for test and development - Oracle Linux 8",
@@ -180,7 +180,7 @@
         "repositories" : [
             {
                 "id" : -185,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/latest/i386/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/latest/i386/",
                 "name" : "oraclelinux6",
                 "distro_target" : "i386",
                 "description" : "Oracle Linux 6",
@@ -190,7 +190,7 @@
             },
             {
                 "id" : -186,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/addons/i386/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/addons/i386/",
                 "name" : "oraclelinux6-addons",
                 "distro_target" : "i386",
                 "description" : "Addons for Oracle Linux 6",
@@ -200,7 +200,7 @@
             },
             {
                 "id" : -187,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/i386/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/i386/",
                 "name" : "oraclelinux6-uek-r2",
                 "distro_target" : "i386",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 2 for Oracle Linux 6",
@@ -209,28 +209,8 @@
                 "installer_updates" : false
             },
             {
-                "id" : -188,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/UEKR3/latest/i386/",
-                "name" : "oraclelinux6-uek-r3",
-                "distro_target" : "i386",
-                "description" : "Latest Unbreakable Enterprise Kernel Release 3 for Oracle Linux 6",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -189,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/UEKR4/latest/i386/",
-                "name" : "oraclelinux6-uek-r4",
-                "distro_target" : "i386",
-                "description" : "Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 6",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
                 "id" : -190,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/MySQL/i386/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/MySQL/i386/",
                 "name" : "oraclelinux6-mysql55",
                 "distro_target" : "i386",
                 "description" : "MySQL 5.5 for Oracle Linux 6",
@@ -240,40 +220,10 @@
             },
             {
                 "id" : -191,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/i386/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/i386/",
                 "name" : "oraclelinux6-mysql56",
                 "distro_target" : "i386",
                 "description" : "http://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/i386/",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -192,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/playground/latest/i386/",
-                "name" : "oraclelinux6-playground",
-                "distro_target" : "i386",
-                "description" : "Playground (Mainline) Kernels for Oracle Linux 6",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -197,
-                "url" : "http://public-yum.oracle.com/repo/OracleLinux/OL6/SoftwareCollections/i386/",
-                "name" : "oraclelinux6-scl",
-                "distro_target" : "i386",
-                "description" : "Software Collection Library packages for Oracle Linux 6",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -198,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/openstack30/i386/",
-                "name" : "oraclelinux6-openstack30",
-                "distro_target" : "i386",
-                "description" : "OpenStack 3.0 packages for Oracle Linux 6",
                 "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
@@ -307,7 +257,7 @@
         "repositories" : [
             {
                 "id" : -171,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/latest/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/latest/x86_64/",
                 "name" : "oraclelinux6",
                 "distro_target" : "x86_64",
                 "description" : "Oracle Linux 6",
@@ -317,7 +267,7 @@
             },
             {
                 "id" : -172,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/addons/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/addons/x86_64/",
                 "name" : "oraclelinux6-addons",
                 "distro_target" : "x86_64",
                 "description" : "Addons for Oracle Linux 6",
@@ -327,7 +277,7 @@
             },
             {
                 "id" : -173,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/x86_64/",
                 "name" : "oraclelinux6-uek-r2",
                 "distro_target" : "x86_64",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 2 for Oracle Linux 6",
@@ -337,7 +287,7 @@
             },
             {
                 "id" : -174,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/UEKR3/latest/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEKR3/latest/x86_64/",
                 "name" : "oraclelinux6-uek-r3",
                 "distro_target" : "x86_64",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 3 for Oracle Linux 6",
@@ -347,7 +297,7 @@
             },
             {
                 "id" : -175,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/UEKR4/latest/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEKR4/latest/x86_64/",
                 "name" : "oraclelinux6-uek-r4",
                 "distro_target" : "x86_64",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 6",
@@ -357,7 +307,7 @@
             },
             {
                 "id" : -176,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/MySQL/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/MySQL/x86_64/",
                 "name" : "oraclelinux6-mysql55",
                 "distro_target" : "x86_64",
                 "description" : "MySQL 5.5 for Oracle Linux 6",
@@ -367,7 +317,7 @@
             },
             {
                 "id" : -177,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/x86_64/",
                 "name" : "oraclelinux6-mysql56",
                 "distro_target" : "x86_64",
                 "description" : "http://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/x86_64/",
@@ -377,7 +327,7 @@
             },
             {
                 "id" : -178,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/playground/latest/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/playground/latest/x86_64/",
                 "name" : "oraclelinux6-playground",
                 "distro_target" : "x86_64",
                 "description" : "Playground (Mainline) Kernels for Oracle Linux 6",
@@ -387,7 +337,7 @@
             },
             {
                 "id" : -183,
-                "url" : "http://public-yum.oracle.com/repo/OracleLinux/OL6/SoftwareCollections/x86_64/",
+                "url" : "https://public-yum.oracle.com/repo/OracleLinux/OL6/SoftwareCollections/x86_64/",
                 "name" : "oraclelinux6-scl",
                 "distro_target" : "x86_64",
                 "description" : "Software Collection Library packages for Oracle Linux 6",
@@ -397,7 +347,7 @@
             },
             {
                 "id" : -184,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL6/openstack30/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/openstack30/x86_64/",
                 "name" : "oraclelinux6-openstack30",
                 "distro_target" : "x86_64",
                 "description" : "OpenStack 3.0 packages for Oracle Linux 6",
@@ -434,7 +384,7 @@
         "repositories" : [
             {
                 "id" : -154,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/",
                 "name" : "oraclelinux7",
                 "distro_target" : "x86_64",
                 "description" : "Oracle Linux 7",
@@ -444,7 +394,7 @@
             },
             {
                 "id" : -155,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/addons/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/addons/x86_64/",
                 "name" : "oraclelinux7-addons",
                 "distro_target" : "x86_64",
                 "description" : "Addons for Oracle Linux 7",
@@ -454,7 +404,7 @@
             },
             {
                 "id" : -156,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/UEKR4/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR4/x86_64/",
                 "name" : "oraclelinux7-uek-r4",
                 "distro_target" : "x86_64",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 7",
@@ -464,7 +414,7 @@
             },
             {
                 "id" : -157,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/UEKR3/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR3/x86_64/",
                 "name" : "oraclelinux7-uek-r3",
                 "distro_target" : "x86_64",
                 "description" : "Latest Unbreakable Enterprise Kernel Release 3 for Oracle Linux 7",
@@ -474,7 +424,7 @@
             },
             {
                 "id" : -158,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/MySQL55/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/MySQL55/x86_64/",
                 "name" : "oraclelinux7-mysql55",
                 "distro_target" : "x86_64",
                 "description" : "MySQL 5.5 for Oracle Linux 7",
@@ -484,7 +434,7 @@
             },
             {
                 "id" : -159,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/MySQL56/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/MySQL56/x86_64/",
                 "name" : "oraclelinux7-mysql56",
                 "distro_target" : "x86_64",
                 "description" : "MySQL 5.6 for Oracle Linux 7",
@@ -494,7 +444,7 @@
             },
             {
                 "id" : -160,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/MySQL57_community/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/MySQL57_community/x86_64/",
                 "name" : "oraclelinux7-mysql57",
                 "distro_target" : "x86_64",
                 "description" : "MySQL 5.7 for Oracle Linux 7",
@@ -504,7 +454,7 @@
             },
             {
                 "id" : -165,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/openstack20/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/openstack20/x86_64/",
                 "name" : "oraclelinux7-openstack20",
                 "distro_target" : "x86_64",
                 "description" : "OpenStack 2.0 packages for Oracle Linux 7",
@@ -514,7 +464,7 @@
             },
             {
                 "id" : -166,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/openstack21/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/openstack21/x86_64/",
                 "name" : "oraclelinux7-openstack21",
                 "distro_target" : "x86_64",
                 "description" : "OpenStack 2.1 packages for Oracle Linux 7",
@@ -524,7 +474,7 @@
             },
             {
                 "id" : -167,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/openstack30/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/openstack30/x86_64/",
                 "name" : "oraclelinux7-openstack30",
                 "distro_target" : "x86_64",
                 "description" : "OpenStack 3.0 packages for Oracle Linux 7",
@@ -534,7 +484,7 @@
             },
             {
                 "id" : -168,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/openstack_extras/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/openstack_extras/x86_64/",
                 "name" : "oraclelinux7-openstack30-extras",
                 "distro_target" : "x86_64",
                 "description" : "OpenStack 3.0 Extra packages for Oracle Linux 7",
@@ -544,7 +494,7 @@
             },
             {
                 "id" : -169,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/SoftwareCollections/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/SoftwareCollections/x86_64/",
                 "name" : "oraclelinux7-scl",
                 "distro_target" : "x86_64",
                 "description" : "Software Collection Library packages for Oracle Linux 7",
@@ -554,7 +504,7 @@
             },
             {
                 "id" : -170,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/ceph/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/ceph/x86_64/",
                 "name" : "oraclelinux7-ceph",
                 "distro_target" : "x86_64",
                 "description" : "Ceph Storage for Oracle Linux Release 2.0 for Oracle Linux 7",
@@ -564,7 +514,7 @@
             },
             {
                 "id" : -170,
-                "url" : "http://yum.oracle.com/repo/OracleLinux/OL7/ceph/x86_64/",
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/ceph/x86_64/",
                 "name" : "oraclelinux7-ceph",
                 "distro_target" : "x86_64",
                 "description" : "Ceph Storage for Oracle Linux Release 2.0 for Oracle Linux 7",
@@ -722,7 +672,7 @@
                 "name" : "centos7-atomic",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 Atomic",
-                "enabled" : true,
+                "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
             },
@@ -732,16 +682,6 @@
                 "name" : "centos7-centosplus",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 Plus",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -132,
-                "url" : "http://mirror.centos.org/centos-7/7/cloud/x86_64",
-                "name" : "centos7-cloud",
-                "distro_target" : "x86_64",
-                "description" : "CentOS 7 Cloud",
                 "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
@@ -777,51 +717,11 @@
                 "installer_updates" : false
             },
             {
-                "id" : -136,
-                "url" : "http://mirror.centos.org/centos-7/7/opstools/x86_64",
-                "name" : "centos7-opstools",
-                "distro_target" : "x86_64",
-                "description" : "CentOS 7 OpsTools",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -137,
-                "url" : "http://mirror.centos.org/centos-7/7/paas/x86_64",
-                "name" : "centos7-paas",
-                "distro_target" : "x86_64",
-                "description" : "CentOS 7 PaaS",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
                 "id" : -138,
                 "url" : "http://mirror.centos.org/centos-7/7/rt/x86_64",
                 "name" : "centos7-rt",
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 RT",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -139,
-                "url" : "http://mirror.centos.org/centos-7/7/scio/x86_64",
-                "name" : "centos7-scio",
-                "distro_target" : "x86_64",
-                "description" : "CentOS 7 Scio",
-                "enabled" : false,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -140,
-                "url" : "http://mirror.centos.org/centos-7/7/storage/x86_64",
-                "name" : "centos7-storage",
-                "distro_target" : "x86_64",
-                "description" : "CentOS 7 Storage",
                 "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
@@ -833,16 +733,6 @@
                 "distro_target" : "x86_64",
                 "description" : "CentOS 7 Updates",
                 "enabled" : true,
-                "autorefresh" : false,
-                "installer_updates" : false
-            },
-            {
-                "id" : -142,
-                "url" : "http://mirror.centos.org/centos-7/7/virt/x86_64",
-                "name" : "centos7-virt",
-                "distro_target" : "x86_64",
-                "description" : "CentOS 7 Virt",
-                "enabled" : false,
                 "autorefresh" : false,
                 "installer_updates" : false
             },
