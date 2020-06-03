@@ -252,6 +252,83 @@ class UyuniUser(UyuniRemoteObject):
         return bool(self.client("user.removeRole", uid, role))
 
 
+class UyuniOrg(UyuniRemoteObject):
+    """
+    CRUD operations on orgs
+    """
+
+    def get_orgs(self) -> Dict[str, Union[int, str, bool]]:
+        """
+        List all orgs.
+
+        :return:
+        """
+        return self.client("org.listOrgs", self.client.get_token())
+
+    def get_org_by_name(self, name: str) -> Dict[str, Union[int, str, bool]]:
+        """
+        Get org data by name.
+
+        :param name: organisation name
+        :return:
+        """
+        try:
+            org_data = self.client("org.getDetails", self.client.get_token(), name)
+        except UyuniUsersException:
+            org_data = {}
+
+        return org_data
+
+    def create(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
+               last_name: str, email: str, pam: bool) -> Tuple[Dict[str, Union[str, int, bool]], str]:
+        """
+        Create Uyuni org.
+
+        :param name:
+        :param admin_login:
+        :param admin_password:
+        :param admin_prefix:
+        :param first_name:
+        :param last_name:
+        :param email:
+        :param pam:
+        :return: tuple of data and error/log message
+        """
+        try:
+            log.debug("Creating organisation %s", name)
+            ret = self.client("org.create", self.client.get_token(), name, admin_login, admin_password, admin_prefix,
+                              first_name, last_name, email, pam)
+            msg = 'Organisation "{}" has been created successfully'.format(name)
+            log.debug(msg)
+        except UyuniUsersException as exc:
+            ret = {}
+            msg = 'Error while creating organisation: {}'.format(str(exc))
+        except Exception as exc:
+            ret = {}
+            msg = 'Unhandled exception occurred while creating new organisation: {}'.format(str(exc))
+
+        return ret, msg
+
+    def delete(self, name: str) -> Tuple[bool, str]:
+        """
+        Delete Uyuni org.
+
+        :param name:
+        :return: boolean, True if organisation has been deleted.
+        """
+        org_id = int(self.get_org_by_name(name=name).get("id", -1))
+        if org_id > -1:
+            res = bool(self.client("org.delete", self.client.get_token(), org_id))
+            msg = 'Organisation "{}" (ID: "{}") has been removed'.format(name, org_id)
+            log.debug(msg)
+        else:
+            res = False
+            msg = 'Organisation "{}" was not found'.format(name)
+            log.error(msg)
+
+        return res, msg
+
+
 class UyuniSystemgroup(UyuniRemoteObject):
     """
     Provides methods to access and modify system groups.
@@ -573,6 +650,25 @@ def user_remove_role(uid, role, org_admin_user=None, org_admin_password=None):
     :return: boolean indication success in operation
     """
     return UyuniUser(org_admin_user, org_admin_password).remove_role(uid=uid, role=role)
+
+
+def create_org(name, admin_login, first_name, last_name, email, admin_password=None, admin_prefix="Mr.", pam=False):
+    """
+    Create org in Uyuni.
+
+    :param name:
+    :param admin_login:
+    :param first_name:
+    :param last_name:
+    :param email:
+    :param admin_password:
+    :param admin_prefix:
+    :param pam:
+    :return:
+    """
+    return UyuniOrg().create(name=name, admin_login=admin_login, admin_password=admin_password,
+                             email=email, first_name=first_name, last_name=last_name,
+                             admin_prefix=admin_prefix, pam=pam)
 
 
 """
