@@ -1381,7 +1381,6 @@ public class ErrataHandler extends BaseHandler {
      *      Channel objects into a List.  This is primarily used before publishing
      *      to verify all channels are valid before starting the errata creation
      * @param channelsLabels the List of channel labels to verify
-     * @param org the org of the user
      * @return a List of channel objects
      */
     private List<Channel> verifyChannelList(List<String> channelsLabels, User user) {
