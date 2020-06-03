@@ -543,6 +543,19 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </join>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction"
+                  lazy="true" discriminator-value="517">
+            <set name="serverIds" table="rhnActionClusterServers">
+                <key column="action_id"/>
+                <element column="server_id" type="long"/>
+            </set>
+            <join table="rhnActionClusterRemoveNode">
+                <key column="action_id"/>
+                <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster" not-null="true" />
+                <property name="jsonParams" type="string" column="json_params" not-null="true" />
+            </join>
+        </subclass>
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
@@ -599,7 +612,16 @@ select {ra.*}
             NULL as permission_seclabel,
             NULL as source from dual) ra_16_,
     (select NULL as pool_name,
-            NULL as volume_name from dual) ra_17_
+            NULL as volume_name from dual) ra_17_,
+    (select NULL as cluster_id from dual) ra_18_,
+    (select NULL as cluster_id,
+            NULL as server_id,
+            NULL as json_params from dual) ra_19_,
+    (select NULL as cluster_id,
+            NULL as server_id,
+            NULL as json_params from dual) ra_20_,
+    (select NULL as cluster_id,
+            NULL as json_params from dual) ra_21_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -727,7 +749,16 @@ select sa.server_id
                              NULL as permission_seclabel,
                              NULL as source from dual) ra_16_,
                      (select NULL as pool_name,
-                             NULL as volume_name from dual) ra_17_
+                             NULL as volume_name from dual) ra_17_,
+                     (select NULL as cluster_id from dual) ra_18_,
+                     (select NULL as cluster_id,
+                             NULL as server_id,
+                             NULL as json_params from dual) ra_19_,
+                     (select NULL as cluster_id,
+                             NULL as server_id,
+                             NULL as json_params from dual) ra_20_,
+                     (select NULL as cluster_id,
+                             NULL as json_params from dual) ra_21_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id

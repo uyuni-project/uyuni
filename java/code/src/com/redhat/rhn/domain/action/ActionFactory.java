@@ -489,6 +489,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_CLUSTER_JOIN_NODE)) {
             retval = new ClusterJoinNodeAction();
         }
+        else if (typeIn.equals(TYPE_CLUSTER_REMOVE_NODE)) {
+            retval = new ClusterRemoveNodeAction();
+        }
         else {
             retval = new Action();
         }
@@ -1345,5 +1348,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_CLUSTER_JOIN_NODE =
             lookupActionTypeByLabel("cluster.join_node");
+
+    /**
+     * The constant representing "Remove node from cluster" [ID:517]
+     */
+    public static final ActionType TYPE_CLUSTER_REMOVE_NODE =
+            lookupActionTypeByLabel("cluster.remove_node");
 }
 
