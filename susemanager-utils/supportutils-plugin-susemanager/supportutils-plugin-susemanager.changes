@@ -1,3 +1,5 @@
+- supportconfig speedup fixes, add option to not compress spacewalk-debug output dir
+
 -------------------------------------------------------------------
 Wed May 15 15:23:32 CEST 2019 - jgonzalez@suse.com
 
