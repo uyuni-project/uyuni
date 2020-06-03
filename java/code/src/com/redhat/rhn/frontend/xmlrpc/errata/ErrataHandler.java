@@ -318,7 +318,7 @@ public class ErrataHandler extends BaseHandler {
      *                  with the errata.")
      *          #prop_desc("array", "CVEs", "'cves' is the key into the struct")
      *              #array_single("string", "cves - List of CVEs to associate
-     *                  with the errata. (valid only for published errata)")
+     *                  with the errata")
      *     #struct_end()
      *
      *  @xmlrpc.returntype #return_int_success()
