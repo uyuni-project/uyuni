@@ -252,6 +252,194 @@ class UyuniUser(UyuniRemoteObject):
         return bool(self.client("user.removeRole", uid, role))
 
 
+class UyuniSystemgroup(UyuniRemoteObject):
+    """
+    Provides methods to access and modify system groups.
+    """
+
+    def get_details(self, name: str) -> Dict[str, Union[int, str]]:
+        """
+        Retrieve details of a ServerGroup.
+
+        :param name: Name of the system group.
+        :return: data of the system group.
+        """
+        log.debug("Get details for group: %s", name)
+        return self.client("systemgroup.getDetails", name)
+
+    def create(self, name: str, description: str) -> Dict[str, Union[int, str]]:
+        """
+        Create a new system group.
+
+        :param name: Name of the system group.
+        :param description: Description of the system group.
+        :return: data of the system group.
+        """
+        log.debug("Create group: %s", name)
+        return self.client("systemgroup.create", name, description)
+
+    def delete(self, name: str) -> int:
+        """
+        Delete a system group.
+
+        :param name: Name of the system group.
+        :return: 1 on success, exception thrown otherwise.
+        """
+        log.debug("delete group: %s", name)
+        return self.client("systemgroup.delete", name)
+
+    def update(self, name: str, description: str) -> Dict[str, Union[int, str]]:
+        """
+        Update an existing system group.
+
+        :param name: Name of the system group.
+        :param description: Description of the system group.
+        :return: data of the system group.
+        """
+        log.debug("update group: %s", name)
+        return self.client("systemgroup.update", name, description)
+
+    def list_systems(self, name: str, minimal: bool = True) -> List[Dict[str, Any]]:
+        """
+        Get information from the system in the group.
+
+        :param name: Group name
+        :param minimal: default True. Minimal information or more detailed one about systems
+        :return: List of system information
+        """
+        return self._convert_datetime_list(
+            self.client("systemgroup.listSystemsMinimal" if minimal else "systemgroup.listSystems", name))
+
+    def add_remove_systems(self, name: str, add_remove: bool, system_ids: List[int] = []) -> int:
+        """
+        Add or remove list of systems from the group
+
+        :param name: Group name
+        :param add_remove: True to add to the group, False to remove
+        :param system_ids: List of system ids to add or remove
+        :return: 1 on success, exception thrown otherwise
+        """
+        return self.client("systemgroup.addOrRemoveSystems", name, system_ids, add_remove)
+
+
+class UyuniSystems(UyuniRemoteObject):
+
+    def get_minion_id_map(self, refresh: bool = False) -> Dict[str, int]:
+        """
+        Map between minion ID and system internal ID of all system user have access to.
+        Context cache can be used, to avoid multiple call to the server.
+
+        :param refresh: Get new data from server, ignoring values in local context cache
+        :return: Map between minion ID and system ID of all system accessible by authenticated user
+        """
+        minions_token_key = "uyuni.minions_id_map_" + self.client.get_user()
+        if (not minions_token_key in __context__) or refresh:
+            __context__[minions_token_key] = self.client("system.getMinionIdMap")
+        return __context__[minions_token_key]
+
+
+class UyuniChildMasterIntegration:
+    """
+    Integration with the Salt Master which is running
+    on the same host as this current Minion.
+    """
+    DEFAULT_MASTER_CONFIG_PATH = "/etc/salt/master"
+
+    class FCkMinions(CkMinions):
+        """
+        Minion data matcher.
+        """
+
+        def _get_key_fingerprint(self, minion_id: str) -> str:
+            """
+            Get minion key fingerprint.
+
+            :param minion_id:
+            :return: fingerprint or an empty string if not found
+            """
+            keypath = os.path.join(self.opts['pki_dir'], self.acc, minion_id)
+            return salt.utils.crypt.pem_finger(path=keypath, sum_type=self.opts["hash_type"])
+
+        def _get_fingerprints(self, minion_ids: List[str]) -> Dict[str, str]:
+            """
+            Resolve all fingerprints.
+
+            :param minion_ids:
+            :return:
+            """
+            minions = {}
+            for mid in minion_ids:
+                minions[mid] = self._get_key_fingerprint(minion_id=mid)
+
+            return minions
+
+    def __init__(self):
+        self._minions = UyuniChildMasterIntegration.FCkMinions(salt.config.client_config(self._get_master_config()))
+
+    @staticmethod
+    def _get_master_config() -> str:
+        """
+        Return master config.
+        :return: path to salt master configuration file
+        """
+        cfg_path = UyuniChildMasterIntegration.DEFAULT_MASTER_CONFIG_PATH
+        for path in __pillar__.get("uyuni", {}).get("masters", {}).get("configs", [cfg_path]):
+            if os.path.exists(path):
+                cfg_path = path
+                break
+
+        return cfg_path
+
+    def list_minions(self, active: bool = False) -> List[str]:
+        """
+        Return list of currently registered minions.
+
+        :param active: Return only active minions.
+        :return: list of minion ids
+        """
+        return self._minions.connected_ids() if active else self._minions._pki_minions()
+
+    def list_minions_fp(self, active: bool = False) -> Dict[str, str]:
+        """
+        Return list of currently registered minions, including their key fingerprints.
+
+        :param active: Return only active minions.
+        :return: mapping of minion ids to the fingerprints
+        """
+        return self._minions._get_fingerprints(self.list_minions(active=active))
+
+    def select_minions(self, expr: str, tgt: str = "glob") -> Dict[str, Union[List[str], bool]]:
+        """
+        Select minion IDs that matches the expression.
+
+        :param expr: expression
+        :param tgt: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+                    pillar_exact, compound, compound_pillar_exact. Default: glob.
+
+        :return: list of minions
+        """
+        return self._minions.check_minions(expr=expr, tgt_type=tgt)
+
+    def select_minions_fp(self, expr: str, tgt: str = "glob") -> Dict[str, Union[str, bool]]:
+        """
+        Select minion IDs that matches the expression.
+
+        :param expr: expression
+        :param tgt: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+                    pillar_exact, compound, compound_pillar_exact. Default: glob.
+
+        :return: mapping of minion ids to the fingerprints
+        """
+        selected = self.select_minions(expr=expr, tgt=tgt)
+        ret = {
+            "minions": self._minions._get_fingerprints(selected["minions"]),
+            "missing": self._minions._get_fingerprints(selected["missing"]),
+            "ssh_minions": selected.get("ssh_minions", False)
+        }
+
+        return ret
+
+
 def __virtual__():
     """
     Provide Uyuni Users state module.
@@ -386,3 +574,132 @@ def user_remove_role(uid, role, org_admin_user=None, org_admin_password=None):
     """
     return UyuniUser(org_admin_user, org_admin_password).remove_role(uid=uid, role=role)
 
+
+"""
+Server groups management
+"""
+
+
+def systemgroup_create(name, descr, org_admin_user=None, org_admin_password=None):
+    """
+    Create system group.
+
+    :param name: Name of the system group.
+    :param descr: Description of the system group.
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+
+    :return: server group structure.
+    """
+    return UyuniSystemgroup(org_admin_user, org_admin_password).create(name=name, description=descr)
+
+
+def systemgroup_get_details(name, org_admin_user=None, org_admin_password=None):
+    """
+    Get system group details.
+
+    :param name: Name of the system group.
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+
+    :return: server group structure.
+    """
+    return UyuniSystemgroup(org_admin_user, org_admin_password).get_details(name=name)
+
+
+def systemgroup_update(name, descr, org_admin_user=None, org_admin_password=None):
+    """
+    Update system group.
+
+    :param name: Name of the system group.
+    :param descr: Description of the system group.
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+
+    :return: server group structure.
+    """
+    return UyuniSystemgroup(org_admin_user, org_admin_password).update(name=name, description=descr)
+
+
+def systemgroup_delete(name, org_admin_user=None, org_admin_password=None):
+    """
+    Delete system group.
+
+    :param name: Name of the system group.
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+
+    :return: 1 on success, exception thrown otherwise.
+    """
+    return UyuniSystemgroup(org_admin_user, org_admin_password).delete(name=name)
+
+
+def systemgroup_list_systems(name, minimal=True, org_admin_user=None, org_admin_password=None):
+    """
+    Delete system group.
+
+    :param name: Name of the system group.
+
+    :return: List of system information
+    """
+    return UyuniSystemgroup(org_admin_user, org_admin_password).list_systems(name=name, minimal=minimal)
+
+
+def systemgroup_add_remove_systems(name, add_remove, system_ids=[],
+                                   org_admin_user=None, org_admin_password=None):
+    """
+    Delete system group.
+
+    :param name: Name of the system group.
+    :param add_remove: True to add to the group, False to remove.
+    :param system_ids: list of system ids to add/remove from group
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+
+    :return: 1 on success, exception thrown otherwise.
+    """
+    return UyuniSystemgroup(org_admin_user, org_admin_password).add_remove_systems(name=name, add_remove=add_remove,
+                                                                                   system_ids=system_ids)
+
+
+def master_select_minions(expr=None, tgt="glob", fp=False):
+    """
+    Return list minions from the configured Salt Master on the same host
+    which match the expression on the defined target
+
+    :param expr: expression to filter minions
+    :param tgt: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+                pillar_exact, compound, compound_pillar_exact. Default: glob.
+    :param fp: Include fingerprints
+
+    :return: list of minion IDs
+    """
+    cmi = UyuniChildMasterIntegration()
+
+    return (cmi.select_minions_fp if fp else cmi.select_minions)(expr=expr, tgt=tgt)
+
+
+def master_list_minions(active=False):
+    """
+    Return list of all available minions from the configured
+        Salt Master on the same host.
+
+    :param active: Return only active minions.
+
+    :return: list of minion IDs
+    """
+    cmi = UyuniChildMasterIntegration()
+
+    return cmi.list_minions(active=active)
+
+
+def systems_get_minion_id_map(username=None, password=None, refresh=False):
+    """
+    Map between minion ID and system internal ID of all system user have access to
+
+    :param username: username to authenticate
+    :param password: password for user
+    :param refresh: Get new data from server, ignoring values in local context cache
+    :return: Map between minion ID and system ID of all system accessible by authenticated user
+    """
+    return UyuniSystems(username, password).get_minion_id_map(refresh)
