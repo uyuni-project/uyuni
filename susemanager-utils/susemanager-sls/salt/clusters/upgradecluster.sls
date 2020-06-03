@@ -19,6 +19,15 @@ mgr_cluster_upgrade_cluster:
    {%- if pillar.get('ssh_auth_sock', False) %}
       - environ: mgr_ssh_agent_socket_upgradecluster
    {%- endif %}
+{%- for hook in salt['pillar.get']('state_hooks:upgrade:before', []) %}
+      - sls: {{ hook }}
+{%- endfor %}    
 
 include:
   - util.syncmodules
+{%- for hook in pillar['state_hooks'].get('upgrade', {}).get('before', []) %}
+  - {{ hook }}
+{%- endfor %}
+{%- for hook in pillar['state_hooks'].get('upgrade', {}).get('after', []) %}
+  - {{ hook }}
+{%- endfor %}
