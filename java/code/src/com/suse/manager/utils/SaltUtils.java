@@ -707,6 +707,9 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_REMOVE_NODE)) {
             handleClusterRemoveNode(serverAction, jsonResult, action);
         }
+        else if (action.getActionType().equals(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER)) {
+            handleClusterUpgrade(serverAction, jsonResult, action);
+        }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
@@ -749,6 +752,13 @@ public class SaltUtils {
         handleClusterAction(serverAction, jsonResult,
                 "module_|-mgr_cluster_remove_node_*_|-mgrclusters.remove_node_|-run", action,
                 clusterAction, true);
+    }
+
+    private void handleClusterUpgrade(ServerAction serverAction, JsonElement jsonResult, Action action) {
+        ClusterUpgradeAction clusterAction = (ClusterUpgradeAction) action;
+        handleClusterAction(serverAction, jsonResult,
+                "module_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-run",
+                action, clusterAction, false);
     }
 
     private void handleClusterAction(ServerAction serverAction, JsonElement jsonResult, String resulMatch,

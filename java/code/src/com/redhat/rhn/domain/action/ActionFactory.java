@@ -492,6 +492,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_CLUSTER_REMOVE_NODE)) {
             retval = new ClusterRemoveNodeAction();
         }
+        else if (typeIn.equals(TYPE_CLUSTER_UPGRADE_CLUSTER)) {
+            retval = new ClusterUpgradeAction();
+        }
         else {
             retval = new Action();
         }
@@ -1354,5 +1357,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_CLUSTER_REMOVE_NODE =
             lookupActionTypeByLabel("cluster.remove_node");
+
+    /**
+     * The constant representing "Upgrade cluster" [ID:518]
+     */
+    public static final ActionType TYPE_CLUSTER_UPGRADE_CLUSTER =
+            lookupActionTypeByLabel("cluster.upgrade_cluster");
 }
 

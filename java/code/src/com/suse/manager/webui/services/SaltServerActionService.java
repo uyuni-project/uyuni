@@ -425,6 +425,11 @@ public class SaltServerActionService {
                     (ClusterRemoveNodeAction)actionIn;
             return clusterRemoveNodeAction(clusterAction);
         }
+        else if (ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER.equals(actionType)) {
+            ClusterUpgradeAction clusterAction =
+                    (ClusterUpgradeAction)actionIn;
+            return clusterUpgradeClusterAction(clusterAction);
+        }
         else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Action type " +
@@ -1962,6 +1967,9 @@ public class SaltServerActionService {
         return clusterModifyAction(clusterAction, "clusters.removenode");
     }
 
+    private Map<LocalCall<?>, List<MinionSummary>> clusterUpgradeClusterAction(ClusterUpgradeAction clusterAction) {
+        return clusterModifyAction(clusterAction, "clusters.upgradecluster");
+    }
 
     private Map<LocalCall<?>, List<MinionSummary>> clusterModifyAction(
             BaseClusterModifyNodesAction clusterAction, String state) {

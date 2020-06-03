@@ -556,6 +556,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </join>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction"
+                  lazy="true" discriminator-value="518">
+            <join table="rhnActionClusterUpgradeCluster">
+                <key column="action_id"/>
+                <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster" not-null="true" />
+                <property name="jsonParams" type="string" column="json_params" not-null="true" />
+            </join>
+        </subclass>
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
