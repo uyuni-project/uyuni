@@ -728,7 +728,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         channels.add(channel.getLabel());
 
         Errata errata = handler.create(admin, errataInfo,
-                bugs, keywords, packages, true, channels);
+                bugs, keywords, packages, channels);
 
         Errata result = ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, admin.getOrg());
         assertEquals(errata, result);
@@ -792,7 +792,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         try {
             Errata errata = handler.create(admin, errataInfo,
-                bugs, keywords, packages, true, channels);
+                bugs, keywords, packages, channels);
             fail("large advisory name was accepted");
         }
         catch (Exception e) {
@@ -819,7 +819,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         try {
             Errata errata = handler.create(admin, errataInfo,
-                bugs, keywords, packages, true, channels);
+                bugs, keywords, packages, channels);
             fail("large advisory release was accepted");
         }
         catch (InvalidAdvisoryReleaseException iare) {
@@ -845,7 +845,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         channels.add(channel.getLabel());
 
         Errata errata = handler.create(admin, errataInfo,
-            bugs, keywords, packages, true, channels);
+            bugs, keywords, packages, channels);
 
         assertEquals(ErrataManager.MAX_ADVISORY_RELEASE,
                 errata.getAdvisoryRel().longValue());

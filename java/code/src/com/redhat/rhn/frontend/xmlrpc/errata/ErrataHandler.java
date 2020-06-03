@@ -17,6 +17,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.errata;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -56,6 +62,9 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -66,13 +75,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
 
 
 /**
@@ -1156,14 +1158,11 @@ public class ErrataHandler extends BaseHandler {
      * @param bugs a List of maps consisting of 'id' Integers and 'summary' strings
      * @param keywords a List of keywords for the errata
      * @param packageIds a List of package Id packageId Integers
-     * @param publish should the errata be published
-     * @param channelLabels an array of channel labels to publish to if the errata is to
-     *          be published
+     * @param channelLabels an array of channel labels to publish to
      * @throws InvalidChannelRoleException if the user perms are incorrect
-     * @return The errata created (whether published or unpublished)
+     * @return The errata created
      *
-     * @xmlrpc.doc Create a custom errata.  If "publish" is set to true,
-     *      the errata will be published as well
+     * @xmlrpc.doc Create a custom errata
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
      *      #struct_begin("errata info")
@@ -1195,16 +1194,15 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "keyword - List of keywords to associate
      *              with the errata.")
      * @xmlrpc.param #array_single("int", "packageId")
-     * @xmlrpc.param #param_desc("boolean", "publish", "Should the errata be published.")
      * @xmlrpc.param
      *       #array_single("string", "channelLabel - list of channels the errata should be
-     *                  published too, ignored if publish is set to false")
+     *                  published to")
      * @xmlrpc.returntype
      *      $ErrataSerializer
      */
     public Errata create(User loggedInUser, Map<String, Object> errataInfo,
-            List<Map<String, Object>> bugs, List<String> keywords,
-            List<Integer> packageIds, boolean publish, List<String> channelLabels)
+                         List<Map<String, Object>> bugs, List<String> keywords,
+                         List<Integer> packageIds, List<String> channelLabels)
             throws InvalidChannelRoleException {
 
         // confirm that the user only provided valid keys in the map
@@ -1233,10 +1231,7 @@ public class ErrataHandler extends BaseHandler {
 
         //Don't want them to publish an errata without any channels,
         //so check first before creating anything
-        List<Channel> channels = null;
-        if (publish) {
-            channels = verifyChannelList(channelLabels, loggedInUser);
-        }
+        List<Channel> channels = verifyChannelList(channelLabels, loggedInUser);
 
         String synopsis = (String) getRequiredAttribute(errataInfo, "synopsis");
         String advisoryName = (String) getRequiredAttribute(errataInfo, "advisory_name");
@@ -1325,11 +1320,7 @@ public class ErrataHandler extends BaseHandler {
 
         ErrataFactory.save(newErrata);
 
-        //if true, channels will not be null, but will be a List of channel objects
-        if (publish) {
-            return publish(newErrata, channels, loggedInUser, false);
-        }
-        return newErrata;
+        return publish(newErrata, channels, loggedInUser, false);
     }
 
     /**

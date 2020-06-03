@@ -1015,7 +1015,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channels.add(mergeFrom.getLabel());
 
         Errata errata = errataHandler.create(admin, errataInfo,
-                bugs, keywords, packages, true, channels);
+                bugs, keywords, packages, channels);
         TestUtils.flushAndEvict(errata);
 
         fromList = handler.listErrata(admin, mergeFrom.getLabel());
@@ -1055,7 +1055,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channels.add(mergeTo.getLabel());
 
         Errata errata = errataHandler.create(admin, errataInfo,
-            bugs, keywords, packages, true, channels);
+            bugs, keywords, packages, channels);
         TestUtils.flushAndEvict(errata);
 
         List<Map<String, Object>> fromList = handler
@@ -1101,7 +1101,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channels.add(mergeFrom.getLabel());
 
         Errata errata = errataHandler.create(admin, errataInfo,
-                bugs, keywords, packages, true, channels);
+                bugs, keywords, packages, channels);
         TestUtils.flushAndEvict(errata);
 
         fromList = handler.listErrata(admin, mergeFrom.getLabel());
