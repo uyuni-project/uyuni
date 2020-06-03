@@ -293,7 +293,8 @@ def upgrade_cluster(skuba_cluster_path,
                        timeout=timeout,
                        **kwargs)
 
-    for node in nodes:
+    # Ensure master nodes are upgraded first
+    for node, _ in sorted(nodes.items(), key=lambda x: 0 if x[1].get('role') == 'master' else 1):
         if not nodes[node]['internal-ips']:
             log.error('No internal-ips defined for node: {}. Cannot proceed upgrading this node!'.format(node))
             continue
