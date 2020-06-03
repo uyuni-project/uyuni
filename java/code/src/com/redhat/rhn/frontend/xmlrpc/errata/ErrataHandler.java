@@ -666,44 +666,6 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Returns a list of unpublished errata for the logged-in user's Org.
-     * @param loggedInUser The current user
-     * @return Returns an array of errata
-     *
-     * @xmlrpc.doc Returns a list of unpublished errata
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("erratum")
-     *              #prop("int", "id")
-     *              #prop("int", "published")
-     *              #prop("string", "advisory")
-     *              #prop("string", "advisory_name")
-     *              #prop("string", "advisory_type")
-     *              #prop("string", "synopsis")
-     *              #prop("dateTime.iso8601", "created")
-     *              #prop("dateTime.iso8601", "update_date")
-     *          #struct_end()
-     *      #array_end()
-     */
-    public Object[] listUnpublishedErrata(User loggedInUser) {
-        Map[] unpub = (Map[])ErrataManager.unpublishedOwnedErrata(loggedInUser, Map.class)
-                .toArray(new Map[0]);
-
-        for (Map errataItem : unpub) {
-            // remove items that can be NULL to prevent xmlrpc failure
-            Iterator<Map.Entry> itr = errataItem.entrySet().iterator();
-            for (; itr.hasNext();) {
-                if (itr.next().getValue() == null) {
-                    itr.remove();
-                }
-            }
-        }
-
-        return unpub;
-    }
-
-    /**
      * Returns a list of CVEs applicable to the errata with the given advisory name. CVEs may be associated
      * only with published errata.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
