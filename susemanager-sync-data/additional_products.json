@@ -1,5 +1,72 @@
 [
     {
+        "id" : -18,
+        "name" : "Ubuntu 20.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "20.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu 20.04",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -210,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-main",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Main",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -211,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-updates/main/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -212,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-security/main/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-main-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -213,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal/universe/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-universe",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Universe",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -17,
         "name" : "Oracle Linux 8",
         "identifier" : "oraclelinux-8",
