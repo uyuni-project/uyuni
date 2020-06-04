@@ -14,7 +14,8 @@ import type {MessageType} from 'components/messages';
 
 type Props = {
   cluster: ClusterType,
-  setMessages: (Array<MessageType>) => void
+  setMessages: (Array<MessageType>) => void,
+  hasEditingPermissions: boolean
 }
 
 const ManagementSettings = (props: Props) => {
@@ -69,6 +70,7 @@ const ManagementSettings = (props: Props) => {
           systemData={values}
           groupData={{}}
           scope="system">
+          { props.hasEditingPermissions &&  
           <SectionToolbar>
             <div className='action-button-wrapper'>
               <div className='btn-group'>
@@ -78,17 +80,17 @@ const ManagementSettings = (props: Props) => {
                       <Button id="btn-save" icon="fa-floppy-o"
                         text={t("Save")}
                         className="btn-success"
-                        handler={() => {save(validate())}} />
+                        handler={() => {save(validate())}} /> 
                       <Button id="reset-btn" icon="fa-eraser" text="Clear values"
                         className="btn-default"
-                        handler={() => clearValues(() => window.confirm("Are you sure you want to clear all values?"))} />
-
-                    </React.Fragment>                      
-                  }
+                        handler={() => clearValues(() =>
+                          window.confirm("Are you sure you want to clear all values?"))} /> 
+                    </React.Fragment> }
                 </FormulaFormContext.Consumer>
               </div>
             </div>    
           </SectionToolbar>
+          }
           <Panel headingLevel="h3" title={t('Provider Settings')}>
             <FormulaFormRenderer />
           </Panel>

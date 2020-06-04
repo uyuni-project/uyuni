@@ -15,10 +15,20 @@
 
 package com.suse.manager.webui.controllers.clusters;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
+import static com.suse.manager.webui.controllers.clusters.mappers.ResponseMappers.toClusterNodeResponse;
+import static com.suse.manager.webui.controllers.clusters.mappers.ResponseMappers.toClusterResponse;
+import static com.suse.manager.webui.controllers.clusters.mappers.ResponseMappers.toServerResponse;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withClusterAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withRolesTemplate;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.halt;
+import static spark.Spark.post;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
@@ -44,13 +54,14 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.template.jade.JadeTemplateEngine;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -61,21 +72,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.controllers.clusters.mappers.ResponseMappers.toClusterNodeResponse;
-import static com.suse.manager.webui.controllers.clusters.mappers.ResponseMappers.toClusterResponse;
-import static com.suse.manager.webui.controllers.clusters.mappers.ResponseMappers.toServerResponse;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withRolesTemplate;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.halt;
-import static spark.Spark.post;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller for clusters UI.
@@ -83,6 +86,8 @@ import static spark.Spark.post;
 public class ClustersController {
 
     private static final Logger LOG = Logger.getLogger(ClustersController.class);
+
+    private static final Pattern LABEL_REGEX = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]+$");
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -102,38 +107,42 @@ public class ClustersController {
         get("/manager/clusters",
                 withCsrfToken(withUserPreferences(withRolesTemplate(ClustersController::showList))), jade);
         get("/manager/clusters/add",
-                withCsrfToken(withUserPreferences(withRolesTemplate(ClustersController::showAddCluster))), jade);
+                withCsrfToken(withClusterAdmin(
+                        withUserPreferences(withRolesTemplate(ClustersController::showAddCluster)))), jade);
         get("/manager/cluster/:id",
                 withCsrfToken(withUserPreferences(withRolesTemplate(ClustersController::showCluster))), jade);
         get("/manager/cluster/:id/join",
-                withCsrfToken(withUserPreferences(withRolesTemplate(ClustersController::showJoinCluster))), jade);
+                withCsrfToken(withClusterAdmin(
+                        withUserPreferences(withRolesTemplate(ClustersController::showJoinCluster)))), jade);
         post("/manager/cluster/:id/remove",
-                withCsrfToken(withUserPreferences(withRolesTemplate(ClustersController::showRemoveNode))), jade);
+                withCsrfToken(withClusterAdmin(
+                        withUserPreferences(withRolesTemplate(ClustersController::showRemoveNode)))), jade);
         get("/manager/cluster/:id/upgrade",
-                withCsrfToken(withUserPreferences(withRolesTemplate(ClustersController::showClusterUpgrade))), jade);
+                withCsrfToken(withClusterAdmin(
+                        withUserPreferences(withRolesTemplate(ClustersController::showClusterUpgrade)))), jade);
 
         get("/manager/api/cluster/:id/nodes",
                 withUser(ClustersController::listNodes));
         get("/manager/api/cluster/:id/nodes-to-join",
                 withUser(ClustersController::listNodesToJoin));
         post("/manager/api/cluster/:id/refresh-group-nodes",
-                withUser(ClustersController::refreshGroupNodes));
+                withClusterAdmin(ClustersController::refreshGroupNodes));
         get("/manager/api/cluster/:id/formula/:formula/data",
                 withUser(ClustersController::getFormulaData));
         post("/manager/api/cluster/:id/formula/:formula/data",
-                withUser(ClustersController::saveFormulaData));
+                withClusterAdmin(ClustersController::saveFormulaData));
         post("/manager/api/cluster/:id/join",
-                withOrgAdmin(ClustersController::joinNode));
+                withClusterAdmin(ClustersController::joinNode));
         post("/manager/api/cluster/:id/remove-node",
-                withOrgAdmin(ClustersController::removeNode));
+                withClusterAdmin(ClustersController::removeNode));
         post("/manager/api/cluster/:id/upgrade",
-                withOrgAdmin(ClustersController::upgradeCluster));
+                withClusterAdmin(ClustersController::upgradeCluster));
         get("/manager/api/cluster/:id",
                 withUser(ClustersController::getClusterProps));
         post("/manager/api/cluster/:id",
-                withOrgAdmin(ClustersController::updateCluster));
+                withClusterAdmin(ClustersController::updateCluster));
         delete("/manager/api/cluster/:id",
-                withOrgAdmin(ClustersController::deleteCluster));
+                withClusterAdmin(ClustersController::deleteCluster));
 
         post("/manager/api/cluster/provider/:provider/formula/:formula/form",
                 withUser(ClustersController::providerFormulaForm));
@@ -141,12 +150,12 @@ public class ClustersController {
                 withUser(ClustersController::providerManagementNodes));
 
         post("/manager/api/cluster/new/add",
-                withOrgAdmin(ClustersController::addCluster));
+                withClusterAdmin(ClustersController::addCluster));
 
     }
 
     private static Object getClusterProps(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
         return json(response,
                 ResultJson.success(toClusterResponse(cluster,
                         getClusterProvider(cluster.getProvider()))));
@@ -172,7 +181,7 @@ public class ClustersController {
     }
 
     private static Object updateCluster(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
 
         UpdateClusterRequest clusterRequest;
         try {
@@ -183,7 +192,11 @@ public class ClustersController {
             return json(response, HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error("invalid_request_body"));
         }
-        // TODO validate name, description
+        if (StringUtils.isBlank(clusterRequest.getName()) ||
+                StringUtils.isBlank(clusterRequest.getDescription())) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Name and description are mandatory"));
+        }
         try {
             clusterManager.update(cluster, clusterRequest.getName(), clusterRequest.getDescription());
             HibernateFactory.getSession().getTransaction().commit();
@@ -197,15 +210,14 @@ public class ClustersController {
     }
 
     private static ModelAndView showRemoveNode(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
         List<String> nodes = Arrays.asList(request.queryParamsValues("nodes"));
 
         var clusterNodes = clusterManager.listClusterNodes(cluster);
         var clusterNodeHostnames = clusterNodes.stream()
                 .map(n -> n.getHostname())
                 .collect(Collectors.toList());
-        var allMatch = nodes.stream().allMatch(n -> clusterNodeHostnames.contains(n));
-        if (!allMatch) {
+        if (!clusterNodeHostnames.containsAll(nodes)) {
             LOG.error("Not all nodes '" + nodes + "' are part of the cluster");
             halt(HttpStatus.SC_BAD_REQUEST);
         }
@@ -230,7 +242,7 @@ public class ClustersController {
             return json(response, HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error("request_error"));
         }
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
 
         String formula = request.params("formula");
         if (StringUtils.isBlank(formula)) {
@@ -250,12 +262,11 @@ public class ClustersController {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     ResultJson.error(e.getMessage()));
         }
-        FlashScopeHelper.flash(request, "Saved successfully");
         return json(response, ResultJson.success());
     }
 
     private static ModelAndView showJoinCluster(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
         Map<String, Object> data = new HashMap<>();
         data.put("flashMessage", FlashScopeHelper.flash(request));
         data.put("contentCluster", GSON.toJson(
@@ -265,7 +276,7 @@ public class ClustersController {
     }
 
     private static ModelAndView showClusterUpgrade(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
         Map<String, Object> data = new HashMap<>();
         data.put("flashMessage", FlashScopeHelper.flash(request));
         data.put("contentCluster", GSON.toJson(
@@ -274,36 +285,128 @@ public class ClustersController {
         return new ModelAndView(data, "controllers/clusters/templates/upgrade.jade");
     }
 
-    private static String addCluster(Request request, Response response, User user) {
-        Optional<Map<String, Object>> json = parseJson(request, response);
-        if (json.isEmpty()) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("request_error"));
+    private static class AddClusterRequest {
+        private String name;
+        private String label;
+        private String description;
+        private String provider;
+        private Long managementNodeId;
+        private Map<String, Object> managementSettings;
+
+        /**
+         * @return name to get
+         */
+        public String getName() {
+            return name;
         }
 
-        // TODO validate input
-        String name = (String)json.get().get("name");
-        String label = (String)json.get().get("label");
-        String description = (String)json.get().get("description");
-        String provider = (String)json.get().get("provider");
-        long managementNodeId = ((Number)json.get().get("managementNodeId")).longValue();
-        Map<String, Object> managementSettings = (Map<String, Object>)json.get().get("managementSettings");
+        /**
+         * @return label to get
+         */
+        public String getLabel() {
+            return label;
+        }
+
+        /**
+         * @return description to get
+         */
+        public String getDescription() {
+            return description;
+        }
+
+        /**
+         * @return provider to get
+         */
+        public String getProvider() {
+            return provider;
+        }
+
+        /**
+         * @return managementNodeId to get
+         */
+        public Long getManagementNodeId() {
+            return managementNodeId;
+        }
+
+        /**
+         * @return managementSettings to get
+         */
+        public Map<String, Object> getManagementSettings() {
+            return managementSettings;
+        }
+    }
+
+    private static String addCluster(Request request, Response response, User user) {
+        AddClusterRequest clusterRequest;
+        try {
+            clusterRequest = GSON.fromJson(request.body(), AddClusterRequest.class);
+        }
+        catch (JsonParseException e) {
+            LOG.error("Error parsing request body", e);
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("invalid_request_body"));
+        }
+
+        if (StringUtils.isBlank(clusterRequest.getName())) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Name is mandatory"));
+        }
+        if (StringUtils.isBlank(clusterRequest.getLabel())) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Label is mandatory"));
+        }
+
+        if (!LABEL_REGEX.matcher(clusterRequest.getLabel()).matches()) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Label format is wrong"));
+        }
+        if (StringUtils.isBlank(clusterRequest.getDescription())) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Description is mandatory"));
+        }
+        if (StringUtils.isBlank(clusterRequest.getProvider())) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Provider is mandatory"));
+        }
+        if (!validProvider(clusterRequest.getProvider())) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Invalid provider"));
+        }
+        if (clusterRequest.getManagementNodeId() == null) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Management node id is mandatory"));
+        }
+        if (clusterRequest.getManagementSettings() == null ||
+                clusterRequest.getManagementSettings().isEmpty()) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Management settings are mandatory"));
+        }
+
         Cluster cluster;
         try {
-            cluster = clusterManager.addCluster(name, label, description,
-                    managementNodeId, provider, managementSettings, user);
+            cluster = clusterManager.addCluster(clusterRequest.getName(),
+                    clusterRequest.getLabel(), clusterRequest.getDescription(),
+                    clusterRequest.getManagementNodeId(), clusterRequest.getProvider(),
+                    clusterRequest.getManagementSettings(), user);
             HibernateFactory.getSession().getTransaction().commit();
         }
         catch (Exception e) {
             LOG.error("Adding cluster failed", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()));
         }
-        FlashScopeHelper.flash(request, "Cluster has been added successfully");
+        FlashScopeHelper.flash(request, String.format("Cluster '%s' has been added successfully",
+                clusterRequest.getName()));
         return json(response, ResultJson.success(cluster.getId()));
     }
 
+    private static boolean validProvider(String provider) {
+        List<String> providers = clusterManager.findClusterProviders()
+                .stream().map(ClusterProvider::getLabel).collect(Collectors.toList());
+        return providers.contains(provider);
+    }
+
     private static Object deleteCluster(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
 
         try {
             clusterManager.deleteCluster(cluster, user);
@@ -313,7 +416,8 @@ public class ClustersController {
             LOG.error("Deleting cluster failed", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()));
         }
-        FlashScopeHelper.flash(request, String.format("Cluster '%s' deleted successfully", cluster.getName()));
+        FlashScopeHelper.flash(request, String.format("Cluster '%s' has been deleted successfully",
+                cluster.getName()));
         return json(response, ResultJson.success());
     }
 
@@ -346,7 +450,7 @@ public class ClustersController {
     }
 
     private static Object upgradeCluster(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
         ModifyNodesRequest nodesRequest;
         try {
             nodesRequest = GSON.fromJson(request.body(), ModifyNodesRequest.class);
@@ -372,7 +476,7 @@ public class ClustersController {
     }
 
     private static Object modifyClusterNodes(ActionType actionType, Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
         ModifyNodesRequest nodesRequest;
         try {
             nodesRequest = GSON.fromJson(request.body(), ModifyNodesRequest.class);
@@ -412,7 +516,10 @@ public class ClustersController {
 
     private static String providerManagementNodes(Request request, Response response, User user) {
         String provider = request.params("provider");
-        // TODO validate provider
+        if (!validProvider(provider)) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Invalid provider"));
+        }
         List<String> minionIds = clusterManager.findManagementNodeByProvider(provider);
         List<ServerResponse> data = minionIds.stream()
                 .map(minionId -> MinionServerFactory.findByMinionId(minionId))
@@ -425,18 +532,18 @@ public class ClustersController {
 
     private static ModelAndView showAddCluster(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        List<ClusterProviderResponse> types =
+        List<ClusterProviderResponse> providers =
                 clusterManager.findClusterProviders().stream()
                         .map(ResponseMappers::toClusterProviderResponse)
                         .collect(Collectors.toList());
         data.put("flashMessage", FlashScopeHelper.flash(request));
-        data.put("contentAdd", GSON.toJson(types));
+        data.put("contentAdd", GSON.toJson(providers));
         MinionController.addActionChains(user, data);
         return new ModelAndView(data, "controllers/clusters/templates/add.jade");
     }
 
     private static Object listNodes(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
         Map<String, Object> data = new HashMap<>();
         Optional<List<String>> fields = clusterManager.getNodesListFields(cluster.getProvider());
         data.put("fields", fields.orElse(Collections.emptyList()));
@@ -449,7 +556,7 @@ public class ClustersController {
     }
 
     private static Object listNodesToJoin(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
 
         var servers = clusterManager.getNodesAvailableForJoining(cluster, user);
         List<ServerResponse> data = servers.entrySet().stream()
@@ -486,7 +593,7 @@ public class ClustersController {
      * @return ModelAndView for page
      */
     public static ModelAndView showCluster(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
 
         Map<String, Object> data = new HashMap<>();
         data.put("flashMessage", FlashScopeHelper.flash(request));
@@ -506,8 +613,15 @@ public class ClustersController {
         String provider = request.params("provider");
         String formula = request.params("formula");
 
-        // TODO assert parameters not empty and valid
-        // TODO validate provider
+        if (StringUtils.isBlank(formula)) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Formula is mandatory"));
+
+        }
+        if (!validProvider(provider)) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Invalid provider"));
+        }
 
         Map<String, Object> data = new HashMap<>();
         data.put("form",
@@ -531,7 +645,7 @@ public class ClustersController {
      * @return the formula form as Json
      */
     public static String getFormulaData(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
 
         String formula = request.params("formula");
         Optional<Map<String, Object>> data = FormulaManager.getInstance().getClusterFormulaData(cluster, formula);
@@ -546,7 +660,7 @@ public class ClustersController {
      * @return the outcome as Json
      */
     public static String refreshGroupNodes(Request request, Response response, User user) {
-        Cluster cluster = getCluster(request);
+        Cluster cluster = getCluster(request, user);
 
         long actionId;
         try {
@@ -557,7 +671,7 @@ public class ClustersController {
             LOG.error("Scheduling remove node from cluster failed", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()));
         }
-        FlashScopeHelper.flash(request, "Scheduled action to remove the node from the cluster");
+        FlashScopeHelper.flash(request, "Scheduled action to refresh the system group associated with cluster");
         return json(response, ResultJson.success(actionId));
     }
 
@@ -574,9 +688,9 @@ public class ClustersController {
         return id;
     }
 
-    private static Cluster getCluster(Request request) {
+    private static Cluster getCluster(Request request, User user) {
         Long id = getId(request);
-        Optional<Cluster> cluster = ClusterFactory.findClusterById(id);
+        Optional<Cluster> cluster = ClusterFactory.findClusterByIdAndOrg(id, user.getOrg());
         if (cluster.isEmpty()) {
             halt(HttpStatus.SC_NOT_FOUND, "Cluster " + id + " not found");
         }
@@ -585,7 +699,7 @@ public class ClustersController {
 
 
     private static ClusterProvider getClusterProvider(String label) {
-        Optional<ClusterProvider> provider = clusterManager.findClusterProvider(label);
+        Optional<ClusterProvider> provider = ClusterManager.findClusterProvider(label);
         if (provider.isEmpty()) {
             halt(HttpStatus.SC_NOT_FOUND, "Provider " + label + " not found");
         }

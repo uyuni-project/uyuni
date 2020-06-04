@@ -55,17 +55,17 @@ type ClusterNodesResultType = {
     fields: Array<string>
 }
 
-export type ErrorMessagesType = {
+export type ErrorMessagesType = Error & {
     messages: Array<MessageType>
 }
 
 export class ErrorMessages extends Error {
 
-    msg: ?MessageType = null;
+    messages: Array<MessageType>;
 
     constructor(message: MessageType) {
         super(message.text);
-        this.msg = message;
+        this.messages = [message];
     }
 }
 
@@ -111,19 +111,6 @@ const useClustersApi = ()  => {
     const handleResponseError = (jqXHR: Object, arg: string = "") => {
         throw new ErrorMessages(Network.responseErrorMessage(jqXHR));
     };
-
-    // const fetchClustersList = () : Promise<Array<ClusterType>> => {
-    //     return Network.get("/rhn/manager/api/clusters").promise
-    //         .then((data: JsonResult<ClustersListResultType>) => {
-    //             setClusters(data.data.clusters);
-    //             setClustersMessages(data.data.messages);
-    //             return data.data.clusters;
-    //         })
-    //         .catch(handleResponseError)
-    //         .finally(() => {
-    //             setFetching(false);
-    //         });
-    // }
 
     const fetchClusterNodes = (clusterId: number): Promise<ClusterNodesResultType> => {
         setFetching(true);

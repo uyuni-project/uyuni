@@ -7,17 +7,18 @@ import SelectProvider from './select-provider';
 import FinishAddCluster from './finish-add';
 import FormulaConfig from '../shared/ui/formula-config';
 import SelectServer from '../shared/ui/select-server';
-import useClustersApi from '../shared/api/use-clusters-api';
+import useClustersApi, {withErrorMessages}  from '../shared/api/use-clusters-api';
 import {HashRouter, Route, Switch} from 'components/utils/HashRouter';
 import {SystemLink} from 'components/links';
 
-
 import type {ClusterProviderType, ServerType} from '../shared/api/use-clusters-api';
 import type {FormulaValuesType} from '../shared/api/use-clusters-api';
+import type {MessageType} from 'components/messages';
 
 type Props = {
   providers: Array<ClusterProviderType>,
   flashMessage: string,
+  setMessages: (Array<MessageType>) => void
 };
 
 const AddCluster = (props: Props) => {
@@ -89,7 +90,6 @@ const AddCluster = (props: Props) => {
                     </Switch>
                 </HashRouter>
             </TopPanel>);
-
 }
 
-export default hot(module)(withPageWrapper<Props>(AddCluster));
+export default hot(module)(withPageWrapper<Props>(withErrorMessages(AddCluster)));

@@ -5,7 +5,7 @@ import withPageWrapper from 'components/general/with-page-wrapper';
 import {TopPanel} from 'components/panels/TopPanel';
 import {LinkButton} from 'components/buttons';
 import useRoles from "core/auth/use-roles";
-import {isOrgAdmin} from "core/auth/auth.utils";
+import {isClusterAdmin} from "core/auth/auth.utils";
 import {Table} from 'components/table/Table';
 import {Column} from 'components/table/Column';
 import {SearchField} from 'components/table/SearchField';
@@ -22,7 +22,7 @@ type Props = {
 
 const ListClusters = (props) => {
     const roles = useRoles();
-    const hasEditingPermissions = isOrgAdmin(roles);
+    const hasEditingPermissions = isClusterAdmin(roles);
     const panelButtons = (
         <div className="pull-right btn-group">
         {

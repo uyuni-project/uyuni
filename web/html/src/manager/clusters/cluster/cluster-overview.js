@@ -43,7 +43,8 @@ const NodeField = (props: {value: any}) => {
 type Props = {
   cluster: ClusterType,
   onUpdateName: (string) => void,
-  setMessages: (Array<MessageType>) => void
+  setMessages: (Array<MessageType>) => void,
+  hasEditingPermissions: boolean
 };
 
 const ClusterOverview = (props: Props) => {
@@ -138,8 +139,7 @@ const ClusterOverview = (props: Props) => {
   const editContent =
       <Form
           model={editModel}
-          onValidate={(valid) => console.log("valid: " + (valid ? "true" : "false"))}
-          onChange={(model) => {setEditModel(model); console.log(model)}} 
+          onChange={(model) => {setEditModel(model);}} 
           formDirection="form-horizontal"
           >
           <Text
@@ -193,13 +193,15 @@ const ClusterOverview = (props: Props) => {
 
         <SectionToolbar>
           <div className="pull-right btn-group">
+              { props.hasEditingPermissions &&
               <LinkButton
                 id="join-btn"
                 icon="fa-plus"
                 text={t("Join node")}
                 className="gap-right btn-default"
                 href={`/rhn/manager/cluster/${props.cluster.id}/join`}
-                />
+                /> }
+              { props.hasEditingPermissions &&
               <Button
                 id="remove-btn"
                 disabled={selections.size === 0}
@@ -207,41 +209,40 @@ const ClusterOverview = (props: Props) => {
                 text={t("Remove node")}
                 className="gap-right btn-default"
                 handler={onRemove}
-                />
+                /> }
               <AsyncButton id="refresh-btn" defaultType="btn-default"
                 icon="fa-refresh"
                 text={t("Refresh") }
                 className="gap-right"
                 action={() => fetchData() }
                 />
+              { props.hasEditingPermissions &&
               <LinkButton
                 id="upgrade"
-                disabled={true}
                 icon="spacewalk-icon-package-upgrade"
                 text={t("Upgrade cluster") }
                 className="btn-default gap-right"
                 href={`/rhn/manager/cluster/${props.cluster.id}/upgrade`}
-                />                
+                /> }
+              { props.hasEditingPermissions &&
               <AsyncButton id="refresh-group-btn" defaultType="btn-default"
                 icon="fa-refresh"
                 text={t("Refresh system group") }
                 className="gap-right"
                 action={() => onRefreshGroupNodes()}
-                />
-
+                /> }
           </div>
         </SectionToolbar>
         
         <Panel headingLevel="h3" title={t('Cluster Properties')}
-          buttons={<ModalLink
+          buttons={ props.hasEditingPermissions ? <ModalLink
                   target="cluster-edit-dialog"
                   icon="fa-plus"
                   className="btn-link"
                   text={t("Edit properties")}
                   title={t("Edit cluster details")}
                   onClick={() => setEditModel({name: cluster.name, description: cluster.description})}
-                />
-          }>
+                /> : null }>
             {fetchingProps ? 
               <Loading/> :
               <>

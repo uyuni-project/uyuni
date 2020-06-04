@@ -35,7 +35,7 @@ const ScheduleClusterAction = (props: Props) => {
     const onSchedule = (): Promise<any> => {
         return props.schedule(earliest, actionChain ? actionChain.text: null).then(
             (actionId) => {
-                // setDisableSchedule(true);
+                setDisableSchedule(true);
                 const actionChainMsg = Messages.success(<span>{t("Action has been successfully added to the Action Chain ")}
                         <ActionChainLink id={actionId}>{actionChain ? actionChain.text : ""}</ActionChainLink>.</span>);
                 const actionMsg = Messages.success(<span>{t("Action has been ")}

@@ -10,7 +10,7 @@ import ClusterOverview from './cluster-overview';
 import ManagementSettings from './cluster-config';
 import useClustersApi, {withErrorMessages} from '../shared/api/use-clusters-api';
 import useRoles from "core/auth/use-roles";
-import {isOrgAdmin} from "core/auth/auth.utils";
+import {isClusterAdmin} from "core/auth/auth.utils";
 import {LinkButton} from 'components/buttons';
 import {DeleteDialog} from 'components/dialog/DeleteDialog';
 import {showDialog} from 'components/dialog/util';
@@ -27,7 +27,7 @@ type Props = {
 
 const Cluster = (props: Props) => {
     const roles = useRoles();
-    const hasEditingPermissions = isOrgAdmin(roles);
+    const hasEditingPermissions = isClusterAdmin(roles);
     const {deleteCluster} = useClustersApi();
     const [name, setName] = useState<string>(props.cluster.name);
 
@@ -97,10 +97,12 @@ const Cluster = (props: Props) => {
               </div>
               <Switch>
                 <Route path="overview">
-                  <ClusterOverview cluster={props.cluster} setMessages={props.setMessages} onUpdateName={onUpdateName}/>
+                  <ClusterOverview cluster={props.cluster} setMessages={props.setMessages} onUpdateName={onUpdateName}
+                    hasEditingPermissions={hasEditingPermissions} />
                 </Route>
                 <Route path="settings">
-                  <ManagementSettings cluster={props.cluster} setMessages={props.setMessages}/>
+                  <ManagementSettings cluster={props.cluster} setMessages={props.setMessages}
+                    hasEditingPermissions={hasEditingPermissions} />
                 </Route>
               </Switch>
 

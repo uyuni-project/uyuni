@@ -3,6 +3,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import {RolesProvider} from "core/auth/roles-context";
 import {UserLocalizationProvider} from "core/user-localization/user-localization-context"
 import AddCluster from './add-cluster';
+import {MessagesContainer} from 'components/toastr/toastr';
 
 export const renderer = (id, {contentAdd, flashMessage} = {}) => {
   let providersJson = {};
@@ -14,6 +15,7 @@ export const renderer = (id, {contentAdd, flashMessage} = {}) => {
 
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
+      <MessagesContainer/>
       <UserLocalizationProvider>
         <AddCluster providers={providersJson} flashMessage={flashMessage}/>
       </UserLocalizationProvider>  

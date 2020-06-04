@@ -8,6 +8,7 @@ import {Messages} from 'components/messages';
 import {Label} from 'components/input/Label';
 
 import type {MessageType} from 'components/messages';
+import type {ErrorMessagesType} from '../shared/api/use-clusters-api';
 
 type Props = {
     panel: React.Node,
@@ -30,9 +31,9 @@ const FinishAddCluster = (props: Props) => {
                 setSubmitted(true);
                 window.location = `/rhn/manager/cluster/${data}`;
             })
-            .catch((err: Error) => {
+            .catch((err: ErrorMessagesType) => {
                 console.log(err);
-                props.setMessages([Messages.error("Error adding cluster: " + err.message)]);
+                props.setMessages(err.messages)
                 throw err;
             });
         } else {
@@ -75,7 +76,7 @@ const FinishAddCluster = (props: Props) => {
                             <Label required={true} className="col-md-3" name={t("Label:")}/>
                             <div className="col-md-3">
                                 <input className="form-control" type="text" value={label} onChange={ev => setLabel(ev.target.value)}
-                                required pattern="^[a-zA-Z_][a-zA-Z0-9_]+$" title="only letters, numbers or underscore"/>
+                                required pattern="^[a-zA-Z_][a-zA-Z0-9_-]+$" title="letters and numbers, optionally underscore or hyphen, must start with a letter or underscore"/>
                             </div>
                         </div>
                         <div className="form-group">
