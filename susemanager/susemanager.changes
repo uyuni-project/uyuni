@@ -1,5 +1,7 @@
 - Make systemd services and timers enablement really quiet
 - migrate cobbler configs for ks_mirror -> distro_mirror rename (bsc#1169209)
+- Packages for the Ubuntu 18.04 bootstrap repo are now populated with Python3
+  dependencies (bsc#1168845)
 
 -------------------------------------------------------------------
 Thu Apr 23 10:27:57 CEST 2020 - jgonzalez@suse.com
