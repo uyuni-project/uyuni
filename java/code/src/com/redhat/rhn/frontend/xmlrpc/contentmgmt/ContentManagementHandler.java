@@ -578,10 +578,11 @@ public class ContentManagementHandler extends BaseHandler {
      * #paragraph()
      * Appstream module/stream filtering:
      * #itemlist()
-     *   #item("by module name, stream - field: module_stream; matcher: equals; value: modulaneme:stream
+     *   #item("by module name, stream - field: module_stream; matcher: equals; value: modulaneme:stream")
      * #itemlist_end()
      * Note: Only 'allow' rule is supported for appstream filters.
      * #paragraph_end()
+     * #paragraph()
      *
      * Note: The 'matches' matcher works on Java regular expressions.
      *
