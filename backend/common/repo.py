@@ -9,6 +9,7 @@ import zlib
 import lzma
 from urllib import parse
 import hashlib
+from collections import namedtuple
 
 import requests
 
@@ -42,6 +43,8 @@ class DpkgRepo:
             md5: str = ""
             sha1: str = ""
             sha256: str = ""
+            sha384: str = ""
+            sha512: str = ""
 
         def __init__(self, size: int, uri: str):
             self.checksum = DpkgRepo.ReleaseEntry.Checksum()
@@ -136,22 +139,41 @@ class DpkgRepo:
         :param release: decoded content of the Release file
         :return: dictionary
         """
+        # Length of hexadecimal representation for each checksum algorithm
+        LEN_MD5 = 128 // 4
+        LEN_SHA1 = 160 // 4
+        LEN_SHA256 = 256 // 4
+        LEN_SHA384 = 384 // 4
+        LEN_SHA512 = 512 // 4
+        Entry = namedtuple("Entry", "checksum, size, path")
         for line in release.split(os.linesep):
-            cs_s_path = tuple(filter(None, line.strip().replace("\t", " ").split(" ")))
-            if len(cs_s_path) == 3 and len(cs_s_path[0]) in [0x20, 0x28, 0x40]:
-                try:
-                    int(cs_s_path[0], 0x10)
-                    rel_entry = DpkgRepo.ReleaseEntry(int(cs_s_path[1]), cs_s_path[2])
-                    self._release.setdefault(rel_entry.uri, rel_entry)
-                    if len(cs_s_path[0]) == 0x20:
-                        self._release[rel_entry.uri].checksum.md5 = cs_s_path[0]
-                    elif len(cs_s_path[0]) == 0x28:
-                        self._release[rel_entry.uri].checksum.sha1 = cs_s_path[0]
-                    elif len(cs_s_path[0]) == 0x40:
-                        self._release[rel_entry.uri].checksum.sha256 = cs_s_path[0]
+            try:
+                entry = Entry._make(
+                    filter(None, line.strip().replace("\t", " ").split(" "))
+                )
+                int(entry.checksum, 0x10) # assert entry.checksum is hexadecimal
+                rel_entry = DpkgRepo.ReleaseEntry(int(entry.size), entry.path)
+            except (TypeError, ValueError):
+                continue
 
-                except ValueError:
-                    pass
+            if len(entry.checksum) in (
+                LEN_MD5,
+                LEN_SHA1,
+                LEN_SHA256,
+                LEN_SHA384,
+                LEN_SHA512,
+            ):
+                self._release.setdefault(rel_entry.uri, rel_entry)
+                if len(entry.checksum) == LEN_MD5:
+                    self._release[rel_entry.uri].checksum.md5 = entry.checksum
+                elif len(entry.checksum) == LEN_SHA1:
+                    self._release[rel_entry.uri].checksum.sha1 = entry.checksum
+                elif len(entry.checksum) == LEN_SHA256:
+                    self._release[rel_entry.uri].checksum.sha256 = entry.checksum
+                elif len(entry.checksum) == LEN_SHA384:
+                    self._release[rel_entry.uri].checksum.sha384 = entry.checksum
+                elif len(entry.checksum) == LEN_SHA512:
+                    self._release[rel_entry.uri].checksum.sha512 = entry.checksum
 
         return self._release
 
@@ -209,9 +231,8 @@ class DpkgRepo:
 
     def verify_packages_index(self) -> bool:
         """
-        Verify Packages index against all listed checksum algorithms.
+        Verify Packages index with the best available checksum algorithm.
 
-        :param name: name of the packages index
         :return: result (boolean)
         """
         name, data = self.get_pkg_index_raw()
@@ -221,12 +242,16 @@ class DpkgRepo:
            return True
 
         entry = self.get_release_index().get(name)
-        for algorithm in ["md5", "sha1", "sha256"]:
-            if entry is None:
-                res = False
-            else:
-                res = getattr(hashlib, algorithm)(data).hexdigest() == getattr(entry.checksum, algorithm)
-            if not res:
-                break
+        if entry is None:
+            return False
 
-        return res
+        result = False
+        for algorithm in ("sha512", "sha384", "sha256", "sha1", "md5"):
+            entry_checksum = getattr(entry.checksum, algorithm, None)
+            if entry_checksum:
+                result = getattr(hashlib, algorithm)(data).hexdigest() == entry_checksum
+                break
+            else:
+                continue
+
+        return result

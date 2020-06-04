@@ -73,6 +73,25 @@ class TestCommonRepo:
             repo = DpkgRepo("http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/")
             assert repo.verify_packages_index()
 
+    @patch("spacewalk.common.repo.DpkgRepo.get_pkg_index_raw", MagicMock(return_value=("Packages.gz", b"\x00")))
+    @patch("spacewalk.common.repo.DpkgRepo.is_flat", MagicMock(return_value=False))
+    def test_verify_packages_index_missing_some_checksums(self):
+        """
+        Test verify_packages_index method when only sha256 checksum is available.
+
+        :return:
+        """
+        gri = DpkgRepo.ReleaseEntry(size=999, uri="restricted/binary-amd64")
+        gri.checksum.md5 = ""
+        gri.checksum.sha1 = ""
+        gri.checksum.sha256 = "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+
+        release_index = MagicMock()
+        release_index().get = MagicMock(return_value=gri)
+        with patch("common.repo.DpkgRepo.get_release_index", release_index):
+            repo = DpkgRepo("http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/")
+            assert repo.verify_packages_index()
+
     @patch("spacewalk.common.repo.DpkgRepo.get_release_index", mock_release_index)
     def test_is_flat(self):
         """
