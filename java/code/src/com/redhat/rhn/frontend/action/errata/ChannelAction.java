@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata;
 
+import static com.redhat.rhn.frontend.struts.RequestContext.ERRATA_ID;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -185,9 +187,9 @@ public class ChannelAction extends RhnSetAction {
     /**
      * Takes an RhnSet object with ids and gets all the channelIds from the set.
      * @param set The RhnSet object containing channel ids
-     * @retval Set of channelIds
+     * @return Set of channelIds
      */
-    private Set<Long> getChannelIdsFromRhnSet(RhnSet set) {
+    public Set<Long> getChannelIdsFromRhnSet(RhnSet set) {
         Set<Long> retval = new HashSet<Long>();
         Iterator<RhnSetElement> itr = set.getElements().iterator();
 
@@ -246,18 +248,20 @@ public class ChannelAction extends RhnSetAction {
      * {@inheritDoc}
      * Add eid to our parameter map
      */
-    protected void processParamMap(ActionForm formIn,
+    public void processParamMap(ActionForm formIn,
                                    HttpServletRequest request,
                                    Map<String, Object> params) {
         //keep eid in params
-        Long eid = new RequestContext(request).getRequiredParam("eid");
+        Long eid = new RequestContext(request).getParamAsLong(ERRATA_ID);
+        if (eid != null) {
+            params.put(ERRATA_ID, eid);
+        }
+
         //keep track of return visit
         String rv = request.getParameter("returnvisit");
         if (rv != null) {
             params.put("returnvisit", "true");
         }
-        params.put("eid", eid);
-
     }
 
     protected RhnSetDecl getSetDecl() {

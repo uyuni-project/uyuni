@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata;
 
+import static com.redhat.rhn.frontend.struts.RequestContext.ERRATA_ID;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.ClonedErrata;
@@ -27,6 +29,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnListAction;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
@@ -65,7 +68,8 @@ public class ChannelSetupAction extends RhnListAction {
         clampListBounds(pc, request, user);
 
         //Get the errata object
-        Errata e = requestContext.lookupErratum();
+        Long errataId = requestContext.getParamAsLong(ERRATA_ID);
+        Errata e = ErrataManager.lookupErrata(errataId, requestContext.getCurrentUser());
 
         //get the data result containing the channels in this org
         DataResult<ChannelOverview> channels =
@@ -80,13 +84,13 @@ public class ChannelSetupAction extends RhnListAction {
             List<Long> pkgs;
             //so if the channel is not a clone or the errata is not cloned, we simply allow
             //the package name match to be used
-            if (channel.getOriginalId() == null || !e.isCloned()) {
+            if (e != null && (channel.getOriginalId() == null || !e.isCloned())) {
                 pkgs = ChannelManager.relevantPackages(channel.getId(), e);
             }
             //Else we check and see if the original channel was listed in
             //      the original errata
-            else if (e.isCloned() && errataInChannel(((ClonedErrata)e).getOriginal(),
-                    channel.getOriginalId())) {
+            else if (e != null && (e.isCloned() && errataInChannel(((ClonedErrata)e).getOriginal(),
+                    channel.getOriginalId()))) {
                 pkgs = ChannelManager.relevantPackages(channel.getId(), e);
             } //if it wasn't then no packages are listed
             else {
@@ -114,7 +118,7 @@ public class ChannelSetupAction extends RhnListAction {
             //init the set
             set = RhnSetDecl.CHANNELS_FOR_ERRATA.create(user);
             //If e is published, it must already have channels and needs it's set init
-            if (e.isPublished()) {
+            if (e != null && (e.isPublished())) {
                 //get the channels for this errata
                 Set<Channel> channelsInErrata = e.getChannels();
                 Iterator<Channel> channelItr = channelsInErrata.iterator();
@@ -147,7 +151,7 @@ public class ChannelSetupAction extends RhnListAction {
         request.setAttribute(RequestContext.PAGE_LIST, channels);
         request.setAttribute("set", set);
         //set advisory for toolbar
-        request.setAttribute("advisory", e.getAdvisory());
+        request.setAttribute("advisory", e != null ? e.getAdvisory() : "");
 
         // forward to page
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

@@ -15,8 +15,7 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.frontend.struts.RhnAction;
-import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.frontend.struts.RhnListAction;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +31,10 @@ import javax.servlet.http.HttpServletResponse;
  * CreateSetupAction
  * @version $Rev$
  */
-public class CreateSetupAction extends RhnAction {
+public class CreateSetupAction extends RhnListAction {
+
+    /** This class reuses code in the channel assignment page */
+    private ChannelSetupAction channelSetupAction = new ChannelSetupAction();
 
     /**
      * {@inheritDoc}
@@ -61,6 +63,7 @@ public class CreateSetupAction extends RhnAction {
         //set errata severity types
         form.set("advisorySeverityLabels", ErrataManager.advisorySeverityLabels());
 
-        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+        // set up channel selection list
+        return channelSetupAction.execute(mapping, formIn, request, response);
     }
 }

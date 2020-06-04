@@ -49,13 +49,13 @@ public class CreateActionTest extends RhnBaseTestCase {
         RhnMockDynaActionForm form = fillOutForm();
         form.set("synopsis", ""); //required field, so we should get a validation error
 
-        ActionForward result = action.execute(mapping, form, request, response);
+        ActionForward result = action.create(mapping, form, request, response);
         assertEquals(result.getName(), "failure");
 
         //fillout form correctly
         form = fillOutForm();
 
-        result = action.execute(mapping, form, request, response);
+        result = action.create(mapping, form, request, response);
         assertEquals(result.getName(), "success");
     }
 
