@@ -540,6 +540,20 @@ PKGLISTUBUNTU1804 = [
     "python3-gnupg",
 ]
 
+PKGLISTUBUNTU2004 = [
+    "dctrl-tools",
+    "libnorm1",
+    "libpgm-5.2-0",
+    "libzmq5",
+    "python3-crypto",
+    "python3-dateutil",
+    "python3-msgpack",
+    "python3-psutil",
+    "python3-zmq",
+    "salt-common",
+    "salt-minion",
+]
+
 DATA = {
     'SLE-11-SP1-i586' : {
         'PDID' : 684, 'PKGLIST' : PKGLIST11 + PKGLIST11_X86_I586,
@@ -965,6 +979,11 @@ DATA = {
     'ubuntu-18.04-amd64' : {
         'PDID' : [-1, 1918], 'PKGLIST' : PKGLISTUBUNTU1804,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
+    'ubuntu-20.04-amd64' : {
+        'PDID' : [-18, 2113], 'PKGLIST' : PKGLISTUBUNTU2004,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/20/4/bootstrap/',
         'TYPE' : 'deb'
     }
 }

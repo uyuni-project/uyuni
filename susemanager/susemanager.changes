@@ -1,3 +1,5 @@
+- Enable support for bootstrapping Ubuntu 20.04 LTS added from the
+  Setup Wizard or mgr-sync
 - Make systemd services and timers enablement really quiet
 - migrate cobbler configs for ks_mirror -> distro_mirror rename (bsc#1169209)
 - Packages for the Ubuntu 18.04 bootstrap repo are now populated with Python3
