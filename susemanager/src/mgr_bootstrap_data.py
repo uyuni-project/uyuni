@@ -1184,6 +1184,11 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/18/4/bootstrap/',
         'TYPE' : 'deb'
     },
+    'ubuntu-20.04-amd64' : {
+        'PDID' : [-18, 2113], 'BETAPDID' : [2112], 'PKGLIST' : PKGLISTUBUNTU2004,
+        'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/20/4/bootstrap/',
+        'TYPE' : 'deb'
+    },
     'ubuntu-16.04-amd64-uyuni' : {
         'BASECHANNEL' : 'ubuntu-16.04-pool-amd64-uyuni', 'PKGLIST' : PKGLISTUBUNTU1604,
         'DEST' : '/srv/www/htdocs/pub/repositories/ubuntu/16/4/bootstrap/',

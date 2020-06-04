@@ -1,3 +1,5 @@
+- Enable support for bootstrapping Ubuntu 20.04 LTS added from the
+  Setup Wizard or mgr-sync
 - migrate proxy list in cobbler settings (bsc#1169536)
 - Make systemd services and timers enablement really quiet
 - Packages for the Ubuntu 18.04 bootstrap repo are now populated with Python3
