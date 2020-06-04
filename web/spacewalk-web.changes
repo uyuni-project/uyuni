@@ -1,3 +1,4 @@
+- Remove lowercase image label limitation
 - Sort activation keys on bootstrapping page (bsc#1171251)
 - auto select recommended and mandatory channels by default (bsc#1162843)
 - Add hint to edit formulas before applying state (bsc#1168805)
