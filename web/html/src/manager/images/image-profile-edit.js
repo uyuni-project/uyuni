@@ -12,7 +12,6 @@ const { FormGroup } = require('components/input/FormGroup');
 const { Label } = require('components/input/Label');
 const { Select } = require('components/input/Select');
 const { Text } = require('components/input/Text');
-const Validation = require("components/validation");
 const Utils = require("utils/functions").Utils;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
@@ -389,7 +388,7 @@ class CreateImageProfile extends React.Component {
           onChange={this.onFormChange}
           onSubmit={(e) => this.isEdit() ? this.onUpdate(e) : this.onCreate(e)}
           onValidate={this.onValidate}>
-          <Text name="label" label={t("Label")} required validators={[this.isLabelValid, Validation.isLowercase()]} invalidHint={t("Label is required and must be a unique lowercase string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
+          <Text name="label" label={t("Label")} required validators={[this.isLabelValid]} invalidHint={t("Label is required and must be a unique string and it cannot include any colons (:).")} labelClass="col-md-3" divClass="col-md-6"/>
           <Select name="imageType" label={t("Image Type")} required labelClass="col-md-3" divClass="col-md-6" onChange={this.handleImageTypeChange} disabled={this.isEdit()}>
             { this.state.imageTypes.map(k =>
               <option key={k} value={k}>{ typeMap[k].name }</option>) }
