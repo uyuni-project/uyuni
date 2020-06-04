@@ -63,10 +63,15 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
 
         DebReleaseWriter releaseWriter = new DebReleaseWriter(channel, prefix);
         releaseWriter.generateRelease();
-        String releaseDatetime = DebReleaseWriter.RFC822_DATE_FORMAT.format(ZonedDateTime.now());
+        ZonedDateTime now = ZonedDateTime.now();
+        String releaseDatetime = DebReleaseWriter.RFC822_DATE_FORMAT.format(now);
 
         String releaseContent = FileUtils.readStringFromFile(prefix + "Release");
 
+        if (!releaseContent.contains(releaseDatetime)) {
+            // We have a possible race condition of 1 second
+            releaseDatetime = DebReleaseWriter.RFC822_DATE_FORMAT.format(now.minusSeconds(1));
+        }
         String rel = "Archive: " + channel.getLabel() + "\n" +
                 "Label: " + channel.getLabel() + "\n" +
                 "Suite: " + channel.getLabel() + "\n" +
