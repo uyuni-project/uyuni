@@ -79,17 +79,11 @@ Feature: Be able to bootstrap a Salt build host via the GUI
   Scenario: Apply the highstate to the build host
     Given I am on the Systems overview page of this "build_host"
     When I wait until no Salt job is running on "build_host"
-<<<<<<< HEAD
     And I enable repositories before installing Docker
     And I apply highstate on "build_host"
     And I wait until "docker" service is active on "build_host"
     And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "build_host"
     And I disable repositories after installing Docker
-=======
-    And I apply highstate on "build_host"
-    And I wait until "docker" service is active on "build_host"
-    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "build_host"
->>>>>>> parent of 6024a5b655... Revert "Testsuite: Decouple the minion from the Docker/Kiwi build host"
 
 @buildhost
   Scenario: Check that the build host is now a build host5
