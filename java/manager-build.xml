@@ -265,7 +265,7 @@
     <exec executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/salt/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/" />
     </exec>
-    <echo message="Copying Salt grains, beacons, and modules to remote host...${salt.state.files.dir}"/>
+    <echo message="Copying Salt grains, beacons, modules and pillars to remote host...${salt.state.files.dir}"/>
     <exec executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/src/grains/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_grains/" />
     </exec>
@@ -274,6 +274,9 @@
     </exec>
     <exec executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_modules/" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/ ${deploy.user}@${deploy.host}:/usr/share/susemanager/modules/pillar/" />
     </exec>
     <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
     <exec executable="rsync">
