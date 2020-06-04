@@ -17,35 +17,49 @@ const FadeTransition = cssTransition({
   duration: 0
 });
 
-export function showSuccessToastr(message: string|React.Node, optionalParams: OptionalParams = {autoHide: true}) {
-  const notify = () => toast.success(message, {
+function show(message: string | React.Node | Array<string | React.Node>, notify: (string | React.Node) => void) {
+  if (Array.isArray(message)) {
+    for (const msg of message) {
+      notify(msg);
+    }
+  } else {
+    notify(message);
+  }
+}
+
+export function showSuccessToastr(message: string | React.Node, optionalParams: OptionalParams = {autoHide: true}) {
+  const notify = (msg) => toast.success(msg, {
     autoClose: optionalParams.autoHide
     });
-  notify();
+  show(message, notify)
 }
 
 export function showWarningToastr(message: string|React.Node, optionalParams: OptionalParams = {autoHide: true}) {
-  const notify = () => toast.warning(message, {
+  const notify = (msg) => toast.warning(msg, {
     autoClose: optionalParams.autoHide
     });
-  notify();
+
+  show(message, notify)
 }
 
-export function showErrorToastr(message: string|React.Node|Error, optionalParams: OptionalParams = {autoHide: true}) {
-  if (message instanceof Error) {
-    message = (message: Error).toString();
-  }
-  const notify = () => toast.error(message, {
+export function showErrorToastr(message: string | React.Node | Error | Array<string | React.Node>, optionalParams: OptionalParams = {autoHide: true}) {
+  const notify = (msg) => toast.error(msg, {
     autoClose: optionalParams.autoHide
     });
-  notify();
+
+  if (message instanceof Error) {
+    const msg = (message: Error).toString();
+    notify(msg)
+  } else {
+    show(message, notify)
+  }
 }
 
 export function showInfoToastr(message: string|React.Node, optionalParams: OptionalParams = {autoHide: true}) {
-  const notify = () => toast.info(message, {
+  const notify = (msg) => toast.info(msg, {
     autoClose: optionalParams.autoHide,
     });
-  notify();
+  show(message, notify)
 }
 
 export const MessagesContainer = (props: MessagesContainerProps) => {
