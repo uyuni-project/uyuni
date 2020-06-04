@@ -1,5 +1,948 @@
 [
     {
+        "id" : -18,
+        "name" : "Ubuntu 20.04",
+        "identifier" : "Ubuntu-Client",
+        "former_identifier" : "",
+        "version" : "20.04",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Ubuntu 20.04",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -210,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal/main/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-main",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Main",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -211,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-updates/main/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -212,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal-security/main/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-main-security",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false
+            },
+            {
+                "id" : -213,
+                "url" : "http://archive.ubuntu.com/ubuntu/dists/focal/universe/binary-amd64/",
+                "name" : "ubuntu-2004-amd64-universe",
+                "distro_target" : "amd64",
+                "description" : "Ubuntu 20.04 LTS AMD64 Universe",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -17,
+        "name" : "Oracle Linux 8",
+        "identifier" : "oraclelinux-8",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Oracle Linux 8 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -203,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/x86_64/",
+                "name" : "oraclelinux8",
+                "distro_target" : "x86_64",
+                "description" : "Oracle Linux 8",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -204,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/appstream/x86_64/",
+                "name" : "oraclelinux8-appstream",
+                "distro_target" : "x86_64",
+                "description" : "Oracle Linux 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -205,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/addons/x86_64/",
+                "name" : "oraclelinux8-addons",
+                "distro_target" : "x86_64",
+                "description" : "Addons for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -206,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/codeready/builder/x86_64/",
+                "name" : "oraclelinux8-codereadybuilder",
+                "distro_target" : "x86_64",
+                "description" : "Latest CodeReady Builder packages for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -207,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/developer/UEKR6/x86_64/",
+                "name" : "oraclelinux8-developer-uek-r6",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 6 for Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -208,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL8/developer/x86_64/",
+                "name" : "oraclelinux8-developer",
+                "distro_target" : "x86_64",
+                "description" : "Packages for test and development - Oracle Linux 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -16,
+        "name" : "Oracle Linux 6",
+        "identifier" : "oraclelinux-6",
+        "former_identifier" : "",
+        "version" : "6",
+        "release_type" : null,
+        "arch" : "i386",
+        "friendly_name" : "Oracle Linux 6 i386",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -185,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/latest/i386/",
+                "name" : "oraclelinux6",
+                "distro_target" : "i386",
+                "description" : "Oracle Linux 6",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -186,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/addons/i386/",
+                "name" : "oraclelinux6-addons",
+                "distro_target" : "i386",
+                "description" : "Addons for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -187,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/i386/",
+                "name" : "oraclelinux6-uek-r2",
+                "distro_target" : "i386",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 2 for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -190,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/MySQL/i386/",
+                "name" : "oraclelinux6-mysql55",
+                "distro_target" : "i386",
+                "description" : "MySQL 5.5 for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -191,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/i386/",
+                "name" : "oraclelinux6-mysql56",
+                "distro_target" : "i386",
+                "description" : "http://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/i386/",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -15,
+        "name" : "Oracle Linux 6",
+        "identifier" : "oraclelinux-6",
+        "former_identifier" : "",
+        "version" : "6",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Oracle Linux 6 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -171,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/latest/x86_64/",
+                "name" : "oraclelinux6",
+                "distro_target" : "x86_64",
+                "description" : "Oracle Linux 6",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -172,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/addons/x86_64/",
+                "name" : "oraclelinux6-addons",
+                "distro_target" : "x86_64",
+                "description" : "Addons for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -173,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/x86_64/",
+                "name" : "oraclelinux6-uek-r2",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 2 for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -174,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEKR3/latest/x86_64/",
+                "name" : "oraclelinux6-uek-r3",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 3 for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -175,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/UEKR4/latest/x86_64/",
+                "name" : "oraclelinux6-uek-r4",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -176,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/MySQL/x86_64/",
+                "name" : "oraclelinux6-mysql55",
+                "distro_target" : "x86_64",
+                "description" : "MySQL 5.5 for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -177,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/x86_64/",
+                "name" : "oraclelinux6-mysql56",
+                "distro_target" : "x86_64",
+                "description" : "http://yum.oracle.com/repo/OracleLinux/OL6/MySQL56/x86_64/",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -178,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/playground/latest/x86_64/",
+                "name" : "oraclelinux6-playground",
+                "distro_target" : "x86_64",
+                "description" : "Playground (Mainline) Kernels for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -183,
+                "url" : "https://public-yum.oracle.com/repo/OracleLinux/OL6/SoftwareCollections/x86_64/",
+                "name" : "oraclelinux6-scl",
+                "distro_target" : "x86_64",
+                "description" : "Software Collection Library packages for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -184,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL6/openstack30/x86_64/",
+                "name" : "oraclelinux6-openstack30",
+                "distro_target" : "x86_64",
+                "description" : "OpenStack 3.0 packages for Oracle Linux 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -14,
+        "name" : "Oracle Linux 7",
+        "identifier" : "oraclelinux-7",
+        "former_identifier" : "",
+        "version" : "7",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Oracle Linux 7 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -154,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/",
+                "name" : "oraclelinux7",
+                "distro_target" : "x86_64",
+                "description" : "Oracle Linux 7",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -155,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/addons/x86_64/",
+                "name" : "oraclelinux7-addons",
+                "distro_target" : "x86_64",
+                "description" : "Addons for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -156,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR4/x86_64/",
+                "name" : "oraclelinux7-uek-r4",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 4 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -157,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/UEKR3/x86_64/",
+                "name" : "oraclelinux7-uek-r3",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 3 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -158,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/MySQL55/x86_64/",
+                "name" : "oraclelinux7-mysql55",
+                "distro_target" : "x86_64",
+                "description" : "MySQL 5.5 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -159,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/MySQL56/x86_64/",
+                "name" : "oraclelinux7-mysql56",
+                "distro_target" : "x86_64",
+                "description" : "MySQL 5.6 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -160,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/MySQL57_community/x86_64/",
+                "name" : "oraclelinux7-mysql57",
+                "distro_target" : "x86_64",
+                "description" : "MySQL 5.7 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -165,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/openstack20/x86_64/",
+                "name" : "oraclelinux7-openstack20",
+                "distro_target" : "x86_64",
+                "description" : "OpenStack 2.0 packages for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -166,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/openstack21/x86_64/",
+                "name" : "oraclelinux7-openstack21",
+                "distro_target" : "x86_64",
+                "description" : "OpenStack 2.1 packages for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -167,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/openstack30/x86_64/",
+                "name" : "oraclelinux7-openstack30",
+                "distro_target" : "x86_64",
+                "description" : "OpenStack 3.0 packages for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -168,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/openstack_extras/x86_64/",
+                "name" : "oraclelinux7-openstack30-extras",
+                "distro_target" : "x86_64",
+                "description" : "OpenStack 3.0 Extra packages for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -169,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/SoftwareCollections/x86_64/",
+                "name" : "oraclelinux7-scl",
+                "distro_target" : "x86_64",
+                "description" : "Software Collection Library packages for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -170,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/ceph/x86_64/",
+                "name" : "oraclelinux7-ceph",
+                "distro_target" : "x86_64",
+                "description" : "Ceph Storage for Oracle Linux Release 2.0 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -170,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL7/ceph/x86_64/",
+                "name" : "oraclelinux7-ceph",
+                "distro_target" : "x86_64",
+                "description" : "Ceph Storage for Oracle Linux Release 2.0 for Oracle Linux 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -13,
+        "name" : "CentOS 8",
+        "identifier" : "centos-8",
+        "former_identifier" : "",
+        "version" : "8",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "CentOS 8 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -145,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=BaseOS&infra=stock",
+                "name" : "centos8",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 8",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -146,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=AppStream&infra=stock",
+                "name" : "centos8-appstream",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 8 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -147,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=centosplus&infra=stock",
+                "name" : "centos8-centosplus",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 8 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -148,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=cr&infra=stock",
+                "name" : "centos8-cr",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 8 CR",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -149,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=extras&infra=stock",
+                "name" : "centos8-extras",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 8 Extras",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -150,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=fasttrack&infra=stock",
+                "name" : "centos8-fasttrack",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 8 FastTrack",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -151,
+                "url" : "http://mirrorlist.centos.org/?release=8&arch=x86_64&repo=PowerTools&infra=stock",
+                "name" : "centos8-powertools",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 8 PowerTools",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -199,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-8&arch=x86_64",
+                "name" : "epel8",
+                "distro_target" : "x86_64",
+                "description" : "EPEL 8",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -12,
+        "name" : "CentOS 7",
+        "identifier" : "centos-7",
+        "former_identifier" : "",
+        "version" : "7",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "CentOS 7 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -129,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=os",
+                "name" : "centos7",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 7",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -130,
+                "url" : "http://mirror.centos.org/centos-7/7/atomic/x86_64",
+                "name" : "centos7-atomic",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 7 Atomic",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -131,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=centosplus",
+                "name" : "centos7-centosplus",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 7 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -133,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=cr",
+                "name" : "centos7-cr",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 7 CR",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -134,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=extras",
+                "name" : "centos7-extras",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 7 Extras",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -135,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=fasttrack",
+                "name" : "centos7-fasttrack",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 7 FastTrack",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -138,
+                "url" : "http://mirror.centos.org/centos-7/7/rt/x86_64",
+                "name" : "centos7-rt",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 7 RT",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -141,
+                "url" : "http://mirrorlist.centos.org/?release=7&arch=x86_64&repo=updates",
+                "name" : "centos7-updates",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 7 Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -200,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-7&arch=x86_64",
+                "name" : "epel7",
+                "distro_target" : "x86_64",
+                "description" : "EPEL 7",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -11,
+        "name" : "CentOS 6",
+        "identifier" : "centos-6",
+        "former_identifier" : "",
+        "version" : "6",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "CentOS 6 x86_64",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -123,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=os",
+                "name" : "centos6",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 6",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -124,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=centosplus",
+                "name" : "centos6-centosplus",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 6 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -125,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=contrib",
+                "name" : "centos6-contrib",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 6 Contrib",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -126,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=extras",
+                "name" : "centos6-extras",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 6 Extras",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -127,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=fasttrack",
+                "name" : "centos6-fasttrack",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 6 FastTrack",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -128,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=x86_64&repo=updates",
+                "name" : "centos6-updates",
+                "distro_target" : "x86_64",
+                "description" : "CentOS 6 Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -201,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=x86_64",
+                "name" : "epel6",
+                "distro_target" : "x86_64",
+                "description" : "EPEL 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
+        "id" : -10,
+        "name" : "CentOS 6",
+        "identifier" : "centos-6",
+        "former_identifier" : "",
+        "version" : "6",
+        "release_type" : null,
+        "arch" : "i386",
+        "friendly_name" : "CentOS 6 i386",
+        "product_class" : "SLE-M-T",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "alpha",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -114,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=os",
+                "name" : "centos6",
+                "distro_target" : "i386",
+                "description" : "CentOS 6",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -115,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=centosplus",
+                "name" : "centos6-centosplus",
+                "distro_target" : "i386",
+                "description" : "CentOS 6 Plus",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -116,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=contrib",
+                "name" : "centos6-contrib",
+                "distro_target" : "i386",
+                "description" : "CentOS 6 Contrib",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -118,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=extras",
+                "name" : "centos6-extras",
+                "distro_target" : "i386",
+                "description" : "CentOS 6 Extras",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -119,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=fasttrack",
+                "name" : "centos6-fasttrack",
+                "distro_target" : "i386",
+                "description" : "CentOS 6 FastTrack",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -120,
+                "url" : "http://mirrorlist.centos.org/?release=6&arch=i386&repo=updates",
+                "name" : "centos6-updates",
+                "distro_target" : "i386",
+                "description" : "CentOS 6 Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false
+            },
+            {
+                "id" : -202,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6&arch=i386",
+                "name" : "epel6",
+                "distro_target" : "i386",
+                "description" : "EPEL 6",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false
+            }
+        ]
+    },
+    {
         "id" : -9,
         "name" : "Open Enterprise Server 2018 SP2",
         "identifier" : "Open_Enterprise_Server",
