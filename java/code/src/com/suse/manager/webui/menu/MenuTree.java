@@ -204,12 +204,9 @@ public class MenuTree {
                         .withAltUrl("/rhn/errata/RelevantBugErrata.do").withAltUrl("/rhn/errata/RelevantEnhancementErrata.do")
                         .withAltUrl("/rhn/errata/RelevantSecurityErrata.do")))
                 .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/errata/Search.do"))
-                .addChild(
-                    new MenuItem("Manage Errata").withVisibility(checkAcl(user, "user_role(channel_admin)")).withDir("/rhn/errata/manage")
-                        .addChild(new MenuItem("Published").withPrimaryUrl("/rhn/errata/manage/PublishedErrata.do")
-                            .withVisibility(checkAcl(user, "user_role(channel_admin)")))
-                        .addChild(new MenuItem("Unpublished").withPrimaryUrl("/rhn/errata/manage/UnpublishedErrata.do")
-                            .withVisibility(checkAcl(user, "user_role(channel_admin)"))))
+                .addChild(new MenuItem("Manage Errata").withPrimaryUrl("/rhn/errata/manage/PublishedErrata.do")
+                        .withAltUrl("/rhn/errata/manage/Create.do").withAltUrl("/rhn/errata/manage/CreateSubmit.do")
+                        .withVisibility(checkAcl(user, "user_role(channel_admin)")))
                 .addChild(new MenuItem("Clone Errata").withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                     .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)"))));
 
