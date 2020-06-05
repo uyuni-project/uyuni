@@ -69,3 +69,4 @@ ui:
       - status
       - has-updates
       - has-disruptive-updates
+      - caasp-release-version
