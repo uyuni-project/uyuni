@@ -239,7 +239,7 @@ When(/^I wait until file "([^"]*)" contains "([^"]*)" on server$/) do |file, con
   end
 end
 
-When(/^I check the tomcat logs for errors$/) do
+Then(/^the tomcat logs should not contain errors$/) do
   output = $server.run('cat /var/log/tomcat/*')
   msgs = %w[ERROR NullPointer]
   msgs.each do |msg|
@@ -247,32 +247,30 @@ When(/^I check the tomcat logs for errors$/) do
   end
 end
 
-Then(/^I restart the spacewalk service$/) do
+When(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
 end
 
-Then(/^I shutdown the spacewalk service$/) do
+When(/^I shutdown the spacewalk service$/) do
   $server.run('spacewalk-service stop')
 end
 
-Then(/^I execute spacewalk-debug on the server$/) do
+When(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
-  cmd = "echo | scp -o StrictHostKeyChecking=no root@#{$server.ip}:/tmp/spacewalk-debug.tar.bz2 . 2>&1"
-  command_output = `#{cmd}`
-  unless $CHILD_STATUS.success?
-    raise "Execute command failed: #{$ERROR_INFO}: #{command_output}"
-  end
+  code = file_extract($server, "/tmp/spacewalk-debug.tar.bz2", "spacewalk-debug.tar.bz2")
+  raise "Download debug file failed" unless code.zero?
 end
 
 Then(/^I get logfiles from "([^"]*)"$/) do |target|
-  `mkdir logs` unless Dir.exist?('logs')
   node = get_target(target)
-  _out, code = node.run("journalctl > /var/log/messages")
-  _out, code = node.run("tar cfvJ /tmp/#{target}-logs.tar.xz /var/log/")
-  raise 'Generate log archive failed' unless code.zero?
-  cmd = "echo | scp -o StrictHostKeyChecking=no root@#{node.ip}:/tmp/#{target}-logs.tar.xz ./logs/ 2>&1"
-  command_output = `#{cmd}`
-  raise "Download logfiles failed: #{command_output}" unless $CHILD_STATUS.success?
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/
+    node.run('zypper mr --enable os_pool_repo os_update_repo && zypper --non-interactive install tar')
+  end
+  node.run("journalctl > /var/log/messages && (tar cfvJP /tmp/#{target}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]])")
+  `mkdir logs` unless Dir.exist?('logs')
+  code = file_extract(node, "/tmp/#{target}-logs.tar.xz", "logs/#{target}-logs.tar.xz")
+  raise "Download log archive failed" unless code.zero?
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
