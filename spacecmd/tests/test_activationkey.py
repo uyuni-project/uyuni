@@ -1555,7 +1555,7 @@ class TestSCActivationKeyMethods:
         assert not shell.list_child_channels.called
         assert not shell.do_configchannel_list.called
         assert not shell.import_activtionkey_fromdetails.called
-        assert ret is None
+        assert ret is 1
         assert logger.error.call_args_list[0][0][0] == 'Error - must specify either -c or -x options!'
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
@@ -1604,7 +1604,7 @@ class TestSCActivationKeyMethods:
         assert not shell.do_configchannel_list.called
         assert not shell.import_activtionkey_fromdetails.called
         assert logger.error.call_args_list[0][0][0] == "Key key_clone_name already exists"
-        assert ret is None
+        assert ret is 1
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
     @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))
@@ -1633,7 +1633,7 @@ class TestSCActivationKeyMethods:
         assert not shell.do_configchannel_list.called
         assert not shell.import_activtionkey_fromdetails.called
         assert logger.error.call_args_list[0][0][0] == "Error no activationkey to clone passed!"
-        assert ret is None
+        assert ret is 1
 
     @patch("spacecmd.activationkey.is_interactive", MagicMock(return_value=False))
     @patch("spacecmd.activationkey.prompt_user", MagicMock(side_effect=["original_key", "cloned_key"]))

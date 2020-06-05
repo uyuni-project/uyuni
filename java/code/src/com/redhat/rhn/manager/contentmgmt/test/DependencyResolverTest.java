@@ -95,7 +95,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      */
     public void testMixedFilters() throws DependencyResolutionException {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:10");
-        ContentFilter filter1 = contentManager.createFilter("mymodule-filter", DENY, MODULE, criteria1, user);
+        ContentFilter filter1 = contentManager.createFilter("mymodule-filter", ALLOW, MODULE, criteria1, user);
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "mypkg");
         ContentFilter filter2 = contentManager.createFilter("mypkg-filter", DENY, PACKAGE, criteria2, user);
 
@@ -111,7 +111,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      */
     public void testNonMatchingModuleFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:foo");
-        ContentFilter filter = contentManager.createFilter("mymodule-filter", DENY, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("mymodule-filter", ALLOW, MODULE, criteria, user);
 
         try {
             resolver.resolveFilters(singletonList(filter));
@@ -138,9 +138,9 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      */
     public void testResolveModuleFilters() throws Exception {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:10");
-        ContentFilter filter1 = contentManager.createFilter("postgresql-filter", DENY, MODULE, criteria1, user);
+        ContentFilter filter1 = contentManager.createFilter("postgresql-filter", ALLOW, MODULE, criteria1, user);
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter filter2 = contentManager.createFilter("perl-filter", DENY, MODULE, criteria2, user);
+        ContentFilter filter2 = contentManager.createFilter("perl-filter", ALLOW, MODULE, criteria2, user);
 
         List<ContentFilter> result = resolver.resolveFilters(Arrays.asList(filter1, filter2));
 
@@ -175,7 +175,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      */
     public void testResolveModuleFiltersVersionUpdates() throws DependencyResolutionException {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter filter = contentManager.createFilter("perl-filter", DENY, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("perl-filter", ALLOW, MODULE, criteria, user);
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter));
 
@@ -194,7 +194,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      */
     public void testModuleFiltersForeignPackagesSelected() throws Exception {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
-        ContentFilter filter = contentManager.createFilter("perl-5.24-filter", DENY, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria, user);
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter));
         assertNotEmpty(result);
@@ -213,7 +213,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      */
     public void testModuleFiltersForeignPackagesConflicting() throws Exception {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter filter = contentManager.createFilter("perl-5.24-filter", DENY, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria, user);
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter));
         assertNotEmpty(result);
@@ -231,9 +231,9 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
      */
     public void testConflictingStreams() {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter filter1 = contentManager.createFilter("perl-5.24-filter", DENY, MODULE, criteria1, user);
+        ContentFilter filter1 = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria1, user);
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
-        ContentFilter filter2 = contentManager.createFilter("perl-5.26-filter", DENY, MODULE, criteria2, user);
+        ContentFilter filter2 = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria2, user);
 
         try {
             resolver.resolveFilters(Arrays.asList(filter1, filter2));

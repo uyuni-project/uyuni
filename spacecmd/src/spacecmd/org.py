@@ -92,27 +92,27 @@ def do_org_create(self, args):
     else:
         if not options.org_name:
             logging.error('An organization name is required')
-            return
+            return 1
 
         if not options.username:
             logging.error('A username is required')
-            return
+            return 1
 
         if not options.first_name:
             logging.error('A first name is required')
-            return
+            return 1
 
         if not options.last_name:
             logging.error('A last name is required')
-            return
+            return 1
 
         if not options.email:
             logging.error('An email address is required')
-            return
+            return 1
 
         if not options.password:
             logging.error('A password is required')
-            return
+            return 1
 
         if not options.pam:
             options.pam = False
@@ -133,6 +133,8 @@ def do_org_create(self, args):
                            options.email,
                            options.pam)
 
+    return 0
+
 ####################
 
 
@@ -152,15 +154,17 @@ def do_org_delete(self, args):
 
     if len(args) != 1:
         self.help_org_delete()
-        return
+        return 1
 
     name = args[0]
     org_id = self.get_org_id(name)
     if not org_id:
         logging.warning("No organisation found for the name %s", name)
         print("Organisation '{}' was not found".format(name))
+        return 1
     elif self.user_confirm('Delete this organization [y/N]:'):
         self.client.org.delete(self.session, org_id)
+        return 0
 
 ####################
 
@@ -181,16 +185,18 @@ def do_org_rename(self, args):
 
     if len(args) != 2:
         self.help_org_rename()
-        return
+        return 1
 
     name, new_name = args
     org_id = self.get_org_id(name)
     if not org_id:
         logging.warning("No organisation found for the name %s", name)
         print("Organisation '{}' was not found".format(name))
+        return 1
     else:
         new_name = args[1]
         self.client.org.updateName(self.session, org_id, new_name)
+        return 0
 
 ####################
 
@@ -211,7 +217,7 @@ def do_org_addtrust(self, args):
 
     if len(args) != 2:
         self.help_org_addtrust()
-        return
+        return 1
 
     your_org, trust_org = args
     your_org_id = self.get_org_id(your_org)
@@ -220,11 +226,14 @@ def do_org_addtrust(self, args):
     if your_org_id is None:
         logging.warning("No organisation found for the name %s", your_org)
         print("Organisation '{}' was not found".format(your_org))
+        return 1
     elif org_to_trust_id is None:
         logging.warning("No trust organisation found for the name %s", trust_org)
         print("Organisation '{}' to trust for, was not found".format(trust_org))
+        return 1
     else:
         self.client.org.trusts.addTrust(self.session, your_org_id, org_to_trust_id)
+        return 0
 
 ####################
 
@@ -245,7 +254,7 @@ def do_org_removetrust(self, args):
 
     if len(args) != 2:
         self.help_org_removetrust()
-        return
+        return 1
 
     your_org, trust_org = args
     your_org_id = self.get_org_id(your_org)
@@ -253,9 +262,11 @@ def do_org_removetrust(self, args):
     if your_org_id is None:
         logging.warning("No organisation found for the name %s", your_org)
         print("Organisation '{}' was not found".format(your_org))
+        return 1
     elif trusted_org_id is None:
         logging.warning("No trust organisation found for the name %s", trust_org)
         print("Organisation '{}' to trust for, was not found".format(trust_org))
+        return 1
     else:
         systems = self.client.org.trusts.listSystemsAffected(self.session, your_org_id, trusted_org_id)
         print('Affected Systems')
@@ -268,6 +279,7 @@ def do_org_removetrust(self, args):
 
         if self.user_confirm('Remove this trust [y/N]:'):
             self.client.org.trusts.removeTrust(self.session, your_org_id, trusted_org_id)
+        return 0
 
 
 def help_org_trustdetails(self):
@@ -286,13 +298,14 @@ def do_org_trustdetails(self, args):
 
     if not args:
         self.help_org_trustdetails()
-        return
+        return 1
 
     trusted_org = args[0]
     org_id = self.get_org_id(trusted_org)
     if org_id is None:
         logging.warning("No trusted organisation found for the name %s", trusted_org)
         print("Trusted organisation '{}' was not found".format(trusted_org))
+        return 1
     else:
         details = self.client.org.trusts.getDetails(self.session, org_id)
         consumed = self.client.org.trusts.listChannelsConsumed(self.session, org_id)
@@ -314,6 +327,7 @@ def do_org_trustdetails(self, args):
         print('-----------------')
         if provided:
             print('\n'.join(sorted([c.get('name') for c in provided])))
+        return 0
 
 
 def help_org_list(self):
@@ -350,21 +364,24 @@ def do_org_listtrusts(self, args):
 
     if not args:
         self.help_org_listtrusts()
-        return
+        return 1
 
     org_id = self.get_org_id(args[0])
     if org_id is None:
         logging.warning("No organisation found for the name %s", args[0])
         print("Organisation '{}' was not found".format(args[0]))
+        return 1
     else:
         trusts = self.client.org.trusts.listTrusts(self.session, org_id)
         if not trusts:
             print("No trust organisation has been found")
             logging.warning("No trust organisation has been found")
+            return 1
         else:
             for trust in sorted(trusts, key=itemgetter('orgName')):
                 if trust.get('trustEnabled'):
                     print(trust.get('orgName'))
+            return 0
 
 
 def help_org_listusers(self):
@@ -383,15 +400,17 @@ def do_org_listusers(self, args):
 
     if not args:
         self.help_org_listusers()
-        return
+        return 1
 
     org_id = self.get_org_id(args[0])
     if org_id is None:
         logging.warning("No organisation found for the name %s", args[0])
         print("Organisation '{}' was not found".format(args[0]))
+        return 1
     else:
         users = self.client.org.listUsers(self.session, org_id)
         print('\n'.join(sorted([u.get('login') for u in users])))
+        return 0
 
 ####################
 
@@ -412,7 +431,7 @@ def do_org_details(self, args):
 
     if not args:
         self.help_org_details()
-        return
+        return 1
 
     name = args[0]
 
@@ -432,3 +451,5 @@ def do_org_details(self, args):
     print('Activation Keys:        %i' % details.get('activation_keys'))
     print('Kickstart Profiles:     %i' % details.get('kickstart_profiles'))
     print('Configuration Channels: %i' % details.get('configuration_channels'))
+
+    return 0

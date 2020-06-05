@@ -1,5 +1,15 @@
 - Add duplicate line for repodata Debian component in release file
-
+- improve speed of Content Lifecycle Management channel list loading (bsc#1153234)
+- Avoid traceback with AssertionError: Failed to update row (bsc#1172558)
+- Pass minion ip to the kiwi_collect_image runner as fallback instead
+  of fqdn if not present (bsc#1170737)
+- Fix software channel list coloring
+- apply highstate when add-on system types should be applied to the
+  system on bootstrapping (bsc#1172190)
+- configure HTTP timeouts via rhn.conf
+- fixed bug where in scheduling a vhm refresh would result in a permission error for org admins
+- Validate CLM projects on build/promote with XMLRPC
+- Fix nullpointer exception during proxy registration (bsc#1171287)
 - improve Content Lifecycle Management build and promotion performance (bsc#1159226)
 - fix info text about package installation on channel change (bsc#1171684)
 - Clarify the behavior of the checkbox system list, when it adds systems to ssm

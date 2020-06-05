@@ -65,7 +65,7 @@ class TestSCRepo:
         mprint = MagicMock()
         with patch("spacecmd.repo.print", mprint):
             out = spacecmd.repo.do_repo_details(shell, "")
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.getRepoDetails.called
         assert shell.help_repo_details.called
@@ -86,7 +86,7 @@ class TestSCRepo:
 
         assert not shell.client.channel.software.getRepoDetails.called
         assert not shell.help_repo_details.called
-        assert out is None
+        assert out is 1
         assert mprint.called
 
         assert_expect(mprint.call_args_list,
@@ -118,7 +118,7 @@ class TestSCRepo:
 
         assert not shell.help_repo_details.called
         assert shell.client.channel.software.getRepoDetails.called
-        assert out is None
+        assert out is 0
         assert mprint.called
 
         exp = [
@@ -152,7 +152,7 @@ class TestSCRepo:
         with patch("spacecmd.repo.print", mprint):
             out = spacecmd.repo.do_repo_listfilters(shell, "")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.listRepoFilters.called
         assert shell.help_repo_listfilters.called
@@ -171,7 +171,7 @@ class TestSCRepo:
         with patch("spacecmd.repo.print", mprint):
             out = spacecmd.repo.do_repo_listfilters(shell, "some-filter")
 
-        assert out is None
+        assert out is 1
         assert not shell.help_repo_listfilters.called
         assert shell.client.channel.software.listRepoFilters.called
         assert mprint.called
@@ -195,7 +195,7 @@ class TestSCRepo:
         with patch("spacecmd.repo.print", mprint):
             out = spacecmd.repo.do_repo_listfilters(shell, "some-filter")
 
-        assert out is None
+        assert out is 0
         assert not shell.help_repo_listfilters.called
         assert shell.client.channel.software.listRepoFilters.called
         assert mprint.called
@@ -216,7 +216,7 @@ class TestSCRepo:
         with patch("spacecmd.repo.print", mprint):
             out = spacecmd.repo.do_repo_addfilters(shell, "")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.addRepoFilter.called
         assert shell.help_repo_addfilters.called
@@ -235,7 +235,7 @@ class TestSCRepo:
         with patch("spacecmd.repo.print", mprint):
             out = spacecmd.repo.do_repo_addfilters(shell, "some-repo")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.addRepoFilter.called
         assert shell.help_repo_addfilters.called
@@ -256,7 +256,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_addfilters(shell, "some-repo foo bar")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.help_repo_addfilters.called
         assert not shell.client.channel.software.addRepoFilter.called
@@ -280,7 +280,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_addfilters(shell, "some-repo +emacs")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert not shell.help_repo_addfilters.called
         assert not logger.error.called
@@ -304,7 +304,7 @@ class TestSCRepo:
                     patch("spacecmd.repo.logging", logger) as lgr:
                 out = spacecmd.repo.do_repo_removefilters(shell, arg)
 
-            assert out is None
+            assert out is 1
             assert not mprint.called
             assert not shell.client.channel.software.removeRepoFilter.called
             assert not logger.error.called
@@ -326,7 +326,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_removefilters(shell, "repo foo bar")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.removeRepoFilter.called
         assert not shell.help_repo_removefilters.called
@@ -350,7 +350,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_removefilters(shell, "repo +emacs -vim")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert not shell.help_repo_removefilters.called
         assert not logger.error.called
@@ -378,7 +378,7 @@ class TestSCRepo:
                     patch("spacecmd.repo.logging", logger) as lgr:
                 out = spacecmd.repo.do_repo_setfilters(shell, arg)
 
-            assert out is None
+            assert out is 1
             assert not mprint.called
             assert not logger.error.called
             assert not shell.client.channel.software.setRepoFilters.called
@@ -400,7 +400,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_setfilters(shell, "repo foo bar")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.setRepoFilters.called
         assert not shell.help_repo_setfilters.called
@@ -424,7 +424,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_setfilters(shell, "repo +emacs -vim")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert not shell.help_repo_setfilters.called
         assert not logger.error.called
@@ -452,7 +452,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_clearfilters(shell, "")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not logger.error.called
         assert not shell.client.channel.software.clearRepoFilters.called
@@ -475,7 +475,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_clearfilters(shell, "repo --yes")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert not shell.help_repo_clearfilters.called
         assert not logger.error.called
@@ -498,7 +498,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_clearfilters(shell, "repo")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert not shell.help_repo_clearfilters.called
         assert not logger.error.called
@@ -521,7 +521,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_delete(shell, "")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not logger.error.called
         assert not shell.client.channel.software.removeRepo.called
@@ -544,7 +544,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_rename(shell, "")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not logger.error.called
         assert not shell.client.channel.software.getRepoDetails.called
@@ -568,7 +568,7 @@ class TestSCRepo:
                     patch("spacecmd.repo.logging", logger) as lgr:
                 out = spacecmd.repo.do_repo_updateurl(shell, "")
 
-            assert out is None
+            assert out is 1
             assert not mprint.called
             assert not logger.error.called
             assert not shell.client.channel.software.updateRepUrl.called
@@ -593,7 +593,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_updatessl(shell, "")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert not logger.error.called
         assert shell.client.channel.software.updateRepoSsl.called
@@ -620,7 +620,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_updatessl(shell, "--name name --ca ca --cert cert --key key")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert not logger.error.called
         assert shell.client.channel.software.updateRepoSsl.called
@@ -647,7 +647,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_updatessl(shell, "--ca ca --cert cert --key key")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.updateRepoSsl.called
         assert logger.error.called
@@ -672,7 +672,7 @@ class TestSCRepo:
                 patch("spacecmd.repo.logging", logger) as lgr:
             out = spacecmd.repo.do_repo_create(shell, "")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert shell.client.channel.software.createRepo.called
         assert not logger.error.called
@@ -699,7 +699,7 @@ class TestSCRepo:
                                                "--n name --t type -u http://something "
                                                "--ca ca --cert cert --key key")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert shell.client.channel.software.createRepo.called
         assert not logger.error.called
@@ -725,7 +725,7 @@ class TestSCRepo:
                                                "--t type -u http://something "
                                                "--ca ca --cert cert --key key")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.createRepo.called
         assert logger.error.called
@@ -751,7 +751,7 @@ class TestSCRepo:
                                                "-n name -t type "
                                                "--ca ca --cert cert --key key")
 
-        assert out is None
+        assert out is 1
         assert not mprint.called
         assert not shell.client.channel.software.createRepo.called
         assert logger.error.called
@@ -777,7 +777,7 @@ class TestSCRepo:
                                                "-n name -u http://something "
                                                "--ca ca --cert cert --key key")
 
-        assert out is None
+        assert out is 0
         assert not mprint.called
         assert not logger.error.called
         assert shell.client.channel.software.createRepo.called

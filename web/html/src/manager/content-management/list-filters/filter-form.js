@@ -281,7 +281,7 @@ const FilterForm = (props: Props) => {
           clmFilterOptions.STREAM.key === props.filter.type &&
           <>
             <AppStreamsForm/>
-            <input type="hidden" name="rule" value="deny"/>
+            <input type="hidden" name="rule" value="allow"/>
           </>
         }
 

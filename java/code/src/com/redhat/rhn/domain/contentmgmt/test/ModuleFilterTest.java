@@ -23,7 +23,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import static com.redhat.rhn.domain.contentmgmt.ContentFilter.EntityType.MODULE;
-import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.DENY;
+import static com.redhat.rhn.domain.contentmgmt.ContentFilter.Rule.ALLOW;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 
 public class ModuleFilterTest extends BaseTestCaseWithUser {
@@ -40,7 +40,7 @@ public class ModuleFilterTest extends BaseTestCaseWithUser {
     public void testGetModule() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule");
         ModuleFilter filter =
-                (ModuleFilter) contentManager.createFilter("mymodule-filter-1", DENY, MODULE, criteria, user)
+                (ModuleFilter) contentManager.createFilter("mymodule-filter-1", ALLOW, MODULE, criteria, user)
                         .asModuleFilter().get();
 
         Module module = filter.getModule();
@@ -48,7 +48,7 @@ public class ModuleFilterTest extends BaseTestCaseWithUser {
         assertNull(module.getStream());
 
         criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "mymodule:mystream:foo");
-        filter = (ModuleFilter) contentManager.createFilter("mymodule-filter-2", DENY, MODULE, criteria, user)
+        filter = (ModuleFilter) contentManager.createFilter("mymodule-filter-2", ALLOW, MODULE, criteria, user)
                 .asModuleFilter().get();
 
         // The field value is interpreted as module_name : stream_name

@@ -72,6 +72,9 @@ public class HttpClientAdapter {
      */
     public static final String NO_PROXY = "server.satellite.no_proxy";
     public static final String MAX_CONNCECTIONS = "java.mgr_sync_max_connections";
+    public static final String HTTP_CONNECTION_TIMEOUT = "java.http_connection_timeout";
+    public static final String HTTP_SOCKET_TIMEOUT = "java.http_socket_timeout";
+    private static final int TO_MILLISECONDS = 1000;
 
     /** The log. */
     private static Logger log = Logger.getLogger(HttpClientAdapter.class);
@@ -113,6 +116,8 @@ public class HttpClientAdapter {
 
         clientBuilder.setDefaultCredentialsProvider(credentialsProvider);
         Builder requestConfigBuilder = RequestConfig.custom()
+                .setConnectTimeout(Config.get().getInt(HTTP_CONNECTION_TIMEOUT, 5) * TO_MILLISECONDS)
+                .setSocketTimeout(Config.get().getInt(HTTP_SOCKET_TIMEOUT, 5 * 60) * TO_MILLISECONDS)
                 .setCookieSpec(CookieSpecs.IGNORE_COOKIES);
 
         // Store the proxy settings

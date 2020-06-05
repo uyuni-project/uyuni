@@ -49,13 +49,17 @@ def do_scap_listxccdfscans(self, args):
 
     if not args:
         self.help_scap_listxccdfscans()
-        return
+        return 1
 
     # use the systems listed in the SSM
     if re.match('ssm', args[0], re.I):
         systems = self.ssm.keys()
     else:
         systems = self.expand_systems(args)
+
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
 
     add_separator = False
 
@@ -77,6 +81,8 @@ def do_scap_listxccdfscans(self, args):
         for s in scan_list:
             print('XID: %d Profile: %s Path: (%s) Completed: %s' % (s['xid'], s['profile'], s['path'], s['completed']))
 
+    return 0
+
 ####################
 
 
@@ -92,7 +98,7 @@ def do_scap_getxccdfscanruleresults(self, args):
 
     if not args:
         self.help_scap_getxccdfscanruleresults()
-        return
+        return 1
 
     add_separator = False
 
@@ -111,6 +117,8 @@ def do_scap_getxccdfscanruleresults(self, args):
         for s in scan_results:
             print('IDref: %s Result: %s Idents: (%s)' % (s['idref'], s['result'], s['idents']))
 
+    return 0
+
 ####################
 
 
@@ -126,7 +134,7 @@ def do_scap_getxccdfscandetails(self, args):
 
     if not args:
         self.help_scap_getxccdfscandetails()
-        return
+        return 1
 
     add_separator = False
 
@@ -152,6 +160,8 @@ def do_scap_getxccdfscandetails(self, args):
               scan_details['start_time'], "End_Time:", scan_details['end_time'], \
               "Errors:", scan_details['errors'])
 
+    return 0
+
 ####################
 
 
@@ -175,7 +185,7 @@ def do_scap_schedulexccdfscan(self, args):
 
     if len(args) < 3:
         self.help_scap_schedulexccdfscan()
-        return
+        return 1
 
     path = args[0]
     param = "--"
@@ -187,9 +197,15 @@ def do_scap_schedulexccdfscan(self, args):
     else:
         systems = self.expand_systems(args[2:])
 
+    if not systems:
+        logging.warning('No systems selected')
+        return 1
+
     for system in systems:
         system_id = self.get_system_id(system)
         if not system_id:
             continue
 
         self.client.system.scap.scheduleXccdfScan(self.session, system_id, path, param)
+
+    return 0

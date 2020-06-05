@@ -73,13 +73,13 @@ def do_ssm_add(self, args):
 
     if not args:
         self.help_ssm_add()
-        return
+        return 1
 
     systems = self.expand_systems(args)
 
     if not systems:
         logging.warning('No systems found')
-        return
+        return 1
 
     for system in systems:
         if system in self.ssm:
@@ -94,6 +94,8 @@ def do_ssm_add(self, args):
 
     # save the SSM for use between sessions
     save_cache(self.ssm_cache_file, self.ssm)
+
+    return 0
 
 ####################
 
@@ -120,13 +122,13 @@ def do_ssm_intersect(self, args):
 
     if not args:
         self.help_ssm_intersect()
-        return
+        return 1
 
     systems = self.expand_systems(args)
 
     if not systems:
         logging.warning('No systems found')
-        return
+        return 1
 
     # tmp_ssm placeholder to gather systems that are both in original ssm
     # selection and newly selected group
@@ -144,6 +146,8 @@ def do_ssm_intersect(self, args):
 
     if self.ssm:
         logging.debug('Systems Selected: %i' % len(self.ssm))
+
+    return 0
 
 ####################
 
@@ -168,13 +172,13 @@ def do_ssm_remove(self, args):
 
     if not args:
         self.help_ssm_remove()
-        return
+        return 1
 
     systems = self.expand_systems(args)
 
     if not systems:
         logging.warning('No systems found')
-        return
+        return 1
 
     for system in systems:
         # double-check for existance in case of duplicate names
@@ -186,6 +190,8 @@ def do_ssm_remove(self, args):
 
     # save the SSM for use between sessions
     save_cache(self.ssm_cache_file, self.ssm)
+
+    return 0
 
 ####################
 
@@ -203,6 +209,9 @@ def do_ssm_list(self, args):
     if systems:
         print('\n'.join(systems))
         logging.debug('Systems Selected: %i' % len(systems))
+        return 0
+    else:
+        return 1
 
 ####################
 
@@ -217,3 +226,5 @@ def do_ssm_clear(self, args):
 
     # save the SSM for use between sessions
     save_cache(self.ssm_cache_file, self.ssm)
+
+    return 0

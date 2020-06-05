@@ -184,22 +184,19 @@ public class RhnSetFactory extends HibernateFactory {
         params.put("user_id", elem.getUserId());
         params.put("label", elem.getLabel());
         params.put("el_one", elem.getElement());
-        int count;
 
         if (elem.getElementThree() == null && elem.getElementTwo() == null) {
-            count = el1.executeUpdate(params);
+            el1.executeUpdate(params);
         }
         else if (elem.getElementThree() == null) {
             params.put("el_two", elem.getElementTwo());
-            count = el2.executeUpdate(params);
+            el2.executeUpdate(params);
         }
         else {
             params.put("el_three", elem.getElementThree());
             params.put("el_two", elem.getElementTwo());
-            count = el3.executeUpdate(params);
+            el3.executeUpdate(params);
         }
-
-        assert count == 1 : "Failed to update row";
     }
 
     /**
