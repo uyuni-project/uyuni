@@ -181,7 +181,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the virtual storage pools and volumes for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I refresh the "test-pool0" storage pool of this "kvm_server"
-    When I follow "Storage"
+    And I follow "Storage"
     And I open the sub-list of the product "test-pool0"
     Then I wait until I see "test-vm2_system.qcow2" text
 

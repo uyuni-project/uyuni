@@ -952,7 +952,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
            " --network network=test-net0 --graphics vnc "\
-           "--serial pty,log.file=/tmp/#{vm_name}.console.log,log.append=off "\
+           "--serial file,path=/tmp/#{vm_name}.console.log "\
            "--import --hvm --noautoconsole --noreboot")
 end
 
