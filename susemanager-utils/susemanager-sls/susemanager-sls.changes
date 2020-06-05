@@ -1,3 +1,6 @@
+- Use minion fqdn instead of minion id as target in kiwi_collect_image
+  runner. If fqdn is not present or is localhost, use minion ip as
+  fallback (bsc#1170737)
 - trust customer gpg key when metadata signing is enabled
 - specify gpg key for RH systems in repo file (bsc#1172286)
 - Implement CaaSP cluster upgrade procedure in cluster provider module.
