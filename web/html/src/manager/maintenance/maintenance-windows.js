@@ -30,7 +30,8 @@ class MaintenanceWindows extends React.Component {
     constructor(props) {
         super(props);
 
-        ["delete", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError", "update"]
+        ["delete", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError",
+            "update", "refreshCalendar"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             messages: [],
@@ -157,6 +158,27 @@ class MaintenanceWindows extends React.Component {
             });
     }
 
+    refreshCalendar(item) {
+        return Network.post(
+            "/rhn/manager/api/maintenance/calendar/refresh",
+            JSON.stringify(item),
+            "application/json"
+        ).promise.then((_) => {
+            const successMsg = <span>{t("Calendar successfully refreshed")}</span>
+            const msgs = this.state.messages.concat(MessagesUtils.info(successMsg));
+
+            while (msgs.length > messagesCounterLimit) {
+                msgs.shift();
+            }
+
+            this.setState({
+                messages: msgs
+            });
+
+            this.getDetails(item, "edit");
+        }).catch(this.handleResponseError);
+    };
+
     handleForwardAction = (action) => {
         const loc = window.location;
         if (action === undefined || action === "back") {
@@ -200,6 +222,7 @@ class MaintenanceWindows extends React.Component {
                                                   schedule={this.state.selected}
                                                   onEdit={this.update}
                                                   onActionChanged={this.handleForwardAction}
+                                                  onRefresh={this.refreshCalendar}
                         />
                         :
                         <MaintenanceWindowsList data={this.state.schedules}
