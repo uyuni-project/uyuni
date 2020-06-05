@@ -42,7 +42,7 @@ const SelectServer = (props: Props) => {
         setFetching(true);
         props.fetchServers().then(data => {
             setServers(data);
-            setSelections(new Set());
+            setSelections(props.selectedServers ? new Set(props.selectedServers.map(srv => srv.id)) : new Set());
         })
         .catch((error : ErrorMessagesType) => {
             props.setMessages(error.messages);
@@ -61,13 +61,7 @@ const SelectServer = (props: Props) => {
     };
 
     const selectServers = (selections: Set<number>) => {
-        const selectedServers = [];
-        for (const srvId of selections) {
-            const server = servers.find(srv => srv.id === srvId);
-            if (server) {
-                selectedServers.push(server);
-            }
-        }
+        const selectedServers = servers.filter(srv => selections.has(srv.id));
         props.onNext(selectedServers);
     }
 
@@ -94,7 +88,7 @@ const SelectServer = (props: Props) => {
                     <div className="btn-group">
                         {props.onPrev ? <Button
                             id="btn-prev"
-                            text={t("Prev")}
+                            text={t("Back")}
                             className="btn-default"
                             icon="fa-arrow-left"
                             handler={() => props.onPrev()} /> : null}

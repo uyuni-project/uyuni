@@ -49,7 +49,7 @@ const FinishAddCluster = (props: Props) => {
                         <Button
                             id="btn-prev"
                             disabled={submitted}
-                            text={t("Prev")}
+                            text={t("Back")}
                             className="btn-default"
                             icon="fa-arrow-left"
                             handler={() => props.onPrev()}

@@ -187,7 +187,6 @@ const ClusterOverview = (props: Props) => {
                 closableModal={true}
                 className="modal-lg"
                 content={editContent}
-                onClosePopUp={() => {console.log("onclose")}}
                 buttons={editButtons}
               />
 

@@ -56,7 +56,7 @@ const ScheduleClusterAction = (props: Props) => {
                             props.onPrev ? <Button
                                 id="btn-prev"
                                 disabled={disableSchedule}
-                                text={t("Prev")}
+                                text={t("Back")}
                                 className="btn-default"
                                 icon="fa-arrow-left"
                                 handler={props.onPrev}

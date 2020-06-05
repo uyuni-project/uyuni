@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import {useState} from 'react';
 import * as Network from 'utils/network';
 import {showInfoToastr, showSuccessToastr, showWarningToastr, showErrorToastr} from 'components/toastr/toastr';
 
@@ -69,11 +68,8 @@ export class ErrorMessages extends Error {
     }
 }
 
-type Props = {}
-type State = {}
-
 export const withErrorMessages = (PageComponent: React.AbstractComponent<any>) => {
-    return class extends React.Component<Props, State> {
+    return class extends React.Component<{}, {}> {
 
         showMessages = (messages: Array<MessageType>) => {
             messages.forEach((msg) => {
@@ -105,51 +101,35 @@ export const withErrorMessages = (PageComponent: React.AbstractComponent<any>) =
 }
 
 const useClustersApi = ()  => {
-    const [fetching, setFetching] = useState<boolean>(false);
-    // const [fetchListeners] = useState<Array<(boolean) => void>>([]);
-
     const handleResponseError = (jqXHR: Object, arg: string = "") => {
         throw new ErrorMessages(Network.responseErrorMessage(jqXHR));
     };
 
     const fetchClusterNodes = (clusterId: number): Promise<ClusterNodesResultType> => {
-        setFetching(true);
         return Network.get(`/rhn/manager/api/cluster/${clusterId}/nodes`).promise
             .then((data: JsonResult<ClusterNodesResultType>) => {
                 return data.data;
             })
-            .catch(handleResponseError)
-            .finally(() => {
-                setFetching(false);
-            });
+            .catch(handleResponseError);
     }
 
     const fetchManagementNodes = (provider: string): Promise<Array<ServerType>> => {
-        setFetching(true);
         return Network.get(`/rhn/manager/api/cluster/provider/${provider}/management-nodes`).promise
             .then((data: JsonResult<Array<ServerType>>) => {
                 return data.data;
             })
-            .catch(handleResponseError)
-            .finally(() => {
-                setFetching(false);
-            });
+            .catch(handleResponseError);
     }
 
     const fetchNodesToJoin = (clusterId: number): Promise<Array<ServerType>> => {
-        setFetching(true);
         return Network.get(`/rhn/manager/api/cluster/${clusterId}/nodes-to-join`).promise
             .then((data: JsonResult<Array<ServerType>>) => {
                 return data.data;
             })
-            .catch(handleResponseError)
-            .finally(() => {
-                setFetching(false);
-            });
+            .catch(handleResponseError);
     }
 
     const fetchProviderFormulaForm = (provider: string, formula: string, context: ?FormulaContextType): Promise<any> => {
-        setFetching(true);
         return Network.post(`/rhn/manager/api/cluster/provider/${provider}/formula/${formula}/form`,
             JSON.stringify(context),
             "application/json"
@@ -162,39 +142,27 @@ const useClustersApi = ()  => {
                     ...data.data
                     });
             })
-            .catch(handleResponseError)
-            .finally(() => {
-                setFetching(false);
-            });
+            .catch(handleResponseError);
     }
 
     const fetchClusterFormulaData = (clusterId: number, formula: string): Promise<any> => {
-        setFetching(true);
         return Network.get(`/rhn/manager/api/cluster/${clusterId}/formula/${formula}/data`).promise
             .then((data: JsonResult<any>) => {
                 return data.data;
             })
-            .catch(handleResponseError)
-            .finally(() => {
-                setFetching(false);
-            });
+            .catch(handleResponseError);
     }
 
     const saveClusterFormulaData = (clusterId: number, formula: string, data: FormulaValuesType): Promise<any> => {
-        setFetching(true);
         return Network.post(
             `/rhn/manager/api/cluster/${clusterId}/formula/${formula}/data`,
             JSON.stringify(data),
             "application/json"
         ).promise
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     const addCluster = (name: string, label: string, description: string, providerLabel: string, managementNodeId: number, managementSettings: FormulaValuesType) : Promise<number> => {
-        setFetching(true);
         return Network.post(
             "/rhn/manager/api/cluster/new/add",
             JSON.stringify({
@@ -210,14 +178,10 @@ const useClustersApi = ()  => {
         .then((data: JsonResult<number>) => {
             return data.data
         })
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     const scheduleJoinNode = (clusterId: number, serverIds: Array<number>, joinFormula: FormulaValuesType, earliest: Date, actionChain: ?string): Promise<number> => {
-        setFetching(true);
         return Network.post(
             `/rhn/manager/api/cluster/${clusterId}/join`,
             JSON.stringify({
@@ -230,14 +194,10 @@ const useClustersApi = ()  => {
         .then((data: JsonResult<number>) => {
             return data.data
         })
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     const scheduleRemoveNode = (clusterId: number, serverIds: Array<number>, removeFormula: FormulaValuesType, earliest: Date, actionChain: ?string): Promise<number> => {
-        setFetching(true);
         return Network.post(
             `/rhn/manager/api/cluster/${clusterId}/remove-node`,
             JSON.stringify({
@@ -250,14 +210,10 @@ const useClustersApi = ()  => {
         .then((data: JsonResult<number>) => {
             return data.data
         })
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     const scheduleUpgradeCluster = (clusterId: number, earliest: Date, actionChain: ?string): Promise<number> => {
-        setFetching(true);
         return Network.post(
             `/rhn/manager/api/cluster/${clusterId}/upgrade`,
             JSON.stringify({
@@ -268,14 +224,10 @@ const useClustersApi = ()  => {
         .then((data: JsonResult<number>) => {
             return data.data
         })
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     const saveClusterProps = (clusterId: number, cluster: EditableClusterPropsType): Promise<any> => {
-        setFetching(true);
         return Network.post(
             `/rhn/manager/api/cluster/${clusterId}`,
             JSON.stringify(cluster),
@@ -284,49 +236,34 @@ const useClustersApi = ()  => {
         .then((data: JsonResult<number>) => {
             return true;
         })
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     const deleteCluster = (clusterId: number): Promise<any> => {
-        setFetching(true);
         return Network.del(
             `/rhn/manager/api/cluster/${clusterId}`,
             null,
             "application/json"
         ).promise
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     const refreshGroupNodes = (clusterId: number): Promise<any> => {
-        setFetching(true);
         return Network.post(
             `/rhn/manager/api/cluster/${clusterId}/refresh-group-nodes`,
             null,
             "application/json"
         ).promise
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     const fetchClusterProps = (clusterId: number): Promise<ClusterType> => {
-        setFetching(true);
         return Network.get(
             `/rhn/manager/api/cluster/${clusterId}`).promise
         .then((data: JsonResult<ClusterType>) => {
             return data.data;
         })
-        .catch(handleResponseError)
-        .finally(() => {
-            setFetching(false);
-        });
+        .catch(handleResponseError);
     }
 
     return {

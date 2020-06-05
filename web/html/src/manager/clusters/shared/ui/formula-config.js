@@ -82,7 +82,7 @@ const FormulaConfig = (props: Props) => {
                                 <div className="btn-group">
                                   {props.onPrev ? <Button
                                       id="btn-prev"
-                                      text={t("Prev")}
+                                      text={t("Back")}
                                       className="btn-default"
                                       icon="fa-arrow-left"
                                       handler={props.onPrev}
@@ -122,7 +122,7 @@ const FormulaConfig = (props: Props) => {
                       <div className="btn-group">
                         <Button
                             id="btn-prev"
-                            text={t("Prev")}
+                            text={t("Back")}
                             className="btn-default"
                             icon="fa-arrow-left"
                             disabled={true}
