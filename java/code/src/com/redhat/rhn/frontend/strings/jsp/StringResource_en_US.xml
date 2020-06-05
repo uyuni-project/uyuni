@@ -7197,7 +7197,7 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
       </trans-unit>
       <trans-unit id="cloneconfirm.jsp.pagesummary">
-        <source>The patches listed below will be cloned. Once they are cloned, they will appear in your &lt;a href=&quot;{0}&quot;&gt;unpublished patches list&lt;/a&gt;. From there you can verify the text and associated packages for each patch. Once you are ready, you can publish the patches so they are available to users in your organization.</source>
+        <source>The patches listed here will be cloned and added in the channels selected below. Once they are cloned, they will appear in each channel's patch list.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneConfirm.do</context>
         </context-group>

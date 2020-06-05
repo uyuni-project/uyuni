@@ -208,6 +208,7 @@ public class MenuTree {
                         .withAltUrl("/rhn/errata/manage/Create.do").withAltUrl("/rhn/errata/manage/CreateSubmit.do")
                         .withVisibility(checkAcl(user, "user_role(channel_admin)")))
                 .addChild(new MenuItem("Clone Errata").withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
+                    .withAltUrl("/rhn/errata/manage/CloneConfirm.do")
                     .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)"))));
 
             // (Software) Channels
