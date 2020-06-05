@@ -6,6 +6,8 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 const AsyncButton = require("components/buttons").AsyncButton;
 const Button = require("components/buttons").Button;
+const ModalButton = require("components/dialog/ModalButton").ModalButton;
+const DangerDialog = require("components/dialog/DangerDialog").DangerDialog;
 const { Combobox } = require("components/combobox");
 const { InnerPanel } = require("components/panels/InnerPanel");
 const { Form } = require('components/input/Form');
@@ -18,7 +20,7 @@ class MaintenanceWindowsEdit extends React.Component {
         super(props);
 
         this.state = {
-            fileName: "",
+            calendarDataText: "",
             selectedCalendar: 0
         };
 
@@ -29,6 +31,7 @@ class MaintenanceWindowsEdit extends React.Component {
 
     setSchedule = (schedule) => {
         Object.assign(this.state, schedule);
+        this.state.calendarDataText = schedule.calendarUrl;
         Object.assign(this.state, {
             calendarAdded: schedule.calendarName ? true : false
         })
@@ -57,7 +60,7 @@ class MaintenanceWindowsEdit extends React.Component {
             calendarId: this.state.calendarId,
             calendarName: this.setCalendarName(),
             calendarData: this.state.calendarData,
-            calendarUrl: this.state.calendarUrl,
+            calendarUrl: (!this.isEdit() && this.state.calendarData) ? "" : this.state.calendarDataText,
             /* Reschedule strategy. false == 'FAIL', true == 'CANCEL' */
             strategy: this.state.strategy ? "Cancel" : "Fail"
         });
@@ -68,9 +71,9 @@ class MaintenanceWindowsEdit extends React.Component {
         this.setState(model);
     };
 
-    onFileDestChanged = (event) => {
+    onCalendarDataTextChanged = (event) => {
         this.setState({
-            fileName: event.target.value
+            calendarDataText: event.target.value
         });
     };
 
@@ -82,22 +85,20 @@ class MaintenanceWindowsEdit extends React.Component {
         reader.onload = (e) => this.icalFileLoaded(e.target.result);
         reader.readAsText(event.target.files[0]);
         this.setState({
-            fileName: event.target.files[0].name
+            calendarDataText: event.target.files[0].name
         });
     };
 
     onIcalFileRemove = () => {
+        document.getElementById("ical-data-upload").value = "";
         this.setState({
             calendarData: undefined,
-            calendarUrl: undefined,
-            fileName: ""
+            calendarDataText: "",
         });
     };
 
     handleFileAttach = () => {
-        this.state.fileName === "" ?
-            document.getElementById("ical-data-upload").click()
-            : this.setState({calendarUrl: this.state.fileName})
+        document.getElementById("ical-data-upload").click();
     };
 
     icalFileLoaded = (fileString) => {
@@ -124,7 +125,8 @@ class MaintenanceWindowsEdit extends React.Component {
         return (
             <Form onChange={this.onFormChanged} model={model}>
                 <Text name="scheduleName" required type="text" label={t("Schedule Name")}
-                      labelClass="col-sm-3" divClass="col-sm-6" />
+                      labelClass="col-sm-3" divClass="col-sm-6"
+                      disabled={this.isEdit()} />
                 <Radio defaultValue="SINGLE" name="scheduleType" inline={true} label={t('Type')} labelClass="col-md-3" divClass="col-md-6"
                        items={[
                            {label: <b>{t('Single')}</b>, value: 'SINGLE'},
@@ -176,35 +178,81 @@ class MaintenanceWindowsEdit extends React.Component {
             <Form onChange={model => this.onFormChanged(model)} model={model}>
                 <Text name="calendarName" required type="text" label={t("Calendar Name")}
                       labelClass="col-md-3" divClass="col-md-6" disabled={this.isEdit()}/>
-                {this.isEdit() &&
+                {(this.isEdit() && !this.state.calendarUrl) &&
                 <Check name="strategy" label={<b>{t("Cancel affected actions")}</b>} divClass="col-md-6 col-md-offset-3" />
                 }
                 <div className="form-horizontal">
                     <div className="form-group">
                         <label className="col-md-3 control-label">{t("Calendar data")}:</label>
-                        <div className="col-md-4" style={{alignItems: "center", display: "flex"}}>
+                        {(!this.isEdit() || this.state.calendarUrl) &&
+                        <div className={"col-md-" + (this.isEdit() ? "5" : "4")}
+                             style={{alignItems: "center", display: "flex"}} >
                             <input type="text" className="form-control"
+                                   style={{textOverflow: "ellipsis"}}
                                    placeholder={t("Enter Url to ical file")}
-                                   value={this.state.fileName}
-                                   disabled={this.state.calendarData || this.state.calendarUrl}
-                                   onChange={this.onFileDestChanged}/>
+                                   value={this.state.calendarDataText}
+                                   disabled={this.state.calendarData && !this.state.calendarUrl}
+                                   onChange={this.onCalendarDataTextChanged}/>
                             {!this.state.calendarData && <b style={{paddingLeft: "25px"}}>or</b>}
                         </div>
-                        {!this.state.calendarData ?
+                        }
+                        {!(this.isEdit() && this.state.calendarUrl) ? (
+                                !this.state.calendarData ?
+                                    <div className="col-md-1">
+                                        <Button id="ical-upload-btn" className="btn-default"
+                                                text={t("Attach file")}
+                                                handler={this.handleFileAttach}
+                                        />
+                                    </div>
+                                    :
+                                    <div className="col-md-1">
+                                        <Button id="ical-rm-btn" className="btn-default" text={t("Remove file")}
+                                                handler={this.onIcalFileRemove}/>
+                                    </div>
+                            ) :
                             <div className="col-md-1">
-                                <Button id="ical-upload-btn" className="btn-default"
-                                        text={t("Attach file")}
-                                        handler={this.handleFileAttach}
+                                <ModalButton id="url-refresh-btn"
+                                             className="btn-default btn-sm"
+                                             icon="fa-refresh"
+                                             target="confirm-modal"
+                                             title={t("Refresh data from url")}
+                                             disabled={this.state.calendarUrl !== this.state.calendarDataText}
                                 />
-                            </div>
-                            :
-                            <div className="col-md-1">
-                                <Button id="ical-rm-btn" className="btn-default" text={t("Remove file")}
-                                        handler={this.onIcalFileRemove}/>
+                                <DangerDialog id="confirm-modal"
+                                              title="Confirm calendar refresh"
+                                              content={
+                                                  <div>
+                                                      <div>{t("Refreshing the calendar causes affected actions to be rescheduled.")}</div>
+                                                      <div>{t("Confirm if you want to proceed.")}</div>
+                                                      <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
+                                                  </div>
+                                              }
+                                              onConfirm={() => this.props.onRefresh({
+                                                  calendarName: this.state.calendarName,
+                                                  strategy: this.state.strategy ? "Cancel" : "Fail",
+                                                  calendarUrl: this.state.calendarUrl
+                                                  })}
+                                              submitText="Confirm"
+                                              submitIcon="fa-check"
+                                />
                             </div>
                         }
                     </div>
                 </div>
+                {(this.isEdit() && this.state.calendarData) &&
+                <div className="panel panel-default">
+                    <div className="panel-heading">
+                        <h4>
+                            {this.state.calendarName}
+                        </h4>
+                    </div>
+                    <div className="panel-body">
+                        <pre>
+                            {this.state.calendarData}
+                        </pre>
+                    </div>
+                </div>
+                }
             </Form>
         )
     }
@@ -213,6 +261,7 @@ class MaintenanceWindowsEdit extends React.Component {
         const buttons = [
             <div className="btn-group pull-right">
                 <AsyncButton action={this.onEdit} defaultType="btn-success"
+                             disabled={this.state.icalLoading}
                              text={(this.isEdit() ? t("Update ") : t("Create ")) +
                              (type === "schedule" ? t("Schedule") : t("Calendar"))}
                 />
