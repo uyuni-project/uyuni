@@ -1,3 +1,4 @@
+- Split branding style themes for Uyuni and SUSE Manager
 - increase XMLRPC API version
 - Correctly set action to failed in case of Salt errors on execution (bsc#1169604)
 - improve speed of Content Lifecycle Management channel list loading (bsc#1153234)

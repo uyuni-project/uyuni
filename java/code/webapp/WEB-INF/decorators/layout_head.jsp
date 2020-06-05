@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ page import="com.suse.manager.webui.menu.MenuTree" %>
+<%@ page import="com.redhat.rhn.common.conf.Config"%>
+
 <!-- enclosing head tags in layout_c.jsp -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -37,14 +39,28 @@
     <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css?cb=${cb_version}" />
 
     <!-- import spacewalk styles -->
-    <rhn:require acl="is(development_environment)">
-      <link rel="stylesheet/less" type="text/css" href="/css/spacewalk.less" />
-      <script>less = { env: 'development' };</script>
-      <script src="/javascript/less.js"></script>
-    </rhn:require>
-    <rhn:require acl="not is(development_environment)">
-      <link rel="stylesheet" href="/css/spacewalk.css?cb=${cb_version}" />
-    </rhn:require>
+    <c:choose>
+        <c:when test='${Config.get().getString("product_name").compareToIgnoreCase("Uyuni") == 0}'>
+            <rhn:require acl="is(development_environment)">
+                <link rel="stylesheet/less" type="text/css" href="/css/uyuni/spacewalk.less" />
+                <script>less = { env: 'development for ${Config.get().getString("product_name")}' };</script>
+                <script src="/javascript/less.js"></script>
+            </rhn:require>
+            <rhn:require acl="not is(development_environment)">
+                <link rel="stylesheet" href="/css/uyuni/spacewalk.css?cb=${cb_version}" />
+            </rhn:require>
+        </c:when>
+        <c:otherwise>
+            <rhn:require acl="is(development_environment)">
+                <link rel="stylesheet/less" type="text/css" href="/css/spacewalk.less" />
+                <script>less = { env: 'development for ${Config.get().getString("product_name")}' };</script>
+                <script src="/javascript/less.js"></script>
+            </rhn:require>
+            <rhn:require acl="not is(development_environment)">
+                <link rel="stylesheet" href="/css/spacewalk.css?cb=${cb_version}" />
+            </rhn:require>
+        </c:otherwise>
+    </c:choose>
 
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>

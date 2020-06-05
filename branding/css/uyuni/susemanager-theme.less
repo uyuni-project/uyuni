@@ -1,0 +1,1272 @@
+/* Main HTML5 tags defined for the theme */
+body {
+  background: @spacewalk-background;
+  width: auto;
+  -webkit-font-smoothing: antialiased;
+}
+html, body {
+  height: auto;
+}
+
+* {
+  outline: none!important;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  height:auto;
+  z-index: 1000;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px solid darken(@susemanager-green, 10%);
+  margin-bottom: 0;
+  padding: 12px 10px;
+  background: @spacewalk-header;
+  a {
+    color: @spacewalk-gray-light;
+  }
+  a:hover {
+    color: @spacewalk-gray-light;
+  }
+  img {
+    float: left;
+  }
+}
+
+footer {
+  border-top: 1px solid @spacewalk-blue-light;
+  background: @spacewalk-footer;
+  padding: 3px 12px;
+  color: @spacewalk-footer-text;
+  font-weight: normal;
+  font-size: 0.9em;
+  height: auto;
+  min-height: auto;
+  clear: both;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  .make-row(0);
+
+  a {
+    color: @spacewalk-footer-links;
+    text-decoration: underline;
+  }
+  a:hover {
+    color: @spacewalk-footer-hover;
+  }
+  /* override spacewalk rules */
+  div:nth-child(1),
+  div:nth-child(2) {
+    float: none;
+    width: 100%;
+    margin: 0;
+    min-height: auto;
+    text-align: left!important;
+    padding: 0;
+  }
+
+  div.wrapper {
+    background: url('/img/susemanager/logo-footer.png') no-repeat right center;
+    background-size: auto 20px;
+    min-height: 28px;
+    padding-right: 55px!important;
+    > div {
+      padding: 3px 0 2px 0;
+    }
+  }
+}
+
+/* titles */
+h1, h2, h3, h4 {
+  .Roboto-thin
+}
+h1 {
+  font-size: 2em
+}
+h2 {
+  font-size: 1.7em;
+}
+h3 {
+  font-size: 1.4em;
+}
+h4 {
+  font-size: 1.2em;
+}
+p {
+  margin-bottom: 1em;
+}
+
+/* basic layout */
+.row-0 {
+  .make-row();
+  &:first-child {
+    padding-left:0;
+  }
+  &:last-child {
+    padding-right: 0
+  }
+}
+.spacewalk-header-container {
+  .make-row(0);
+  .spacewalk-logo {
+    .make-xs-column(5);
+    padding-left: 0;
+  }
+  .spacewalk-header-links {
+    .make-xs-column(7);
+    .text-right;
+    padding-right: 0;
+  }
+}
+
+/* override spacewalk rules */
+section {
+  transition: none!important;
+  -webkit-transition: none!important;
+}
+
+.spacewalk-main-column-layout {
+  .make-row(0);
+  /* override the grid row margin */
+  margin-right: 0;
+  margin-left: 0;
+   aside {
+    .make-xs-column(2);
+    background: @spacewalk-aside;
+    border-right: 1px solid @spacewalk-aside-border;
+    /* erasing the predefined paddings in the columns */
+    padding: 0;
+    position: fixed;
+    #nav nav ul.level1 {
+      overflow-y: auto !important;
+      scrollbar-color: rgba(173,216,230,0.5) transparent;
+      scrollbar-width: thin;
+      &::-webkit-scrollbar {
+        width: 7px;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(173,216,230,0.5);
+        background: rgba(173,216,230,0.5);
+      }
+    }
+  }
+
+  /* fixing margins in the 1st and last columns */
+  section {
+    .make-xs-column(10);
+    padding-left:2em;
+    padding-right: 2em;
+    padding-top: 0;
+    padding-bottom: 2em;
+    overflow-y: auto!important;
+    float: right;
+  }
+}
+
+#breadcrumb {
+  color: @spacewalk-gray;
+  display: inline-block;
+  span {
+    vertical-align: bottom;
+  }
+  span.level, a {
+    padding: 0 3px;
+  }
+  i {
+    margin-right: 0;
+  }
+}
+
+.navbar-right {
+  float: right;
+}
+
+.navbar-collapse.in {
+  display: block !important;
+}
+.navbar-collapse.collapse {
+  display: none !important;
+}
+.navbar-collapse.collapse + div section {
+  width: 100%;
+}
+
+header, nav.navbar-pf {
+  .navbar-toggle {
+    display: inline-block;
+    float: none;
+    margin: 0;
+    padding: 0;
+    i {
+      margin: 0;
+      font-size: 1.5em;
+    }
+  }
+  .navbar-toggle:hover {
+    color: @susemanager-green;
+  }
+  .navbar-header {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+  .navbar-utility, .navbar-primary {
+    .navbar-right;
+    font-size: 1em;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    a, .spacewalk-header-non-link {
+      display: inline-block;
+      padding: 4px 8px 4px 12px;
+      border-radius: 2px;
+    }
+  }
+
+  a.toggle-box:hover,
+  a.toggle-box.open {
+    color: @susemanager-green;
+  }
+  .box-wrapper {
+    position: absolute;
+    top: 100%;
+    background-color: @spacewalk-blue;
+    border-radius: 0px 2px 2px 2px;
+    z-index: 1000;
+    box-shadow: 0px 4px 4px 0px @spacewalk-gray;
+    margin-top: 5px;
+  }
+
+  /* overwrite the padding the grid columns give */
+  &#spacewalk-header {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  /* Search header box */
+  form#search-form {
+    .form-group {
+      padding: 10px;
+      width: 200px;
+    }
+    input[type="search"] {
+      padding: 0px 5px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      display: block;
+      width: 100%;
+    }
+    //style for the select to make it plain colour
+    select.form-control {
+      -webkit-appearance: button;
+      -webkit-padding-end: 20px;
+      background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+      cursor: pointer;
+      display: inline-block;
+      -moz-appearance: none;
+      text-indent: 0.01px;
+      text-overflow: '';
+      line-height: normal;
+      padding: 2px 28px 2px 2px;
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+    }
+  }
+
+  /* System Set Manager header box */
+  .ssm-box {
+    border: 1px solid @spacewalk-gray-dark;
+    #header_selcount {
+      .badge {
+        border-radius: 8px;
+        background: @spacewalk-gray-light;
+        display: inline-block;
+        padding: 2px 6px;
+        text-align: center;
+        color: darken(@spacewalk-gray-dark, 20%);
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+    }
+    a#manage-ssm:hover {
+      text-decoration: none;
+      color: @susemanager-green;
+    }
+    a {
+      display: inline-block;
+      border-radius: 0;
+      padding: 3px 5px;
+    }
+    a#clear-ssm {
+      margin-left: -4px;
+      border-left: 1px dashed @spacewalk-gray-dark;
+      color: @spacewalk-gray-light;
+      i {
+        margin: 0;
+      }
+    }
+    a#clear-ssm:hover {
+      background-color: @spacewalk-red;
+      color: @spacewalk-gray-light;
+    }
+  }
+
+  /* Header Logo bar */
+  .navbar-brand {
+    float: none;
+    padding: 0;
+    height: auto;
+    line-height: 1.2em;
+    font-size: 1.6em;
+    display: inline-block;
+    vertical-align: baseline;
+    color: @spacewalk-gray-light;
+    > i {
+      display: none;
+    }
+    > span > i {
+      font-size: 0.4em;
+      margin-right: 0.8em;
+    }
+  }
+  .navbar-brand:hover {
+    color: @spacewalk-gray-light;
+  }
+}
+
+#scroll-top {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  right: 3px;
+  cursor: pointer;
+  z-index: 1000;
+  border-radius: 20px;
+  width: 35px;
+  height: 35px;
+  font-size: 1.5em;
+  padding: 0;
+  text-align: center;
+  background-color: rgba(77, 211, 167, 0.2);
+  color: @spacewalk-gray-dark;
+  border: 1px solid rgba(0, 192, 129, 0.2);
+  i {
+    margin: 0 auto;
+    height: 26px;
+  }
+}
+#scroll-top:hover {
+  background-color: rgba(0, 192, 129, 0.9);
+  color: @spacewalk-gray-light;
+  border: 1px solid darken(@susemanager-green, 10%);
+}
+
+//Nav menu in left column
+#nav {
+  font-size: 1.1em;
+  //Search box
+  .nav-tool-box {
+    text-align: center;
+    position: relative;
+    input, button {
+      margin: auto;
+      vertical-align: top;
+    }
+    input {
+      background-color: @spacewalk-blue;
+      border-color: @spacewalk-blue-light;
+      border-style: solid;
+      border-radius: 0;
+      border-width: 0 0 1px 0;
+      color: @spacewalk-gray-light;
+      padding-right: 3em;
+      height: 3em;
+    }
+    input:focus {
+      box-shadow: none;
+    }
+    .input-right-icon {
+      color: @spacewalk-aside-menu-search-clear;
+      position: absolute;
+      top: .4em;
+      right: 0;
+      font-size: 1.2em;
+      cursor: pointer;
+      margin-right: 1em;
+      padding: 0;
+    }
+    .clear:hover {
+      color: @spacewalk-aside-menu-search-clear-hover;
+    }
+  }
+  //Menu
+  nav {
+    ul {
+      padding: 0;
+      list-style: none;
+      display: block;
+      li {
+        padding: 0;
+        list-style: none;
+        font-size: 1em;
+        display: block;
+        div {
+          a {
+            padding: 4px 10px;
+          }
+        }
+      }
+      li.node.open {
+        > ul {
+          display: block;
+        }
+      }
+      // active
+      li.active > .nodeLink {
+        color: @susemanager-green;
+      }
+      li.active > .leafLink {
+        background-color: @spacewalk-aside-menu-active;
+        border-radius: 0 2px 2px 0;
+      }
+      // nodeLink and leafLink
+      div.nodeLink,
+      div.leafLink {
+        color: @spacewalk-gray-light;
+        border-left: 3px solid transparent;
+        a {
+          display: block;
+          color: inherit;
+          width: auto;
+        }
+      }
+      div.nodeLink:hover,
+      div.leafLink:hover {
+        border-left-color: @susemanager-green;
+      }
+      // nodeLink only
+      div.nodeLink {
+        position: relative;
+        > i {
+          font-size: 1.3em;
+          vertical-align: text-bottom;
+        }
+        > i.submenuIcon {
+          font-size: 1.1em;
+          position: absolute;
+          right: 0.5em;
+          top: 0.3em;
+        }
+        > a {
+          display: inline-block;
+        }
+        > a:hover {
+          color: @spacewalk-gray-light;
+        }
+      }
+      div.nodeLink:hover {
+        color: @spacewalk-aside-menu-active;
+      }
+    }
+    /* First Level */
+    > ul {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-right: 10px;
+      > li {
+        > div {
+          > a {
+            padding: 8px 2px;
+          }
+        }
+        > div.nodeLink {
+          padding-left: 0.8em;
+          > i.submenuIcon {
+            top: 0.6em;
+          }
+        }
+        /* Second Level */
+        > ul {
+          padding-bottom: 10px;
+          > li {
+            > div {
+              > a {
+                padding-left: 3em;
+              }
+            }
+            /* Third Level */
+            > ul {
+              > li {
+                > div {
+                  > a {
+                    padding-left: 5em;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .collapsed {
+    ul ul {
+      display: none;
+    }
+  }
+}
+
+.spacewalk-list .spacewalk-list-top-addons .spacewalk-list-pagination {
+  float: right;
+  width: auto;
+  margin-bottom: 18px;
+}
+
+//PAGINATOR from 0 - 9 and A - Z
+.spacewalk-list .spacewalk-list-head-addons .spacewalk-list-alphabar,
+.spacewalk-list .spacewalk-list-top-addons .spacewalk-list-alphabar {
+  padding: 0;
+  padding-bottom: .5em;
+  float: left;
+  width: auto;
+  margin-top: 5px;
+  margin-left: 10px;
+  .dropdown-menu {
+    display: none;
+    width: auto;
+    right: 0;
+    min-width: 100px;
+    z-index: 10;
+    max-height: 250px;
+    overflow-y: auto;
+    text-align: right;
+    li {
+      display: block;
+      padding: 0 1px;
+      a {
+        display: block;
+        border: 0px;
+        color: #428bca;
+        padding: 2px 20px;
+      }
+    }
+    li.disabled {
+      a {
+        color: #aaa;
+      }
+    }
+    li:nth-child(11) {
+      border-top: 1px solid #dddddd;
+    }
+  }
+  .dropdown.dropdown-alphabar.open {
+    .dropdown-menu {
+      display: block;
+    }
+  }
+}
+
+// Filter by system: button besides the input search
+.spacewalk-button-filter{
+  border-left: 0;
+  color: #666666;
+  background-color: #ffffff;
+  border-color: #cccccc;
+}
+
+.spacewalk-list {
+  .spacewalk-list-head-addons {
+    .spacewalk-list-head-addons-extra {
+      float: right;
+      width: auto;
+    }
+    .spacewalk-list-filter {
+      input.with-bottom-margin {
+        margin-bottom: .5em;
+      }
+    }
+  }
+}
+
+//Table's filters
+.filter-input{
+  padding: .7em;
+  .col-md-3{
+    padding-left: 0
+  }
+  .col-md-9{
+    padding-right: 0
+  }
+}
+.display-number{
+  .input-sm;
+  display: inline-block;
+  width: 5em;
+  border: 1px solid #dddddd;
+  background-color: @spacewalk-gray-light-background;
+}
+.view-systems-registered{
+  .input-sm;
+  width: 10em;
+  display: inline-block;
+  border: 1px solid #dddddd;
+}
+
+/* Icons Legend */
+.sideleg {
+  background: @spacewalk-icon-legend;
+  color: @spacewalk-icon-legend-text;
+  padding: .5em 1em;
+  border-radius: 0px 0px 4px 4px;
+  .hidden-sm;
+  .hidden-xs;
+  li {
+    list-style: none;
+    margin: 0.5em 0;
+    padding:0;
+    white-space: nowrap;
+  }
+  ul {
+    margin: 0;
+    padding: 0
+  }
+}
+
+/* question symbol for help pop up*/
+h1 .fa-stack .fa-question {
+  font-size: .6em;
+}
+h1 .fa-stack {
+  width: 1em;
+  height: 1em;
+  line-height: .7em;
+}
+.fa-stack .fa-circle {
+  font-size: .7em;
+  .text-info;
+}
+
+// Panels: reseting default margins and paddings in H tags
+.panel .panel-heading{
+  h1, h2, h3, h4, h5, h6{
+    padding: 0;
+    margin: 0;
+  }
+}
+//Panels: deleting border-top in the first row of a table contained within a Panel class
+.panel-body tr:first-child{
+  td, th{
+    border-top: 0;
+  }
+}
+
+/* systems selected tool*/
+.spacewalk-toolbar>a, #spacewalk-bar-off i {
+  cursor: pointer;
+}
+#show-systems-bar {
+  padding: .5em 1.2em;
+  background: #fff;
+  border:1px solid #ccc;
+  border-radius: 0 0 4px 4px;
+}
+
+/* spacewalk toolbar: contains the H1 of each page + the toolbar */
+.spacewalk-toolbar-h1 {
+  margin-bottom: 1.5em;
+  .spacewalk-toolbar {
+    .pull-right;
+    padding: .5em 1em;
+    a {
+      border-right:1px solid @gray-light;
+      padding: 0 .5em
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    a:last-child {
+      border-right:0
+    }
+  }
+}
+
+/* Margins to elements */
+//margins bottom
+.margin-bottom-xs {
+  margin-bottom: .5em;
+}
+.margin-bottom-sm {
+  margin-bottom: 1em;
+}
+.margin-bottom-md {
+  margin-bottom: 2em;
+}
+.margin-bottom-lg {
+  margin-bottom: 3em;
+}
+//margins top
+.margin-top-xs {
+  margin-top: .5em;
+}
+.margin-top-sm {
+  margin-top: 1em;
+}
+.margin-top-md {
+  margin-top: 2em;
+}
+.margin-top-lg {
+  margin-top: 3em;
+}
+
+
+/* adding margin to the icons in fontawesome */
+i[class~="fa"],
+i[class^="icon-"],
+i[class*=" icon-"],
+i[class*="spacewalk-icon"],
+i[class^="spacewalk-icon"] {
+  margin-right: .5em;
+}
+/* if the icon is inside a H tag the margin is a bit smaller*/
+h1, h2, h3, h4, h5, h6 {
+  i[class~="fa"],
+  i[class^="icon-"],
+  i[class*=" icon-"],
+  i[class^="fa-"],
+  i[class*="spacewalk-icon"],
+  i[class^="spacewalk-icon"] {
+    margin-right: .3em;
+  }
+}
+/* use this class to add text to the left of an icon */
+i[class~="fa-right"] {
+  margin-left: 0.5em;
+  margin-right: 0em;
+}
+
+// icon size smaller than the ones default by Font Awesome
+.fa-1-5x {
+  font-size: 1.3em;
+}
+.fa-1-5x.icon-border {
+  border-width: 2px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+// alerts
+.alert {
+  margin: 18px 0;
+}
+
+// data lists
+
+.spacewalk-list {
+
+  .spacewalk-list-top-addons {
+    margin-bottom: 0;
+    padding-top: 0;
+  }
+
+  .spacewalk-list-footer-addons {
+    .make-row(0);
+    .spacewalk-list-footer-addons-extra {
+      .pull-left;
+      .text-left;
+    }
+  }
+}
+
+.spacewalk-csv-download {
+  .pull-right;
+}
+
+/* btn with margin top and bottom */
+.btn.spacewalk-btn-margin-vertical {
+  margin: 1em 0
+}
+//tabs - adding a margin to all tabs
+ul.nav.nav-tabs {
+  margin-bottom: .2em
+}
+//tabs - adding a margin button to the last UL
+ul.nav.nav-tabs:last-child {
+  margin-bottom: 1.5em
+}
+
+// Rewriting
+// Jumbotron
+// --------------------------------------------------
+
+
+.jumbotron {
+  padding: @jumbotron-padding;
+  margin-bottom: @jumbotron-padding;
+  font-size: (@font-size-base * 1.3);
+  line-height: (@line-height-base * 1.5);
+  background-color: transparent;
+  border: 1px solid #ccc;
+
+  h1 {
+    line-height: 1;
+  }
+  p {
+    line-height: 1.4;
+  }
+
+  @media screen and (min-width: @screen-tablet) {
+    padding-top:    (@jumbotron-padding * 1);
+    padding-bottom: (@jumbotron-padding * 1);
+
+    .container & {
+      padding-left:  (@jumbotron-padding * 2);
+      padding-right: (@jumbotron-padding * 2);
+    }
+
+    h1 {
+      font-size: (@font-size-base * 3.5);
+    }
+  }
+}
+
+/* Create new Admin User form.
+This class will align the text inside the tables of each panel in the form with name="createSatelliteForm"
+*/
+form[name="createSatelliteForm"] table {
+  text-align: left;
+}
+//giving top margin to the panels
+form[name="createSatelliteForm"] .panel {
+  margin-top: 30px;
+}
+
+/* Hack for when an Aside doesnt have any content to not brake the theme */
+#spacewalk-aside:after {
+  content: ".";
+  color: #232526;
+}
+
+/* CVE audit */
+select[name="cveIdentifierYear"]#cveIdentifierYear {
+  -webkit-appearance: button;
+    -webkit-padding-end: 20px;
+  background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+  cursor: pointer;
+  display: inline-block;
+  min-width: 80px;
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+}
+input[name="cveIdentifierId"]#cveIdentifierId {
+  min-width: 120px;
+}
+.popover-content {
+  font-weight: normal;
+}
+.popover-content ul {
+  padding: .3em;
+  list-style-position: inside;
+}
+.popover-content ul li {
+  margin-top: .5em
+}
+/* Create New User. Language selection hidden for SUSE Manager users as we only offer support for English */
+#new-user-language {
+  display: none;
+}
+
+i.spacewalk-help-link {
+  font-size: 16px
+}
+
+/* after pattern fly - fixes (more like workarounds) */
+.navbar-pf {
+  ul.navbar-utility, ul.navbar-primary {
+    font-size: 13px;
+    > li {
+      display: inline-block;
+      float: none;
+      margin: 0;
+      clear: none;
+      color: @spacewalk-gray-light;
+      vertical-align: top;
+      border-radius: 2px;
+      a:hover, a:focus {
+        background-color: @spacewalk-header;
+        text-decoration: underline;
+      }
+      button, button:hover {
+        background-color: @spacewalk-header;
+        color: @spacewalk-gray-light;
+      }
+    }
+    .search {
+      .form-group {
+        .btn-primary {
+          display: block;
+          width: 100%;
+          background: @spacewalk-gray-light;
+          color: @spacewalk-gray-dark;
+          border: 0;
+          border-radius: 2px;
+          height: 1.8em;
+          padding: 0;
+        }
+        .btn-primary:hover {
+          background: @susemanager-green;
+          color: #333;
+        }
+      }
+    }
+  }
+  .wrap nav.option li.active {
+    border-bottom: 4px solid transparent;
+  }
+}
+
+/* Override rules from bootstrap for nav-tabs*/
+.nav-tabs {
+  margin-bottom: .4em;
+  li {
+    min-width: 60px;
+    a, a:focus {
+      border: none;
+      padding: 6px 12px 1px;
+      display: inline-block;
+      color: @spacewalk-blue-light;
+      font-size: 1.1em;
+      border-width: 0 0 5px 0;
+      border-style: solid;
+      border-color: transparent;
+      margin-right: 10px;
+    }
+    a:hover {
+      background: inherit;
+      border-width: 0 0 3px 0;
+      border-color: @susemanager-green;
+      padding-bottom: 3px;
+    }
+  }
+  li.active {
+    a, a:hover, a:focus {
+      border-width: 0 0 5px 0;
+      border-color: @susemanager-green;
+      color: @spacewalk-gray;
+      background: inherit;
+      padding-bottom: 1px;
+    }
+  }
+  .nav-tabs-indent(1);
+  .nav-tabs-indent(2);
+  .nav-tabs-indent(3);
+
+  .nav-tabs-indent(@i) {
+    &:nth-child(@{i}) {
+        margin-left: (@i - 1) * 30px;
+    }
+  }
+}
+
+/* Override rules from spacewalk-theme.less that uses
+"PatternFly-webicon" icons for alert boxes decoration */
+.alert:before,
+.alert:after {
+  font-family: 'spacewalk-icon';
+  top: 15px;
+}
+
+.alert-info,
+.alert-success,
+.alert-warning,
+.alert-danger {
+  position: relative;
+}
+
+.alert-info:before {
+  content: "\e63e";
+  color: #306899;
+}
+
+.alert-info:after {
+  content: "";
+  color: transparent;
+}
+
+.alert-success:before {
+  content: "\e63d";
+  color: #57a81c;
+}
+
+.alert-success:after {
+  content: "";
+  color: transparent;
+}
+
+.alert-warning:before {
+  content: "\e63f";
+  color: #eb7720;
+}
+
+.alert-warning:after {
+  content: "";
+  color: transparent;
+}
+
+.alert-danger:before {
+  content: "\e640";
+  color: #c90813;
+}
+
+.alert-danger:after {
+  content: "";
+  color: transparent;
+}
+
+.list-group-item-text.formula-description {
+  padding-left: 42px;
+  padding-top: 10px;
+  color: #777;
+}
+
+.input-group.small-color-picker {
+  width: 130px;
+}
+
+time:hover {
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  cursor: default;
+}
+
+.spacewalk-section-toolbar-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: auto;
+}
+.spacewalk-section-toolbar {
+  overflow: auto;
+  border: 1px solid #ddd;
+  padding: 0 5px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fafafa+0,eaeaea+100 */
+  background: rgb(250,250,250); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(250,250,250,1) 0%, rgba(234,234,234,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(250,250,250,1) 0%,rgba(234,234,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(250,250,250,1) 0%,rgba(234,234,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#eaeaea',GradientType=0 ); /* IE6-9 */
+  .action-button-wrapper {
+    float: right;
+    overflow: auto;
+    margin-right: 5px;
+    button, input, .btn {
+      .spacewalk-section-toolbar-button;
+    }
+  }
+  .selector-button-wrapper {
+    display: inline-block;
+    margin-left: 5px;
+    button, input, .btn {
+      .spacewalk-section-toolbar-button;
+    }
+  }
+  .spacewalk-list-pagination {
+    display: inline-block;
+    margin: 1.2em 1em;
+    .spacewalk-list-pagination-btns {
+      padding-left: .5em;
+    }
+  }
+  > .btn-group {
+    margin: 10px;
+  }
+}
+.spacewalk-section-toolbar.fixed {
+  position: fixed;
+  z-index: 900;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0px 2px 1px 0px #eee;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-top: 0px;
+  .form-group {
+    margin-bottom: 0;
+  }
+  .spacewalk-list-pagination {
+    margin-bottom: 1.2em;
+  }
+}
+.spacewalk-scheduler {
+    margin-top: 15px;
+}
+
+.remaining-length-wrapper {
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: -18px;
+  color: @spacewalk-gray-dark;
+}
+
+// overrides errata icon styles
+.errata-low {
+  color: @spacewalk-gray;
+}
+.errata-moderate {
+  color: @spacewalk-yellow;
+}
+.errata-important {
+  color: @spacewalk-orange;
+}
+.errata-critical {
+  color: @spacewalk-red;
+}
+
+/**
+* Simulate bootstrap 4 rule behavior
+*
+* Note: keep this as a single style rule
+*/
+.d-inline-block {
+  display: inline-block;
+}
+.d-block {
+  display: block;
+  overflow: auto;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
+}
+
+i.fa.pointer {
+  min-width: 1em;
+}
+
+.v-middle {
+  vertical-align: middle;
+}
+
+/**
+* use these classes to fix progress bar
+* to let the text overlaps the progress bar behind
+*/
+.progress-bar-wrapper {
+  position: relative;
+  text-align: center;
+  margin-bottom: 0;
+  line-height: 1.3em;
+  .progress-bar-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+  .progress-bar {
+    background-color: @susemanager-green;
+  }
+}
+
+/**
+* behave as a table
+*/
+.table-style {
+  display: table;
+  border-collapse: collapse;
+  .table-row  {
+    display: table-row;
+    .table-col {
+      display: table-cell;
+      border: 1px solid @spacewalk-gray-light;
+      padding: .2em;
+      vertical-align: middle;
+    }
+  }
+}
+
+.tag-base {
+  padding: 0 .5em;
+  border-radius: 2px;
+  font-size: 85%;
+}
+
+.recommended-tag-base {
+  .tag-base;
+  background-color: @spacewalk-yellow;
+ }
+
+.mandatory-tag-base {
+  .tag-base;
+  background-color: @spacewalk-red;
+  color: white;
+}
+
+.line-separator {
+  height: 1px;
+  background-color: @spacewalk-gray-light;
+  width: 100%;
+  margin: .5em auto;
+  display: inline-block;
+}
+
+input:disabled+label {
+  cursor: not-allowed;
+  color: @spacewalk-gray;
+}
+
+select.small-select {
+  height: 1.8em;
+  line-height: 1.8em;
+  padding: 0 0.5em;
+  width: auto;
+  text-align: center;
+}
+
+.react-hot-loader-error-overlay {
+  position: fixed;
+  z-index: 1000;
+}
+
+/*Colapsed pannels*/
+
+.panel-heading, .collapsible-content {
+
+  .collapsed {
+    .hide-on-collapsed {
+      display: inline;
+    }
+
+    .show-on-collapsed {
+      display: none;
+    }
+  }
+
+  .hide-on-collapsed {
+    display: none;
+  }
+
+  .show-on-collapsed {
+    display: inline;
+  }
+
+  .accordion-toggle {
+    cursor: pointer;
+  }
+
+}
+
+.panel-body .min-height-panel {
+  min-height: 20px;
+}

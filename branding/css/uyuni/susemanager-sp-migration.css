@@ -1,0 +1,22 @@
+ul.products-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.products-list li+li {
+  padding-top: 0;
+}
+li.addon-product {
+  list-style-image: url(/img/branch.gif);
+}
+div.channel-details {
+  margin: 20px 3%;
+}
+.none-item {
+  margin-top: 5px;
+}
+
+.products-list li label {
+    vertical-align: top;
+    margin-left: 10px;
+}

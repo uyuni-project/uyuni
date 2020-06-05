@@ -1,0 +1,172 @@
+@font-face {
+   font-family: 'Raleway', sans-serif;
+   src: url('../fonts/Raleway/Raleway-Light.ttf') format('truetype');
+   font-weight: '300';
+   font-style: normal;
+}
+
+/* SUSE Manager Login */
+body.login-page {
+  background: @spacewalk-blue-light;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  overflow: auto;
+  margin-top: 0px;
+  color: @spacewalk-gray-light;
+}
+.login-page {
+  .text-left;
+  .wrap {
+    width: 1024px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .navbar-header {
+    margin-left: 10px;
+  }
+  .spacewalk-main-column-layout {
+    section {
+      padding: 3em 0;
+      width: 100%;
+    }
+  }
+  h1 {
+    font-size: 52px;
+    color: @susemanager-green;
+  }
+  h2 {
+    font-size: 32px
+  }
+  .Raleway-font {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300
+  }
+  .btn-dark {
+    color: @susemanager-green;
+    border: 1px solid @susemanager-green;
+    display: inline-block;
+    text-decoration: none;
+    padding: .4em 1em;
+    border-radius: 4px;
+    font-size: 15px;
+    margin-left: 3em
+  }
+  .btn-dark:hover {
+    border: 1px solid darken(@susemanager-green, 10%);
+  }
+  .margins-updown {
+    margin: 2em 0;
+  }
+  input {
+    margin-bottom: 1em;
+    background: @spacewalk-blue;
+    color: #ccc;
+    border: 0;
+    -webkit-font-smoothing: antialiased;
+    box-shadow: 0px 1px 0px 0px lighten(@spacewalk-blue-light, 8%), 0px 1px 0px 0px darken(@spacewalk-blue, 3%) inset;
+    -moz-box-shadow: 0px 1px 0px 0px lighten(@spacewalk-blue-light, 8%), 0px 1px 0px 0px darken(@spacewalk-blue, 3%) inset;
+    -webkit-box-shadow: 0px 1px 0px 0px lighten(@spacewalk-blue-light, 8%), 0px 1px 0px 0px darken(@spacewalk-blue, 3%) inset;
+  }
+  input:focus {
+    color: #fff
+  }
+  hr {
+    background: darken(@spacewalk-blue, 3%);
+    height: 1px;
+    border: 0;
+    border-bottom: 1px solid lighten(@spacewalk-blue-light, 8%);
+  }
+  input[type="submit"] {
+    background: @susemanager-green;
+    color: #fff;
+    margin-bottom: 1em;
+    border: 0;
+    box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
+    -moz-box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
+    -webkit-box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
+  }
+  input[type="submit"]:hover {
+    background: darken(@susemanager-green, 10%);
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    text-decoration: underline;
+  }
+  a:hover {
+    color: #00b268
+  }
+  .small-text {
+    font-size: .8em;
+  }
+  label {
+    font-weight: normal;
+  }
+  header {
+    font-size: 13px;
+    border-bottom: 0px;
+    .navbar-brand {
+      text-decoration: none;
+    }
+  }
+  .alert {
+    font-size: 14px
+  }
+  footer {
+    border-bottom: 16px solid @susemanager-green;
+    border-top-width: 0px;
+    background-color: @spacewalk-blue-light;
+    position: fixed;
+    padding-bottom: 1em;
+    padding-left: 0;
+    color: @spacewalk-gray;
+    div.wrapper {
+      background-size: auto 30px;
+      min-height: 35px;
+    }
+    .wrap {
+      > div {
+        display: inline-block;
+        width: auto;
+      }
+      > div:first-of-type:after {
+        content: '|';
+      }
+    }
+    a {
+      color: inherit;
+    }
+    .bottom-line {
+      display: block;
+      margin-top: 10px;
+    }
+  }
+}
+
+.keep-header {
+  .login-page {
+    header {
+      height: auto!important;
+      .navbar-utility {
+        float: right!important;
+        width: auto;
+        margin-top: 0px!important;
+      }
+    }
+  }
+}
+
+@media (max-width: @screen-desktop) {
+  .login-page .wrap {
+    width: 100%;
+  }
+}
+
+@media (max-width: @screen-tablet) {
+  .login-page section.wrap {
+    padding-right: 1em;
+    padding-left: 1em;
+  }
+  .keep-header;
+}

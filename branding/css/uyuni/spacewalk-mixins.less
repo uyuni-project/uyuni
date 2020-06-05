@@ -1,0 +1,41 @@
+.Roboto-thin{
+	font-family: @roboto-light;
+}
+.Roboto-strong{
+	font-family: @roboto-bold;
+}
+
+/* Mixings */
+.border-rounded(@a; @b; @c; @d){
+	-moz-border-radius: @a @b @c @d;
+	border-radius: @a @b @c @d;
+	-webkit-border-radius: @a @b @c @d;
+	-khtml-border-radius: @a @b @c @d;	
+}
+.table-rounded-row-variant(@state; @background; @border) {
+  .table-rounded thead tr.@{state},
+  .table-rounded tbody tr.@{state},
+  .table-rounded tfoot tr.@{state} {
+    background-color: @background;
+  }
+  // Hover states for `.table-rounded`
+  // Note: this is not available for cells or rows within `thead` or `tfoot`.
+  .table-rounded tbody tr {
+    td.@{state}:hover,
+    th.@{state}:hover,
+    &.@{state}:hover td {
+      background-color: darken(@background, 3%);
+    }
+  }
+}
+
+/* glow and shadow for text */
+.glow-text {
+  text-shadow: 1px 1px 1px #fff;
+}
+.glow-text-deleted {
+  text-shadow: 0 0 0 transparent;
+}
+.shadow-text {
+  text-shadow: 1px 1px 1px #555;
+}

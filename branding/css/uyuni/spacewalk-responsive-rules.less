@@ -1,0 +1,79 @@
+/* Rules to make it responsive */
+.aside-horizontal {
+	.spacewalk-main-column-layout aside {
+		margin-bottom: 1em;
+		padding-bottom: 0;
+		border-bottom: 1px solid #ccc;
+		min-height: 1px;
+	}
+}
+//second logo of SPACEWALK
+.logoLetter {
+	.navbar-header a:nth-child(2) {
+		display: none;
+	}
+}
+// columns in the header
+.header-responsive {
+	.spacewalk-header-container {
+		.make-row(0);
+		.spacewalk-logo {
+			.make-xs-column(6);
+			padding-left: 0;
+		}
+		.spacewalk-header-links {
+			.make-xs-column(6);
+			padding-right: 0;
+		}
+	}
+	.navbar-brand {
+		padding: 0px !important;
+		width: auto !important;
+		img {
+			width: 66% !important;
+		}
+	}
+	.navbar-utility {
+		width: 100%;
+	}
+}
+// columns without paddings
+.columns-no-padding {
+	.row-0 {
+		.col-md-6 {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+}
+// Logal text in the footer takes 100% in small screens
+.legal-text-footer {
+	footer {
+		div:nth-child(1) {
+			.make-xs-column(12);
+		}
+	}	
+}
+// buttons will go 100% width
+.buttons-full-size {
+	form {
+		.btn {
+			width: 100%
+		}
+	}
+}
+
+//classes that will take effect on tablets and mobiles screens
+@media (max-width: @screen-tablet) {
+	.aside-horizontal;
+	.header-responsive;
+	.columns-no-padding;
+	.legal-text-footer;
+}
+//classes that will take effect only on mobiles screens
+@media (max-width: @screen-phone) {
+	.logoLetter;
+	.buttons-full-size;
+}
+
+
