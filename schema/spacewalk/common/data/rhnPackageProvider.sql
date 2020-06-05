@@ -23,7 +23,7 @@ insert into rhnPackageProvider (id, name) values
 insert into rhnPackageProvider (id, name) values
 (sequence_nextval('rhn_package_provider_id_seq'), 'Scientific Linux' );
 insert into rhnPackageProvider (id, name) values
-(sequence_nextval('rhn_package_provider_id_seq'), 'SUSE LINUX Products GmbH' );
+(sequence_nextval('rhn_package_provider_id_seq'), 'SUSE LLC' );
 insert into rhnPackageProvider (id, name) values
 (sequence_nextval('rhn_package_provider_id_seq'), 'openSUSE' );
 insert into rhnPackageProvider (id, name) values
@@ -37,8 +37,4 @@ insert into rhnPackageProvider (id, name) values
 insert into rhnPackageProvider (id, name) values
 (sequence_nextval('rhn_package_provider_id_seq'), 'Uyuni' );
 
-
-
-
 commit;
-
