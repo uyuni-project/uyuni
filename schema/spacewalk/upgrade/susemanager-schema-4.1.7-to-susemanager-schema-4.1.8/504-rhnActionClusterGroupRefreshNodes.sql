@@ -28,6 +28,6 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterGroupRefreshNodes (
 )
 ;
 
-CREATE UNIQUE INDEX IF NOT EXISTS rhnactionclustergrn_aid_idx ON rhnActionClusterGroupRefreshNodes (action_id);
+CREATE UNIQUE INDEX IF NOT EXISTS rhnactionclustergrn_aid_uq ON rhnActionClusterGroupRefreshNodes (action_id);
 
 insert into rhnActionType values (515, 'cluster.group_refresh_nodes', 'Refresh cluster group nodes', 'N', 'N') on conflict do nothing;

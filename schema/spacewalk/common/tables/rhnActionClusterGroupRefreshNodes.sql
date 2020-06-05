@@ -28,4 +28,4 @@ CREATE TABLE rhnActionClusterGroupRefreshNodes (
 )
 ;
 
-CREATE UNIQUE INDEX rhnactionclustergrn_aid_idx ON rhnActionClusterGroupRefreshNodes (action_id);
+CREATE UNIQUE INDEX rhnactionclustergrn_aid_uq ON rhnActionClusterGroupRefreshNodes (action_id);

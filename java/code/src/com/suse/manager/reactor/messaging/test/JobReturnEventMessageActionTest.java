@@ -2125,7 +2125,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ClusterManager clusterManager = ClusterManager.instance();
         Map<String, Object> params = new HashMap<>();
-
+        params.put("skuba_cluster_path", "/opt/mycluster");
+        params.put("map", Collections.singletonMap("key", "value"));
         BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
         assertTrue(action instanceof ClusterJoinNodeAction);
         ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
@@ -2147,6 +2148,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         action = (ClusterJoinNodeAction)ActionFactory.lookupById(action.getId());
         assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
         assertEquals("\n" +
@@ -2270,7 +2272,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ClusterManager clusterManager = ClusterManager.instance();
         Map<String, Object> params = new HashMap<>();
-
+        params.put("skuba_cluster_path", "/opt/mycluster");
+        params.put("map", Collections.singletonMap("key", "value"));
         BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
         assertTrue(action instanceof ClusterRemoveNodeAction);
         ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
@@ -2292,6 +2295,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         action = (ClusterRemoveNodeAction)ActionFactory.lookupById(action.getId());
         assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
         assertEquals("\n" +
@@ -2371,7 +2375,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ClusterManager clusterManager = ClusterManager.instance();
         Map<String, Object> params = new HashMap<>();
-
+        params.put("skuba_cluster_path", "/opt/mycluster");
+        params.put("map", Collections.singletonMap("key", "value"));
         BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER,
                 cluster, Arrays.asList(), params, new Date(), user);
         assertTrue(action instanceof ClusterUpgradeAction);
@@ -2394,6 +2399,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         action = (ClusterUpgradeAction)ActionFactory.lookupById(action.getId());
         assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
         serverAction = action.getServerActions().stream().findFirst().get();
         assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
         assertEquals("\n" +

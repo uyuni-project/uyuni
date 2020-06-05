@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterRemoveNode (
                             CONSTRAINT rhn_actionclrmnode_cluster_fk
                             REFERENCES suseClusters (id)
                             ON DELETE CASCADE,
-    json_params         VARCHAR(8192),
+    json_params         TEXT,
     created             TIMESTAMPTZ
                             DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
     modified            TIMESTAMPTZ
@@ -29,6 +29,6 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterRemoveNode (
 )
 ;
 
-CREATE UNIQUE INDEX IF NOT EXISTS rhnactionclusterrn_aid_idx ON rhnActionClusterRemoveNode (action_id);
+CREATE UNIQUE INDEX IF NOT EXISTS rhnactionclusterrn_aid_uq ON rhnActionClusterRemoveNode (action_id);
 
 insert into rhnActionType values (517, 'cluster.remove_node', 'Remove node from cluster', 'N', 'N') on conflict do nothing;

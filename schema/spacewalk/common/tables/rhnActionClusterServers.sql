@@ -23,5 +23,4 @@ CREATE TABLE rhnActionClusterServers (
                             ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX rhn_action_cluster_srvs_idx
-    ON rhnActionClusterServers (action_id, server_id);
+CREATE UNIQUE INDEX rhn_action_cluster_srvs_uq ON rhnActionClusterServers (action_id, server_id);

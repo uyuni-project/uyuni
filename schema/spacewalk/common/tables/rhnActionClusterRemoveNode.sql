@@ -21,7 +21,7 @@ CREATE TABLE rhnActionClusterRemoveNode (
                             CONSTRAINT rhn_actionclrmnode_cluster_fk
                             REFERENCES suseClusters (id)
                             ON DELETE CASCADE,
-    json_params         VARCHAR(8192),
+    json_params         TEXT,
     created             TIMESTAMPTZ
                             DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
     modified            TIMESTAMPTZ
@@ -29,4 +29,4 @@ CREATE TABLE rhnActionClusterRemoveNode (
 )
 ;
 
-CREATE UNIQUE INDEX rhnactionclusterrn_aid_idx ON rhnActionClusterRemoveNode (action_id);
+CREATE UNIQUE INDEX rhnactionclusterrn_aid_uq ON rhnActionClusterRemoveNode (action_id);

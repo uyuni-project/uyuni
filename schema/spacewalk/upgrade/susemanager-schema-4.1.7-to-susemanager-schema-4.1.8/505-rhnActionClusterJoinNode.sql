@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterJoinNode (
                             CONSTRAINT rhn_actioncljoin_cluster_fk
                             REFERENCES suseClusters (id)
                             ON DELETE CASCADE,
-    json_params         VARCHAR(8192),
+    json_params         TEXT,
     created             TIMESTAMPTZ
                             DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
     modified            TIMESTAMPTZ
@@ -29,6 +29,6 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterJoinNode (
 )
 ;
 
-CREATE UNIQUE INDEX IF NOT EXISTS rhnactionclusterjn_aid_idx ON rhnActionClusterJoinNode (action_id);
+CREATE UNIQUE INDEX IF NOT EXISTS rhnactionclusterjn_aid_uq ON rhnActionClusterJoinNode (action_id);
 
 insert into rhnActionType values (516, 'cluster.join_node', 'Join node to cluster', 'N', 'N') on conflict do nothing;

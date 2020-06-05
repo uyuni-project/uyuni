@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS suseClusters (
                     ON DELETE CASCADE,
     label       VARCHAR(256) NOT NULL,
     name        VARCHAR(256) NOT NULL,
-    description VARCHAR(4096) NOT NULL DEFAULT '',
+    description VARCHAR(4096) DEFAULT '',
     provider    VARCHAR(50) NOT NULL,
     management_node_id  NUMERIC
                         CONSTRAINT suse_clusters_mgmt_node_fk
@@ -38,11 +38,11 @@ CREATE TABLE IF NOT EXISTS suseClusters (
 
 CREATE SEQUENCE IF NOT EXISTS suse_cluster_id_seq;
 
-CREATE UNIQUE INDEX IF NOT EXISTS suse_cluster_name_idx
+CREATE UNIQUE INDEX IF NOT EXISTS suse_cluster_name_uq
     ON suseClusters (name);
 
-CREATE UNIQUE INDEX IF NOT EXISTS suse_cluster_label_idx
+CREATE UNIQUE INDEX IF NOT EXISTS suse_cluster_label_uq
     ON suseClusters (label);
 
-CREATE UNIQUE INDEX IF NOT EXISTS suse_cluster_group_idx
+CREATE UNIQUE INDEX IF NOT EXISTS suse_cluster_group_uq
     ON suseClusters (group_id);

@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterUpgradeCluster (
                             CONSTRAINT rhn_actionclrmnode_cluster_fk
                             REFERENCES suseClusters (id)
                             ON DELETE CASCADE,
-    json_params         VARCHAR(8192),
+    json_params         TEXT,
     created             TIMESTAMPTZ
                             DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
     modified            TIMESTAMPTZ
@@ -29,6 +29,6 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterUpgradeCluster (
 )
 ;
 
-CREATE UNIQUE INDEX IF NOT EXISTS rhnactionclusteruc_aid_idx ON rhnActionClusterUpgradeCluster (action_id);
+CREATE UNIQUE INDEX IF NOT EXISTS rhnactionclusteruc_aid_uq ON rhnActionClusterUpgradeCluster (action_id);
 
 insert into rhnActionType values (518, 'cluster.upgrade_cluster', 'Upgrade cluster', 'N', 'N') on conflict do nothing;
