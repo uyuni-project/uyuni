@@ -1,0 +1,28 @@
+// rewrite the sortedCol class
+
+.list-row-even td.sortedCol {
+  background-color: transparent!important;
+}
+
+.list-row-odd td.sortedCol {
+background-color: @table-bg-accent !important;
+}
+
+.list-row-even:hover td,
+.list-row-even:hover td.sortedCol,
+.list-row-odd:hover td,
+.list-row-odd:hover td.sortedCol {
+  background-color: darken(@gray-lighter, 2%) !important;
+}
+
+.vertical-middle td {
+  vertical-align: middle !important;
+}
+
+.list-row-odd {
+  background-color: @table-bg-accent;
+}
+
+td {
+  overflow: hidden;
+}
