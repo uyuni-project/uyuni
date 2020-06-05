@@ -90,8 +90,8 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
                 " e03849ea786b9f7b28a35c17949e85a93eb1cff1 20 repodata/binary-ia64/Packages.gz\n" +
                 "SHA256:\n" +
                 " e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 main/binary-ia64/Packages\n" +
-                " e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 main/binary-ia64/Packages\n" +
-                " f5d031af01f137ae07fa71720fab94d16cc8a2a59868766002918b7c240f3967 20 repodata/binary-ia64/Packages.gz\n";
+                " f5d031af01f137ae07fa71720fab94d16cc8a2a59868766002918b7c240f3967 20 main/binary-ia64/Packages.gz\n";
+                " e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 repodata/binary-ia64/Packages\n" +
                 " f5d031af01f137ae07fa71720fab94d16cc8a2a59868766002918b7c240f3967 20 repodata/binary-ia64/Packages.gz\n";
         assertEquals(rel, releaseContent);
     }
