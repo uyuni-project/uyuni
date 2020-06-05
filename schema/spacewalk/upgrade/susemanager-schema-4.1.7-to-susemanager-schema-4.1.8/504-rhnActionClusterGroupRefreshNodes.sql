@@ -22,8 +22,6 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterGroupRefreshNodes (
                             REFERENCES suseClusters (id)
                             ON DELETE CASCADE,
     created             TIMESTAMPTZ
-                            DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
-    modified            TIMESTAMPTZ
                             DEFAULT (CURRENT_TIMESTAMP) NOT NULL
 )
 ;

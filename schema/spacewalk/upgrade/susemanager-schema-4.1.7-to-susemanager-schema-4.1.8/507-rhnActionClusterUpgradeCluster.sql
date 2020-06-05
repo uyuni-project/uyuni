@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS rhnActionClusterUpgradeCluster (
                             ON DELETE CASCADE,
     json_params         TEXT,
     created             TIMESTAMPTZ
-                            DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
-    modified            TIMESTAMPTZ
                             DEFAULT (CURRENT_TIMESTAMP) NOT NULL
 )
 ;
