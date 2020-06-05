@@ -8,10 +8,12 @@ Feature: Sanity checks
   Scenario: The server is healthy
     Then "server" should have a FQDN
 
+@sle_client
   Scenario: The traditional client is healthy
     Then "sle_client" should have a FQDN
     And "sle_client" should communicate with the server
 
+@sle_minion
   Scenario: The minion is healthy
     Then "sle_minion" should have a FQDN
     And "sle_minion" should communicate with the server
