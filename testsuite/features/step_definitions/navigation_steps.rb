@@ -401,9 +401,13 @@ Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
   end
 end
 
-When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
+When(/^I wait at most ([0-9]+) seconds until table row for "([^"]*)" contains button "([^"]*)"$/) do |timeout, text, button|
   xpath_query = "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
+  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_f)
+end
+
+When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until table row for "#{text}" contains button "#{button}")
 end
 
 When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
