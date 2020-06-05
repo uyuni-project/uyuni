@@ -93,6 +93,14 @@ Before('@proxy') do
   skip_this_scenario unless $proxy
 end
 
+Before('@sle_client') do
+  skip_this_scenario unless $client
+end
+
+Before('@sle_minion') do
+  skip_this_scenario unless $minion
+end
+
 Before('@centos_minion') do
   skip_this_scenario unless $ceos_minion
 end
