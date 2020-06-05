@@ -106,9 +106,6 @@ class DpkgRepo:
                     break
                 resp.close()
 
-        if self._pkg_index == ("", b"",):
-            raise GeneralRepoException("No variants of package index has been found on {} repo".format(self._url))
-
         return self._pkg_index
 
     def decompress_pkg_index(self) -> str:
@@ -179,9 +176,6 @@ class DpkgRepo:
         finally:
             resp.close()
 
-        if not self._release:
-            raise GeneralRepoException("Repository seems either broken or has unsupported format")
-
         return self._release
 
     @staticmethod
@@ -220,6 +214,11 @@ class DpkgRepo:
         :return: result (boolean)
         """
         name, data = self.get_pkg_index_raw()
+
+        # If there are no packages in the repo, return True
+        if (name, data) == ("", b"",):
+           return True
+
         entry = self.get_release_index().get(name)
         for algorithm in ["md5", "sha1", "sha256"]:
             if entry is None:
