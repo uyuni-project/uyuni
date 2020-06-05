@@ -9,7 +9,7 @@ type Props = {
 }
 
 const LoginHeader = (props: Props) => (
-  <header className="navbar-pf Raleway-font">
+  <header className="navbar-pf">
     <div className="wrap">
       <a href="/" target="" title={props.title} className="navbar-brand">
         <i className="fa fa-home" />
