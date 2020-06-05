@@ -172,7 +172,8 @@ public class MenuTree {
 
             // Clusters
             nodes.add(new MenuItem("clusters.nav.title").withIcon("spacewalk-icon-clusters")
-                    .addChild(new MenuItem("clusters.nav.overview").withPrimaryUrl("/rhn/manager/clusters"))
+                    .addChild(new MenuItem("clusters.nav.overview").withPrimaryUrl("/rhn/manager/clusters")
+                        .withDir("/rhn/manager/cluster"))
                     .addChild(new MenuItem("clusters.nav.add").withPrimaryUrl("/rhn/manager/clusters/add")
                             .withVisibility(adminRoles.get("clusters"))));
 
