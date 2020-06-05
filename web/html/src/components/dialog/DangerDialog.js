@@ -27,7 +27,7 @@ export function DangerDialog(props) {
         }
         {props.onConfirm ?
             <Button
-                defaultType="btn-danger"
+                className="btn-danger"
                 text={props.submitText}
                 title={props.submitText}
                 icon={props.submitIcon}
