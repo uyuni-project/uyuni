@@ -15,7 +15,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I select "1-SUSE-PKG-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait at most 300 seconds until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "xen_server"
 
 @virthost_xen
@@ -27,6 +27,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
     And the virtpoller beacon should be enabled on "xen_server"
+    And I restart salt-minion on "xen_server"
 
 @virthost_xen
   Scenario: Prepare a Xen test virtual machine and list it
@@ -157,14 +158,15 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
+    And I enter "512" as "memory"
     And I enter "/var/testsuite-data/disk-image-template-xenpv.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
-    And I wait until table row for "test-vm2" contains button "Stop"
-    And "test-vm2" virtual machine on "xen_server" should have 1024MB memory and 1 vcpus
+    And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
+    And "test-vm2" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
     And "test-vm2" virtual machine on "xen_server" should have a "test-vm2_system.qcow2" xen disk
 
@@ -182,21 +184,23 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait until I see "General" text
     And I enter "test-vm3" as "name"
     And I select "Fully Virtualized" from "osType"
+    And I enter "512" as "memory"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm3" text
-    And I wait until table row for "test-vm3" contains button "Stop"
-    And "test-vm3" virtual machine on "xen_server" should have 1024MB memory and 1 vcpus
+    And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
+    And "test-vm3" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
     And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system.qcow2" xen disk
 
 @virthost_xen
   Scenario: Show the virtual storage pools and volumes for Xen
     Given I am on the "Virtualization" page of this "xen_server"
-    When I follow "Storage"
-    And I open the sub-list of the product "default"
+    When I refresh the "test-pool0" storage pool of this "xen_server"
+    And I follow "Storage"
+    And I open the sub-list of the product "test-pool0"
     Then I wait until I see "test-vm2_system.qcow2" text
 
 @virthost_xen
