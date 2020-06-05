@@ -11,7 +11,8 @@
 
 # this feature is destructive for other features, so it is better at the end
 - features/finishing/srv_smdba.feature
-# this feature is needed for gathering log/debug infos
-- features/finishing/srv_susemanager_debug.feature
+# these features are needed for gathering log/debug info
+- features/finishing/srv_debug.feature
+- features/finishing/allcli_debug.feature
 
 ## Post run features END ##

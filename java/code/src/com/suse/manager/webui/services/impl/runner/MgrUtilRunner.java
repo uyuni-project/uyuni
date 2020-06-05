@@ -35,7 +35,7 @@ public class MgrUtilRunner {
      */
     public static class ExecResult {
 
-        @SerializedName("returncode")
+        @SerializedName("retcode")
         private int returnCode;
         @SerializedName("stdout")
         private String stdout;

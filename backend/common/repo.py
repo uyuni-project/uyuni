@@ -67,12 +67,13 @@ class DpkgRepo:
                 key = "/".join(parse.urlparse(self.__repo._url).path.strip("/").split("/")[-2:] + [key])
             return self[key]
 
-    def __init__(self, url: str):
+    def __init__(self, url: str, proxies: dict = None):
         self._url = url
         self._flat_checked: typing.Optional[int] = None
         self._flat: bool = False
         self._pkg_index: typing.Tuple[str, bytes] = ("", b"", )
         self._release = DpkgRepo.EntryDict(self)
+        self.proxies = proxies
 
     def append_index_file(self, index_file: str) -> str:
         """
@@ -100,14 +101,11 @@ class DpkgRepo:
         if self._pkg_index[0] == "":
             for cnt_fname in [DpkgRepo.PKG_GZ, DpkgRepo.PKG_XZ, DpkgRepo.PKG_RW]:
                 packages_url = self.append_index_file(cnt_fname)
-                resp = requests.get(packages_url)
+                resp = requests.get(packages_url, proxies=self.proxies)
                 if resp.status_code == http.HTTPStatus.OK:
                     self._pkg_index = cnt_fname, resp.content
                     break
                 resp.close()
-
-        if self._pkg_index == ("", b"",):
-            raise GeneralRepoException("No variants of package index has been found on {} repo".format(self._url))
 
         return self._pkg_index
 
@@ -164,7 +162,7 @@ class DpkgRepo:
         :raises GeneralRepoException if the Release file cannot be found.
         :return: string
         """
-        resp = requests.get(self._get_parent_url(self._url, 2, "Release"))
+        resp = requests.get(self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies)
         try:
             self._flat = resp.status_code in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.FORBIDDEN]
             self._flat_checked = 1
@@ -173,14 +171,11 @@ class DpkgRepo:
                 raise GeneralRepoException("HTTP error {} occurred while connecting to the URL".format(resp.status_code))
 
             if not self._release and self.is_flat():
-                resp = requests.get(self._get_parent_url(self._url, 0, "Release"))
+                resp = requests.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
                 if resp.status_code == http.HTTPStatus.OK:
                     self._release = self._parse_release_index(resp.content.decode("utf-8"))
         finally:
             resp.close()
-
-        if not self._release:
-            raise GeneralRepoException("Repository seems either broken or has unsupported format")
 
         return self._release
 
@@ -220,6 +215,11 @@ class DpkgRepo:
         :return: result (boolean)
         """
         name, data = self.get_pkg_index_raw()
+
+        # If there are no packages in the repo, return True
+        if (name, data) == ("", b"",):
+           return True
+
         entry = self.get_release_index().get(name)
         for algorithm in ["md5", "sha1", "sha256"]:
             if entry is None:

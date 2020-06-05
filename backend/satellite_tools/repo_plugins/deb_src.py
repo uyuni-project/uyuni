@@ -109,8 +109,28 @@ class DebRepo:
         :return:
         """
         # TODO: Signature verification is not yet implemented here.
-        if not repo.DpkgRepo(self.url).verify_packages_index():
+        if not repo.DpkgRepo(self.url, self._get_proxies()).verify_packages_index():
             raise repo.GeneralRepoException("Package index checksum failure")
+
+    def _get_proxies(self):
+        """
+        Returns proxies dict for requests with python-requests.
+        """
+        if self.proxy:
+            (_, netloc, _, _, _) = urlparse.urlsplit(self.proxy)
+            proxies = {
+                'http': 'http://' + netloc,
+                'https': 'http://' + netloc
+            }
+            if self.proxy_username and self.proxy_password:
+                proxies = {
+                    'http': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
+                    'https': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
+                }
+            return proxies
+        else:
+            return None
+
 
     def _download(self, url):
         if url.startswith('file://'):
@@ -122,19 +142,7 @@ class DebRepo:
             return filename
         for _ in range(0, RETRIES):
             try:
-                proxies=""
-                if self.proxy:
-                    (scheme, netloc, path, query, fragid) = urlparse.urlsplit(self.proxy)
-                    proxies = {
-                        'http': 'http://' + netloc,
-                        'https': 'http://' + netloc
-                    }
-                    if self.proxy_username and self.proxy_password:
-                        proxies = {
-                            'http': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
-                            'https': 'http://' + self.proxy_username + ":" + self.proxy_password + "@" + netloc,
-                        }
-                data = requests.get(url, proxies=proxies, cert=(self.sslclientcert, self.sslclientkey),
+                data = requests.get(url, proxies=self._get_proxies(), cert=(self.sslclientcert, self.sslclientkey),
                                     verify=self.sslcacert)
                 if not data.ok:
                     return ''

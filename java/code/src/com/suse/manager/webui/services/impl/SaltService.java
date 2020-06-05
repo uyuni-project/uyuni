@@ -1268,7 +1268,7 @@ public class SaltService implements SystemQuery, SaltApi {
     public Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
             String imageStore) {
         RunnerCall<MgrUtilRunner.ExecResult> call =
-                MgrKiwiImageRunner.collectImage(minion.getMinionId(), filepath, imageStore);
+                MgrKiwiImageRunner.collectImage(minion.getMinionId(), minion.getIpAddress(), filepath, imageStore);
         return callSync(call);
     }
 }

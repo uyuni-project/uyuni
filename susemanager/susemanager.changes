@@ -3,7 +3,7 @@
 - migrate proxy list in cobbler settings (bsc#1169536)
 - Make systemd services and timers enablement really quiet
 - Packages for the Ubuntu 18.04 bootstrap repo are now populated with Python3
-  dependencies
+  dependencies (bsc#1168845)
 
 -------------------------------------------------------------------
 Wed May 20 11:01:49 CEST 2020 - jgonzalez@suse.com
