@@ -1,3 +1,5 @@
+- Add duplicate line for repodata Debian component in release file
+
 - improve Content Lifecycle Management build and promotion performance (bsc#1159226)
 - fix info text about package installation on channel change (bsc#1171684)
 - Clarify the behavior of the checkbox system list, when it adds systems to ssm

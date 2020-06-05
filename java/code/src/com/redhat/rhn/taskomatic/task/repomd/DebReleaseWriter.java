@@ -81,17 +81,25 @@ public class DebReleaseWriter {
                     .stream().map(name -> new File(pathPrefix + name))
                     .collect(Collectors.toList());
 
-            // assume we always use the "main" component for our repos
-            String filePrefix = "main/binary-" + toArchString(channel.getChannelArch()) + "/";
+            /*
+               To allow old traditional Debian clients to get the metadata files, also add
+               a duplicate line with 'repodata' components.
+               Old clients using 'apt-transport-spacewalk' do use the 'repodata' component
+            */
+            String mainfilePrefix = "main/binary-" + toArchString(channel.getChannelArch()) + "/";
+            String repodatafilePrefix = "repodata/binary-" + toArchString(channel.getChannelArch()) + "/";
 
             writer.println("MD5Sum:");
-            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::md5Hex, filePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::md5Hex, mainfilePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::md5Hex, repodatafilePrefix, file));
 
             writer.println("SHA1:");
-            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha1Hex, filePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha1Hex, mainfilePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha1Hex, repodatafilePrefix, file));
 
             writer.println("SHA256:");
-            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha256Hex, filePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha256Hex, mainfilePrefix, file));
+            metadataFiles.forEach(file -> appendSum(writer, DigestUtils::sha256Hex, repodatafilePrefix, file));
         }
         catch (IOException e) {
             log.error("Could not generate Release file for channel " + channel.getLabel(), e);
