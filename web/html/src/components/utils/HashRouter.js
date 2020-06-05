@@ -8,8 +8,8 @@ type HashContextType = {
     hash: ?string,
     switch?: boolean,
     match?: boolean,
-    goTo: (string) => void,
-    back: () => void
+    goTo: (?string) => void,
+    back: () => void,
 }
 
 export const HashRouterContext = React.createContext<HashContextType>({
@@ -39,24 +39,38 @@ const HashRouter = ({initialPath, children}: HashRouterProps) => {
         if (hash) {
             setHash(hash);
         } else {
-            goTo(initialPath);
+            initial();
         }
         window.addEventListener("popstate", (event) => {
             setHash(hashUrl())
         });
     }, []);
 
-    const goTo = (hash: string) => {
-        history.pushState(null, "", "#/" + hash);
-        setHash(hash);
+    const goTo = (hash: ?string) : void => {
+        if (hash) {
+            history.pushState(null, "", "#/" + hash);
+            setHash(hash);
+        } else {
+            initial();
+        }
     }
+
+    const replaceWith = (hash: string) : void => {
+        console.log("replace " + hash)
+        history.replaceState(null, "", "#/" + hash);
+        setHash(hash);
+    } 
 
     const back = () => {
         history.back();
     }
 
+    const initial = () => {
+        replaceWith(initialPath);
+    }
+
     return (
-        <HashRouterContext.Provider value={{hash: hash, goTo: goTo, back: back}}>
+        <HashRouterContext.Provider value={{hash: hash, goTo: goTo, back: back, initial: initial}}>
             {children}
         </HashRouterContext.Provider>
     );
@@ -64,7 +78,7 @@ const HashRouter = ({initialPath, children}: HashRouterProps) => {
 
 type RouterProps = {
     path: string,
-    children:  React.Node | (HashContextType) => React.Node
+    children:  React.Node | (HashContextType) => React.Node | void
 }
 
 const Route = ({path, children}: RouterProps) => {

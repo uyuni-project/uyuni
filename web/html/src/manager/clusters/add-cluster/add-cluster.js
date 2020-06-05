@@ -54,7 +54,7 @@ const AddCluster = (props: Props) => {
                                     fetchServers={() => fetchManagementNodes(providerLabel)}
                                     onNext={(nodes) => {setManagementNode(nodes[0]); goTo("provider-settings");}}
                                     onPrev={back} />                               
-                                : null}
+                                : goTo()}
                         </Route>
                         <Route path="provider-settings">
                             {({goTo, back}) => providerLabel ?
@@ -63,7 +63,7 @@ const AddCluster = (props: Props) => {
                                     provider={providerLabel}
                                     formula="settings"
                                     onNext={(formulaValues) => {setProviderConfig(formulaValues); goTo("finish");}}
-                                    onPrev={back} /> : null}
+                                    onPrev={back} /> : goTo()}
                         </Route> 
                         <Route path="finish">
                             {({goTo, back}) => {
@@ -84,7 +84,7 @@ const AddCluster = (props: Props) => {
                                         }
                                         onAdd={onAdd}
                                         onPrev={back}
-                                        /> : null;
+                                        /> : goTo();
                             }}
                         </Route>
                     </Switch>

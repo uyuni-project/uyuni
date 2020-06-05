@@ -42,7 +42,7 @@ const UpgradeCluster = (props: Props) => {
                 </Route>
                 <Route path="schedule">
                     {({ goTo, back }) => {
-                        return <ScheduleClusterAction
+                        return upgradeConfig ? <ScheduleClusterAction
                             title={t("Schedule upgrade cluster")}
                             panel={
                                 <div className="form-horizontal">
@@ -55,7 +55,7 @@ const UpgradeCluster = (props: Props) => {
                             schedule={scheduleUpgrade}
                             scheduleButtonLabel={t("Upgrade")}
                             onPrev={back}
-                        />
+                        /> : goTo()
                     }}
                 </Route>
             </Switch>

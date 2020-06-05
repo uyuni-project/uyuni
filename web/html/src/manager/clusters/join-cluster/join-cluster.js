@@ -51,14 +51,14 @@ const JoinCluster = (props: Props) => {
                                     onNext={(nodes) => {setNodesToJoin(nodes); goTo("join-config")}}/>}
                         </Route>
                         <Route path="join-config">
-                            {({goTo, back}) =>
+                            {({goTo, back}) => nodesToJoin ? 
                                 <FormulaConfig title={t("New node configuration")}
                                     values={joinConfig}
                                     formula="join_node"
                                     context={{"nodes": nodesToJoin.map(node => node.id), "cluster": props.cluster.id}}
                                     provider={props.cluster.provider.label}
                                     onNext={(formulaValues) => {setJoinConfig(formulaValues); goTo("schedule");}}
-                                    onPrev={back} />}
+                                    onPrev={back} /> : goTo() }
                         </Route>
                         <Route path="schedule">
                             {({goTo, back}) => {
@@ -82,7 +82,7 @@ const JoinCluster = (props: Props) => {
                                         schedule={scheduleJoin}
                                         scheduleButtonLabel={t("Join")}
                                         onPrev={back}
-                                        /> : null;
+                                        /> : goTo();
                             }}
                         </Route>
                     </Switch>

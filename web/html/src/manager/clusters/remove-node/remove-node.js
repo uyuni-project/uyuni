@@ -77,7 +77,7 @@ const RemoveNode = (props: Props) => {
                                         schedule={scheduleRemove}
                                         scheduleButtonLabel={t("Remove")}
                                         onPrev={back}                                
-                                    /> : null
+                                    /> : goTo()
                             }
                         </Route>    
                     </Switch>
