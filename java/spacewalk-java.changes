@@ -1,3 +1,4 @@
+- Avoid traceback with AssertionError: Failed to update row (bsc#1172558)
 - Pass minion ip to the kiwi_collect_image runner as fallback instead
   of fqdn if not present (bsc#1170737)
 - Fix software channel list coloring
