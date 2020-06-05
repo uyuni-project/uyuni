@@ -23,6 +23,7 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
@@ -79,6 +80,7 @@ public class MaintenanceController {
         get("/manager/api/maintenance/calendar", withUser(MaintenanceController::getCalendarNames));
         post("/manager/api/maintenance/schedule/save", withUser(MaintenanceController::saveSchedule));
         post("/manager/api/maintenance/calendar/save", withUser(MaintenanceController::saveCalendar));
+        post("/manager/api/maintenance/calendar/refresh", withUser(MaintenanceController::refreshCalendar));
         delete("/manager/api/maintenance/schedule/delete", withUser(MaintenanceController::deleteSchedule));
         delete("/manager/api/maintenance/calendar/delete", withUser(MaintenanceController::deleteCalendar));
     }
@@ -260,32 +262,54 @@ public class MaintenanceController {
                     "Invalid calendar name provided. Choose a different name"
             )));
         }
-        else if (json.getCalendarUrl() == null && json.getCalendarData() == null) {
+        else if (json.getCalendarUrl().isBlank() && json.getCalendarData() == null) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error("Calendar data required")));
         }
 
         MM.lookupCalendarByUserAndLabel(user, json.getCalendarName()).ifPresentOrElse(
                 /* update existing calendar */
                 calendar -> {
-                    /* TODO: Handle Data provided via url*/
-                    if (json.getCalendarUrl() == null) {
-                        Map<String, String> details = new HashMap<>();
-                        String rescheduleStrategy = json.getRescheduleStrategy();
-                        details.put("label", calendar.getLabel());
+                    if (json.getCalendarId() == null) {
+                        Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error("Calendar '" +
+                                json.getCalendarName() + "' already exists.")));
+                    }
+                    Map<String, String> details = new HashMap<>();
+                    String rescheduleStrategy = json.getRescheduleStrategy();
+                    details.put("label", calendar.getLabel());
+                    if (!json.getCalendarUrl().isBlank()) {
+                        details.put("url", json.getCalendarUrl());
+                    }
+                    else {
                         details.put("ical", json.getCalendarData());
+                    }
+
+                    try {
                         List<RescheduleResult> results = MM.updateCalendar(user, calendar.getLabel(), details,
                                 MM.mapRescheduleStrategyStrings(List.of(rescheduleStrategy))
                         );
                         handleRescheduleResult(results, rescheduleStrategy);
                     }
+                    catch (DownloadException e) {
+                        Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
+                                "Error fetching calendar data from '" + json.getCalendarUrl() + "'"
+                        )));
+                    }
                 },
                 /* Create new calendar */
                 () -> {
-                    if (json.getCalendarUrl() == null) {
-                        MM.createMaintenanceCalendar(user, json.getCalendarName(), json.getCalendarData());
+                    if (json.getCalendarData() == null) {
+                        try {
+                            MM.createMaintenanceCalendarWithUrl(user, json.getCalendarName(), json.getCalendarUrl());
+                        }
+                        catch (DownloadException e) {
+                            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
+                                    "Error fetching calendar data from '" + json.getCalendarUrl() + "'"
+                            )));
+                        }
                     }
                     else {
-                        MM.createMaintenanceCalendarWithUrl(user, json.getCalendarName(), json.getCalendarUrl());
+
+                        MM.createMaintenanceCalendar(user, json.getCalendarName(), json.getCalendarData());
                     }
                 }
         );
@@ -318,7 +342,7 @@ public class MaintenanceController {
                 String rescheduleStrategy = json.getRescheduleStrategy();
                 Map<String, String> details = new HashMap<>();
                 details.put("type", json.getScheduleType().toLowerCase());
-                details.put("name", json.getScheduleName());
+                //details.put("name", json.getScheduleName());
                 String label = json.getCalendarName();
                 details.put("calendar", label.equals("<None>") ? "" : label);
                 RescheduleResult result = MM.updateMaintenanceSchedule(user, json.getScheduleName(), details,
@@ -332,9 +356,44 @@ public class MaintenanceController {
     }
 
     /**
+     * Refresh calendar data from url
+     *
+     * @param request the request object
+     * @param response the response obejct
+     * @param user the authorized user
+     * @return string containing the JSON response
+     */
+    public static String refreshCalendar(Request request, Response response, User user) {
+        response.type("application/json");
+        MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
+
+        try {
+            String strategy = json.getRescheduleStrategy();
+            List<RescheduleResult> results = MM.refreshCalendar(
+                    user,
+                    json.getCalendarName(),
+                    MM.mapRescheduleStrategyStrings(List.of(strategy))
+            );
+            handleRescheduleResult(results, strategy);
+        }
+        catch (EntityNotExistsException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
+                    "Calendar " + json.getCalendarName() + " does not exist."
+            )));
+        }
+        catch (DownloadException e) {
+            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
+                    "Error fetching calendar data from '" + json.getCalendarUrl() + "'"
+            )));
+        }
+
+        return json(response, ResultJson.success());
+    }
+
+    /**
      * Deletes a given schedule
      *
-      * @param request the request object
+     * @param request the request object
      * @param response the response object
      * @param user the authorzed user
      * @return the result JSON object

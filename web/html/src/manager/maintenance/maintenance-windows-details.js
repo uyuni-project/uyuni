@@ -91,7 +91,7 @@ class MaintenanceWindowsDetails extends React.Component {
                         {data.calendarUrl &&
                         <tr>
                             <td>{t("Url")}:</td>
-                            <td>{t(data.scheduleUrl)}</td>
+                            <td>{t(data.calendarUrl)}</td>
                         </tr>
                         }
                         </tbody>
