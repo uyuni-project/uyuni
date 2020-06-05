@@ -71,7 +71,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
         User usr = requestContext.getCurrentUser();
 
         //create the errata
-        Errata errata = ErrataFactoryTest.createTestUnpublishedErrata(usr.getOrg().getId());
+        Errata errata = ErrataFactoryTest.createTestPublishedErrata(usr.getOrg().getId());
 
         //We can't publish without selecting channels. Make sure we get an error.
         request.setupAddParameter("eid", errata.getId().toString());
@@ -90,8 +90,6 @@ public class ChannelActionTest extends RhnBaseTestCase {
         request.setupAddParameter("items_selected", c1.getId().toString());
 
         result = action.publish(mapping, form, request, response);
-        //we won't know the id of the published errata, so all we can do is make sure
-        //we got forwarded to publish
         assertEquals(result.getName(), "publish");
     }
 

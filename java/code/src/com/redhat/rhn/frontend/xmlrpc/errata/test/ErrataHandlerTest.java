@@ -749,7 +749,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         errata = TestUtils.reload(errata);
         assertNull(errata);
 
-        errata = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
+        errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         check = ErrataManager.lookupErrata(errata.getId(), user);
         assertTrue(check.getAdvisory().equals(errata.getAdvisory()));
         assertTrue(check.getId().equals(errata.getId()));
@@ -858,7 +858,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      **/
     public void testPublishCustomErrata() throws Exception {
         // publish a custom errata
-        Errata unpublished = ErrataFactoryTest.createTestUnpublishedErrata(admin.getOrg().getId());
+        Errata unpublished = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
         ArrayList channels = new ArrayList();
@@ -876,7 +876,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      **/
     public void testPublishVendorErrata() throws Exception {
         // publish a custom errata
-        Errata unpublished = ErrataFactoryTest.createTestUnpublishedErrata(admin.getOrg().getId());
+        Errata unpublished = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
         unpublished.setOrg(null); // let the errata be a vendor one
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());

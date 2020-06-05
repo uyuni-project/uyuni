@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.errata.test;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.action.errata.NotifySetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -52,22 +51,10 @@ public class NotifySetupActionTest extends RhnBaseTestCase {
         User user = requestContext.getCurrentUser();
         Errata published = ErrataFactoryTest
                 .createTestPublishedErrata(user.getOrg().getId());
-        Errata unpublished = ErrataFactoryTest
-                .createTestUnpublishedErrata(user.getOrg().getId());
-
-        //test bad parameter exception
-        request.setupAddParameter("eid", unpublished.getId().toString());
-        try {
-            action.execute(mapping, form, request, response);
-            fail();
-        }
-        catch (BadParameterException e) {
-            //Success!!!
-        }
 
         //test default case
         request.setupAddParameter("eid", published.getId().toString());
-        request.setupAddParameter("eid", unpublished.getId().toString());
+        request.setupAddParameter("eid", published.getId().toString());
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
         assertNotNull(request.getAttribute("advisory"));

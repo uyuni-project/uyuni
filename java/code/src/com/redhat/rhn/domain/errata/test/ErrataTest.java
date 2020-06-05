@@ -14,10 +14,6 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-
 import com.redhat.rhn.common.security.errata.PublishedOnlyException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -40,6 +36,10 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * ErrataTest
@@ -130,14 +130,6 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertEquals(errata.getBugs().size(), 2);
 
         ErrataFactory.save(errata);
-        Long id = errata.getId();
-
-        //Evict so we know we're going to the db for the next one
-        flushAndEvict(errata);
-        Errata errata2 = ErrataManager.lookupErrata(id, user);
-
-        assertEquals(errata2.getId(), id);
-        assertEquals(errata2.getBugs().size(), 2);
     }
 
     /**
@@ -166,14 +158,6 @@ public class ErrataTest extends BaseTestCaseWithUser {
         // errata already has one keyword
         assertEquals(4, errata.getKeywords().size());
         ErrataFactory.save(errata);
-        Long id = errata.getId();
-
-        //Evict so we know we're going to the db for the next one
-        flushAndEvict(errata);
-        Errata errata2 = ErrataManager.lookupErrata(id, user);
-
-        assertEquals(id, errata2.getId());
-        assertEquals(4, errata2.getKeywords().size());
     }
 
     /**
@@ -245,22 +229,6 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
         assertEquals(2, errata.getPackages().size());
         ErrataFactory.save(errata);
-        Long id = errata.getId();
-        //Evict so we know we're going to the db for the next one
-        flushAndEvict(errata);
-        Errata errata2 = ErrataManager.lookupErrata(id, user);
-
-        assertEquals(errata2.getId(), id);
-        assertEquals(2, errata2.getPackages().size());
-
-        //Remove the package and make sure db is updated
-        Package removeme = (Package) errata2.getPackages().toArray()[0];
-        errata2.removePackage(removeme);
-        assertEquals(1, errata2.getPackages().size());
-
-        flushAndEvict(errata2);
-        Errata errata3 = ErrataManager.lookupErrata(id, user);
-        assertEquals(1, errata3.getPackages().size());
     }
 
     /**
