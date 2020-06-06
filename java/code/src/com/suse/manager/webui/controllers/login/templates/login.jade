@@ -15,13 +15,22 @@ html
         // import custom fonts/icons styles
         link(rel='stylesheet', href='/fonts/font-spacewalk/css/spacewalk-font.css?cb=#{webBuildtimestamp}')
         // import spacewalk styles
-        if isDevMode
-            link(rel='stylesheet/less', href='/css/spacewalk.less')
-            script(type='text/javascript').
-                less = {env: 'development'};
-            script(src='/javascript/less.js')
+        if isUyuni
+            if isDevMode
+                link(rel='stylesheet/less', href='/css/uyuni/spacewalk.less')
+                script(type='text/javascript').
+                    less = {env: 'development for Uyuni'};
+                script(src='/javascript/less.js')
+            else
+                link(rel='stylesheet', href='/css/uyuni/spacewalk.css?cb=#{webBuildtimestamp}')
         else
-            link(rel='stylesheet', href='/css/spacewalk.css?cb=#{webBuildtimestamp}')
+            if isDevMode
+                link(rel='stylesheet/less', href='/css/spacewalk.less')
+                script(type='text/javascript').
+                    less = {env: 'development for SUSE Manager'};
+                script(src='/javascript/less.js')
+            else
+                link(rel='stylesheet', href='/css/spacewalk.css?cb=#{webBuildtimestamp}')
         script(src='/javascript/loggerhead.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/frontend-log.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
