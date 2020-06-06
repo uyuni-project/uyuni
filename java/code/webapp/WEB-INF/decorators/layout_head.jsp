@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ page import="com.suse.manager.webui.menu.MenuTree" %>
-<%@ page import="com.redhat.rhn.common.conf.Config"%>
+<%@ page import="com.redhat.rhn.common.conf.ConfigDefaults"%>
 
 <!-- enclosing head tags in layout_c.jsp -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -40,10 +40,10 @@
 
     <!-- import spacewalk styles -->
     <c:choose>
-        <c:when test='${Config.get().getString("product_name").compareToIgnoreCase("Uyuni") == 0}'>
+        <c:when test='${ConfigDefaults.get().isUyuni()}'>
             <rhn:require acl="is(development_environment)">
                 <link rel="stylesheet/less" type="text/css" href="/css/uyuni/spacewalk.less" />
-                <script>less = { env: 'development for ${Config.get().getString("product_name")}' };</script>
+                <script>less = { env: 'development for Uyuni' };</script>
                 <script src="/javascript/less.js"></script>
             </rhn:require>
             <rhn:require acl="not is(development_environment)">
@@ -53,7 +53,7 @@
         <c:otherwise>
             <rhn:require acl="is(development_environment)">
                 <link rel="stylesheet/less" type="text/css" href="/css/spacewalk.less" />
-                <script>less = { env: 'development for ${Config.get().getString("product_name")}' };</script>
+                <script>less = { env: 'development for SUSE Manager' };</script>
                 <script src="/javascript/less.js"></script>
             </rhn:require>
             <rhn:require acl="not is(development_environment)">
