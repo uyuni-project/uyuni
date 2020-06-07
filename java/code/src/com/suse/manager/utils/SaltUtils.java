@@ -807,12 +807,7 @@ public class SaltUtils {
     }
 
     private String formatClusterActionOutput(JsonElement result) {
-        JsonObject json = result.getAsJsonObject();
-        StringBuilder ret = new StringBuilder();
-        ret.append("retcode: " + json.get("retcode").getAsString() + "\n\n");
-        ret.append("stdout:\n" + json.get("stdout").getAsString() + "\n");
-        ret.append("stderr:\n" + json.get("stderr").getAsString() + "\n");
-        return ret.toString();
+        return YamlHelper.INSTANCE.dump(Json.GSON.fromJson(result, Object.class));
     }
 
     private void scheduleClusterRefresh(Action action, BaseClusterAction clusterAction) {
