@@ -1,0 +1,103 @@
+.Roboto-thin{
+	font-family: @roboto-light;
+}
+.Roboto-strong{
+	font-family: @roboto-bold;
+}
+
+//applies the gradient to buttons
+
+.call-to-action-gradient,
+.call-to-action-button-colour {
+  #gradient .vertical(lighten(@susemanager-green, 5%), @susemanager-green, 0%, 100%);
+}
+
+.default-button-colour {
+  #gradient .vertical(#fff, darken(#fff, 10%), 0%, 100%);
+}
+
+//this should really be the default
+i.no-margin {
+    &[class~="fa"],
+    &[class^="icon-"],
+    &[class*=" icon-"],
+    &[class*="spacewalk-icon"],
+    &[class^="spacewalk-icon"] {
+      margin: 0px;
+    }
+}
+
+//custom setting for vertical alignment because
+//buttons for pagination on the same line have
+//.btn{'padding:6px 12px' and 'border:1px'}  --> 6px+1px=7px
+.table-page-information {
+  display: inline-block;
+  padding: 7px 0px;
+}
+
+.table-search-wrapper {
+  width: 66%!important;
+}
+
+.table-items-per-page-wrapper {
+  width: 33%!important;
+}
+
+.table-input-search {
+  width: 60%;
+  max-width: 500px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+th a.orderBy{
+  cursor: pointer;
+}
+
+.btn-cell{
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.add-pin-popup-subtitle {
+  text-align: center;
+  margin: 0px 0px 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.fingerprintCell > * {
+    overflow-x: auto !important;
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.form-control.ace_editor {
+  width: auto!important;
+}
+
+pre {
+  white-space: pre-wrap;
+  max-height: 70em;
+}
+
+.channel-for-system {
+  hr {
+    margin: 9px 0;
+  }
+  label, a {
+    font-weight: normal;
+  }
+  i {
+    font-size: 0.9em;
+  }
+  dt.disabled {
+    label, a {
+      color: @spacewalk-gray;
+    }
+  }
+  .help-block {
+    margin-top: 25px;
+  }
+}
