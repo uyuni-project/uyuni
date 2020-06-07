@@ -11,6 +11,7 @@
             miscUrl="/rhn/systems/WorkWithGroup.do?sgid=${systemgroup.id}"
             deletionType="systemgroup"
             deletionUrl="/rhn/groups/Delete.do?sgid=${systemgroup.id}"
+            deletionAcl="not is_cluster_group()"
         >
             <c:out value="${systemgroup.name}" />
         </rhn:toolbar>
