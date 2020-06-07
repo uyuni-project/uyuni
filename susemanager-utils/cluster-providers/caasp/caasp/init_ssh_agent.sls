@@ -1,4 +1,5 @@
-{%- if not salt['pillar.get']('params:use_ssh_agent') %}
+{%- set params = pillar['params'] %}
+{%- if not params.use_ssh_agent %}
 mgr_caasp_load_ssh_agent:
   module.run:
     - name: ssh_agent.start_agent
