@@ -57,19 +57,23 @@ export class Messages extends React.Component<Props> {
 
 
     static info(text: string | React.Node): MessageType {
-      return msg("info", text);
+      return Messages.message("info", text);
     }
 
     static success(text: string | React.Node): MessageType {
-      return msg("success", text);
+      return Messages.message("success", text);
     }
 
     static error(text: string | React.Node): MessageType {
-      return msg("error", text);
+      return Messages.message("error", text);
     }
 
     static warning(text: string | React.Node): MessageType {
-      return msg("warning", text);
+      return Messages.message("warning", text);
+    }
+
+    static message(severityIn: Severity, textIn: string | React.Node): MessageType {
+        return {severity: severityIn, text: textIn};
     }
 
     render() {
@@ -87,8 +91,8 @@ export class Messages extends React.Component<Props> {
 
 }
 
-function msg(severityIn: Severity, textIn: string | React.Node | Array<string | React.Node>): MessageType {
-    return {severity: severityIn, text: textIn};
+function msg(severityIn: Severity, ...textIn: Array<React.Node>) {
+    return textIn.map(function(txt) {return {severity: severityIn, text: textIn}});
 }
 
 /**
@@ -98,16 +102,16 @@ function msg(severityIn: Severity, textIn: string | React.Node | Array<string | 
  * of the `Messages` component.
  */
 export const Utils = {
-  info: function (textIn: string | React.Node | Array<string | React.Node>): MessageType {
-    return msg("info", textIn)
+  info: function (textIn: string | React.Node | Array<string | React.Node>): Array<MessageType> {
+    return msg("info", textIn);
   },
-  success: function (textIn: string | React.Node | Array<string | React.Node>): MessageType {
+  success: function (textIn: string | React.Node | Array<string | React.Node>): Array<MessageType> {
     return msg("success", textIn);
   },
-  warning: function (textIn: string | React.Node | Array<string | React.Node>): MessageType {
+  warning: function (textIn: string | React.Node | Array<string | React.Node>): Array<MessageType> {
     return msg("warning", textIn);
   },
-  error: function (textIn: string | React.Node | Array<string | React.Node>): MessageType {
+  error: function (textIn: string | React.Node | Array<string | React.Node>): Array<MessageType> {
     return msg("error", textIn);
   }
 }

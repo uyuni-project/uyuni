@@ -62,9 +62,9 @@ export class ErrorMessages extends Error {
 
     messages: Array<MessageType>;
 
-    constructor(message: MessageType) {
-        super(message.text);
-        this.messages = [message];
+    constructor(messagesIn: Array<MessageType>) {
+        super(messagesIn.map(msg => msg.text).join(", "));
+        this.messages = messagesIn;
     }
 }
 

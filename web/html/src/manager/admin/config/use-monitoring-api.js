@@ -19,7 +19,7 @@ const useMonitoringApi = () => {
     const [exportersStatus, setExportersStatus] = useState<?{[string]: boolean}>(null);
     const [exportersMessages, setExportersMessages] = useState<{[string]: string}>({});
     const [restartNeeded, setRestartNeeded] = useState<boolean>(false);
-    const [messages, setMessages] = useState<?MessageType>(null);
+    const [messages, setMessages] = useState<Array<MessageType>>([]);
 
     const handleResponseError = (jqXHR: Object, arg: string = "") : any => {
       const msg = Network.responseErrorMessage(jqXHR);

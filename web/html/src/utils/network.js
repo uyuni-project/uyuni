@@ -67,7 +67,7 @@ function errorMessageByStatus(status: number): Array<string> {
 type MapFuncType = (string, string) => ?string;
 type jqXHR = {status: number, statusText: string, responseText: string, responseJSON: any};
 
-function responseErrorMessage(jqXHR: Error | jqXHR , messageMapFunc: ?MapFuncType = null): MessageType {
+function responseErrorMessage(jqXHR: Error | jqXHR , messageMapFunc: ?MapFuncType = null): Array<MessageType> {
    if (jqXHR instanceof Error) {
      console.log("Error: " + jqXHR.toString());
      throw jqXHR;
