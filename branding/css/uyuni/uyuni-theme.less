@@ -80,23 +80,32 @@ footer {
 }
 
 /* titles */
-h1, h2, h3, h4 {
-  .Roboto-thin
-}
-h1 {
-  font-size: 2em
-}
-h2 {
-  font-size: 1.7em;
+h1, h2, h3, h4, h5, h6, .subheadline { .Roboto-thin; }
+
+h1, h2 {
+ font-weight: 400;
+ margin-bottom: 10px;
+ margin-top: 20px;
 }
 h3 {
-  font-size: 1.4em;
+ margin-bottom: 10px;
+ margin-top: 20px;
 }
-h4 {
-  font-size: 1.2em;
+h3, h4, h5, h6 {
+  .WorkSans-strong;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
-p {
-  margin-bottom: 1em;
+h1 { font-size: 2em }
+h2 { font-size: 1.75em; }
+h3 { font-size: 1.5em; }
+h4 { font-size: 1.3em; }
+h5 { font-size: 1.15em; }
+h6 { font-size: 1em; }
+.subheadline {
+  font-size: 1.3em;
+  font-weight: 300;
+  line-height: 1.5em;
 }
 
 /* basic layout */
