@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-23 14:33+0100\n"
-"PO-Revision-Date: 2020-05-14 22:19+0000\n"
+"PO-Revision-Date: 2020-07-28 15:29+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/ca/>\n"
@@ -309,7 +309,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:603
 msgid "There was an error while assembling information for the profile."
-msgstr "Hi va haver un error mentre s'assemblava la informació per al perfil:"
+msgstr "Hi va haver un error mentre s'assemblava la informació per al perfil."
 
 #: ../src/up2date_client/rhnregGui.py:624
 msgid "Error running hardware profile"
@@ -736,7 +736,7 @@ msgstr "Versió del sistema operatiu:"
 
 #: ../src/up2date_client/rhnreg_constants.py:99
 msgid " Minor Release: "
-msgstr "Llançament menor:"
+msgstr " Publicació menor: "
 
 #: ../src/up2date_client/rhnreg_constants.py:100
 msgid "Limited Updates Only"
@@ -1292,7 +1292,7 @@ msgstr "Error: El servidor no està disponible. Si us plau, proveu-ho més tard.
 
 #: ../src/up2date_client/rpcServer.py:179
 msgid "ERROR: can not find RHNS CA file"
-msgstr "Error: no es pot trobar el fitxer de l'AC del RHNS:"
+msgstr "Error: no es pot trobar el fitxer de l'AC del RHNS"
 
 #: ../src/up2date_client/rpcServer.py:217
 msgid "Connection aborted by the user"
@@ -1324,27 +1324,27 @@ msgstr "Nom del perfil:"
 
 #: ../src/up2date_client/tui.py:759 ../src/up2date_client/tui.py:760
 msgid "Version: "
-msgstr "Versió:"
+msgstr "Versió: "
 
 #: ../src/up2date_client/tui.py:766
 msgid "CPU model: "
-msgstr "Model de CPU:"
+msgstr "Model de CPU: "
 
 #: ../src/up2date_client/tui.py:772
 msgid "Hostname: "
-msgstr "Nom d'amfitrió:"
+msgstr "Nom d'amfitrió: "
 
 #: ../src/up2date_client/tui.py:784
 msgid "CPU speed: "
-msgstr "Velocitat de la CPU:"
+msgstr "Velocitat de la CPU: "
 
 #: ../src/up2date_client/tui.py:790
 msgid "IP Address: "
-msgstr "Adreça IP:"
+msgstr "Adreça IP: "
 
 #: ../src/up2date_client/tui.py:799
 msgid "Memory: "
-msgstr "Memòria:"
+msgstr "Memòria: "
 
 #: ../src/up2date_client/tui.py:803
 #, python-format
@@ -1379,8 +1379,8 @@ msgstr "Heu especificat un protocol no vàlid. Només es permeten https i http."
 msgid ""
 "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
 msgstr ""
-" <Tab>/<Alt-Tab> entre elements  |  <Espai> selecciona  |  <F12> següent "
-"pantalla"
+"  <Tab>/<Alt-Tab> entre elements  |  <Espai> selecciona  |  <F12> pantalla "
+"següent"
 
 #: ../src/up2date_client/tui.py:1348
 msgid "You must run the RHN registration program as root."
@@ -1450,7 +1450,7 @@ msgstr "Error en analitzar sintàcticament el fitxer oemInfo al camp:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:234
 msgid "Network error: "
-msgstr "Error de xarxa:"
+msgstr "Error de xarxa: "
 
 #: ../src/up2date_client/up2dateErrors.py:302
 msgid ""
@@ -1592,7 +1592,7 @@ msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:90
 msgid "This system is already registered. Use --force to override"
-msgstr "El sistema ja es va registrar. Utilitzeu --force per a substituir-ho"
+msgstr "El sistema ja està registrat. Useu --force per sobreescriure-ho."
 
 #: ../src/bin/rhnreg_ks.py:124
 msgid ""
@@ -2196,7 +2196,7 @@ msgstr "<b>Servidor intermediari d'HTTP</b>"
 
 #: ../data/rh_register.glade.h:96
 msgid "I would like to connect via an _HTTP proxy."
-msgstr "Vull connectar a través d'un servidor intermediari d'_HTTP"
+msgstr "Vull connectar per un servidor intermediari d'_HTTP."
 
 #: ../data/rh_register.glade.h:97
 msgid "I would like to connect to Spacewalk via an _HTTP proxy."
@@ -2221,7 +2221,7 @@ msgstr "ubicació del servidor intermediari"
 
 #: ../data/rh_register.glade.h:102
 msgid "Use Au_thentication with HTTP Proxy:"
-msgstr "Utilitza l'au_tenticació amb el servidor intermediari d'HTTP"
+msgstr "Usa l'au_tenticació amb el servidor intermediari d'HTTP:"
 
 #: ../data/rh_register.glade.h:103
 msgid "Use Authentication with HTTP Proxy"
@@ -2265,9 +2265,9 @@ msgid ""
 "be able to move this system to an earlier minor release channel if you "
 "continue (you will be able to move to a later release.)"
 msgstr ""
-"El vostre sistema es subscriurà al canal de programari base. Si continueu, "
-"no podreu moure aquest sistema a un llançament menor anterior (podreu "
-"moure'l a un llançament posterior)."
+"El sistema se subscriurà al canal de programari de base. Si continueu, no "
+"podreu moure aquest sistema a un llançament menor anterior (podreu moure'l a "
+"un llançament posterior)."
 
 #: ../data/rh_register.glade.h:115
 msgid ""
