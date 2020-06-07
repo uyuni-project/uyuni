@@ -69,4 +69,5 @@ ui:
       - status
       - has-updates
       - has-disruptive-updates
+      - kubelet-version
       - caasp-release-version
