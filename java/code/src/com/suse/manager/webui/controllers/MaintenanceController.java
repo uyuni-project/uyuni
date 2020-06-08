@@ -122,9 +122,7 @@ public class MaintenanceController {
      * @return the result JSON object
      */
     public static String listSchedules(Request request, Response response, User user) {
-        /* TODO: Implement function to retrieve all maintenance schedules the user has access to */
-        List<MaintenanceSchedule> schedules = MM.listScheduleNamesByUser(user).stream().map(
-                name -> MM.lookupMaintenanceScheduleByUserAndName(user, name).get()).collect(Collectors.toList());
+        List<MaintenanceSchedule> schedules = MM.listMaintenanceSchedulesByUser(user);
         return json(response, schedulesToJson(schedules));
     }
 
@@ -137,9 +135,7 @@ public class MaintenanceController {
      * @return the result JSON object
      */
     public static String listCalendars(Request request, Response response, User user) {
-        /* TODO: Implement function to retrieve all maintenance calendars the user has access to */
-        List<MaintenanceCalendar> calendars = MM.listCalendarLabelsByUser(user).stream().map(
-                label -> MM.lookupCalendarByUserAndLabel(user, label).get()).collect(Collectors.toList());
+        List<MaintenanceCalendar> calendars = MM.listCalendarsByUser(user);
         return json(response, calendarsToJson(user, calendars));
     }
 
@@ -194,7 +190,7 @@ public class MaintenanceController {
         json.setCalendarName(calendar.get().getLabel());
         json.setCalendarData(calendar.get().getIcal());
         calendar.get().getUrlOpt().ifPresent(json::setCalendarUrl);
-        json.setScheduleNames(MM.listScheduleNamesByCalendar(user, calendar.get()).stream().map(
+        json.setScheduleNames(MM.listMaintenanceSchedulesByCalendar(user, calendar.get()).stream().map(
                 schedule -> Map.ofEntries(
                         Map.entry("id", schedule.getId().toString()),
                         Map.entry("name", schedule.getName())
@@ -486,7 +482,7 @@ public class MaintenanceController {
         json.setCalendarId(calendar.getId());
         json.setCalendarName(calendar.getLabel());
 
-        json.setScheduleNames(MM.listScheduleNamesByCalendar(user, calendar).stream().map(
+        json.setScheduleNames(MM.listMaintenanceSchedulesByCalendar(user, calendar).stream().map(
                 schedule -> Map.ofEntries(
                         Map.entry("id", schedule.getId().toString()),
                         Map.entry("name", schedule.getName())
