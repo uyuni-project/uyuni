@@ -60,7 +60,7 @@
                 "name" : "ubuntu-2004-amd64-universe",
                 "distro_target" : "amd64",
                 "description" : "Ubuntu 20.04 LTS AMD64 Universe",
-                "enabled" : false,
+                "enabled" : true,
                 "autorefresh" : true,
                 "installer_updates" : false
             }
