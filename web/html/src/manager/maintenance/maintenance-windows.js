@@ -76,7 +76,6 @@ class MaintenanceWindows extends React.Component {
         return Network.get(endpoint, "application/json").promise
             .then(calendarNames => {
                 this.setState({
-                    /* TODO: Is there a prettier way to turn Array into ComboboxItem? */
                     calendarNames: Array.from(Array(calendarNames.length).keys()).map(id => ({id: Number(id), text: calendarNames[id]}))
                 });
             }).catch(this.handleResponseError);
