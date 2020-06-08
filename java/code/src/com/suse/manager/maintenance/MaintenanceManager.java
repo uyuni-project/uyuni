@@ -365,6 +365,34 @@ public class MaintenanceManager {
     }
 
     /**
+     * List Maintenance Schedules belonging to the given User
+     * @param user the user
+     * @return a list of Maintenance Schedules
+     */
+    @SuppressWarnings("unchecked")
+    public List<MaintenanceSchedule> listMaintenanceSchedulesByUser(User user) {
+        return getSession()
+                .createQuery("FROM MaintenanceSchedule WHERE org = :org")
+                .setParameter("org", user.getOrg())
+                .list();
+    }
+
+    /**
+     * List Schedule names that use given calendar
+     * @param user the user
+     * @param calendar the calendar
+     * @return a list of MaintenanceSchedules
+     */
+    @SuppressWarnings("unchecked")
+    public List<MaintenanceSchedule> listMaintenanceSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
+        return getSession()
+                .createQuery("FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar")
+                .setParameter("org", user.getOrg())
+                .setParameter("calendar", calendar)
+                .list();
+    }
+
+    /**
      * Lookup a MaintenanceSchedule by user and name
      * @param user the user
      * @param name the schedule name
@@ -455,18 +483,16 @@ public class MaintenanceManager {
     }
 
     /**
-     * List Schedule names that use given calendar
+     * List Maintenance Calendars belonging to the given User
      * @param user the user
-     * @param calendar the calendar
-     * @return a list of MaintenanceSchedules
+     * @return a list of Maintenance Calendars
      */
     @SuppressWarnings("unchecked")
-    public List<MaintenanceSchedule> listScheduleNamesByCalendar(User user, MaintenanceCalendar calendar) {
+    public List<MaintenanceCalendar> listCalendarsByUser(User user) {
         return getSession()
-            .createQuery("FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar")
-            .setParameter("org", user.getOrg())
-            .setParameter("calendar", calendar)
-            .list();
+                .createQuery("FROM MaintenanceCalendar WHERE org = :org")
+                .setParameter("org", user.getOrg())
+                .list();
     }
 
     /**
