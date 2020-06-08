@@ -34,6 +34,7 @@ class MaintenanceWindows extends React.Component {
             "update", "refreshCalendar"]
             .forEach(method => this[method] = this[method].bind(this));
         this.state = {
+            type: type,
             messages: [],
             schedules: [],
         };
@@ -41,14 +42,16 @@ class MaintenanceWindows extends React.Component {
 
     componentDidMount() {
         this.updateView(getHashAction(), getHashId());
-        type === "schedule" && this.getCalendarNames();
+        this.state.type === "schedule" && this.getCalendarNames();
         window.addEventListener("popstate", () => {
             this.updateView(getHashAction(), getHashId());
         });
     }
 
     updateView(action, id) {
-        if (id || !action) {
+        if (action === "details" && id) {
+            this.getDetails(id, "details");
+        } else if (id || !action) {
             this.handleForwardAction();
         } else {
             this.setState({action: action});
@@ -57,7 +60,7 @@ class MaintenanceWindows extends React.Component {
     }
 
     getMaintenanceSchedules = () => {
-        const endpoint = "/rhn/manager/api/maintenance/" + type + "/list";
+        const endpoint = "/rhn/manager/api/maintenance/" + this.state.type + "/list";
         return Network.get(endpoint, "application/json").promise
             .then(schedules => {
                 this.setState({
@@ -69,19 +72,18 @@ class MaintenanceWindows extends React.Component {
     };
 
     getCalendarNames = () => {
-      const endpoint = "/rhn/manager/api/maintenance/calendar";
-      return Network.get(endpoint, "application/json").promise
-          .then(calendarNames => {
-              this.setState({
-                  /* TODO: Is there a prettier way to turn Array into ComboboxItem? */
-                  calendarNames: Array.from(Array(calendarNames.length).keys()).map(id => ({id: Number(id), text: calendarNames[id]}))
-              });
-          }).catch(this.handleResponseError);
+        const endpoint = "/rhn/manager/api/maintenance/calendar";
+        return Network.get(endpoint, "application/json").promise
+            .then(calendarNames => {
+                this.setState({
+                    /* TODO: Is there a prettier way to turn Array into ComboboxItem? */
+                    calendarNames: Array.from(Array(calendarNames.length).keys()).map(id => ({id: Number(id), text: calendarNames[id]}))
+                });
+            }).catch(this.handleResponseError);
     };
 
     getDetails(row, action) {
-        const endpoint = "/rhn/manager/api/maintenance/" + type + "/" +
-            (type === "schedule" ? row.scheduleName : row.calendarName) + "/details";
+        const endpoint = "/rhn/manager/api/maintenance/" + this.state.type + "/" + row + "/details";
         return Network.get(endpoint, "application/json").promise
             .then(item => {
                 this.setState({
@@ -89,7 +91,7 @@ class MaintenanceWindows extends React.Component {
                     action: action
                 });
                 history.pushState(null, null, "#/" + action + "/" +
-                    (type === "schedule" ? item.scheduleId : item.calendarId));
+                    (this.state.type === "schedule" ? item.scheduleId : item.calendarId));
             }).catch(this.handleResponseError);
     }
 
@@ -110,12 +112,12 @@ class MaintenanceWindows extends React.Component {
 
     update(item) {
         return Network.post(
-            "/rhn/manager/api/maintenance/" + type + "/save",
+            "/rhn/manager/api/maintenance/" + this.state.type + "/save",
             JSON.stringify(item),
             "application/json"
         ).promise.then((_) => {
             const successMsg = <span>{t(
-                (type === "schedule" ? "Schedule " : "Calendar ") +
+                (this.state.type === "schedule" ? "Schedule " : "Calendar ") +
                 "successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
             const msgs = this.state.messages.concat(MessagesUtils.info(successMsg));
 
@@ -132,15 +134,14 @@ class MaintenanceWindows extends React.Component {
     }
 
     delete(item) {
-        /* TODO: schedule name in url fine? Or id better? */
-        return Network.del("/rhn/manager/api/maintenance/" + type + "/delete",
+        return Network.del("/rhn/manager/api/maintenance/" + this.state.type + "/delete",
             JSON.stringify(item),
             "application/json")
             .promise.then((_) => {
                 this.setState({
                     messages: MessagesUtils.info(
-                        (type === "schedule" ? "Schedule " : "Calendar ") +
-                        "\'" + (type === "schedule" ? item.scheduleName : item.calendarName) +
+                        (this.state.type === "schedule" ? "Schedule " : "Calendar ") +
+                        "\'" + (this.state.type === "schedule" ? item.scheduleName : item.calendarName) +
                         "\' has been deleted."
                     )
                 });
@@ -148,7 +149,7 @@ class MaintenanceWindows extends React.Component {
             })
             .catch(data => {
                 const errorMsg = MessagesUtils.error(
-                    t("Error when deleting the " + type));
+                    t("Error when deleting the " + this.state.type));
                 let messages = (data && data.status === 400)
                     ? errorMsg
                     : Network.responseErrorMessage(jqXHR);
@@ -211,26 +212,29 @@ class MaintenanceWindows extends React.Component {
             <div>
                 {messages}
                 { (this.state.action === 'details' && this.state.selected) ?
-                    <MaintenanceWindowsDetails data={this.state.selected}
-                                            onCancel={this.handleForwardAction}
-                                            onEdit={this.handleEditAction}
-                                            onDelete={this.delete}
+                    <MaintenanceWindowsDetails type={this.state.type}
+                                               data={this.state.selected}
+                                               onCancel={this.handleForwardAction}
+                                               onEdit={this.handleEditAction}
+                                               onDelete={this.delete}
                     />
                     : (this.state.action === 'edit' && this.state.selected) ||
                     this.state.action === 'create' ?
-                        <MaintenanceWindowsEdit calendarNames={this.state.calendarNames}
-                                                  schedule={this.state.selected}
-                                                  onEdit={this.update}
-                                                  onActionChanged={this.handleForwardAction}
-                                                  onRefresh={this.refreshCalendar}
+                        <MaintenanceWindowsEdit type={this.state.type}
+                                                calendarNames={this.state.calendarNames}
+                                                schedule={this.state.selected}
+                                                onEdit={this.update}
+                                                onActionChanged={this.handleForwardAction}
+                                                onRefresh={this.refreshCalendar}
                         />
                         :
-                        <MaintenanceWindowsList data={this.state.schedules}
-                                             onActionChanged={this.handleForwardAction}
-                                             onToggleActive={this.toggleActive}
-                                             onSelect={this.handleDetailsAction}
-                                             onEdit={this.handleEditAction}
-                                             onDelete={this.delete}
+                        <MaintenanceWindowsList type={this.state.type}
+                                                data={this.state.schedules}
+                                                onActionChanged={this.handleForwardAction}
+                                                onToggleActive={this.toggleActive}
+                                                onSelect={this.handleDetailsAction}
+                                                onEdit={this.handleEditAction}
+                                                onDelete={this.delete}
                         />
                 }
             </div>
