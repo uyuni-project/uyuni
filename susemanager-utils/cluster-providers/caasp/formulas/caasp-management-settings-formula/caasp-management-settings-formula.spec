@@ -19,7 +19,7 @@
 %define fname caasp-management-settings
 %define fdir  %{_datadir}/susemanager/formulas
 Name:           caasp-management-settings-formula
-Version:        4.1.0
+Version:        4.1.1
 Release:        1
 Summary:        Salt formula for storing the settings used to manage a CaaSP cluster
 License:        GPL-2.0-only
