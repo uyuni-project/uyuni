@@ -1,3 +1,4 @@
+- Enable the monitoring entitlement for s390x (bsc#1172627)
 - update package provider name
 - add new gpg key ids for some package providers
 
