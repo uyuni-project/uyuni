@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
@@ -22,26 +24,20 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-
 import com.suse.manager.webui.Languages;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.apache.http.HttpStatus;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import de.neuland.jade4j.JadeConfiguration;
+import org.apache.http.HttpStatus;
 import spark.ModelAndView;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.jade.JadeTemplateEngine;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods to integrate Spark with SUSE Manager's infrastructure.
@@ -175,6 +171,39 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Use in routes to automatically get the current user, which must be an
+     * Cluster Admin, in your controller.
+     * Example: <code>Spark.get("/url", withClusterAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static Route withClusterAdmin(RouteWithUser route) {
+        return withRole(route, RoleFactory.CLUSTER_ADMIN);
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be an
+     * Cluster Admin, in your controller.
+     * Example: <code>Spark.get("/url", withClusterAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withClusterAdmin(TemplateViewRouteWithUser route) {
+        return withRole(route, RoleFactory.CLUSTER_ADMIN);
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be an
+     * Cluster Admin, in your controller.
+     * Example: <code>Spark.get("/url", withClusterAdmin(withUserPreferences(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withClusterAdmin(TemplateViewRoute route) {
+        return withRole(route, RoleFactory.CLUSTER_ADMIN);
+    }
+
+    /**
      * Returns a route that adds a CSRF token to model.
      *
      * The model associated with the input route must contain the data in the form of a Map
@@ -257,6 +286,24 @@ public class SparkApplicationHelper {
                 throw new PermissionException("no perms");
             }
             return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must have the
+     * role specified, in your controller. Example:
+     * <code>Spark.get("/url", withRole(Controller::method, RoleFactory.SAT_ADMIN));</code>
+     * @param route the route
+     * @param role the required role to have access to the route
+     * @return the route
+     */
+    private static TemplateViewRoute withRole(TemplateViewRoute route, Role role) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(role)) {
+                throw new PermissionException("no perms");
+            }
+            return route.handle(request, response);
         };
     }
 

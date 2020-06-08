@@ -1,8 +1,9 @@
 // @flow
 import {useState} from 'react';
-import Network from 'utils/network';
+import * as Network from 'utils/network';
 
-import type JsonResult from "../../../utils/network";
+import type {JsonResult} from "../../../utils/network";
+import type {MessageType} from 'components/messages';
 
 type ExportersResultType = {
   exporters: {[string]: boolean},
@@ -18,14 +19,14 @@ const useMonitoringApi = () => {
     const [exportersStatus, setExportersStatus] = useState<?{[string]: boolean}>(null);
     const [exportersMessages, setExportersMessages] = useState<{[string]: string}>({});
     const [restartNeeded, setRestartNeeded] = useState<boolean>(false);
-    const [messages, setMessages] = useState<Array<Object>>([]);
+    const [messages, setMessages] = useState<Array<MessageType>>([]);
 
-    const handleResponseError = (jqXHR: Object, arg: string = "") => {
+    const handleResponseError = (jqXHR: Object, arg: string = "") : any => {
       const msg = Network.responseErrorMessage(jqXHR);
       setMessages(msg);
     };
 
-    const fetchStatus = (): Promise<ExportersResultType> => {
+    const fetchStatus = (): Promise<{[string]: boolean}> => {
       setAction("checking");
       return Network.get("/rhn/manager/api/admin/config/monitoring").promise
       .then((data: JsonResult<ExportersResultType>) => {

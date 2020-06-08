@@ -14,9 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.Role;
@@ -30,6 +27,9 @@ import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.TestUtils;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * UserEditSetupActionTest
@@ -72,7 +72,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
             assertNotNull(sah.getRequest().getAttribute("regularRoles"));
             List<UserRoleStatusBean> regularRoles = (List<UserRoleStatusBean>)
                 sah.getRequest().getAttribute("regularRoles");
-            assertEquals(5, regularRoles.size());
+            assertEquals(6, regularRoles.size());
             UserRoleStatusBean lv = regularRoles.get(0);
             assertTrue(TestUtils.isLocalized(lv.getName()));
             assertEquals(true, lv.isDisabled());

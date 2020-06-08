@@ -103,7 +103,7 @@ class GuestsEdit extends React.Component<Props> {
                     GuestsEdit.getRequestParameterFromModel(properties, initialModel));
                   const messages = [].concat(definitionMessages, actionMessages)
                     .filter(item => item)
-                    .map(item => MessagesUtils.error(item));
+                    .map(item => MessagesUtils.error(item))[0];
                   const guestName = definition !== null ? definition.name : '';
                   return (
                     <TopPanel title={guestName} icon="fa spacewalk-icon-virtual-guest">

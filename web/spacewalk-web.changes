@@ -1,3 +1,4 @@
+- UI for managing clusters
 - Remove lowercase image label limitation
 - Sort activation keys on bootstrapping page (bsc#1171251)
 - replace toastr javascript library with react-toastify

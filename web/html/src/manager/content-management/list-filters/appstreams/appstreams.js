@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {showErrorToastr} from 'components/toastr/toastr';
 import TextInput from './text-input';
 import SelectInput from './select-input';
-import Network from 'utils/network';
+import * as Network from 'utils/network';
 
 export default function AppStreams() {
   const [channels, setChannels] = useState([]);
@@ -18,7 +18,7 @@ export default function AppStreams() {
         setChannels(channels.data);
         setLoading(false);
         setBrowse(true);
-      }).catch(xhr => showErrorToastr(Network.responseErrorMessage(xhr)));
+      }).catch(xhr => showErrorToastr(Network.responseErrorMessage(xhr).map(msg => msg.text)));
   }
 
   return (

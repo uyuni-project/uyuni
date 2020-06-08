@@ -1,4 +1,5 @@
 // @flow
+import type {MessageType} from 'components/messages';
 
 const React = require('react');
 const Network = require('utils/network');
@@ -12,7 +13,7 @@ type Props = {
 
 type State = {
   pools: ?Array<{}>,
-  errors: Array<string>,
+  errors: Array<MessageType>,
 };
 
 class VirtualizationPoolsListRefreshApi extends React.Component<Props, State> {
@@ -55,7 +56,7 @@ class VirtualizationPoolsListRefreshApi extends React.Component<Props, State> {
       .catch((response) => {
         const errorMessage = Network.errorMessageByStatus(response.status);
         this.setState({
-          errors: errorMessage !== '' ? [MessagesUtils.error(errorMessage)] : [],
+          errors: errorMessage !== '' ? MessagesUtils.error(errorMessage) : [],
         });
       });
   }

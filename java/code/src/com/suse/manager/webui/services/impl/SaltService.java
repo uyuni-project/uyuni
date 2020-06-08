@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.services.impl;
 
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.JavaMailException;
@@ -23,8 +21,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
-
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MailHelper;
@@ -42,6 +40,7 @@ import com.suse.manager.webui.utils.ElementCallJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.MgrActionChains;
 import com.suse.manager.webui.utils.salt.State;
+import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
@@ -81,6 +80,8 @@ import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
 
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
@@ -675,6 +676,23 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * {@inheritDoc}
      */
+    public List<String> matchCompoundSync(String target) {
+        try {
+            Map<String, Result<Boolean>> result =
+                    callSync(Match.compound(target, Optional.empty()), new Glob("*"));
+            return result.entrySet().stream()
+                    .filter(e -> e.getValue().result().isPresent() && Boolean.TRUE.equals(e.getValue().result().get()))
+                    .map(e -> e.getKey())
+                    .collect(Collectors.toList());
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
             String target, CompletableFuture<GenericError> cancel) {
         return saltSSHService.matchAsyncSSH(target, cancel);
@@ -800,6 +818,22 @@ public class SaltService implements SystemQuery, SaltApi {
                                     Entry<String, Result<T>>::getValue))
             );
         }
+
+        return results;
+    }
+
+    private <T> Map<String, Result<T>> callSync(LocalCall<T> callIn, Target<?> target)
+            throws SaltException {
+
+        ScheduleMetadata metadata = ScheduleMetadata.getDefaultMetadata().withBatchMode();
+        LOG.debug("Local callSync: " + SaltService.localCallToString(callIn));
+        List<Map<String, Result<T>>> callResult =
+                adaptException(callIn.withMetadata(metadata).callSync(SALT_CLIENT,
+                        target, PW_AUTH, defaultBatch));
+        Map<String, Result<T>> results =
+                callResult.stream().flatMap(map -> map.entrySet().stream())
+                        .collect(Collectors.toMap(Entry::getKey,
+                                Entry::getValue));
 
         return results;
     }
@@ -1170,6 +1204,20 @@ public class SaltService implements SystemQuery, SaltApi {
                     }
                 )
         ).map(s -> s.getContainers());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Map<String, Map<String, Object>>> listClusterNodes(
+            MinionServer managementNode, ClusterProviderParameters clusterProviderParameters) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("cluster_type", clusterProviderParameters.getClusterProvider());
+        clusterProviderParameters.getClusterParams().ifPresent(cpp -> pillar.put("params", cpp));
+        return callSync(State.apply(Arrays.asList("clusters.listnodes"), Optional.of(pillar),
+                Optional.of(true), Optional.empty(), ClusterOperationsSlsResult.class),
+                managementNode.getMinionId()).map(ret -> ret.listNodesResult().getChanges().getRet());
     }
 
     /**

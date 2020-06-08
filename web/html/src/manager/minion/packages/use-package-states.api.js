@@ -1,5 +1,5 @@
 //@flow
-import Network from "utils/network";
+import * as Network from 'utils/network';
 import React, {useState} from "react";
 import {Utils as MessagesUtils} from "components/messages";
 import type {

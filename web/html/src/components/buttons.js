@@ -169,7 +169,7 @@ export class LinkButton extends _ButtonBase {
 
   render() {
     return (
-      <a id={this.props.id} title={this.props.title} className={'btn ' + this.props.className} href={this.props.href} target={this.props.target}>
+      <a id={this.props.id} title={this.props.title} className={'btn ' + this.props.className} href={this.props.href} target={this.props.target} onClick={this.props.handler}>
         {this.renderIcon()}{this.props.text}
       </a>
     )
@@ -196,6 +196,8 @@ LinkButton.props = {
   className: PropTypes.string,
   /** target of the link. */
   target: PropTypes.string,
+  /** Callback function to execute on button click. */
+  handler: PropTypes.func,
 };
 
 /**

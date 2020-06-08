@@ -1,7 +1,7 @@
 // @flow
 import {useState} from 'react';
-import type JsonResult from 'utils/network';
-import Network from 'utils/network';
+import type {JsonResult} from 'utils/network';
+import * as Network from 'utils/network';
 import type {ChannelType} from "core/channels/type/channels.type";
 import type {ChannelsDependencies} from "core/channels/utils/channels-dependencies.utils";
 import {processChannelDependencies, dependenciesTooltip as dependenciesTooltipInternal} from "core/channels/utils/channels-dependencies.utils";

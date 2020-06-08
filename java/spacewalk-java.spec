@@ -85,6 +85,7 @@ BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-io
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
+BuildRequires:  apache-commons-jexl
 BuildRequires:  bcel
 BuildRequires:  byte-buddy
 BuildRequires:  c3p0 >= 0.9.1
@@ -157,6 +158,7 @@ Requires:       apache-commons-collections
 Requires:       apache-commons-io
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
+Requires:       apache-commons-jexl
 Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
@@ -195,6 +197,7 @@ Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
 Requires:       system-lock-formula
+Requires:       uyuni-cluster-provider-caasp
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       tomcat-taglibs-standard

@@ -15,5 +15,50 @@
 
 package com.suse.manager.clusters;
 
+import java.util.Map;
+import java.util.Optional;
+
+/**
+ * Parameters for cluster provider queries.
+ */
 public class ClusterProviderParameters {
+    private String clusterProvider;
+    private Optional<Map<String, Object>> clusterParams;
+
+    /**
+     * @param clusterProviderIn cluster type
+     * @param clusterParamsIn
+     */
+    public ClusterProviderParameters(String clusterProviderIn, Optional<Map<String, Object>> clusterParamsIn) {
+        this.clusterProvider = clusterProviderIn;
+        this.clusterParams = clusterParamsIn;
+    }
+
+    /**
+     * @return clusterProvider to get
+     */
+    public String getClusterProvider() {
+        return clusterProvider;
+    }
+
+    /**
+     * @param clusterProviderIn to set
+     */
+    public void setClusterProvider(String clusterProviderIn) {
+        this.clusterProvider = clusterProviderIn;
+    }
+
+    /**
+     * @return clusterParams to get
+     */
+    public Optional<Map<String, Object>> getClusterParams() {
+        return clusterParams;
+    }
+
+    /**
+     * @param clusterParamsIn to set
+     */
+    public void setClusterParams(Optional<Map<String, Object>> clusterParamsIn) {
+        this.clusterParams = clusterParamsIn;
+    }
 }

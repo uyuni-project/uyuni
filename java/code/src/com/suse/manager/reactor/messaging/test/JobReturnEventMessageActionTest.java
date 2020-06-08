@@ -21,6 +21,13 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
+import com.redhat.rhn.domain.action.cluster.BaseClusterModifyNodesAction;
+import com.redhat.rhn.domain.action.cluster.ClusterActionCommand;
+import com.redhat.rhn.domain.action.cluster.ClusterGroupRefreshNodesAction;
+import com.redhat.rhn.domain.action.cluster.ClusterJoinNodeAction;
+import com.redhat.rhn.domain.action.cluster.ClusterRemoveNodeAction;
+import com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction;
+import com.redhat.rhn.domain.action.cluster.test.ClusterActionTest;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
@@ -63,6 +70,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
@@ -2100,4 +2109,401 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertNotSame(runningKernel, minion.getRunningKernel());
         assertNotSame(lastBoot, minion.getLastBoot());
     }
+
+    public void testClustersAddNodeError() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
+        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterJoinNodeAction.class)));
+        } });
+
+        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
+        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
+
+        MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ClusterManager clusterManager = ClusterManager.instance();
+        Map<String, Object> params = new HashMap<>();
+        params.put("skuba_cluster_path", "/opt/mycluster");
+        params.put("map", Collections.singletonMap("key", "value"));
+        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
+        assertTrue(action instanceof ClusterJoinNodeAction);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
+        action.addServerAction(serverAction);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", managementNode.getMinionId());
+        placeholders.put("${action1-id}", action.getId() + "");
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("clusters.addnode.error.json", 0,
+                        placeholders));
+
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        action = (ClusterJoinNodeAction)ActionFactory.lookupById(action.getId());
+        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
+        serverAction = action.getServerActions().stream().findFirst().get();
+        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
+        assertEquals("\n" +
+                "---\n" +
+                "retcode: 255.0\n" +
+                "stderr: 'F0528 17:04:20.778517   11913 join.go:63] error joining node dev-min-caasp-worker-2.lan: failed to apply state kubernetes.install-node-pattern:\n" +
+                "    failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
+                "\n" +
+                "    '\n" +
+                "stdout: ''\n" +
+                "success: false\n" +
+                "\n" +
+                "---\n" +
+                "retcode: 255.0\n" +
+                "stderr: 'F0528 17:04:20.778517   11913 join.go:63] error joining node dev-min-caasp-worker-3.lan: failed to apply state kubernetes.install-node-pattern:\n" +
+                "    failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
+                "\n" +
+                "    '\n" +
+                "stdout: ''\n" +
+                "success: false\n", serverAction.getResultMsg());
+    }
+
+    public void testClustersAddNodeSuccess() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
+        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterJoinNodeAction.class)));
+            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterGroupRefreshNodesAction.class)));
+        } });
+
+        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
+        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
+
+        MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ClusterManager clusterManager = ClusterManager.instance();
+        Map<String, Object> params = new HashMap<>();
+
+        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
+        assertTrue(action instanceof ClusterJoinNodeAction);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
+        action.addServerAction(serverAction);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", managementNode.getMinionId());
+        placeholders.put("${action1-id}", action.getId() + "");
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("clusters.addnode.success.json", 0,
+                        placeholders));
+
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        action = (ClusterJoinNodeAction)ActionFactory.lookupById(action.getId());
+        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        serverAction = action.getServerActions().stream().findFirst().get();
+        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals("\n" +
+                "---\n" +
+                "retcode: 0.0\n" +
+                "stderr: \"W0518 17:48:35.854168   13844 ssh.go:311] \\nThe authenticity of host '192.168.1.208:22' can't be established.\\nECDSA key fingerprint is 50:08:8f:ba:b1:75:68:4c:0a:3b:f0:6b:0b:4f:4f:0c.\\n\\\n" +
+                "    I0518 17:48:35.854333   13844 ssh.go:312] accepting SSH key for \\\"dev-min-caasp-worker-1.lan:22\\\"\\nI0518 17:48:35.854365   13844 ssh.go:313] adding\\\n" +
+                "    \\ fingerprint for \\\"dev-min-caasp-worker-1.lan:22\\\" to \\\"known_hosts\\\"\\nE0518 17:50:14.789115   13844 ssh.go:195] W0518 17:50:09.919982   22114 removeetcdmember.go:79]\\\n" +
+                "    \\ [reset] No kubeadm config, using etcd pod spec to get data directory\\nE0518 17:50:16.834438   13844 ssh.go:195] W0518 17:50:11.965032   22114 cleanupnode.go:81]\\\n" +
+                "    \\ [reset] Failed to remove containers: output: time=\\\"2020-05-18T17:50:11+02:00\\\" level=fatal msg=\\\"failed to connect: failed to connect, make sure\\\n" +
+                "    \\ you are running as root and the runtime has been started: context deadline exceeded\\\"\\nE0518 17:50:16.834464   13844 ssh.go:195] , error: exit status\\\n" +
+                "    \\ 1\\nE0518 17:50:17.265201   13844 ssh.go:195] No files found for firewalld.service.\\nE0518 17:50:20.986180   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/crio.service\\\n" +
+                "    \\ → /usr/lib/systemd/system/crio.service.\\nE0518 17:50:24.071198   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/kubelet.service\\\n" +
+                "    \\ → /usr/lib/systemd/system/kubelet.service.\\nE0518 17:50:46.509489   13844 ssh.go:195] Created symlink /etc/systemd/system/timers.target.wants/skuba-update.timer\\\n" +
+                "    \\ → /usr/lib/systemd/system/skuba-update.timer.\\n\"\n" +
+                "stdout: '[join] applying states to new node\n" +
+                "\n" +
+                "    [join] node successfully joined the cluster\n" +
+                "\n" +
+                "    '\n" +
+                "success: true\n" +
+                "\n" +
+                "---\n" +
+                "retcode: 0.0\n" +
+                "stderr: \"W0518 17:48:35.854168   13844 ssh.go:311] \\nThe authenticity of host '192.168.1.208:22' can't be established.\\nECDSA key fingerprint is 50:08:8f:ba:b1:75:68:4c:0a:3b:f0:6b:0b:4f:4f:0c.\\n\\\n" +
+                "    I0518 17:48:35.854333   13844 ssh.go:312] accepting SSH key for \\\"dev-min-caasp-worker-2.lan:22\\\"\\nI0518 17:48:35.854365   13844 ssh.go:313] adding\\\n" +
+                "    \\ fingerprint for \\\"dev-min-caasp-worker-2.lan:22\\\" to \\\"known_hosts\\\"\\nE0518 17:50:14.789115   13844 ssh.go:195] W0518 17:50:09.919982   22114 removeetcdmember.go:79]\\\n" +
+                "    \\ [reset] No kubeadm config, using etcd pod spec to get data directory\\nE0518 17:50:16.834438   13844 ssh.go:195] W0518 17:50:11.965032   22114 cleanupnode.go:81]\\\n" +
+                "    \\ [reset] Failed to remove containers: output: time=\\\"2020-05-18T17:50:11+02:00\\\" level=fatal msg=\\\"failed to connect: failed to connect, make sure\\\n" +
+                "    \\ you are running as root and the runtime has been started: context deadline exceeded\\\"\\nE0518 17:50:16.834464   13844 ssh.go:195] , error: exit status\\\n" +
+                "    \\ 1\\nE0518 17:50:17.265201   13844 ssh.go:195] No files found for firewalld.service.\\nE0518 17:50:20.986180   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/crio.service\\\n" +
+                "    \\ → /usr/lib/systemd/system/crio.service.\\nE0518 17:50:24.071198   13844 ssh.go:195] Created symlink /etc/systemd/system/multi-user.target.wants/kubelet.service\\\n" +
+                "    \\ → /usr/lib/systemd/system/kubelet.service.\\nE0518 17:50:46.509489   13844 ssh.go:195] Created symlink /etc/systemd/system/timers.target.wants/skuba-update.timer\\\n" +
+                "    \\ → /usr/lib/systemd/system/skuba-update.timer.\\n\"\n" +
+                "stdout: '[join] applying states to new node\n" +
+                "\n" +
+                "    [join] node successfully joined the cluster\n" +
+                "\n" +
+                "    '\n" +
+                "success: true\n", serverAction.getResultMsg());
+    }
+
+    public void testClustersRemoveNodeError() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
+        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterRemoveNodeAction.class)));
+        } });
+
+        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
+        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
+
+        MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ClusterManager clusterManager = ClusterManager.instance();
+        Map<String, Object> params = new HashMap<>();
+        params.put("skuba_cluster_path", "/opt/mycluster");
+        params.put("map", Collections.singletonMap("key", "value"));
+        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
+        assertTrue(action instanceof ClusterRemoveNodeAction);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
+        action.addServerAction(serverAction);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", managementNode.getMinionId());
+        placeholders.put("${action1-id}", action.getId() + "");
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("clusters.removenode.error.json", 0,
+                        placeholders));
+
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        action = (ClusterRemoveNodeAction)ActionFactory.lookupById(action.getId());
+        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
+        serverAction = action.getServerActions().stream().findFirst().get();
+        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
+        assertEquals("\n" +
+                "---\n" +
+                "retcode: 255.0\n" +
+                "stderr: 'F0528 17:04:20.778517   11913 join.go:63] error removing node dev-min-caasp-worker-2.lan: failed to apply state kubernetes.install-node-pattern:\n" +
+                "    failed to initialize client: dial unix /tmp/ssh-xthMe9M9b7/agent.12424: connect: no such file or directory\n" +
+                "\n" +
+                "    '\n" +
+                "stdout: ''\n" +
+                "success: false\n", serverAction.getResultMsg());
+    }
+
+    public void testClustersRemoveNodeSuccess() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
+        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterRemoveNodeAction.class)));
+            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterGroupRefreshNodesAction.class)));
+        } });
+
+        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
+        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
+
+        MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ClusterManager clusterManager = ClusterManager.instance();
+        Map<String, Object> params = new HashMap<>();
+
+        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
+        assertTrue(action instanceof ClusterRemoveNodeAction);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
+        action.addServerAction(serverAction);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", managementNode.getMinionId());
+        placeholders.put("${action1-id}", action.getId() + "");
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("clusters.removenode.success.json", 0,
+                        placeholders));
+
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        action = (ClusterRemoveNodeAction)ActionFactory.lookupById(action.getId());
+        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        serverAction = action.getServerActions().stream().findFirst().get();
+        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals("\n" +
+                "---\n" +
+                "retcode: 0.0\n" +
+                "stderr: ''\n" +
+                "stdout: '[remove-node] removing worker node dev-min-caasp-worker-1.lan (drain timeout: 0s)\n" +
+                "\n" +
+                "    [remove-node] failed disarming kubelet: failed waiting for job caasp-kubelet-disarm-e009966a26df3d53840afc6318dc0d3c12f46858; node could be down, continuing\n" +
+                "    with node removal...\n" +
+                "\n" +
+                "    [remove-node] node dev-min-caasp-worker-1.lan successfully removed from the cluster\n" +
+                "\n" +
+                "    '\n" +
+                "success: true\n", serverAction.getResultMsg());
+    }
+
+    public void testClustersUpgradeSuccessAlreadyLatest() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
+        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterUpgradeAction.class)));
+        } });
+
+        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
+        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
+
+        ClusterManager clusterManager = ClusterManager.instance();
+        Map<String, Object> params = new HashMap<>();
+        params.put("skuba_cluster_path", "/opt/mycluster");
+        params.put("map", Collections.singletonMap("key", "value"));
+        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER,
+                cluster, Arrays.asList(), params, new Date(), user);
+        assertTrue(action instanceof ClusterUpgradeAction);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
+        action.addServerAction(serverAction);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", managementNode.getMinionId());
+        placeholders.put("${action1-id}", action.getId() + "");
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("clusters.upgrade.success.already_latest.json", 0,
+                        placeholders));
+
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        action = (ClusterUpgradeAction)ActionFactory.lookupById(action.getId());
+        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
+        serverAction = action.getServerActions().stream().findFirst().get();
+        assertEquals(ActionFactory.STATUS_COMPLETED, serverAction.getStatus());
+        assertEquals("\n" +
+                "---\n" +
+                "retcode: 0.0\n" +
+                "stderr: ''\n" +
+                "stdout: 'Current Kubernetes cluster version: 1.16.2\n" +
+                "\n" +
+                "    Latest Kubernetes version: 1.16.2\n" +
+                "\n" +
+                "\n" +
+                "    Congratulations! You are already at the latest version available\n" +
+                "\n" +
+                "    '\n" +
+                "success: true\n", serverAction.getResultMsg());
+    }
+
+    public void testClustersUpgradeSuccessFailure() throws Exception {
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionChainManager.setTaskomaticApi(taskomaticMock);
+        ClusterActionCommand.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            oneOf(taskomaticMock).scheduleActionExecution(with(any(ClusterUpgradeAction.class)));
+        } });
+
+        MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
+        Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
+
+        ClusterManager clusterManager = ClusterManager.instance();
+        Map<String, Object> params = new HashMap<>();
+        params.put("skuba_cluster_path", "/opt/mycluster");
+        params.put("map", Collections.singletonMap("key", "value"));
+        BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER,
+                cluster, Arrays.asList(), params, new Date(), user);
+        assertTrue(action instanceof ClusterUpgradeAction);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(managementNode, action);
+        action.addServerAction(serverAction);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Map<String, String> placeholders = new HashMap<>();
+        placeholders.put("${minion-id}", managementNode.getMinionId());
+        placeholders.put("${action1-id}", action.getId() + "");
+        Optional<JobReturnEvent> event = JobReturnEvent.parse(
+                getJobReturnEvent("clusters.upgrade.failure.json", 0,
+                        placeholders));
+
+        JobReturnEventMessage message = new JobReturnEventMessage(event.get());
+        JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction();
+        messageAction.execute(message);
+
+        action = (ClusterUpgradeAction)ActionFactory.lookupById(action.getId());
+        assertEquals("1 action has been schedule for server", 1, action.getServerActions().size());
+        assertEquals("{\"skuba_cluster_path\":\"/opt/mycluster\",\"map\":{\"key\":\"value\"}}", action.getJsonParams());
+        serverAction = action.getServerActions().stream().findFirst().get();
+        assertEquals(ActionFactory.STATUS_FAILED, serverAction.getStatus());
+        assertEquals("\n" +
+                "---\n" +
+                "retcode: 1.0\n" +
+                "stage0_upgrade_addons:\n" +
+                "    retcode: 0.0\n" +
+                "    stderr: ''\n" +
+                "    stdout: 'Current Kubernetes cluster version: 1.16.2\n" +
+                "\n" +
+                "        Latest Kubernetes version: 1.16.2\n" +
+                "\n" +
+                "\n" +
+                "        [apply] Congratulations! Addons for 1.16.2 are already at the latest version available\n" +
+                "\n" +
+                "        '\n" +
+                "    success: true\n" +
+                "stage1_upgrade_nodes:\n" +
+                "    dev-min-caasp-master.lan:\n" +
+                "        retcode: 1.0\n" +
+                "        stderr: ''\n" +
+                "        stdout: 'Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
+                "\n" +
+                "            '\n" +
+                "        success: false\n" +
+                "    dev-min-caasp-worker-1.lan:\n" +
+                "        retcode: 1.0\n" +
+                "        stderr: ''\n" +
+                "        stdout: 'Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
+                "\n" +
+                "            '\n" +
+                "        success: false\n" +
+                "    dev-min-caasp-worker-2.lan:\n" +
+                "        retcode: 1.0\n" +
+                "        stderr: ''\n" +
+                "        stdout: 'Unable to apply node upgrade: failed to initialize client: SSH_AUTH_SOCK is undefined. Make sure ssh-agent is running\n" +
+                "\n" +
+                "            '\n" +
+                "        success: false\n" +
+                "stage2_upgrade_addons:\n" +
+                "    retcode: 0.0\n" +
+                "    stderr: ''\n" +
+                "    stdout: 'Current Kubernetes cluster version: 1.16.2\n" +
+                "\n" +
+                "        Latest Kubernetes version: 1.16.2\n" +
+                "\n" +
+                "\n" +
+                "        [apply] Congratulations! Addons for 1.16.2 are already at the latest version available\n" +
+                "\n" +
+                "        '\n" +
+                "    success: true\n" +
+                "success: false\n", serverAction.getResultMsg());
+    }
+
+
 }

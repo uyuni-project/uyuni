@@ -4,7 +4,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 
-import Network from "../../../utils/network";
+import * as Network from 'utils/network';
 import FormulaForm from "components/FormulaForm";
 import {Utils} from 'utils/functions';
 import SpaRenderer from "core/spa/spa-renderer";

@@ -37,7 +37,7 @@ const CreatorPanel = (props: Props) => {
 
   const setStateItem = (item: Object) => setItem(item);
   const modalNameId = `${props.id}-modal`;
-  const panelCollapseId = props.collapsible && `${props.id}-panel`;
+  const panelCollapseId = props.collapsible ? `${props.id}-panel` : null;
 
   return (
     <React.Fragment>

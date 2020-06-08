@@ -4,7 +4,7 @@ import React from 'react';
 
 type Props = {
   name: string,
-  htmlFor: string,
+  htmlFor?: string,
   className?: string,
   required?: boolean,
 };

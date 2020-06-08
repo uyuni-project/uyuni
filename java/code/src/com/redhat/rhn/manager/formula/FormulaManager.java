@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.formula;
 
+import static com.redhat.rhn.domain.formula.FormulaFactory.getGroupFormulaValuesByNameAndGroupId;
+
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -23,6 +25,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
+import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -384,5 +387,17 @@ public class FormulaManager {
                     .orElse(Collections.emptyMap()));
         }
         return response;
+    }
+
+    /**
+     * Gets the data for a cluster formula.
+     * @param cluster the cluster
+     * @param formulaKey the formula key
+     * @return the formula data
+     */
+    public Optional<Map<String, Object>> getClusterFormulaData(Cluster cluster, String formulaKey) {
+        Optional<String> formulaName = FormulaFactory.getClusterProviderFormulaName(cluster.getProvider(), formulaKey);
+        return formulaName
+                .flatMap(name -> getGroupFormulaValuesByNameAndGroupId(name, cluster.getGroup().getId()));
     }
 }

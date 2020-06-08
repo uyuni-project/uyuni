@@ -1,7 +1,7 @@
 //@flow
 
 import { useEffect } from 'react';
-import Network from '../../utils/network';
+import * as Network from 'utils/network';
 import {useImmer} from "use-immer";
 
 type LoginApiStateType = {

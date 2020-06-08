@@ -1,19 +1,20 @@
-const React = require('react');
+// @flow
+import * as React from 'react';
 
 type Props = {
   headingLevel: string,
-  collapseId?: string,
-  customIconClass?: string,
-  title?: string,
+  collapseId?: ?string,
+  customIconClass?: ?string,
+  title: ?string,
   className?: string,
-  icon?: string,
+  icon?: ?string,
   header?: string,
-  footer?: string,
+  footer?: React.Node,
   children: React.Node,
   buttons?: React.Node,
 };
 
-function Panel(props: Props) {
+const Panel = (props: Props) => {
   const { headingLevel: HeadingLevel } = props;
 
   const titleContent = props.title && <React.Fragment>
@@ -65,8 +66,8 @@ function Panel(props: Props) {
               {
                 props.collapseId ?
                   <div data-toggle="collapse" href={`#${props.collapseId}-panel-closable`} className="accordion-toggle">
-                    <i className={`fa fa-chevron-down show-on-collapsed ${props.customIconClass}`} />
-                    <i className={`fa fa-chevron-right hide-on-collapsed ${props.customIconClass}`} />
+                    <i className={`fa fa-chevron-down show-on-collapsed ${props.customIconClass ? props.customIconClass : ""}`} />
+                    <i className={`fa fa-chevron-right hide-on-collapsed ${props.customIconClass ? props.customIconClass : ""}`} />
                     {titleContent}
                   </div>
                   : titleContent
@@ -97,6 +98,6 @@ Panel.defaultProps = {
   buttons: undefined,
 };
 
-module.exports = {
-  Panel,
+export {
+  Panel
 };

@@ -183,6 +183,7 @@ public class OrgFactory extends HibernateFactory {
         retval.addRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         retval.addRole(RoleFactory.SAT_ADMIN);
         retval.addRole(RoleFactory.IMAGE_ADMIN);
+        retval.addRole(RoleFactory.CLUSTER_ADMIN);
 
         // Save the object since we may have in memory items to write\
         singleton.saveInternal(retval);
