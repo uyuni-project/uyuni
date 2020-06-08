@@ -14,7 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.rhnset.RhnSetFactory;
+import com.redhat.rhn.domain.rhnset.SetCleanup;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.errata.CreateAction;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
+import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -31,7 +40,7 @@ import org.apache.struts.action.ActionMapping;
  */
 public class CreateActionTest extends RhnBaseTestCase {
 
-    public void testCreateErrata() {
+    public void testCreateErrata() throws Exception {
         CreateAction action = new CreateAction();
 
         ActionMapping mapping = new ActionMapping();
@@ -48,6 +57,20 @@ public class CreateActionTest extends RhnBaseTestCase {
 
         RhnMockDynaActionForm form = fillOutForm();
         form.set("synopsis", ""); //required field, so we should get a validation error
+
+        User user = UserFactory.lookupById(Long.parseLong(request.getParameter("uid")));
+        Channel destination = ChannelFactoryTest.createTestChannel(user);
+        RhnSet destinationChannels = RhnSetFactory.createRhnSet(user.getId(),
+            RhnSetDecl.CHANNELS_FOR_ERRATA.getLabel(),
+            SetCleanup.NOOP);
+        destinationChannels.addElement(destination.getId());
+        RhnSetManager.store(destinationChannels);
+        String destinationId = destination.getId().toString();
+        // both read twice
+        request.setupAddParameter("items_on_page", new String[]{destinationId});
+        request.setupAddParameter("items_on_page", new String[]{destinationId});
+        request.setupAddParameter("items_selected", new String[]{destinationId});
+        request.setupAddParameter("items_selected", new String[]{destinationId});
 
         ActionForward result = action.create(mapping, form, request, response);
         assertEquals(result.getName(), "failure");
