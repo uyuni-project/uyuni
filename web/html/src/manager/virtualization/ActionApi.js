@@ -32,7 +32,7 @@ export function ActionApi(props: Props) {
       JSON.stringify(parameters), 'application/json').promise
       .then((response) => {
         if (Object.values(response).includes('Failed')) {
-          setMessages([MessagesUtils.error(t(`Failed to trigger ${action}`))]);
+          setMessages(MessagesUtils.error(t(`Failed to trigger ${action}`)));
         } else {
           if (props.callback) {
             props.callback(response);
@@ -43,10 +43,10 @@ export function ActionApi(props: Props) {
         }
       }, (xhr) => {
         const errMessages = xhr.status === 0
-          ? [MessagesUtils.error(
+          ? MessagesUtils.error(
             t('Request interrupted or invalid response received from the server. Please try again.'),
-          )]
-          : [MessagesUtils.error(Network.errorMessageByStatus(xhr.status))];
+          )
+          : MessagesUtils.error(Network.errorMessageByStatus(xhr.status));
         setMessages(errMessages);
       });
   };

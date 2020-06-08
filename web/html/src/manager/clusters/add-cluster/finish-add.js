@@ -4,7 +4,6 @@ import {useState, useRef} from 'react';
 import {Panel} from 'components/panels/Panel';
 import {AsyncButton, Button} from 'components/buttons';
 import {withErrorMessages} from '../shared/api/use-clusters-api';
-import {Messages} from 'components/messages';
 import {Label} from 'components/input/Label';
 
 import type {MessageType} from 'components/messages';

@@ -26,10 +26,10 @@ export function VirtualizationPoolDefinitionApi(props: Props) {
         setDefinition(response);
       }, (xhr) => {
         const errMessages = xhr.status === 0
-          ? [Messages.Utils.error(
+          ? Messages.Utils.error(
             t('Request interrupted or invalid response received from the server. Please try again.'),
-          )]
-          : [Messages.Utils.error(Network.errorMessageByStatus(xhr.status))];
+          )
+          : Messages.Utils.error(Network.errorMessageByStatus(xhr.status));
         setMessages(errMessages);
       });
   }, [props.hostid, props.poolName]);

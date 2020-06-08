@@ -18,7 +18,7 @@ export default function AppStreams() {
         setChannels(channels.data);
         setLoading(false);
         setBrowse(true);
-      }).catch(xhr => showErrorToastr(Network.responseErrorMessage(xhr).text));
+      }).catch(xhr => showErrorToastr(Network.responseErrorMessage(xhr).map(msg => msg.text)));
   }
 
   return (

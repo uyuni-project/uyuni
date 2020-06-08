@@ -195,7 +195,7 @@ export function GuestsList(props: Props) {
                     <Messages
                       items={
                         [].concat(
-                          errors.map(msg => MessagesUtils.error(msg)),
+                          errors.map(msg => MessagesUtils.error(msg)[0]),
                           getCreationActionMessages()
                         )
                       }

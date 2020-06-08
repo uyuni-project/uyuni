@@ -54,7 +54,7 @@ class VirtualizationNetsListRefreshApi extends React.Component<Props, State> {
       })
       .catch(jqXHR => {
         this.setState({
-          errors: [Network.responseErrorMessage(jqXHR)]
+          errors: Network.responseErrorMessage(jqXHR)
         });
       });
   }

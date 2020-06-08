@@ -56,7 +56,7 @@ class VirtualizationPoolsListRefreshApi extends React.Component<Props, State> {
       .catch((response) => {
         const errorMessage = Network.errorMessageByStatus(response.status);
         this.setState({
-          errors: errorMessage !== '' ? [MessagesUtils.error(errorMessage)] : [],
+          errors: errorMessage !== '' ? MessagesUtils.error(errorMessage) : [],
         });
       });
   }

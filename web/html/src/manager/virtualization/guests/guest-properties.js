@@ -36,7 +36,7 @@ class GuestProperties extends React.Component<Props> {
   validationChecks = [{
     check: (model: Object) => !Number.isNaN(Number.parseInt(model.vcpu, 10))
       && (model.vcpu > this.props.host.cpu.count),
-    message: MessagesUtils.warning('Overcommitting CPU can harm performances.'),
+    message: MessagesUtils.warning('Overcommitting CPU can harm performances.')[0],
   }]
 
   render() {
