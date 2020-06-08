@@ -189,8 +189,8 @@ public class MaintenanceManager {
      * @param limit upper limit of maintenance windows to return
      * @return the list of upcoming maintenance windows
      */
-    public Stream<Pair<Instant, Instant>> calculateUpcomingPeriods(Calendar calendar, Optional<String> eventName, Instant startDate,
-            int limit) {
+    public Stream<Pair<Instant, Instant>> calculateUpcomingPeriods(Calendar calendar, Optional<String> eventName,
+            Instant startDate, int limit) {
         ComponentList<CalendarComponent> allEvents = calendar.getComponents(Component.VEVENT);
 
         Collection<CalendarComponent> filteredEvents = eventName.map(name -> {
