@@ -17,6 +17,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.errata;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -56,6 +62,9 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -66,13 +75,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import org.apache.commons.lang3.StringUtils;
-
-import static java.util.Optional.empty;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
 
 
 /**
@@ -205,9 +207,7 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("int", "id")
      *          #prop("string", "issue_date")
      *          #prop("string", "update_date")
-     *          #prop_desc("string", "last_modified_date", "This date is only included for
-     *          published erratum and it represents the last time the erratum was
-     *          modified.")
+     *          #prop_desc("string", "last_modified_date", "last time the erratum was modified.")
      *          #prop("string", "synopsis")
      *          #prop("int", "release")
      *          #prop("string", "type")
@@ -318,7 +318,7 @@ public class ErrataHandler extends BaseHandler {
      *                  with the errata.")
      *          #prop_desc("array", "CVEs", "'cves' is the key into the struct")
      *              #array_single("string", "cves - List of CVEs to associate
-     *                  with the errata. (valid only for published errata)")
+     *                  with the errata")
      *     #struct_end()
      *
      *  @xmlrpc.returntype #return_int_success()
@@ -664,46 +664,7 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Returns a list of unpublished errata for the logged-in user's Org.
-     * @param loggedInUser The current user
-     * @return Returns an array of errata
-     *
-     * @xmlrpc.doc Returns a list of unpublished errata
-     * @xmlrpc.param #session_key()
-     * @xmlrpc.returntype
-     *      #array_begin()
-     *          #struct_begin("erratum")
-     *              #prop("int", "id")
-     *              #prop("int", "published")
-     *              #prop("string", "advisory")
-     *              #prop("string", "advisory_name")
-     *              #prop("string", "advisory_type")
-     *              #prop("string", "synopsis")
-     *              #prop("dateTime.iso8601", "created")
-     *              #prop("dateTime.iso8601", "update_date")
-     *          #struct_end()
-     *      #array_end()
-     */
-    public Object[] listUnpublishedErrata(User loggedInUser) {
-        Map[] unpub = (Map[])ErrataManager.unpublishedOwnedErrata(loggedInUser, Map.class)
-                .toArray(new Map[0]);
-
-        for (Map errataItem : unpub) {
-            // remove items that can be NULL to prevent xmlrpc failure
-            Iterator<Map.Entry> itr = errataItem.entrySet().iterator();
-            for (; itr.hasNext();) {
-                if (itr.next().getValue() == null) {
-                    itr.remove();
-                }
-            }
-        }
-
-        return unpub;
-    }
-
-    /**
-     * Returns a list of CVEs applicable to the errata with the given advisory name. CVEs may be associated
-     * only with published errata.
+     * Returns a list of CVEs applicable to the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the list of CVEs of both of them.
      * @param loggedInUser The current user
@@ -715,8 +676,7 @@ public class ErrataHandler extends BaseHandler {
      *
      * @xmlrpc.doc Returns a list of
      * <a href="http://cve.mitre.org/" target="_blank">CVE</a>s
-     * applicable to the errata with the given advisory name. CVEs may be associated
-     * only with published errata.
+     * applicable to the errata with the given advisory name.
      * For those errata that are present in both vendor and user organizations under the same advisory name,
      * this method retrieves the list of CVEs of both of them.
      * @xmlrpc.param #session_key()
@@ -1156,14 +1116,11 @@ public class ErrataHandler extends BaseHandler {
      * @param bugs a List of maps consisting of 'id' Integers and 'summary' strings
      * @param keywords a List of keywords for the errata
      * @param packageIds a List of package Id packageId Integers
-     * @param publish should the errata be published
-     * @param channelLabels an array of channel labels to publish to if the errata is to
-     *          be published
+     * @param channelLabels an array of channel labels to publish to
      * @throws InvalidChannelRoleException if the user perms are incorrect
-     * @return The errata created (whether published or unpublished)
+     * @return The errata created
      *
-     * @xmlrpc.doc Create a custom errata.  If "publish" is set to true,
-     *      the errata will be published as well
+     * @xmlrpc.doc Create a custom errata
      * @xmlrpc.param #session_key()
      * @xmlrpc.param
      *      #struct_begin("errata info")
@@ -1195,16 +1152,15 @@ public class ErrataHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "keyword - List of keywords to associate
      *              with the errata.")
      * @xmlrpc.param #array_single("int", "packageId")
-     * @xmlrpc.param #param_desc("boolean", "publish", "Should the errata be published.")
      * @xmlrpc.param
      *       #array_single("string", "channelLabel - list of channels the errata should be
-     *                  published too, ignored if publish is set to false")
+     *                  published to")
      * @xmlrpc.returntype
      *      $ErrataSerializer
      */
     public Errata create(User loggedInUser, Map<String, Object> errataInfo,
-            List<Map<String, Object>> bugs, List<String> keywords,
-            List<Integer> packageIds, boolean publish, List<String> channelLabels)
+                         List<Map<String, Object>> bugs, List<String> keywords,
+                         List<Integer> packageIds, List<String> channelLabels)
             throws InvalidChannelRoleException {
 
         // confirm that the user only provided valid keys in the map
@@ -1233,10 +1189,7 @@ public class ErrataHandler extends BaseHandler {
 
         //Don't want them to publish an errata without any channels,
         //so check first before creating anything
-        List<Channel> channels = null;
-        if (publish) {
-            channels = verifyChannelList(channelLabels, loggedInUser);
-        }
+        List<Channel> channels = verifyChannelList(channelLabels, loggedInUser);
 
         String synopsis = (String) getRequiredAttribute(errataInfo, "synopsis");
         String advisoryName = (String) getRequiredAttribute(errataInfo, "advisory_name");
@@ -1325,11 +1278,7 @@ public class ErrataHandler extends BaseHandler {
 
         ErrataFactory.save(newErrata);
 
-        //if true, channels will not be null, but will be a List of channel objects
-        if (publish) {
-            return publish(newErrata, channels, loggedInUser, false);
-        }
-        return newErrata;
+        return publish(newErrata, channels, loggedInUser, false);
     }
 
     /**
@@ -1354,13 +1303,13 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Publishes an existing (unpublished) errata to a set of channels
+     * Publishes an existing errata to a set of channels
      * @param loggedInUser The current user
      * @param advisory The advisory Name of the errata to publish
      * @param channelLabels List of channels to publish the errata to
      * @return the published errata
      *
-     * @xmlrpc.doc Publish an existing (unpublished) errata to a set of channels.
+     * @xmlrpc.doc Publish an existing errata to a set of channels.
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
      * @xmlrpc.param
@@ -1375,7 +1324,7 @@ public class ErrataHandler extends BaseHandler {
     }
 
     /**
-     * Publishes an existing (unpublished) cloned errata to a set of cloned channels
+     * Publishes an existing cloned errata to a set of cloned channels
      * according to its original erratum
      * @param loggedInUser The current user
      * @param advisory The advisory Name of the errata to publish
@@ -1383,7 +1332,7 @@ public class ErrataHandler extends BaseHandler {
      * @throws InvalidChannelRoleException if the user perms are incorrect
      * @return the published errata
      *
-     * @xmlrpc.doc Publishes an existing (unpublished) cloned errata to a set of cloned
+     * @xmlrpc.doc Publishes an existing cloned errata to a set of cloned
      * channels according to its original erratum
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param("string", "advisoryName")
@@ -1432,7 +1381,6 @@ public class ErrataHandler extends BaseHandler {
      *      Channel objects into a List.  This is primarily used before publishing
      *      to verify all channels are valid before starting the errata creation
      * @param channelsLabels the List of channel labels to verify
-     * @param org the org of the user
      * @return a List of channel objects
      */
     private List<Channel> verifyChannelList(List<String> channelsLabels, User user) {
@@ -1457,7 +1405,7 @@ public class ErrataHandler extends BaseHandler {
 
     /**
      * private helper method to publish the errata
-     * @param errata the Unpublished errata to publish
+     * @param errata the errata to publish
      * @param channels A list of channel objects
      * @return The published Errata
      */

@@ -1,3 +1,4 @@
+- Drop the unpublished patch concept. All patches are published since their creation
 - Implement support for cluster management (CaaSP)
 - Split branding style themes for Uyuni and SUSE Manager
 - increase XMLRPC API version

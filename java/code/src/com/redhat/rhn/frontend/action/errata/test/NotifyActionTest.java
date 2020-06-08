@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import com.redhat.rhn.common.security.errata.PublishedOnlyException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -53,22 +52,9 @@ public class NotifyActionTest extends RhnBaseTestCase {
         RequestContext requestContext = new RequestContext(request);
 
         User user = requestContext.getCurrentUser();
-        Errata published = ErrataFactoryTest
-                .createTestPublishedErrata(user.getOrg().getId());
+        Errata published = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         published.addChannel(c);
-        Errata unpublished = ErrataFactoryTest
-                .createTestUnpublishedErrata(user.getOrg().getId());
-
-        //test PublishOnly exception
-        request.setupAddParameter("eid", unpublished.getId().toString());
-        try {
-            action.execute(mapping, form, request, response);
-            fail();
-        }
-        catch (PublishedOnlyException e) {
-            //Success!!!
-        }
 
         //test default case
         request.setupAddParameter("eid", published.getId().toString());
