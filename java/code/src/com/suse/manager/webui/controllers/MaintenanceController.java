@@ -23,6 +23,7 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
@@ -58,6 +59,7 @@ public class MaintenanceController {
 
     private static final Gson GSON = new GsonBuilder().create();
     private static final MaintenanceManager MM = MaintenanceManager.instance();
+    private static final LocalizationService LOCAL = LocalizationService.getInstance();
 
     private MaintenanceController() { }
 
@@ -153,8 +155,9 @@ public class MaintenanceController {
 
         Optional<MaintenanceSchedule> schedule = MM.lookupMaintenanceScheduleByUserAndId(user, scheduleId);
         if (schedule.isEmpty()) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
-                    "Schedule with id '" + scheduleId + "' does not exist")));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.schedule.id.not.exists", scheduleId
+            ))));
         }
         json.setScheduleId(schedule.get().getId());
         json.setScheduleName(schedule.get().getName());
@@ -183,8 +186,9 @@ public class MaintenanceController {
 
         Optional<MaintenanceCalendar> calendar = MM.lookupCalendarByUserAndId(user, calendarId);
         if (calendar.isEmpty()) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
-                    "Calendar with id '" + calendarId + "' does not exist")));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.calendar.id.not.exists", calendarId
+            ))));
         }
         json.setCalendarId(calendar.get().getId());
         json.setCalendarName(calendar.get().getLabel());
@@ -210,12 +214,11 @@ public class MaintenanceController {
      */
     public static String getCalendarNames(Request request, Response response, User user) {
         response.type("application/json");
-        /* TODO: Return sorted query? */
+
         List<String> calendarNames = new ArrayList<>();
         calendarNames.add("<None>");
         calendarNames.addAll(MM.listCalendarLabelsByUser(user));
 
-        calendarNames.sort(String.CASE_INSENSITIVE_ORDER);
         return json(response, calendarNames);
     }
 
@@ -232,12 +235,14 @@ public class MaintenanceController {
         MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
 
         if (json.getCalendarName().isBlank()) {
-            /* TODO: Add localization */
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error("Calendar name required")));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.calendar.name.empty"
+            ))));
         }
         else if (json.getScheduleName().isBlank()) {
-            /* TODO: Add localization */
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error("Schedule name required")));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.schedule.name.empty"
+            ))));
         }
         createOrUpdateSchedule(user, json);
         return json(response, ResultJson.success());
@@ -256,23 +261,28 @@ public class MaintenanceController {
         MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
 
         if (json.getCalendarName().isBlank()) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error("Calendar name required")));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.calendar.name.empty"
+            ))));
         }
         else if (json.getCalendarName().equals("<None>")) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
-                    "Invalid calendar name provided. Choose a different name"
-            )));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.calendar.name.invalid"
+            ))));
         }
         else if (json.getCalendarUrl().isBlank() && json.getCalendarData() == null) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error("Calendar data required")));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.calendar.data.empty"
+            ))));
         }
 
         MM.lookupCalendarByUserAndLabel(user, json.getCalendarName()).ifPresentOrElse(
                 /* update existing calendar */
                 calendar -> {
                     if (json.getCalendarId() == null) {
-                        Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error("Calendar '" +
-                                json.getCalendarName() + "' already exists.")));
+                        Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                                "maintenance.calendar.exists", json.getCalendarName()
+                        ))));
                     }
                     Map<String, String> details = new HashMap<>();
                     String rescheduleStrategy = json.getRescheduleStrategy();
@@ -291,9 +301,9 @@ public class MaintenanceController {
                         handleRescheduleResult(results, rescheduleStrategy);
                     }
                     catch (DownloadException e) {
-                        Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
-                                "Error fetching calendar data from '" + json.getCalendarUrl() + "'"
-                        )));
+                        Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                                "maintenance.calendar.fetch.error", json.getCalendarUrl()
+                        ))));
                     }
                 },
                 /* Create new calendar */
@@ -303,13 +313,12 @@ public class MaintenanceController {
                             MM.createMaintenanceCalendarWithUrl(user, json.getCalendarName(), json.getCalendarUrl());
                         }
                         catch (DownloadException e) {
-                            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
-                                    "Error fetching calendar data from '" + json.getCalendarUrl() + "'"
-                            )));
+                            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                                    "maintenance.calendar.fetch.error", json.getCalendarUrl()
+                            ))));
                         }
                     }
                     else {
-
                         MM.createMaintenanceCalendar(user, json.getCalendarName(), json.getCalendarData());
                     }
                 }
@@ -323,11 +332,10 @@ public class MaintenanceController {
                 Optional<MaintenanceCalendar> calendar = Optional.empty();
                 if (!json.getCalendarName().equals("<None>")) {
                     /* Lookup calendar */
-                    /* TODO: Localize */
                     calendar = Optional.of(MM.lookupCalendarByUserAndLabel(user, json.getCalendarName())
-                            .orElseThrow(() -> new EntityNotExistsException(
-                                    "Calendar " + json.getCalendarName() + " does not exist."
-                            ))
+                            .orElseThrow(() -> new EntityNotExistsException(LOCAL.getMessage(
+                                    "maintenance.calendar.not.exists", json.getCalendarName()
+                            )))
                     );
                 }
                 /* Create new schedule */
@@ -378,14 +386,14 @@ public class MaintenanceController {
             handleRescheduleResult(results, strategy);
         }
         catch (EntityNotExistsException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(
-                    "Calendar " + json.getCalendarName() + " does not exist."
-            )));
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.calendar.not.exists", json.getCalendarName()
+            ))));
         }
         catch (DownloadException e) {
-            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
-                    "Error fetching calendar data from '" + json.getCalendarUrl() + "'"
-            )));
+            Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.calendar.fetch.error", json.getCalendarUrl()
+            ))));
         }
 
         return json(response, ResultJson.success());
@@ -429,7 +437,6 @@ public class MaintenanceController {
         String name = json.getCalendarName();
         Optional<MaintenanceCalendar> calendar = MM.lookupCalendarByUserAndLabel(user, name);
         if (calendar.isPresent()) {
-            /* TODO: Get strategy */
             String strategy = json.getRescheduleStrategy();
             handleRescheduleResult(MM.remove(user, calendar.get(), strategy.equals("Cancel")), strategy);
         }
@@ -442,14 +449,11 @@ public class MaintenanceController {
     private static void handleRescheduleResult(List<RescheduleResult> results, String strategy) {
         results.forEach(result -> {
             if (!result.isSuccess()) {
-                /* TODO: Localize */
                 String affectedSchedule = result.getScheduleName();
-                String message = (strategy.equals("Cancel")) ?
-                        "An error occurred trying to cancel affected actions for schedule '" +
-                                affectedSchedule + "'" :
-                        "An error occurred. There are remaining actions managed by schedule '" +
-                                affectedSchedule + "'. " +
-                                "Please cancel all actions affected by your changes";
+                String message = LOCAL.getMessage(strategy.equals("Cancel") ?
+                        "maintenance.action.reschedule.error.cancel" :
+                        "maintenance.action.reschedule.error.fail",
+                        affectedSchedule);
                 Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(message)));
             }
         });
