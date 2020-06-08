@@ -315,19 +315,6 @@ Some more irrelevant data
         assert zdcmp.called
         assert "hot" in str(exc.value)
 
-    @patch("spacewalk.common.repo.requests.get", MagicMock(
-        return_value=FakeRequests().conf(status_code=http.HTTPStatus.NOT_FOUND, content=b"")))
-    def test_get_pkg_index_raw_exception(self):
-        """
-        Test getting package index file exception handling
-
-        :return:
-        """
-        with pytest.raises(GeneralRepoException) as exc:
-            DpkgRepo("http://dummy/url").get_pkg_index_raw()
-
-        assert "No variants of package index has been found on http://dummy/url repo" == str(exc.value)
-
     def test_append_index_file_to_url(self):
         """
         Test append index files to the given url.
