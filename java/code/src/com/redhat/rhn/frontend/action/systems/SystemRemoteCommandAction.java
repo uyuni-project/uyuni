@@ -41,7 +41,6 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.util.StringUtil.ScriptCheckResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;

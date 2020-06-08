@@ -19,7 +19,6 @@ import static com.redhat.rhn.domain.action.ActionFactory.TYPE_ERRATA;
 
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -36,8 +35,6 @@ import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
-import com.suse.manager.maintenance.MaintenanceManager;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
