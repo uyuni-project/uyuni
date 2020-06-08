@@ -379,6 +379,19 @@ public class MaintenanceManager {
     }
 
     /**
+     * Lookup MaintenanceSchedule by User and id
+     * @param user the user
+     * @param id the id of the schedule
+     * @return Optional Maintenance Schedule
+     */
+    @SuppressWarnings("unchecked")
+    public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndId(User user, Long id) {
+        return getSession().createQuery("FROM MaintenanceSchedule WHERE org = :org AND id = :id")
+                .setParameter("org", user.getOrg())
+                .setParameter("id", id).uniqueResultOptional();
+    }
+
+    /**
      * Create a Maintenance Schedule
      * @param user the creator
      * @param name the schedule name
@@ -445,12 +458,12 @@ public class MaintenanceManager {
      * List Schedule names that use given calendar
      * @param user the user
      * @param calendar the calendar
-     * @return a list of schedule names
+     * @return a list of MaintenanceSchedules
      */
     @SuppressWarnings("unchecked")
-    public List<String> listScheduleNamesByCalendar(User user, MaintenanceCalendar calendar) {
+    public List<MaintenanceSchedule> listScheduleNamesByCalendar(User user, MaintenanceCalendar calendar) {
         return getSession()
-            .createQuery("SELECT name FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar")
+            .createQuery("FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar")
             .setParameter("org", user.getOrg())
             .setParameter("calendar", calendar)
             .list();
@@ -467,6 +480,19 @@ public class MaintenanceManager {
         return getSession().createNamedQuery("MaintenanceCalendar.lookupByUserAndName")
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter("label", label).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup Maintenance Calendar by User and id
+     * @param user the user
+     * @param id the id of the calendar
+     * @return Optional Maintenance Calendar
+     */
+    @SuppressWarnings("unchecked")
+    public Optional<MaintenanceCalendar> lookupCalendarByUserAndId(User user, Long id) {
+        return getSession().createQuery("FROM MaintenanceCalendar WHERE org = :org AND id = :id")
+                .setParameter("org", user.getOrg())
+                .setParameter("id", id).uniqueResultOptional();
     }
 
     /**
