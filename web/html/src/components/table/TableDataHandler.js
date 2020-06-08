@@ -285,7 +285,7 @@ export class TableDataHandler extends React.Component<Props, State> {
             (
               isEmpty ?
               <div className="panel-body">
-                <h4>{emptyText}</h4>
+                <div className="subheadline">{emptyText}</div>
               </div>
               :
               <div>
