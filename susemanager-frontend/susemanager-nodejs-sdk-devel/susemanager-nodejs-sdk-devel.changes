@@ -1,3 +1,4 @@
+- update websocket-extensions - CVE-2020-7662
 - remove toastr, add react-toastify
 
 -------------------------------------------------------------------
