@@ -477,7 +477,7 @@ public class MaintenanceManager {
     @SuppressWarnings("unchecked")
     public List<String> listCalendarLabelsByUser(User user) {
         return getSession()
-            .createQuery("SELECT label FROM MaintenanceCalendar WHERE org = :org")
+            .createQuery("SELECT label FROM MaintenanceCalendar WHERE org = :org ORDER BY label ASC")
             .setParameter("org", user.getOrg())
             .list();
     }
