@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -23,19 +22,12 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.errata.ChannelSetupAction;
-import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
-
-import org.apache.struts.action.ActionForward;
-
-import java.util.Iterator;
 
 /**
  * ChannelSetupActionTest
@@ -49,81 +41,6 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
      */
     public void testDummy() throws Exception {
         assertEquals(42, 42);
-    }
-
-    /**
-     * This setup action will get called with an unpublished errata during the publish
-     * process. We need to test that nothing is added to the user's set, the relevant
-     * packages are set correctly, and that the returnvisit variable has been set.
-     * @throws Exception something bad happened
-     */
-
-    // This test does not properly set up the permissions to the
-    // errata, because the user for the action is not the same as the
-    // user for the errata.
-
-    public void brokentTestExecuteUnpublished() throws Exception {
-        ChannelSetupAction action = new ChannelSetupAction();
-        ActionHelper sah = new ActionHelper();
-
-        sah.setUpAction(action);
-        sah.setupClampListBounds();
-
-        //Create a new errata
-        Errata e = ErrataFactoryTest.createTestUnpublishedErrata(UserTestUtils
-                                                         .createOrg("channelTestOrg"));
-        sah.getRequest().setupAddParameter("eid", e.getId().toString());
-        sah.getRequest().setupAddParameter("newset", (String) null);
-        sah.getRequest().setupAddParameter("returnvisit", (String) null);
-        sah.getRequest().setupAddParameter("returnvisit", (String) null);
-        sah.setupClampListBounds();
-        ActionForward result = sah.executeAction();
-
-        //make sure set was set
-        assertNotNull(sah.getRequest().getAttribute("set"));
-        assertEquals(result.getName(), RhnHelper.DEFAULT_FORWARD);
-
-        //get the data result back out of the request and inspect
-        DataResult dr = (DataResult) sah.getRequest().getAttribute(
-                RequestContext.PAGE_LIST);
-        assertNotNull(dr);
-        Iterator itr = dr.iterator();
-        while (itr.hasNext()) {
-            //make sure the relevant packages were set
-            ChannelOverview channel = (ChannelOverview) itr.next();
-            assertNotNull(channel.getRelevantPackages());
-        }
-        //make sure returnvisit was set
-        assertNotNull(sah.getRequest().getAttribute("returnvisit"));
-
-        RequestContext requestContext = new RequestContext(sah.getRequest());
-
-        //make sure set is empty
-        User user = requestContext.getCurrentUser();
-        RhnSet set = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);
-        assertTrue(set.isEmpty());
-
-        //Set the setupdated variable to make sure we are keeping changes from the set
-        User usr = requestContext.getCurrentUser();
-        RhnSet newset = RhnSetDecl.CHANNELS_FOR_ERRATA.create(usr);
-        newset.addElement(42L);
-        newset.addElement(43L);
-        newset.addElement(44L);
-        RhnSetManager.store(newset);
-
-        //setup the request
-        sah.getRequest().setupAddParameter("eid", e.getId().toString());
-        sah.getRequest().setupAddParameter("newset", (String) null);
-        sah.getRequest().setupAddParameter("returnvisit", "true");
-        sah.getRequest().setupAddParameter("returnvisit", "true");
-        sah.getRequest().setupAddParameter("setupdated", "true");
-        sah.setupClampListBounds();
-        result = sah.executeAction();
-
-        //ok, now we should have went to the db to get the newset var
-        String ns = (String) sah.getRequest().getAttribute("newset");
-        assertNotNull(ns);
-        assertTrue(ns.length() > 2); // greater than '[]'
     }
 
     /**

@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.errata.test;
 
-import com.redhat.rhn.common.security.errata.PublishedOnlyException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Bug;
@@ -24,18 +23,14 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.impl.PublishedBug;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
-import com.redhat.rhn.domain.errata.impl.UnpublishedBug;
-import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -62,17 +57,6 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
         Errata e2 = ErrataManager.lookupErrata(id, user); //lookup the errata
         assertEquals(1, e2.getNotificationQueue().size()); //should be only 1
-
-        //Let's make sure we can't add notifications to unpublished erratas
-        Errata e3 = ErrataFactoryTest.createTestUnpublishedErrata(
-            UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName()));
-        try {
-            e3.addNotification(new Date());
-            fail();
-        }
-        catch (PublishedOnlyException ex) {
-            //Success!!!
-        }
     }
 
     /**
@@ -109,48 +93,13 @@ public class ErrataTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test unpublished bugs
-     * @throws Exception something bad happened
-     */
-    public void testBugsUnpublished() throws Exception {
-        Errata errata = ErrataFactoryTest
-                .createTestUnpublishedErrata(user.getOrg().getId());
-
-        Bug bug1 = new UnpublishedBug();
-        bug1.setId(1003L);
-        bug1.setSummary("This is a test summary");
-
-        Bug bug2 = new UnpublishedBug();
-        bug2.setId(1004L);
-        bug2.setSummary("This is another test summary");
-
-        errata.addBug(bug1);
-        errata.addBug(bug2);
-
-        assertEquals(errata.getBugs().size(), 2);
-
-        ErrataFactory.save(errata);
-    }
-
-    /**
      * Test the keywords set in the Errata class. Make sure we
      * can add and store keywords.
      * @throws Exception something bad happened
      */
-    //published
-    public void testPublishedKeywords() throws Exception {
+    public void testKeywords() throws Exception {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         assertTrue(errata instanceof PublishedErrata);
-        runKeywordsTest(errata, user);
-    }
-    //unpublished
-    public void testUnpublishedKeywords() throws Exception {
-        Errata errata = ErrataFactoryTest
-                .createTestUnpublishedErrata(user.getOrg().getId());
-        assertTrue(errata instanceof UnpublishedErrata);
-        runKeywordsTest(errata, user);
-    }
-    private void runKeywordsTest(Errata errata, User user) throws Exception {
         errata.addKeyword("yankee");
         errata.addKeyword("hotel");
         errata.addKeyword("foxtrot");
@@ -164,18 +113,14 @@ public class ErrataTest extends BaseTestCaseWithUser {
      * Test the packages set in
      * @throws Exception something bad happened
      */
-    //published
-    public void testPublishedPackage() throws Exception {
+    public void testPackages() throws Exception {
         Errata errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         assertTrue(errata instanceof PublishedErrata);
-        runPackageTest(errata, user);
-    }
-    //unpublished
-    public void testUnpublishedPackage() throws Exception {
-        Errata errata = ErrataFactoryTest
-                .createTestUnpublishedErrata(user.getOrg().getId());
-        assertTrue(errata instanceof UnpublishedErrata);
-        runPackageTest(errata, user);
+        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        errata.addPackage(pkg);
+
+        assertEquals(2, errata.getPackages().size());
+        ErrataFactory.save(errata);
     }
 
     public void testAddChannelsToErrata() throws Exception {
@@ -222,32 +167,15 @@ public class ErrataTest extends BaseTestCaseWithUser {
     }
 
 
-
-    private void runPackageTest(Errata errata, User user) throws Exception {
-        Package pkg = PackageTest.createTestPackage(user.getOrg());
-        errata.addPackage(pkg);
-
-        assertEquals(2, errata.getPackages().size());
-        ErrataFactory.save(errata);
-    }
-
     /**
      * Test bean methods of Errata class
      * @throws Exception something bad happened
      */
-    //published
     public void testBeanMethodsPublished() throws Exception {
         Errata err = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         assertTrue(err instanceof PublishedErrata);
         assertTrue(err.isPublished());
         runBeanMethodsTest(err, 1);
-    }
-    //unpublished
-    public void testBeanMethodsUnpublished() throws Exception {
-        Errata err = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
-        assertTrue(err instanceof UnpublishedErrata);
-        assertFalse(err.isPublished());
-        runBeanMethodsTest(err, 2);
     }
 
     private void runBeanMethodsTest(Errata err, int idOffset) throws Exception {
@@ -356,20 +284,9 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertNull(err.getOrg());
 
         Channel c1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        if (err.isPublished()) {
-            err.addChannel(c1);
-            assertEquals(1, err.getChannels().size());
-            err.setChannels(null);
-            assertNull(err.getChannels());
-        }
-        else {
-            try {
-                err.addChannel(c1);
-                fail();
-            }
-            catch (PublishedOnlyException poex) {
-                //Success!!!
-            }
-        }
+        err.addChannel(c1);
+        assertEquals(1, err.getChannels().size());
+        err.setChannels(null);
+        assertNull(err.getChannels());
     }
 }

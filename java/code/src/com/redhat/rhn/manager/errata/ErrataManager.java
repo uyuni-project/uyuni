@@ -180,36 +180,17 @@ public class ErrataManager extends BaseManager {
      * the channels.  That is done when packages are pushed as part of the errata
      * publication process (which is not done here)
      *
-     * @param unpublished The errata to publish
+     * @param errata The errata to publish
      * @param channelIds The Long channelIds we want to publish this Errata to.
      * @param user who is publishing errata
      * @return Returns a published errata.
      */
-    public static Errata publish(Errata unpublished, Collection channelIds, User user) {
-        //pass on to the factory
-        Errata retval = ErrataFactory.publish(unpublished);
-        log.debug("publish - errata published");
+    public static Errata addToChannels(Errata errata, Collection channelIds, User user) {
+        Errata retval = errata;
 
         retval = addChannelsToErrata(retval, channelIds, user);
         log.debug("publish - updateErrataCacheForChannelsAsync called");
 
-        // update the search server
-        updateSearchIndex();
-        return retval;
-    }
-
-    /**
-     * Takes an unpublished errata and returns a published errata
-     *
-     * @param unpublished The errata to publish
-     * @return Returns a published errata.
-     */
-    public static Errata publish(Errata unpublished) {
-        //pass on to the factory
-        Errata retval = ErrataFactory.publish(unpublished);
-        log.debug("publish - errata published");
-
-        // update the search server
         updateSearchIndex();
         return retval;
     }
@@ -337,18 +318,7 @@ public class ErrataManager extends BaseManager {
      * @return Returns a fresh errata
      */
     public static Errata createNewErrata() {
-        return ErrataFactory.createUnpublishedErrata();
-    }
-
-    /**
-     * Creates a new Unpublished Bug with the id and summary given.
-     * @param id The id for the new bug.
-     * @param summary The summary for the new bug.
-     * @param url The url for the new bug.
-     * @return Returns a Bug object.
-     */
-    public static Bug createNewUnpublishedBug(Long id, String summary, String url) {
-        return ErrataFactory.createUnpublishedBug(id, summary, url);
+        return ErrataFactory.createPublishedErrata();
     }
 
     /**
@@ -1198,16 +1168,6 @@ public class ErrataManager extends BaseManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", orgid);
         return m.execute(params, eids);
-    }
-
-    /**
-     * Create a clone of the errata
-     * @param user user performing the cloning
-     * @param e errata to be cloned
-     * @return clone of the errata
-     */
-    public static Errata createClone(User user, Errata e) {
-        return ErrataFactory.createClone(user.getOrg(), e);
     }
 
     /**

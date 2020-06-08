@@ -57,16 +57,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 column="errata_id"/>
         </set>
 
-       <set name="unpublishedErrata" lazy="true" table="rhnErrataPackageTmp"
-            cascade="save-update" >
-            <key column="package_id"/>
-            <many-to-many
-                class="com.redhat.rhn.domain.errata.impl.UnpublishedErrata"
-                column="errata_id"/>
-        </set>
-
-
-
        <set name="packageFiles" lazy="true" table="rhnPackageFile"
             cascade="save-update,delete" inverse="true">
             <key column="package_id"/>

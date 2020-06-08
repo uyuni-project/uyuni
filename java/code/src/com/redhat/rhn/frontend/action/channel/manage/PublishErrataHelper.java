@@ -83,9 +83,7 @@ public class PublishErrataHelper {
 
 
     /**
-     * Clones an errata Similarly to ErrataFactory.createClone, but creates a published
-     *      errata instead of going through the stupid process of being unpublished and
-     *       then copying all the data to 4 tables
+     * Clones an errata
      * @param original the original errata to clone
      * @param org the org to clone it for
      * @deprecated this function is deprecated by cloneErrataFaster

@@ -17,8 +17,6 @@
  */
 package com.redhat.rhn.domain.errata;
 
-import static org.apache.commons.collections.CollectionUtils.isEmpty;
-
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -33,15 +31,11 @@ import com.redhat.rhn.domain.errata.impl.PublishedBug;
 import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
-import com.redhat.rhn.domain.errata.impl.UnpublishedBug;
-import com.redhat.rhn.domain.errata.impl.UnpublishedClonedErrata;
-import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
 import com.redhat.rhn.domain.errata.impl.UnpublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.ErrataPackageFile;
 import com.redhat.rhn.frontend.dto.OwnedErrata;
@@ -198,50 +192,6 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * publish takes an unpublished errata and copies its contents into a Published Errata
-     * object (and then returns this object). This method also handles removing the old
-     * Unpublished Errata object and child elements from the db.
-     * @param unpublished The Errata to publish
-     * @return Returns a published errata.
-     */
-    public static Errata publish(Errata unpublished) {
-        //Make sure the errata we're publishing is unpublished
-        if (unpublished.isPublished()) {
-            return unpublished; //there is nothing we can do here
-        }
-        //Create a published errata using unpublished
-
-        Errata published;
-
-        if (unpublished.isCloned()) {
-            published = new PublishedClonedErrata();
-            ((PublishedClonedErrata)published).setOriginal(
-                    ((UnpublishedClonedErrata)unpublished).getOriginal());
-        }
-        else {
-            published = ErrataFactory.createPublishedErrata();
-        }
-
-        copyDetails(published, unpublished, false);
-
-        //Save the published Errata
-        save(published);
-
-        //Remove the unpublished Errata from db
-        try {
-            Session session = HibernateFactory.getSession();
-            session.delete(unpublished);
-        }
-        catch (HibernateException e) {
-            throw new HibernateRuntimeException(
-                    "Errors occurred while publishing errata", e);
-        }
-
-        //return the published errata
-        return published;
-    }
-
-    /**
      * Takes a published or unpublished errata and publishes to a channel, creating
      *      all of the correct ErrataFile* entries.  This method does push packages to
      *      the appropriate channel. (Appropriate as defined as the channel previously
@@ -275,9 +225,6 @@ public class ErrataFactory extends HibernateFactory {
             User user, boolean inheritPackages, boolean performPostActions) {
         List<com.redhat.rhn.domain.errata.Errata> toReturn = new ArrayList<Errata>();
         for (Errata errata : errataList) {
-            if (!errata.isPublished()) {
-                errata = publish(errata);
-            }
             errata.addChannel(chan);
             ErrataManager.replaceChannelNotifications(errata.getId(), chan.getId(), new Date());
 
@@ -331,9 +278,6 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static Errata publishToChannel(Errata errata, Channel chan, User user,
             Set<Package> packages) {
-        if (!errata.isPublished()) {
-            errata = publish(errata);
-        }
         errata.addChannel(chan);
         errata = publishErrataPackagesToChannel(errata, chan, user, packages);
         postPublishActions(chan, user);
@@ -416,25 +360,6 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * @param org Org performing the cloning
-     * @param e Errata to be cloned
-     * @return clone of e
-     */
-    public static Errata createClone(Org org, Errata e) {
-
-        UnpublishedClonedErrata clone = new UnpublishedClonedErrata();
-
-        copyDetails(clone, e, true);
-
-        PublishErrataHelper.setUniqueAdvisoryCloneName(e, clone);
-        clone.setOriginal(e);
-        clone.setOrg(org);
-
-        save(clone);
-        return clone;
-    }
-
-    /**
      * Helper method to copy the details for.
      * @param copy The object to copy into.
      * @param original The object to copy from.
@@ -494,17 +419,9 @@ public class ErrataFactory extends HibernateFactory {
         Iterator bugsItr = IteratorUtils.getIterator(original.getBugs());
         while (bugsItr.hasNext()) {
             Bug bugIn = (Bug) bugsItr.next();
-            Bug cloneB;
-            if (copy.isPublished()) { //we want published bugs
-                cloneB = ErrataManager.createNewPublishedBug(bugIn.getId(),
+            Bug cloneB = ErrataManager.createNewPublishedBug(bugIn.getId(),
                         bugIn.getSummary(),
                         bugIn.getUrl());
-            }
-            else { //we want unpublished bugs
-                cloneB = ErrataManager.createNewUnpublishedBug(bugIn.getId(),
-                        bugIn.getSummary(),
-                        bugIn.getUrl());
-            }
             copy.addBug(cloneB);
         }
     }
@@ -515,29 +432,6 @@ public class ErrataFactory extends HibernateFactory {
      */
     public static Errata createPublishedErrata() {
         return new PublishedErrata();
-    }
-
-    /**
-     * Create a new UnpublishedErrata
-     * @return the UnpublishedErrata created
-     */
-    public static Errata createUnpublishedErrata() {
-        return new UnpublishedErrata();
-    }
-
-    /**
-     * Creates a new Unpublished Bug object with the given id and summary.
-     * @param id The id for the new bug
-     * @param summary The summary for the new bug
-     * @param url The bug URL
-     * @return The new unpublished bug.
-     */
-    public static Bug createUnpublishedBug(Long id, String summary, String url) {
-        Bug bug = new UnpublishedBug();
-        bug.setId(id);
-        bug.setSummary(summary);
-        bug.setUrl(url);
-        return bug;
     }
 
     /**
@@ -668,15 +562,8 @@ public class ErrataFactory extends HibernateFactory {
      * @return the Errata found
      */
     public static Errata lookupById(Long id) {
-        //Look for published Errata first
         Session session = HibernateFactory.getSession();
-        Errata errata = session.get(PublishedErrata.class, id);
-
-        //If we nothing was found, look for it in the Unpublished Errata table...
-        if (errata == null) {
-            errata = session.get(UnpublishedErrata.class, id);
-        }
-        return errata;
+        return session.get(PublishedErrata.class, id);
     }
 
     /**
@@ -732,19 +619,10 @@ public class ErrataFactory extends HibernateFactory {
     public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisory, Org org) {
         //look for a published errata first
         Session session = HibernateFactory.getSession();
-        List<Errata> retval = session.getNamedQuery("PublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg")
+        return session.getNamedQuery("PublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg")
                 .setParameter("advisory", advisory)
                 .setParameter("org", org)
                 .getResultList();
-
-        //if nothing was found, check the unpublished errata table
-        if (retval.isEmpty()) {
-            retval = session.getNamedQuery("UnpublishedErrata.findVendorAnUserErrataByAdvisoryNameAndOrg")
-                    .setParameter("advisory", advisory)
-                    .setParameter("org", org)
-                    .getResultList();
-        }
-        return retval;
     }
 
     /**
@@ -817,15 +695,7 @@ public class ErrataFactory extends HibernateFactory {
 
         try {
             session = HibernateFactory.getSession();
-            retval = session.
-                    getNamedQuery("UnpublishedClonedErrata.findByOriginal")
-                    .setParameter("original", original)
-                    .setParameter("org", org).list();
-
-            if (isEmpty(retval)) {
-                retval = lookupPublishedByOriginal(org, original);
-            }
-
+            retval = lookupPublishedByOriginal(org, original);
         }
         catch (HibernateException e) {
             throw new

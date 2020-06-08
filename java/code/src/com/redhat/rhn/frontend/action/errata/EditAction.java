@@ -269,13 +269,7 @@ public class EditAction extends LookupDispatchAction {
             Long bugid = Long.valueOf(bug[0]);
             String summary = bug[1];
             String url = bug[2];
-            //should this be a published or unpublished bug?
-            if (e.isPublished()) {
-                e.addBug(ErrataManager.createNewPublishedBug(bugid, summary, url));
-            }
-            else { //add a new UnpublishedBug
-                e.addBug(ErrataManager.createNewUnpublishedBug(bugid, summary, url));
-            }
+            e.addBug(ErrataManager.createNewPublishedBug(bugid, summary, url));
         }
 
         //add keywords... split on commas and add separately to list

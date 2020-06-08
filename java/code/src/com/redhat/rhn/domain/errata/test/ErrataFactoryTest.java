@@ -15,10 +15,9 @@
 package com.redhat.rhn.domain.errata.test;
 
 import static java.util.Optional.empty;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -30,13 +29,13 @@ import com.redhat.rhn.domain.errata.ErrataFile;
 import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
-import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -58,78 +57,23 @@ import java.util.function.Function;
 
 /**
  * ErrataFactoryTest
- * @version $Rev$
  */
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
-    public static Bug createUnpublishedBug(Long longIn, String stringIn) {
-        return ErrataFactory.createUnpublishedBug(longIn, stringIn,
-                "https://bugzilla.redhat.com/show_bug.cgi?id=" + longIn);
-    }
-
     public static Bug createPublishedBug(Long longIn, String stringIn) {
-        return ErrataFactory.createUnpublishedBug(longIn, stringIn,
+        return ErrataFactory.createPublishedBug(longIn, stringIn,
                 "https://bugzilla.redhat.com/show_bug.cgi?id=" + longIn);
     }
-
-    public void testPublish() throws Exception {
-        Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
-        //add bugs, keywords, and packages so we have something to work with...
-        e.addBug(ErrataManagerTest.createNewUnpublishedBug(42L, "test bug 1"));
-        e.addBug(ErrataManagerTest.createNewUnpublishedBug(43L, "test bug 2"));
-        e.addPackage(PackageTest.createTestPackage(user.getOrg()));
-        e.addKeyword("foo");
-        e.addKeyword("bar");
-        ErrataManager.storeErrata(e); //save changes
-
-        //make sure e is not published
-        assertFalse(e.isPublished());
-
-        //store some attributes for later comparison
-        Long id = e.getId();
-        String advisory = e.getAdvisory();
-        int bugSize = e.getBugs().size();
-        int keySize = e.getKeywords().size();
-        int pkgSize = e.getPackages().size();
-
-        //publish the errata back into Errata object e
-        e = ErrataFactory.publish(e);
-
-        //make sure e is now published
-        assertTrue(e.isPublished());
-
-        //make sure attrs were copied ok
-        assertFalse(id.equals(e.getId())); //e should now have a different id
-        assertEquals(advisory, e.getAdvisory());
-        assertEquals(bugSize, e.getBugs().size());
-        assertEquals(keySize, e.getKeywords().size());
-        assertEquals(pkgSize, e.getPackages().size());
-
-        //try looking up an errata with the old id... shouldn't exist
-        HibernateFactory.getSession().flush();
-
-
-        try {
-            ErrataManager.lookupErrata(id, user);
-            fail("Should not be able to find errata " + id);
-        }
-        catch (LookupException ex) {
-            // Expected
-        }
-    }
-
 
     public void testPublishToChannel()  throws Exception {
-        Errata e = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
-        e.addBug(ErrataManagerTest.createNewUnpublishedBug(42L, "test bug 1"));
-        e.addBug(ErrataManagerTest.createNewUnpublishedBug(43L, "test bug 2"));
+        e.addBug(ErrataManagerTest.createNewPublishedBug(42L, "test bug 1"));
+        e.addBug(ErrataManagerTest.createNewPublishedBug(43L, "test bug 2"));
         e.addPackage(PackageTest.createTestPackage(user.getOrg()));
         e.addKeyword("foo");
         e.addKeyword("bar");
         ErrataManager.storeErrata(e); //save changes
-
-
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setOrg(user.getOrg());
@@ -179,26 +123,6 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userPublishedErrata.getAdvisoryName())));
         assertTrue(erratas.stream().allMatch(e -> e instanceof PublishedErrata));
 
-        //create user unpublished errata
-        Errata userUnpublishedErrata = createTestUnpublishedErrata(user.getOrg().getId());
-        assertTrue(userUnpublishedErrata instanceof UnpublishedErrata);
-        assertNotNull(userUnpublishedErrata.getId());
-        assertNotNull(userUnpublishedErrata.getAdvisory());
-
-        //Lookup the user unpublished errata
-        errata = ErrataFactory.lookupById(userUnpublishedErrata.getId());
-        assertTrue(errata instanceof UnpublishedErrata);
-        assertEquals(userUnpublishedErrata.getId(), errata.getId());
-        assertEquals(userUnpublishedErrata.getAdvisory(), userUnpublishedErrata.getAdvisory());
-
-        erratas = ErrataFactory.lookupVendorAndUserErrataByAdvisoryAndOrg(
-                userUnpublishedErrata.getAdvisory(), user.getOrg());
-
-        assertEquals(erratas.size(), 1);
-        assertTrue(erratas.stream().allMatch(e -> e.getId().equals(userUnpublishedErrata.getId())));
-        assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userUnpublishedErrata.getAdvisory())));
-        assertTrue(erratas.stream().allMatch(e -> e instanceof UnpublishedErrata));
-
         //create vendor published errata with same name as user published errata
         Errata vendorPublishedErrata = createTestPublishedErrata(null,
                 Optional.of(userPublishedErrata.getAdvisory()));
@@ -225,47 +149,28 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testCreateAndLookupErrata() throws Exception {
-        //published
         Errata published = createTestPublishedErrata(user.getOrg().getId());
         assertTrue(published instanceof PublishedErrata);
         assertNotNull(published.getId());
         Long pubid = published.getId();
         String pubname = published.getAdvisoryName();
-        //unpublished
-        Errata unpublished = createTestUnpublishedErrata(user.getOrg().getId());
-        assertTrue(unpublished instanceof UnpublishedErrata);
-        assertNotNull(unpublished.getId());
-        Long unpubid = unpublished.getId();
-        String unpubname = unpublished.getAdvisoryName();
 
-        //Lookup the published errata
+        //Lookup the errata
         Errata errata = ErrataFactory.lookupById(pubid);
         assertTrue(errata instanceof PublishedErrata);
         assertEquals(pubid, errata.getId());
         errata = ErrataFactory.lookupByAdvisoryAndOrg(pubname, user.getOrg());
         assertTrue(errata instanceof PublishedErrata);
         assertEquals(pubname, errata.getAdvisoryName());
-
-        //Lookup the unpublished errata
-        errata = ErrataFactory.lookupById(unpubid);
-        assertTrue(errata instanceof UnpublishedErrata);
-        assertEquals(unpubid, errata.getId());
     }
 
     public void testCreateAndLookupErrataNullOrg() throws Exception {
-        //create a published errata with null Org
+        //create an errata with null Org
         Errata published = createTestPublishedErrata(null);
         assertTrue(published instanceof PublishedErrata);
         assertNotNull(published.getId());
         Long pubid = published.getId();
         String pubname = published.getAdvisoryName();
-
-        //unpublished
-        Errata unpublished = createTestUnpublishedErrata(null);
-        assertTrue(unpublished instanceof UnpublishedErrata);
-        assertNotNull(unpublished.getId());
-        Long unpubid = unpublished.getId();
-        String unpubname = unpublished.getAdvisoryName();
 
         //Lookup the published errata by null Org
         Errata errata = ErrataFactory.lookupById(pubid);
@@ -278,11 +183,6 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         //Lookup the published errata by user's Org
         errata = ErrataFactory.lookupByAdvisoryAndOrg(pubname, user.getOrg());
         assertNull(errata);
-
-        //Lookup the unpublished errata by null Org
-        errata = ErrataFactory.lookupById(unpubid);
-        assertTrue(errata instanceof UnpublishedErrata);
-        assertEquals(unpubid, errata.getId());
     }
 
     public void testLastModified() throws Exception {
@@ -292,22 +192,13 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     public void testBugs() throws Exception {
-        //test unpublished
-        Errata e = createTestUnpublishedErrata(user.getOrg().getId());
-        assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
-        e.addBug(ErrataFactoryTest.createUnpublishedBug(123L, "test bug"));
-        assertEquals(1, e.getBugs().size());
-
-        //test published
-        e = createTestPublishedErrata(user.getOrg().getId());
+        var e = createTestPublishedErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().size() == 0);
         e.addBug(ErrataFactoryTest.createPublishedBug(123L, "test bug"));
         assertEquals(1, e.getBugs().size());
     }
 
     public void testFiles() throws Exception {
-        //test unpublished
-        Errata e = createTestUnpublishedErrata(user.getOrg().getId());
         Set errataFilePackages = new HashSet();
         errataFilePackages.add(PackageTest.createTestPackage(user.getOrg()));
         ErrataFile ef = ErrataFactory.createUnpublishedErrataFile(ErrataFactory.
@@ -317,19 +208,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                                                                   TestUtils.randomString(),
                                                                   errataFilePackages);
 
-        assertEquals(1, e.getFiles().size());
-        assertNull(ef.getId());
-
-        e.addFile(ef);
-        TestUtils.saveAndFlush(e);
-
-        assertNotNull(ef.getId());
-        assertEquals(2, e.getFiles().size());
-        assertNotNull(ef.getPackages());
-        assertEquals(1, ef.getPackages().size());
-
-        //test published
-        e = createTestPublishedErrata(user.getOrg().getId());
+        var e = createTestPublishedErrata(user.getOrg().getId());
         ef = ErrataFactory.createPublishedErrataFile(ErrataFactory.
                                                      lookupErrataFileType("RPM"),
                                                      "SOME FAKE CHECKSUM",
@@ -395,17 +274,6 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         return createTestErrata(orgId, advisory);
     }
 
-    public static Errata createTestUnpublishedErrata(Long orgId) throws Exception {
-        return createTestUnpublishedErrata(orgId, empty());
-    }
-
-    public static Errata createTestUnpublishedErrata(Long orgId, Optional<String> advisory) throws Exception {
-        Errata e = ErrataFactory.createUnpublishedErrata();
-        fillOutErrata(e, orgId, advisory);
-        ErrataFactory.save(e);
-        return e;
-    }
-
     private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) throws Exception {
         String name = Opt.fold(advisory, () -> "JAVA Test " + TestUtils.randomString(), Function.identity());
         Org org = null;
@@ -454,37 +322,6 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.setSeverity(s);
     }
 
-    public void testCreateClone() throws Exception {
-
-       Errata published = createTestPublishedErrata(user.getOrg().getId());
-       Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
-       published.addChannel(baseChannel);
-       Errata clone = ErrataFactory.createClone(user.getOrg(), published);
-
-       assertNotNull(clone.getId());
-       assertFalse(published.isCloned());
-       assertTrue(clone.isCloned());
-       assertEquals(published.getProduct(), clone.getProduct());
-       assertEquals(published.getDescription(), clone.getDescription());
-       assertEquals(published.getSynopsis(), clone.getSynopsis());
-       assertEquals(published.getSolution(), clone.getSolution());
-       assertEquals(published.getNotes(), clone.getNotes());
-       assertEquals(published.getTopic(), clone.getTopic());
-       assertEquals(published.getRefersTo(), clone.getRefersTo());
-       assertEquals(published.getUpdateDate(), clone.getUpdateDate());
-       assertEquals(published.getIssueDate(), clone.getIssueDate());
-       assertEquals(published.getAdvisoryType(), clone.getAdvisoryType());
-       assertEquals(published.getAdvisoryRel(), clone.getAdvisoryRel());
-       assertEquals(published.getLocallyModified(), clone.getLocallyModified());
-       assertEquals(published.getSeverity(), clone.getSeverity());
-
-       /* Create a 2nd clone and make sure that the cloning function
-        * does not create a clone whose name collides with the already
-        * existing clone
-        */
-       clone = ErrataFactory.createClone(user.getOrg(), published);
-    }
-
     public static void updateNeedsErrataCache(Long packageId, Long serverId,
             Long errataId) {
         WriteMode m =
@@ -498,16 +335,16 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     public static void testLookupByOriginal() throws Exception {
-
         Long orgId = UserTestUtils.createOrg("testOrgLookupByOriginal");
         Org org = OrgFactory.lookupById(orgId);
         Errata published = createTestPublishedErrata(orgId);
-        ClonedErrata clone = (ClonedErrata) ErrataFactory.createClone(org, published);
+
+        Long ceid = PublishErrataHelper.cloneErrataFaster(published.getId(), org);
 
         List list = ErrataFactory.lookupByOriginal(org, published);
 
         assertEquals(1, list.size());
-        clone = (ClonedErrata) list.get(0);
+        var clone = (ClonedErrata) list.get(0);
         assertTrue(clone.getOriginal().equals(published));
     }
 

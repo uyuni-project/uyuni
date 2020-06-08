@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
-import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rpm.SourceRpm;
 import com.redhat.rhn.frontend.xmlrpc.packages.PackageHelper;
@@ -60,7 +59,6 @@ public class Package extends BaseDomainHelper {
     private Date lastModified;
     private Boolean lockPending = Boolean.FALSE;
     private Set<PublishedErrata> publishedErrata = new HashSet<PublishedErrata>();
-    private Set<UnpublishedErrata> unpublishedErrata = new HashSet<UnpublishedErrata>();
     private Set<Channel> channels = new HashSet<Channel>();
     private Set<PackageFile> packageFiles = new HashSet<PackageFile>();
 
@@ -592,20 +590,6 @@ public class Package extends BaseDomainHelper {
      */
     public void setPublishedErrata(Set<PublishedErrata> publishedErrataIn) {
         this.publishedErrata = publishedErrataIn;
-    }
-
-    /**
-     * @return Returns the unpublishedErrata.
-     */
-    public Set<UnpublishedErrata> getUnpublishedErrata() {
-        return unpublishedErrata;
-    }
-
-    /**
-     * @param unpublishedErrataIn The unpublishedErrata to set.
-     */
-    public void setUnpublishedErrata(Set<UnpublishedErrata> unpublishedErrataIn) {
-        this.unpublishedErrata = unpublishedErrataIn;
     }
 
     /**

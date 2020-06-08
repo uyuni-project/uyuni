@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.channel.test;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
@@ -44,6 +43,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
@@ -70,6 +70,7 @@ import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -927,17 +928,17 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         List<Long> list = new ArrayList<Long>();
         list.add(cchan.getId());
 
-         Errata ce = ErrataManager.createClone(user, oe);
-         ce = ErrataManager.publish(ce, list, user);
+        Long ceid = PublishErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Errata ce = ErrataFactory.lookupById(ceid);
+        ce = ErrataManager.addToChannels(ce, list, user);
 
-         Package testPackage = PackageTest.createTestPackage(user.getOrg());
-         oe.addPackage(testPackage);
-         ochan.addPackage(testPackage);
+        Package testPackage = PackageTest.createTestPackage(user.getOrg());
+        oe.addPackage(testPackage);
+        ochan.addPackage(testPackage);
 
-         List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
-         assertTrue(result.size() == 1);
-         assertEquals(result.get(0).getId(), ce.getId());
-
+        List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
+        assertTrue(result.size() == 1);
+        assertEquals(result.get(0).getId(), ce.getId());
     }
 
     public void testListErrataPackagesForResync() throws Exception {
@@ -953,24 +954,24 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         List<Long> list = new ArrayList<Long>();
         list.add(cchan.getId());
 
-         Errata ce = ErrataManager.createClone(user, oe);
-         ce = ErrataManager.publish(ce, list, user);
+        Long ceid = PublishErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Errata ce = ErrataFactory.lookupById(ceid);
+        ce = ErrataManager.addToChannels(ce, list, user);
 
-         Package testPackage = PackageTest.createTestPackage(user.getOrg());
-         oe.addPackage(testPackage);
-         ochan.addPackage(testPackage);
+        Package testPackage = PackageTest.createTestPackage(user.getOrg());
+        oe.addPackage(testPackage);
+        ochan.addPackage(testPackage);
 
-         RhnSet set = RhnSetDecl.ERRATA_TO_SYNC.get(user);
-         set.clear();
-         set.add(ce.getId());
-         RhnSetManager.store(set);
+        RhnSet set = RhnSetDecl.ERRATA_TO_SYNC.get(user);
+        set.clear();
+        set.add(ce.getId());
+        RhnSetManager.store(set);
 
-         List<PackageOverview> result = ChannelManager.listErrataPackagesForResync(
-                                                 cchan, user, set.getLabel());
-         assertTrue(result.size() == 1);
+        List<PackageOverview> result = ChannelManager.listErrataPackagesForResync(
+                                         cchan, user, set.getLabel());
+        assertTrue(result.size() == 1);
 
-         assertEquals(result.get(0).getId(), testPackage.getId());
-
+        assertEquals(result.get(0).getId(), testPackage.getId());
     }
 
     /**

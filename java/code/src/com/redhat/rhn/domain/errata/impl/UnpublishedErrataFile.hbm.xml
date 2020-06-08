@@ -19,8 +19,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             insert="false" update="false"/>
         <many-to-one name="fileType" class="com.redhat.rhn.domain.errata.ErrataFileType"
             column="type" />
-        <many-to-one name="errata" class="com.redhat.rhn.domain.errata.impl.UnpublishedErrata"
-            column="errata_id" />
         <set name="channels" lazy="true" table="rhnErrataFileChannelTmp">
             <key column="errata_file_id"/>
             <many-to-many

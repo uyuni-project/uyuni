@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.errata.impl;
 
-import com.redhat.rhn.common.security.errata.PublishedOnlyException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.AbstractErrata;
 import com.redhat.rhn.domain.errata.Cve;
@@ -69,14 +68,12 @@ public class UnpublishedErrata extends AbstractErrata {
      * {@inheritDoc}
      */
     public void addChannel(Channel channelIn) {
-        throw new PublishedOnlyException("Only published erratas can have channels");
     }
 
     /**
      * {@inheritDoc}
      */
     public void setChannels(Set channelsIn) {
-        throw new PublishedOnlyException("Only published erratas can have channels");
     }
 
     /**
@@ -91,14 +88,12 @@ public class UnpublishedErrata extends AbstractErrata {
      * {@inheritDoc}
      */
     public void addNotification(Date dateIn) {
-        throw new PublishedOnlyException("Only published erratas can have notifications");
     }
 
     /**
      * {@inheritDoc}
      */
     public void setNotificationQueue(Set queueIn) {
-        throw new PublishedOnlyException("Only published erratas can have notifications");
     }
 
     /**

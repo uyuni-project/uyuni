@@ -92,8 +92,8 @@ public class ChannelAction extends RhnSetAction {
             return failNoChannelsSelected(request, mapping, errata.getId());
         }
 
-        //publish the errata
-        errata = ErrataManager.publish(errata, getChannelIdsFromRhnSet(set), user);
+        //add to appropriate channels
+        errata = ErrataManager.addToChannels(errata, getChannelIdsFromRhnSet(set), user);
 
         return strutsDelegate.forwardParam(mapping.findForward("publish"),
                 "eid",
