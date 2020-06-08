@@ -1,3 +1,4 @@
+- only report real error, not result (bsc#1171687)
 - use defined return values for spacecmd methods so scripts can
   check for failure (bsc#1171687)
 
