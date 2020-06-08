@@ -175,7 +175,7 @@ class MaintenanceWindows extends React.Component {
                 messages: msgs
             });
 
-            this.getDetails(item, "edit");
+            this.getDetails(item.calendarId, "edit");
         }).catch(this.handleResponseError);
     };
 

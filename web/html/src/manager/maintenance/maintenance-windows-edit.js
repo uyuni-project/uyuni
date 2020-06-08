@@ -229,6 +229,7 @@ class MaintenanceWindowsEdit extends React.Component {
                                                   </div>
                                               }
                                               onConfirm={() => this.props.onRefresh({
+                                                  calendarId: this.state.calendarId,
                                                   calendarName: this.state.calendarName,
                                                   strategy: this.state.strategy ? "Cancel" : "Fail",
                                                   calendarUrl: this.state.calendarUrl
