@@ -3727,7 +3727,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.nochannelsselected">
-        <source>A published patch must belong to at least one channel.</source>
+        <source>At least one channel must be selected.</source>
         <target>প্রকাশিত ত্রুটি-বিচ্যুতির তথ্য অন্তত একটি চ্যানেলের সাথে যুক্ত হওয়া আবশ্যক।</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
@@ -4591,7 +4591,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions">
-        <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+        <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -4714,6 +4714,12 @@ organization. You may grant or remove the organization administrator role in the
       <trans-unit id="errata.create.jsp.notes">
         <source>Notes:</source>
         <target>বিবরণ:</target>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="errata.create.jsp.channels">
+        <source>Channels to add:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -7915,7 +7921,7 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
       </trans-unit>
       <trans-unit id="cloneconfirm.jsp.pagesummary">
-        <source>The patches listed below will be cloned. Once they are cloned, they will appear in your &lt;a href=&quot;{0}&quot;&gt;unpublished patches list&lt;/a&gt;. From there you can verify the text and associated packages for each patch. Once you are ready, you can publish the patches so they are available to users in your organization.</source>
+        <source>The patches listed here will be cloned and added in the channels selected below. Once they are cloned, they will appear in each channel's patch list.</source>
         <target>নিম্নলিখিত ত্রুটি-বিচ্যুতির তথ্য ক্লোন করা হবে। ক্লোন করার পরে সেগুলি আপনার &lt;a href="{0}"&gt;অপ্রকাশিত ত্রুটি-বিচ্যুতির তালিকায়&lt;/a&gt; অন্তর্ভুক্ত করা হবে। এই স্থান থেকে প্রতিটি ত্রুটি-বিচ্যুতির তথ্য ও সংশ্লিষ্ট প্যাকেজ পরীক্ষা করা যাবে। সমস্ত প্রস্তুতির পরে প্রতিষ্ঠানের ব্যবহারকারীদের জন্য ত্রুটি-বিচ্যুতির তথ্য উপলব্ধ করার জন্য সেগুলি প্রকাশ করা যাবে।</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneConfirm.do</context>
