@@ -15,23 +15,25 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
+import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnAction;
-import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
 
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,10 +42,13 @@ import javax.servlet.http.HttpServletResponse;
  * CloneConfirmAction
  * @version $Rev$
  */
-public class CloneConfirmAction extends RhnAction {
+public class CloneConfirmAction extends RhnSetAction {
+
+    /** This class reuses code in the channel assignment page */
+    private ChannelAction channelAction = new ChannelAction();
 
     /** {@inheritDoc} */
-    public ActionForward execute(ActionMapping mapping,
+    public ActionForward clone(ActionMapping mapping,
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
@@ -51,15 +56,26 @@ public class CloneConfirmAction extends RhnAction {
         RequestContext rctx = new RequestContext(request);
         User user = rctx.getCurrentUser();
 
-        DataResult dr = ErrataManager.selectedForCloning(user, null);
+        //Make sure at least one channel is selected
+        RhnSet channelSet = updateSet(request);
+        if (channelSet.isEmpty()) {
+            ActionErrors errors = new ActionErrors();
+            errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("errata.publish.nochannelsselected"));
+            addErrors(request, errors);
+            return mapping.findForward("failure");
+        }
 
-        cloneDataResult(user, dr);
+        DataResult<ErrataOverview> dr = ErrataManager.selectedForCloning(user, null);
+
+        channelSet.getElements().forEach(c -> {
+            ErrataManager.cloneChannelErrata(dr, c.getElement(), user);
+        });
 
         RhnSet set = RhnSetDecl.ERRATA_CLONE.get(user);
         set.clear();
         RhnSetManager.store(set);
 
-        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+        return mapping.findForward("success");
     }
 
     /**
@@ -67,15 +83,35 @@ public class CloneConfirmAction extends RhnAction {
      * @param user user the errata is being cloned for
      * @param dr list of Errata to be cloned
      */
-    protected void cloneDataResult(User user, DataResult dr) {
+    protected void cloneDataResult(User user, DataResult<ErrataOverview> dr) {
+        dr.forEach(eo -> {
+            Long cloneId = PublishErrataHelper.cloneErrataFaster(eo.getId(), user.getOrg());
+
+        });
         Iterator i = dr.iterator();
 
         while (i.hasNext()) {
             ErrataOverview eo = (ErrataOverview) i.next();
 
-            Errata e = ErrataFactory.lookupById(eo.getId());
-            ErrataManager.createClone(user, e);
-
         }
+    }
+
+    protected void processMethodKeys(Map<String, String> map) {
+        map.put("deleteconfirm.jsp.confirm", "clone");
+    }
+
+    @Override
+    protected RhnSetDecl getSetDecl() {
+        return channelAction.getSetDecl();
+    }
+
+    @Override
+    protected DataResult getDataResult(User user, ActionForm formIn, HttpServletRequest request) {
+        return channelAction.getDataResult(user, formIn, request);
+    }
+
+    @Override
+    protected void processParamMap(ActionForm form, HttpServletRequest request, Map<String, Object> params) {
+        channelAction.processParamMap(form, request, params);
     }
 }

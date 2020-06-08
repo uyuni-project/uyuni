@@ -591,7 +591,7 @@ public class ErrataManager extends BaseManager {
      * @param pc PageControl
      * @return errata selected for cloning
      */
-    public static DataResult selectedForCloning(User user, PageControl pc) {
+    public static DataResult<ErrataOverview> selectedForCloning(User user, PageControl pc) {
         return errataInSet(user, pc, "in_set", "clone_errata_list");
     }
 
@@ -650,7 +650,7 @@ public class ErrataManager extends BaseManager {
      * @param label Set label
      * @return all of the errata
      */
-    private static DataResult errataInSet(User user, PageControl pc, String mode,
+    private static DataResult<ErrataOverview> errataInSet(User user, PageControl pc, String mode,
             String label) {
         SelectMode m = ModeFactory.getMode("Errata_queries", mode);
         Map<String, Object> params = new HashMap<String, Object>();

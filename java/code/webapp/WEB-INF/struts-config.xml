@@ -2143,12 +2143,17 @@
      <action path="/errata/manage/CloneConfirmSubmit"
          scope="request"
          input="/WEB-INF/pages/admin/errata/cloneconfirm.jsp"
+         parameter="dispatch"
          type="com.redhat.rhn.frontend.action.errata.CloneConfirmAction"
          className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
          <set-property property="acls" value="user_role(channel_admin)"/>
          <forward name="default"
-                  path="/errata/manage/UnpublishedErrata.do" redirect="true"/>
+                  path="/errata/manage/CloneConfirm.do" redirect="true"/>
+         <forward name="failure"
+                  path="/errata/manage/CloneConfirm.do"/>
+         <forward name="success"
+                  path="/errata/manage/PublishedErrata.do" redirect="true"/>
      </action>
 
     <action path="/errata/manage/UnpublishedDeleteConfirm"
@@ -2222,10 +2227,12 @@
              name="errataCreateForm"
              scope="request"
              input="/WEB-INF/pages/errata/create.jsp"
+             parameter="dispatch"
              type="com.redhat.rhn.frontend.action.errata.CreateAction"
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="postRequired" value="true" />
          <set-property property="acls" value="user_role(channel_admin)"/>
+         <forward name="default" path="/errata/manage/Create.do"/>
          <forward name="failure" path="/errata/manage/Create.do"/>
          <forward name="success" path="/errata/manage/Edit.do" redirect="true"/>
      </action>

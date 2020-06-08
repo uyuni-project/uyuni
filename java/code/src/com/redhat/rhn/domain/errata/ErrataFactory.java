@@ -17,6 +17,8 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
+
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -820,7 +822,7 @@ public class ErrataFactory extends HibernateFactory {
                     .setParameter("original", original)
                     .setParameter("org", org).list();
 
-            if (retval == null) {
+            if (isEmpty(retval)) {
                 retval = lookupPublishedByOriginal(org, original);
             }
 
