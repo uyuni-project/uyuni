@@ -1,3 +1,4 @@
+- copy /var/lib/spacewalk during migration (bsc#1169550)
 - Enable support for bootstrapping Ubuntu 20.04 LTS added from the
   Setup Wizard or mgr-sync
 - Make systemd services and timers enablement really quiet
