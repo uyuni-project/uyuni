@@ -13,6 +13,7 @@ type Props = {
   domainCaps: Object,
   poolCaps: Object,
   pools: Array<Object>,
+  poolCaps: Object,
   onlyHandledDisks: boolean,
 }
 

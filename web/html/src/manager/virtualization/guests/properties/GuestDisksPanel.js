@@ -12,6 +12,7 @@ type Props = {
   changeModel: Function,
   pools: Array<Object>,
   caps: Object,
+  poolCaps: Object,
 }
 
 export function GuestDisksPanel(props: Props) : React.Node {
@@ -84,6 +85,7 @@ export function GuestDisksPanel(props: Props) : React.Node {
               index={index}
               domainCaps={props.caps}
               pools={props.pools}
+              poolCaps={props.poolCaps}
               onlyHandledDisks={onlyHandledDisks}
             />
         }
