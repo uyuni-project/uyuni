@@ -598,4 +598,12 @@ public class ClusterManager {
     private String getGroupDescription(String clusterName) {
         return "Group for cluster " + clusterName;
     }
+
+    /**
+     * @param serverGroupId id of the server group
+     * @return true if the server group is owned by a cluster
+     */
+    public boolean isClusterGroup(Long serverGroupId) {
+        return ClusterFactory.findClusterByGroupId(serverGroupId).isPresent();
+    }
 }

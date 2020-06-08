@@ -33,7 +33,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
-import com.suse.manager.clusters.ClusterFactory;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
 import org.apache.log4j.Logger;
@@ -546,6 +546,7 @@ public class Access extends BaseHandler {
         Map map = (Map) ctx;
         Long sgid = getAsLong(map.get("sgid"));
         User user = (User) map.get("user");
-        return ClusterFactory.findClusterByGroupId(sgid).isPresent();
+        return ClusterManager.instance().isClusterGroup(sgid);
     }
+
 }
