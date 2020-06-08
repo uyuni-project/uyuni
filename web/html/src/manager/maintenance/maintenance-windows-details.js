@@ -11,8 +11,8 @@ const {Form} = require("components/input/Form");
 const {Check} = require("components/input/Check");
 const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 
-const scheduleTypeToString = (type) => {
-    switch (type) {
+const scheduleTypeToString = (scheduleType) => {
+    switch (scheduleType) {
         case "MULTI":
             return "Multi";
         case "SINGLE":
@@ -27,6 +27,7 @@ class MaintenanceWindowsDetails extends React.Component {
         super(props);
 
         this.state = {
+            type: props.type,
             calendarData: this.props.data.calendarData,
             messages: [],
         };
@@ -86,7 +87,7 @@ class MaintenanceWindowsDetails extends React.Component {
                         </tr>
                         <tr>
                             <td>{t("Used by schedule")}:</td>
-                            <td>{t(data.scheduleNames)}</td>
+                            <td>{t(data.scheduleNames.map(name => name.name).join(", "))}</td>
                         </tr>
                         {data.calendarUrl &&
                         <tr>
@@ -127,7 +128,9 @@ class MaintenanceWindowsDetails extends React.Component {
                     icon="fa-edit"
                     title={t("Edit")}
                     className="btn-default"
-                    handler={() => this.props.onEdit(this.props.data)}
+                    handler={() => this.props.onEdit(
+                        this.state.type === "schedule" ? this.props.data.scheduleId : this.props.data.calendarId
+                    )}
                 />
                 <ModalButton
                     text={t("Delete")}
@@ -148,7 +151,7 @@ class MaintenanceWindowsDetails extends React.Component {
             >
                 { this.state.messages ?
                     <Messages items={this.state.messages}/> : null }
-                {type === "schedule" ? this.renderScheduleDetails(this.props.data)
+                {this.state.type === "schedule" ? this.renderScheduleDetails(this.props.data)
                     : this.renderCalendarDetails(this.props.data)}
                 {this.props.data.calendarData &&
                 <div className="panel panel-default">

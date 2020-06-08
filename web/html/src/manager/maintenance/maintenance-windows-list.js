@@ -18,6 +18,7 @@ class MaintenanceWindowsList extends React.Component {
         super(props);
 
         this.state = {
+            type: props.type,
             itemToDelete: {}
         };
     }
@@ -52,12 +53,26 @@ class MaintenanceWindowsList extends React.Component {
                     header={t('Schedule Name')}
                     cell={(row) => row.scheduleName}
                 />
+                {/*TODO: Move styling to its own css file*/}
                 <Column
                     columnClass="text-center"
                     headerClass="text-center"
                     columnKey="calendarName"
                     header={t('Calendar')}
-                    cell={(row) => row.calendarName}
+                    cell={(row) =>
+                        <a style={{
+                            display: "inline-block",
+                            padding: "2px 4px",
+                            border: "1px solid #ccc",
+                            margin: "0 3px",
+                            borderRadius: "1px",
+                            backgroundColor: "#eee",
+                            color: "inherit"
+                        }}
+                           href={t("/rhn/manager/schedule/maintenance/calendars#/details/" + row.calendarId)}>
+                            {row.calendarName}
+                        </a>
+                    }
                 />
                 <Column
                     columnClass="text-right"
@@ -69,13 +84,13 @@ class MaintenanceWindowsList extends React.Component {
                                 className="btn-default btn-sm"
                                 title={t("Details")}
                                 icon="fa-list"
-                                handler={() => {this.props.onSelect(row)}}
+                                handler={() => {this.props.onSelect(row.scheduleId)}}
                             />
                             <Button
                                 className="btn-default btn-sm"
                                 title={t("Edit")}
                                 icon="fa-edit"
-                                handler={() => {this.props.onEdit(row)}}
+                                handler={() => {this.props.onEdit(row.scheduleId)}}
                             />
                             <ModalButton
                                 className="btn-default btn-sm"
@@ -117,7 +132,20 @@ class MaintenanceWindowsList extends React.Component {
                     headerClass="text-center"
                     columnKey="usedBySchedule"
                     header={t('Used by Schedule')}
-                    cell={(row) => row.scheduleNames.join(", ")}
+                    cell={(row) => row.scheduleNames.map(name =>
+                        <a style={{
+                            display: "inline-block",
+                            padding: "2px 4px",
+                            border: "1px solid #ccc",
+                            margin: "0 3px",
+                            borderRadius: "1px",
+                            backgroundColor: "#eee",
+                            color: "inherit"
+                        }}
+                           href={"/rhn/manager/schedule/maintenance/schedules#/details/" + name.id}>
+                            {name.name}
+                        </a>
+                    )}
                 />
                 <Column
                     columnClass="text-right"
@@ -129,13 +157,13 @@ class MaintenanceWindowsList extends React.Component {
                                 className="btn-default btn-sm"
                                 title={t("Details")}
                                 icon="fa-list"
-                                handler={() => {this.props.onSelect(row)}}
+                                handler={() => {this.props.onSelect(row.calendarId)}}
                             />
                             <Button
                                 className="btn-default btn-sm"
                                 title={t("Edit")}
                                 icon="fa-edit"
-                                handler={() => {this.props.onEdit(row)}}
+                                handler={() => {this.props.onEdit(row.calendarId)}}
                             />
                             <ModalButton
                                 className="btn-default btn-sm"
@@ -152,11 +180,11 @@ class MaintenanceWindowsList extends React.Component {
             <DeleteDialog id="delete-modal"
                           title={t("Delete maintenance calendar")}
                           content={
-                                  <Form model={{strategy: this.state.strategy}} onChange={this.setCheck}>
-                                      <div>{t("Are you sure you want to delete the selected item?")}</div>
-                                      <div>{t("Deleting this calendar will unassign all schedules from this calendar.")}</div>
-                                      <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
-                                  </Form>
+                              <Form model={{strategy: this.state.strategy}} onChange={this.setCheck}>
+                                  <div>{t("Are you sure you want to delete the selected item?")}</div>
+                                  <div>{t("Deleting this calendar will unassign all schedules from this calendar.")}</div>
+                                  <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
+                              </Form>
                           }
                           onConfirm={() => this.props.onDelete(this.addStrategy())}
                           onClosePopUp={() => this.selectToDelete({})}
@@ -179,14 +207,14 @@ class MaintenanceWindowsList extends React.Component {
 
         return (
             <div>
-                <InnerPanel title={t("Maintenance " +  (type === "schedule" ? "Schedules" : "Calendars"))} icon="spacewalk-icon-salt" buttons={this.props.disableCreate ? null : createButton}>
+                <InnerPanel title={t("Maintenance " +  (this.state.type === "schedule" ? "Schedules" : "Calendars"))} icon="spacewalk-icon-salt" buttons={this.props.disableCreate ? null : createButton}>
                     <div className="panel panel-default">
                         <div className="panel-heading">
                             <div>
-                                <h3>{t(type === "schedule" ? "Schedules" : "Calendars")}</h3>
+                                <h3>{t(this.state.type === "schedule" ? "Schedules" : "Calendars")}</h3>
                             </div>
                         </div>
-                        {type === "schedule" ? this.renderScheduleTable() : this.renderCalendarTable()}
+                        {this.state.type === "schedule" ? this.renderScheduleTable() : this.renderCalendarTable()}
                     </div>
                 </InnerPanel>
             </div>

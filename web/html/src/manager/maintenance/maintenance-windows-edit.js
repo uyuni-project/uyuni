@@ -20,6 +20,7 @@ class MaintenanceWindowsEdit extends React.Component {
         super(props);
 
         this.state = {
+            type: props.type,
             calendarDataText: "",
             selectedCalendar: 0
         };
@@ -35,7 +36,7 @@ class MaintenanceWindowsEdit extends React.Component {
         Object.assign(this.state, {
             calendarAdded: schedule.calendarName ? true : false
         })
-        if (type === "schedule" && this.props.calendarNames.length > 1 && this.props.schedule.calendarName) {
+        if (this.state.type === "schedule" && this.props.calendarNames.length > 1 && this.props.schedule.calendarName) {
             Object.assign(this.state, {
                 selectedCalendar: this.props.calendarNames.filter(name => name.text === this.props.schedule.calendarName)[0].id
             });
@@ -43,7 +44,7 @@ class MaintenanceWindowsEdit extends React.Component {
     };
 
     setCalendarName = () => {
-        return type === "schedule" ?
+        return this.state.type === "schedule" ?
             ((this.state.calendarAdded && this.state.calendarName) ? this.state.calendarName : "<None>")
             : this.state.calendarName;
     };
@@ -263,7 +264,7 @@ class MaintenanceWindowsEdit extends React.Component {
                 <AsyncButton action={this.onEdit} defaultType="btn-success"
                              disabled={this.state.icalLoading}
                              text={(this.isEdit() ? t("Update ") : t("Create ")) +
-                             (type === "schedule" ? t("Schedule") : t("Calendar"))}
+                             (this.state.type === "schedule" ? t("Schedule") : t("Calendar"))}
                 />
             </div>
         ];
@@ -274,7 +275,7 @@ class MaintenanceWindowsEdit extends React.Component {
         ];
         return (
             <InnerPanel title={t("Schedule Maintenance Window")} icon="spacewalk-icon-salt" buttonsLeft={buttonsLeft} buttons={buttons} >
-                {type === "schedule" ? this.renderScheduleEdit() : this.renderCalendarEdit()}
+                {this.state.type === "schedule" ? this.renderScheduleEdit() : this.renderCalendarEdit()}
                 <input type="file" id="ical-data-upload" style={{display: "none"}} onChange={this.onIcalFileAttach}/>
             </InnerPanel>
         );
