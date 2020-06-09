@@ -1,3 +1,5 @@
+- Add channels for openSUSE Leap 15.1 and Uyuni Client Tools, and
+  Uyuni Client Tools for SLE15SP2
 - Use HTTPS for Oracle repositories
 
 -------------------------------------------------------------------
