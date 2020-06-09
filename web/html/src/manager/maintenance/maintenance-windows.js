@@ -1,6 +1,8 @@
 /* eslint-disable */
 'use strict';
 
+import "./maintenance-windows.css";
+
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Messages = require("components/messages").Messages;
