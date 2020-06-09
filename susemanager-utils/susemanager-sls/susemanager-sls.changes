@@ -1,3 +1,4 @@
+- Avoid SSL certificate issue when bootstrapping OpenSUSE Leap 15.2 (bsc#1172712)
 - Add Salt states for CaaSP cluster management
 - Use minion fqdn instead of minion id as target in kiwi_collect_image
   runner. If fqdn is not present or is localhost, use minion ip as
