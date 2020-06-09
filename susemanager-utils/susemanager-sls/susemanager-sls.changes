@@ -1,3 +1,4 @@
+- Avoid SSL certificate issue when bootstrapping OpenSUSE Leap 15.2 (bsc#1172712)
 - Add missing certs SLS files for Debian 10 and Ubuntu 20.04 (bsc#1173896)
 
 -------------------------------------------------------------------
