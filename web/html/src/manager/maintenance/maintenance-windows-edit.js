@@ -186,8 +186,7 @@ class MaintenanceWindowsEdit extends React.Component {
                     <div className="form-group">
                         <label className="col-md-3 control-label">{t("Calendar data")}:</label>
                         {(!this.isEdit() || this.state.calendarUrl) &&
-                        <div className={"col-md-" + (this.isEdit() ? "5" : "4")}
-                             style={{alignItems: "center", display: "flex"}} >
+                        <div className={"align-center col-md-" + (this.isEdit() ? "5" : "4")} >
                             <input type="text" className="form-control"
                                    style={{textOverflow: "ellipsis"}}
                                    placeholder={t("Enter Url to ical file")}
