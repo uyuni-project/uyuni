@@ -53,22 +53,13 @@ class MaintenanceWindowsList extends React.Component {
                     header={t('Schedule Name')}
                     cell={(row) => row.scheduleName}
                 />
-                {/*TODO: Move styling to its own css file*/}
                 <Column
                     columnClass="text-center"
                     headerClass="text-center"
                     columnKey="calendarName"
                     header={t('Calendar')}
                     cell={(row) =>
-                        <a style={{
-                            display: "inline-block",
-                            padding: "2px 4px",
-                            border: "1px solid #ccc",
-                            margin: "0 3px",
-                            borderRadius: "1px",
-                            backgroundColor: "#eee",
-                            color: "inherit"
-                        }}
+                        <a className="list-tag-link"
                            href={t("/rhn/manager/schedule/maintenance/calendars#/details/" + row.calendarId)}>
                             {row.calendarName}
                         </a>
@@ -133,15 +124,7 @@ class MaintenanceWindowsList extends React.Component {
                     columnKey="usedBySchedule"
                     header={t('Used by Schedule')}
                     cell={(row) => row.scheduleNames.map(name =>
-                        <a style={{
-                            display: "inline-block",
-                            padding: "2px 4px",
-                            border: "1px solid #ccc",
-                            margin: "0 3px",
-                            borderRadius: "1px",
-                            backgroundColor: "#eee",
-                            color: "inherit"
-                        }}
+                        <a className="list-tag-link"
                            href={"/rhn/manager/schedule/maintenance/schedules#/details/" + name.id}>
                             {name.name}
                         </a>
