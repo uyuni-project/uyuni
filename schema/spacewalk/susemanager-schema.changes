@@ -1,3 +1,5 @@
+- Enable the monitoring entitlement for s390x (bsc#1172627)
+
 -------------------------------------------------------------------
 Thu Apr 23 10:32:19 CEST 2020 - jgonzalez@suse.com
 
