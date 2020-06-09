@@ -400,9 +400,7 @@ public class LocalizationService {
      * @return String representation of given date.
      */
     public String formatDate(Instant instant) {
-        Context ctx = Context.getCurrentContext();
-        Date date = Date.from(instant);
-        return formatDate(date, ctx.getLocale());
+        return formatDate(Date.from(instant));
     }
 
     /**
