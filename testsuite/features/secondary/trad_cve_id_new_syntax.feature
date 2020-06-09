@@ -6,6 +6,8 @@ Feature: Support for new CVE-ID syntax
   Scenario: Check perseus-dummy-7891 patches
     Given I am on the patches page
     When I follow the left menu "Patches > Patches > All"
+    And I enter "dummy" as the filtered synopsis
+    And I click on the filter button
     And I follow "perseus-dummy-7891"
     Then I should see a "perseus-dummy-7891 - Security Advisory" text
     And I should see a "CVE-1999-12345" link

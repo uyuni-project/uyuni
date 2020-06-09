@@ -701,7 +701,6 @@ When(/^I disable repositories after installing Docker$/) do
     repos = "containers_pool_repo containers_updates_repo"
     puts $build_host.run("zypper mr --disable #{repos}")
   end
-
 end
 
 When(/^I enable repositories before installing branch server$/) do
