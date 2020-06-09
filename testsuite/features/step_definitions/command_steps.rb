@@ -858,7 +858,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   # we need "host" utility
   step "I install package \"bind-utils\" on this \"#{host}\""
   # direct name resolution
-  ["proxy.example.org", "download.suse.de"].each do |dest|
+  ["proxy.example.org", "dns.google.com"].each do |dest|
     output, return_code = node.run("host #{dest}", fatal = false)
     raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
@@ -866,7 +866,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   # reverse name resolution
   net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   client = net_prefix + "2"
-  [client, "149.44.176.1"].each do |dest|
+  [client, "8.8.8.8"].each do |dest|
     output, return_code = node.run("host #{dest}", fatal = false)
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
