@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 12:14:57 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
 - Allow spacewalk-repo-sync to sync empty DEB repositories.
 - supportconfig speedup fixes, add option to not compress spacewalk-debug output dir
 - Prevent failure when syncing from RHEL CDN due extra params (bsc#1171885)
