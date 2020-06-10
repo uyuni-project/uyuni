@@ -161,7 +161,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I select "ide" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen_server" should have a "test-vm_disk-1.qcow2" xen disk
+    And "test-vm" virtual machine on "xen_server" should have a "test-vm_disk-1" xen disk from pool "test-pool0"
     And "test-vm" virtual machine on "xen_server" should have a ide cdrom
 
 @virthost_xen
@@ -198,7 +198,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "xen_server" should have a "test-vm2_system.qcow2" xen disk
+    And "test-vm2" virtual machine on "xen_server" should have a "test-vm2_system" xen disk from pool "test-pool0"
 
 @virthost_xen
   Scenario: Show the Spice graphical console for Xen
@@ -223,7 +223,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
     And "test-vm3" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system.qcow2" xen disk
+    And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system" xen disk from pool "test-pool0"
 
 @virthost_xen
   Scenario: Show the virtual storage pools and volumes for Xen
@@ -231,7 +231,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I refresh the "test-pool0" storage pool of this "xen_server"
     And I follow "Storage"
     And I open the sub-list of the product "test-pool0"
-    Then I wait until I see "test-vm2_system.qcow2" text
+    Then I wait until I see "test-vm2_system" text
 
 @virthost_xen
   Scenario: delete a running Xen virtual machine

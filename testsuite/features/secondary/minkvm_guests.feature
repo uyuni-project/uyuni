@@ -162,7 +162,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "ide" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk-1.qcow2" virtio disk
+    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk-1" virtio disk from pool "test-pool0"
     And "test-vm" virtual machine on "kvm_server" should have a ide cdrom
 
 @virthost_kvm
@@ -197,7 +197,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system.qcow2" virtio disk
+    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system" virtio disk from pool "test-pool0"
 
 @virthost_kvm
   Scenario: Show the Spice graphical console for KVM
@@ -212,7 +212,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     When I refresh the "test-pool0" storage pool of this "kvm_server"
     And I follow "Storage"
     And I open the sub-list of the product "test-pool0"
-    Then I wait until I see "test-vm2_system.qcow2" text
+    Then I wait until I see "test-vm2_system" text
 
 @virthost_kvm
   Scenario: delete a running KVM virtual machine
