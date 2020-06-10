@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 12:21:25 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
 - Add channels for openSUSE Leap 15.1 and Uyuni Client Tools, and
   Uyuni Client Tools for SLE15SP2
 - Use HTTPS for Oracle repositories
