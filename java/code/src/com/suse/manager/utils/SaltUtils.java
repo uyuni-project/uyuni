@@ -1913,14 +1913,15 @@ public class SaltUtils {
             if (json.isJsonObject() && json.getAsJsonObject().has(key)) {
                 if (json.getAsJsonObject().get(key).isJsonPrimitive() &&
                     json.getAsJsonObject().get(key).getAsJsonPrimitive().isString()) {
-                    return Optional.of(json.getAsJsonObject()
-                            .get(key).getAsJsonPrimitive().getAsString());
+                    return Optional.ofNullable(
+                            json.getAsJsonObject().get(key).getAsJsonPrimitive().getAsString())
+                            .filter(s -> !s.isEmpty());
                 }
                 else if (json.getAsJsonObject().get(key).isJsonArray()) {
                     StringBuilder msg = new StringBuilder();
                     json.getAsJsonObject().get(key).getAsJsonArray()
                             .forEach(elem -> msg.append(elem.getAsString()));
-                    return Optional.of(msg.toString());
+                    return Optional.ofNullable(msg.toString()).filter(s -> !s.isEmpty());
                 }
             }
         }
