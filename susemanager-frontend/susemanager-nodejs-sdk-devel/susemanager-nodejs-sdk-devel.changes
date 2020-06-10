@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 12:37:44 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.5-1
 - update websocket-extensions - CVE-2020-7662
 - remove toastr, add react-toastify
 
