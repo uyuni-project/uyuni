@@ -141,7 +141,7 @@
 
                             <c:otherwise>
                                 <rhn:hidden name="schedule_type" value="maintenance_window" />
-                                <div class="col-md-3"> </div>
+                                <div class="col-md-3"><bean:message key="schedule.jsp.maint-window"/></div>
                                 <jsp:include page="/WEB-INF/pages/common/fragments/maintenance-window-picker.jsp" />
                             </c:otherwise>
                         </c:choose>
