@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 14:26:36 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.17-1
 - add Ubuntu 20.04 LTS
 - add SLE Live Patching (Z-Series) and SLES LTSS 12 SP3 ARM64
 
