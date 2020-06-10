@@ -163,6 +163,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1936,12 +1937,15 @@ public class SaltUtils {
      * @return the error as a string
      */
     public static String decodeSaltErr(SaltError saltErr) {
-        Optional<String> errorMessage = SaltUtils.decodeStdMessage(saltErr, "stderr");
-        Optional<String> outMessage = !errorMessage.isPresent() ?
-                SaltUtils.decodeStdMessage(saltErr, "stdout") : errorMessage;
-        Optional<String> returnMessage = !outMessage.isPresent() ?
-                SaltUtils.decodeStdMessage(saltErr, "return") : outMessage;
-        return returnMessage.orElseGet(() -> saltErr.toString());
+        List<Optional<String>> messages = new LinkedList<>();
+        messages.add(SaltUtils.decodeStdMessage(saltErr, "stderr"));
+        messages.add(SaltUtils.decodeStdMessage(saltErr, "stdout"));
+        messages.add(SaltUtils.decodeStdMessage(saltErr, "return"));
+        Optional<String> error = Optional.ofNullable(messages.stream()
+                    .flatMap(Optional::stream)
+                    .collect(Collectors.joining(" "))
+                ).filter(s -> !s.isEmpty());
+        return error.orElseGet(() -> saltErr.toString());
     }
 
     /**
