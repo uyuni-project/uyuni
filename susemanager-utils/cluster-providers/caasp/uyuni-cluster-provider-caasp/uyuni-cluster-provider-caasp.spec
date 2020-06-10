@@ -23,7 +23,7 @@
 %define fname caasp
 %define fdir %{_datadir}/susemanager/cluster-providers
 Name:           uyuni-cluster-provider-caasp
-Version:        4.1.0
+Version:        4.1.1
 Release:        1
 Summary:        SUSE CaaS Platform cluster provider for SUSE Manager
 License:        GPL-2.0-only
