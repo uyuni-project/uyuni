@@ -1,3 +1,5 @@
+- Enable osimage_build_host for additional architectures (bsc#1149101, bsc#1172076)
+
 -------------------------------------------------------------------
 Wed Jun 10 12:40:28 CEST 2020 - jgonzalez@suse.com
 
