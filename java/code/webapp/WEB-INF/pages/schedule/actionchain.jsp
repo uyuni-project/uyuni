@@ -50,7 +50,10 @@
                         <th><bean:message key="actionchain.jsp.delete"/></th>
                     </tr>
                 </thead>
-                <tbody class="action-chain" data-action-chain-id="${param.id}">
+                <tbody
+                    class="action-chain"
+                    data-action-chain-id="${param.id}"
+                    data-maintenance-windows-present="${maintenanceWindows != null || maintenanceWindowsMultiSchedules != null}">
                     <c:forEach items="${groups}" var="group">
                         <tr class="group" data-sort-order="${group.sortOrder}">
                             <td>

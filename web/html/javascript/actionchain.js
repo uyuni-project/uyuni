@@ -1,5 +1,6 @@
 $(function() {
   var actionChainId = $(".action-chain").data("action-chain-id");
+  var maintenanceWindowsPresent = $(".action-chain").data("maintenance-windows-present");
 
   // handle clik on title label
   $("#label-link").click(function(){
@@ -69,13 +70,20 @@ $(function() {
   // handle click on save changes
   $("#save").click(function(){
     save(function onSuccess(text) {
-      $("#error-message").hide();
-      $("#success-message").text(text).fadeIn();
-
-      $("#label-link-text").text($("#label-input").val());
-      $("#label-link").show();
-      $("#label-input").hide();
-      clearUnsavedData();
+      if (maintenanceWindowsPresent) {
+        // only when we deal with maintenance windows
+        // we will refresh the page (the datepicker must be reloaded)
+        clearUnsavedData();
+        location.reload();
+      } else {
+        $("#error-message").hide();
+        $("#success-message").text(text).fadeIn();
+  
+        $("#label-link-text").text($("#label-input").val());
+        $("#label-link").show();
+        $("#label-input").hide();
+        clearUnsavedData();
+      }
     });
     return false;
   });
