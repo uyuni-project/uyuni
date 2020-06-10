@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 12:40:28 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
 - Add tables for cluster management
 - Enable the monitoring entitlement for s390x (bsc#1172627)
 - update package provider name
