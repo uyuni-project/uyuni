@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 12:22:39 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.11-1
 - UI for managing clusters
 - Remove lowercase image label limitation
 - Sort activation keys on bootstrapping page (bsc#1171251)
