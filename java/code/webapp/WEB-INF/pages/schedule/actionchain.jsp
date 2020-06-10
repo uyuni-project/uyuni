@@ -102,7 +102,7 @@
                 <rhn:submitted/>
 
                 <c:choose>
-                    <%-- When there are multiple schedules, we don not display date picker nor the maint. window picker --%>
+                    <%-- When there are multiple schedules, we do not display date picker nor the maint. window picker --%>
                     <c:when test="${maintenanceWindowsMultiSchedules}">
                          <div class="alert alert-info">
                              <bean:message key="schedule.jsp.multiple_maintenance_schedules" />
