@@ -1139,6 +1139,24 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$
   end
 end
 
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have "([^"]*)" attached to a cdrom$/) do |vm, host, path|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{path} attached to cdrom") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    tree = Nokogiri::XML(output)
+    disks = tree.xpath("//disk")
+    disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
+    source = !disk_index.nil? && disks[disk_index].xpath('source/@file')[0].to_s || ""
+    break if source == path
+    sleep 3
+  end
+end
+
+When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|
+  node = get_target(host)
+  node.run("qemu-img create -f qcow2 #{path} 1G")
+end
+
 When(/^I delete all "([^"]*)" volumes from "([^"]*)" pool on "([^"]*)" without error control$/) do |volumes, pool, host|
   node = get_target(host)
   output, _code = node.run("virsh vol-list #{pool} | sed -n -e 's/^[[:space:]]*\([^[:space:]]\+\).*$/\1/;/#{volumes}/p'", false)
