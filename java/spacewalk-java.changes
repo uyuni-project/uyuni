@@ -1,3 +1,4 @@
+- Use volumes for VMs disks
 - Toggle virtpoller when toggling virtualization host entitlement (bsc#1172962)
 - Pass minion ip to the kiwi_collect_image runner as fallback instead
   of fqdn if not present (bsc#1170737)
