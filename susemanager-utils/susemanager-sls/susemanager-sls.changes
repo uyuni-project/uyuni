@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 12:41:08 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
 - Avoid SSL certificate issue when bootstrapping OpenSUSE Leap 15.2 (bsc#1172712)
 - Add Salt states for CaaSP cluster management
 - Use minion fqdn instead of minion id as target in kiwi_collect_image
