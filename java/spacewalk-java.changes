@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 12:16:32 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.11-1
 - Drop the unpublished patch concept. All patches are published since their creation
 - Implement support for cluster management (CaaSP)
 - Split branding style themes for Uyuni and SUSE Manager
