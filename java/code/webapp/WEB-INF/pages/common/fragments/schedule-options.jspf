@@ -39,7 +39,7 @@
                 <c:if test="${maintenanceWindows != null}">
                     <div class="form-group">
                         <div class="col-sm-3 control-label">
-                            <input type="radio" name="schedule_type" value="maintenance_window" />
+                            <input type="radio" checked name="schedule_type" value="maintenance_window" />
                             <label for="schedule-by-maintenance-window"><bean:message key="schedule.jsp.maint-window"/></label>
                         </div>
                         <jsp:include page="/WEB-INF/pages/common/fragments/maintenance-window-picker.jsp" />
