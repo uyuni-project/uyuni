@@ -1,3 +1,4 @@
+- Add VM disk format support
 - Enable osimage_build_host for additional architectures (bsc#1149101, bsc#1172076)
 
 -------------------------------------------------------------------
