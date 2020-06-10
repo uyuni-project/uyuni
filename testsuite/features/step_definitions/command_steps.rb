@@ -1113,6 +1113,19 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) di
   end
 end
 
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) disk from pool "([^"]*)"$/) do |vm, host, vol, bus, pool|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{vol} #{bus} disk from pool #{pool}") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    tree = Nokogiri::XML(output)
+    disks = tree.xpath("//disk").select do |x|
+      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) && (x.xpath('target/@bus')[0].to_s == bus)
+    end
+    break if !disks.empty?
+    sleep 3
+  end
+end
+
 Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$/) do |vm, host, presence, bus|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} #{presence == 'a' ? 'never got' : 'still has'} a #{bus} cdrom") do
