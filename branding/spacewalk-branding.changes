@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 14:12:05 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.17-1
 - Updated the message about automatically installing product packages (bsc#1169520)
 
 -------------------------------------------------------------------
