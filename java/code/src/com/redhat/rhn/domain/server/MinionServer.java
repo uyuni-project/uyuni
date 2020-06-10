@@ -126,16 +126,12 @@ public class MinionServer extends Server implements SaltConfigurable {
     /**
      * Return <code>true</code> if OS on this system supports OS Image building,
      * <code>false</code> otherwise.
-     * <p>
-     * Note: For SLES, we are only checking if it's not 10.
-     * Older than SLES 10 are not being checked.
-     * </p>
      *
      * @return <code>true</code> if OS supports OS Image building
      */
     @Override
     public boolean doesOsSupportsOSImageBuilding() {
-        return !isSLES10();
+        return isSLES11() || isSLES12() || isSLES15() || isLeap15();
     }
 
     /**
