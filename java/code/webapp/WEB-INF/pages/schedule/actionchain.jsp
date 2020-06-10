@@ -111,6 +111,12 @@
                              <bean:message key="schedule.jsp.multiple_maintenance_schedules" />
                          </div>
                     </c:when>
+                    <%-- When maintenance windows are set but empty, we do not display date picker nor the maint. window picker --%>
+                    <c:when test="${maintenanceWindows != null && empty maintenanceWindows}">
+                         <div class="alert alert-info">
+                             <bean:message key="schedule.jsp.no_maintenance_windows" />
+                         </div>
+                    </c:when>
 
                     <c:otherwise>
                         <div class="form-group">
