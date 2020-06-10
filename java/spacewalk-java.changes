@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jun 10 14:13:50 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.33-1
 - Avoid traceback with AssertionError: Failed to update row (bsc#1172558)
 - apply highstate when add-on system types should be applied to the
   system on bootstrapping (bsc#1172190)
