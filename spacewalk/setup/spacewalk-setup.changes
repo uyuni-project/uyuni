@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 10 12:20:44 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.5-1
+- Enable CaaSP cluster provider
+
+-------------------------------------------------------------------
 Wed Mar 11 10:56:46 CET 2020 - jgonzalez@suse.com
 
 - version 4.1.4-1
