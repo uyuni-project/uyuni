@@ -678,6 +678,7 @@ using `qemu-img` and `virt-install`
 
 ```cucumber
   When I create "test-vm" virtual machine on "virt-server"
+  When I create empty "/path/to/disk.qcow2" qcow2 disk file on "virt-server"
 ```
 
 * Checking the state of a virtual machine
@@ -707,6 +708,7 @@ Then "test-vm" virtual machine on "virt-server" should have a "disk.qcow2" scsi 
 Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
 Then "test-vm" virtual machine on "virt-server" should have no cdrom
 Then "test-vm" virtual machine on "virt-server" should have a "myvolume" virtio disk from pool "test-pool"
+Then "test-vm" virtual machine on "virt-server" should have "/path/to/image.iso" attached to a cdrom
 ```
 
 * Remove disk images from a storage pool

@@ -166,6 +166,17 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm" virtual machine on "kvm_server" should have a ide cdrom
 
 @virthost_kvm
+  Scenario: Attach an image to a cdrom on a KVM virtual machine
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Edit" in row "test-vm"
+    And I store "" into file "/tmp/test-image.iso" on "kvm_server"
+    And I wait until I do not see "Loading..." text
+    And I enter "/tmp/test-image.iso" as "disk2_source_file"
+    And I click on "Update"
+    Then I should see a "Hosted Virtual Systems" text
+    And "test-vm" virtual machine on "kvm_server" should have "/tmp/test-image.iso" attached to a cdrom
+
+@virthost_kvm
   Scenario: Delete a disk from a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
@@ -185,12 +196,17 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @virthost_kvm
   Scenario: Create a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm_server"
+    And I create empty "/var/lib/libvirt/images/test-pool0/disk1.qcow2" qcow2 disk file on "kvm_server"
+    And I refresh the "test-pool0" storage pool of this "kvm_server"
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
+    And I click on "add_disk"
+    And I select "test-pool0" from "disk1_source_pool"
+    And I select "disk1.qcow2" from "disk1_source_file"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
@@ -198,6 +214,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
     And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system" virtio disk from pool "test-pool0"
+    And "test-vm2" virtual machine on "kvm_server" should have a "disk1.qcow2" virtio disk from pool "test-pool0"
 
 @virthost_kvm
   Scenario: Show the Spice graphical console for KVM
