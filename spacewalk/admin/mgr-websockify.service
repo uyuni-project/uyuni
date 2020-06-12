@@ -6,7 +6,5 @@ ExecStartPre=/usr/bin/sh -c "grep secret_key /etc/rhn/rhn.conf | tr -d ' ' | cut
 ExecStart=/usr/bin/websockify \
     --token-plugin JWTTokenApi \
 	--token-source /etc/rhn/websockify.key \
-	--cert /etc/apache2/ssl.crt/server.crt \
-	--key /etc/pki/tls/private/spacewalk.key \
-	8050
+	localhost:8050
 ExecReload=/bin/kill -USR1 $MAINPID

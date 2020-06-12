@@ -1,3 +1,5 @@
+- Restrict websockify to server localhost only (bsc#1149644)
+
 -------------------------------------------------------------------
 Fri Feb 28 11:41:14 CET 2020 - jgonzalez@suse.com
 
