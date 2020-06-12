@@ -94,7 +94,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                                 .getActionChainSLSFileName(actionChain.getId(), minionSummary1, 1))
                         .toFile());
         assertEquals(("mgr_actionchain_131_action_1_chunk_1:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   mods: remotecommands\n" +
                         "    -   kwargs:\n" +
@@ -102,7 +102,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "                mgr_remote_cmd_runas: foobar\n" +
                         "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
                         "mgr_actionchain_131_action_2_chunk_1:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   require:\n" +
                         "        -   module: mgr_actionchain_131_action_1_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
@@ -166,7 +166,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                                 .getActionChainSLSFileName(actionChain.getId(), minionSummary1, 1))
                         .toFile());
         assertEquals(("mgr_actionchain_131_action_1_chunk_1:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   mods: remotecommands\n" +
                         "    -   kwargs:\n" +
@@ -174,13 +174,13 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "                mgr_remote_cmd_runas: foobar\n" +
                         "                mgr_remote_cmd_script: salt://scripts/script_1.sh\n" +
                         "mgr_actionchain_131_action_2_chunk_1:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: system.reboot\n" +
                         "    -   at_time: 1\n" +
                         "    -   require:\n" +
                         "        -   module: mgr_actionchain_131_action_1_chunk_1\n" +
                         "schedule_next_chunk:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: mgractionchains.next\n" +
                         "    -   actionchain_id: 131\n" +
                         "    -   chunk: 2\n" +
@@ -195,7 +195,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                                 .getActionChainSLSFileName(actionChain.getId(), minionSummary1, 2))
                         .toFile());
         assertEquals(("mgr_actionchain_131_action_3_chunk_2:\n" +
-                "    module.run:\n" +
+                "    mgrcompat.module_run:\n" +
                 "    -   name: state.apply\n").replaceAll("131", actionChain.getId() + ""), fileContent);
     }
 
@@ -238,12 +238,12 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         .toFile());
 
         assertEquals(("schedule_next_chunk:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: mgractionchains.next\n" +
                         "    -   actionchain_id: 142\n" +
                         "    -   chunk: 2\n" +
                         "mgr_actionchain_142_action_1_chunk_1:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   mods:\n" +
                         "        - packages.pkginstall\n" +
@@ -257,7 +257,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "                    - x86_64\n" +
                         "                    - 2018.3.0-4.1\n" +
                         "clean_action_chain_if_previous_failed:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: mgractionchains.clean\n" +
                         "    -   onfail:\n" +
                         "        -   module: mgr_actionchain_142_action_1_chunk_1\n")
@@ -405,7 +405,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         .toFile());
 
         assertEquals(("mgr_actionchain_142_action_1_chunk_1:\n" +
-                        "    module.run:\n" +
+                        "    mgrcompat.module_run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   mods:\n" +
                         "        - packages.pkginstall\n" +
