@@ -31,7 +31,6 @@ import com.redhat.rhn.domain.errata.impl.PublishedBug;
 import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
 import com.redhat.rhn.domain.errata.impl.PublishedErrataFile;
-import com.redhat.rhn.domain.errata.impl.UnpublishedErrataFile;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -383,27 +382,6 @@ public class ErrataFactory extends HibernateFactory {
     }
 
 
-
-    /**
-     * Creates a new Unpublished Errata file with given ErrataFileType, checksum, and name
-     * @param ft ErrataFileType for the new ErrataFile
-     * @param cs MD5 Checksum for the new Errata File
-     * @param name name for the file
-     * @param packages Packages associated with this errata file.
-     * @return new Unpublished Errata File
-     */
-    public static ErrataFile createUnpublishedErrataFile(ErrataFileType ft,
-            String cs,
-            String name,
-            Set packages) {
-        ErrataFile file = new UnpublishedErrataFile();
-        file.setFileType(ft);
-        file.setChecksum(ChecksumFactory.safeCreate(cs, "md5"));
-        file.setFileName(name);
-        file.setPackages(packages);
-        return file;
-    }
-
     /**
      * Creates a new Published Errata file with given ErrataFileType, checksum, and name
      * @param ft ErrataFileType for the new ErrataFile
@@ -472,13 +450,6 @@ public class ErrataFactory extends HibernateFactory {
             q.setLong("errata_id", errataId.longValue());
             q.setString("file_type", fileType.toUpperCase());
             retval =  q.list();
-
-            if (retval == null) {
-                q = session.getNamedQuery("UnpublishedErrataFile.listByErrataAndFileType");
-                q.setLong("errata_id", errataId.longValue());
-                q.setString("file_type", fileType.toUpperCase());
-                retval =  q.list();
-            }
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException(e.getMessage(), e);

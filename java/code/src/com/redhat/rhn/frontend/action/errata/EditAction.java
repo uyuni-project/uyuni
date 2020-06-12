@@ -153,7 +153,7 @@ public class EditAction extends LookupDispatchAction {
     }
 
     /**
-     * This method handles changing an UnpublishedErrata to a PublishedErrata
+     * This method adds an errata to some channels
      * @param mapping Action mapping
      * @param formIn Form
      * @param request The request

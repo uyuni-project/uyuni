@@ -198,34 +198,6 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, e.getBugs().size());
     }
 
-    public void testFiles() throws Exception {
-        Set errataFilePackages = new HashSet();
-        errataFilePackages.add(PackageTest.createTestPackage(user.getOrg()));
-        ErrataFile ef = ErrataFactory.createUnpublishedErrataFile(ErrataFactory.
-                                                              lookupErrataFileType("RPM"),
-                                                                  "SOME FAKE CHECKSUM",
-                                                                  "test erratafile " +
-                                                                  TestUtils.randomString(),
-                                                                  errataFilePackages);
-
-        var e = createTestPublishedErrata(user.getOrg().getId());
-        ef = ErrataFactory.createPublishedErrataFile(ErrataFactory.
-                                                     lookupErrataFileType("RPM"),
-                                                     "SOME FAKE CHECKSUM",
-                                                     "test erratafile " +
-                                                     TestUtils.randomString(),
-                                                     errataFilePackages);
-        assertEquals(1, e.getFiles().size());
-        assertNull(ef.getId());
-        assertNotNull(ef.getPackages());
-        assertEquals(1, ef.getPackages().size());
-
-        e.addFile(ef);
-        TestUtils.saveAndFlush(e);
-
-        assertNotNull(ef.getId());
-        assertEquals(2, e.getFiles().size());
-    }
     /**
      * Create an Errata for testing and commit it to the DB.
      * @param orgId the Org who owns this Errata
@@ -302,18 +274,10 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Set errataFilePackages = new HashSet();
         errataFilePackages.add(testPackage);
         e.addPackage(testPackage);
-        if (e.isPublished()) {
-            ef = ErrataFactory.createPublishedErrataFile(ErrataFactory.
-                    lookupErrataFileType("RPM"),
-                        "SOME FAKE CHECKSUM",
-                        "test errata file" + TestUtils.randomString(), errataFilePackages);
-        }
-        else {
-            ef = ErrataFactory.createUnpublishedErrataFile(ErrataFactory.
-                    lookupErrataFileType("RPM"),
-                        "SOME FAKE CHECKSUM",
-                        "test errata file", errataFilePackages);
-        }
+        ef = ErrataFactory.createPublishedErrataFile(ErrataFactory.
+                lookupErrataFileType("RPM"),
+                    "SOME FAKE CHECKSUM",
+                    "test errata file" + TestUtils.randomString(), errataFilePackages);
 
         e.addFile(ef);
         Severity s = new Severity();
