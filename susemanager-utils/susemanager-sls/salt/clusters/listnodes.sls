@@ -6,7 +6,7 @@ mgr_ssh_agent_socket_clusters_listnodes:
 {%- endif %}
 
 mgr_cluster_list_nodes:
-  module.run:
+  mgrcompat.module_run:
     - name: mgrclusters.list_nodes
     - provider_module: {{ pillar['cluster_type'] }}
     - params: {{ pillar['params'] }}

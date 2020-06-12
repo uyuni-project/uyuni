@@ -9,7 +9,7 @@ mgr_ssh_agent_socket_clusters_addnode:
 {%- for node in params.nodes %}
 {%- set addparams = {'node_name': node.node_name, 'target': node.target, 'role': params.role, 'user': params.user, 'skuba_cluster_path': params.skuba_cluster_path } %}
 mgr_cluster_add_node_{{ node.node_name }}:
-  module.run:
+  mgrcompat.module_run:
     - name: mgrclusters.add_node
     - provider_module: {{ pillar['cluster_type'] }}
     - params: {{ addparams }}

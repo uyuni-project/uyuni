@@ -56,6 +56,6 @@ mainframe-sysinfo:
 {% endif %}
 {% if 'network.fqdns' in salt %}
 fqdns:
-  module.run:
+  mgrcompat.module_run:
     - name: network.fqdns
 {% endif%}

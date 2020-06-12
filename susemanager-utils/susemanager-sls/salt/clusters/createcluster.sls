@@ -6,7 +6,7 @@ mgr_ssh_agent_socket_clusters_createcluster:
 {%- endif %}
 
 mgr_cluster_create_cluster:
-  module.run:
+  mgrcompat.module_run:
     - name: mgrclusters.create_cluster
     - provider_module: {{ pillar['cluster_type'] }}
     - params: {{ pillar['params'] }}
