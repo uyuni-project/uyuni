@@ -19,13 +19,13 @@ postgres_exporter_service:
     - m_name: "prometheus-postgres_exporter.service"
 
 jmx_tomcat_java_config:
-  module.run:
+  mgrcompat.module_run:
     - name: file.search
     - path: /etc/sysconfig/tomcat
     - pattern: "-Dcom\\.sun\\.management\\.jmxremote\\.port=3333 -Dcom\\.sun\\.management\\.jmxremote\\.ssl=false -Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false -Djava\\.rmi\\.server\\.hostname="
 
 jmx_taskomatic_java_config:
-  module.run:
+  mgrcompat.module_run:
     - name: file.search
     - path: /etc/rhn/taskomatic.conf
     - pattern: "-Dcom\\.sun\\.management\\.jmxremote\\.port=3334 -Dcom\\.sun\\.management\\.jmxremote\\.ssl=false -Dcom\\.sun\\.management\\.jmxremote\\.authenticate=false -Djava\\.rmi\\.server\\.hostname="

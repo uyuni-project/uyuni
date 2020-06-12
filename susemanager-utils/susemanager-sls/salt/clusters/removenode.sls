@@ -9,7 +9,7 @@ mgr_ssh_agent_socket_clusters_removenode:
 {%- for node in params.nodes %}
 {%- set removeparams = {'node_name': node.node_name, 'skuba_cluster_path': params.skuba_cluster_path, 'drain_timeout': params.drain_timeout } %}
 mgr_cluster_remove_node_{{ node.node_name }}:
-  module.run:
+  mgrcompat.module_run:
     - name: mgrclusters.remove_node
     - provider_module: {{ pillar['cluster_type'] }}
     - params: {{ removeparams }}
