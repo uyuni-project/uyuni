@@ -1,3 +1,5 @@
+- Don't use SSL to proxy mgr-websockify with apache (bsc#1149644)
+
 -------------------------------------------------------------------
 Wed Mar 11 10:53:59 CET 2020 - jgonzalez@suse.com
 
