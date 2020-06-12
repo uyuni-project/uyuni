@@ -58,7 +58,7 @@ mainframe-sysinfo:
 {%- if grains['saltversioninfo'][0] >= 2018 %}
 {% if 'network.fqdns' in salt %}
 fqdns:
-  module.run:
+  mgrcompat.module_run:
     - name: network.fqdns
 {% endif%}
 {%- endif%}
