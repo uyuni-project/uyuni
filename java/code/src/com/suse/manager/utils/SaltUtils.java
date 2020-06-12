@@ -229,7 +229,7 @@ public class SaltUtils {
                 () -> false,
                 results -> results.entrySet().stream()
                     .anyMatch(result -> extractFunction(result.getKey())
-                        .map(fn -> fn.equals("module.run") ?
+                        .map(fn -> fn.equals("mgrcompat.module_run") ?
                             PKG_EXECUTION_MODULES.contains(result.getValue().getName()) :
                             PKG_STATE_MODULES.contains(fn)
                         ).orElse(false) &&
@@ -393,7 +393,7 @@ public class SaltUtils {
                 apply.entrySet().stream().flatMap(e -> {
             return extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>
                     map(fn -> {
-                if (fn.equals("module.run")) {
+                if (fn.equals("mgrcompat.module_run")) {
                     StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
                             e.getValue(),
                             new TypeToken<StateApplyResult<JsonElement>>() {
