@@ -205,7 +205,7 @@ public class MonitoringService {
                 new Tuple2<>("tomcat",
                         "mgrcompat_|-jmx_tomcat_exporter_service_|-service.status_|-module_run"),
                 new Tuple2<>("taskomatic",
-                        "mgrcompat_|-jmx_taskomatic_exporter_service_|-service.status_|-module_run")
+                        "mgrcompat_|-jmx_taskomatic_exporter_service_|-service.status_|-module_run"),
                 new Tuple2<>("tomcat:config",
                         "mgrcompat_|-jmx_tomcat_java_config_|-file.search_|-module_run"),
                 new Tuple2<>("taskomatic:config",
