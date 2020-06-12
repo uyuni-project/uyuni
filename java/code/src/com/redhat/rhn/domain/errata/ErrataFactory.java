@@ -360,73 +360,6 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Helper method to copy the details for.
-     * @param copy The object to copy into.
-     * @param original The object to copy from.
-     * @param clone  set to true if this is a cloned errata, and thus
-     *      things like org or advisory name shouldn't be set
-     */
-    private static void copyDetails(Errata copy, Errata original, boolean clone) {
-
-        //Set the easy things first ;)
-
-        if (!clone) {
-            copy.setAdvisory(original.getAdvisory());
-            copy.setAdvisoryName(original.getAdvisoryName());
-            copy.setOrg(original.getOrg());
-        }
-
-        copy.setAdvisoryType(original.getAdvisoryType());
-        copy.setProduct(original.getProduct());
-        copy.setErrataFrom(original.getErrataFrom());
-        copy.setDescription(original.getDescription());
-        copy.setSynopsis(original.getSynopsis());
-        copy.setTopic(original.getTopic());
-        copy.setSolution(original.getSolution());
-        copy.setIssueDate(original.getIssueDate());
-        copy.setUpdateDate(original.getUpdateDate());
-        copy.setNotes(original.getNotes());
-        copy.setRefersTo(original.getRefersTo());
-        copy.setAdvisoryRel(original.getAdvisoryRel());
-        copy.setLocallyModified(original.getLocallyModified());
-        copy.setLastModified(original.getLastModified());
-        copy.setSeverity(original.getSeverity());
-
-
-        /*
-         * Copy the packages
-         * packages aren't published or unpublished exactly... that is determined
-         * by the status of the errata...
-         */
-        copy.setPackages(new HashSet(original.getPackages()));
-
-        /*
-         * Copy the keywords
-         * if we use the string version of addKeyword, we don't have to worry about
-         * whether or not the keyword is published.
-         */
-        Iterator keysItr = IteratorUtils.getIterator(original.getKeywords());
-        while (keysItr.hasNext()) {
-            Keyword k = (Keyword) keysItr.next();
-            copy.addKeyword(k.getKeyword());
-        }
-
-
-        /*
-         * Copy the bugs. If copy is published, then the bugs should be published as well.
-         * If not, then we want unpublished bugs.
-         */
-        Iterator bugsItr = IteratorUtils.getIterator(original.getBugs());
-        while (bugsItr.hasNext()) {
-            Bug bugIn = (Bug) bugsItr.next();
-            Bug cloneB = ErrataManager.createNewPublishedBug(bugIn.getId(),
-                        bugIn.getSummary(),
-                        bugIn.getUrl());
-            copy.addBug(cloneB);
-        }
-    }
-
-    /**
      * Create a new PublishedErrata from scratch
      * @return the PublishedErrata created
      */
@@ -1056,7 +989,57 @@ public class ErrataFactory extends HibernateFactory {
      * @param cloned the cloned errata that needs syncing
      */
     public static void syncErrataDetails(PublishedClonedErrata cloned) {
-        copyDetails(cloned, cloned.getOriginal(), true);
+        Errata original = cloned.getOriginal();
+
+        //Set the easy things first ;)
+        cloned.setAdvisoryType(original.getAdvisoryType());
+        cloned.setProduct(original.getProduct());
+        cloned.setErrataFrom(original.getErrataFrom());
+        cloned.setDescription(original.getDescription());
+        cloned.setSynopsis(original.getSynopsis());
+        cloned.setTopic(original.getTopic());
+        cloned.setSolution(original.getSolution());
+        cloned.setIssueDate(original.getIssueDate());
+        cloned.setUpdateDate(original.getUpdateDate());
+        cloned.setNotes(original.getNotes());
+        cloned.setRefersTo(original.getRefersTo());
+        cloned.setAdvisoryRel(original.getAdvisoryRel());
+        cloned.setLocallyModified(original.getLocallyModified());
+        cloned.setLastModified(original.getLastModified());
+        cloned.setSeverity(original.getSeverity());
+
+
+        /*
+         * Copy the packages
+         * packages aren't published or unpublished exactly... that is determined
+         * by the status of the errata...
+         */
+        cloned.setPackages(new HashSet(original.getPackages()));
+
+        /*
+         * Copy the keywords
+         * if we use the string version of addKeyword, we don't have to worry about
+         * whether or not the keyword is published.
+         */
+        Iterator keysItr = IteratorUtils.getIterator(original.getKeywords());
+        while (keysItr.hasNext()) {
+            Keyword k = (Keyword) keysItr.next();
+            cloned.addKeyword(k.getKeyword());
+        }
+
+
+        /*
+         * Copy the bugs. If copy is published, then the bugs should be published as well.
+         * If not, then we want unpublished bugs.
+         */
+        Iterator bugsItr = IteratorUtils.getIterator(original.getBugs());
+        while (bugsItr.hasNext()) {
+            Bug bugIn = (Bug) bugsItr.next();
+            Bug cloneB = ErrataManager.createNewPublishedBug(bugIn.getId(),
+                        bugIn.getSummary(),
+                        bugIn.getUrl());
+            cloned.addBug(cloneB);
+        }
     }
 
     /**

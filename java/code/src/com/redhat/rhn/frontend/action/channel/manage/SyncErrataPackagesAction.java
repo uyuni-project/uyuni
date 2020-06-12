@@ -138,12 +138,11 @@ public class SyncErrataPackagesAction extends RhnAction implements
         ChannelEditor.getInstance().addPackages(user, chan, pids);
         for (Long eid : eids) {
             Errata e = ErrataManager.lookupErrata(eid, user);
-            if (e.isPublished() && e.isCloned()) {
+            if (e.isCloned()) {
                 ErrataFactory.syncErrataDetails((PublishedClonedErrata) e);
             }
             else {
-                log.fatal("Tried to sync errata with id " + eid +
-                        " But it was not published or was not cloned");
+                log.fatal("Tried to sync errata with id " + eid + " but it was not cloned");
             }
         }
 
