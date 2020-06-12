@@ -16,8 +16,10 @@ def setup_environment():
         sys.modules['salt'] = MagicMock()
         sys.modules['salt.utils'] = MagicMock()
         sys.modules['salt.utils.versions'] = MagicMock()
+        sys.modules['salt.utils.odict'] = MagicMock()
         sys.modules['salt.modules'] = MagicMock()
         sys.modules['salt.modules.cmdmod'] = MagicMock()
+        sys.modules['salt.states'] = MagicMock()
         sys.modules['salt.exceptions'] = MagicMock(CommandExecutionError=Exception)
 
 

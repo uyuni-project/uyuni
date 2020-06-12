@@ -6,6 +6,8 @@ Author: Pablo Suárez Herńandez <psuarezhernandez@suse.com>
 '''
 
 from mock import MagicMock, patch
+from . import mockery
+mockery.setup_environment()
 
 from ..states import mgrcompat
 
@@ -13,13 +15,9 @@ TAILORED_MODULE_RUN_KWARGS = {'service.running': [{'text': 'superseded', 'name':
 MGRCOMPAT_MODULE_RUN_KWARGS = {'name': 'service.running', 'text': 'superseded', 'm_name': 'salt-minion'}
 
 mgrcompat.log = MagicMock()
-mgrcompat.module = MagicMock()
-mgrcompat.__salt__ = {'module.run': True}
+mgrcompat.OrderedDict = dict
 mgrcompat.__opts__ = {}
-mgrcompat.__pillar__ = {}
 mgrcompat.__grains__ = {}
-mgrcompat.__context__ = {}
-mgrcompat.__utils__ = {}
 
 
 def test_module_run_on_sodium():
