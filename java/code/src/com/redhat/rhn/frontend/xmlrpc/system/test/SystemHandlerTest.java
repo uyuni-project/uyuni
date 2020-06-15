@@ -29,8 +29,8 @@ import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -2301,8 +2301,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 contains = true;
                 assertEquals(act.getActionType(),
                         ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
-                VirtualizationSetMemoryAction action = HibernateFactory.getSession().load(
-                        VirtualizationSetMemoryAction.class,  (long) id);
+                VirtualizationSetMemoryGuestAction action = HibernateFactory.getSession().load(
+                        VirtualizationSetMemoryGuestAction.class,  (long) id);
                 assertEquals(action.getMemory(), Integer.valueOf(512 * 1024));
             }
         }
@@ -2329,8 +2329,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 contains = true;
                 assertEquals(act.getActionType(),
                         ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
-                VirtualizationSetVcpusAction action = HibernateFactory.getSession().load(
-                        VirtualizationSetVcpusAction.class,  (long) id);
+                VirtualizationSetVcpusGuestAction action = HibernateFactory.getSession().load(
+                        VirtualizationSetVcpusGuestAction.class,  (long) id);
                 assertEquals(action.getVcpu(), Integer.valueOf(3));
             }
         }

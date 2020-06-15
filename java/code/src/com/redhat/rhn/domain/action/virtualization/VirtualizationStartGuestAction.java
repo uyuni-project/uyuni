@@ -15,9 +15,8 @@
 package com.redhat.rhn.domain.action.virtualization;
 
 /**
- * VirtualizationStartAction - Class representing TYPE_VIRTUALIZATION_SHUTDOWN
- * @version $Rev$
+ * Class representing TYPE_VIRTUALIZATION_SHUTDOWN
  */
-public class VirtualizationStartAction extends BaseVirtualizationAction {
+public class VirtualizationStartGuestAction extends BaseVirtualizationGuestAction {
 
 }

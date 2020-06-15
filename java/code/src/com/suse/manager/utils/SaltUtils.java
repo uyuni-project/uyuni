@@ -49,7 +49,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
@@ -691,7 +691,7 @@ public class SaltUtils {
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
             handleSubscribeChannels(serverAction, jsonResult, action);
         }
-        else if (action instanceof BaseVirtualizationAction) {
+        else if (action instanceof BaseVirtualizationGuestAction) {
             // Tell VirtNotifications that we got a change, passing actionId
             VirtNotifications.spreadActionUpdate(action);
             JsonObject result = jsonResult.getAsJsonObject();

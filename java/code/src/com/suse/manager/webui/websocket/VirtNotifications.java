@@ -18,7 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
@@ -81,10 +81,10 @@ public class VirtNotifications {
     // Map each virtualization action types to an id supplier. The id is indeed
     // different for guests, pools, volumes and networks
     private static final Map<Class<? extends Action>, Function<Action, String>> IDS_MAPPER = Map.of(
-            BaseVirtualizationAction.class,
+            BaseVirtualizationGuestAction.class,
             (action) -> {
                 String id = "new-" + action.getId();
-                BaseVirtualizationAction virtAction = (BaseVirtualizationAction)action;
+                BaseVirtualizationGuestAction virtAction = (BaseVirtualizationGuestAction)action;
                 String uuid = virtAction.getUuid();
                 if (uuid != null) {
                     id = uuid;

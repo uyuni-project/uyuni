@@ -17,10 +17,9 @@ package com.redhat.rhn.domain.action.virtualization;
 import java.util.Map;
 
 /**
- * VirtualizationShutdownAction - Class representing TYPE_VIRTUALIZATION_SHUTDOWN
- * @version $Rev$
+ * Class representing TYPE_VIRTUALIZATION_REBOOT
  */
-public class VirtualizationShutdownAction extends BaseVirtualizationAction {
+public class VirtualizationRebootGuestAction extends BaseVirtualizationGuestAction {
 
     private boolean force = false;
 
@@ -42,9 +41,9 @@ public class VirtualizationShutdownAction extends BaseVirtualizationAction {
      * {@inheritDoc}
      */
     public void extractParameters(Map context) {
-        if (context.containsKey(BaseVirtualizationAction.FORCE_STRING)) {
+        if (context.containsKey(BaseVirtualizationGuestAction.FORCE_STRING)) {
             setForce(Boolean.valueOf((String)context.get(
-                    BaseVirtualizationAction.FORCE_STRING)));
+                    BaseVirtualizationGuestAction.FORCE_STRING)));
         }
     }
 }

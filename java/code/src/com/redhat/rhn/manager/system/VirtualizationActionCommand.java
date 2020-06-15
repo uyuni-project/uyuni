@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -97,8 +97,8 @@ public class VirtualizationActionCommand {
         LOG.debug("store() called.");
 
         LOG.debug("creating virtAction");
-        BaseVirtualizationAction virtAction =
-            (BaseVirtualizationAction) ActionFactory.createAction(this.getActionType());
+        BaseVirtualizationGuestAction virtAction =
+            (BaseVirtualizationGuestAction) ActionFactory.createAction(this.getActionType());
         String actionName = this.getActionType().getName().replaceAll("\\.$", "");
 
         // Handle VM Update name change.

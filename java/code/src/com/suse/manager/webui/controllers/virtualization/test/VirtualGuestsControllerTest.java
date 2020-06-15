@@ -18,9 +18,9 @@ package com.suse.manager.webui.controllers.virtualization.test;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -187,7 +187,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                      actions.get(0).getTypeName());
 
         Action action = ActionManager.lookupAction(user, actions.get(0).getId());
-        VirtualizationShutdownAction virtAction = (VirtualizationShutdownAction)action;
+        VirtualizationShutdownGuestAction virtAction = (VirtualizationShutdownGuestAction)action;
         assertEquals(guest.getUuid(), virtAction.getUuid());
 
         // Check the response
@@ -218,7 +218,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
                      actions.get(0).getTypeName());
 
         Action action = ActionManager.lookupAction(user, actions.get(0).getId());
-        VirtualizationSetVcpusAction virtAction = (VirtualizationSetVcpusAction)action;
+        VirtualizationSetVcpusGuestAction virtAction = (VirtualizationSetVcpusGuestAction)action;
         assertEquals(vcpus, virtAction.getVcpu());
 
         // Check the response
@@ -271,10 +271,10 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         // Make sure the setVpu action was queued
         DataResult<ScheduledAction> scheduledActions = ActionManager.pendingActions(user, null);
-        ArrayList<VirtualizationSetMemoryAction> virtActions = new ArrayList<VirtualizationSetMemoryAction>();
+        ArrayList<VirtualizationSetMemoryGuestAction> virtActions = new ArrayList<VirtualizationSetMemoryGuestAction>();
         scheduledActions.stream().forEach(action -> virtActions.add(
-                (VirtualizationSetMemoryAction)ActionManager.lookupAction(user, action.getId())));
-        virtActions.sort((VirtualizationSetMemoryAction a1, VirtualizationSetMemoryAction a2) ->
+                (VirtualizationSetMemoryGuestAction)ActionManager.lookupAction(user, action.getId())));
+        virtActions.sort((VirtualizationSetMemoryGuestAction a1, VirtualizationSetMemoryGuestAction a2) ->
                 a1.getUuid().compareTo(a2.getUuid()));
 
         assertEquals(ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY.getName(),

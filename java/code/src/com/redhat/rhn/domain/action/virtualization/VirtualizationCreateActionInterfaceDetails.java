@@ -22,7 +22,7 @@ import java.util.Objects;
 public class VirtualizationCreateActionInterfaceDetails {
 
     private Long id;
-    private VirtualizationCreateAction action;
+    private VirtualizationCreateGuestAction action;
     private String type;
     private String source;
     private String mac;
@@ -44,14 +44,14 @@ public class VirtualizationCreateActionInterfaceDetails {
     /**
      * @return the associated virtualization create action details
      */
-    public VirtualizationCreateAction getAction() {
+    public VirtualizationCreateGuestAction getAction() {
         return action;
     }
 
     /**
      * @param actionIn the associated virtualization create action details
      */
-    public void setAction(VirtualizationCreateAction actionIn) {
+    public void setAction(VirtualizationCreateGuestAction actionIn) {
         action = actionIn;
     }
 

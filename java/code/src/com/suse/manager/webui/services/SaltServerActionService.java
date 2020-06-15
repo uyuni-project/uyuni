@@ -61,24 +61,24 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -331,49 +331,49 @@ public class SaltServerActionService {
             return subscribeChanelsAction(minions, subscribeAction.getDetails());
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN.equals(actionType)) {
-            VirtualizationShutdownAction virtAction =
-                    (VirtualizationShutdownAction)actionIn;
+            VirtualizationShutdownGuestAction virtAction =
+                    (VirtualizationShutdownGuestAction)actionIn;
             return virtStateChangeAction(minions, virtAction.getUuid(), "stopped", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_START.equals(actionType)) {
-            VirtualizationStartAction virtAction = (VirtualizationStartAction)actionIn;
+            VirtualizationStartGuestAction virtAction = (VirtualizationStartGuestAction)actionIn;
             return virtStateChangeAction(minions, virtAction.getUuid(), "running", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SUSPEND.equals(actionType)) {
-            VirtualizationSuspendAction virtAction =
-                    (VirtualizationSuspendAction)actionIn;
+            VirtualizationSuspendGuestAction virtAction =
+                    (VirtualizationSuspendGuestAction)actionIn;
             return virtStateChangeAction(minions, virtAction.getUuid(), "suspended", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_RESUME.equals(actionType)) {
-            VirtualizationResumeAction virtAction =
-                    (VirtualizationResumeAction)actionIn;
+            VirtualizationResumeGuestAction virtAction =
+                    (VirtualizationResumeGuestAction)actionIn;
             return virtStateChangeAction(minions, virtAction.getUuid(), "resumed", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_REBOOT.equals(actionType)) {
-            VirtualizationRebootAction virtAction =
-                    (VirtualizationRebootAction)actionIn;
+            VirtualizationRebootGuestAction virtAction =
+                    (VirtualizationRebootGuestAction)actionIn;
             return virtStateChangeAction(minions, virtAction.getUuid(), "rebooted", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_DELETE.equals(actionType)) {
-            VirtualizationDeleteAction virtAction =
-                    (VirtualizationDeleteAction)actionIn;
+            VirtualizationDeleteGuestAction virtAction =
+                    (VirtualizationDeleteGuestAction)actionIn;
             return virtStateChangeAction(minions, virtAction.getUuid(), "deleted", virtAction);
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS.equals(actionType)) {
-            VirtualizationSetVcpusAction virtAction =
-                    (VirtualizationSetVcpusAction)actionIn;
+            VirtualizationSetVcpusGuestAction virtAction =
+                    (VirtualizationSetVcpusGuestAction)actionIn;
             return virtSetterAction(minions, virtAction.getUuid(),
                                     "vcpus", virtAction.getVcpu());
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY.equals(actionType)) {
-            VirtualizationSetMemoryAction virtAction =
-                    (VirtualizationSetMemoryAction)actionIn;
+            VirtualizationSetMemoryGuestAction virtAction =
+                    (VirtualizationSetMemoryGuestAction)actionIn;
             return virtSetterAction(minions, virtAction.getUuid(),
                                     "mem", virtAction.getMemory());
         }
         else if (ActionFactory.TYPE_VIRTUALIZATION_CREATE.equals(actionType)) {
-            VirtualizationCreateAction createAction =
-                    (VirtualizationCreateAction)actionIn;
+            VirtualizationCreateGuestAction createAction =
+                    (VirtualizationCreateGuestAction)actionIn;
             return virtCreateAction(minions, createAction);
         }
         else if (ActionFactory.TYPE_KICKSTART_INITIATE.equals(actionType)) {
@@ -1529,7 +1529,7 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtStateChangeAction(
-            List<MinionSummary> minionSummaries, String uuid, String state, BaseVirtualizationAction action) {
+            List<MinionSummary> minionSummaries, String uuid, String state, BaseVirtualizationGuestAction action) {
         Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
                 Collectors.toMap(minion -> {
 
@@ -1544,13 +1544,13 @@ public class SaltServerActionService {
                                     Collections.singletonList("virt." + state),
                                     Optional.of(pillar));
                         }
-                        else if (state.equals("rebooted") && ((VirtualizationRebootAction)action).isForce()) {
+                        else if (state.equals("rebooted") && ((VirtualizationRebootGuestAction)action).isForce()) {
                             return State.apply(
                                     Collections.singletonList("virt.reset"),
                                     Optional.of(pillar));
                         }
                         else {
-                            if (state.equals("stopped") && ((VirtualizationShutdownAction)action).isForce()) {
+                            if (state.equals("stopped") && ((VirtualizationShutdownGuestAction)action).isForce()) {
                                 pillar.put("domain_state", "powered_off");
                             }
                             else {
@@ -1606,7 +1606,7 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> virtCreateAction(List<MinionSummary> minions,
-            VirtualizationCreateAction action) {
+            VirtualizationCreateGuestAction action) {
         String state = action.getUuid() != null ? "virt.update-vm" : "virt.create-vm";
 
         Map<LocalCall<?>, List<MinionSummary>> ret = minions.stream().collect(

@@ -22,7 +22,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="format" type="string" column="format"/>
 
         <many-to-one name="action" column="action_id"
-                class="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction"
+                class="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction"
                 not-null="true" insert="true" update="false" />
 
     </class>
