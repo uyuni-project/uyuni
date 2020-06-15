@@ -5,21 +5,11 @@ const React = require("react");
 const {Button} = require("components/buttons");
 const {ModalButton} = require("components/dialog/ModalButton");
 const {DeleteDialog} = require("components/dialog/DeleteDialog");
-const { TopPanel } = require('components/panels/TopPanel');
+const {TopPanel} = require('components/panels/TopPanel');
 const {Messages} = require("components/messages");
 const {Form} = require("components/input/Form");
 const {Check} = require("components/input/Check");
-const { BootstrapPanel } = require('components/panels/BootstrapPanel');
-
-const scheduleTypeToString = (scheduleType) => {
-    switch (scheduleType) {
-        case "MULTI":
-            return "Multi";
-        case "SINGLE":
-            return "Single";
-    }
-    return null;
-}
+const {BootstrapPanel} = require('components/panels/BootstrapPanel');
 
 class MaintenanceWindowsDetails extends React.Component {
 
@@ -34,13 +24,15 @@ class MaintenanceWindowsDetails extends React.Component {
     }
 
     setCheck = (model) => {
+        /* strategy gets initialized as empty string, but we want the initial value to be false.
+        * Is equivalent to: if strategy is "" then set it to false */
         model.strategy === "" && (model.strategy = false);
         this.setState(model);
     };
 
     addStrategy = () => {
         const item = this.props.data;
-        item.strategy = (this.state.strategy ? "Cancel" : "Fail");
+        item.strategy = this.state.strategy ? "Cancel" : "Fail";
         return item;
     };
 
@@ -52,15 +44,15 @@ class MaintenanceWindowsDetails extends React.Component {
                         <tbody>
                         <tr>
                             <td>{t("Schedule Name")}</td>
-                            <td>{t(data.scheduleName)}</td>
+                            <td>{data.scheduleName}</td>
                         </tr>
                         <tr>
                             <td>{t("Assigned Calendar")}:</td>
-                            <td>{t(data.calendarName)}</td>
+                            <td>{data.calendarName}</td>
                         </tr>
                         <tr>
                             <td>{t("Schedule Type")}:</td>
-                            <td>{t(scheduleTypeToString(data.scheduleType))}</td>
+                            <td>{data.scheduleType === "SINGLE" ? t("Single") : t("Multi")}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -68,7 +60,7 @@ class MaintenanceWindowsDetails extends React.Component {
                 <DeleteDialog id="delete-modal"
                               title={t("Delete maintenance schedule")}
                               content={t("Are you sure you want to delete the selected item? \n" +
-                                  "Deleting the schedule will unassign all systems from this schedule.")}
+                                  "This will remove the current schedule from all the systems assigned to it.")}
                               onConfirm={() => this.props.onDelete(this.props.data)}
                 />
             </BootstrapPanel>
@@ -83,17 +75,18 @@ class MaintenanceWindowsDetails extends React.Component {
                         <tbody>
                         <tr>
                             <td>{t("Calendar Name")}</td>
-                            <td>{t(data.calendarName)}</td>
+                            <td>{data.calendarName}</td>
                         </tr>
                         <tr>
                             <td>{t("Used by schedule")}:</td>
-                            <td>{t(data.scheduleNames.map(name => name.name).join(", "))}</td>
+                            <td>{data.scheduleNames.map(name => name.name).join(", ")}</td>
                         </tr>
-                        {data.calendarUrl &&
-                        <tr>
-                            <td>{t("Url")}:</td>
-                            <td>{t(data.calendarUrl)}</td>
-                        </tr>
+                        {
+                            data.calendarUrl &&
+                            <tr>
+                                <td>{t("Url")}:</td>
+                                <td>{data.calendarUrl}</td>
+                            </tr>
                         }
                         </tbody>
                     </table>
@@ -103,7 +96,7 @@ class MaintenanceWindowsDetails extends React.Component {
                               content={
                                   <Form model={{strategy: this.state.strategy}} onChange={this.setCheck}>
                                       <div>{t("Are you sure you want to delete the selected item?")}</div>
-                                      <div>{t("Deleting this calendar will unassign all schedules from this calendar.")}</div>
+                                      <div>{t("This will remove the current schedule from all the systems assigned to it.")}</div>
                                       <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
                                   </Form>
                               }
@@ -125,6 +118,7 @@ class MaintenanceWindowsDetails extends React.Component {
                 />
                 <Button
                     text={t("Edit")}
+                    disabled={!isAdmin}
                     icon="fa-edit"
                     title={t("Edit")}
                     className="btn-default"
@@ -134,6 +128,7 @@ class MaintenanceWindowsDetails extends React.Component {
                 />
                 <ModalButton
                     text={t("Delete")}
+                    disabled={!isAdmin}
                     icon="fa-trash"
                     title={t("Delete")}
                     target="delete-modal"
@@ -149,25 +144,27 @@ class MaintenanceWindowsDetails extends React.Component {
                 helpUrl=""
                 button={buttons}
             >
-                { this.state.messages ?
-                    <Messages items={this.state.messages}/> : null }
-                {this.state.type === "schedule" ? this.renderScheduleDetails(this.props.data)
-                    : this.renderCalendarDetails(this.props.data)}
-                {this.props.data.calendarData &&
-                <div className="panel panel-default">
-                    <div className="panel-heading">
-                        <h4>
-                            {this.props.data.calendarName}
-                        </h4>
-                    </div>
-                    <div className="panel-body">
+                <Messages items={this.state.messages}/>
+                {
+                    this.state.type === "schedule"
+                        ? this.renderScheduleDetails(this.props.data)
+                        : this.renderCalendarDetails(this.props.data)
+                }
+                {
+                    this.props.data.calendarData &&
+                    <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h4>
+                                {this.props.data.calendarName}
+                            </h4>
+                        </div>
+                        <div className="panel-body">
                         <pre>
                             {this.props.data.calendarData}
                         </pre>
+                        </div>
                     </div>
-                </div>
                 }
-
             </TopPanel>
         );
     }

@@ -8900,9 +8900,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="maintenance.schedule.name.empty">
         <source>Schedule name required</source>
       </trans-unit>
-      <trans-unit id="maintenance.calendar.name.invalid">
-        <source>Invalid calendar name provided. Choose a different name</source>
-      </trans-unit>
       <trans-unit id="maintenance.calendar.data.empty">
         <source>Calendar data required</source>
       </trans-unit>
@@ -8925,7 +8922,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail">
-        <source>An error occured. There are remaining actions managed by schedule '{0}'. Please cancel all actions affected by your changes</source>
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
       </trans-unit>
     </body>
   </file>

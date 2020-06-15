@@ -59,7 +59,7 @@ class MaintenanceWindowsList extends React.Component {
                     columnKey="calendarName"
                     header={t('Calendar')}
                     cell={(row) =>
-                        <a className="list-tag-link"
+                        <a className="link-tag"
                            href={t("/rhn/manager/schedule/maintenance/calendars#/details/" + row.calendarId)}>
                             {row.calendarName}
                         </a>
@@ -79,12 +79,14 @@ class MaintenanceWindowsList extends React.Component {
                             />
                             <Button
                                 className="btn-default btn-sm"
+                                disabled={!isAdmin}
                                 title={t("Edit")}
                                 icon="fa-edit"
                                 handler={() => {this.props.onEdit(row.scheduleId)}}
                             />
                             <ModalButton
                                 className="btn-default btn-sm"
+                                disabled={!isAdmin}
                                 title={t("Delete")}
                                 icon="fa-trash"
                                 target="delete-modal"
@@ -98,7 +100,7 @@ class MaintenanceWindowsList extends React.Component {
             <DeleteDialog id="delete-modal"
                           title={t("Delete maintenance schedule")}
                           content={t("Are you sure you want to delete the selected item? \n" +
-                              "Deleting the schedule will unassign all systems from this schedule.")}
+                              "This will remove the schedule from all the systems assigned to it.")}
                           onConfirm={() => this.props.onDelete(this.state.itemToDelete)}
                           onClosePopUp={() => this.selectToDelete({})}
             />
@@ -124,7 +126,7 @@ class MaintenanceWindowsList extends React.Component {
                     columnKey="usedBySchedule"
                     header={t('Used by Schedule')}
                     cell={(row) => row.scheduleNames.map(name =>
-                        <a className="list-tag-link"
+                        <a className="link-tag"
                            href={"/rhn/manager/schedule/maintenance/schedules#/details/" + name.id}>
                             {name.name}
                         </a>
@@ -144,12 +146,14 @@ class MaintenanceWindowsList extends React.Component {
                             />
                             <Button
                                 className="btn-default btn-sm"
+                                disabled={!isAdmin}
                                 title={t("Edit")}
                                 icon="fa-edit"
                                 handler={() => {this.props.onEdit(row.calendarId)}}
                             />
                             <ModalButton
                                 className="btn-default btn-sm"
+                                disabled={!isAdmin}
                                 title={t("Delete")}
                                 icon="fa-trash"
                                 target="delete-modal"
@@ -165,7 +169,7 @@ class MaintenanceWindowsList extends React.Component {
                           content={
                               <Form model={{strategy: this.state.strategy}} onChange={this.setCheck}>
                                   <div>{t("Are you sure you want to delete the selected item?")}</div>
-                                  <div>{t("Deleting this calendar will unassign all schedules from this calendar.")}</div>
+                                  <div>{t("This will unassign all schedules from this calendar.")}</div>
                                   <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
                               </Form>
                           }
@@ -180,6 +184,7 @@ class MaintenanceWindowsList extends React.Component {
             <div className="btn-group pull-right">
                 <Button
                     className="btn-default"
+                    disabled={!isAdmin}
                     icon="fa-plus"
                     text={t("Create")}
                     title="Create a new maintenance schedule"
