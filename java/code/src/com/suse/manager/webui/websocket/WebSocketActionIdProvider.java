@@ -12,31 +12,15 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.action.virtualization;
+package com.suse.manager.webui.websocket;
 
-
-public class BaseVirtualizationVolumeAction extends BaseVirtualizationPoolAction {
-
-    private String volumeName;
-
-
-    /**
-     * @return Returns the volumeName.
-     */
-    public String getVolumeName() {
-        return volumeName;
-    }
-
+/**
+ * Interface to be implemented to provide proper action ID for VirtNotification Web socket
+ */
+public interface WebSocketActionIdProvider {
 
     /**
-     * @param volumeNameIn The volumeName to set.
+     * @return the ID of the action
      */
-    public void setVolumeName(String volumeNameIn) {
-        volumeName = volumeNameIn;
-    }
-
-    @Override
-    public String getWebSocketActionId() {
-        return String.format("volume-%s/%s", getPoolName(), getVolumeName());
-    }
+    String getWebSocketActionId();
 }

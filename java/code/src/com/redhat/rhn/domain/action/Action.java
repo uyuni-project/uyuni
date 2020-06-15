@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.webui.websocket.WebSocketActionIdProvider;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -34,7 +36,7 @@ import java.util.Set;
  * Action - Class representation of the table rhnAction.
  * @version $Rev$
  */
-public class Action extends BaseDomainHelper implements Serializable {
+public class Action extends BaseDomainHelper implements Serializable, WebSocketActionIdProvider {
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
 
@@ -431,5 +433,10 @@ public class Action extends BaseDomainHelper implements Serializable {
      */
     public String getHistoryDetails(Server server, User currentUser) {
         return "";
+    }
+
+    @Override
+    public String getWebSocketActionId() {
+        return null;
     }
 }
