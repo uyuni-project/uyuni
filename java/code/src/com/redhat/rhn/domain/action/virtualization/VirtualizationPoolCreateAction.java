@@ -189,4 +189,13 @@ public class VirtualizationPoolCreateAction extends BaseVirtualizationPoolAction
             source = null;
         }
     }
+
+    @Override
+    public String getWebSocketActionId() {
+        String id = super.getWebSocketActionId();
+        if (getUuid() == null) {
+            id = String.format("new-%s", getId());
+        }
+        return id;
+    }
 }

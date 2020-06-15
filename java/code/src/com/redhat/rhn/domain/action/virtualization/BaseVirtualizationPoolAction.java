@@ -36,4 +36,9 @@ public class BaseVirtualizationPoolAction extends Action {
     public void setPoolName(String poolNameIn) {
         poolName = poolNameIn;
     }
+
+    @Override
+    public String getWebSocketActionId() {
+        return String.format("pool-%s", getPoolName());
+    }
 }

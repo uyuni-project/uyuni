@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
+
 import com.redhat.rhn.domain.action.Action;
 
 import java.util.Map;
@@ -54,4 +55,12 @@ public abstract class BaseVirtualizationGuestAction extends Action {
         // therefore does nothing.
     }
 
+    @Override
+    public String getWebSocketActionId() {
+        String id = "new-" + getId();
+        if (uuid != null) {
+            id = uuid;
+        }
+        return id;
+    }
 }
