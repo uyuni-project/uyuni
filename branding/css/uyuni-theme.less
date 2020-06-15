@@ -12,6 +12,11 @@ html, body {
   outline: none!important;
 }
 
+input.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: @input-placeholder;
+  opacity: 1; /* Firefox */
+}
+
 header {
   position: fixed;
   top: 0;
