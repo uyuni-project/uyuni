@@ -35,10 +35,9 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
-import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.impl.PublishedBug;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
-import com.redhat.rhn.domain.errata.impl.PublishedKeyword;
+import com.redhat.rhn.domain.errata.impl.Keyword;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -714,7 +713,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     private static boolean doesUpdateStack(Errata e) {
         return e.getKeywords().stream()
-            .anyMatch(k -> ((PublishedKeyword) k).getKeyword().equals("restart_suggested"));
+            .anyMatch(k -> ((Keyword) k).getKeyword().equals("restart_suggested"));
     }
 
     /**
@@ -1552,7 +1551,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertFalse(ErrataManager.updateStackUpdateNeeded(user, server));
 
         Set<Keyword> kw = new HashSet<Keyword>();
-        Keyword k = new PublishedKeyword();
+        Keyword k = new Keyword();
         k.setKeyword("restart_suggested");
         k.setErrata(errata3);
         kw.add(k);

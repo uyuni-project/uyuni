@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.errata.impl;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.errata.Errata;
-import com.redhat.rhn.domain.errata.Keyword;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -25,10 +24,8 @@ import java.io.Serializable;
 
 /**
  * Keyword
- * @version $Rev$
  */
-public class PublishedKeyword extends BaseDomainHelper
-                              implements Keyword, Serializable {
+public class Keyword extends BaseDomainHelper implements Serializable {
 
     private String keyword;
     private Errata errata;
@@ -72,10 +69,10 @@ public class PublishedKeyword extends BaseDomainHelper
      * {@inheritDoc}
      */
     public boolean equals(final Object other) {
-        if (!(other instanceof PublishedKeyword)) {
+        if (!(other instanceof Keyword)) {
             return false;
         }
-        PublishedKeyword castOther = (PublishedKeyword) other;
+        Keyword castOther = (Keyword) other;
         return new EqualsBuilder().append(keyword, castOther.keyword)
                                   .append(errata, castOther.errata)
                                   .isEquals();

@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.errata.impl.PublishedKeyword"
+    <class name="com.redhat.rhn.domain.errata.impl.Keyword"
         table="rhnErrataKeyword" >
 
         <composite-id unsaved-value="any">

@@ -65,7 +65,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             cascade="all">
             <key column="errata_id"/>
             <one-to-many
-                class="com.redhat.rhn.domain.errata.impl.PublishedKeyword"/>
+                class="com.redhat.rhn.domain.errata.impl.Keyword"/>
         </set>
         <set name="packages" lazy="true" table="rhnErrataPackage"
             order-by="PACKAGE_ID asc">
