@@ -1106,6 +1106,10 @@ DATA = {
         'PDID' : [2001], 'PKGLIST' : PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/2/bootstrap/'
     },
+    'openSUSE-Leap-15.2-x86_64-uyuni' : {
+        'BASECHANNEL' : 'opensuse_leap15_2-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/opensuse/15/2/bootstrap/'
+    },
     'centos-6-x86_64' : {
         'PDID' : [-11, 1682], 'BETAPDID' : [2064], 'PKGLIST' : RES6,
         'DEST' : '/srv/www/htdocs/pub/repositories/centos/6/bootstrap/'
