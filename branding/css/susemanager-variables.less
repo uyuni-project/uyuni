@@ -21,60 +21,61 @@
 @eos-gray-dark-2:    #686565; // $eos-bc-gray-900
 @eos-gray-dark-3:    #141823; // $eos-bc-gray-1000
 
-/* Special colours for Manager */
-// Colours for SUMa only
-@susemanager-green-dark:      @eos-green-dark;
-@susemanager-green:           @eos-green;
-@susemanager-green-light:     @eos-green-light;
-@susemanager-blue-dark:       @eos-blue-dark;
+/* Special colours for SUSE Manager */
 @susemanager-text-menu:       @eos-gray-dark-3;
 @susemanager-text-header:     @eos-gray-light-3;
 @susemanager-link:            @eos-blue-dark;
 
 /* Main tags colours */
-@spacewalk-green-dark:   @eos-green-dark;
-@spacewalk-green:        @eos-green;
-@spacewalk-green-light:  @eos-green-light;
-@spacewalk-gray:         @eos-gray;
-@spacewalk-gray-light:   @eos-gray-light-2;
-@spacewalk-gray-dark:    @eos-gray-dark-2;
-@spacewalk-orange:       @eos-yellow-dark;
-@spacewalk-orange-light: #fd9a2b; // orange-light
-@spacewalk-yellow-dark:  #c5b345; // yellow-dark
-@spacewalk-yellow:       @eos-yellow;
-@spacewalk-red:          @eos-red;
-@spacewalk-background:   @eos-white;
-@spacewalk-blue:         @eos-blue-dark;
-@spacewalk-blue-light:   @eos-blue;
-@spacewalk-violet:       #841781;
-@spacewalk-notification-badge: @spacewalk-orange-light;
+@green-dark:             @eos-green-dark;
+@green:                  @eos-green;
+@green-light:            @eos-green-light;
+@gray-dark:              @eos-gray-dark-2;
+@gray:                   @eos-gray;
+@gray-light:             @eos-gray-light-2;
+@orange:                 @eos-yellow-dark;
+@orange-light:           #fd9a2b;
+@yellow-dark:            #c5b345;
+@yellow:                 @eos-yellow;
+@red:                    @eos-red;
+@white:                  @eos-white;
+@blue:                   @eos-blue-dark;
+@blue-light:             @eos-blue;
+@violet:                 #841781;
 
 /* Header */
-@spacewalk-header:       @eos-pine;
+@header:       @eos-pine;
 
 // Colours for the menu in the first column on the left:
-@spacewalk-aside:                        @eos-gray-light-3;
-@spacewalk-aside-border:                 lighten(@spacewalk-aside, 8%);
-@susemanager-aside-menu-active:          @susemanager-green;
-@susemanager-aside-menu-active-text:     @eos-white;
+@aside:                        @eos-gray-light-3;
+@aside-border:                 lighten(@aside, 8%);
+@aside-menu-active:            @green;
+@aside-menu-active-text:       @eos-white;
 
 /* aside menu search box */
-@spacewalk-aside-menu-search-clear:          fade(@eos-gray-light-1, 60%);
-@spacewalk-aside-menu-search-clear-hover:    @eos-gray-dark-1;
-
-/* Footer colours */
-@spacewalk-footer:            @spacewalk-aside;
-@spacewalk-footer-text:       @eos-gray-dark-2;
-@spacewalk-footer-links:      @eos-gray-dark-2;
-@spacewalk-footer-hover:      @eos-gray-dark-2;
-@spacewalk-footer-border:     @eos-gray-light-2;
+@aside-menu-search-clear:          fade(@eos-gray-light-1, 60%);
+@aside-menu-search-clear-hover:    @eos-gray-dark-1;
 
 /* Icons legend */
-@spacewalk-icon-legend:       @spacewalk-blue;
-@spacewalk-icon-legend-text:  #dddddd;
+@icon-legend:       @blue;
+@icon-legend-text:  #DDDDDD;
+
+/* Footer colours */
+@footer:            @aside;
+@footer-text:       @eos-gray-dark-2;
+@footer-links:      @eos-gray-dark-2;
+@footer-hover:      @eos-gray-dark-2;
+@footer-border:     @eos-gray-light-2;
 
 /* Buttons */
-@btn-primary-bg:     @susemanager-green;
+@btn-primary-bg:     @green;
+
+/* Other elements */
+@notification-badge:     @orange-light;
+
+/**
+* FONTS
+*/
 
 /* Lato variable: font variable to be applied in different text elements*/
 @lato: 'Lato', arial, helvetica, sans-serif;

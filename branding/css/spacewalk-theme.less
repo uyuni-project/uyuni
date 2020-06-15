@@ -60,13 +60,13 @@ p {
 		padding-right: 0
 	}
 }
-.spacewalk-header-container {
+.header-container {
 	.make-row(0);
 	.spacewalk-logo {
 		.make-xs-column(5);
 		padding-left: 0;
 	}
-	.spacewalk-header-links {
+	.header-links {
 		.make-xs-column(7);
 		.text-right;
 		padding-right: 0;
@@ -90,8 +90,8 @@ p {
 	margin-right: 0;
 	margin-left: 0;
  	aside {
-		background: @spacewalk-aside;
-		border-right: 1px solid @spacewalk-aside-border;
+		background: @aside;
+		border-right: 1px solid @aside-border;
 		height: auto;
 		min-height: 100%;
 		/* erasing the predefined paddings in the columns */
@@ -208,9 +208,9 @@ p {
 
 /* Icons Legend */
 aside .sideleg {
-	background: @spacewalk-icon-legend;
+	background: @icon-legend;
 	width: 90%;
-	color: @spacewalk-icon-legend-text;
+	color: @icon-legend-text;
 	padding: .5em 1em;
 	border-radius: 4px;
 	margin: 2em auto;
@@ -252,19 +252,19 @@ aside .nav > li > a {
 #sidenav {
 	min-height: 1px;
 	a {
-		color: @spacewalk-aside-first-submenu-hyperlink;
+		color: @aside-first-submenu-hyperlink;
 		.shadow-text;
 	}
 	a:hover {
-		color: @spacewalk-aside-first-submenu-hyperlink-hover;
+		color: @aside-first-submenu-hyperlink-hover;
 		.shadow-text;
 	}
 	ul > li ul li a {
-                color: @spacewalk-aside-second-submenu-hyperlink;
+                color: @aside-second-submenu-hyperlink;
                 .glow-text;
         }
         ul > li ul li a:hover {
-                color: @spacewalk-aside-second-submenu-hyperlink-hover;
+                color: @aside-second-submenu-hyperlink-hover;
                 .glow-text;
         }
 	li a:before {
@@ -283,17 +283,17 @@ aside .nav > li > a {
 		margin-right: .5em
 	}
 	li {
-		border-bottom: 1px solid @spacewalk-aside-border;
+		border-bottom: 1px solid @aside-border;
 	}
 	ul li:hover, ul li a:hover {
-                background: @spacewalk-list-menu-hover;
+                background: @list-menu-hover;
         }
 	li.active,
 	li.active:hover,
 	li.active > a,
 	li.active > a:hover {
-		color: @spacewalk-aside-menu-hyperlink-active;
-		background: @spacewalk-list-menu-active;
+		color: @aside-menu-hyperlink-active;
+		background: @list-menu-active;
 		.glow-text-deleted;
 	}
 	li > a {
@@ -310,39 +310,39 @@ aside .nav > li > a {
 	ul > li ul li {
 	    padding: 0 0 0 1em !important;
 	    margin: 0;
-	    background: @spacewalk-list-first-submenu;
-	    border-bottom: 1px solid @spacewalk-aside-border;
+	    background: @list-first-submenu;
+	    border-bottom: 1px solid @aside-border;
 	}
 	ul > li ul li.active,
 	ul > li ul li.active:hover,
 	ul > li ul li.active a,
 	ul > li ul li.active a:hover {
-		color: @spacewalk-aside-menu-hyperlink-active;
-		background: @spacewalk-list-first-submenu-active;
+		color: @aside-menu-hyperlink-active;
+		background: @list-first-submenu-active;
 		.glow-text-deleted;
 	}
 	ul > li ul li:hover, ul > li ul li a:hover {
-		background: @spacewalk-list-first-submenu-hover;
+		background: @list-first-submenu-hover;
 	}
 	/* second submenu */
 	ul>ul>ul li {
 	    padding: 0 0 0 1.5em !important;
 	    margin: 0;
-	    background: @spacewalk-list-second-submenu;
+	    background: @list-second-submenu;
 	    border-bottom: 1px solid #bbb;
 	}
 	ul>ul>ul li.active,
 	ul>ul>ul li.active:hover,
 	ul>ul>ul li.active a,
 	ul>ul>ul li.active a:hover {
-		background: @spacewalk-list-second-submenu-active;
+		background: @list-second-submenu-active;
 		.glow-text-deleted;
 	}
 	ul>ul>ul li:hover, ul>ul>ul li a:hover {
-		background: @spacewalk-list-second-submenu-hover;
+		background: @list-second-submenu-hover;
 	}
 	ul>ul>ul li:last-child {
-		border-bottom: 1px solid @spacewalk-list-second-submenu-last-line;
+		border-bottom: 1px solid @list-second-submenu-last-line;
 	}
 
 }
@@ -691,13 +691,13 @@ div:not([class~="alert"]) i.fa {
         color: @spacewalk-gold-yellow;
     }
     &.text-success {
-        color: @spacewalk-green;
+        color: @green;
     }
     &.text-info {
-        color: @spacewalk-blue;
+        color: @blue;
     }
     &.text-danger {
-        color: @spacewalk-red;
+        color: @red;
     }
 }
 
@@ -707,13 +707,13 @@ div:not([class~="alert"]) i.fa {
         color: @spacewalk-gold-yellow;
     }
     &.text-success {
-        color: @spacewalk-green;
+        color: @green;
     }
     &.text-info {
-        color: @spacewalk-blue;
+        color: @blue;
     }
     &.text-danger {
-        color: @spacewalk-red;
+        color: @red;
     }
 }
 
