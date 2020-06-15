@@ -28,9 +28,7 @@ public class MaintenanceWindowJson {
     /** Name of the schedule */
     private String scheduleName;
 
-    /** Type of the schedule
-     * Either SINGLE or MULTI
-     */
+    /** Type of the schedule */
     private String scheduleType;
 
     /** calendar ID */
