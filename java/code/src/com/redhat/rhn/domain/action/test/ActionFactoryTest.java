@@ -37,9 +37,9 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
@@ -516,16 +516,16 @@ public class ActionFactoryTest extends RhnBaseTestCase {
                  type.equals(ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN) ||
                  type.equals(ActionFactory.TYPE_VIRTUALIZATION_START) ||
                  type.equals(ActionFactory.TYPE_VIRTUALIZATION_SUSPEND)) {
-            BaseVirtualizationAction va = (BaseVirtualizationAction)newA;
+            BaseVirtualizationGuestAction va = (BaseVirtualizationGuestAction)newA;
             va.setUuid("testuuid");
         }
         else if (type.equals(ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY)) {
-           VirtualizationSetMemoryAction va = (VirtualizationSetMemoryAction)newA;
+           VirtualizationSetMemoryGuestAction va = (VirtualizationSetMemoryGuestAction)newA;
            va.setUuid("testuuid");
            va.setMemory(1234);
         }
         else if (type.equals(ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS)) {
-            VirtualizationSetVcpusAction va = (VirtualizationSetVcpusAction)newA;
+            VirtualizationSetVcpusGuestAction va = (VirtualizationSetVcpusGuestAction)newA;
             va.setUuid("testuuid");
             va.setVcpu(12);
         }

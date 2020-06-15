@@ -22,7 +22,7 @@ import java.util.Objects;
 public class VirtualizationCreateActionDiskDetails {
 
     private Long id;
-    private VirtualizationCreateAction action;
+    private VirtualizationCreateGuestAction action;
     private String device;
     private String template;
     private long size = 0;
@@ -62,14 +62,14 @@ public class VirtualizationCreateActionDiskDetails {
     /**
      * @return the associated virtualization create action details
      */
-    public VirtualizationCreateAction getAction() {
+    public VirtualizationCreateGuestAction getAction() {
         return action;
     }
 
     /**
      * @param actionIn the associated virtualization create action details
      */
-    public void setAction(VirtualizationCreateAction actionIn) {
+    public void setAction(VirtualizationCreateGuestAction actionIn) {
         action = actionIn;
     }
 

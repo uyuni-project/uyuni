@@ -50,22 +50,22 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSchedulePollerAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.org.Org;
@@ -406,31 +406,31 @@ public class ActionFactory extends HibernateFactory {
             retval = new DaemonConfigAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_SHUTDOWN)) {
-            retval = new VirtualizationShutdownAction();
+            retval = new VirtualizationShutdownGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_START)) {
-            retval = new VirtualizationStartAction();
+            retval = new VirtualizationStartGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_SUSPEND)) {
-            retval = new VirtualizationSuspendAction();
+            retval = new VirtualizationSuspendGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_RESUME)) {
-            retval = new VirtualizationResumeAction();
+            retval = new VirtualizationResumeGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_REBOOT)) {
-            retval = new VirtualizationRebootAction();
+            retval = new VirtualizationRebootGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_DESTROY)) {
-            retval = new VirtualizationDestroyAction();
+            retval = new VirtualizationDestroyGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_DELETE)) {
-            retval = new VirtualizationDeleteAction();
+            retval = new VirtualizationDeleteGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_SET_MEMORY)) {
-            retval = new VirtualizationSetMemoryAction();
+            retval = new VirtualizationSetMemoryGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_SET_VCPUS)) {
-            retval = new VirtualizationSetVcpusAction();
+            retval = new VirtualizationSetVcpusGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_SCHEDULE_POLLER)) {
             retval = new VirtualizationSchedulePollerAction();
@@ -442,7 +442,7 @@ public class ActionFactory extends HibernateFactory {
             retval = new KickstartGuestToolsChannelSubscriptionAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_CREATE)) {
-            retval = new VirtualizationCreateAction();
+            retval = new VirtualizationCreateGuestAction();
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_POOL_REFRESH)) {
             retval = new VirtualizationPoolRefreshAction();

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,9 +15,8 @@
 package com.redhat.rhn.domain.action.virtualization;
 
 /**
- * VirtualizationDestroyAction - Class representing TYPE_VIRTUALIZATION_DESTROY
- * @version $Rev$
+ * Class representing TYPE_VIRTUALIZATION_DELETE
  */
-public class VirtualizationDestroyAction extends BaseVirtualizationAction {
+public class VirtualizationDeleteGuestAction extends BaseVirtualizationGuestAction {
 
 }

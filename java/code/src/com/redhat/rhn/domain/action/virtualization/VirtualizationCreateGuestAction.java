@@ -19,10 +19,9 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- *
- * VirtualizationCreateAction - Class representing TYPE_VIRTUALIZATION_CREATE
+ * CreateAction - Class representing TYPE_VIRTUALIZATION_CREATE
  */
-public class VirtualizationCreateAction extends BaseVirtualizationAction {
+public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestAction {
 
     private static final long serialVersionUID = 5911199267745279497L;
     public static final String TYPE = "type";
@@ -261,8 +260,8 @@ public class VirtualizationCreateAction extends BaseVirtualizationAction {
     @Override
     public boolean equals(Object other) {
         boolean result = false;
-        if (other instanceof VirtualizationCreateAction) {
-            VirtualizationCreateAction otherAction = (VirtualizationCreateAction)other;
+        if (other instanceof VirtualizationCreateGuestAction) {
+            VirtualizationCreateGuestAction otherAction = (VirtualizationCreateGuestAction)other;
             result = Objects.equals(getType(), otherAction.getType()) &&
                     Objects.equals(getGuestName(), otherAction.getGuestName()) &&
                     Objects.equals(getOsType(), otherAction.getOsType()) &&

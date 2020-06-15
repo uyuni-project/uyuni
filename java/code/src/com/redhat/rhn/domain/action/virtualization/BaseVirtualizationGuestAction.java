@@ -14,43 +14,44 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
+import com.redhat.rhn.domain.action.Action;
+
 import java.util.Map;
 
 /**
- * VirtualizationSetVcpusAction - Class representing TYPE_VIRTUALIZATION_SET_VCPUS
- * @version $Rev$
+ * Base class representing virtualization actions
  */
-public class VirtualizationSetVcpusAction extends BaseVirtualizationAction {
+public abstract class BaseVirtualizationGuestAction extends Action {
 
-    public static final String SET_CPU_STRING = "setVcpu";
+    public static final String FORCE_STRING = "force";
 
-    private Integer vcpu;
+    private String uuid;
 
     /**
-     * Set the vcpus to be appied to the guest.
-     * @param vcpuIn New setting for guest vcpus.
+     * Getter for uuid
+     * @return String to get
      */
-    public void setVcpu(Integer vcpuIn) {
-        vcpu = vcpuIn;
+    public String getUuid() {
+        return this.uuid;
     }
 
     /**
-     * Guest the guest vcpus.
-     * @return The guest vcpu setting.
+     * Setter for uuid
+     * @param stringIn String to set uuid to
      */
-    public Integer getVcpu() {
-        return vcpu;
+    public void setUuid(String stringIn) {
+        this.uuid = stringIn;
     }
 
     /**
-     * {@inheritDoc}
+     * Extract any required parameters from the provided context and call the
+     * appropriate setters.
+     *
+     * @param context Map of strings
      */
     public void extractParameters(Map context) {
-        if (context.containsKey(VirtualizationSetVcpusAction.SET_CPU_STRING)) {
-            setVcpu(Integer.valueOf((String)context.get(
-                    VirtualizationSetVcpusAction.SET_CPU_STRING)));
-        }
+        // Most virtualization actions require no parameters, default implementation
+        // therefore does nothing.
     }
 
 }
-
