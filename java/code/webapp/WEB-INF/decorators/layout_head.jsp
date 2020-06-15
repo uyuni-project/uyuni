@@ -42,12 +42,12 @@
     <c:choose>
         <c:when test='${ConfigDefaults.get().isUyuni()}'>
             <rhn:require acl="is(development_environment)">
-                <link rel="stylesheet/less" type="text/css" href="/css/uyuni/uyuni.less" />
+                <link rel="stylesheet/less" type="text/css" href="/css/uyuni.less" />
                 <script>less = { env: 'development for Uyuni' };</script>
                 <script src="/javascript/less.js"></script>
             </rhn:require>
             <rhn:require acl="not is(development_environment)">
-                <link rel="stylesheet" href="/css/uyuni/uyuni.css?cb=${cb_version}" />
+                <link rel="stylesheet" href="/css/uyuni.css?cb=${cb_version}" />
             </rhn:require>
         </c:when>
         <c:otherwise>
