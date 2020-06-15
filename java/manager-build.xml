@@ -260,6 +260,7 @@
     </condition>
     <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
     <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
+    <property name="salt.cluster.provider" value="/usr/share/susemanager/cluster-providers"/>
 
     <echo message="Copying Salt sls files to remote host...${salt.state.files.dir}"/>
     <exec executable="rsync">
@@ -281,6 +282,13 @@
     <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
     <exec executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/susemanager-sls/reactor/ ${deploy.user}@${deploy.host}:${salt.reactor.files.dir}/" />
+    </exec>
+    <echo message="Copying CaasP cluster provider files to remote host...${salt.cluster.provider}"/>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/metadata ${deploy.user}@${deploy.host}:${salt.cluster.provider}/metadata/caasp" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/caasp/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/states/caasp" />
     </exec>
   </target>
 

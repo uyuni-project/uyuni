@@ -55,6 +55,17 @@ state_hooks:
     after:
       - caasp.kill_ssh_agent
 
+
+actions:
+  # create:
+  #   state: caasp.orch.create
+  join:
+    state: caasp.orch.join
+  remove:
+    state: caasp.orch.remove
+  upgrade:
+    state: caasp.orcch.upgrade
+
 management_node:
   match: 'I@caasp:management_node:true'
 

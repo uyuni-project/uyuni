@@ -1960,19 +1960,19 @@ public class SaltServerActionService {
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> clusterJoinNodeAction(ClusterJoinNodeAction clusterAction) {
-        return clusterModifyAction(clusterAction, "clusters.addnode");
+        return clusterModifyAction(clusterAction, "join", "clusters.addnode");
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> clusterRemoveNodeAction(ClusterRemoveNodeAction clusterAction) {
-        return clusterModifyAction(clusterAction, "clusters.removenode");
+        return clusterModifyAction(clusterAction, "remove", "clusters.removenode");
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> clusterUpgradeClusterAction(ClusterUpgradeAction clusterAction) {
-        return clusterModifyAction(clusterAction, "clusters.upgradecluster");
+        return clusterModifyAction(clusterAction, "upgrade", "clusters.upgradecluster");
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> clusterModifyAction(
-            BaseClusterModifyNodesAction clusterAction, String state) {
+            BaseClusterModifyNodesAction clusterAction, String action, String state) {
         Cluster cluster = clusterAction.getCluster();
 
         Optional<Map<String, Object>> settingsFormulaData = formulaManager

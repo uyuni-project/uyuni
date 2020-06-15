@@ -563,7 +563,16 @@ public class ClusterManager {
     public Optional<Map<String, List<String>>> getStateHooks(String provider) {
         return FormulaFactory.getClusterProviderMetadata(provider, "state_hooks", Map.class)
                 .map(m -> (Map<String, List<String>>)m);
+    }
 
+    /**
+     * Get orchestration hooks for cluster provider.
+     * @param provider cluster provider label
+     * @return orchestration hooks as Map (if any)
+     */
+    public Optional<Map<String, List<String>>> getActions(String provider) {
+        return FormulaFactory.getClusterProviderMetadata(provider, "actions", Map.class)
+                .map(m -> (Map<String, List<String>>)m);
     }
 
     /**
