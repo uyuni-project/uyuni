@@ -17,7 +17,7 @@ Below is the list of Ruby gems used by the testsuite. It may change over time as
 
 ### Communication with test VMs
 
-* ```twopence``` allows to run commands, import and extract files as one would do with ssh and scp, but with a test-oriented approach (timeouts, etc)
+* ```twopence``` allows to run commands, import and extract files as one would do with ssh and scp, but with a test-oriented approach (timeouts, etc). Twopence can be installed as rpm from [here](https://build.opensuse.org/package/show/systemsmanagement:sumaform:tools/twopence).
 * ```lavanda``` offers Ruby convenience extensions to twopence
 
 ### Simulation of user interaction
