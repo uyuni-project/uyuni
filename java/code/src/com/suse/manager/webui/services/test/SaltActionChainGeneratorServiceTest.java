@@ -105,7 +105,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    mgrcompat.module_run:\n" +
                         "    -   name: state.apply\n" +
                         "    -   require:\n" +
-                        "        -   module: mgr_actionchain_131_action_1_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
+                        "        -   mgrcompat: mgr_actionchain_131_action_1_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
                 fileContent);
 
         assertFalse(stateFilesRoot
@@ -178,7 +178,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   name: system.reboot\n" +
                         "    -   at_time: 1\n" +
                         "    -   require:\n" +
-                        "        -   module: mgr_actionchain_131_action_1_chunk_1\n" +
+                        "        -   mgrcompat: mgr_actionchain_131_action_1_chunk_1\n" +
                         "schedule_next_chunk:\n" +
                         "    mgrcompat.module_run:\n" +
                         "    -   name: mgractionchains.next\n" +
@@ -186,7 +186,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    -   chunk: 2\n" +
                         "    -   next_action_id: 3\n" +
                         "    -   require:\n" +
-                        "        -   module: mgr_actionchain_131_action_2_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
+                        "        -   mgrcompat: mgr_actionchain_131_action_2_chunk_1\n").replaceAll("131", actionChain.getId() + ""),
                 fileContent);
         fileContent = FileUtils
                 .readFileToString(stateFilesRoot
@@ -260,7 +260,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
                         "    mgrcompat.module_run:\n" +
                         "    -   name: mgractionchains.clean\n" +
                         "    -   onfail:\n" +
-                        "        -   module: mgr_actionchain_142_action_1_chunk_1\n")
+                        "        -   mgrcompat: mgr_actionchain_142_action_1_chunk_1\n")
                         .replaceAll("142", actionChain.getId() + ""),
                 fileContent);
 
