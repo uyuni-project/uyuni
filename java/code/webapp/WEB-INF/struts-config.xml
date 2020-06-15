@@ -2254,8 +2254,6 @@
              className="com.redhat.rhn.frontend.struts.RhnActionMapping">
          <set-property property="acls" value="user_role(channel_admin); errata_editable()"/>
          <set-property property="postRequiredIfSubmitted" value="true" />
-         <forward name="published"
-             path="/errata/manage/SelectChannels.do" redirect="true"/>
          <forward name="notified"
              path="/errata/manage/Notify.do" redirect="true"/>
          <forward name="default"

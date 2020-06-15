@@ -61,7 +61,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * EditAction
- * @version $Rev$
  */
 public class EditAction extends LookupDispatchAction {
 
@@ -131,10 +130,6 @@ public class EditAction extends LookupDispatchAction {
      */
     public ActionForward setupPage(HttpServletRequest request, ActionMapping mapping,
                                    Errata errata) {
-
-        //What type of errata is this? we need to set isPublished
-        request.setAttribute("isPublished", "true");
-
         //set the list of bugs
         request.setAttribute("bugs", errata.getBugs());
         //set advisory for toolbar
@@ -146,24 +141,6 @@ public class EditAction extends LookupDispatchAction {
                 (ErrataFactory.ERRATA_TYPE_SECURITY));
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
-    }
-
-    /**
-     * This method adds an errata to some channels
-     * @param mapping Action mapping
-     * @param formIn Form
-     * @param request The request
-     * @param response The response
-     * @return Returns an ActionForward for either published or failure
-     */
-    public ActionForward publish(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
-        //forward to the channels page so user can associate channels
-        //with this errata.
-        return getStrutsDelegate().forwardParam(mapping.findForward("published"),
-                "eid", request.getParameter("eid"));
     }
 
     /**
@@ -428,7 +405,6 @@ public class EditAction extends LookupDispatchAction {
      */
     protected Map getKeyMethodMap() {
         Map map = new HashMap();
-        map.put("errata.edit.publisherrata", "publish");
         map.put("errata.edit.sendnotification", "notify");
         map.put("errata.edit.submit", "addBug");
         map.put("errata.edit.delete", "deleteBug");

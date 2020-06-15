@@ -167,9 +167,5 @@ public class EditActionTest extends RhnBaseTestCase {
         assertEquals(form.get("advisoryName"), errata.getAdvisoryName());
         //check select list to make sure correct one is selected
         assertEquals(form.get("advisoryType"), errata.getAdvisoryType());
-
-        //We created a published errata above
-        assertEquals(request.getAttribute("isPublished"), "true");
     }
-
 }

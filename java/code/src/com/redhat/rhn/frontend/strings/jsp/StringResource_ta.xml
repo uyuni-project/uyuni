@@ -3796,20 +3796,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>அழிக்கவும்</target>
       </trans-unit>
-      <trans-unit id="errata.edit.youmaypublish" xml:space="preserve">
-        <source>You may now publish this patch.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target>இப்போது இந்தப் பிழைத்திருத்தத்தை வெளியிடலாம்.</target>
-      </trans-unit>
-      <trans-unit id="errata.edit.publisherrata" xml:space="preserve">
-        <source>Publish Patch</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
-        </context-group>
-        <target>பிழைத்திருத்தங்களை வெளியிடவும்</target>
-      </trans-unit>
       <trans-unit id="errata.edit.sendnotification" xml:space="preserve">
         <source>Send Notification</source>
         <context-group name="ctx">
