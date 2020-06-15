@@ -27,14 +27,6 @@ Feature: Debug the clients after the testsuite has run
   Scenario: Get client logs for SSH minion
     When I get logfiles from "ssh_minion"
 
-@virthost_kvm
-  Scenario: Get client logs for KVM virtualization host
-    When I get logfiles from "kvm_server"
-
-@virthost_xen
-  Scenario: Get client logs for Xen virtualization host
-    When I get logfiles from "xen_server"
-
 @buildhost
   Scenario: Get client logs for build host
     When I get logfiles from "build_host"
