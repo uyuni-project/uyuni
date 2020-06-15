@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Jun 15 12:41:30 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
 - Enable bootstrap repository creation for openSUSE Leap 15.2 for Uyuni
 
 -------------------------------------------------------------------
