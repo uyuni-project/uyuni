@@ -314,14 +314,6 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Creates a new (Unpublished) Errata object.
-     * @return Returns a fresh errata
-     */
-    public static Errata createNewErrata() {
-        return ErrataFactory.createPublishedErrata();
-    }
-
-    /**
      * Creates a new PublishedBug with the id and summary given.
      * @param id The id for the new bug
      * @param summary The summary for the new bug

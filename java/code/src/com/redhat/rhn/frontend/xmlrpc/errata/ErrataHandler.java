@@ -1217,7 +1217,7 @@ public class ErrataHandler extends BaseHandler {
         if (newErrata != null) {
             throw new DuplicateErrataException(advisoryName);
         }
-        newErrata = ErrataManager.createNewErrata();
+        newErrata = ErrataFactory.createPublishedErrata();
         newErrata.setOrg(loggedInUser.getOrg());
 
         //all required
