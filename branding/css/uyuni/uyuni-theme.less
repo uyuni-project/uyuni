@@ -1,6 +1,6 @@
 /* Main HTML5 tags defined for the theme */
 body {
-  background: @spacewalk-background;
+  background: @white;
   width: auto;
   -webkit-font-smoothing: antialiased;
 }
@@ -20,15 +20,15 @@ header {
   width: 100%;
   border: none;
   border-radius: 0;
-  border-bottom: 2px solid darken(@susemanager-green, 10%);
+  border-bottom: 2px solid darken(@green, 10%);
   margin-bottom: 0;
   padding: 12px 10px;
-  background: @spacewalk-header;
+  background: @header;
   a {
-    color: @spacewalk-gray-light;
+    color: @gray-light;
   }
   a:hover {
-    color: @spacewalk-gray-light;
+    color: @gray-light;
   }
   img {
     float: left;
@@ -36,10 +36,10 @@ header {
 }
 
 footer {
-  border-top: 1px solid @spacewalk-blue-light;
-  background: @spacewalk-footer;
+  border-top: 1px solid @blue-light;
+  background: @footer;
   padding: 3px 12px;
-  color: @spacewalk-footer-text;
+  color: @footer-text;
   font-weight: normal;
   font-size: 0.9em;
   height: auto;
@@ -51,11 +51,11 @@ footer {
   .make-row(0);
 
   a {
-    color: @spacewalk-footer-links;
+    color: @footer-links;
     text-decoration: underline;
   }
   a:hover {
-    color: @spacewalk-footer-hover;
+    color: @footer-hover;
   }
   /* override spacewalk rules */
   div:nth-child(1),
@@ -120,13 +120,13 @@ h6 { font-size: 1em; }
     padding-right: 0
   }
 }
-.spacewalk-header-container {
+.header-container {
   .make-row(0);
   .spacewalk-logo {
     .make-xs-column(5);
     padding-left: 0;
   }
-  .spacewalk-header-links {
+  .header-links {
     .make-xs-column(7);
     .text-right;
     padding-right: 0;
@@ -146,8 +146,8 @@ section {
   margin-left: 0;
    aside {
     .make-xs-column(2);
-    background: @spacewalk-aside;
-    border-right: 1px solid @spacewalk-aside-border;
+    background: @aside;
+    border-right: 1px solid @aside-border;
     /* erasing the predefined paddings in the columns */
     padding: 0;
     position: fixed;
@@ -178,7 +178,7 @@ section {
 }
 
 #breadcrumb {
-  color: @spacewalk-gray;
+  color: @gray;
   display: inline-block;
   span {
     vertical-align: bottom;
@@ -217,7 +217,7 @@ header, nav.navbar-pf {
     }
   }
   .navbar-toggle:hover {
-    color: @susemanager-green;
+    color: @green;
   }
   .navbar-header {
     float: none;
@@ -231,7 +231,7 @@ header, nav.navbar-pf {
     display: inline-block;
     position: relative;
     vertical-align: middle;
-    a, .spacewalk-header-non-link {
+    a, .header-non-link {
       display: inline-block;
       padding: 4px 8px 4px 12px;
       border-radius: 2px;
@@ -240,20 +240,20 @@ header, nav.navbar-pf {
 
   a.toggle-box:hover,
   a.toggle-box.open {
-    color: @susemanager-green;
+    color: @green;
   }
   .box-wrapper {
     position: absolute;
     top: 100%;
-    background-color: @spacewalk-blue;
+    background-color: @blue;
     border-radius: 0px 2px 2px 2px;
     z-index: 1000;
-    box-shadow: 0px 4px 4px 0px @spacewalk-gray;
+    box-shadow: 0px 4px 4px 0px @gray;
     margin-top: 5px;
   }
 
   /* overwrite the padding the grid columns give */
-  &#spacewalk-header {
+  &#header {
     padding-right: 0;
     padding-left: 0;
   }
@@ -291,22 +291,22 @@ header, nav.navbar-pf {
 
   /* System Set Manager header box */
   .ssm-box {
-    border: 1px solid @spacewalk-gray-dark;
+    border: 1px solid @gray-dark;
     #header_selcount {
       .badge {
         border-radius: 8px;
-        background: @spacewalk-gray-light;
+        background: @gray-light;
         display: inline-block;
         padding: 2px 6px;
         text-align: center;
-        color: darken(@spacewalk-gray-dark, 20%);
+        color: darken(@gray-dark, 20%);
         vertical-align: middle;
         margin-right: 5px;
       }
     }
     a#manage-ssm:hover {
       text-decoration: none;
-      color: @susemanager-green;
+      color: @green;
     }
     a {
       display: inline-block;
@@ -315,15 +315,15 @@ header, nav.navbar-pf {
     }
     a#clear-ssm {
       margin-left: -4px;
-      border-left: 1px dashed @spacewalk-gray-dark;
-      color: @spacewalk-gray-light;
+      border-left: 1px dashed @gray-dark;
+      color: @gray-light;
       i {
         margin: 0;
       }
     }
     a#clear-ssm:hover {
-      background-color: @spacewalk-red;
-      color: @spacewalk-gray-light;
+      background-color: @red;
+      color: @gray-light;
     }
   }
 
@@ -336,7 +336,7 @@ header, nav.navbar-pf {
     font-size: 1.6em;
     display: inline-block;
     vertical-align: baseline;
-    color: @spacewalk-gray-light;
+    color: @gray-light;
     > i {
       display: none;
     }
@@ -346,7 +346,7 @@ header, nav.navbar-pf {
     }
   }
   .navbar-brand:hover {
-    color: @spacewalk-gray-light;
+    color: @gray-light;
   }
 }
 
@@ -364,7 +364,7 @@ header, nav.navbar-pf {
   padding: 0;
   text-align: center;
   background-color: rgba(77, 211, 167, 0.2);
-  color: @spacewalk-gray-dark;
+  color: @gray-dark;
   border: 1px solid rgba(0, 192, 129, 0.2);
   i {
     margin: 0 auto;
@@ -373,8 +373,8 @@ header, nav.navbar-pf {
 }
 #scroll-top:hover {
   background-color: rgba(0, 192, 129, 0.9);
-  color: @spacewalk-gray-light;
-  border: 1px solid darken(@susemanager-green, 10%);
+  color: @gray-light;
+  border: 1px solid darken(@green, 10%);
 }
 
 //Nav menu in left column
@@ -389,12 +389,12 @@ header, nav.navbar-pf {
       vertical-align: top;
     }
     input {
-      background-color: @spacewalk-blue;
-      border-color: @spacewalk-blue-light;
+      background-color: @blue;
+      border-color: @blue-light;
       border-style: solid;
       border-radius: 0;
       border-width: 0 0 1px 0;
-      color: @spacewalk-gray-light;
+      color: @gray-light;
       padding-right: 3em;
       height: 3em;
     }
@@ -402,7 +402,7 @@ header, nav.navbar-pf {
       box-shadow: none;
     }
     .input-right-icon {
-      color: @spacewalk-aside-menu-search-clear;
+      color: @aside-menu-search-clear;
       position: absolute;
       top: .4em;
       right: 0;
@@ -412,7 +412,7 @@ header, nav.navbar-pf {
       padding: 0;
     }
     .clear:hover {
-      color: @spacewalk-aside-menu-search-clear-hover;
+      color: @aside-menu-search-clear-hover;
     }
   }
   //Menu
@@ -439,16 +439,16 @@ header, nav.navbar-pf {
       }
       // active
       li.active > .nodeLink {
-        color: @susemanager-green;
+        color: @green;
       }
       li.active > .leafLink {
-        background-color: @spacewalk-aside-menu-active;
+        background-color: @aside-menu-active;
         border-radius: 0 2px 2px 0;
       }
       // nodeLink and leafLink
       div.nodeLink,
       div.leafLink {
-        color: @spacewalk-gray-light;
+        color: @gray-light;
         border-left: 3px solid transparent;
         a {
           display: block;
@@ -458,7 +458,7 @@ header, nav.navbar-pf {
       }
       div.nodeLink:hover,
       div.leafLink:hover {
-        border-left-color: @susemanager-green;
+        border-left-color: @green;
       }
       // nodeLink only
       div.nodeLink {
@@ -477,11 +477,11 @@ header, nav.navbar-pf {
           display: inline-block;
         }
         > a:hover {
-          color: @spacewalk-gray-light;
+          color: @gray-light;
         }
       }
       div.nodeLink:hover {
-        color: @spacewalk-aside-menu-active;
+        color: @aside-menu-active;
       }
     }
     /* First Level */
@@ -619,7 +619,7 @@ header, nav.navbar-pf {
   display: inline-block;
   width: 5em;
   border: 1px solid #dddddd;
-  background-color: @spacewalk-gray-light-background;
+  background-color: @gray-light-2;
 }
 .view-systems-registered{
   .input-sm;
@@ -630,8 +630,8 @@ header, nav.navbar-pf {
 
 /* Icons Legend */
 .sideleg {
-  background: @spacewalk-icon-legend;
-  color: @spacewalk-icon-legend-text;
+  background: @icon-legend;
+  color: @icon-legend-text;
   padding: .5em 1em;
   border-radius: 0px 0px 4px 4px;
   .hidden-sm;
@@ -858,7 +858,7 @@ form[name="createSatelliteForm"] .panel {
 }
 
 /* Hack for when an Aside doesnt have any content to not brake the theme */
-#spacewalk-aside:after {
+#aside:after {
   content: ".";
   color: #232526;
 }
@@ -906,16 +906,16 @@ i.spacewalk-help-link {
       float: none;
       margin: 0;
       clear: none;
-      color: @spacewalk-gray-light;
+      color: @gray-light;
       vertical-align: top;
       border-radius: 2px;
       a:hover, a:focus {
-        background-color: @spacewalk-header;
+        background-color: @header;
         text-decoration: underline;
       }
       button, button:hover {
-        background-color: @spacewalk-header;
-        color: @spacewalk-gray-light;
+        background-color: @header;
+        color: @gray-light;
       }
     }
     .search {
@@ -923,15 +923,15 @@ i.spacewalk-help-link {
         .btn-primary {
           display: block;
           width: 100%;
-          background: @spacewalk-gray-light;
-          color: @spacewalk-gray-dark;
+          background: @gray-light;
+          color: @gray-dark;
           border: 0;
           border-radius: 2px;
           height: 1.8em;
           padding: 0;
         }
         .btn-primary:hover {
-          background: @susemanager-green;
+          background: @green;
           color: #333;
         }
       }
@@ -951,7 +951,7 @@ i.spacewalk-help-link {
       border: none;
       padding: 6px 12px 1px;
       display: inline-block;
-      color: @spacewalk-blue-light;
+      color: @blue-light;
       font-size: 1.1em;
       border-width: 0 0 5px 0;
       border-style: solid;
@@ -961,15 +961,15 @@ i.spacewalk-help-link {
     a:hover {
       background: inherit;
       border-width: 0 0 3px 0;
-      border-color: @susemanager-green;
+      border-color: @green;
       padding-bottom: 3px;
     }
   }
   li.active {
     a, a:hover, a:focus {
       border-width: 0 0 5px 0;
-      border-color: @susemanager-green;
-      color: @spacewalk-gray;
+      border-color: @green;
+      color: @gray;
       background: inherit;
       padding-bottom: 1px;
     }
@@ -1122,21 +1122,21 @@ time:hover {
   margin-right: 10px;
   margin-top: 5px;
   margin-bottom: -18px;
-  color: @spacewalk-gray-dark;
+  color: @gray-dark;
 }
 
 // overrides errata icon styles
 .errata-low {
-  color: @spacewalk-gray;
+  color: @gray;
 }
 .errata-moderate {
-  color: @spacewalk-yellow;
+  color: @yellow;
 }
 .errata-important {
-  color: @spacewalk-orange;
+  color: @orange;
 }
 .errata-critical {
-  color: @spacewalk-red;
+  color: @red;
 }
 
 /**
@@ -1185,7 +1185,7 @@ i.fa.pointer {
     left: 0;
   }
   .progress-bar {
-    background-color: @susemanager-green;
+    background-color: @green;
   }
 }
 
@@ -1199,7 +1199,7 @@ i.fa.pointer {
     display: table-row;
     .table-col {
       display: table-cell;
-      border: 1px solid @spacewalk-gray-light;
+      border: 1px solid @gray-light;
       padding: .2em;
       vertical-align: middle;
     }
@@ -1214,18 +1214,18 @@ i.fa.pointer {
 
 .recommended-tag-base {
   .tag-base;
-  background-color: @spacewalk-yellow;
+  background-color: @yellow;
  }
 
 .mandatory-tag-base {
   .tag-base;
-  background-color: @spacewalk-red;
+  background-color: @red;
   color: white;
 }
 
 .line-separator {
   height: 1px;
-  background-color: @spacewalk-gray-light;
+  background-color: @gray-light;
   width: 100%;
   margin: .5em auto;
   display: inline-block;
@@ -1233,7 +1233,7 @@ i.fa.pointer {
 
 input:disabled+label {
   cursor: not-allowed;
-  color: @spacewalk-gray;
+  color: @gray;
 }
 
 select.small-select {
