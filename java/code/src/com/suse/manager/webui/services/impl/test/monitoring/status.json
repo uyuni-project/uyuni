@@ -52,7 +52,7 @@
             "duration": 23.169,
             "__id__": "postgres_exporter_service"
         },
-        "module_|-jmx_tomcat_java_config_|-file.search_|-run": {
+        "mgrcompat_|-jmx_tomcat_java_config_|-file.search_|-module_run": {
             "name": "file.search",
             "changes": {
                 "ret": true
@@ -65,7 +65,7 @@
             "duration": 15.399,
             "__id__": "jmx_tomcat_java_config"
         },
-        "module_|-jmx_taskomatic_java_config_|-file.search_|-run": {
+        "mgrcompat_|-jmx_taskomatic_java_config_|-file.search_|-module_run": {
             "name": "file.search",
             "changes": {
                 "ret": false

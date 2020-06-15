@@ -72,7 +72,7 @@
     "out": "highstate",
     "retcode": 0,
     "return": {
-      "module_|-mgr_cluster_remove_node_dev-min-caasp-worker-1.lan_|-mgrclusters.remove_node_|-run": {
+      "mgrcompat_|-mgr_cluster_remove_node_dev-min-caasp-worker-1.lan_|-mgrclusters.remove_node_|-module_run": {
         "__id__": "mgr_cluster_remove_node_dev-min-caasp-worker-1.lan",
         "__run_num__": 2,
         "__sls__": "clusters.removenode",
@@ -90,7 +90,7 @@
         "result": true,
         "start_time": "15:44:32.923690"
       },
-      "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+      "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
         "__id__": "sync_modules",
         "__run_num__": 0,
         "__sls__": "util.syncmodules",

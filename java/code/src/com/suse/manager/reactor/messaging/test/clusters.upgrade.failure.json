@@ -60,7 +60,7 @@
     "out": "highstate",
     "retcode": 0,
     "return": {
-      "module_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-run": {
+      "mgrcompat_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-module_run": {
         "__id__": "mgr_cluster_upgrade_cluster",
         "__run_num__": 2,
         "__sls__": "clusters.upgradecluster",
@@ -108,7 +108,7 @@
         "result": true,
         "start_time": "15:28:32.829704"
       },
-      "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+      "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
         "__id__": "sync_modules",
         "__run_num__": 0,
         "__sls__": "util.syncmodules",

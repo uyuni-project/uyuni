@@ -26,16 +26,16 @@ import java.util.Map;
  * clusters.addnode or clusters.removenode
  */
 public class ClusterOperationsSlsResult {
-    @SerializedName("module_|-mgr_cluster_add_node_|-mgrclusters.add_node_|-run")
+    @SerializedName("mgrcompat_|-mgr_cluster_add_node_|-mgrclusters.add_node_|-module_run")
     private StateApplyResult<Ret<Map<String, Map<String, Object>>>> addNodeResult;
 
-    @SerializedName("module_|-mgr_cluster_remove_nodes_|-mgrclusters.remove_node_|-run")
+    @SerializedName("mgrcompat_|-mgr_cluster_remove_nodes_|-mgrclusters.remove_node_|-module_run")
     private StateApplyResult<Ret<Map<String, Map<String, Object>>>> removeNodeResult;
 
-    @SerializedName("module_|-mgr_cluster_list_nodes_|-mgrclusters.list_nodes_|-run")
+    @SerializedName("mgrcompat_|-mgr_cluster_list_nodes_|-mgrclusters.list_nodes_|-module_run")
     private StateApplyResult<Ret<Map<String, Map<String, Object>>>> listNodesResult;
 
-    @SerializedName("module_|-mgr_cluster_list_nodes_|-mgrclusters.upgradecluster_|-run")
+    @SerializedName("mgrcompat_|-mgr_cluster_list_nodes_|-mgrclusters.upgradecluster_|-module_run")
     private StateApplyResult<Ret<Map<String, Map<String, Object>>>> upgradeResult;
 
     /**

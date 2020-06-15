@@ -749,21 +749,21 @@ public class SaltUtils {
     private void handleClusterJoinNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
         ClusterJoinNodeAction clusterAction = (ClusterJoinNodeAction)action;
         handleClusterAction(serverAction, jsonResult,
-                "module_|-mgr_cluster_add_node_*_|-mgrclusters.add_node_|-run", action,
+                "mgrcompat_|-mgr_cluster_add_node_*_|-mgrclusters.add_node_|-module_run", action,
                 clusterAction, true);
     }
 
     private void handleClusterRemoveNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
         ClusterRemoveNodeAction clusterAction = (ClusterRemoveNodeAction)action;
         handleClusterAction(serverAction, jsonResult,
-                "module_|-mgr_cluster_remove_node_*_|-mgrclusters.remove_node_|-run", action,
+                "mgrcompat_|-mgr_cluster_remove_node_*_|-mgrclusters.remove_node_|-module_run", action,
                 clusterAction, true);
     }
 
     private void handleClusterUpgrade(ServerAction serverAction, JsonElement jsonResult, Action action) {
         ClusterUpgradeAction clusterAction = (ClusterUpgradeAction) action;
         handleClusterAction(serverAction, jsonResult,
-                "module_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-run",
+                "mgrcompat_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-module_run",
                 action, clusterAction, false);
     }
 

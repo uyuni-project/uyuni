@@ -91,7 +91,7 @@
         "result": true,
         "start_time": "17:04:13.630979"
       },
-      "module_|-mgr_cluster_add_node_dev-min-caasp-worker-2.lan_|-mgrclusters.add_node_|-run": {
+      "mgrcompat_|-mgr_cluster_add_node_dev-min-caasp-worker-2.lan_|-mgrclusters.add_node_|-module_run": {
         "__id__": "mgr_cluster_add_node_dev-min-caasp-worker-2.lan",
         "__run_num__": 5,
         "__sls__": "clusters.addnode",
@@ -109,7 +109,7 @@
         "result": false,
         "start_time": "17:04:20.725951"
       },
-"module_|-mgr_cluster_add_node_dev-min-caasp-worker-3.lan_|-mgrclusters.add_node_|-run": {
+"mgrcompat_|-mgr_cluster_add_node_dev-min-caasp-worker-3.lan_|-mgrclusters.add_node_|-module_run": {
 "__id__": "mgr_cluster_add_node_dev-min-caasp-worker-3.lan",
 "__run_num__": 5,
 "__sls__": "clusters.addnode",
@@ -127,7 +127,7 @@
 "result": false,
 "start_time": "17:04:20.725951"
 },
-      "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+      "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
         "__id__": "sync_modules",
         "__run_num__": 0,
         "__sls__": "util.syncmodules",
