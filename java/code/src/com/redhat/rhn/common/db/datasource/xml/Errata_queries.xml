@@ -887,30 +887,6 @@ ORDER BY E.update_date, E.id
   <elaborator name="errata_flags"/>
 </mode>
 
-
-<mode name="unpublished_in_set" class="com.redhat.rhn.frontend.dto.OwnedErrata">
-  <query params="user_id, set_label">
-SELECT DISTINCT E.id,
-       E.update_date,
-       E.advisory,
-       E.advisory_type,
-       E.advisory_name,
-       E.synopsis AS ADVISORY_SYNOPSIS,
-       E.update_date,
-       E.created,
-       E.locally_modified,
-       0 AS PUBLISHED
-  FROM rhnErrataTmp E,
-       rhnSet ST
- WHERE ST.user_id = :user_id
-   AND ST.label = :set_label
-   AND ST.element = E.id
-ORDER BY E.update_date, E.id
-  </query>
-  <elaborator name="errata_overview" />
-  <elaborator name="errata_flags_tmp"/>
-</mode>
-
 <mode name="published_in_set" class="com.redhat.rhn.frontend.dto.OwnedErrata">
   <query params="user_id, set_label">
 SELECT DISTINCT E.id,
@@ -1139,17 +1115,6 @@ SELECT E.id,
 FROM rhnErrata E
     LEFT JOIN rhnErrataKeyword RB ON E.id = RB.errata_id AND RB.keyword = 'reboot_suggested'
     LEFT JOIN rhnErrataKeyword RS ON E.id = RS.errata_id AND RS.keyword = 'restart_suggested'
-WHERE E.id IN (%s)
-ORDER BY E.update_date DESC
-</query>
-
-<query name="errata_flags_tmp" params="">
-SELECT E.id,
-    CASE WHEN RB.keyword IS NOT NULL THEN 1 ELSE 0 END AS reboot_suggested,
-    CASE WHEN RS.keyword IS NOT NULL THEN 1 ELSE 0 END AS restart_suggested
-FROM rhnErrataTmp E
-    LEFT JOIN rhnErrataKeywordTmp RB ON E.id = RB.errata_id AND RB.keyword = 'reboot_suggested'
-    LEFT JOIN rhnErrataKeywordTmp RS ON E.id = RS.errata_id AND RS.keyword = 'restart_suggested'
 WHERE E.id IN (%s)
 ORDER BY E.update_date DESC
 </query>

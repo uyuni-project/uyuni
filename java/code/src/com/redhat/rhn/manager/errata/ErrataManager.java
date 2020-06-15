@@ -498,17 +498,6 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Returns all of the unpublished errata in the given set.
-     * @param user Currently logged in user.
-     * @param pc PageControl
-     * @param label Set label
-     * @return all of the errata.
-     */
-    public static DataResult unpublishedInSet(User user, PageControl pc, String label) {
-        return errataInSet(user, pc, "unpublished_in_set", label);
-    }
-
-    /**
      * Returns all errata from this user.
      * @param user Currently logged in user.
      * @return all of the errata.
@@ -585,16 +574,6 @@ public class ErrataManager extends BaseManager {
      */
     public static void deletePublishedErrata(User user, String label) {
         DataResult dr = publishedInSet(user, null, label);
-        deleteErrata(user, dr);
-    }
-
-    /**
-     * Delete unpublished errata in the set named as label
-     * @param user User performing the operation
-     * @param label name of the set that contains the id's of the errata to be deleted
-     */
-    public static void deleteUnpublishedErrata(User user, String label) {
-        DataResult dr = unpublishedInSet(user, null, label);
         deleteErrata(user, dr);
     }
 

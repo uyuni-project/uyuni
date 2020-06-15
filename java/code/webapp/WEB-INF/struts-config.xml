@@ -2150,16 +2150,6 @@
                   path="/errata/manage/PublishedErrata.do" redirect="true"/>
      </action>
 
-    <action path="/errata/manage/UnpublishedDeleteConfirm"
-        scope="request"
-        input="/WEB-INF/pages/admin/errata/unpublisheddeleteconfirm.jsp"
-        type="com.redhat.rhn.frontend.action.errata.UnpublishedDeleteConfirmSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(channel_admin)"/>
-        <forward name="default"
-               path="/WEB-INF/pages/admin/errata/unpublisheddeleteconfirm.jsp" />
-    </action>
-
     <action path="/errata/manage/PublishedDeleteConfirm"
         scope="request"
         input="/WEB-INF/pages/admin/errata/publisheddeleteconfirm.jsp"
@@ -2169,17 +2159,6 @@
         <forward name="default"
                path="/WEB-INF/pages/admin/errata/publisheddeleteconfirm.jsp" />
     </action>
-
-     <action path="/errata/manage/UnpublishedDeleteConfirmSubmit"
-         scope="request"
-         input="/WEB-INF/pages/admin/errata/unpublisheddeleteconfirm.jsp"
-         type="com.redhat.rhn.frontend.action.errata.UnpublishedDeleteConfirmAction"
-         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="postRequired" value="true" />
-         <set-property property="acls" value="user_role(channel_admin)"/>
-         <forward name="default"
-                  path="/errata/AllErrata.do" redirect="true"/>
-     </action>
 
      <action path="/errata/manage/PublishedDeleteConfirmSubmit"
          scope="request"
