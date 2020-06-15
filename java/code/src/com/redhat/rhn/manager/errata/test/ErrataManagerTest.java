@@ -246,14 +246,6 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(errata.size() >= 1);
     }
 
-    public void testUnpublishedErrata() {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-        DataResult errata = ErrataManager.unpublishedOwnedErrata(user);
-        assertNotNull(errata);
-        assertTrue(errata.size() <= 20);
-    }
-
     public void testUnpublishedInSet() {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());

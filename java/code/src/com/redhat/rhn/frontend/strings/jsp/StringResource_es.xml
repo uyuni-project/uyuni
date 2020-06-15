@@ -4774,17 +4774,9 @@ administrador de la organización en la sección "Roles" de la pestaña
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target state="needs-adaptation">&lt;p&gt;La siguiente lista representa las erratas pertenecientes a su organización.&lt;/p&gt;&lt;p&gt;Haga clic en una recomendación de errata para editar la información de la errata o la lista de paquetes a los cuales se aplica la errata.&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target>Erratas sin publicar</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target>Gestión de parches</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target>Ninguna errata sin publicar</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
         <source>No Published Patches</source>

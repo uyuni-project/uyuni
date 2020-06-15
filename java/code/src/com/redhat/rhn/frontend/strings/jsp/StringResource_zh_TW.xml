@@ -4893,17 +4893,9 @@ organization. You may grant or remove the organization administrator role in the
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target> &lt;p&gt;以下勘誤清單顯示了您組織所擁有的勘誤。&lt;/p&gt;&lt;p&gt;請按下勘誤的提要，以編輯本勘誤的詳細資料，或此勘誤套用的套件清單。&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target>未發佈的勘誤</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target>勘誤管理</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target>沒有未發佈的勘誤</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
         <source>No Published Patches</source>

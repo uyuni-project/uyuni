@@ -4691,17 +4691,9 @@ organization. You may grant or remove the organization administrator role in the
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target> &lt;p&gt;নিম্নলিখিত তালিকায় আপনার প্রতিষ্ঠানের মালিকানাধীন ত্রুটি-বিচ্যুতির তথ্য উল্লিখিত হয়েছে।&lt;/p&gt;&lt;p&gt;ত্রুটি-বিচ্যুতির বিবরণ অথবা প্রযোজ্য প্যাকেজের তালিকা সম্পাদন করতে ত্রুটি-বিচ্যুতির সারসংক্ষপের উপর ক্লিক করুন। &lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target>অপ্রকাশিত ত্রুটি-বিচ্যুতির তথ্য</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target>ত্রুটি-বিচ্যুতি পরিচালনা</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target>কোনো অপ্রকাশিত ত্রুটি-বিচ্যুতির তথ্য উপস্থিত নেই</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
         <source>No Published Patches</source>

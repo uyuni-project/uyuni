@@ -2097,20 +2097,6 @@
      </action>
 
      <!-- Beginning of errata management -->
-
-    <action path="/errata/manage/UnpublishedErrata"
-        scope="request"
-        input="/WEB-INF/pages/errata/unpublished.jsp"
-        type="com.redhat.rhn.frontend.action.errata.UnpublishedErrataAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(channel_admin)"/>
-        <forward name="default"
-               path="/WEB-INF/pages/errata/unpublished.jsp" />
-       <forward name="continue"
-                path="/errata/manage/UnpublishedDeleteConfirm.do" redirect="true"/>
-    </action>
-
     <action path="/errata/manage/PublishedErrata"
         scope="request"
         input="/WEB-INF/pages/errata/published.jsp"

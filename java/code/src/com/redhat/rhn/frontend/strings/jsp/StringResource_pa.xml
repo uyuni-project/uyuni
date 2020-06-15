@@ -4783,17 +4783,9 @@ organization. You may grant or remove the organization administrator role in the
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target> &lt;p&gt; ਹੇਠਲੀ ਇਰੱਟਾ ਸੂਚੀ ਤੁਹਾਡੇ ਸੰਗਠਨ ਨਾਲ ਸਬੰਧ ਇਰੱਟਾ ਵੇਖਾਉਂਦਾ ਹੈ।&lt;/p&gt;&lt;p&gt;ਇੱਰਟੱਮ ਦੀ ਸਾਰ ਝਲਕ ਨੂੰ ਇੱਰਟੱਮ ਵੇਰਵਾ ਸੋਧਣ ਜਾਂ ਪੈਕੇਜਾਂ ਦੀ ਸੂਚੀ, ਜਿੰਨਾਂ ਉੱਤੇ ਇਰੱਟਾ ਲਾਗੂ ਹੁੰਦਾ ਹੈ, ਨੂੰ ਬਦਲਣ ਲਈ ਦਬਾਓ।&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target>ਨਾ-ਪਰਾਕਿਸ਼ਤ ਇਰੱਟਾ</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target>ਇਰੱਟਾ ਪਰਬੰਧਨ</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target>ਕੋਈ ਨਾ-ਪਰਕਾਸ਼ਤ ਇਰੱਟਾ ਨਹੀਂ</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
         <source>No Published Patches</source>

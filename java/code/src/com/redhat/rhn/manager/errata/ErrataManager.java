@@ -498,25 +498,6 @@ public class ErrataManager extends BaseManager {
     }
 
     /**
-     * Returns all of the unpublished errata.
-     * @param user Currently logged in user.
-     * @return all of the errata.
-     */
-    public static DataResult unpublishedOwnedErrata(User user) {
-        return unpublishedOwnedErrata(user, null);
-    }
-
-    /**
-     * Returns all of the unpublished errata.
-     * @param user Currently logged in user.
-     * @param clazz The class you would like the return values represented as
-     * @return all of the errata.
-     */
-    public static DataResult unpublishedOwnedErrata(User user, Class clazz) {
-        return ownedErrata(user, "unpublished_owned_errata", clazz);
-    }
-
-    /**
      * Returns all of the unpublished errata in the given set.
      * @param user Currently logged in user.
      * @param pc PageControl

@@ -4897,17 +4897,9 @@ organisation. Vous pouvez accorder ou retirer le rôle d'administrateur d'organi
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
         <target> &lt;p&gt; La liste d'errata suivante représente les errata qui appartiennent à votre organisation.&lt;/p&gt; &lt;p&gt; Cliquez sur le synopsis d'un errata pour modifier les détails de l'errata ou la liste des paquetages auxquels s'applique l'errata.&lt;/p&gt;</target>
       </trans-unit>
-      <trans-unit id="erratalist.jsp.unpublishederrata" xml:space="preserve">
-        <source>Unpublished Patches</source>
-        <target>Errata non publiés</target>
-      </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
         <target>Gestion des errata</target>
-      </trans-unit>
-      <trans-unit id="erratalist.jsp.nounpublishederrata" xml:space="preserve">
-        <source>No Unpublished Patches</source>
-        <target>Aucun errata non publié</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nopublishederrata" xml:space="preserve">
         <source>No Published Patches</source>
