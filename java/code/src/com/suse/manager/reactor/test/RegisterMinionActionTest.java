@@ -1813,6 +1813,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(minionStartUpGrains)));
                     allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
                     allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncAll(with(any(MinionList.class)));
                     allowing(saltServiceMock).getGrains(MINION_ID);
                     will(returnValue(getGrains(MINION_ID, null, null, key)));
                 }},
