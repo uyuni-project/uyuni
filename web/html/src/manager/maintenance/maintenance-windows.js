@@ -1,8 +1,6 @@
 /* eslint-disable */
 'use strict';
 
-import "./maintenance-windows.css";
-
 const React = require("react");
 const ReactDOM = require("react-dom");
 const Messages = require("components/messages").Messages;
@@ -12,6 +10,7 @@ const {MaintenanceWindowsList} = require("./maintenance-windows-list");
 const {MaintenanceWindowsEdit} =  require("./maintenance-windows-edit");
 const MessagesUtils = require("components/messages").Utils;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
+const MaintenanceWindowsApi = require("./maintenance-windows-api");
 
 const messagesCounterLimit = 1;
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
@@ -61,9 +60,9 @@ class MaintenanceWindows extends React.Component {
         this.clearMessages();
     }
 
-    getMaintenanceSchedules = () => {
-        const endpoint = "/rhn/manager/api/maintenance/" + this.state.type + "/list";
-        return Network.get(endpoint, "application/json").promise
+    listMaintenanceWindowItems = () => {
+        /* Returns a list of maintenance schedules or calendars depending on the type provided */
+        return MaintenanceWindowsApi.list(this.state.type)
             .then(schedules => {
                 this.setState({
                     action: undefined,
@@ -74,18 +73,22 @@ class MaintenanceWindows extends React.Component {
     };
 
     getCalendarNames = () => {
-        const endpoint = "/rhn/manager/api/maintenance/calendar";
-        return Network.get(endpoint, "application/json").promise
+        return MaintenanceWindowsApi.calendarNames()
             .then(calendarNames => {
+                /* Convert list of calendar names into ComboboxItem
+                Add "<None>" as first element to allow unassigning of calendars */
+                const names = Array.from(Array(calendarNames.length + 1).keys()).map(id => (id === 0)
+                    ? ({id: 0, text: "<None>"})
+                    : ({id: Number(id), text: calendarNames[id - 1]}));
                 this.setState({
-                    calendarNames: Array.from(Array(calendarNames.length).keys()).map(id => ({id: Number(id), text: calendarNames[id]}))
+                    calendarNames: names
                 });
             }).catch(this.handleResponseError);
     };
 
     getDetails(row, action) {
-        const endpoint = "/rhn/manager/api/maintenance/" + this.state.type + "/" + row + "/details";
-        return Network.get(endpoint, "application/json").promise
+        /* Returns the details of given schedule or calendar depending on the type provided */
+        return MaintenanceWindowsApi.details(row, this.state.type)
             .then(item => {
                 this.setState({
                     selected: item,
@@ -122,12 +125,8 @@ class MaintenanceWindows extends React.Component {
                 "successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
             const msgs = this.state.messages.concat(MessagesUtils.info(successMsg));
 
-            while (msgs.length > messagesCounterLimit) {
-                msgs.shift();
-            }
-
             this.setState({
-                messages: msgs
+                messages: msgs.slice(0, messagesCounterLimit)
             });
 
             this.handleForwardAction();
@@ -166,15 +165,11 @@ class MaintenanceWindows extends React.Component {
             JSON.stringify(item),
             "application/json"
         ).promise.then((_) => {
-            const successMsg = <span>{t("Calendar successfully refreshed")}</span>
-            const msgs = this.state.messages.concat(MessagesUtils.info(successMsg));
-
-            while (msgs.length > messagesCounterLimit) {
-                msgs.shift();
-            }
-
+            const msgs = this.state.messages.concat(MessagesUtils.info(
+                t("Calendar successfully refreshed"))
+            );
             this.setState({
-                messages: msgs
+                messages: msgs.slice(0, messagesCounterLimit)
             });
 
             this.getDetails(item.calendarId, "edit");
@@ -184,7 +179,7 @@ class MaintenanceWindows extends React.Component {
     handleForwardAction = (action) => {
         const loc = window.location;
         if (action === undefined || action === "back") {
-            this.getMaintenanceSchedules().then(data => {
+            this.listMaintenanceWindowItems().then(data => {
                 history.pushState(null, null, loc.pathname + loc.search);
             });
         } else {
@@ -212,15 +207,14 @@ class MaintenanceWindows extends React.Component {
         return (
             <div>
                 {messages}
-                { (this.state.action === 'details' && this.state.selected) ?
+                { this.state.action === 'details' ?
                     <MaintenanceWindowsDetails type={this.state.type}
                                                data={this.state.selected}
                                                onCancel={this.handleForwardAction}
                                                onEdit={this.handleEditAction}
                                                onDelete={this.delete}
                     />
-                    : (this.state.action === 'edit' && this.state.selected) ||
-                    this.state.action === 'create' ?
+                    : (this.state.action === 'edit' || this.state.action === 'create') && isAdmin ?
                         <MaintenanceWindowsEdit type={this.state.type}
                                                 calendarNames={this.state.calendarNames}
                                                 schedule={this.state.selected}
