@@ -113,7 +113,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
         e.setAdvisoryName(TestUtils.randomString());
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
 
         Errata e2 = ErrataManager.lookupErrata(e.getId(), user);
         assertEquals(e.getAdvisoryName(), e2.getAdvisoryName());
@@ -282,7 +282,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
          * an NPE.
          */
         errata.setOrg(null);
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         try {
             check = ErrataManager.lookupErrata(errata.getId(), user);
@@ -293,7 +293,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         }
         Org org2 = OrgFactory.lookupById(UserTestUtils.createOrg("testOrg2"));
         errata.setOrg(org2);
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         try {
             check = ErrataManager.lookupErrata(errata.getId(), user);

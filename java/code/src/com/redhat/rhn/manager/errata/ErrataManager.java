@@ -221,7 +221,7 @@ public class ErrataManager extends BaseManager {
 
         //Save the errata
         log.debug("addChannelsToErrata - storing errata");
-        storeErrata(errata);
+        ErrataFactory.save(errata);
 
         errata = (Errata) HibernateFactory.reload(errata);
         log.debug("addChannelsToErrata - errata reloaded from DB");
@@ -1064,14 +1064,6 @@ public class ErrataManager extends BaseManager {
         advSeverityRankss.add(Severity.getById(3).getRank());
         advSeverityRankss.add(Severity.UNSPECIFIED_RANK); // dummy rank for 'unspecified'
         return advSeverityRankss;
-    }
-
-    /**
-     * Stores an errata to the db
-     * @param errataIn The errata to store.
-     */
-    public static void storeErrata(Errata errataIn) {
-        ErrataFactory.save(errataIn);
     }
 
     /**

@@ -17,13 +17,13 @@ package com.redhat.rhn.frontend.action.errata.test;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.errata.ChannelSetupAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -66,7 +66,7 @@ public class ChannelSetupActionTest extends RhnBaseTestCase {
         //make sure we have a channel for the errata
         Channel c1 = ChannelFactoryTest.createTestChannel(org);
         e.addChannel(c1);
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
         //setup the request object
         sah.getRequest().setupAddParameter("eid", e.getId().toString());
         sah.getRequest().setupAddParameter("newset", (String) null);

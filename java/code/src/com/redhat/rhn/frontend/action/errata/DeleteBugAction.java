@@ -15,10 +15,10 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -49,7 +49,7 @@ public class DeleteBugAction extends RhnAction {
         //remove the bug
         errata.removeBug(bid);
         //save the errata
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         ActionMessages msgs = new ActionMessages();
         msgs.add(ActionMessages.GLOBAL_MESSAGE,

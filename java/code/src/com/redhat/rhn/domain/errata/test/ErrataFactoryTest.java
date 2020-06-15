@@ -36,7 +36,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
-import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.test.ErrataManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -73,7 +72,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         e.addPackage(PackageTest.createTestPackage(user.getOrg()));
         e.addKeyword("foo");
         e.addKeyword("bar");
-        ErrataManager.storeErrata(e); //save changes
+        //save changes
+        ErrataFactory.save(e);
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         channel.setOrg(user.getOrg());

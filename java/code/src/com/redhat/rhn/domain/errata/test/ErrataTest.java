@@ -46,13 +46,13 @@ public class ErrataTest extends BaseTestCaseWithUser {
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         e.addChannel(c);
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
         Long id = e.getId(); //get id for later
         e.addNotification(new Date()); //add one
         e.addNotification(new Date()); //add another
         assertEquals(1, e.getNotificationQueue().size()); //should be only 1
         //save errata and evict
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
         flushAndEvict(e);
 
         Errata e2 = ErrataManager.lookupErrata(id, user); //lookup the errata

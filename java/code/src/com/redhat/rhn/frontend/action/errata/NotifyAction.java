@@ -15,10 +15,10 @@
 package com.redhat.rhn.frontend.action.errata;
 
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.errata.ErrataManager;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -50,7 +50,7 @@ public class NotifyAction extends RhnAction {
 
         //Add the notification with the current time
         errata.addNotification(new Date()); //add a notification to the queue
-        ErrataManager.storeErrata(errata);
+        ErrataFactory.save(errata);
 
         //Save success message and forward to default mapping
         ActionMessages msgs = new ActionMessages();

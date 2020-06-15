@@ -17,11 +17,11 @@ package com.redhat.rhn.manager.task.test;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
-import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.task.TaskScheduler;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -50,7 +50,7 @@ public class TaskSchedulerTest extends RhnBaseTestCase {
         e.addChannel(c1);
         e.addChannel(c2);
 
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
 
         assertEquals(2, e.getChannels().size());
 

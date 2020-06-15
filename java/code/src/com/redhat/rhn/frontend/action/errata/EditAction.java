@@ -283,7 +283,7 @@ public class EditAction extends LookupDispatchAction {
         }
 
         //Save errata back to db
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
 
         ActionMessages messages = new ActionMessages();
         messages.add(ActionMessages.GLOBAL_MESSAGE,

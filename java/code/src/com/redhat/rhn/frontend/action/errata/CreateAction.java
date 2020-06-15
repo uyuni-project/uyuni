@@ -147,7 +147,7 @@ public class CreateAction extends RhnSetAction {
         //Set the org for the errata to the logged in user's org
         e.setOrg(user.getOrg());
 
-        ErrataManager.storeErrata(e);
+        ErrataFactory.save(e);
         ErrataManager.addToChannels(e, channelAction.getChannelIdsFromRhnSet(set), user);
 
         ActionMessages msgs = new ActionMessages();
