@@ -22,9 +22,9 @@ import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
  * @version $Rev$
  */
 public class VirtualSystemsRowRenderer extends RowRenderer {
-    private static final String TREE_ROW_PARENT     = "tree-row-parent";
-    private static final String TREE_ROW_CHILD_EVEN = "tree-row-child-even";
-    private static final String TREE_ROW_CHILD_ODD  = "tree-row-child-odd";
+    private static final String TREE_ROW_PARENT     = "list-row-odd";
+    private static final String TREE_ROW_CHILD_EVEN = "list-row-even";
+    private static final String TREE_ROW_CHILD_ODD  = "list-row-even";
 
     private boolean evenRow = false;
 
