@@ -97,7 +97,7 @@ public class CreateAction extends RhnSetAction {
             return mapping.findForward("failure");
         }
 
-        //Create a new unpublished errata
+        //Create a new errata
         Errata e = ErrataFactory.createPublishedErrata();
         e.setSynopsis(form.getString("synopsis"));
         e.setAdvisoryName(form.getString("advisoryName"));

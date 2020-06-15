@@ -61,8 +61,7 @@ public class ChannelAction extends RhnSetAction {
 
 
     /**
-     * Publishes an unpublished errata (with id = eid) and adds the errata to the
-     * channels selected on the confirmation page.
+     * Adds an errata (with id = eid) to the channels selected on the confirmation page.
      * @param mapping ActionMapping for this action
      * @param formIn The form
      * @param request The request

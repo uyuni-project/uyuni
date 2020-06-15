@@ -62,7 +62,6 @@ public abstract class BaseErrataActionTestCase extends RhnBaseTestCase {
         ah.getRequest().setupAddParameter("items_selected", (String[])null);
         ah.executeAction("selectall");
 
-        //satellite could already have a few unpublished errata
         RhnSet set = RhnSetDecl.ERRATA_TO_DELETE.get(user);
         assertTrue(set.size() >= 4);
     }

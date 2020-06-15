@@ -60,7 +60,7 @@ public class EditActionTest extends RhnBaseTestCase {
 
         RequestContext requestContext = new RequestContext(request);
 
-        //Create a new unpublished errata
+        //Create a new errata
         User user = requestContext.getCurrentUser();
         Errata errata = ErrataFactoryTest
                 .createTestPublishedErrata(user.getOrg().getId());

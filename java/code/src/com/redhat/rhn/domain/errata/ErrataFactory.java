@@ -191,10 +191,9 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Takes a published or unpublished errata and publishes to a channel, creating
-     *      all of the correct ErrataFile* entries.  This method does push packages to
-     *      the appropriate channel. (Appropriate as defined as the channel previously
-     *      having a package with the same name).
+     * Takes an errata and publishes to a channel, creating all of the correct ErrataFile* entries.
+     * This method does push packages to the appropriate channel. (Appropriate as defined as the
+     * channel previously having a package with the same name).
      * @param errataList list of errata to publish
      * @param chan channel to publish it into.
      * @param user the user doing the pushing
@@ -207,10 +206,9 @@ public class ErrataFactory extends HibernateFactory {
     }
 
     /**
-     * Takes a published or unpublished errata and publishes to a channel, creating
-     *      all of the correct ErrataFile* entries.  This method does push packages to
-     *      the appropriate channel. (Appropriate as defined as the channel previously
-     *      having a package with the same name).
+     * Takes an errata and publishes it to a channel, creating all of the correct ErrataFile*
+     * entries. This method does push packages to the appropriate channel.
+     * (Appropriate as defined as the channel previously having a package with the same name).
      * @param errataList list of errata to publish
      * @param chan channel to publish it into.
      * @param user the user doing the pushing
@@ -979,12 +977,7 @@ public class ErrataFactory extends HibernateFactory {
         cloned.setLastModified(original.getLastModified());
         cloned.setSeverity(original.getSeverity());
 
-
-        /*
-         * Copy the packages
-         * packages aren't published or unpublished exactly... that is determined
-         * by the status of the errata...
-         */
+        // Copy the packages
         cloned.setPackages(new HashSet(original.getPackages()));
 
         /*
