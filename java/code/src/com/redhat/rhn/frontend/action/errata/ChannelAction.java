@@ -136,49 +136,39 @@ public class ChannelAction extends RhnSetAction {
         errata.clearChannels(); //clear the channels associated with errata.
         //add the channels from the set back to the errata
 
-        errata = ErrataManager.addChannelsToErrata(errata,
-                newChannels, user);
+        errata = ErrataManager.addChannelsToErrata(errata, newChannels, user);
 
-        //Update Errata Cache
-        if (errata.isPublished()) {
-
-            log.debug("updateChannels - isPublished");
-            // Compute list of old and NEW channels so we can
-            // refresh both of their caches.
-            List<Channel> channelsToRemove = new LinkedList<Channel>();
-            List<Long> channelsToAdd = new LinkedList<Long>();
-            for (Channel c : originalChannels) {
-                if (!newChannels.contains(c.getId())) {
-                    //We are removing the errata from the channel
-                    log.debug("updateChannels.Adding1: " + c.getId());
-                    channelsToRemove.add(c);
-                }
+        // Compute list of old and NEW channels so we can
+        // refresh both of their caches.
+        List<Channel> channelsToRemove = new LinkedList<Channel>();
+        List<Long> channelsToAdd = new LinkedList<Long>();
+        for (Channel c : originalChannels) {
+            if (!newChannels.contains(c.getId())) {
+                //We are removing the errata from the channel
+                log.debug("updateChannels.Adding1: " + c.getId());
+                channelsToRemove.add(c);
             }
-
-            for (Long cid : newChannels) {
-                Channel newChan = ChannelFactory.lookupById(cid);
-                if (!originalChannels.contains(newChan)) {
-                    channelsToAdd.add(newChan.getId());
-                }
-            }
-            log.debug("updateChannels() - channels to remove errata: " + channelsToRemove);
-
-            //If the errata was removed from any channels lets remove it.
-            List<Long> eList = new ArrayList<Long>();
-            eList.add(errata.getId());
-            for (Channel toRemove : channelsToRemove) {
-                ErrataManager.removeErratumFromChannel(errata, toRemove, user);
-            }
-
-
-
         }
-       StrutsDelegate strutsDelegate = getStrutsDelegate();
-       strutsDelegate.saveMessages(request, getMessages(errata));
+
+        for (Long cid : newChannels) {
+            Channel newChan = ChannelFactory.lookupById(cid);
+            if (!originalChannels.contains(newChan)) {
+                channelsToAdd.add(newChan.getId());
+            }
+        }
+        log.debug("updateChannels() - channels to remove errata: " + channelsToRemove);
+
+        //If the errata was removed from any channels lets remove it.
+        List<Long> eList = new ArrayList<Long>();
+        eList.add(errata.getId());
+        for (Channel toRemove : channelsToRemove) {
+            ErrataManager.removeErratumFromChannel(errata, toRemove, user);
+        }
+
+        StrutsDelegate strutsDelegate = getStrutsDelegate();
+        strutsDelegate.saveMessages(request, getMessages(errata));
 
         //Store a success message and forward to default mapping
-        //ActionMessages msgs = getMessages(errata);
-        //strutsDelegate.saveMessages(request, msgs);
         return strutsDelegate.forwardParam(mapping.findForward("push"),
                                       "eid",
                                       errata.getId().toString());

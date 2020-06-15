@@ -27,7 +27,6 @@ import java.util.Set;
 
 /**
  * Errata - Class representation of the table rhnErrata.
- * @version $Rev$
  */
 public interface Errata {
 
@@ -400,13 +399,6 @@ public interface Errata {
      * @return list of maps with channel_id and time
      */
     List getNotificationQueue();
-
-    /**
-     * Tells whether or not the errata is published.
-     * @return Returns true if this is a PublishedErrata
-     */
-    boolean isPublished();
-
 
     /**
      * Tells whether or not the errata is cloned.

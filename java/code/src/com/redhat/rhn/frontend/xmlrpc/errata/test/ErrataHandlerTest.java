@@ -859,15 +859,14 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      **/
     public void testPublishCustomErrata() throws Exception {
         // publish a custom errata
-        Errata unpublished = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
         ArrayList channels = new ArrayList();
         channels.add(channel.getLabel());
-        Errata published = handler.publish(admin, unpublished.getAdvisoryName(), channels);
+        Errata published = handler.publish(admin, e.getAdvisoryName(), channels);
 
-        assertTrue(published.isPublished());
-        assertEquals(unpublished.getAdvisory(), published.getAdvisory());
+        assertEquals(e.getAdvisory(), published.getAdvisory());
     }
 
     /**
@@ -877,16 +876,15 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      **/
     public void testPublishVendorErrata() throws Exception {
         // publish a custom errata
-        Errata unpublished = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
-        unpublished.setOrg(null); // let the errata be a vendor one
+        Errata e = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
+        e.setOrg(null); // let the errata be a vendor one
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
         ArrayList channels = new ArrayList();
         channels.add(channel.getLabel());
-        Errata published = handler.publish(admin, unpublished.getAdvisoryName(), channels);
+        Errata published = handler.publish(admin, e.getAdvisoryName(), channels);
 
-        assertTrue(published.isPublished());
-        assertEquals(unpublished.getAdvisory(), published.getAdvisory());
+        assertEquals(e.getAdvisory(), published.getAdvisory());
     }
 
     public void testListByDate() throws Exception {

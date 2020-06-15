@@ -60,8 +60,8 @@ public class ErrataChannelIntersectionAction extends RhnAction {
 
         request.setAttribute("channel", channel.getLabel());
         request.setAttribute("advisory", e.getAdvisory());
-        request.setAttribute(RequestContext.PAGE_LIST, PackageFactory
-                .getErrataChannelIntersection(cid, e.getId(), e.isPublished()));
+        request.setAttribute(RequestContext.PAGE_LIST,
+                PackageFactory.getErrataChannelIntersection(cid, e.getId(), true));
 
         // forward to page
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

@@ -174,7 +174,6 @@ public class ErrataTest extends BaseTestCaseWithUser {
     public void testBeanMethodsPublished() throws Exception {
         Errata err = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         assertTrue(err instanceof PublishedErrata);
-        assertTrue(err.isPublished());
         runBeanMethodsTest(err, 1);
     }
 

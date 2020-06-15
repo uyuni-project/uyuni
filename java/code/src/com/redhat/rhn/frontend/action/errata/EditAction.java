@@ -133,12 +133,8 @@ public class EditAction extends LookupDispatchAction {
                                    Errata errata) {
 
         //What type of errata is this? we need to set isPublished
-        if (errata.isPublished()) {
         request.setAttribute("isPublished", "true");
-        }
-        else {
-        request.setAttribute("isPublished", "false");
-        }
+
         //set the list of bugs
         request.setAttribute("bugs", errata.getBugs());
         //set advisory for toolbar

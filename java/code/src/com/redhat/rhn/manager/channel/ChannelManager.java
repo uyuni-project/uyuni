@@ -407,17 +407,7 @@ public class ChannelManager extends BaseManager {
      * @return Returns the ids for relevant packages
      */
     public static DataResult<Long> relevantPackages(Long channelId, Errata e) {
-        SelectMode m;
-
-        if (e.isPublished()) {
-            m = ModeFactory.getMode("Channel_queries",
-                                    "relevant_packages_for_channel_published");
-        }
-        else {
-            m = ModeFactory.getMode("Channel_queries",
-                                    "relevant_packages_for_channel_unpublished");
-        }
-
+        SelectMode m = ModeFactory.getMode("Channel_queries", "relevant_packages_for_channel_published");
         Map<String, Long> params = new HashMap<String, Long>();
         params.put("cid", channelId);
         params.put("eid", e.getId());

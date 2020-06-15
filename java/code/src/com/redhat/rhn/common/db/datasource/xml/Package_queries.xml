@@ -417,26 +417,6 @@ ORDER BY UPPER(PN.name), PE.version, PE.release, PE.epoch, PA.label, P.id
   <elaborator name="package_channels" />
 </mode>
 
-<mode name="packages_in_tmp_errata" class="com.redhat.rhn.frontend.dto.PackageOverview">
-  <query params="eid">
-SELECT P.id id, PN.name || '-' || PE.version
-       || '-' || PE.release || (CASE WHEN PE.epoch IS NULL THEN '' ELSE ':' || PE.epoch END)
-       || '-' || PA.label package_nvre
- FROM rhnPackageName PN,
-      rhnPackageEVR PE,
-      rhnPackageArch PA,
-      rhnPackage P,
-      rhnErrataPackageTmp EP
-WHERE EP.errata_id = :eid
-  AND EP.package_id = P.id
-  AND PN.id = P.name_id
-  AND PE.id = P.evr_id
-  AND PA.id = P.package_arch_id
-ORDER BY UPPER(PN.name), PE.version, PE.release, PE.epoch, PA.label, P.id
-  </query>
-  <elaborator name="package_channels" />
-</mode>
-
 <mode name="packages_in_channel_by_id_combo" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="cid">
 SELECT PN.id || '|' || PE.id || '|' || PA.id AS ID_COMBO,
@@ -735,34 +715,6 @@ ORDER BY UPPER(X.PACKAGE_NVRE)
   <elaborator name="package_channels" />
 </mode>
 
-<mode name="packages_available_to_tmp_errata"  class="com.redhat.rhn.frontend.dto.PackageOverview">
-  <query params="org_id, eid">
-select * from (
-  SELECT DISTINCT P.id ID,
-                  PN.name || '-' || PE.version || '-' || PE.release
-                    || (CASE WHEN PE.epoch IS NULL THEN '' ELSE ':' || PE.epoch END)
-                    || '-' || PA.label PACKAGE_NVRE
-    FROM rhnPackageName PN,
-         rhnPackageEVR PE,
-         rhnPackageArch PA,
-     rhnArchType PAT,
-         rhnPackage P
-   WHERE P.org_id = :org_id
-     AND PN.id = P.name_id
-     AND PE.id = P.evr_id
-     AND PA.id = P.package_arch_id
-   AND PA.arch_type_id = PAT.id
-   AND PAT.label = 'rpm'
-     AND NOT EXISTS (SELECT 1
-                       FROM rhnErrataPackageTmp EP
-                      WHERE EP.errata_id = :eid
-                        AND EP.package_id = P.id)
-) X
-ORDER BY UPPER(X.PACKAGE_NVRE)
-  </query>
-  <elaborator name="package_channels" />
-</mode>
-
 <mode name="packages_available_to_errata_in_channel" class="com.redhat.rhn.frontend.dto.PackageOverview">
   <query params="source_cid, target_eid">
 SELECT P.id AS ID,
@@ -777,27 +729,6 @@ SELECT P.id AS ID,
    AND PA.id = P.package_arch_id
    AND NOT EXISTS (SELECT 1
               FROM rhnErrataPackage EP
-             WHERE EP.errata_id = :target_eid
-               AND EP.package_id = P.id)
-ORDER BY UPPER(PN.name || '-' || evr_t_as_vre_simple(PE.evr))
-  </query>
-  <elaborator name="package_channels" />
-</mode>
-
-<mode name="packages_available_to_tmp_errata_in_channel" class="com.redhat.rhn.frontend.dto.PackageOverview">
-  <query params="source_cid, target_eid">
-SELECT P.id AS ID,
-       PN.name || '-' || evr_t_as_vre_simple(PE.evr) || '.' || PA.label AS PACKAGE_NVRE,
-       P.summary
-  FROM rhnPackageName PN, rhnPackageEVR PE, rhnPackage P,
-       rhnChannelPackage CP, rhnPackageArch PA
- WHERE CP.channel_id = :source_cid
-   AND CP.package_id = P.id
-   AND P.name_id = PN.id
-   AND P.evr_id = PE.id
-   AND PA.id = P.package_arch_id
-   AND NOT EXISTS (SELECT 1
-              FROM rhnErrataPackagetmp EP
              WHERE EP.errata_id = :target_eid
                AND EP.package_id = P.id)
 ORDER BY UPPER(PN.name || '-' || evr_t_as_vre_simple(PE.evr))

@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.errata;
 
+import static java.util.stream.Collectors.toList;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
@@ -39,7 +41,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -148,13 +149,8 @@ public class AddPackagesConfirmAction extends RhnAction implements Listable {
         setDecl.clear(user);
 
         // Update Errata Cache
-        if (errata.isPublished()) {
-            List<Long> list = new ArrayList<Long>();
-            for (Channel chan : errata.getChannels()) {
-                list.add(chan.getId());
-            }
-            ErrataCacheManager.insertCacheForChannelErrataAsync(list, errata);
-        }
+        var list = errata.getChannels().stream().map(Channel::getId).collect(toList());
+        ErrataCacheManager.insertCacheForChannelErrataAsync(list, errata);
 
         // Set the correct action message and return to the success mapping
         ActionMessages msgs = getMessages(packagesAdded, errata.getAdvisory());

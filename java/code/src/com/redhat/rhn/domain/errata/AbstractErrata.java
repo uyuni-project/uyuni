@@ -38,9 +38,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
  * AbstractErrata abstract implmenetation of Errata
- * @version $Rev$
  */
 public abstract class AbstractErrata extends BaseDomainHelper implements
         Errata, Selectable {
@@ -663,12 +661,6 @@ public abstract class AbstractErrata extends BaseDomainHelper implements
             pf.getChannels().clear();
         }
     }
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    public abstract boolean isPublished();
 
     /**
      *
