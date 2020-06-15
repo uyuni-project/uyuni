@@ -19,33 +19,27 @@ class MaintenanceWindowsEdit extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            type: props.type,
-            calendarDataText: "",
-            selectedCalendar: 0
-        };
-
-        if(this.isEdit()) {
-            this.setSchedule(this.props.schedule);
+        if (this.isEdit()) {
+            this.state = props.schedule;
+            this.state.type = props.type;
+            this.state.calendarDataText = props.schedule.calendarUrl;
+            this.state.calendarAdded = props.schedule.calendarName ? true : false;
+            (this.state.type === "schedule" && this.props.calendarNames.length > 1 && this.props.schedule.calendarName)
+                ? this.state.selectedCalendar = this.props.calendarNames
+                    .filter(name => name.text === this.props.schedule.calendarName)[0].id
+                : this.state.selectedCalendar = 0;
+        } else {
+            this.state = {
+                type: props.type,
+                calendarDataText: "",
+                selectedCalendar: 0
+            }
         }
     }
 
-    setSchedule = (schedule) => {
-        Object.assign(this.state, schedule);
-        this.state.calendarDataText = schedule.calendarUrl;
-        Object.assign(this.state, {
-            calendarAdded: schedule.calendarName ? true : false
-        })
-        if (this.state.type === "schedule" && this.props.calendarNames.length > 1 && this.props.schedule.calendarName) {
-            Object.assign(this.state, {
-                selectedCalendar: this.props.calendarNames.filter(name => name.text === this.props.schedule.calendarName)[0].id
-            });
-        }
-    };
-
     setCalendarName = () => {
         return this.state.type === "schedule" ?
-            ((this.state.calendarAdded && this.state.calendarName) ? this.state.calendarName : "<None>")
+            ((this.state.calendarAdded && this.state.calendarName) ? this.state.calendarName : "")
             : this.state.calendarName;
     };
 
@@ -112,7 +106,7 @@ class MaintenanceWindowsEdit extends React.Component {
     onSelectCalendar = (item) => {
         this.setState({
             selectedCalendar: item.id,
-            calendarName: item.text
+            calendarName: item.text === "<None>" ? "" : item.text
         })
     };
 
@@ -144,7 +138,7 @@ class MaintenanceWindowsEdit extends React.Component {
                                     handler={() => this.setState({calendarAdded: !this.state.calendarAdded})} />
                             :
                             <div className="panel panel-default">
-                                <div className="panel-heading" style={{padding: "0px"}}>
+                                <div className="panel-heading no-padding">
                                     <Button text="Add Calendar" icon="fa-chevron-up"
                                             handler={() => this.setState({calendarAdded: !this.state.calendarAdded})} />
                                 </div>
@@ -186,19 +180,18 @@ class MaintenanceWindowsEdit extends React.Component {
                     <div className="form-group">
                         <label className="col-md-3 control-label">{t("Calendar data")}:</label>
                         {(!this.isEdit() || this.state.calendarUrl) &&
-                        <div className={"align-center col-md-" + (this.isEdit() ? "5" : "4")} >
-                            <input type="text" className="form-control"
-                                   style={{textOverflow: "ellipsis"}}
+                        <div className={"align-middle col-md-" + (this.isEdit() ? "5" : "4")} >
+                            <input type="text" className="form-control text-truncate"
                                    placeholder={t("Enter Url to ical file")}
                                    value={this.state.calendarDataText}
                                    disabled={this.state.calendarData && !this.state.calendarUrl}
                                    onChange={this.onCalendarDataTextChanged}/>
-                            {!this.state.calendarData && <b style={{paddingLeft: "25px"}}>or</b>}
+                            {!this.state.calendarData && <b className="pl-4">or</b>}
                         </div>
                         }
                         {!(this.isEdit() && this.state.calendarUrl) ? (
                                 !this.state.calendarData ?
-                                    <div className="col-md-1">
+                                    <div className="pl-0 col-md-1">
                                         <Button id="ical-upload-btn" className="btn-default"
                                                 text={t("Attach file")}
                                                 handler={this.handleFileAttach}
@@ -222,7 +215,7 @@ class MaintenanceWindowsEdit extends React.Component {
                                               title="Confirm calendar refresh"
                                               content={
                                                   <div>
-                                                      <div>{t("Refreshing the calendar causes affected actions to be rescheduled.")}</div>
+                                                      <div>{t("Refreshing the calendar will reschedule all affected actions.")}</div>
                                                       <div>{t("Confirm if you want to proceed.")}</div>
                                                       <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
                                                   </div>
@@ -232,7 +225,7 @@ class MaintenanceWindowsEdit extends React.Component {
                                                   calendarName: this.state.calendarName,
                                                   strategy: this.state.strategy ? "Cancel" : "Fail",
                                                   calendarUrl: this.state.calendarUrl
-                                                  })}
+                                              })}
                                               submitText="Confirm"
                                               submitIcon="fa-check"
                                 />
@@ -276,7 +269,7 @@ class MaintenanceWindowsEdit extends React.Component {
         return (
             <InnerPanel title={t("Schedule Maintenance Window")} icon="spacewalk-icon-salt" buttonsLeft={buttonsLeft} buttons={buttons} >
                 {this.state.type === "schedule" ? this.renderScheduleEdit() : this.renderCalendarEdit()}
-                <input type="file" id="ical-data-upload" style={{display: "none"}} onChange={this.onIcalFileAttach}/>
+                <input className="hidden" type="file" id="ical-data-upload" onChange={this.onIcalFileAttach}/>
             </InnerPanel>
         );
     }
