@@ -1,5 +1,6 @@
 --
 -- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2020 SUSE LLC
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,8 +18,7 @@
 CREATE TABLE rhnActionType
 (
     id                NUMERIC NOT NULL
-                          CONSTRAINT rhn_action_type_pk PRIMARY KEY
-                          ,
+                          CONSTRAINT rhn_action_type_pk PRIMARY KEY,
     label             VARCHAR(48) NOT NULL,
     name              VARCHAR(100) NOT NULL,
     trigger_snapshot  CHAR(1)
@@ -28,16 +28,17 @@ CREATE TABLE rhnActionType
     unlocked_only     CHAR(1)
                           DEFAULT ('N') NOT NULL
                           CONSTRAINT rhn_action_type_unlck_ck
-                              CHECK (unlocked_only in ('Y','N'))
+                              CHECK (unlocked_only in ('Y','N')),
+    maintenance_mode_only CHAR(1)
+                          DEFAULT ('N') NOT NULL
+                          CONSTRAINT rhn_action_type_mtmode_ck
+                              CHECK (maintenance_mode_only in ('Y','N'))
 )
-
 ;
 
 CREATE UNIQUE INDEX rhn_action_type_label_uq
-    ON rhnActionType (label)
-    ;
+    ON rhnActionType (label);
 
 CREATE UNIQUE INDEX rhn_action_type_name_uq
-    ON rhnActionType (name)
-    ;
+    ON rhnActionType (name);
 
