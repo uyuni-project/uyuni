@@ -11,10 +11,6 @@ type Props = {
 const LoginHeader = (props: Props) => (
   <header className="navbar-pf">
     <div className="wrap">
-      <a href="/" target="" title={props.title} className="navbar-brand">
-        <i className="fa fa-home" />
-        <span>{props.text}</span>
-      </a>
       <div className="navbar-header">
         <div className="custom-text">
           {props.customHeader}
