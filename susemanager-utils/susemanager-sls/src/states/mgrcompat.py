@@ -49,7 +49,7 @@ def module_run(**kwargs):
     '''
     This function execute the Salt "module.run" state passing the arguments
     in the right way according to the supported syntax depending on the Salt
-    minion version
+    minion version and configuration
 
     '''
 
