@@ -32,25 +32,6 @@
    AND   G.id = UMSG.server_group_id
   </query>
 
-  <query name="errata_count">
-           SELECT
-                 sgm.server_group_id AS ID,
-                 ( select count(distinct E.id) from rhnErrata E where E.id = SNEC.errata_id AND E.advisory_type = 'Security Advisory') AS SECURITY_ERRATA,
-                 ( select count(distinct E.id) from rhnErrata E where E.id = SNEC.errata_id AND E.advisory_type = 'Bug Fix Advisory') AS BUG_ERRATA,
-                 ( select count(distinct E.id) from rhnErrata E where E.id = SNEC.errata_id AND E.advisory_type = 'Product Enhancement Advisory') AS ENHANCEMENT_ERRATA
-            FROM
-                 rhnServerNeededErrataCache SNEC,
-                 rhnServerGroupMembers SGM,
-
-
-           WHERE
-
-                  snpc.server_id = sgm.server_id
-                 AND sgm.server_group_id IN (%s)
-
-
-  </query>
-
 <query name="visible_to_user_ids" params="user_id">
 select * from (
 SELECT DISTINCT SG.id AS ID, SG.name AS NAME
