@@ -617,11 +617,14 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
       </context-group>
       </trans-unit>
+      <trans-unit id="grouplist.jsp.security">
+          <source>Security updates needed</source>
+      </trans-unit>
       <trans-unit id="grouplist.jsp.updates">
-        <source>Patch Updates Available</source>
+        <source>Updates available</source>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
-        <source>No Applicable Patches</source>
+        <source>No applicable updates</source>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.satadmin.description">
         <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from

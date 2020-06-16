@@ -1,3 +1,5 @@
+- Include number of non-patch package updates to non-critical update counts
+  in system group pages (bsc#1170468)
 - Compute the websockify URL on browser side (bsc#1149644)
 - Deleting registered VM doesn't remove them VM from the Guests list (bsc#1170096)
 - improve salt-ssh error parsing on bootstrapping (bsc#1172120)
