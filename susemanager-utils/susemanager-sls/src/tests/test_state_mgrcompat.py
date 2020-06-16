@@ -11,8 +11,8 @@ mockery.setup_environment()
 
 from ..states import mgrcompat
 
-TAILORED_MODULE_RUN_KWARGS = {'service.running': [{'text': 'superseded', 'name': 'salt-minion'}]}
-MGRCOMPAT_MODULE_RUN_KWARGS = {'name': 'service.running', 'text': 'superseded', 'm_name': 'salt-minion'}
+TAILORED_MODULE_RUN_KWARGS = {'service.running': [{'text': 'superseded', 'name': 'salt-minion', "foo": "bar"}]}
+MGRCOMPAT_MODULE_RUN_KWARGS = {'name': 'service.running', 'text': 'superseded', 'm_name': 'salt-minion', 'kwargs': {'foo': 'bar'}}
 
 mgrcompat.log = MagicMock()
 mgrcompat.OrderedDict = dict
@@ -23,21 +23,21 @@ mgrcompat.__grains__ = {}
 def test_module_run_on_sodium():
     mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
     mgrcompat.module.run = mock
-    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [2020, 1, 1, 1]}):
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3001, None, None, None]}):
         mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
         mock.assert_called_once_with(**TAILORED_MODULE_RUN_KWARGS)
 
 def test_module_run_on_neon():
     mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
     mgrcompat.module.run = mock
-    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [2019, 10, 1, 1]}):
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3000, None, None, None]}):
         mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
         mock.assert_called_once_with(**MGRCOMPAT_MODULE_RUN_KWARGS)
 
 def test_module_run_on_neon_use_superseded():
     mock = MagicMock(return_value={'changes': {'service.running': 'foobar'}})
     mgrcompat.module.run = mock
-    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [2019, 10, 1, 1]}):
+    with patch.dict(mgrcompat.__grains__, {'saltversioninfo': [3000, None, None, None]}):
         with patch.dict(mgrcompat.__opts__, {'use_superseded': ['module.run']}):
             mgrcompat.module_run(**MGRCOMPAT_MODULE_RUN_KWARGS)
             mock.assert_called_once_with(**TAILORED_MODULE_RUN_KWARGS)
