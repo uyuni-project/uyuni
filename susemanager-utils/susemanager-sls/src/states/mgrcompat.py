@@ -32,7 +32,7 @@ def __virtual__():
     module.__grains__ = __grains__
     module.__context__ = __context__
     module.__utils__ = __utils__
-    return __virtualname__ if 'module.run' in __salt__ else (False, 'module.run is not available')
+    return __virtualname__
 
 def _tailor_kwargs_to_new_syntax(name, **kwargs):
     # Remove "m_" from the kwargs parameters key
