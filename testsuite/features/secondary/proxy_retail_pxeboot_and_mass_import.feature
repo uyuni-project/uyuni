@@ -535,18 +535,6 @@ Feature: PXE boot a Retail terminal
 @proxy
 @private_net
 @pxeboot_minion
-  Scenario: Cleanup: reset to proper branch ID for pxeboot
-    # Branch ID was changed by mass import yaml file
-    Given I am on the Systems overview page of this "proxy"
-    When I follow "Formulas" in the content area
-    And I follow first "Branch Network" in the content area
-    And I enter "example" in branch id field
-    And I click on "Save Formula"
-    Then I should see a "Formula saved" text
-
-@proxy
-@private_net
-@pxeboot_minion
   Scenario: Cleanup: apply the highstate after the mass import cleanup changes
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
