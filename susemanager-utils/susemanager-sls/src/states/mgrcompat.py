@@ -35,11 +35,12 @@ def __virtual__():
     return __virtualname__
 
 def _tailor_kwargs_to_new_syntax(name, **kwargs):
-    # Remove "m_" from the kwargs parameters key
     nkwargs = {}
     for k, v in kwargs.items():
         if k.startswith("m_"):
             nkwargs[k[2:]] = v
+        elif k == 'kwargs':
+            nkwargs.update(v)
         else:
             nkwargs[k] = v
     return {name: [OrderedDict(nkwargs)]}
