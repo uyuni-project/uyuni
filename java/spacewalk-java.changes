@@ -1,3 +1,5 @@
+- Include number of non-patch package updates to non-critical update counts
+  in system group pages (bsc#1170468)
 - bump XMLRPC API version number to distinguish from Spacewalk 2.10
 - Cluster UI: return to overview page after scheduling actions
 - fix NPE on auto installation when no kernel options are given (bsc#1173932)

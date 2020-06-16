@@ -28,7 +28,7 @@
             <c:when test="${errata_counts['se'] > 0}">
                 <rhn:icon type="system-crit" />
             </c:when>
-            <c:when test="${(errata_counts['se'] == 0) && (errata_counts['be'] > 0 || errata_counts['ee'] > 0)}">
+            <c:when test="${(errata_counts['se'] == 0) && (errata_counts['be'] > 0 || errata_counts['ee'] > 0 || errata_counts['op'] > 0)}">
                 <rhn:icon type="system-warn" />
             </c:when>
             <c:otherwise>
@@ -36,7 +36,7 @@
             </c:otherwise>
         </c:choose>
         <c:choose>
-            <c:when test="${errata_counts['se'] == 0 && errata_counts['be'] == 0 && errata_counts['ee'] == 0}">
+            <c:when test="${errata_counts['se'] == 0 && errata_counts['be'] == 0 && errata_counts['ee'] == 0 && errata_counts['op'] == 0}">
                 <bean:message key="systemgroup.details.noupdates"/>
             </c:when>
             <c:otherwise>
@@ -44,8 +44,8 @@
                 <c:if test="${errata_counts['se'] > 0}">
                     <bean:message key="systemgroup.details.updates.critical" arg0="/rhn/groups/ListErrata.do?sgid=${id}" arg1="${errata_counts['se']}"/>&nbsp;&nbsp;&nbsp;
                 </c:if>
-                <c:if test="${errata_counts['be'] > 0 || errata_counts['ee'] > 0}">
-                    <bean:message key="systemgroup.details.updates.noncritical" arg0="/rhn/groups/ListErrata.do?sgid=${id}" arg1="${errata_counts['be'] + errata_counts['ee']}"/>
+                <c:if test="${errata_counts['be'] > 0 || errata_counts['ee'] > 0 || errata_counts['op'] > 0}">
+                    <bean:message key="systemgroup.details.updates.noncritical" arg0="/rhn/groups/ListErrata.do?sgid=${id}" arg1="${errata_counts['be'] + errata_counts['ee'] + errata_counts['op']}"/>
                 </c:if>
             </c:otherwise>
         </c:choose>
