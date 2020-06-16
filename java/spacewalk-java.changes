@@ -1,4 +1,6 @@
-- Synchronize Salt modules and states during registration
+- Synchronize Salt modules and states during minion registration.
+- Adapt expectations for jobs return events after switching Salt
+  states to use 'mgrcompat.module_run' state.
 - fix NPE on auto installation when no kernel options are given (bsc#1173932)
 - fix issue with disabling self_update for autoyast autoupgrade (bsc#1170654)
 - serve media.1/products when available (bsc#1173204)
