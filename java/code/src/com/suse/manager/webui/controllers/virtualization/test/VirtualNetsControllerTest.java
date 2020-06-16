@@ -82,7 +82,7 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         };
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
                 new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager())
         );
 

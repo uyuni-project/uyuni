@@ -1,3 +1,4 @@
+- Toggle virtpoller when toggling virtualization host entitlement (bsc#1172962)
 - Pass minion ip to the kiwi_collect_image runner as fallback instead
   of fqdn if not present (bsc#1170737)
 - fix up2date detection on RH8 when salt-minion is used for registration

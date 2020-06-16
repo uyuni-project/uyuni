@@ -1882,7 +1882,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SaltService saltService = new SaltService();
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
@@ -1912,7 +1912,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testAddEntitlementSystemAlreadyHas() throws Exception {
         SaltService saltService = new SaltService();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);

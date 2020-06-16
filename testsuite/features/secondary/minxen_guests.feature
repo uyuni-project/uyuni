@@ -17,8 +17,6 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "xen_server"
-    # Shorten the virtpoller interval to avoid losing time
-    And I reduce virtpoller run interval on "xen_server"
 
 @virthost_xen
   Scenario: Setting the virtualization entitlement for Xen
@@ -28,7 +26,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-
+    And the virtpoller beacon should be enabled on "xen_server"
 
 @virthost_xen
   Scenario: Prepare a Xen test virtual machine and list it

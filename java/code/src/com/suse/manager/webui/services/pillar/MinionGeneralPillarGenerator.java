@@ -50,14 +50,6 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         PKGSET_BEACON_PROPS.put("interval", PKGSET_INTERVAL);
     }
 
-    private static final Map<String, Object> VIRTPOLLER_BEACON_PROPS = new HashMap<>();
-
-    static {
-        VIRTPOLLER_BEACON_PROPS.put("cache_file", Config.get().getString(ConfigDefaults.VIRTPOLLER_CACHE_FILE));
-        VIRTPOLLER_BEACON_PROPS.put("expire_time", Config.get().getInt(ConfigDefaults.VIRTPOLLER_CACHE_EXPIRATION));
-        VIRTPOLLER_BEACON_PROPS.put("interval", Config.get().getInt(ConfigDefaults.VIRTPOLLER_INTERVAL));
-    }
-
     /**
      * Generates pillar data containing general information of the passed minion
      * @param minion the minion server
@@ -88,14 +80,6 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         if (minion.getOsFamily().toLowerCase().equals("suse") ||
                 minion.getOsFamily().toLowerCase().equals("redhat")) {
             beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
-        }
-        // this add the configuration for the beacon that tell us about
-        // virtual guests running on that minion
-        // The virtpoller is still usefull with the libvirt events: it will help
-        // synchronizing the DB with the actual guest lists in case we had a temporary shutdown.
-        // TODO: find a better way to detect when the beacon should be configured
-        if (minion.isVirtualHost()) {
-            beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);
         }
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);

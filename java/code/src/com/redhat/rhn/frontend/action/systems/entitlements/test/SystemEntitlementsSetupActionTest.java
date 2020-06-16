@@ -69,7 +69,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         context.setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltServiceMock),
+                        new FormulaMonitoringManager()),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
                         new FormulaMonitoringManager())
         );

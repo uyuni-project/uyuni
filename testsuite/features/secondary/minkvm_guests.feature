@@ -26,6 +26,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
+    And the virtpoller beacon should be enabled on "kvm_server"
     And I restart salt-minion on "kvm_server"
 
 @virthost_kvm
