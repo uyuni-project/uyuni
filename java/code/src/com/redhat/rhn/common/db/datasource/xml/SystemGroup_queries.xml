@@ -13,18 +13,20 @@
                               WHERE SFV.server_id = SGM.server_id
                                     AND SFV.label = 'ftr_system_grouping')) AS  SERVER_COUNT,
         (SELECT CASE MAX(CASE E.advisory_type
-            WHEN 'Security Advisory' THEN 3
-            WHEN 'Bug Fix Advisory' THEN 2
-            WHEN 'Product Enhancement Advisory' THEN 1 END)
-          WHEN 3 THEN 'Security Advisory'
-          WHEN 2 THEN 'Bug Fix Advisory'
-          WHEN 1 THEN 'Product Enhancement Advisory' END type_value
-                       from rhnErrata E inner join
-                            rhnServerNeededCache SNPC on E.id = SNPC.errata_id inner join
-                            rhnServerGroupMembers SGM on SGM.server_id = SNPC.server_id inner join
-                            rhnServerFeaturesView SFV on SGM.server_id = SFV.server_id
-                       where sgm.server_group_id = G.id
-                         AND SFV.label = 'ftr_system_grouping') as MOST_SEVERE_ERRATA
+                WHEN 'Security Advisory' THEN 3
+                WHEN 'Bug Fix Advisory' THEN 2
+                WHEN 'Product Enhancement Advisory' THEN 1
+                ELSE 0 END)
+            WHEN 3 THEN 'Security Advisory'
+            WHEN 2 THEN 'Bug Fix Advisory'
+            WHEN 1 THEN 'Product Enhancement Advisory'
+            WHEN 0 THEN 'Outdated Packages' END type_value
+        FROM rhnServerNeededCache SNPC
+            INNER JOIN rhnServerGroupMembers SGM on SGM.server_id = SNPC.server_id
+            INNER JOIN rhnServerFeaturesView SFV on SGM.server_id = SFV.server_id
+            LEFT JOIN rhnErrata E on E.id = SNPC.errata_id
+        WHERE SGM.server_group_id = G.id
+          AND SFV.label = 'ftr_system_grouping') as MOST_SEVERE_ERRATA
  FROM   rhnServerGroup G, rhnUserManagedServerGroups UMSG
  WHERE   G.ORG_ID = :org_id
    AND   UMSG.user_id = :user_id
@@ -67,15 +69,17 @@ ORDER BY UPPER(NAME)
         CASE MAX(CASE e.advisory_type
             WHEN 'Security Advisory' THEN 3
             WHEN 'Bug Fix Advisory' THEN 2
-            WHEN 'Product Enhancement Advisory' THEN 1 END)
+            WHEN 'Product Enhancement Advisory' THEN 1
+            ELSE 0 END)
             WHEN 3 THEN 'Security Advisory'
             WHEN 2 THEN 'Bug Fix Advisory'
             WHEN 1 THEN 'Product Enhancement Advisory'
+            WHEN 0 THEN 'Outdated Packages'
         END AS most_severe_errata
-    FROM rhnErrata e
-        INNER JOIN rhnServerNeededCache snpc ON e.id = snpc.errata_id
+    FROM rhnServerNeededCache snpc
         INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snpc.server_id
         INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
+        LEFT JOIN rhnErrata e ON e.id = snpc.errata_id
     WHERE sgm.server_group_id IN (%s) AND sfv.label = 'ftr_system_grouping'
     GROUP BY server_group_id
 </query>
@@ -141,16 +145,19 @@ ORDER BY UPPER(SG.name), SG.id
 
 <mode name="group_errata_counts">
   <query params="sgid">
-     SELECT count(DISTINCT e.id),
+     SELECT count(DISTINCT CASE
+                WHEN snc.errata_id IS NULL THEN snc.package_id
+                ELSE snc.errata_id END), --Count multiple packages in an erratum as one
             CASE e.advisory_type
                 WHEN 'Security Advisory' THEN 'se'
                 WHEN 'Bug Fix Advisory' THEN 'be'
                 WHEN 'Product Enhancement Advisory' THEN 'ee'
+                ELSE 'op' --Outdated packages
             END AS advisory_type
-      FROM rhnErrata e
-        INNER JOIN rhnServerNeededCache snc ON e.id = snc.errata_id
+      FROM rhnServerNeededCache snc
         INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snc.server_id
         INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
+        LEFT JOIN rhnErrata e ON e.id = snc.errata_id
       WHERE sgm.server_group_id = :sgid AND sfv.label = 'ftr_system_grouping'
       GROUP BY e.advisory_type
   </query>

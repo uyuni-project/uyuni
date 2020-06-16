@@ -6160,14 +6160,14 @@ organization. You may grant or remove the organization administrator role in the
         <target>В менеджер комплектов</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.security">
-        <source>Security Updates Needed</source>
+        <source>Security updates needed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
         <target>Необходимы обновления безопасности</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.updates">
-        <source>Patch Updates Available</source>
+        <source>Updates available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>

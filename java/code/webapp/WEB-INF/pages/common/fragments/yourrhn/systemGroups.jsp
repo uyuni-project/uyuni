@@ -20,7 +20,7 @@
                                         <c:when test="${current.mostSevereErrata == 'Security Advisory'}">
                                         <rhn:icon type="system-crit" title="grouplist.jsp.security" />
                                         </c:when>
-                                        <c:when test="${current.mostSevereErrata == 'Bug Fix Advisory' or current.mostSevereErrata == 'Product Enhancement Advisory'}">
+                                        <c:when test="${current.mostSevereErrata == 'Bug Fix Advisory' or current.mostSevereErrata == 'Product Enhancement Advisory' or current.mostSevereErrata == 'Outdated Packages'}">
                                         <rhn:icon type="system-warn" title="grouplist.jsp.updates" />
                                 </c:when>
                                         <c:otherwise>
