@@ -19,7 +19,6 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -65,18 +64,20 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.google.gson.JsonElement;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalCall;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -127,7 +128,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         saltServerActionService = createSaltServerActionService(systemQuery);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
                 new SystemEntitler(systemQuery, virtManager, new FormulaMonitoringManager())
         );
 

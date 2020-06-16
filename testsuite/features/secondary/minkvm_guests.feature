@@ -18,8 +18,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "kvm_server"
     And I restart salt-minion on "kvm_server"
-    # Shorten the virtpoller interval to avoid losing time
-    And I reduce virtpoller run interval on "kvm_server"
 
 @virthost_kvm
   Scenario: Setting the virtualization entitlement for KVM
@@ -29,7 +27,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
-
+    And the virtpoller beacon should be enabled on "kvm_server"
 
 @virthost_kvm
   Scenario: Prepare a KVM test virtual machine and list it

@@ -626,6 +626,12 @@ The check box can be identified by name, id or label text.
   Then the pillar data for "timezone" should be empty on "ssh_minion"
 ```
 
+* Salt beacons
+
+```cucumber
+  Then the virtpoller beacon should be enabled on "xen_server"
+```
+
 * Apply the Salt highstate
 
 ```cucumber

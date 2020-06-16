@@ -14,45 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
-import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.ServerStateRevision;
-import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.domain.state.VersionConstraints;
-import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
-import com.redhat.rhn.manager.action.ActionChainManager;
-import org.apache.commons.lang3.StringUtils;
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit3.JUnit3Mockery;
-import org.jmock.lib.concurrent.Synchroniser;
-import org.jmock.lib.legacy.ClassImposteriser;
-import com.redhat.rhn.frontend.dto.ErrataOverview;
-import com.redhat.rhn.frontend.dto.HistoryEvent;
-import com.redhat.rhn.frontend.dto.OperationDetailsDto;
-import com.redhat.rhn.frontend.dto.PackageMetadata;
-import com.redhat.rhn.frontend.dto.ScheduledAction;
-import com.redhat.rhn.frontend.dto.ServerPath;
-import com.redhat.rhn.frontend.dto.ShortSystemInfo;
-import com.redhat.rhn.frontend.dto.SystemOverview;
-
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -117,10 +78,23 @@ import com.redhat.rhn.domain.server.test.GuestBuilder;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
+import com.redhat.rhn.frontend.dto.HistoryEvent;
+import com.redhat.rhn.frontend.dto.OperationDetailsDto;
+import com.redhat.rhn.frontend.dto.PackageMetadata;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
+import com.redhat.rhn.frontend.dto.ServerPath;
+import com.redhat.rhn.frontend.dto.ShortSystemInfo;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
@@ -169,6 +143,7 @@ import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -188,6 +163,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1912,7 +1888,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         SaltService saltService = new SaltService();
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
@@ -1942,7 +1918,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testAddEntitlementSystemAlreadyHas() throws Exception {
         SaltService saltService = new SaltService();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);

@@ -583,6 +583,13 @@ Then(/^the download should get no error$/) do
   assert_nil(@download_error)
 end
 
+Then(/^the ([^ ]+) beacon should be enabled on "([^"]*)"$/) do |beacon, minion|
+  system_name = get_system_name(minion)
+
+  output, _code = $server.run("salt #{system_name} beacons.list")
+  raise "Beacon #{beacon} not enabled" unless output.split("\n").map(&:strip).include?("#{beacon}:")
+end
+
 # Perform actions
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)

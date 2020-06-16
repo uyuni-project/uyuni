@@ -1,3 +1,5 @@
+- Merge virtualization fragment into suma-minion pillar (bsc#1172962)
+
 -------------------------------------------------------------------
 Wed Jun 10 12:41:08 CEST 2020 - jgonzalez@suse.com
 

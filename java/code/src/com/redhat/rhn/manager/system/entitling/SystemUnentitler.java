@@ -21,10 +21,10 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.VirtManager;
 
 import org.apache.log4j.Logger;
 
@@ -40,8 +40,17 @@ public class SystemUnentitler {
 
     private static final Logger LOG = Logger.getLogger(SystemUnentitler.class);
 
-    public static final SystemUnentitler INSTANCE = new SystemUnentitler();
-    private MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private MonitoringManager monitoringManager;
+    private VirtManager virtManager;
+
+    /**
+     * @param virtManagerIn instance for managing virtual machines.
+     * @param monitoringManagerIn instance for handling monitoring configuration.
+     */
+    public SystemUnentitler(VirtManager virtManagerIn, MonitoringManager monitoringManagerIn) {
+        this.virtManager = virtManagerIn;
+        this.monitoringManager = monitoringManagerIn;
+    }
 
     /**
      * Removes all the entitlements related to a server.
@@ -73,18 +82,21 @@ public class SystemUnentitler {
             unentitleServer(server, ent);
         }
 
-        if (EntitlementManager.MONITORING.equals(ent)) {
-            server.asMinionServer().ifPresent(s -> {
-                ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
-
+        server.asMinionServer().ifPresent(s -> {
+            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
+            if (EntitlementManager.MONITORING.equals(ent)) {
                 try {
                     monitoringManager.disableMonitoring(s);
                 }
                 catch (ValidatorException | IOException e) {
                     LOG.warn("Error disabling monitoring: " + e.getMessage());
                 }
-            });
-        }
+            }
+
+            if (EntitlementManager.VIRTUALIZATION.equals(ent)) {
+                virtManager.updateLibvirtEngine(s);
+            }
+        });
     }
 
     private void unentitleServer(Server server, Entitlement ent) {
