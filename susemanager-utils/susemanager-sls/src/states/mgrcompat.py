@@ -70,8 +70,11 @@ def module_run(**kwargs):
         use_new_syntax = False
 
     if use_new_syntax:
+        log.debug("Minion is using the new syntax for 'module.run' state. Tailoring parameters.")
+        log.debug("Old parameters: {}".format(kwargs))
         old_name = kwargs.pop('name')
         new_kwargs = _tailor_kwargs_to_new_syntax(old_name, **kwargs)
+        log.debug("New parameters for 'module.run' state: {}".format(new_kwargs))
     else:
         new_kwargs = kwargs
 
