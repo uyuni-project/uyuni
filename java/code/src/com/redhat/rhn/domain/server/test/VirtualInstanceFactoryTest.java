@@ -57,7 +57,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 "testOrg" + this.getClass().getSimpleName());
         builder = new GuestBuilder(user);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager()),
                 new SystemEntitler(new SaltService(), new TestVirtManager(), new FormulaMonitoringManager())
         );
     }

@@ -160,7 +160,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             )  throws Exception {
         SaltService saltService = new SaltService();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);

@@ -47,7 +47,7 @@ MANAGER_GLOBAL_PILLAR = [
 ]
 
 MINION_PILLAR_FILES_PREFIX = "pillar_{minion_id}"
-MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml"]
+MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml", "_virtualization.yml"]
 
 CONFIG_FILE = '/etc/rhn/rhn.conf'
 
@@ -100,7 +100,10 @@ def ext_pillar(minion_id, *args):
         data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, minion_pillar_filename_prefix + suffix)
         if os.path.exists(data_filename):
             try:
-                ret.update(yaml.load(open(data_filename).read(), Loader=yaml.FullLoader))
+                ret = salt.utils.dictupdate.merge(
+                        ret,
+                        yaml.load(open(data_filename).read(), Loader=yaml.FullLoader),
+                        strategy='recurse')
             except Exception as error:
                 log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
 
