@@ -56,23 +56,17 @@ def module_run(**kwargs):
     # The new syntax will be used as the default
     use_new_syntax = True
 
-    if __grains__['saltversioninfo'][0] > 2019:
-        # New syntax - any future Salt release
+    if __grains__['saltversioninfo'][0] > 3000:
+        # Only new syntax - default behavior for Sodium and future releases
         pass
-    elif __grains__['saltversioninfo'][0] == 2019 and __grains__['saltversioninfo'][1] > 2 and __opts__.get('use_superseded', []):
-        # New syntax - posible future Neon release (not yet determined)
-        pass
-    elif __grains__['saltversioninfo'][0] == 2019 and __grains__['saltversioninfo'][1] > 2 and not 'module.run' in __opts__.get('use_superseded', []):
-        # New syntax - posible future Neon release (not yet determined)
-        use_new_syntax = False
     elif __grains__['saltversioninfo'][0] > 2016 and 'module.run' in __opts__.get('use_superseded', []):
-        # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3 and 2019.2
+        # New syntax - explicitely enabled via 'use_superseded' configuration on 2018.3, 2019.2 and 3000.x
         pass
     elif __grains__['saltversioninfo'][0] > 2016 and not 'module.run' in __opts__.get('use_superseded', []):
-        # Old syntax - default behavior on 2018.3 and 2019.2
+        # Old syntax - default behavior for 2018.3, 2019.2 and 3000.x
         use_new_syntax = False
     elif __grains__['saltversioninfo'][0] <= 2016:
-        # Old syntax - no new syntax available for 2016.11 and 2015.8
+        # Only old syntax - the new syntax is not available for 2016.11 and 2015.8
         use_new_syntax = False
 
     if use_new_syntax:
