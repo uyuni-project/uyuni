@@ -233,7 +233,7 @@ class FormulaForm extends React.Component {
             let element = layout[key];
             if (element.$type === "group" || element.$type === "namespace") {
                 value = this.getValuesClean(value, element);
-                if (!$.isEmptyObject(value))
+                if (!jQuery.isEmptyObject(value))
                     result[key] = value;
             }
             else if ((element.$scope === this.props.currentScope || element.$scope === "system") && !(value && value.length === 0)) {
@@ -365,7 +365,7 @@ class FormulaForm extends React.Component {
         }))
         const messages = <Messages items={messageItems} />;
 
-        if (this.state.formulaLayout === undefined || this.state.formulaLayout === null || $.isEmptyObject(this.state.formulaLayout)) {
+        if (this.state.formulaLayout === undefined || this.state.formulaLayout === null || jQuery.isEmptyObject(this.state.formulaLayout)) {
             if (this.props.addFormulaNavBar !== undefined)
                 this.props.addFormulaNavBar(get(this.state.formulaList, ["Not found"]), this.props.formulaId);
             return (
@@ -398,7 +398,7 @@ class FormulaForm extends React.Component {
                             </div>
                             <div className="action-button-wrapper">
                                 <div className="btn-group">
-                                    <Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className={"btn btn-success"} handler={() => $('<input type="submit">').hide().appendTo($("#formula-form")).click().remove()} />
+                                    <Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className={"btn btn-success"} handler={() => jQuery('<input type="submit">').hide().appendTo(jQuery("#formula-form")).trigger("click").remove()} />
                                     <Button id="reset-btn" icon="fa-eraser" text="Clear values" className="btn btn-default" handler={this.clearValues} />
                                 </div>
                             </div>

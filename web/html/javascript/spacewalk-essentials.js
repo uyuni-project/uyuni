@@ -46,16 +46,8 @@ function adaptFluidColLayout() {
 }
 
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
-// On window load
-jQuery(window).on("load", function () {
-  adjustDistanceForFixedHeader();
-  columnHeight();
-});
-
-// On window resize
-jQuery(window).on("resize", function () {
-  alignContentDimensions();
-});
+// On window load and resize
+jQuery(window).on("load resize", alignContentDimensions);
 
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
@@ -226,13 +218,13 @@ function makeAjaxHandler(callbackFunction, errorHandlerFunction) {
     // navigates away from page during an AJAX call
     // first, we detect page unloading
     jQuery(window).on("beforeunload", function() {
-      $.unloading = true;
+      jQuery.unloading = true;
     });
     return {
       callback: callbackFunction,
       errorHandler: function(message, exception) {
         // second, if we get an error during unloading we ignore it
-        if ($.unloading == true) {
+        if (jQuery.unloading == true) {
           console.log("Ignoring exception " + exception + " with message " + message + " because it is a DWR error during unload");
         }
         else {
@@ -257,7 +249,7 @@ function showFatalError(message, exception) {
 // So three col-md-auto would get col-md-4 each.
 // Five col-md-auto would get two with col-md-3 and three with col-md-2
 function onDocumentReadyAutoBootstrapGrid() {
-  $.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
+  jQuery.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
     //for each div with class row
     jQuery('.col-' + gridSize + '-auto:first').parent().each(function() {
       //we count the number of childrens with class col-md-6
@@ -405,7 +397,7 @@ jQuery(function () {
 
 // Disables the enter key from submitting the form
 function disableEnterKey() {
-  jQuery(window).keydown(function(event){
+  jQuery(window).on('keydown', function(event){
     if(event.keyCode == 13) {
       event.preventDefault();
       return false;
