@@ -14,16 +14,12 @@
  */
 package com.redhat.rhn.testing;
 
-import java.io.File;
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.text.DateFormat;
-import java.util.Collection;
-import java.util.Date;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.util.Asserts;
 
 import com.suse.manager.webui.services.impl.SaltService;
-import junit.framework.ComparisonFailure;
-import junit.framework.TestCase;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Level;
@@ -31,10 +27,15 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.util.Asserts;
+import java.io.File;
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
+import java.util.Collection;
+import java.util.Date;
+
+import junit.framework.ComparisonFailure;
+import junit.framework.TestCase;
 
 /**
  * RhnBaseTestCase is the base class for all RHN TestCases.
@@ -44,6 +45,7 @@ import com.redhat.rhn.common.util.Asserts;
  */
 public abstract class RhnBaseTestCase extends TestCase {
 
+    private final SaltService saltService = new SaltService();
     /**
      * Constructs a TestCase with the given name.
      * @param name Name of TestCase.
@@ -57,7 +59,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      */
     public RhnBaseTestCase() {
         super();
-        MessageQueue.configureDefaultActions(new SaltService());
+        MessageQueue.configureDefaultActions(saltService);
     }
 
     /**
@@ -76,6 +78,7 @@ public abstract class RhnBaseTestCase extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         TestCaseHelper.tearDownHelper();
+        saltService.close();
     }
 
     /**
