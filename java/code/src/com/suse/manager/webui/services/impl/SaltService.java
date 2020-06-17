@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.services.impl;
 
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.messaging.JavaMailException;
@@ -23,8 +21,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
-
 import com.redhat.rhn.manager.system.SystemManager;
+
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.MailHelper;
@@ -79,6 +77,9 @@ import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
 import com.suse.utils.Opt;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
@@ -148,6 +149,7 @@ public class SaltService implements SystemQuery, SaltApi {
 
     // Shared salt client instance
     private final SaltClient SALT_CLIENT;
+    private final CloseableHttpAsyncClient asyncHttpClient;
 
     // executing salt-ssh calls
     private final SaltSSHService saltSSHService;
@@ -183,7 +185,7 @@ public class SaltService implements SystemQuery, SaltApi {
         HttpAsyncClientBuilder httpClientBuilder = HttpAsyncClients.custom();
         httpClientBuilder.setDefaultRequestConfig(requestConfig);
 
-        CloseableHttpAsyncClient asyncHttpClient = httpClientBuilder
+        asyncHttpClient = httpClientBuilder
                 .setMaxConnPerRoute(20)
                 .setMaxConnTotal(20)
                 .build();
@@ -196,6 +198,18 @@ public class SaltService implements SystemQuery, SaltApi {
                         .withPresencePingTimeout(ConfigDefaults.get().getSaltPresencePingTimeout())
                         .withPresencePingGatherJobTimeout(ConfigDefaults.get().getSaltPresencePingGatherJobTimeout())
                         .build();
+    }
+
+    /**
+     * Close the opened resources when the service is no longer needed
+     */
+    public void close() {
+        try {
+            asyncHttpClient.close();
+        }
+        catch (IOException eIn) {
+            LOG.warn("Failed to close HTTP client", eIn);
+        }
     }
 
     /**
