@@ -38,59 +38,103 @@ class MaintenanceWindowsDetails extends React.Component {
 
     renderScheduleDetails(data) {
         return (
-            <BootstrapPanel title={t("Schedule Details")}>
-                <div className="table-responsive">
-                    <table className="table">
-                        <tbody>
-                        <tr>
-                            <td>{t("Schedule Name")}</td>
-                            <td>{data.scheduleName}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("Assigned Calendar")}:</td>
-                            <td>{data.calendarName}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("Schedule Type")}:</td>
-                            <td>{data.scheduleType === "SINGLE" ? t("Single") : t("Multi")}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <DeleteDialog id="delete-modal"
-                              title={t("Delete maintenance schedule")}
-                              content={t("Are you sure you want to delete the selected item? \n" +
-                                  "This will remove the current schedule from all the systems assigned to it.")}
-                              onConfirm={() => this.props.onDelete(this.props.data)}
-                />
-            </BootstrapPanel>
+            <div>
+                <BootstrapPanel title={t("Schedule Details")}>
+                    <div className="table-responsive">
+                        <table className="table">
+                            <tbody>
+                            <tr>
+                                <td>{t("Schedule Name")}</td>
+                                <td>{data.scheduleName}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("Assigned Calendar")}:</td>
+                                <td>{data.calendarName}</td>
+                            </tr>
+                            <tr>
+                                <td>{t("Schedule Type")}:</td>
+                                <td>{data.scheduleType === "SINGLE" ? t("Single") : t("Multi")}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <DeleteDialog id="delete-modal"
+                                  title={t("Delete maintenance schedule")}
+                                  content={t("Are you sure you want to delete the selected item? \n" +
+                                      "This will remove the current schedule from all the systems assigned to it.")}
+                                  onConfirm={() => this.props.onDelete(this.props.data)}
+                    />
+                </BootstrapPanel>
+                {
+                    data.maintenanceWindows !== undefined && data.maintenanceWindows.length > 0 &&
+                    <BootstrapPanel title={t("Upcoming Maintenance Windows")}>
+                        <div className="table-responsive">
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th>{t("Start")}</th>
+                                    <th>{t("End")}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {
+                                    data.maintenanceWindows.map(window =>
+                                        <tr>
+                                            <td>{window.start}</td>
+                                            <td>{window.end}</td>
+                                        </tr>
+                                    )
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    </BootstrapPanel>
+                }
+            </div>
         );
     }
 
     renderCalendarDetails(data) {
         return (
-            <BootstrapPanel title={t("Schedule Details")}>
-                <div className="table-responsive">
-                    <table className="table">
-                        <tbody>
-                        <tr>
-                            <td>{t("Calendar Name")}</td>
-                            <td>{data.calendarName}</td>
-                        </tr>
-                        <tr>
-                            <td>{t("Used by schedule")}:</td>
-                            <td>{data.scheduleNames.map(name => name.name).join(", ")}</td>
-                        </tr>
-                        {
-                            data.calendarUrl &&
+            <div>
+                <BootstrapPanel title={t("Schedule Details")}>
+                    <div className="table-responsive">
+                        <table className="table">
+                            <tbody>
                             <tr>
-                                <td>{t("Url")}:</td>
-                                <td>{data.calendarUrl}</td>
+                                <td>{t("Calendar Name")}</td>
+                                <td>{data.calendarName}</td>
                             </tr>
-                        }
-                        </tbody>
-                    </table>
-                </div>
+                            <tr>
+                                <td>{t("Used by schedule")}:</td>
+                                <td>{data.scheduleNames.map(name => name.name).join(", ")}</td>
+                            </tr>
+                            {
+                                data.calendarUrl &&
+                                <tr>
+                                    <td>{t("Url")}:</td>
+                                    <td>{data.calendarUrl}</td>
+                                </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </BootstrapPanel>
+                {
+                    this.props.data.calendarData &&
+                    <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <h4>
+                                {this.props.data.calendarName}
+                            </h4>
+                        </div>
+                        <div className="panel-body">
+                        <pre>
+                            {this.props.data.calendarData}
+                        </pre>
+                        </div>
+                    </div>
+                }
                 <DeleteDialog id="delete-modal"
                               title={t("Delete maintenance calendar")}
                               content={
@@ -102,7 +146,7 @@ class MaintenanceWindowsDetails extends React.Component {
                               }
                               onConfirm={() => this.props.onDelete(this.addStrategy())}
                 />
-            </BootstrapPanel>
+            </div>
         );
     }
 
@@ -149,21 +193,6 @@ class MaintenanceWindowsDetails extends React.Component {
                     this.state.type === "schedule"
                         ? this.renderScheduleDetails(this.props.data)
                         : this.renderCalendarDetails(this.props.data)
-                }
-                {
-                    this.props.data.calendarData &&
-                    <div className="panel panel-default">
-                        <div className="panel-heading">
-                            <h4>
-                                {this.props.data.calendarName}
-                            </h4>
-                        </div>
-                        <div className="panel-body">
-                        <pre>
-                            {this.props.data.calendarData}
-                        </pre>
-                        </div>
-                    </div>
                 }
             </TopPanel>
         );
