@@ -53,6 +53,8 @@ public class MaintenanceWindowController {
             .serializeNulls()
             .create();
 
+    private MaintenanceWindowController() { }
+
     /**
      * Invoked from Router. Initialize routes for Systems Views.
      */
