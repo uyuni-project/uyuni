@@ -36,6 +36,7 @@ import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
 import com.suse.manager.webui.controllers.MaintenanceController;
+import com.suse.manager.webui.controllers.MaintenanceWindowController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
@@ -187,6 +188,9 @@ public class Router implements SparkApplication {
 
         // Maintenance windows
         MaintenanceController.initRoutes(jade);
+
+        // Maintenance Window
+        MaintenanceWindowController.initRoutes();
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

@@ -121,7 +121,9 @@ class Highstate extends React.Component {
                                         actionChains={actionChains}
                                         actionChain={this.state.actionChain}
                                         onActionChainChanged={this.onActionChainChanged}
-                                        onDateTimeChanged={this.onDateTimeChanged}/>
+                                        onDateTimeChanged={this.onDateTimeChanged}
+                                        systemIds={window.minions.map(m => m.id)}
+                                        actionType="states.apply"/>
                     </div>
                 </div>
                 <DisplayHighstate />
