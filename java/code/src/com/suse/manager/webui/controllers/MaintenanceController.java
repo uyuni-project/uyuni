@@ -166,10 +166,15 @@ public class MaintenanceController {
         json.setScheduleName(schedule.getName());
         json.setScheduleType(schedule.getScheduleType().toString());
 
+        MM.calculateMaintenanceWindows(schedule).ifPresent(windows -> json.setMaintenanceWindows(
+                windows.stream().map(window -> Map.of(
+                        "start", window.getLeft(),
+                        "end", window.getMiddle()
+                )).collect(Collectors.toList())
+        ));
+
         schedule.getCalendarOpt().ifPresent(maintenanceCalendar -> {
-            json.setCalendarId(maintenanceCalendar.getId());
             json.setCalendarName(maintenanceCalendar.getLabel());
-            json.setCalendarData(maintenanceCalendar.getIcal());
             maintenanceCalendar.getUrlOpt().ifPresent(json::setCalendarUrl);
         });
         return json(response, json);
