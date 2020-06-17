@@ -8,8 +8,8 @@
     <div class="col-sm-6">
         <select name="maintenance_window" id="maintenance-window-select" class="form-control">
             <c:forEach var="window" items="${maintenanceWindows}">
-                <option value="${window.right}">
-                    <p><c:out value="${window.left} - ${window.middle}" /></p>
+                <option value="${window.fromMilliseconds}">
+                    <p><c:out value="${window.from} - ${window.to}" /></p>
                 </option>
             </c:forEach>
         <select>
