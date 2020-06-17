@@ -1,23 +1,15 @@
 @import url(patternfly1/resources/components/bootstrap/less/bootstrap.less);
-/* Here begins the spacewalk css theme */
 
-/* Spacewalk variables */
-@import url(spacewalk-variables.less);
-/* Spacewalk mixins */
-@import url(spacewalk-mixins.less);
-/* Spacewalk inputs */
-@import url(spacewalk-inputs.less);
-/*Import of Tables style*/
-@import url(spacewalk-tables.less);
-/*Import of Error pages style*/
-@import url(spacewalk-error.less);
-/* Import of spacewalk tools */
-@import url(spacewalk-tools.less);
-/* Import of the Theme */
-@import url(spacewalk-theme.less);
-
-/* Spacewalk fixes of TB3 */
-@import url(spacewalk-fixes.less);
+/* Here begins the basic default css theme */
+@import url(variables.less);
+@import url(mixins.less);
+@import url(inputs.less);
+@import url(tables.less);
+@import url(error.less);
+@import url(tools.less);
+@import url(theme.less);
+/* Additional default fixes */
+@import url(fixes.less);
 
 /* ------------------ */
 /* SUSE Manager theme */
@@ -27,25 +19,11 @@
 @import url(susemanager-tables.less);
 @import url(susemanager-buttons.less);
 @import url(susemanager-theme.less);
-
-/* Style for the Login page only */
 @import url(susemanager-login.less);
-
-/* Setup wizard styles */
 @import url(susemanager-setup-wizard.less);
+@import url(susemanager-visualization.less);
+@import url(susemanager-notifications.less);
 
 // LEAVE THIS LINE AT THE END ALWAYS TO WARRANTY THE RESPONSIVE RULES REWRITE THE EXISTING STYLES
-/* Responsive rules */
-@import url(spacewalk-responsive-rules.less);
-
-/* ------------------------ */
-// SUSE Manager responsiveness
+@import url(responsive-rules.less);
 @import url(susemanager-responsive-rules.less);
-
-/* ----------------------- */
-// SUSE Manager Visualization
-@import url(susemanager-visualization.less);
-
-/* ---------------------- */
-// SUSE Manager Notifications
-@import url(susemanager-notifications.less);
