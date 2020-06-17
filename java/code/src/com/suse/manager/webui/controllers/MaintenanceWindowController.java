@@ -30,13 +30,10 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import org.apache.commons.lang3.tuple.Triple;
+
 import org.apache.log4j.Logger;
 import spark.Request;
 import spark.Response;
@@ -72,30 +69,21 @@ public class MaintenanceWindowController {
      * @return the json response
      */
     public static String getMaintenanceWindows(Request req, Response res, User user) {
-        Map<String, Object> map = GSON.fromJson(req.body(), Map.class);
-        Set<Long> systemIds = Stream.of(
-                map.get("systemIds").toString().split(","))
-                .flatMap(id -> {
-                    try {
-                        return Stream.of(Long.valueOf(id));
-                    }
-                    catch (IllegalArgumentException e) {
-                        return Stream.empty();
-                    }
-                }).collect(Collectors.toSet());
+        MaintenanceWindowsParams map = GSON.fromJson(req.body(), MaintenanceWindowsParams.class);
 
-        String actionTypeLabel = map.get("actionType").toString();
-        List<Triple<String, String, Long>> mws = new LinkedList<>();
+        Set<Long> systemIds = new HashSet<>(map.getSystemIds());
+
+        String actionTypeLabel = map.getActionType();
         ActionType actionType = ActionFactory.lookupActionTypeByLabel(actionTypeLabel);
 
-        MaintenanceManager.instance()
-                .calculateUpcomingMaintenanceWindows(actionType, systemIds)
-                .ifPresent(windows -> {
-                    mws.addAll(windows);
-                });
-
         Map<String, Object> data = new HashMap<>();
-        data.put("maintenance-windows", mws);
+
+        if (actionType.isMaintenancemodeOnly()) {
+            MaintenanceManager.instance()
+                    .calculateUpcomingMaintenanceWindows(systemIds)
+                    .ifPresent(windows -> data.put("maintenanceWindows", windows));
+        }
+
         res.type("application/json");
         return json(res, ResultJson.success(data));
     }
