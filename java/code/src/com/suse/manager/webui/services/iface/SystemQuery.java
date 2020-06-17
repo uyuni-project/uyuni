@@ -193,12 +193,6 @@ public interface SystemQuery {
             String target, CompletableFuture<GenericError> cancel);
 
     /**
-     * Call 'saltutil.refresh_pillar' to sync the grains to the target minion(s).
-     * @param minionList minion list
-     */
-    void refreshPillar(MinionList minionList);
-
-    /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
      * @param minionList minion list
      */

@@ -37,10 +37,12 @@ import com.redhat.rhn.manager.formula.FormulaUtil;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.reactor.utils.ValueMap;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -48,6 +50,7 @@ import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import org.apache.commons.jexl2.Expression;
 import org.apache.commons.jexl2.JexlContext;
 import org.apache.commons.jexl2.JexlEngine;
@@ -82,6 +85,7 @@ public class ClusterManager {
 
 
     private static volatile ClusterManager instance;
+    private SaltApi saltApi;
     private SystemQuery systemQuery;
     private ServerGroupManager serverGroupManager;
     private FormulaManager formulaManager;
@@ -104,6 +108,7 @@ public class ClusterManager {
      * No arg constructor.
      */
     public ClusterManager() {
+        this.saltApi = SaltService.INSTANCE_SALT_API;
         this.systemQuery = SaltService.INSTANCE;
         this.serverGroupManager = ServerGroupManager.getInstance();
         this.formulaManager = FormulaManager.getInstance();
@@ -332,7 +337,7 @@ public class ClusterManager {
         List<String> minionIds = group.getServers().stream()
                 .flatMap(s -> Opt.stream(s.asMinionServer()))
                 .map(MinionServer::getMinionId).collect(Collectors.toList());
-        systemQuery.refreshPillar(new MinionList(minionIds));
+        saltApi.refreshPillar(new MinionList(minionIds));
     }
 
     /**

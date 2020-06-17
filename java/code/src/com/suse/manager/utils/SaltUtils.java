@@ -15,12 +15,9 @@
 
 package com.suse.manager.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
+import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -92,6 +89,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.clusters.ClusterNode;
 import com.suse.manager.model.clusters.Cluster;
@@ -102,6 +100,7 @@ import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -140,6 +139,14 @@ import com.suse.salt.netapi.results.StateApplyResult;
 import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 import com.suse.utils.Opt;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -174,9 +181,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
-import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-
 /**
  * SaltUtils
  */
@@ -204,6 +208,7 @@ public class SaltUtils {
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
     private SystemQuery systemQuery = SaltService.INSTANCE;
+    private SaltApi saltApi = SaltService.INSTANCE_SALT_API;
     private ClusterManager clusterManager = ClusterManager.instance();
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
@@ -1411,7 +1416,7 @@ public class SaltUtils {
             try {
                 FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
-                systemQuery.refreshPillar(new MinionList(server.getMinionId()));
+                saltApi.refreshPillar(new MinionList(server.getMinionId()));
             }
             catch (IOException | ValidatorException e) {
                 LOG.error("Could not enable blackout formula", e);
@@ -1862,6 +1867,14 @@ public class SaltUtils {
      */
     public void setSystemQuery(SystemQuery systemQueryIn) {
         this.systemQuery = systemQueryIn;
+    }
+
+    /**
+     * For unit testing only.
+     * @param saltApiIn the {@link SaltApi} to set
+     */
+    public void setSaltApi(SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
     }
 
     /**
