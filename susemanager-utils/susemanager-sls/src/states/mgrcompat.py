@@ -36,14 +36,18 @@ def __virtual__():
 
 def _tailor_kwargs_to_new_syntax(name, **kwargs):
     nkwargs = {}
+    _opt_kwargs = None
     for k, v in kwargs.items():
         if k.startswith("m_"):
             nkwargs[k[2:]] = v
         elif k == 'kwargs':
-            nkwargs.update(v)
+            _opt_kwargs = kwargs[k]
         else:
             nkwargs[k] = v
-    return {name: [OrderedDict(nkwargs)]}
+    ret = {name: [OrderedDict(nkwargs)]}
+    if _opt_kwargs:
+        ret[name].append(OrderedDict(_opt_kwargs))
+    return ret
 
 def module_run(**kwargs):
     '''
