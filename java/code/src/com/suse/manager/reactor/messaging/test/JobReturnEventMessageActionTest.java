@@ -618,6 +618,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
         SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
+        SaltUtils.INSTANCE.setSaltApi(saltServiceMock);
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);

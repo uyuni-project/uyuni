@@ -59,7 +59,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      */
     public RhnBaseTestCase() {
         super();
-        MessageQueue.configureDefaultActions(saltService);
+        MessageQueue.configureDefaultActions(saltService, saltService);
     }
 
     /**

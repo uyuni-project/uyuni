@@ -21,6 +21,7 @@ import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
 import com.suse.manager.reactor.SaltReactor;
 
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.log4j.LogManager;
@@ -53,15 +54,16 @@ public class RhnServletListener implements ServletContextListener {
     private boolean hibernateStarted = false;
     private boolean loggingStarted = false;
     private final SystemQuery systemQuery = SaltService.INSTANCE;
+    private final SaltApi saltApi = SaltService.INSTANCE_SALT_API;
 
     // Salt event reactor instance
-    private final SaltReactor saltReactor = new SaltReactor(SaltService.INSTANCE_SALT_API, systemQuery);
+    private final SaltReactor saltReactor = new SaltReactor(saltApi, systemQuery);
 
     private void startMessaging() {
         // Start the MessageQueue thread listening for
         // Events
         MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions(systemQuery);
+        MessageQueue.configureDefaultActions(systemQuery, saltApi);
     }
 
     private void stopMessaging() {

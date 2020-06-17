@@ -31,7 +31,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.formula.FormulaUtil;
 
-
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.StateTargetType;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -86,12 +86,15 @@ public class FormulaController {
             .create();
 
     private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
 
     /**
      * @param systemQueryIn instance to use.
+     * @param saltApiIn Salt API instance to use.
      */
-    public FormulaController(SystemQuery systemQueryIn) {
+    public FormulaController(SystemQuery systemQueryIn, SaltApi saltApiIn) {
         this.systemQuery = systemQueryIn;
+        this.saltApi = saltApiIn;
     }
 
     /**
@@ -248,7 +251,7 @@ public class FormulaController {
                         return deniedResponse(response);
                     }
                     FormulaFactory.saveServerFormulaData(formData, MinionServerFactory.getMinionId(id), formulaName);
-                    systemQuery.refreshPillar(new MinionList(minion.get().getMinionId()));
+                    saltApi.refreshPillar(new MinionList(minion.get().getMinionId()));
                     break;
                 case GROUP:
                     ManagedServerGroup group = ServerGroupFactory.lookupByIdAndOrg(id, user.getOrg());
@@ -262,7 +265,7 @@ public class FormulaController {
                     List<String> minionIds = group.getServers().stream()
                             .flatMap(s -> Opt.stream(s.asMinionServer()))
                             .map(MinionServer::getMinionId).collect(Collectors.toList());
-                    systemQuery.refreshPillar(new MinionList(minionIds));
+                    saltApi.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
                     return errorResponse(response, Arrays.asList("error_invalid_target")); //Invalid target type!

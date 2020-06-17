@@ -16,6 +16,7 @@
 package com.redhat.rhn.common.messaging;
 
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
+import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.redhat.rhn.frontend.events.CloneErrataAction;
 import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataAction;
@@ -53,10 +54,11 @@ import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 
-import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -270,8 +272,9 @@ public class MessageQueue {
      * This method should be called directly after <code>startMessaging</code>.
      *
      * @param systemQuery instance for gathering data from a system
+     * @param saltApi Salt Api instance to use
      */
-    public static void configureDefaultActions(SystemQuery systemQuery) {
+    public static void configureDefaultActions(SystemQuery systemQuery, SaltApi saltApi) {
         // Register the Actions for the Events
         // If we develop a large set of MessageEvents we may want to
         // refactor this block out into a class or method that
@@ -336,7 +339,7 @@ public class MessageQueue {
                                     SsmConfigFilesEvent.class);
 
         // Handle changes of channel assignments on minions
-        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(systemQuery),
+        MessageQueue.registerAction(new ChannelsChangedEventMessageAction(systemQuery, saltApi),
                 ChannelsChangedEventMessage.class);
     }
 }
