@@ -21,7 +21,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        4.1.8
+Version:        4.1.9
 Release:        1
 Summary:        Static Salt state files for SUSE Manager
 License:        GPL-2.0-only
@@ -89,6 +89,7 @@ cp src/modules/kiwi_info.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/modules/ssh_agent.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
 
 %check

@@ -1,6 +1,12 @@
 - Merge virtualization fragment into suma-minion pillar (bsc#1172962)
 
 -------------------------------------------------------------------
+Wed Jun 17 16:21:24 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
+- Add ssh_agent for CaaSP management
+
+-------------------------------------------------------------------
 Wed Jun 10 12:41:08 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.8-1
