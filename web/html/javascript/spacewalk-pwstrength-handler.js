@@ -56,8 +56,8 @@ function setupPasswordStrengthMeter() {
 // check if confirm password input field matches with password input field
 // swap icons in the input-group-addon
 function updateTickIcon() {
-    var desiredpassVal = $.trim(jQuery('input[name="desiredpassword"]').val());
-    var desiredpassConfirmVal = $.trim(jQuery('#confirmpass').val());
+    var desiredpassVal = jQuery.trim(jQuery('input[name="desiredpassword"]').val());
+    var desiredpassConfirmVal = jQuery.trim(jQuery('#confirmpass').val());
     var placeholderAttr = jQuery('input[name="desiredpassword"]').attr('placeholder');
     function success(element) {
         element.removeClass("fa-times-circle text-danger");

@@ -129,9 +129,9 @@ class RemoteCommand extends React.Component {
       result: {
         minions: new Map()
       },
-      previewed: $.Deferred(),
-      ran: $.Deferred(),
-      executing: $.Deferred().resolve(),
+      previewed: jQuery.Deferred(),
+      ran: jQuery.Deferred(),
+      executing: jQuery.Deferred().resolve(),
       errors: [],
       warnings: []
     };
@@ -221,7 +221,7 @@ class RemoteCommand extends React.Component {
   }
 
   onPreview() {
-    const deferred = $.Deferred();
+    const deferred = jQuery.Deferred();
     this.state.websocket.send(JSON.stringify({
                               preview: true,
                               target: this.state.target
@@ -238,7 +238,7 @@ class RemoteCommand extends React.Component {
   }
 
   onRun() {
-      const deferred = $.Deferred();
+      const deferred = jQuery.Deferred();
       this.state.websocket.send(JSON.stringify({
                                 preview: false,
                                 target: this.state.target,
@@ -273,9 +273,9 @@ class RemoteCommand extends React.Component {
     var ws = new WebSocket(url);
     ws.onopen = () => {
       this.setState({
-          previewed: $.Deferred(),
-          ran: $.Deferred().resolve(),
-          executing: $.Deferred().resolve(),
+          previewed: jQuery.Deferred(),
+          ran: jQuery.Deferred().resolve(),
+          executing: jQuery.Deferred().resolve(),
       });
     };
     ws.onclose = (e) => {
@@ -294,8 +294,8 @@ class RemoteCommand extends React.Component {
       }
       this.setState({
           errors: errs,
-          previewed: $.Deferred(),
-          ran: $.Deferred(),
+          previewed: jQuery.Deferred(),
+          ran: jQuery.Deferred(),
       });
     };
     ws.onerror = (e) => {
@@ -310,7 +310,7 @@ class RemoteCommand extends React.Component {
       switch(event.type) {
         case "asyncJobStart":
             this.setState({
-                executing: $.Deferred(),
+                executing: jQuery.Deferred(),
                 errors: [],
                 warnings: [],
                 result: {
@@ -383,7 +383,7 @@ class RemoteCommand extends React.Component {
             if (timedOutDone) {
                 if (previewed.state() == "pending") {
                     previewed.resolve();
-                    ran = $.Deferred();
+                    ran = jQuery.Deferred();
                 } else if (ran.state() == "pending") {
                     previewed.resolve();
                     ran.resolve();
@@ -427,7 +427,7 @@ class RemoteCommand extends React.Component {
                 var previewed = this.state.previewed;
                 var ran = this.state.ran;
                 if (previewed && previewed.state() == "pending") {
-                    previewed = $.Deferred();
+                    previewed = jQuery.Deferred();
                     ran = ran.resolve();
                 } else if (ran && ran.state() == "pending") {
                     previewed = previewed.resolve();
@@ -462,8 +462,8 @@ class RemoteCommand extends React.Component {
   targetChanged(event) {
     this.setState({
       target: event.target.value,
-      previewed: $.Deferred(),
-      ran: $.Deferred().resolve()
+      previewed: jQuery.Deferred(),
+      ran: jQuery.Deferred().resolve()
     });
   }
 
