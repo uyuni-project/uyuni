@@ -59,6 +59,7 @@ class MaintenanceWindowsList extends React.Component {
                     columnKey="calendarName"
                     header={t('Calendar')}
                     cell={(row) =>
+                        row.calendarId &&
                         <a className="link-tag"
                            href={t("/rhn/manager/schedule/maintenance/calendars#/details/" + row.calendarId)}>
                             {row.calendarName}
