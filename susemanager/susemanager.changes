@@ -1,3 +1,5 @@
+- fix bootstrap repo create without flush option (bsc#1172702)
+
 -------------------------------------------------------------------
 Mon Jun 15 12:41:30 CEST 2020 - jgonzalez@suse.com
 

@@ -404,7 +404,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     if options.dryrun:
         log("Create directory:", destdirtmp)
     else:
-        if options.flush:
+        if options.flush or not os.path.exists(destdir):
             os.makedirs(destdirtmp)
         else:
             shutil.copytree(destdir, destdirtmp)
