@@ -130,7 +130,7 @@ class BuildImage extends React.Component {
     if(this.state.model.version) {
       params.version = this.state.model.version;
     }
-    const qstr = $.param(params);
+    const qstr = jQuery.param(params);
     return encodeURIComponent("/rhn/manager/cm/build" + (qstr ? "?" + qstr : ""));
   }
 

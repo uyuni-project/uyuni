@@ -38,7 +38,7 @@ class Combobox extends React.Component<ComboboxProps, ComboboxState> {
   }
 
   componentDidMount() {
-    this.combobox = $(ReactDOM.findDOMNode(this));
+    this.combobox = jQuery(ReactDOM.findDOMNode(this));
 
     // init widget
     this.combobox.select2({

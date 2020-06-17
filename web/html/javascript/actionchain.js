@@ -103,7 +103,7 @@ jQuery(function() {
 
   // handle exit without save
   jQuery(window).on("beforeunload", function() {
-    if ($.unsaved == true) {
+    if (jQuery.unsaved == true) {
       return jQuery("#before-unload").text();
     }
   });
@@ -167,12 +167,12 @@ jQuery(function() {
   }
 
   function setUnsavedData() {
-    $.unsaved = true;
+    jQuery.unsaved = true;
     jQuery("#action-chain-save-input").fadeIn();
   }
 
   function clearUnsavedData() {
-    $.unsaved = false;
+    jQuery.unsaved = false;
     jQuery("#action-chain-save-input").fadeOut();
   }
 });

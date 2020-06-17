@@ -160,7 +160,7 @@ function makeAjaxHandler(callbackFunction, errorHandlerFunction) {
       callback: callbackFunction,
       errorHandler: function(message, exception) {
         // second, if we get an error during unloading we ignore it
-        if ($.unloading == true) {
+        if (jQuery.unloading == true) {
           console.log("Ignoring exception " + exception + " with message " + message + " because it is a DWR error during unload");
         }
         else {
@@ -185,7 +185,7 @@ function showFatalError(message, exception) {
 // So three col-md-auto would get col-md-4 each.
 // Five col-md-auto would get two with col-md-3 and three with col-md-2
 function bootstrapColumnsExtension() {
-  $.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
+  jQuery.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
     //for each div with class row
     jQuery('.col-' + gridSize + '-auto:first').parent().each(function() {
       //we count the number of childrens with class col-md-6
@@ -334,7 +334,7 @@ function setupTextareaACEEditorPlugin() {
 
 // Disables the enter key from submitting the form
 function disableEnterKey() {
-  jQuery(window).keydown(function(event){
+  jQuery(window).on('keydown', function(event){
     if(event.keyCode == 13) {
       event.preventDefault();
       return false;

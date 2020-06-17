@@ -11,7 +11,7 @@ export type JsonResult<T> = {
 }
 
 function request(url, type, headers, data, contentType, processData = true) {
-   const a = $.ajax({
+   const a = jQuery.ajax({
          url: url,
          data: data,
          type: type,

@@ -147,7 +147,7 @@ class FormulaForm extends React.Component {
 
             if (element.$type === "group" || element.$type === "namespace") {
                 value = this.getValuesClean(value, element);
-                if (!$.isEmptyObject(value))
+                if (!jQuery.isEmptyObject(value))
                     result[key] = value;
             }
             else if ((element.$scope === this.props.currentScope || element.$scope === "system") && !(value && value.length === 0)) {
@@ -247,7 +247,7 @@ class FormulaForm extends React.Component {
         }));
         const messages = <Messages items={messageItems} />;
 
-        if (this.state.formulaLayout === undefined || this.state.formulaLayout === null || $.isEmptyObject(this.state.formulaLayout)) {
+        if (this.state.formulaLayout === undefined || this.state.formulaLayout === null || jQuery.isEmptyObject(this.state.formulaLayout)) {
             if (this.props.addFormulaNavBar !== undefined)
                 this.props.addFormulaNavBar(get(this.state.formulaList, ["Not found"]), this.props.formulaId);
             return (
