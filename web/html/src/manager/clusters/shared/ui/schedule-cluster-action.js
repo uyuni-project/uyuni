@@ -20,7 +20,8 @@ type Props = {
     schedule: (earliest: Date, actionChain: ?string) => Promise<any>,
     onPrev?: () =>  void,
     setMessages: (Array<MessageType>) => void,
-    scheduleButtonLabel: string
+    scheduleButtonLabel: string,
+    actionType?: string
 };
 
 const ScheduleClusterAction = (props: Props) => {
@@ -71,6 +72,7 @@ const ScheduleClusterAction = (props: Props) => {
                     timezone={timezone}
                     localTime={localTime}
                     earliest={earliest}
+                    actionType={this.props.actionType}
                     onDateTimeChanged={(date) => {setEarliest(date); setActionChain(null);}}
                 />
             </Panel>);
