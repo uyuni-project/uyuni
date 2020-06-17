@@ -619,7 +619,9 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
          actionChains={actionChains}
          actionChain={this.state.actionChain}
          onActionChainChanged={this.onActionChainChanged}
-         onDateTimeChanged={this.onDateTimeChanged}/>
+         onDateTimeChanged={this.onDateTimeChanged}
+         systemIds={this.state.popupServersList.map(s => Number(s.id))}
+         actionType="channels.subscribe" />
 
       <ServersListPopup servers={this.state.popupServersList} channelName={this.state.popupServersChannelName}
          title={t("Systems to subscribe to")}
