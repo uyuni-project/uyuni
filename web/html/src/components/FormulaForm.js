@@ -167,7 +167,7 @@ class FormulaForm extends React.Component {
         }))
         const messages = <Messages items={messageItems} />;
 
-        if (this.state.formulaRawLayout === undefined || this.state.formulaRawLayout === null || $.isEmptyObject(this.state.formulaRawLayout)) {
+        if (this.state.formulaRawLayout === undefined || this.state.formulaRawLayout === null || jQuery.isEmptyObject(this.state.formulaRawLayout)) {
             if (this.props.addFormulaNavBar !== undefined)
                 this.props.addFormulaNavBar(get(this.state.formulaList, ["Not found"]), this.props.formulaId);
             return (
