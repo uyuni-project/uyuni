@@ -9,6 +9,14 @@ const {DateTimePicker} = require("./datetimepicker");
 const {Combobox} = require("./combobox");
 import type {ComboboxItem} from "./combobox";
 const Functions = require("../utils/functions");
+const Network = require("utils/network");
+const {Loading} = require("components/utils/Loading");
+
+export type MaintenanceWindow = {
+  id: number,
+  from: string,
+  to: string,
+}
 
 export type ActionChain = {
   id: number,
@@ -21,14 +29,22 @@ type ActionScheduleProps = {
   localTime: string,
   actionChains?: Array<ActionChain>,
   onDateTimeChanged: (date: Date) => void,
-  onActionChainChanged?: (actionChain: ?ActionChain) => void
+  onActionChainChanged?: (actionChain: ?ActionChain) => void,
+  systemIds?: Array<number>,
+  actionType?: string,
 };
 
 type ActionScheduleState = {
+  loading: boolean,
   type: "earliest" | "actionChain",
   earliest: Date,
   actionChain?: ActionChain,
-  actionChains?: Array<ActionChain>
+  actionChains?: Array<ActionChain>,
+  isMaintenanceModeEnabled: boolean,
+  maintenanceWindow: MaintenanceWindow,
+  maintenanceWindows: Array<MaintenanceWindow>,
+  systemIds: Array<number>,
+  actionType: string,
 };
 
 class ActionSchedule extends React.Component<ActionScheduleProps, ActionScheduleState> {
@@ -40,6 +56,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
 
     if (props.actionChains) {
       this.state = {
+        loading: true,
         type: "earliest",
         earliest: props.earliest,
         actionChain: props.actionChains.length > 0 ? props.actionChains[0] : this.newActionChainOpt,
@@ -47,12 +64,57 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       };
     } else {
       this.state = {
+        loading: true,
         type: "earliest",
-        earliest: props.earliest
+        earliest: props.earliest,
+        isMaintenanceModeEnabled: false,
+        maintenanceWindow: {},
+        maintenanceWindows: [],
+        systemIds: props.systemIds ? props.systemIds : [],
+        actionType: props.actionType ? props.actionType : "",
       };
     }
 
   }
+
+  UNSAFE_componentWillMount = () => {
+    if (this.state.systemIds && this.state.actionType) {
+      const postData = JSON.stringify({
+        systemIds: this.state.systemIds,
+        actionType: this.state.actionType,
+      });
+      Network.post("/rhn/manager/api/maintenance-windows", postData, "application/json").promise
+        .then(data =>
+          {
+            if (data.maintenanceWindows) {
+              this.setState({
+                loading: false,
+                maintenanceWindow: data.maintenanceWindows[0],
+                maintenanceWindows: data.maintenanceWindows,
+                isMaintenanceModeEnabled: true
+              });
+            }
+            else {
+              this.setState({
+                loading: false,
+                isMaintenanceModeEnabled: false
+              });
+            }
+          }
+        ).catch(this.handleResponseError);
+    }
+    else {
+      this.setState({
+        loading: false,
+        isMaintenanceModeEnabled: false
+      });
+    }
+  };
+
+  handleResponseError = (jqXHR) => {
+    console.log(Network.responseErrorMessage(jqXHR));
+    this.setState({ loading: false });
+  };
 
   onDateTimeChanged = (date: Date) => {
     this.setState({
@@ -64,6 +126,18 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
 
   onSelectEarliest = () => {
     this.onDateTimeChanged(this.state.earliest);
+  }
+
+  onMaintenanceWindowChanged = (selectedItem: MaintenanceWindow) => {
+    this.onDateTimeChanged(Functions.Utils.dateWithTimezone(selectedItem.from));
+  }
+
+  onSelectMaintenanceWindow = (event: Object) => {
+    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => mw.id == event.target.value)[0]);
+  }
+
+  onFocusMaintenanceWindow = (event: Object) => {
+    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => mw.id == event.target.value)[0]);
   }
 
   onActionChainChanged = (selectedItem: ActionChain) => {
@@ -105,6 +179,10 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loading text={t('Loading the scheduler...')}/>
+    }
+
     return (
       <div className="spacewalk-scheduler">
         <div className="form-horizontal">
@@ -114,9 +192,23 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
                 <input type="radio" name="use_date" value="true" checked={this.state.type == "earliest"} id="schedule-by-date" onChange={this.onSelectEarliest}/> }
               <label htmlFor="schedule-by-date">{t("Earliest:")}</label>
             </div>
-            <div className="col-sm-6">
-              <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
-            </div>
+              {
+                !this.state.isMaintenanceModeEnabled ?
+                  <div className="col-sm-6">
+                    <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
+                  </div>
+                  :
+                  <div className="col-sm-3">
+                    <select
+                        id="maintenance-window"
+                        className="form-control"
+                        name="maintenance_window"
+                        onChange={this.onSelectMaintenanceWindow}
+                        onFocus={this.onFocusMaintenanceWindow}>
+                      { this.state.maintenanceWindows.map(mw =><option key={mw.id} value={mw.id}> {mw.from + " - " + mw.to}</option>) }
+                    </select>
+                  </div>
+              }
           </div>
           { (this.state.actionChains && this.state.actionChain) &&
             <div className="form-group">
@@ -125,12 +217,12 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
                 <label htmlFor="schedule-by-action-chain">{t("Add to:")}</label>
               </div>
               <div className="col-sm-3">
-                { (this.state.actionChains && this.state.actionChain) && 
+                { (this.state.actionChains && this.state.actionChain) &&
                   <Combobox id="action-chain" name="action_chain" selectedId={this.state.actionChain.id}
                             data={this.state.actionChains} onSelect={this.onSelectActionChain}
                             onFocus={this.onFocusActionChain} />}
               </div>
-            </div> 
+            </div>
             }
         </div>
       </div>
