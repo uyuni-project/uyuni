@@ -81,7 +81,16 @@ class DebPackage:
 
 class DebRepo:
     # url example - http://ftp.debian.org/debian/dists/jessie/main/binary-amd64/
-    def __init__(self, url, cache_dir, pkg_dir, proxy_addr="", proxy_user="", proxy_pass=""):
+    def __init__(
+        self,
+        url,
+        cache_dir,
+        pkg_dir,
+        proxy_addr="",
+        proxy_user="",
+        proxy_pass="",
+        gpg_verify=True,
+    ):
         self.url = url
         parts = url.rsplit('/dists/', 1)
         self.base_url = [parts[0]]
@@ -93,6 +102,7 @@ class DebRepo:
         self.proxy = proxy_addr
         self.proxy_username = proxy_user
         self.proxy_password = proxy_pass
+        self.gpg_verify = gpg_verify
 
         self.basecachedir = cache_dir
         if not os.path.isdir(self.basecachedir):
@@ -108,8 +118,7 @@ class DebRepo:
 
         :return:
         """
-        # TODO: Signature verification is not yet implemented here.
-        if not repo.DpkgRepo(self.url, self._get_proxies()).verify_packages_index():
+        if not repo.DpkgRepo(self.url, self._get_proxies(), self.gpg_verify).verify_packages_index():
             raise repo.GeneralRepoException("Package index checksum failure")
 
     def _get_proxies(self):
@@ -257,7 +266,7 @@ class ContentSource:
 
         self.repo = DebRepo(url, os.path.join(CACHE_DIR, self.org, name),
                             os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR, self.org, 'stage'),
-                            self.proxy_addr, self.proxy_user, self.proxy_pass)
+                            self.proxy_addr, self.proxy_user, self.proxy_pass, gpg_verify=not(insecure))
         self.repo.verify()
 
         self.num_packages = 0

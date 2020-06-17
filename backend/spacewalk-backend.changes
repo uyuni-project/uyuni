@@ -1,4 +1,5 @@
 - Only check strongest available Ubuntu/Debian repository index checksum
+- Verify GPG signature of Ubuntu/Debian repository metadata (Release file)
 
 -------------------------------------------------------------------
 Wed Jun 10 12:14:57 CEST 2020 - jgonzalez@suse.com
