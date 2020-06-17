@@ -1,3 +1,5 @@
+- improve salt-ssh error parsing on bootstrapping (bsc#1172120)
+
 -------------------------------------------------------------------
 Wed Jun 10 12:16:32 CEST 2020 - jgonzalez@suse.com
 
