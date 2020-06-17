@@ -16,6 +16,7 @@ export type MaintenanceWindow = {
   id: number,
   from: string,
   to: string,
+  fromLocalDate: string
 }
 
 export type ActionChain = {
@@ -60,7 +61,11 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
         type: "earliest",
         earliest: props.earliest,
         actionChain: props.actionChains.length > 0 ? props.actionChains[0] : this.newActionChainOpt,
-        actionChains: props.actionChains.length > 0 ? props.actionChains : [this.newActionChainOpt]
+        actionChains: props.actionChains.length > 0 ? props.actionChains : [this.newActionChainOpt],
+        maintenanceWindow: {}, // todo deuglify
+        maintenanceWindows: [],
+        systemIds: props.systemIds ? props.systemIds : [],
+        actionType: props.actionType ? props.actionType : "",
       };
     } else {
       this.state = {
@@ -86,11 +91,14 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       Network.post("/rhn/manager/api/maintenance-windows", postData, "application/json").promise
         .then(data =>
           {
-            if (data.maintenanceWindows) {
+            const maintenanceWindows = data.data.maintenanceWindows;
+
+            if (maintenanceWindows) {
+              const indexed = maintenanceWindows.map((elem, idx) => Object.assign(elem, {"id": idx}));
               this.setState({
                 loading: false,
-                maintenanceWindow: data.maintenanceWindows[0],
-                maintenanceWindows: data.maintenanceWindows,
+                maintenanceWindow: maintenanceWindows[0],
+                maintenanceWindows: indexed,
                 isMaintenanceModeEnabled: true
               });
             }
@@ -129,7 +137,8 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   }
 
   onMaintenanceWindowChanged = (selectedItem: MaintenanceWindow) => {
-    this.onDateTimeChanged(Functions.Utils.dateWithTimezone(selectedItem.from));
+    const startDateStr = selectedItem.fromLocalDate;
+    this.onDateTimeChanged(Functions.Utils.dateWithTimezone(startDateStr));
   }
 
   onSelectMaintenanceWindow = (event: Object) => {
@@ -182,7 +191,6 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     if (this.state.loading) {
       return <Loading text={t('Loading the scheduler...')}/>
     }
-
     return (
       <div className="spacewalk-scheduler">
         <div className="form-horizontal">
@@ -190,7 +198,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
             <div className="col-sm-3 control-label">
               { (this.state.actionChains && this.state.actionChain) &&
                 <input type="radio" name="use_date" value="true" checked={this.state.type == "earliest"} id="schedule-by-date" onChange={this.onSelectEarliest}/> }
-              <label htmlFor="schedule-by-date">{t("Earliest:")}</label>
+              <label htmlFor="schedule-by-date">{!this.state.isMaintenanceModeEnabled ?t("Earliest:") : t("Maintenance Window:")}</label>
             </div>
               {
                 !this.state.isMaintenanceModeEnabled ?
