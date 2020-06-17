@@ -45,6 +45,7 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.HttpHelper;
+import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.utils.Opt;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -134,7 +135,7 @@ public class MaintenanceManager {
      * @return the optional upcoming maintenance windows
      * @throws IllegalStateException if two or more systems have different maint. schedules assigned
      */
-    public Optional<List<Triple<String, String, Long>>> calculateUpcomingMaintenanceWindows(Set<Long> systemIds)
+    public Optional<List<MaintenanceWindowData>> calculateUpcomingMaintenanceWindows(Set<Long> systemIds)
             throws IllegalStateException {
         Set<MaintenanceSchedule> schedules = MaintenanceManager.instance().listSchedulesOfSystems(systemIds);
         // if there are no schedules, there are no maintenance windows
@@ -175,11 +176,8 @@ public class MaintenanceManager {
                 .map(c -> calculateUpcomingPeriods(c, multiScheduleName, Instant.now(), 10))
                 .orElseGet(Stream::empty);
 
-        List<Triple<String, String, Long>> result = periodStream
-                .map(p -> Triple.of(
-                        LocalizationService.getInstance().formatDate(p.getLeft()),
-                        LocalizationService.getInstance().formatDate(p.getRight()),
-                        p.getLeft().toEpochMilli()))
+        List<MaintenanceWindowData> result = periodStream
+                .map(p -> new MaintenanceWindowData(p.getLeft(), p.getRight()))
                 .collect(toList());
         return of(result);
     }
