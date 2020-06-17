@@ -55,31 +55,26 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   constructor(props: ActionScheduleProps) {
     super(props);
 
+    const commonState = {
+      loading: true,
+      type: "earliest",
+      earliest: props.earliest,
+      isMaintenanceModeEnabled: false,
+      maintenanceWindow: {},
+      maintenanceWindows: [],
+      systemIds: props.systemIds ? props.systemIds : [],
+      actionType: props.actionType ? props.actionType : "",
+    }
+
+    let actionChainsState = {};
     if (props.actionChains) {
-      this.state = {
-        loading: true,
-        type: "earliest",
-        earliest: props.earliest,
+      actionChainsState = {
         actionChain: props.actionChains.length > 0 ? props.actionChains[0] : this.newActionChainOpt,
         actionChains: props.actionChains.length > 0 ? props.actionChains : [this.newActionChainOpt],
-        maintenanceWindow: {}, // todo deuglify
-        maintenanceWindows: [],
-        systemIds: props.systemIds ? props.systemIds : [],
-        actionType: props.actionType ? props.actionType : "",
-      };
-    } else {
-      this.state = {
-        loading: true,
-        type: "earliest",
-        earliest: props.earliest,
-        isMaintenanceModeEnabled: false,
-        maintenanceWindow: {},
-        maintenanceWindows: [],
-        systemIds: props.systemIds ? props.systemIds : [],
-        actionType: props.actionType ? props.actionType : "",
       };
     }
 
+    this.state = Object.assign(commonState, actionChainsState);
   }
 
   UNSAFE_componentWillMount = () => {
@@ -206,7 +201,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
                     <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
                   </div>
                   :
-                  <div className="col-sm-3">
+                  <div className="col-sm-6">
                     <select
                         id="maintenance-window"
                         className="form-control"
