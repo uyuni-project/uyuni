@@ -182,6 +182,79 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     }
   }
 
+  renderDatePicker = () => {
+    return (
+      <DateTimePicker
+        onChange={this.onDateTimeChanged}
+        value={this.state.earliest}
+        timezone={this.props.timezone} />
+    );
+  }
+
+  renderMaintWindowPicker = () => {
+    const rows = this.state.maintenanceWindows
+          .map(mw => <option key={mw.id} value={mw.id}> {mw.from + " - " + mw.to}</option>);
+    return (
+      <select
+        id="maintenance-window"
+        className="form-control"
+        name="maintenance_window"
+        onChange={this.onSelectMaintenanceWindow}
+        onFocus={this.onFocusMaintenanceWindow}
+      >
+        { rows }
+      </select>);
+    }
+
+  // responsible for rendering date picker or maintenance window picker
+  renderPickers = () => {
+    const renderRadioBtn = this.state.actionChains && this.state.actionChain;
+
+    return (
+      <div className="form-group">
+        <div className="col-sm-3 control-label">
+          {
+            renderRadioBtn &&
+              <input type="radio"
+                name="use_date"
+                value="true"
+                checked={this.state.type == "earliest"}
+                id="schedule-by-date"
+                onChange={this.onSelectEarliest}/>
+          }
+          <label htmlFor="schedule-by-date">
+            {!this.state.isMaintenanceModeEnabled ? t("Earliest:") : t("Maintenance Window:")}
+          </label>
+        </div>
+
+        <div className="col-sm-6">
+          {
+            this.state.isMaintenanceModeEnabled
+              ? this.renderMaintWindowPicker()
+              : this.renderDatePicker()
+           }
+        </div>
+      </div>
+    );
+  }
+
+  renderActionChainPicker = () => {
+    return (
+      <div className="form-group">
+        <div className="col-sm-3 control-label">
+          <input type="radio" name="action_chain" value="false" checked={this.state.type == "actionChain"} id="schedule-by-action-chain" onChange={this.onFocusActionChain}/>
+          <label htmlFor="schedule-by-action-chain">{t("Add to:")}</label>
+        </div>
+        <div className="col-sm-3">
+          { (this.state.actionChains && this.state.actionChain) &&
+            <Combobox id="action-chain" name="action_chain" selectedId={this.state.actionChain.id}
+                      data={this.state.actionChains} onSelect={this.onSelectActionChain}
+                      onFocus={this.onFocusActionChain} />}
+        </div>
+      </div>
+      );
+  }
+
   render() {
     if (this.state.loading) {
       return <Loading text={t('Loading the scheduler...')}/>
@@ -190,43 +263,13 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       <div className="spacewalk-scheduler">
         <div className="form-horizontal">
           <div className="form-group">
-            <div className="col-sm-3 control-label">
-              { (this.state.actionChains && this.state.actionChain) &&
-                <input type="radio" name="use_date" value="true" checked={this.state.type == "earliest"} id="schedule-by-date" onChange={this.onSelectEarliest}/> }
-              <label htmlFor="schedule-by-date">{!this.state.isMaintenanceModeEnabled ?t("Earliest:") : t("Maintenance Window:")}</label>
-            </div>
-              {
-                !this.state.isMaintenanceModeEnabled ?
-                  <div className="col-sm-6">
-                    <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
-                  </div>
-                  :
-                  <div className="col-sm-6">
-                    <select
-                        id="maintenance-window"
-                        className="form-control"
-                        name="maintenance_window"
-                        onChange={this.onSelectMaintenanceWindow}
-                        onFocus={this.onFocusMaintenanceWindow}>
-                      { this.state.maintenanceWindows.map(mw =><option key={mw.id} value={mw.id}> {mw.from + " - " + mw.to}</option>) }
-                    </select>
-                  </div>
-              }
-          </div>
-          { (this.state.actionChains && this.state.actionChain) &&
-            <div className="form-group">
-              <div className="col-sm-3 control-label">
-                <input type="radio" name="action_chain" value="false" checked={this.state.type == "actionChain"} id="schedule-by-action-chain" onChange={this.onFocusActionChain}/>
-                <label htmlFor="schedule-by-action-chain">{t("Add to:")}</label>
-              </div>
-              <div className="col-sm-3">
-                { (this.state.actionChains && this.state.actionChain) &&
-                  <Combobox id="action-chain" name="action_chain" selectedId={this.state.actionChain.id}
-                            data={this.state.actionChains} onSelect={this.onSelectActionChain}
-                            onFocus={this.onFocusActionChain} />}
-              </div>
-            </div>
+            { 
+              this.renderPickers()
             }
+            {
+              this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()
+            }
+          </div>
         </div>
       </div>
     );
