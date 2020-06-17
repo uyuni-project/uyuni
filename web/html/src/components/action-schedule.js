@@ -262,10 +262,12 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
           <label htmlFor="schedule-by-action-chain">{t("Add to:")}</label>
         </div>
         <div className="col-sm-3">
-          { (this.state.actionChains && this.state.actionChain) &&
-            <Combobox id="action-chain" name="action_chain" selectedId={this.state.actionChain.id}
-                      data={this.state.actionChains} onSelect={this.onSelectActionChain}
-                      onFocus={this.onFocusActionChain} />}
+          <Combobox
+            id="action-chain"
+            name="action_chain"
+            selectedId={this.state.actionChain.id}
+            data={this.state.actionChains} onSelect={this.onSelectActionChain}
+            onFocus={this.onFocusActionChain} />
         </div>
       </div>
       );
