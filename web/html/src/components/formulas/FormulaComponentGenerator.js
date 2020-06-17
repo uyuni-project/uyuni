@@ -362,7 +362,7 @@ function getValuesClean(values, layout) {
         let element = layout[key];
         if (element.$type === "group" || element.$type === "namespace") {
             value = getValuesClean(value, element);
-            if (!$.isEmptyObject(value))
+            if (!jQuery.isEmptyObject(value))
                 result[key] = value;
         }
         else if ((element.$scope === "system") && !(value && value.length === 0)) {

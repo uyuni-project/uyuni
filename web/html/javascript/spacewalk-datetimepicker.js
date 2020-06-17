@@ -46,7 +46,7 @@ function setupDatePicker() {
 
     var timeFmt = input.data('time-format');
     if (timeFmt != undefined) {
-      $.extend(timeOpts, {'timeFormat': timeFmt });
+      jQuery.extend(timeOpts, {'timeFormat': timeFmt });
     }
     input.timepicker(timeOpts);
 

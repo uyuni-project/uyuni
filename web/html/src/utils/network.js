@@ -17,7 +17,7 @@ export type JsonResult<T> = {
 }
 
 function request(url: string, type:  "GET" | "POST" | "DELETE" | "PUT", headers, data: any, contentType: string, processData: boolean = true) : Cancelable {
-   const a = $.ajax({
+   const a = jQuery.ajax({
          url: url,
          data: data,
          type: type,
