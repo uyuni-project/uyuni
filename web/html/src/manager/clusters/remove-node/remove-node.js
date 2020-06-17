@@ -76,6 +76,7 @@ const RemoveNode = (props: Props) => {
                                         }
                                         schedule={scheduleRemove}
                                         scheduleButtonLabel={t("Remove")}
+                                        actionType="cluster.remove_node"
                                         onPrev={back}                                
                                     /> : goTo()
                             }
