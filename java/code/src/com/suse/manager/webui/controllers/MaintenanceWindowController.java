@@ -81,9 +81,14 @@ public class MaintenanceWindowController {
         Map<String, Object> data = new HashMap<>();
 
         if (actionType.isMaintenancemodeOnly()) {
-            MaintenanceManager.instance()
-                    .calculateUpcomingMaintenanceWindows(systemIds)
-                    .ifPresent(windows -> data.put("maintenanceWindows", windows));
+            try {
+                MaintenanceManager.instance()
+                        .calculateUpcomingMaintenanceWindows(systemIds)
+                        .ifPresent(windows -> data.put("maintenanceWindows", windows));
+            }
+            catch (IllegalStateException e) {
+                data.put("maintenanceWindowsMultiSchedules", true);
+            }
         }
 
         res.type("application/json");

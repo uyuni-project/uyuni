@@ -42,6 +42,7 @@ type ActionScheduleState = {
   actionChain?: ActionChain,
   actionChains?: Array<ActionChain>,
   isMaintenanceModeEnabled: boolean,
+  multiMaintenanceWindows: boolean,
   maintenanceWindow: MaintenanceWindow,
   maintenanceWindows: Array<MaintenanceWindow>,
   systemIds: Array<number>,
@@ -62,6 +63,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       isMaintenanceModeEnabled: false,
       maintenanceWindow: {},
       maintenanceWindows: [],
+      multiMaintenanceWindows: false,
       systemIds: props.systemIds ? props.systemIds : [],
       actionType: props.actionType ? props.actionType : "",
     }
@@ -86,9 +88,16 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       Network.post("/rhn/manager/api/maintenance-windows", postData, "application/json").promise
         .then(data =>
           {
+            const multiMaintWindows = data.data.maintenanceWindowsMultiSchedules;
             const maintenanceWindows = data.data.maintenanceWindows;
 
-            if (maintenanceWindows) {
+            if (multiMaintWindows === true) {
+              this.setState({
+                loading: false,
+                multiMaintenanceWindows: true
+              });
+            }
+            else if (maintenanceWindows) {
               const indexed = maintenanceWindows.map((elem, idx) => Object.assign(elem, {"id": idx}));
               this.setState({
                 loading: false,
@@ -182,6 +191,13 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     }
   }
 
+  renderMultiMaintWindowsWarning = () => {
+    return (
+      <div className="alert alert-info">
+        {t("There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.")}
+    </div>);
+  }
+
   renderDatePicker = () => {
     return (
       <DateTimePicker
@@ -263,8 +279,11 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       <div className="spacewalk-scheduler">
         <div className="form-horizontal">
           <div className="form-group">
-            { 
-              this.renderPickers()
+            {
+              this.state.multiMaintenanceWindows
+                ? this.renderMultiMaintWindowsWarning()
+                : this.renderPickers()
+
             }
             {
               this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()
