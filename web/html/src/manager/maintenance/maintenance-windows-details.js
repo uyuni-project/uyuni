@@ -10,6 +10,8 @@ const {Messages} = require("components/messages");
 const {Form} = require("components/input/Form");
 const {Check} = require("components/input/Check");
 const {BootstrapPanel} = require('components/panels/BootstrapPanel');
+const {Table} = require("components/table/Table");
+const {Column} = require("components/table/Column");
 
 class MaintenanceWindowsDetails extends React.Component {
 
@@ -37,88 +39,85 @@ class MaintenanceWindowsDetails extends React.Component {
     };
 
     renderScheduleDetails(data) {
+        const tableData = [
+            {left: t("Schedule Name:"), right: data.scheduleName},
+            {left: t("Assigned Calendar:"), right: data.calendarName},
+            {left: t("Schedule Type:"), right: data.scheduleType === "SINGLE" ? t("Single") : t("Multi")},
+        ];
+
         return (
             <div>
                 <BootstrapPanel title={t("Schedule Details")}>
-                    <div className="table-responsive">
-                        <table className="table">
-                            <tbody>
-                            <tr>
-                                <td>{t("Schedule Name")}</td>
-                                <td>{data.scheduleName}</td>
-                            </tr>
-                            <tr>
-                                <td>{t("Assigned Calendar")}:</td>
-                                <td>{data.calendarName}</td>
-                            </tr>
-                            <tr>
-                                <td>{t("Schedule Type")}:</td>
-                                <td>{data.scheduleType === "SINGLE" ? t("Single") : t("Multi")}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <DeleteDialog id="delete-modal"
-                                  title={t("Delete maintenance schedule")}
-                                  content={t("Are you sure you want to delete the selected item? \n" +
-                                      "This will remove the current schedule from all the systems assigned to it.")}
-                                  onConfirm={() => this.props.onDelete(this.props.data)}
-                    />
+                    <Table
+                        data={tableData}
+                        identifier={row => tableData.indexOf(row)}
+                        initialItemsPerPage={0}
+                    >
+                        <Column
+                            columnKey="left"
+                            cell={(row) => row.left}
+                        />
+                        <Column
+                            columnKey="right"
+                            cell={(row) => row.right}
+                        />
+                    </Table>
                 </BootstrapPanel>
                 {
                     data.maintenanceWindows !== undefined && data.maintenanceWindows.length > 0 &&
                     <BootstrapPanel title={t("Upcoming Maintenance Windows")}>
-                        <div className="table-responsive">
-                            <table className="table">
-                                <thead>
-                                <tr>
-                                    <th>{t("Start")}</th>
-                                    <th>{t("End")}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {
-                                    data.maintenanceWindows.map(window =>
-                                        <tr>
-                                            <td>{window.start}</td>
-                                            <td>{window.end}</td>
-                                        </tr>
-                                    )
-                                }
-                                </tbody>
-                            </table>
-                        </div>
+                        <Table
+                            data={data.maintenanceWindows}
+                            identifier={row => data.maintenanceWindows.indexOf(row)}
+                            initialItemsPerPage={0}
+                        >
+                            <Column
+                                header={t("Start")}
+                                columnKey="start"
+                                cell={(row) => row.start}
+                            />
+                            <Column
+                                header={t("End")}
+                                columnKey="end"
+                                cell={(row) => row.end}
+                            />
+                        </Table>
                     </BootstrapPanel>
                 }
+                <DeleteDialog id="delete-modal"
+                              title={t("Delete maintenance schedule")}
+                              content={t("Are you sure you want to delete the selected item? \n" +
+                                  "This will remove the current schedule from all the systems assigned to it.")}
+                              onConfirm={() => this.props.onDelete(this.props.data)}
+                />
             </div>
         );
     }
 
     renderCalendarDetails(data) {
+        const tableData = [
+            {left: t("Calendar Name:"), right: data.calendarName},
+            {left: t("Used by Schedule:"), right: data.scheduleNames.map(name => name.name).join(", ")},
+        ];
+        data.calendarUrl && tableData.push({left: "Url:", right: data.calendarUrl});
+
         return (
             <div>
                 <BootstrapPanel title={t("Schedule Details")}>
-                    <div className="table-responsive">
-                        <table className="table">
-                            <tbody>
-                            <tr>
-                                <td>{t("Calendar Name")}</td>
-                                <td>{data.calendarName}</td>
-                            </tr>
-                            <tr>
-                                <td>{t("Used by schedule")}:</td>
-                                <td>{data.scheduleNames.map(name => name.name).join(", ")}</td>
-                            </tr>
-                            {
-                                data.calendarUrl &&
-                                <tr>
-                                    <td>{t("Url")}:</td>
-                                    <td>{data.calendarUrl}</td>
-                                </tr>
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+                    <Table
+                        data={tableData}
+                        identifier={row => tableData.indexOf(row)}
+                        initialItemsPerPage={0}
+                    >
+                        <Column
+                            columnKey="left"
+                            cell={(row) => row.left}
+                        />
+                        <Column
+                            columnKey="right"
+                            cell={(row) => row.right}
+                        />
+                    </Table>
                 </BootstrapPanel>
                 {
                     this.props.data.calendarData &&
@@ -183,7 +182,10 @@ class MaintenanceWindowsDetails extends React.Component {
 
         return (
             <TopPanel
-                title={this.props.data.scheduleName}
+                title={this.props.type === "schedule"
+                    ? this.props.data.scheduleName
+                    : this.props.data.calendarName
+                }
                 icon="spacewalk-icon-salt"
                 helpUrl=""
                 button={buttons}
