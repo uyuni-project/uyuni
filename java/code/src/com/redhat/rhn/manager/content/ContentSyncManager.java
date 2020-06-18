@@ -1387,20 +1387,50 @@ public class ContentSyncManager {
        return products.stream().flatMap(p -> p.getRepositories().stream()).collect(Collectors.toList());
     }
 
-    private static Map<Long, Optional<ProductType>> productTypesById(List<ProductTreeEntry> tree) {
+    private static <T> Map<Long, T> productAttributeOverride(List<ProductTreeEntry> tree,
+            Function<ProductTreeEntry, T> attrGetter) {
         return tree.stream()
                 .collect(Collectors.groupingBy(
                         e -> e.getProductId(), Collectors.mapping(
-                                e -> e.getProductType(), Collectors.toSet())))
+                                attrGetter, Collectors.toSet())))
                 .entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> {
                     if (e.getValue().size() != 1) {
-                        throw new RuntimeException("");
+                        throw new RuntimeException(
+                                "found more then 1 unique value for a product attribute override: " +
+                                "id " + e.getKey() +
+                                " values " + e.getValue().stream()
+                                        .map(s -> s.toString())
+                                        .collect(Collectors.joining(","))
+                        );
                     }
                     else {
                         return e.getValue().iterator().next();
                     }
                 })).entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
     }
+
+    private static List<SCCProductJson> overrideProductAttributes(
+            List<SCCProductJson> jsonProducts, List<ProductTreeEntry> tree) {
+        Map<Long, Optional<ProductType>> productTypeById = productAttributeOverride(
+                tree, ProductTreeEntry::getProductType);
+
+        Map<Long, ReleaseStage> releaseStageById = productAttributeOverride(
+                tree, ProductTreeEntry::getReleaseStage);
+        return jsonProducts.stream().map(product -> {
+            ProductType productType = Optional.ofNullable(productTypeById.get(product.getId()))
+                    .flatMap(Function.identity())
+                    .orElseGet(product::getProductType);
+
+            ReleaseStage releaseStage = Optional.ofNullable(releaseStageById.get(product.getId()))
+                    .orElseGet(product::getReleaseStage);
+
+            return product.copy()
+                    .setProductType(productType)
+                    .setReleaseStage(releaseStage)
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
 
     /**
      * Update Products, Repositories and relation ship table in DB.
@@ -1430,12 +1460,7 @@ public class ContentSyncManager {
                 ));
         Set<Long> productIdsSwitchedToReleased = new HashSet<>();
 
-        Map<Long, Optional<ProductType>> productTypeById = productTypesById(tree);
-
-        Map<Long, SUSEProduct> productMap = productsById.values().stream().map(p -> {
-                SCCProductJson productJson = Optional.ofNullable(productTypeById.get(p.getId()))
-                    .flatMap(Function.identity())
-                    .map(pt -> p.copy().setProductType(pt).build()).orElse(p);
+        Map<Long, SUSEProduct> productMap = productsById.values().stream().map(productJson -> {
 
                 // If the product is release the id should be stable
                 // so we don't do the fuzzy matching to reduce unexpected behaviour
@@ -1666,7 +1691,10 @@ public class ContentSyncManager {
         log.info("ContentSyncManager.updateSUSEProducts called");
         Map<Long, SUSEProduct> processed = new HashMap<>();
 
-        List<SCCProductJson> allProducts = flattenProducts(products).collect(Collectors.toList());
+        List<SCCProductJson> allProducts = overrideProductAttributes(
+                flattenProducts(products).collect(Collectors.toList()),
+                staticTree
+        );
 
         Map<Long, SCCProductJson> productsById = allProducts.stream().collect(Collectors.toMap(
                 SCCProductJson::getId,
