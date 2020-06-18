@@ -153,6 +153,14 @@ const useClustersApi = ()  => {
             .catch(handleResponseError);
     }
 
+    const fetchClusterUpgradePlan = (clusterId: number): Promise<string> => {
+        return Network.get(`/rhn/manager/api/cluster/${clusterId}/upgrade-plan`).promise
+            .then((data: JsonResult<string>) => {
+                return data.data;
+            })
+            .catch(handleResponseError);
+    }
+
     const saveClusterFormulaData = (clusterId: number, formula: string, data: FormulaValuesType): Promise<any> => {
         return Network.post(
             `/rhn/manager/api/cluster/${clusterId}/formula/${formula}/data`,
@@ -280,6 +288,7 @@ const useClustersApi = ()  => {
         scheduleRemoveNode,
         deleteCluster,
         refreshGroupNodes,
+        fetchClusterUpgradePlan,
         scheduleUpgradeCluster
     }
 }

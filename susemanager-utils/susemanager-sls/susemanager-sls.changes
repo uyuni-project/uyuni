@@ -1,3 +1,4 @@
+- States and metadata for showing the cluster upgrade plan in the UI
 - Fix action chain resuming when patches updating salt-minion don't cause service to be
   restarted (bsc#1144447)
 - Make grub2 autoinstall kernel path relative to the boot partition root (bsc#1175876)

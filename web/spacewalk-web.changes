@@ -1,3 +1,4 @@
+- Show cluster upgrade plan in the upgrade UI
 - Enable to switch to multiple webUI theme
 - Only refresh the virtual storage list when pool events are received
 - Drop node-fetch to fix CVE-2020-15168
