@@ -257,36 +257,31 @@ class UyuniOrg(UyuniRemoteObject):
     CRUD operations on orgs
     """
 
-    def get_orgs(self) -> Dict[str, Union[int, str, bool]]:
+    def list_orgs(self) -> Dict[str, Union[int, str, bool]]:
         """
         List all orgs.
 
-        :return:
+        :return: list of all existing organizations
         """
-        return self.client("org.listOrgs", self.client.get_token())
+        return self.client("org.listOrgs")
 
-    def get_org_by_name(self, name: str) -> Dict[str, Union[int, str, bool]]:
+    def get_details(self, name: str) -> Dict[str, Union[int, str, bool]]:
         """
         Get org data by name.
 
         :param name: organisation name
-        :return:
+        :return: organization details
         """
-        try:
-            org_data = self.client("org.getDetails", self.client.get_token(), name)
-        except UyuniUsersException:
-            org_data = {}
+        return self.client("org.getDetails", name)
 
-        return org_data
-
-    def create(self, name: str, admin_login: str, admin_password: str, admin_prefix: str, first_name: str,
-               last_name: str, email: str, pam: bool) -> Tuple[Dict[str, Union[str, int, bool]], str]:
+    def create(self, name: str, org_admin_login: str, org_admin_password: str, admin_prefix: str, first_name: str,
+               last_name: str, email: str, pam: bool = False) -> Dict[str, Union[str, int, bool]]:
         """
-        Create Uyuni org.
+        Create a new Uyuni org.
 
         :param name:
-        :param admin_login:
-        :param admin_password:
+        :param org_admin_login:
+        :param org_admin_password:
         :param admin_prefix:
         :param first_name:
         :param last_name:
@@ -294,39 +289,28 @@ class UyuniOrg(UyuniRemoteObject):
         :param pam:
         :return: tuple of data and error/log message
         """
-        try:
-            log.debug("Creating organisation %s", name)
-            ret = self.client("org.create", self.client.get_token(), name, admin_login, admin_password, admin_prefix,
-                              first_name, last_name, email, pam)
-            msg = 'Organisation "{}" has been created successfully'.format(name)
-            log.debug(msg)
-        except UyuniUsersException as exc:
-            ret = {}
-            msg = 'Error while creating organisation: {}'.format(str(exc))
-        except Exception as exc:
-            ret = {}
-            msg = 'Unhandled exception occurred while creating new organisation: {}'.format(str(exc))
+        return self.client("org.create", name, org_admin_login, org_admin_password, admin_prefix,
+                           first_name, last_name, email, pam)
 
-        return ret, msg
-
-    def delete(self, name: str) -> Tuple[bool, str]:
+    def delete(self, name: str) -> int:
         """
         Delete Uyuni org.
 
         :param name:
-        :return: boolean, True if organisation has been deleted.
+        :return: 1 on success, exception thrown otherwise.
         """
-        org_id = int(self.get_org_by_name(name=name).get("id", -1))
-        if org_id > -1:
-            res = bool(self.client("org.delete", self.client.get_token(), org_id))
-            msg = 'Organisation "{}" (ID: "{}") has been removed'.format(name, org_id)
-            log.debug(msg)
-        else:
-            res = False
-            msg = 'Organisation "{}" was not found'.format(name)
-            log.error(msg)
+        org_id = int(self.get_details(name=name).get("id", -1))
+        return self.client("org.delete", org_id)
 
-        return res, msg
+    def update_name(self, org_id: int, name: str) -> Dict[str, Union[str, int, bool]]:
+        """
+        Update Uyuni org name.
+
+        :param org_id: organization internal id
+        :param name: new organization name
+        :return: organization details
+        """
+        return self.client("org.updateName", org_id, name)
 
 
 class UyuniSystemgroup(UyuniRemoteObject):
@@ -652,23 +636,68 @@ def user_remove_role(uid, role, org_admin_user=None, org_admin_password=None):
     return UyuniUser(org_admin_user, org_admin_password).remove_role(uid=uid, role=role)
 
 
-def create_org(name, admin_login, first_name, last_name, email, admin_password=None, admin_prefix="Mr.", pam=False):
+def org_list_orgs(admin_user=None, admin_password=None):
+    """
+
+    :return: list of all available orgs.
+    """
+    return UyuniOrg(admin_user, admin_password).list_orgs()
+
+
+def org_get_details(name, admin_user=None, admin_password=None):
+    """
+
+    :param name:
+    :param admin_user:
+    :param admin_password:
+    :return:
+    """
+    return UyuniOrg(admin_user, admin_password).get_details(name)
+
+
+def org_delete(name, admin_user=None, admin_password=None):
+    """
+
+    :param name:
+    :param admin_user:
+    :param admin_password:
+    :return:
+    """
+    return UyuniOrg(admin_user, admin_password).delete(name)
+
+
+def org_create(name, org_admin_login, org_admin_password, first_name, last_name, email,
+               admin_user=None, admin_password=None, admin_prefix="Mr.", pam=False):
     """
     Create org in Uyuni.
 
     :param name:
-    :param admin_login:
+    :param org_admin_login:
+    :param org_admin_password:
     :param first_name:
     :param last_name:
     :param email:
+    :param admin_user:
     :param admin_password:
     :param admin_prefix:
     :param pam:
     :return:
     """
-    return UyuniOrg().create(name=name, admin_login=admin_login, admin_password=admin_password,
-                             email=email, first_name=first_name, last_name=last_name,
+    return UyuniOrg(admin_user, admin_password).create(name=name, org_admin_login=org_admin_login, org_admin_password=org_admin_password,
+                             first_name=first_name, last_name=last_name, email=email,
                              admin_prefix=admin_prefix, pam=pam)
+
+
+def org_update_name(org_id, name, admin_user=None, admin_password=None):
+    """
+    update Uyuni organization name
+    :param org_id:
+    :param name:
+    :param admin_user:
+    :param admin_password:
+    :return:
+    """
+    return UyuniOrg(admin_user, admin_password).update_name(org_id, name)
 
 
 """
