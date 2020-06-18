@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
@@ -50,7 +49,6 @@ import java.util.stream.Collectors;
 public class FormulaManager {
 
     private static FormulaManager instance;
-    private SystemQuery systemQuery;
     private SaltApi saltApi;
     private ServerGroupFactory serverGroupFactory = ServerGroupFactory.SINGLETON;
     private static final String DEFAULT_KEY = "$default";
@@ -58,9 +56,11 @@ public class FormulaManager {
     private static final String EDIT_GROUP = "edit-group";
     private static final String PROTOTYPE = "$prototype";
 
-    private FormulaManager() {
-        systemQuery = SaltService.INSTANCE;
-        saltApi = SaltService.INSTANCE_SALT_API;
+    /**
+     * @param saltApiIn
+     */
+    public FormulaManager(SaltApi saltApiIn) {
+        saltApi = saltApiIn;
     }
 
     /**
@@ -70,25 +70,9 @@ public class FormulaManager {
      */
     public static synchronized FormulaManager getInstance() {
         if (instance == null) {
-            instance = new FormulaManager();
+            instance = new FormulaManager(SaltService.INSTANCE_SALT_API);
         }
         return instance;
-    }
-
-    /**
-     * This method is only for testing purpose.
-     * @param systemQueryIn to set
-     */
-    public void setSystemQuery(SaltService systemQueryIn) {
-        this.systemQuery = systemQueryIn;
-    }
-
-    /**
-     * This method is only for testing purpose.
-     * @param saltApiIn to set
-     */
-    public void setSaltApi(SaltApi saltApiIn) {
-        this.saltApi = saltApiIn;
     }
 
     /**

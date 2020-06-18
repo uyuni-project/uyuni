@@ -79,6 +79,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 
@@ -122,6 +123,9 @@ public class HandlerFactory {
         SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
         SystemQuery systemQuery = SaltService.INSTANCE;
+        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+
+        FormulaManager formulaManager = new FormulaManager(saltApi);
         RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
         SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
@@ -145,7 +149,7 @@ public class HandlerFactory {
         factory.addHandler("contentmanagement", new ContentManagementHandler());
         factory.addHandler("distchannel", new DistChannelHandler());
         factory.addHandler("errata", new ErrataHandler());
-        factory.addHandler("formula", new FormulaHandler(FormulaManager.getInstance()));
+        factory.addHandler("formula", new FormulaHandler(formulaManager));
         factory.addHandler("image.store", new ImageStoreHandler());
         factory.addHandler("image.profile", new ImageProfileHandler());
         factory.addHandler("image", new ImageInfoHandler());

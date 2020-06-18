@@ -67,7 +67,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     static final String TEMP_PATH = "formulas/";
     static final String formulaName = "dhcpd";
     private SaltService saltServiceMock;
-    private FormulaManager manager = FormulaManager.getInstance();
+    private FormulaManager manager;
     private Path metadataDir;
 
     public FormulaManagerTest() { }
@@ -78,9 +78,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
         MockConnection.clear();
         saltServiceMock = mock(SaltService.class);
-        manager.setSystemQuery(saltServiceMock);
-        manager.setSaltApi(saltServiceMock);
         metadataDir = Files.createTempDirectory("metadata");
+        manager = new FormulaManager(saltServiceMock);
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
         FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
         createMetadataFiles();
