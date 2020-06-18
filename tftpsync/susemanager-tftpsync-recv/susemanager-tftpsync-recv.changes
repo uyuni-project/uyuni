@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jun 18 16:16:51 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.7-1
 - ensure correct /etc/apache2/conf.d/susemanager-tftpsync-recv.conf after upgrade (bsc#1169535)
 - Do not produce 500 errors with empty and UTF files (bsc#1167265)
 

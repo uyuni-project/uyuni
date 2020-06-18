@@ -2,6 +2,12 @@
 - improve salt-ssh error parsing on bootstrapping (bsc#1172120)
 
 -------------------------------------------------------------------
+Thu Jun 18 16:14:15 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.34-1
+- Enable the monitoring checkbox for Ubuntu 20.04 systems (bsc#1173120)
+
+-------------------------------------------------------------------
 Wed Jun 10 14:13:50 CEST 2020 - jgonzalez@suse.com
 
 - version 4.0.33-1
