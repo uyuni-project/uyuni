@@ -1,3 +1,4 @@
+- Enable OS image building for all SUSE distributions (bsc#1149101, bsc#1172076)
 - Toggle virtpoller when toggling virtualization host entitlement (bsc#1172962)
 - Deleting registered VM doesn't remove them VM from the Guests list (bsc#1170096)
 - improve salt-ssh error parsing on bootstrapping (bsc#1172120)
