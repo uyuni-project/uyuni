@@ -1,3 +1,4 @@
+- Add bootstrap repository definitions for openSUSE Leap 15.1 and 15.2 aarch64 for Uyuni
 - update server-migrator.sh script for Upgrading Uyuni to version 4.1
 
 -------------------------------------------------------------------
