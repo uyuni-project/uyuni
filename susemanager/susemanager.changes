@@ -1,3 +1,4 @@
+- generate bootstrap repos for all archs (bsc#1173154)
 - fix bootstrap repo create without flush option (bsc#1172702)
 
 -------------------------------------------------------------------
