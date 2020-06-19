@@ -1,3 +1,5 @@
+- Compute the websockify URL on browser side (bsc#1149644)
+
 -------------------------------------------------------------------
 Wed Jun 10 12:22:39 CEST 2020 - jgonzalez@suse.com
 

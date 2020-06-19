@@ -7,7 +7,7 @@ export const renderer = (id, {
   guestUuid,
   guestName,
   graphicsType,
-  socketUrl,
+  token,
 }) => {
   SpaRenderer.renderNavigationReact(
     <GuestsConsole
@@ -15,7 +15,7 @@ export const renderer = (id, {
       guestUuid={guestUuid}
       guestName={guestName}
       graphicsType={graphicsType}
-      socketUrl={socketUrl}
+      token={token}
     />,
     document.getElementById(id),
   );
