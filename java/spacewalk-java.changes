@@ -1,3 +1,4 @@
+- Compute the websockify URL on browser side (bsc#1149644)
 - Deleting registered VM doesn't remove them VM from the Guests list (bsc#1170096)
 - improve salt-ssh error parsing on bootstrapping (bsc#1172120)
 

@@ -21,7 +21,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -44,11 +43,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
@@ -61,6 +55,12 @@ import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
 import com.suse.manager.webui.utils.gson.VirtualGuestSetterActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsBaseActionJson;
 import com.suse.manager.webui.utils.gson.VirtualGuestsUpdateActionJson;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -473,20 +473,19 @@ public class VirtualGuestsController {
         data.put("guestName", guest.getName());
         data.put("graphicsType", def.getGraphics().getType());
 
-        String url = null;
+        String token = null;
         if (Arrays.asList("spice", "vnc").contains(def.getGraphics().getType())) {
             try {
                 WebSockifyTokenBuilder tokenBuilder = new WebSockifyTokenBuilder(hostname, port);
                 tokenBuilder.useServerSecret();
-                url = "wss://" + ConfigDefaults.get().getHostname() +
-                        "/rhn/websockify/?token=" + tokenBuilder.getToken();
+                token = tokenBuilder.getToken();
             }
             catch (JoseException e) {
                 LOG.error(e);
                 Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
             }
         }
-        data.put("socketUrl", url);
+        data.put("token", token);
 
         return new ModelAndView(data, "templates/virtualization/guests/console.jade");
     }
