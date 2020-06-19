@@ -241,6 +241,24 @@ public class VirtNotifications {
     }
 
     /**
+     * A static method to notify all {@link Session}s attached to WebSocket that a refresh is needed.
+     * Must be synchronized. Sending messages concurrently from separate threads
+     * will result in IllegalStateException.
+     *
+     * @param kind the kind of object list that needs refresh. One of "guest", "pool"
+     */
+    public static void spreadRefresh(String kind) {
+        synchronized (LOCK) {
+            // Notify sessions waiting for this action
+            wsSessions.forEach((session, servers) -> {
+                Map<String, Object> data = new HashMap<>();
+                data.put("refresh", kind);
+                sendMessage(session, GSON.toJson(data));
+            });
+        }
+    }
+
+    /**
      * A static method to clean up all invalid sessions
      */
     public static void clearBrokenSessions() {

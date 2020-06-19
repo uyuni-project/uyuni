@@ -24,6 +24,7 @@ import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.websocket.VirtNotifications;
 
 import org.apache.log4j.Logger;
 
@@ -130,5 +131,6 @@ public class LibvirtEngineDomainLifecycleMessageAction implements MessageAction 
                 }
             });
         }
+        VirtNotifications.spreadRefresh("guest");
     }
 }
