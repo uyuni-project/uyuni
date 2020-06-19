@@ -312,7 +312,7 @@ class UyuniGroups:
                     return StateResult.state_error(name, "Deleting user {} failed. See logs for more details"
                                                    .format(name))
             except Exception as exc:
-                return StateResult.prepare_result(name, "Error deleting group '{}': {}".format(name, exc))
+                return StateResult.state_error(name, "Error deleting group '{}': {}".format(name, exc))
 
 
 class UyuniOrgs:
@@ -350,8 +350,9 @@ class UyuniOrgs:
             current_org = __salt__['uyuni.org_get_details'](name,
                                                             admin_user=admin_user,
                                                             admin_password=admin_password)
-            current_org_admin = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_user=org_admin_user,
-                                                                   org_admin_password=org_admin_passorg_admin_userorg_admin_userword)
+            current_org_admin = __salt__['uyuni.user_get_details'](org_admin_user,
+                                                                   org_admin_user=org_admin_user,
+                                                                   org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode != 2850:
                 return StateResult.state_error(name, "Error managing org '{}': {}".format(name, exc))
@@ -384,6 +385,44 @@ class UyuniOrgs:
             return StateResult.state_error(name, "Error managing org '{}': {}".format(name, exc))
         else:
             return StateResult.prepare_result(name, True, "{0} org successful managed".format(name), changes)
+
+    def delete(self, name: str, admin_user=None, admin_password=None) -> Dict[str, Any]:
+        """
+       Remove organization from the Uyuni
+
+       :param name: Organization Name
+       :param admin_user: administrator username
+       :param admin_password: administrator password
+
+       :return: dict for Salt communication
+       """
+        try:
+            current_org = __salt__['uyuni.org_get_details'](name,
+                                                            admin_user=admin_user,
+                                                            admin_password=admin_password)
+        except Exception as exc:
+            if exc.faultCode == 2850:
+                return StateResult.prepare_result(name, True, "{0} is already absent".format(name))
+            if exc.faultCode == 2950:
+                return StateResult.state_error(name,
+                                               "Error deleting organization (admin credentials error) '{}': {}"
+                                               .format(name, exc))
+            raise exc
+        else:
+            if __opts__['test']:
+                return StateResult.prepare_result(name, None, "{0} would be removed".format(name))
+            try:
+                result = __salt__['uyuni.org_delete'](name,
+                                                      admin_user=admin_user,
+                                                      admin_password=admin_password)
+                if result:
+                    return StateResult.prepare_result(name, True, "Org {} has been deleted".format(name),
+                                                      {'name': {'old': current_org.get('name')}})
+                else:
+                    return StateResult.state_error(name, "Deleting Org {} failed. See logs for more details"
+                                                   .format(name))
+            except Exception as exc:
+                return StateResult.state_error(name, "Error deleting Org '{}': {}".format(name, exc))
 
 
 def __virtual__():
@@ -443,6 +482,17 @@ def org_present(name, org_admin_user, org_admin_password,
     return UyuniOrgs().manage(name, org_admin_user, org_admin_password, first_name,
                               last_name, email, pam,
                               admin_user, admin_password)
+
+
+def org_absent(name, admin_user=None, admin_password=None):
+    """
+    Delete uyuni organization
+    :param name: organization name
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return: dict for Salt communication
+    """
+    return UyuniOrgs().delete(name, admin_user, admin_password)
 
 
 def group_present(name, description, expression=None, target="glob",
