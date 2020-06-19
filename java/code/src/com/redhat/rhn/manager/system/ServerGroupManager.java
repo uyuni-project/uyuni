@@ -358,7 +358,7 @@ public class ServerGroupManager {
      */
     public void updatePillarAfterGroupUpdateForServers(Collection<Server> servers) {
         servers.stream().map(server -> server.asMinionServer()).flatMap(Opt::stream)
-                .forEach(this.minionGroupMembershipPillarFileManager::generatePillarFile);
+                .forEach(this.minionGroupMembershipPillarFileManager::updatePillarFile);
     }
 
     /**

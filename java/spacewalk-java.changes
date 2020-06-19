@@ -1,3 +1,4 @@
+- Don't output virtualization pillar for systems without virtualization entitlement
 - Use volumes for VMs disks
 - Toggle virtpoller when toggling virtualization host entitlement (bsc#1172962)
 - Pass minion ip to the kiwi_collect_image runner as fallback instead

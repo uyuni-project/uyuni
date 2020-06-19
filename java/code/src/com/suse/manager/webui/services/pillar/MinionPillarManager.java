@@ -69,7 +69,7 @@ public class MinionPillarManager {
         if (refreshAccessTokens) {
             AccessTokenFactory.refreshTokens(minion, tokensToActivate);
         }
-        this.pillarFileManagers.stream().forEach(m -> m.generatePillarFile(minion));
+        this.pillarFileManagers.stream().forEach(m -> m.updatePillarFile(minion));
     }
 
     /**
