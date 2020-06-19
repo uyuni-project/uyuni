@@ -19,6 +19,7 @@ const FadeTransition = cssTransition({
 
 function show(message: string | React.Node | Array<string | React.Node>, notify: (string | React.Node) => void) {
   if (Array.isArray(message)) {
+    message = message.reduce((acc, val) => acc.concat(val), []);
     for (const msg of message) {
       notify(msg);
     }
