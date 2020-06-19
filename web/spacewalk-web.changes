@@ -1,3 +1,5 @@
+- Flatten messages passed as array of array to toastr in order to make
+  them visible
 - Update help link URLs in the UI
 - Use volumes for VMs disks and allow attaching cdrom images
 - Compute the websockify URL on browser side (bsc#1149644)
