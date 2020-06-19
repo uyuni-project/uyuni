@@ -123,8 +123,9 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, systemEntitlementManager);
         host.asMinionServer().get().setMinionId("testminion.local");
-        host.getGuests().iterator().next().setUuid(guid);
-        host.getGuests().iterator().next().setName("sles12sp2");
+        VirtualInstance guest = host.getGuests().iterator().next();
+        guest.setUuid(guid);
+        guest.setName("sles12sp2");
 
         virtualGuestsController = new VirtualGuestsController(virtManager);
 
