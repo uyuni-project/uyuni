@@ -201,16 +201,20 @@ public class SaltUtils {
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
-    public static final SaltUtils INSTANCE = new SaltUtils();
+    public static final SaltUtils INSTANCE = new SaltUtils(
+            SaltService.INSTANCE,
+            SaltService.INSTANCE_SALT_API,
+            ClusterManager.instance()
+    );
 
     public static final String CAASP_PATTERN_IDENTIFIER = "patterns-caasp-Node";
     public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
-    private SystemQuery systemQuery = SaltService.INSTANCE;
-    private SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-    private ClusterManager clusterManager = ClusterManager.instance();
+    private SystemQuery systemQuery;
+    private SaltApi saltApi;
+    private final ClusterManager clusterManager;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -233,8 +237,24 @@ public class SaltUtils {
 
     /**
      * Constructor for testing purposes.
+     *
+     * @param systemQueryIn
+     * @param saltApiIn
+     * @param clusterManagerIn
      */
-    public SaltUtils() { }
+    public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn,
+                     ClusterManager clusterManagerIn) {
+        this.saltApi = saltApiIn;
+        this.systemQuery = systemQueryIn;
+        this.clusterManager = clusterManagerIn;
+    }
+
+    /**
+     *
+     */
+    public SaltUtils() {
+        this(SaltService.INSTANCE, SaltService.INSTANCE_SALT_API, ClusterManager.instance());
+    }
 
     /**
      * Figure out if the list of packages has changed based on the result of a Salt call
