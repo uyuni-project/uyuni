@@ -41,7 +41,6 @@ state_hooks:
   join:
     before:
       - caasp.init_ssh_agent
-      - caasp.prepare_node
     after:
       - caasp.kill_ssh_agent
   remove:
