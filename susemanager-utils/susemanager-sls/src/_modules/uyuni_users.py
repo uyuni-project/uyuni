@@ -314,6 +314,54 @@ class UyuniOrg(UyuniRemoteObject):
         return self.client("org.updateName", org_id, name)
 
 
+class UyuniOrgTrust(UyuniRemoteObject):
+
+    def __init__(self, user: str = None, password: str = None):
+        UyuniRemoteObject.__init__(self, user, password)
+        self._org_manager = UyuniOrg()
+
+    def list_orgs(self) -> List[Dict[str, Union[str, int]]]:
+        """
+        List all organanizations trusted by the authenticated user organization
+
+        :return:
+        """
+        return self.client("org.trusts.listOrgs")
+
+    def list_trusts(self, org_name: str) -> List[Dict[str, Union[str, int, bool]]]:
+        """
+        List all organanizations trusted by the authenticated user organization
+
+        :return:
+        """
+        org = self._org_manager.get_details(org_name)
+        return self.client("org.trusts.listTrusts", org["id"])
+
+    def add_trust(self, org_name: str, org_trust: str) -> int:
+        """
+        Set organisation trusted.
+
+        :param org_name: organization name
+        :param org_trust: organization to trust
+        :return: 1 on success, exception thrown otherwise.
+        """
+        this_org = self._org_manager.get_details(org_name)
+        trust_org = self._org_manager.get_details(org_trust)
+        return self.client("org.trusts.addTrust", this_org["id"], trust_org["id"])
+
+    def remove_trust(self, org_name: str, org_untrust: str) -> int:
+        """
+        Set organisation trusted.
+        :param org_name: organization name
+        :param org_untrust: organization to trust
+        :return: 1 on success, exception thrown otherwise.
+        """
+        this_org = self._org_manager.get_details(org_name)
+        trust_org = self._org_manager.get_details(org_untrust)
+        return self.client("org.trusts.removeTrust", this_org["id"], trust_org["id"])
+
+
+
 class UyuniSystemgroup(UyuniRemoteObject):
     """
     Provides methods to access and modify system groups.
@@ -700,6 +748,54 @@ def org_update_name(org_id, name, admin_user=None, admin_password=None):
     :return:
     """
     return UyuniOrg(admin_user, admin_password).update_name(org_id, name)
+
+
+def org_trust_add_trust(org_name, org_trust, admin_user=None, admin_password=None):
+    """
+    Add an organization to the list of trusted organizations.
+    admin_user needs to have SUSE Manager Administrator role to perform this action
+    :param org_name:
+    :param org_trust:
+    :param admin_user:
+    :param admin_password:
+    :return:
+    """
+    return UyuniOrgTrust(admin_user, admin_password).add_trust(org_name, org_trust)
+
+
+def org_trust_remove_trust(org_name, org_untrust, admin_user=None, admin_password=None):
+    """
+    Remove an organization to the list of trusted organizations.
+    admin_user needs to have SUSE Manager Administrator role to perform this action
+    :param org_name:
+    :param org_untrust:
+    :param admin_user:
+    :param admin_password:
+    :return:
+    """
+    return UyuniOrgTrust(admin_user, admin_password).remove_trust(org_name, org_untrust)
+
+
+def org_trust_list_orgs(admin_user=None, admin_password=None):
+    """
+    List all organanizations trusted by the authenticated user organization
+    :param admin_user: authentication user
+    :param admin_password: authentication user password
+    :return:
+    """
+    return UyuniOrgTrust(admin_user, admin_password).list_orgs()
+
+
+def org_trust_list_trusts(org_name, admin_user=None, admin_password=None):
+    """
+    List all trusts for one organization
+    admin_user needs to have SUSE Manager Administrator role to perform this action
+    :param org_name: Nome of the organization to get the trusts
+    :param admin_user: authentication user
+    :param admin_password: authentication user password
+    :return: list of all organizations with the trust flag value
+    """
+    return UyuniOrgTrust(admin_user, admin_password).list_trusts(org_name)
 
 
 """
