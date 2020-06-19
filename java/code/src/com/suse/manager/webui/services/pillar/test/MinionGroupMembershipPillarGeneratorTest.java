@@ -54,7 +54,7 @@ public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUs
         ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
         ServerFactory.addServerToGroup(minion, group);
         ServerFactory.save(minion);
-        this.minionGroupMembershipPillarFileManager.generatePillarFile(minion);
+        this.minionGroupMembershipPillarFileManager.updatePillarFile(minion);
 
         Path filePath = tmpPillarRoot.resolve(PILLAR_DATA_FILE_PREFIX + "_" +
         minion.getMinionId() + "_" + "group_memberships" + "." +

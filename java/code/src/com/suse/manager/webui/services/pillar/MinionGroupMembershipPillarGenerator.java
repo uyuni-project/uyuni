@@ -27,6 +27,7 @@ import com.suse.manager.webui.utils.SaltPillar;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +46,7 @@ public class MinionGroupMembershipPillarGenerator implements MinionPillarGenerat
      * @return the SaltPillar containing the pillar data
      */
     @Override
-    public SaltPillar generatePillarData(MinionServer minion) {
+    public Optional<SaltPillar> generatePillarData(MinionServer minion) {
         LOG.debug("Generating group memberships pillar file for minion: " + minion.getMinionId());
 
         SaltPillar pillar = new SaltPillar();
@@ -58,7 +59,7 @@ public class MinionGroupMembershipPillarGenerator implements MinionPillarGenerat
         pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
         pillar.add("addon_group_types", addonGroupTypes.toArray(new String[addonGroupTypes.size()]));
 
-        return pillar;
+        return Optional.of(pillar);
     }
 
     @Override
