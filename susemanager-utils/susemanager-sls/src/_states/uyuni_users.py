@@ -1,6 +1,7 @@
 import logging
 from typing import Optional, Dict, Any, List
 from collections import Counter
+
 log = logging.getLogger(__name__)
 
 __virtualname__ = 'uyuni'
@@ -178,14 +179,14 @@ class UyuniGroups:
         remove_systems = [sys for sys in current_systems if sys not in new_systems]
         if remove_systems:
             __salt__['uyuni.systemgroup_add_remove_systems'](name, False, remove_systems,
-                                                                org_admin_user=org_admin_user,
-                                                                org_admin_password=org_admin_password)
+                                                             org_admin_user=org_admin_user,
+                                                             org_admin_password=org_admin_password)
 
         add_systems = [sys for sys in new_systems if sys not in current_systems]
         if add_systems:
             __salt__['uyuni.systemgroup_add_remove_systems'](name, True, add_systems,
-                                                                org_admin_user=org_admin_user,
-                                                                org_admin_password=org_admin_password)
+                                                             org_admin_user=org_admin_user,
+                                                             org_admin_password=org_admin_password)
 
     @staticmethod
     def _get_systems_for_group(matching: str, target: str = "glob",
@@ -306,12 +307,83 @@ class UyuniGroups:
                 if result:
                     return StateResult.prepare_result(name, True, "Group {} has been deleted".format(name),
                                                       {'name': {'old': current_group.get('name')},
-                                                       'description': {'old':  current_group.get('description')}})
+                                                       'description': {'old': current_group.get('description')}})
                 else:
                     return StateResult.state_error(name, "Deleting user {} failed. See logs for more details"
                                                    .format(name))
             except Exception as exc:
                 return StateResult.prepare_result(name, "Error deleting group '{}': {}".format(name, exc))
+
+
+class UyuniOrgs:
+
+    @staticmethod
+    def _compute_changes(user_changes: Dict[str, Any],
+                         current_user: Dict[str, Any]) -> Dict[str, Any]:
+        changes = {}
+        for field in ["email", "first_name", "last_name"]:
+            if (current_user or {}).get(field) != user_changes.get(field):
+                changes[field] = {"new": user_changes[field]}
+                if current_user:
+                    changes[field]["old"] = (current_user or {}).get(field)
+        return changes
+
+    def manage(self, name: str, org_admin_user: str, org_admin_password: str, first_name: str,
+               last_name: str, email: str, pam: bool = False,
+               admin_user=None, admin_password=None) -> Dict[str, Any]:
+        """
+        Manage organization.
+        :param name: organization name
+        :param org_admin_user: organization admin user
+        :param org_admin_password: organization admin password
+        :param first_name: organization admin first name
+        :param last_name: organization admin last name
+        :param email: organization admin email
+        :param pam: organization admin pam authentication
+        :param admin_user: uyuni admin user
+        :param admin_password: uyuni admin password
+        :return: dict for Salt communication
+        """
+        current_org = None
+        current_org_admin = None
+        try:
+            current_org = __salt__['uyuni.org_get_details'](name,
+                                                            admin_user=admin_user,
+                                                            admin_password=admin_password)
+            current_org_admin = __salt__['uyuni.user_get_details'](org_admin_user, org_admin_user=org_admin_user,
+                                                                   org_admin_password=org_admin_passorg_admin_userorg_admin_userword)
+        except Exception as exc:
+            if exc.faultCode != 2850:
+                return StateResult.state_error(name, "Error managing org '{}': {}".format(name, exc))
+
+        user_paramters = {"uid": org_admin_user, "password": org_admin_password, "email": email,
+                          "first_name": first_name, "last_name": last_name,
+                          "org_admin_user": org_admin_user, "org_admin_password": org_admin_password}
+
+        changes = self._compute_changes(user_paramters, current_org_admin)
+        if not current_org:
+            changes["org_name"] = {"new": name}
+            changes["org_admin_user"] = {"new": org_admin_user}
+            changes["pam"] = {"new": pam}
+
+        if not changes:
+            return StateResult.prepare_result(name, True, "{0} is already installed".format(name))
+        if __opts__['test']:
+            return StateResult.prepare_result(name, None, "{0} would be installed".format(name), changes)
+
+        try:
+            if current_org:
+                __salt__['uyuni.user_set_details'](**user_paramters)
+            else:
+                __salt__['uyuni.org_create'](name=name,
+                                             org_admin_user=org_admin_user, org_admin_password=org_admin_password,
+                                             first_name=first_name, last_name=last_name, email=email,
+                                             admin_user=admin_user, admin_password=admin_password, pam=pam)
+
+        except Exception as exc:
+            return StateResult.state_error(name, "Error managing org '{}': {}".format(name, exc))
+        else:
+            return StateResult.prepare_result(name, True, "{0} org successful managed".format(name), changes)
 
 
 def __virtual__():
@@ -350,6 +422,27 @@ def user_absent(name, org_admin_user=None, org_admin_password=None):
     :return:
     """
     return UyuniUsers().delete(name, org_admin_user, org_admin_password)
+
+
+def org_present(name, org_admin_user, org_admin_password,
+                first_name, last_name, email, pam=False,
+                admin_user=None, admin_password=None):
+    """
+    Create or update uyuni organization
+    :param name: organization name
+    :param org_admin_user: organization admin user
+    :param org_admin_password: organization admin password
+    :param first_name: organization admin first name
+    :param last_name: organization admin last name
+    :param email: organization admin email
+    :param pam: organization admin pam authentication
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return: dict for Salt communication
+    """
+    return UyuniOrgs().manage(name, org_admin_user, org_admin_password, first_name,
+                              last_name, email, pam,
+                              admin_user, admin_password)
 
 
 def group_present(name, description, expression=None, target="glob",
