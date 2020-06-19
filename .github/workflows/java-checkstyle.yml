@@ -1,4 +1,4 @@
-name: Checkstyle
+name: Java checkstyle
 
 on:
   push:
