@@ -333,6 +333,8 @@ class UyuniOrgs:
                admin_user=None, admin_password=None) -> Dict[str, Any]:
         """
         Manage organization.
+        Admin user must have SUSE Manager Administrator role to perform this action
+
         :param name: organization name
         :param org_admin_user: organization admin user
         :param org_admin_password: organization admin password
@@ -388,14 +390,15 @@ class UyuniOrgs:
 
     def delete(self, name: str, admin_user=None, admin_password=None) -> Dict[str, Any]:
         """
-       Remove organization from the Uyuni
+        Remove organization from the Uyuni
+        Admin user must have SUSE Manager Administrator role to perform this action
 
-       :param name: Organization Name
-       :param admin_user: administrator username
-       :param admin_password: administrator password
+        :param name: Organization Name
+        :param admin_user: administrator username
+        :param admin_password: administrator password
 
-       :return: dict for Salt communication
-       """
+        :return: dict for Salt communication
+        """
         try:
             current_org = __salt__['uyuni.org_get_details'](name,
                                                             admin_user=admin_user,
@@ -468,6 +471,8 @@ def org_present(name, org_admin_user, org_admin_password,
                 admin_user=None, admin_password=None):
     """
     Create or update uyuni organization
+    Admin user must have SUSE Manager Administrator role to perform this action
+
     :param name: organization name
     :param org_admin_user: organization admin user
     :param org_admin_password: organization admin password
@@ -487,6 +492,8 @@ def org_present(name, org_admin_user, org_admin_password,
 def org_absent(name, admin_user=None, admin_password=None):
     """
     Delete uyuni organization
+    Admin user must have SUSE Manager Administrator role to perform this action
+
     :param name: organization name
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
