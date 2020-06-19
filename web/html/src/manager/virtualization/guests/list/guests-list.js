@@ -34,8 +34,14 @@ export function GuestsList(props: Props) {
   const [errors, setErrors] = React.useState<Array<string>>([]);
   const [lastRefresh, setLastRefresh] = React.useState(Date.now());
 
+  const refresh = (type: string) => {
+    if (type === "guest") {
+      setLastRefresh(Date.now());
+    }
+  }
+
   const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
-                                                                  props.serverId, props.saltEntitled);
+                                                                  props.serverId, refresh, props.saltEntitled);
 
   const searchData = (datum: Object, criteria?: string): boolean => {
     if (criteria) {

@@ -5,6 +5,7 @@ export function useVirtNotification(
     errors: Array<string>,
     setErrors: Function,
     serverId: string,
+    refresh: (type: string) => void,
     listen: boolean = true): [Object, Function] {
   const [actionsResults, setActionsResults] = React.useState({});
   const [webSocketErr, setWebSocketErr] = React.useState(false);
@@ -57,6 +58,12 @@ export function useVirtNotification(
       ws.onmessage = (e) => {
         if (typeof e.data === 'string') {
           const newActions = JSON.parse(e.data);
+          const refreshKind = newActions['refresh'];
+          if (refreshKind != null) {
+            refresh(refreshKind);
+            return;
+          }
+
           /*
            * The received items are split in two maps:
            *   - one with the actions that we don't already know about
