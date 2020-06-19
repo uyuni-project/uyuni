@@ -37,7 +37,7 @@
 
 </script>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt"
- helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.ood">
+ helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.dup">
   <bean:message key="duplicates.jsp.header"/>
 </rhn:toolbar>
 

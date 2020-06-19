@@ -216,7 +216,7 @@ const MonitoringAdmin = (props) => {
         <h1>
           <i className="fa fa-info-circle"></i>
           {t("SUSE Manager Configuration - Monitoring")}
-          <HelpLink url="/docs/reference/admin/general.html"/>
+          <HelpLink url="/docs/administration/pages/prometheus.html"/>
         </h1>
       </div>
       <div className="page-summary">

@@ -18,7 +18,7 @@
              creationUrl="/rhn/channels/manage/Edit.do"
              creationType="channel"
              creationAcl="user_role(channel_admin)"
-             helpUrl="/docs/reference/software/channel-details.html">
+             helpUrl="/docs/reference/software/software-channel-list-menu.html">
   <bean:message key="channels.all.jsp.toolbar"/>
 </rhn:toolbar>
 
