@@ -1,7 +1,7 @@
 name: Java checkstyle
 
 on:
-  push:
+  pull_request:
     paths:
       - 'java/**.java'
 
