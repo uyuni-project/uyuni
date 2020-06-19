@@ -260,6 +260,7 @@ class UyuniOrg(UyuniRemoteObject):
     def list_orgs(self) -> Dict[str, Union[int, str, bool]]:
         """
         List all orgs.
+        Admin user must have SUSE Manager Administrator role to perform this action
 
         :return: list of all existing organizations
         """
@@ -268,6 +269,7 @@ class UyuniOrg(UyuniRemoteObject):
     def get_details(self, name: str) -> Dict[str, Union[int, str, bool]]:
         """
         Get org data by name.
+        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param name: organisation name
         :return: organization details
@@ -279,7 +281,7 @@ class UyuniOrg(UyuniRemoteObject):
                admin_prefix: str = "Mr.", pam: bool = False) -> Dict[str, Union[str, int, bool]]:
         """
         Create a new Uyuni org.
-
+        Admin user must have SUSE Manager Administrator role to perform this action
         :param name:
         :param org_admin_user:
         :param org_admin_password:
@@ -296,6 +298,7 @@ class UyuniOrg(UyuniRemoteObject):
     def delete(self, name: str) -> int:
         """
         Delete Uyuni org.
+        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param name:
         :return: 1 on success, exception thrown otherwise.
@@ -306,6 +309,7 @@ class UyuniOrg(UyuniRemoteObject):
     def update_name(self, org_id: int, name: str) -> Dict[str, Union[str, int, bool]]:
         """
         Update Uyuni org name.
+        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_id: organization internal id
         :param name: new organization name
@@ -687,7 +691,8 @@ def user_remove_role(uid, role, org_admin_user=None, org_admin_password=None):
 
 def org_list_orgs(admin_user=None, admin_password=None):
     """
-
+    List all existing org.
+    Admin user must have SUSE Manager Administrator role to perform this action
     :return: list of all available orgs.
     """
     return UyuniOrg(admin_user, admin_password).list_orgs()
@@ -695,7 +700,8 @@ def org_list_orgs(admin_user=None, admin_password=None):
 
 def org_get_details(name, admin_user=None, admin_password=None):
     """
-
+    Get org details
+    Admin user must have SUSE Manager Administrator role to perform this action
     :param name:
     :param admin_user:
     :param admin_password:
@@ -706,7 +712,8 @@ def org_get_details(name, admin_user=None, admin_password=None):
 
 def org_delete(name, admin_user=None, admin_password=None):
     """
-
+    Delete org
+    Admin user must have SUSE Manager Administrator role to perform this action
     :param name:
     :param admin_user:
     :param admin_password:
@@ -719,7 +726,7 @@ def org_create(name, org_admin_user, org_admin_password, first_name, last_name, 
                admin_prefix="Mr.", pam=False, admin_user=None, admin_password=None):
     """
     Create org in Uyuni.
-
+    Admin user must have SUSE Manager Administrator role to perform this action
     :param name: organization name
     :param org_admin_user: organization admin user
     :param org_admin_password: organization admin password
