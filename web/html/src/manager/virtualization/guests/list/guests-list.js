@@ -23,7 +23,6 @@ declare var userPrefPageSize: number;
 
 type Props = {
   serverId: string,
-  refreshInterval: number,
   saltEntitled: boolean,
   foreignEntitled: boolean,
   isAdmin: boolean,
@@ -33,6 +32,7 @@ export function GuestsList(props: Props) {
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [selected, setSelected] = React.useState(undefined);
   const [errors, setErrors] = React.useState<Array<string>>([]);
+  const [lastRefresh, setLastRefresh] = React.useState(Date.now());
 
   const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
                                                                   props.serverId, props.saltEntitled);
@@ -50,6 +50,7 @@ export function GuestsList(props: Props) {
       return Object.assign(actions, newAction);
     }, {});
     setActionsResults(Object.assign({}, actionsResults, newActions));
+    setLastRefresh(Date.now());
   }
 
   const createModalButton = (actionType: string, actionData: Array<Object>, row: Object): React.Node => {
@@ -181,7 +182,7 @@ export function GuestsList(props: Props) {
           return (
             <VirtualizationGuestsListRefreshApi
               serverId={props.serverId}
-              refreshInterval={props.refreshInterval}
+              lastRefresh={lastRefresh}
             >
               {
                 ({

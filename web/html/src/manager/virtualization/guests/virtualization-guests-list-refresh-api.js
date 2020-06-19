@@ -1,64 +1,33 @@
 // @flow
 
-const React = require('react');
-const Network = require('utils/network');
+import * as React from 'react';
+import * as Network from 'utils/network';
 
 type Props = {
   serverId: string,
-  refreshInterval: number,
+  lastRefresh: number,
   children: Function,
 };
 
-type State = {
-  guests: Array<{}>,
-  error?: Object,
-};
+export function VirtualizationGuestsListRefreshApi(props: Props) {
+  const [guests, setGuests] = React.useState([]);
+  const [error, setError] = React.useState(undefined);
 
-class VirtualizationGuestsListRefreshApi extends React.Component<Props, State> {
-  intervalId = undefined;
+  React.useEffect(() => refreshServerData(), [props.lastRefresh]);
 
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      guests: [],
-      error: undefined,
-    };
-  }
-
-  // eslint-disable-next-line
-  UNSAFE_componentWillMount() {
-    this.refreshServerData();
-    this.intervalId = setInterval(this.refreshServerData, this.props.refreshInterval);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.intervalId);
-  }
-
-  refreshServerData = () => {
-    Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${this.props.serverId}/data`, 'application/json').promise
+  const refreshServerData = () => {
+    Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${props.serverId}/data`, 'application/json').promise
       .then((data) => {
-        this.setState({
-          guests: data,
-          error: undefined,
-        });
+        setGuests(data);
+        setError(undefined);
       })
       .catch((response) => {
-        this.setState({
-          error: Network.errorMessageByStatus(response.status),
-        });
+        setError(Network.errorMessageByStatus(response.status))
       });
   }
 
-  render() {
-    return this.props.children({
-      guests: this.state.guests,
-      error: this.state.error,
-    });
-  }
+  return props.children({
+    guests,
+    error,
+  });
 }
-
-module.exports = {
-  VirtualizationGuestsListRefreshApi,
-};
