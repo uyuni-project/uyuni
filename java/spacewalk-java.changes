@@ -1,3 +1,4 @@
+- Compute the websockify URL on browser side (bsc#1149644)
 - disable Beta product tree tag
 - Enable OS image building for all SUSE distributions (bsc#1149101, bsc#1172076)
 - Toggle virtpoller when toggling virtualization host entitlement (bsc#1172962)

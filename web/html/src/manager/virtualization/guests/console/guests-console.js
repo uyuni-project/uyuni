@@ -19,7 +19,7 @@ type Props = {
   guestUuid: string,
   guestName: string,
   graphicsType: string,
-  socketUrl: string,
+  token: string,
 };
 
 type State = {
@@ -42,7 +42,9 @@ class GuestsConsole extends React.Component<Props, State> {
       vnc: VncClient,
       spice: SpiceClient,
     };
-    this.client = new clients[this.props.graphicsType]('canvas', this.props.socketUrl, this.onConnect, this.onDisconnect, this.askPassword);
+    const port = window.location.port ? `:${window.location.port}` : "";
+    const url = `wss://${window.location.hostname}${port}/rhn/websockify/?token=${this.props.token}`;
+    this.client = new clients[this.props.graphicsType]('canvas', url, this.onConnect, this.onDisconnect, this.askPassword);
 
     const editUrl = `/rhn/manager/systems/details/virtualization/guests/${this.props.hostId}/edit/${this.props.guestUuid}`;
     const error = this.client !== undefined
