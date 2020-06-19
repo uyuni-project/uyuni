@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Class for generating minion pillar data containing general information of minions
@@ -56,7 +57,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
      * @return the SaltPillar containing the pillar data
      */
     @Override
-    public SaltPillar generatePillarData(MinionServer minion) {
+    public Optional<SaltPillar> generatePillarData(MinionServer minion) {
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", minion.getOrg().getId());
 
@@ -84,7 +85,7 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);
         }
-        return pillar;
+        return Optional.of(pillar);
     }
 
     /**

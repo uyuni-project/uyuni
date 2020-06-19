@@ -1,3 +1,4 @@
+- Don't output virtualization pillar for systems without virtualization entitlement
 - Update help link URLs in the UI
 - Use volumes for VMs disks and allow attaching cdrom images
 - Compute the websockify URL on browser side (bsc#1149644)

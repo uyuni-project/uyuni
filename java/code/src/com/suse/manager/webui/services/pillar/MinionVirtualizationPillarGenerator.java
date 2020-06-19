@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Class for generating pillar data for the virtual hosts
@@ -52,19 +53,22 @@ public class MinionVirtualizationPillarGenerator implements MinionPillarGenerato
      * @return the SaltPillar containing the pillar data
      */
     @Override
-    public SaltPillar generatePillarData(MinionServer minion) {
+    public Optional<SaltPillar> generatePillarData(MinionServer minion) {
         LOG.debug("Generating virtualization pillar file for minion: " + minion.getMinionId());
 
-        SaltPillar pillar = new SaltPillar();
-        // this add the configuration for the beacon that tell us about
-        // virtual guests running on that minion
-        // The virtpoller is still usefull with the libvirt events: it will help
-        // synchronizing the DB with the actual guest lists in case we had a temporary shutdown.
-        Map<String, Object> beaconConfig = new HashMap<>();
-        beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);
-        pillar.add("beacons", beaconConfig);
+        SaltPillar pillar = null;
+        if (minion.hasVirtualizationEntitlement()) {
+            pillar = new SaltPillar();
+            // this add the configuration for the beacon that tell us about
+            // virtual guests running on that minion
+            // The virtpoller is still usefull with the libvirt events: it will help
+            // synchronizing the DB with the actual guest lists in case we had a temporary shutdown.
+            Map<String, Object> beaconConfig = new HashMap<>();
+            beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);
+            pillar.add("beacons", beaconConfig);
+        }
 
-        return pillar;
+        return Optional.ofNullable(pillar);
     }
 
     @Override

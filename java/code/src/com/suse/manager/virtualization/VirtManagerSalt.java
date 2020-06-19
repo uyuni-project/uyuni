@@ -182,7 +182,7 @@ public class VirtManagerSalt implements VirtManager {
                 Optional.of(pillar)), minion.getMinionId());
 
         if (minion.hasVirtualizationEntitlement()) {
-            minionVirtualizationPillarFileManager.generatePillarFile(minion);
+            minionVirtualizationPillarFileManager.updatePillarFile(minion);
         }
         else {
             minionVirtualizationPillarFileManager.removePillarFile(minion.getMinionId());
