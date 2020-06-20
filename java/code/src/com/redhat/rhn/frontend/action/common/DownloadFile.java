@@ -619,7 +619,18 @@ public class DownloadFile extends DownloadAction {
             // my $dp = File::Spec->catfile($kickstart_mount, $tree->base_path, $path);
 
             if (child == null) {
-                diskPath = kickstartMount + "/" + tree.getBasePath() + path;
+                if (path.contains("repodata/") && tree.getKernelOptions().contains("useonlinerepo")) {
+                    String[] split = StringUtils.split(path, '/');
+                    if (split[0].equals("repodata")) {
+                        split[0] = tree.getChannel().getLabel();
+                    }
+                    diskPath = "/var/cache/" +
+                        Config.get().getString("repomd_path_prefix", "rhn/repodata/") + "/" +
+                        StringUtils.join(split, '/');
+                }
+                else {
+                    diskPath = kickstartMount + "/" + tree.getBasePath() + path;
+                }
             }
             else if (path.endsWith("/comps.xml")) {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
