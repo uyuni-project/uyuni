@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -110,13 +111,12 @@ public class NotificationMessageController {
     public static String delete(Request request, Response response, User user) {
         List<Long> messageIds = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
 
-        messageIds.forEach(messageId ->
-                {
-                    Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
-                    if (un.isPresent()) {
-                        UserNotificationFactory.remove(un.get());
-                    }
-                });
+        List<UserNotification> notifications = messageIds.stream()
+                .map(id -> UserNotificationFactory.lookupByUserAndMessageId(id, user))
+                .flatMap(o -> o.isPresent() ? Stream.of(o.get()) : Stream.empty())
+                .collect(Collectors.toList());
+
+        UserNotificationFactory.delete(notifications);
 
         Notification.spreadUpdate();
 

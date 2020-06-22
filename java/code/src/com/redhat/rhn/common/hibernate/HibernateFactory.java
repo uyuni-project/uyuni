@@ -51,6 +51,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import javax.persistence.FlushModeType;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.Root;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -312,6 +315,26 @@ public abstract class HibernateFactory {
         numDeleted++;
 
         return numDeleted;
+    }
+
+    /**
+     * Deletes rows corresponding to multiple objects (as in DELETE FROM... IN ...).
+     *
+     * @param objects the objects to delete
+     * @param clazz class of the objects to delete
+     * @param <T> type of the objects to delete
+     * @return the number of deleted objects
+     */
+    public static <T> int delete(Collection<T> objects, Class<T> clazz) {
+        // both T and clazz are needed because type erasure
+        if (objects.isEmpty()) {
+            return 0;
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaDelete<T> delete = builder.createCriteriaDelete(clazz);
+        Root<T> root = delete.from(clazz);
+        delete.where(root.in(objects));
+        return getSession().createQuery(delete).executeUpdate();
     }
 
     /**

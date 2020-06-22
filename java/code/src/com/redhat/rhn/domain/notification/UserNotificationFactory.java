@@ -27,6 +27,7 @@ import com.suse.manager.webui.websocket.Notification;
 
 import org.apache.log4j.Logger;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -89,15 +90,6 @@ public class UserNotificationFactory extends HibernateFactory {
         if (!isNotificationTypeDisabled(userNotificationIn)) {
             singleton.saveObject(userNotificationIn);
         }
-    }
-
-    /**
-     * Remove {@link UserNotification} from the database.
-     *
-     * @param userNotificationIn userNotification
-     */
-    public static void remove(UserNotification userNotificationIn) {
-        singleton.removeObject(userNotificationIn);
     }
 
     /**
@@ -299,6 +291,16 @@ public class UserNotificationFactory extends HibernateFactory {
         Root<NotificationMessage> root = delete.from(NotificationMessage.class);
         delete.where(builder.lessThan(root.<Date>get("created"), before));
         return getSession().createQuery(delete).executeUpdate();
+    }
+
+    /**
+     * Deletes multiple notifications
+     *
+     * @param notifications the notifications to delete
+     * @return int number of deleted notifications
+     */
+    public static int delete(Collection<UserNotification> notifications) {
+        return delete(notifications, UserNotification.class);
     }
 
     @Override

@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.domain.notification.test;
 
+import static java.util.Optional.empty;
+
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
@@ -95,5 +98,37 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         result = UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
         assertEquals(1, result);
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
+    }
+
+    public final void testDeleteNotificationMessages() {
+        // Clean up all notifications that might be present
+        if (UserNotificationFactory.listAllNotificationMessages().size() > 0) {
+            UserNotificationFactory.deleteNotificationMessagesBefore(Date.from(Instant.now()));
+        }
+        assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
+
+        // Create notifications
+        NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet());
+
+        // There should be one present
+        assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
+        List<UserNotification> unread = UserNotificationFactory.listUnreadByUser(user);
+        assertEquals(1, unread.size());
+
+        // Try deleting
+        int result = UserNotificationFactory.delete(unread);
+        assertEquals(1, result);
+
+        HibernateFactory.getSession().flush();
+
+        // Should be deleted
+        assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
+
+        // Try deleting again
+        int resultAfter = UserNotificationFactory.delete(unread);
+
+        // Should not be deleted
+        assertEquals(0, resultAfter);
     }
 }

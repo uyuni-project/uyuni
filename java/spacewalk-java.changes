@@ -1,3 +1,4 @@
+- prevent deadlock on suseusernotification (bsc#1173073)
 - avoid multiple base channels when onboarding minions (bsc#1167871)
 
 -------------------------------------------------------------------
