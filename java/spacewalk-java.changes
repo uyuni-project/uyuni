@@ -1,3 +1,4 @@
+- prevent deadlock on suseusernotification (bsc#1173073)
 - Include number of non-patch package updates to non-critical update counts
   in system group pages (bsc#1170468)
 - Compute the websockify URL on browser side (bsc#1149644)
