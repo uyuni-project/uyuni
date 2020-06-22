@@ -16,7 +16,6 @@ import { GuestPropertiesForm } from './properties/guest-properties-form';
 import { GuestPropertiesTraditional } from './properties/guest-properties-traditional';
 import { VirtualizationDomainsCapsApi } from './virtualization-domains-caps-api';
 import { VirtualizationListRefreshApi } from '../virtualization-list-refresh-api';
-import { VirtualizationPoolsListRefreshApi } from '../pools/virtualization-pools-list-refresh-api';
 import { VirtualizationPoolCapsApi } from '../pools/virtualization-pools-capabilities-api';
 
 type Props = {
@@ -67,11 +66,11 @@ export function GuestProperties(props: Props) : React.Node {
           data: networks,
           error: netListError,
         }) => (
-          <VirtualizationPoolsListRefreshApi serverId={props.host.id}>
+          <VirtualizationListRefreshApi serverId={props.host.id} lastRefresh={Date.now()} type="pools">
             {
               ({
-                pools,
-                errors: poolListError,
+                data: pools,
+                error: poolListError,
               }) => (
                 <VirtualizationPoolCapsApi hostId={props.host.id}>
                 {
@@ -235,7 +234,7 @@ export function GuestProperties(props: Props) : React.Node {
                 </VirtualizationPoolCapsApi>
               )
             }
-          </VirtualizationPoolsListRefreshApi>
+          </VirtualizationListRefreshApi>
         )
       }
     </VirtualizationListRefreshApi>
