@@ -1,4 +1,5 @@
-- generate bootstrap repos for all archs (bsc#1173154)
+- generate bootstrap repos for all archs when --auto is used (bsc#1173154)
+- add --no-flush option to mgr-create-bootstrap-repo
 - fix bootstrap repo create without flush option (bsc#1172702)
 
 -------------------------------------------------------------------
