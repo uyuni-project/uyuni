@@ -1,133 +1,133 @@
 /* Main HTML5 tags defined for the theme */
 html, body {
-	height: 100%
+  height: 100%
 }
 footer {
-	padding: 1.2em 0;
-	background: #030303;
-	color: #cfcfcf;
-	font-weight: normal;
-	font-size: 0.9em;
-	min-height: 80px;
-	clear: both;
+  padding: 1.2em 0;
+  background: #030303;
+  color: #cfcfcf;
+  font-weight: normal;
+  font-size: 0.9em;
+  min-height: 80px;
+  clear: both;
 
-	.make-row(0);
+  .make-row(0);
 
-	div:nth-child(1) {
-		.make-xs-column(8);
-		.text-center;
-		.make-sm-column-offset(2);
-	}
-	div:nth-child(2) {
-		.make-xs-column(2);
-		.text-right;
-		.hidden-xs;
-	}
+  div:nth-child(1) {
+    .make-xs-column(8);
+    .text-center;
+    .make-sm-column-offset(2);
+  }
+  div:nth-child(2) {
+    .make-xs-column(2);
+    .text-right;
+    .hidden-xs;
+  }
 }
 
 section {
-	/* for the body div to make both columns the same size*/
-	height: auto;
-	min-height: 100%;
+  /* for the body div to make both columns the same size*/
+  height: auto;
+  min-height: 100%;
 }
 /* titles */
 h1, h2, h3, h4 {
-	.Roboto-thin
+  .Roboto-thin
 }
 h1 {
-	font-size: 2em
+  font-size: 2em
 }
 h2 {
-	font-size: 1.7em;
+  font-size: 1.7em;
 }
 h3 {
-	font-size: 1.4em;
+  font-size: 1.4em;
 }
 h4 {
-	font-size: 1.2em;
+  font-size: 1.2em;
 }
 p {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 
 /* basic layout */
 .row-0 {
-	.make-row();
-	&:first-child {
-		padding-left:0;
-	}
-	&:last-child {
-		padding-right: 0
-	}
+  .make-row();
+  &:first-child {
+    padding-left:0;
+  }
+  &:last-child {
+    padding-right: 0
+  }
 }
 .header-container {
-	.make-row(0);
-	.spacewalk-logo {
-		.make-xs-column(5);
-		padding-left: 0;
-	}
-	.header-links {
-		.make-xs-column(7);
-		.text-right;
-		padding-right: 0;
-	}
+  .make-row(0);
+  .spacewalk-logo {
+    .make-xs-column(5);
+    padding-left: 0;
+  }
+  .header-links {
+    .make-xs-column(7);
+    .text-right;
+    padding-right: 0;
+  }
 }
 
 .spacewalk-main-column-layout {
-	.make-row(0);
-	min-height: 100%;
-	aside {
-		.make-sm-column(2);
-	}
-	section {
-		.make-sm-column(10);
-	}
+  .make-row(0);
+  min-height: 100%;
+  aside {
+    .make-sm-column(2);
+  }
+  section {
+    .make-sm-column(10);
+  }
 }
 
 
 .spacewalk-main-column-layout {
-	/* override the grid row margin */
-	margin-right: 0;
-	margin-left: 0;
- 	aside {
-		background: @aside;
-		border-right: 1px solid @aside-border;
-		height: auto;
-		min-height: 100%;
-		/* erasing the predefined paddings in the columns */
-		padding-right: 0;
-		padding-left: 0;
-	}
+  /* override the grid row margin */
+  margin-right: 0;
+  margin-left: 0;
+   aside {
+    background: @aside;
+    border-right: 1px solid @aside-border;
+    height: auto;
+    min-height: 100%;
+    /* erasing the predefined paddings in the columns */
+    padding-right: 0;
+    padding-left: 0;
+  }
 
-	/* fixing margins in the 1st and last columns */
-	section {
-		padding-left:2em;
-		padding-right: 2em;
-		padding-bottom: 3em;
-		/* some animation */
-		transition: width 2s, height 2s, transform 2s;
-    	-webkit-transition: width 2s, height 2s, -webkit-transform 2s;
+  /* fixing margins in the 1st and last columns */
+  section {
+    padding-left:2em;
+    padding-right: 2em;
+    padding-bottom: 3em;
+    /* some animation */
+    transition: width 2s, height 2s, transform 2s;
+      -webkit-transition: width 2s, height 2s, -webkit-transform 2s;
     }
 }
 
 /* fixing the footer to the bottom */
 .spacewalk-top-wrap {
-	overflow: hidden;
-	margin-bottom: -80px;
-	padding-bottom: 80px;
-	height: auto !important;
-	min-height: 100%
+  overflow: hidden;
+  margin-bottom: -80px;
+  padding-bottom: 80px;
+  height: auto !important;
+  min-height: 100%
 }
 /* style for the login page */
 .login-page {
-	width: 70%;
-	text-align: center;
-	margin-right: auto;
-	margin-left: auto;
-	overflow: hidden;
-	ul {
-		list-style: none;
-	}
+  width: 70%;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  overflow: hidden;
+  ul {
+    list-style: none;
+  }
 }
 
 .navbar-primary .btn-group {
@@ -145,121 +145,121 @@ p {
 //PAGINATOR from 0 - 9 and A - Z
 
 .spacewalk-alphabar{
-	padding-bottom: .3em;
-	&.pagination{
-		margin: 0
-	}
-	&.pagination > li > a, .pagination > li > span{
-		border-top: 1px solid #dddddd;
-		border-bottom: 1px solid #dddddd;
-		border-left: 0;
-		border-right: 0;
-		font-size: .9em;
-	}
-	&.pagination-sm > li:first-child > a, .pagination-sm > li:first-child > span{
-		border-left: 1px solid #dddddd;
-		padding-left: 8px;
-	}
-	&.pagination-sm > li:last-child > a, .pagination-sm > li:last-child > span{
-		border-right: 1px solid #dddddd;
-		padding-right: 8px;
-	}
-	&.pagination-sm > li > a, .pagination-sm > li > span{
-		padding: 4px;
-	}
-	&.pagination-sm > li:nth-child(11) > a{
-		border-left: 1px solid #dddddd;
-		padding-left: 10px;
-	}
-	&.pagination-sm > li:nth-child(10) > a{
-		padding-right: 10px;
-	}
+  padding-bottom: .3em;
+  &.pagination{
+    margin: 0
+  }
+  &.pagination > li > a, .pagination > li > span{
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+    border-left: 0;
+    border-right: 0;
+    font-size: .9em;
+  }
+  &.pagination-sm > li:first-child > a, .pagination-sm > li:first-child > span{
+    border-left: 1px solid #dddddd;
+    padding-left: 8px;
+  }
+  &.pagination-sm > li:last-child > a, .pagination-sm > li:last-child > span{
+    border-right: 1px solid #dddddd;
+    padding-right: 8px;
+  }
+  &.pagination-sm > li > a, .pagination-sm > li > span{
+    padding: 4px;
+  }
+  &.pagination-sm > li:nth-child(11) > a{
+    border-left: 1px solid #dddddd;
+    padding-left: 10px;
+  }
+  &.pagination-sm > li:nth-child(10) > a{
+    padding-right: 10px;
+  }
 }
 
 // Filter by system: button besides the input search
 .spacewalk-button-filter{
-	border-left: 0;
-	color: #666666;
-	background-color: #ffffff;
-	border-color: #cccccc;
+  border-left: 0;
+  color: #666666;
+  background-color: #ffffff;
+  border-color: #cccccc;
 }
 
 //Table's filters
 .filter-input{
-	padding: .7em;
-	.col-md-3{
-		padding-left: 0
-	}
-	.col-md-9{
-		padding-right: 0
-	}
+  padding: .7em;
+  .col-md-3{
+    padding-left: 0
+  }
+  .col-md-9{
+    padding-right: 0
+  }
 }
 .display-number{
-	.input-sm;
-	display: inline-block;
-	border: 1px solid #dddddd;
+  .input-sm;
+  display: inline-block;
+  border: 1px solid #dddddd;
 }
 .view-systems-registered{
-	.input-sm;
-	width: 10em;
-	display: inline-block;
-	border: 1px solid #dddddd;
+  .input-sm;
+  width: 10em;
+  display: inline-block;
+  border: 1px solid #dddddd;
 }
 
 /* Icons Legend */
 aside .sideleg {
-	background: @icon-legend;
-	width: 90%;
-	color: @icon-legend-text;
-	padding: .5em 1em;
-	border-radius: 4px;
-	margin: 2em auto;
-	.hidden-sm;
-	.hidden-xs;
-	li {
-		list-style: none;
-		margin: 1em 0;
-		padding:0;
-	}
-	ul {
-		margin: 0;
-		padding: 0
-	}
+  background: @icon-legend;
+  width: 90%;
+  color: @icon-legend-text;
+  padding: .5em 1em;
+  border-radius: 4px;
+  margin: 2em auto;
+  .hidden-sm;
+  .hidden-xs;
+  li {
+    list-style: none;
+    margin: 1em 0;
+    padding:0;
+  }
+  ul {
+    margin: 0;
+    padding: 0
+  }
 }
 // Main horizontal menu
 .spacewalk-main-nav {
-	border: 0
+  border: 0
 }
 .spacewalk-main-nav:after {
-	height: 4px;
-	background: @spacewalk-main	;
-	width: 100%
+  height: 4px;
+  background: @spacewalk-main  ;
+  width: 100%
 }
 
 /* style for Menu in the left column */
 .nav-stacked > li + li {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 //Menu in left column
 aside ul > ul li {
-	list-style: none;
-	padding: 0
+  list-style: none;
+  padding: 0
 }
 aside .nav > li > a {
-	padding: .4em 1em
+  padding: .4em 1em
 }
 #sidenav {
-	min-height: 1px;
-	a {
-		color: @aside-first-submenu-hyperlink;
-		.shadow-text;
-	}
-	a:hover {
-		color: @aside-first-submenu-hyperlink-hover;
-		.shadow-text;
-	}
-	ul > li ul li a {
+  min-height: 1px;
+  a {
+    color: @aside-first-submenu-hyperlink;
+    .shadow-text;
+  }
+  a:hover {
+    color: @aside-first-submenu-hyperlink-hover;
+    .shadow-text;
+  }
+  ul > li ul li a {
                 color: @aside-second-submenu-hyperlink;
                 .glow-text;
         }
@@ -267,163 +267,163 @@ aside .nav > li > a {
                 color: @aside-second-submenu-hyperlink-hover;
                 .glow-text;
         }
-	li a:before {
-		content: "◦";
-		font-family: 'FontAwesome';
-		margin-right: .5em
-	}
-	li.parent a:before {
-		content: "\f105 ";
-		font-family: 'FontAwesome';
-		margin-right: .5em
-	}
-	li.parent.active a:before {
-		content: "\f107 ";
-		font-family: 'FontAwesome';
-		margin-right: .5em
-	}
-	li {
-		border-bottom: 1px solid @aside-border;
-	}
-	ul li:hover, ul li a:hover {
+  li a:before {
+    content: "◦";
+    font-family: 'FontAwesome';
+    margin-right: .5em
+  }
+  li.parent a:before {
+    content: "\f105 ";
+    font-family: 'FontAwesome';
+    margin-right: .5em
+  }
+  li.parent.active a:before {
+    content: "\f107 ";
+    font-family: 'FontAwesome';
+    margin-right: .5em
+  }
+  li {
+    border-bottom: 1px solid @aside-border;
+  }
+  ul li:hover, ul li a:hover {
                 background: @list-menu-hover;
         }
-	li.active,
-	li.active:hover,
-	li.active > a,
-	li.active > a:hover {
-		color: @aside-menu-hyperlink-active;
-		background: @list-menu-active;
-		.glow-text-deleted;
-	}
-	li > a {
-		border-radius: 0
-	}
-	ul li:last-child {
-		-moz-box-shadow: 0px 1px 1px #bbb;
-		-webkit-box-shadow: 0px 1px 1px #bbb;
-		box-shadow: 0px 1px 1px #bbb;
-	}
+  li.active,
+  li.active:hover,
+  li.active > a,
+  li.active > a:hover {
+    color: @aside-menu-hyperlink-active;
+    background: @list-menu-active;
+    .glow-text-deleted;
+  }
+  li > a {
+    border-radius: 0
+  }
+  ul li:last-child {
+    -moz-box-shadow: 0px 1px 1px #bbb;
+    -webkit-box-shadow: 0px 1px 1px #bbb;
+    box-shadow: 0px 1px 1px #bbb;
+  }
 
-	/* ul-submenues */
-	/* first submenu */
-	ul > li ul li {
-	    padding: 0 0 0 1em !important;
-	    margin: 0;
-	    background: @list-first-submenu;
-	    border-bottom: 1px solid @aside-border;
-	}
-	ul > li ul li.active,
-	ul > li ul li.active:hover,
-	ul > li ul li.active a,
-	ul > li ul li.active a:hover {
-		color: @aside-menu-hyperlink-active;
-		background: @list-first-submenu-active;
-		.glow-text-deleted;
-	}
-	ul > li ul li:hover, ul > li ul li a:hover {
-		background: @list-first-submenu-hover;
-	}
-	/* second submenu */
-	ul>ul>ul li {
-	    padding: 0 0 0 1.5em !important;
-	    margin: 0;
-	    background: @list-second-submenu;
-	    border-bottom: 1px solid #bbb;
-	}
-	ul>ul>ul li.active,
-	ul>ul>ul li.active:hover,
-	ul>ul>ul li.active a,
-	ul>ul>ul li.active a:hover {
-		background: @list-second-submenu-active;
-		.glow-text-deleted;
-	}
-	ul>ul>ul li:hover, ul>ul>ul li a:hover {
-		background: @list-second-submenu-hover;
-	}
-	ul>ul>ul li:last-child {
-		border-bottom: 1px solid @list-second-submenu-last-line;
-	}
+  /* ul-submenues */
+  /* first submenu */
+  ul > li ul li {
+      padding: 0 0 0 1em !important;
+      margin: 0;
+      background: @list-first-submenu;
+      border-bottom: 1px solid @aside-border;
+  }
+  ul > li ul li.active,
+  ul > li ul li.active:hover,
+  ul > li ul li.active a,
+  ul > li ul li.active a:hover {
+    color: @aside-menu-hyperlink-active;
+    background: @list-first-submenu-active;
+    .glow-text-deleted;
+  }
+  ul > li ul li:hover, ul > li ul li a:hover {
+    background: @list-first-submenu-hover;
+  }
+  /* second submenu */
+  ul>ul>ul li {
+      padding: 0 0 0 1.5em !important;
+      margin: 0;
+      background: @list-second-submenu;
+      border-bottom: 1px solid #bbb;
+  }
+  ul>ul>ul li.active,
+  ul>ul>ul li.active:hover,
+  ul>ul>ul li.active a,
+  ul>ul>ul li.active a:hover {
+    background: @list-second-submenu-active;
+    .glow-text-deleted;
+  }
+  ul>ul>ul li:hover, ul>ul>ul li a:hover {
+    background: @list-second-submenu-hover;
+  }
+  ul>ul>ul li:last-child {
+    border-bottom: 1px solid @list-second-submenu-last-line;
+  }
 
 }
 
 /* question symbol for help pop up*/
 .spacewalk-help-link {
-	vertical-align: top;
+  vertical-align: top;
 }
 
 // Panels: reseting default margins and paddings in H tags
 .panel .panel-heading{
-	h1, h2, h3, h4, h5, h6{
-		padding: 0;
-		margin: 0;
-	}
+  h1, h2, h3, h4, h5, h6{
+    padding: 0;
+    margin: 0;
+  }
 }
 //Panels: deleting border-top in the first row of a table contained within a Panel class
 .panel-body tr:first-child{
-	td, th{
-		border-top: 0;
-	}
+  td, th{
+    border-top: 0;
+  }
 }
 
 /* systems selected tool*/
 .spacewalk-toolbar>a, #spacewalk-bar-off i {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 #show-systems-bar {
-	padding: .5em 1.2em;
-	background: #fff;
-	border:1px solid #ccc;
-	border-radius: 0 0 4px 4px;
+  padding: .5em 1.2em;
+  background: #fff;
+  border:1px solid #ccc;
+  border-radius: 0 0 4px 4px;
 }
 
 /* spacewalk toolbar: contains the H1 of each page + the toolbar */
 .spacewalk-toolbar-h1 {
-	margin-bottom: 1.5em;
+  margin-bottom: 1.5em;
 }
 
 .spacewalk-toolbar {
-	.pull-right;
-	padding: .5em 1em;
-	a {
-		border-right:1px solid @gray-light;
-		padding: 0 .5em
-	}
-	a:hover {
-		text-decoration: none;
-	}
-	a:last-child {
-		border-right:0
-	}
+  .pull-right;
+  padding: .5em 1em;
+  a {
+    border-right:1px solid @gray-light;
+    padding: 0 .5em
+  }
+  a:hover {
+    text-decoration: none;
+  }
+  a:last-child {
+    border-right:0
+  }
 }
 
 /* Margins to elements */
 //margins bottom
 .margin-bottom-xs {
-	margin-bottom: .5em;
+  margin-bottom: .5em;
 }
 .margin-bottom-sm {
-	margin-bottom: 1em;
+  margin-bottom: 1em;
 }
 .margin-bottom-md {
-	margin-bottom: 2em;
+  margin-bottom: 2em;
 }
 .margin-bottom-lg {
-	margin-bottom: 3em;
+  margin-bottom: 3em;
 }
 //margins top
 .margin-top-xs {
-	margin-top: .5em;
+  margin-top: .5em;
 }
 .margin-top-sm {
-	margin-top: 1em;
+  margin-top: 1em;
 }
 .margin-top-md {
-	margin-top: 2em;
+  margin-top: 2em;
 }
 .margin-top-lg {
-	margin-top: 3em;
+  margin-top: 3em;
 }
 
 
@@ -433,18 +433,18 @@ i[class^="icon-"],
 i[class*=" icon-"],
 i[class*="spacewalk-icon"],
 i[class^="spacewalk-icon"] {
-	margin-right: .5em;
+  margin-right: .5em;
 }
 /* if the icon is inside a H tag the margin is a bit smaller*/
 h1, h2, h3, h4, h5, h6 {
-	i[class~="fa"],
-	i[class^="icon-"],
-	i[class*=" icon-"],
-	i[class^="fa-"],
-	i[class*="spacewalk-icon"],
-	i[class^="spacewalk-icon"] {
-		margin-right: .3em;
-	}
+  i[class~="fa"],
+  i[class^="icon-"],
+  i[class*=" icon-"],
+  i[class^="fa-"],
+  i[class*="spacewalk-icon"],
+  i[class^="spacewalk-icon"] {
+    margin-right: .3em;
+  }
 }
 // icon size smaller than the ones default by Font Awesome
 .fa-1-5x {
@@ -466,7 +466,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .fa.fa-small {
-	font-size: 0.7em;
+  font-size: 0.7em;
   text-align: center;
   vertical-align: middle;
 }
@@ -485,113 +485,113 @@ h1, h2, h3, h4, h5, h6 {
 
 .spacewalk-list {
 
-	.spacewalk-list-top-addons {
-		.make-row(0);
-		margin-bottom: 0.5em;
-		.spacewalk-list-alphabar {
-			.make-md-column(9);
-			.text-left;
-			padding-left: 0;
-		}
+  .spacewalk-list-top-addons {
+    .make-row(0);
+    margin-bottom: 0.5em;
+    .spacewalk-list-alphabar {
+      .make-md-column(9);
+      .text-left;
+      padding-left: 0;
+    }
 
-		.spacewalk-list-pagination {
-			.make-md-column(3);
-			.text-right;
-			padding-right: 0;
-			.spacewalk-list-pagination-btns {
-				padding-left: 0.5em;
-			}
-		}
-		padding-top: 0.5em;
-	}
+    .spacewalk-list-pagination {
+      .make-md-column(3);
+      .text-right;
+      padding-right: 0;
+      .spacewalk-list-pagination-btns {
+        padding-left: 0.5em;
+      }
+    }
+    padding-top: 0.5em;
+  }
 
-	.spacewalk-list-head-addons {
-		padding-top: 0.7em;
-		.make-row(0);
-		.spacewalk-list-filter {
-			.make-md-column(4);
-			.text-left;
-			padding-left: 0;
-			.spacewalk-list-channel-show-hide {
-				.pull-right;
-				.text-right;
-			}
-		}
-		.spacewalk-list-head-addons-extra {
-			.make-md-column(8);
-			.text-right;
-			padding-right: 0;
-		}
-	}
+  .spacewalk-list-head-addons {
+    padding-top: 0.7em;
+    .make-row(0);
+    .spacewalk-list-filter {
+      .make-md-column(4);
+      .text-left;
+      padding-left: 0;
+      .spacewalk-list-channel-show-hide {
+        .pull-right;
+        .text-right;
+      }
+    }
+    .spacewalk-list-head-addons-extra {
+      .make-md-column(8);
+      .text-right;
+      padding-right: 0;
+    }
+  }
 
-	.spacewalk-list-head-extra {
-		.make-row();
-	}
+  .spacewalk-list-head-extra {
+    .make-row();
+  }
 
-	.spacewalk-list-footer-addons {
-		.make-row(0);
-		.spacewalk-list-footer-addons-extra {
-			.pull-right;
-			.text-right;
-		}
-		.spacewalk-list-reflinks {
-			.pull-right;
-			.text-right;
-		}
-	}
-	.spacewalk-list-footer-extra {
-	}
+  .spacewalk-list-footer-addons {
+    .make-row(0);
+    .spacewalk-list-footer-addons-extra {
+      .pull-right;
+      .text-right;
+    }
+    .spacewalk-list-reflinks {
+      .pull-right;
+      .text-right;
+    }
+  }
+  .spacewalk-list-footer-extra {
+  }
 
-	.spacewalk-list-bottom-addons {
-		.make-row(0);
-		.spacewalk-list-pagination {
-			.text-right;
-			.pull-right;
-			.spacewalk-list-pagination-btns {
-				padding-left: 0.5em;
-			}
-		}
-		.spacewalk-list-bottom-addons-extra {
-		}
-	}
+  .spacewalk-list-bottom-addons {
+    .make-row(0);
+    .spacewalk-list-pagination {
+      .text-right;
+      .pull-right;
+      .spacewalk-list-pagination-btns {
+        padding-left: 0.5em;
+      }
+    }
+    .spacewalk-list-bottom-addons-extra {
+    }
+  }
 }
 
 .spacewalk-csv-download {
-	.text-right;
+  .text-right;
 }
 
 
 #loginForm+.col-md-6.col-md-offset-3.text-left {
-	font-size:.8em;
-	margin-bottom:2em;
+  font-size:.8em;
+  margin-bottom:2em;
 }
 
 /* btn with margin top and bottom */
 .btn.spacewalk-btn-margin-vertical {
-	margin: 1em 0
+  margin: 1em 0
 }
 //tabs - adding a margin to all tabs
 ul.nav.nav-tabs {
-	margin-bottom: .2em
+  margin-bottom: .2em
 }
 //tabs - adding a margin button to the last UL
 ul.nav.nav-tabs:last-child {
-	margin-bottom: 1.5em
+  margin-bottom: 1.5em
 }
 /* login form */
 #loginForm {
-	border: 1px solid @gray-light;
-	border-radius: @border-radius-base;
-	background: @gray-lighter;
-	margin-top: 2em;
-	margin-bottom:2em;
-	padding: 1.5em;
-	label {
-		text-align: left;
-		.Roboto-thin;
-		color: @gray;
-		font-size: 1.1em
-	}
+  border: 1px solid @gray-light;
+  border-radius: @border-radius-base;
+  background: @gray-lighter;
+  margin-top: 2em;
+  margin-bottom:2em;
+  padding: 1.5em;
+  label {
+    text-align: left;
+    .Roboto-thin;
+    color: @gray;
+    font-size: 1.1em
+  }
 }
 
 // Rewriting
@@ -631,17 +631,17 @@ ul.nav.nav-tabs:last-child {
 
 /* Links inside alert with darker colour and underline text */
 .alert a{
-	color: darken(@brand-primary, 10%);
-	text-decoration: underline;
+  color: darken(@brand-primary, 10%);
+  text-decoration: underline;
 }
 
 .mail-address-border {
-	border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 /* help links are shown in SUSE Manager
 .spacewalk-help-link {
-	display: none;
+  display: none;
 }
 */
 
@@ -663,7 +663,7 @@ ul.nav.nav-tabs:last-child {
 }
 
 .datepicker th {
-	text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 .col-inline + .col-inline {
