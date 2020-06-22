@@ -238,7 +238,9 @@ def cli():
 
 
     parser.add_option('-f', '--flush', action='store_true', dest='flush',
-                      help='when used in conjuction with --create, deletes the target repository before creating it')
+                      help='when used in conjuction with --create, deletes the target repository before creating it (default)')
+    parser.add_option('--no-flush', action='store_true', dest='noflush',
+                      help='when used in conjuction with --create, prevent deletion of the target repository before creating it')
     parser.add_option('', '--with-custom-channels', action='store_true', dest='usecustomchannels',
                       help='Take custom channels into account when searching for newest package versions')
     parser.add_option('', '--with-parent-channel', action="store", dest='parentchannel',
@@ -250,8 +252,12 @@ def cli():
         initLOG(logfile, level=5)
     else:
         initLOG(logfile, CFG.DEBUG or 1)
-    if not options.flush:
-        options.flush = CFG.BOOTSTRAP_REPO_FLUSH
+    flush = CFG.BOOTSTRAP_REPO_FLUSH
+    if options.flush:
+        flush = options.flush
+    if options.noflush:
+        flush = False
+    options.flush = flush
 
     log(sys.argv, 1)
     if isBeta():
@@ -638,7 +644,7 @@ def main():
             log_error("'%s' not found" % elabel)
             sys.exit(1)
 
-        if options.flush:
+        if opts.flush:
             destdir = os.path.normpath(mgr_bootstrap_data.DATA[elabel]['DEST'])
             dirprefix, lastdir = os.path.split(destdir)
             destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
