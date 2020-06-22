@@ -1,74 +1,34 @@
 // @flow
-import type {MessageType} from 'components/messages';
-
-const React = require('react');
-const Network = require('utils/network');
-const MessagesUtils = require('components/messages.js').Utils;
+import * as React from 'react';
+import * as Network from 'utils/network';
+import { Utils as MessagesUtils } from 'components/messages';
 
 type Props = {
   serverId: string,
-  refreshInterval?: number,
+  lastRefresh: number,
   children: Function,
 };
 
-type State = {
-  pools: ?Array<{}>,
-  errors: Array<MessageType>,
-};
+export function VirtualizationPoolsListRefreshApi(props: Props) {
+  const [pools, setPools] = React.useState(undefined);
+  const [errors, setErrors] = React.useState([]);
 
-class VirtualizationPoolsListRefreshApi extends React.Component<Props, State> {
-  static defaultProps = {
-    refreshInterval: undefined,
-  };
+  React.useEffect(() => refreshServerData(), [props.lastRefresh]);
 
-  intervalId = undefined;
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      pools: undefined,
-      errors: [],
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.refreshInterval !== undefined) {
-      this.intervalId = setInterval(this.refreshServerData, this.props.refreshInterval);
-    }
-    this.refreshServerData();
-  }
-
-  componentWillUnmount() {
-    if (this.props.refreshInterval !== undefined) {
-      clearInterval(this.intervalId);
-    }
-  }
-
-  refreshServerData = () => {
-    Network.get(`/rhn/manager/api/systems/details/virtualization/pools/${this.props.serverId}/data`, 'application/json').promise
+  const refreshServerData = () => {
+    Network.get(`/rhn/manager/api/systems/details/virtualization/pools/${props.serverId}/data`, 'application/json').promise
       .then((data) => {
-        this.setState({
-          pools: data,
-          errors: [],
-        });
+        setPools(data);
+        setErrors([]);
       })
       .catch((response) => {
         const errorMessage = Network.errorMessageByStatus(response.status);
-        this.setState({
-          errors: errorMessage !== '' ? MessagesUtils.error(errorMessage) : [],
-        });
+        setErrors(errorMessage !== '' ? MessagesUtils.error(errorMessage) : []);
       });
   }
 
-  render() {
-    return this.props.children({
-      pools: this.state.pools,
-      errors: this.state.errors,
-    });
-  }
+  return props.children({
+    pools,
+    errors,
+  });
 }
-
-module.exports = {
-  VirtualizationPoolsListRefreshApi,
-};
