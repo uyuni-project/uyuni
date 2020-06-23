@@ -24,13 +24,14 @@ import com.redhat.rhn.manager.BaseManager;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
+import com.suse.manager.webui.websocket.VirtNotifications;
+
+import org.apache.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.apache.log4j.Logger;
 
 /**
  * VirtualInstanceManager
@@ -133,6 +134,10 @@ public class VirtualInstanceManager extends BaseManager {
             virtualInstances.stream().forEach(virtualInstance -> {
                 deleteGuestVirtualInstance(virtualInstance);
             });
+        }
+
+        if (!plan.isEmpty()) {
+            VirtNotifications.spreadRefresh("guest");
         }
     }
 

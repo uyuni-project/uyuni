@@ -34,13 +34,12 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessage;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
+import com.suse.manager.reactor.messaging.LibvirtEnginePoolLifecycleMessage;
+import com.suse.manager.reactor.messaging.LibvirtEnginePoolMessageAction;
+import com.suse.manager.reactor.messaging.LibvirtEnginePoolRefreshMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
-import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessage;
 import com.suse.manager.reactor.messaging.RefreshGeneratedSaltFilesEventMessageAction;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessage;
@@ -51,9 +50,13 @@ import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
 import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.salt.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.MinionStartEvent;
+import com.suse.manager.webui.utils.salt.MinionStartupGrains;
 import com.suse.manager.webui.utils.salt.SystemIdGenerateEvent;
 import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
@@ -62,6 +65,7 @@ import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
+
 import org.apache.log4j.Logger;
 
 import java.util.Optional;
@@ -126,6 +130,10 @@ public class SaltReactor {
                 ImageDeployedEventMessage.class);
         MessageQueue.registerAction(new LibvirtEngineDomainLifecycleMessageAction(virtManager),
                 LibvirtEngineDomainLifecycleMessage.class);
+        MessageQueue.registerAction(new LibvirtEnginePoolMessageAction(),
+                LibvirtEnginePoolLifecycleMessage.class);
+        MessageQueue.registerAction(new LibvirtEnginePoolMessageAction(),
+                LibvirtEnginePoolRefreshMessage.class);
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);
 

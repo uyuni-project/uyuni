@@ -18,8 +18,9 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.common.messaging.EventMessage;
 
-import com.google.gson.JsonElement;
 import com.suse.salt.netapi.event.EngineEvent;
+
+import com.google.gson.JsonElement;
 
 import org.hibernate.Transaction;
 
@@ -58,6 +59,11 @@ public abstract class AbstractLibvirtEngineMessage implements EventMessage, Even
 
         if ("domain".equals(objectType)) {
             return LibvirtEngineDomainMessage.createDomainMessage(connection,
+                    eventType, engineEvent.getMinionId(), engineEvent.getTimestamp(),
+                    engineEvent.getData(JsonElement.class));
+        }
+        else if ("pool".equals(objectType)) {
+            return LibvirtEnginePoolMessage.createPoolMessage(connection,
                     eventType, engineEvent.getMinionId(), engineEvent.getTimestamp(),
                     engineEvent.getData(JsonElement.class));
         }
