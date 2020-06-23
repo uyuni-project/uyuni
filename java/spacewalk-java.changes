@@ -1,3 +1,4 @@
+- Fix recurring actions being displayed in Task Schedules list
 - Fix: handle corner case of deb pkg compare version (bsc#1173201)
 
 -------------------------------------------------------------------

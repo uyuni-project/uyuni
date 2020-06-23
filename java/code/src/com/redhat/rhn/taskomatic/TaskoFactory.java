@@ -251,15 +251,22 @@ public class TaskoFactory extends HibernateFactory {
      * @return list of active schedules
      */
     public static List<TaskoSchedule> listActiveSchedulesByOrg(Integer orgId) {
+        List<TaskoSchedule> schedules;
+        List<String> filter = List.of("recurring-state-apply-bunch");    // List of bunch names to be excluded
         Map<String, Object> params = new HashMap<String, Object>();
+
         params.put("timestamp", new Date());    // use server time, not DB time
         if (orgId == null) {
-            return singleton.listObjectsByNamedQuery(
-                    "TaskoSchedule.listActiveInSat", params);
+            schedules = singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveInSat", params);
         }
-        params.put("org_id", orgId);
-        return singleton.listObjectsByNamedQuery(
-               "TaskoSchedule.listActiveByOrg", params);
+        else {
+            params.put("org_id", orgId);
+            schedules = singleton.listObjectsByNamedQuery("TaskoSchedule.listActiveByOrg", params);
+        }
+
+        // Remove schedules with bunch names in 'filter'
+        schedules.removeIf(schedule -> filter.contains(schedule.getBunch().getName()));
+        return  schedules;
     }
 
     /**
