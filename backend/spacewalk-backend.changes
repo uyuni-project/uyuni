@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:20:14 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
 - Only check strongest available Ubuntu/Debian repository index checksum
 
 -------------------------------------------------------------------
