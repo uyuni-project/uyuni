@@ -88,7 +88,7 @@ class TestCommonRepo:
 
         release_index = MagicMock()
         release_index().get = MagicMock(return_value=gri)
-        with patch("common.repo.DpkgRepo.get_release_index", release_index):
+        with patch("spacewalk.common.repo.DpkgRepo.get_release_index", release_index):
             repo = DpkgRepo("http://mygreathost.com/ubuntu/dists/bionic/restricted/binary-amd64/")
             assert repo.verify_packages_index()
 
@@ -126,7 +126,7 @@ class TestCommonRepo:
         assert DpkgRepo._get_parent_url(url, depth=7) == "http://mygreathost.com/"
 
     @patch("spacewalk.common.repo.requests.get", MagicMock(
-        return_value=FakeRequests().conf(status_code=http.HTTPStatus.NOT_FOUND, content=b"")))
+        return_value=FakeRequests().conf(status_code=http.HTTPStatus.NOT_FOUND, content=b"", url="")))
     @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
     def test_get_release_index_flat(self):
         """
@@ -139,20 +139,22 @@ class TestCommonRepo:
         assert repo.is_flat()
 
     @patch("spacewalk.common.repo.requests.get", MagicMock(
-        return_value=FakeRequests().conf(status_code=http.HTTPStatus.OK, content=b"")))
+        return_value=FakeRequests().conf(status_code=http.HTTPStatus.OK, content=b"", url="")))
     @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
     def test_get_release_index_standard(self):
         """
-        Get release index file contents, standard.
+        Get release index file contents, standard and skip GPG verification.
 
         :return:
         """
-        repo = DpkgRepo("http://dummy/url")
-        assert repo.get_release_index() == "Plasma conduit overflow"
-        assert not repo.is_flat()
+        repo = DpkgRepo("http://dummy/url", gpg_verify=False)
+        with patch("spacewalk.common.repo.DpkgRepo._has_valid_gpg_signature", MagicMock()) as gpg_check:
+            assert repo.get_release_index() == "Plasma conduit overflow"
+            assert not repo.is_flat()
+            assert not gpg_check.called
 
     @patch("spacewalk.common.repo.requests.get", MagicMock(
-        return_value=FakeRequests().conf(status_code=http.HTTPStatus.NO_CONTENT, content=b"")))
+        return_value=FakeRequests().conf(status_code=http.HTTPStatus.NO_CONTENT, content=b"", url="")))
     @patch("spacewalk.common.repo.DpkgRepo._parse_release_index", MagicMock(return_value="Plasma conduit overflow"))
     def test_get_release_index_exception(self):
         """
@@ -165,6 +167,72 @@ class TestCommonRepo:
         with pytest.raises(GeneralRepoException) as exc:
             assert repo.get_release_index()
         assert str(exc.value) == "HTTP error 204 occurred while connecting to the URL"
+
+    def test_has_valid_gpg_signature_call_InRelease(self):
+        """
+        Test _has_valid_gpg_signature call with an embedded GPG signature (InRelease).
+
+        :return:
+        """
+        repo = DpkgRepo("http://dummy/url/InRelease")
+        response = FakeRequests().conf(
+                content=b"dummy content",
+                url="http://dummy/url/InRelease",
+        )
+
+        mock_popen = MagicMock()
+        mock_communicate = MagicMock()
+        mock_popen().communicate = mock_communicate
+        mock_popen().returncode = 0
+
+        with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
+            assert repo._has_valid_gpg_signature(response)
+            mock_communicate.assert_called_once_with(b"dummy content")
+
+    @patch("spacewalk.common.repo.tempfile.NamedTemporaryFile", MagicMock())
+    @patch("spacewalk.common.repo.requests.get", MagicMock(
+        return_value=FakeRequests().conf(status_code=http.HTTPStatus.OK, content=b"", url="")))
+    def test_has_valid_gpg_signature_call_Release(self):
+        """
+        Test _has_valid_gpg_signature call with a detached GPG signature (Release + Release.gpg).
+
+        :return:
+        """
+
+        repo = DpkgRepo("http://dummy/url/Release")
+        response = FakeRequests().conf(
+                content=b"dummy content",
+                url="http://dummy/url/Release",
+        )
+        mock_popen = MagicMock()
+        mock_popen().returncode = 0
+
+        with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
+            assert repo._has_valid_gpg_signature(response)
+            mock_popen.assert_called_once
+            gpg_args = mock_popen.call_args[0][0]
+            assert gpg_args[0] == "gpg"
+            assert gpg_args[1] == "--verify"
+            assert gpg_args[2].beginswith("/tmp/")
+            assert gpg_args[3].beginswith("/tmp/")
+
+    def test_has_valid_gpg_signature_returns_false_if_gpg_verify_fails(self):
+        """
+        Test _has_valid_gpg_signature returns False if gpg --verify returns non-zero.
+
+        :return:
+        """
+        repo = DpkgRepo("http://dummy/url/InRelease")
+        response = FakeRequests().conf(
+                content=b"dummy content",
+                url="http://dummy/url/InRelease",
+        )
+        mock_popen = MagicMock()
+        mock_popen().returncode = 1
+
+        with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
+            assert not repo._has_valid_gpg_signature(response)
+
 
     def test_parse_release_index(self):
         """
