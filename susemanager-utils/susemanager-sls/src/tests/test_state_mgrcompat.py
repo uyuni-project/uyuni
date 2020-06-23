@@ -11,7 +11,7 @@ mockery.setup_environment()
 
 from ..states import mgrcompat
 
-TAILORED_MODULE_RUN_KWARGS = {'service.running': [{'text': 'superseded', 'name': 'salt-minion', "foo": "bar"}]}
+TAILORED_MODULE_RUN_KWARGS = {'service.running': [{'text': 'superseded', 'name': 'salt-minion'}, {"foo": "bar"}]}
 MGRCOMPAT_MODULE_RUN_KWARGS = {'name': 'service.running', 'text': 'superseded', 'm_name': 'salt-minion', 'kwargs': {'foo': 'bar'}}
 
 mgrcompat.log = MagicMock()
