@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:21:48 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.12-1
 - Don't output virtualization pillar for systems without virtualization entitlement
 - Update help link URLs in the UI
 - Use volumes for VMs disks and allow attaching cdrom images
