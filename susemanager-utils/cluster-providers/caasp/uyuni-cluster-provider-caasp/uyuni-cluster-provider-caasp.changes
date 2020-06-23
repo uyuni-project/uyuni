@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:25:47 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - Don't execute caasp.prepare_node on the management node when
   joining another node
 
