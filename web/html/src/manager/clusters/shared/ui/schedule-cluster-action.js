@@ -79,7 +79,7 @@ const ScheduleClusterAction = (props: Props) => {
                     timezone={timezone}
                     localTime={localTime}
                     earliest={earliest}
-                    actionType={this.props.actionType}
+                    actionType={props.actionType}
                     onDateTimeChanged={(date) => {setEarliest(date); setActionChain(null);}}
                 />
             </Panel>);
