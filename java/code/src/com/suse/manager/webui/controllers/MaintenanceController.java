@@ -168,8 +168,8 @@ public class MaintenanceController {
 
         MM.calculateMaintenanceWindows(schedule).ifPresent(windows -> json.setMaintenanceWindows(
                 windows.stream().map(window -> Map.of(
-                        "start", window.getLeft(),
-                        "end", window.getMiddle()
+                        "start", window.getFrom(),
+                        "end", window.getTo()
                 )).collect(Collectors.toList())
         ));
 
