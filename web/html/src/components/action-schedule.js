@@ -85,7 +85,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
         systemIds: this.state.systemIds,
         actionType: this.state.actionType,
       });
-      Network.post("/rhn/manager/api/maintenance-windows", postData, "application/json").promise
+      Network.post("/rhn/manager/api/maintenance/upcoming-windows", postData, "application/json").promise
         .then(data =>
           {
             const multiMaintWindows = data.data.maintenanceWindowsMultiSchedules;
