@@ -166,7 +166,7 @@ public class MaintenanceManager {
      * @param schedule the given MaintenanceSchedule
      * @return the optional upcoming maintenance windows
      */
-    public Optional<List<Triple<String, String, Long>>> calculateMaintenanceWindows(MaintenanceSchedule schedule) {
+    public Optional<List<MaintenanceWindowData>> calculateMaintenanceWindows(MaintenanceSchedule schedule) {
         Optional<String> multiScheduleName = getScheduleNameForMulti(schedule);
 
         Stream<Pair<Instant, Instant>> periodStream = schedule.getCalendarOpt()
