@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:23:18 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.15-1
 - generate bootstrap repos for all archs when --auto is used (bsc#1173154)
 - add --no-flush option to mgr-create-bootstrap-repo
 - fix bootstrap repo create without flush option (bsc#1172702)
