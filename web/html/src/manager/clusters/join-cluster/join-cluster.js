@@ -82,6 +82,7 @@ const JoinCluster = (props: Props) => {
                                         schedule={scheduleJoin}
                                         scheduleButtonLabel={t("Join")}
                                         onPrev={back}
+                                        actionType="cluster.join_node"
                                         /> : goTo();
                             }}
                         </Route>

@@ -48,7 +48,6 @@ public class DateTimePickerTag extends TagSupport {
     private static final String JS_INCLUDE_GUARD_ATTR = "__spacewalk_datepicker_included";
 
     private DatePicker data;
-    private boolean greyOut = false;
 
     /**
      * @return the date picker object for this tag
@@ -64,24 +63,6 @@ public class DateTimePickerTag extends TagSupport {
      */
     public void setData(DatePicker pData) {
         this.data = pData;
-    }
-
-    /**
-     * Gets the greyOut.
-     *
-     * @return greyOut
-     */
-    public boolean isGreyOut() {
-        return greyOut;
-    }
-
-    /**
-     * Sets the greyOut.
-     *
-     * @param greyOutIn the greyOut
-     */
-    public void setGreyOut(boolean greyOutIn) {
-        greyOut = greyOutIn;
     }
 
     /**
@@ -229,10 +210,6 @@ public class DateTimePickerTag extends TagSupport {
                     data.getCalendar().getFirstDayOfWeek());
             dateInput.setAttribute("data-date-week-start", firstDay);
 
-            if (greyOut) {
-                dateInput.setAttribute("disabled", "disabled");
-            }
-
             group.addBody(dateInput);
         }
 
@@ -256,10 +233,6 @@ public class DateTimePickerTag extends TagSupport {
             timeInput.setAttribute("data-initial-hour",
                     String.valueOf(data.getHourOfDay()));
             timeInput.setAttribute("data-initial-minute", String.valueOf(data.getMinute()));
-
-            if (greyOut) {
-                timeInput.setAttribute("disabled", "disabled");
-            }
 
             group.addBody(timeInput);
         }

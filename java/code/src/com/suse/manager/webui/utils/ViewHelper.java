@@ -27,6 +27,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -138,6 +139,15 @@ public enum ViewHelper {
         DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(date);
+    }
+
+    /**
+     * Render a given time in the current user's configured timezone
+     * @param instant the instant
+     * @return user's local time
+     */
+    public String renderDate(Instant instant) {
+        return renderDate(new Date(instant.toEpochMilli()));
     }
 
     /**

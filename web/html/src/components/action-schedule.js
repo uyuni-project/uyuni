@@ -9,6 +9,15 @@ const {DateTimePicker} = require("./datetimepicker");
 const {Combobox} = require("./combobox");
 import type {ComboboxItem} from "./combobox";
 const Functions = require("../utils/functions");
+const Network = require("utils/network");
+const {Loading} = require("components/utils/Loading");
+
+export type MaintenanceWindow = {
+  id: number,
+  from: string,
+  to: string,
+  fromLocalDate: string
+}
 
 export type ActionChain = {
   id: number,
@@ -21,14 +30,23 @@ type ActionScheduleProps = {
   localTime: string,
   actionChains?: Array<ActionChain>,
   onDateTimeChanged: (date: Date) => void,
-  onActionChainChanged?: (actionChain: ?ActionChain) => void
+  onActionChainChanged?: (actionChain: ?ActionChain) => void,
+  systemIds?: Array<number>,
+  actionType?: string,
 };
 
 type ActionScheduleState = {
+  loading: boolean,
   type: "earliest" | "actionChain",
   earliest: Date,
   actionChain?: ActionChain,
-  actionChains?: Array<ActionChain>
+  actionChains?: Array<ActionChain>,
+  isMaintenanceModeEnabled: boolean,
+  multiMaintenanceWindows: boolean,
+  maintenanceWindow: MaintenanceWindow,
+  maintenanceWindows: Array<MaintenanceWindow>,
+  systemIds: Array<number>,
+  actionType: string,
 };
 
 class ActionSchedule extends React.Component<ActionScheduleProps, ActionScheduleState> {
@@ -38,21 +56,77 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   constructor(props: ActionScheduleProps) {
     super(props);
 
+    const commonState = {
+      loading: true,
+      type: "earliest",
+      earliest: props.earliest,
+      isMaintenanceModeEnabled: false,
+      maintenanceWindow: {},
+      maintenanceWindows: [],
+      multiMaintenanceWindows: false,
+      systemIds: props.systemIds ? props.systemIds : [],
+      actionType: props.actionType ? props.actionType : "",
+    }
+
+    let actionChainsState = {};
     if (props.actionChains) {
-      this.state = {
-        type: "earliest",
-        earliest: props.earliest,
+      actionChainsState = {
         actionChain: props.actionChains.length > 0 ? props.actionChains[0] : this.newActionChainOpt,
-        actionChains: props.actionChains.length > 0 ? props.actionChains : [this.newActionChainOpt]
-      };
-    } else {
-      this.state = {
-        type: "earliest",
-        earliest: props.earliest
+        actionChains: props.actionChains.length > 0 ? props.actionChains : [this.newActionChainOpt],
       };
     }
 
+    this.setState(Object.assign(commonState, actionChainsState));
   }
+
+  UNSAFE_componentWillMount = () => {
+    if (this.state.systemIds && this.state.actionType) {
+      const postData = JSON.stringify({
+        systemIds: this.state.systemIds,
+        actionType: this.state.actionType,
+      });
+      Network.post("/rhn/manager/api/maintenance/upcoming-windows", postData, "application/json").promise
+        .then(data =>
+          {
+            const multiMaintWindows = data.data.maintenanceWindowsMultiSchedules;
+            const maintenanceWindows = data.data.maintenanceWindows;
+
+            if (multiMaintWindows === true) {
+              this.setState({
+                loading: false,
+                multiMaintenanceWindows: true
+              });
+            }
+            else if (maintenanceWindows) {
+              const indexed = maintenanceWindows.map((elem, idx) => Object.assign(elem, {"id": idx}));
+              this.setState({
+                loading: false,
+                maintenanceWindow: maintenanceWindows[0],
+                maintenanceWindows: indexed,
+                isMaintenanceModeEnabled: true
+              });
+            }
+            else {
+              this.setState({
+                loading: false,
+                isMaintenanceModeEnabled: false
+              });
+            }
+          }
+        ).catch(this.handleResponseError);
+    }
+    else {
+      this.setState({
+        loading: false,
+        isMaintenanceModeEnabled: false
+      });
+    }
+  };
+
+  handleResponseError = (jqXHR) => {
+    console.log(Network.responseErrorMessage(jqXHR));
+    this.setState({ loading: false });
+  };
 
   onDateTimeChanged = (date: Date) => {
     this.setState({
@@ -64,6 +138,19 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
 
   onSelectEarliest = () => {
     this.onDateTimeChanged(this.state.earliest);
+  }
+
+  onMaintenanceWindowChanged = (selectedItem: MaintenanceWindow) => {
+    const startDateStr = selectedItem.fromLocalDate;
+    this.onDateTimeChanged(Functions.Utils.dateWithTimezone(startDateStr));
+  }
+
+  onSelectMaintenanceWindow = (event: Object) => {
+    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => mw.id == event.target.value)[0]);
+  }
+
+  onFocusMaintenanceWindow = (event: Object) => {
+    this.onMaintenanceWindowChanged(this.state.maintenanceWindows.filter(mw => mw.id == event.target.value)[0]);
   }
 
   onActionChainChanged = (selectedItem: ActionChain) => {
@@ -104,34 +191,105 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     }
   }
 
+  renderMultiMaintWindowsWarning = () => {
+    return (
+      <div className="alert alert-info">
+        {t("There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.")}
+    </div>);
+  }
+
+  renderDatePicker = () => {
+    return (
+      <DateTimePicker
+        onChange={this.onDateTimeChanged}
+        value={this.state.earliest}
+        timezone={this.props.timezone} />
+    );
+  }
+
+  renderMaintWindowPicker = () => {
+    const rows = this.state.maintenanceWindows
+          .map(mw => <option key={mw.id} value={mw.id}> {mw.from + " - " + mw.to}</option>);
+    return (
+      <select
+        id="maintenance-window"
+        className="form-control"
+        name="maintenance_window"
+        onChange={this.onSelectMaintenanceWindow}
+        onFocus={this.onFocusMaintenanceWindow}
+      >
+        { rows }
+      </select>);
+    }
+
+  // responsible for rendering date picker or maintenance window picker
+  renderPickers = () => {
+    const renderRadioBtn = this.state.actionChains && this.state.actionChain;
+
+    return (
+      <div className="form-group">
+        <div className="col-sm-3 control-label">
+          {
+            renderRadioBtn &&
+              <input type="radio"
+                name="use_date"
+                value="true"
+                checked={this.state.type == "earliest"}
+                id="schedule-by-date"
+                onChange={this.onSelectEarliest}/>
+          }
+          <label htmlFor="schedule-by-date">
+            {!this.state.isMaintenanceModeEnabled ? t("Earliest:") : t("Maintenance Window:")}
+          </label>
+        </div>
+
+        <div className="col-sm-6">
+          {
+            this.state.isMaintenanceModeEnabled
+              ? this.renderMaintWindowPicker()
+              : this.renderDatePicker()
+           }
+        </div>
+      </div>
+    );
+  }
+
+  renderActionChainPicker = () => {
+    return (
+      <div className="form-group">
+        <div className="col-sm-3 control-label">
+          <input type="radio" name="action_chain" value="false" checked={this.state.type == "actionChain"} id="schedule-by-action-chain" onChange={this.onFocusActionChain}/>
+          <label htmlFor="schedule-by-action-chain">{t("Add to:")}</label>
+        </div>
+        <div className="col-sm-3">
+          <Combobox
+            id="action-chain"
+            name="action_chain"
+            selectedId={this.state.actionChain.id}
+            data={this.state.actionChains} onSelect={this.onSelectActionChain}
+            onFocus={this.onFocusActionChain} />
+        </div>
+      </div>
+      );
+  }
+
   render() {
+    if (this.state.loading) {
+      return <Loading text={t('Loading the scheduler...')}/>
+    }
     return (
       <div className="spacewalk-scheduler">
         <div className="form-horizontal">
           <div className="form-group">
-            <div className="col-sm-3 control-label">
-              { (this.state.actionChains && this.state.actionChain) &&
-                <input type="radio" name="use_date" value="true" checked={this.state.type == "earliest"} id="schedule-by-date" onChange={this.onSelectEarliest}/> }
-              <label htmlFor="schedule-by-date">{t("Earliest:")}</label>
-            </div>
-            <div className="col-sm-6">
-              <DateTimePicker onChange={this.onDateTimeChanged} value={this.state.earliest} timezone={this.props.timezone} />
-            </div>
-          </div>
-          { (this.state.actionChains && this.state.actionChain) &&
-            <div className="form-group">
-              <div className="col-sm-3 control-label">
-                <input type="radio" name="action_chain" value="false" checked={this.state.type == "actionChain"} id="schedule-by-action-chain" onChange={this.onFocusActionChain}/>
-                <label htmlFor="schedule-by-action-chain">{t("Add to:")}</label>
-              </div>
-              <div className="col-sm-3">
-                { (this.state.actionChains && this.state.actionChain) && 
-                  <Combobox id="action-chain" name="action_chain" selectedId={this.state.actionChain.id}
-                            data={this.state.actionChains} onSelect={this.onSelectActionChain}
-                            onFocus={this.onFocusActionChain} />}
-              </div>
-            </div> 
+            {
+              this.state.multiMaintenanceWindows
+                ? this.renderMultiMaintWindowsWarning()
+                : this.renderPickers()
             }
+            {
+              this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()
+            }
+          </div>
         </div>
       </div>
     );

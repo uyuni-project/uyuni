@@ -554,6 +554,12 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
     this.props.onChangeActionChain(actionChain);
   }
 
+  computeSystemIds = () => {
+    return this.props.allowedChanges
+      .map(allowed => allowed.servers.map(srv => srv.id))
+      .reduce((ids1, ids2) => ids1.concat(ids2), [])
+  }
+
   render() {
     const rows = this.props.allowedChanges.map(allowed => {
       const newBaseName = allowed.newBaseChannel ? allowed.newBaseChannel.name : t("(Couldn't determine new base channel)");
@@ -619,7 +625,9 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
          actionChains={actionChains}
          actionChain={this.state.actionChain}
          onActionChainChanged={this.onActionChainChanged}
-         onDateTimeChanged={this.onDateTimeChanged}/>
+         onDateTimeChanged={this.onDateTimeChanged}
+         systemIds={this.computeSystemIds()}
+         actionType="channels.subscribe" />
 
       <ServersListPopup servers={this.state.popupServersList} channelName={this.state.popupServersChannelName}
          title={t("Systems to subscribe to")}

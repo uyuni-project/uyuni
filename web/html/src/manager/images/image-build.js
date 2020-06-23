@@ -285,6 +285,7 @@ class BuildImage extends React.Component {
              earliest={this.state.model.earliest}
              actionChains={actionChains}
              actionChain={this.state.model.actionChain}
+             actionType="image.build"
              onActionChainChanged={this.onActionChainChanged}
              onDateTimeChanged={this.onDateTimeChanged}/>
 
