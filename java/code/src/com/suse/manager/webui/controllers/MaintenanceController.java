@@ -25,6 +25,8 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.download.DownloadException;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.EntityExistsException;
@@ -36,14 +38,19 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.RescheduleResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
+import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
+import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.MaintenanceWindowJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import spark.ModelAndView;
@@ -57,9 +64,13 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class MaintenanceController {
 
-    private static final Gson GSON = new GsonBuilder().create();
     private static final MaintenanceManager MM = MaintenanceManager.instance();
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
+    private static final Gson GSON = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
+            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .serializeNulls()
+            .create();
 
     private MaintenanceController() { }
 
@@ -85,6 +96,10 @@ public class MaintenanceController {
         post("/manager/api/maintenance/calendar/refresh", withUser(MaintenanceController::refreshCalendar));
         delete("/manager/api/maintenance/schedule/delete", withUser(MaintenanceController::deleteSchedule));
         delete("/manager/api/maintenance/calendar/delete", withUser(MaintenanceController::deleteCalendar));
+
+        // upcoming maintenance windows for systems
+        post("/manager/api/maintenance/upcoming-windows",
+                withUser(MaintenanceController::getUpcomingMaintenanceWindows));
     }
 
     /**
@@ -482,5 +497,38 @@ public class MaintenanceController {
         ).collect(Collectors.toList()));
 
         return json;
+    }
+
+    /**
+     * Get all the maintenance windows for the system ids selected
+     *
+     * @param req the request
+     * @param res the response
+     * @param user the current user
+     * @return the json response
+     */
+    public static String getUpcomingMaintenanceWindows(Request req, Response res, User user) {
+        MaintenanceWindowsParams map = GSON.fromJson(req.body(), MaintenanceWindowsParams.class);
+
+        Set<Long> systemIds = new HashSet<>(map.getSystemIds());
+
+        String actionTypeLabel = map.getActionType();
+        ActionType actionType = ActionFactory.lookupActionTypeByLabel(actionTypeLabel);
+
+        Map<String, Object> data = new HashMap<>();
+
+        if (actionType.isMaintenancemodeOnly()) {
+            try {
+                MaintenanceManager.instance()
+                        .calculateUpcomingMaintenanceWindows(systemIds)
+                        .ifPresent(windows -> data.put("maintenanceWindows", windows));
+            }
+            catch (IllegalStateException e) {
+                data.put("maintenanceWindowsMultiSchedules", true);
+            }
+        }
+
+        res.type("application/json");
+        return json(res, ResultJson.success(data));
     }
 }
