@@ -76,7 +76,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       };
     }
 
-    this.state = Object.assign(commonState, actionChainsState);
+    this.setState(Object.assign(commonState, actionChainsState));
   }
 
   UNSAFE_componentWillMount = () => {
@@ -285,7 +285,6 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
               this.state.multiMaintenanceWindows
                 ? this.renderMultiMaintWindowsWarning()
                 : this.renderPickers()
-
             }
             {
               this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()
