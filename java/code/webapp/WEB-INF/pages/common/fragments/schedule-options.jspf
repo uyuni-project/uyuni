@@ -13,6 +13,7 @@
                      <bean:message key="schedule.jsp.multiple_maintenance_schedules" />
                  </div>
             </c:when>
+
             <%-- When maintenance windows are set but empty, we do not display date picker nor the maint. window picker --%>
             <c:when test="${maintenanceWindows != null && empty maintenanceWindows}">
                  <div class="alert alert-info">
@@ -20,7 +21,18 @@
                  </div>
             </c:when>
 
-            <%-- When maintenance windows are set but empty, we do not display date picker nor the maint. window picker --%>
+            <%-- When maintenance windows are present, we display the maintenance windows picker --%>
+            <c:when test="${maintenanceWindows != null}">
+                <div class="form-group">
+                    <div class="col-sm-3 control-label">
+                        <input type="radio" checked name="schedule_type" value="maintenance_window" />
+                        <label for="schedule-by-maintenance-window"><bean:message key="schedule.jsp.maint-window"/></label>
+                    </div>
+                    <jsp:include page="/WEB-INF/pages/common/fragments/maintenance-window-picker.jsp" />
+                </div>
+            </c:when>
+
+            <%-- Otherwise, we display the date picker --%>
             <c:otherwise>
                 <div class="form-group">
                     <div class="col-sm-3 control-label">
@@ -30,21 +42,10 @@
                     </div>
                     <div class="col-sm-6">
                         <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
-                            <jsp:param name="greyOut" value="${maintenanceWindows != null}"/>
                             <jsp:param name="widget" value="date"/>
                         </jsp:include>
                     </div>
                 </div>
-
-                <c:if test="${maintenanceWindows != null}">
-                    <div class="form-group">
-                        <div class="col-sm-3 control-label">
-                            <input type="radio" checked name="schedule_type" value="maintenance_window" />
-                            <label for="schedule-by-maintenance-window"><bean:message key="schedule.jsp.maint-window"/></label>
-                        </div>
-                        <jsp:include page="/WEB-INF/pages/common/fragments/maintenance-window-picker.jsp" />
-                    </div>
-                </c:if>
             </c:otherwise>
         </c:choose>
         <div class="form-group">
