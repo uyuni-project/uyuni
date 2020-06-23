@@ -1168,15 +1168,6 @@ When(/I refresh the "([^"]*)" storage pool of this "([^"]*)"/) do |pool, host|
   node.run("virsh pool-refresh #{pool}")
 end
 
-When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  source = File.dirname(__FILE__) + '/../upload_files/susemanager-virtpoller.conf'
-  dest = "/etc/salt/minion.d/susemanager-virtpoller.conf"
-  return_code = file_inject(node, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  node.run("systemctl restart salt-minion")
-end
-
 # WORKAROUND
 # Work around issue https://github.com/SUSE/spacewalk/issues/10360
 # Remove as soon as the issue is fixed

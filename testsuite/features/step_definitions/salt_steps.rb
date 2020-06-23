@@ -29,19 +29,19 @@ end
 When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion stop', false) if minion == 'sle_minion'
-  node.run('systemctl stop salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
+  node.run('systemctl stop salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I start salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
+  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   node = get_target(minion)
   node.run('rcsalt-minion restart', false) if minion == 'sle_minion'
-  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion].include?(minion)
+  node.run('systemctl restart salt-minion', false) if %w[ceos_minion ceos_ssh_minion ubuntu_minion ubuntu_ssh_minion kvm_server xen_server].include?(minion)
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
