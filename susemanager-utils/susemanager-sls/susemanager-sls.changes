@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:24:45 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
 - Remove VM disk type attribute
 - Merge virtualization fragment into suma-minion pillar (bsc#1172962)
 
