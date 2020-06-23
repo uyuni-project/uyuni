@@ -1,6 +1,7 @@
 -------------------------------------------------------------------
 Wed Jun 10 12:15:27 CEST 2020 - jgonzalez@suse.com
 
+- Fix combobox dropdown list being cut off if exceeding the section
 - version 4.1.5-1
 - Add cluster icon
 - Split branding style themes for Uyuni and SUSE Manager
