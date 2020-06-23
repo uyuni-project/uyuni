@@ -211,6 +211,9 @@ public class ScheduleDetailAction extends RhnAction {
         List dropDown = new ArrayList();
         try {
             List<Map> bunches = new TaskomaticApi().listSatBunchSchedules(loggedInUser);
+            // Since recurring states have their own place in the webUI we don't
+            // want them to show up in the Task Schedules UI
+            bunches.removeIf(bunch -> bunch.get("name").equals("recurring-state-apply-bunch"));
 
             for (Map b : bunches) {
                 addOption(dropDown, (String)b.get("name"), (String)b.get("name"));
