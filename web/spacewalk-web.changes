@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:22:34 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.12-1
 - Flatten messages passed as array of array to toastr in order to make
   them visible
 - Update help link URLs in the UI
