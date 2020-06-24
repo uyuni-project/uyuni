@@ -38,16 +38,14 @@ import spark.template.jade.JadeTemplateEngine;
 /**
  * Controller class providing backend for Virtual networks UI
  */
-public class VirtualNetsController {
-
-    private VirtManager virtManager;
+public class VirtualNetsController extends AbstractVirtualizationController {
 
     /**
      * Controller class providing backend for Virtual networks UI
      * @param virtManagerIn instance to manage virtualization
      */
     public VirtualNetsController(VirtManager virtManagerIn) {
-        this.virtManager = virtManagerIn;
+        super(virtManagerIn, "templates/virtualization/nets");
     }
 
     /**
