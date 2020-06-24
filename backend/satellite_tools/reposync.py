@@ -70,6 +70,7 @@ if '.' not in hostname:
 default_log_location = '/var/log/rhn/'
 relative_comps_dir = 'rhn/comps'
 relative_modules_dir = 'rhn/modules'
+relative_mediaproducts_dir = 'suse/media.1'
 checksum_cache_filename = 'reposync/checksum_cache'
 default_import_batch_size = 20
 
@@ -593,6 +594,8 @@ class RepoSync(object):
                         if not self.no_errata:
                             self.import_updates(plugin)
 
+                        self.import_mediaproducts(plugin)
+
                         # only for repos obtained from the DB
                         if self.sync_kickstart and data['repo_label']:
                             try:
@@ -767,7 +770,7 @@ class RepoSync(object):
         src.close()
         if old_checksum and old_checksum != getFileChecksum('sha256', abspath):
             self.regen = True
-        log(0, "*** NOTE: Importing comps file for the channel '%s'. Previous comps will be discarded." % (self.channel['label']))        
+        log(0, "*** NOTE: Importing {1} file for the channel '{0}'. Previous {1} will be discarded.".format(self.channel['label'], comps_type))
 
         repoDataKey = 'group' if comps_type == 'comps' else comps_type
         file_timestamp = os.path.getmtime(filename)
@@ -813,6 +816,11 @@ class RepoSync(object):
         modulesfile = plug.get_modules()
         if modulesfile:
             self.copy_metadata_file(plug, modulesfile, 'modules', relative_modules_dir)
+    def import_mediaproducts(self, plug):
+        mediaproducts = plug.get_mediaproducts()
+        if mediaproducts:
+            self.copy_metadata_file(plug, mediaproducts, 'mediaproducts', relative_mediaproducts_dir)
+
     def _populate_erratum(self, notice):
         patch_name = self._patch_naming(notice)
         existing_errata = self.get_errata(patch_name)
