@@ -21,7 +21,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -35,15 +34,10 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
@@ -60,6 +54,11 @@ import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
@@ -87,9 +86,7 @@ import spark.template.jade.JadeTemplateEngine;
 /**
  * Controller class providing backend for Virtual storage pools UI
  */
-public class VirtualPoolsController {
-
-    private final VirtManager virtManager;
+public class VirtualPoolsController extends AbstractVirtualizationController {
 
     private static final Logger LOG = Logger.getLogger(VirtualPoolsController.class);
 
@@ -105,7 +102,7 @@ public class VirtualPoolsController {
      * @param virtManagerIn instance to manage virtualization
      */
     public VirtualPoolsController(VirtManager virtManagerIn) {
-        this.virtManager = virtManagerIn;
+        super(virtManagerIn, "templates/virtualization/pools");
     }
 
     /**
@@ -432,50 +429,6 @@ public class VirtualPoolsController {
                 VirtualVolumeBaseActionJson.class);
     }
 
-
-    /**
-     * Displays a page server-related virtual page
-     *
-     * @param request the request
-     * @param response the response
-     * @param user the user
-     * @param template the name to the Jade template of the page
-     * @param modelExtender provides additional properties to pass to the Jade template
-     * @return the ModelAndView object to render the page
-     */
-    private ModelAndView renderPage(Request request, Response response, User user,
-                                          String template,
-                                          Supplier<Map<String, Object>> modelExtender) {
-        Map<String, Object> data = new HashMap<>();
-        Long serverId;
-        Server server;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        try {
-            server = SystemManager.lookupByIdAndUser(serverId, user);
-        }
-        catch (LookupException e) {
-            throw new NotFoundException();
-        }
-
-        /* For system-common.jade */
-        data.put("server", server);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(serverId));
-
-        if (modelExtender != null) {
-            data.putAll(modelExtender.get());
-        }
-
-        /* For the rest of the template */
-
-        return new ModelAndView(data, String.format("templates/virtualization/pools/%s.jade", template));
-    }
 
 
     /**

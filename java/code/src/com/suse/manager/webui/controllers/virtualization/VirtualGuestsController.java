@@ -22,15 +22,14 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -38,7 +37,6 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -68,6 +66,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,7 +86,7 @@ import spark.template.jade.JadeTemplateEngine;
 /**
  * Controller class providing backend for Virtual Guests list page
  */
-public class VirtualGuestsController {
+public class VirtualGuestsController extends AbstractVirtualizationController {
 
     private static final Logger LOG = Logger.getLogger(VirtualGuestsController.class);
 
@@ -98,13 +97,11 @@ public class VirtualGuestsController {
             .serializeNulls()
             .create();
 
-    private final VirtManager virtManager;
-
     /**
      * @param virtManagerIn instance to manage virtualization
      */
     public VirtualGuestsController(VirtManager virtManagerIn) {
-        this.virtManager = virtManagerIn;
+        super(virtManagerIn, "templates/virtualization/guests");
     }
 
     /**
@@ -141,33 +138,14 @@ public class VirtualGuestsController {
      */
     public ModelAndView show(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        Long serverId;
-        Server server;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        try {
-            server = SystemManager.lookupByIdAndUser(serverId, user);
-        }
-        catch (LookupException e) {
-            throw new NotFoundException();
-        }
-
-        /* For system-common.jade */
-        data.put("server", server);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(serverId));
+        Server server = getServer(request, user);
 
         /* For the rest of the template */
         data.put("salt_entitled", server.hasEntitlement(EntitlementManager.SALT));
         data.put("foreign_entitled", server.hasEntitlement(EntitlementManager.FOREIGN));
         data.put("is_admin", user.hasRole(RoleFactory.ORG_ADMIN));
 
-        return new ModelAndView(data, "templates/virtualization/guests/show.jade");
+        return renderPage(request, response, user, "show", () -> data);
     }
 
     /**
@@ -179,14 +157,7 @@ public class VirtualGuestsController {
      * @return JSON result of the API call
      */
     public String data(Request request, Response response, User user) {
-        Long serverId;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
+        Long serverId = getServerId(request);
 
         DataResult<VirtualSystemOverview> data =
                 SystemManager.virtualGuestsForHostList(user, serverId, null);
@@ -213,22 +184,16 @@ public class VirtualGuestsController {
      * @return the json response
      */
     public String getGuest(Request request, Response response, User user) {
-        Long serverId;
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
+        long serverId = getServerId(request);
 
         String uuid = request.params("uuid");
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, serverId, null);
         VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
-                .findFirst().orElseThrow(() -> new NotFoundException());
+                .findFirst().orElseThrow(NotFoundException::new);
 
         GuestDefinition definition = virtManager.getGuestDefinition(host.asMinionServer().get().getMinionId(),
-                guest.getName()).orElseThrow(() -> new NotFoundException());
+                guest.getName()).orElseThrow(NotFoundException::new);
 
         return json(response, definition);
     }
@@ -242,13 +207,7 @@ public class VirtualGuestsController {
      * @return the json response
      */
     public String getDomainsCapabilities(Request request, Response response, User user) {
-        Long serverId;
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
+        long serverId = getServerId(request);
 
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         String minionId = host.asMinionServer().orElseThrow(() ->
@@ -292,13 +251,7 @@ public class VirtualGuestsController {
         actionsMap.put("update", VirtualGuestsUpdateActionJson.class);
         actionsMap.put("new", VirtualGuestsUpdateActionJson.class);
 
-        Long serverId;
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
+        Server host = getServer(request, user);
 
         String action = request.params("action");
         VirtualGuestsBaseActionJson data;
@@ -309,15 +262,8 @@ public class VirtualGuestsController {
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
 
-        Server host;
-        try {
-            host = SystemManager.lookupByIdAndUser(serverId, user);
-        }
-        catch (LookupException e) {
-            throw new NotFoundException();
-        }
         DataResult<VirtualSystemOverview> guests =
-                SystemManager.virtualGuestsForHostList(user, serverId, null);
+                SystemManager.virtualGuestsForHostList(user, host.getId(), null);
 
         HashMap<String, String> actionResults = new HashMap<>();
         if (data.getUuids() == null || data.getUuids().isEmpty()) {
@@ -366,43 +312,25 @@ public class VirtualGuestsController {
     public ModelAndView edit(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
 
-        Long hostId;
-        try {
-            hostId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
         // Use uuids since the IDs may change
         String guestUuid = request.params("guestuuid");
 
-        Server host;
-        try {
-            host = SystemManager.lookupByIdAndUser(hostId, user);
-        }
-        catch (LookupException e) {
-            throw new NotFoundException();
-        }
+        Server host = getServer(request, user);
         DataResult<VirtualSystemOverview> guests =
-                SystemManager.virtualGuestsForHostList(user, hostId, null);
+                SystemManager.virtualGuestsForHostList(user, host.getId(), null);
 
         Optional<VirtualSystemOverview> guest = guests.stream().
                 filter(item -> item.getUuid().equals(guestUuid)).findFirst();
 
-        if (!guest.isPresent()) {
+        if (guest.isEmpty()) {
             throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
         }
-
-        /* For system-common.jade */
-        data.put("server", host);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(hostId));
 
         /* For the rest of the template */
         MinionController.addActionChains(user, data);
         data.put("guestUuid", guestUuid);
         data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
-        return new ModelAndView(data, "templates/virtualization/guests/edit.jade");
+        return renderPage(request, response, user, "edit", () -> data);
     }
 
     /**
@@ -415,23 +343,17 @@ public class VirtualGuestsController {
      */
     public ModelAndView create(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-
-        Long hostId = Long.parseLong(request.params("sid"));
-        Server host = SystemManager.lookupByIdAndUser(hostId, user);
+        Server host = getServer(request, user);
 
         if (!host.hasEntitlement(EntitlementManager.SALT)) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Only for Salt-managed virtual hosts");
         }
 
-        /* For system-common.jade */
-        data.put("server", host);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(hostId));
-
         /* For the rest of the template */
         MinionController.addActionChains(user, data);
-        data.put("isSalt", host.hasEntitlement(EntitlementManager.SALT));
+        data.put("isSalt", true);
 
-        return new ModelAndView(data, "templates/virtualization/guests/create.jade");
+        return renderPage(request, response, user, "create", () -> data);
     }
 
     /**
@@ -444,14 +366,7 @@ public class VirtualGuestsController {
      */
     public ModelAndView console(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-
-        Long hostId;
-        try {
-            hostId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
+        long hostId = getServerId(request);
 
         // Use uuids since the IDs may change
         String guestUuid = request.params("guestuuid");
@@ -464,11 +379,7 @@ public class VirtualGuestsController {
         GuestDefinition def = virtManager.getGuestDefinition(minionId, guest.getName()).
                 orElseThrow(() -> Spark.halt(HttpStatus.SC_BAD_REQUEST));
         String hostname = host.getName();
-        Integer port = def.getGraphics().getPort();
-
-        /* For system-common.jade */
-        data.put("server", host);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(hostId));
+        int port = def.getGraphics().getPort();
 
         /* For the rest of the template */
         data.put("guestUuid", guestUuid);
@@ -489,7 +400,7 @@ public class VirtualGuestsController {
         }
         data.put("token", token);
 
-        return new ModelAndView(data, "templates/virtualization/guests/console.jade");
+        return renderPage(request, response, user, "console", () -> data);
     }
 
     private String triggerGuestUpdateAction(Server host,
