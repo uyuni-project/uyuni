@@ -77,6 +77,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private ProductName productName;
     private Comps comps;
     private Modules modules;
+    private MediaProducts mediaProducts;
     private String summary;
     private Set<Errata> erratas = new HashSet<Errata>();
     private Set<Package> packages = new HashSet<Package>();
@@ -230,6 +231,20 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
 
     public boolean isModular() {
         return modules != null;
+    }
+
+    /**
+     * @param mediaProductsIn The Media Products to set.
+     */
+    public void setMediaProducts(MediaProducts mediaProductsIn) {
+        this.mediaProducts = mediaProductsIn;
+    }
+
+    /**
+     * @return Returns the Modules.
+     */
+    public MediaProducts getMediaProducts() {
+        return mediaProducts;
     }
 
     /**
