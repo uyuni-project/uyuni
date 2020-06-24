@@ -428,6 +428,99 @@ class UyuniOrgs:
                 return StateResult.state_error(name, "Error deleting Org '{}': {}".format(name, exc))
 
 
+class UyuniOrgsTrust:
+
+    def trust(self, name: str, orgs_trust: List[str],
+              admin_user: str = None, admin_password: str = None) -> Dict[str, Any]:
+        """
+        Add trusted organisations to the a org
+
+        :param name: organization name
+        :param orgs_trust: list of organization names to trust
+        :param admin_user: administrator username
+        :param admin_password: administrator password
+        :return: dict for Salt communication
+        """
+        try:
+            org_trusts = __salt__['uyuni.org_trust_list_trusts'](name,
+                                                                 admin_user=admin_user, admin_password=admin_password)
+            current_org = __salt__['uyuni.org_get_details'](name,
+                                                            admin_user=admin_user, admin_password=admin_password)
+        except Exception as exc:
+            return StateResult.state_error(name, "Error managing org Trust'{}': {}".format(name, exc))
+
+        trusts_to_add = []
+        trusts_to_remove = []
+        for org_trust in org_trusts:
+            if org_trust.get("orgName") in (orgs_trust or []) and not org_trust.get("trustEnabled"):
+                trusts_to_add.append(org_trust)
+            elif org_trust.get("orgName") not in (orgs_trust or []) and org_trust.get("trustEnabled"):
+                trusts_to_remove.append(org_trust)
+
+        if not trusts_to_add and not trusts_to_remove:
+            return StateResult.prepare_result(name, True, "{0} is already installed".format(name))
+        if __opts__['test']:
+            changes = {}
+            for org_add in trusts_to_add:
+                changes[org_add.get("orgName")] = {'old': None, 'new': True}
+            for org_remove in trusts_to_remove:
+                changes[org_remove.get("orgName")] = {'old': True, 'new': None}
+            return StateResult.prepare_result(name, None, "{0} would be installed".format(name), changes)
+
+        processed_changes = {}
+        try:
+            for org_add in trusts_to_add:
+                __salt__['uyuni.org_trust_add_trust'](current_org.get("id"), org_add.get("orgId"))
+                processed_changes[org_add.get("orgName")] = {'old': None, 'new': True}
+            for org_remove in trusts_to_remove:
+                __salt__['uyuni.org_trust_remove_trust'](current_org.get("id"), org_remove.get("orgId"))
+                processed_changes[org_remove.get("orgName")] = {'old': True, 'new': None}
+        except Exception as exc:
+            return StateResult.prepare_result(name, False, "Error managing Org Trust '{}': {}".format(name, exc),
+                                              processed_changes)
+        return StateResult.prepare_result(name, True, "Org Trust successful managed", processed_changes)
+
+    def untrust(self, name: str, orgs_untrust: List[str],
+                admin_user: str = None, admin_password: str = None) -> Dict[str, Any]:
+        """
+        Remove trusted organisations from a organization.
+
+        :param name: Organization name
+        :param orgs_untrust: list of organization names to untrust
+        :param admin_user: administrator username
+        :param admin_password: administrator password
+        :return: dict for Salt communication
+        """
+        try:
+            org_trusts = __salt__['uyuni.org_trust_list_trusts'](name,
+                                                                 admin_user=admin_user, admin_password=admin_password)
+            current_org = __salt__['uyuni.org_get_details'](name,
+                                                            admin_user=admin_user, admin_password=admin_password)
+        except Exception as exc:
+            return StateResult.state_error(name, "Error managing org untrust'{}': {}".format(name, exc))
+
+        trusts_to_remove = [org for org in org_trusts
+                            if org.get("orgName") in (orgs_untrust or []) and org.get("trustEnabled")]
+
+        if not trusts_to_remove:
+            return StateResult.prepare_result(name, True, "{0} is already installed".format(name))
+        if __opts__['test']:
+            changes = {}
+            for org_remove in trusts_to_remove:
+                changes[org_remove.get("orgName")] = {'old': True, 'new': None}
+            return StateResult.prepare_result(name, None, "{0} would be installed".format(name), changes)
+
+        processed_changes = {}
+        try:
+            for org_remove in trusts_to_remove:
+                __salt__['uyuni.org_trust_remove_trust'](current_org.get("id"), org_remove.get("orgId"))
+                processed_changes[org_remove.get("orgName")] = {'old': True, 'new': None}
+        except Exception as exc:
+            return StateResult.prepare_result(name, False, "Error managing Org untrust '{}': {}".format(name, exc),
+                                              processed_changes)
+        return StateResult.prepare_result(name, True, "Org untrust successful managed", processed_changes)
+
+
 def __virtual__():
     '''
     TODO add a check to Only Runs in Uyuni server
@@ -500,6 +593,31 @@ def org_absent(name, admin_user=None, admin_password=None):
     :return: dict for Salt communication
     """
     return UyuniOrgs().delete(name, admin_user, admin_password)
+
+
+def org_trust_present(name, trust, admin_user=None, admin_password=None):
+    """
+    Add trusted organisations from a organization.
+    :param name: Organization name
+    :param trust: list of organization names to trust
+    :param admin_user: administrator username
+    :param admin_password: administrator password
+    :return: dict for Salt communication
+    """
+    return UyuniOrgsTrust().trust(name, trust, admin_user, admin_password)
+
+
+def org_untrust_present(name, untrust, admin_user=None, admin_password=None):
+    """
+    Remove trusted organisations from a organization.
+
+    :param name: Organization name
+    :param untrust: list of organization names to untrust
+    :param admin_user: administrator username
+    :param admin_password: administrator password
+    :return: dict for Salt communication
+    """
+    return UyuniOrgsTrust().untrust(name, untrust, admin_user, admin_password)
 
 
 def group_present(name, description, expression=None, target="glob",
