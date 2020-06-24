@@ -15,7 +15,7 @@ mgr_cluster_upgrade_cluster:
    {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_modules
    {%- else %}
-      - module: sync_modules
+      - mgrcompat: sync_modules
    {%- endif %}
    {%- if pillar.get('ssh_auth_sock', False) %}
       - environ: mgr_ssh_agent_socket_upgradecluster

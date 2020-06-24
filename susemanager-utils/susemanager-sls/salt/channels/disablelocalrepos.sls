@@ -31,7 +31,7 @@ disable_repo_{{ alias }}:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 {% do repos_disabled.update({'count': repos_disabled.count + 1}) %}
 {% endif %}
