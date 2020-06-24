@@ -36,6 +36,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                      discriminator-value="2" lazy="true">
         </subclass>
 
+        <subclass
+                     name="com.redhat.rhn.domain.channel.MediaProducts"
+                     discriminator-value="3" lazy="true">
+        </subclass>
 
     </class>
 </hibernate-mapping>

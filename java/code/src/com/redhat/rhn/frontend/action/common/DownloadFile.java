@@ -628,6 +628,10 @@ public class DownloadFile extends DownloadAction {
                         Config.get().getString("repomd_path_prefix", "rhn/repodata/") + "/" +
                         StringUtils.join(split, '/');
                 }
+                else if (path.endsWith("/media.1/products") && tree.getChannel().getMediaProducts() != null) {
+                    diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                        "/" + tree.getChannel().getMediaProducts().getRelativeFilename();
+                }
                 else {
                     diskPath = kickstartMount + "/" + tree.getBasePath() + path;
                 }
