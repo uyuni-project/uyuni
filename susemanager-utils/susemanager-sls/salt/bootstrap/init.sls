@@ -180,6 +180,7 @@ salt-minion-package:
 
 include:
   - bootstrap.remove_traditional_stack
+  - util.syncstates
 
 mgr_update_basic_pkgs:
   pkg.latest:
