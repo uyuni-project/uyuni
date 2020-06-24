@@ -15,3 +15,4 @@
 
 INSERT INTO rhnCompsType (id, label) VALUES (1, 'comps');
 INSERT INTO rhnCompsType (id, label) VALUES (2, 'modules');
+INSERT INTO rhnCompsType (id, label) VALUES (3, 'mediaproducts');
