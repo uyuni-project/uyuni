@@ -27,11 +27,11 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle_minion"
 
-   Scenario: Check if onboarding for the minion with the new module.run syntax was successful
-     Given I am authorized as "admin" with password "admin"
-     When I navigate to "rhn/systems/Overview.do" page
-     And I wait until I see the name of "sle_minion", refreshing the page
-     And I wait until onboarding is completed for "sle_minion"
+  Scenario: Check if onboarding for the minion with the new module.run syntax was successful
+    Given I am authorized as "admin" with password "admin"
+    When I navigate to "rhn/systems/Overview.do" page
+    And I wait until I see the name of "sle_minion", refreshing the page
+    And I wait until onboarding is completed for "sle_minion"
  
   Scenario: Check that installed packages are visible
     Given I am on the Systems overview page of this "sle_minion"
@@ -46,16 +46,15 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
-   Scenario: Cleanup: Delete profile of the minion and disable new module.run syntax
-     Given I am on the Systems overview page of this "sle_minion"
-     And I remove "/etc/salt/minion.d/custom_modulerun.conf" from "sle_minion"
-     When I follow "Delete System"
-     Then I should see a "Confirm System Profile Deletion" text
-     When I click on "Delete Profile"
-     Then I wait until I see "Cleanup timed out. Please check if the machine is reachable." text
-     When I click on "Delete Profile Without Cleanup"
-     And I wait until I see "has been deleted" text
-     Then "sle_minion" should not be registered
+  Scenario: Cleanup: Delete profile of the minion and disable new module.run syntax
+    Given I am on the Systems overview page of this "sle_minion"
+    And I remove "/etc/salt/minion.d/custom_modulerun.conf" from "sle_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
+    And I cleanup minion "sle_minion"
+    Then "sle_minion" should not be registered
 
   Scenario: Cleanup: bootstrap again the minion
     Given I am authorized
