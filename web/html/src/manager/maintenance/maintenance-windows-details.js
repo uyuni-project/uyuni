@@ -103,7 +103,7 @@ class MaintenanceWindowsDetails extends React.Component {
 
         return (
             <div>
-                <BootstrapPanel title={t("Schedule Details")}>
+                <BootstrapPanel title={t("Calendar Details")}>
                     <Table
                         data={tableData}
                         identifier={row => tableData.indexOf(row)}
@@ -186,7 +186,7 @@ class MaintenanceWindowsDetails extends React.Component {
                     ? this.props.data.scheduleName
                     : this.props.data.calendarName
                 }
-                icon="spacewalk-icon-salt"
+                icon="spacewalk-icon-schedule"
                 helpUrl=""
                 button={buttons}
             >
