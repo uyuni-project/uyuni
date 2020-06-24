@@ -42,7 +42,7 @@ remove_traditional_stack_all:
 {%- endif %}
 {%- if repos_disabled.count > 0 %}
     - require:
-      - module: disable_repo*
+      - mgrcompat: disable_repo*
 {%- endif %}
 
 remove_traditional_stack:
