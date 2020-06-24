@@ -1,4 +1,6 @@
+- add new comps type mediaproducts (bsc#1173204)
 - Fix: handle corner case of deb pkg compare version (bsc#1173201)
+
 -------------------------------------------------------------------
 Tue Jun 23 17:24:11 CEST 2020 - jgonzalez@suse.com
 

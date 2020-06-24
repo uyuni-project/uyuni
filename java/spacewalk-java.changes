@@ -1,3 +1,6 @@
+- serve media.1/products when available (bsc#1173204)
+- use repo metadata of the synced base channel when kernel
+  option "useonlinerepo" is provided (bsc#1173204)
 - Fix recurring actions being displayed in Task Schedules list
 - Fix: handle corner case of deb pkg compare version (bsc#1173201)
 
