@@ -14,7 +14,7 @@ mgr_install_dmidecode:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 {%- endif %}
 
@@ -25,7 +25,7 @@ grains:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 cpuinfo:
   mgrcompat.module_run:
@@ -34,7 +34,7 @@ cpuinfo:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 udev:
   mgrcompat.module_run:
@@ -43,7 +43,7 @@ udev:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 network-interfaces:
   mgrcompat.module_run:
@@ -52,7 +52,7 @@ network-interfaces:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 network-ips:
   mgrcompat.module_run:
@@ -62,8 +62,8 @@ network-ips:
       - saltutil: sync_states
       - saltutil: sync_modules
 {%- else %}
-      - module: sync_states
-      - module: sync_modules
+      - mgrcompat: sync_states
+      - mgrcompat: sync_modules
 {%- endif %}
 network-modules:
   mgrcompat.module_run:
@@ -73,8 +73,8 @@ network-modules:
       - saltutil: sync_states
       - saltutil: sync_modules
 {%- else %}
-      - module: sync_states
-      - module: sync_modules
+      - mgrcompat: sync_states
+      - mgrcompat: sync_modules
 {%- endif %}
 
 {% if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64'] %}
@@ -87,7 +87,7 @@ smbios-records-bios:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 smbios-records-system:
   mgrcompat.module_run:
@@ -98,7 +98,7 @@ smbios-records-system:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 smbios-records-baseboard:
   mgrcompat.module_run:
@@ -109,7 +109,7 @@ smbios-records-baseboard:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 smbios-records-chassis:
   mgrcompat.module_run:
@@ -120,7 +120,7 @@ smbios-records-chassis:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 {% elif grains['cpuarch'] in ['s390', 's390x'] %}
 mainframe-sysinfo:
@@ -130,7 +130,7 @@ mainframe-sysinfo:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 {% endif %}
 {% if 'network.fqdns' in salt %}
@@ -141,6 +141,6 @@ fqdns:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 {% endif%}
