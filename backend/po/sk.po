@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-05-11 07:59+0000\n"
+"PO-Revision-Date: 2020-06-30 08:32+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
 "\n"
@@ -28,7 +28,7 @@ msgstr ""
 #: ../server/apacheAuth.py:84
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
+msgstr "Zaslaný podpis proxy %s nezodpovedá nášmu %s."
 
 #: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
@@ -47,11 +47,11 @@ msgstr ""
 
 #: ../server/handlers/applet/applet.py:78
 msgid "Your system was not found in the RHN database"
-msgstr ""
+msgstr "Váš systém sa nenašiel v databáze RHN"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this satellite."
-msgstr ""
+msgstr "Na tomto satellite je ISS zakázané."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
