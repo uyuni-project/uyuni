@@ -15,22 +15,26 @@
 package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.google.gson.JsonObject;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
+
+import com.google.gson.JsonObject;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
@@ -54,8 +58,23 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @param jade jade engine
      */
     public void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/virtualization/net/:sid",
+                withUserPreferences(withCsrfToken(withUser(this::show))), jade);
+
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
                 withUser(this::data));
+    }
+
+    /**
+     * Displays the virtual networks page.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public ModelAndView show(Request request, Response response, User user) {
+        return renderPage(request, response, user, "show", null);
     }
 
     /**
@@ -67,7 +86,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      * @return JSON result of the API call
      */
     public String data(Request request, Response response, User user) {
-        Long serverId;
+        long serverId;
 
         try {
             serverId = Long.parseLong(request.params("sid"));
@@ -76,15 +95,12 @@ public class VirtualNetsController extends AbstractVirtualizationController {
             throw new NotFoundException();
         }
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
-        String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
+        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
 
         Map<String, JsonObject> infos = virtManager.getNetworks(minionId);
-        List<VirtualNetworkInfoJson> networks = infos.entrySet().stream().map(entry -> {
-            VirtualNetworkInfoJson net = new VirtualNetworkInfoJson(entry.getKey(),
-                    entry.getValue());
-
-            return net;
-        }).collect(Collectors.toList());
+        List<VirtualNetworkInfoJson> networks = infos.entrySet().stream()
+                .map(entry -> new VirtualNetworkInfoJson(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
 
         return json(response, networks);
     }
