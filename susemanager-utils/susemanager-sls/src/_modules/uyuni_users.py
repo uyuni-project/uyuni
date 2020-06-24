@@ -326,24 +326,26 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
     def list_orgs(self) -> List[Dict[str, Union[str, int]]]:
         """
-        List all organanizations trusted by the authenticated user organization
+        List all organizations trusted by the authenticated user organization
 
-        :return:
+        :return: List of organization details
         """
         return self.client("org.trusts.listOrgs")
 
     def list_trusts(self, org_name: str) -> List[Dict[str, Union[str, int, bool]]]:
         """
-        List all organanizations trusted by the authenticated user organization
+        List all trusts for the organization
+        Admin user must have SUSE Manager Administrator role to perform this action
 
-        :return:
+        :return: list with all organization and if is trusted or not
         """
         org = self._org_manager.get_details(org_name)
         return self.client("org.trusts.listTrusts", org["id"])
 
-    def add_trust(self, org_name: str, org_trust: str) -> int:
+    def add_trust_by_name(self, org_name: str, org_trust: str) -> int:
         """
-        Set organisation trusted.
+        Set organisation trusted
+        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_name: organization name
         :param org_trust: organization to trust
@@ -351,19 +353,42 @@ class UyuniOrgTrust(UyuniRemoteObject):
         """
         this_org = self._org_manager.get_details(org_name)
         trust_org = self._org_manager.get_details(org_trust)
-        return self.client("org.trusts.addTrust", this_org["id"], trust_org["id"])
+        return self.add_trust(this_org["id"], trust_org["id"])
 
-    def remove_trust(self, org_name: str, org_untrust: str) -> int:
+    def add_trust(self, org_id: str, org_trust_id: str) -> int:
         """
         Set organisation trusted.
+        Admin user must have SUSE Manager Administrator role to perform this action
+
+        :param org_id: organization id
+        :param org_trust_id: organization id to trust
+        :return: 1 on success, exception thrown otherwise.
+        """
+        return self.client("org.trusts.addTrust", org_id, org_trust_id)
+
+    def remove_trust_by_name(self, org_name: str, org_untrust: str) -> int:
+        """
+        Remove organisation trusted.
+        Admin user must have SUSE Manager Administrator role to perform this action
+
         :param org_name: organization name
-        :param org_untrust: organization to trust
+        :param org_untrust: organization name to untrust
         :return: 1 on success, exception thrown otherwise.
         """
         this_org = self._org_manager.get_details(org_name)
         trust_org = self._org_manager.get_details(org_untrust)
-        return self.client("org.trusts.removeTrust", this_org["id"], trust_org["id"])
+        return self.remove_trust(this_org["id"], trust_org["id"])
 
+    def remove_trust(self, org_id: str, org_untrust_id: str) -> int:
+        """
+        Remove organisation trusted.
+        Admin user must have SUSE Manager Administrator role to perform this action
+
+        :param org_id: organization id
+        :param org_untrust_id: organization id to untrust
+        :return: 1 on success, exception thrown otherwise.
+        """
+        return self.client("org.trusts.removeTrust", org_id, org_untrust_id)
 
 
 class UyuniSystemgroup(UyuniRemoteObject):
@@ -757,32 +782,6 @@ def org_update_name(org_id, name, admin_user=None, admin_password=None):
     return UyuniOrg(admin_user, admin_password).update_name(org_id, name)
 
 
-def org_trust_add_trust(org_name, org_trust, admin_user=None, admin_password=None):
-    """
-    Add an organization to the list of trusted organizations.
-    admin_user needs to have SUSE Manager Administrator role to perform this action
-    :param org_name:
-    :param org_trust:
-    :param admin_user:
-    :param admin_password:
-    :return:
-    """
-    return UyuniOrgTrust(admin_user, admin_password).add_trust(org_name, org_trust)
-
-
-def org_trust_remove_trust(org_name, org_untrust, admin_user=None, admin_password=None):
-    """
-    Remove an organization to the list of trusted organizations.
-    admin_user needs to have SUSE Manager Administrator role to perform this action
-    :param org_name:
-    :param org_untrust:
-    :param admin_user:
-    :param admin_password:
-    :return:
-    """
-    return UyuniOrgTrust(admin_user, admin_password).remove_trust(org_name, org_untrust)
-
-
 def org_trust_list_orgs(admin_user=None, admin_password=None):
     """
     List all organanizations trusted by the authenticated user organization
@@ -797,12 +796,64 @@ def org_trust_list_trusts(org_name, admin_user=None, admin_password=None):
     """
     List all trusts for one organization
     admin_user needs to have SUSE Manager Administrator role to perform this action
-    :param org_name: Nome of the organization to get the trusts
+    :param org_name: Name of the organization to get the trusts
     :param admin_user: authentication user
     :param admin_password: authentication user password
     :return: list of all organizations with the trust flag value
     """
     return UyuniOrgTrust(admin_user, admin_password).list_trusts(org_name)
+
+
+def org_trust_add_trust_by_name(org_name, org_trust, admin_user=None, admin_password=None):
+    """
+    Add an organization to the list of trusted organizations.
+    admin_user needs to have SUSE Manager Administrator role to perform this action
+    :param org_name: organization name
+    :param org_trust: Trust organization name
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return:
+    """
+    return UyuniOrgTrust(admin_user, admin_password).add_trust_by_name(org_name, org_trust)
+
+
+def org_trust_add_trust(org_id, org_trust_id, admin_user=None, admin_password=None):
+    """
+    Add an organization to the list of trusted organizations.
+    admin_user needs to have SUSE Manager Administrator role to perform this action
+    :param org_id: Organization id
+    :param org_trust_id: Trust organization id
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return:
+    """
+    return UyuniOrgTrust(admin_user, admin_password).add_trust(org_id, org_trust_id)
+
+
+def org_trust_remove_trust_by_name(org_name, org_untrust, admin_user=None, admin_password=None):
+    """
+    Remove an organization to the list of trusted organizations.
+    admin_user needs to have SUSE Manager Administrator role to perform this action
+    :param org_name: organization name
+    :param org_untrust: organization name to untrust
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return:
+    """
+    return UyuniOrgTrust(admin_user, admin_password).remove_trust_by_name(org_name, org_untrust)
+
+
+def org_trust_remove_trust(org_id, org_untrust_id, admin_user=None, admin_password=None):
+    """
+    Remove an organization to the list of trusted organizations.
+    admin_user needs to have SUSE Manager Administrator role to perform this action
+    :param org_id: orgnization id
+    :param org_untrust_id: organizaton id to untrust
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return:
+    """
+    return UyuniOrgTrust(admin_user, admin_password).remove_trust(org_id, org_untrust_id)
 
 
 """
