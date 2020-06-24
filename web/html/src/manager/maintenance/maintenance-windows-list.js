@@ -196,7 +196,7 @@ class MaintenanceWindowsList extends React.Component {
 
         return (
             <div>
-                <InnerPanel title={t("Maintenance " +  (this.state.type === "schedule" ? "Schedules" : "Calendars"))} icon="spacewalk-icon-salt" buttons={this.props.disableCreate ? null : createButton}>
+                <InnerPanel title={t("Maintenance " +  (this.state.type === "schedule" ? "Schedules" : "Calendars"))} icon="spacewalk-icon-schedule" buttons={this.props.disableCreate ? null : createButton}>
                     <div className="panel panel-default">
                         <div className="panel-heading">
                             <div>

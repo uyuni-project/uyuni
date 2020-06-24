@@ -267,7 +267,8 @@ class MaintenanceWindowsEdit extends React.Component {
             </div>
         ];
         return (
-            <InnerPanel title={t("Schedule Maintenance Window")} icon="spacewalk-icon-salt" buttonsLeft={buttonsLeft} buttons={buttons} >
+            <InnerPanel title={t("Maintenance ") +(this.state.type === "schedule" ? t("Schedule") : t("Calendar"))}
+                        icon="spacewalk-icon-schedule" buttonsLeft={buttonsLeft} buttons={buttons} >
                 {this.state.type === "schedule" ? this.renderScheduleEdit() : this.renderCalendarEdit()}
                 <input className="hidden" type="file" id="ical-data-upload" onChange={this.onIcalFileAttach}/>
             </InnerPanel>
