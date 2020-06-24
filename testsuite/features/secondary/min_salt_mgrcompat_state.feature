@@ -4,6 +4,14 @@
 @sle_minion
 Feature: Verify that Salt mgrcompat state works when the new module.run syntax is enabled
 
+  Scenario: Remove mgrcompat module from minion synced modules and schedule Hardware Refresh
+    Given I remove "/var/cache/salt/minion/extmods/states/mgrcompat.py" from "sle_minion"
+    And I am on the Systems overview page of this "sle_minion"
+    When I follow "Hardware"
+    And I click on "Schedule Hardware Refresh"
+    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+
   Scenario: Delete SLES minion system profile before script bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
