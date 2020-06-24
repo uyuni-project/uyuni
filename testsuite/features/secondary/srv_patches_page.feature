@@ -21,7 +21,7 @@ Feature: Patches page
 
   Scenario: Create new bugfix patch with bnc URL
     Given I am on the patches page
-    When I follow the left menu "Patches > Manage Patches > Published"
+    When I follow the left menu "Patches > Manage Patches"
     And I follow "Create Patch"
     When I enter "Test Patch" as "synopsis"
     And I enter "Test Advisory" as "advisoryName"
@@ -36,12 +36,13 @@ Feature: Patches page
     And I enter "test,keywords" as "keywords"
     And I enter "Test Reference" as "refersTo"
     And I enter "Test Note" as "notes"
+    And I check test channel
     And I click on "Create Patch"
-    Then I should see a "Patch Test Advisory-1 created." text
+    Then I should see a "Patch: Test Advisory-1" text
 
   Scenario: Create new enhancement patch with no bnc URL
     Given I am on the patches page
-    When I follow the left menu "Patches > Manage Patches > Published"
+    When I follow the left menu "Patches > Manage Patches"
     And I follow "Create Patch"
     When I enter "Enhancement Patch" as "synopsis"
     And I enter "Enhancement Advisory" as "advisoryName"
@@ -55,25 +56,17 @@ Feature: Patches page
     And I enter "Enhancement,keywords" as "keywords"
     And I enter "Enhancement Reference" as "refersTo"
     And I enter "Enhancement Note" as "notes"
+    And I check test channel
     And I click on "Create Patch"
-    Then I should see a "Patch Enhancement Advisory-1 created." text
+    Then I should see a "Patch: Enhancement Advisory-1" text
 
   Scenario: Delete enhancement patch
     Given I am on the patches page
-    When I follow the left menu "Patches > Manage Patches > Unpublished"
+    When I follow the left menu "Patches > Manage Patches"
     And I check "Enhancement Advisory" patch
     And I click on "Delete Patches"
     And I click on "Confirm"
     Then I should see a "Successfully deleted 1 patches." text
-
-  Scenario: Publish patch called "Test advisory"
-    Given I am on the patches page
-    When I follow the left menu "Patches > Manage Patches > Unpublished"
-    And I follow "Test Advisory"
-    And I click on "Publish Patch"
-    And I check test channel
-    And I click on "Publish Patch"
-    Then I should see a "All Types" text
 
   Scenario: Verify patch presence in web UI
     Given I am on the patches page
@@ -102,7 +95,7 @@ Feature: Patches page
 
   Scenario: Delete patch
     Given I am on the patches page
-    When I follow the left menu "Patches > Manage Patches > Published"
+    When I follow the left menu "Patches > Manage Patches"
     And I check "Test Advisory" patch
     And I click on "Delete Patches"
     And I click on "Confirm"

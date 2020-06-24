@@ -9,7 +9,7 @@
     <body>
         <rhn:toolbar base="h1" icon="header-user"
                      imgAlt="users.jsp.imgAlt"
-                     helpUrl="/docs/reference/home/home-overview.html">
+                     helpUrl="/docs/reference/users/users-menu.html">
             <bean:message key="Addresses" />
         </rhn:toolbar>
         <p><bean:message key="addresses.summary" /></p>

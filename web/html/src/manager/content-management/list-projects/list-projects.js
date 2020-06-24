@@ -70,7 +70,7 @@ const ListProjects = (props: Props) => {
   );
 
   return (
-      <TopPanel title={t('Content Lifecycle Projects')} icon="spacewalk-icon-lifecycle" button={panelButtons} helpUrl="/docs/reference/clm/clm-menu.html">
+      <TopPanel title={t('Content Lifecycle Projects')} icon="spacewalk-icon-lifecycle" button={panelButtons} helpUrl="/docs/reference/clm/clm-projects.html">
         <Table
           data={normalizedProjects}
           identifier={row => row.label}

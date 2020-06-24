@@ -728,7 +728,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         channels.add(channel.getLabel());
 
         Errata errata = handler.create(admin, errataInfo,
-                bugs, keywords, packages, true, channels);
+                bugs, keywords, packages, channels);
 
         Errata result = ErrataFactory.lookupByAdvisoryAndOrg(advisoryName, admin.getOrg());
         assertEquals(errata, result);
@@ -749,7 +749,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         errata = TestUtils.reload(errata);
         assertNull(errata);
 
-        errata = ErrataFactoryTest.createTestUnpublishedErrata(user.getOrg().getId());
+        errata = ErrataFactoryTest.createTestPublishedErrata(user.getOrg().getId());
         check = ErrataManager.lookupErrata(errata.getId(), user);
         assertTrue(check.getAdvisory().equals(errata.getAdvisory()));
         assertTrue(check.getId().equals(errata.getId()));
@@ -792,7 +792,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         try {
             Errata errata = handler.create(admin, errataInfo,
-                bugs, keywords, packages, true, channels);
+                bugs, keywords, packages, channels);
             fail("large advisory name was accepted");
         }
         catch (Exception e) {
@@ -819,7 +819,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
 
         try {
             Errata errata = handler.create(admin, errataInfo,
-                bugs, keywords, packages, true, channels);
+                bugs, keywords, packages, channels);
             fail("large advisory release was accepted");
         }
         catch (InvalidAdvisoryReleaseException iare) {
@@ -845,7 +845,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         channels.add(channel.getLabel());
 
         Errata errata = handler.create(admin, errataInfo,
-            bugs, keywords, packages, true, channels);
+            bugs, keywords, packages, channels);
 
         assertEquals(ErrataManager.MAX_ADVISORY_RELEASE,
                 errata.getAdvisoryRel().longValue());
@@ -858,7 +858,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      **/
     public void testPublishCustomErrata() throws Exception {
         // publish a custom errata
-        Errata unpublished = ErrataFactoryTest.createTestUnpublishedErrata(admin.getOrg().getId());
+        Errata unpublished = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());
         ArrayList channels = new ArrayList();
@@ -876,7 +876,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
      **/
     public void testPublishVendorErrata() throws Exception {
         // publish a custom errata
-        Errata unpublished = ErrataFactoryTest.createTestUnpublishedErrata(admin.getOrg().getId());
+        Errata unpublished = ErrataFactoryTest.createTestPublishedErrata(admin.getOrg().getId());
         unpublished.setOrg(null); // let the errata be a vendor one
         Channel channel = ChannelFactoryTest.createBaseChannel(admin);
         channel.setOrg(admin.getOrg());

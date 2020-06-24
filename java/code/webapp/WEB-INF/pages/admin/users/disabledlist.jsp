@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-user" imgAlt="users.jsp.imgAlt"
- helpUrl="/docs/reference/users/deactivated-users.html"
+ helpUrl="/docs/reference/admin/users.html"
  creationUrl="/rhn/users/CreateUser.do"
  creationType="user">
   <bean:message key="disabledlist.jsp.title"/>

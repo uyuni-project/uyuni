@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="system.common.systemAlt"
- helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.wst">
+ helpUrl="/docs/reference/systems/systems-list.html#ref.webui.systems.systems.reboot">
   <bean:message key="unentitledlist.jsp.header"/>
 </rhn:toolbar>
 

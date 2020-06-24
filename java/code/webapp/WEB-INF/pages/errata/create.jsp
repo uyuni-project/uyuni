@@ -169,12 +169,30 @@
                     <html:textarea property="notes" cols="40" rows="6" styleClass="form-control"/>
                 </div>
             </div>
-            <rhn:hidden name="eid" value="0" />
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-6">
-                    <html:submit styleClass="btn btn-success">
+                    <h3><bean:message key="errata.create.jsp.channels"/></h3>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-6">
+                    <c:set var="pageList" value="${requestScope.pageList}" />
+                    <rhn:list pageList="${requestScope.pageList}" noDataText="errata.publish.nochannels">
+                      <rhn:listdisplay set="${requestScope.set}" hiddenvars="${requestScope.newset}">
+                        <rhn:set value="${current.id}" />
+                        <rhn:column header="errata.publish.channelname">
+                            <c:out value="${current.name}"/>
+                        </rhn:column>
+                      </rhn:listdisplay>
+                    </rhn:list>
+                    <rhn:hidden name="returnvisit" value="${param.returnvisit}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-6">
+                    <button class="btn btn-primary" type="submit" name="dispatch" value='<bean:message key="errata.create.jsp.createerrata"/>'>
                         <bean:message key="errata.create.jsp.createerrata"/>
-                    </html:submit>
+                    </button>
                 </div>
             </div>
         </html:form>

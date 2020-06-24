@@ -17,9 +17,6 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "kvm_server"
-    And I restart salt-minion on "kvm_server"
-    # Shorten the virtpoller interval to avoid losing time
-    And I reduce virtpoller run interval on "kvm_server"
 
 @virthost_kvm
   Scenario: Setting the virtualization entitlement for KVM
@@ -29,7 +26,37 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
+    And the virtpoller beacon should be enabled on "kvm_server"
+    And I restart salt-minion on "kvm_server"
 
+@virthost_kvm
+  Scenario: Enable the virtualization host formula for KVM
+    Given I am on the Systems overview page of this "kvm_server"
+    When I follow "Formulas" in the content area
+    Then I should see a "Choose formulas" text
+    And I should see a "Virtualization" text
+    When I check the "virtualization-host" formula
+    And I click on "Save"
+    Then the "virtualization-host" formula should be checked
+
+@virthost_kvm
+  Scenario: Parametrize the KVM virtualization host
+    Given I am on the Systems overview page of this "kvm_server"
+    When I follow "Formulas" in the content area
+    And I follow first "Virtualization Host" in the content area
+    And I enter "192.168.124.1" in virtual network IPv4 address field
+    And I enter "192.168.124.2" in first IPv4 address for DHCP field
+    And I enter "192.168.124.254" in last IPv4 address for DHCP field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+
+@virthost_kvm
+  Scenario: Apply the KVM virtualization host formula via the highstate
+    Given I am on the Systems overview page of this "kvm_server"
+    When I follow "States" in the content area
+    And I click on "Apply Highstate"
+    And I wait until event "Apply highstate scheduled by admin" is completed
+    Then service "libvirtd" is enabled on "kvm_server"
 
 @virthost_kvm
   Scenario: Prepare a KVM test virtual machine and list it
@@ -135,8 +162,19 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "ide" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk-1.qcow2" virtio disk
+    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk-1" virtio disk from pool "test-pool0"
     And "test-vm" virtual machine on "kvm_server" should have a ide cdrom
+
+@virthost_kvm
+  Scenario: Attach an image to a cdrom on a KVM virtual machine
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I click on "Edit" in row "test-vm"
+    And I store "" into file "/tmp/test-image.iso" on "kvm_server"
+    And I wait until I do not see "Loading..." text
+    And I enter "/tmp/test-image.iso" as "disk2_source_file"
+    And I click on "Update"
+    Then I should see a "Hosted Virtual Systems" text
+    And "test-vm" virtual machine on "kvm_server" should have "/tmp/test-image.iso" attached to a cdrom
 
 @virthost_kvm
   Scenario: Delete a disk from a KVM virtual machine
@@ -158,19 +196,25 @@ Feature: Be able to manage KVM virtual machines via the GUI
 @virthost_kvm
   Scenario: Create a KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm_server"
+    And I create empty "/var/lib/libvirt/images/test-pool0/disk1.qcow2" qcow2 disk file on "kvm_server"
+    And I refresh the "test-pool0" storage pool of this "kvm_server"
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
+    And I click on "add_disk"
+    And I select "test-pool0" from "disk1_source_pool"
+    And I select "disk1.qcow2" from "disk1_source_file"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system.qcow2" virtio disk
+    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system" virtio disk from pool "test-pool0"
+    And "test-vm2" virtual machine on "kvm_server" should have a "disk1.qcow2" virtio disk from pool "test-pool0"
 
 @virthost_kvm
   Scenario: Show the Spice graphical console for KVM
@@ -183,9 +227,9 @@ Feature: Be able to manage KVM virtual machines via the GUI
   Scenario: Show the virtual storage pools and volumes for KVM
     Given I am on the "Virtualization" page of this "kvm_server"
     When I refresh the "test-pool0" storage pool of this "kvm_server"
-    When I follow "Storage"
+    And I follow "Storage"
     And I open the sub-list of the product "test-pool0"
-    Then I wait until I see "test-vm2_system.qcow2" text
+    Then I wait until I see "test-vm2_system" text
 
 @virthost_kvm
   Scenario: delete a running KVM virtual machine

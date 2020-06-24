@@ -7,7 +7,7 @@
     <body>
         <%@ include file="/WEB-INF/pages/common/fragments/user/user-header.jspf" %>
         <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
-        <rhn:toolbar base="h2" helpUrl="/docs/reference/users/active-users.html">
+        <rhn:toolbar base="h2" helpUrl="/docs/reference/admin/users.html">
             <bean:message key="yourchangeemail.jsp.title" />
         </rhn:toolbar>
         <p>${pageinstructions}</p>

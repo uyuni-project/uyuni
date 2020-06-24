@@ -126,16 +126,12 @@ public class MinionServer extends Server implements SaltConfigurable {
     /**
      * Return <code>true</code> if OS on this system supports OS Image building,
      * <code>false</code> otherwise.
-     * <p>
-     * Note: For SLES, we are only checking if it's not 10.
-     * Older than SLES 10 are not being checked.
-     * </p>
      *
      * @return <code>true</code> if OS supports OS Image building
      */
     @Override
     public boolean doesOsSupportsOSImageBuilding() {
-        return !isSLES10();
+        return isSLES11() || isSLES12() || isSLES15() || isLeap15();
     }
 
     /**
@@ -155,7 +151,8 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     @Override
     public boolean doesOsSupportsMonitoring() {
-        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isRedHat6() || isRedHat7() || isRedHat8();
+        return isSLES12() || isSLES15() || isLeap15() || isUbuntu1804() || isUbuntu2004() || isRedHat6() ||
+                isRedHat7() || isRedHat8();
     }
 
     /**
@@ -192,6 +189,10 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     private boolean isUbuntu1804() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("18.04");
+    }
+
+    private boolean isUbuntu2004() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("20.04");
     }
 
     /**

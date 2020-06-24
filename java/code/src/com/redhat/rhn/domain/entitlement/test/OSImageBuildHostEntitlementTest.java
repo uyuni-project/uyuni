@@ -9,11 +9,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-import com.suse.manager.reactor.utils.ValueMap;
-
-import java.util.HashMap;
-import java.util.Map;
-
 public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
 
     @Override public void setUp() throws Exception {
@@ -34,6 +29,8 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
     @Override
     public void testIsAllowedOnServer() throws Exception {
         Server traditional = ServerTestUtils.createTestSystem(user);
+        traditional.setOs("SLES");
+        traditional.setRelease("12.2");
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setOs("SLES");
         minion.setRelease("12.2");
@@ -44,25 +41,17 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
         assertTrue(ent.isAllowedOnServer(minion));
         assertFalse(ent.isAllowedOnServer(traditional));
 
+        minion.setOs("SLES");
+        minion.setRelease("15.1");
+        assertTrue(ent.isAllowedOnServer(minion));
+
         minion.setOs("RedHat Linux");
         minion.setRelease("6Server");
-        assertTrue(ent.isAllowedOnServer(minion));
+        assertFalse(ent.isAllowedOnServer(minion));
     }
 
     @Override
-    public void testIsAllowedOnServerWithGrains() throws Exception {
-        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
-        Map<String, Object> grains = new HashMap<>();
-        grains.put("os_family", "Suse");
-        grains.put("osmajorrelease", "12");
-
-        assertTrue(ent.isAllowedOnServer(minion, new ValueMap(grains)));
-
-        grains.put("os_family", "RedHat");
-        grains.put("osmajorrelease", "7");
-        assertTrue(ent.isAllowedOnServer(minion, new ValueMap(grains)));
-
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(minion, EntitlementManager.MANAGEMENT);
-        assertFalse(ent.isAllowedOnServer(minion, new ValueMap(grains)));
+    public void testIsAllowedOnServerWithGrains() {
+        // Nothing to test
     }
 }

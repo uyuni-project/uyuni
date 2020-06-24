@@ -2242,24 +2242,24 @@ available for this kickstart profile to function properly.
 &lt;p&gt;이 문제를 해결하려면 다음 사항을 확인하십시오:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-이 킥스타트 프로파일의 기본 채널에 대한 'rhn-tools' 자식 소프트웨어 채널을 
+이 킥스타트 프로파일의 기본 채널에 대한 'rhn-tools' 자식 소프트웨어 채널을
 조직에서 사용할 수 있습니까? 사용할 수 없는 경우 @@PRODUCT_NAME@@ 관리자로 부터
-'rhn-tools' 소프트웨어 채널의 인타이틀먼트를 요청해야 합니다. 
+'rhn-tools' 소프트웨어 채널의 인타이틀먼트를 요청해야 합니다.
 &lt;/li&gt;
 &lt;li&gt;
 이 킥스타트 프로파일의 기본 채널에 대한 'rhn-tools' 자식 채널을 @@PRODUCT_NAME@@에서
 사용할 수 있는지 확인하십시오. 사용할 수 없는 경우 satellite 관리자에게 문의하여
-rhn-tools 채널의 satellite 동기화를 요청하고 다시 시도해야 
-합니다.  
+rhn-tools 채널의 satellite 동기화를 요청하고 다시 시도해야
+합니다.
 &lt;/li&gt;
 &lt;li&gt;
-이 킥스타트에 해당하는 rhn-kickstart* 패키지를 킥스타트의 기본 채널의 
-'rhn-tools' 채널에서 사용할 수 있는지 확인하십시오 사용할 수 없는 경우, 
-킥스타트 프로파일이 올바르게 작동하도록 하기 위해 이를 사용 가능하게 해야 합니다. 
+이 킥스타트에 해당하는 rhn-kickstart* 패키지를 킥스타트의 기본 채널의
+'rhn-tools' 채널에서 사용할 수 있는지 확인하십시오 사용할 수 없는 경우,
+킥스타트 프로파일이 올바르게 작동하도록 하기 위해 이를 사용 가능하게 해야 합니다.
 &lt;/li&gt;
 &lt;li&gt;
-위에 나열된 패키지를 킥스타트의 기본 채널에서 사용할 수 있습니까? 사용할 수 없는 경우 킥스타트 프로파일이 올바르게 
-작동하도록 하기 위해 이를 사용 가능하게 해야 합니다.  
+위에 나열된 패키지를 킥스타트의 기본 채널에서 사용할 수 있습니까? 사용할 수 없는 경우 킥스타트 프로파일이 올바르게
+작동하도록 하기 위해 이를 사용 가능하게 해야 합니다.
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
@@ -10116,6 +10116,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="notification.stateapplyfailed">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
+      </trans-unit>
+      <trans-unit id="cluster.join_precondition_package_name">
+        <source>Package {0} not found in subscribed channels</source>
       </trans-unit>
     </body>
   </file>

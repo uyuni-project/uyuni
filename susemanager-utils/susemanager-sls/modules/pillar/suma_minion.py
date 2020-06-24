@@ -47,9 +47,11 @@ MANAGER_GLOBAL_PILLAR = [
 ]
 
 MINION_PILLAR_FILES_PREFIX = "pillar_{minion_id}"
-MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml"]
+MINION_PILLAR_FILES_SUFFIXES = [".yml", "_group_memberships.yml", "_virtualization.yml"]
 
 CONFIG_FILE = '/etc/rhn/rhn.conf'
+
+formulas_metadata_cache = dict()
 
 # Fomula group subtypes
 class EditGroupSubtype(Enum):
@@ -98,7 +100,10 @@ def ext_pillar(minion_id, *args):
         data_filename = os.path.join(MANAGER_PILLAR_DATA_PATH, minion_pillar_filename_prefix + suffix)
         if os.path.exists(data_filename):
             try:
-                ret.update(yaml.load(open(data_filename).read(), Loader=yaml.FullLoader))
+                ret = salt.utils.dictupdate.merge(
+                        ret,
+                        yaml.load(open(data_filename).read(), Loader=yaml.FullLoader),
+                        strategy='recurse')
             except Exception as error:
                 log.error('Error accessing "{pillar_file}": {message}'.format(pillar_file=data_filename, message=str(error)))
 
@@ -141,11 +146,16 @@ def formula_pillars(minion_id, group_ids):
     for group in group_ids:
         for formula in data.get(str(group), []):
             formula_utf8 = salt.utils.stringutils.to_str(formula)
-            if formula_utf8 in out_formulas:
-                continue # already processed
+            formula_metadata = load_formula_metadata(formula)
+            if formula_metadata.get("type", "") != "cluster-formula":
+                # a minion can be in multiple cluster groups, each group with its own cluster-formulas
+                # in such a case we want to merge all values from cluster-formulas
+                # the values of the formula will be under different keys, mgr_clusters:cluster1:.., mgr_clusters:cluster2:...
+                if formula_utf8 in out_formulas:
+                    continue # already processed
             out_formulas.append(formula_utf8)
             pillar = salt.utils.dictupdate.merge(pillar,
-                     load_formula_pillar(minion_id, group, formula),
+                     load_formula_pillar(minion_id, group, formula, formula_metadata),
                      strategy='recurse')
 
     # Loading minion formulas
@@ -170,7 +180,7 @@ def formula_pillars(minion_id, group_ids):
     return pillar
 
 
-def load_formula_pillar(minion_id, group_id, formula_name):
+def load_formula_pillar(minion_id, group_id, formula_name, formula_metadata = None):
     '''
     Load the data from a specific formula for a minion in a specific group, merge and return it.
     '''
@@ -194,8 +204,23 @@ def load_formula_pillar(minion_id, group_id, formula_name):
         log.error('Error loading data for formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
         return {}
 
+    # if group_data starts with mgr_clusters then merge and adjust without the mgr_clusters:<cluster>:settings prefix
+    cluster_name = None
+    cluster_pillar_key = None
+    if formula_metadata and formula_metadata.get("type", "") == "cluster-formula":
+        if "cluster_pillar_key" not in formula_metadata:
+            log.error("No 'cluster_pillar_key' in metadata of formula {}".format(formula_name))
+        else:    
+            cluster_pillar_key = formula_metadata["cluster_pillar_key"]
+            group_data, cluster_name = _pillar_value_by_path(group_data, "mgr_clusters:*:{}".format(cluster_pillar_key))
+
     merged_data = merge_formula_data(layout, group_data, system_data)
     merged_data = adjust_empty_values(layout, merged_data)
+
+    # put back data under cluster pillar namespace
+    if cluster_name:
+        merged_data = {"mgr_clusters": {cluster_name: {cluster_pillar_key: merged_data}}}
+
     return merged_data
 
 
@@ -303,3 +328,44 @@ def image_pillars(minion_id):
 
     return ret
 
+def load_formula_metadata(formula_name):
+    if formula_name in formulas_metadata_cache:
+        return formulas_metadata_cache[formula_name]
+
+    metadata_filename = None
+    metadata_paths_ordered = [
+        os.path.join(MANAGER_FORMULAS_METADATA_STANDALONE_PATH, formula_name, "metadata.yml"),
+        os.path.join(MANAGER_FORMULAS_METADATA_MANAGER_PATH, formula_name, "metadata.yml"),
+        os.path.join(CUSTOM_FORMULAS_METADATA_PATH, formula_name, "metadata.yml")
+    ]
+    
+    # Take the first metadata file that exist
+    for mpath in metadata_paths_ordered:
+        if os.path.isfile(mpath):
+            metadata_filename = mpath
+            break
+            
+    if not metadata_filename:             
+        log.error('Error loading metadata for formula "{formula}": No metadata.yml found'.format(formula=formula_name))
+        return {}
+    try:
+        metadata = yaml.load(open(metadata_filename).read())
+    except Exception as error:
+        log.error('Error loading data for formula "{formula}": {message}'.format(formula=formula_name, message=str(error)))
+        return {}
+
+    formulas_metadata_cache[formula_name] = metadata                 
+    return metadata            
+
+def _pillar_value_by_path(data, path):
+    result = data
+    first_key = None
+    for token in path.split(":"):
+        if token == "*":
+            first_key = next(iter(result))
+            result = result[first_key] if first_key else None
+        elif token in result:
+            result = result[token]
+        else:
+            break
+    return result, first_key

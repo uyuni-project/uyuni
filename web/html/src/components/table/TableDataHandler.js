@@ -189,7 +189,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                       {column.props.header}
                   </Header>;
           } else {
-              return <Header key={index} className={column.props.headerClass}/>;
+              return <Header key={index} width={column.props.width} className={column.props.headerClass}/>;
           }
       });
 
@@ -285,7 +285,7 @@ export class TableDataHandler extends React.Component<Props, State> {
             (
               isEmpty ?
               <div className="panel-body">
-                <h4>{emptyText}</h4>
+                <div className="subheadline">{emptyText}</div>
               </div>
               :
               <div>

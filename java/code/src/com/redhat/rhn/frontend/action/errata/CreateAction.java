@@ -17,16 +17,19 @@
  */
 package com.redhat.rhn.frontend.action.errata;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.Severity;
+import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.errata.ErrataManager;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -40,6 +43,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,15 +52,18 @@ import javax.servlet.http.HttpServletResponse;
  * CreateAction
  * @version $Rev$
  */
-public class CreateAction extends RhnAction {
+public class CreateAction extends RhnSetAction {
+
+    /** This class reuses code in the channel assignment page */
+    private ChannelAction channelAction = new ChannelAction();
 
     /**
      * {@inheritDoc}
      */
-    public ActionForward execute(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
+    public ActionForward create(ActionMapping mapping,
+                                ActionForm formIn,
+                                HttpServletRequest request,
+                                HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm) formIn;
 
         RequestContext requestContext = new RequestContext(request);
@@ -78,13 +85,20 @@ public class CreateAction extends RhnAction {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                        new ActionMessage("errata.edit.error.rhAdvisoryName"));
         }
+        //Make sure at least one channel is selected
+        RhnSet set = updateSet(request);
+        if (set.isEmpty()) {
+            errors.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("errata.publish.nochannelsselected"));
+        }
+
         if (!errors.isEmpty()) { // We've got errors. Forward to failure mapping.
             addErrors(request, errors);
             return mapping.findForward("failure");
         }
 
         //Create a new unpublished errata
-        Errata e = ErrataManager.createNewErrata();
+        Errata e = ErrataFactory.createPublishedErrata();
         e.setSynopsis(form.getString("synopsis"));
         e.setAdvisoryName(form.getString("advisoryName"));
         e.setAdvisoryRel(Long.valueOf(form.getString("advisoryRelease")));
@@ -134,6 +148,7 @@ public class CreateAction extends RhnAction {
         e.setOrg(user.getOrg());
 
         ErrataManager.storeErrata(e);
+        ErrataManager.publish(e, channelAction.getChannelIdsFromRhnSet(set), user);
 
         ActionMessages msgs = new ActionMessages();
         msgs.add(ActionMessages.GLOBAL_MESSAGE,
@@ -158,8 +173,28 @@ public class CreateAction extends RhnAction {
             Long id = Long.valueOf(form.getString("buglistId"));
             String summary = form.getString("buglistSummary");
             String url = form.getString("buglistUrl");
-            return ErrataManager.createNewUnpublishedBug(id, summary, url);
+            return ErrataFactory.createPublishedBug(id, summary, url);
         }
         return null;
+    }
+
+    @Override
+    protected void processMethodKeys(Map<String, String> map) {
+        map.put("errata.create.jsp.createerrata", "create");
+    }
+
+    @Override
+    protected RhnSetDecl getSetDecl() {
+        return channelAction.getSetDecl();
+    }
+
+    @Override
+    protected DataResult getDataResult(User user, ActionForm formIn, HttpServletRequest request) {
+        return channelAction.getDataResult(user, formIn, request);
+    }
+
+    @Override
+    protected void processParamMap(ActionForm form, HttpServletRequest request, Map<String, Object> params) {
+        channelAction.processParamMap(form, request, params);
     }
 }

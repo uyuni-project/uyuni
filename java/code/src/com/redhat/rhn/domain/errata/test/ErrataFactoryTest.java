@@ -249,9 +249,6 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         errata = ErrataFactory.lookupById(unpubid);
         assertTrue(errata instanceof UnpublishedErrata);
         assertEquals(unpubid, errata.getId());
-        errata = ErrataFactory.lookupByAdvisoryAndOrg(unpubname, user.getOrg());
-        assertTrue(errata instanceof UnpublishedErrata);
-        assertEquals(unpubid, errata.getId());
     }
 
     public void testCreateAndLookupErrataNullOrg() throws Exception {
@@ -285,13 +282,6 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         errata = ErrataFactory.lookupById(unpubid);
         assertTrue(errata instanceof UnpublishedErrata);
         assertEquals(unpubid, errata.getId());
-        errata = ErrataFactory.lookupByAdvisoryAndOrg(unpubname, null);
-        assertTrue(errata instanceof UnpublishedErrata);
-        assertEquals(unpubid, errata.getId());
-
-        //Lookup the unpublished errata by user's Org
-        errata = ErrataFactory.lookupByAdvisoryAndOrg(unpubname, user.getOrg());
-        assertNull(errata);
     }
 
     public void testLastModified() throws Exception {

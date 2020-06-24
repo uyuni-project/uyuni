@@ -33,7 +33,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
-
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
 import org.apache.log4j.Logger;
@@ -535,4 +535,18 @@ public class Access extends BaseHandler {
         Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
         return ContactMethodUtil.isSSHPushContactMethod(lookedUp.getContactMethod());
     }
+
+    /**
+     * Checks if a server group is owned by a cluster.
+     * @param ctx acl context
+     * @param params parameters for acl
+     * @return true if the server group is owned by a cluster
+     */
+    public boolean aclIsClusterGroup(Object ctx, String[] params) {
+        Map map = (Map) ctx;
+        Long sgid = getAsLong(map.get("sgid"));
+        User user = (User) map.get("user");
+        return ClusterManager.instance().isClusterGroup(sgid);
+    }
+
 }

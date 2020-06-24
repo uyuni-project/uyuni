@@ -64,7 +64,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.1.10
+Version:        4.1.12
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -85,6 +85,7 @@ BuildRequires:  apache-commons-collections
 BuildRequires:  apache-commons-io
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-logging
+BuildRequires:  apache-commons-jexl
 BuildRequires:  bcel
 BuildRequires:  byte-buddy
 BuildRequires:  c3p0 >= 0.9.1
@@ -157,6 +158,7 @@ Requires:       apache-commons-collections
 Requires:       apache-commons-io
 Requires:       apache-commons-lang3
 Requires:       apache-commons-logging
+Requires:       apache-commons-jexl
 Requires:       bcel
 Requires:       byte-buddy
 Requires:       c3p0 >= 0.9.1
@@ -195,6 +197,7 @@ Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
 Requires:       system-lock-formula
+Requires:       uyuni-cluster-provider-caasp
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       tomcat-taglibs-standard
@@ -514,9 +517,7 @@ install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-def
 install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 
 # Adjust product tree tag
-%if 0%{?sle_version} && !0%{?is_opensuse}
-sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
-%else
+%if 0%{?is_opensuse}
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api

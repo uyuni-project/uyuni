@@ -36,7 +36,7 @@
 %endif
 
 Name:           spacewalk-branding
-Version:        4.1.4
+Version:        4.1.5
 Release:        1%{?dist}
 Summary:        Spacewalk branding data
 License:        GPL-2.0-only
@@ -109,6 +109,7 @@ jar -cf java-branding.jar -C java/code/src com
 ln -s /srv/www/htdocs/css/bootstrap css/bootstrap
 ln -s /srv/www/htdocs/css/patternfly1 css/patternfly1
 lessc css/spacewalk.less > css/spacewalk.css
+lessc css/uyuni/spacewalk.less > css/uyuni/spacewalk.css
 lessc css/susemanager-fullscreen.less > css/susemanager-fullscreen.css
 rm -f css/bootstrap
 rm -f css/patternfly1
@@ -116,6 +117,7 @@ rm -f css/patternfly1
 %install
 install -d -m 755 %{buildroot}%{wwwdocroot}
 install -d -m 755 %{buildroot}%{wwwdocroot}/css
+install -d -m 755 %{buildroot}%{wwwdocroot}/css/uyuni
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
@@ -133,6 +135,8 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %files
 %dir %{wwwdocroot}/css
 %{wwwdocroot}/css/*.css
+%dir %{wwwdocroot}/css/uyuni
+%{wwwdocroot}/css/uyuni/*.css
 %dir %{wwwdocroot}/fonts
 %{wwwdocroot}/fonts/*
 %dir /%{wwwdocroot}/img
@@ -153,5 +157,6 @@ ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{tomcat_path}/webapps/r
 %files devel
 %defattr(-,root,root)
 %{wwwdocroot}/css/*.less
+%{wwwdocroot}/css/uyuni/*.less
 
 %changelog

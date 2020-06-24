@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue Jun 23 17:24:11 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
+- Add VM disk format support
+- Enable osimage_build_host for additional architectures (bsc#1149101, bsc#1172076)
+
+-------------------------------------------------------------------
+Wed Jun 10 12:40:28 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
+- Add tables for cluster management
+- Enable the monitoring entitlement for s390x (bsc#1172627)
+- update package provider name
+- add new gpg key ids for some package providers
+
+-------------------------------------------------------------------
 Wed May 20 11:05:12 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.7-1

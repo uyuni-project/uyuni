@@ -15,6 +15,12 @@
 
 package com.suse.manager.reactor.messaging;
 
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toSet;
+
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -41,6 +47,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.virtualization.VirtManagerSalt;
@@ -52,6 +59,9 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
+
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -61,13 +71,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
-import org.apache.log4j.Logger;
-
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Optional.ofNullable;
-import static java.util.stream.Collectors.partitioningBy;
-import static java.util.stream.Collectors.toSet;
 
 /**
  * Common registration logic that can be used from multiple places
@@ -85,7 +88,8 @@ public class RegistrationUtils {
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
     private static SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(),
+            new SystemUnentitler(new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
+                    new FormulaMonitoringManager()),
             new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
                     new FormulaMonitoringManager())
     );
@@ -128,7 +132,8 @@ public class RegistrationUtils {
         StatesAPI.generateServerPackageState(minion);
 
         // Should we apply the highstate?
-        boolean applyHighstate = activationKey.isPresent() && activationKey.get().getDeployConfigs();
+        boolean applyHighstate = activationKey.isPresent() && (activationKey.get().getDeployConfigs() ||
+                activationKey.get().getEntitlements().stream().anyMatch(e -> !e.isBase()));
 
         // Apply initial states asynchronously
         List<String> statesToApply = new ArrayList<>();

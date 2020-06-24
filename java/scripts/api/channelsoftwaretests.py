@@ -47,7 +47,7 @@ class ChannelSoftware(RhnTestCase):
                        'notes' : 'test notes',
                        '' : '',
                        'solution' : 'test solution'}
-        client.errata.create(self.session_key, SEC_ERRATA_INFO, ERRATA_BUGS, ERRATA_KEYWORDS, ERRATA_PACKAGES, True, [CHANNEL_LABEL])
+        client.errata.create(self.session_key, SEC_ERRATA_INFO, ERRATA_BUGS, ERRATA_KEYWORDS, ERRATA_PACKAGES, [CHANNEL_LABEL])
 
         self.random_int = randint(1, 1000000)
         self.advisory_name = "apitest %s" % self.random_int
@@ -62,7 +62,7 @@ class ChannelSoftware(RhnTestCase):
                        'notes' : 'test notes',
                        '' : '',
                        'solution' : 'test solution'}
-        client.errata.create(self.session_key, BUG_ERRATA_INFO, ERRATA_BUGS, ERRATA_KEYWORDS, ERRATA_PACKAGES, True, [CHANNEL_LABEL])
+        client.errata.create(self.session_key, BUG_ERRATA_INFO, ERRATA_BUGS, ERRATA_KEYWORDS, ERRATA_PACKAGES, [CHANNEL_LABEL])
 
         self.random_int = randint(1, 1000000)
         self.advisory_name = "apitest %s" % self.random_int
@@ -77,7 +77,7 @@ class ChannelSoftware(RhnTestCase):
                        'notes' : 'test notes',
                        '' : '',
                        'solution' : 'test solution'}
-        client.errata.create(self.session_key, ENH_ERRATA_INFO, ERRATA_BUGS, ERRATA_KEYWORDS, ERRATA_PACKAGES, True, [CHANNEL_LABEL])
+        client.errata.create(self.session_key, ENH_ERRATA_INFO, ERRATA_BUGS, ERRATA_KEYWORDS, ERRATA_PACKAGES, [CHANNEL_LABEL])
 
     def tearDown(self):
         result = client.channel.software.delete(self.session_key, CHANNEL_LABEL)

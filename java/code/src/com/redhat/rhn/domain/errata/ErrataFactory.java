@@ -17,7 +17,7 @@
  */
 package com.redhat.rhn.domain.errata;
 
-import static java.util.stream.Collectors.toCollection;
+import static org.apache.commons.collections.CollectionUtils.isEmpty;
 
 import com.redhat.rhn.common.db.DatabaseException;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -56,8 +56,8 @@ import com.suse.utils.Opt;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,7 +71,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.stream.Collectors;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
@@ -755,29 +754,11 @@ public class ErrataFactory extends HibernateFactory {
      * @return Returns the errata corresponding to the passed in advisory name.
      */
     public static Errata lookupByAdvisoryAndOrg(String advisory, Org org) {
-        Session session = null;
-        Errata retval = null;
-        //  try {
-        //look for a published errata first
-        session = HibernateFactory.getSession();
-        retval = (Errata) session.getNamedQuery("PublishedErrata.findByAdvisoryNameAndOrg")
+        return (Errata) HibernateFactory.getSession()
+                .getNamedQuery("PublishedErrata.findByAdvisoryNameAndOrg")
                 .setParameter("advisory", advisory)
                 .setParameter("org", org)
                 .uniqueResult();
-        //if nothing was found, check the unpublished errata table
-        if (retval == null) {
-            retval = (Errata)
-                    session.getNamedQuery("UnpublishedErrata.findByAdvisoryNameAndOrg")
-                    .setParameter("advisory", advisory)
-                    .setParameter("org", org)
-                    .uniqueResult();
-        }
-        //      }
-        //      catch (HibernateException e) {
-        //          throw new
-        //            HibernateRuntimeException("Error looking up errata by advisory name");
-        //       }
-        return retval;
     }
 
     /**
@@ -790,19 +771,11 @@ public class ErrataFactory extends HibernateFactory {
         Session session = null;
         List<Errata> retval = null;
         try {
-            //look for a published errata first
             session = HibernateFactory.getSession();
             retval = session.getNamedQuery("PublishedErrata.findByAdvisory")
                     .setParameter("advisory", advisoryId)
                     .setParameter("org", org)
                     .getResultList();
-
-            if (retval == null) {
-                retval = session.getNamedQuery("UnpublishedErrata.findByAdvisory")
-                        .setParameter("advisory", advisoryId)
-                        .setParameter("org", org)
-                        .getResultList();
-            }
         }
         catch (HibernateException e) {
 
@@ -849,7 +822,7 @@ public class ErrataFactory extends HibernateFactory {
                     .setParameter("original", original)
                     .setParameter("org", org).list();
 
-            if (retval == null) {
+            if (isEmpty(retval)) {
                 retval = lookupPublishedByOriginal(org, original);
             }
 
@@ -1225,15 +1198,6 @@ public class ErrataFactory extends HibernateFactory {
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
         List<Errata> foundErrata = listPublishedErrata(ids, orgId);
 
-        HashSet<Long> foundErrataIds = foundErrata.stream().map(Errata::getId).collect(toCollection(HashSet::new));
-
-        List<Long> remainingIds = ids.stream()
-                .filter(id -> !foundErrataIds.contains(id))
-                .collect(Collectors.toList());
-
-        if (!remainingIds.isEmpty()) {
-            foundErrata.addAll(listUnpublishedErrata(remainingIds, orgId));
-        }
         return foundErrata;
     }
 
@@ -1247,19 +1211,6 @@ public class ErrataFactory extends HibernateFactory {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("orgId", orgId);
         return singleton.listObjectsByNamedQuery("PublishedErrata.listAvailableToOrgByIds",
-                params, eids, "eids");
-    }
-
-    /**
-     * List unpublished errata objects by ID and org
-     * @param eids list of ids
-     *  * @param orgId the organization id
-     * @return List of Errata Objects
-     */
-    private static List<Errata> listUnpublishedErrata(Collection<Long> eids, Long orgId) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("orgId", orgId);
-        return singleton.listObjectsByNamedQuery("UnpublishedErrata.listAvailableToOrgByIds",
                 params, eids, "eids");
     }
 

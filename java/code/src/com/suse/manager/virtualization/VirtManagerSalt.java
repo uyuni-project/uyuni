@@ -14,14 +14,19 @@
  */
 package com.suse.manager.virtualization;
 
+import com.redhat.rhn.domain.server.MinionServer;
+
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
+import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
+import com.suse.manager.webui.utils.salt.State;
+import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.MinionList;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.redhat.rhn.domain.server.MinionServer;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.salt.State;
-import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,6 +43,8 @@ import java.util.stream.Collectors;
 public class VirtManagerSalt implements VirtManager {
 
     private final SaltApi saltApi;
+    private MinionPillarFileManager minionVirtualizationPillarFileManager =
+            new MinionPillarFileManager(new MinionVirtualizationPillarGenerator());
 
     /**
      * Service providing utility functions to handle virtual machines.
@@ -54,11 +61,18 @@ public class VirtManagerSalt implements VirtManager {
     public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("vm_", domainName);
+
+        LocalCall<Map<String, VmInfoJson>> vmInfoCall =
+                new LocalCall<>("virt.vm_info", Optional.empty(), Optional.of(args),
+                        new TypeToken<Map<String, VmInfoJson>>() { });
+        Optional<Map<String, VmInfoJson>> vmInfo = saltApi.callSync(vmInfoCall, minionId);
+
         LocalCall<String> call =
                 new LocalCall<>("virt.get_xml", Optional.empty(), Optional.of(args), new TypeToken<String>() { });
 
         Optional<String> result = saltApi.callSync(call, minionId);
-        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml));
+        return result.filter(s -> !s.startsWith("ERROR")).map(xml -> GuestDefinition.parse(xml,
+                vmInfo.map(data -> data.get(domainName))));
     }
 
     /**
@@ -166,6 +180,14 @@ public class VirtManagerSalt implements VirtManager {
         pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
         saltApi.callSync(State.apply(Collections.singletonList("virt.engine-events"),
                 Optional.of(pillar)), minion.getMinionId());
+
+        if (minion.hasVirtualizationEntitlement()) {
+            minionVirtualizationPillarFileManager.updatePillarFile(minion);
+        }
+        else {
+            minionVirtualizationPillarFileManager.removePillarFile(minion.getMinionId());
+        }
+        saltApi.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
 }

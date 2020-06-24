@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
@@ -60,7 +59,7 @@ public class CloneConfirmSetupActionTest extends RhnMockStrutsTestCase {
 
         actionPerform();
 
-        DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
+        DataResult dr = (DataResult) request.getAttribute("errataList");
         assertNotNull(dr);
         assertTrue(dr.size() == 5);
     }

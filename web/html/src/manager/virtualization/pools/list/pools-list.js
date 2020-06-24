@@ -17,6 +17,8 @@ import { VirtualizationPoolsListRefreshApi } from '../virtualization-pools-list-
 import { VirtualizationPoolsActionApi } from '../virtualization-pools-action-api';
 import { useVirtNotification } from '../../useVirtNotification.js';
 
+import type {MessageType} from 'components/messages';
+
 type Props = {
   serverId: string,
   refreshInterval: number,
@@ -165,7 +167,7 @@ export function PoolsList(props: Props) {
     return null;
   }
 
-  function getCreationActionMessages(): React.Node {
+  function getCreationActionMessages(): Array<MessageType> {
     return Object.keys(actionsResults)
       .filter(key => key.startsWith("new-") && actionsResults[key].type === "virt.pool_create")
       .flatMap(key => {

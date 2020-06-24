@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.formula;
 
+import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
@@ -24,6 +26,10 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.suse.manager.clusters.ClusterFactory;
+import com.suse.manager.model.clusters.Cluster;
+import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.utils.Opt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,9 +37,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
-import com.suse.utils.Opt;
-
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -49,6 +54,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -60,10 +68,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.common.validator.ValidatorException;
-import org.apache.commons.collections.ListUtils;
 
 
 /**
@@ -90,6 +94,8 @@ public class FormulaFactory {
     private static final String METADATA_FILE = "metadata.yml";
     private static final String PILLAR_EXAMPLE_FILE = "pillar.example";
     private static final String PILLAR_FILE_EXTENSION = "json";
+    private static final String METADATA_DIR_CLUSTER_PROVIDERS = "/usr/share/susemanager/cluster-providers/metadata/";
+
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .registerTypeAdapter(Double.class,  new JsonSerializer<Double>() {
@@ -232,8 +238,9 @@ public class FormulaFactory {
     public static List<Formula> listFormulas() {
         List<Formula> formulas = new LinkedList<>();
         for (String formulaName : listFormulaNames()) {
+            Map<String, Object> metadata = getMetadata(formulaName);
             Formula formula = new Formula(formulaName);
-            formula.setMetadata(getMetadata(formulaName));
+            formula.setMetadata(metadata);
             formulas.add(formula);
         }
         return formulas;
@@ -499,8 +506,40 @@ public class FormulaFactory {
                 groupId + "_" + name + "." + PILLAR_FILE_EXTENSION);
         try {
             if (dataFile.exists()) {
-                return Optional.of((Map<String, Object>) GSON.fromJson(
-                        new BufferedReader(new FileReader(dataFile)), Map.class));
+                Map<String, Object> data = (Map<String, Object>) GSON.fromJson(
+                        new BufferedReader(new FileReader(dataFile)), Map.class);
+
+                if (formulaHasType(name, "cluster-formula")) {
+                    // find cluster for this group
+                    Optional<Cluster> cluster = ClusterFactory.findClusterByGroupId(groupId);
+                    if (cluster.isPresent()) {
+                        // load cluster provider metadata and look for the key of this formula
+                        Map<String, Object> metadata = getClusterProviderMetadata(cluster.get().getProvider());
+                        Map<String, Object> formulas = (Map<String, Object>) metadata.get("formulas");
+                        Optional<String> formulaKey = formulas.entrySet().stream()
+                                .filter(e -> e.getValue() instanceof Map)
+                                .filter(e -> ((Map) e.getValue()).get("name").equals(name))
+                                .map(e -> e.getKey())
+                                .findFirst();
+                        if (formulaKey.isPresent()) {
+                            // return values under mgr_clusters:<cluster-name>:<formula-key>
+                            return getValueByPath(data,
+                                    "mgr_clusters:" + cluster.get().getLabel() + ":" + formulaKey.get())
+                                    .filter(Map.class::isInstance)
+                                    .map(Map.class::cast);
+                        }
+                        else {
+                            return Optional.empty();
+                        }
+                    }
+                    else {
+                        return Optional.empty();
+                    }
+                }
+                else {
+                    return Optional.of(data);
+                }
+
             }
             else {
                 return Optional.empty();
@@ -509,6 +548,23 @@ public class FormulaFactory {
         catch (FileNotFoundException e) {
             return Optional.empty();
         }
+    }
+
+    /**
+     * Get the name of the formula that corresponds to the key used by the cluster provider.
+     * @param clusterProvider the name of the cluster provider
+     * @param formulaKey the key of the formula
+     * @return the name of the formula
+     */
+    public static Optional<String> getClusterProviderFormulaName(String clusterProvider, String formulaKey) {
+        Map<String, Object> metadata = getClusterProviderMetadata(clusterProvider);
+        return getValueByPath(metadata, "formulas:" + formulaKey)
+                .filter(Map.class::isInstance)
+                .map(Map.class::cast)
+                .filter(data -> !"cluster-provider".equals(data.get("source")))
+                .filter(data -> data.containsKey("name"))
+                .filter(data -> data.get("name") instanceof String)
+                .map(data -> (String)data.get("name"));
     }
 
     /**
@@ -888,4 +944,165 @@ public class FormulaFactory {
         return (boolean) nodeExporter.get("enabled") || (boolean) apacheExporter.get("enabled") ||
                 (boolean) postgresExporter.get("enabled");
     }
+
+    /**
+     * Returns the metadata of a cluster provider.
+     * @param provider the name of the formula
+     * @return the metadata
+     */
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> getClusterProviderMetadata(String provider) {
+        // TODO cache metadata ?
+        String metadataFilePath = provider + File.separator + METADATA_FILE;
+        File metadataFileStandalone = new File(METADATA_DIR_CLUSTER_PROVIDERS + metadataFilePath);
+        try {
+            if (metadataFileStandalone.isFile()) {
+                return (Map<String, Object>) YAML.load(new FileInputStream(metadataFileStandalone));
+            }
+            else {
+                return Collections.emptyMap();
+            }
+        }
+        catch (IOException e) {
+            return Collections.emptyMap();
+        }
+    }
+
+    /**
+     * Get a value from the cluster provider metadata.
+     * @param provider the name of the cluster provider
+     * @param key the key of the value
+     * @param keyType the Java type of the value
+     * @param <T> the Java type of the value
+     * @return the value of the metadata key
+     */
+    public static <T> Optional<T> getClusterProviderMetadata(String provider, String key, Class<T> keyType) {
+        Map<String, Object> metadata = FormulaFactory.getClusterProviderMetadata(provider);
+        return FormulaFactory.getValueByPath(metadata, key)
+                .filter(keyType::isInstance)
+                .map(keyType::cast);
+    }
+
+    /**
+     * Get a formula layout from a cluster provider. The formula is referenced by its key not by it's actual name.
+     * @param provider the name of the cluster provider
+     * @param formulaKey the key of the formula used by the provider
+     * @return the formula layout as a Map
+     */
+    public static Optional<Map<String, Object>> getClusterProviderFormulaLayout(String provider, String formulaKey) {
+        Map<String, Object> metadata = getClusterProviderMetadata(provider);
+        Optional<String> formulaName = getValueByPath(metadata, "formulas:" + formulaKey + ":name")
+                .filter(String.class::isInstance)
+                .map(String.class::cast);
+
+        String formulaSource = getValueByPath(metadata, "formulas:" + formulaKey + ":source")
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .orElse("system");
+
+        if (formulaName.isEmpty()) {
+            return Optional.empty();
+        }
+        if ("system".equals(formulaSource)) {
+            return getFormulaLayoutByName(formulaName.get());
+        }
+        else if ("cluster-provider".equals(formulaSource)) {
+            return getFormulaLayoutByClusterProviderAndName(provider, formulaName.get());
+        }
+        else {
+            throw new RuntimeException("Unknown formula source " + formulaSource);
+        }
+    }
+
+    private static Optional<Map<String, Object>> getFormulaLayoutByClusterProviderAndName(String provider,
+                                                                                          String name) {
+        Path layoutFile = Paths.get(METADATA_DIR_CLUSTER_PROVIDERS, provider, name + ".yml");
+        try {
+            if (Files.exists(layoutFile)) {
+                return Optional.of((Map<String, Object>) YAML.load(new FileInputStream(layoutFile.toFile())));
+            }
+            else {
+                return Optional.empty();
+            }
+        }
+        catch (FileNotFoundException | YAMLException e) {
+            LOG.error("Error loading layout for formula '" + name +
+                    "' from cluster provider '" + provider + "'", e);
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Checks the type of the formula.
+     * @param formula the name of the formula
+     * @param type the type
+     * @return whether the formula has the given type or not
+     */
+    public static boolean formulaHasType(String formula, String type) {
+        Map<String, Object> metadata = getMetadata(formula);
+        return Optional.ofNullable(metadata.get("type"))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .map(t -> t.equals(type))
+                .orElse(false);
+    }
+
+
+    /**
+     * Get the value from a nested map structure by a colon separated path.
+     * E.g. key1:key2:key3 for a map with a depth of 3.
+     * @param data the nested map
+     * @param path the path
+     * @return a value if available
+     */
+    public static Optional<Object> getValueByPath(Map<String, Object> data, String path) {
+        String[] tokens = StringUtils.split(path, ":");
+        Map<String, Object> current = data;
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+            Object val = current.get(token);
+            if (i == tokens.length - 1) {
+                return Optional.ofNullable(val);
+            }
+            if (val == null) {
+                return Optional.empty();
+            }
+            if (val instanceof Map) {
+                current = (Map<String, Object>)val;
+            }
+            else {
+                return Optional.empty();
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Get all installed cluster providers.
+     * @return a list containing the metadata of all installed cluster providers
+     */
+    public static List<Map<String, Object>> getClusterProvidersMetadata() {
+        Path dir = Path.of(METADATA_DIR_CLUSTER_PROVIDERS);
+        try {
+            return Files.list(dir)
+                    .filter(Files::isDirectory)
+                    .map(p -> {
+                        String provider = p.getFileName().toString();
+                        Map<String, Object> m = getClusterProviderMetadata(provider);
+                        m = new HashMap<>(m);
+                        m.put("label", provider);
+                        return m;
+                    })
+                    .collect(Collectors.toList());
+        }
+        catch (IOException e) {
+            LOG.error("Error loading providers metadata", e);
+            return Collections.emptyList();
+        }
+    }
+
+    public static String getClusterPillarDir() {
+        return dataDir + PILLAR_DIR;
+    }
+
 }

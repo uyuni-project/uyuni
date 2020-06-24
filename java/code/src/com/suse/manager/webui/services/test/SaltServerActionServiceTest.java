@@ -19,7 +19,6 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -65,18 +64,20 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.google.gson.JsonElement;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.salt.netapi.calls.LocalCall;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.jmock.Expectations;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -125,14 +126,19 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
 
-        saltServerActionService = new SaltServerActionService(systemQuery);
-        saltServerActionService.setSkipCommandScriptPerms(true);
+        saltServerActionService = createSaltServerActionService(systemQuery);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
                 new SystemEntitler(systemQuery, virtManager, new FormulaMonitoringManager())
         );
 
         sshPushSystemMock = mock(SystemSummary.class);
+    }
+
+    private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery) {
+        SaltServerActionService service = new SaltServerActionService(systemQuery);
+        service.setSkipCommandScriptPerms(true);
+        return service;
     }
 
     public void testPackageUpdate() throws Exception {
@@ -541,7 +547,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 throw new RuntimeException();
             }
         };
-        return new SaltServerActionService(systemQuery);
+        return createSaltServerActionService(systemQuery);
     }
 
     /**
@@ -579,7 +585,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 return Optional.of(new JsonObject());
             }
         };
-        saltServerActionService = new SaltServerActionService(systemQuery);
+        saltServerActionService = createSaltServerActionService(systemQuery);
 
         saltServerActionService.executeSSHAction(prereq, minion);
         assertEquals(STATUS_COMPLETED, prereqServerAction.getStatus());
@@ -702,7 +708,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 return Optional.empty();
             }
         };
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery);
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
@@ -728,19 +734,19 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 throw new RuntimeException();
             }
         };
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery);
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
         try {
             saltServerActionService.executeSSHAction(action, minion);
         } catch (RuntimeException e) {
-            // expected
-            assertEquals(STATUS_FAILED, serverAction.getStatus());
-            assertTrue(serverAction.getResultMsg().startsWith("Error calling Salt: "));
-            return;
+            fail("Runtime exception should not have been thrown.");
         }
-        fail("Runtime exception should have been thrown.");
+
+        assertEquals(STATUS_FAILED, serverAction.getStatus());
+        assertTrue(serverAction.getResultMsg().startsWith("Error calling Salt: "));
     }
+
 
     /**
      * Tests that a successful execution of a reboot action will move this action to the
@@ -756,7 +762,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 return Optional.of(new JsonObject());
             }
         };
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery);
 
         Action action = createRebootAction(new Date(1L));
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);

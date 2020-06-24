@@ -1,5 +1,28 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:23:18 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.15-1
+- generate bootstrap repos for all archs when --auto is used (bsc#1173154)
+- add --no-flush option to mgr-create-bootstrap-repo
+- fix bootstrap repo create without flush option (bsc#1172702)
+
+-------------------------------------------------------------------
+Mon Jun 15 12:41:30 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
+- Enable bootstrap repository creation for openSUSE Leap 15.2 for Uyuni
+
+-------------------------------------------------------------------
+Wed Jun 10 12:36:34 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.13-1
+- copy /var/lib/spacewalk during migration (bsc#1169550)
+- Enable support for bootstrapping Ubuntu 20.04 LTS added from the
+  Setup Wizard or mgr-sync
 - migrate proxy list in cobbler settings (bsc#1169536)
 - Make systemd services and timers enablement really quiet
+- Packages for the Ubuntu 18.04 bootstrap repo are now populated with Python3
+  dependencies (bsc#1168845)
 
 -------------------------------------------------------------------
 Wed May 20 11:01:49 CEST 2020 - jgonzalez@suse.com

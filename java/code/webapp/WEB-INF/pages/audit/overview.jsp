@@ -11,7 +11,7 @@
 <body>
 
 <rhn:toolbar base="h1" icon="header-system" imgAlt="audit.jsp.alt"
- helpUrl="/docs/reference/systems/systems-overview.html">
+ helpUrl="/docs/reference/audit/audit-menu.html">
   <bean:message key="audit.overview.jsp.header"/>
 </rhn:toolbar>
 

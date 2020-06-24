@@ -84,6 +84,7 @@ import com.redhat.rhn.frontend.dto.CustomDataKeyOverview;
 import com.redhat.rhn.frontend.dto.EmptySystemProfileOverview;
 import com.redhat.rhn.frontend.dto.EssentialServerDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -178,7 +179,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         });
         SaltService saltService = new SaltService();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
@@ -336,6 +337,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             // expected
         }
 
+        DataResult<VirtualSystemOverview> data = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
+        assertEquals("Guest not found", 1, data.getTotalSize());
     }
 
     public void testDeleteVirtualServerHostDeleted() throws Exception {

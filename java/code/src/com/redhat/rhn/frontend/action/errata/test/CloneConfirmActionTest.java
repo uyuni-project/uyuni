@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
@@ -66,10 +65,20 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
         RhnSet set = RhnSetDecl.ERRATA_CLONE.get(user);
         assertEquals(5, set.size());
 
+        Channel destination = ChannelFactoryTest.createTestChannel(user);
+        RhnSet destinationChannels = RhnSetFactory.createRhnSet(user.getId(),
+                RhnSetDecl.CHANNELS_FOR_ERRATA.getLabel(),
+                SetCleanup.NOOP);
+        destinationChannels.addElement(destination.getId());
+        RhnSetManager.store(destinationChannels);
+
+        RhnSet channelSet = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);
+        assertEquals(1, channelSet.size());
+
         request.addParameter("dispatch", "Confirm");
 
         actionPerform();
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        verifyForward("success");
         set = RhnSetDecl.ERRATA_CLONE.get(user);
         assertEquals(0, set.size());
 

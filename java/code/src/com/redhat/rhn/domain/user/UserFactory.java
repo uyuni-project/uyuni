@@ -65,7 +65,7 @@ public  class UserFactory extends HibernateFactory {
 
     private static final Role[] IMPLIEDROLESARRAY = { RoleFactory.CHANNEL_ADMIN,
             RoleFactory.CONFIG_ADMIN, RoleFactory.SYSTEM_GROUP_ADMIN,
-            RoleFactory.ACTIVATION_KEY_ADMIN, RoleFactory.IMAGE_ADMIN };
+            RoleFactory.ACTIVATION_KEY_ADMIN, RoleFactory.IMAGE_ADMIN, RoleFactory.CLUSTER_ADMIN };
 
     /** List of Role objects that are applied if you are an Org_admin */
     public static final List<Role> IMPLIEDROLES = Arrays.asList(IMPLIEDROLESARRAY);

@@ -405,6 +405,7 @@ copy_remote_files() {
                /var/lib/Kiwi
                /var/lib/rhn
                /var/lib/salt
+               /var/lib/spacewalk
                /var/log/rhn
                /var/spacewalk"
 

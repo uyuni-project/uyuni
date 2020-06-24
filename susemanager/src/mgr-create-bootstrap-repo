@@ -238,7 +238,9 @@ def cli():
 
 
     parser.add_option('-f', '--flush', action='store_true', dest='flush',
-                      help='when used in conjuction with --create, deletes the target repository before creating it')
+                      help='when used in conjuction with --create, deletes the target repository before creating it (default)')
+    parser.add_option('--no-flush', action='store_true', dest='noflush',
+                      help='when used in conjuction with --create, prevent deletion of the target repository before creating it')
     parser.add_option('', '--with-custom-channels', action='store_true', dest='usecustomchannels',
                       help='Take custom channels into account when searching for newest package versions')
     parser.add_option('', '--with-parent-channel', action="store", dest='parentchannel',
@@ -250,8 +252,12 @@ def cli():
         initLOG(logfile, level=5)
     else:
         initLOG(logfile, CFG.DEBUG or 1)
-    if not options.flush:
-        options.flush = CFG.BOOTSTRAP_REPO_FLUSH
+    flush = CFG.BOOTSTRAP_REPO_FLUSH
+    if options.flush:
+        flush = options.flush
+    if options.noflush:
+        flush = False
+    options.flush = flush
 
     log(sys.argv, 1)
     if isBeta():
@@ -404,7 +410,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     if options.dryrun:
         log("Create directory:", destdirtmp)
     else:
-        if options.flush:
+        if not os.path.exists(destdir):
             os.makedirs(destdirtmp)
         else:
             shutil.copytree(destdir, destdirtmp)
@@ -513,22 +519,19 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         return 1
     return 0
 
-def generate_all(options, mgr_bootstrap_data, additional=[]):
+def generate_repo_view(mgr_bootstrap_data):
     repos = {}
-    errors = 0
-
-    log("Generating bootstrap repos for all available products which had changes.")
-
     for dist in sorted(list_labels(mgr_bootstrap_data, do_print=False).values()):
-        if mgr_bootstrap_data.DATA[dist]['DEST'] in repos:
-            continue
-        repos[mgr_bootstrap_data.DATA[dist]['DEST']] = mgr_bootstrap_data.DATA[dist]
-        repos[mgr_bootstrap_data.DATA[dist]['DEST']]['DIST'] = dist
+        if mgr_bootstrap_data.DATA[dist]['DEST'] not in repos:
+            repos[mgr_bootstrap_data.DATA[dist]['DEST']] = {}
+        repos[mgr_bootstrap_data.DATA[dist]['DEST']][dist] = mgr_bootstrap_data.DATA[dist]
+    return repos
 
-    regenerated = 0
-    for dest, repo in repos.items():
+def find_dists_for_regeneration(dest, dists, doall=False):
+    regenerate = []
+    for label, dist in dists.items():
         destfile = os.path.join(dest, 'repodata', 'repomd.xml')
-        if 'TYPE' in repo and repo['TYPE'] == 'deb':
+        if 'TYPE' in dist and dist['TYPE'] == 'deb':
             destfile = os.path.join(dest, 'dists', 'bootstrap', 'Release')
 
         filemodtime = 0
@@ -536,13 +539,13 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
             filemodtime = os.path.getmtime(destfile)
 
         log("{0} modified: {1}".format(destfile, filemodtime), 2)
-        if 'PDID' in repo:
-            pdids = ', '.join(repo['PDID'])
+        if 'PDID' in dist:
+            pdids = ', '.join(dist['PDID'])
             h = rhnSQL.prepare(rhnSQL.Statement(_find_mand_modified_repos % (pdids)))
             h.execute(filemod=time.strftime('%Y-%m-%d %H:%M:%S %z', time.localtime(filemodtime)))
-        if 'BASECHANNEL' in repo:
+        if 'BASECHANNEL' in dist:
             h = rhnSQL.prepare(rhnSQL.Statement(_find_modified_repos_by_basechannel))
-            h.execute(filemod=time.strftime('%Y-%m-%d %H:%M:%S %z', time.localtime(filemodtime)), basechannel=repo['BASECHANNEL'])
+            h.execute(filemod=time.strftime('%Y-%m-%d %H:%M:%S %z', time.localtime(filemodtime)), basechannel=dist['BASECHANNEL'])
 
         res = h.fetchall_dict() or []
         if not res:
@@ -550,7 +553,10 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
         regen = True
         oneNewerTimestamp = 0
         for channelinfo in res:
-            if channelinfo['newer'] == 1:
+            if doall and channelinfo['last_synced']:
+                log("{0} available. Full regeneration requested".format(channelinfo['label']), 2)
+                regen = regen and True
+            elif not doall and channelinfo['newer'] == 1:
                 log("{0} modified after last bootstrap generation".format(channelinfo['label']), 2)
                 regen = regen and True
                 if channelinfo['last_synced'] and channelinfo['last_synced'].timestamp() > oneNewerTimestamp:
@@ -558,12 +564,36 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
             else:
                 log("{0} not modified".format(channelinfo['label']), 2)
                 regen = regen and False
+        # regen is True when *all* required channels were re-synced
+        # set it tue true after a grace period of 4 hours
         if not regen and oneNewerTimestamp > 0 and time.time() - oneNewerTimestamp > 4 * 60 * 60:
             log("latest channel sync at: {0}. Grace period over. Regenarate bootstrap repo.".format(oneNewerTimestamp), 2)
             regen = True
         if regen:
-            regenerated += 1
-            errors += create_repo(repo['DIST'], options, mgr_bootstrap_data, additional=additional)
+            regenerate.append(label)
+    return regenerate
+
+
+def generate_all(options, mgr_bootstrap_data, additional=[]):
+    repos = {}
+    errors = 0
+
+    log("Generating bootstrap repos for all available products which had changes.")
+
+    repos = generate_repo_view(mgr_bootstrap_data)
+
+    regenerated = 0
+    for dest, dists in repos.items():
+       labels =  find_dists_for_regeneration(dest, dists, doall=options.flush)
+       if options.flush and len(labels) > 0:
+           destdir = os.path.normpath(dest)
+           dirprefix, lastdir = os.path.split(destdir)
+           destdirtmp = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "tmp"))
+           destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+           doall = True
+       for label in labels:
+           errors += create_repo(label, options, mgr_bootstrap_data, additional=additional)
+           regenerated += 1
 
     if not regenerated:
         log("Nothing to do.")
@@ -614,6 +644,11 @@ def main():
             log_error("'%s' not found" % elabel)
             sys.exit(1)
 
+        if opts.flush:
+            destdir = os.path.normpath(mgr_bootstrap_data.DATA[elabel]['DEST'])
+            dirprefix, lastdir = os.path.split(destdir)
+            destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+            os.rename(destdir, destdirold)
         r = create_repo(elabel, opts, mgr_bootstrap_data, additional=args)
     elif opts.list:
         list_labels(mgr_bootstrap_data)

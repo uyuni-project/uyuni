@@ -146,12 +146,12 @@ public class NotificationMessageController {
     public String delete(Request request, Response response, User user) {
         List<Long> messageIds = Json.GSON.fromJson(request.body(), new TypeToken<List<Long>>() { }.getType());
 
-        messageIds.forEach(messageId -> {
-                    Optional<UserNotification> un = UserNotificationFactory.lookupByUserAndMessageId(messageId, user);
-                    if (un.isPresent()) {
-                        UserNotificationFactory.remove(un.get());
-                    }
-                });
+        List<UserNotification> notifications = messageIds.stream()
+                .map(id -> UserNotificationFactory.lookupByUserAndMessageId(id, user))
+                .flatMap(Optional::stream)
+                .collect(Collectors.toList());
+
+        UserNotificationFactory.delete(notifications);
 
         Notification.spreadUpdate();
 

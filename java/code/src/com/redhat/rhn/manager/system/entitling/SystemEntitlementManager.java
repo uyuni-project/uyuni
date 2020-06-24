@@ -28,7 +28,8 @@ import com.suse.manager.webui.services.impl.SaltService;
 public class SystemEntitlementManager {
 
     public static final SystemEntitlementManager INSTANCE = new SystemEntitlementManager(
-            SystemUnentitler.INSTANCE,
+            new SystemUnentitler(new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
+                    new FormulaMonitoringManager()),
             new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
                     new FormulaMonitoringManager())
     );

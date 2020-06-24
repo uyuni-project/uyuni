@@ -36,7 +36,8 @@ public class MinionPillarManager {
 
     public static final MinionPillarManager INSTANCE = new MinionPillarManager(
             Arrays.asList(new MinionPillarFileManager(MinionGeneralPillarGenerator.INSTANCE),
-                    new MinionPillarFileManager(MinionGroupMembershipPillarGenerator.INSTANCE)));
+                    new MinionPillarFileManager(MinionGroupMembershipPillarGenerator.INSTANCE),
+                    new MinionPillarFileManager(MinionVirtualizationPillarGenerator.INSTANCE)));
 
     private List<MinionPillarFileManager> pillarFileManagers;
 
@@ -69,7 +70,7 @@ public class MinionPillarManager {
         if (refreshAccessTokens) {
             AccessTokenFactory.refreshTokens(minion, tokensToActivate);
         }
-        this.pillarFileManagers.stream().forEach(m -> m.generatePillarFile(minion));
+        this.pillarFileManagers.stream().forEach(m -> m.updatePillarFile(minion));
     }
 
     /**

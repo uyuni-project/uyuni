@@ -41,7 +41,7 @@ def compute_image_filename
   case ENV['PXEBOOT_IMAGE']
   when nil
     'Kiwi/POS_Image-JeOS6_head'
-  when 'sles15sp1'
+  when 'sles15sp2'
     'Kiwi/POS_Image-JeOS7_head'
   else
     'Kiwi/POS_Image-JeOS6_head'
@@ -52,7 +52,7 @@ def compute_image_name
   case ENV['PXEBOOT_IMAGE']
   when nil
     'POS_Image_JeOS6_head'
-  when 'sles15sp1'
+  when 'sles15sp2'
     'POS_Image_JeOS7_head'
   else
     'POS_Image_JeOS6_head'

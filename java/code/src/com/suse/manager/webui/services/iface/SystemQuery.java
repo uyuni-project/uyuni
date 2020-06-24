@@ -14,9 +14,8 @@
  */
 package com.suse.manager.webui.services.iface;
 
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.JsonElement;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.suse.manager.clusters.ClusterProviderParameters;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
@@ -36,6 +35,9 @@ import com.suse.salt.netapi.errors.GenericError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.SSHResult;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -164,6 +166,15 @@ public interface SystemQuery {
     Optional<Jobs.Info> listJob(String jid);
 
     /**
+     * Get information about all the nodes available via a cluster.
+     * @param managementNode the management node of the cluster
+     * @param clusterProviderParameters the parameters for calling the cluster provider manager on the management node
+     * @return a list of nodes returned by the cluster provider manager
+     */
+    Optional<Map<String, Map<String, Object>>> listClusterNodes(MinionServer managementNode,
+                                                                ClusterProviderParameters clusterProviderParameters);
+
+    /**
      * Match the given target expression asynchronously.
      * @param target the target expression
      * @param cancel  a future used to cancel waiting on return events
@@ -180,12 +191,6 @@ public interface SystemQuery {
      */
     Optional<CompletionStage<Map<String, Result<Boolean>>>> matchAsyncSSH(
             String target, CompletableFuture<GenericError> cancel);
-
-    /**
-     * Call 'saltutil.refresh_pillar' to sync the grains to the target minion(s).
-     * @param minionList minion list
-     */
-    void refreshPillar(MinionList minionList);
 
     /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
@@ -439,4 +444,11 @@ public interface SystemQuery {
      * @return Optional with true if the file deletion succeeded.
      */
     Optional<Boolean> removeFile(Path path);
+
+    /**
+     * Match minions synchronously using a compound matcher.
+     * @param target compound matcher
+     * @return list of minion ids
+     */
+    List<String> matchCompoundSync(String target);
 }

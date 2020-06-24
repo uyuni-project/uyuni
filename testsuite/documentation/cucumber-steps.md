@@ -361,6 +361,7 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I wait until table row for "test-vm" contains button "Resume"
+  When I wait at most 300 seconds until table row for "test-vm" contains button "Resume"
   When I wait until the tree item "test-pool1" contains "test-pool1 is started automatically" button
 ```
 
@@ -626,6 +627,12 @@ The check box can be identified by name, id or label text.
   Then the pillar data for "timezone" should be empty on "ssh_minion"
 ```
 
+* Salt beacons
+
+```cucumber
+  Then the virtpoller beacon should be enabled on "xen_server"
+```
+
 * Apply the Salt highstate
 
 ```cucumber
@@ -671,6 +678,7 @@ using `qemu-img` and `virt-install`
 
 ```cucumber
   When I create "test-vm" virtual machine on "virt-server"
+  When I create empty "/path/to/disk.qcow2" qcow2 disk file on "virt-server"
 ```
 
 * Checking the state of a virtual machine
@@ -699,6 +707,8 @@ Then "test-vm" virtual machine on "virt-server" should have a NIC with 02:34:56:
 Then "test-vm" virtual machine on "virt-server" should have a "disk.qcow2" scsi disk
 Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
 Then "test-vm" virtual machine on "virt-server" should have no cdrom
+Then "test-vm" virtual machine on "virt-server" should have a "myvolume" virtio disk from pool "test-pool"
+Then "test-vm" virtual machine on "virt-server" should have "/path/to/image.iso" attached to a cdrom
 ```
 
 * Remove disk images from a storage pool

@@ -1,6 +1,6 @@
 // @flow
 
-const React = require('react');
+import * as React from 'react';
 
 type Props = {
   className?: string,
@@ -17,6 +17,6 @@ function PanelRow(props: Props) {
   );
 }
 
-module.exports = {
+export {
   PanelRow,
 };

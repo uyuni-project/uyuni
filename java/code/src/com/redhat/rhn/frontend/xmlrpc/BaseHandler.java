@@ -361,6 +361,17 @@ public class BaseHandler implements XmlRpcInvocationHandler {
     }
 
     /**
+     * Private helper method to make sure a user has cluster admin role.
+     * If not, this will throw a generic Permission exception.
+     * @param user The user to check
+     * @throws PermissionCheckFailureException if user is not an image admin.
+     */
+    public static void ensureClusterAdmin(User user)
+            throws PermissionCheckFailureException {
+        ensureUserRole(user, RoleFactory.CLUSTER_ADMIN);
+    }
+
+    /**
      * Private helper method to make sure a user  the given role..
      * If not, this will throw a generic Permission exception.
      * @param user The user to check

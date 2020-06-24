@@ -6,7 +6,7 @@
 <c:if test="${errata.securityAdvisory}">
      <rhn:toolbar base="h1" icon="errata-security"
      						iconAlt="errata-legend.jsp.security"
-						helpUrl="/docs/reference/spacecmd/errata_.html">
+						helpUrl="/docs/reference/patches/patches-menu.html">
 	   <c:if test="${empty errata}">
 	 	 <decorator:getProperty property="meta.name" />
        </c:if>

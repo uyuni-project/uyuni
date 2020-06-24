@@ -145,7 +145,7 @@ public abstract class AbstractMinionBootstrapper {
             String responseMessage = "Cannot read/write '" + SALT_SSH_DIR_PATH + "/known_hosts'. " +
                                      "Please check permissions.";
             LOG.error("Error during bootstrap: " + responseMessage);
-            return new BootstrapResult(false, Optional.of(contactMethod), responseMessage);
+            return new BootstrapResult(false, Optional.of(contactMethod), responseMessage.split("\\r?\\n"));
         }
 
         try {
@@ -155,7 +155,7 @@ public abstract class AbstractMinionBootstrapper {
                         String responseMessage = SaltUtils.decodeSaltErr(error);
                         LOG.error("Error during bootstrap: " + responseMessage);
                         return new BootstrapResult(false, Optional.of(contactMethod),
-                                responseMessage);
+                                responseMessage.split("\\r?\\n"));
                     },
                     result -> {
                         // We have results, check if result = true
@@ -169,7 +169,7 @@ public abstract class AbstractMinionBootstrapper {
                             LOG.error("States failed during bootstrap: " + msg);
                         });
                         return new BootstrapResult(success, Optional.of(contactMethod),
-                                errMessage.orElse(null));
+                                Opt.fold(errMessage, () -> null, m -> m.split("\\r?\\n")));
                     }
             );
         }

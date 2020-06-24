@@ -276,10 +276,10 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
              * it shouldn't matter
              */
             if (getType().equals("list")) {
-                out.print("<table class=\"table table-striped\"");
+                out.print("<table class=\"table\"");
             }
  else if (getType().equals("treeview")) {
-                out.print("<table class=\"table table-striped\" id=\"channel-list\"");
+                out.print("<table class=\"table\" id=\"channel-list\"");
             }
             else {
                 out.print("<table class=\"" + getType() + "\"");

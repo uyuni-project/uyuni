@@ -11,7 +11,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf"%>
 
     <rhn:toolbar base="h2" icon="header-power"
-        helpUrl="/docs/reference/systems/system-details/sd-provisioning.html">
+        helpUrl="/docs/reference/systems/ssm-overview.html#ref.webui.systems.ssm.provision.pm_config">
         <bean:message key="ssm.provisioning.powermanagement.configuration.header" />
     </rhn:toolbar>
     <div class="page-summary">

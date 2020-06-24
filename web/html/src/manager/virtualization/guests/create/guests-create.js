@@ -7,10 +7,10 @@ const { hot } = require('react-hot-loader');
 const { TopPanel } = require('components/panels/TopPanel');
 const MessagesUtils = require('components/messages').Utils;
 const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
-const { GuestProperties } = require('../guest-properties');
+const { GuestProperties } = require('../GuestProperties');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 const GuestNicsPanel = require('../properties/guest-nics-panel');
-const GuestDisksPanel = require('../properties/guest-disks-panel');
+const DiskUtils = require('../properties/disk-utils');
 const Functions = require('utils/functions');
 
 type Props = {
@@ -33,7 +33,7 @@ class GuestsCreate extends React.Component<Props, State> {
 
     // Diff the model with the initial one to avoid changing disks if user hasn't touched them.
     const disks = getOrderedItemsFromModel(model, 'disk')
-      .map(index => GuestDisksPanel.getRequestParams(model, index));
+      .map(index => DiskUtils.getRequestParams(model, index));
 
     const filteredProps = ['disk', 'network', 'vmType'];
     return Object.assign(
@@ -54,7 +54,7 @@ class GuestsCreate extends React.Component<Props, State> {
     memory: 1024,
     vcpu: 1,
     disk0_editable: true,
-    disk0_type: 'file',
+    disk0_type: 'volume',
     disk0_device: 'disk',
     network0_type: 'network',
     graphicsType: 'vnc',

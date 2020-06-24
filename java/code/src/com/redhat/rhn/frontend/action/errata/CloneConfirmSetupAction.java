@@ -17,13 +17,42 @@ package com.redhat.rhn.frontend.action.errata;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnListAction;
 import com.redhat.rhn.manager.errata.ErrataManager;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * CloneConfirmSetupAction
  * @version $Rev$
  */
-public class CloneConfirmSetupAction extends BaseErrataListSetupAction {
+public class CloneConfirmSetupAction extends RhnListAction {
+    /** This class reuses code in the channel assignment page */
+    private ChannelSetupAction channelSetupAction = new ChannelSetupAction();
+
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm formIn, HttpServletRequest request,
+                                 HttpServletResponse response) {
+
+        RequestContext requestContext = new RequestContext(request);
+
+        User user = requestContext.getCurrentUser();
+        PageControl pc = new PageControl();
+
+        clampListBounds(pc, request, user);
+
+        DataResult dr = getDataResult(user, pc);
+
+        request.setAttribute("errataList", dr);
+
+        return channelSetupAction.execute(mapping, formIn, request, response);
+    }
 
     /**
      * {@inheritDoc}

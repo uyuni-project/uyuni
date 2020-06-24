@@ -521,6 +521,13 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         dupIdSzenario(true, false, true);
     }
 
+    public void testReleaseStageOverride() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+        SUSEProduct product = SUSEProductFactory.lookupByProductId(1150);
+        assertEquals(ReleaseStage.beta, product.getReleaseStage());
+    }
 
     /**
      * Test if changes in SCC data result in updates of the channel data in the DB

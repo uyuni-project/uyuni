@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <rhn-navi-tree label="manage_errata" invisible="1" formvar="eid"
-    title-depth="1" acl_mixins="com.redhat.rhn.common.security.acl.ErrataAclHandler">
+    title-depth="1">
 
     <rhn-tab name="Details">
         <rhn-tab-url>/rhn/errata/manage/Edit.do</rhn-tab-url>
     </rhn-tab>
 
-    <rhn-tab name="Channels" acl="errata_is_published()">
+    <rhn-tab name="Channels">
         <rhn-tab-url>/rhn/errata/manage/Channels.do</rhn-tab-url>
     </rhn-tab>
 

@@ -15,7 +15,7 @@ const { BootstrapPanel } = require('components/panels/BootstrapPanel');
 const {ChannelAnchorLink, ActionLink, ActionChainLink} = require("components/links");
 const ChannelUtils = require("core/channels/utils/channels-dependencies.utils");
 
-import type JsonResult from "utils/network";
+import type {JsonResult} from "utils/network";
 import type {ActionChain} from "components/action-schedule";
 
 declare var localTime: string;

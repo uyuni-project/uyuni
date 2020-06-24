@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 23 17:19:35 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.5-1
+- Restrict websockify to server localhost only (bsc#1149644)
+
+-------------------------------------------------------------------
 Mon Apr 13 09:31:58 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.4-1

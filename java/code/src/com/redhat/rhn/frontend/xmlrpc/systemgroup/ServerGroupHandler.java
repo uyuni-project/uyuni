@@ -35,6 +35,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.manager.clusters.ClusterFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -250,6 +251,12 @@ public class ServerGroupHandler extends BaseHandler {
         ensureSystemGroupAdmin(loggedInUser);
         ServerGroupManager manager = ServerGroupManager.getInstance();
         ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
+        ClusterFactory.findClusterByGroupId(group.getId()).ifPresent(cluster -> {
+            throw new FaultException(1234, "group_owned_by_cluster",
+                    String.format("Group can't be deleted because it's owned by cluster '%s'." +
+                                    " Delete cluster to delete this group.",
+                            cluster.getName()));
+        });
         manager.remove(loggedInUser, group);
         return 1;
     }

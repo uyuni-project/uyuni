@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.formula;
 
+import static com.redhat.rhn.domain.formula.FormulaFactory.getGroupFormulaValuesByNameAndGroupId;
+
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -23,8 +25,11 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
-import com.suse.manager.webui.services.impl.SaltService;
+
+import com.suse.manager.model.clusters.Cluster;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
@@ -46,13 +51,16 @@ public class FormulaManager {
 
     private static FormulaManager instance;
     private SystemQuery systemQuery;
+    private SaltApi saltApi;
     private ServerGroupFactory serverGroupFactory = ServerGroupFactory.SINGLETON;
     private static final String DEFAULT_KEY = "$default";
     private static final String TYPE_KEY = "$type";
     private static final String EDIT_GROUP = "edit-group";
     private static final String PROTOTYPE = "$prototype";
+
     private FormulaManager() {
         systemQuery = SaltService.INSTANCE;
+        saltApi = SaltService.INSTANCE_SALT_API;
     }
 
     /**
@@ -76,6 +84,14 @@ public class FormulaManager {
     }
 
     /**
+     * This method is only for testing purpose.
+     * @param saltApiIn to set
+     */
+    public void setSaltApi(SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
+    }
+
+    /**
      * Save the formula data for the given system.
      * @param user user
      * @param systemId systemId
@@ -89,7 +105,7 @@ public class FormulaManager {
                 .orElseThrow(() -> new IllegalArgumentException("Minion " + systemId + " not found."));
         FormulaUtil.ensureUserHasPermissionsOnServer(user, minion);
         FormulaFactory.saveServerFormulaData(content, minion.getMinionId(), formulaName);
-        systemQuery.refreshPillar(new MinionList(minion.getMinionId()));
+        saltApi.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
     /**
@@ -109,7 +125,7 @@ public class FormulaManager {
         List<String> minionIds = group.getServers().stream()
             .flatMap(s -> Opt.stream(s.asMinionServer()))
             .map(MinionServer::getMinionId).collect(Collectors.toList());
-        systemQuery.refreshPillar(new MinionList(minionIds));
+        saltApi.refreshPillar(new MinionList(minionIds));
     }
 
     /**
@@ -384,5 +400,17 @@ public class FormulaManager {
                     .orElse(Collections.emptyMap()));
         }
         return response;
+    }
+
+    /**
+     * Gets the data for a cluster formula.
+     * @param cluster the cluster
+     * @param formulaKey the formula key
+     * @return the formula data
+     */
+    public Optional<Map<String, Object>> getClusterFormulaData(Cluster cluster, String formulaKey) {
+        Optional<String> formulaName = FormulaFactory.getClusterProviderFormulaName(cluster.getProvider(), formulaKey);
+        return formulaName
+                .flatMap(name -> getGroupFormulaValuesByNameAndGroupId(name, cluster.getGroup().getId()));
     }
 }

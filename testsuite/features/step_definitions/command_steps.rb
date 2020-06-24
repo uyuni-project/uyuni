@@ -283,7 +283,7 @@ Then(/^file "([^"]*)" should not contain "([^"]*)" on server$/) do |file, conten
   "\n-----\n#{output[:stderr]}\n-----\n"
 end
 
-When(/^I check the tomcat logs for errors$/) do
+Then(/^the tomcat logs should not contain errors$/) do
   output = $server.run('cat /var/log/tomcat/*')
   msgs = %w[ERROR NullPointer]
   msgs.each do |msg|
@@ -291,15 +291,15 @@ When(/^I check the tomcat logs for errors$/) do
   end
 end
 
-Then(/^I restart the spacewalk service$/) do
+When(/^I restart the spacewalk service$/) do
   $server.run('spacewalk-service restart')
 end
 
-Then(/^I shutdown the spacewalk service$/) do
+When(/^I shutdown the spacewalk service$/) do
   $server.run('spacewalk-service stop')
 end
 
-Then(/^I execute spacewalk-debug on the server$/) do
+When(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
   cmd = "echo | scp -o StrictHostKeyChecking=no root@#{$server.ip}:/tmp/spacewalk-debug.tar.bz2 . 2>&1"
   command_output = `#{cmd}`
@@ -309,14 +309,15 @@ Then(/^I execute spacewalk-debug on the server$/) do
 end
 
 Then(/^I get logfiles from "([^"]*)"$/) do |target|
-  `mkdir logs` unless Dir.exist?('logs')
   node = get_target(target)
-  _out, code = node.run("journalctl > /var/log/messages")
-  _out, code = node.run("tar cfvJ /tmp/#{target}-logs.tar.xz /var/log/")
-  raise 'Generate log archive failed' unless code.zero?
-  cmd = "echo | scp -o StrictHostKeyChecking=no root@#{node.ip}:/tmp/#{target}-logs.tar.xz ./logs/ 2>&1"
-  command_output = `#{cmd}`
-  raise "Download logfiles failed: #{command_output}" unless $CHILD_STATUS.success?
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/
+    node.run('zypper mr --enable os_pool_repo os_update_repo && zypper --non-interactive install tar')
+  end
+  node.run("journalctl > /var/log/messages && (tar cfvJP /tmp/#{target}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]])")
+  `mkdir logs` unless Dir.exist?('logs')
+  code = file_extract(node, "/tmp/#{target}-logs.tar.xz", "logs/#{target}-logs.tar.xz")
+  raise "Download log archive failed" unless code.zero?
 end
 
 Then(/^the susemanager repo file should exist on the "([^"]*)"$/) do |host|
@@ -769,7 +770,11 @@ end
 
 When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |pkg_name, host|
   node = get_target(host)
-  cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
+  if host == 'sle_minion'
+    cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
+  elsif host.include? 'ubuntu'
+    cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
+  end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
     result, return_code = node.run(cmd, false)
     break if return_code.zero?
@@ -857,7 +862,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   # we need "host" utility
   step "I install package \"bind-utils\" on this \"#{host}\""
   # direct name resolution
-  ["proxy.example.org", "download.suse.de"].each do |dest|
+  ["proxy.example.org", "dns.google.com"].each do |dest|
     output, return_code = node.run("host #{dest}", fatal = false)
     raise "Direct name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
@@ -865,7 +870,7 @@ Then(/^name resolution should work on terminal "([^"]*)"$/) do |host|
   # reverse name resolution
   net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
   client = net_prefix + "2"
-  [client, "149.44.176.1"].each do |dest|
+  [client, "8.8.8.8"].each do |dest|
     output, return_code = node.run("host #{dest}", fatal = false)
     raise "Reverse name resolution of #{dest} on terminal #{host} doesn't work: #{output}" unless return_code.zero?
     STDOUT.puts "#{output}"
@@ -947,7 +952,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
            " --network network=test-net0 --graphics vnc "\
-           "--serial pty,log.file=/tmp/#{vm_name}.console.log,log.append=off "\
+           "--serial file,path=/tmp/#{vm_name}.console.log "\
            "--import --hvm --noautoconsole --noreboot")
 end
 
@@ -1108,6 +1113,19 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) di
   end
 end
 
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) disk from pool "([^"]*)"$/) do |vm, host, vol, bus, pool|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{vol} #{bus} disk from pool #{pool}") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    tree = Nokogiri::XML(output)
+    disks = tree.xpath("//disk").select do |x|
+      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) && (x.xpath('target/@bus')[0].to_s == bus)
+    end
+    break if !disks.empty?
+    sleep 3
+  end
+end
+
 Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$/) do |vm, host, presence, bus|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} #{presence == 'a' ? 'never got' : 'still has'} a #{bus} cdrom") do
@@ -1121,6 +1139,24 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have (no|a) ([^ ]*) ?cdrom$
   end
 end
 
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have "([^"]*)" attached to a cdrom$/) do |vm, host, path|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{path} attached to cdrom") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    tree = Nokogiri::XML(output)
+    disks = tree.xpath("//disk")
+    disk_index = disks.find_index { |x| x.attribute('device').to_s == 'cdrom' }
+    source = !disk_index.nil? && disks[disk_index].xpath('source/@file')[0].to_s || ""
+    break if source == path
+    sleep 3
+  end
+end
+
+When(/^I create empty "([^"]*)" qcow2 disk file on "([^"]*)"$/) do |path, host|
+  node = get_target(host)
+  node.run("qemu-img create -f qcow2 #{path} 1G")
+end
+
 When(/^I delete all "([^"]*)" volumes from "([^"]*)" pool on "([^"]*)" without error control$/) do |volumes, pool, host|
   node = get_target(host)
   output, _code = node.run("virsh vol-list #{pool} | sed -n -e 's/^[[:space:]]*\([^[:space:]]\+\).*$/\1/;/#{volumes}/p'", false)
@@ -1130,15 +1166,6 @@ end
 When(/I refresh the "([^"]*)" storage pool of this "([^"]*)"/) do |pool, host|
   node = get_target(host)
   node.run("virsh pool-refresh #{pool}")
-end
-
-When(/^I reduce virtpoller run interval on "([^"]*)"$/) do |host|
-  node = get_target(host)
-  source = File.dirname(__FILE__) + '/../upload_files/susemanager-virtpoller.conf'
-  dest = "/etc/salt/minion.d/susemanager-virtpoller.conf"
-  return_code = file_inject(node, source, dest)
-  raise 'File injection failed' unless return_code.zero?
-  node.run("systemctl restart salt-minion")
 end
 
 # WORKAROUND

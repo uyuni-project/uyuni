@@ -1,3 +1,20 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:22:34 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.12-1
+- Flatten messages passed as array of array to toastr in order to make
+  them visible
+- Update help link URLs in the UI
+- Use volumes for VMs disks and allow attaching cdrom images
+- Compute the websockify URL on browser side (bsc#1149644)
+
+-------------------------------------------------------------------
+Wed Jun 10 12:22:39 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.11-1
+- UI for managing clusters
+- Remove lowercase image label limitation
+- Sort activation keys on bootstrapping page (bsc#1171251)
 - replace toastr javascript library with react-toastify
 - Implement module picker controls for CLM AppStream filters
 

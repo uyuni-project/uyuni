@@ -542,6 +542,21 @@ public class ActionFactoryTest extends RhnBaseTestCase {
         return newA;
     }
 
+    public static Action createNewAction(User user, ActionType type) throws Exception {
+        Action newA = ActionFactory.createAction(type);
+        newA.setSchedulerUser(user);
+        newA.setName("RHN-JAVA Test Action");
+        newA.setActionType(type);
+        newA.setOrg(user.getOrg());
+        newA.setEarliestAction(new Date());
+        newA.setVersion(0L);
+        newA.setArchived(0L);
+        newA.setCreated(new Date());
+        newA.setModified(new Date());
+
+        return newA;
+    }
+
     /**
      * Create a new ServerAction
      * @param newS new system

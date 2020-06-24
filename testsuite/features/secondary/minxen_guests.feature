@@ -15,10 +15,8 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I select "1-SUSE-PKG-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
-    And I wait until I see "Successfully bootstrapped host!" text
+    And I wait at most 300 seconds until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "xen_server"
-    # Shorten the virtpoller interval to avoid losing time
-    And I reduce virtpoller run interval on "xen_server"
 
 @virthost_xen
   Scenario: Setting the virtualization entitlement for Xen
@@ -28,7 +26,38 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
+    And the virtpoller beacon should be enabled on "xen_server"
+    And I restart salt-minion on "xen_server"
 
+@virthost_xen
+  Scenario: Enable the virtualization host formula for Xen
+    Given I am on the Systems overview page of this "xen_server"
+    When I follow "Formulas" in the content area
+    Then I should see a "Choose formulas" text
+    And I should see a "Virtualization" text
+    When I check the "virtualization-host" formula
+    And I click on "Save"
+    Then the "virtualization-host" formula should be checked
+
+@virthost_xen
+  Scenario: Parametrize the Xen virtualization host
+    Given I am on the Systems overview page of this "xen_server"
+    When I follow "Formulas" in the content area
+    And I follow first "Virtualization Host" in the content area
+    And I select "Xen" from "hypervisor"
+    And I enter "192.168.124.1" in virtual network IPv4 address field
+    And I enter "192.168.124.2" in first IPv4 address for DHCP field
+    And I enter "192.168.124.254" in last IPv4 address for DHCP field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+
+@virthost_xen
+  Scenario: Apply the Xen virtualization host formula via the highstate
+    Given I am on the Systems overview page of this "xen_server"
+    When I follow "States" in the content area
+    And I click on "Apply Highstate"
+    And I wait until event "Apply highstate scheduled by admin" is completed
+    Then service "libvirtd" is enabled on "xen_server"
 
 @virthost_xen
   Scenario: Prepare a Xen test virtual machine and list it
@@ -132,7 +161,7 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I select "ide" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "xen_server" should have a "test-vm_disk-1.qcow2" xen disk
+    And "test-vm" virtual machine on "xen_server" should have a "test-vm_disk-1" xen disk from pool "test-pool0"
     And "test-vm" virtual machine on "xen_server" should have a ide cdrom
 
 @virthost_xen
@@ -159,16 +188,17 @@ Feature: Be able to manage XEN virtual machines via the GUI
     When I follow "Create Guest"
     And I wait until I see "General" text
     And I enter "test-vm2" as "name"
+    And I enter "512" as "memory"
     And I enter "/var/testsuite-data/disk-image-template-xenpv.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I select "Spice" from "graphicsType"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm2" text
-    And I wait until table row for "test-vm2" contains button "Stop"
-    And "test-vm2" virtual machine on "xen_server" should have 1024MB memory and 1 vcpus
+    And I wait at most 500 seconds until table row for "test-vm2" contains button "Stop"
+    And "test-vm2" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm2" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "xen_server" should have a "test-vm2_system.qcow2" xen disk
+    And "test-vm2" virtual machine on "xen_server" should have a "test-vm2_system" xen disk from pool "test-pool0"
 
 @virthost_xen
   Scenario: Show the Spice graphical console for Xen
@@ -184,22 +214,24 @@ Feature: Be able to manage XEN virtual machines via the GUI
     And I wait until I see "General" text
     And I enter "test-vm3" as "name"
     And I select "Fully Virtualized" from "osType"
+    And I enter "512" as "memory"
     And I enter "/var/testsuite-data/disk-image-template.qcow2" as "disk0_source_template"
     And I select "test-net0" from "network0_source"
     And I click on "Create"
     Then I should see a "Hosted Virtual Systems" text
     When I wait until I see "test-vm3" text
-    And I wait until table row for "test-vm3" contains button "Stop"
-    And "test-vm3" virtual machine on "xen_server" should have 1024MB memory and 1 vcpus
+    And I wait at most 500 seconds until table row for "test-vm3" contains button "Stop"
+    And "test-vm3" virtual machine on "xen_server" should have 512MB memory and 1 vcpus
     And "test-vm3" virtual machine on "xen_server" should have 1 NIC using "test-net0" network
-    And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system.qcow2" xen disk
+    And "test-vm3" virtual machine on "xen_server" should have a "test-vm3_system" xen disk from pool "test-pool0"
 
 @virthost_xen
   Scenario: Show the virtual storage pools and volumes for Xen
     Given I am on the "Virtualization" page of this "xen_server"
-    When I follow "Storage"
-    And I open the sub-list of the product "default"
-    Then I wait until I see "test-vm2_system.qcow2" text
+    When I refresh the "test-pool0" storage pool of this "xen_server"
+    And I follow "Storage"
+    And I open the sub-list of the product "test-pool0"
+    Then I wait until I see "test-vm2_system" text
 
 @virthost_xen
   Scenario: delete a running Xen virtual machine

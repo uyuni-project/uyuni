@@ -14,9 +14,6 @@
  */
 package com.suse.manager.webui.menu;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
-
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
@@ -31,6 +28,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.PageContext;
 
 /**
  * The UI Menu Tree.
@@ -53,6 +53,7 @@ public class MenuTree {
         adminRoles.put("satellite", checkAcl(user, "user_role(satellite_admin)"));
         adminRoles.put("activationKey", checkAcl(user, "user_role(activation_key_admin)"));
         adminRoles.put("image", checkAcl(user, "user_role(image_admin)"));
+        adminRoles.put("clusters", checkAcl(user, "user_role(cluster_admin)"));
 
         MenuItemList nodes = new MenuItemList();
 
@@ -169,6 +170,13 @@ public class MenuTree {
                     .withDir("/rhn/manager/vhms")
                     .withVisibility(adminRoles.get("org"))));
 
+            // Clusters
+            nodes.add(new MenuItem("clusters.nav.title").withIcon("spacewalk-icon-clusters")
+                    .addChild(new MenuItem("clusters.nav.overview").withPrimaryUrl("/rhn/manager/clusters")
+                        .withDir("/rhn/manager/cluster"))
+                    .addChild(new MenuItem("clusters.nav.add").withPrimaryUrl("/rhn/manager/clusters/add")
+                            .withVisibility(adminRoles.get("clusters"))));
+
             // Salt
             nodes.add(new MenuItem("Salt").withIcon("spacewalk-icon-salt")
                 .addChild(new MenuItem("Keys").withPrimaryUrl("/rhn/manager/systems/keys"))
@@ -196,13 +204,11 @@ public class MenuTree {
                         .withAltUrl("/rhn/errata/RelevantBugErrata.do").withAltUrl("/rhn/errata/RelevantEnhancementErrata.do")
                         .withAltUrl("/rhn/errata/RelevantSecurityErrata.do")))
                 .addChild(new MenuItem("Advanced Search").withPrimaryUrl("/rhn/errata/Search.do"))
-                .addChild(
-                    new MenuItem("Manage Errata").withVisibility(checkAcl(user, "user_role(channel_admin)")).withDir("/rhn/errata/manage")
-                        .addChild(new MenuItem("Published").withPrimaryUrl("/rhn/errata/manage/PublishedErrata.do")
-                            .withVisibility(checkAcl(user, "user_role(channel_admin)")))
-                        .addChild(new MenuItem("Unpublished").withPrimaryUrl("/rhn/errata/manage/UnpublishedErrata.do")
-                            .withVisibility(checkAcl(user, "user_role(channel_admin)"))))
+                .addChild(new MenuItem("Manage Errata").withPrimaryUrl("/rhn/errata/manage/PublishedErrata.do")
+                        .withAltUrl("/rhn/errata/manage/Create.do").withAltUrl("/rhn/errata/manage/CreateSubmit.do")
+                        .withVisibility(checkAcl(user, "user_role(channel_admin)")))
                 .addChild(new MenuItem("Clone Errata").withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
+                    .withAltUrl("/rhn/errata/manage/CloneConfirm.do")
                     .withDir("/rhn/errata/manage/clone").withVisibility(checkAcl(user, "user_role(channel_admin)"))));
 
             // (Software) Channels

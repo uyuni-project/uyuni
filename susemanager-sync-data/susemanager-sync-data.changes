@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 10 12:41:44 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.5-1
+- add Ubuntu 20.04 LTS
+- fixing centos/oraclelinux 6-8
+
+-------------------------------------------------------------------
 Wed May 20 11:07:01 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.4-1

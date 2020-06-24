@@ -52,9 +52,11 @@ public class MinionPillarFileManager {
      * Generates pillar containing the information of the server groups the the passed minion is member of
      * @param minion the minion server
      */
-    public void generatePillarFile(MinionServer minion) {
-        SaltPillar pillar = this.minionPillarGenerator.generatePillarData(minion);
-        this.saveFileToDisk(pillar, this.minionPillarGenerator.getFilename(minion.getMinionId()));
+    public void updatePillarFile(MinionServer minion) {
+        this.minionPillarGenerator.generatePillarData(minion).ifPresentOrElse(
+                (pillar) -> this.saveFileToDisk(pillar, this.minionPillarGenerator.getFilename(minion.getMinionId())),
+                () -> removePillarFile(minion.getMinionId())
+        );
     }
 
     private void saveFileToDisk(SaltPillar pillar, String filename) {

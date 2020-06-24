@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 10 12:36:06 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
+- supportconfig speedup fixes, add option to not compress spacewalk-debug output dir
+
+-------------------------------------------------------------------
 Wed Mar 11 11:00:33 CET 2020 - jgonzalez@suse.com
 
 - version 4.1.2-1

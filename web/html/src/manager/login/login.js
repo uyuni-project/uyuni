@@ -103,7 +103,7 @@ const Login = (props: Props) => {
               <Messages items={getGlobalMessages(props.validationErrors, props.schemaUpgradeRequired)} />
               <React.Fragment>
                 <div className="col-sm-6">
-                  <h1 className="Raleway-font">{product.bodyTitle}</h1>
+                  <h1>{product.bodyTitle}</h1>
                   <p className="gray-text margins-updown">
                     Discover a new way of managing your servers, packages, patches and more via one interface.
                   </p>
@@ -117,7 +117,7 @@ const Login = (props: Props) => {
                 </div>
                 <div className="col-sm-5 col-sm-offset-1">
                   <Messages items={getFormMessages(success, messages)} />
-                  <h2 className="Raleway-font gray-text">{t('Sign In')}</h2>
+                  <h2 className="gray-text">{t('Sign In')}</h2>
                   <form
                     onSubmit={(event) => event.preventDefault()}
                     name="loginForm">

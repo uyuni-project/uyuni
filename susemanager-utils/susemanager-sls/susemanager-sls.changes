@@ -1,3 +1,27 @@
+-------------------------------------------------------------------
+Tue Jun 23 17:24:45 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
+- Remove VM disk type attribute
+- Merge virtualization fragment into suma-minion pillar (bsc#1172962)
+
+-------------------------------------------------------------------
+Wed Jun 17 16:21:24 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.9-1
+- Add ssh_agent for CaaSP management
+
+-------------------------------------------------------------------
+Wed Jun 10 12:41:08 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.8-1
+- Avoid SSL certificate issue when bootstrapping OpenSUSE Leap 15.2 (bsc#1172712)
+- Add Salt states for CaaSP cluster management
+- Use minion fqdn instead of minion id as target in kiwi_collect_image
+  runner. If fqdn is not present or is localhost, use minion ip as
+  fallback (bsc#1170737)
+- trust customer gpg key when metadata signing is enabled
+- specify gpg key for RH systems in repo file (bsc#1172286)
 - Implement CaaSP cluster upgrade procedure in cluster provider module.
 - handle GPG check flags different for yum/dnf (bsc#1171859)
 - Enable bootstrapping for Oracle Linux 6, 7 and 8

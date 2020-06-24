@@ -3924,7 +3924,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>Non è disponibile alcun canale.</target>
       </trans-unit>
       <trans-unit id="errata.publish.nochannelsselected">
-        <source>A published patch must belong to at least one channel.</source>
+        <source>At least one channel must be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4798,7 +4798,7 @@ amministratore dell'organizzazione all'interno della sezione &quot;Ruoli&quot; d
         <target>Crea Errata</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions">
-        <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+        <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -4928,6 +4928,12 @@ amministratore dell'organizzazione all'interno della sezione &quot;Ruoli&quot; d
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
         <target>Note:</target>
+      </trans-unit>
+      <trans-unit id="errata.create.jsp.channels">
+        <source>Channels to add:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.description">
         <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has different versions of these packages, or does not have the packages at all. Select the packages you want to push into this channel below, and click 'Continue'.</source>
@@ -8387,7 +8393,7 @@ organization management tools if you choose to remove this role from your login.
         <target>Nessun errata</target>
       </trans-unit>
       <trans-unit id="cloneconfirm.jsp.pagesummary">
-        <source>The patches listed below will be cloned. Once they are cloned, they will appear in your &lt;a href=&quot;{0}&quot;&gt;unpublished patches list&lt;/a&gt;. From there you can verify the text and associated packages for each patch. Once you are ready, you can publish the patches so they are available to users in your organization.</source>
+        <source>The patches listed here will be cloned and added in the channels selected below. Once they are cloned, they will appear in each channel's patch list.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneConfirm.do</context>
         </context-group>
