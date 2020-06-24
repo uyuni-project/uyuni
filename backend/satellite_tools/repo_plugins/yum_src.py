@@ -964,6 +964,30 @@ type=rpm-md
             modules = self._retrieve_md_path('modules')
         return modules
 
+    def get_mediaproducts(self):
+        """
+        Return path to media.1/products file if available
+
+        :returns: str
+        """
+        media_products_path = os.path.join(self._get_repodata_path(), 'media.1/products')
+        try:
+            (s,b,p,q,f,o) = urlparse(self.url)
+            if p[-1] != '/':
+                p = p + '/'
+            p = p + 'media.1/products'
+        except (ValueError, IndexError, KeyError) as e:
+            return None
+        url = urlunparse((s,b,p,q,f,o))
+        try:
+            urlgrabber_opts = {}
+            self.set_download_parameters(urlgrabber_opts, url, media_products_path)
+            urlgrabber.urlgrab(url, media_products_path, **urlgrabber_opts)
+        except Exception as exc:
+            # no mirror list found continue without
+            return None
+        return media_products_path
+
     def raw_list_packages(self, filters=None):
         """
         Return a raw list of available packages.
@@ -1099,7 +1123,8 @@ type=rpm-md
             return False
 
     # Get download parameters for threaded downloader
-    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None, checksum_value=None, bytes_range=None):
+    def set_download_parameters(self, params, relative_path, target_file, checksum_type=None,
+                                checksum_value=None, bytes_range=None):
         # Create directories if needed
         target_dir = os.path.dirname(target_file)
         if not os.path.exists(target_dir):
