@@ -1,3 +1,6 @@
+- make media.1/products available for every channel. Needed for
+  autoinstallation of SLE15 SP2 (bsc#1173204)
+
 -------------------------------------------------------------------
 Wed Jun 10 14:11:38 CEST 2020 - jgonzalez@suse.com
 
