@@ -58,7 +58,7 @@ mgr_buildimage_kiwi_prepare:
   cmd.run:
     - name: "{{ kiwi }} --logfile={{ root_dir }}/prepare.log --shared-cache-dir={{ cache_dir }} {{ profile_opt }} system prepare --description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
     - require:
-      - module: mgr_buildimage_prepare_source
+      - mgrcompat: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
 
 mgr_buildimage_kiwi_create:
