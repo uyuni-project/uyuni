@@ -1,26 +1,22 @@
 @import url(patternfly1/resources/components/bootstrap/less/bootstrap.less);
 
-/* Here begins the basic default css theme */
+/* The basic default css and the overriding customization right after each */
+@import url(susemanager-typography.less);
 @import url(variables.less);
+@import url(susemanager-variables.less);
+@import url(theme.less);
+@import url(susemanager-theme.less);
 @import url(mixins.less);
+@import url(susemanager-mixins.less);
 @import url(inputs.less);
 @import url(tables.less);
 @import url(error.less);
 @import url(tools.less);
-@import url(theme.less);
 @import url(setup-wizard.less);
 @import url(visualization.less);
 @import url(notifications.less);
-/* Additional default fixes */
-@import url(fixes.less);
-
-/* ------------------ */
-/* SUSE Manager theme */
-@import url(susemanager-typography.less);
-@import url(susemanager-variables.less);
-@import url(susemanager-mixins.less);
-@import url(susemanager-theme.less);
 @import url(susemanager-login.less);
+@import url(fixes.less);
 
 // LEAVE THIS LINE AT THE END ALWAYS TO WARRANTY THE RESPONSIVE RULES REWRITE THE EXISTING STYLES
 @import url(responsive-rules.less);

@@ -1,26 +1,22 @@
 @import url(patternfly1/resources/components/bootstrap/less/bootstrap.less);
 
-/* Here begins the basic default css theme */
+/* The basic default css and the overriding customization right after each */
+@import url(uyuni-typography.less);
 @import url(variables.less);
+@import url(uyuni-variables.less);
+@import url(theme.less);
+@import url(uyuni-theme.less);
 @import url(mixins.less);
+@import url(uyuni-mixins.less);
 @import url(inputs.less);
 @import url(tables.less);
 @import url(error.less);
 @import url(tools.less);
-@import url(theme.less);
 @import url(setup-wizard.less);
 @import url(visualization.less);
 @import url(notifications.less);
-/* Additional default fixes */
-@import url(fixes.less);
-
-/* ------------------ */
-/* Uyuni theme */
-@import url(uyuni-typography.less);
-@import url(uyuni-variables.less);
-@import url(uyuni-mixins.less);
-@import url(uyuni-theme.less);
 @import url(uyuni-login.less);
+@import url(fixes.less);
 
 // LEAVE THIS LINE AT THE END ALWAYS TO WARRANTY THE RESPONSIVE RULES REWRITE THE EXISTING STYLES
 @import url(responsive-rules.less);
