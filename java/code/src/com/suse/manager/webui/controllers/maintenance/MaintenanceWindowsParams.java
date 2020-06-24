@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.maintenance;
 
 import java.util.List;
 
