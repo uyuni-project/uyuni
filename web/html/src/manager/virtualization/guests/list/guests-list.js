@@ -11,7 +11,7 @@ import { LinkButton, AsyncButton } from 'components/buttons';
 import { ModalButton } from 'components/dialog/ModalButton';
 import * as Systems from 'components/systems';
 import { VirtualizationGuestActionApi } from '../virtualization-guest-action-api';
-import { VirtualizationGuestsListRefreshApi } from '../virtualization-guests-list-refresh-api';
+import { VirtualizationListRefreshApi } from '../../virtualization-list-refresh-api';
 import { useVirtNotification } from '../../useVirtNotification.js';
 import { Utils as GuestsListUtils } from './guests-list.utils';
 import { ActionConfirm } from 'components/dialog/ActionConfirm';
@@ -186,13 +186,14 @@ export function GuestsList(props: Props) {
             </div>);
 
           return (
-            <VirtualizationGuestsListRefreshApi
+            <VirtualizationListRefreshApi
               serverId={props.serverId}
               lastRefresh={lastRefresh}
+              type="guests"
             >
               {
                 ({
-                  guests,
+                  data: guests,
                   refreshError,
                 }) => (
                   <div>
@@ -359,7 +360,7 @@ export function GuestsList(props: Props) {
                   </div>
                 )
               }
-            </VirtualizationGuestsListRefreshApi>
+            </VirtualizationListRefreshApi>
           );
         }
       }
