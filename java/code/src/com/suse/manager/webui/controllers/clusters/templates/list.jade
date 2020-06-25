@@ -18,6 +18,6 @@ script(type='text/javascript').
             'clusters',
                 {
                     clusters: document.getElementById('init_data_clusters').textContent,
-                    flashMessage: "#{flashMessage}"
+                    flashMessage: !{flashMessage ? flashMessage : "null"}
                 }
             ); });

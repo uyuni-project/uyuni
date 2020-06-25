@@ -28,7 +28,10 @@ const RemoveNode = (props: Props) => {
                  props.nodes
                     .filter(node => node.server ? true : false)
                     .map(node => node.server ? node.server.id : 0),
-                removeConfig, earliest, actionChain);
+                removeConfig, earliest, actionChain)
+                .then(() => {
+                    window.location = `/rhn/manager/cluster/${props.cluster.id}`;
+                });
         }
         return Promise.reject(new Error('invalid data'));
     }

@@ -3,12 +3,10 @@ import * as React from 'react';
 import {useState} from 'react';
 import {Panel} from 'components/panels/Panel';
 import {AsyncButton, Button} from 'components/buttons';
-import {ActionLink, ActionChainLink} from 'components/links';
 import {ActionSchedule} from 'components/action-schedule';
 import Functions from 'utils/functions';
 import {withErrorMessages}  from '../api/use-clusters-api';
 import useUserLocalization from 'core/user-localization/use-user-localization';
-import {Messages} from 'components/messages';
 
 import type {ActionChain} from "components/action-schedule";
 import type {ErrorMessagesType} from '../api/use-clusters-api';
@@ -36,11 +34,6 @@ const ScheduleClusterAction = (props: Props) => {
         return props.schedule(earliest, actionChain ? actionChain.text: null).then(
             (actionId) => {
                 setDisableSchedule(true);
-                const actionChainMsg = Messages.success(<span>{t("Action has been successfully added to the Action Chain ")}
-                        <ActionChainLink id={actionId}>{actionChain ? actionChain.text : ""}</ActionChainLink>.</span>);
-                const actionMsg = Messages.success(<span>{t("Action has been ")}
-                          <ActionLink id={actionId}>{t("scheduled")}</ActionLink>{t(" successfully.")}</span>);
-                props.setMessages([actionChain ? actionChainMsg : actionMsg]);
             },
             (error: ErrorMessagesType) => {
                 props.setMessages(error.messages);

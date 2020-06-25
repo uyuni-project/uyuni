@@ -49,6 +49,7 @@ import com.suse.manager.webui.controllers.clusters.mappers.ResponseMappers;
 import com.suse.manager.webui.controllers.clusters.response.ClusterNodeResponse;
 import com.suse.manager.webui.controllers.clusters.response.ClusterProviderResponse;
 import com.suse.manager.webui.controllers.clusters.response.ClusterResponse;
+import com.suse.manager.webui.controllers.clusters.response.MessageResponse;
 import com.suse.manager.webui.controllers.clusters.response.ServerResponse;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.MinionActionUtils;
@@ -394,8 +395,9 @@ public class ClustersController {
             LOG.error("Adding cluster failed", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()));
         }
-        FlashScopeHelper.flash(request, String.format("Cluster '%s' has been added successfully",
-                clusterRequest.getName()));
+        FlashScopeHelper.flash(request,
+                GSON.toJson(MessageResponse.success("cluster_added",
+                        cluster.getName())));
         return json(response, ResultJson.success(cluster.getId()));
     }
 
@@ -416,8 +418,9 @@ public class ClustersController {
             LOG.error("Deleting cluster failed", e);
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, ResultJson.error(e.getMessage()));
         }
-        FlashScopeHelper.flash(request, String.format("Cluster '%s' has been deleted successfully",
-                cluster.getName()));
+        FlashScopeHelper.flash(request,
+                GSON.toJson(MessageResponse.success("cluster_deleted",
+                        cluster.getName())));
         return json(response, ResultJson.success());
     }
 
@@ -472,6 +475,8 @@ public class ClustersController {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     ResultJson.error("Internal error " + e.getClass()));
         }
+        FlashScopeHelper.flash(request,
+                GSON.toJson(MessageResponse.success("action_scheduled", Long.toString(actionId))));
         return json(response, ResultJson.success(actionId));
     }
 
@@ -498,6 +503,8 @@ public class ClustersController {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     ResultJson.error("Internal error " + e.getClass()));
         }
+        FlashScopeHelper.flash(request,
+                GSON.toJson(MessageResponse.success("action_scheduled", Long.toString(actionId))));
         return json(response, ResultJson.success(actionId));
     }
 

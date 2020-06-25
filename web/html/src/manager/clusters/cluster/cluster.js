@@ -14,14 +14,21 @@ import {isClusterAdmin} from "core/auth/auth.utils";
 import {LinkButton} from 'components/buttons';
 import {DeleteDialog} from 'components/dialog/DeleteDialog';
 import {showDialog} from 'components/dialog/util';
-import {Messages} from 'components/messages';
+import {fromServerMessage} from 'components/messages';
+import {ActionLink, ActionChainLink} from 'components/links';
 
 import type {ClusterType, ErrorMessagesType} from '../shared/api/use-clusters-api'
-import type {MessageType} from 'components/messages';
+import type {ServerMessageType, MessageType} from 'components/messages';
+
+const msgMap = {
+  "action_scheduled": (actionId) => <>{t("Action has been ")}<ActionLink id={actionId}>{t("scheduled")}</ActionLink>{t(" successfully.")}</>,
+  "action_chain_scheduled": (actionChainId, actionChain) => <>{t("Action has been successfully added to the Action Chain ")}<ActionChainLink id={actionChainId}>{actionChain}</ActionChainLink>.</>,
+  "cluster_added": (name) => <>{t("Cluster ")}<strong>{name}</strong>{t(" has been added successfully.")}</>
+}
 
 type Props = {
   cluster: ClusterType,
-  flashMessage: String,
+  flashMessage: ?ServerMessageType,
   setMessages: (Array<MessageType>) => void
 };
 
@@ -50,7 +57,10 @@ const Cluster = (props: Props) => {
 
     useEffect(() => {
       if(props.flashMessage) {
-        props.setMessages([Messages.info(props.flashMessage)])
+        const message = fromServerMessage(props.flashMessage, msgMap);
+        if (message) {
+          props.setMessages([message]);
+        }
       }
     }, []);
 

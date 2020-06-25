@@ -15,6 +15,9 @@
 
 package com.suse.manager.webui.controllers.clusters.response;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Message view bean.
  */
@@ -22,6 +25,7 @@ public class MessageResponse {
 
     private String severity;
     private String text;
+    private List<String> args;
 
     /**
      * @param severityIn message severity
@@ -30,6 +34,57 @@ public class MessageResponse {
     public MessageResponse(String severityIn, String textIn) {
         this.severity = severityIn;
         this.text = textIn;
+    }
+
+    /**
+     * @param severityIn message severity
+     * @param textIn message text
+     * @param argsIn message parameters
+     */
+    public MessageResponse(String severityIn, String textIn, List<String> argsIn) {
+        this.severity = severityIn;
+        this.text = textIn;
+        this.args = argsIn;
+    }
+
+    /**
+     * Creates a success message.
+     * @param textIn the text
+     * @param args optional arguments
+     * @return a success message
+     */
+    public static MessageResponse success(String textIn, String... args) {
+        return new MessageResponse("success", textIn, Arrays.asList(args));
+    }
+
+    /**
+     * Creates an info message.
+     * @param textIn the text
+     * @param args optional arguments
+     * @return an info message
+     */
+    public static MessageResponse info(String textIn, String... args) {
+        return new MessageResponse("info", textIn, Arrays.asList(args));
+    }
+
+    /**
+     * Creates a warning message.
+     * @param textIn the text
+     * @param args optional arguments
+     * @return a warning message
+     */
+    public static MessageResponse warning(String textIn, String... args) {
+        return new MessageResponse("warning", textIn, Arrays.asList(args));
+    }
+
+    /**
+     * Creates an error message.
+     * @param textIn the text
+     * @param args optional arguments
+     * @return a warning message
+     */
+    public static MessageResponse error(String textIn, String... args) {
+        return new MessageResponse("error", textIn, Arrays.asList(args));
     }
 
     /**
