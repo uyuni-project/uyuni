@@ -165,6 +165,11 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(1, "3.1-20170329", "3.1-20150325");
     }
 
+    public void testBugzilla1173201() {
+        assertCompareSymm(-1, "1.27+1.3.9", "1.27.1ubuntu1+1.3.9");
+        assertCompareSymm(-1, "1.27+1.3.9", "1.27.1+1.3.9");
+    }
+
     /* from official rpm tests */
     public void testTildeAndCaretSorting() {
         assertCompareSymm(1, "1.0~rc1^git1", "1.0~rc1");

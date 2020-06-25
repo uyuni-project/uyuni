@@ -51,10 +51,20 @@ public class RpmVersionComparator implements Comparator<String> {
         int b1 = 0;
         int b2 = 0;
 
+        if (str1.indexOf("+") > 0 && str2.indexOf("+") > 0) {
+            String post1 = str1.substring(str1.indexOf("+"));
+            String post2 = str2.substring(str2.indexOf("+"));
+
+            if (post1.equals(post2)) {
+                str1 = str1.substring(0, str1.indexOf("+"));
+                str2 = str2.substring(0, str2.indexOf("+"));
+            }
+        }
+
         // Handling for Debian packages that contain a '-' in version (e.g. 8-20180414)
         // These packages have a version like upstream_version-debian_revision
-        String debUpstreamVer1 = o1;
-        String debUpstreamVer2 = o2;
+        String debUpstreamVer1 = str1;
+        String debUpstreamVer2 = str2;
         String debRevisionVer1 = "";
         String debRevisionVer2 = "";
 
