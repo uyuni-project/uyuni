@@ -2,6 +2,9 @@
 {% set repos_disabled = {'match_str': 'spacewalk:', 'matching': true} %}
 {%- include 'channels/disablelocalrepos.sls' %}
 
+include:
+  - util.syncstates
+
 disable_spacewalksd:
   service.dead:
     - name: rhnsd
