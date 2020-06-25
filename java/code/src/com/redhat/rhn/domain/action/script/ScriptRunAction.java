@@ -19,6 +19,7 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.download.DownloadManager;
+import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.suse.manager.utils.SaltUtils;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -29,6 +30,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
  * @version $Rev$
  */
 public class ScriptRunAction extends ScriptAction {
+
+    private final SaltUtils saltUtils = SchedulerKernel.SALT_UTILS;
 
     /**
      * {@inheritDoc}
@@ -81,7 +84,7 @@ public class ScriptRunAction extends ScriptAction {
     @Override
     public void onCancelAction() {
         if (allServersFinished()) {
-            FileUtils.deleteFile(SaltUtils.INSTANCE.getScriptPath(getId()));
+            FileUtils.deleteFile(saltUtils.getScriptPath(getId()));
         }
     }
 }

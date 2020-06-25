@@ -23,6 +23,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcServer;
@@ -30,7 +32,11 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.metrics.PrometheusExporter;
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 
@@ -63,7 +69,23 @@ public class SchedulerKernel {
     private String dataSourceConfigPath = "org.quartz.jobStore.dataSource";
     private String dataSourcePrefix = "org.quartz.dataSource";
     private String defaultDataSource = "rhnDs";
+
+    /*
+    This is more or less the entry point for taskomatic where all instances are
+    initialized and passed on. The only code that should access those instances directly
+    is job classes which seem to have no way right now to pass parameters on construction.
+     */
     public static final SystemQuery SYSTEM_QUERY = SaltService.INSTANCE;
+    public static final SaltApi SALT_API = SaltService.INSTANCE_SALT_API;
+    public static final ServerGroupManager SERVER_GROUP_MANAGER = ServerGroupManager.getInstance();
+    public static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
+    public static final ClusterManager CLUSTER_MANAGER = new ClusterManager(
+            SALT_API, SYSTEM_QUERY, SERVER_GROUP_MANAGER, FORMULA_MANAGER
+    );
+    public static final SaltUtils SALT_UTILS = new SaltUtils(
+            SYSTEM_QUERY, SALT_API, CLUSTER_MANAGER);
+    public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE =
+            new SaltServerActionService(SchedulerKernel.SYSTEM_QUERY, SALT_UTILS);
 
 
     /**

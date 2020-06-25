@@ -27,6 +27,7 @@ import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
@@ -303,12 +304,14 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     }
 
     private SSHPushWorkerSalt successWorker(SystemQuery saltServiceMock) {
+        SaltUtils saltUtils = new SaltUtils();
         return new SSHPushWorkerSalt(
                 logger,
                 sshPushSystemMock,
                 saltServiceMock,
                 saltSSHServiceMock,
-                new SaltServerActionService(new SaltService())
+                new SaltServerActionService(new SaltService(), saltUtils),
+                saltUtils
         );
     }
 }

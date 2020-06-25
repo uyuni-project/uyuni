@@ -44,7 +44,7 @@ public class MinionActionExecutor extends RhnJavaJob {
     private static final int ACTION_DATABASE_POLL_TIME = 100;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
-    private SaltServerActionService saltServerActionService = new SaltServerActionService(SchedulerKernel.SYSTEM_QUERY);
+    private SaltServerActionService saltServerActionService = SchedulerKernel.SALT_SERVER_ACTION_SERVICE;
 
     /**
      * @param context the job execution context
