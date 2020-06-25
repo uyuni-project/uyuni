@@ -214,6 +214,15 @@ if result <> 1
 then
 	raise notice 'rpm.rpmstrcmp('3.1-20170329', '3.1-20150325') should be 1';
 end if;
-
+select * into result from rpm.rpmstrcmp('1.27+1.3.9', '1.27.1ubuntu1+1.3.9');
+if result <> -1
+then
+	raise notice 'rpm.rpmstrcmp('1.27+1.3.9', '1.27.1ubuntu1+1.3.9') should be -1';
+end if;
+select * into result from rpm.rpmstrcmp('1.27+1.3.9', '1.27.1+1.3.9');
+if result <> -1
+then
+	raise notice 'rpm.rpmstrcmp('1.27+1.3.9', '1.27.1+1.3.9') should be -1';
+end if;
 end;
 $$
