@@ -83,6 +83,7 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -114,7 +115,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String HOSTNAME = "foo.bar.com";
 
     private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
-    private SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService());
+    private SaltServerActionService saltServerActionService = new SaltServerActionService(
+            new SaltService(),
+            SaltUtils.INSTANCE
+    );
 
     @Override
     public void setUp() throws Exception {

@@ -30,10 +30,11 @@ import com.redhat.rhn.frontend.context.Context;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
@@ -73,6 +74,10 @@ public class MinionActionUtils {
 
     /** Whether the current database is Postgres. */
     public static final boolean POSTGRES = ConfigDefaults.get().isPostgresql();
+    private static final SaltServerActionService saltServerActionService = new SaltServerActionService(
+            SaltService.INSTANCE,
+            SaltUtils.INSTANCE
+    );
 
     private MinionActionUtils() {
     }
@@ -81,7 +86,7 @@ public class MinionActionUtils {
      * Extracts the action id out of a json object like
      * ScheduleMetadata without parsing the whole object
      */
-    public static final Function<JsonElement, Optional<Long>> EXTRACT_ACTION_ID =
+    private static final Function<JsonElement, Optional<Long>> EXTRACT_ACTION_ID =
             flatMap(Json::asLong)
                     .compose(flatMap(Json::asPrim))
                     .compose(flatMap(Json.getField(ScheduleMetadata.SUMA_ACTION_ID)))
@@ -302,7 +307,7 @@ public class MinionActionUtils {
                                         }
 
                                         StateApplyResult<Ret<JsonElement>> stateApplyResult = e.getValue();
-                                        JobReturnEventMessageAction.handleAction(retActionId,
+                                        saltServerActionService.handleAction(retActionId,
                                                 minionId,
                                                 stateApplyResult.isResult() ? 0 : -1,
                                                 stateApplyResult.isResult(),

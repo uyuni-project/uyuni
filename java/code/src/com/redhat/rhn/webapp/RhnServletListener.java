@@ -16,11 +16,16 @@ package com.redhat.rhn.webapp;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.satellite.StartupTasksCommand;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
+import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.reactor.SaltReactor;
 
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -55,9 +60,17 @@ public class RhnServletListener implements ServletContextListener {
     private boolean loggingStarted = false;
     private final SystemQuery systemQuery = SaltService.INSTANCE;
     private final SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+    private final ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+    private final FormulaManager formulaManager = FormulaManager.getInstance();
+    private final ClusterManager clusterManager = new ClusterManager(
+            saltApi, systemQuery, serverGroupManager, formulaManager
+    );
+    private final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
+    private final SaltServerActionService saltServerActionService = new SaltServerActionService(
+            systemQuery, saltUtils);
 
     // Salt event reactor instance
-    private final SaltReactor saltReactor = new SaltReactor(saltApi, systemQuery);
+    private final SaltReactor saltReactor = new SaltReactor(saltApi, systemQuery, saltServerActionService);
 
     private void startMessaging() {
         // Start the MessageQueue thread listening for
