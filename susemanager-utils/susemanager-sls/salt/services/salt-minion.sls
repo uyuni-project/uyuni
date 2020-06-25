@@ -1,4 +1,4 @@
-{%- include 'bootstrap.remove_traditional_stack.sls' %}
+{%- include 'bootstrap/remove_traditional_stack.sls' %}
 
 {%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 
