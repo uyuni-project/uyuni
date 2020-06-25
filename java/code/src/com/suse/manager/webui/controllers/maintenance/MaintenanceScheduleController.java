@@ -41,7 +41,7 @@ import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.utils.gson.MaintenanceWindowJson;
+import com.suse.manager.webui.utils.gson.MaintenanceScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
 
@@ -131,7 +131,7 @@ public class MaintenanceScheduleController {
      */
     public static String getScheduleDetails(Request request, Response response, User user) {
         Long scheduleId = Long.parseLong(request.params("id"));
-        MaintenanceWindowJson json = new MaintenanceWindowJson();
+        MaintenanceScheduleJson json = new MaintenanceScheduleJson();
 
         MaintenanceSchedule schedule = MM.lookupScheduleByUserAndId(user, scheduleId)
                 .orElseThrow(() -> Spark.halt(
@@ -153,7 +153,6 @@ public class MaintenanceScheduleController {
 
         schedule.getCalendarOpt().ifPresent(maintenanceCalendar -> {
             json.setCalendarName(maintenanceCalendar.getLabel());
-            maintenanceCalendar.getUrlOpt().ifPresent(json::setCalendarUrl);
         });
         return json(response, json);
     }
@@ -168,7 +167,7 @@ public class MaintenanceScheduleController {
      */
     public static String saveSchedule(Request request, Response response, User user) {
         response.type("application/json");
-        MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
+        MaintenanceScheduleJson json = GSON.fromJson(request.body(), MaintenanceScheduleJson.class);
 
         if (json.getScheduleName().isBlank()) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
@@ -223,7 +222,7 @@ public class MaintenanceScheduleController {
      */
     public static String deleteSchedule(Request request, Response response, User user) {
         response.type("application/json");
-        MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
+        MaintenanceScheduleJson json = GSON.fromJson(request.body(), MaintenanceScheduleJson.class);
 
         String name = json.getScheduleName();
         MM.lookupScheduleByUserAndName(user, name).ifPresentOrElse(
@@ -247,12 +246,12 @@ public class MaintenanceScheduleController {
         });
     }
 
-    private static List<MaintenanceWindowJson> schedulesToJson(List<MaintenanceSchedule> schedules) {
+    private static List<MaintenanceScheduleJson> schedulesToJson(List<MaintenanceSchedule> schedules) {
         return schedules.stream().map(MaintenanceScheduleController::scheduleToJson).collect(Collectors.toList());
     }
 
-    private static MaintenanceWindowJson scheduleToJson(MaintenanceSchedule schedule) {
-        MaintenanceWindowJson json = new MaintenanceWindowJson();
+    private static MaintenanceScheduleJson scheduleToJson(MaintenanceSchedule schedule) {
+        MaintenanceScheduleJson json = new MaintenanceScheduleJson();
 
         json.setScheduleId(schedule.getId());
         json.setScheduleName(schedule.getName());
