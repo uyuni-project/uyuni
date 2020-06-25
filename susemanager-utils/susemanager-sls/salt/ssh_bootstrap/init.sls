@@ -60,5 +60,5 @@ authorize_own_key:
     - require:
       - file: ownership_own_ssh_key
       - ssh_auth: no_own_key_authorized
-include:
-  - bootstrap.remove_traditional_stack
+
+{%- include 'bootstrap.remove_traditional_stack.sls' %}
