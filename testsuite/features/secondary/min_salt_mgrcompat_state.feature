@@ -23,7 +23,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
 
   Scenario: Enable new module.run syntax on the minion and perform registration
     Given I store "use_superseded: [module.run]" into file "/etc/salt/minion.d/custom_modulerun.conf" on "sle_minion"
-    And I am authorized 
+    And I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
@@ -40,7 +40,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     When I navigate to "rhn/systems/Overview.do" page
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
- 
+
   Scenario: Check that installed packages are visible
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -88,4 +88,4 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed   
+    And I wait until event "Subscribe channels scheduled by admin" is completed
