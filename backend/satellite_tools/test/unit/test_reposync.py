@@ -689,6 +689,7 @@ class RepoSyncTest(unittest.TestCase):
         rs.import_products = Mock()
         rs.import_susedata = Mock()
         rs.import_groups = Mock()
+        rs.import_mediaproducts = Mock()
         rs.import_modules = Mock()
         self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
         self.reposync.taskomatic.add_to_erratacache_queue = Mock()
@@ -726,6 +727,7 @@ class SyncTest(unittest.TestCase):
             load_plugin=Mock(),
             import_packages=Mock(return_value=0),
             import_groups=Mock(),
+            import_mediaproducts=Mock(),
             import_modules=Mock(),
             import_updates=Mock(),
             import_products=Mock(),
