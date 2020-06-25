@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * JSON representation of the Maintenance Window scheduling
  */
-public class MaintenanceWindowJson {
+public class MaintenanceScheduleJson {
 
     /** schedule ID */
     private Long scheduleId;
@@ -36,15 +36,6 @@ public class MaintenanceWindowJson {
 
     /** The name of the calendar */
     private String calendarName;
-
-    /** The url to the ical file */
-    private String calendarUrl;
-
-    /** The calendars ical data */
-    private String calendarData;
-
-    /** List of schedule names used by a calendar */
-    private List<Map<String, String>> scheduleNames;
 
     /** The reschedule strategy */
     private String strategy;
@@ -140,60 +131,6 @@ public class MaintenanceWindowJson {
      */
     public void setCalendarName(String calendarNameIn) {
         this.calendarName = calendarNameIn;
-    }
-
-    /**
-     * Gets the ical data of the calendar
-     *
-     * @return the calendarData
-     */
-    public String getCalendarData() {
-        return calendarData;
-    }
-
-    /**
-     * Sets the ical data of the calendar
-     *
-     * @param calendarDataIn the calendarData
-     */
-    public void setCalendarData(String calendarDataIn) {
-        this.calendarData = calendarDataIn;
-    }
-
-    /**
-     * Gets the url to the ical file
-     *
-     * @return the calendarUrl
-     */
-    public String getCalendarUrl() {
-        return calendarUrl;
-    }
-
-    /**
-     * Sets the url to the ical file
-     *
-     * @param calendarUrlIn the calendarUrl
-     */
-    public void setCalendarUrl(String calendarUrlIn) {
-        this.calendarUrl = calendarUrlIn;
-    }
-
-    /**
-     * Gets a list of schedule names using a calendar object
-     *
-     * @return the list of scheduleNames
-     */
-    public List<Map<String, String>> getScheduleNames() {
-        return scheduleNames;
-    }
-
-    /**
-     * Sets a list of schedule names using a calendar object
-     *
-     * @param scheduleNamesIn the list of scheduleNames
-     */
-    public void setScheduleNames(List<Map<String, String>> scheduleNamesIn) {
-        this.scheduleNames = scheduleNamesIn;
     }
 
     /**
