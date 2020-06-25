@@ -816,6 +816,7 @@ class RepoSync(object):
         modulesfile = plug.get_modules()
         if modulesfile:
             self.copy_metadata_file(plug, modulesfile, 'modules', relative_modules_dir)
+
     def import_mediaproducts(self, plug):
         mediaproducts = plug.get_mediaproducts()
         if mediaproducts:
