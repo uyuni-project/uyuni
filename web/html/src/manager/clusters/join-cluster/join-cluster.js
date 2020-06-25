@@ -26,7 +26,10 @@ const JoinCluster = (props: Props) => {
 
     const scheduleJoin = (earliest: Date, actionChain: ?string): Promise<any> => {
         if (nodesToJoin && joinConfig) {
-            return scheduleJoinNode(props.cluster.id, nodesToJoin.map(node => node.id), joinConfig, earliest, actionChain);
+            return scheduleJoinNode(props.cluster.id, nodesToJoin.map(node => node.id), joinConfig, earliest, actionChain)
+                .then(() => {
+                    window.location = `/rhn/manager/cluster/${props.cluster.id}`;
+                });
         }
         return Promise.reject(new Error('invalid data'));
     }
@@ -64,6 +67,7 @@ const JoinCluster = (props: Props) => {
                             {({goTo, back}) => {
                                 return nodesToJoin?
                                     <ScheduleClusterAction
+                                        cluster={props.cluster}
                                         title={t("Schedule join node")}
                                         panel={
                                                 <div className="form-horizontal">

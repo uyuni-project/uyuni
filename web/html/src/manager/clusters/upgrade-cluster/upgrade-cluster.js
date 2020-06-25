@@ -22,7 +22,10 @@ const UpgradeCluster = (props: Props) => {
     const { scheduleUpgradeCluster } = useClustersApi();
 
     const scheduleUpgrade = (earliest: Date, actionChain: ?string): Promise<any> => {
-        return scheduleUpgradeCluster(props.cluster.id, earliest, actionChain);
+        return scheduleUpgradeCluster(props.cluster.id, earliest, actionChain)
+                .then(() => {
+                    window.location = `/rhn/manager/cluster/${props.cluster.id}`;
+                });
     }
 
     return (<TopPanel title={t('Upgrade ') + props.cluster.name}

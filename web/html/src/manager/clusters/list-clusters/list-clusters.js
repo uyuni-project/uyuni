@@ -11,13 +11,21 @@ import {Column} from 'components/table/Column';
 import {SearchField} from 'components/table/SearchField';
 import Functions from 'utils/functions';
 import {SystemLink} from 'components/links';
-import {showInfoToastr} from 'components/toastr/toastr';
+import {fromServerMessage} from 'components/messages';
+import {withErrorMessages} from '../shared/api/use-clusters-api';
 
 import type {ClusterType} from '../shared/api/use-clusters-api';
+import type {MessageType} from 'components/messages';
+
+const msgMap = {
+  "cluster_deleted": (name) => <>{t("Cluster ")}<strong>{name}</strong>{t(" has been deleted successfully.")}</>
+}
+
 
 type Props = {
   clusters: Array<ClusterType>,
   flashMessage: String,
+  setMessages: (Array<MessageType>) => void
 };
 
 const ListClusters = (props) => {
@@ -49,7 +57,10 @@ const ListClusters = (props) => {
 
     useEffect(()=> {
         if(props.flashMessage) {
-            showInfoToastr(props.flashMessage);
+            const message = fromServerMessage(props.flashMessage, msgMap);
+            if (message) {
+                props.setMessages([message]);
+            }
         }
     }, []);
 
@@ -99,4 +110,4 @@ const ListClusters = (props) => {
 
 }
 
-export default hot(module)(withPageWrapper<Props>(ListClusters));
+export default hot(module)(withPageWrapper<Props>(withErrorMessages(ListClusters)));
