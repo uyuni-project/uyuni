@@ -45,25 +45,54 @@ class UyuniUsers:
                                                 org_admin_password=org_admin_password)
 
     @staticmethod
+    def _update_user_system_groups(name: str,
+                                   current_system_groups: List[str] = [],
+                                   system_groups: List[str] = [],
+                                   org_admin_user: str = None,
+                                   org_admin_password: str = None):
+
+        systems_groups_add = [sys for sys in (system_groups or []) if sys not in (current_system_groups or [])]
+        if systems_groups_add:
+            __salt__['uyuni.user_add_assigned_system_groups'](uid=name, server_group_names=systems_groups_add,
+                                                              org_admin_user=org_admin_user,
+                                                              org_admin_password=org_admin_password)
+
+        system_groups_remove = [sys for sys in (current_system_groups or []) if sys not in (system_groups or [])]
+        if system_groups_remove:
+            __salt__['uyuni.user_remove_assigned_system_groups'](uid=name, server_group_names=system_groups_remove,
+                                                                 org_admin_user=org_admin_user,
+                                                                 org_admin_password=org_admin_password)
+
+    @staticmethod
     def _compute_changes(user_changes: Dict[str, Any],
-                         roles: List[str],
                          current_user: Dict[str, Any],
-                         current_roles: List[str]):
+                         roles: List[str],
+                         current_roles: List[str],
+                         system_groups: List[str],
+                         current_system_groups: List[str]):
         changes = {}
         error = None
+        # user fields changes
         for field in ["email", "first_name", "last_name"]:
             if (current_user or {}).get(field) != user_changes.get(field):
                 changes[field] = {"new": user_changes[field]}
                 if current_user:
                     changes[field]["old"] = (current_user or {}).get(field)
 
+        # roles changes
         if Counter(roles or []) != Counter(current_roles or []):
             changes['roles'] = {'new': roles}
             if current_roles:
                 changes['roles']['old'] = current_roles
 
+        # system group changes
+        if Counter(system_groups or []) != Counter(current_system_groups or []):
+            changes['system_groups'] = {'new': system_groups}
+            if current_system_groups:
+                changes['system_groups']['old'] = current_system_groups
+
+        # check if password have changed
         if current_user:
-            # check if password have changed
             try:
                 __salt__['uyuni.user_get_details'](user_changes.get('uid'),
                                                    user_changes.get('password'))
@@ -76,28 +105,34 @@ class UyuniUsers:
         return changes, error
 
     def manage(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "",
-               org_admin_user: str = None, org_admin_password: str = None,
-               roles: Optional[List[str]] = []) -> Dict[str, Any]:
+               roles: Optional[List[str]] = [], system_groups: Optional[List[str]] = [],
+               org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
-        Manage user, insuring it is present with all the specified characteristics
+        Manage user, insuring it is present with all his characteristics
 
         :param uid: user ID
         :param password: desired password for the user
         :param email: valid email address
         :param first_name: First name
         :param last_name: Second name
+        :param roles: roles to assign to user
+        :param system_groups: system groups to assign user to
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
-        :param roles: roles to assign to user
         :return: dict for Salt communication
         """
         current_user = None
         current_roles = None
+        current_system_groups_names = None
         try:
             current_user = __salt__['uyuni.user_get_details'](uid, org_admin_user=org_admin_user,
                                                               org_admin_password=org_admin_password)
             current_roles = __salt__['uyuni.user_list_roles'](uid, org_admin_user=org_admin_user,
                                                               org_admin_password=org_admin_password)
+            current_system_groups = __salt__['uyuni.user_list_assigned_system_groups'](uid,
+                                                                                       org_admin_user=org_admin_user,
+                                                                                       org_admin_password=org_admin_password)
+            current_system_groups_names = [s["name"] for s in (current_system_groups or [])]
         except Exception as exc:
             if exc.faultCode == 2950:
                 return StateResult.state_error(
@@ -108,7 +143,9 @@ class UyuniUsers:
                           "first_name": first_name, "last_name": last_name,
                           "org_admin_user": org_admin_user, "org_admin_password": org_admin_password}
 
-        changes, error = self._compute_changes(user_paramters, roles, current_user, current_roles)
+        changes, error = self._compute_changes(user_paramters, current_user,
+                                               roles, current_roles,
+                                               system_groups, current_system_groups_names)
 
         if error:
             return StateResult.state_error(uid, "Error managing user '{}': {}".format(uid, error))
@@ -125,6 +162,8 @@ class UyuniUsers:
 
             self._update_user_roles(uid, current_roles, roles,
                                     org_admin_user, org_admin_password)
+            self._update_user_system_groups(uid, current_system_groups_names, system_groups,
+                                            org_admin_user, org_admin_password)
         except Exception as exc:
             return StateResult.state_error(uid, "Error managing user '{}': {}".format(uid, exc))
         else:
@@ -529,23 +568,25 @@ def __virtual__():
 
 
 def user_present(name, password, email, first_name=None, last_name=None,
-                 org_admin_user=None, org_admin_password=None, roles=None):
+                 roles=None, system_groups=None,
+                 org_admin_user=None, org_admin_password=None):
     """
-    Insure user is present with all the specified characteristics
+    Insure user is present with all his characteristics
 
     :param name: user ID
     :param password: desired password for the user
     :param email: valid email address
     :param first_name: First name
     :param last_name: Second name
+    :param roles: roles to assign to user
+    :param system_groups: system_groups to assign to user
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
-    :param roles: roles to assign to user
     :return: dict for Salt communication
     """
     return UyuniUsers().manage(name, password, email, first_name, last_name,
-                               org_admin_user, org_admin_password,
-                               roles)
+                               roles, system_groups,
+                               org_admin_user, org_admin_password)
 
 
 def user_absent(name, org_admin_user=None, org_admin_password=None):

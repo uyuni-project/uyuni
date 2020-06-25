@@ -251,6 +251,40 @@ class UyuniUser(UyuniRemoteObject):
         log.debug("remove role '%s' to user %s", role, uid)
         return bool(self.client("user.removeRole", uid, role))
 
+    def list_assigned_system_groups(self, uid: str) -> List[Dict[str, Union[int, str]]]:
+        """
+        Returns the system groups that a user can administer.
+
+        :param uid: UID of the user
+        :return: List of system groups that a user can administer
+        """
+        log.debug("list assigned system groups for user %s", uid)
+        return self.client("user.listAssignedSystemGroups", uid)
+
+    def add_assigned_system_groups(self, uid: str, server_group_names: List[str], set_default: bool = False) -> int:
+        """
+        Add system groups to user's list of assigned system groups.
+
+        :param uid: user id to look for
+        :param server_group_names: systems groups to add to list of assigned system groups
+        :param set_default: Should system groups also be added to user's list of default system groups.
+        :return: 1 on success, exception thrown otherwise.
+        """
+        log.debug("add assigned system groups to user %s: %s", uid, server_group_names)
+        return self.client("user.addAssignedSystemGroups", uid, server_group_names, set_default)
+
+    def remove_assigned_system_groups(self, uid: str, server_group_names: List[str], set_default: bool = False) -> int:
+        """
+        Remove system groups from a user's list of assigned system groups
+
+        :param uid: user id to look for
+        :param server_group_names: systems groups to remove from list of assigned system groups
+        :param set_default: Should system groups also be added to user's list of default system groups.
+        :return: 1 on success, exception thrown otherwise.
+        """
+        log.debug("remove assign groups from user %s: %s", uid, server_group_names)
+        return self.client("user.removeAssignedSystemGroups", uid, server_group_names, set_default)
+
 
 class UyuniOrg(UyuniRemoteObject):
     """
@@ -712,6 +746,58 @@ def user_remove_role(uid, role, org_admin_user=None, org_admin_password=None):
     :return: boolean indication success in operation
     """
     return UyuniUser(org_admin_user, org_admin_password).remove_role(uid=uid, role=role)
+
+
+def user_list_assigned_system_groups(uid, org_admin_user=None, org_admin_password=None):
+    """
+    Returns the system groups that a user can administer.
+    If no organization admin credentials are provided, credentials from pillar are used
+
+    :param uid: user id to look for
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+    :return: List of system groups that a user can administer
+    """
+    return UyuniUser(org_admin_user,
+                     org_admin_password).list_assigned_system_groups(uid=uid)
+
+
+def user_add_assigned_system_groups(uid, server_group_names, set_default=False,
+                                    org_admin_user=None, org_admin_password=None):
+    """
+    Add system groups to user's list of assigned system groups.
+    If no organization admin credentials are provided, credentials from pillar are used
+
+    :param uid: user id to look for
+    :param server_group_names: systems groups to add to list of assigned system groups
+    :param set_default: Should system groups also be added to user's list of default system groups.
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+    :return: boolean indication success in operation
+    """
+    return UyuniUser(org_admin_user,
+                     org_admin_password).add_assigned_system_groups(uid=uid,
+                                                                    server_group_names=server_group_names,
+                                                                    set_default=set_default)
+
+
+def user_remove_assigned_system_groups(uid, server_group_names, set_default=False,
+                                       org_admin_user=None, org_admin_password=None):
+    """
+    Remove system groups from a user's list of assigned system groups.
+    If no organization admin credentials are provided, credentials from pillar are used
+
+    :param uid: user id to look for
+    :param server_group_names: systems groups to remove from list of assigned system groups
+    :param set_default: Should system groups also be added to user's list of default system groups.
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+    :return: boolean indication success in operation
+    """
+    return UyuniUser(org_admin_user,
+                     org_admin_password).remove_assigned_system_groups(uid=uid,
+                                                                    server_group_names=server_group_names,
+                                                                    set_default=set_default)
 
 
 def org_list_orgs(admin_user=None, admin_password=None):
