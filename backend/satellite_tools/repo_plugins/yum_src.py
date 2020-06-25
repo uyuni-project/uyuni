@@ -960,7 +960,7 @@ type=rpm-md
             self.set_download_parameters(urlgrabber_opts, url, media_products_path)
             urlgrabber.urlgrab(url, media_products_path, **urlgrabber_opts)
         except Exception as exc:
-            # no mirror list found continue without
+            # no 'media.1/products' file found
             return None
         return media_products_path
 
