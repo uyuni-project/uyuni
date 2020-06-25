@@ -178,7 +178,7 @@ salt-minion-package:
     - require:
       - pkg: salt-minion-package
 
-{%- include 'bootstrap/remove_traditional_stack.sls' %}
+{% include 'bootstrap/remove_traditional_stack.sls' %}
 
 mgr_update_basic_pkgs:
   pkg.latest:
