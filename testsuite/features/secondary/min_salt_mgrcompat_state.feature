@@ -6,6 +6,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
 
   Scenario: Remove mgrcompat module from minion synced modules and schedule Hardware Refresh
     Given I remove "/var/cache/salt/minion/extmods/states/mgrcompat.py" from "sle_minion"
+    And I remove "/var/cache/salt/minion/extmods/states/__pycache__/mgrcompat*" from "sle_minion"
     And I am on the Systems overview page of this "sle_minion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
