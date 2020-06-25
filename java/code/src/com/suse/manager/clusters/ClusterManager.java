@@ -85,10 +85,10 @@ public class ClusterManager {
 
 
     private static volatile ClusterManager instance;
-    private SaltApi saltApi;
-    private SystemQuery systemQuery;
-    private ServerGroupManager serverGroupManager;
-    private FormulaManager formulaManager;
+    private final SaltApi saltApi;
+    private final SystemQuery systemQuery;
+    private final ServerGroupManager serverGroupManager;
+    private final FormulaManager formulaManager;
 
     /**
      * @return the instance
@@ -105,13 +105,28 @@ public class ClusterManager {
     }
 
     /**
+     *
+     * @param saltApiIn
+     * @param systemQueryIn
+     * @param serverGroupManagerIn
+     * @param formulaManagerIn
+     */
+    public ClusterManager(SaltApi saltApiIn,
+                          SystemQuery systemQueryIn,
+                          ServerGroupManager serverGroupManagerIn,
+                          FormulaManager formulaManagerIn) {
+        this.saltApi = saltApiIn;
+        this.systemQuery = systemQueryIn;
+        this.formulaManager = formulaManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
+    }
+
+    /**
      * No arg constructor.
      */
     public ClusterManager() {
-        this.saltApi = SaltService.INSTANCE_SALT_API;
-        this.systemQuery = SaltService.INSTANCE;
-        this.serverGroupManager = ServerGroupManager.getInstance();
-        this.formulaManager = FormulaManager.getInstance();
+        this(SaltService.INSTANCE_SALT_API, SaltService.INSTANCE,
+                ServerGroupManager.getInstance(), FormulaManager.getInstance());
     }
 
     /**

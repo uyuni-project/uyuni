@@ -21,7 +21,10 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 import static spark.Spark.post;
 
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.ActivationKeysController;
@@ -95,6 +98,9 @@ public class Router implements SparkApplication {
         VirtManager virtManager = new VirtManagerSalt(saltApi);
         RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
         SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        FormulaManager formulaManager = new FormulaManager(saltApi);
+        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
 
         SystemsController systemsController = new SystemsController(systemQuery);
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
@@ -102,6 +108,7 @@ public class Router implements SparkApplication {
         MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper);
         StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
         FormulaController formulaController = new FormulaController(systemQuery, saltApi);
+        ClustersController clustersController = new ClustersController(clusterManager, formulaManager);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
@@ -181,7 +188,7 @@ public class Router implements SparkApplication {
         SSOController.initRoutes();
 
         // Clusters
-        ClustersController.initRoutes(jade);
+        clustersController.initRoutes(jade);
 
     }
 
