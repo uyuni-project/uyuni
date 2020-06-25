@@ -1,7 +1,3 @@
-include:
-  - util.syncstates
-  - util.syncmodules
-
 {%- if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64', 'aarch64'] %}
 mgr_install_dmidecode:
   pkg.installed:
@@ -147,3 +143,7 @@ fqdns:
 {%- endif %}
 {% endif%}
 {%- endif%}
+
+include:
+  - util.syncstates
+  - util.syncmodules

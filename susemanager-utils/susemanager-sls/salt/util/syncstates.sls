@@ -3,6 +3,6 @@ sync_states:
   saltutil.sync_states
 {%- else %}
   mgrcompat.module_run:
-      - name: saltutil.sync_states
+    - name: saltutil.sync_states
 {%- endif %}
 
