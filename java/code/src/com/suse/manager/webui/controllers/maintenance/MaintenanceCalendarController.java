@@ -39,7 +39,7 @@ import com.suse.manager.maintenance.rescheduling.RescheduleStrategyType;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.utils.gson.MaintenanceWindowJson;
+import com.suse.manager.webui.utils.gson.MaintenanceCalendarJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
 
@@ -131,7 +131,7 @@ public class MaintenanceCalendarController {
      */
     public static String getCalendarDetails(Request request, Response response, User user) {
         Long calendarId = Long.parseLong(request.params("id"));
-        MaintenanceWindowJson json = new MaintenanceWindowJson();
+        MaintenanceCalendarJson json = new MaintenanceCalendarJson();
 
         MaintenanceCalendar calendar = MM.lookupCalendarByUserAndId(user, calendarId).orElseThrow(
                 () -> Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
@@ -176,7 +176,7 @@ public class MaintenanceCalendarController {
      */
     public static String saveCalendar(Request request, Response response, User user) {
         response.type("application/json");
-        MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
+        MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
         if (json.getCalendarName().isBlank()) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
@@ -254,7 +254,7 @@ public class MaintenanceCalendarController {
      */
     public static String refreshCalendar(Request request, Response response, User user) {
         response.type("application/json");
-        MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
+        MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
         try {
             RescheduleStrategy rescheduleStrategy = RescheduleStrategyType
@@ -291,7 +291,7 @@ public class MaintenanceCalendarController {
      */
     public static String deleteCalendar(Request request, Response response, User user) {
         response.type("application/json");
-        MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
+        MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
         String name = json.getCalendarName();
         MM.lookupCalendarByUserAndLabel(user, name).ifPresentOrElse(
@@ -318,12 +318,12 @@ public class MaintenanceCalendarController {
         });
     }
 
-    private static List<MaintenanceWindowJson> calendarsToJson(User user, List<MaintenanceCalendar> calendars) {
+    private static List<MaintenanceCalendarJson> calendarsToJson(User user, List<MaintenanceCalendar> calendars) {
         return calendars.stream().map(calendar -> calendarToJson(user, calendar)).collect(Collectors.toList());
     }
 
-    private static MaintenanceWindowJson calendarToJson(User user, MaintenanceCalendar calendar) {
-        MaintenanceWindowJson json = new MaintenanceWindowJson();
+    private static MaintenanceCalendarJson calendarToJson(User user, MaintenanceCalendar calendar) {
+        MaintenanceCalendarJson json = new MaintenanceCalendarJson();
 
         json.setCalendarId(calendar.getId());
         json.setCalendarName(calendar.getLabel());
