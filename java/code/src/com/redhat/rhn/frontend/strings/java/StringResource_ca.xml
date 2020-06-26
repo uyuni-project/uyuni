@@ -492,6 +492,7 @@
       </trans-unit>
       <trans-unit id="Clone Errata">
         <source>Clone Patches</source>
+        <target>Clona els pedaços</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -578,7 +579,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Errata</target>
+        <target>Pedaços</target>
       </trans-unit>
       <trans-unit id="exception">
         <source>Exception</source>
@@ -996,7 +997,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Drets del sistema</target>
+        <target>Tipus de sistemes</target>
       </trans-unit>
       <trans-unit id="System Groups">
         <source>System Groups</source>
@@ -1284,24 +1285,28 @@
       </trans-unit>
       <trans-unit id="User Account">
         <source>User Account</source>
+        <target>Compte d'usuari</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Account">
         <source>My Account</source>
+        <target>El meu compte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Preferences">
         <source>My Preferences</source>
+        <target>Les meves preferències</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Organization">
         <source>My Organization</source>
+        <target>La meva organització</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1546,7 +1551,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>Correu electrònic</target>
+        <target>Adreça electrònica</target>
       </trans-unit>
       <trans-unit id="company">
         <source>Company</source>
@@ -2580,72 +2585,84 @@
       </trans-unit>
       <trans-unit id="toolbar.create.group">
         <source>Create Group</source>
+        <target>Crea un grup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.create.extgroup">
         <source>Create External Group</source>
+        <target>Crea un grup extern</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.extgroup">
         <source>Delete External Group</source>
+        <target>Suprimeix el grup extern</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.user">
         <source>Delete User</source>
+        <target>Suprimeix l'usuari</target>
         <context-group name="ctx">
           <context context-type="sourcefile">User details pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.erratum">
         <source>Delete Patch</source>
+        <target>Suprimeix el pedaç</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata details pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.system">
         <source>Delete System</source>
+        <target>Suprimeix el sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Package list pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.systemgroup">
         <source>Delete Group</source>
+        <target>Suprimeix el grup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.work.with.group">
         <source>Work With Group</source>
+        <target>Treballa amb el grup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.errata">
         <source>Delete Patch</source>
+        <target>Suprimeix el pedaç</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata edit page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.kickstart">
         <source>Delete Autoinstallation</source>
+        <target>Suprimeix la instal·lació automàtica</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart profile pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.deleteTree">
         <source>Delete Distribution</source>
+        <target>Suprimeix la distribució</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/Kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.profile">
         <source>Delete Profile</source>
+        <target>Suprimeix el perfil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
@@ -2915,24 +2932,28 @@
       </trans-unit>
       <trans-unit id="systemsearch.jsp.devices">
         <source>Hardware Devices</source>
+        <target>Dispositius de maquinari</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_description">
         <source>Description</source>
+        <target>Descripció</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_driver">
         <source>Driver</source>
+        <target>Controlador</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_hwdevice_device_id">
         <source>Device ID</source>
+        <target>Id. del dispositiu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -3041,6 +3062,7 @@
       </trans-unit>
       <trans-unit id="systemsearch_location_address">
         <source>Address</source>
+        <target>Adreça</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -3157,12 +3179,14 @@
       </trans-unit>
       <trans-unit id="errata.applynone">
         <source>No patches selected.</source>
+        <target>No s'ha seleccionat cap pedaç.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.none">
         <source>No systems selected.</source>
+        <target>No s'ha seleccionat cap sistema.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
@@ -3245,6 +3269,7 @@
       </trans-unit>
       <trans-unit id="summary">
         <source>Summary</source>
+        <target>Resum</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3252,6 +3277,7 @@
       </trans-unit>
       <trans-unit id="topic">
         <source>Topic</source>
+        <target>Tema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3259,6 +3285,7 @@
       </trans-unit>
       <trans-unit id="description">
         <source>Description</source>
+        <target>Descripció</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3266,6 +3293,7 @@
       </trans-unit>
       <trans-unit id="solution">
         <source>Solution</source>
+        <target>Solució</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/CreateSubmit.do</context>
@@ -3324,12 +3352,14 @@
       </trans-unit>
       <trans-unit id="type">
         <source>Type</source>
+        <target>Tipus</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyCreate.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="patch.applynone">
         <source>No patches selected.</source>
+        <target>No s'ha seleccionat cap pedaç.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
@@ -5418,6 +5448,7 @@
       </trans-unit>
       <trans-unit id="label">
         <source>Label</source>
+        <target>Etiqueta</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit.do</context>
         </context-group>
@@ -7501,6 +7532,7 @@
       </trans-unit>
       <trans-unit id="entitlement">
         <source>System Types</source>
+        <target>Tipus de sistemes</target>
       </trans-unit>
       <trans-unit id="groupAdmins">
         <source>Group Admins</source>
