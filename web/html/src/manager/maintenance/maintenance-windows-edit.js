@@ -110,6 +110,18 @@ class MaintenanceWindowsEdit extends React.Component {
         })
     };
 
+    onConfirmRefresh = () => {
+        this.setState({
+            icalLoading: true
+        });
+        this.props.onRefresh({
+            calendarId: this.state.calendarId,
+            calendarName: this.state.calendarName,
+            strategy: this.state.strategy ? "Cancel" : "Fail",
+            calendarUrl: this.state.calendarUrl
+        })
+    }
+
     renderScheduleEdit() {
         const model = {
             scheduleName: this.state.scheduleName,
@@ -206,7 +218,7 @@ class MaintenanceWindowsEdit extends React.Component {
                             <div className="col-md-1">
                                 <ModalButton id="url-refresh-btn"
                                              className="btn-default btn-sm"
-                                             icon="fa-refresh"
+                                             icon={this.state.icalLoading ? "fa fa-circle-o-notch fa-spin" : "fa-refresh"}
                                              target="confirm-modal"
                                              title={t("Refresh data from url")}
                                              disabled={this.state.calendarUrl !== this.state.calendarDataText}
@@ -220,12 +232,7 @@ class MaintenanceWindowsEdit extends React.Component {
                                                       <Check name="strategy" label={<b>{t("Cancel affected actions?")}</b>} divClass="col-md-6" />
                                                   </div>
                                               }
-                                              onConfirm={() => this.props.onRefresh({
-                                                  calendarId: this.state.calendarId,
-                                                  calendarName: this.state.calendarName,
-                                                  strategy: this.state.strategy ? "Cancel" : "Fail",
-                                                  calendarUrl: this.state.calendarUrl
-                                              })}
+                                              onConfirm={() => this.onConfirmRefresh()}
                                               submitText="Confirm"
                                               submitIcon="fa-check"
                                 />
