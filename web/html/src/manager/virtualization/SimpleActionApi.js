@@ -1,18 +1,20 @@
 // @flow
 import * as React from 'react';
-import { ActionApi } from '../ActionApi';
+import { ActionApi } from './ActionApi';
 
 type Props = {
+  urlType: string,
+  idName: string,
   hostid: string,
   children: Function,
   bounce?: string,
   callback?: Function,
 };
 
-export function VirtualizationGuestActionApi(props: Props) {
+export function SimpleActionApi(props: Props) {
   return (
     <ActionApi
-      urlTemplate={ `/rhn/manager/api/systems/details/virtualization/guests/${props.hostid}/`}
+      urlTemplate={ `/rhn/manager/api/systems/details/virtualization/${props.urlType}/${props.hostid}/`}
       bounce={props.bounce}
       callback={props.callback}
     >
@@ -21,8 +23,8 @@ export function VirtualizationGuestActionApi(props: Props) {
         onAction: apiAction,
         messages,
       }) => {
-        const onAction = (action: string, uuids: Array<string>, parameters: Object) => {
-          const messageData = Object.assign({ }, parameters, { uuids });
+        const onAction = (action: string, ids: Array<string>, parameters: Object) => {
+          const messageData = Object.assign({ }, parameters, { [props.idName]: ids });
           apiAction((urlTemplate) => `${urlTemplate}${action}`, action, messageData);
         }
         return props.children({onAction, messages});
@@ -31,7 +33,7 @@ export function VirtualizationGuestActionApi(props: Props) {
     </ActionApi>
   );
 }
-VirtualizationGuestActionApi.defaultProps = {
+SimpleActionApi.defaultProps = {
   bounce: undefined,
   callback: undefined,
 };

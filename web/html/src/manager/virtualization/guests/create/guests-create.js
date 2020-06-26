@@ -8,7 +8,7 @@ const { TopPanel } = require('components/panels/TopPanel');
 const MessagesUtils = require('components/messages').Utils;
 const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
 const { GuestProperties } = require('../GuestProperties');
-const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
+const { SimpleActionApi } = require('../../SimpleActionApi');
 const GuestNicsPanel = require('../properties/guest-nics-panel');
 const DiskUtils = require('../properties/disk-utils');
 const Functions = require('utils/functions');
@@ -62,7 +62,9 @@ class GuestsCreate extends React.Component<Props, State> {
 
   render() {
     return (
-      <VirtualizationGuestActionApi
+      <SimpleActionApi
+        urlType="guests"
+        idName="uuids"
         hostid={this.props.host.id}
         bounce={`/rhn/manager/systems/details/virtualization/guests/${this.props.host.id}`}
       >
@@ -96,7 +98,7 @@ class GuestsCreate extends React.Component<Props, State> {
             );
           }
         }
-      </VirtualizationGuestActionApi>
+      </SimpleActionApi>
     );
   }
 }
