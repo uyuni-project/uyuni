@@ -169,6 +169,7 @@ class MaintenanceWindows extends React.Component {
                 t("Calendar successfully refreshed"))
             );
             this.setState({
+                action: undefined,
                 messages: msgs.slice(0, messagesCounterLimit)
             });
 
