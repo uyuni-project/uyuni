@@ -179,7 +179,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                     .ifPresent(minion -> jobResult
                             .ifPresent(result-> {
                                 SystemInfo systemInfo = Json.GSON.fromJson(result, SystemInfo.class);
-                                SaltUtils.INSTANCE.updateSystemInfo(systemInfo, minion);
+                                saltUtils.updateSystemInfo(systemInfo, minion);
                             }));
         }
       // For all jobs: update minion last checkin

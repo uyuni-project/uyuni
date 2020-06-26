@@ -2361,7 +2361,7 @@ public class SaltServerActionService {
                                 SaltKeyUtils.deleteSaltKey(action.get().getSchedulerUser(), minionId);
                             }
                         }
-                        SaltUtils.INSTANCE.updateServerAction(sa,
+                        saltUtils.updateServerAction(sa,
                                 retcode,
                                 success,
                                 jobId,

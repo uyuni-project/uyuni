@@ -201,12 +201,6 @@ public class SaltUtils {
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
-    public static final SaltUtils INSTANCE = new SaltUtils(
-            SaltService.INSTANCE,
-            SaltService.INSTANCE_SALT_API,
-            ClusterManager.instance()
-    );
-
     public static final String CAASP_PATTERN_IDENTIFIER = "patterns-caasp-Node";
     public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 

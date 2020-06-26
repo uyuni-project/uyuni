@@ -404,7 +404,17 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testExecuteActionChain() throws Exception {
-        SaltUtils.INSTANCE.setScriptsDir(Files.createTempDirectory("actionscripts"));
+        SystemQuery systemQuery = SaltService.INSTANCE;
+        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        FormulaManager formulaManager = new FormulaManager(saltApi);
+        ClusterManager clusterManager = new ClusterManager(
+                saltApi, systemQuery, serverGroupManager, formulaManager
+        );
+        SaltUtils saltUtils = new SaltUtils(
+                systemQuery, saltApi, clusterManager
+        );
+        saltUtils.setScriptsDir(Files.createTempDirectory("actionscripts"));
 
         SaltActionChainGeneratorService generatorService = new SaltActionChainGeneratorService() {
             @Override

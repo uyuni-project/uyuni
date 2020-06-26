@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -83,8 +82,11 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 
@@ -115,9 +117,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String HOSTNAME = "foo.bar.com";
 
     private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SaltService saltService = new SaltService();
+    private SystemQuery systemQuery = saltService;
+    private SaltApi saltApi = saltService;
+    private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, ClusterManager.instance());
     private SaltServerActionService saltServerActionService = new SaltServerActionService(
-            new SaltService(),
-            SaltUtils.INSTANCE
+            systemQuery,
+            saltUtils
     );
 
     @Override

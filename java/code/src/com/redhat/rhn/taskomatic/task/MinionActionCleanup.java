@@ -15,7 +15,6 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
 import java.io.IOException;

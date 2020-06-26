@@ -692,8 +692,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
-        SaltUtils.INSTANCE.setSaltApi(saltServiceMock);
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
@@ -704,8 +702,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.caasp-node.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = saltServiceMock;
+        SaltApi saltApi = saltServiceMock;
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
@@ -742,7 +740,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() {{  }});
 
-        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
@@ -753,8 +750,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.caasp-node.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = saltServiceMock;
+        SaltApi saltApi = saltServiceMock;
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
@@ -792,7 +789,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
@@ -803,8 +799,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.caasp-management.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = saltServiceMock;
+        SaltApi saltApi = saltServiceMock;
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
@@ -1200,7 +1196,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Set<NetworkInterface> oldIfs = new HashSet<>();
         oldIfs.addAll(server.getNetworkInterfaces());
 
-        SaltUtils.INSTANCE.updateServerAction(sa, 0L, true, "n/a", element, "state.apply");
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, ClusterManager.instance());
+
+        saltUtils.updateServerAction(sa, 0L, true, "n/a", element, "state.apply");
 
         Map<String, NetworkInterface> ethNames = server.getNetworkInterfaces().stream().collect(Collectors.toMap(
                 eth -> eth.getName(),
@@ -1504,8 +1502,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             will(returnValue(result));
         }});
 
-        SaltUtils.INSTANCE.setXccdfResumeXsl(resumeXsl);
-        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
+        saltUtils.setXccdfResumeXsl(resumeXsl);
+        saltUtils.setSystemQuery(saltServiceMock);
         messageAction.execute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
@@ -1828,7 +1826,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
         }});
-        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
@@ -1859,7 +1856,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     with(equal(String.format("/srv/www/os-images/%d/", user.getOrg().getId()))));
             will(returnValue(Optional.of(mockResult)));
         }});
-        SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
 
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.OSIMAGE_BUILD_HOST);
 
