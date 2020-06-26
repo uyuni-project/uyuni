@@ -15,7 +15,6 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.taskomatic.core.SchedulerKernel;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import org.quartz.JobExecutionContext;
 
@@ -25,7 +24,7 @@ import org.quartz.JobExecutionContext;
  */
 public class MinionActionChainCleanup extends RhnJavaJob {
 
-    private final SystemQuery systemQuery = SchedulerKernel.SYSTEM_QUERY;
+    private final MinionActionUtils minionActionUtils = SchedulerKernel.MINION_ACTION_UTILS;
 
     /**
      * @param context the job execution context
@@ -39,7 +38,7 @@ public class MinionActionChainCleanup extends RhnJavaJob {
 
         // Measure time and calculate the total duration
         long start = System.currentTimeMillis();
-        MinionActionUtils.cleanupMinionActionChains(systemQuery);
+        minionActionUtils.cleanupMinionActionChains();
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

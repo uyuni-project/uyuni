@@ -42,6 +42,7 @@ import com.suse.manager.reactor.messaging.LibvirtEnginePoolRefreshMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
+import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -86,6 +87,7 @@ public class SaltReactor {
     private final SaltApi saltApi;
     private final SystemQuery systemQuery;
     private final SaltServerActionService saltServerActionService;
+    private final SaltUtils saltUtils;
 
     // The event stream object
     private EventStream eventStream;
@@ -100,12 +102,14 @@ public class SaltReactor {
      * @param saltApiIn instance to talk to salt
      * @param systemQueryIn instance to get system information.
      * @param saltServerActionServiceIn
+     * @param saltUtilsIn
      */
-    public SaltReactor(SaltApi saltApiIn, SystemQuery systemQueryIn,
-                       SaltServerActionService saltServerActionServiceIn) {
+    public SaltReactor(SaltApi saltApiIn, SystemQuery systemQueryIn, SaltServerActionService saltServerActionServiceIn,
+                       SaltUtils saltUtilsIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
         this.saltServerActionService = saltServerActionServiceIn;
+        this.saltUtils = saltUtilsIn;
     }
 
     /**
@@ -123,7 +127,7 @@ public class SaltReactor {
                 MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);
-        MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService),
+        MessageQueue.registerAction(new JobReturnEventMessageAction(saltServerActionService, saltUtils),
                 JobReturnEventMessage.class);
         MessageQueue.registerAction(new RefreshGeneratedSaltFilesEventMessageAction(),
                 RefreshGeneratedSaltFilesEventMessage.class);

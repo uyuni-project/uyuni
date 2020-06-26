@@ -296,7 +296,7 @@ public class SaltUtils {
      * @param server server to update
      * @return an outcome
      */
-    public static PackageChangeOutcome handlePackageChanges(String function,
+    public PackageChangeOutcome handlePackageChanges(String function,
             JsonElement callResult, Server server) {
         final PackageChangeOutcome outcome;
 

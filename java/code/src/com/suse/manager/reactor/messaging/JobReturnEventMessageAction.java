@@ -53,12 +53,15 @@ import java.util.stream.Collectors;
 public class JobReturnEventMessageAction implements MessageAction {
 
     private final SaltServerActionService saltServerActionService;
+    private final SaltUtils saltUtils;
 
     /**
      * @param saltServerActionServiceIn
+     * @param saltUtilsIn
      */
-    public JobReturnEventMessageAction(SaltServerActionService saltServerActionServiceIn) {
+    public JobReturnEventMessageAction(SaltServerActionService saltServerActionServiceIn, SaltUtils saltUtilsIn) {
         this.saltServerActionService = saltServerActionServiceIn;
+        this.saltUtils = saltUtilsIn;
     }
 
     /**
@@ -215,7 +218,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                     boolean fullPackageRefreshNeeded = false;
                     try {
                         if (forcePackageListRefresh(jobReturnEvent) ||
-                                SaltUtils.handlePackageChanges(function, result,
+                                saltUtils.handlePackageChanges(function, result,
                                         minionServer) ==  PackageChangeOutcome.NEEDS_REFRESHING) {
                             fullPackageRefreshNeeded = true;
                         }

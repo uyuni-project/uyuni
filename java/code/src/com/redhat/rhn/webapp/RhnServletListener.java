@@ -70,7 +70,7 @@ public class RhnServletListener implements ServletContextListener {
             systemQuery, saltUtils);
 
     // Salt event reactor instance
-    private final SaltReactor saltReactor = new SaltReactor(saltApi, systemQuery, saltServerActionService);
+    private final SaltReactor saltReactor = new SaltReactor(saltApi, systemQuery, saltServerActionService, saltUtils);
 
     private void startMessaging() {
         // Start the MessageQueue thread listening for

@@ -32,8 +32,11 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.google.gson.reflect.TypeToken;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
@@ -116,7 +119,11 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             }
         } });
 
-        MinionActionUtils.cleanupMinionActions(saltServiceMock);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, ClusterManager.instance());
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
+                saltUtils);
+        minionActionUtils.cleanupMinionActions();
 
         if (!MinionActionUtils.POSTGRES) {
             action.getServerActions().stream().forEach(sa -> {
@@ -258,7 +265,11 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
         ActionChainFactory.delete(actionChain);
 
-        MinionActionUtils.cleanupMinionActionChains(saltServiceMock);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, ClusterManager.instance());
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
+                saltUtils);
+        minionActionUtils.cleanupMinionActionChains();
         
         if (!MinionActionUtils.POSTGRES) {
             assertActionCompleted(action1_1);

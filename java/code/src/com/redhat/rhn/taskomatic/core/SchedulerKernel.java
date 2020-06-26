@@ -40,6 +40,7 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import com.suse.manager.webui.utils.MinionActionUtils;
 import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -86,6 +87,8 @@ public class SchedulerKernel {
             SYSTEM_QUERY, SALT_API, CLUSTER_MANAGER);
     public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE =
             new SaltServerActionService(SchedulerKernel.SYSTEM_QUERY, SALT_UTILS);
+    public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(
+            SALT_SERVER_ACTION_SERVICE, SYSTEM_QUERY, SALT_UTILS);
 
 
     /**
