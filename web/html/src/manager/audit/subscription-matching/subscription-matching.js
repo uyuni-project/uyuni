@@ -17,7 +17,8 @@ const Network = require("utils/network");
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 const { StatePersistedContext } = require("components/utils/StatePersistedContext");
 
-class SubscriptionMatching extends React.Component {
+
+export class SubscriptionMatching extends React.Component {
   state = {
     serverData: null,
     error: null
