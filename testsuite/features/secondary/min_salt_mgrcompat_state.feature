@@ -18,6 +18,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I remove "/var/cache/salt/minion/extmods/states/__pycache__/mgrcompat*" from "sle_minion"
     And I store "grains: {__suse_reserved_saltutil_states_support: False}" into file "/etc/salt/minion.d/custom_grains.conf" on "sle_minion"
     And I run "salt-call saltutil.refresh_grains" on "sle_minion"
+    And I am on the Systems overview page of this "sle_minion"
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
