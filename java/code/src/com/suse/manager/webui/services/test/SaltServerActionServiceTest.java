@@ -843,7 +843,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private void successWorker() throws IOException {
-        SaltUtils saltUtils = new SaltUtils() {
+        SaltService saltService = new SaltService();
+        SystemQuery systemQuery = saltService;
+        SaltApi saltApi = saltService;
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, ClusterManager.instance()) {
             @Override
             public boolean shouldRefreshPackageList(String function,
                                                     Optional<JsonElement> callResult) {

@@ -244,13 +244,6 @@ public class SaltUtils {
     }
 
     /**
-     *
-     */
-    public SaltUtils() {
-        this(SaltService.INSTANCE, SaltService.INSTANCE_SALT_API, ClusterManager.instance());
-    }
-
-    /**
      * Figure out if the list of packages has changed based on the result of a Salt call
      * given as JsonElement. This information is used to decide if we should trigger a
      * package list refresh.

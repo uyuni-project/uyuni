@@ -27,9 +27,11 @@ import com.redhat.rhn.taskomatic.task.sshpush.SSHPushWorkerSalt;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -104,14 +106,14 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         ServerAction serverAction = createChildServerAction(action,
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(action);
-        SystemQuery systemQuery = new SaltService() {
+        SaltService saltService = new SaltService() {
             @Override
             public Optional<Boolean> ping(String minionId) {
                 return Optional.of(true);
             }
         };
 
-        SSHPushWorkerSalt worker = successWorker(systemQuery);
+        SSHPushWorkerSalt worker = successWorker(saltService, saltService);
 
         context().checking(new Expectations() {{
            
@@ -175,13 +177,13 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(upcomingAction);
 
-        SystemQuery systemQuery = new SaltService() {
+        SaltService saltService = new SaltService() {
             @Override
             public Optional<Boolean> ping(String minionId) {
                 return Optional.of(true);
             }
         };
-        SSHPushWorkerSalt worker = successWorker(systemQuery);
+        SSHPushWorkerSalt worker = successWorker(saltService, saltService);
 
         context().checking(new Expectations() {{
 
@@ -223,7 +225,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(upcomingAction);
 
-        SystemQuery systemQuery = new SaltService() {
+        SaltService saltService = new SaltService() {
             @Override
             public Optional<Boolean> ping(String minionId) {
                 return Optional.of(true);
@@ -241,7 +243,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             }
         };
 
-        SSHPushWorkerSalt worker = successWorker(systemQuery);
+        SSHPushWorkerSalt worker = successWorker(saltService, saltService);
 
         context().checking(new Expectations() {{
             oneOf(saltSSHServiceMock).cleanPendingActionChainAsync(with(any(MinionServer.class)));
@@ -303,14 +305,14 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         return mockQueue;
     }
 
-    private SSHPushWorkerSalt successWorker(SystemQuery saltServiceMock) {
-        SaltUtils saltUtils = new SaltUtils();
+    private SSHPushWorkerSalt successWorker(SystemQuery systemQuery, SaltApi saltApi) {
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, ClusterManager.instance());
         return new SSHPushWorkerSalt(
                 logger,
                 sshPushSystemMock,
-                saltServiceMock,
+                systemQuery,
                 saltSSHServiceMock,
-                new SaltServerActionService(new SaltService(), saltUtils),
+                new SaltServerActionService(systemQuery, saltUtils),
                 saltUtils
         );
     }
