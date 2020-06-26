@@ -587,9 +587,10 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
        labels =  find_dists_for_regeneration(dest, dists, doall=options.flush)
        if options.flush and len(labels) > 0:
            destdir = os.path.normpath(dest)
-           dirprefix, lastdir = os.path.split(destdir)
-           destdirtmp = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "tmp"))
-           destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+           if os.path.exists(destdir):
+               dirprefix, lastdir = os.path.split(destdir)
+               destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+               os.rename(destdir, destdirold)
            doall = True
        for label in labels:
            errors += create_repo(label, options, mgr_bootstrap_data, additional=additional)
@@ -646,9 +647,10 @@ def main():
 
         if opts.flush:
             destdir = os.path.normpath(mgr_bootstrap_data.DATA[elabel]['DEST'])
-            dirprefix, lastdir = os.path.split(destdir)
-            destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
-            os.rename(destdir, destdirold)
+            if os.path.exists(destdir):
+                dirprefix, lastdir = os.path.split(destdir)
+                destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+                os.rename(destdir, destdirold)
         r = create_repo(elabel, opts, mgr_bootstrap_data, additional=args)
     elif opts.list:
         list_labels(mgr_bootstrap_data)
