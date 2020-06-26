@@ -83,3 +83,6 @@ mgr_image_remove:
     - force: False
 
 {% endif %}
+
+include:
+  - util.syncstates
