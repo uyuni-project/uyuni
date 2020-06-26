@@ -344,6 +344,7 @@ def cleanup_dir(path):
     if os.path.exists(path):
         try:
             shutil.rmtree(path)
+            log("REMOVE dir {0}".format(path), 3)
         except OSError as err:
             log_error('Error while deleting {0}: {1}'.format(path, err))
             return False
@@ -408,11 +409,12 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         return 1
 
     if options.dryrun:
-        log("Create directory:", destdirtmp)
+        log("Create directory: {0}".format(destdirtmp))
     else:
         if not os.path.exists(destdir):
             os.makedirs(destdirtmp)
         else:
+            log("Copy destdir to tempdir", 3)
             shutil.copytree(destdir, destdirtmp)
 
     print()
@@ -458,7 +460,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             for p in pkgs:
                 log(p, 2)
                 rpmdir = os.path.join(destdirtmp, p['arch']) if repotype != 'deb' else debs_dir
-                if not os.path.exists(rpmdir):
+                if not os.path.exists(rpmdir) and not options.dryrun:
                     os.makedirs(rpmdir)
                 log("copy '%s'" % p['nvrea'])
                 log("copy {0} / {1} to {2}".format(basepath, p['path'], rpmdir), 2)
@@ -590,7 +592,11 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
            if os.path.exists(destdir):
                dirprefix, lastdir = os.path.split(destdir)
                destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
-               os.rename(destdir, destdirold)
+               if options.dryrun:
+                   log("Move directory: {0}".format(destdir))
+               else:
+                   log("FLUSH: move destdir to old", 2)
+                   os.rename(destdir, destdirold)
            doall = True
        for label in labels:
            errors += create_repo(label, options, mgr_bootstrap_data, additional=additional)
@@ -650,7 +656,11 @@ def main():
             if os.path.exists(destdir):
                 dirprefix, lastdir = os.path.split(destdir)
                 destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
-                os.rename(destdir, destdirold)
+                if opts.dryrun:
+                    log("Move directory: {0}".format(destdir))
+                else:
+                    log("FLUSH: move destdir to old", 2)
+                    os.rename(destdir, destdirold)
         r = create_repo(elabel, opts, mgr_bootstrap_data, additional=args)
     elif opts.list:
         list_labels(mgr_bootstrap_data)
