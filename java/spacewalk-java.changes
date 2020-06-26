@@ -1,3 +1,4 @@
+- Branding adjustments, get rid of spacewalk as a default
 - serve media.1/products when available (bsc#1173204)
 - use repo metadata of the synced base channel when kernel
   option "useonlinerepo" is provided (bsc#1173204)
