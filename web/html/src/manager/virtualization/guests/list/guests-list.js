@@ -8,11 +8,9 @@ import * as Systems from 'components/systems';
 import { Utils as ListUtils } from '../../list.utils';
 import { ListTab } from '../../ListTab';
 
-
-declare var userPrefPageSize: number;
-
 type Props = {
   serverId: string,
+  pageSize: number,
   saltEntitled: boolean,
   foreignEntitled: boolean,
   isAdmin: boolean,
@@ -41,7 +39,7 @@ export function GuestsList(props: Props) {
     <ListTab
       serverId={props.serverId}
       saltEntitled={props.saltEntitled}
-      pageSize={userPrefPageSize}
+      pageSize={props.pageSize}
       type="guest"
       title={t('Hosted Virtual Systems')}
       description={t('This is a list of virtual guests which are configured to run on this host.')}
