@@ -4,6 +4,15 @@ Wed Jun 10 14:26:36 CEST 2020 - jgonzalez@suse.com
 - version 4.0.17-1
 - add Ubuntu 20.04 LTS
 - add SLE Live Patching (Z-Series) and SLES LTSS 12 SP3 ARM64
+- Remove:
+  * sle12sp4-ltss-channel_families.patch
+
+-------------------------------------------------------------------
+Wed Jun 10 10:15:35 UTC 2020 - Michael Calmer <mc@suse.com>
+
+- Add SLE 12 SP4 LTSS channel families (bsc#1173398)
+- Add:
+  * sle12sp4-ltss-channel_families.patch
 
 -------------------------------------------------------------------
 Fri Feb 28 12:09:05 CET 2020 - jgonzalez@suse.com
