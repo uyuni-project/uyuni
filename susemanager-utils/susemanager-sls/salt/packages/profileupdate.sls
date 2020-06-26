@@ -25,6 +25,7 @@ debianrelease:
 
 include:
   - util.syncgrains
+  - util.syncstates
   - util.syncmodules
 
 grains_update:
