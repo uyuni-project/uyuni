@@ -116,6 +116,10 @@
     "name" : "SUSE Linux Enterprise Live Patching PPC"
   },
   {
+    "label" : "SLE-LP-Z",
+    "name" : "SUSE Linux Enterprise Live Patching (Z-Series)"
+  },
+  {
     "label" : "SLE-M-T",
     "name" : "SUSE Manager Tools"
   },
@@ -184,6 +188,10 @@
     "name" : "SUSE Linux Enterprise Server LTSS 12 SP2 Z-Series"
   },
   {
+    "label" : "SLES12-SP3-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 ARM64"
+  },
+  {
     "label" : "SLES12-SP3-LTSS-PPC",
     "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 PPC"
   },
@@ -194,6 +202,22 @@
   {
     "label" : "SLES12-SP3-LTSS-Z",
     "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 Z-Series"
+  },
+  {
+    "label" : "SLES12-SP4-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP4 ARM64"
+  },
+  {
+    "label" : "SLES12-SP4-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP4 PPC"
+  },
+  {
+    "label" : "SLES12-SP4-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64"
+  },
+  {
+    "label" : "SLES12-SP4-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP4 Z-Series"
   },
   {
     "label" : "SLES15-GA-LTSS-PPC",
