@@ -308,6 +308,13 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I wait until I do not see "test-net0.xml" text
 
 @virthost_kvm
+  Scenario: List virtual networks
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    Then I wait until I see "test-net0" text
+    And I should see a "test-net1" text
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
