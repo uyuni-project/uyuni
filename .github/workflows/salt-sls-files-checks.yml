@@ -16,6 +16,6 @@ jobs:
 
     - uses: mattsb42/not-grep@master
       with:
-        config-file: ./github/config/file-content-checks.toml
+        config-file: ./.github/config/file-content-checks.toml
         # If you don't set debug, passing checks will be hidden.
         debug: true
