@@ -14,7 +14,6 @@
  */
 package com.suse.manager.maintenance;
 
-import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static java.util.Collections.emptySet;
 import static java.util.Optional.empty;
@@ -300,19 +299,7 @@ public class MaintenanceManager {
      * @return the {@link MaintenanceSchedule}s assigned to given systems
      */
     public Set<MaintenanceSchedule> listSchedulesOfSystems(Set<Long> systemIds) {
-        if (systemIds.isEmpty()) {
-            return emptySet();
-        }
-
-        return (Set<MaintenanceSchedule>) HibernateFactory.getSession()
-                .createQuery(
-                        "SELECT s.maintenanceSchedule " +
-                                "FROM Server s " +
-                                "WHERE s.maintenanceSchedule IS NOT NULL " +
-                                "AND s.id IN (:systemIds)")
-                .setParameter("systemIds", systemIds)
-                .stream()
-                .collect(toSet());
+        return maintenanceFactory.listSchedulesOfSystems(systemIds);
     }
 
 
@@ -342,8 +329,8 @@ public class MaintenanceManager {
         ensureOrgAdmin(user);
         ensureCalendarAccessible(user, calendar);
         List<RescheduleResult> result = new LinkedList<>();
-        List<MaintenanceSchedule> schedules = listSchedulesByUserAndCalendar(user, calendar);
-        getSession().remove(calendar);
+        List<MaintenanceSchedule> schedules = maintenanceFactory.listSchedulesByUserAndCalendar(user, calendar);
+        maintenanceFactory.remove(calendar);
         for (MaintenanceSchedule schedule: schedules) {
             schedule.setCalendar(null);
             List<RescheduleStrategy> strategy = new LinkedList<>();
@@ -365,12 +352,8 @@ public class MaintenanceManager {
      * @param user the user
      * @return a list of Schedule names
      */
-    @SuppressWarnings("unchecked")
     public List<String> listScheduleNamesByUser(User user) {
-        return getSession()
-            .createQuery("SELECT name FROM MaintenanceSchedule WHERE org = :org")
-            .setParameter("org", user.getOrg())
-            .list();
+        return maintenanceFactory.listScheduleNamesByUser(user);
     }
 
     /**
@@ -378,12 +361,8 @@ public class MaintenanceManager {
      * @param user the user
      * @return a list of Maintenance Schedules
      */
-    @SuppressWarnings("unchecked")
     public List<MaintenanceSchedule> listMaintenanceSchedulesByUser(User user) {
-        return getSession()
-                .createQuery("FROM MaintenanceSchedule WHERE org = :org")
-                .setParameter("org", user.getOrg())
-                .list();
+        return maintenanceFactory.listMaintenanceSchedulesByUser(user);
     }
 
     /**
@@ -392,13 +371,8 @@ public class MaintenanceManager {
      * @param calendar the calendar
      * @return a list of MaintenanceSchedules
      */
-    @SuppressWarnings("unchecked")
     public List<MaintenanceSchedule> listMaintenanceSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
-        return getSession()
-                .createQuery("FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar")
-                .setParameter("org", user.getOrg())
-                .setParameter("calendar", calendar)
-                .list();
+        return maintenanceFactory.listMaintenanceSchedulesByCalendar(user, calendar);
     }
 
     /**
@@ -407,12 +381,8 @@ public class MaintenanceManager {
      * @param name the schedule name
      * @return Optional Maintenance Schedule
      */
-    @SuppressWarnings("unchecked")
     public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndName(User user, String name) {
-        return getSession().createNamedQuery("MaintenanceSchedule.lookupByUserAndName")
-            .setParameter("orgId", user.getOrg().getId())
-            .setParameter("name", name)
-            .uniqueResultOptional();
+        return maintenanceFactory.lookupMaintenanceScheduleByUserAndName(user, name);
     }
 
     /**
@@ -421,11 +391,8 @@ public class MaintenanceManager {
      * @param id the id of the schedule
      * @return Optional Maintenance Schedule
      */
-    @SuppressWarnings("unchecked")
     public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndId(User user, Long id) {
-        return getSession().createQuery("FROM MaintenanceSchedule WHERE org = :org AND id = :id")
-                .setParameter("org", user.getOrg())
-                .setParameter("id", id).uniqueResultOptional();
+        return maintenanceFactory.lookupMaintenanceScheduleByUserAndId(user, id);
     }
 
     /**
@@ -483,12 +450,8 @@ public class MaintenanceManager {
      * @param user the user
      * @return a list of Calendar labels
      */
-    @SuppressWarnings("unchecked")
     public List<String> listCalendarLabelsByUser(User user) {
-        return getSession()
-            .createQuery("SELECT label FROM MaintenanceCalendar WHERE org = :org ORDER BY label ASC")
-            .setParameter("org", user.getOrg())
-            .list();
+        return maintenanceFactory.listCalendarLabelsByUser(user);
     }
 
     /**
@@ -496,12 +459,8 @@ public class MaintenanceManager {
      * @param user the user
      * @return a list of Maintenance Calendars
      */
-    @SuppressWarnings("unchecked")
     public List<MaintenanceCalendar> listCalendarsByUser(User user) {
-        return getSession()
-                .createQuery("FROM MaintenanceCalendar WHERE org = :org")
-                .setParameter("org", user.getOrg())
-                .list();
+        return maintenanceFactory.listCalendarsByUser(user);
     }
 
     /**
@@ -510,11 +469,8 @@ public class MaintenanceManager {
      * @param label the label of the calendar
      * @return Optional Maintenance Calendar
      */
-    @SuppressWarnings("unchecked")
     public Optional<MaintenanceCalendar> lookupCalendarByUserAndLabel(User user, String label) {
-        return getSession().createNamedQuery("MaintenanceCalendar.lookupByUserAndName")
-                .setParameter("orgId", user.getOrg().getId())
-                .setParameter("label", label).uniqueResultOptional();
+        return maintenanceFactory.lookupCalendarByUserAndLabel(user, label);
     }
 
     /**
@@ -523,11 +479,8 @@ public class MaintenanceManager {
      * @param id the id of the calendar
      * @return Optional Maintenance Calendar
      */
-    @SuppressWarnings("unchecked")
     public Optional<MaintenanceCalendar> lookupCalendarByUserAndId(User user, Long id) {
-        return getSession().createQuery("FROM MaintenanceCalendar WHERE org = :org AND id = :id")
-                .setParameter("org", user.getOrg())
-                .setParameter("id", id).uniqueResultOptional();
+        return maintenanceFactory.lookupCalendarByUserAndId(user, id);
     }
 
     /**
@@ -592,7 +545,7 @@ public class MaintenanceManager {
         }
         maintenanceFactory.save(calendar);
         List<RescheduleResult> result = new LinkedList<>();
-        for (MaintenanceSchedule schedule: listSchedulesByUserAndCalendar(user, calendar)) {
+        for (MaintenanceSchedule schedule: maintenanceFactory.listSchedulesByUserAndCalendar(user, calendar)) {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
             if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
@@ -621,7 +574,7 @@ public class MaintenanceManager {
                 calendar.getUrlOpt().orElseThrow(() -> new EntityNotExistsException("url"))));
         maintenanceFactory.save(calendar);
         List<RescheduleResult> result = new LinkedList<>();
-        for (MaintenanceSchedule schedule: listSchedulesByUserAndCalendar(user, calendar)) {
+        for (MaintenanceSchedule schedule: maintenanceFactory.listSchedulesByUserAndCalendar(user, calendar)) {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
             if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
@@ -630,14 +583,6 @@ public class MaintenanceManager {
             result.add(r);
         }
         return result;
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<MaintenanceSchedule> listSchedulesByUserAndCalendar(User user, MaintenanceCalendar calendar) {
-        return getSession()
-                .createQuery("from MaintenanceSchedule WHERE org = :org and calendar = :calendar ORDER BY name ASC")
-                .setParameter("org", user.getOrg())
-                .setParameter("calendar", calendar).getResultList();
     }
 
     private String fetchCalendarData(String url) {
@@ -909,13 +854,7 @@ public class MaintenanceManager {
         ensureOrgAdmin(user);
         ensureScheduleAccessible(user, schedule);
 
-        @SuppressWarnings("unchecked")
-        List<Long> systemIds = getSession().createQuery(
-                "SELECT s.id from Server s " +
-                        "WHERE s.maintenanceSchedule = :schedule")
-                .setParameter("schedule", schedule)
-                .list();
-
+        List<Long> systemIds = maintenanceFactory.listSystemIdsWithSchedule(schedule);
         ensureSystemsAccessible(user, systemIds);
 
         return systemIds;
