@@ -97,6 +97,15 @@ public class MaintenanceManager {
 
     private static volatile MaintenanceManager instance = null;
 
+    private MaintenanceFactory maintenanceFactory;
+
+    /**
+     * Constructor.
+     */
+    public MaintenanceManager() {
+        maintenanceFactory = new MaintenanceFactory();
+    }
+
     /**
      * Instantiate Maintenance Manager object
      *
@@ -308,14 +317,6 @@ public class MaintenanceManager {
 
 
     /**
-     * Save a MaintenanceSchedule
-     * @param schedule the schedule
-     */
-    protected void save(MaintenanceSchedule schedule) {
-        getSession().save(schedule);
-    }
-
-    /**
      * Remove a MaintenanceSchedule
      * @param user the user
      * @param schedule the schedule
@@ -323,15 +324,7 @@ public class MaintenanceManager {
     public void remove(User user, MaintenanceSchedule schedule) {
         ensureOrgAdmin(user);
         ensureScheduleAccessible(user, schedule);
-        getSession().remove(schedule);
-    }
-
-    /**
-     * Save a MaintenanceCalendar
-     * @param calendar the calendar
-     */
-    protected void save(MaintenanceCalendar calendar) {
-        getSession().save(calendar);
+        maintenanceFactory.remove(schedule);
     }
 
     /**
@@ -452,7 +445,7 @@ public class MaintenanceManager {
         ms.setName(name);
         ms.setScheduleType(type);
         calendar.ifPresent(ms::setCalendar);
-        save(ms);
+        maintenanceFactory.save(ms);
         return ms;
     }
 
@@ -481,7 +474,7 @@ public class MaintenanceManager {
             }
             schedule.setCalendar(calendar);
         }
-        save(schedule);
+        maintenanceFactory.save(schedule);
         return manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
     }
 
@@ -551,7 +544,7 @@ public class MaintenanceManager {
         mc.setOrg(user.getOrg());
         mc.setLabel(label);
         mc.setIcal(ical);
-        save(mc);
+        maintenanceFactory.save(mc);
         return mc;
     }
 
@@ -572,7 +565,7 @@ public class MaintenanceManager {
         mc.setLabel(label);
         mc.setUrl(url);
         mc.setIcal(fetchCalendarData(url));
-        save(mc);
+        maintenanceFactory.save(mc);
         return mc;
     }
 
@@ -597,7 +590,7 @@ public class MaintenanceManager {
             calendar.setUrl(details.get("url"));
             calendar.setIcal(fetchCalendarData(details.get("url")));
         }
-        save(calendar);
+        maintenanceFactory.save(calendar);
         List<RescheduleResult> result = new LinkedList<>();
         for (MaintenanceSchedule schedule: listSchedulesByUserAndCalendar(user, calendar)) {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
@@ -626,7 +619,7 @@ public class MaintenanceManager {
                 .orElseThrow(() -> new EntityNotExistsException(label));
         calendar.setIcal(fetchCalendarData(
                 calendar.getUrlOpt().orElseThrow(() -> new EntityNotExistsException("url"))));
-        save(calendar);
+        maintenanceFactory.save(calendar);
         List<RescheduleResult> result = new LinkedList<>();
         for (MaintenanceSchedule schedule: listSchedulesByUserAndCalendar(user, calendar)) {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
