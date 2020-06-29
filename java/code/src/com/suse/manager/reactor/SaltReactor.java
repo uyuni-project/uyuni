@@ -34,6 +34,8 @@ import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessage;
 import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
+import com.suse.manager.reactor.messaging.LibvirtEngineNetworkLifecycleMessage;
+import com.suse.manager.reactor.messaging.LibvirtEngineNetworkMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolLifecycleMessage;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolMessageAction;
 import com.suse.manager.reactor.messaging.LibvirtEnginePoolRefreshMessage;
@@ -134,6 +136,8 @@ public class SaltReactor {
                 LibvirtEnginePoolLifecycleMessage.class);
         MessageQueue.registerAction(new LibvirtEnginePoolMessageAction(),
                 LibvirtEnginePoolRefreshMessage.class);
+        MessageQueue.registerAction(new LibvirtEngineNetworkMessageAction(),
+                LibvirtEngineNetworkLifecycleMessage.class);
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);
 

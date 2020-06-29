@@ -67,6 +67,11 @@ public abstract class AbstractLibvirtEngineMessage implements EventMessage, Even
                     eventType, engineEvent.getMinionId(), engineEvent.getTimestamp(),
                     engineEvent.getData(JsonElement.class));
         }
+        else if ("network".equals(objectType)) {
+            return LibvirtEngineNetworkMessage.createNetworkMessage(connection,
+                    eventType, engineEvent.getMinionId(), engineEvent.getTimestamp(),
+                    engineEvent.getData(JsonElement.class));
+        }
         return null;
     }
 
