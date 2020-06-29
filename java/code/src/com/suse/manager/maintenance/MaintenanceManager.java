@@ -78,6 +78,7 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
  * MaintenanceManager
  */
 public class MaintenanceManager {
+
     private static Logger log = Logger.getLogger(MaintenanceManager.class);
 
     private ScheduleFactory scheduleFactory;
@@ -155,7 +156,7 @@ public class MaintenanceManager {
                     return;
                 }
             }
-            Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMachingDate(systemIds, scheduleDate);
+            Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMatchingDate(systemIds, scheduleDate);
             if (!offendingSchedules.isEmpty()) {
                 throw new NotInMaintenanceModeException(offendingSchedules, scheduleDate);
             }
@@ -170,7 +171,7 @@ public class MaintenanceManager {
      * @param date the schedule date of the action
      * @return set of {@link MaintenanceSchedule}s
      */
-    private Set<MaintenanceSchedule> listSystemSchedulesNotMachingDate(Set<Long> systemIds, Date date) {
+    private Set<MaintenanceSchedule> listSystemSchedulesNotMatchingDate(Set<Long> systemIds, Date date) {
         return listSchedulesOfSystems(systemIds).stream()
                 .filter(schedule -> {
                     Collection<CalendarComponent> events = icalUtils.getCalendarEventsAtDate(
