@@ -76,7 +76,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testCreateSchedule() throws Exception {
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.empty());
 
         List<String> names = mm.listScheduleNamesByUser(user);
@@ -98,7 +98,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         File ical = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
 
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
 
         List<String> labels = mm.listCalendarLabelsByUser(user);
@@ -118,7 +118,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     public void testCreateScheduleWithCalendar() throws Exception {
         File ical = new File(TestUtils.findTestData(
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
 
         MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
         mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
@@ -203,7 +203,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      */
     public void testListSystemsWithSchedule() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
@@ -225,8 +225,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      */
     public void testRetractScheduleFromSystems() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
-        MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = MaintenanceManager.instance().createSchedule(
+        MaintenanceManager mm = new MaintenanceManager();
+        MaintenanceSchedule schedule = mm.createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         // assign the schedule to both systems
@@ -252,8 +252,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      */
     public void testAssignScheduleToSystemWithPendingActions() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
-        MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = MaintenanceManager.instance().createSchedule(
+        MaintenanceManager mm = new MaintenanceManager();
+        MaintenanceSchedule schedule = mm.createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -279,15 +279,15 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      * @throws Exception
      */
     public void testAssignScheduleCrossOrg() throws Exception {
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         user.addPermanentRole(ORG_ADMIN);
         Org acmeOrg = UserTestUtils.createNewOrgFull("acme-123");
         User user2 = UserTestUtils.createUser("user-321", acmeOrg.getId());
         user2.addPermanentRole(ORG_ADMIN);
 
-        MaintenanceSchedule schedule1 = MaintenanceManager.instance().createSchedule(
+        MaintenanceSchedule schedule1 = mm.createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
-        MaintenanceSchedule schedule2 = MaintenanceManager.instance().createSchedule(
+        MaintenanceSchedule schedule2 = mm.createSchedule(
                 user2, "test-schedule-2", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         Server system1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -544,7 +544,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
     public void testListSystemsSchedules() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 

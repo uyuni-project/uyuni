@@ -70,7 +70,7 @@ import spark.template.jade.JadeTemplateEngine;
 public class MaintenanceController {
 
     private static IcalUtils icalUtils = new IcalUtils();
-    private static final MaintenanceManager MM = MaintenanceManager.instance();
+    private static final MaintenanceManager MM = new MaintenanceManager();
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -530,7 +530,7 @@ public class MaintenanceController {
 
         if (actionType.isMaintenancemodeOnly()) {
             try {
-                MaintenanceManager.instance()
+                MM
                         .calculateUpcomingMaintenanceWindows(systemIds)
                         .ifPresent(windows -> data.put("maintenanceWindows", windows));
             }
