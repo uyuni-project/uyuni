@@ -57,9 +57,8 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.fortuna.ical4j.model.property.Summary;
 
 /**
- * Various functions that have something to deal with net.fortuna stuff todo
+ * Computation related to the ICalendar objects
  */
-// maybe calendar utils?
 public class IcalUtils {
 
     private static Logger log = Logger.getLogger(IcalUtils.class);
@@ -188,7 +187,6 @@ public class IcalUtils {
      * @param calendarIn the {@link MaintenanceCalendar}
      * @return the parsed calendar or empty, if there was a problem parsing the calendar
      */
-    // todo revisit: is this needed from outside?
     public Optional<Calendar> parseCalendar(MaintenanceCalendar calendarIn) {
         return parseCalendar(new StringReader(calendarIn.getIcal()));
     }
