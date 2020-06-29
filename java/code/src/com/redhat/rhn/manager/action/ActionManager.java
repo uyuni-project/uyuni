@@ -138,6 +138,8 @@ public class ActionManager extends BaseManager {
      */
     private static final Long REMAINING_TRIES = 10L;
 
+    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
+
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
     private ActionManager() {
@@ -1484,7 +1486,7 @@ public class ActionManager extends BaseManager {
      * @param serverIds server IDs
      */
     public static void scheduleForExecution(Action action, Set<Long> serverIds) {
-        MaintenanceManager.instance().checkMaintenanceWindows(serverIds, action);
+        maintenanceManager.checkMaintenanceWindows(serverIds, action);
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("status_id", ActionFactory.STATUS_QUEUED.getId());

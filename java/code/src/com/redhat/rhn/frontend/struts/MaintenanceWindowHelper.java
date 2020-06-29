@@ -29,7 +29,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MaintenanceWindowHelper {
 
-    private MaintenanceWindowHelper() { }
+    private static MaintenanceManager maintenanceManager;
+
+    private MaintenanceWindowHelper() {
+        maintenanceManager = new MaintenanceManager();
+    }
 
     /**
      * Given the systems, populate the request object with available maintenance windows.
@@ -40,7 +44,7 @@ public class MaintenanceWindowHelper {
     public static void prepopulateMaintenanceWindows(HttpServletRequest request,
             Set<Long> systemIds) {
         try {
-            MaintenanceManager.instance()
+            maintenanceManager
                     .calculateUpcomingMaintenanceWindows(systemIds)
                     .ifPresent(windows -> {
                         request.setAttribute(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.ACTION_CHAIN.toString());

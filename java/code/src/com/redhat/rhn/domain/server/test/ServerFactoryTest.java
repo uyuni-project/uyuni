@@ -1454,7 +1454,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testSetMaintenanceWindowToSystems() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        MaintenanceSchedule schedule = MaintenanceManager.instance().createSchedule(
+        MaintenanceSchedule schedule = new MaintenanceManager().createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);

@@ -80,8 +80,6 @@ import net.fortuna.ical4j.model.component.CalendarComponent;
 public class MaintenanceManager {
     private static Logger log = Logger.getLogger(MaintenanceManager.class);
 
-    private static volatile MaintenanceManager instance = null;
-
     private ScheduleFactory scheduleFactory;
     private CalendarFactory calendarFactory;
     private IcalUtils icalUtils;
@@ -93,22 +91,6 @@ public class MaintenanceManager {
         scheduleFactory = new ScheduleFactory();
         calendarFactory = new CalendarFactory();
         icalUtils = new IcalUtils();
-    }
-
-    /**
-     * Instantiate Maintenance Manager object
-     *
-     * @return MaintenanceManager object
-     */
-    public static MaintenanceManager instance() {
-        if (instance == null) {
-            synchronized (MaintenanceManager.class) {
-                if (instance == null) {
-                    instance = new MaintenanceManager();
-                }
-            }
-        }
-        return instance;
     }
 
     /**
@@ -132,7 +114,7 @@ public class MaintenanceManager {
      */
     public Optional<List<MaintenanceWindowData>> calculateUpcomingMaintenanceWindows(Set<Long> systemIds)
             throws IllegalStateException {
-        Set<MaintenanceSchedule> schedules = MaintenanceManager.instance().listSchedulesOfSystems(systemIds);
+        Set<MaintenanceSchedule> schedules = listSchedulesOfSystems(systemIds);
         // if there are no schedules, there are no maintenance windows
         if (schedules.isEmpty()) {
             return empty();
@@ -617,9 +599,8 @@ public class MaintenanceManager {
      * @return true when the action is inside of a maintenance window, otherwise falsegg
      */
     public boolean checkIfInMaintenanceMode(MinionServer server) {
-        MaintenanceManager mm = MaintenanceManager.instance();
         return server.getMaintenanceScheduleOpt()
-                .map(schedule -> !mm.getCalendarForNow(schedule)
+                .map(schedule -> !getCalendarForNow(schedule)
                 .isEmpty())
                 .orElse(true);
     }
@@ -646,11 +627,10 @@ public class MaintenanceManager {
      * @return List of minions in maintenance mode
      */
     public List<Long> systemIdsMaintenanceMode(List<MinionServer> minions) {
-        MaintenanceManager mm = MaintenanceManager.instance();
         Set<MaintenanceSchedule> schedulesInMaintMode = minions.stream()
                 .flatMap(minion -> minion.getMaintenanceScheduleOpt().stream())
                 .distinct()
-                .filter(sched -> !mm.getCalendarForNow(sched).isEmpty())
+                .filter(sched -> !getCalendarForNow(sched).isEmpty())
                 .collect(Collectors.toSet());
 
         List<Long> minionsInMaintMode = minions.stream()

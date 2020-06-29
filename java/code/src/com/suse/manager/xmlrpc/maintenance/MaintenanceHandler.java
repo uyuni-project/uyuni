@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  */
 public class MaintenanceHandler extends BaseHandler {
 
-    private final MaintenanceManager mm = MaintenanceManager.instance();
+    private final MaintenanceManager mm = new MaintenanceManager();
 
     /**
      * List Schedule Names visible to user
