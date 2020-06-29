@@ -100,6 +100,8 @@ public class IcalUtils {
     }
 
     /**
+     * THIS IS ONLY PUBLIC FOR TESTING.
+     *
      * Calculate upcoming maintenance windows starting from given date based on calendar and optional filter name
      * (in case we're dealing with MULTI calendar and want to filter only events we're interested in).
      *
