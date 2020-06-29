@@ -32,6 +32,8 @@ import java.util.Optional;
  */
 public class RecurringStateApplyJob extends RhnJavaJob {
 
+    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
+
     /**
      * Schedule highstate application.
      *
@@ -57,7 +59,7 @@ public class RecurringStateApplyJob extends RhnJavaJob {
     }
 
     private void scheduleAction(JobExecutionContext context, RecurringAction action) {
-        List<Long> minionIds = MaintenanceManager.instance().systemIdsMaintenanceMode(action.computeMinions());
+        List<Long> minionIds = maintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
 
         try {
             ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
