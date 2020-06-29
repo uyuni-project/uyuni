@@ -63,11 +63,6 @@ public class CancelRescheduleStrategy implements RescheduleStrategy {
         return "Cancel";
     }
 
-    private List<Server> getUntouchedServerinAction(Action action, List<Server> affectedServer) {
-        return action.getServerActions().stream()
-                .map(sa -> sa.getServer())
-                .filter(s -> !affectedServer.contains(s))
-                .collect(Collectors.toList());
     }
 
 }
