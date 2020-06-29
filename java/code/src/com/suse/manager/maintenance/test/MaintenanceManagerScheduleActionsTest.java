@@ -91,14 +91,14 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-2", SINGLE, empty());
 
         MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer sys2 = MinionServerFactoryTest.createTestMinionServer(user);
 
-        assertTrue(MaintenanceManager.instance().checkIfInMaintenanceMode(sys1));
-        assertTrue(MaintenanceManager.instance().checkIfInMaintenanceMode(sys2));
+        assertTrue(mm.checkIfInMaintenanceMode(sys1));
+        assertTrue(mm.checkIfInMaintenanceMode(sys2));
 
         mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
 
@@ -125,13 +125,13 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         }});
 
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", calString);
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-2", SINGLE, of(mc));
 
         MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
-        assertTrue(MaintenanceManager.instance().checkIfInMaintenanceMode(sys1));
+        assertTrue(mm.checkIfInMaintenanceMode(sys1));
 
         try {
             ActionChainManager.scheduleApplyStates(user, List.of(sys1.getId()), empty(), new Date(12345), null);
@@ -153,7 +153,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         // this tests assumes that HW refresh is not a maintenance-mode-only action
         assertFalse(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.isMaintenancemodeOnly());
 
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -172,7 +172,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
      * Tests scheduling a just a channel state (part of channel change which should be allowed)
      */
     public void testScheduleChannelChangeNoMaintWindow() throws Exception {
-        MaintenanceManager mm = MaintenanceManager.instance();
+        MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);

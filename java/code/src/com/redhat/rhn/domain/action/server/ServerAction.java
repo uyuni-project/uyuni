@@ -45,6 +45,8 @@ public class ServerAction extends ActionChild implements Serializable {
     private ActionStatus status;
     private Server server;
 
+    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
+
 
     /**
      * Getter for status
@@ -159,7 +161,7 @@ public class ServerAction extends ActionChild implements Serializable {
     public void setServerWithCheck(Server serverIn) {
         Action parentAction = getParentAction();
         if (parentAction != null) {
-            MaintenanceManager.instance().checkMaintenanceWindows(Set.of(serverIn.getId()), parentAction);
+            maintenanceManager.checkMaintenanceWindows(Set.of(serverIn.getId()), parentAction);
         }
         setServer(serverIn);
     }
@@ -178,7 +180,7 @@ public class ServerAction extends ActionChild implements Serializable {
      */
     public void setParentActionWithCheck(Action parentActionIn) {
         if (server != null) {
-            MaintenanceManager.instance().checkMaintenanceWindows(Set.of(server.getId()), parentActionIn);
+            maintenanceManager.checkMaintenanceWindows(Set.of(server.getId()), parentActionIn);
         }
 
         setParentAction(parentActionIn);
