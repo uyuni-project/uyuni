@@ -15,6 +15,7 @@
 
 package com.suse.manager.maintenance;
 
+import static java.util.Collections.emptySet;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
@@ -33,7 +34,9 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -42,6 +45,8 @@ import java.util.stream.Stream;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
 import net.fortuna.ical4j.filter.Filter;
+import net.fortuna.ical4j.filter.HasPropertyRule;
+import net.fortuna.ical4j.filter.PeriodRule;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
 import net.fortuna.ical4j.model.ComponentList;
@@ -49,6 +54,7 @@ import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.PeriodList;
 import net.fortuna.ical4j.model.component.CalendarComponent;
+import net.fortuna.ical4j.model.property.Summary;
 
 /**
  * Various functions that have something to deal with net.fortuna stuff todo
@@ -140,6 +146,40 @@ public class IcalUtils {
                 .map(p -> Pair.of(p.getStart().toInstant(), p.getRangeEnd().toInstant()));
 
         return sortedLimited;
+    }
+
+    /**
+     * Get all schedules of given calendar at given date.
+     * Filter results by summary, if the summary parameter is passed.
+     *
+     * @param date the date
+     * @param calendar the calendar
+     * @param summary event summary
+     * @return the collection of calendars components matching given date (and optionally summary)
+     */
+    public Collection<CalendarComponent> getCalendarEventsAtDate(Date date, Optional<Calendar> calendar,
+            Optional<String> summary) {
+        if (calendar.isEmpty()) {
+            return emptySet();
+        }
+
+        Period p = new Period(new DateTime(date), java.time.Duration.ofSeconds(1));
+        ArrayList<Predicate<Component>> rules = new ArrayList<>();
+        rules.add(new PeriodRule<>(p));
+
+        summary.ifPresent(s -> {
+            Summary filterSummary = new Summary(s);
+            HasPropertyRule<Component> propertyRule = new HasPropertyRule<>(filterSummary);
+            rules.add(propertyRule);
+        });
+
+        @SuppressWarnings("unchecked")
+        Predicate<CalendarComponent>[] comArr = new Predicate[rules.size()];
+        comArr = rules.toArray(comArr);
+
+        Filter<CalendarComponent> filter = new Filter<>(comArr, Filter.MATCH_ALL);
+
+        return filter.filter(calendar.get().getComponents(Component.VEVENT));
     }
 
     /**
