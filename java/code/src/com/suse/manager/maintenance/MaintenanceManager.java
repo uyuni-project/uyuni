@@ -489,7 +489,7 @@ public class MaintenanceManager {
      * @param action the action
      * @throws NotInMaintenanceModeException when some systems are outside of maintenance window
      */
-    public void checkMaintenanceWindows(Set<Long> systemIds, Action action) {
+    public void canActionBeScheduled(Set<Long> systemIds, Action action) {
         Date scheduleDate = action.getEarliestAction();
 
         // we only take maintenance-mode-only actions and actions that don't have prerequisite
@@ -654,7 +654,7 @@ public class MaintenanceManager {
      * @param server the server to check
      * @return true when the action is inside of a maintenance window, otherwise falsegg
      */
-    public boolean checkIfInMaintenanceMode(MinionServer server) {
+    public boolean isSystemInMaintenanceMode(MinionServer server) {
         return server.getMaintenanceScheduleOpt()
                 .map(schedule -> !getCalendarForNow(schedule).isEmpty())
                 .orElse(true);
