@@ -656,8 +656,7 @@ public class MaintenanceManager {
      */
     public boolean checkIfInMaintenanceMode(MinionServer server) {
         return server.getMaintenanceScheduleOpt()
-                .map(schedule -> !getCalendarForNow(schedule)
-                .isEmpty())
+                .map(schedule -> !getCalendarForNow(schedule).isEmpty())
                 .orElse(true);
     }
 
