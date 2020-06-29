@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.controllers;
 
+import static com.suse.manager.maintenance.rescheduling.RescheduleStrategyType.CANCEL;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -38,6 +39,8 @@ import com.google.gson.GsonBuilder;
 import com.suse.manager.maintenance.IcalUtils;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
+import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
+import com.suse.manager.maintenance.rescheduling.RescheduleStrategyType;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
@@ -281,13 +284,15 @@ public class MaintenanceController {
             }
             else {
                 /* Update existing schedule */
-                String rescheduleStrategy = json.getRescheduleStrategy();
+                RescheduleStrategy rescheduleStrategy = RescheduleStrategyType
+                        .fromLabel(json.getRescheduleStrategy())
+                        .createInstance();
                 Map<String, String> details = new HashMap<>();
                 details.put("type", json.getScheduleType().toLowerCase());
                 details.put("calendar", json.getCalendarName().strip());
                 RescheduleResult result = MM.updateSchedule(user, json.getScheduleName(), details,
-                        MM.mapRescheduleStrategyStrings(List.of(rescheduleStrategy)));
-                handleRescheduleResult(List.of(result), rescheduleStrategy);
+                        List.of(rescheduleStrategy));
+                handleRescheduleResult(List.of(result), rescheduleStrategy.getType());
             }
         }
         catch (EntityNotExistsException | EntityExistsException e) {
@@ -337,11 +342,12 @@ public class MaintenanceController {
                     }
 
                     try {
-                        String rescheduleStrategy = json.getRescheduleStrategy();
+                        RescheduleStrategy rescheduleStrategy = RescheduleStrategyType
+                                .fromLabel(json.getRescheduleStrategy())
+                                .createInstance();
                         List<RescheduleResult> results = MM.updateCalendar(user, calendar.getLabel(), details,
-                                MM.mapRescheduleStrategyStrings(List.of(rescheduleStrategy))
-                        );
-                        handleRescheduleResult(results, rescheduleStrategy);
+                                List.of(rescheduleStrategy));
+                        handleRescheduleResult(results, rescheduleStrategy.getType());
                     }
                     catch (DownloadException e) {
                         Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(LOCAL.getMessage(
@@ -385,13 +391,15 @@ public class MaintenanceController {
         MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
 
         try {
-            String strategy = json.getRescheduleStrategy();
+            RescheduleStrategy rescheduleStrategy = RescheduleStrategyType
+                    .fromLabel(json.getRescheduleStrategy())
+                    .createInstance();
             List<RescheduleResult> results = MM.refreshCalendar(
                     user,
                     json.getCalendarName(),
-                    MM.mapRescheduleStrategyStrings(List.of(strategy))
+                    List.of(rescheduleStrategy)
             );
-            handleRescheduleResult(results, strategy);
+            handleRescheduleResult(results, rescheduleStrategy.getType());
         }
         catch (EntityNotExistsException e) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
@@ -443,8 +451,8 @@ public class MaintenanceController {
         String name = json.getCalendarName();
         MM.lookupCalendarByUserAndLabel(user, name).ifPresentOrElse(
                 calendar -> {
-                    String strategy = json.getRescheduleStrategy();
-                    handleRescheduleResult(MM.remove(user, calendar, strategy.equals("Cancel")), strategy);
+                    RescheduleStrategyType type = RescheduleStrategyType.fromLabel(json.getRescheduleStrategy());
+                    handleRescheduleResult(MM.remove(user, calendar, type == CANCEL), type);
                 },
                 () -> Spark.halt(HttpStatus.SC_BAD_REQUEST)
         );
@@ -452,11 +460,11 @@ public class MaintenanceController {
         return json(response, ResultJson.success());
     }
 
-    private static void handleRescheduleResult(List<RescheduleResult> results, String strategy) {
+    private static void handleRescheduleResult(List<RescheduleResult> results, RescheduleStrategyType strategy) {
         results.forEach(result -> {
             if (!result.isSuccess()) {
                 String affectedSchedule = result.getScheduleName();
-                String message = LOCAL.getMessage(strategy.equals("Cancel") ?
+                String message = LOCAL.getMessage(strategy == CANCEL ?
                                 "maintenance.action.reschedule.error.cancel" :
                                 "maintenance.action.reschedule.error.fail",
                         affectedSchedule);
