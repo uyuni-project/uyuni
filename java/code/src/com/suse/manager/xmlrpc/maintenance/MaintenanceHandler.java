@@ -21,12 +21,14 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.EntityExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
-import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.EntityExistsException;
+import com.redhat.rhn.manager.EntityNotExistsException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
+import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
+import com.suse.manager.maintenance.rescheduling.RescheduleStrategyType;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
@@ -184,8 +186,7 @@ public class MaintenanceHandler extends BaseHandler {
         validateMap(validKeys, details);
 
         try {
-            return mm.updateSchedule(loggedInUser, name, details,
-                    mm.mapRescheduleStrategyStrings(rescheduleStrategy));
+            return mm.updateSchedule(loggedInUser, name, details, createStrategiesFromStrings(rescheduleStrategy));
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -345,8 +346,7 @@ public class MaintenanceHandler extends BaseHandler {
         validateMap(validKeys, details);
 
         try {
-            return mm.updateCalendar(loggedInUser, label, details,
-                    mm.mapRescheduleStrategyStrings(rescheduleStrategy));
+            return mm.updateCalendar(loggedInUser, label, details, createStrategiesFromStrings(rescheduleStrategy));
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -385,7 +385,7 @@ public class MaintenanceHandler extends BaseHandler {
     public List<RescheduleResult> refreshCalendar(User loggedInUser, String label, List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return mm.refreshCalendar(loggedInUser, label, mm.mapRescheduleStrategyStrings(rescheduleStrategy));
+            return mm.refreshCalendar(loggedInUser, label, createStrategiesFromStrings(rescheduleStrategy));
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -505,5 +505,17 @@ public class MaintenanceHandler extends BaseHandler {
         catch (PermissionException e) {
             throw new PermissionCheckFailureException(e);
         }
+    }
+
+    /**
+     * Convenience method for creating multiple strategies from given strings
+     *
+     * @param strategyLabels the labels of the strategies
+     * @return the list of {@link RescheduleStrategy}
+     */
+    private static List<RescheduleStrategy> createStrategiesFromStrings(List<String> strategyLabels) {
+        return strategyLabels.stream()
+                .map(label -> RescheduleStrategyType.fromLabel(label).createInstance())
+                .collect(Collectors.toList());
     }
 }
