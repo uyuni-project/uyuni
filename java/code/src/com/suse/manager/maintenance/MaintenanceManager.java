@@ -640,7 +640,7 @@ public class MaintenanceManager {
                 .setParameter("calendar", calendar).getResultList();
     }
 
-    protected String fetchCalendarData(String url) {
+    private String fetchCalendarData(String url) {
         try {
             HttpHelper http = new HttpHelper();
             HttpResponse response = http.sendGetRequest(url);
@@ -658,7 +658,7 @@ public class MaintenanceManager {
         }
     }
 
-    protected RescheduleResult manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
+    private RescheduleResult manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
             List<RescheduleStrategy> scheduleStrategy) {
         List<Long> systemIdsUsingSchedule = listSystemIdsWithSchedule(user, schedule);
         if (systemIdsUsingSchedule.isEmpty()) {
