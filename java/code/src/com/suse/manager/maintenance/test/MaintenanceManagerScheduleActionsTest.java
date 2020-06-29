@@ -92,7 +92,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         }});
 
         MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = mm.createMaintenanceSchedule(user, "test-schedule-2", SINGLE, empty());
+        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-2", SINGLE, empty());
 
         MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer sys2 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -126,8 +126,8 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         }});
 
         MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceCalendar mc = mm.createMaintenanceCalendar(user, "testcalendar", calString);
-        MaintenanceSchedule schedule = mm.createMaintenanceSchedule(user, "test-schedule-2", SINGLE, of(mc));
+        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", calString);
+        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-2", SINGLE, of(mc));
 
         MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
@@ -154,7 +154,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         assertFalse(ActionFactory.TYPE_HARDWARE_REFRESH_LIST.isMaintenancemodeOnly());
 
         MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = mm.createMaintenanceSchedule(user, "test-schedule-3", SINGLE, empty());
+        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -173,7 +173,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
      */
     public void testScheduleChannelChangeNoMaintWindow() throws Exception {
         MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = mm.createMaintenanceSchedule(user, "test-schedule-3", SINGLE, empty());
+        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-3", SINGLE, empty());
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
 

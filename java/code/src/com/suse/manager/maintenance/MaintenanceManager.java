@@ -365,7 +365,7 @@ public class MaintenanceManager {
      * @param user the user
      * @return a list of Maintenance Schedules
      */
-    public List<MaintenanceSchedule> listMaintenanceSchedulesByUser(User user) {
+    public List<MaintenanceSchedule> listSchedulesByUser(User user) {
         return scheduleFactory.listSchedulesByUser(user);
     }
 
@@ -375,7 +375,7 @@ public class MaintenanceManager {
      * @param calendar the calendar
      * @return a list of MaintenanceSchedules
      */
-    public List<MaintenanceSchedule> listMaintenanceSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
+    public List<MaintenanceSchedule> listSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
         return scheduleFactory.listSchedulesByCalendar(user, calendar);
     }
 
@@ -385,7 +385,7 @@ public class MaintenanceManager {
      * @param name the schedule name
      * @return Optional Maintenance Schedule
      */
-    public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndName(User user, String name) {
+    public Optional<MaintenanceSchedule> lookupScheduleByUserAndName(User user, String name) {
         return scheduleFactory.lookupScheduleByUserAndName(user, name);
     }
 
@@ -395,7 +395,7 @@ public class MaintenanceManager {
      * @param id the id of the schedule
      * @return Optional Maintenance Schedule
      */
-    public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndId(User user, Long id) {
+    public Optional<MaintenanceSchedule> lookupScheduleByUserAndId(User user, Long id) {
         return scheduleFactory.lookupScheduleByUserAndId(user, id);
     }
 
@@ -407,7 +407,7 @@ public class MaintenanceManager {
      * @param calendar and optional Maintenance Calendar
      * @return the created Maintenance Schedule
      */
-    public MaintenanceSchedule createMaintenanceSchedule(User user, String name, ScheduleType type,
+    public MaintenanceSchedule createSchedule(User user, String name, ScheduleType type,
             Optional<MaintenanceCalendar> calendar) {
         ensureOrgAdmin(user);
         ensureScheduleNotExists(user, name);
@@ -428,10 +428,10 @@ public class MaintenanceManager {
      * @param rescheduleStrategy which strategy should be executed when a rescheduling of actions is required
      * @return the updated MaintenanceSchedule
      */
-    public RescheduleResult updateMaintenanceSchedule(User user, String name, Map<String, String> details,
+    public RescheduleResult updateSchedule(User user, String name, Map<String, String> details,
             List<RescheduleStrategy> rescheduleStrategy) {
         ensureOrgAdmin(user);
-        MaintenanceSchedule schedule = lookupMaintenanceScheduleByUserAndName(user, name)
+        MaintenanceSchedule schedule = lookupScheduleByUserAndName(user, name)
                 .orElseThrow(() -> new EntityNotExistsException(name));
         if (details.containsKey("type")) {
             schedule.setScheduleType(ScheduleType.lookupByLabel(details.get("type")));
@@ -494,7 +494,7 @@ public class MaintenanceManager {
      * @param ical the Calendar data in ICal format
      * @return the created Maintenance Calendar
      */
-    public MaintenanceCalendar createMaintenanceCalendar(User user, String label, String ical) {
+    public MaintenanceCalendar createCalendar(User user, String label, String ical) {
         ensureOrgAdmin(user);
         ensureCalendarNotExists(user, label);
         MaintenanceCalendar mc = new MaintenanceCalendar();
@@ -513,7 +513,7 @@ public class MaintenanceManager {
      * @return the created Maintenance Calendar
      * @throws DownloadException when fetching data from url failed
      */
-    public MaintenanceCalendar createMaintenanceCalendarWithUrl(User user, String label, String url)
+    public MaintenanceCalendar createCalendarWithUrl(User user, String label, String url)
             throws DownloadException {
         ensureOrgAdmin(user);
         ensureCalendarNotExists(user, label);
