@@ -39,7 +39,7 @@ Name:           spacewalk-branding
 Version:        4.1.7
 Release:        1%{?dist}
 Summary:        Spacewalk branding data
-License:        GPL-2.0-only and OFL-1.0
+License:        GPL-2.0-only and OFL-1.1
 Group:          Applications/Internet
 
 Url:            https://github.com/uyuni-project/uyuni
