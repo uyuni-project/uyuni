@@ -9,7 +9,7 @@ jobs:
   ruby_checkstyle:
 
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-ruby@v1
@@ -18,7 +18,7 @@ jobs:
 
     - name: Install RuboCop
       run: gem install rubocop -v 0.84.0
-      
+
     - name: Run RuboCop
       run: |
         cd testsuite
