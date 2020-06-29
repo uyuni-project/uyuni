@@ -15,8 +15,8 @@
 package com.suse.manager.maintenance;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static java.util.Collections.emptySet;
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -70,18 +70,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import net.fortuna.ical4j.filter.Filter;
-import net.fortuna.ical4j.filter.HasPropertyRule;
-import net.fortuna.ical4j.filter.PeriodRule;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.Component;
-import net.fortuna.ical4j.model.DateTime;
-import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.component.CalendarComponent;
-import net.fortuna.ical4j.model.property.Summary;
 
 /**
  * MaintenanceManager
@@ -200,8 +192,11 @@ public class MaintenanceManager {
     private Set<MaintenanceSchedule> listSystemSchedulesNotMachingDate(Set<Long> systemIds, Date date) {
         return listSchedulesOfSystems(systemIds).stream()
                 .filter(schedule -> {
-                    Collection<CalendarComponent> events = getScheduleEventsAtDate(date, schedule, schedule
-                            .getCalendarOpt().flatMap(c -> icalUtils.parseCalendar(c)));
+                    Collection<CalendarComponent> events = icalUtils.getCalendarEventsAtDate(
+                            date,
+                            schedule.getCalendarOpt().flatMap(c -> icalUtils.parseCalendar(c)),
+                            getScheduleNameForMulti(schedule)
+                    );
                     return events.isEmpty();
                 })
                 .collect(toSet());
@@ -559,9 +554,7 @@ public class MaintenanceManager {
             })
             .filter(Opt.fold(calendarOpt,
                     () -> (sa -> true),
-                    c -> (sa -> {
-                        return !isActionInMaintenanceWindow(sa.getParentAction(), schedule, calendarOpt);
-                    })))
+                    c -> (sa -> !isActionInMaintenanceWindow(sa.getParentAction(), schedule, calendarOpt))))
             .collect(Collectors.groupingBy(ServerAction::getParentAction,
                     Collectors.mapping(ServerAction::getServer, toList())));
 
@@ -592,8 +585,11 @@ public class MaintenanceManager {
      */
     public boolean isActionInMaintenanceWindow(Action action, MaintenanceSchedule schedule,
             Optional<Calendar> calendarOpt) {
-        Collection<CalendarComponent> events = getScheduleEventsAtDate(action.getEarliestAction(), schedule,
-                calendarOpt);
+        Collection<CalendarComponent> events = icalUtils.getCalendarEventsAtDate(
+                action.getEarliestAction(),
+                calendarOpt,
+                getScheduleNameForMulti(schedule)
+        );
 
         if (!events.isEmpty()) {
             if (log.isDebugEnabled()) {
@@ -609,7 +605,9 @@ public class MaintenanceManager {
 
     private Collection<CalendarComponent> getCalendarForNow(MaintenanceSchedule ms) {
         return ms.getCalendarOpt()
-                .map(cal -> getScheduleEventsAtDate(new Date(), ms, icalUtils.parseCalendar(cal)))
+                .map(cal -> icalUtils.getCalendarEventsAtDate(
+                        new Date(), icalUtils.parseCalendar(cal),
+                        getScheduleNameForMulti(ms)))
                 .orElse(Collections.emptyList());
     }
 
@@ -669,30 +667,6 @@ public class MaintenanceManager {
          logSkippedMinions(logList);
 
          return minionsInMaintMode;
-    }
-
-    private Collection<CalendarComponent> getScheduleEventsAtDate(
-            Date date, MaintenanceSchedule schedule, Optional<Calendar> calendarOpt) {
-        if (calendarOpt.isEmpty()) {
-            return emptySet();
-        }
-
-        Period p = new Period(new DateTime(date), java.time.Duration.ofSeconds(1));
-        ArrayList<Predicate<Component>> rules = new ArrayList<>();
-        rules.add(new PeriodRule<>(p));
-
-        if (schedule.getScheduleType().equals(ScheduleType.MULTI)) {
-            Summary summary = new Summary(schedule.getName());
-            HasPropertyRule<Component> propertyRule = new HasPropertyRule<>(summary);
-            rules.add(propertyRule);
-        }
-        @SuppressWarnings("unchecked")
-        Predicate<CalendarComponent>[] comArr = new Predicate[rules.size()];
-        comArr = rules.toArray(comArr);
-
-        Filter<CalendarComponent> filter = new Filter<>(comArr, Filter.MATCH_ALL);
-
-        return filter.filter(calendarOpt.get().getComponents(Component.VEVENT));
     }
 
     /**
@@ -850,5 +824,17 @@ public class MaintenanceManager {
             }
         }
         return ret;
+    }
+
+    /**
+     * Convenience method: return schedule name if the schedule type is MULTI, return empty otherwise
+     * @param schedule the schedule
+     * @return optional of schedule name
+     */
+    private static Optional<String> getScheduleNameForMulti(MaintenanceSchedule schedule) {
+        if (schedule.getScheduleType() == MaintenanceSchedule.ScheduleType.MULTI) {
+            return of(schedule.getName());
+        }
+        return empty();
     }
 }
