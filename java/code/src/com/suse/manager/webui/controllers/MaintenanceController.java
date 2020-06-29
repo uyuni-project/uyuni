@@ -141,7 +141,7 @@ public class MaintenanceController {
      * @return the result JSON object
      */
     public static String listSchedules(Request request, Response response, User user) {
-        List<MaintenanceSchedule> schedules = MM.listMaintenanceSchedulesByUser(user);
+        List<MaintenanceSchedule> schedules = MM.listSchedulesByUser(user);
         return json(response, schedulesToJson(schedules));
     }
 
@@ -170,7 +170,7 @@ public class MaintenanceController {
         Long scheduleId = Long.parseLong(request.params("id"));
         MaintenanceWindowJson json = new MaintenanceWindowJson();
 
-        MaintenanceSchedule schedule = MM.lookupMaintenanceScheduleByUserAndId(user, scheduleId)
+        MaintenanceSchedule schedule = MM.lookupScheduleByUserAndId(user, scheduleId)
                 .orElseThrow(() -> Spark.halt(
                         HttpStatus.SC_BAD_REQUEST,
                         GSON.toJson(ResultJson.error(LOCAL.getMessage(
@@ -217,7 +217,7 @@ public class MaintenanceController {
         json.setCalendarName(calendar.getLabel());
         json.setCalendarData(calendar.getIcal());
         calendar.getUrlOpt().ifPresent(json::setCalendarUrl);
-        json.setScheduleNames(MM.listMaintenanceSchedulesByCalendar(user, calendar).stream().map(
+        json.setScheduleNames(MM.listSchedulesByCalendar(user, calendar).stream().map(
                 schedule -> Map.of(
                         "id", schedule.getId().toString(),
                         "name", schedule.getName()
@@ -269,7 +269,7 @@ public class MaintenanceController {
                     );
                 }
                 /* Create new schedule */
-                MM.createMaintenanceSchedule(
+                MM.createSchedule(
                         user,
                         json.getScheduleName(),
                         MaintenanceSchedule.ScheduleType.lookupByLabel(json.getScheduleType().toLowerCase()),
@@ -282,7 +282,7 @@ public class MaintenanceController {
                 Map<String, String> details = new HashMap<>();
                 details.put("type", json.getScheduleType().toLowerCase());
                 details.put("calendar", json.getCalendarName().strip());
-                RescheduleResult result = MM.updateMaintenanceSchedule(user, json.getScheduleName(), details,
+                RescheduleResult result = MM.updateSchedule(user, json.getScheduleName(), details,
                         MM.mapRescheduleStrategyStrings(List.of(rescheduleStrategy)));
                 handleRescheduleResult(List.of(result), rescheduleStrategy);
             }
@@ -350,7 +350,7 @@ public class MaintenanceController {
                 () -> {
                     if (json.getCalendarData() == null) {
                         try {
-                            MM.createMaintenanceCalendarWithUrl(user, json.getCalendarName(), json.getCalendarUrl());
+                            MM.createCalendarWithUrl(user, json.getCalendarName(), json.getCalendarUrl());
                         }
                         catch (DownloadException e) {
                             Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
@@ -362,7 +362,7 @@ public class MaintenanceController {
                         }
                     }
                     else {
-                        MM.createMaintenanceCalendar(user, json.getCalendarName(), json.getCalendarData());
+                        MM.createCalendar(user, json.getCalendarName(), json.getCalendarData());
                     }
                 }
         );
@@ -417,7 +417,7 @@ public class MaintenanceController {
         MaintenanceWindowJson json = GSON.fromJson(request.body(), MaintenanceWindowJson.class);
 
         String name = json.getScheduleName();
-        MM.lookupMaintenanceScheduleByUserAndName(user, name).ifPresentOrElse(
+        MM.lookupScheduleByUserAndName(user, name).ifPresentOrElse(
                 schedule -> MM.remove(user, schedule),
                 () -> Spark.halt(HttpStatus.SC_BAD_REQUEST)
         );
@@ -489,7 +489,7 @@ public class MaintenanceController {
         json.setCalendarId(calendar.getId());
         json.setCalendarName(calendar.getLabel());
 
-        json.setScheduleNames(MM.listMaintenanceSchedulesByCalendar(user, calendar).stream().map(
+        json.setScheduleNames(MM.listSchedulesByCalendar(user, calendar).stream().map(
                 schedule -> Map.of(
                         "id", schedule.getId().toString(),
                         "name", schedule.getName()
