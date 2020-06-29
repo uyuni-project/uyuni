@@ -153,7 +153,7 @@ public class MaintenanceFactory extends HibernateFactory {
      * @param user the user
      * @return a list of Maintenance Schedules
      */
-    public List<MaintenanceSchedule> listMaintenanceSchedulesByUser(User user) {
+    public List<MaintenanceSchedule> listSchedulesByUser(User user) {
         return getSession()
                 .createQuery("FROM MaintenanceSchedule WHERE org = :org")
                 .setParameter("org", user.getOrg())
@@ -166,7 +166,7 @@ public class MaintenanceFactory extends HibernateFactory {
      * @param calendar the calendar
      * @return a list of MaintenanceSchedules
      */
-    public List<MaintenanceSchedule> listMaintenanceSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
+    public List<MaintenanceSchedule> listSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
         return getSession()
                 .createQuery("FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar")
                 .setParameter("org", user.getOrg())
@@ -180,7 +180,7 @@ public class MaintenanceFactory extends HibernateFactory {
      * @param name the schedule name
      * @return Optional Maintenance Schedule
      */
-    public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndName(User user, String name) {
+    public Optional<MaintenanceSchedule> lookupScheduleByUserAndName(User user, String name) {
         return getSession().createNamedQuery("MaintenanceSchedule.lookupByUserAndName")
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter("name", name)
@@ -193,7 +193,7 @@ public class MaintenanceFactory extends HibernateFactory {
      * @param id the id of the schedule
      * @return Optional Maintenance Schedule
      */
-    public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndId(User user, Long id) {
+    public Optional<MaintenanceSchedule> lookupScheduleByUserAndId(User user, Long id) {
         return getSession().createQuery("FROM MaintenanceSchedule WHERE org = :org AND id = :id")
                 .setParameter("org", user.getOrg())
                 .setParameter("id", id).uniqueResultOptional();
