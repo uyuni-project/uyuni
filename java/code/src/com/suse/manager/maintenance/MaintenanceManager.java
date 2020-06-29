@@ -790,7 +790,7 @@ public class MaintenanceManager {
      * @param server the server to check
      * @return true when the action is inside of a maintenance window, otherwise falsegg
      */
-    public static boolean checkIfInMaintenanceMode(MinionServer server) {
+    public boolean checkIfInMaintenanceMode(MinionServer server) {
         MaintenanceManager mm = MaintenanceManager.instance();
         return server.getMaintenanceScheduleOpt()
                 .map(schedule -> !mm.getCalendarForNow(schedule)
@@ -803,7 +803,7 @@ public class MaintenanceManager {
      *
      * @param servers the list of servers to log
      */
-    public static void logSkippedMinions(List<MinionServer> servers) {
+    private static void logSkippedMinions(List<MinionServer> servers) {
        log.warn("Skipping action for " + servers.size() + " minions.");
        if (log.isDebugEnabled()) {
           String serverNames = servers.stream()
@@ -819,7 +819,7 @@ public class MaintenanceManager {
      * @param minions servers to check
      * @return List of minions in maintenance mode
      */
-    public static List<Long> systemIdsMaintenanceMode(List<MinionServer> minions) {
+    public List<Long> systemIdsMaintenanceMode(List<MinionServer> minions) {
         MaintenanceManager mm = MaintenanceManager.instance();
         Set<MaintenanceSchedule> schedulesInMaintMode = minions.stream()
                 .flatMap(minion -> minion.getMaintenanceScheduleOpt().stream())
