@@ -1,4 +1,4 @@
-name: Ruby checkstyle
+name: RuboCop
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - 'testsuite/features/**.rb'
 
 jobs:
-  ruby_checkstyle:
+  rubocop:
 
     runs-on: ubuntu-latest
 
