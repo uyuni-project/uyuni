@@ -80,7 +80,7 @@ public class MaintenanceHandler extends BaseHandler {
      * #array_end()
      */
     public MaintenanceSchedule getScheduleDetails(User loggedInUser, String name) {
-        return mm.lookupMaintenanceScheduleByUserAndName(loggedInUser, name)
+        return mm.lookupScheduleByUserAndName(loggedInUser, name)
                 .orElseThrow(() -> new EntityNotExistsFaultException(name));
     }
 
@@ -104,7 +104,7 @@ public class MaintenanceHandler extends BaseHandler {
     public MaintenanceSchedule createSchedule(User loggedInUser, String name, String type) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return mm.createMaintenanceSchedule(loggedInUser, name, ScheduleType.lookupByLabel(type),
+            return mm.createSchedule(loggedInUser, name, ScheduleType.lookupByLabel(type),
                     Optional.empty());
         }
         catch (EntityExistsException e) {
@@ -135,7 +135,7 @@ public class MaintenanceHandler extends BaseHandler {
             String calendar) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return mm.createMaintenanceSchedule(loggedInUser, name, ScheduleType.lookupByLabel(type),
+            return mm.createSchedule(loggedInUser, name, ScheduleType.lookupByLabel(type),
                     mm.lookupCalendarByUserAndLabel(loggedInUser, calendar));
         }
         catch (EntityExistsException e) {
@@ -184,7 +184,7 @@ public class MaintenanceHandler extends BaseHandler {
         validateMap(validKeys, details);
 
         try {
-            return mm.updateMaintenanceSchedule(loggedInUser, name, details,
+            return mm.updateSchedule(loggedInUser, name, details,
                     mm.mapRescheduleStrategyStrings(rescheduleStrategy));
         }
         catch (EntityNotExistsException e) {
@@ -207,7 +207,7 @@ public class MaintenanceHandler extends BaseHandler {
      */
     public int deleteSchedule(User loggedInUser, String name) {
         ensureOrgAdmin(loggedInUser);
-        Optional<MaintenanceSchedule> schedule = mm.lookupMaintenanceScheduleByUserAndName(loggedInUser, name);
+        Optional<MaintenanceSchedule> schedule = mm.lookupScheduleByUserAndName(loggedInUser, name);
         mm.remove(loggedInUser, schedule.orElseThrow(() -> new EntityNotExistsFaultException(name)));
         return 1;
     }
@@ -268,7 +268,7 @@ public class MaintenanceHandler extends BaseHandler {
     public MaintenanceCalendar createCalendar(User loggedInUser, String label, String ical) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return mm.createMaintenanceCalendar(loggedInUser, label, ical);
+            return mm.createCalendar(loggedInUser, label, ical);
         }
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -295,7 +295,7 @@ public class MaintenanceHandler extends BaseHandler {
     public MaintenanceCalendar createCalendarWithUrl(User loggedInUser, String label, String url) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return mm.createMaintenanceCalendarWithUrl(loggedInUser, label, url);
+            return mm.createCalendarWithUrl(loggedInUser, label, url);
         }
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -440,7 +440,7 @@ public class MaintenanceHandler extends BaseHandler {
     public Integer assignScheduleToSystems(User loggedInUser, String scheduleName, List<Integer> systemIds) {
         ensureOrgAdmin(loggedInUser);
         MaintenanceSchedule schedule = mm
-                .lookupMaintenanceScheduleByUserAndName(loggedInUser, scheduleName)
+                .lookupScheduleByUserAndName(loggedInUser, scheduleName)
                 .orElseThrow(() -> new EntityNotExistsFaultException(scheduleName));
 
         Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
@@ -496,7 +496,7 @@ public class MaintenanceHandler extends BaseHandler {
     public List<Long> listSystemsWithSchedule(User loggedInUser, String scheduleName) {
         ensureOrgAdmin(loggedInUser);
         MaintenanceSchedule schedule = mm
-                .lookupMaintenanceScheduleByUserAndName(loggedInUser, scheduleName)
+                .lookupScheduleByUserAndName(loggedInUser, scheduleName)
                 .orElseThrow(() -> new EntityNotExistsFaultException(scheduleName));
 
         try {
