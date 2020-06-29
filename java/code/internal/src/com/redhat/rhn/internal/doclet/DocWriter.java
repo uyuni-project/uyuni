@@ -34,22 +34,24 @@ public abstract class DocWriter {
     protected String output;
     protected String templates;
     protected String product;
+    protected String apiVersion;
     private boolean debug = false;
 
 
     /**
      * Constructor
-     *
      * @param outputIn path to the output folder
      * @param templatesIn path to the HTML templates folder
      * @param productIn name of the product
+     * @param apiVersionIn version of the api
      * @param debugIn whether to show debugging messages
      *
      */
-    public DocWriter(String outputIn, String templatesIn, String productIn, boolean debugIn) {
+    public DocWriter(String outputIn, String templatesIn, String productIn, String apiVersionIn, boolean debugIn) {
         output = outputIn;
         templates = templatesIn;
         product = productIn;
+        apiVersion = apiVersionIn;
         debug = debugIn;
     }
 
@@ -87,6 +89,7 @@ public abstract class DocWriter {
         VelocityHelper vh = new VelocityHelper(templateDir);
         vh.addMatch("handlers", handlers);
         vh.addMatch("productName", product);
+        vh.addMatch("apiVersion", apiVersion);
         String out = vh.renderTemplateFile(ApiDoclet.API_HEADER_FILE);
         out += vh.renderTemplateFile(ApiDoclet.API_INDEX_FILE);
         out += vh.renderTemplateFile(ApiDoclet.API_FOOTER_FILE);

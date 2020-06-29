@@ -73,6 +73,7 @@ public abstract class ApiDoclet implements Doclet {
     private String outputFolder;
     private String templateFolder;
     private String productName;
+    private String apiVersion;
 
     protected final Set<Option> getOptions() {
         return Set.of(
@@ -117,6 +118,15 @@ public abstract class ApiDoclet implements Doclet {
                     productName = arguments.get(0);
                     return true;
                 }
+            },
+            new AbstractOption("-apiversion", true,
+                    "version of the API to write in the generated docs", "version") {
+                @Override
+                public boolean process(String option,
+                                       List<String> arguments) {
+                    apiVersion = arguments.get(0);
+                    return true;
+                }
             }
         );
     }
@@ -132,13 +142,14 @@ public abstract class ApiDoclet implements Doclet {
 
     /**
      * @return The documentation writer for the Doclet implementation
-     *
      * @param outputIn the folder where the result needs to be written
      * @param templateIn the folder where the templates are located
      * @param productNameIn the name of the product to write in the docs
+     * @param apiVersionIn the version of the API to write in the docs
      * @param debugIn whether to show debug infos
      */
-    public abstract DocWriter getWriter(String outputIn, String templateIn, String productNameIn, boolean debugIn);
+    public abstract DocWriter getWriter(String outputIn, String templateIn, String productNameIn,
+                                        String apiVersionIn, boolean debugIn);
 
     @Override
     public Set<? extends Option> getSupportedOptions() {
@@ -282,7 +293,7 @@ public abstract class ApiDoclet implements Doclet {
             handlerList.add(handler);
         }
         Collections.sort(handlerList);
-        DocWriter writer = getWriter(outputFolder, templateFolder, productName, debug);
+        DocWriter writer = getWriter(outputFolder, templateFolder, productName, apiVersion, debug);
         try {
             writer.write(handlerList, serialMap);
         }
