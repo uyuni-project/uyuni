@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.maintenance;
+package com.suse.manager.maintenance.rescheduling;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.Server;
