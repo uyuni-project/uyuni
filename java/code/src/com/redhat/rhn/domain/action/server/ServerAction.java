@@ -161,7 +161,7 @@ public class ServerAction extends ActionChild implements Serializable {
     public void setServerWithCheck(Server serverIn) {
         Action parentAction = getParentAction();
         if (parentAction != null) {
-            maintenanceManager.checkMaintenanceWindows(Set.of(serverIn.getId()), parentAction);
+            maintenanceManager.canActionBeScheduled(Set.of(serverIn.getId()), parentAction);
         }
         setServer(serverIn);
     }
@@ -180,7 +180,7 @@ public class ServerAction extends ActionChild implements Serializable {
      */
     public void setParentActionWithCheck(Action parentActionIn) {
         if (server != null) {
-            maintenanceManager.checkMaintenanceWindows(Set.of(server.getId()), parentActionIn);
+            maintenanceManager.canActionBeScheduled(Set.of(server.getId()), parentActionIn);
         }
 
         setParentAction(parentActionIn);
