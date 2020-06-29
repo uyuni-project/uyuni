@@ -37,7 +37,7 @@ import com.google.gson.GsonBuilder;
 
 import com.suse.manager.maintenance.IcalUtils;
 import com.suse.manager.maintenance.MaintenanceManager;
-import com.suse.manager.maintenance.RescheduleResult;
+import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;

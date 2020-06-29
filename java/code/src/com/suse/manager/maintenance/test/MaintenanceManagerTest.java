@@ -34,10 +34,10 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.maintenance.CancelRescheduleStrategy;
+import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
 import com.suse.manager.maintenance.MaintenanceManager;
-import com.suse.manager.maintenance.RescheduleResult;
-import com.suse.manager.maintenance.RescheduleStrategy;
+import com.suse.manager.maintenance.rescheduling.RescheduleResult;
+import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;

@@ -40,6 +40,11 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.maintenance.factory.CalendarFactory;
 import com.suse.manager.maintenance.factory.ScheduleFactory;
+import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
+import com.suse.manager.maintenance.rescheduling.FailRescheduleStrategy;
+import com.suse.manager.maintenance.rescheduling.RescheduleException;
+import com.suse.manager.maintenance.rescheduling.RescheduleResult;
+import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;
