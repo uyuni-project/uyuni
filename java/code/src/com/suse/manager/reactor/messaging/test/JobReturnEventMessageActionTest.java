@@ -1904,8 +1904,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 JobReturnEvent.parse(getJobReturnEvent("image.build.kiwi.json", actionId));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = saltServiceMock;
+        SaltApi saltApi = saltServiceMock;
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
