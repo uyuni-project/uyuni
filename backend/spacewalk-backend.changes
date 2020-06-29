@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Jun 29 10:06:58 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.11-1
 - make media.1/products available for every channel. Needed for
   autoinstallation of SLE15 SP2 (bsc#1173204)
 
