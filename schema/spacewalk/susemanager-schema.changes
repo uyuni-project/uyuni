@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Jun 29 10:11:12 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
 - add new comps type mediaproducts (bsc#1173204)
 - Fix: handle corner case of deb pkg compare version (bsc#1173201)
 
