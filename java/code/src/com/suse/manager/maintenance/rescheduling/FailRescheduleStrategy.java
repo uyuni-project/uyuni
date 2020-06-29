@@ -40,8 +40,8 @@ public class FailRescheduleStrategy implements RescheduleStrategy {
     }
 
     @Override
-    public String getType() {
-        return "Fail";
+    public RescheduleStrategyType getType() {
+        return RescheduleStrategyType.FAIL;
     }
 
 }
