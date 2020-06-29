@@ -2,7 +2,8 @@ name: Ruby checkstyle
 
 on:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    paths:
+      - 'testsuite/features/**.rb'
 
 jobs:
   ruby_checkstyle:
