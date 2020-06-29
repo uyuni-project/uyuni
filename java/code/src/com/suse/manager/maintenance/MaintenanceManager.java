@@ -41,7 +41,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.maintenance.factory.CalendarFactory;
 import com.suse.manager.maintenance.factory.ScheduleFactory;
 import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
-import com.suse.manager.maintenance.rescheduling.FailRescheduleStrategy;
 import com.suse.manager.maintenance.rescheduling.RescheduleException;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
@@ -800,30 +799,6 @@ public class MaintenanceManager {
         if (listCalendarLabelsByUser(user).contains(label)) {
             throw new EntityExistsException(String.format("Maintenance Calendar '%s' already exists", label));
         }
-    }
-
-    /**
-     * Map reschedule strategy strings to objects
-     * @param rescheduleStrategy list of strategy strings
-     * @return list of strategy objects
-     */
-    public List<RescheduleStrategy> mapRescheduleStrategyStrings(List<String> rescheduleStrategy) {
-        List<RescheduleStrategy> ret = new LinkedList<>();
-
-        CancelRescheduleStrategy cancel = new CancelRescheduleStrategy();
-        FailRescheduleStrategy fail = new FailRescheduleStrategy();
-        for (String st : rescheduleStrategy) {
-            if (st.equals(cancel.getType())) {
-                ret.add(cancel);
-            }
-            else if (st.equals(fail.getType())) {
-                ret.add(fail);
-            }
-            else {
-                throw new EntityNotExistsException(String.format("Reschedule Strategy '%s' does not exist.", st));
-            }
-        }
-        return ret;
     }
 
     /**
