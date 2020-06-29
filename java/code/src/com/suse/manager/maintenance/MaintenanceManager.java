@@ -95,148 +95,13 @@ public class MaintenanceManager {
     }
 
     /**
-     * Given the systems, return upcoming maintenance windows.
-     *
-     * The windows are returned as a list of triples consisting of:
-     * - window start date as a human-readable string
-     * - window end date as a human-readable string
-     * - start date as number of milliseconds since the epoch
-     *
-     * The formatting is done by {@link LocalizationService}.
-     *
-     * If given systems do not have any maint. <b>schedules</b> assigned, return an empty optional.
-     * If given systems have different maint. schedules assigned, throw an exception.
-     * Otherwise return list of maintenance windows (the list can be empty, if the schedule does not contain
-     * any upcoming maintenance windows).
-     *
-     * @param systemIds the system ids
-     * @return the optional upcoming maintenance windows
-     * @throws IllegalStateException if two or more systems have different maint. schedules assigned
-     */
-    public Optional<List<MaintenanceWindowData>> calculateUpcomingMaintenanceWindows(Set<Long> systemIds)
-            throws IllegalStateException {
-        Set<MaintenanceSchedule> schedules = listSchedulesOfSystems(systemIds);
-        // if there are no schedules, there are no maintenance windows
-        if (schedules.isEmpty()) {
-            return empty();
-        }
-
-        // there are multiple schedules for systems, we throw an exception
-        if (schedules.size() > 1) {
-            String scheduleIds = schedules.stream().map(s -> s.getId().toString()).collect(joining(","));
-            throw new IllegalStateException("Multiple schedules: " + scheduleIds);
-        }
-
-        MaintenanceSchedule schedule = schedules.iterator().next();
-        return icalUtils.calculateUpcomingMaintenanceWindows(schedule);
-    }
-
-    /**
-     * Check if an action can be scheduled at given date for given systems.
-     *
-     * If some systems have a {@link MaintenanceSchedule} and are outside of their maintenance windows,
-     * throw the {@link NotInMaintenanceModeException} that bears the offending schedules.
-     *
-     * @param systemIds the system IDs to check
-     * @param action the action
-     * @throws NotInMaintenanceModeException when some systems are outside of maintenance window
-     */
-    public void checkMaintenanceWindows(Set<Long> systemIds, Action action) {
-        Date scheduleDate = action.getEarliestAction();
-
-        // we only take maintenance-mode-only actions and actions that don't have prerequisite
-        // (first actions in action chains) into account
-        if (action.getActionType().isMaintenancemodeOnly() && action.getPrerequisite() == null) {
-            // Special Case: we want to allow channel changing but it calls a state.apply
-            if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
-                ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
-                if (applyStatesAction.getDetails() != null &&
-                        applyStatesAction.getDetails().getMods().equals(
-                            List.of(ApplyStatesEventMessage.CHANNELS))) {
-                    return;
-                }
-            }
-            Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMatchingDate(systemIds, scheduleDate);
-            if (!offendingSchedules.isEmpty()) {
-                throw new NotInMaintenanceModeException(offendingSchedules, scheduleDate);
-            }
-        }
-    }
-
-    /**
-     * List {@link MaintenanceSchedule}s which are assigned to given systems and which do NOT match given date
-     * (no maintenance windows in given date).
-     *
-     * @param systemIds the system IDs to check
-     * @param date the schedule date of the action
-     * @return set of {@link MaintenanceSchedule}s
-     */
-    private Set<MaintenanceSchedule> listSystemSchedulesNotMatchingDate(Set<Long> systemIds, Date date) {
-        return listSchedulesOfSystems(systemIds).stream()
-                .filter(schedule -> {
-                    Collection<CalendarComponent> events = icalUtils.getCalendarEventsAtDate(
-                            date,
-                            schedule.getCalendarOpt().flatMap(c -> icalUtils.parseCalendar(c)),
-                            getScheduleNameForMulti(schedule)
-                    );
-                    return events.isEmpty();
-                })
-                .collect(toSet());
-    }
-
-    /**
      * List {@link MaintenanceSchedule}s assigned to given systems.
      *
      * @param systemIds the IDs of systems
      * @return the {@link MaintenanceSchedule}s assigned to given systems
      */
-    public Set<MaintenanceSchedule> listSchedulesOfSystems(Set<Long> systemIds) {
-        return scheduleFactory.listSchedulesOfSystems(systemIds);
-    }
-
-
-    /**
-     * Remove a MaintenanceSchedule
-     * @param user the user
-     * @param schedule the schedule
-     */
-    public void remove(User user, MaintenanceSchedule schedule) {
-        ensureOrgAdmin(user);
-        ensureScheduleAccessible(user, schedule);
-        scheduleFactory.remove(schedule);
-    }
-
-    /**
-     * Remove a MaintenanceCalendar
-     *
-     * When a calendar is removed, depending schedules loose all Maintenance Windows.
-     * This require to cancel all pending actions or let the removal fail.
-     *
-     * @param user the user
-     * @param calendar the calendar
-     * @param cancelScheduledActions cancel scheduled actions
-     * @return List of results
-     */
-    public List<RescheduleResult> remove(User user, MaintenanceCalendar calendar, boolean cancelScheduledActions) {
-        ensureOrgAdmin(user);
-        ensureCalendarAccessible(user, calendar);
-        List<RescheduleResult> result = new LinkedList<>();
-        List<MaintenanceSchedule> schedules = scheduleFactory.listSchedulesByUserAndCalendar(user, calendar);
-        calendarFactory.remove(calendar);
-        for (MaintenanceSchedule schedule: schedules) {
-            schedule.setCalendar(null);
-            List<RescheduleStrategy> strategy = new LinkedList<>();
-            if (cancelScheduledActions) {
-                strategy = Collections.singletonList(new CancelRescheduleStrategy());
-            }
-            RescheduleResult r = manageAffectedScheduledActions(user, schedule, strategy);
-            if (!r.isSuccess()) {
-                // in case of false, update failed and we had a DB rollback
-                return Collections.singletonList(r);
-            }
-            result.add(r);
-        }
-        return result;
+    public Set<MaintenanceSchedule> listSchedulesBySystems(Set<Long> systemIds) {
+        return scheduleFactory.listSchedulesBySystems(systemIds);
     }
 
     /**
@@ -265,6 +130,23 @@ public class MaintenanceManager {
      */
     public List<MaintenanceSchedule> listSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
         return scheduleFactory.listSchedulesByCalendar(user, calendar);
+    }
+
+    /**
+     * List {@link Server} IDs with given schedule
+     *
+     * @param user the user
+     * @param schedule the schedule
+     * @return the {@link Server} IDS with given schedule
+     */
+    public List<Long> listSystemIdsWithSchedule(User user, MaintenanceSchedule schedule) {
+        ensureOrgAdmin(user);
+        ensureScheduleAccessible(user, schedule);
+
+        List<Long> systemIds = scheduleFactory.listSystemIdsWithSchedule(schedule);
+        ensureSystemsAccessible(user, systemIds);
+
+        return systemIds;
     }
 
     /**
@@ -335,6 +217,17 @@ public class MaintenanceManager {
         }
         scheduleFactory.save(schedule);
         return manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
+    }
+
+    /**
+     * Remove a MaintenanceSchedule
+     * @param user the user
+     * @param schedule the schedule
+     */
+    public void remove(User user, MaintenanceSchedule schedule) {
+        ensureOrgAdmin(user);
+        ensureScheduleAccessible(user, schedule);
+        scheduleFactory.remove(schedule);
     }
 
     /**
@@ -477,6 +370,168 @@ public class MaintenanceManager {
         return result;
     }
 
+    /**
+     * Remove a MaintenanceCalendar
+     *
+     * When a calendar is removed, depending schedules loose all Maintenance Windows.
+     * This require to cancel all pending actions or let the removal fail.
+     *
+     * @param user the user
+     * @param calendar the calendar
+     * @param cancelScheduledActions cancel scheduled actions
+     * @return List of results
+     */
+    public List<RescheduleResult> remove(User user, MaintenanceCalendar calendar, boolean cancelScheduledActions) {
+        ensureOrgAdmin(user);
+        ensureCalendarAccessible(user, calendar);
+        List<RescheduleResult> result = new LinkedList<>();
+        List<MaintenanceSchedule> schedules = scheduleFactory.listSchedulesByUserAndCalendar(user, calendar);
+        calendarFactory.remove(calendar);
+        for (MaintenanceSchedule schedule: schedules) {
+            schedule.setCalendar(null);
+            List<RescheduleStrategy> strategy = new LinkedList<>();
+            if (cancelScheduledActions) {
+                strategy = Collections.singletonList(new CancelRescheduleStrategy());
+            }
+            RescheduleResult r = manageAffectedScheduledActions(user, schedule, strategy);
+            if (!r.isSuccess()) {
+                // in case of false, update failed and we had a DB rollback
+                return Collections.singletonList(r);
+            }
+            result.add(r);
+        }
+        return result;
+    }
+
+    /**
+     * Assign {@link MaintenanceSchedule} to given set of {@link Server}s.
+     *
+     * @param user the user
+     * @param schedule the {@link MaintenanceSchedule}
+     * @param systemIds the set of {@link Server} IDs
+     * @throws PermissionException if the user does not have access to given servers
+     * @throws IllegalArgumentException if systems have pending maintenance-only actions
+     * @return the number of involved {@link Server}s
+     */
+    public int assignScheduleToSystems(User user, MaintenanceSchedule schedule, Set<Long> systemIds) {
+        ensureOrgAdmin(user);
+        ensureSystemsAccessible(user, systemIds);
+        ensureScheduleAccessible(user, schedule);
+
+        Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(systemIds);
+        if (!withMaintenanceActions.isEmpty()) {
+            throw new IllegalArgumentException("Systems have pending maintenance-only actions:" +
+                    withMaintenanceActions);
+        }
+
+        return ServerFactory.setMaintenanceScheduleToSystems(schedule, systemIds);
+    }
+
+    /**
+     * Retract {@link MaintenanceSchedule} from given set of {@link Server}s.
+     *
+     * @param user the user
+     * @param systemIds the set of {@link Server} IDs
+     * @throws PermissionException if the user does not have access to given servers
+     * @return the number of involved {@link Server}s
+     */
+    public int retractScheduleFromSystems(User user, Set<Long> systemIds) {
+        ensureOrgAdmin(user);
+        ensureSystemsAccessible(user, systemIds);
+
+        return ServerFactory.setMaintenanceScheduleToSystems(null, systemIds);
+    }
+
+    /**
+     * Given the systems, return upcoming maintenance windows.
+     *
+     * The windows are returned as a list of triples consisting of:
+     * - window start date as a human-readable string
+     * - window end date as a human-readable string
+     * - start date as number of milliseconds since the epoch
+     *
+     * The formatting is done by {@link LocalizationService}.
+     *
+     * If given systems do not have any maint. <b>schedules</b> assigned, return an empty optional.
+     * If given systems have different maint. schedules assigned, throw an exception.
+     * Otherwise return list of maintenance windows (the list can be empty, if the schedule does not contain
+     * any upcoming maintenance windows).
+     *
+     * @param systemIds the system ids
+     * @return the optional upcoming maintenance windows
+     * @throws IllegalStateException if two or more systems have different maint. schedules assigned
+     */
+    public Optional<List<MaintenanceWindowData>> calculateUpcomingMaintenanceWindows(Set<Long> systemIds)
+            throws IllegalStateException {
+        Set<MaintenanceSchedule> schedules = listSchedulesBySystems(systemIds);
+        // if there are no schedules, there are no maintenance windows
+        if (schedules.isEmpty()) {
+            return empty();
+        }
+
+        // there are multiple schedules for systems, we throw an exception
+        if (schedules.size() > 1) {
+            String scheduleIds = schedules.stream().map(s -> s.getId().toString()).collect(joining(","));
+            throw new IllegalStateException("Multiple schedules: " + scheduleIds);
+        }
+
+        MaintenanceSchedule schedule = schedules.iterator().next();
+        return icalUtils.calculateUpcomingMaintenanceWindows(schedule);
+    }
+
+    /**
+     * Check if an action can be scheduled at given date for given systems.
+     *
+     * If some systems have a {@link MaintenanceSchedule} and are outside of their maintenance windows,
+     * throw the {@link NotInMaintenanceModeException} that bears the offending schedules.
+     *
+     * @param systemIds the system IDs to check
+     * @param action the action
+     * @throws NotInMaintenanceModeException when some systems are outside of maintenance window
+     */
+    public void checkMaintenanceWindows(Set<Long> systemIds, Action action) {
+        Date scheduleDate = action.getEarliestAction();
+
+        // we only take maintenance-mode-only actions and actions that don't have prerequisite
+        // (first actions in action chains) into account
+        if (action.getActionType().isMaintenancemodeOnly() && action.getPrerequisite() == null) {
+            // Special Case: we want to allow channel changing but it calls a state.apply
+            if (action.getActionType().equals(ActionFactory.TYPE_APPLY_STATES)) {
+                ApplyStatesAction applyStatesAction = (ApplyStatesAction) action;
+                if (applyStatesAction.getDetails() != null &&
+                        applyStatesAction.getDetails().getMods().equals(
+                            List.of(ApplyStatesEventMessage.CHANNELS))) {
+                    return;
+                }
+            }
+            Set<MaintenanceSchedule> offendingSchedules = listSystemSchedulesNotMatchingDate(systemIds, scheduleDate);
+            if (!offendingSchedules.isEmpty()) {
+                throw new NotInMaintenanceModeException(offendingSchedules, scheduleDate);
+            }
+        }
+    }
+
+    /**
+     * List {@link MaintenanceSchedule}s which are assigned to given systems and which do NOT match given date
+     * (no maintenance windows in given date).
+     *
+     * @param systemIds the system IDs to check
+     * @param date the schedule date of the action
+     * @return set of {@link MaintenanceSchedule}s
+     */
+    private Set<MaintenanceSchedule> listSystemSchedulesNotMatchingDate(Set<Long> systemIds, Date date) {
+        return listSchedulesBySystems(systemIds).stream()
+                .filter(schedule -> {
+                    Collection<CalendarComponent> events = icalUtils.getCalendarEventsAtDate(
+                            date,
+                            schedule.getCalendarOpt().flatMap(c -> icalUtils.parseCalendar(c)),
+                            getScheduleNameForMulti(schedule)
+                    );
+                    return events.isEmpty();
+                })
+                .collect(toSet());
+    }
+
     protected String fetchCalendarData(String url) {
         try {
             HttpHelper http = new HttpHelper();
@@ -607,21 +662,6 @@ public class MaintenanceManager {
     }
 
     /**
-     * Log the number of servers skipped and if debugging is enabled list the server ids
-     *
-     * @param servers the list of servers to log
-     */
-    private static void logSkippedMinions(List<MinionServer> servers) {
-       log.warn("Skipping action for " + servers.size() + " minions.");
-       if (log.isDebugEnabled()) {
-          String serverNames = servers.stream()
-          .map(m -> m.getId().toString())
-          .collect(Collectors.joining(","));
-          log.debug("Skipped minion ids: " + serverNames);
-       }
-    }
-
-    /**
      * Given a list of minions, sorts by maintenance mode status, logs skipped minions
      *
      * @param minions servers to check
@@ -650,59 +690,18 @@ public class MaintenanceManager {
     }
 
     /**
-     * Assign {@link MaintenanceSchedule} to given set of {@link Server}s.
+     * Log the number of servers skipped and if debugging is enabled list the server ids
      *
-     * @param user the user
-     * @param schedule the {@link MaintenanceSchedule}
-     * @param systemIds the set of {@link Server} IDs
-     * @throws PermissionException if the user does not have access to given servers
-     * @throws IllegalArgumentException if systems have pending maintenance-only actions
-     * @return the number of involved {@link Server}s
+     * @param servers the list of servers to log
      */
-    public int assignScheduleToSystems(User user, MaintenanceSchedule schedule, Set<Long> systemIds) {
-        ensureOrgAdmin(user);
-        ensureSystemsAccessible(user, systemIds);
-        ensureScheduleAccessible(user, schedule);
-
-        Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(systemIds);
-        if (!withMaintenanceActions.isEmpty()) {
-            throw new IllegalArgumentException("Systems have pending maintenance-only actions:" +
-                    withMaintenanceActions);
+    private static void logSkippedMinions(List<MinionServer> servers) {
+        log.warn("Skipping action for " + servers.size() + " minions.");
+        if (log.isDebugEnabled()) {
+            String serverNames = servers.stream()
+                    .map(m -> m.getId().toString())
+                    .collect(Collectors.joining(","));
+            log.debug("Skipped minion ids: " + serverNames);
         }
-
-        return ServerFactory.setMaintenanceScheduleToSystems(schedule, systemIds);
-    }
-
-    /**
-     * Retract {@link MaintenanceSchedule} from given set of {@link Server}s.
-     *
-     * @param user the user
-     * @param systemIds the set of {@link Server} IDs
-     * @throws PermissionException if the user does not have access to given servers
-     * @return the number of involved {@link Server}s
-     */
-    public int retractScheduleFromSystems(User user, Set<Long> systemIds) {
-        ensureOrgAdmin(user);
-        ensureSystemsAccessible(user, systemIds);
-
-        return ServerFactory.setMaintenanceScheduleToSystems(null, systemIds);
-    }
-
-    /**
-     * List {@link Server} IDs with given schedule
-     *
-     * @param user the user
-     * @param schedule the schedule
-     * @return the {@link Server} IDS with given schedule
-     */
-    public List<Long> listSystemIdsWithSchedule(User user, MaintenanceSchedule schedule) {
-        ensureOrgAdmin(user);
-        ensureScheduleAccessible(user, schedule);
-
-        List<Long> systemIds = scheduleFactory.listSystemIdsWithSchedule(schedule);
-        ensureSystemsAccessible(user, systemIds);
-
-        return systemIds;
     }
 
     /**
