@@ -77,13 +77,13 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
     public void testCreateSchedule() throws Exception {
         MaintenanceManager mm = MaintenanceManager.instance();
-        mm.createMaintenanceSchedule(user, "test server", ScheduleType.SINGLE, Optional.empty());
+        mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.empty());
 
         List<String> names = mm.listScheduleNamesByUser(user);
         assertEquals(1, names.size());
         assertContains(names, "test server");
 
-        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupMaintenanceScheduleByUserAndName(user, "test server");
+        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
         MaintenanceSchedule dbSchedule = dbScheduleOpt.get();
 
@@ -99,7 +99,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
 
         MaintenanceManager mm = MaintenanceManager.instance();
-        mm.createMaintenanceCalendar(user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
 
         List<String> labels = mm.listCalendarLabelsByUser(user);
         assertEquals(1, labels.size());
@@ -120,14 +120,14 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
         MaintenanceManager mm = MaintenanceManager.instance();
 
-        MaintenanceCalendar mc = mm.createMaintenanceCalendar(user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
-        mm.createMaintenanceSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
+        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
 
         List<String> names = mm.listScheduleNamesByUser(user);
         assertEquals(1, names.size());
         assertContains(names, "test server");
 
-        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupMaintenanceScheduleByUserAndName(user, "test server");
+        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
         MaintenanceSchedule dbSchedule = dbScheduleOpt.get();
 
@@ -155,10 +155,10 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        MaintenanceCalendar mc = mm.createMaintenanceCalendar(user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
-        mm.createMaintenanceSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
+        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
+        mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
 
-        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupMaintenanceScheduleByUserAndName(user, "test server");
+        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
         MaintenanceSchedule dbSchedule = dbScheduleOpt.get();
         assertNotNull(dbSchedule.getCalendarOpt().orElse(null));
@@ -184,9 +184,9 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Map<String, String> sDetails = new HashMap<>();
         sDetails.put("type", "multi");
 
-        mm.updateMaintenanceSchedule(user, "test server", sDetails, Collections.emptyList());
+        mm.updateSchedule(user, "test server", sDetails, Collections.emptyList());
 
-        dbScheduleOpt = mm.lookupMaintenanceScheduleByUserAndName(user, "test server");
+        dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
         dbSchedule = dbScheduleOpt.get();
 
@@ -204,7 +204,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     public void testListSystemsWithSchedule() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = mm.createMaintenanceSchedule(
+        MaintenanceSchedule schedule = mm.createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         Server withSchedule = MinionServerFactoryTest.createTestMinionServer(user);
@@ -226,7 +226,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     public void testRetractScheduleFromSystems() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = MaintenanceManager.instance().createMaintenanceSchedule(
+        MaintenanceSchedule schedule = MaintenanceManager.instance().createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         // assign the schedule to both systems
@@ -253,7 +253,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     public void testAssignScheduleToSystemWithPendingActions() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = MaintenanceManager.instance().createMaintenanceSchedule(
+        MaintenanceSchedule schedule = MaintenanceManager.instance().createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -285,9 +285,9 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         User user2 = UserTestUtils.createUser("user-321", acmeOrg.getId());
         user2.addPermanentRole(ORG_ADMIN);
 
-        MaintenanceSchedule schedule1 = MaintenanceManager.instance().createMaintenanceSchedule(
+        MaintenanceSchedule schedule1 = MaintenanceManager.instance().createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
-        MaintenanceSchedule schedule2 = MaintenanceManager.instance().createMaintenanceSchedule(
+        MaintenanceSchedule schedule2 = MaintenanceManager.instance().createSchedule(
                 user2, "test-schedule-2", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         Server system1 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -326,8 +326,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        MaintenanceCalendar mc = mm.createMaintenanceCalendar(user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
-        MaintenanceSchedule ms = mm.createMaintenanceSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
+        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
+        MaintenanceSchedule ms = mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
 
         Server server = ServerTestUtils.createTestSystem(user);
 
@@ -372,9 +372,9 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server coreServer = ServerTestUtils.createTestSystem(user);
 
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceCalendar mcal = mm.createMaintenanceCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
-        MaintenanceSchedule sapSchedule = mm.createMaintenanceSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
-        MaintenanceSchedule coreSchedule = mm.createMaintenanceSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
+        MaintenanceCalendar mcal = mm.createCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
+        MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
 
         mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()));
         mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()));
@@ -440,9 +440,9 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server coreServer = ServerTestUtils.createTestSystem(user);
 
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceCalendar mcal = mm.createMaintenanceCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
-        MaintenanceSchedule sapSchedule = mm.createMaintenanceSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
-        MaintenanceSchedule coreSchedule = mm.createMaintenanceSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
+        MaintenanceCalendar mcal = mm.createCalendar(user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
+        MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
 
         mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()));
         mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()));
@@ -545,7 +545,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     public void testListSystemsSchedules() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = MaintenanceManager.instance();
-        MaintenanceSchedule schedule = mm.createMaintenanceSchedule(
+        MaintenanceSchedule schedule = mm.createSchedule(
                 user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         Server withSchedule = MinionServerFactoryTest.createTestMinionServer(user);
