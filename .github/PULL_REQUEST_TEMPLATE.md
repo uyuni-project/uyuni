@@ -50,7 +50,6 @@ If you need to re-run a test, please mark the related checkbox, it will be unche
 - [ ] Re-run test "backend_unittests_pgsql"
 - [ ] Re-run test "java_lint_checkstyle"
 - [ ] Re-run test "java_pgsql_tests"
-- [ ] Re-run test "ruby_rubocop"
 - [ ] Re-run test "schema_migration_test_oracle"
 - [ ] Re-run test "schema_migration_test_pgsql"
 - [ ] Re-run test "susemanager_unittests"
