@@ -30,10 +30,11 @@ public class HtmlWriter extends DocWriter {
      * @param outputIn path to the output folder
      * @param templatesIn path to the HTML templates folder
      * @param productIn name of the product
+     * @param apiVersionIn version of the api
      * @param debugIn whether to show debugging messages
      */
-    public HtmlWriter(String outputIn, String templatesIn, String productIn, boolean debugIn) {
-        super(outputIn, templatesIn, productIn, debugIn);
+    public HtmlWriter(String outputIn, String templatesIn, String productIn, String apiVersionIn, boolean debugIn) {
+        super(outputIn, templatesIn, productIn, apiVersionIn, debugIn);
     }
 
     /**
@@ -42,12 +43,8 @@ public class HtmlWriter extends DocWriter {
      */
     public void write(List<Handler> handlers,
             Map<String, String> serializers) throws Exception {
-
-
-
         //First macro-tize the serializer's docs
         renderSerializers(templates, serializers);
-
 
         //Lets do the index first
         writeFile(output + "index.html", generateIndex(handlers, templates));
@@ -60,8 +57,5 @@ public class HtmlWriter extends DocWriter {
         for (String file : OTHER_FILES) {
             writeFile(output + file + ".html", readFile(templates + file + ".txt"));
         }
-
     }
-
-
 }

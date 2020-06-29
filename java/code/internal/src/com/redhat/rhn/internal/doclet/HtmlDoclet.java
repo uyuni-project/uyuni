@@ -34,8 +34,9 @@ public class HtmlDoclet extends ApiDoclet {
     }
 
     @Override
-    public DocWriter getWriter(String outputFolder, String templateFolder, String productName, boolean debug) {
-        return new HtmlWriter(outputFolder, templateFolder, productName, debug);
+    public DocWriter getWriter(String outputFolder, String templateFolder, String productName,
+                               String apiVersionIn, boolean debug) {
+        return new HtmlWriter(outputFolder, templateFolder, productName, apiVersionIn, debug);
     }
 
 }
