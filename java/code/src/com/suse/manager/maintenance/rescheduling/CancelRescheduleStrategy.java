@@ -37,9 +37,14 @@ public class CancelRescheduleStrategy implements RescheduleStrategy {
     private static final Logger LOG = Logger.getLogger(CancelRescheduleStrategy.class);
 
     @Override
+    public RescheduleStrategyType getType() {
+        return RescheduleStrategyType.CANCEL;
+    }
+
+    @Override
     public RescheduleResult reschedule(User user, Map<Action, List<Server>> actionsServers,
             MaintenanceSchedule schedule) throws RescheduleException {
-        RescheduleResult result = new RescheduleResult(getType(), schedule.getName(), actionsServers);
+        RescheduleResult result = new RescheduleResult(getType().getLabel(), schedule.getName(), actionsServers);
         try {
             for (Action action: actionsServers.keySet()) {
                 List<Long> serverIds = actionsServers.get(action).stream()
@@ -56,13 +61,6 @@ public class CancelRescheduleStrategy implements RescheduleStrategy {
         }
         result.setSuccess(true);
         return result;
-    }
-
-    @Override
-    public String getType() {
-        return "Cancel";
-    }
-
     }
 
 }
