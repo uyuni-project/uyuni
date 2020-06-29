@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Mon Jun 29 10:08:38 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
 - Branding adjustments, get rid of spacewalk as a default
 - serve media.1/products when available (bsc#1173204)
 - use repo metadata of the synced base channel when kernel
