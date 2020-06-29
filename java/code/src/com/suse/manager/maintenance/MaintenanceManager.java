@@ -130,8 +130,6 @@ public class MaintenanceManager {
      *
      * The formatting is done by {@link LocalizationService}.
      *
-     * The upper limit of returned maintenance windows is currently hardcoded to 10.
-     *
      * If given systems do not have any maint. <b>schedules</b> assigned, return an empty optional.
      * If given systems have different maint. schedules assigned, throw an exception.
      * Otherwise return list of maintenance windows (the list can be empty, if the schedule does not contain
