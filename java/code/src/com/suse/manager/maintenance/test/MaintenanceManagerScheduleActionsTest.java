@@ -97,8 +97,8 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer sys2 = MinionServerFactoryTest.createTestMinionServer(user);
 
-        assertTrue(MaintenanceManager.checkIfInMaintenanceMode(sys1));
-        assertTrue(MaintenanceManager.checkIfInMaintenanceMode(sys2));
+        assertTrue(MaintenanceManager.instance().checkIfInMaintenanceMode(sys1));
+        assertTrue(MaintenanceManager.instance().checkIfInMaintenanceMode(sys2));
 
         mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
 
@@ -131,7 +131,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
 
         MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
-        assertTrue(MaintenanceManager.checkIfInMaintenanceMode(sys1));
+        assertTrue(MaintenanceManager.instance().checkIfInMaintenanceMode(sys1));
 
         try {
             ActionChainManager.scheduleApplyStates(user, List.of(sys1.getId()), empty(), new Date(12345), null);

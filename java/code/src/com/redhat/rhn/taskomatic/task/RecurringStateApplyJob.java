@@ -57,7 +57,7 @@ public class RecurringStateApplyJob extends RhnJavaJob {
     }
 
     private void scheduleAction(JobExecutionContext context, RecurringAction action) {
-        List<Long> minionIds = MaintenanceManager.systemIdsMaintenanceMode(action.computeMinions());
+        List<Long> minionIds = MaintenanceManager.instance().systemIdsMaintenanceMode(action.computeMinions());
 
         try {
             ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
