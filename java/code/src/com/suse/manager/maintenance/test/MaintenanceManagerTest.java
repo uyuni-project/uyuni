@@ -555,7 +555,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(
                 Set.of(schedule),
-                mm.listSchedulesOfSystems(Set.of(withSchedule.getId(), withoutSchedule.getId()))
+                mm.listSchedulesBySystems(Set.of(withSchedule.getId(), withoutSchedule.getId()))
         );
     }
 
