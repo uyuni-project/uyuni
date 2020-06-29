@@ -19,7 +19,7 @@ import static java.util.Optional.empty;
 
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.maintenance.IcalUtils;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -36,9 +36,9 @@ import net.fortuna.ical4j.model.Calendar;
 /**
  * Tests focusing on maintenance windows computation
  */
-public class MaintenanceManagerWindowsTest extends TestCase {
+public class IcalUtilsTest extends TestCase {
 
-    private MaintenanceManager maintenanceManager = MaintenanceManager.instance();
+    private IcalUtils icalUtils = new IcalUtils();
 
     private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
     private static final String GOOGLE_ICS = "maintenance-windows-google-multizones.ics";
@@ -51,7 +51,7 @@ public class MaintenanceManagerWindowsTest extends TestCase {
         super.setUp();
 
         File ical = new File(TestUtils.findTestData(new File(TESTDATAPATH, GOOGLE_ICS).getAbsolutePath()).getPath());
-        multiZonesCal = maintenanceManager.parseCalendar(new FileReader(ical)).get();
+        multiZonesCal = icalUtils.parseCalendar(new FileReader(ical)).get();
     }
 
     /**
@@ -62,10 +62,10 @@ public class MaintenanceManagerWindowsTest extends TestCase {
         ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-09T08:00:00-04:00"); // NY
         ZonedDateTime tokyoStart = ZonedDateTime.parse("2020-06-09T21:00:00+09:00"); // Japan (same moment in time!)
 
-        List<Pair<Instant, Instant>> listNewYork = maintenanceManager.calculateUpcomingPeriods(multiZonesCal, empty(),
+        List<Pair<Instant, Instant>> listNewYork = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
                 newYorkStart.toInstant(), 5).collect(Collectors.toList());
 
-        List<Pair<Instant, Instant>> listTokyo = maintenanceManager.calculateUpcomingPeriods(multiZonesCal, empty(),
+        List<Pair<Instant, Instant>> listTokyo = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
                 tokyoStart.toInstant(), 5).collect(Collectors.toList());
 
         assertEquals(listNewYork, listTokyo);
@@ -81,12 +81,12 @@ public class MaintenanceManagerWindowsTest extends TestCase {
     public void testSameLocalTimeAhead() {
         ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-08T08:00:00-04:00"); // NY
 
-        List<Pair<Instant, Instant>> listNewYork = maintenanceManager.calculateUpcomingPeriods(multiZonesCal, empty(),
+        List<Pair<Instant, Instant>> listNewYork = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
                 newYorkStart.toInstant(), 5).collect(Collectors.toList());
 
         // Sri Lanka is ahead of NYC, so at 11:00 in Sri Lanka, we still see maint. windows starting at 8:00 in NY
         ZonedDateTime sriLankaAlike = ZonedDateTime.parse("2020-06-08T11:00:00+05:30");
-        List<Pair<Instant, Instant>> listSriLanka = maintenanceManager.calculateUpcomingPeriods(multiZonesCal, empty(),
+        List<Pair<Instant, Instant>> listSriLanka = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
                 sriLankaAlike.toInstant(), 5).collect(Collectors.toList());
         assertEquals(listNewYork, listSriLanka);
     }
@@ -102,13 +102,13 @@ public class MaintenanceManagerWindowsTest extends TestCase {
     public void testSameLocalTimeBehind() {
         ZonedDateTime newYorkStart = ZonedDateTime.parse("2020-06-08T08:00:00-04:00"); // NY
 
-        List<Pair<Instant, Instant>> listNewYork = maintenanceManager.calculateUpcomingPeriods(multiZonesCal, empty(),
+        List<Pair<Instant, Instant>> listNewYork = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
                 newYorkStart.toInstant(), 5).collect(Collectors.toList());
 
         // Tahiti, on the other hand is behind NYC, so at 8:00 Tahitian time, the maintenance windows at 8:00 NY time
         // is already over and we shouldn't see it
         ZonedDateTime tahitiLike = ZonedDateTime.parse("2020-06-08T08:00:00-10:00");
-        List<Pair<Instant, Instant>> listTahiti = maintenanceManager.calculateUpcomingPeriods(multiZonesCal, empty(),
+        List<Pair<Instant, Instant>> listTahiti = icalUtils.calculateUpcomingPeriods(multiZonesCal, empty(),
                 tahitiLike.toInstant(), 4).collect(Collectors.toList());
 
         List<Pair<Instant, Instant>> newYorkButFirst = listNewYork.stream().skip(1).collect(Collectors.toList());
