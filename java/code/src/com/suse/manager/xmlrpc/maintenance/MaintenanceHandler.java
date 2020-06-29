@@ -26,7 +26,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.EntityExistsException;
 
 import com.suse.manager.maintenance.MaintenanceManager;
-import com.suse.manager.maintenance.RescheduleResult;
+import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType;

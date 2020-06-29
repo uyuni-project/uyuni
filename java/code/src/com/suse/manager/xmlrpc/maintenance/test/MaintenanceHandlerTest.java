@@ -22,7 +22,7 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.maintenance.RescheduleResult;
+import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.test.MaintenanceTestUtils;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
