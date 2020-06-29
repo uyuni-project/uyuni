@@ -86,7 +86,7 @@ public class SchedulerKernel {
     public static final SaltUtils SALT_UTILS = new SaltUtils(
             SYSTEM_QUERY, SALT_API, CLUSTER_MANAGER);
     public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE =
-            new SaltServerActionService(SchedulerKernel.SYSTEM_QUERY, SALT_UTILS);
+            new SaltServerActionService(SchedulerKernel.SYSTEM_QUERY, SALT_UTILS, CLUSTER_MANAGER);
     public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(
             SALT_SERVER_ACTION_SERVICE, SYSTEM_QUERY, SALT_UTILS);
 

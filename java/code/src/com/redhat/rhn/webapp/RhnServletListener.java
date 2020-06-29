@@ -67,7 +67,7 @@ public class RhnServletListener implements ServletContextListener {
     );
     private final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
     private final SaltServerActionService saltServerActionService = new SaltServerActionService(
-            systemQuery, saltUtils);
+            systemQuery, saltUtils, clusterManager);
 
     // Salt event reactor instance
     private final SaltReactor saltReactor = new SaltReactor(saltApi, systemQuery, saltServerActionService, saltUtils);

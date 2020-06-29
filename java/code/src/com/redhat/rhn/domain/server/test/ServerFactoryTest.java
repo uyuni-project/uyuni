@@ -68,6 +68,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -120,10 +121,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private SaltService saltService = new SaltService();
     private SystemQuery systemQuery = saltService;
     private SaltApi saltApi = saltService;
-    private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, ClusterManager.instance());
+    private ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+    private FormulaManager formulaManager = new FormulaManager(saltApi);
+    private ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+    private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
     private SaltServerActionService saltServerActionService = new SaltServerActionService(
             systemQuery,
-            saltUtils
+            saltUtils,
+            clusterManager
     );
 
     @Override

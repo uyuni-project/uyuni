@@ -149,7 +149,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService service = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService service = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         service.setSkipCommandScriptPerms(true);
         return service;
     }
@@ -844,9 +844,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     private void successWorker() throws IOException {
         SaltService saltService = new SaltService();
-        SystemQuery systemQuery = saltService;
-        SaltApi saltApi = saltService;
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, ClusterManager.instance()) {
+        FormulaManager formulaManager = new FormulaManager(saltService);
+        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ClusterManager clusterManager = new ClusterManager(saltService, saltService, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(saltService, saltService, clusterManager) {
             @Override
             public boolean shouldRefreshPackageList(String function,
                                                     Optional<JsonElement> callResult) {

@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltUtils;
@@ -43,8 +45,12 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     public void testCleanupScriptActions() throws Exception {
         SystemQuery systemQuery = SaltService.INSTANCE;
         SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, ClusterManager.instance());
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+
+        FormulaManager formulaManager = new FormulaManager(saltApi);
+        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,
                 saltUtils);
 
@@ -72,8 +78,12 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     public void testCleanupScriptWithoutAction() throws Exception {
         SystemQuery systemQuery = SaltService.INSTANCE;
         SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, ClusterManager.instance());
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        FormulaManager formulaManager = new FormulaManager(saltApi);
+        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
+                clusterManager);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,
                 saltUtils);
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
@@ -93,8 +103,12 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     public void testCleanupScriptActionsPickedUp() throws Exception {
         SystemQuery systemQuery = SaltService.INSTANCE;
         SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, ClusterManager.instance());
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        FormulaManager formulaManager = new FormulaManager(saltApi);
+        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
+                clusterManager);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,
                 saltUtils);
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));

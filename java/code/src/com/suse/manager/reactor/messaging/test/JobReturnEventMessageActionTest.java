@@ -199,7 +199,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -337,7 +337,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -415,7 +415,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -500,7 +500,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -561,7 +561,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -637,7 +637,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -712,7 +712,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -760,7 +760,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -809,7 +809,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1118,7 +1118,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -1175,7 +1175,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -1310,7 +1310,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -1425,7 +1425,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -1473,7 +1473,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
 
         File scapFile = new File(TestUtils.findTestDataInDir(
@@ -1723,7 +1723,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1756,7 +1756,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1797,7 +1797,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1914,7 +1914,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1961,7 +1961,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -2004,7 +2004,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2029,7 +2029,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("dev-minsles12sp2.test.local");
@@ -2101,7 +2101,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("dev-minsles12sp2.test.local");
@@ -2184,7 +2184,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
         saltServerActionService.failDependentServerActions(applyStateAction.getId(),
                 minion.getMinionId(), Optional.empty());
 
@@ -2257,7 +2257,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2325,7 +2325,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2372,7 +2372,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2403,7 +2403,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2435,7 +2435,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         Map<String, Object> params = new HashMap<>();
         params.put("skuba_cluster_path", "/opt/mycluster");
         params.put("map", Collections.singletonMap("key", "value"));
@@ -2507,7 +2507,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         Map<String, Object> params = new HashMap<>();
 
         BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
@@ -2596,7 +2596,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
+                clusterManager);
         Map<String, Object> params = new HashMap<>();
         params.put("skuba_cluster_path", "/opt/mycluster");
         params.put("map", Collections.singletonMap("key", "value"));
@@ -2659,7 +2660,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
+                clusterManager);
         Map<String, Object> params = new HashMap<>();
 
         BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
@@ -2721,7 +2723,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         Map<String, Object> params = new HashMap<>();
         params.put("skuba_cluster_path", "/opt/mycluster");
         params.put("map", Collections.singletonMap("key", "value"));
@@ -2786,7 +2788,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager
         );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         Map<String, Object> params = new HashMap<>();
         params.put("skuba_cluster_path", "/opt/mycluster");
         params.put("map", Collections.singletonMap("key", "value"));

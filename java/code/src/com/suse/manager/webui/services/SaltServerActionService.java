@@ -225,16 +225,17 @@ public class SaltServerActionService {
     private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
     private SaltUtils saltUtils;
     private FormulaManager formulaManager = FormulaManager.getInstance();
-    private ClusterManager clusterManager = ClusterManager.instance();
+    private final ClusterManager clusterManager;
     private boolean skipCommandScriptPerms;
 
     /**
      * @param systemQueryIn instance for getting information from a system.
      * @param saltUtilsIn
      */
-    public SaltServerActionService(SystemQuery systemQueryIn, SaltUtils saltUtilsIn) {
+    public SaltServerActionService(SystemQuery systemQueryIn, SaltUtils saltUtilsIn, ClusterManager clusterManagerIn) {
         this.systemQuery = systemQueryIn;
         this.saltUtils = saltUtilsIn;
+        this.clusterManager = clusterManagerIn;
     }
 
     private Action unproxy(Action entity) {
