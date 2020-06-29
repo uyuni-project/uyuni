@@ -152,7 +152,7 @@ public class ScheduleFactory extends HibernateFactory {
      * @param systemIds the IDs of systems
      * @return the {@link MaintenanceSchedule}s assigned to given systems
      */
-    public Set<MaintenanceSchedule> listSchedulesOfSystems(Set<Long> systemIds) {
+    public Set<MaintenanceSchedule> listSchedulesBySystems(Set<Long> systemIds) {
         if (systemIds.isEmpty()) {
             return emptySet();
         }
