@@ -14,12 +14,7 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.messaging.EventDatabaseMessage;
-
 import com.google.gson.JsonElement;
-
-import org.hibernate.Transaction;
 
 import java.util.Optional;
 
@@ -27,11 +22,10 @@ import java.util.Optional;
  *
  * LibvirtEngineDomainLifecycleMessage
  */
-public class LibvirtEngineDomainLifecycleMessage extends LibvirtEngineDomainMessage implements EventDatabaseMessage {
+public class LibvirtEngineDomainLifecycleMessage extends LibvirtEngineDomainMessage {
 
     private String event;
     private String detail;
-    private Transaction txn;
 
     /**
      * @return the domain lifecycle event type (start, destroy, etc)
@@ -53,22 +47,11 @@ public class LibvirtEngineDomainLifecycleMessage extends LibvirtEngineDomainMess
         return super.toString() + "[" + event + "]";
     }
 
-    /**
-    *
-    * {@inheritDoc}
-    */
-   @Override
-   public Transaction getTransaction() {
-       return txn;
-   }
-
     protected LibvirtEngineDomainLifecycleMessage(String connection,
             Optional<String> minionId, String timestamp, JsonElement data) {
         super(connection, minionId, timestamp, data);
 
         this.event = data.getAsJsonObject().get("event").getAsString();
         this.detail = data.getAsJsonObject().get("detail").getAsString();
-
-        txn = HibernateFactory.getSession().getTransaction();
     }
 }

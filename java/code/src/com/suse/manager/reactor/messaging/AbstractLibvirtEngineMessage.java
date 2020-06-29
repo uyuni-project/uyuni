@@ -14,10 +14,14 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
 import com.redhat.rhn.common.messaging.EventMessage;
 
 import com.google.gson.JsonElement;
 import com.suse.salt.netapi.event.EngineEvent;
+
+import org.hibernate.Transaction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,13 +30,14 @@ import java.util.Optional;
 /**
  * Libvirt_events engine message to handle
  */
-public abstract class AbstractLibvirtEngineMessage implements EventMessage {
+public abstract class AbstractLibvirtEngineMessage implements EventMessage, EventDatabaseMessage {
 
     private static final int LIBVIRT_EVENTS_ADDITIONAL_PARTS_COUNT = 3;
 
     private String connection;
     private Optional<String> minionId;
     private String timestamp;
+    private Transaction txn;
 
     /**
      * Parse the engine event if it is a libvirt_events one.
@@ -86,6 +91,15 @@ public abstract class AbstractLibvirtEngineMessage implements EventMessage {
         return null;
     }
 
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public Transaction getTransaction() {
+        return txn;
+    }
+
     @Override
     public String toText() {
         return toString();
@@ -102,5 +116,7 @@ public abstract class AbstractLibvirtEngineMessage implements EventMessage {
         this.connection = connectIn;
         this.minionId = minionIdIn;
         this.timestamp = timestampIn;
+
+        this.txn = HibernateFactory.getSession().getTransaction();
     }
 }
