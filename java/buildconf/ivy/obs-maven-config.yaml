@@ -1,13 +1,16 @@
 repositories:
   Leap:
+    project: openSUSE:Leap:15.2
+    repository: standard
+  Leap15.1:
     project: openSUSE:Leap:15.1
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.1
+    repository: openSUSE_Leap_15.2
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.1
+    repository: openSUSE_Leap_15.2
 artifacts:
   - artifact: asm
     package: asm3
@@ -22,7 +25,8 @@ artifacts:
   - artifact: c3p0
     repository: Uyuni_Other
   - artifact: cglib
-    repository: Leap
+    jar: cglib.jar
+    repository: Leap15.1
   - artifact: classmate
     repository: Uyuni_Other
   - artifact: classpathx-mail-1.3.1-monolithic
@@ -87,7 +91,7 @@ artifacts:
     rpm: geronimo-jta-1_1
     repository: Leap
   - artifact: google-gson
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: hibernate-c3p0
     package: hibernate5
     jar: hibernate-c3p0
@@ -108,16 +112,17 @@ artifacts:
     repository: Uyuni_Other
   - artifact: httpclient
     package: httpcomponents-client
-    jar: httpclient-[0-9.]+
-    repository: Uyuni_Other
+    rpm: httpcomponents-client-[0-9]+
+    jar: httpclient
+    repository: Leap
   - artifact: httpcore
     package: httpcomponents-core
-    jar: httpcore-[0-9.]+
-    repository: Uyuni_Other
+    jar: httpcore.jar
+    repository: Leap
   - artifact: httpcore-nio
     package: httpcomponents-core
     jar: httpcore-nio
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: jade4j
     repository: Uyuni_Other
   - artifact: jaf
@@ -147,6 +152,7 @@ artifacts:
   - artifact: jose4j
     repository: Uyuni_Other
   - artifact: log4j
+    package: log4j12
     repository: Leap
   - artifact: jsch
     repository: Uyuni_Other
@@ -172,7 +178,7 @@ artifacts:
     repository: Uyuni_Other
   - artifact: netty-transport
     package: netty
-    jar: netty-transport
+    jar: netty-transport-[0-9]
     repository: Uyuni_Other
   - artifact: netty-transport-native-unix-common
     package: netty
@@ -222,11 +228,13 @@ artifacts:
   - artifact: sitemesh
     repository: Uyuni_Other
   - artifact: slf4j-api
+    rpm: slf4j-[0-9]+
     package: slf4j
     jar: api
     repository: Leap
   - artifact: slf4j-log4j12
     package: slf4j
+    rpm: slf4j-log4j12
     jar: log4j12
     repository: Leap
   - artifact: snakeyaml
@@ -281,7 +289,6 @@ artifacts:
     repository: Leap
   - artifact: xerces-j2
     rpm: xerces-j2-[0-9.]+
-    jar: xerces-j2-[0-9.]+
     repository: Leap
   - artifact: xmlsec
     repository: Uyuni_Other
@@ -322,9 +329,10 @@ artifacts:
 
   - artifact: hamcrest-core
     package: hamcrest
-    jar: hamcrest/core
+    rpm: hamcrest-core
     repository: Leap
   - artifact: hamcrest-library
     package: hamcrest
+    rpm: hamcrest-[0-9]+
     jar: hamcrest/library
     repository: Leap
