@@ -362,7 +362,7 @@ public class MaintenanceManager {
      * @return a list of Maintenance Schedules
      */
     public List<MaintenanceSchedule> listMaintenanceSchedulesByUser(User user) {
-        return maintenanceFactory.listMaintenanceSchedulesByUser(user);
+        return maintenanceFactory.listSchedulesByUser(user);
     }
 
     /**
@@ -372,7 +372,7 @@ public class MaintenanceManager {
      * @return a list of MaintenanceSchedules
      */
     public List<MaintenanceSchedule> listMaintenanceSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
-        return maintenanceFactory.listMaintenanceSchedulesByCalendar(user, calendar);
+        return maintenanceFactory.listSchedulesByCalendar(user, calendar);
     }
 
     /**
@@ -382,7 +382,7 @@ public class MaintenanceManager {
      * @return Optional Maintenance Schedule
      */
     public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndName(User user, String name) {
-        return maintenanceFactory.lookupMaintenanceScheduleByUserAndName(user, name);
+        return maintenanceFactory.lookupScheduleByUserAndName(user, name);
     }
 
     /**
@@ -392,7 +392,7 @@ public class MaintenanceManager {
      * @return Optional Maintenance Schedule
      */
     public Optional<MaintenanceSchedule> lookupMaintenanceScheduleByUserAndId(User user, Long id) {
-        return maintenanceFactory.lookupMaintenanceScheduleByUserAndId(user, id);
+        return maintenanceFactory.lookupScheduleByUserAndId(user, id);
     }
 
     /**
