@@ -589,7 +589,7 @@ public class MaintenanceManager {
         return result;
     }
 
-    private String fetchCalendarData(String url) {
+    protected String fetchCalendarData(String url) {
         try {
             HttpHelper http = new HttpHelper();
             HttpResponse response = http.sendGetRequest(url);

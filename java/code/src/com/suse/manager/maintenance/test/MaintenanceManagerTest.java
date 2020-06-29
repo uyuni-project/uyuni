@@ -150,7 +150,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  EXCHANGE_ICS).getAbsolutePath()).getPath());
         MaintenanceManager mm = new MaintenanceManager() {
             @Override
-            protected String fetchCalendarData(String url) {
+            public String fetchCalendarData(String url) {
                 return FileUtils.readStringFromFile(icalEx.getAbsolutePath());
             }
         };
