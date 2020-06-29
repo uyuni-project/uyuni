@@ -34,6 +34,8 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import com.suse.manager.maintenance.IcalUtils;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.RescheduleResult;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
@@ -64,6 +66,7 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class MaintenanceController {
 
+    private static IcalUtils icalUtils = new IcalUtils();
     private static final MaintenanceManager MM = MaintenanceManager.instance();
     private static final LocalizationService LOCAL = LocalizationService.getInstance();
     private static final Gson GSON = new GsonBuilder()
@@ -181,7 +184,7 @@ public class MaintenanceController {
         json.setScheduleName(schedule.getName());
         json.setScheduleType(schedule.getScheduleType().toString());
 
-        MM.calculateMaintenanceWindows(schedule).ifPresent(windows -> json.setMaintenanceWindows(
+        icalUtils.calculateUpcomingMaintenanceWindows(schedule).ifPresent(windows -> json.setMaintenanceWindows(
                 windows.stream().map(window -> Map.of(
                         "start", window.getFrom(),
                         "end", window.getTo()
