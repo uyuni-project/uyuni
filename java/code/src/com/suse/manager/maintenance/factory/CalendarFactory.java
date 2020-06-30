@@ -65,7 +65,7 @@ public class CalendarFactory extends HibernateFactory {
      * @param user the user
      * @return a list of Maintenance Calendars
      */
-    public List<MaintenanceCalendar> listCalendarsByUser(User user) {
+    public List<MaintenanceCalendar> listByUser(User user) {
         return getSession()
                 .createQuery("FROM MaintenanceCalendar WHERE org = :org")
                 .setParameter("org", user.getOrg())
@@ -78,7 +78,7 @@ public class CalendarFactory extends HibernateFactory {
      * @param label the label of the calendar
      * @return Optional Maintenance Calendar
      */
-    public Optional<MaintenanceCalendar> lookupCalendarByUserAndLabel(User user, String label) {
+    public Optional<MaintenanceCalendar> lookupByUserAndLabel(User user, String label) {
         return getSession().createNamedQuery("MaintenanceCalendar.lookupByUserAndName")
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter("label", label).uniqueResultOptional();
@@ -90,7 +90,7 @@ public class CalendarFactory extends HibernateFactory {
      * @param id the id of the calendar
      * @return Optional Maintenance Calendar
      */
-    public Optional<MaintenanceCalendar> lookupCalendarByUserAndId(User user, Long id) {
+    public Optional<MaintenanceCalendar> lookupByUserAndId(User user, Long id) {
         return getSession().createQuery("FROM MaintenanceCalendar WHERE org = :org AND id = :id")
                 .setParameter("org", user.getOrg())
                 .setParameter("id", id).uniqueResultOptional();
