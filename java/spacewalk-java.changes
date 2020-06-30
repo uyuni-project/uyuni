@@ -1,3 +1,4 @@
+- improve performance of the System Groups page with many clients (bsc#1172839)
 - Adapt expectations for jobs return events after switching Salt
   states to use 'mgrcompat.module_run' state.
 - fix NPE on auto installation when no kernel options are given (bsc#1173932)
