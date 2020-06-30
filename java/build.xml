@@ -9,11 +9,16 @@
   <condition property="java.lib.dir" value="${JAVA_LIBDIR}" else="/usr/share/java">
     <isset property="JAVA_LIBDIR"/>
   </condition>
+  <condition property="product.name.short" value="susemanager" else="uyuni">
+    <equals arg1="${product.name}" arg2="'SUSE Manager'"/>
+  </condition>
   <available file="${java.lib.dir}/tomcat6" type="dir" property="tomcat" value="tomcat6" />
   <available file="${java.lib.dir}/tomcat" type="dir" property="tomcat" value="tomcat" />
   <available file="/usr/share/java/tomcat/tomcat-servlet-3.1-api.jar" type="file" property="tomcat" value="tomcat8" />
   <available file="/usr/share/java/tomcat/tomcat-servlet-4.0-api.jar" type="file" property="tomcat" value="tomcat9" />
   <property name="tomcat" value="tomcat5" />
+  <echo message="Importing buildconf/build-props-${product.name.short}.xml product.name=${product.name}" />
+  <import file="buildconf/build-props-${product.name.short}.xml" />
   <echo message="Importing buildconf/build-props-${tomcat}.xml" />
   <import file="buildconf/build-props-${tomcat}.xml" />
   <import file="buildconf/build-props.xml" />

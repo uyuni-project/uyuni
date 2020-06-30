@@ -411,7 +411,7 @@ PRODUCT_NAME="Uyuni"
 %endif
 
 # compile only java sources (no packing here)
-ant -Dprefix=$RPM_BUILD_ROOT init-install compile
+ant -Dprefix=$RPM_BUILD_ROOT -Dproduct.name="'$PRODUCT_NAME'" init-install compile
 
 %if 0%{?run_checkstyle}
 echo "Running checkstyle on java main sources"

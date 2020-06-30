@@ -144,11 +144,11 @@
              regexp ${jmock-jars} strutstest" / -->
 
   <!-- SUSE extra dependencies: build and runtime -->
-  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpcomponents/httpclient httpcomponents/httpcore httpasyncclient httpcomponents/httpcore-nio simpleclient simpleclient_common simpleclient_servlet simpleclient_httpserver pgjdbc-ng spy netty-common netty-buffer netty-resolver netty-transport netty-codec netty-handler netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api commons-jexl" />
+  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient simpleclient simpleclient_common simpleclient_servlet simpleclient_httpserver pgjdbc-ng spy netty-common netty-buffer netty-resolver netty-transport netty-codec netty-handler netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api commons-jexl ${product-common-jars}" />
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="${commons-lang} concurrentlinkedhashmap-lru
-    httpcomponents/httpcore slf4j/api slf4j/log4j12" />
+    slf4j/api slf4j/log4j12 ${product-runtime-jars}" />
 
   <property name="install.build.jar.dependencies"
       value="ant ant/ant-junit ${ant-contrib.path} antlr ${jasper-jars} ${test.build.jar.dependencies}
@@ -163,7 +163,7 @@
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io ${commons-lang} commons-logging ${commons-validator} ${hibernate}
-             ${tomcat-jars} ${javamail} jdom jsch dwr google-gson/google-gson
+             ${tomcat-jars} ${javamail} jdom jsch dwr
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec quartz
@@ -175,7 +175,7 @@
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging
-             ${commons-validator} concurrent dom4j google-gson/google-gson ${hibernate} ${jta11-jars}
+             ${commons-validator} concurrent dom4j ${hibernate} ${jta11-jars}
              jaf ${jasper-jars} ${javamail} jcommon jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars}
