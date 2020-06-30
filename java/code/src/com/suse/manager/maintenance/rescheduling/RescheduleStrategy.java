@@ -37,16 +37,6 @@ public interface RescheduleStrategy {
     RescheduleStrategyType getType();
 
     /**
-     * Create an {@link RescheduleStrategy} instance given the string
-     *
-     * @param string the string
-     * @return the {@link RescheduleStrategy}
-     */
-    default RescheduleStrategy fromString(String string) {
-        throw new IllegalArgumentException(String.format("Reschedule Strategy '%s' does not exist.", string));
-    }
-
-    /**
      * Try to reschedule the given action for the given system according the
      * implementation.
      *
