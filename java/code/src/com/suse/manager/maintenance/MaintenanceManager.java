@@ -101,7 +101,7 @@ public class MaintenanceManager {
      * @return the {@link MaintenanceSchedule}s assigned to given systems
      */
     public Set<MaintenanceSchedule> listSchedulesBySystems(Set<Long> systemIds) {
-        return scheduleFactory.listSchedulesBySystems(systemIds);
+        return scheduleFactory.listBySystems(systemIds);
     }
 
     /**
@@ -119,7 +119,7 @@ public class MaintenanceManager {
      * @return a list of Maintenance Schedules
      */
     public List<MaintenanceSchedule> listSchedulesByUser(User user) {
-        return scheduleFactory.listSchedulesByUser(user);
+        return scheduleFactory.listByUser(user);
     }
 
     /**
@@ -129,7 +129,7 @@ public class MaintenanceManager {
      * @return a list of MaintenanceSchedules
      */
     public List<MaintenanceSchedule> listSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
-        return scheduleFactory.listSchedulesByCalendar(user, calendar);
+        return scheduleFactory.listByCalendar(user, calendar);
     }
 
     /**
@@ -156,7 +156,7 @@ public class MaintenanceManager {
      * @return Optional Maintenance Schedule
      */
     public Optional<MaintenanceSchedule> lookupScheduleByUserAndName(User user, String name) {
-        return scheduleFactory.lookupScheduleByUserAndName(user, name);
+        return scheduleFactory.lookupByUserAndName(user, name);
     }
 
     /**
@@ -166,7 +166,7 @@ public class MaintenanceManager {
      * @return Optional Maintenance Schedule
      */
     public Optional<MaintenanceSchedule> lookupScheduleByUserAndId(User user, Long id) {
-        return scheduleFactory.lookupScheduleByUserAndId(user, id);
+        return scheduleFactory.lookupByUserAndId(user, id);
     }
 
     /**
@@ -245,7 +245,7 @@ public class MaintenanceManager {
      * @return a list of Maintenance Calendars
      */
     public List<MaintenanceCalendar> listCalendarsByUser(User user) {
-        return calendarFactory.listCalendarsByUser(user);
+        return calendarFactory.listByUser(user);
     }
 
     /**
@@ -255,7 +255,7 @@ public class MaintenanceManager {
      * @return Optional Maintenance Calendar
      */
     public Optional<MaintenanceCalendar> lookupCalendarByUserAndLabel(User user, String label) {
-        return calendarFactory.lookupCalendarByUserAndLabel(user, label);
+        return calendarFactory.lookupByUserAndLabel(user, label);
     }
 
     /**
@@ -265,7 +265,7 @@ public class MaintenanceManager {
      * @return Optional Maintenance Calendar
      */
     public Optional<MaintenanceCalendar> lookupCalendarByUserAndId(User user, Long id) {
-        return calendarFactory.lookupCalendarByUserAndId(user, id);
+        return calendarFactory.lookupByUserAndId(user, id);
     }
 
     /**
@@ -330,7 +330,7 @@ public class MaintenanceManager {
         }
         calendarFactory.save(calendar);
         List<RescheduleResult> result = new LinkedList<>();
-        for (MaintenanceSchedule schedule: scheduleFactory.listSchedulesByUserAndCalendar(user, calendar)) {
+        for (MaintenanceSchedule schedule: scheduleFactory.listByUserAndCalendar(user, calendar)) {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
             if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
@@ -359,7 +359,7 @@ public class MaintenanceManager {
                 calendar.getUrlOpt().orElseThrow(() -> new EntityNotExistsException("url"))));
         calendarFactory.save(calendar);
         List<RescheduleResult> result = new LinkedList<>();
-        for (MaintenanceSchedule schedule: scheduleFactory.listSchedulesByUserAndCalendar(user, calendar)) {
+        for (MaintenanceSchedule schedule: scheduleFactory.listByUserAndCalendar(user, calendar)) {
             RescheduleResult r = manageAffectedScheduledActions(user, schedule, rescheduleStrategy);
             if (!r.isSuccess()) {
                 // in case of false, update failed and we had a DB rollback
@@ -385,7 +385,7 @@ public class MaintenanceManager {
         ensureOrgAdmin(user);
         ensureCalendarAccessible(user, calendar);
         List<RescheduleResult> result = new LinkedList<>();
-        List<MaintenanceSchedule> schedules = scheduleFactory.listSchedulesByUserAndCalendar(user, calendar);
+        List<MaintenanceSchedule> schedules = scheduleFactory.listByUserAndCalendar(user, calendar);
         calendarFactory.remove(calendar);
         for (MaintenanceSchedule schedule: schedules) {
             schedule.setCalendar(null);
