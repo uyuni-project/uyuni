@@ -59,7 +59,7 @@ public class ScheduleFactory extends HibernateFactory {
      * @param calendar the Calendar
      * @return the list of Schedules
      */
-    public List<MaintenanceSchedule> listSchedulesByUserAndCalendar(User user, MaintenanceCalendar calendar) {
+    public List<MaintenanceSchedule> listByUserAndCalendar(User user, MaintenanceCalendar calendar) {
         return getSession()
                 .createQuery("FROM MaintenanceSchedule " +
                         "WHERE org = :org and calendar = :calendar " +
@@ -85,7 +85,7 @@ public class ScheduleFactory extends HibernateFactory {
      * @param user the user
      * @return a list of Maintenance Schedules
      */
-    public List<MaintenanceSchedule> listSchedulesByUser(User user) {
+    public List<MaintenanceSchedule> listByUser(User user) {
         return getSession()
                 .createQuery("FROM MaintenanceSchedule WHERE org = :org")
                 .setParameter("org", user.getOrg())
@@ -98,7 +98,7 @@ public class ScheduleFactory extends HibernateFactory {
      * @param calendar the calendar
      * @return a list of MaintenanceSchedules
      */
-    public List<MaintenanceSchedule> listSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
+    public List<MaintenanceSchedule> listByCalendar(User user, MaintenanceCalendar calendar) {
         return getSession()
                 .createQuery("FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar")
                 .setParameter("org", user.getOrg())
@@ -112,7 +112,7 @@ public class ScheduleFactory extends HibernateFactory {
      * @param name the schedule name
      * @return Optional Maintenance Schedule
      */
-    public Optional<MaintenanceSchedule> lookupScheduleByUserAndName(User user, String name) {
+    public Optional<MaintenanceSchedule> lookupByUserAndName(User user, String name) {
         return getSession().createNamedQuery("MaintenanceSchedule.lookupByUserAndName")
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter("name", name)
@@ -125,7 +125,7 @@ public class ScheduleFactory extends HibernateFactory {
      * @param id the id of the schedule
      * @return Optional Maintenance Schedule
      */
-    public Optional<MaintenanceSchedule> lookupScheduleByUserAndId(User user, Long id) {
+    public Optional<MaintenanceSchedule> lookupByUserAndId(User user, Long id) {
         return getSession().createQuery("FROM MaintenanceSchedule WHERE org = :org AND id = :id")
                 .setParameter("org", user.getOrg())
                 .setParameter("id", id)
@@ -152,7 +152,7 @@ public class ScheduleFactory extends HibernateFactory {
      * @param systemIds the IDs of systems
      * @return the {@link MaintenanceSchedule}s assigned to given systems
      */
-    public Set<MaintenanceSchedule> listSchedulesBySystems(Set<Long> systemIds) {
+    public Set<MaintenanceSchedule> listBySystems(Set<Long> systemIds) {
         if (systemIds.isEmpty()) {
             return emptySet();
         }
