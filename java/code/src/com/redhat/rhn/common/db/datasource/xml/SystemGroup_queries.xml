@@ -11,22 +11,7 @@
                  AND EXISTS ( SELECT 1
                               FROM rhnServerFeaturesView SFV
                               WHERE SFV.server_id = SGM.server_id
-                                    AND SFV.label = 'ftr_system_grouping')) AS  SERVER_COUNT,
-        (SELECT CASE MAX(CASE E.advisory_type
-                WHEN 'Security Advisory' THEN 3
-                WHEN 'Bug Fix Advisory' THEN 2
-                WHEN 'Product Enhancement Advisory' THEN 1
-                ELSE 0 END)
-            WHEN 3 THEN 'Security Advisory'
-            WHEN 2 THEN 'Bug Fix Advisory'
-            WHEN 1 THEN 'Product Enhancement Advisory'
-            WHEN 0 THEN 'Outdated Packages' END type_value
-        FROM rhnServerNeededCache SNPC
-            INNER JOIN rhnServerGroupMembers SGM on SGM.server_id = SNPC.server_id
-            INNER JOIN rhnServerFeaturesView SFV on SGM.server_id = SFV.server_id
-            LEFT JOIN rhnErrata E on E.id = SNPC.errata_id
-        WHERE SGM.server_group_id = G.id
-          AND SFV.label = 'ftr_system_grouping') as MOST_SEVERE_ERRATA
+                                    AND SFV.label = 'ftr_system_grouping')) AS  SERVER_COUNT
  FROM   rhnServerGroup G, rhnUserManagedServerGroups UMSG
  WHERE   G.ORG_ID = :org_id
    AND   UMSG.user_id = :user_id
@@ -62,7 +47,7 @@ ORDER BY UPPER(NAME)
     ) x
     ORDER BY UPPER(NAME)
   </query>
-    <elaborator name="most_severe_errata" />
+  <elaborator name="most_severe_errata" />
 </mode>
 <query name="most_severe_errata" params="">
     SELECT rhnServerGroup.id,
@@ -130,6 +115,7 @@ ORDER BY UPPER(NAME)
 <mode name="visible_to_user" class="com.redhat.rhn.frontend.dto.SystemGroupOverview">
   <query name="visible_to_user_ids" />
   <elaborator name="visible_to_user_overview_fast" />
+  <elaborator name="most_severe_errata" />
 </mode>
 
 <mode name="managed_system_groups_by_system">
