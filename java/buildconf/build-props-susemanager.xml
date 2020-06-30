@@ -1,0 +1,9 @@
+<project name="build-props-susemanager">
+
+    <!-- extra dependencies: build and runtime -->
+    <property name="product-common-jars" value="httpclient httpcore httpcore-nio google-gson" />
+
+    <!-- extra dependencies: runtime only -->
+    <property name="product-runtime-jars" value="" />
+
+</project>
