@@ -38,8 +38,8 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.maintenance.factory.CalendarFactory;
-import com.suse.manager.maintenance.factory.ScheduleFactory;
+import com.suse.manager.model.maintenance.CalendarFactory;
+import com.suse.manager.model.maintenance.ScheduleFactory;
 import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
 import com.suse.manager.maintenance.rescheduling.RescheduleException;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
