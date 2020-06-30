@@ -29,11 +29,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MaintenanceWindowHelper {
 
-    private static MaintenanceManager maintenanceManager;
+    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 
-    private MaintenanceWindowHelper() {
-        maintenanceManager = new MaintenanceManager();
-    }
+    private MaintenanceWindowHelper() { }
 
     /**
      * Given the systems, populate the request object with available maintenance windows.
