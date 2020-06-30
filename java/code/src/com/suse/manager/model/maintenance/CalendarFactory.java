@@ -13,12 +13,10 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.maintenance.factory;
+package com.suse.manager.model.maintenance;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
-
-import com.suse.manager.model.maintenance.MaintenanceCalendar;
 
 import org.apache.log4j.Logger;
 
