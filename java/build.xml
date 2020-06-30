@@ -17,7 +17,7 @@
   <available file="/usr/share/java/tomcat/tomcat-servlet-3.1-api.jar" type="file" property="tomcat" value="tomcat8" />
   <available file="/usr/share/java/tomcat/tomcat-servlet-4.0-api.jar" type="file" property="tomcat" value="tomcat9" />
   <property name="tomcat" value="tomcat5" />
-  <echo message="Importing buildconf/build-props-${product.name.short}.xml product.name=${product.name}" />
+  <echo message="Importing buildconf/build-props-${product.name.short}.xml" />
   <import file="buildconf/build-props-${product.name.short}.xml" />
   <echo message="Importing buildconf/build-props-${tomcat}.xml" />
   <import file="buildconf/build-props-${tomcat}.xml" />
