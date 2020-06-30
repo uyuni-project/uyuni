@@ -272,7 +272,7 @@ When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
   attach_file(field, canonical_path)
 end
 
-When(/I view system with id "([^"]*)"/) do |arg1|
+When(/^I view system with id "([^"]*)"$/) do |arg1|
   visit Capybara.app_host + '/rhn/systems/details/Overview.do?sid=' + arg1
 end
 
