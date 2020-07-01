@@ -165,29 +165,18 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @return JSON result of the API call
      */
     public String data(Request request, Response response, User user) {
-        Long serverId;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
-        String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
+        Server host = getServer(request, user);
+        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
 
         Map<String, JsonObject> infos = virtManager.getPools(minionId);
         Map<String, Map<String, JsonObject>> volInfos = virtManager.getVolumes(minionId);
         List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
             Map<String, JsonObject> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
-            List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream().map(volEntry -> {
-                return new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue());
-            }).collect(Collectors.toList());
+            List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream()
+                    .map(volEntry -> new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue()))
+                    .collect(Collectors.toList());
 
-            VirtualStoragePoolInfoJson pool = new VirtualStoragePoolInfoJson(entry.getKey(),
-                    entry.getValue(), volumes);
-
-            return pool;
+            return new VirtualStoragePoolInfoJson(entry.getKey(), entry.getValue(), volumes);
         }).collect(Collectors.toList());
 
         return json(response, pools);
@@ -202,15 +191,7 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @return JSON-formatted capabilities
      */
     public String getCapabilities(Request request, Response response, User user) {
-        Long serverId;
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        Server host = getServer(request, user);
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
 
@@ -230,21 +211,13 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @return JSON-formatted capabilities
      */
     public String getPool(Request request, Response response, User user) {
-        Long serverId;
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        Server host = getServer(request, user);
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get pool definition of Salt system")).getMinionId();
 
         String poolName = request.params("name");
         PoolDefinition definition = virtManager.getPoolDefinition(minionId, poolName)
-                .orElseThrow(() -> new NotFoundException());
+                .orElseThrow(NotFoundException::new);
 
         return json(response, definition);
     }
