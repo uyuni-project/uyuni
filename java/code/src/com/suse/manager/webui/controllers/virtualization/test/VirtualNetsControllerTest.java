@@ -14,9 +14,14 @@
  */
 package com.suse.manager.webui.controllers.virtualization.test;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
@@ -39,11 +44,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.hamcrest.collection.IsMapContaining;
 import org.jmock.Expectations;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
@@ -88,6 +95,8 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         host.asMinionServer().get().setMinionId("testminion.local");
+
+        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Paris"));
     }
 
     public void testData() throws Exception {
@@ -103,5 +112,28 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertFalse(net1.isAutostart());
         assertTrue(net1.isPersistent());
         assertEquals("860e49a3-d227-4105-95ca-d19dc8f0c8b6", net1.getUuid());
+    }
+
+    public void testStart() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.start(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/start",
+                                              "{names: [\"net0\"]}",
+                                              host.getId()),
+                response, user);
+
+        // Ensure the start action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationNetworkStateChangeAction virtAction = (VirtualizationNetworkStateChangeAction) action;
+        assertEquals("net0", virtAction.getNetworkName());
+        assertEquals("start", virtAction.getState());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 }
