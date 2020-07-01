@@ -113,7 +113,7 @@
         <dependency org="javax.xml.bind" name="jaxb-api" rev="2.3.0" transitive="false"/>
         <dependency org="com.sun.xml.bind" name="jaxb-core" rev="2.3.0" transitive="false"/>
         <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.3.0" transitive="false"/>
-        <dependency org="junit" name="junit" rev="3.8.2" transitive="false"/>
+        <dependency org="suse" name="junit" rev="4.12" transitive="false"/>
         <dependency org="org.jmock" name="jmock" rev="2.6.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-junit3" rev="2.6.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-legacy" rev="2.6.0" transitive="false"/>

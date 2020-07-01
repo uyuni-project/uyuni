@@ -333,3 +333,6 @@ artifacts:
     rpm: hamcrest-[0-9]+
     jar: hamcrest/library
     repository: Leap
+  - artifact: junit
+    package: junit
+    repository: Leap
