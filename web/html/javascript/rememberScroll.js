@@ -43,7 +43,7 @@ function refreshURL() {
 
 jQuery(window).on("load", function() {
 	restoreScroll();
-	jQuery(window).scroll(saveScroll);
+	jQuery(window).on("scroll", saveScroll);
 	setTimeout(refreshURL, 15000);
 });
 

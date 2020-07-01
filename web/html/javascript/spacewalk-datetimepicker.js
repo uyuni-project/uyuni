@@ -9,7 +9,7 @@ function setupDatePicker() {
     var input = $(this);
     input.datepicker();
     var name = input.data('picker-name');
-    $('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="date"]').click(function() {
+    $('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="date"]').on("click", function() {
       input.datepicker('show');
     });
 
@@ -50,7 +50,7 @@ function setupDatePicker() {
     }
     input.timepicker(timeOpts);
 
-    $('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="time"]').click(function() {
+    $('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="time"]').on("click", function() {
       input.timepicker('show');
     });
 

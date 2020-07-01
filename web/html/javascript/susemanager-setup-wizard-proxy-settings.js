@@ -91,16 +91,16 @@ function setProxySettingsEditable(editable) {
 // only relevant for the proxy settings
 $(document).ready(function() {
   // set the edit button callback
-  $('#http-proxy-edit').click(function() {
+  $('#http-proxy-edit').on("click", function() {
     setProxySettingsEditable(true);
   });
 
   // set the save button callback
-  $('#http-proxy-save').click(function() {
+  $('#http-proxy-save').on("click", function() {
     saveProxySettings();
   });
 
-  $('#http-proxy-verify').click(function() {
+  $('#http-proxy-verify').on("click", function() {
     verifyProxySettings(true);
   });
 
