@@ -1,3 +1,4 @@
+- Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
 - Fix JS linting errors/warnings
 - Enable Nutanix AHV virtual host gatherer.
 - Web UI: Implement managing maintenance schedules and calendars
