@@ -121,7 +121,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         get("/manager/api/systems/details/virtualization/guests/:sid/data",
                 withUser(this::data));
         post("/manager/api/systems/details/virtualization/guests/:sid/:action",
-                withUser(this::action));
+                withUser(this::guestAction));
         get("/manager/api/systems/details/virtualization/guests/:sid/guest/:uuid",
                 withUser(this::getGuest));
         get("/manager/api/systems/details/virtualization/guests/:sid/domains_capabilities",
@@ -238,7 +238,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @param user the user
      * @return the json response
      */
-    public String action(Request request, Response response, User user) {
+    public String guestAction(Request request, Response response, User user) {
         HashMap<String, Class<? extends VirtualGuestsBaseActionJson>> actionsMap = new HashMap<>();
         actionsMap.put("start", VirtualGuestsBaseActionJson.class);
         actionsMap.put("suspend", VirtualGuestsBaseActionJson.class);
