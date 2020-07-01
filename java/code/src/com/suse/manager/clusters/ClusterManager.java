@@ -84,25 +84,10 @@ public class ClusterManager {
             .create();
 
 
-    private static volatile ClusterManager instance;
     private final SaltApi saltApi;
     private final SystemQuery systemQuery;
     private final ServerGroupManager serverGroupManager;
     private final FormulaManager formulaManager;
-
-    /**
-     * @return the instance
-     */
-    public static ClusterManager instance() {
-        if (instance == null) {
-            synchronized (ClusterManager.class) {
-                if (instance == null) {
-                    instance = new ClusterManager();
-                }
-            }
-        }
-        return instance;
-    }
 
     /**
      *
@@ -119,14 +104,6 @@ public class ClusterManager {
         this.systemQuery = systemQueryIn;
         this.formulaManager = formulaManagerIn;
         this.serverGroupManager = serverGroupManagerIn;
-    }
-
-    /**
-     * No arg constructor.
-     */
-    public ClusterManager() {
-        this(SaltService.INSTANCE_SALT_API, SaltService.INSTANCE,
-                ServerGroupManager.getInstance(), FormulaManager.getInstance());
     }
 
     /**

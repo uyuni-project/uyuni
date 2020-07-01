@@ -1196,7 +1196,11 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Set<NetworkInterface> oldIfs = new HashSet<>();
         oldIfs.addAll(server.getNetworkInterfaces());
 
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, ClusterManager.instance());
+        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
+        ClusterManager clusterManager = new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager,
+                formulaManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager);
 
         saltUtils.updateServerAction(sa, 0L, true, "n/a", element, "state.apply");
 
