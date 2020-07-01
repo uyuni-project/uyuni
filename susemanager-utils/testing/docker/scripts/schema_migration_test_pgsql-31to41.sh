@@ -16,7 +16,7 @@ fi
 
 # Database schema creation
 
-rpm -ivh /root/susemanager-schema-4.0.1-1.2.noarch.rpm
+rpm -ivh /root/susemanager-schema-4.1.8-1.2.uyuni.noarch.rpm
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
@@ -28,8 +28,8 @@ echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
 sysctl -w kernel.shmmax=18446744073709551615
-su - postgres -c "/usr/lib/postgresql10/bin/pg_ctl stop" ||:
-su - postgres -c "/usr/lib/postgresql10/bin/pg_ctl start"
+su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl stop" ||:
+su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl start"
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 # SUSE Manager initialization
@@ -62,9 +62,9 @@ fi
 # THE NEXT BLOCK CAN BE COMMENTED OUT WHEN WE HAVE THE LINK PACKAGED
 for v in `seq 30 -1 1`; do
     minusone=$(($v-1))
-    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$minusone-to-susemanager-schema-3.2.$v ]; then
-        if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0 ]; then
-            mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-3.2.$v-to-susemanager-schema-4.0.0
+    if [ -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.0.$minusone-to-susemanager-schema-4.0.$v ]; then
+        if [ ! -d /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.0.$v-to-susemanager-schema-4.1.0 ]; then
+            mkdir /etc/sysconfig/rhn/schema-upgrade/susemanager-schema-4.0.$v-to-susemanager-schema-4.1.0
             # set hard this destination
             #export SUMA_TEST_SCHEMA_VERSION="4.0.1"
         fi
@@ -78,9 +78,9 @@ done
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
     cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
-    su - postgres -c "/usr/lib/postgresql10/bin/pg_ctl stop"
+    su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl stop"
     exit 1
 fi
 
 # Postgres shutdown (avoid stale memory by shmget())
-su - postgres -c "/usr/lib/postgresql10/bin/pg_ctl stop"
+su - postgres -c "/usr/lib/postgresql12/bin/pg_ctl stop"
