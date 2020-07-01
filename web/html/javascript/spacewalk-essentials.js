@@ -1,4 +1,4 @@
-$(document).on("ready", function(){
+$(document).ready(function(){
 
   /*
    * System Set Manager: actions to hide the SSM toolbar
@@ -47,7 +47,7 @@ function adaptFluidColLayout() {
 
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
 // On window load
-$(window).load(function () {
+$(window).on("load", function () {
   adjustDistanceForFixedHeader();
   columnHeight();
 });
@@ -248,7 +248,7 @@ function showFatalError(message, exception) {
 // as much space as possible while still being responsive
 // So three col-md-auto would get col-md-4 each.
 // Five col-md-auto would get two with col-md-3 and three with col-md-2
-$(document).on("ready", function() {
+$(document).ready(function() {
   $.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
     //for each div with class row
     $('.col-' + gridSize + '-auto:first').parent().each(function() {
@@ -317,7 +317,7 @@ function humanizeDates() {
   });
 }
 
-$(document).on("ready", function() {
+$(document).ready(function() {
   humanizeDates();
 });
 
@@ -549,6 +549,6 @@ function initIEWarningUse() {
   }
 }
 
-$(document).on("ready", function() {
+$(document).ready(function() {
   initIEWarningUse();
 })

@@ -1,4 +1,4 @@
-$(document).on("ready", function() {
+$(document).ready(function() {
   // move the footer to the end of the body
   const footer = $('footer');
   footer.remove();
