@@ -406,6 +406,11 @@ if [ "$INSTALLER" == yum ]; then
     CLIENT_REPO_NAME="susemanager:bootstrap"
     CLIENT_REPO_FILE="/etc/yum.repos.d/$CLIENT_REPO_NAME.repo"
 
+    # In case of CentOS, check is centos bootstrap repository is available, if not, failback to res.
+    if [[ "$Y_CLIENT_CODE_BASE" == centos && ! `$FETCH $CLIENT_REPO_URL/repodata/repomd.xml` ]]; then
+        CLIENT_REPO_URL="${{CLIENT_REPOS_ROOT}}/res/${{Y_CLIENT_CODE_VERSION}}/bootstrap"
+    fi
+
     setup_bootstrap_repo
 
     if [ -z "$Y_MISSING" ]; then
