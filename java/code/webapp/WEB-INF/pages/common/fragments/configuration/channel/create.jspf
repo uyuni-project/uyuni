@@ -49,38 +49,38 @@
             </div>
         </div>
         <script type="text/javascript">
-           $(document).ready(function() {
-               $('#symlink_radio').on("click", function() {
-                   $('#cffUid').attr('disabled', true);
-                   $('#cffGid').attr('disabled', true);
-                   $('#cffPermissions').attr('disabled', true);
-                   $('#cffMacroStart').attr('disabled', true);
-                   $('#cffMacroEnd').attr('disabled', true);
-                   $('#targetPath').attr('disabled', false);
-                   $('#contentsRow').hide();
-                   $('#hiddenContentsRow').show();
+           jQuery(document).ready(function() {
+               jQuery('#symlink_radio').on("click", function() {
+                   jQuery('#cffUid').attr('disabled', true);
+                   jQuery('#cffGid').attr('disabled', true);
+                   jQuery('#cffPermissions').attr('disabled', true);
+                   jQuery('#cffMacroStart').attr('disabled', true);
+                   jQuery('#cffMacroEnd').attr('disabled', true);
+                   jQuery('#targetPath').attr('disabled', false);
+                   jQuery('#contentsRow').hide();
+                   jQuery('#hiddenContentsRow').show();
                });
 
-               $('#file_radio').on("click", function() {
-                   $('#cffUid').attr('disabled', false);
-                   $('#cffGid').attr('disabled', false);
-                   $('#cffPermissions').attr('disabled', false);
-                   $('#cffMacroStart').attr('disabled', false);
-                   $('#cffMacroEnd').attr('disabled', false);
-                   $('#targetPath').attr('disabled', true);
-                   $('#contentsRow').show();
-                   $('#hiddenContentsRow').hide();
+               jQuery('#file_radio').on("click", function() {
+                   jQuery('#cffUid').attr('disabled', false);
+                   jQuery('#cffGid').attr('disabled', false);
+                   jQuery('#cffPermissions').attr('disabled', false);
+                   jQuery('#cffMacroStart').attr('disabled', false);
+                   jQuery('#cffMacroEnd').attr('disabled', false);
+                   jQuery('#targetPath').attr('disabled', true);
+                   jQuery('#contentsRow').show();
+                   jQuery('#hiddenContentsRow').hide();
                });
 
-               $('#dir_radio').on("click", function() {
-                   $('#cffUid').attr('disabled', false);
-                   $('#cffGid').attr('disabled', false);
-                   $('#cffPermissions').attr('disabled', false);
-                   $('#cffMacroStart').attr('disabled', true);
-                   $('#cffMacroEnd').attr('disabled', true);
-                   $('#targetPath').attr('disabled', true);
-                   $('#contentsRow').hide();
-                   $('#hiddenContentsRow').show();
+               jQuery('#dir_radio').on("click", function() {
+                   jQuery('#cffUid').attr('disabled', false);
+                   jQuery('#cffGid').attr('disabled', false);
+                   jQuery('#cffPermissions').attr('disabled', false);
+                   jQuery('#cffMacroStart').attr('disabled', true);
+                   jQuery('#cffMacroEnd').attr('disabled', true);
+                   jQuery('#targetPath').attr('disabled', true);
+                   jQuery('#contentsRow').hide();
+                   jQuery('#hiddenContentsRow').show();
                });
            });
        </script>

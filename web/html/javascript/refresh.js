@@ -3,9 +3,9 @@
  * can then use this value to recognize that the form data needs to be 
  * refreshed.
  */
-$(function() {
-  $(".refreshes-form").change(function(){
-    var refreshFormHidden = $("#refreshForm");
+jQuery(function() {
+  jQuery(".refreshes-form").change(function(){
+    var refreshFormHidden = jQuery("#refreshForm");
     refreshFormHidden.val(true);
     refreshFormHidden.closest("form").submit();
   });

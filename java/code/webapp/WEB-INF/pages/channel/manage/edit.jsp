@@ -7,9 +7,9 @@
 <html>
     <body>
         <script type="text/javascript">
-            $(document).ready(function() {
-                var defaultArch = $('#parentarch option:selected').val();
-                var defaultChecksum = $('#checksum option:selected').val();
+            jQuery(document).ready(function() {
+                var defaultArch = jQuery('#parentarch option:selected').val();
+                var defaultChecksum = jQuery('#checksum option:selected').val();
 
                 function setChildChannelArchChecksum() {
                     var baseChannelArches = {};
@@ -25,28 +25,28 @@
                     archCompatMap["<c:out value="${archCompat.key}" />"] = ${archCompat.value};
                     </c:forEach>
 
-                    var parentArchLabel = baseChannelArches[$('#parent').val()];
+                    var parentArchLabel = baseChannelArches[jQuery('#parent').val()];
                     archCompatMapKey = parentArchLabel;
                     if (typeof parentArchLabel === 'undefined') {
                         archCompatMapKey = "";
                         parentArchLabel = defaultArch;
                     }
 
-                    var archSelect = $('#parentarch');
+                    var archSelect = jQuery('#parentarch');
                     archSelect.find('option').hide();
                     $.each(archCompatMap[archCompatMapKey], function(i, compatibleArch) {
                         archSelect.find('option[value="' + compatibleArch.label + '"]').show();
                     });
                     archSelect.val(parentArchLabel);
 
-                    var checksum = baseChannelChecksums[$('#parent').val()];
+                    var checksum = baseChannelChecksums[jQuery('#parent').val()];
                     if (typeof checksum === 'undefined') {
                         checksum = defaultChecksum
                     }
-                    $('#checksum').val(checksum);
+                    jQuery('#checksum').val(checksum);
                 }
 
-                $('#parent').change(function() {
+                jQuery('#parent').change(function() {
                     setChildChannelArchChecksum();
                 });
 
@@ -57,8 +57,8 @@
                 setChildChannelArchChecksum();
                 // set other values: after the "parent change"
                 // selected values are lost because of the filter function
-                $('#parentarch').val(defaultArch);
-                $('#checksum').val(defaultChecksum);
+                jQuery('#parentarch').val(defaultArch);
+                jQuery('#checksum').val(defaultChecksum);
             });
         </script>
         <rhn:toolbar base="h1" icon="header-channel"

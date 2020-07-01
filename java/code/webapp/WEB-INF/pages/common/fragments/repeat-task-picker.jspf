@@ -7,13 +7,13 @@
 <c:set value="${requestScope[param.widget]}" var="picker"/>
 
 <script type="text/javascript">
-  $(function() {
+  jQuery(function() {
     function toggleStatus() {
-      var status = $('fieldset#recurring-picker-${picker.name} input[type="radio"]:checked').val();
-      $('fieldset#recurring-picker-${picker.name} .recurring-options[data-status!="' + status + '"][data-picker-name="${picker.name}"]').find('select, input').prop('disabled', true);
-      $('fieldset#recurring-picker-${picker.name} .recurring-options[data-status="' + status + '"][data-picker-name="${picker.name}"]').find('select, input').prop('disabled', false);
+      var status = jQuery('fieldset#recurring-picker-${picker.name} input[type="radio"]:checked').val();
+      jQuery('fieldset#recurring-picker-${picker.name} .recurring-options[data-status!="' + status + '"][data-picker-name="${picker.name}"]').find('select, input').prop('disabled', true);
+      jQuery('fieldset#recurring-picker-${picker.name} .recurring-options[data-status="' + status + '"][data-picker-name="${picker.name}"]').find('select, input').prop('disabled', false);
     }
-    $('fieldset#recurring-picker-${picker.name} input[type="radio"]').on("click", function() {
+    jQuery('fieldset#recurring-picker-${picker.name} input[type="radio"]').on("click", function() {
         toggleStatus();
     });
     toggleStatus();
