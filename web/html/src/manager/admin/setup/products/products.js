@@ -432,6 +432,19 @@ class Products extends React.Component {
   };
 
   compareProducts = (prod1, prod2) => {
+    const suseStr = "SUSE";
+    const isProd1Suse = prod1.label.startsWith(suseStr);
+    const isProd2Suse = prod2.label.startsWith(suseStr);
+
+    // if one of the products is SUSE, it's lower in the ordering
+    if (isProd1Suse && !isProd2Suse) {
+      return -1;
+    }
+    if (!isProd1Suse && isProd2Suse) {
+      return 1;
+    }
+
+    // otherwise use the label-based ordering
     return prod1.label.toLowerCase().localeCompare(prod2.label.toLowerCase());
   }
 
