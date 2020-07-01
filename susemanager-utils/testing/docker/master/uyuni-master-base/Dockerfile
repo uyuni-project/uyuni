@@ -1,6 +1,6 @@
 # Container used to test SUSE Manager HEAD
 #
-# VERSION                4.0.0
+# VERSION                4.1.2
 
 FROM registry.mgr.suse.de/uyuni-master-root:latest
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
@@ -10,7 +10,7 @@ ADD add_packages.sh /root/add_packages.sh
 RUN /root/add_packages.sh
 
 # add schema RPMs for migration tests
-ADD susemanager-schema-4.0.1-1.2.noarch.rpm /root/susemanager-schema-4.0.1-1.2.noarch.rpm
+ADD susemanager-schema-4.1.8-1.2.uyuni.noarch.rpm /root/susemanager-schema-4.1.8-1.2.uyuni.noarch.rpm
 
 # Create fake filesystem entries required to run spacewalk-setup
 ADD create_fake_filesystem_entries.sh /root/create_fake_filesystem_entries.sh

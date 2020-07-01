@@ -1,4 +1,4 @@
-VERSION = 4.1.1
+VERSION = 4.1.2
 REGISTRY = registry.mgr.suse.de
 SHELL := /bin/bash
 BUILDOPTS=

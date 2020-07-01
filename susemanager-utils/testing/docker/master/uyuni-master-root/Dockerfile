@@ -1,8 +1,8 @@
 # Container used to test SUSE Manager Head
 #
-# VERSION                4.0.0
+# VERSION                4.1.2
 
-FROM opensuse/leap:15.1
+FROM opensuse/leap:15.2
 MAINTAINER Michael Calmer "Michael.Calmer@suse.com"
 
 # Add the repositories
