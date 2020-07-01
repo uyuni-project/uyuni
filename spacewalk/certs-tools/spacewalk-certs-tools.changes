@@ -1,4 +1,4 @@
-- Use RES bootstrap repository as failback repo when bootstrapping CentOS (bsc#1173556)
+- Use RES bootstrap repository as fallback repo when bootstrapping CentOS (bsc#1173556)
 
 -------------------------------------------------------------------
 Wed Jun 10 12:15:57 CEST 2020 - jgonzalez@suse.com
