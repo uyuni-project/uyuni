@@ -70,7 +70,7 @@ const Pins = createReactClass({
   savePin: function(systemId, subscriptionId) {
     Network.post("/rhn/manager/api/subscription-matching/pins", {system_id: systemId, subscription_id: subscriptionId})
       .promise.then(data => this.props.onPinChanged(data));
-    $("#addPinPopUp").modal("hide"); //to trigger popup close action
+    jQuery("#addPinPopUp").modal("hide"); //to trigger popup close action
     this.closePopUp();
   },
 

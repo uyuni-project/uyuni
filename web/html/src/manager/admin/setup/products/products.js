@@ -391,8 +391,8 @@ class Products extends React.Component {
     const currentObject = this;
 
     //HACK: usage of JQuery here is needed to apply the select2js plugin
-    $('select#product-arch-filter.apply-select2js-on-this').each(function(i) {
-      var select = $(this);
+    jQuery('select#product-arch-filter.apply-select2js-on-this').each(function(i) {
+      var select = jQuery(this);
       // apply select2js only one time
       if (!select.hasClass('select2js-applied')) {
         select.addClass('select2js-applied');

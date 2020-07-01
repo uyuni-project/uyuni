@@ -20,7 +20,7 @@ export function DangerDialog(props) {
             icon={props.submitIcon}
             handler={() => {
                 if(props.onConfirm) props.onConfirm(props.item);
-                $('#' + props.id).modal('hide');
+                jQuery('#' + props.id).modal('hide');
             }}
         />
         <Button
@@ -29,7 +29,7 @@ export function DangerDialog(props) {
             title={t("Cancel")}
             icon="fa-close"
             handler={() => {
-                $('#' + props.id).modal('hide');
+                jQuery('#' + props.id).modal('hide');
             }}
         />
     </div>;

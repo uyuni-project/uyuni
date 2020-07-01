@@ -5,11 +5,11 @@ import React from "react";
 export class PopUp extends React.Component {
 
   componentDidMount() {
-    $("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
+    jQuery("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
   }
 
   close() {
-    $("#" + this.props.id).modal().hide();
+    jQuery("#" + this.props.id).modal().hide();
   }
 
   render() {

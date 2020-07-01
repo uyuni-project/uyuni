@@ -652,7 +652,7 @@ public class ListTagUtil {
                 fields.get(0).toString()));
         sb.append(String.format("<input autofocus=\"autofocus\" type=\"text\" " +
                 "name=\"%s\" value=\"%s\" class=\"form-control\" placeholder=\"%s\" " +
-                "onkeypress=\"return enterKeyHandler(event, $('button[name=%s]'))\"/>",
+                "onkeypress=\"return enterKeyHandler(event, jQuery('button[name=%s]'))\"/>",
                                 filterValueKey,
                                 (filterValue != null ?
                                  StringEscapeUtils.escapeHtml4(filterValue) :
