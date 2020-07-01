@@ -433,6 +433,10 @@ class Products extends React.Component {
     this.props.handleUnSelectedItems(items);
   };
 
+  compareProducts = (prod1, prod2) => {
+    return prod1.label.toLowerCase().localeCompare(prod2.label.toLowerCase());
+  }
+
   buildRows = (message) => {
     return Object.keys(message).map((id) => message[id]);
   };
@@ -461,7 +465,7 @@ class Products extends React.Component {
     return (
       <div>
         <CustomDataHandler
-          data={this.buildRows(this.filterDataByArch(this.props.data))}
+          data={this.buildRows(this.filterDataByArch(this.props.data).sort(this.compareProducts))}
           identifier={(raw) => raw.identifier}
           initialItemsPerPage={userPrefPageSize}
           loading={this.props.loading}
@@ -527,7 +531,7 @@ class CheckList extends React.Component {
               : null
           }
           {
-            this.props.data.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase())).map((l, index) =>
+            this.props.data.map((l, index) =>
             {
               return (
                 <CheckListItem
