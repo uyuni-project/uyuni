@@ -13,7 +13,7 @@
       $('fieldset#recurring-picker-${picker.name} .recurring-options[data-status!="' + status + '"][data-picker-name="${picker.name}"]').find('select, input').prop('disabled', true);
       $('fieldset#recurring-picker-${picker.name} .recurring-options[data-status="' + status + '"][data-picker-name="${picker.name}"]').find('select, input').prop('disabled', false);
     }
-    $('fieldset#recurring-picker-${picker.name} input[type="radio"]').click(function() {
+    $('fieldset#recurring-picker-${picker.name} input[type="radio"]').on("click", function() {
         toggleStatus();
     });
     toggleStatus();

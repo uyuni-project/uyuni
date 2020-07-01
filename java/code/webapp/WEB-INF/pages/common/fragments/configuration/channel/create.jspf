@@ -50,7 +50,7 @@
         </div>
         <script type="text/javascript">
            $(document).ready(function() {
-               $('#symlink_radio').click(function() {
+               $('#symlink_radio').on("click", function() {
                    $('#cffUid').attr('disabled', true);
                    $('#cffGid').attr('disabled', true);
                    $('#cffPermissions').attr('disabled', true);
@@ -61,7 +61,7 @@
                    $('#hiddenContentsRow').show();
                });
 
-               $('#file_radio').click(function() {
+               $('#file_radio').on("click", function() {
                    $('#cffUid').attr('disabled', false);
                    $('#cffGid').attr('disabled', false);
                    $('#cffPermissions').attr('disabled', false);
@@ -72,7 +72,7 @@
                    $('#hiddenContentsRow').hide();
                });
 
-               $('#dir_radio').click(function() {
+               $('#dir_radio').on("click", function() {
                    $('#cffUid').attr('disabled', false);
                    $('#cffGid').attr('disabled', false);
                    $('#cffPermissions').attr('disabled', false);

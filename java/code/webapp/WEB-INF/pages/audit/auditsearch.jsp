@@ -53,8 +53,8 @@
     $(document).ready(function() {
         check_defaults();
 
-        $('#check_all_button').click(check_all);
-        $('#uncheck_all_button').click(uncheck_all);
+        $('#check_all_button').on("click", check_all);
+        $('#uncheck_all_button').on("click", uncheck_all);
 
         // create the 'set selector' dropdown
         var setChooser = $(document.createElement('select'));
@@ -65,7 +65,7 @@
         $.each(typeSets, function(key, typeName) {
             setChooser.append(
               $(document.createElement('option'))
-              .click(check_set_from_option)
+              .on("click", check_set_from_option)
               .html(key)
             );
         });
