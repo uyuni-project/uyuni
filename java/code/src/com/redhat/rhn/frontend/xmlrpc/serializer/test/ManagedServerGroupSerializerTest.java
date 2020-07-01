@@ -17,9 +17,9 @@ package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ManagedServerGroupSerializer;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.io.StringWriter;
@@ -28,7 +28,7 @@ import java.io.Writer;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
-public class ManagedServerGroupSerializerTest extends MockObjectTestCase {
+public class ManagedServerGroupSerializerTest extends RhnJmockBaseTestCase {
 
     private XmlRpcSerializer serializer;
 

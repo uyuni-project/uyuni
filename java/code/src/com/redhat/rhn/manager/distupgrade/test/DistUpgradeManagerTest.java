@@ -59,18 +59,24 @@ import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Tests for {@link DistUpgradeManager} methods.
  */
 public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    private static final Mockery CONTEXT = new Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 

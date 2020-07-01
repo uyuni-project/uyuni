@@ -14,15 +14,17 @@
  */
 package com.redhat.rhn.frontend.servlets.test;
 
-import com.suse.manager.webui.utils.LoginHelper;
 import com.redhat.rhn.frontend.servlets.CreateRedirectURI;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+
+import com.suse.manager.webui.utils.LoginHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.net.URLEncoder;
 import java.util.Vector;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -53,7 +55,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * CreateRedirectURITest
  */
-public class CreateRedirectURITest extends MockObjectTestCase {
+public class CreateRedirectURITest extends RhnJmockBaseTestCase {
 
     private HttpServletRequest mockRequest;
 

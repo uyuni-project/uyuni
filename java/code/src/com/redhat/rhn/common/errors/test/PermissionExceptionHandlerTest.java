@@ -20,6 +20,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -31,7 +32,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.Vector;
@@ -40,7 +40,7 @@ import java.util.Vector;
  * PermissionExceptionHandlerTest
  * @version $Rev$
  */
-public class PermissionExceptionHandlerTest extends MockObjectTestCase {
+public class PermissionExceptionHandlerTest extends RhnJmockBaseTestCase {
 
     private TraceBackAction tba;
 

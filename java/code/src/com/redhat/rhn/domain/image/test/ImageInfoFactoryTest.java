@@ -44,9 +44,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -59,7 +57,6 @@ import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -73,7 +70,7 @@ import java.util.Set;
 
 public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    private static final Mockery CONTEXT = new Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 

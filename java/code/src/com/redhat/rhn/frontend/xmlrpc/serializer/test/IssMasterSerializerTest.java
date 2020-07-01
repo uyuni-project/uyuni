@@ -15,25 +15,24 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.iss.IssMasterOrg;
+import com.redhat.rhn.frontend.xmlrpc.serializer.IssMasterOrgSerializer;
+import com.redhat.rhn.frontend.xmlrpc.serializer.IssMasterSerializer;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
-
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
-import com.redhat.rhn.domain.iss.IssFactory;
-import com.redhat.rhn.domain.iss.IssMaster;
-import com.redhat.rhn.domain.iss.IssMasterOrg;
-import com.redhat.rhn.frontend.xmlrpc.serializer.IssMasterOrgSerializer;
-import com.redhat.rhn.frontend.xmlrpc.serializer.IssMasterSerializer;
-import com.redhat.rhn.testing.TestUtils;
-
-public class IssMasterSerializerTest extends MockObjectTestCase {
+public class IssMasterSerializerTest extends RhnJmockBaseTestCase {
     private String[] masterOrgNames = {"masterOrg1", "masterOrg2", "masterOrg3"};
 
     public void testMasterSerialize() throws XmlRpcException, IOException {

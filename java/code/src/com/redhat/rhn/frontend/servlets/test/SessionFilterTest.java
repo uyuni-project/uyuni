@@ -16,10 +16,10 @@ package com.redhat.rhn.frontend.servlets.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.frontend.servlets.SessionFilter;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import org.hibernate.Session;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  * SessionFilterTest
  * @version $Rev$
  */
-public class SessionFilterTest extends MockObjectTestCase {
+public class SessionFilterTest extends RhnJmockBaseTestCase {
 
     private HttpServletRequest request;
     private HttpServletResponse response;

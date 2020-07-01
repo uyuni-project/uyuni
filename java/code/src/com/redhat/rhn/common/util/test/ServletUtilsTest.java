@@ -16,11 +16,11 @@
 package com.redhat.rhn.common.util.test;
 
 import com.redhat.rhn.common.util.ServletUtils;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.ServletTestUtils;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -37,7 +37,7 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ServletUtilsTest extends MockObjectTestCase {
+public class ServletUtilsTest extends RhnJmockBaseTestCase {
 
     private HttpServletRequest mockRequest;
 

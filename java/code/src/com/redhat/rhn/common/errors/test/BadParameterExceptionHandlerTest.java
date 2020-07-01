@@ -20,6 +20,7 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -31,7 +32,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.config.ExceptionConfig;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.Vector;
@@ -40,8 +41,9 @@ import java.util.Vector;
  * BadParameterExceptionHandlerTest
  * @version $Rev$
  */
-public class BadParameterExceptionHandlerTest extends MockObjectTestCase {
+public class BadParameterExceptionHandlerTest extends RhnJmockBaseTestCase {
 
+    protected Mockery context = new Mockery();
     private TraceBackAction tba;
 
     public void setUp() throws Exception {

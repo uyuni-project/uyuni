@@ -17,14 +17,13 @@ package com.redhat.rhn.frontend.xmlrpc.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.mockobjects.servlet.MockServletInputStream;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -33,7 +32,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class XmlRpcServletTest extends MockObjectTestCase {
+public class XmlRpcServletTest extends RhnJmockBaseTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();

@@ -16,11 +16,11 @@ package com.redhat.rhn.frontend.servlets.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.servlets.ResourceReloadServlet;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import com.mockobjects.servlet.MockServletOutputStream;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  * SessionFilterTest
  * @version $Rev: 51260 $
  */
-public class ResourceReloadServletTest extends MockObjectTestCase {
+public class ResourceReloadServletTest extends RhnJmockBaseTestCase {
 
     private HttpServletRequest request;
     private HttpServletResponse response;

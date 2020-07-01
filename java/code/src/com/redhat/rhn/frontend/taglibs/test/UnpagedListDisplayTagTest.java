@@ -20,11 +20,11 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.ListTag;
 import com.redhat.rhn.frontend.taglibs.UnpagedListDisplayTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.RhnMockServletOutputStream;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +37,7 @@ import javax.servlet.jsp.tagext.Tag;
  * UnpagedListDisplayTagTest
  * @version $Rev$
  */
-public class UnpagedListDisplayTagTest extends MockObjectTestCase {
+public class UnpagedListDisplayTagTest extends RhnJmockBaseTestCase {
     private UnpagedListDisplayTag ldt;
     private ListTag lt;
 

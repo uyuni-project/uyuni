@@ -15,17 +15,16 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import com.redhat.rhn.frontend.servlets.RhnHttpServletRequest;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import com.mockobjects.servlet.MockHttpSession;
-
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 /**
  * RhnHttpServletRequestTest
  * @version $Rev$
  */
-public class RhnHttpServletRequestTest extends MockObjectTestCase {
+public class RhnHttpServletRequestTest extends RhnJmockBaseTestCase {
     private RhnMockHttpServletRequest mockRequest;
     private RhnHttpServletRequest request;
 

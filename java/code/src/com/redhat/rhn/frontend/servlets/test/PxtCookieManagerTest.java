@@ -17,9 +17,9 @@ package com.redhat.rhn.frontend.servlets.test;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.manager.session.SessionManager;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
  * PxtCookieManagerTest
  * @version $Rev$
  */
-public class PxtCookieManagerTest extends MockObjectTestCase {
+public class PxtCookieManagerTest extends RhnJmockBaseTestCase {
 
     private static final int TIMEOUT = 3600;
 

@@ -15,8 +15,7 @@
 package com.redhat.rhn.frontend.security.test;
 
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
-
-import org.jmock.integration.junit3.MockObjectTestCase;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import java.util.Enumeration;
 import java.util.Vector;
@@ -30,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @version $Rev$
  */
-public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTestCase {
+public abstract class AuthenticationServiceAbstractTestCase extends RhnJmockBaseTestCase {
 
     protected HttpServletRequest mockRequest;
     protected HttpServletResponse mockResponse;

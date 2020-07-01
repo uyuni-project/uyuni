@@ -14,13 +14,27 @@
  */
 package com.redhat.rhn.testing;
 
-import org.jmock.integration.junit3.MockObjectTestCase;
+import org.jmock.Mockery;
+import org.jmock.api.Imposteriser;
+
+import junit.framework.TestCase;
 
 /**
  * RhnJmockBaseTestCase - This is the same thing as {@link RhnBaseTestCase}
- * but it extends from {@link MockObjectTestCase}.
+ * but it encapsulates a JMock context
  */
-public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
+public abstract class RhnJmockBaseTestCase extends TestCase {
+    protected Mockery context = new Mockery();
+
+    public RhnJmockBaseTestCase() {
+    }
+
+    /**
+     * @param name The test case name
+     */
+    public RhnJmockBaseTestCase(String name) {
+        super(name);
+    }
 
     /**
      * Called once per test method.
@@ -39,5 +53,25 @@ public abstract class RhnJmockBaseTestCase extends MockObjectTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         TestCaseHelper.tearDownHelper();
+    }
+
+    protected Mockery context() {
+        return context;
+    }
+
+    protected void setImposteriser(Imposteriser imposteriser) {
+        context.setImposteriser(imposteriser);
+    }
+
+    protected <T> T mock(Class<T> typeToMock) {
+        return context.mock(typeToMock);
+    }
+
+    protected <T> T mock(Class<T> typeToMock, String name) {
+        return context.mock(typeToMock, name);
+    }
+
+    protected void verify() {
+        context.assertIsSatisfied();
     }
 }

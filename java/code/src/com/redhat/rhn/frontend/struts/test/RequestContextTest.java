@@ -17,14 +17,14 @@ package com.redhat.rhn.frontend.struts.test;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.utils.LoginHelper;
-
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import spark.routematch.RouteMatch;
 /**
  * RequestContextTest
  */
-public class RequestContextTest extends MockObjectTestCase {
+public class RequestContextTest extends RhnJmockBaseTestCase {
 
     /**
      *

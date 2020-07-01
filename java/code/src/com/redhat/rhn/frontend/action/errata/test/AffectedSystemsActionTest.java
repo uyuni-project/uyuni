@@ -26,6 +26,7 @@ import com.redhat.rhn.frontend.action.errata.AffectedSystemsAction;
 import com.redhat.rhn.frontend.struts.RequestContext.Pagination;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -34,14 +35,13 @@ import com.redhat.rhn.testing.TestUtils;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 /**
  * AffectedSystemsActionTest
  * @version $Rev$
  */
-public class AffectedSystemsActionTest extends MockObjectTestCase {
+public class AffectedSystemsActionTest extends RhnJmockBaseTestCase {
 
     @Override
     protected void setUp() throws Exception {

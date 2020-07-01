@@ -15,11 +15,12 @@
 
 package com.suse.manager.webui.utils.gson.test;
 
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.salt.netapi.calls.wheel.Key;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class SaltMinionTestJson extends MockObjectTestCase {
+public class SaltMinionTestJson extends RhnJmockBaseTestCase {
 
     @Override
     public void setUp() throws Exception {

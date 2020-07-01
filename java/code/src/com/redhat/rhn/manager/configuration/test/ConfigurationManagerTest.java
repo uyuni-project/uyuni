@@ -63,7 +63,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -85,7 +84,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
     private static final ConfigFileCount EXPECTED_COUNT =
                                     ConfigFileCount.create(3, 0, 1, 0);
 
-    private static final Mockery CONTEXT = new JUnit3Mockery() {{
+    private static final Mockery CONTEXT = new Mockery() {{
         setThreadingPolicy(new Synchroniser());
     }};
 

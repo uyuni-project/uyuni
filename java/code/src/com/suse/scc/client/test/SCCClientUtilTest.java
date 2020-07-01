@@ -14,6 +14,7 @@
  */
 package com.suse.scc.client.test;
 
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.scc.client.SCCClientUtils;
@@ -22,7 +23,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -35,7 +35,7 @@ import java.net.URISyntaxException;
 /**
  * Tests {@link SCCClientUtils}
  */
-public class SCCClientUtilTest extends MockObjectTestCase {
+public class SCCClientUtilTest extends RhnJmockBaseTestCase {
 
     private static final String TEST_USER_NAME = "t";
     private static final String TEST_FILE_NAME =

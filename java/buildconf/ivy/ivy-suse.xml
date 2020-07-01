@@ -114,9 +114,10 @@
         <dependency org="com.sun.xml.bind" name="jaxb-core" rev="2.3.0" transitive="false"/>
         <dependency org="com.sun.xml.bind" name="jaxb-impl" rev="2.3.0" transitive="false"/>
         <dependency org="suse" name="junit" rev="4.12" transitive="false"/>
-        <dependency org="org.jmock" name="jmock" rev="2.6.0" transitive="false"/>
-        <dependency org="org.jmock" name="jmock-junit3" rev="2.6.0" transitive="false"/>
-        <dependency org="org.jmock" name="jmock-legacy" rev="2.6.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock" rev="2.12.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock-junit4" rev="2.12.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock-legacy" rev="2.12.0" transitive="false"/>
         <dependency org="mockobjects" name="mockobjects-core" rev="0.09" transitive="false"/>
         <dependency org="mockobjects" name="mockobjects-jdk1.4-j2ee1.3" rev="0.09" transitive="false"/>
         <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>

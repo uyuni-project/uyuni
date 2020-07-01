@@ -19,10 +19,10 @@ import com.redhat.rhn.frontend.action.CSVDownloadAction;
 import com.redhat.rhn.frontend.taglibs.list.CSVTag;
 import com.redhat.rhn.frontend.taglibs.list.ListSetTag;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 import org.jmock.lib.legacy.ClassImposteriser;
 
 import java.util.List;
@@ -32,7 +32,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.Tag;
 
-public class CSVTagTest extends MockObjectTestCase {
+public class CSVTagTest extends RhnJmockBaseTestCase {
     private ListSetTag lst;
     private CSVTag csv;
 

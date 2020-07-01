@@ -15,9 +15,9 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import com.redhat.rhn.frontend.security.RedirectServlet;
+import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
 import org.jmock.Expectations;
-import org.jmock.integration.junit3.MockObjectTestCase;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  * RedirectServletTest
  * @version $Rev$
  */
-public class RedirectServletTest extends MockObjectTestCase {
+public class RedirectServletTest extends RhnJmockBaseTestCase {
 
     private class RedirectServletStub extends RedirectServlet {
         public void doGet(HttpServletRequest request, HttpServletResponse response)

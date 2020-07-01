@@ -147,7 +147,6 @@ import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -184,7 +183,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private SystemHandler handler =
             new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager);
 
-    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+    private final Mockery MOCK_CONTEXT = new Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ClassImposteriser.INSTANCE);
     }};

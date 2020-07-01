@@ -100,7 +100,6 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
-import org.jmock.integration.junit3.JUnit3Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.jmock.lib.legacy.ClassImposteriser;
 
@@ -127,7 +126,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static TaskomaticApi taskomaticApi;
     private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
 
-    private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
+    private final Mockery MOCK_CONTEXT = new Mockery() {{
         setThreadingPolicy(new Synchroniser());
         setImposteriser(ClassImposteriser.INSTANCE);
     }};
