@@ -6,10 +6,10 @@ function setupPasswordStrengthMeter() {
         minChar: 5,
         usernameField: "#loginname",
         onKeyUp: function (evt) {
-            $('input[name="desiredpassword"]').popover('show');
+            jQuery('input[name="desiredpassword"]').popover('show');
             //when there are no errors the popover disappears
-            if ($('ul.error-list').is(':empty')) {
-                $('input[name="desiredpassword"]').popover('destroy');
+            if (jQuery('ul.error-list').is(':empty')) {
+                jQuery('input[name="desiredpassword"]').popover('destroy');
             }
             //update the tick next to the desiredpassword input field
             updateTickIcon();
@@ -49,16 +49,16 @@ function setupPasswordStrengthMeter() {
             progress: '#pwstrenghtfield'
         }
     };
-    $('input[name="desiredpassword"]').pwstrength(options);
+    jQuery('input[name="desiredpassword"]').pwstrength(options);
 }
 
 // check if password >= 5 characters
 // check if confirm password input field matches with password input field
 // swap icons in the input-group-addon
 function updateTickIcon() {
-    var desiredpassVal = $.trim($('input[name="desiredpassword"]').val());
-    var desiredpassConfirmVal = $.trim($('#confirmpass').val());
-    var placeholderAttr = $('input[name="desiredpassword"]').attr('placeholder');
+    var desiredpassVal = $.trim(jQuery('input[name="desiredpassword"]').val());
+    var desiredpassConfirmVal = $.trim(jQuery('#confirmpass').val());
+    var placeholderAttr = jQuery('input[name="desiredpassword"]').attr('placeholder');
     function success(element) {
         element.removeClass("fa-times-circle text-danger");
         element.addClass("fa-check-circle text-success");
@@ -71,31 +71,31 @@ function updateTickIcon() {
     // on the edit user page
     if ((typeof placeholderAttr !== 'undefined' && placeholderAttr !== false)) {
         // icons are green
-        success($("#desiredtick"));
-        success($("#confirmtick"));
+        success(jQuery("#desiredtick"));
+        success(jQuery("#confirmtick"));
         if (desiredpassVal.length > 0 && desiredpassVal.length < 5) {
-            danger($("#desiredtick"));
-            danger($("#confirmtick"));
+            danger(jQuery("#desiredtick"));
+            danger(jQuery("#confirmtick"));
         }
         else if (desiredpassVal != desiredpassConfirmVal) {
-            danger($("#confirmtick"));
+            danger(jQuery("#confirmtick"));
         }
     }
     // on create user pages
     else {
         // icons are red
-        danger($("#desiredtick"));
-        danger($("#confirmtick"));
+        danger(jQuery("#desiredtick"));
+        danger(jQuery("#confirmtick"));
         if (desiredpassVal.length >= 5) {
-            success($("#desiredtick"));
+            success(jQuery("#desiredtick"));
         }
         if (desiredpassVal == desiredpassConfirmVal && desiredpassVal.length >= 5) {
-            success($("#confirmtick"));
+            success(jQuery("#confirmtick"));
         }
     }
 }
 
 // document ready handler
-$(document).ready(function() {
+jQuery(document).ready(function() {
     setupPasswordStrengthMeter();
 });

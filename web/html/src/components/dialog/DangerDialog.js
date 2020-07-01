@@ -22,7 +22,7 @@ export function DangerDialog(props) {
                 defaultType={btnClass}
                 action={() => {
                     props.onConfirmAsync(true);
-                    $('#' + props.id).modal('hide');
+                    jQuery('#' + props.id).modal('hide');
                 }}
             /> : null
         }
@@ -34,7 +34,7 @@ export function DangerDialog(props) {
                 icon={props.submitIcon}
                 handler={() => {
                     props.onConfirm(props.item);
-                    $('#' + props.id).modal('hide');
+                    jQuery('#' + props.id).modal('hide');
                 }}
             /> : null
         }
@@ -45,7 +45,7 @@ export function DangerDialog(props) {
             title={t("Cancel")}
             icon="fa-close"
             handler={() => {
-                $('#' + props.id).modal('hide');
+                jQuery('#' + props.id).modal('hide');
             }}
         />
     </div>;
