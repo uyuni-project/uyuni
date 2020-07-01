@@ -184,11 +184,9 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @return the json response
      */
     public String getGuest(Request request, Response response, User user) {
-        long serverId = getServerId(request);
-
         String uuid = request.params("uuid");
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
-        DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, serverId, null);
+        Server host = getServer(request, user);
+        DataResult<VirtualSystemOverview> guests = SystemManager.virtualGuestsForHostList(user, host.getId(), null);
         VirtualSystemOverview guest = guests.stream().filter(vso -> vso.getUuid().equals(uuid))
                 .findFirst().orElseThrow(NotFoundException::new);
 
@@ -207,9 +205,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @return the json response
      */
     public String getDomainsCapabilities(Request request, Response response, User user) {
-        long serverId = getServerId(request);
-
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        Server host = getServer(request, user);
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
 
