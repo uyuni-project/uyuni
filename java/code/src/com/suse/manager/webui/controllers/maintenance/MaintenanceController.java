@@ -15,10 +15,12 @@
 
 package com.suse.manager.webui.controllers.maintenance;
 
+import static com.suse.manager.maintenance.rescheduling.RescheduleStrategyType.CANCEL;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.user.User;
@@ -26,18 +28,24 @@ import com.redhat.rhn.domain.user.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.maintenance.rescheduling.RescheduleResult;
+import com.suse.manager.maintenance.rescheduling.RescheduleStrategyType;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
+import org.apache.http.HttpStatus;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
@@ -46,6 +54,7 @@ import spark.template.jade.JadeTemplateEngine;
 public class MaintenanceController {
 
     private static final MaintenanceManager MM = new MaintenanceManager();
+    private static final LocalizationService LOCAL = LocalizationService.getInstance();
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
@@ -101,5 +110,18 @@ public class MaintenanceController {
 
         res.type("application/json");
         return json(res, ResultJson.success(data));
+    }
+
+    protected static void handleRescheduleResult(List<RescheduleResult> results, RescheduleStrategyType strategy) {
+        results.forEach(result -> {
+            if (!result.isSuccess()) {
+                String affectedSchedule = result.getScheduleName();
+                String message = LOCAL.getMessage(strategy == CANCEL ?
+                                "maintenance.action.reschedule.error.cancel" :
+                                "maintenance.action.reschedule.error.fail",
+                        affectedSchedule);
+                Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(message)));
+            }
+        });
     }
 }
