@@ -45,9 +45,11 @@ public class RecurringActionFactory extends HibernateFactory {
      * @return list of minion recurring actions
      */
     public static List<MinionRecurringAction> listMinionRecurringActions(Long id) {
-       return getSession().createQuery("SELECT action FROM MinionRecurringAction action " +
-               "WHERE action.minion.id = :mid " +
-               "ORDER BY action.id DESC")
+       return getSession()
+               .createQuery("SELECT action FROM MinionRecurringAction action " +
+                       "WHERE action.minion.id = :mid " +
+                       "ORDER BY action.id DESC",
+                       MinionRecurringAction.class)
                .setParameter("mid", id)
                .list();
     }
@@ -59,9 +61,11 @@ public class RecurringActionFactory extends HibernateFactory {
      * @return list of group recurring actions
      */
     public static List<GroupRecurringAction> listGroupRecurringActions(Long id) {
-        return getSession().createQuery("SELECT action FROM GroupRecurringAction action " +
-                "WHERE action.group.id = :gid " +
-                "ORDER BY action.id DESC")
+        return getSession()
+                .createQuery("SELECT action FROM GroupRecurringAction action " +
+                        "WHERE action.group.id = :gid " +
+                        "ORDER BY action.id DESC",
+                        GroupRecurringAction.class)
                 .setParameter("gid", id)
                 .list();
     }
@@ -73,9 +77,11 @@ public class RecurringActionFactory extends HibernateFactory {
      * @return list of org recurring actions
      */
     public static List<OrgRecurringAction> listOrgRecurringActions(Long id) {
-        return getSession().createQuery("SELECT action FROM OrgRecurringAction action " +
-                "WHERE action.org.id = :oid " +
-                "ORDER BY action.id DESC")
+        return getSession()
+                .createQuery("SELECT action FROM OrgRecurringAction action " +
+                        "WHERE action.org.id = :oid " +
+                        "ORDER BY action.id DESC",
+                        OrgRecurringAction.class)
                 .setParameter("oid", id)
                 .list();
     }
@@ -94,24 +100,27 @@ public class RecurringActionFactory extends HibernateFactory {
             orgs = OrgFactory.lookupAllOrgs();
         }
 
-        Stream<? extends RecurringAction> orgActions = getSession().createQuery(
-                "SELECT orgAction FROM OrgRecurringAction orgAction " +
-                        "WHERE orgAction.org IN :orgs " +
-                        "ORDER by orgAction.id DESC")
+        Stream<? extends RecurringAction> orgActions = getSession()
+                .createQuery("SELECT orgAction FROM OrgRecurringAction orgAction " +
+                                "WHERE orgAction.org IN :orgs " +
+                                "ORDER by orgAction.id DESC",
+                        OrgRecurringAction.class)
                 .setParameter("orgs", orgs)
                 .stream();
 
-        Stream<? extends RecurringAction> groupActions = getSession().createQuery(
-                "SELECT groupAction FROM GroupRecurringAction groupAction " +
-                        "WHERE groupAction.group.org = :org " +
-                        "ORDER by groupAction.id DESC")
+        Stream<? extends RecurringAction> groupActions = getSession()
+                .createQuery("SELECT groupAction FROM GroupRecurringAction groupAction " +
+                                "WHERE groupAction.group.org = :org " +
+                                "ORDER by groupAction.id DESC",
+                        GroupRecurringAction.class)
                 .setParameter("org", org)
                 .stream();
 
-        Stream<? extends RecurringAction> minionActions = getSession().createQuery(
-                "SELECT minionAction FROM MinionRecurringAction minionAction " +
+        Stream<? extends RecurringAction> minionActions = getSession()
+                .createQuery("SELECT minionAction FROM MinionRecurringAction minionAction " +
                         "WHERE minionAction.minion.org = :org " +
-                        "ORDER by minionAction.id DESC")
+                        "ORDER by minionAction.id DESC",
+                        MinionRecurringAction.class)
                 .setParameter("org", org)
                 .stream();
 
@@ -126,7 +135,7 @@ public class RecurringActionFactory extends HibernateFactory {
      */
     public static Optional<RecurringAction> lookupById(long id) {
         return getSession().createQuery("SELECT action FROM RecurringAction action " +
-                "WHERE action.id = :id")
+                "WHERE action.id = :id", RecurringAction.class)
                 .setParameter("id", id)
                 .uniqueResultOptional();
     }
@@ -139,9 +148,11 @@ public class RecurringActionFactory extends HibernateFactory {
      */
     public static Optional<Long> lookupEqualEntityId(RecurringAction action) {
         // 1. we create a stream of entities with given name and entity id
-        Stream<RecurringAction> stream = getSession().createQuery("SELECT dbAction FROM RecurringAction dbAction " +
-                "WHERE dbAction.name = :name " +
-                "AND :entityId IN (dbAction.minion.id, dbAction.group.id, dbAction.org.id)")
+        Stream<RecurringAction> stream = getSession()
+                .createQuery("SELECT dbAction FROM RecurringAction dbAction " +
+                        "WHERE dbAction.name = :name " +
+                        "AND :entityId IN (dbAction.minion.id, dbAction.group.id, dbAction.org.id)",
+                        RecurringAction.class)
                 .setParameter("name", action.getName())
                 .setParameter("entityId", action.getEntityId())
                 .stream();
