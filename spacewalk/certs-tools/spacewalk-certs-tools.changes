@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 01 16:11:36 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.10-1
 - Use RES bootstrap repository as fallback repo when bootstrapping CentOS (bsc#1173556)
 
 -------------------------------------------------------------------
