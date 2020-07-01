@@ -56,7 +56,8 @@ def start_agent(**kwargs):
     variables = dict()
     for line in ssh_agent_lines:
         if line.startswith('SSH'):
-            var, *rest = line.split(';')
+            line_content_list = line.split(';')
+            var, rest = line_content_list[0], line_content_list[1:]
             key, val = var.strip().split("=", 1)
             variables[key] = val
 
