@@ -1,20 +1,20 @@
-$(document).ready(function(){
+jQuery(document).ready(function(){
 
   /*
    * System Set Manager: actions to hide the SSM toolbar
    * when the Clear button is pressed or when
    * no system is selected
    */
-  $(document).on('click', '#clear-ssm-btn', function() {
+  jQuery(document).on('click', '#clear-ssm-btn', function() {
     hidesystemtool();
   });
   function hidesystemtool(){
-    $(".spacewalk-bar").animate({
+    jQuery(".spacewalk-bar").animate({
       "right": "-=50px",
       "opacity": "0"},
       300, function() {
       /* after animation is complete we hide the element */
-      $(this).hide();
+      jQuery(this).hide();
     });
   }
   // See if there is a system already selected as soon as the page loads
@@ -24,7 +24,7 @@ $(document).ready(function(){
   create_checkall_checkbox();
 
   // Wrapping the tables in a div which will make them responsive
-  $(".table").wrap("<div class='table-responsive'>");
+  jQuery(".table").wrap("<div class='table-responsive'>");
 
   // Set up the behavior and the event function
   // for the spacewalk section toolbar [sst]
@@ -36,34 +36,34 @@ $(document).ready(function(){
 
 
 function adaptFluidColLayout() {
-  $('.col-class-calc-width').each(function() {
-    var totalWidth = $(this).parent().width();
-    $(this).siblings('.col').each(function() {
-      totalWidth = Math.floor(totalWidth - $(this).outerWidth());
+  jQuery('.col-class-calc-width').each(function() {
+    var totalWidth = jQuery(this).parent().width();
+    jQuery(this).siblings('.col').each(function() {
+      totalWidth = Math.floor(totalWidth - jQuery(this).outerWidth());
     });
-    $(this).css('width', totalWidth - 10);
+    jQuery(this).css('width', totalWidth - 10);
   });
 }
 
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
 // On window load
-$(window).on("load", function () {
+jQuery(window).on("load", function () {
   adjustDistanceForFixedHeader();
   columnHeight();
 });
 
 // On window resize
-$(window).on("resize", function () {
+jQuery(window).on("resize", function () {
   alignContentDimensions();
 });
 
 // On window scroll
-$(window).on("scroll", function () {
+jQuery(window).on("scroll", function () {
   if ((document.documentElement.scrollTop || document.body.scrollTop) < 100) {
-    $('#scroll-top').hide();
+    jQuery('#scroll-top').hide();
   }
   else {
-    $('#scroll-top').show();
+    jQuery('#scroll-top').show();
   }
 
   sstScrollBehavior();
@@ -86,17 +86,17 @@ var sstScrollBehavior = function() {
 var sstScrollBehaviorSetupIsDone = false; // flag to implement the function one time only
 function sstScrollBehaviorSetup(sst) {
   sstScrollBehaviorSetupIsDone = true;
-  const adjustSpaceObject = $('<div>').height(sst.outerHeight());
+  const adjustSpaceObject = jQuery('<div>').height(sst.outerHeight());
   var fixedTop = sst.offset().top;
 
   // override the empty function hooked on window.scroll event                                              │
   sstScrollBehavior = function() {
-    var currentScroll = $(window).scrollTop();
+    var currentScroll = jQuery(window).scrollTop();
     if (currentScroll >= fixedTop) {
       sst.after(adjustSpaceObject);
-      $(sst).addClass('fixed');
+      jQuery(sst).addClass('fixed');
     } else {
-      $(sst).removeClass('fixed');
+      jQuery(sst).removeClass('fixed');
       adjustSpaceObject.remove();
     }
     sstStyle();
@@ -106,39 +106,39 @@ function sstScrollBehaviorSetup(sst) {
 // when the page scrolls down and the toolbar is going up and hidden,
 // the toolbar takes a fixed place right below the header bar
 function handleSst() {
-  var sst = $('.spacewalk-section-toolbar');
+  var sst = jQuery('.spacewalk-section-toolbar');
 
-  if ($('.move-to-fixed-toolbar').length > 0) {
+  if (jQuery('.move-to-fixed-toolbar').length > 0) {
     // if there is no 'spacewalk-section-toolbar', then create it
     if (sst.length == 0) {
-      sst = $('<div class="spacewalk-section-toolbar">');
-      $('.spacewalk-list.list').before(sst);
+      sst = jQuery('<div class="spacewalk-section-toolbar">');
+      jQuery('.spacewalk-list.list').before(sst);
     }
 
     // move each named tag into the 'spacewalk-section-toolbar'
-    $('.move-to-fixed-toolbar').each(function() {
-      sst.append($(this));
-      $(this).removeClass('move-to-fixed-toolbar');
+    jQuery('.move-to-fixed-toolbar').each(function() {
+      sst.append(jQuery(this));
+      jQuery(this).removeClass('move-to-fixed-toolbar');
     });
   }
 
   // move children of each named tag
   // into the 'spacewalk-section-toolbar > action-button-wrapper'
-  if ($('.move-children-to-fixed-toolbar').length > 0) {
+  if (jQuery('.move-children-to-fixed-toolbar').length > 0) {
     // if there is no 'spacewalk-section-toolbar', then create it
     if (sst.length == 0) {
-      sst = $('<div class="spacewalk-section-toolbar">');
-      $('.spacewalk-list.list').before(sst);
+      sst = jQuery('<div class="spacewalk-section-toolbar">');
+      jQuery('.spacewalk-list.list').before(sst);
     }
-    var selectorButtonWrapper = $('.selector-button-wrapper');
+    var selectorButtonWrapper = jQuery('.selector-button-wrapper');
     // if there is no 'action-button-wrapper', then create it
     if (selectorButtonWrapper.length == 0) {
-      selectorButtonWrapper = $('<div class="selector-button-wrapper">');
+      selectorButtonWrapper = jQuery('<div class="selector-button-wrapper">');
       sst.prepend(selectorButtonWrapper);
     }
-    $('.move-children-to-fixed-toolbar').each(function() {
-      selectorButtonWrapper.append($(this).children());
-      $(this).removeClass('move-children-to-fixed-toolbar');
+    jQuery('.move-children-to-fixed-toolbar').each(function() {
+      selectorButtonWrapper.append(jQuery(this).children());
+      jQuery(this).removeClass('move-children-to-fixed-toolbar');
     });
   }
 
@@ -150,12 +150,12 @@ function handleSst() {
 }
 
 function sstStyle() {
-  var sst = $('.spacewalk-section-toolbar');
+  var sst = jQuery('.spacewalk-section-toolbar');
   if (sst.hasClass('fixed')) {
     sst.css({
-      top: $('header').outerHeight() - 1,
-      left: $('section').offset().left,
-      'min-width': $('section').outerWidth()
+      top: jQuery('header').outerHeight() - 1,
+      left: jQuery('section').offset().left,
+      'min-width': jQuery('section').outerWidth()
     });
   }
   else {
@@ -170,18 +170,18 @@ function sstStyle() {
 // padding-top equals the header height to be fully visible
 function adjustDistanceForFixedHeader() {
   // subtract 1px in case the outerHeight comes to us already upper rounded
-  $('.spacewalk-main-column-layout').css('padding-top', $('header').outerHeight()-1);
+  jQuery('.spacewalk-main-column-layout').css('padding-top', jQuery('header').outerHeight()-1);
 }
 
 // Make columns 100% in height
 function columnHeight() {
-  const aside = $('.spacewalk-main-column-layout aside');
-  const section = $('.spacewalk-main-column-layout section');
+  const aside = jQuery('.spacewalk-main-column-layout aside');
+  const section = jQuery('.spacewalk-main-column-layout section');
   aside.css('min-height', 0);
   section.css('min-height', 0);
-  const headerHeight = $('header').outerHeight();
-  const footerHeight = $('.login-page footer').outerHeight();
-  const docHeight = $(document).height();
+  const headerHeight = jQuery('header').outerHeight();
+  const footerHeight = jQuery('.login-page footer').outerHeight();
+  const docHeight = jQuery(document).height();
   // Column heights should equal the document height minus the header height and footer height
   aside.css('min-height', docHeight - headerHeight - footerHeight + 1);
   // responsive rule: the aside block is layered on top of section,
@@ -198,8 +198,8 @@ function makeRendererHandler(divId, debug) {
     if (debug) {
       alert(text);
     }
-    $('#' + divId).html(text);
-    $('#' + divId).fadeIn();
+    jQuery('#' + divId).html(text);
+    jQuery('#' + divId).fadeIn();
     columnHeight();
   });
 }
@@ -217,7 +217,7 @@ function makeAjaxHandler(callbackFunction, errorHandlerFunction) {
     // workaround to a DWR bug that calls errorHandler when user
     // navigates away from page during an AJAX call
     // first, we detect page unloading
-    $(window).on("beforeunload", function() {
+    jQuery(window).on("beforeunload", function() {
       $.unloading = true;
     });
     return {
@@ -248,22 +248,22 @@ function showFatalError(message, exception) {
 // as much space as possible while still being responsive
 // So three col-md-auto would get col-md-4 each.
 // Five col-md-auto would get two with col-md-3 and three with col-md-2
-$(document).ready(function() {
+jQuery(document).ready(function() {
   $.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
     //for each div with class row
-    $('.col-' + gridSize + '-auto:first').parent().each(function() {
+    jQuery('.col-' + gridSize + '-auto:first').parent().each(function() {
       //we count the number of childrens with class col-md-6
-      var numberOfCols = $(this).children('.col-'  + gridSize + '-auto').length;
+      var numberOfCols = jQuery(this).children('.col-'  + gridSize + '-auto').length;
       if (numberOfCols > 0 && numberOfCols < 13) {
         minSpan = Math.floor(12 / numberOfCols);
         remainder = (12 % numberOfCols);
-        $(this).children('.col-' + gridSize + '-auto').each(function(idx, col) {
+        jQuery(this).children('.col-' + gridSize + '-auto').each(function(idx, col) {
           var width = minSpan;
           if (remainder > 0) {
             width += 1;
             remainder--;
           }
-          $(this).addClass('col-' + gridSize + '-' + width);
+          jQuery(this).addClass('col-' + gridSize + '-' + width);
         });
       }
     });
@@ -281,43 +281,43 @@ function formFocus(form, name) {
 
 // Humanizes all the time elements with the human class
 function humanizeDates() {
-  $("time.human-from, time.human-calendar").each(function (index) {
-    var datetime = $(this).attr('datetime');
+  jQuery("time.human-from, time.human-calendar").each(function (index) {
+    var datetime = jQuery(this).attr('datetime');
     if (datetime == undefined) {
       // if the attribute is not set, the content
       // should be a valid date
-      datetime = $(this).html();
+      datetime = jQuery(this).html();
     }
     var parsed = moment(datetime);
     if (parsed.isValid()) {
-      var originalContent = $(this).html();
-      if ($(this).hasClass("human-from")) {
-        var ref = $(this).attr("data-reference-date");
+      var originalContent = jQuery(this).html();
+      if (jQuery(this).hasClass("human-from")) {
+        var ref = jQuery(this).attr("data-reference-date");
         if (ref) {
           var refParsed = moment(ref);
           if (refParsed.isValid()) {
-            $(this).html(parsed.from(refParsed));
+            jQuery(this).html(parsed.from(refParsed));
           }
         }
         else {
-          $(this).html(parsed.fromNow());
+          jQuery(this).html(parsed.fromNow());
         }
       }
-      if ($(this).hasClass("human-calendar")) {
-        $(this).html(parsed.calendar());
+      if (jQuery(this).hasClass("human-calendar")) {
+        jQuery(this).html(parsed.calendar());
       }
       // if the original did not had a datetime attribute, add it
-      var datetimeAttr = $(this).attr('datetime');
+      var datetimeAttr = jQuery(this).attr('datetime');
       if (datetimeAttr == undefined) {
-        $(this).attr('datetime', datetime);
+        jQuery(this).attr('datetime', datetime);
       }
       // add a tooltip
-      $(this).attr('title', originalContent);
+      jQuery(this).attr('title', originalContent);
     }
   });
 }
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
   humanizeDates();
 });
 
@@ -330,16 +330,16 @@ $(document).ready(function() {
 function setupTextareaEditor(textarea, mode) {
   // if textarea is not shown, the height will be negative,
   // so we set the height of the editor in the popup to the 70% of the window height
-  var tH = textarea.height() > 0 ? textarea.height() : ($(window).height()  * 0.7);
+  var tH = textarea.height() > 0 ? textarea.height() : (jQuery(window).height()  * 0.7);
 
-  var editDiv = $('<div>', {
+  var editDiv = jQuery('<div>', {
       position: 'absolute',
       width: textarea.width(),
       height: tH,
       'class': textarea.attr('class')
   }).attr('id', textarea.attr('id') + '-editor').insertBefore(textarea);
 
-  var toolBar = $('<div></div>').insertBefore(editDiv[0]);
+  var toolBar = jQuery('<div></div>').insertBefore(editDiv[0]);
   textarea.hide();
 
   var editor = ace.edit(editDiv[0]);
@@ -357,7 +357,7 @@ function setupTextareaEditor(textarea, mode) {
 
   toolBar.addClass('ace_editor');
   toolBar.css('width', editDiv.css('width'));
-  var modeSel = $('<select> \
+  var modeSel = jQuery('<select> \
     <option selected value="sh">Shell</option> \
     <option value="xml">XML</option> \
     <option value="ruby">Ruby</option> \
@@ -366,8 +366,8 @@ function setupTextareaEditor(textarea, mode) {
     <option value="yaml">Yaml</option> \
     </select>');
   modeSel.find('option').each(function() {
-  if ($(this).text() == mode)
-    $(this).attr('selected', 'selected');
+  if (jQuery(this).text() == mode)
+    jQuery(this).attr('selected', 'selected');
   });
 
   toolBar.append(modeSel);
@@ -377,7 +377,7 @@ function setupTextareaEditor(textarea, mode) {
   }
 
   modeSel.change(function () {
-    editor.getSession().setMode("ace/mode/" + $(this).val());
+    editor.getSession().setMode("ace/mode/" + jQuery(this).val());
   });
 
   // Set editor to read only according to data attribute
@@ -392,9 +392,9 @@ function setupTextareaEditor(textarea, mode) {
  * setups every textarea with data-editor attribute
  * set to some language with an ACE editor
  */
-$(function () {
-  $('textarea[data-editor]').each(function () {
-    var textarea = $(this);
+jQuery(function () {
+  jQuery('textarea[data-editor]').each(function () {
+    var textarea = jQuery(this);
     var mode = textarea.data('editor');
     setupTextareaEditor(textarea, mode);
   });
@@ -402,7 +402,7 @@ $(function () {
 
 // Disables the enter key from submitting the form
 function disableEnterKey() {
-  $(window).keydown(function(event){
+  jQuery(window).keydown(function(event){
     if(event.keyCode == 13) {
       event.preventDefault();
       return false;
@@ -449,7 +449,7 @@ var spacewalkContentObserver = new MutationObserver(function(mutations) {
     }
 });
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
   var target = document.getElementById('spacewalk-content');
   // configuration of the observer:
   var config = { childList: true, characterData: true, subtree: true };
@@ -457,24 +457,24 @@ $(document).ready(function() {
   spacewalkContentObserver.observe(target, config);
 });
 
-$(document).on('click', '.toggle-box', function() {
-  if ($(this).hasClass('open')) {
-    $(this).removeClass('open');
+jQuery(document).on('click', '.toggle-box', function() {
+  if (jQuery(this).hasClass('open')) {
+    jQuery(this).removeClass('open');
   }
   else {
-    $('.toggle-box.open').trigger('click');
-    $(this).addClass('open');
+    jQuery('.toggle-box.open').trigger('click');
+    jQuery(this).addClass('open');
   }
-  $(this).blur(); // remove the focus
+  jQuery(this).blur(); // remove the focus
 })
 
 // focus go away from the menu or the nav menu
-$(document).on("click", function (e) {
-  var target = $(e.target);
+jQuery(document).on("click", function (e) {
+  var target = jQuery(e.target);
   // if a toggle-box button is active and the current click
   // is not on its related box, trigger a close for it
-  $('.toggle-box.open').each(function() {
-    var toggleButton = $(this);
+  jQuery('.toggle-box.open').each(function() {
+    var toggleButton = jQuery(this);
     var toggleBox = toggleButton.parent();
     if (!target.closest(toggleBox).length) {
       toggleButton.trigger('click');
@@ -484,50 +484,50 @@ $(document).on("click", function (e) {
 
 /* prevent jumping to the top of the page because
 of an <a href> tag that is actually not a link */
-$(document).on('click', 'a', function(e) {
-  const href = $(this).attr('href');
+jQuery(document).on('click', 'a', function(e) {
+  const href = jQuery(this).attr('href');
   if (href != null && href.length == 1 && href == '#') {
     e.preventDefault();
-    $(this).blur(); // remove the focus
+    jQuery(this).blur(); // remove the focus
   }
 });
 
 /*
 * Check if the field contains the allowed values only
 */
-$(document).on('keyup change', '.activationKey-check', function(e) {
-  if ($(this).val().match(/([^a-zA-Z0-9-_.])/g)) {
-    $(this).parent().addClass('has-error');
+jQuery(document).on('keyup change', '.activationKey-check', function(e) {
+  if (jQuery(this).val().match(/([^a-zA-Z0-9-_.])/g)) {
+    jQuery(this).parent().addClass('has-error');
   }
   else {
-    $(this).parent().removeClass('has-error');
+    jQuery(this).parent().removeClass('has-error');
   }
 });
 
 function addTextareaLengthNotification() {
   // Add a notification text of the remaining length for a textarea
-  $('textarea.with-maxlength').each(function() {
-    const textareaId = $(this).attr('id');
-    $(this).after(
-      $('<div/>')
+  jQuery('textarea.with-maxlength').each(function() {
+    const textareaId = jQuery(this).attr('id');
+    jQuery(this).after(
+      jQuery('<div/>')
         .attr("id", "newDiv1")
         .addClass("remaining-length-wrapper text-right")
         .html(
-          $('<span/>')
+          jQuery('<span/>')
             .html([
-              $('<span/>')
+              jQuery('<span/>')
               .attr("id", textareaId + '-remaining-length')
-              .text($(this).attr('maxlength') - $(this).val().length)
-              , $('<span/>').text(' ' + t('remaining'))
+              .text(jQuery(this).attr('maxlength') - jQuery(this).val().length)
+              , jQuery('<span/>').text(' ' + t('remaining'))
             ])
         )
     );
   });
 
   // Update the remaining length text of the related textarea
-  $(document).on('input', 'textarea.with-maxlength', function() {
-    $('#' + $(this).attr('id') + '-remaining-length')
-      .html($(this).attr('maxlength') - $(this).val().length);
+  jQuery(document).on('input', 'textarea.with-maxlength', function() {
+    jQuery('#' + jQuery(this).attr('id') + '-remaining-length')
+      .html(jQuery(this).attr('maxlength') - jQuery(this).val().length);
   });
 }
 
@@ -549,6 +549,6 @@ function initIEWarningUse() {
   }
 }
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
   initIEWarningUse();
 })

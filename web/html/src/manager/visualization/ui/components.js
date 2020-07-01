@@ -55,18 +55,18 @@ function addCheckinTimePartitioningSelect(anchorId, applyCallback, clearCallback
     .attr('type', 'text')
     .attr('class', 'partitioning-timepicker input-group-addon');
 
-  $(anchorId + ' .partitioning-datepicker').datepicker({
+  jQuery(anchorId + ' .partitioning-datepicker').datepicker({
     autoclose: true,
     format: 'yyyy-mm-dd'
   });
-  $(anchorId + ' .partitioning-datepicker').datepicker('setDate', new Date());
-  $(anchorId + ' .partitioning-timepicker').timepicker({timeFormat: 'H:i:s', maxTime: '23:30:00'});
-  $(anchorId + ' .partitioning-timepicker').timepicker('setTime', new Date());
+  jQuery(anchorId + ' .partitioning-datepicker').datepicker('setDate', new Date());
+  jQuery(anchorId + ' .partitioning-timepicker').timepicker({timeFormat: 'H:i:s', maxTime: '23:30:00'});
+  jQuery(anchorId + ' .partitioning-timepicker').timepicker('setTime', new Date());
 
   const checkinPartitioningButtons = checkinTimePartitioning.append('div').attr('class', 'btn-group');
   addButton(checkinPartitioningButtons, 'Apply', () => {
-    const date = $(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
-    const time = $(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
+    const date = jQuery(anchorId + ' .partitioning-datepicker' ).datepicker( 'getDate' );
+    const time = jQuery(anchorId + ' .partitioning-timepicker' ).timepicker( 'getTime' );
     const datetime = new Date(date.getFullYear(), date.getMonth(), date.getDate(),
       time.getHours(), time.getMinutes(), time.getSeconds());
       applyCallback(datetime);
@@ -179,8 +179,8 @@ function groupSelector(groups, element) {
       .text(NO_GROUP_LABEL);
 
     //HACK: usage of JQuery here is needed to apply the select2js plugin
-    $('select.apply-select2js-on-this').each(function(i) {
-      var select = $(this);
+    jQuery('select.apply-select2js-on-this').each(function(i) {
+      var select = jQuery(this);
       // apply select2js only one time
       if (!select.hasClass('select2js-applied')) {
         select.addClass('select2js-applied');

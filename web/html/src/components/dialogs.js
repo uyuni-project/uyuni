@@ -60,11 +60,11 @@ function ModalLink(props) {
 }
 
 function showDialog(dialogId) {
-  $('#' + dialogId).modal('show');
+  jQuery('#' + dialogId).modal('show');
 }
 
 function hideDialog(modalId) {
-  $('#' + dialogId).modal('hide');
+  jQuery('#' + dialogId).modal('hide');
 }
 
 ModalLink.propTypes = {
@@ -93,7 +93,7 @@ function DeleteDialog(props) {
             icon="fa-trash"
             handler={() => {
                 if(props.onConfirm) props.onConfirm(props.item);
-                $('#' + props.id).modal('hide');
+                jQuery('#' + props.id).modal('hide');
             }}
         />
         <Button
@@ -102,7 +102,7 @@ function DeleteDialog(props) {
             title={t("Cancel")}
             icon="fa-close"
             handler={() => {
-                $('#' + props.id).modal('hide');
+                jQuery('#' + props.id).modal('hide');
             }}
         />
     </div>;

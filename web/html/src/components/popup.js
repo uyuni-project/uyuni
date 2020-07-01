@@ -15,7 +15,7 @@ const PopUp = React.createClass({
     },
 
   componentDidMount: function() {
-    $("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
+    jQuery("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);
   },
 
   render: function() {

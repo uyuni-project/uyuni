@@ -8,8 +8,8 @@ const {Utils} = require("../utils/functions");
 const {DeleteSystem} = require("./delete-system");
 
 function postForm(serverId) {
-  const form = $("table[class='list compare-list']").closest("form");
-  $('<input>').attr({
+  const form = jQuery("table[class='list compare-list']").closest("form");
+  jQuery('<input>').attr({
       type: "hidden",
       id: "removedServerId",
       name: "removedServerId",

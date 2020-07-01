@@ -197,7 +197,7 @@ function pageResponse(data) {
     }
     if (document.getElementById('pagination_selcount_top')) {
       dwr.util.setValue("pagination_selcount_top", resp.pagination);
-      if ($('#pagination_selcount_bottom').lenght > 0) {
+      if (jQuery('#pagination_selcount_bottom').lenght > 0) {
         dwr.util.setValue("pagination_selcount_bottom", resp.pagination);
       }
     }
@@ -205,7 +205,7 @@ function pageResponse(data) {
 
 // the function we call to read the number of systems selected and hide/show the toolbar
 function updateSsmToolbarOpacity() {
-  $(".spacewalk-bar").animate({"opacity": "100"}, 0, function() {});
+  jQuery(".spacewalk-bar").animate({"opacity": "100"}, 0, function() {});
 }
 
 function sortColumn(sortByWidget, sortByValue, sortDirWidget, sortDirValue) {
@@ -247,10 +247,10 @@ function numericValidate(evt) {
 /*
 * Fix input width if it has a maxlenght attribute
 */
-$(document).ready(function() {
-  $('input.set-maxlength-width').each(function() {
-    if ($(this).attr('maxlength') != null) {
-      $(this).css('width', $(this).attr('maxlength') + 'em');
+jQuery(document).ready(function() {
+  jQuery('input.set-maxlength-width').each(function() {
+    if (jQuery(this).attr('maxlength') != null) {
+      jQuery(this).css('width', jQuery(this).attr('maxlength') + 'em');
     }
   });
 });

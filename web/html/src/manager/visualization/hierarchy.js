@@ -201,13 +201,13 @@ const Hierarchy = React.createClass({
       .get(endpoint, 'application/json')
       .promise
       .then(
-        (data) => $(document).ready(() => displayHierarchy(data)),
+        (data) => jQuery(document).ready(() => displayHierarchy(data)),
         (xhr) =>  d3.select('#svg-wrapper').text(t('There was an error fetching data from the server.'))
       );
   },
 
   showFilters: function() {
-    const filterBox = $('#visualization-filter-wrapper');
+    const filterBox = jQuery('#visualization-filter-wrapper');
     if (filterBox.hasClass("open")) {
       filterBox.removeClass('open').slideUp('fast', () => {Utils.adjustSvgDimensions()});
       this.setState({ showFilters: false});

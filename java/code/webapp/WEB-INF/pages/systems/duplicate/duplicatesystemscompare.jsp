@@ -214,7 +214,7 @@
         </tbody>
 </table>
 <script>
-var csrfToken = $('input[name=csrf_token]').val();
+var csrfToken = jQuery('input[name=csrf_token]').val();
 function getServerIdsToDelete() {
     return [
         <c:forEach items="${requestScope.systems.systemIds}" var="current" varStatus="loop">

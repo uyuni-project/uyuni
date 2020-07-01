@@ -1,17 +1,17 @@
-$(function() {
-  var actionChainId = $(".action-chain").data("action-chain-id");
+jQuery(function() {
+  var actionChainId = jQuery(".action-chain").data("action-chain-id");
 
   // handle clik on title label
-  $("#label-link").on("click", function(){
-    $("#label-link").hide();
-    $("#label-input").show().focus();
+  jQuery("#label-link").on("click", function(){
+    jQuery("#label-link").hide();
+    jQuery("#label-input").show().focus();
     setUnsavedData();
     return false;
   });
 
   // handle clik on +/- icons
-  $(".system-list-show-hide").on("click", function() {
-    var group = $(this).closest(".group");
+  jQuery(".system-list-show-hide").on("click", function() {
+    var group = jQuery(this).closest(".group");
     var list = group.find(".system-list");
     var icon = group.find(".system-list-show-hide i");
 
@@ -35,14 +35,14 @@ $(function() {
   });
 
   // handle click on "delete action chain"
-  $("#delete-action-chain").on("click", function (event, target) {
+  jQuery("#delete-action-chain").on("click", function (event, target) {
     clearUnsavedData();
   });
 
   // handle click on "delete action" (that is: delete an action chain
   // entry group)
-  $(".delete-group").on("click", function (event, target) {
-    var group = $(this).closest(".group");
+  jQuery(".delete-group").on("click", function (event, target) {
+    var group = jQuery(this).closest(".group");
 
     group.fadeOut(400, renumberGroups).addClass("deleted");
     return false;
@@ -50,9 +50,9 @@ $(function() {
 
   // handle click on "delete system" (that is: delete an action chain
   // entry)
-  $(".group").on("click", ".delete-entry", function (event, target) {
-    li = $(this).closest("li");
-    ul = $(this).closest("ul");
+  jQuery(".group").on("click", ".delete-entry", function (event, target) {
+    li = jQuery(this).closest("li");
+    ul = jQuery(this).closest("ul");
     var group = ul.closest(".group");
 
     if (ul.find("li:visible").size() == 1) {
@@ -67,58 +67,58 @@ $(function() {
   });
 
   // handle click on save changes
-  $("#save").on("click", function(){
+  jQuery("#save").on("click", function(){
     save(function onSuccess(text) {
-      $("#error-message").hide();
-      $("#success-message").text(text).fadeIn();
+      jQuery("#error-message").hide();
+      jQuery("#success-message").text(text).fadeIn();
 
-      $("#label-link-text").text($("#label-input").val());
-      $("#label-link").show();
-      $("#label-input").hide();
+      jQuery("#label-link-text").text(jQuery("#label-input").val());
+      jQuery("#label-link").show();
+      jQuery("#label-input").hide();
       clearUnsavedData();
     });
     return false;
   });
 
   // handle click on cancel
-  $("#cancel").on("click", function() {
+  jQuery("#cancel").on("click", function() {
     clearUnsavedData();
     location.reload();
   });
 
   // handle click on save and schedule
-  $("#save-and-schedule").on("click", function() {
+  jQuery("#save-and-schedule").on("click", function() {
     save(function onSuccess(result) {
       clearUnsavedData();
-      $("form.schedule").submit();
+      jQuery("form.schedule").submit();
     });
     return false;
   });
 
   // handle drag and drop
-  $(".action-chain").sortable({
+  jQuery(".action-chain").sortable({
     cursor: "move",
     update: renumberGroups
   });
 
   // handle exit without save
-  $(window).on("beforeunload", function() {
+  jQuery(window).on("beforeunload", function() {
     if ($.unsaved == true) {
-      return $("#before-unload").text();
+      return jQuery("#before-unload").text();
     }
   });
 
   // save changes on Action Chain via AJAX
   function save(onSuccess) {
-    var newLabel = $("#label-input").val();
-    var deletedEntries = $(".entry.deleted").map(function(i, element) {
-      return $(element).data("entry-id");
+    var newLabel = jQuery("#label-input").val();
+    var deletedEntries = jQuery(".entry.deleted").map(function(i, element) {
+      return jQuery(element).data("entry-id");
     }).get();
-    var deletedSortOrders = $(".group.deleted").map(function(i, element) {
-      return $(element).data("sort-order");
+    var deletedSortOrders = jQuery(".group.deleted").map(function(i, element) {
+      return jQuery(element).data("sort-order");
     }).get();
-    var reorderedSortOrders = $(".group:not(.deleted)").map(function(i, element) {
-      return $(element).data("sort-order");
+    var reorderedSortOrders = jQuery(".group:not(.deleted)").map(function(i, element) {
+      return jQuery(element).data("sort-order");
     }).get();
 
     ActionChainSaveAction.save(
@@ -130,16 +130,16 @@ $(function() {
       makeAjaxHandler(function(resultString) {
           var result = $.parseJSON(resultString);
           if (result.success) {
-            $(".entry.deleted").remove();
-            $(".group.deleted").remove();
-            $(".group").each(function(i, element){
-              $(element).data("sort-order", i);
+            jQuery(".entry.deleted").remove();
+            jQuery(".group.deleted").remove();
+            jQuery(".group").each(function(i, element){
+              jQuery(element).data("sort-order", i);
             });
             onSuccess(result.text);
           }
           else {
-            $("#success-message").hide();
-            $("#error-message").text(result.text).fadeIn();
+            jQuery("#success-message").hide();
+            jQuery("#error-message").text(result.text).fadeIn();
           }
         },
         function(message) {
@@ -150,8 +150,8 @@ $(function() {
   }
 
   function renumberGroups(){
-    $(".group:visible").each(function(index, element) {
-      $(element).find(".counter").text(index + 1);
+    jQuery(".group:visible").each(function(index, element) {
+      jQuery(element).find(".counter").text(index + 1);
     });
     setUnsavedData();
   }
@@ -168,11 +168,11 @@ $(function() {
 
   function setUnsavedData() {
     $.unsaved = true;
-    $("#action-chain-save-input").fadeIn();
+    jQuery("#action-chain-save-input").fadeIn();
   }
 
   function clearUnsavedData() {
     $.unsaved = false;
-    $("#action-chain-save-input").fadeOut();
+    jQuery("#action-chain-save-input").fadeOut();
   }
 });

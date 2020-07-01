@@ -15,18 +15,18 @@ function swapValues(fromCtlId, toCtlId) {
 }
 
 function moveNext() {
-   var form = $("form[name='kickstartCreateWizardForm']");
+   var form = jQuery("form[name='kickstartCreateWizardForm']");
    swapValues("wizard-nextstep", "wizard-curstep");
    form.submit();
 }
 
 function refresh() {
-   var form = $("form[name='kickstartCreateWizardForm']");
+   var form = jQuery("form[name='kickstartCreateWizardForm']");
    form.submit();
 }
 
 function toggleKSTree(what) {
-   var form = $("form[name='kickstartCreateWizardForm']");
+   var form = jQuery("form[name='kickstartCreateWizardForm']");
    var select = form.find("select[name='kstreeId']");
    if(what.checked) {
        select.prop("disabled", "disabled");
@@ -36,7 +36,7 @@ function toggleKSTree(what) {
 }
 
 function clickNewestRHTree() {
-   var form = $("form[name='kickstartCreateWizardForm']");
+   var form = jQuery("form[name='kickstartCreateWizardForm']");
    var treeCheckbox = form.find("input[name='useNewestTree']")
    var rhTreeCheckbox = form.find("input[name='useNewestRHTree']")
    if(rhTreeCheckbox.is(':checked')) {
@@ -45,7 +45,7 @@ function clickNewestRHTree() {
 }
 
 function clickNewestTree() {
-   var form = $("form[name='kickstartCreateWizardForm']");
+   var form = jQuery("form[name='kickstartCreateWizardForm']");
    var treeCheckbox = form.find("input[name='useNewestTree']")
    var rhTreeCheckbox = form.find("input[name='useNewestRHTree']")
    if(treeCheckbox.is(':checked')) {

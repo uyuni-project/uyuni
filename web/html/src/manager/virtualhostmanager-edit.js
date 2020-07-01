@@ -96,7 +96,7 @@ class VirtualHostManagerEdit extends React.Component {
                 formData, false, false);
         } else {
             request = Network.post("/rhn/manager/api/vhms/update/" + this.state.model.id,
-                $(this.form).serialize());
+                jQuery(this.form).serialize());
         }
 
         return request.promise.then(data => {
@@ -120,7 +120,7 @@ class VirtualHostManagerEdit extends React.Component {
                 formData, false, false);
         } else {
             request = Network.post("/rhn/manager/api/vhms/create",
-                $(this.form).serialize());
+                jQuery(this.form).serialize());
         }
 
         return request.promise.then(data => {

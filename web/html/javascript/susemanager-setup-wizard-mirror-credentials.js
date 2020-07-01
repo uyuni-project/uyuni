@@ -9,17 +9,17 @@ var subscriptionsId;
 function initEdit(id, user) {
   console.log("initEdit(): " + id);
   editId = id;
-  $('#edit-user').val(user);
-  $('#edit-password').val("");
-  $('#mirror-credentials-error-container').hide(); // Hide the error container
-  $('.mirror-credentials-error').hide(); // Make sure all error elements are hidden
+  jQuery('#edit-user').val(user);
+  jQuery('#edit-password').val("");
+  jQuery('#mirror-credentials-error-container').hide(); // Hide the error container
+  jQuery('.mirror-credentials-error').hide(); // Make sure all error elements are hidden
 }
 
 // Init modal to delete credentials
 function initDelete(id, user) {
   console.log("initDelete(): " + id);
   deleteId = id;
-  $('#delete-user').text(user);
+  jQuery('#delete-user').text(user);
 }
 
 // Init the modal to list subscriptions
@@ -31,17 +31,17 @@ function initSubscriptions(id) {
 // Hide any modal dialogs
 function hideModal() {
   console.log("hideModal()");
-  $("#edit-credentials-spinner").html("");
-  $("#modal-edit-credentials").modal('hide');
-  $("#delete-credentials-spinner").html("");
-  $("#modal-delete-credentials").modal('hide');
+  jQuery("#edit-credentials-spinner").html("");
+  jQuery("#modal-edit-credentials").modal('hide');
+  jQuery("#delete-credentials-spinner").html("");
+  jQuery("#modal-delete-credentials").modal('hide');
 }
 
 // Save credentials from edit dialog
 function saveCredentials() {
   var validated = true;
-  $('#add-credentials-form .form-control[required]').each(function() {
-    var field = $(this);
+  jQuery('#add-credentials-form .form-control[required]').each(function() {
+    var field = jQuery(this);
     if (field.val().length == 0) {
       field.closest('.form-group').addClass('has-error');
       validated = false;
@@ -53,8 +53,8 @@ function saveCredentials() {
 
   if (validated) {
     console.log("Saving credentials: " + editId);
-    var user = $('#edit-user').val();
-    var password = $('#edit-password').val();
+    var user = jQuery('#edit-user').val();
+    var password = jQuery('#edit-password').val();
     showSpinner("edit-credentials-spinner");
 
     var responseHandler = function(result) {
@@ -62,15 +62,15 @@ function saveCredentials() {
         MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));
       }
       else {
-        $('#mirror-credentials-error-container').show(); // show the error container
-        $('#' + result).show(); //result contains the id of the error element to be shown
+        jQuery('#mirror-credentials-error-container').show(); // show the error container
+        jQuery('#' + result).show(); //result contains the id of the error element to be shown
       }
     };
 
     MirrorCredentialsRenderer.saveCredentials(editId, user, password,
         makeAjaxHandler(responseHandler));
 
-    $("#edit-credentials-spinner").hide();
+    jQuery("#edit-credentials-spinner").hide();
   }
 }
 
@@ -96,14 +96,14 @@ function verifyCredentials(id, refresh) {
 }
 
 // relevant for the mirror credentials page
-$(document).ready(function() {
+jQuery(document).ready(function() {
   // Clear input fields whenever the edit modal is hidden
-  $('#modal-edit-credentials').on('hidden.bs.modal', function() {
+  jQuery('#modal-edit-credentials').on('hidden.bs.modal', function() {
     initEdit("", "");
   });
 
   // Load subscriptions when modal is shown
-  $('#modal-list-subscriptions').on('show.bs.modal', function() {
+  jQuery('#modal-list-subscriptions').on('show.bs.modal', function() {
     showSpinner("modal-list-subscriptions-body");
     MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
       makeRendererHandler("modal-list-subscriptions-body", false));

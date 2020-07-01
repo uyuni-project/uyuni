@@ -55,7 +55,7 @@
               <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
               <script type="text/javascript">
 function toggleAsterisk() {
-  $("[name='password-asterisk']").toggle()
+  jQuery("[name='password-asterisk']").toggle()
 }
               </script>
               <div class="form-group">

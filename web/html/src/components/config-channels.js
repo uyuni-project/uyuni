@@ -428,7 +428,7 @@ class RankingTable extends React.Component {
 
   handleUpdate() {
     const newItems = this.cloneItems();
-    const ids = $(this.node).sortable('toArray', { attribute: "data-id" });
+    const ids = jQuery(this.node).sortable('toArray', { attribute: "data-id" });
     if(ids.length > 0) {
       ids.forEach((id, ix) => {
         const item = newItems.find((elm) => elm.label === id);
@@ -436,7 +436,7 @@ class RankingTable extends React.Component {
       });
     }
 
-    $(this.node).sortable('cancel');
+    jQuery(this.node).sortable('cancel');
     this.setState({ items: newItems });
 
     if(this.props.onUpdate) {
@@ -445,7 +445,7 @@ class RankingTable extends React.Component {
   }
 
   componentDidMount() {
-    $(this.node).sortable({
+    jQuery(this.node).sortable({
       update: this.handleUpdate.bind(this),
       items: "a"
     });
