@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
   <file source-language="en" datatype="plaintext" original="" target-language="ja">
     <body>
@@ -37,21 +37,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>Management</target>
+        <target>マネージメント</target>
       </trans-unit>
       <trans-unit id="Spacewalk Provisioning Entitled Servers">
         <source>Provisioning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>Provisioning</target>
+        <target>プロビジョニング</target>
       </trans-unit>
       <trans-unit id="Spacewalk Monitoring Entitled Servers">
         <source>Monitoring</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>Monitoring</target>
+        <target>モニタリング</target>
       </trans-unit>
       <!--  Human Readable version of the entitlement labels -->
       <group>
@@ -61,27 +61,20 @@
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <trans-unit id="bootstrap_entitled">
-          <source>Bootstrap</source>
-        </trans-unit>
+          <source>Bootstrap</source> <target>ブートストラップ</target></trans-unit>
         <trans-unit id="enterprise_entitled">
-          <source>Management</source>
-          <target>Management</target>
-        </trans-unit>
+          <source>Management</source> <target>マネージメント</target> </trans-unit>
         <trans-unit id="unentitled">
-          <source>&lt;em&gt;(none)&lt;/em&gt;</source>
-          <target>&lt;em&gt;(なし)&lt;/em&gt;</target>
+          <source>&lt;em&gt;(none)&lt;/em&gt;</source> <target>&lt;em&gt;(なし)&lt;/em&gt;</target>
         </trans-unit>
         <trans-unit id="base">
-          <source>Base</source>
-          <target>ベース</target>
+          <source>Base</source> <target>ベース</target>
         </trans-unit>
         <trans-unit id="add-on">
-          <source>Add-On</source>
-          <target>追加</target>
+          <source>Add-On</source> <target>追加</target>
         </trans-unit>
         <trans-unit id="virtualization_host">
-          <source>Virtualization Host</source>
-          <target>仮想化</target>
+          <source>Virtualization Host</source> <target>仮想化</target>
         </trans-unit>
       </group>
       <!-- TimeZones -->
@@ -213,6 +206,7 @@
       </trans-unit>
       <trans-unit id="Pacific/Easter">
         <source>(GMT-0500) Chile (Easter Island)</source>
+        <target>(GMT-0500) チリ (イースター島)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -268,6 +262,7 @@
       </trans-unit>
       <trans-unit id="Australia/Adelaide">
         <source>Australia Adelaide</source>
+        <target>オーストラリア アデレード</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -351,6 +346,7 @@
       </trans-unit>
       <trans-unit id="America/Santiago">
         <source>(GMT-0300) Chile (Continental)</source>
+        <target>(GMT-0300) チリ (大陸)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -2822,28 +2818,22 @@
         <note>Probe command requirements:
           rhn_command_requirements.name -&gt; rhn_command_requirements.description</note>
         <trans-unit id="npunix">
-          <source>RHNMD must be running on the monitored host to perform this check.</source>
-          <target>このチェックを実行するには、RHNMD がモニター中のホストで稼動していなければなりません。</target>
+          <source>RHNMD must be running on the monitored host to perform this check.</source> <target>このチェックを実行するには、RHNMD がモニター中のホストで稼動していなければなりません。</target>
         </trans-unit>
         <trans-unit id="oracle">
-          <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-          <target>Oracle チェックは、$ORACLE_HOME/rdbms/admin/catalog.sql の実行により作成されるデータベースの設定と公共関連付けが必要になります。また、いずれの Oracle のインスタンスでも、チェック内に設定された Oracle ユーザーは CONNECT とSELECT_CATALOG_ROLE の最低限度の権限を持っている必要があります。</target>
+          <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source> <target>Oracle チェックは、$ORACLE_HOME/rdbms/admin/catalog.sql の実行により作成されるデータベースの設定と公共関連付けが必要になります。また、いずれの Oracle のインスタンスでも、チェック内に設定された Oracle ユーザーは CONNECT とSELECT_CATALOG_ROLE の最低限度の権限を持っている必要があります。</target>
         </trans-unit>
         <trans-unit id="snmp">
-          <source>SNMP must be running on the monitored host to perform this check.</source>
-          <target>このチェックを実行するには、モニター中のホスト上で SNMP が稼動していなければなりません。</target>
+          <source>SNMP must be running on the monitored host to perform this check.</source> <target>このチェックを実行するには、モニター中のホスト上で SNMP が稼動していなければなりません。</target>
         </trans-unit>
         <trans-unit id="bea61_snmp">
-          <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source>
-          <target>Domain Admin サーバーの IP アドレスがある場合、このチェックは BEA 管理サーバーに対して設定することができます。SNMP は DomainAdmin サーバー上でも有効にする必要があり、これは Weblogic コンソールで行うことができます。</target>
+          <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source> <target>Domain Admin サーバーの IP アドレスがある場合、このチェックは BEA 管理サーバーに対して設定することができます。SNMP は DomainAdmin サーバー上でも有効にする必要があり、これは Weblogic コンソールで行うことができます。</target>
         </trans-unit>
         <trans-unit id="npunix_oracle">
-          <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-          <target>このチェックを実行するには、モニター中のホスト上で RHNMD が稼動していなければなりません。Oracle チェックは、$ORACLE_HOME/rdbms/admin/catalog.sql の実行により作成されるデータベースの設定と公共関連付けが必要になります。また、いずれの Oracle インスタンスでも、このチェック内で設定された Oracle ユーザーは CONNECT と SELECT_CATALOG_ROLE の最低限度の権限を持っている必要があります。</target>
+          <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source> <target>このチェックを実行するには、モニター中のホスト上で RHNMD が稼動していなければなりません。Oracle チェックは、$ORACLE_HOME/rdbms/admin/catalog.sql の実行により作成されるデータベースの設定と公共関連付けが必要になります。また、いずれの Oracle インスタンスでも、このチェック内で設定された Oracle ユーザーは CONNECT と SELECT_CATALOG_ROLE の最低限度の権限を持っている必要があります。</target>
         </trans-unit>
         <trans-unit id="apache1_3">
-          <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source>
-          <target>この Web サーバーの httpd.conf ファイル内の ExtendedStatus ディレクティブは、このチェックが正常に機能するよう On に設定する必要があります。</target>
+          <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source> <target>この Web サーバーの httpd.conf ファイル内の ExtendedStatus ディレクティブは、このチェックが正常に機能するよう On に設定する必要があります。</target>
         </trans-unit>
       </group>
       <group>
@@ -2853,48 +2843,37 @@
         <note>Command group names:
       rhn_command_groups.description -&gt; rhn_command_groups.description</note>
         <trans-unit id="All">
-          <source>All</source>
-          <target>すべて</target>
+          <source>All</source> <target>すべて</target>
         </trans-unit>
         <trans-unit id="Apache">
-          <source>Apache</source>
-          <target>Apache</target>
+          <source>Apache</source> <target>Apache</target>
         </trans-unit>
         <trans-unit id="BEA Weblogic">
-          <source>BEA Weblogic</source>
-          <target>BEA Weblogic</target>
+          <source>BEA Weblogic</source> <target>BEA Weblogic</target>
         </trans-unit>
         <trans-unit id="General">
-          <source>General</source>
-          <target>全般</target>
+          <source>General</source> <target>全般</target>
         </trans-unit>
         <trans-unit id="Linux">
-          <source>Linux</source>
-          <target>Linux</target>
+          <source>Linux</source> <target>Linux</target>
         </trans-unit>
         <trans-unit id="Log Agent">
-          <source>Log Agent</source>
-          <target>ログエージェント</target>
+          <source>Log Agent</source> <target>ログエージェント</target>
         </trans-unit>
         <trans-unit id="MySQL">
-          <source>MySQL</source>
-          <target>MySQL</target>
+          <source>MySQL</source> <target>MySQL</target>
         </trans-unit>
         <trans-unit id="Network Services">
-          <source>Network Services</source>
-          <target>ネットワークサービス</target>
+          <source>Network Services</source> <target>ネットワークサービス</target>
         </trans-unit>
         <trans-unit id="Oracle">
-          <source>Oracle</source>
-          <target>Oracle</target>
+          <source>Oracle</source> <target>Oracle</target>
         </trans-unit>
         <trans-unit id="Spacewalk">
-          <source>@@PRODUCT_NAME@@</source>
-          <target>@@PRODUCT_NAME@@</target>
+          <source>@@PRODUCT_NAME@@</source> <target>@@PRODUCT_NAME@@</target>
         </trans-unit>
         <trans-unit id="Satellite">
-          <source>@@PRODUCT_NAME@@</source>
-          <target>@@PRODUCT_NAME@@</target>
+          <source>@@PRODUCT_NAME@@</source> <target>@@PRODUCT_NAME@@</target>
         </trans-unit>
       </group>
       <group>
@@ -2904,305 +2883,230 @@
         <note>Command names:
       rhn_command.description -&gt; rhn_command.description</note>
         <trans-unit id="Active Sessions">
-          <source>Active Sessions</source>
-          <target>アクティブセッション</target>
+          <source>Active Sessions</source> <target>アクティブセッション</target>
         </trans-unit>
         <trans-unit id="Availability">
-          <source>Availability</source>
-          <target>アベイラビリティー (可用性)</target>
+          <source>Availability</source> <target>アベイラビリティー (可用性)</target>
         </trans-unit>
         <trans-unit id="Blocking Sessions">
-          <source>Blocking Sessions</source>
-          <target>ブロック中のセッション</target>
+          <source>Blocking Sessions</source> <target>ブロック中のセッション</target>
         </trans-unit>
         <trans-unit id="Buffer Cache">
-          <source>Buffer Cache</source>
-          <target>バッファーキャッシュ</target>
+          <source>Buffer Cache</source> <target>バッファーキャッシュ</target>
         </trans-unit>
         <trans-unit id="CPU Usage">
-          <source>CPU Usage</source>
-          <target>CPU 使用 </target>
+          <source>CPU Usage</source> <target>CPU 使用 </target>
         </trans-unit>
         <trans-unit id="Check Nothing">
-          <source>Check Nothing</source>
-          <target>チェックしない</target>
+          <source>Check Nothing</source> <target>チェックしない</target>
         </trans-unit>
         <trans-unit id="Client Connectivity">
-          <source>Client Connectivity</source>
-          <target>クライアントの接続性</target>
+          <source>Client Connectivity</source> <target>クライアントの接続性</target>
         </trans-unit>
         <trans-unit id="DNS Lookup">
-          <source>DNS Lookup</source>
-          <target>DNS ルックアップ</target>
+          <source>DNS Lookup</source> <target>DNS ルックアップ</target>
         </trans-unit>
         <trans-unit id="Data Dictionary Cache">
-          <source>Data Dictionary Cache</source>
-          <target>データ辞書キャッシュ</target>
+          <source>Data Dictionary Cache</source> <target>データ辞書キャッシュ</target>
         </trans-unit>
         <trans-unit id="Database Accessibility">
-          <source>Database Accessibility</source>
-          <target>データベースアクセス度</target>
+          <source>Database Accessibility</source> <target>データベースアクセス度</target>
         </trans-unit>
         <trans-unit id="Disk I/O Throughput">
-          <source>Disk I/O Throughput</source>
-          <target>ディスク I/O スループット</target>
+          <source>Disk I/O Throughput</source> <target>ディスク I/O スループット</target>
         </trans-unit>
         <trans-unit id="Disk Sort Ratio">
-          <source>Disk Sort Ratio</source>
-          <target>ディスクソート率</target>
+          <source>Disk Sort Ratio</source> <target>ディスクソート率</target>
         </trans-unit>
         <trans-unit id="Disk Space">
-          <source>Disk Space</source>
-          <target>ディスク領域</target>
+          <source>Disk Space</source> <target>ディスク領域</target>
         </trans-unit>
         <trans-unit id="Disk Usage">
-          <source>Disk Usage</source>
-          <target>ディスク使用</target>
+          <source>Disk Usage</source> <target>ディスク使用</target>
         </trans-unit>
         <trans-unit id="Execute Queue">
-          <source>Execute Queue</source>
-          <target>実行キュー</target>
+          <source>Execute Queue</source> <target>実行キュー</target>
         </trans-unit>
         <trans-unit id="Execution Time">
-          <source>Execution Time</source>
-          <target>実行時間</target>
+          <source>Execution Time</source> <target>実行時間</target>
         </trans-unit>
         <trans-unit id="FTP">
-          <source>FTP</source>
-          <target>FTP</target>
+          <source>FTP</source> <target>FTP</target>
         </trans-unit>
         <trans-unit id="Heap Free">
-          <source>Heap Free</source>
-          <target>空きヒープ</target>
+          <source>Heap Free</source> <target>空きヒープ</target>
         </trans-unit>
         <trans-unit id="Host Availability">
-          <source>Host Availability</source>
-          <target>ホストの可用性</target>
+          <source>Host Availability</source> <target>ホストの可用性</target>
         </trans-unit>
         <trans-unit id="ICMP Blocked">
-          <source>ICMP Blocked</source>
-          <target>ブロックされた ICMP </target>
+          <source>ICMP Blocked</source> <target>ブロックされた ICMP </target>
         </trans-unit>
         <trans-unit id="IMAP Mail">
-          <source>IMAP Mail</source>
-          <target>IMAP メール</target>
+          <source>IMAP Mail</source> <target>IMAP メール</target>
         </trans-unit>
         <trans-unit id="Idle Sessions">
-          <source>Idle Sessions</source>
-          <target>アイドルセッション</target>
+          <source>Idle Sessions</source> <target>アイドルセッション</target>
         </trans-unit>
         <trans-unit id="Index Extents">
-          <source>Index Extents</source>
-          <target>インデックスのエクステント</target>
+          <source>Index Extents</source> <target>インデックスのエクステント</target>
         </trans-unit>
         <trans-unit id="Inodes">
-          <source>Inodes</source>
-          <target>Inode</target>
+          <source>Inodes</source> <target>Inode</target>
         </trans-unit>
         <trans-unit id="Interface Traffic">
-          <source>Interface Traffic</source>
-          <target>インターフェーストラフィック</target>
+          <source>Interface Traffic</source> <target>インターフェーストラフィック</target>
         </trans-unit>
         <trans-unit id="JDBC Connection Pool">
-          <source>JDBC Connection Pool</source>
-          <target>JDBC 接続プール</target>
+          <source>JDBC Connection Pool</source> <target>JDBC 接続プール</target>
         </trans-unit>
         <trans-unit id="Latency">
-          <source>Latency</source>
-          <target>待ち時間</target>
+          <source>Latency</source> <target>待ち時間</target>
         </trans-unit>
         <trans-unit id="Library Cache">
-          <source>Library Cache</source>
-          <target>ライブラリーキャッシュ</target>
+          <source>Library Cache</source> <target>ライブラリーキャッシュ</target>
         </trans-unit>
         <trans-unit id="Load">
-          <source>Load</source>
-          <target>ロード</target>
+          <source>Load</source> <target>ロード</target>
         </trans-unit>
         <trans-unit id="Locks">
-          <source>Locks</source>
-          <target>ロック</target>
+          <source>Locks</source> <target>ロック</target>
         </trans-unit>
         <trans-unit id="Log Pattern Match">
-          <source>Log Pattern Match</source>
-          <target>ログパターン一致</target>
+          <source>Log Pattern Match</source> <target>ログパターン一致</target>
         </trans-unit>
         <trans-unit id="Log Size Growth">
-          <source>Log Size Growth</source>
-          <target>ロズサイズの増加</target>
+          <source>Log Size Growth</source> <target>ロズサイズの増加</target>
         </trans-unit>
         <trans-unit id="LongLegs">
-          <source>LongLegs</source>
-          <target>LongLegs</target>
+          <source>LongLegs</source> <target>LongLegs</target>
         </trans-unit>
         <trans-unit id="Mail Transfer (SMTP)">
-          <source>Mail Transfer (SMTP)</source>
-          <target>メール転送 (SMTP)</target>
+          <source>Mail Transfer (SMTP)</source> <target>メール転送 (SMTP)</target>
         </trans-unit>
         <trans-unit id="Memory Usage">
-          <source>Memory Usage</source>
-          <target>メモリー使用</target>
+          <source>Memory Usage</source> <target>メモリー使用</target>
         </trans-unit>
         <trans-unit id="Open Tables">
-          <source>Open Tables</source>
-          <target>開放表</target>
+          <source>Open Tables</source> <target>開放表</target>
         </trans-unit>
         <trans-unit id="Opened Tables">
-          <source>Opened Tables</source>
-          <target>開放した表</target>
+          <source>Opened Tables</source> <target>開放した表</target>
         </trans-unit>
         <trans-unit id="POP Mail">
-          <source>POP Mail</source>
-          <target>POP メール</target>
+          <source>POP Mail</source> <target>POP メール</target>
         </trans-unit>
         <trans-unit id="Ping">
-          <source>Ping</source>
-          <target>Ping</target>
+          <source>Ping</source> <target>Ping</target>
         </trans-unit>
         <trans-unit id="Probe Count">
-          <source>Probe Count</source>
-          <target>プローブ数</target>
+          <source>Probe Count</source> <target>プローブ数</target>
         </trans-unit>
         <trans-unit id="Process Count Total">
-          <source>Process Count Total</source>
-          <target>プロセス数合計</target>
+          <source>Process Count Total</source> <target>プロセス数合計</target>
         </trans-unit>
         <trans-unit id="Process Counts">
-          <source>Process Counts</source>
-          <target>プロセス数</target>
+          <source>Process Counts</source> <target>プロセス数</target>
         </trans-unit>
         <trans-unit id="Process Counts by State">
-          <source>Process Counts by State</source>
-          <target>状態別のプロセス数</target>
+          <source>Process Counts by State</source> <target>状態別のプロセス数</target>
         </trans-unit>
         <trans-unit id="Process Health">
-          <source>Process Health</source>
-          <target>プロセスの健全性</target>
+          <source>Process Health</source> <target>プロセスの健全性</target>
         </trans-unit>
         <trans-unit id="Process Running">
-          <source>Process Running</source>
-          <target>実行中プロセス</target>
+          <source>Process Running</source> <target>実行中プロセス</target>
         </trans-unit>
         <trans-unit id="Processes">
-          <source>Processes</source>
-          <target>プロセス</target>
+          <source>Processes</source> <target>プロセス</target>
         </trans-unit>
         <trans-unit id="Query Rate">
-          <source>Query Rate</source>
-          <target>クエリー率</target>
+          <source>Query Rate</source> <target>クエリー率</target>
         </trans-unit>
         <trans-unit id="RPC Service">
-          <source>RPC Service</source>
-          <target>RPC サービス</target>
+          <source>RPC Service</source> <target>RPC サービス</target>
         </trans-unit>
         <trans-unit id="Redo Log">
-          <source>Redo Log</source>
-          <target>再試行ログ</target>
+          <source>Redo Log</source> <target>再試行ログ</target>
         </trans-unit>
         <trans-unit id="Remote Ping">
-          <source>Remote Ping</source>
-          <target>リモート Ping </target>
+          <source>Remote Ping</source> <target>リモート Ping </target>
         </trans-unit>
         <trans-unit id="Remote Program">
-          <source>Remote Program</source>
-          <target>リモートプログラム</target>
+          <source>Remote Program</source> <target>リモートプログラム</target>
         </trans-unit>
         <trans-unit id="Remote Program with Data">
-          <source>Remote Program with Data</source>
-          <target>データのあるリモートプログラム</target>
+          <source>Remote Program with Data</source> <target>データのあるリモートプログラム</target>
         </trans-unit>
         <trans-unit id="Requests">
-          <source>Requests</source>
-          <target>要求</target>
+          <source>Requests</source> <target>要求</target>
         </trans-unit>
         <trans-unit id="SNMP Check">
-          <source>SNMP Check</source>
-          <target>SNMP チェック</target>
+          <source>SNMP Check</source> <target>SNMP チェック</target>
         </trans-unit>
         <trans-unit id="SSH">
-          <source>SSH</source>
-          <target>SSH</target>
+          <source>SSH</source> <target>SSH</target>
         </trans-unit>
         <trans-unit id="Secure Web server (HTTPS)">
-          <source>Secure Web server (HTTPS)</source>
-          <target>セキュア Web サーバー(HTTPS)</target>
+          <source>Secure Web server (HTTPS)</source> <target>セキュア Web サーバー(HTTPS)</target>
         </trans-unit>
         <trans-unit id="Server State">
-          <source>Server State</source>
-          <target>サーバーの状態</target>
+          <source>Server State</source> <target>サーバーの状態</target>
         </trans-unit>
         <trans-unit id="Servlet">
-          <source>Servlet</source>
-          <target>Servlet</target>
+          <source>Servlet</source> <target>Servlet</target>
         </trans-unit>
         <trans-unit id="Swap">
-          <source>Swap</source>
-          <target>Swap</target>
+          <source>Swap</source> <target>Swap</target>
         </trans-unit>
         <trans-unit id="Swap Usage">
-          <source>Swap Usage</source>
-          <target>Swap 使用</target>
+          <source>Swap Usage</source> <target>Swap 使用</target>
         </trans-unit>
         <trans-unit id="TCP Check">
-          <source>TCP Check</source>
-          <target>TCP チェック</target>
+          <source>TCP Check</source> <target>TCP チェック</target>
         </trans-unit>
         <trans-unit id="TCP Connections by State">
-          <source>TCP Connections by State</source>
-          <target>状態別の TCP 接続</target>
+          <source>TCP Connections by State</source> <target>状態別の TCP 接続</target>
         </trans-unit>
         <trans-unit id="TNS Ping">
-          <source>TNS Ping</source>
-          <target>TNS Ping</target>
+          <source>TNS Ping</source> <target>TNS Ping</target>
         </trans-unit>
         <trans-unit id="Table Extents">
-          <source>Table Extents</source>
-          <target>テーブルのエクステント</target>
+          <source>Table Extents</source> <target>テーブルのエクステント</target>
         </trans-unit>
         <trans-unit id="Tablespace Usage">
-          <source>Tablespace Usage</source>
-          <target>テーブル領域の使用</target>
+          <source>Tablespace Usage</source> <target>テーブル領域の使用</target>
         </trans-unit>
         <trans-unit id="Threads Running">
-          <source>Threads Running</source>
-          <target>実行中スレッド</target>
+          <source>Threads Running</source> <target>実行中スレッド</target>
         </trans-unit>
         <trans-unit id="UDP Check">
-          <source>UDP Check</source>
-          <target>UDP チェック</target>
+          <source>UDP Check</source> <target>UDP チェック</target>
         </trans-unit>
         <trans-unit id="Uptime">
-          <source>Uptime</source>
-          <target>アップタイム</target>
+          <source>Uptime</source> <target>アップタイム</target>
         </trans-unit>
         <trans-unit id="Uptime (SNMP)">
-          <source>Uptime (SNMP)</source>
-          <target>アップタイム (SNMP)</target>
+          <source>Uptime (SNMP)</source> <target>アップタイム (SNMP)</target>
         </trans-unit>
         <trans-unit id="Users">
-          <source>Users</source>
-          <target>ユーザー</target>
+          <source>Users</source> <target>ユーザー</target>
         </trans-unit>
         <trans-unit id="Virtual Memory">
-          <source>Virtual Memory</source>
-          <target>仮想メモリー</target>
+          <source>Virtual Memory</source> <target>仮想メモリー</target>
         </trans-unit>
         <trans-unit id="Web server (HTTP)">
-          <source>Web server (HTTP)</source>
-          <target>Web サーバー (HTTP)</target>
+          <source>Web server (HTTP)</source> <target>Web サーバー (HTTP)</target>
         </trans-unit>
         <!-- Kickstart Install Types -->
         <trans-unit id="Red Hat Enterprise Linux 4">
-          <source>Red Hat Enterprise Linux 4</source>
-          <target>Red Hat Enterprise Linux 4</target>
+          <source>Red Hat Enterprise Linux 4</source> <target>Red Hat Enterprise Linux 4</target>
         </trans-unit>
         <trans-unit id="Red Hat Enterprise Linux 3">
-          <source>Red Hat Enterprise Linux 3</source>
-          <target>Red Hat Enterprise Linux 3</target>
+          <source>Red Hat Enterprise Linux 3</source> <target>Red Hat Enterprise Linux 3</target>
         </trans-unit>
         <trans-unit id="Red Hat Enterprise Linux 2.1">
-          <source>Red Hat Enterprise Linux 2.1</source>
-          <target>Red Hat Enterprise Linux 2.1</target>
+          <source>Red Hat Enterprise Linux 2.1</source> <target>Red Hat Enterprise Linux 2.1</target>
         </trans-unit>
       </group>
       <group>
@@ -3210,56 +3114,42 @@
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
         <trans-unit id="kickstart.state.created">
-          <source>Autoinstallation session created but has not yet been used.</source>
-          <target>キックスタートセッションが作成されましたが、まだ使用されていません。</target>
+          <source>Autoinstallation session created but has not yet been used.</source> <target>キックスタートセッションが作成されましたが、まだ使用されていません。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.deployed">
-          <source>Files required for autoinstallation action have been installed.</source>
-          <target>キックスタート動作に必要なファイルがインストールされています。</target>
+          <source>Files required for autoinstallation action have been installed.</source> <target>キックスタート動作に必要なファイルがインストールされています。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.injected">
-          <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-          <target>このシステム設定は次回の起動時にキックスタートを開始するよう変更されています。</target>
+          <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source> <target>このシステム設定は次回の起動時にキックスタートを開始するよう変更されています。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.restarted">
-          <source>The system has been restarted in order to begin the autoinstallation process.</source>
-          <target>キックスタートプロセスを開始するため、システムが再起動されています。</target>
+          <source>The system has been restarted in order to begin the autoinstallation process.</source> <target>キックスタートプロセスを開始するため、システムが再起動されています。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.configuration_accessed">
-          <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
-          <target>このシステムはキックスタート設定ファイルを @@PRODUCT_NAME@@ からダウンロードしました。</target>
+          <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source> <target>このシステムはキックスタート設定ファイルを @@PRODUCT_NAME@@ からダウンロードしました。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.started">
-          <source>The initial files required for autoinstallation have been downloaded.</source>
-          <target>anaconda に必要な初期ファイルがダウンロードされています。</target>
+          <source>The initial files required for autoinstallation have been downloaded.</source> <target>anaconda に必要な初期ファイルがダウンロードされています。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.in_progress">
-          <source>The system is downloading the RPMs required to install.</source>
-          <target>このシステムはインストールに必要な RPM をダウンロード中です。</target>
+          <source>The system is downloading the RPMs required to install.</source> <target>このシステムはインストールに必要な RPM をダウンロード中です。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.registered">
-          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source>
-          <target>このシステムはキックスタート完了後 @@PRODUCT_NAME@@ に正しく登録されました。</target>
+          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source> <target>このシステムはキックスタート完了後 @@PRODUCT_NAME@@ に正しく登録されました。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.package_synch">
-          <source>Package synchronization in progress.</source>
-          <target>パッケージの同期が実行中です。</target>
+          <source>Package synchronization in progress.</source> <target>パッケージの同期が実行中です。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.package_synch_scheduled">
-          <source>Package synchronization scheduled.</source>
-          <target>パッケージ同期がスケジュールされました。</target>
+          <source>Package synchronization scheduled.</source> <target>パッケージ同期がスケジュールされました。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.configuration_deploy">
-          <source>Configuration files are being deployed.</source>
-          <target>設定ファイルは配備されています。</target>
+          <source>Configuration files are being deployed.</source> <target>設定ファイルは配備されています。</target>
         </trans-unit>
         <trans-unit id="kickstart.state.complete">
-          <source>Autoinstallation complete.</source>
-          <target>キックスタート完了</target>
-        </trans-unit>
+          <source>Autoinstallation complete.</source> <target>自動インストール完了。</target> </trans-unit>
         <trans-unit id="kickstart.state.failed">
-          <source>Autoinstallation failed.</source>
-          <target>キックスタートは失敗しました。</target>
+          <source>Autoinstallation failed.</source> <target>キックスタートは失敗しました。</target>
         </trans-unit>
       </group>
       <group>
@@ -3267,17 +3157,13 @@
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
         <trans-unit id="error.unsupported_db_min">
-          <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
-        </trans-unit>
+          <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source> <target>動作中の postgresql {0} はサポートされていません。最小必須バージョンは {1} です。</target></trans-unit>
         <trans-unit id="error.unsupported_db_max">
-          <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
-        </trans-unit>
+          <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source> <target>動作中の postgresql {0} はサポートされていません。最大許可バージョンは {1} です。</target></trans-unit>
         <trans-unit id="error.unsupported_db_migrate">
-          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
-        </trans-unit>
+          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source> <target>{1} で動作する postgresql {0} はサポートされていません。 postgresql {2} に移行してください。</target></trans-unit>
         <trans-unit id="error.unfinished_schema_upgrade">
-          <source>Database schema upgrade in progress!</source>
-        </trans-unit>
+          <source>Database schema upgrade in progress!</source> <target>データベーススキーマのアップグレードを行なっています！</target></trans-unit>
       </group>
     </body>
   </file>
