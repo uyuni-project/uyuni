@@ -2,7 +2,7 @@ $(function() {
   var actionChainId = $(".action-chain").data("action-chain-id");
 
   // handle clik on title label
-  $("#label-link").click(function(){
+  $("#label-link").on("click", function(){
     $("#label-link").hide();
     $("#label-input").show().focus();
     setUnsavedData();
@@ -10,7 +10,7 @@ $(function() {
   });
 
   // handle clik on +/- icons
-  $(".system-list-show-hide").click(function() {
+  $(".system-list-show-hide").on("click", function() {
     var group = $(this).closest(".group");
     var list = group.find(".system-list");
     var icon = group.find(".system-list-show-hide i");
@@ -35,13 +35,13 @@ $(function() {
   });
 
   // handle click on "delete action chain"
-  $("#delete-action-chain").click(function (event, target) {
+  $("#delete-action-chain").on("click", function (event, target) {
     clearUnsavedData();
   });
 
   // handle click on "delete action" (that is: delete an action chain
   // entry group)
-  $(".delete-group").click(function (event, target) {
+  $(".delete-group").on("click", function (event, target) {
     var group = $(this).closest(".group");
 
     group.fadeOut(400, renumberGroups).addClass("deleted");
@@ -67,7 +67,7 @@ $(function() {
   });
 
   // handle click on save changes
-  $("#save").click(function(){
+  $("#save").on("click", function(){
     save(function onSuccess(text) {
       $("#error-message").hide();
       $("#success-message").text(text).fadeIn();
@@ -81,13 +81,13 @@ $(function() {
   });
 
   // handle click on cancel
-  $("#cancel").click(function() {
+  $("#cancel").on("click", function() {
     clearUnsavedData();
     location.reload();
   });
 
   // handle click on save and schedule
-  $("#save-and-schedule").click(function() {
+  $("#save-and-schedule").on("click", function() {
     save(function onSuccess(result) {
       clearUnsavedData();
       $("form.schedule").submit();

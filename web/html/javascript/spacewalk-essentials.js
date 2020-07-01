@@ -56,13 +56,13 @@ $(window).on("load", function () {
 });
 
 // On window resize
-$(window).resize(function () {
+$(window).on("resize", function () {
   alignContentDimensions();
 });
 
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
-  $(window).scroll(function() {
+  $(window).on("scroll", function () {
     if($(this).scrollTop() > 100) {
       $('#scroll-top').show();
     } else {
@@ -76,7 +76,6 @@ function scrollTopBehavior() {
     window.scrollTo(0,0);
   });
 }
-
 
 // A container function for what should be fired
 // to set HTML tag dimensions
@@ -424,7 +423,7 @@ function disableEnterKey() {
 // Binds the enter key to a specific submit button on a key event
 function enterKeyHandler(event, $button) {
     if(event.keyCode == 13) {
-        $button.click();
+        $button.trigger("click");
         return false;
     }
 }
@@ -488,7 +487,7 @@ $(document).on('click', '.toggle-box', function() {
 })
 
 // focus go away from the menu or the nav menu
-$(document).click(function (e) {
+$(document).on("click", function (e) {
   var target = $(e.target);
   // if a toggle-box button is active and the current click
   // is not on its related box, trigger a close for it

@@ -189,7 +189,7 @@
 
         $("span[name=audit_kv]").each(function(index, node) {
             var aElem = $( "<a href='javascript:void(0);'>" + showStr + "</a>" );
-            aElem.click(toggleKV);
+            aElem.on("click", toggleKV);
             aElem.appendTo(node);
         });
     });
