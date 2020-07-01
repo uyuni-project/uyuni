@@ -15,7 +15,7 @@
 
 package com.suse.manager.webui.controllers.maintenance;
 
-import static com.suse.manager.maintenance.rescheduling.RescheduleStrategyType.CANCEL;
+import static com.suse.manager.webui.controllers.maintenance.MaintenanceController.handleRescheduleResult;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -231,19 +231,6 @@ public class MaintenanceScheduleController {
         );
 
         return json(response, ResultJson.success());
-    }
-
-    private static void handleRescheduleResult(List<RescheduleResult> results, RescheduleStrategyType strategy) {
-        results.forEach(result -> {
-            if (!result.isSuccess()) {
-                String affectedSchedule = result.getScheduleName();
-                String message = LOCAL.getMessage(strategy == CANCEL ?
-                                "maintenance.action.reschedule.error.cancel" :
-                                "maintenance.action.reschedule.error.fail",
-                        affectedSchedule);
-                Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(message)));
-            }
-        });
     }
 
     private static List<MaintenanceScheduleJson> schedulesToJson(List<MaintenanceSchedule> schedules) {
