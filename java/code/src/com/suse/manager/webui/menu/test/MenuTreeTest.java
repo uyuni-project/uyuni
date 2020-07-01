@@ -15,6 +15,11 @@
 
 package com.suse.manager.webui.menu.test;
 
+import com.redhat.rhn.common.security.acl.Access;
+import com.redhat.rhn.common.security.acl.AclFactory;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.menu.MenuItem;
 import com.suse.manager.webui.menu.MenuTree;
 import com.suse.manager.webui.menu.MenuTree.MenuItemList;
@@ -22,6 +27,7 @@ import com.suse.manager.webui.menu.MenuTree.MenuItemList;
 import java.util.List;
 
 
+import com.suse.manager.webui.services.impl.SaltService;
 import junit.framework.TestCase;
 
 public class MenuTreeTest extends TestCase {
@@ -80,8 +86,13 @@ public class MenuTreeTest extends TestCase {
                     .withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                     .withDir("/rhn/errata/manage/clone")));
 
+        SaltService saltService = new SaltService();
+        MenuTree menuTree = new MenuTree(new AclFactory(new Access(new ClusterManager(
+                saltService, saltService, ServerGroupManager.getInstance(), new FormulaManager(saltService)
+        ))));
+
         // the TESTED method
-        List<MenuItem> bestActiveDir = MenuTree.getBestActiveDirs(nodes, url);
+        List<MenuItem> bestActiveDir = menuTree.getBestActiveDirs(nodes, url);
 
         // check if all returned levels are flagged as active
         for (MenuItem menuItem : bestActiveDir) {
