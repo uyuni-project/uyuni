@@ -63,10 +63,11 @@ import com.redhat.rhn.domain.action.script.ScriptAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
@@ -107,9 +108,9 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
-
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
@@ -411,6 +412,10 @@ public class SaltServerActionService {
                     (BaseVirtualizationVolumeAction)actionIn;
             return virtVolumeDeleteAction(minions,
                     deleteAction.getPoolName(), deleteAction.getVolumeName());
+        }
+        else if (ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE.equals(actionType)) {
+            VirtualizationNetworkStateChangeAction networkAction = (VirtualizationNetworkStateChangeAction) actionIn;
+            return virtNetworkStateChangeAction(minions, networkAction.getNetworkName(), networkAction.getState());
         }
         else if (ActionFactory.TYPE_CLUSTER_GROUP_REFRESH_NODES.equals(actionType)) {
             ClusterGroupRefreshNodesAction clusterAction =
@@ -1929,6 +1934,27 @@ public class SaltServerActionService {
                 },
                 Collections::singletonList
         ));
+
+        ret.remove(null);
+
+        return ret;
+    }
+
+    private Map<LocalCall<?>, List<MinionSummary>> virtNetworkStateChangeAction(
+            List<MinionSummary> minionSummaries, String networkName, String state) {
+        Map<LocalCall<?>, List<MinionSummary>> ret = minionSummaries.stream().collect(
+                Collectors.toMap(minion -> {
+
+                            Map<String, Object> pillar = new HashMap<>();
+                            pillar.put("network_state", state);
+                            pillar.put("network_name", networkName);
+
+                            return State.apply(
+                                    Collections.singletonList("virt.network-statechange"),
+                                    Optional.of(pillar));
+                        },
+                        Collections::singletonList
+                ));
 
         ret.remove(null);
 
