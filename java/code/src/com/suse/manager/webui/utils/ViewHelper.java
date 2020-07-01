@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
+import com.redhat.rhn.webapp.RhnServletListener;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import org.apache.commons.lang3.text.WordUtils;
@@ -47,6 +48,9 @@ public enum ViewHelper {
      * Singleton instance
      */
     INSTANCE;
+
+    private static final RenderUtils RENDER_UTILS = RhnServletListener.RENDER_UTILS;
+    private static final ClusterManager CLUSTER_MANAGER = RhnServletListener.CLUSTER_MANAGER;
 
     ViewHelper() { }
 
@@ -93,7 +97,7 @@ public enum ViewHelper {
         try {
             Map<String, String> sparkParams = request.params().entrySet().stream().collect(
                     Collectors.toMap(entry -> entry.getKey().substring(1), entry -> entry.getValue()));
-            return RenderUtils.INSTANCE.renderNavigationMenu(
+            return RENDER_UTILS.renderNavigationMenu(
                     request.raw(), menuDefinition, rendererClass, 0, 3, sparkParams, additionalParams);
         }
         catch (Exception e) {
@@ -186,6 +190,6 @@ public enum ViewHelper {
      * @return true if the group is owned by a cluster
      */
     public boolean isClusterGroup(String groupId) {
-        return ClusterManager.instance().isClusterGroup(Long.parseLong(groupId));
+        return CLUSTER_MANAGER.isClusterGroup(Long.parseLong(groupId));
     }
 }
