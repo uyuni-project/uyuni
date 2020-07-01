@@ -35,7 +35,7 @@ mgr_server_localhost_alias_absent:
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 
 {%- elif salt['file.file_exists']('/etc/centos-release') %}
-{# We try CentOS bootstrap repository first. Failback to RES #}
+{# We try CentOS bootstrap repository first, if not avaiable then fallback to RES #}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/centos/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
 {%- if bootstrap_repo_request['status'] == 901 %}
