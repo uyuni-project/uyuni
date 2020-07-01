@@ -26,14 +26,28 @@ mgr_server_localhost_alias_absent:
 {%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osrelease'] ~ '/0/bootstrap/' %}
 {%- endif %}
+
 {%- elif grains['os_family'] == 'RedHat' %}
 {%- if salt['file.file_exists' ]('/etc/oracle-release') %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/oracle/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+
+{%- elif salt['file.file_exists' ]('/etc/centos-release') %}
+{# We try CentOS bootstrap repository first. Failback to RES #}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/centos/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{% set bootstrap_repo_request = salt['http.query'](bootstrap_repo_url + 'repodata/repomd.xml', status=True, verify_ssl=False) %}
+{%- if bootstrap_repo_request['status'] == 901 %}
+{{ raise(bootstrap_repo_request['error']) }}
+{%- elif not (0 < bootstrap_repo_request['status'] < 300) %}
+{% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+{%- endif %}
+
 {%- elif salt['file.file_exists' ]('/etc/redhat-release') %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/res/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
+
 {%- else %}
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ grains['osmajorrelease'] ~ '/bootstrap/' %}
 {%- endif %}
+
 {%- elif grains['os_family'] == 'Debian' %}
 {%- set osrelease = grains['osrelease'].split('.') %}
 {%- if grains['os'] == 'Ubuntu' %}
