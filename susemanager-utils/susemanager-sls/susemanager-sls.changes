@@ -1,3 +1,4 @@
+- Fix detection of CentOS systems to properly set bootstrap repo (bsc#1173556)
 - Do not produce syntax error on custom ssh_agent Salt module when
   executing on Python 2 instance.
 
