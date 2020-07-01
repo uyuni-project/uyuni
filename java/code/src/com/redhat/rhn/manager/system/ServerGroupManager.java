@@ -74,6 +74,14 @@ public class ServerGroupManager {
     }
 
     /**
+     * Only used for unit tests.
+     * @param pillarFileManagerIn to set
+     */
+    public void setMinionGroupMembershipPillarFileManager(MinionPillarFileManager pillarFileManagerIn) {
+        this.minionGroupMembershipPillarFileManager = pillarFileManagerIn;
+    }
+
+    /**
      * Lookup a ServerGroup by ID and organization.
      * @param id Server group id
      * @param user logged in user needed for authentication
