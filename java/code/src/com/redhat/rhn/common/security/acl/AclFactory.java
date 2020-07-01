@@ -29,22 +29,14 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class AclFactory {
 
-    // private instance of the service.
-    private static AclFactory instance = new AclFactory();
+    private final Access access;
 
     /**
      * hidden constructor
+     * @param accessIn
      */
-    private AclFactory() {
-        // hidden constructor
-    }
-
-    /** Get the running instance of the AclFactory
-     *
-     * @return The AclFactory singleton
-     */
-    public static AclFactory getInstance() {
-        return instance;
+    public AclFactory(Access accessIn) {
+        this.access = accessIn;
     }
 
     /**
@@ -54,7 +46,6 @@ public class AclFactory {
      */
     public Acl getAcl(String mixinsIn) {
         Acl aclObj = new Acl();
-        Access access = new Access();
         aclObj.registerHandler(access);
 
         // Add the mixin handlers as well.

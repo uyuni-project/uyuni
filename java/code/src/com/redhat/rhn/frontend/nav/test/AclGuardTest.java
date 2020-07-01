@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.nav.test;
 
+import com.redhat.rhn.common.security.acl.Access;
+import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.nav.AclGuard;
 import com.redhat.rhn.frontend.nav.NavNode;
@@ -29,13 +31,14 @@ public class AclGuardTest extends RhnBaseTestCase {
 
     public void testNoAclDefined() {
         NavNode node = new NavNode();
-        AclGuard aclGuard = new AclGuard(new HashMap());
+        AclFactory aclFactory = new AclFactory(new Access(null));
+        AclGuard aclGuard = new AclGuard(new HashMap(), aclFactory);
         boolean rc = aclGuard.canRender(node, 0);
         assertTrue(rc);
     }
 
     public void testNullNodeDefined() {
-        AclGuard aclGuard = new AclGuard(new HashMap());
+        AclGuard aclGuard = new AclGuard(new HashMap(), new AclFactory(new Access(null)));
         boolean rc = aclGuard.canRender(null, 0);
         assertTrue(rc);
     }
@@ -44,7 +47,7 @@ public class AclGuardTest extends RhnBaseTestCase {
         NavNode node = new NavNode();
         node.setAcl("false_test()");
         AclGuard aclGuard = new AclGuard(new HashMap(),
-                MockAclHandler.class.getName());
+                MockAclHandler.class.getName(), new AclFactory(new Access(null)));
         boolean rc = aclGuard.canRender(node, 0);
         assertFalse(rc);
     }
@@ -53,7 +56,7 @@ public class AclGuardTest extends RhnBaseTestCase {
         NavNode node = new NavNode();
         node.setAcl("true_test()");
         AclGuard aclGuard = new AclGuard(new HashMap(),
-                MockAclHandler.class.getName());
+                MockAclHandler.class.getName(), new AclFactory(new Access(null)));
         boolean rc = aclGuard.canRender(node, 0);
         assertTrue(rc);
     }

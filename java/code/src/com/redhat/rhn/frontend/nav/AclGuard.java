@@ -26,25 +26,29 @@ import java.util.Map;
 public class AclGuard implements RenderGuard {
     private Map context;
     private String mixins;
+    private final AclFactory aclFactory;
 
 
     /**
      * Constructor
      * @param ctx Acl Context
      * @param mixinsIn The string of classnames used to add extra Acl Handlers
+     * @param aclFactoryIn
      */
-    public AclGuard(Map ctx, String mixinsIn) {
+    public AclGuard(Map ctx, String mixinsIn, AclFactory aclFactoryIn) {
         super();
         context = ctx;
         this.mixins = mixinsIn;
+        this.aclFactory = aclFactoryIn;
     }
 
     /**
      * Constructor
      * @param ctx Acl Context
+     * @param aclFactoryIn
      */
-    public AclGuard(Map ctx) {
-        this(ctx, null);
+    public AclGuard(Map ctx, AclFactory aclFactoryIn) {
+        this(ctx, null, aclFactoryIn);
     }
 
     /**
@@ -65,7 +69,7 @@ public class AclGuard implements RenderGuard {
             return true;
         }
 
-        Acl acl = AclFactory.getInstance().getAcl(mixins);
+        Acl acl = aclFactory.getAcl(mixins);
         return acl.evalAcl(context, aclStr);
     }
 }

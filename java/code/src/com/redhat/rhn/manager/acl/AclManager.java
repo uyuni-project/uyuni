@@ -18,6 +18,7 @@ import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.webapp.RhnServletListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
  * @version $Rev$
  */
 public class AclManager {
+
+    private static AclFactory aclFactory = RhnServletListener.ACL_FACTORY;
 
     private AclManager() {
         // hidden constructor
@@ -69,7 +72,7 @@ public class AclManager {
         // Acl everytime we need to use it. We should register
         // the acl handlers at startup and simply call acl.evalAcl()
         // when needed.
-        Acl aclObj = AclFactory.getInstance().getAcl(mixins);
+        Acl aclObj = aclFactory.getAcl(mixins);
         if (context == null) {
            context = new HashMap();
         }
