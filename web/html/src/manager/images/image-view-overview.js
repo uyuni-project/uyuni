@@ -459,7 +459,7 @@ class BuildDialog extends React.Component {
         icon="fa-cogs"
         handler={() => {
           if(this.props.onBuild) this.props.onBuild(this.props.data.profile.id, this.props.data.version, this.props.data.buildServer.id, this.state.model.earliest);
-          $("#build-modal").modal('hide');
+          jQuery("#build-modal").modal('hide');
         }}
       />
       <Button
@@ -468,7 +468,7 @@ class BuildDialog extends React.Component {
         title={t("Cancel")}
         icon="fa-close"
         handler={() => {
-          $("#build-modal").modal('hide');
+          jQuery("#build-modal").modal('hide');
         }}
       />
     </div>;
@@ -518,7 +518,7 @@ class InspectDialog extends React.Component {
         icon="fa-search"
         handler={() => {
           if(this.props.onInspect) this.props.onInspect(this.props.data.id, this.state.model.earliest);
-          $("#inspect-modal").modal('hide');
+          jQuery("#inspect-modal").modal('hide');
         }}
       />
       <Button
@@ -527,7 +527,7 @@ class InspectDialog extends React.Component {
         title={t("Cancel")}
         icon="fa-close"
         handler={() => {
-          $("#inspect-modal").modal('hide');
+          jQuery("#inspect-modal").modal('hide');
         }}
       />
     </div>;

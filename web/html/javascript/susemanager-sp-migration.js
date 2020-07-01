@@ -1,17 +1,17 @@
-$(function() {
+jQuery(function() {
   // Show child channels of selected base channel
   function showChannelTree(channelID) {
-    $('.channels-tree#channels-tree-' + channelID).show();
-    $('.channels-tree[id != channels-tree-' + channelID + ']').hide();
+    jQuery('.channels-tree#channels-tree-' + channelID).show();
+    jQuery('.channels-tree[id != channels-tree-' + channelID + ']').hide();
   }
 
   // Create hidden inputs to submit channel IDs
   function prepareSubmitChannels() {
-    $('#migrationForm input[type="hidden", name="childChannels"]').remove();
+    jQuery('#migrationForm input[type="hidden", name="childChannels"]').remove();
     // Submit all checked child channel's IDs
-    $('.channels-tree:visible input:checked').each(function() {
-      $('#migrationForm').append(
-        createHiddenInput('childChannels', $(this).val())
+    jQuery('.channels-tree:visible input:checked').each(function() {
+      jQuery('#migrationForm').append(
+        createHiddenInput('childChannels', jQuery(this).val())
       );
     });
     return true;
@@ -27,13 +27,13 @@ $(function() {
   }
 
   // Prepare submitting the form
-  $('#migrationForm').submit(function() {
+  jQuery('#migrationForm').submit(function() {
     prepareSubmitChannels();
   });
 
   // Switch displayed channel tree
-  $('#base-channel-select').change(function() {
-    showChannelTree($(this).val());
+  jQuery('#base-channel-select').change(function() {
+    showChannelTree(jQuery(this).val());
   });
 });
 

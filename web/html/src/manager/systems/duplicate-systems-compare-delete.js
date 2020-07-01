@@ -9,8 +9,8 @@ const {DeleteSystem} = require("./delete-system");
 const SpaRenderer  = require("core/spa/spa-renderer").default;
 
 function postForm(serverId) {
-  const form = $("table[class='list compare-list']").closest("form");
-  $('<input>').attr({
+  const form = jQuery("table[class='list compare-list']").closest("form");
+  jQuery('<input>').attr({
       type: "hidden",
       id: "removedServerId",
       name: "removedServerId",

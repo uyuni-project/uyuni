@@ -67,9 +67,9 @@ class Notifications extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.unreadMessagesLength && this.state.unreadMessagesLength > prevState.unreadMessagesLength) {
-      $('#notification-counter').addClass('highlight-updated-value');
+      jQuery('#notification-counter').addClass('highlight-updated-value');
       setTimeout(function() {
-        $('#notification-counter').removeClass('highlight-updated-value');
+        jQuery('#notification-counter').removeClass('highlight-updated-value');
       }, 1000);
     }
   }

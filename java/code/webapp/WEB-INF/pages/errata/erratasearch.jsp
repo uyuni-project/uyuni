@@ -19,9 +19,9 @@
 
         function issueDateSearchOptions() {
             if (document.getElementById("issueDateOptionsCheckBox").checked) {
-                $('#issueDateOptions').show();
+                jQuery('#issueDateOptions').show();
             } else {
-                $('#issueDateOptions').hide();
+                jQuery('#issueDateOptions').hide();
             }
         }
     </script>
