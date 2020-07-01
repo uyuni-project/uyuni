@@ -53,7 +53,9 @@ public class CalendarFactory extends HibernateFactory {
      */
     public List<String> listCalendarLabelsByUser(User user) {
         return getSession()
-                .createQuery("SELECT label FROM MaintenanceCalendar WHERE org = :org ORDER BY label ASC")
+                .createQuery(
+                        "SELECT label FROM MaintenanceCalendar WHERE org = :org ORDER BY label ASC",
+                        String.class)
                 .setParameter("org", user.getOrg())
                 .list();
     }
@@ -65,7 +67,7 @@ public class CalendarFactory extends HibernateFactory {
      */
     public List<MaintenanceCalendar> listByUser(User user) {
         return getSession()
-                .createQuery("FROM MaintenanceCalendar WHERE org = :org")
+                .createQuery("FROM MaintenanceCalendar WHERE org = :org", MaintenanceCalendar.class)
                 .setParameter("org", user.getOrg())
                 .list();
     }
@@ -77,7 +79,7 @@ public class CalendarFactory extends HibernateFactory {
      * @return Optional Maintenance Calendar
      */
     public Optional<MaintenanceCalendar> lookupByUserAndLabel(User user, String label) {
-        return getSession().createNamedQuery("MaintenanceCalendar.lookupByUserAndName")
+        return getSession().createNamedQuery("MaintenanceCalendar.lookupByUserAndName", MaintenanceCalendar.class)
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter("label", label).uniqueResultOptional();
     }
@@ -89,7 +91,10 @@ public class CalendarFactory extends HibernateFactory {
      * @return Optional Maintenance Calendar
      */
     public Optional<MaintenanceCalendar> lookupByUserAndId(User user, Long id) {
-        return getSession().createQuery("FROM MaintenanceCalendar WHERE org = :org AND id = :id")
+        return getSession()
+                .createQuery(
+                        "FROM MaintenanceCalendar WHERE org = :org AND id = :id",
+                        MaintenanceCalendar.class)
                 .setParameter("org", user.getOrg())
                 .setParameter("id", id).uniqueResultOptional();
     }
