@@ -1,3 +1,4 @@
+- Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
 - fix error when rolling back a system to a snapshot (bsc#1173997)
 - Implement maintenance windows backend
 - Add check for maintainence window during executing recurring actions
