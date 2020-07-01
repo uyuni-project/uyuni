@@ -3,7 +3,7 @@
     <dependencies>
         <!-- Runtime dependencies -->
         <dependency org="suse" name="antlr" rev="2.7.7" />
-        <dependency org="suse" name="asm" rev="3.3.2" />
+        <dependency org="suse" name="asm" rev="5.2" />
         <dependency org="suse" name="bcel" rev="5.2" />
         <dependency org="suse" name="byte-buddy" rev="1.8.17" />
         <dependency org="suse" name="c3p0" rev="0.9.5.2" />

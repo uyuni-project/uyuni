@@ -10,8 +10,8 @@ repositories:
     repository: openSUSE_Leap_15.2
 artifacts:
   - artifact: asm
-    package: asm3
-    jar: asm3-all
+    package: asm5
+    jar: asm5-all
     repository: Leap
   - artifact: antlr
     repository: Leap
