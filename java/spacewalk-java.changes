@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Jul 01 16:12:13 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.15-1
 - Make httpcomponents and gson jar symlinks dependent on product
 - Fix symlinks for gson, httcomponents on Leap 15.2
 
