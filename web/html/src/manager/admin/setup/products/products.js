@@ -86,7 +86,7 @@ class ProductsPageWrapper extends React.Component {
     refreshNeeded: refreshNeeded_flag_from_backend,
     refreshRunning: refreshRunning_flag_from_backend || scc_refresh_file_locked_status,
     noToolsChannelSubscription: noToolsChannelSubscription_flag_from_backend,
-    serverData: {_DATA_ROOT_ID : []},
+    serverData: [],
     errors: [],
     loading: true,
     selectedItems: [],
