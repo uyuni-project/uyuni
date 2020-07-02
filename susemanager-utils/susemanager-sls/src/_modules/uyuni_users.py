@@ -286,6 +286,74 @@ class UyuniUser(UyuniRemoteObject):
         return self.client("user.removeAssignedSystemGroups", uid, server_group_names, set_default)
 
 
+class UyuniChannel(UyuniRemoteObject):
+    def list_manageable_channels(self) -> List[Dict[str, Union[int, str]]]:
+        """
+        List all software channels that the user is entitled to manage.
+        :return: list of manageable channels
+        """
+        return self.client("channel.listManageableChannels")
+
+    def list_my_channels(self) -> List[Dict[str, Union[int, str]]]:
+        """
+        List all software channels that the user is entitled to manage.
+        :return: list of manageable channels
+        """
+        return self.client("channel.listMyChannels")
+
+
+class UyuniChannelSoftware(UyuniRemoteObject):
+    def set_user_manageable(self, channel_label: str, uid: str, access: bool) -> int:
+        """
+        Set the manageable flag for a given channel and user.
+        If access is set to 'true', this method will give the user manage permissions to the channel.
+        Otherwise, that privilege is revoked.
+
+        :param channel_label: label of the channel
+        :param uid: user login id
+        :param access: Flag which if user should have management access to channel or not
+        :return: 1 on success, exception thrown otherwise.
+        """
+        log.debug("change managing access to %s for user %s in channel %s", access, uid, channel_label)
+        return self.client("channel.software.setUserManageable", channel_label, uid, access)
+
+    def set_user_subscribable(self, channel_label: str, uid: str, access: bool) -> int:
+        """
+        Set the subscribable flag for a given channel and user.
+        If value is set to 'true', this method will give the user subscribe permissions to the channel.
+        Otherwise, that privilege is revoked.
+
+        :param channel_label: label of the channel
+        :param uid: user login id
+        :param access: Flag which if user should subscribe a channel or not
+        :return: 1 on success, exception thrown otherwise.
+        """
+        log.debug("change subscription access to %s for user %s in channel %s", access, uid, channel_label)
+        return self.client("channel.software.setUserSubscribable", channel_label, uid, access)
+
+    def is_user_manageable(self, channel_label: str, uid: str) -> bool:
+        """
+        Returns whether the channel may be managed by the given user.
+
+        :param channel_label: label of the channel
+        :param uid: user login id
+        :return: boolean which indicates if user can manage channel or not
+        """
+        log.debug("check if user %s can manage channel %s", uid, channel_label)
+        return bool(self.client("channel.software.isUserManageable", channel_label, uid))
+
+    def is_user_subscribable(self, channel_label: str, uid: str) -> bool:
+        """
+        Returns whether the channel may be subscribed to by the given user.
+
+        :param channel_label: label of the channel
+        :param uid: user login id
+        :return: boolean which indicates if user subscribe the channel or not
+        """
+        log.debug("check if user %s can subscribe channel %s", uid, channel_label)
+        return bool(self.client("channel.software.isUserSubscribable", channel_label, uid))
+
+
 class UyuniOrg(UyuniRemoteObject):
     """
     CRUD operations on orgs
@@ -798,6 +866,87 @@ def user_remove_assigned_system_groups(uid, server_group_names, set_default=Fals
                      org_admin_password).remove_assigned_system_groups(uid=uid,
                                                                     server_group_names=server_group_names,
                                                                     set_default=set_default)
+
+
+## channel.software
+def channel_list_manageable_channels(uid, password):
+    """
+    List with all of manageable channels for the authenticated user
+    :param uid: user login id
+    :param password: user password
+    :return: list of manageable channels for the user
+    """
+    return UyuniChannel(uid, password).list_manageable_channels()
+
+
+def channel_list_my_channels(uid, password):
+    """
+    List with all of subscribed channels for the authenticated user
+    :param uid: user login id
+    :param password: user password
+    :return: list of subscribed channels for the user
+    """
+    return UyuniChannel(uid, password).list_my_channels()
+
+
+def channel_software_set_user_manageable(channel_label, uid, access,
+                                         admin_user=None, admin_password=None):
+    """
+    Set the manageable flag for a given channel and user.
+    If access is set to 'true', this method will give the user manage permissions to the channel.
+    Otherwise, that privilege is revoked.
+
+    :param channel_label: label of the channel
+    :param uid: user login id
+    :param access: Flag which if user should have access to channel or not
+    :param admin_user: organization admin username
+    :param admin_password: organization admin password
+    :return: boolean indication success in operation
+    """
+    return UyuniChannelSoftware(admin_user, admin_password).set_user_manageable(channel_label, uid, access)
+
+
+def channel_software_set_user_subscribable(channel_label, uid, access,
+                                         admin_user=None, admin_password=None):
+    """
+    Set the subscribable flag for a given channel and user.
+    If value is set to 'true', this method will give the user subscribe permissions to the channel.
+    Otherwise, that privilege is revoked.
+
+    :param channel_label: label of the channel
+    :param uid: user login id
+    :param access: Flag which if user should subscribe a channel or not
+    :param admin_user: organization admin username
+    :param admin_password: organization admin password
+    :return: boolean indication success in operation
+    """
+    return UyuniChannelSoftware(admin_user, admin_password).set_user_subscribable(channel_label, uid, access)
+
+
+def channel_software_is_user_manageable(channel_label, uid, admin_user=None, admin_password=None):
+    """
+    Returns whether the channel may be managed by the given user.
+
+    :param channel_label: label of the channel
+    :param uid: user login id
+    :param admin_user: organization admin username
+    :param admin_password: organization admin password
+    :return: boolean which indicates if user can manage channel or not
+    """
+    return UyuniChannelSoftware(admin_user, admin_password).is_user_manageable(channel_label, uid)
+
+
+def channel_software_is_user_subscribable(channel_label, uid, admin_user=None, admin_password=None):
+    """
+    Returns whether the channel may be managed by the given user.
+
+    :param channel_label: label of the channel
+    :param uid: user login id
+    :param admin_user: organization admin username
+    :param admin_password: organization admin password
+    :return: boolean which indicates if user subscribe the channel or not
+    """
+    return UyuniChannelSoftware(admin_user, admin_password).is_user_subscribable(channel_label, uid)
 
 
 def org_list_orgs(admin_user=None, admin_password=None):
