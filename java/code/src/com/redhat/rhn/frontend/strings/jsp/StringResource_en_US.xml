@@ -4453,6 +4453,9 @@ organization. You may grant or remove the organization administrator role in the
         <trans-unit id="ssm.overview.groups.create">
           <source>&lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;Create&lt;/a&gt; and &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;manage&lt;/a&gt; groups</source>
         </trans-unit>
+        <trans-unit id="ssm.overview.schedule.assign">
+          <source>&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Assign&lt;/a&gt; a maintenance schedule to selected systems</source>
+        </trans-unit>
         <trans-unit id="ssm.overview.channels">
           <source>Channels</source>
         </trans-unit>
@@ -4672,6 +4675,9 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.misc.index.tabs.preferences">
           <source>Preferences</source>
+        </trans-unit>
+        <trans-unit id="ssm.misc.index.tabs.maintenanceschedule">
+          <source>Maintenance Windows</source>
         </trans-unit>
         <trans-unit id="ssm.misc.index.tabs.custom">
           <source>Custom Values</source>

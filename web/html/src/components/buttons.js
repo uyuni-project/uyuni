@@ -65,7 +65,7 @@ export class AsyncButton extends _ButtonBase {
     let style = "btn ";
     switch (this.state.value) {
         case "failure": style += "btn-danger"; break;
-        case "waiting": style += "btn-default"; break;
+        case "waiting":
         case "initial": style += this.props.defaultType ? this.props.defaultType : "btn-default"; break;
         default: style += this.props.defaultType ? this.props.defaultType : "btn-default"; break;
     }
