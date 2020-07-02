@@ -1,3 +1,4 @@
+- Product list in the Wizard doesn't show SLE products first (bsc#1173522)
 - Cluster UI: return to overview page after scheduling actions
 
 -------------------------------------------------------------------
