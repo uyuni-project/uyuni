@@ -8948,6 +8948,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="maintenance.action.reschedule.error.fail">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
       </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.systemnotfound">
+        <source>Some of the specified servers cannot be found</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
