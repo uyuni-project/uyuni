@@ -180,13 +180,13 @@ function columnHeight() {
   aside.css('min-height', 0);
   section.css('min-height', 0);
   const headerHeight = jQuery('header').outerHeight();
-  const footerHeight = jQuery('.login-page footer').outerHeight();
+  const footerHeight = jQuery('.login-page footer').length > 0 ? jQuery('.login-page footer').outerHeight() : 0;
   const docHeight = jQuery(document).height();
   // Column heights should equal the document height minus the header height and footer height
   aside.css('min-height', docHeight - headerHeight - footerHeight + 1);
   // responsive rule: the aside block is layered on top of section,
   // and when it is shown, its height increase the docHeight
-  const asideHeight = aside.is(':hidden') ? 0 : aside.outerHeight();
+  const asideHeight = aside.length > 0 && !aside.is(':hidden') ? aside.outerHeight() : 0;
   section.css('min-height', docHeight - headerHeight - asideHeight - footerHeight);
 };
 
