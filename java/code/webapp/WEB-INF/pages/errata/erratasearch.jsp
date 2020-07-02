@@ -9,7 +9,7 @@
 <html>
     <head>
         <script language="javascript">
-        jQuery(window).load(
+        jQuery(window).on("load",
             function() {
                 issueDateSearchOptions();
             });
