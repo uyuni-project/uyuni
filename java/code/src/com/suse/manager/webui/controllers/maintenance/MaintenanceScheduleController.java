@@ -33,6 +33,7 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.maintenance.IcalUtils;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
@@ -85,6 +86,8 @@ public class MaintenanceScheduleController {
         get("/manager/schedule/maintenance/schedules",
                 withUserPreferences(withCsrfToken(withUser(MaintenanceScheduleController::maintenanceSchedules))),
                 jade);
+        get("/manager/systems/ssm/maintenance", withCsrfToken(withUser(MaintenanceScheduleController::ssmSchedules)),
+                jade);
         get("/manager/api/maintenance/schedule/list", withUser(MaintenanceScheduleController::list));
         get("/manager/api/maintenance/schedule/:id/details", withUser(MaintenanceScheduleController::details));
         post("/manager/api/maintenance/schedule/:id/assign", withUser(MaintenanceScheduleController::assign));
@@ -106,6 +109,22 @@ public class MaintenanceScheduleController {
         params.put("type", "schedule");
         params.put("isAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
         return new ModelAndView(params, "templates/schedule/maintenance-windows.jade");
+    }
+
+    /**
+     * Handler for the SSM schedule assignment page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ssmSchedules(Request request, Response response, User user) {
+        List<Long> systemIds = SsmManager.listServerIds(user);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("systems", GSON.toJson(systemIds));
+        return new ModelAndView(data, "templates/ssm/schedules.jade");
     }
 
     /**
