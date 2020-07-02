@@ -22,6 +22,24 @@ import java.util.Map;
  */
 public class MaintenanceCalendarJson {
 
+    /**
+     * Constructor
+     */
+    public MaintenanceCalendarJson() { }
+
+    /**
+     * Constructor
+     * @param calendarIdIn calendar id
+     * @param calendarNameIn calenar name
+     * @param scheduleNamesIn schedule names
+     */
+    public MaintenanceCalendarJson(Long calendarIdIn, String calendarNameIn,
+                                   List<Map<String, String>> scheduleNamesIn) {
+        this.calendarId = calendarIdIn;
+        this.calendarName = calendarNameIn;
+        this.scheduleNames = scheduleNamesIn;
+    }
+
     /** schedule ID */
     private Long scheduleId;
 
