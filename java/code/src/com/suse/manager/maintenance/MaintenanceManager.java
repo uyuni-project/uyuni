@@ -71,6 +71,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.Tuple;
+
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 
@@ -130,6 +132,18 @@ public class MaintenanceManager {
      */
     public List<MaintenanceSchedule> listSchedulesByCalendar(User user, MaintenanceCalendar calendar) {
         return scheduleFactory.listByCalendar(user, calendar);
+    }
+
+    /**
+     * Returns tuples representing calendar id, calendar label, and name of schedule assigned to the calendar.
+     *
+     * @see CalendarFactory.listCalendarToSchedulesAssigments
+     *
+     * @param user the user
+     * @return the tuples representing the assignments of calendar to schedules
+     */
+    public List<Tuple> listCalendarToSchedulesAssigments(User user) {
+        return calendarFactory.listCalendarToSchedulesAssignments(user);
     }
 
     /**

@@ -22,6 +22,9 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.Tuple;
 
 /**
  * {@link HibernateFactory} for {@link MaintenanceCalendar}
@@ -97,6 +100,27 @@ public class CalendarFactory extends HibernateFactory {
                         MaintenanceCalendar.class)
                 .setParameter("org", user.getOrg())
                 .setParameter("id", id).uniqueResultOptional();
+    }
+
+    /**
+     * Returns tuples representing calendar id, calendar label, and name of schedule assigned to the calendar.
+     * For calendars assigned to multiple schedules there will be one item for each such assignment in the result.
+     *
+     * @param user the user
+     * @return the tuples representing the assignments of calendar to schedules
+     */
+    public List<Tuple> listCalendarToSchedulesAssignments(User user) {
+        return getSession()
+                .createQuery(
+                        "SELECT calendar.id, calendar.label, schedule.id, schedule.name " +
+                                "FROM MaintenanceCalendar calendar " +
+                                "LEFT JOIN MaintenanceSchedule schedule " +
+                                "ON schedule.calendar = calendar " +
+                                "WHERE calendar.org = :org",
+                        Tuple.class)
+                .setParameter("org", user.getOrg())
+                .stream()
+                .collect(Collectors.toList());
     }
 
     @Override
