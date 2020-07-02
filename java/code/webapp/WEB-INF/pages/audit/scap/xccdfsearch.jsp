@@ -9,7 +9,7 @@
     </head>
     <body>
         <script language="javascript">
-            jQuery(window).load(function() {
+            jQuery(window).on("load", function() {
                 scanDateSearchOptions();
             });
             function scanDateSearchOptions() {

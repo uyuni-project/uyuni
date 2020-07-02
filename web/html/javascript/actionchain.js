@@ -55,7 +55,7 @@ jQuery(function() {
     ul = jQuery(this).closest("ul");
     var group = ul.closest(".group");
 
-    if (ul.find("li:visible").size() == 1) {
+    if (ul.find("li:visible").length == 1) {
       group.fadeOut(400, renumberGroups).addClass("deleted");
     }
     else {
@@ -128,7 +128,7 @@ jQuery(function() {
       deletedSortOrders,
       reorderedSortOrders,
       makeAjaxHandler(function(resultString) {
-          var result = $.parseJSON(resultString);
+          var result = JSON.parse(resultString);
           if (result.success) {
             jQuery(".entry.deleted").remove();
             jQuery(".group.deleted").remove();
@@ -157,7 +157,7 @@ jQuery(function() {
   }
 
   function updateSystemCounter(ul, group) {
-    var count = ul.find("li:visible").size();
+    var count = ul.find("li:visible").length;
     group.find(".system-counter").text(count);
     if (count == 1) {
       group.find(".singular-label").show();
