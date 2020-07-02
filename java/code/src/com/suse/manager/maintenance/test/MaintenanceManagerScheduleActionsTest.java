@@ -100,7 +100,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         assertTrue(mm.isSystemInMaintenanceMode(sys1));
         assertTrue(mm.isSystemInMaintenanceMode(sys2));
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
+        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
 
         try {
             ActionChainManager.scheduleApplyStates(user, List.of(sys1.getId(), sys2.getId()), empty(), new Date(12345), null);
@@ -130,7 +130,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
         MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-2", SINGLE, of(mc));
 
         MinionServer sys1 = MinionServerFactoryTest.createTestMinionServer(user);
-        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
+        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
         assertTrue(mm.isSystemInMaintenanceMode(sys1));
 
         try {
@@ -158,7 +158,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
+        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
 
         try {
             ActionManager.scheduleHardwareRefreshAction(user, sys1, new Date(12345));
@@ -177,7 +177,7 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()));
+        mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false);
 
         try {
             ActionManager.scheduleApplyStates(user, Collections.singletonList(sys1.getId()),

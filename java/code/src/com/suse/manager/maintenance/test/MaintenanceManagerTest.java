@@ -210,7 +210,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server withSchedule = MinionServerFactoryTest.createTestMinionServer(user);
         Server withoutSchedule = MinionServerFactoryTest.createTestMinionServer(user);
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(withSchedule.getId()));
+        mm.assignScheduleToSystems(user, schedule, Set.of(withSchedule.getId()), false);
 
         assertEquals(
                 List.of(withSchedule.getId()),
@@ -232,7 +232,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // assign the schedule to both systems
         Server system1 = MinionServerFactoryTest.createTestMinionServer(user);
         Server system2 = MinionServerFactoryTest.createTestMinionServer(user);
-        mm.assignScheduleToSystems(user, schedule, Set.of(system1.getId(), system2.getId()));
+        mm.assignScheduleToSystems(user, schedule, Set.of(system1.getId(), system2.getId()), false);
 
         // retract it from one system
         mm.retractScheduleFromSystems(user, Set.of(system1.getId()));
@@ -262,14 +262,14 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         // assign an action not tied to maintenance mode
         Action allowedAction = MaintenanceTestUtils
                 .createActionForServerAt(user, ActionFactory.TYPE_VIRTUALIZATION_START, sys1, "2020-04-13T08:15:00+02:00");
-        assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId())));
+        assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
         // assign an offending action to one system
         Action disallowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
         ServerActionTest.createServerAction(sys2, disallowedAction);
 
         assertExceptionThrown(
-                () -> mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId(), sys2.getId())),
+                () -> mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId(), sys2.getId()), false),
                 IllegalArgumentException.class);
     }
 
@@ -295,7 +295,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         // user 2 assigns schedule 1
         assertExceptionThrown(
-                () -> mm.assignScheduleToSystems(user2, schedule1, Set.of(system2.getId())),
+                () -> mm.assignScheduleToSystems(user2, schedule1, Set.of(system2.getId()), false),
                 PermissionException.class);
 
         // user 2 retracts from system1
@@ -305,7 +305,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         // user 2 assigns to system 1
         assertExceptionThrown(
-                () -> mm.assignScheduleToSystems(user2, schedule2, Set.of(system1.getId())),
+                () -> mm.assignScheduleToSystems(user2, schedule2, Set.of(system1.getId()), false),
                 PermissionException.class);
 
         // user 2 lists systems with schedule 1
@@ -376,8 +376,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
         MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
 
-        mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()));
-        mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()));
+        mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()), false);
+        mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()), false);
 
         Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
                 user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
@@ -444,8 +444,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", ScheduleType.MULTI, Optional.of(mcal));
         MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", ScheduleType.MULTI, Optional.of(mcal));
 
-        mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()));
-        mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()));
+        mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()), false);
+        mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()), false);
 
         // Action Chain which start inside of the window, but has parts outside of the window
         // Expected Result: No change
@@ -551,7 +551,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server withSchedule = MinionServerFactoryTest.createTestMinionServer(user);
         Server withoutSchedule = MinionServerFactoryTest.createTestMinionServer(user);
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(withSchedule.getId()));
+        mm.assignScheduleToSystems(user, schedule, Set.of(withSchedule.getId()), false);
 
         assertEquals(
                 Set.of(schedule),
