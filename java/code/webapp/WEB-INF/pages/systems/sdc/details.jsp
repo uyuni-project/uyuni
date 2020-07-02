@@ -158,6 +158,24 @@
                     </rhn:require>
 
                     <div class="form-group">
+                        <label for="maintenance-schedule" class="col-lg-3 control-label">
+                            <bean:message key="sdc.details.edit.schedule"/>
+                        </label>
+                        <div class="col-lg-2">
+                            <html:select property="schedule_id" styleId="maintenance-schedule" styleClass="form-control">
+                                <html:option value="0" key="sdc.details.edit.schedule.none"/>
+                                <html:options collection="schedules" property="id" labelProperty="name"/>
+                            </html:select>
+                            <div class="checkbox">
+                                <label for="cancel-affected">
+                                    <html:checkbox property="cancel_affected_actions" styleId="cancel-affected"/>
+                                    <bean:message key="sdc.details.edit.schedule.cancelaffected"/>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="description" class="col-lg-3 control-label">
                             <bean:message key="sdc.details.edit.description" />
                         </label>
