@@ -135,8 +135,9 @@ class UyuniUsers:
             current_system_groups_names = [s["name"] for s in (current_system_groups or [])]
         except Exception as exc:
             if exc.faultCode == 2950:
-                return StateResult.state_error(
-                    comment="Error managing user (admin credentials error) '{}': {}".format(uid, exc))
+                return StateResult.state_error(uid,
+                                               comment="Error managing user (admin credentials error) '{}': {}".format(
+                                                   uid, exc))
             pass
 
         user_paramters = {"uid": uid, "password": password, "email": email,
@@ -207,6 +208,106 @@ class UyuniUsers:
                 return StateResult.prepare_result(uid, True, "User {} has been deleted".format(uid), changes)
             except Exception as exc:
                 return StateResult.state_error(uid, "Error deleting user '{}': {}".format(uid, exc))
+
+
+class UyuniUserChannels:
+    def manage(self, uid: str, password: str,
+               managed_channels: Optional[List[str]] = [],
+               org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
+        """
+        User channels management present implementation
+
+        :param uid: user ID
+        :param password: user password
+        :param managed_channels: channels user can manage
+        :param org_admin_user: organization administrator username
+        :param org_admin_password: organization administrator password
+        :return: dict for Salt communication
+        """
+        try:
+            current_roles = __salt__['uyuni.user_list_roles'](uid, password=password)
+            current_manageable_channels = __salt__['uyuni.channel_list_manageable_channels'](uid, password)
+        except Exception as exc:
+            return StateResult.state_error(uid,
+                                           comment="Error managing user channels '{}': {}".format(uid, exc))
+            pass
+
+        if "org_admin" in current_roles or "channel_admin" in current_roles:
+            return StateResult.state_error(uid, "Channels access cannot be managed, "
+                                                "User can manage all channel in the organization "
+                                                "(\"org_admin\" or \"org channel_admin\" role).")
+
+        channel_manageable_revoke = [c.get("label") for c in (current_manageable_channels or [])]
+        channel_manageable_add = []
+
+        changes = {"manageable_channels": {"old": channel_manageable_revoke.copy(), "new": managed_channels}}
+
+        for c in (managed_channels or []):
+            if c in channel_manageable_revoke:
+                channel_manageable_revoke.remove(c)
+            else:
+                channel_manageable_add.append(c)
+
+        if not (channel_manageable_revoke or channel_manageable_add):
+            return StateResult.prepare_result(uid, True, "{0} is already installed".format(uid))
+        if __opts__['test']:
+            return StateResult.prepare_result(uid, None, "{0} would be installed".format(uid), changes)
+
+        try:
+            for channel in channel_manageable_revoke:
+                __salt__['uyuni.channel_software_set_user_manageable'](channel, uid, False,
+                                                                       org_admin_user, org_admin_password)
+            for channel in channel_manageable_add:
+                __salt__['uyuni.channel_software_set_user_manageable'](channel, uid, True,
+                                                                       org_admin_user, org_admin_password)
+        except Exception as exc:
+            return StateResult.state_error(uid, "Error managing Channel management '{}': {}".format(uid, exc))
+        return StateResult.prepare_result(uid, True, "Channel management successful managed", changes)
+
+    def delete(self, uid: str, password: str,
+               unmanaged_channels: Optional[List[str]] = [],
+               org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
+        """
+        Delete user management from channels list
+
+        :param uid: user ID
+        :param password: user password
+        :param unmanaged_channels: channels user should not manage
+        :param org_admin_user: organization administrator username
+        :param org_admin_password: organization administrator password
+        :return: dict for Salt communication
+        """
+        try:
+            current_roles = __salt__['uyuni.user_list_roles'](uid, password=password)
+            current_manageable_channels = __salt__['uyuni.channel_list_manageable_channels'](uid, password)
+        except Exception as exc:
+            return StateResult.state_error(uid,
+                                           comment="Error managing user channels '{}': {}".format(uid, exc))
+            pass
+
+        if "org_admin" in current_roles or "channel_admin" in current_roles:
+            return StateResult.state_error(uid, "Channels access cannot be managed, "
+                                                "User can manage all channel in the organization "
+                                                "(\"org_admin\" or \"org channel_admin\" role).")
+
+        current_channels_label = [c.get("label") for c in (current_manageable_channels or [])]
+        changes = {"manageable_channels": {"old": current_channels_label,
+                                           "new": [c for c in current_channels_label if c not in unmanaged_channels]}}
+
+        channel_manageable_revoke = [c for c in unmanaged_channels if c in current_channels_label]
+
+        if not channel_manageable_revoke:
+            return StateResult.prepare_result(uid, True, "{0} is already installed".format(uid))
+        if __opts__['test']:
+            return StateResult.prepare_result(uid, None, "{0} would be installed".format(uid), changes)
+
+        try:
+            for channel in channel_manageable_revoke:
+                __salt__['uyuni.channel_software_set_user_manageable'](channel, uid, False,
+                                                                       org_admin_user, org_admin_password)
+        except Exception as exc:
+            return StateResult.state_error(uid, "Error managing Channel management '{}': {}".format(uid, exc))
+        return StateResult.prepare_result(uid, True, "Channel management successful managed", changes)
 
 
 class UyuniGroups:
@@ -587,6 +688,39 @@ def user_present(name, password, email, first_name=None, last_name=None,
     return UyuniUsers().manage(name, password, email, first_name, last_name,
                                roles, system_groups,
                                org_admin_user, org_admin_password)
+
+
+def user_channels_present(name, password, managed_channels=[],
+                          org_admin_user=None, org_admin_password=None):
+    """
+    Insure user is present with all his characteristics
+
+    :param name: user ID
+    :param password: user password
+    :param managed_channels: channels user can manage
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+    :return: dict for Salt communication
+    """
+    return UyuniUserChannels().manage(name, password, managed_channels,
+                                      org_admin_user, org_admin_password)
+
+
+def user_channels_absent(name, password, unmanaged_channels=[],
+                          org_admin_user=None, org_admin_password=None):
+    """
+    Delete user management from channels list
+
+    :param name: DeleteD
+    :param password: user password
+    :param unmanaged_channels: channels user should not manage
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
+    :return: dict for Salt communication
+    """
+    return UyuniUserChannels().delete(name, password, unmanaged_channels,
+                                      org_admin_user, org_admin_password)
+
 
 
 def user_absent(name, org_admin_user=None, org_admin_password=None):
