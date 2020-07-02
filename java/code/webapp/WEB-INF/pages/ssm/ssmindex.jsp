@@ -173,6 +173,7 @@
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_package_refresh)">
                             <li><bean:message key="ssm.overview.misc.packageprofiles"/></li>
                         </rhn:require>
+                        <li><bean:message key="ssm.overview.schedule.assign"/></li>
                         <rhn:require acl="all_systems_in_set_have_feature(ftr_remote_command)">
                             <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
                         </rhn:require>
