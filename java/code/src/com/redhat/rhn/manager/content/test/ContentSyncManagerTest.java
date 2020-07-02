@@ -46,9 +46,6 @@ import com.redhat.rhn.manager.content.ProductTreeEntry;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.model.ChannelFamilyJson;
@@ -56,6 +53,10 @@ import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.UpgradePathJson;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.FileUtils;
 
@@ -1283,6 +1284,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     public void testIsRefreshNeeded() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        Config.get().remove(ContentSyncManager.RESOURCE_PATH);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
