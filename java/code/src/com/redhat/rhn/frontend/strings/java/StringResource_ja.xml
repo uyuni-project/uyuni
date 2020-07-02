@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
   <file source-language="en" datatype="plaintext" original="" target-language="ja">
     <body>
@@ -210,44 +210,34 @@
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
         <trans-unit id="yes">
-          <source>Yes</source>
-          <target>はい</target>
+          <source>Yes</source> <target>はい</target>
         </trans-unit>
         <trans-unit id="no">
-          <source>No</source>
-          <target>いいえ</target>
+          <source>No</source> <target>いいえ</target>
         </trans-unit>
         <trans-unit id="Enabled">
-          <source>Enabled</source>
-          <target>有効</target>
+          <source>Enabled</source> <target>有効</target>
         </trans-unit>
         <trans-unit id="Disabled">
-          <source>Disabled</source>
-          <target>無効</target>
+          <source>Disabled</source> <target>無効</target>
         </trans-unit>
         <trans-unit id="Tip">
-          <source>Tip</source>
-          <target>ヒント</target>
+          <source>Tip</source> <target>ヒント</target>
         </trans-unit>
         <trans-unit id="Note">
-          <source>Note</source>
-          <target>注記</target>
+          <source>Note</source> <target>注記</target>
         </trans-unit>
         <trans-unit id="Warning">
-          <source>Warning</source>
-          <target>警告</target>
+          <source>Warning</source> <target>警告</target>
         </trans-unit>
         <trans-unit id="Custom">
-          <source>Custom</source>
-          <target>カスタム</target>
+          <source>Custom</source> <target>カスタム</target>
         </trans-unit>
         <trans-unit id="Examples">
-          <source>Examples</source>
-          <target>例</target>
+          <source>Examples</source> <target>例</target>
         </trans-unit>
         <trans-unit id="none specified">
-          <source>none specified</source>
-          <target>未指定</target>
+          <source>none specified</source> <target>未指定</target>
         </trans-unit>
       </group>
       <trans-unit id="About Spacewalk">
@@ -398,7 +388,7 @@
         <target>スペースは有効?</target>
       </trans-unit>
       <trans-unit id="list delimiter">
-        <source>, </source>
+        <source>,</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Anywhere a list of words is delimited</context>
         </context-group>
@@ -476,6 +466,7 @@
       </trans-unit>
       <trans-unit id="Channel List">
         <source>Channel List</source>
+        <target>チャンネル一覧</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -552,12 +543,14 @@
       </trans-unit>
       <trans-unit id="Guests">
         <source>Guests</source>
+        <target>ゲスト</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Storage">
         <source>Storage</source>
+        <target>ストレージ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -650,6 +643,7 @@
       </trans-unit>
       <trans-unit id="Documentation_version">
         <source>Documentation {0}</source>
+        <target>ドキュメンテーション {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -712,6 +706,7 @@
       </trans-unit>
       <trans-unit id="Manage">
         <source>Manage</source>
+        <target>管理</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -865,12 +860,14 @@
       </trans-unit>
       <trans-unit id="product_proxy">
         <source>@@PRODUCT_NAME@@ Proxy</source>
+        <target>@@PRODUCT_NAME@@ プロキシ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_server">
         <source>@@PRODUCT_NAME@@ Server</source>
+        <target>@@PRODUCT_NAME@@ サーバ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1045,6 +1042,7 @@
       </trans-unit>
       <trans-unit id="System List">
         <source>System List</source>
+        <target>システム一覧</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1065,12 +1063,14 @@
       </trans-unit>
       <trans-unit id="Last Execution Times">
         <source>Last Execution Times</source>
+        <target>直近の実行時間</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Runtime Status">
         <source>Runtime Status</source>
+        <target>実行時の状態</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1101,7 +1101,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
-        <target>&lt;p&gt; &lt;strong&gt; &lt;a href=&quot;http://www.redhat.com&quot;&gt;{0} システムに対して十分なエンタイトルメントがありません&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;</target>
+        <target>&lt;p&gt; &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} システムに対して十分なエンタイトルメントがありません&lt;/a&gt;&lt;/strong&gt;。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="traceback message header">
         <source>The following exception occurred while executing this request:</source>
@@ -1199,7 +1199,7 @@
         <target>Sr.</target>
       </trans-unit>
       <trans-unit id="user prefix  ">
-        <source> </source>
+        <source></source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1308,7 +1308,7 @@
         <target>値</target>
       </trans-unit>
       <trans-unit id="web traceback subject">
-        <source>WEB TRACEBACK from </source>
+        <source>WEB TRACEBACK from</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
@@ -1323,30 +1323,35 @@
       </trans-unit>
       <trans-unit id="Notification Messages">
         <source>Notification Messages</source>
+        <target>通知メッセージ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="User Account">
         <source>User Account</source>
+        <target>ユーザアカウント</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Account">
         <source>My Account</source>
+        <target>マイアカウント</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Preferences">
         <source>My Preferences</source>
+        <target>設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="My Organization">
         <source>My Organization</source>
+        <target>組織</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1394,7 +1399,7 @@
         <target>システムグループ管理者　</target>
       </trans-unit>
       <trans-unit id="for Org">
-        <source> for Org </source>
+        <source>for Org</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
@@ -1533,6 +1538,7 @@
       </trans-unit>
       <trans-unit id="error.maxpassword">
         <source>Passwords cannot be more than {0} characters.</source>
+        <target>パスワードを {0} 文字以上にすることはできません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1648,6 +1654,7 @@
       </trans-unit>
       <trans-unit id="address2">
         <source>Street Address 2</source>
+        <target>所番地 2</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Edit</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -1779,12 +1786,10 @@
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
         <trans-unit id="first">
-          <source>First Scan Id</source>
-          <target>1 番目のスキャン ID</target>
+          <source>First Scan Id</source> <target>1 番目のスキャン ID</target>
         </trans-unit>
         <trans-unit id="second">
-          <source>Second Scan Id</source>
-          <target>2 番目のスキャン ID</target>
+          <source>Second Scan Id</source> <target>2 番目のスキャン ID</target>
         </trans-unit>
       </group>
       <trans-unit id="message.perms_updated">
@@ -1913,14 +1918,14 @@
         <target>アカウント &lt;strong&gt;{0}&lt;/strong&gt; が作成されました。</target>
       </trans-unit>
       <trans-unit id="message.filterby">
-        <source>Filter by {0}: </source>
+        <source>Filter by {0}:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
         <target>{0} でフィルターする: </target>
       </trans-unit>
       <trans-unit id="message.filterby.multiple">
-        <source>Filter by: </source>
+        <source>Filter by:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
@@ -1934,8 +1939,7 @@
         <target>{0} - {1} / {2}</target>
       </trans-unit>
       <trans-unit id="message.range.withtypedescription">
-        <source>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
-{3} displayed</source>
+        <source>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt; {3} displayed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
@@ -2002,21 +2006,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>ACL ステートメントを構文解析できませんでした :&quot;{0}&quot;</target>
+        <target>ACL ステートメントを構文解析できませんでした :"{0}"</target>
       </trans-unit>
       <trans-unit id="bad-handler">
         <source>Could not find ACL handler {0} in statement: "{1}". Available ACL handlers: {2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>ステートメントに ACL ハンドラー {0} が見つかりませんでした: &quot;{1}&quot;。使用できる ACL ハンドラー: {2}</target>
+        <target>ステートメントに ACL ハンドラー {0} が見つかりませんでした: "{1}"。使用できる ACL ハンドラー: {2}</target>
       </trans-unit>
       <trans-unit id="invocation-target-exception">
         <source>IllegalInvocationException calling {0} ("{1}"): {2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>IllegalInvocationException が {0} (&quot;{1}&quot;) を呼び出しています: {2}</target>
+        <target>IllegalInvocationException が {0} ("{1}") を呼び出しています: {2}</target>
       </trans-unit>
       <trans-unit id="no notes">
         <source>(none)</source>
@@ -2135,7 +2139,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
-        <target>{0} ファイルのアップロードが &lt;a href=&quot;{1}&quot;&gt;スケジュールされました&lt;/a&gt;。</target>
+        <target>{0} ファイルのアップロードが &lt;a href="{1}"&gt;スケジュールされました&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="configfiles.upload">
         <source>Import config file data from system</source>
@@ -2153,6 +2157,7 @@
       </trans-unit>
       <trans-unit id="configfiles.deployed">
         <source>Files successfully deployed</source>
+        <target>ファイルを正しく配置しました</target>
       </trans-unit>
       <trans-unit id="configfiles.verify">
         <source>Verify deployed config files</source>
@@ -2170,6 +2175,7 @@
       </trans-unit>
       <trans-unit id="configfiles.diffed">
         <source>Files successfully compared</source>
+        <target>ファイルの比較を行ないました</target>
       </trans-unit>
       <trans-unit id="config.actionnote">
         <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</source>
@@ -2177,7 +2183,7 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Revision 5 of /etc/foo from My Config Channel</context>
         </context-group>
-        <target>&lt;a href=&quot;{3}&quot;&gt;{4}&lt;/a&gt; からの &lt;a href=&quot;{0}&quot;&gt;リビジジョン {1}&lt;/a&gt; - {2}</target>
+        <target>&lt;a href="{3}"&gt;{4}&lt;/a&gt; からの &lt;a href="{0}"&gt;リビジジョン {1}&lt;/a&gt; - {2}</target>
       </trans-unit>
       <trans-unit id="config.upload.onechannel">
         <source>Destination Configuration Channel: {0}</source>
@@ -2209,36 +2215,11 @@
         <target>以下のパッケージはキックスタートプロファイル {0} に関連するチャンネルには存在しません。キックスタート機能をすべて適切に動作させるには、このプロファイルに関連するチャンネルの 1 つ以上に以下のパッケージが存在しなければなりません。</target>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage">
-        <source>&lt;div style="text-align: left;"&gt;
-&lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-Is the 'rhn-tools' child software channel for this kickstart profile's base
-channel available to your organization? If it is not, you will need to request
-entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator.
-&lt;/li&gt;
-&lt;li&gt;
-Make sure that the 'rhn-tools' child channel for this kickstart profile's base
-channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-SUSE Manager administrator and request a satellite-sync for the rhn-tools channel
-and try again.
-&lt;/li&gt;
-&lt;li&gt;
-Make sure the spacewalk-koan package corresponding to this kickstart are
-available in the kickstart's base channel's 'rhn-tools' channel. If not, you
-will need to make them available for this kickstart profile to function properly.
-&lt;/li&gt;
-&lt;li&gt;
-Are the packages listed above available in this kickstart's base channel? If not, you will need to make them
-available for this kickstart profile to function properly.
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-</source>
+        <source>&lt;div style="text-align: left;"&gt; &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; Is the 'rhn-tools' child software channel for this kickstart profile's base channel available to your organization? If it is not, you will need to request entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator. &lt;/li&gt; &lt;li&gt; Make sure that the 'rhn-tools' child channel for this kickstart profile's base channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your SUSE Manager administrator and request a satellite-sync for the rhn-tools channel and try again. &lt;/li&gt; &lt;li&gt; Make sure the spacewalk-koan package corresponding to this kickstart are available in the kickstart's base channel's 'rhn-tools' channel. If not, you will need to make them available for this kickstart profile to function properly. &lt;/li&gt; &lt;li&gt; Are the packages listed above available in this kickstart's base channel? If not, you will need to make them available for this kickstart profile to function properly. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target>&lt;div style=&quot;text-align: left;&quot;&gt;
+        <target>&lt;div style="text-align: left;"&gt;
 &lt;p&gt;この問題を解決するために、以下のことを確認してください。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2266,23 +2247,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
 </target>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream">
-        <source>&lt;div style="text-align: left;"&gt;
-&lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-Is the 'appstream' child software channel for this kickstart profile's base
-channel available to your organization? If it is not, you will need to request
-entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator.
-&lt;/li&gt;
-&lt;li&gt;
-Make sure that the 'appstream' child channel for this kickstart profile's base
-channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-satellite administrator and request a cdn-sync for the appstream channel
-and try again.
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/div&gt;
-</source>
+        <source>&lt;div style="text-align: left;"&gt; &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; Is the 'appstream' child software channel for this kickstart profile's base channel available to your organization? If it is not, you will need to request entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator. &lt;/li&gt; &lt;li&gt; Make sure that the 'appstream' child channel for this kickstart profile's base channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your satellite administrator and request a cdn-sync for the appstream channel and try again. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2309,7 +2274,7 @@ and try again.
         <target>キックスタートのパッケージ同期をスケジュール</target>
       </trans-unit>
       <trans-unit id="kickstart.error.invalidlabel">
-        <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, - </source>
+        <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, -</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -2448,7 +2413,7 @@ and try again.
         <target>&lt;strong&gt;{0}&lt;/strong&gt; という名前のキックスタートスニペットはすでに存在します。</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message">
-        <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
+        <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or begin with a period(.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2552,7 +2517,7 @@ and try again.
             1 system failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/FailedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} システム&lt;/a&gt;&lt;/strong&gt; がこの動作の完了に失敗しました。&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} システム&lt;/a&gt;&lt;/strong&gt; がこの動作の完了に失敗しました。&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.failedlink.plural">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2562,7 +2527,7 @@ and try again.
             2 systems failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/FailedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} システム&lt;/a&gt;&lt;/strong&gt; がこの動作の完了に失敗しました。&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} システム&lt;/a&gt;&lt;/strong&gt; がこの動作の完了に失敗しました。&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2572,7 +2537,7 @@ and try again.
             1 system successfully completed this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} システム&lt;/a&gt;&lt;/strong&gt; がこの動作を正しく完了しました。&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} システム&lt;/a&gt;&lt;/strong&gt; がこの動作を正しく完了しました。&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink.plural">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2582,7 +2547,7 @@ and try again.
             2 systems successfully completed this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} システム&lt;/a&gt;&lt;/strong&gt; がこの動作を正しく完了しました。&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} システム&lt;/a&gt;&lt;/strong&gt; がこの動作を正しく完了しました。&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.name">
         <source>Patch Update: {0} - {1}</source>
@@ -2601,28 +2566,28 @@ and try again.
         <target>エラータ更新: ソフトウェア更新スタックの更新の組み合わせ ({0} エラータ)</target>
       </trans-unit>
       <trans-unit id="errata.schedule">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule">
-        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural">
-        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -3059,7 +3024,7 @@ and try again.
         <target>クエリーを構文解析できませんでした '{0}'</target>
       </trans-unit>
       <trans-unit id="packages.search.index_files_missing">
-        <source>Index files missing from search-server.  Assuming data exists in database, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
+        <source>Index files missing from search-server. Assuming data exists in database, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
@@ -3444,9 +3409,7 @@ and try again.
         <target>ベースとなる組織 {0} は削除できません。</target>
       </trans-unit>
       <trans-unit id="userdisable.error.orgadmin">
-        <source>You cannot deactivate another organization
-administrator. Please remove the 'Organization Administrator' role from this
-user before attempting to deactivate their account.</source>
+        <source>You cannot deactivate another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
@@ -3880,7 +3843,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="paramnotes">You have successfully scheduled a package profile refresh
                                              for workstation3.</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={1}&quot;&gt;{2}&lt;/a&gt; に対して &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={0}&quot;&gt;パッケージプロファイルのリフレッシュ&lt;/a&gt; が正しくスケジュールされました。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt; に対して &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;パッケージプロファイルのリフレッシュ&lt;/a&gt; が正しくスケジュールされました。</target>
       </trans-unit>
       <trans-unit id="message.bulkremovecustomdata">
         <source>Value removed for &lt;strong&gt;{0}&lt;/strong&gt; from {1} systems.</source>
@@ -3986,15 +3949,15 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>&lt;strong&gt;{3}&lt;/strong&gt; からの &lt;strong&gt;{2}&lt;/strong&gt; に対するパッケージプロファイルの同期が正しく &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}&quot;&gt;スケジュールされました&lt;/a&gt;&lt;/strong&gt;。</target>
+        <target>&lt;strong&gt;{3}&lt;/strong&gt; からの &lt;strong&gt;{2}&lt;/strong&gt; に対するパッケージプロファイルの同期が正しく &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされました&lt;/a&gt;&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.hardwarerefresh">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync. This is required to verify that the system has the ability to compare packages.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; @@PRODUCT_NAME@@ は &lt;strong&gt;{2}&lt;/strong&gt; のハードウェアリフレッシュがパッケージプロファイルの同期より先に実行されるよう &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}&quot;&gt;スケジュールされています&lt;/a&gt;&lt;/strong&gt;。これは、システムがパッケージの比較を行えるかどうかを検証するために必要です。</target>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; @@PRODUCT_NAME@@ は &lt;strong&gt;{2}&lt;/strong&gt; のハードウェアリフレッシュがパッケージプロファイルの同期より先に実行されるよう &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt;&lt;/strong&gt;。これは、システムがパッケージの比較を行えるかどうかを検証するために必要です。</target>
       </trans-unit>
       <trans-unit id="filterCreate.success">
         <source>The filter {0} was successfully created</source>
@@ -4018,7 +3981,7 @@ user before attempting to deactivate their account.</source>
         <target>同期するパッケージはありません。</target>
       </trans-unit>
       <trans-unit id="punctuation.colonwithspace">
-        <source>: </source>
+        <source>:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.systems.monitoring.BaseProbeAction</context>
         </context-group>
@@ -4082,12 +4045,10 @@ user before attempting to deactivate their account.</source>
                         like the start and expiration date for notification filters.
                 </note>
         <trans-unit id="daterangepicker.error.invalid">
-          <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-          <target>日付 &quot;{0}&quot; は有効ではないため、そのデフォルトにリセットされています。選択する月にそれだけの日数があるか確認してください。</target>
+          <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source> <target>日付 "{0}" は有効ではないため、そのデフォルトにリセットされています。選択する月にそれだけの日数があるか確認してください。</target>
         </trans-unit>
         <trans-unit id="daterangepicker.error.start.before.end">
-          <source>The start date "{0}" must be before the end date "{1}"</source>
-          <target>開始日 &quot;{0}&quot; は終了日 &quot;{1}&quot; より前でなければなりません。</target>
+          <source>The start date "{0}" must be before the end date "{1}"</source> <target>開始日 "{0}" は終了日 "{1}" より前でなければなりません。</target>
         </trans-unit>
       </group>
       <trans-unit id="monitoring.services.restarted">
@@ -5914,7 +5875,7 @@ user before attempting to deactivate their account.</source>
         <target>通知メソッド '{0}' が作成されました。</target>
       </trans-unit>
       <trans-unit id="method.nametaken">
-        <source>Notification Method with name '{0}' is already in use.  Please choose a different name.</source>
+        <source>Notification Method with name '{0}' is already in use. Please choose a different name.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.AbstractMethodEditAction</context>
         </context-group>
@@ -5960,14 +5921,14 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ Service の最初のユーザーが作成されました。追加の設定は、&lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;ここをクリック&lt;/strong&gt;&lt;/a&gt; して完了してください。</target>
+        <target>@@PRODUCT_NAME@@ Service の最初のユーザーが作成されました。追加の設定は、&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;ここをクリック&lt;/strong&gt;&lt;/a&gt; して完了してください。</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>外部で認証された &lt;strong&gt;{0}&lt;/strong&gt; ユーザーとしてログインしています。このアカウントのログインとパスワードでログインするには、&lt;a href=&quot;/rhn/account/UserDetails.do&quot;&gt;&lt;strong&gt;{0} ユーザーページ&lt;/strong&gt;&lt;/a&gt; でパスワードを設定してください。</target>
+        <target>外部で認証された &lt;strong&gt;{0}&lt;/strong&gt; ユーザーとしてログインしています。このアカウントのログインとパスワードでログインするには、&lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} ユーザーページ&lt;/strong&gt;&lt;/a&gt; でパスワードを設定してください。</target>
       </trans-unit>
       <trans-unit id="hostname">
         <source>@@PRODUCT_NAME@@ server hostname</source>
@@ -6041,14 +6002,14 @@ user before attempting to deactivate their account.</source>
         <target>未処理エラー</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.success">
-        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
+        <source>Bootstrap script successfully generated. You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>ブートストラップスクリプトが正しく生成されました。 &lt;a href=&quot;{0}/pub/bootstrap/&quot;&gt;{0}/pub/bootstrap/&lt;/a&gt; からアクセスできます。</target>
+        <target>ブートストラップスクリプトが正しく生成されました。 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; からアクセスできます。</target>
       </trans-unit>
       <trans-unit id="restart.config.error">
-        <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
+        <source>There was an error restarting the @@PRODUCT_NAME@@. It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;. Please contact support for more information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
@@ -6062,11 +6023,11 @@ user before attempting to deactivate their account.</source>
         <target>エラーが発生して、ご使用の Satellite 設定に関する変更は保存できませんでした。詳細についてはサポートに連絡してください。</target>
       </trans-unit>
       <trans-unit id="restart.config.success">
-        <source>@@PRODUCT_NAME@@ restarting.  If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually. </source>
+        <source>@@PRODUCT_NAME@@ restarting. If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ の再起動中です。このページが 5 分後にリフレッシュされない場合は、&lt;a href=&quot;/rhn/YourRhn.do&quot;&gt;ここ&lt;/a&gt; をクリックして、手動でリフレッシュしてください。</target>
+        <target>@@PRODUCT_NAME@@ の再起動中です。このページが 5 分後にリフレッシュされない場合は、&lt;a href="/rhn/YourRhn.do"&gt;ここ&lt;/a&gt; をクリックして、手動でリフレッシュしてください。</target>
       </trans-unit>
       <trans-unit id="restart.config.norestart">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
@@ -6132,7 +6093,7 @@ user before attempting to deactivate their account.</source>
         <target>キーが正しく削除されました。</target>
       </trans-unit>
       <trans-unit id="crypto.key.descinuse">
-        <source>This description is already in use.  Please type a new description for this key.</source>
+        <source>This description is already in use. Please type a new description for this key.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -6174,7 +6135,7 @@ user before attempting to deactivate their account.</source>
         <target>ファイル保持一覧が更新されました。</target>
       </trans-unit>
       <trans-unit id="preservation.key.labelexists">
-        <source>File Preservation label already exists. Please choose a unique File Preservation label. </source>
+        <source>File Preservation label already exists. Please choose a unique File Preservation label.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListCreate.do</context>
         </context-group>
@@ -6216,17 +6177,7 @@ user before attempting to deactivate their account.</source>
         <target>{0} ファイル保持一覧が追加されました。</target>
       </trans-unit>
       <trans-unit id="taskomatic.msg.awolservers">
-        <source>Systems Not Checking In:
--------------------------
-The following systems recently stopped checking in with @@PRODUCT_NAME@@:
-
-{0}
-
-
-Please note that inactive systems cannot receive any updates.
-
-Follow this url to see the full list of inactive systems:
-{1}</source>
+        <source>Systems Not Checking In: ------------------------- The following systems recently stopped checking in with @@PRODUCT_NAME@@: {0} Please note that inactive systems cannot receive any updates. Follow this url to see the full list of inactive systems: {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -6431,7 +6382,7 @@ Follow this url to see the full list of inactive systems:
         <target>キックスタートスクリプトが削除されました。</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.success">
-        <source>Autoinstallation cloned successfully.  You are now editing the cloned Autoinstallation.</source>
+        <source>Autoinstallation cloned successfully. You are now editing the cloned Autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
@@ -6459,7 +6410,7 @@ Follow this url to see the full list of inactive systems:
         <target>{0} に対してシステムキックスタートがスケジュールされました</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate">
-        <source>System record created for {0} in Cobbler.  This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
+        <source>System record created for {0} in Cobbler. This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6479,7 +6430,7 @@ Follow this url to see the full list of inactive systems:
         <target>{0} にシステムキックスタートがスケジュールされました。システムコンソールで状況を確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noprofiles">
-        <source>No profiles found that are compatible with this System.  Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
+        <source>No profiles found that are compatible with this System. Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6521,7 +6472,7 @@ Follow this url to see the full list of inactive systems:
         <target>このシステムの現在のベースチャンネルに対して、チャンネル {0} へのサブスクリプションが残っていません。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date">
-        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
+        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6597,7 +6548,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel">
-        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -6618,7 +6569,7 @@ Follow this url to see the full list of inactive systems:
         <target>指定の場所で initrd が見つかりませんでした: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.inuse">
-        <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
+        <source>The Autoinstallable Distribution you have chosen to delete is in use. Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
@@ -6698,59 +6649,45 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
         <trans-unit id="activation-key.java.invalid_chars">
-          <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
-          <target>アクティベーションキーラベル &lt;strong&gt;{0}&lt;/strong&gt; に無効な文字 &lt;strong&gt;{1}&lt;/strong&gt; が 1 つ以上含まれています。ラベルから無効な文字を削除してください。</target>
+          <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source> <target>アクティベーションキーラベル &lt;strong&gt;{0}&lt;/strong&gt; に無効な文字 &lt;strong&gt;{1}&lt;/strong&gt; が 1 つ以上含まれています。ラベルから無効な文字を削除してください。</target>
         </trans-unit>
         <trans-unit id="activation-key.java.exists">
-          <source>An activation key with label '{0}' is already taken. Please choose a different label.</source>
-          <target>'{0}' というラベルのアクティベーションキーはすでに使用されています。別のラベルをを選択してください。</target>
+          <source>An activation key with label '{0}' is already taken. Please choose a different label.</source> <target>'{0}' というラベルのアクティベーションキーはすでに使用されています。別のラベルをを選択してください。</target>
         </trans-unit>
         <trans-unit id="activation-key.java.created">
-          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
-          <target>アクティベーションキー &lt;strong&gt;{0}&lt;/strong&gt; が作成されました。</target>
+          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source> <target>アクティベーションキー &lt;strong&gt;{0}&lt;/strong&gt; が作成されました。</target>
         </trans-unit>
         <trans-unit id="activation-key.java.deleted">
-          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-          <target>アクティベーションキー &lt;strong&gt;{0}&lt;/strong&gt; が削除されました。</target>
+          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source> <target>アクティベーションキー &lt;strong&gt;{0}&lt;/strong&gt; が削除されました。</target>
         </trans-unit>
         <trans-unit id="activation-key.java.cloned">
-          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
-          <target>アクティベーションキー &lt;strong&gt;{0}&lt;/strong&gt; のクローンが作成されました。</target>
+          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source> <target>アクティベーションキー &lt;strong&gt;{0}&lt;/strong&gt; のクローンが作成されました。</target>
         </trans-unit>
         <trans-unit id="activation-key.java.modified">
-          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
-          <target>アクティベーションキー &lt;strong&gt;{0}&lt;/strong&gt; が変更されました。</target>
+          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source> <target>アクティベーションキー &lt;strong&gt;{0}&lt;/strong&gt; が変更されました。</target>
         </trans-unit>
         <trans-unit id="activation-key.java.org_prefixed">
-          <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; が &lt;strong&gt;{1}&lt;/strong&gt; に変更されていることに注意してください。</target>
+          <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; が &lt;strong&gt;{1}&lt;/strong&gt; に変更されていることに注意してください。</target>
         </trans-unit>
         <trans-unit id="activation-key.java.allowed-values">
-          <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
-        </trans-unit>
+          <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source> </trans-unit>
         <trans-unit id="system.sdc.missing.config_deploy1">
-          <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
-          <target>このシステムには設定配備機能がありません。設定配備には特定のソフトウェアがシステムにインストールされ、有効になっていなければなりません。</target>
+          <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source> <target>このシステムには設定配備機能がありません。設定配備には特定のソフトウェアがシステムにインストールされ、有効になっていなければなりません。</target>
         </trans-unit>
         <trans-unit id="system.sdc.missing.config_deploy2">
-          <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-          <target>このシステムで設定配備機能が有効になるかを確認するには、&lt;a href={0}&gt;{1}&lt;/a&gt; スクリーンでこのシステムを選択し、&quot;{2}&quot; をクリックします。</target>
+          <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source> <target>このシステムで設定配備機能が有効になるかを確認するには、&lt;a href={0}&gt;{1}&lt;/a&gt; スクリーンでこのシステムを選択し、"{2}" をクリックします。</target>
         </trans-unit>
         <trans-unit id="system.sdc.addtossm">
-          <source>System added to the System Set Manager.</source>
-          <target>システム設定マネージャーにシステムが追加されました。</target>
+          <source>System added to the System Set Manager.</source> <target>システム設定マネージャーにシステムが追加されました。</target>
         </trans-unit>
         <trans-unit id="system.sdc.removefromssm">
-          <source>System removed from the System Set Manager.</source>
-          <target>システム設定マネージャーからシステムが削除されました。</target>
+          <source>System removed from the System Set Manager.</source> <target>システム設定マネージャーからシステムが削除されました。</target>
         </trans-unit>
         <trans-unit id="usageLimit">
-          <source>Usage Limit</source>
-          <target>使用限度</target>
+          <source>Usage Limit</source> <target>使用限度</target>
         </trans-unit>
         <trans-unit id="key">
-          <source>Key</source>
-          <target>キー</target>
+          <source>Key</source> <target>キー</target>
         </trans-unit>
       </group>
       <trans-unit id="file_size.b">
@@ -6785,14 +6722,14 @@ Follow this url to see the full list of inactive systems:
         <target>設定ファイルのリビジョンの作成中にエラーが発生しました。({0}) は '{1}' ですが、'{2}' に変更しようとしています。ファイルタイプを変更する場合は、({0}) を削除し、'{1}' ではなく '{2}' として再び追加する必要があります。</target>
       </trans-unit>
       <trans-unit id="error.config-not-specified">
-        <source>Error creating Configuration File Revision:  Upload file not found.</source>
+        <source>Error creating Configuration File Revision: Upload file not found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
         </context-group>
         <target>設定ファイルのリビジョンの作成中にエラーが発生: アップロードファイルが見つかりませんでした。</target>
       </trans-unit>
       <trans-unit id="error.config-empty">
-        <source>Error creating Configuration File Revision:  File {0} is empty.</source>
+        <source>Error creating Configuration File Revision: File {0} is empty.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File /etc/testfile.txt not found.</context>
@@ -6800,7 +6737,7 @@ Follow this url to see the full list of inactive systems:
         <target>設定ファイルのリビジョンの作成中にエラーが発生: ファイル {0} は空です。</target>
       </trans-unit>
       <trans-unit id="error.configtoolarge">
-        <source>Error creating Configuration File Revision:  File too large.  The maximum file size is {0}</source>
+        <source>Error creating Configuration File Revision: File too large. The maximum file size is {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File too large.  The maximum file size is 128 KB</context>
@@ -7227,7 +7164,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target>RHN Applet @@PRODUCT_NAME@@ のアクティベーションが &lt;a href=&quot;{0}&quot;&gt;スケジュールされました&lt;/a&gt;。</target>
+        <target>RHN Applet @@PRODUCT_NAME@@ のアクティベーションが &lt;a href="{0}"&gt;スケジュールされました&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.none">
         <source>None</source>
@@ -7264,16 +7201,13 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
         <trans-unit id="sdc.config.deploy.noaction">
-          <source>No deploy action completed.</source>
-          <target>配備の動作は完了していません。</target>
+          <source>No deploy action completed.</source> <target>配備の動作は完了していません。</target>
         </trans-unit>
         <trans-unit id="sdc.config.deploy.failure">
-          <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>すべてのファイルおよび/またはディレクトリー ({0}) の配備に失敗しました。[&lt;a href=&quot;{1}&quot;&gt;&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source> <target>すべてのファイルおよび/またはディレクトリー ({0}) の配備に失敗しました。[&lt;a href="{1}"&gt;"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.deploy.success">
-          <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>すべてのファイルおよび/またはディレクトリー ({0}) は正常に配備されました。[&lt;a href=&quot;{1}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source> <target>すべてのファイルおよび/またはディレクトリー ({0}) は正常に配備されました。[&lt;a href="{1}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
       </group>
       <group>
@@ -7281,128 +7215,97 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
         <trans-unit id="sdc.config.diff.noaction">
-          <source>No system comparisons completed.</source>
-          <target>システムの比較は完了していません。</target>
+          <source>No system comparisons completed.</source> <target>システムの比較は完了していません。</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0">
-          <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>比較のためのファイル、ディレクトリまたはシンボリックリンクが選択されていません。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>比較のためのファイル、ディレクトリまたはシンボリックリンクが選択されていません。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1">
-          <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 つのシンボリックリンクの内の {4} が @@PRODUCT_NAME@@-Managed ファイルと正常に比較されました。 [&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 つのシンボリックリンクの内の {4} が @@PRODUCT_NAME@@-Managed ファイルと正常に比較されました。 [&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2">
-          <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {5} つのシンボリックリンクの内の {4} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {5} つのシンボリックリンクの内の {4} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0">
-          <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 つのディレクトリーの内の {2} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 つのディレクトリーの内の {2} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1">
-          <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 つのディレクトリーの内の {2} つと 1 つのシンボリックリンクの内の {4} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 つのディレクトリーの内の {2} つと 1 つのシンボリックリンクの内の {4} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2">
-          <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 つのディレクトリーの内の {2} つと {5} つのシンボリックリンクの内の {4} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 つのディレクトリーの内の {2} つと {5} つのシンボリックリンクの内の {4} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0">
-          <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {3} つのディレクトリーの内の {2} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {3} つのディレクトリーの内の {2} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1">
-          <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {3} つのディレクトリーの内の {2} つと 1 つのシンボリックリンクの内の {4} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {3} つのディレクトリーの内の {2} つと 1 つのシンボリックリンクの内の {4} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2">
-          <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {3} つのディレクトリーの内の {2} つと {5} つのシンボリックリンクの内の {4} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {3} つのディレクトリーの内の {2} つと {5} つのシンボリックリンクの内の {4} つが @@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0">
-          <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 つのファイルの内の {0} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 つのファイルの内の {0} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1">
-          <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 つのファイルの内の {0} つと 1 つのシンボリックリンクの内の {4} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 つのファイルの内の {0} つと 1 つのシンボリックリンクの内の {4} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2">
-          <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 つのファイルの内の {0} つと {5} つのシンボリックリンクの内の {4} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 つのファイルの内の {0} つと {5} つのシンボリックリンクの内の {4} つが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0">
-          <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 ファイルの内の {0} ファイルと 1 ディレクトリーの内の {2} ディレクトリーが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 ファイルの内の {0} ファイルと 1 ディレクトリーの内の {2} ディレクトリーが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1">
-          <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 ファイルの内の {0} ファイル、1 ディレクトリーの内の {2} ディレクトリー、および 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 ファイルの内の {0} ファイル、1 ディレクトリーの内の {2} ディレクトリー、および 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2">
-          <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 ファイルの内の {0} ファイル、1 ディレクトリーの内の {2} ディレクトリー、および {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 ファイルの内の {0} ファイル、1 ディレクトリーの内の {2} ディレクトリー、および {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0">
-          <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 ファイルの内の {0} と {3} ディレクトリーの内の {2} が、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 ファイルの内の {0} と {3} ディレクトリーの内の {2} が、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1">
-          <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 ファイルの内の {0} ファイル、{3} ディレクトリーの内の {2} ディレクトリー、および 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 ファイルの内の {0} ファイル、{3} ディレクトリーの内の {2} ディレクトリー、および 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2">
-          <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の 1 ファイルの内の {0} ファイル、{3} ディレクトリーの内の {2} ディレクトリー、および {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の 1 ファイルの内の {0} ファイル、{3} ディレクトリーの内の {2} ディレクトリー、および {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0">
-          <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイルが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイルが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1">
-          <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイルと 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイルと 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2">
-          <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイルと {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイルと {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0">
-          <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイルと 1 ディレクトリーの内の {2} ディレクトリーが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイルと 1 ディレクトリーの内の {2} ディレクトリーが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1">
-          <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイル、1 ディレクトリーの内の {2} ディレクトリー、および 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイル、1 ディレクトリーの内の {2} ディレクトリー、および 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2">
-          <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイル、1 ディレクトリーの内の {2} ディレクトリー、および {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイル、1 ディレクトリーの内の {2} ディレクトリー、および {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0">
-          <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイルと {3} ディレクトリーの内の {2} ディレクトリーが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイルと {3} ディレクトリーの内の {2} ディレクトリーが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1">
-          <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイル、{3} ディレクトリーの内の {2} ディレクトリー、および 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイル、{3} ディレクトリーの内の {2} ディレクトリー、および 1 シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2">
-          <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>システム上の {1} ファイルの内の {0} ファイル、{3} ディレクトリーの内の {2} ディレクトリー、および {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href=&quot;{6}&quot;&gt;詳細の表示&lt;/a&gt;]</target>
+          <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source> <target>システム上の {1} ファイルの内の {0} ファイル、{3} ディレクトリーの内の {2} ディレクトリー、および {5} シンボリックリンクの内の {4} シンボリックリンクが、@@PRODUCT_NAME@@ によって管理されたファイルと正常に比較されました。[&lt;a href="{6}"&gt;詳細の表示&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.differing.files_0">
-          <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-          <target>既存のシステムには @@PRODUCT_NAME@@ 管理ファイルと異なるファイルは存在していません。</target>
+          <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source> <target>既存のシステムには @@PRODUCT_NAME@@ 管理ファイルと異なるファイルは存在していません。</target>
         </trans-unit>
         <trans-unit id="sdc.config.differing.files_1">
-          <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
-          <target>システム上の 1 ファイルの内の 1 つが @@PRODUCT_NAME@@ 管理ファイルと異なっていました。</target>
+          <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source> <target>システム上の 1 ファイルの内の 1 つが @@PRODUCT_NAME@@ 管理ファイルと異なっていました。</target>
         </trans-unit>
         <trans-unit id="sdc.config.differing.files_2">
-          <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-          <target>システム上の {1} ファイルの内の {0} が @@PRODUCT_NAME@@ 管理ファイルと異なっていました。</target>
+          <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source> <target>システム上の {1} ファイルの内の {0} が @@PRODUCT_NAME@@ 管理ファイルと異なっていました。</target>
         </trans-unit>
       </group>
       <group>
@@ -7410,12 +7313,10 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
         <trans-unit id="sdc.config.time.message">
-          <source>{0} by {1}</source>
-          <target>{0} - {1}</target>
+          <source>{0} by {1}</source> <target>{0} - {1}</target>
         </trans-unit>
         <trans-unit id="sdc.config.time.message_url">
-          <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
-          <target>{0} - &lt;a href=&quot;{1}&quot;&gt;{2}&lt;/a&gt;</target>
+          <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source> <target>{0} - &lt;a href="{1}"&gt;{2}&lt;/a&gt;</target>
         </trans-unit>
       </group>
       <group>
@@ -7423,120 +7324,84 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url">
-          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
-        </trans-unit>
+          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0">
-          <source>No files, directories or symlinks.</source>
-        </trans-unit>
+          <source>No files, directories or symlinks.</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1">
-          <source>{3} symlink</source>
-        </trans-unit>
+          <source>{3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2">
-          <source>{3} symlinks</source>
-        </trans-unit>
+          <source>{3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0">
-          <source>{2} directory</source>
-        </trans-unit>
+          <source>{2} directory</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1">
-          <source>{2} directory and {3} symlink</source>
-        </trans-unit>
+          <source>{2} directory and {3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2">
-          <source>{2} directory and {3} symlinks</source>
-        </trans-unit>
+          <source>{2} directory and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0">
-          <source>{2} directories</source>
-        </trans-unit>
+          <source>{2} directories</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1">
-          <source>{2} directories and {3} symlink</source>
-        </trans-unit>
+          <source>{2} directories and {3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2">
-          <source>{2} directories and {3} symlinks</source>
-        </trans-unit>
+          <source>{2} directories and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0">
-          <source>{1} file</source>
-        </trans-unit>
+          <source>{1} file</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1">
-          <source>{1} file and {3} symlink</source>
-        </trans-unit>
+          <source>{1} file and {3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2">
-          <source>{1} file and {3} symlinks</source>
-        </trans-unit>
+          <source>{1} file and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0">
-          <source>{1} file and {2} directory</source>
-        </trans-unit>
+          <source>{1} file and {2} directory</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1">
-          <source>{1} file, {2} directory and {3} symlink</source>
-        </trans-unit>
+          <source>{1} file, {2} directory and {3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2">
-          <source>{1} file, {2} directory and {3} symlinks</source>
-        </trans-unit>
+          <source>{1} file, {2} directory and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0">
-          <source>{1} file and {2} directories</source>
-        </trans-unit>
+          <source>{1} file and {2} directories</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1">
-          <source>{1} file, {2} directories and {3} symlink</source>
-        </trans-unit>
+          <source>{1} file, {2} directories and {3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2">
-          <source>{1} file, {2} directories and {3} symlinks</source>
-        </trans-unit>
+          <source>{1} file, {2} directories and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0">
-          <source>{1} files</source>
-        </trans-unit>
+          <source>{1} files</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1">
-          <source>{1} files and {3} symlink</source>
-        </trans-unit>
+          <source>{1} files and {3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2">
-          <source>{1} files and {3} symlinks</source>
-        </trans-unit>
+          <source>{1} files and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0">
-          <source>{1} files and {2} directory</source>
-        </trans-unit>
+          <source>{1} files and {2} directory</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1">
-          <source>{1} files, {2} directory and {3} symlink</source>
-        </trans-unit>
+          <source>{1} files, {2} directory and {3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2">
-          <source>{1} files, {2} directory and {3} symlinks</source>
-        </trans-unit>
+          <source>{1} files, {2} directory and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0">
-          <source>{1} files and {2} directories</source>
-        </trans-unit>
+          <source>{1} files and {2} directories</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1">
-          <source>{1} files, {2} directories and {3} symlink</source>
-        </trans-unit>
+          <source>{1} files, {2} directories and {3} symlink</source> </trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2">
-          <source>{1} files, {2} directories and {3} symlinks</source>
-        </trans-unit>
+          <source>{1} files, {2} directories and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2">
-          <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
-        </trans-unit>
+          <source>{0} states, {1} file, {2} directories and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2">
-          <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
-        </trans-unit>
+          <source>{0} states, {1} files, {2} directories and {3} symlinks</source> </trans-unit>
         <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0">
-          <source>{0} state</source>
-        </trans-unit>
+          <source>{0} state</source> </trans-unit>
         <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0">
-          <source>{0} state and {1} file</source>
-        </trans-unit>
+          <source>{0} state and {1} file</source> </trans-unit>
         <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0">
-          <source>{0} state and {1} files</source>
-        </trans-unit>
+          <source>{0} state and {1} files</source> </trans-unit>
       </group>
       <group>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
         <trans-unit id="config.channels_0">
-          <source>No configuration channels</source>
-          <target>設定チャンネルがありません</target>
+          <source>No configuration channels</source> <target>設定チャンネルがありません</target>
         </trans-unit>
         <trans-unit id="config.channels_1">
-          <source>1 configuration channel</source>
-          <target>設定チャンネルが 1 つあります</target>
+          <source>1 configuration channel</source> <target>設定チャンネルが 1 つあります</target>
         </trans-unit>
         <trans-unit id="config.channels_2">
-          <source>{0} configuration channels</source>
-          <target>設定チャンネルが {0} あります</target>
+          <source>{0} configuration channels</source> <target>設定チャンネルが {0} あります</target>
         </trans-unit>
       </group>
       <trans-unit id="channel.unavailable">
@@ -8195,7 +8060,7 @@ Follow this url to see the full list of inactive systems:
         <target>{0} チャンネルマネージャーが正常に更新されました。</target>
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting">
-        <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
+        <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
@@ -8215,7 +8080,7 @@ Follow this url to see the full list of inactive systems:
         <target>子チャンネルのサブスクリプションが更新されました。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.failed_channels">
-        <source>Note:  Some channel subscriptions could not be updated because there were no available subscriptions.</source>
+        <source>Note: Some channel subscriptions could not be updated because there were no available subscriptions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
@@ -8232,7 +8097,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">SELinuxMode</context>
         </context-group>
-        <target>無効な SELinux モード &quot;{0}&quot; が指定されました。有効な値は {1} です。</target>
+        <target>無効な SELinux モード "{0}" が指定されました。有効な値は {1} です。</target>
       </trans-unit>
       <trans-unit id="softwareEntitlementSubs.successMessage">
         <source>Updated entitlement count for '{0}'</source>
@@ -8306,10 +8171,10 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/UploadFile</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>このチャンネルにはファイル名 &quot;{0}&quot; はすでに存在しています。</target>
+        <target>このチャンネルにはファイル名 "{0}" はすでに存在しています。</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel">
-        <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
+        <source>Could not automatically subscribe the system to the RHN Tools Channel. This channel contains packages required for virtualization. This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8330,7 +8195,7 @@ Follow this url to see the full list of inactive systems:
         <target>パッケージ {0} を持つ子チャンネルは複数存在します。このシステムを適切な子チャンネルに手動でサブスクライブし、このパッケージのインストールをスケジュールしてください。</target>
       </trans-unit>
       <trans-unit id="system.entitle.novirtchannel">
-        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
+        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel. This channel contains packages required for virtualization. This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8351,11 +8216,11 @@ Follow this url to see the full list of inactive systems:
         <target>システムはすでに {0} エンタイトルメントを持っています。</target>
       </trans-unit>
       <trans-unit id="system.entitle.addedvirtualization">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
+        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。詳細については、&lt;a href=&quot;/rhn/help/reference/en/ref.webui.systems.systems.jsp&quot;&gt;ここ&lt;/a&gt;をご覧ください。</target>
+        <target>システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。詳細については、&lt;a href="/rhn/help/reference/en/ref.webui.systems.systems.jsp"&gt;ここ&lt;/a&gt;をご覧ください。</target>
       </trans-unit>
       <trans-unit id="system.entitle.addedvirtualization.nodoc">
         <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
@@ -8438,7 +8303,7 @@ Follow this url to see the full list of inactive systems:
         <target>サーバーは PAM 認証をサポートするよう設定されていません。PAM の設定手順についてはリファレンスガイドを参照してください。</target>
       </trans-unit>
       <trans-unit id="api.org.migrationtosameorg">
-        <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
+        <source>User cannot migrate a system where the origination and destination organizations are the same. Org Id: {0}, System Id: {1}.</source>
         <target>移行元組織と移行先組織が同じ場合はシステムを移行できません。組織 ID: {0}、システム ID: {1}。</target>
       </trans-unit>
       <trans-unit id="api.org.nosuchorg">
@@ -8495,10 +8360,10 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.systemgroup.lookupServerGroup">
         <source>Unable to locate or access server group: "{0}"</source>
-        <target>サーバーグループの発見やアクセスができません: &quot;{0}&quot;</target>
+        <target>サーバーグループの発見やアクセスができません: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied">
-        <source>Changing administrator access is not allowed for Satellite and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
+        <source>Changing administrator access is not allowed for Satellite and Organization administrators. These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
         <target>Satellite 管理者および組織管理者に対して管理者アクセスの変更が許可されていません。これらのユーザーにはデフォルトでアクセス権が与えられているため、次のユーザーを入力内容から削除する必要があります: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel">
@@ -8527,11 +8392,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target>無効なエラータタイプです &quot;{0}&quot;。&quot;セキュリティーアドバイザリー&quot;、&quot;プロダクト機能強化アドバイザリー&quot;、&quot;バグ修正アドバイザリー&quot; のいずれかを使用してください。</target>
+        <target>無効なエラータタイプです "{0}"。"セキュリティーアドバイザリー"、"プロダクト機能強化アドバイザリー"、"バグ修正アドバイザリー" のいずれかを使用してください。</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
-        <target>無効なアドバイザリーリリース &quot;{0}&quot;です。最大値は {1} です。</target>
+        <target>無効なアドバイザリーリリース "{0}"です。最大値は {1} です。</target>
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
@@ -8555,14 +8420,14 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.channel.software.channelsubscription">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target>このシステムを要求されたチャンネルに対してサブスクライブさせることができません: &quot;{0}&quot;</target>
+        <target>このシステムを要求されたチャンネルに対してサブスクライブさせることができません: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel">
-        <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
+        <source>Multiple base channels selected for subscription. The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
         <target>サブスクリプションに対して複数のベースチャンネルが選択されています。{0} と {1} の両方のチャンネルがサブスクリプションに対して選択されましたが、システムは 1 つのベースチャンネルに対してのみサブスクライブできます。</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannellist">
-        <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
+        <source>The channel list provided is invalid. It must contain a list of channel labels or ids, but not a mixture of both.</source>
         <target>提供されたチャンネルリストは有効ではありません。チャンネルリストにはチャンネルラベルまたは ID をリストしますが、両方が混在してはなりません。</target>
       </trans-unit>
       <trans-unit id="channel.invalidchannelarch">
@@ -8617,7 +8482,7 @@ Follow this url to see the full list of inactive systems:
         <target>指定されたパッケージキー ({0}) は無効です。</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidProvider">
-        <source>The package provider specified ({0}) is  invalid.</source>
+        <source>The package provider specified ({0}) is invalid.</source>
         <target>指定されたパッケージプロバイダー ({0}) は無効です。</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidvirttype">
@@ -8922,14 +8787,14 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="filter.clearfilter">
         <source>The list below is filtered.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Clear filter to see all items.&lt;/strong&gt; &lt;/a&gt;</source>
-        <target>以下のリストがフィルターされています。&lt;br/&gt; &lt;a href=&quot;{0}&quot;&gt; &lt;strong&gt;すべての項目を表示するためにフィルターをクリアにします。&lt;/strong&gt; &lt;/a&gt;</target>
+        <target>以下のリストがフィルターされています。&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;すべての項目を表示するためにフィルターをクリアにします。&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="listtag.clearfilter">
-        <source>Clear filter </source>
+        <source>Clear filter</source>
         <target>フィルターをクリア</target>
       </trans-unit>
       <trans-unit id="listtag.seeall">
-        <source>to see all {0} items.  </source>
+        <source>to see all {0} items.</source>
         <target>{0} 項目全てを見るため</target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessage">
@@ -9099,7 +8964,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscripttype">
         <source>Only script types of "pre" and "post" are allowed for kickstarts.</source>
-        <target>キックスタートには、スクリプトタイプとして &quot;pre&quot; と &quot;post&quot; のみが使用できます。</target>
+        <target>キックスタートには、スクリプトタイプとして "pre" と "post" のみが使用できます。</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscriptname">
         <source>Script Name must be larger than 0 and fewer than 40 characters.</source>
@@ -9114,9 +8979,7 @@ Follow this url to see the full list of inactive systems:
         <target>ラベル</target>
       </trans-unit>
       <trans-unit id="package.remove.cant.rollback">
-        <source>One or more of the packages you have selected for removal below are not contained in
-            a software channel that this system is subscribed to.  If you choose to continue with the removal
-            you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
+        <source>One or more of the packages you have selected for removal below are not contained in a software channel that this system is subscribed to. If you choose to continue with the removal you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
         <target>削除のために選択した以下の 1 つまたは複数のパッケージは、このシステムがサブスクライブする
 			ソフトウェアチャンネルに含まれないものがあります。削除を実行すると、このシステムをこのスナップショットや以前のスナップショットに
 			ロールバックすることができなくなります。</target>
@@ -9329,7 +9192,7 @@ Follow this url to see the full list of inactive systems:
         <source>Channel &lt;strong&gt;'{0}'&lt;/strong&gt; has been deleted.</source>
       </trans-unit>
       <trans-unit id="distribution.tree.exists">
-        <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
+        <source>A distribution already exists with the name '{0}'. Please select another name.</source>
         <target>'{0}' という名前のディストリビューションはすでに存在します。別の名前を選択してください。</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.redhat">
@@ -9337,14 +9200,14 @@ Follow this url to see the full list of inactive systems:
         <target>Red Hat チャンネルは削除できません。カスタムチャンネルのみ削除できます。</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.haschild">
-        <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
+        <source>This channel has child channels associated with it. You must delete those channels first before deleting the parent.</source>
         <target>このチャンネルには子チャンネルが関連付けられています。子チャンネルを削除してから親チャンネルを削除しなければなりません。</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.hasclones">
         <source>Unable to delete channel. The channel you have tried to delete has been cloned. You must delete the clones before you can delete this channel. Cloned channels include ({0}{1}).</source>
       </trans-unit>
       <trans-unit id="api.kickstart.tree.notfound">
-        <source>The autoinstallable tree could not be found.  You may not have access to the requested tree.</source>
+        <source>The autoinstallable tree could not be found. You may not have access to the requested tree.</source>
         <target>キックスタートツリーが見つかりませんでした。指定のツリーへのアクセスが許可されていない可能性があります。</target>
       </trans-unit>
       <trans-unit id="message.channelcreated">
@@ -9446,7 +9309,7 @@ Follow this url to see the full list of inactive systems:
         <target>選択されたキックスタート可能なツリーは現在使用できません。cobbler の機能を確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt">
-        <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
+        <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type. Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
         <target>現在選択されている仮想化タイプに適合しないディストリビューションまたはキックスタートツリーが選択されました。別のディストリビューションを選択するか、またはこのプロファイルの仮想化タイプを変更してからディストリビューションを設定するようにしてください。</target>
       </trans-unit>
       <trans-unit id="snapshots.childchannel">
@@ -9530,7 +9393,7 @@ Follow this url to see the full list of inactive systems:
         <target>システムの移行</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone">
-        <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
+        <source>This organization has no trusted organizations. Systems can only be migrated between organizations with defined trusts.</source>
         <target>この組織には信頼できる組織がありません。信頼できる組織として定義されている組織間でしかシステムの移行は行えません。</target>
       </trans-unit>
       <trans-unit id="ssm.misc.changeprefs.changed">
@@ -9580,23 +9443,7 @@ Follow this url to see the full list of inactive systems:
         <target>ベースチャンネルサブスクリプションの更新</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.distro.syncfail">
-        <source>
-The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to
-synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler.
-These errors must be corrected for the distributions to be available for
-autoinstalling systems:
-
-{0}
-
-Please check:
-
-/var/log/rhn/rhn_taskomatic_daemon.log and
-/var/log/rhn/rhn_web_ui.log
-/var/log/cobbler/cobbler.log
-
-for more detailed errors.  If you don't resolve the errors the autoinstallable
-tree will not be usable for autoinstalling.
-        </source>
+        <source>The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler. These errors must be corrected for the distributions to be available for autoinstalling systems: {0} Please check: /var/log/rhn/rhn_taskomatic_daemon.log and /var/log/rhn/rhn_web_ui.log /var/log/cobbler/cobbler.log for more detailed errors. If you don't resolve the errors the autoinstallable tree will not be usable for autoinstalling.</source>
       </trans-unit>
       <trans-unit id="errata.delete.msg">
         <source>Successfully deleted {0} patches.</source>
@@ -9675,31 +9522,19 @@ tree will not be usable for autoinstalling.
         </context-group>
       </trans-unit>
       <trans-unit id="email.satellitecert.spwbodyend">
-        <source>
-
-
-Thank you for using @@PRODUCT_NAME@@.
---the @@PRODUCT_NAME@@ Team
-</source>
+        <source>Thank you for using @@PRODUCT_NAME@@. --the @@PRODUCT_NAME@@ Team</source>
       </trans-unit>
       <trans-unit id="email.satellitecert.satbodyend">
-        <source>
-Please contact your regional @@VENDOR_NAME@@ Customer Service Representative for information
-on how to renew your @@PRODUCT_NAME@@ Certificate.
-
-
-Thank you for using @@PRODUCT_NAME@@.
---the @@PRODUCT_NAME@@ Team
-</source>
+        <source>Please contact your regional @@VENDOR_NAME@@ Customer Service Representative for information on how to renew your @@PRODUCT_NAME@@ Certificate. Thank you for using @@PRODUCT_NAME@@. --the @@PRODUCT_NAME@@ Team</source>
       </trans-unit>
       <trans-unit id="alphabar.label">
         <source>Select first character</source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody2">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href=&quot;http://www.suse.com/products/suse-manager/&quot; target=&quot;_new&quot;&gt;&lt;i class=&quot;fa fa-globe&quot;&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
-        <source> </source>
+        <source></source>
       </trans-unit>
       <trans-unit id="lookup.customkey.title">
         <source>We're sorry, but the custom key could not be found.</source>
@@ -9718,10 +9553,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Begin autoinstallation at the next system check in.</source>
       </trans-unit>
       <trans-unit id="isodownload.rest.description">
-        <source>
-Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}.
-Note that only one set of ISO images is necessary to install any particular release of {0}.
-</source>
+        <source>Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}. Note that only one set of ISO images is necessary to install any particular release of {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ListCustomData.do</context>
         </context-group>
@@ -9739,27 +9571,19 @@ Note that only one set of ISO images is necessary to install any particular rele
         </context-group>
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr1">
-        <source>
-Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
-</source>
+        <source>Below are all the channel content ISOs available for use with channel {0}. If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr2">
-        <source>
-There are two types of channel content ISOs: Base Channel Content ISOs and Incremental Channel Content ISOs.
-You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt; if you need to initially populate a new @@PRODUCT_NAME@@ with channel content.
-Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.
-</source>
+        <source>There are two types of channel content ISOs: Base Channel Content ISOs and Incremental Channel Content ISOs. You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt; if you need to initially populate a new @@PRODUCT_NAME@@ with channel content. Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-note">
-        <source>
-&lt;strong&gt;Note:&lt;/strong&gt; Additional documentation on using @@PRODUCT_NAME@@ Channel Content ISOs is available in the &lt;em&gt;@@PRODUCT_NAME@@ Installation Guide&lt;/em&gt;, section 6.2.2.
-</source>
+        <source>&lt;strong&gt;Note:&lt;/strong&gt; Additional documentation on using @@PRODUCT_NAME@@ Channel Content ISOs is available in the &lt;em&gt;@@PRODUCT_NAME@@ Installation Guide&lt;/em&gt;, section 6.2.2.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
@@ -9819,19 +9643,19 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       </trans-unit>
       <trans-unit id="satellite.expired">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted">
         <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.graceperiod">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate. Your SUSE Manager will become inactive in {0} day(s).</source>
       </trans-unit>
       <trans-unit id="restricted.forbidden">
         <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
       </trans-unit>
       <trans-unit id="org.entitlements.system.defaultorg">
-        <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
+        <source>You are not allowed to update entitlements in the Default Org. These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
       </trans-unit>
       <trans-unit id="distupgrade.upgrade">
         <source>Service Pack Migration</source>
@@ -9960,25 +9784,25 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Removed &lt;strong&gt;{1}&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host.nodoc">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host.nodoc">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
