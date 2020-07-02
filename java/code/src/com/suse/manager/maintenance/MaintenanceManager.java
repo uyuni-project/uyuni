@@ -422,19 +422,23 @@ public class MaintenanceManager {
      * @param user the user
      * @param schedule the {@link MaintenanceSchedule}
      * @param systemIds the set of {@link Server} IDs
+     * @param cancelAffectedActions whether the affected maintenance-only actions outside the window shall be cancelled
      * @throws PermissionException if the user does not have access to given servers
      * @throws IllegalArgumentException if systems have pending maintenance-only actions
      * @return the number of involved {@link Server}s
      */
-    public int assignScheduleToSystems(User user, MaintenanceSchedule schedule, Set<Long> systemIds) {
+    public int assignScheduleToSystems(User user, MaintenanceSchedule schedule, Set<Long> systemIds,
+            boolean cancelAffectedActions) {
         ensureOrgAdmin(user);
         ensureSystemsAccessible(user, systemIds);
         ensureScheduleAccessible(user, schedule);
 
-        Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(systemIds);
-        if (!withMaintenanceActions.isEmpty()) {
-            throw new IllegalArgumentException("Systems have pending maintenance-only actions:" +
-                    withMaintenanceActions);
+        RescheduleResult result = manageAffectedScheduledActionsForSystems(user, systemIds, schedule,
+                cancelAffectedActions ? Collections.singletonList(new CancelRescheduleStrategy()) :
+                        Collections.emptyList());
+
+        if (!result.isSuccess()) {
+            throw new IllegalArgumentException("Some systems have pending maintenance-only actions");
         }
 
         return ServerFactory.setMaintenanceScheduleToSystems(schedule, systemIds);
@@ -563,14 +567,9 @@ public class MaintenanceManager {
         }
     }
 
-    private RescheduleResult manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
-            List<RescheduleStrategy> scheduleStrategy) {
-        List<Long> systemIdsUsingSchedule = listSystemIdsWithSchedule(user, schedule);
-        if (systemIdsUsingSchedule.isEmpty()) {
-            return new RescheduleResult(schedule.getName(), true);
-        }
-        Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(
-                new HashSet<Long>(systemIdsUsingSchedule));
+    private RescheduleResult manageAffectedScheduledActionsForSystems(User user, Set<Long> serverIds,
+            MaintenanceSchedule schedule, List<RescheduleStrategy> scheduleStrategy) {
+        Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(serverIds);
         if (withMaintenanceActions.isEmpty()) {
             return new RescheduleResult(schedule.getName(), true);
         }
@@ -623,6 +622,16 @@ public class MaintenanceManager {
         HibernateFactory.rollbackTransaction();
         HibernateFactory.closeSession();
         return new RescheduleResult(schedule.getName(), false);
+    }
+
+    protected RescheduleResult manageAffectedScheduledActions(User user, MaintenanceSchedule schedule,
+            List<RescheduleStrategy> scheduleStrategy) {
+        List<Long> systemIdsUsingSchedule = listSystemIdsWithSchedule(user, schedule);
+        if (systemIdsUsingSchedule.isEmpty()) {
+            return new RescheduleResult(schedule.getName(), true);
+        }
+        return manageAffectedScheduledActionsForSystems(user, new HashSet<>(systemIdsUsingSchedule), schedule,
+                scheduleStrategy);
     }
 
     /**
