@@ -1,40 +1,3 @@
-jQuery(document).ready(function(){
-
-  /*
-   * System Set Manager: actions to hide the SSM toolbar
-   * when the Clear button is pressed or when
-   * no system is selected
-   */
-  jQuery(document).on('click', '#clear-ssm-btn', function() {
-    hidesystemtool();
-  });
-  function hidesystemtool(){
-    jQuery(".spacewalk-bar").animate({
-      "right": "-=50px",
-      "opacity": "0"},
-      300, function() {
-      /* after animation is complete we hide the element */
-      jQuery(this).hide();
-    });
-  }
-  // See if there is a system already selected as soon as the page loads
-  updateSsmToolbarOpacity();
-
-  // This is a function from spacewalk-checkall.js
-  create_checkall_checkbox();
-
-  // Wrapping the tables in a div which will make them responsive
-  jQuery(".table").wrap("<div class='table-responsive'>");
-
-  // Set up the behavior and the event function
-  // for the spacewalk section toolbar [sst]
-  handleSst();
-
-  // Show character length for textarea
-  addTextareaLengthNotification();
-});
-
-
 function adaptFluidColLayout() {
   jQuery('.col-class-calc-width').each(function() {
     var totalWidth = jQuery(this).parent().width();
@@ -44,30 +7,6 @@ function adaptFluidColLayout() {
     jQuery(this).css('width', totalWidth - 10);
   });
 }
-
-/* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
-// On window load
-jQuery(window).on("load", function () {
-  adjustDistanceForFixedHeader();
-  columnHeight();
-});
-
-// On window resize
-jQuery(window).on("resize", function () {
-  alignContentDimensions();
-});
-
-// On window scroll
-jQuery(window).on("scroll", function () {
-  if ((document.documentElement.scrollTop || document.body.scrollTop) < 100) {
-    jQuery('#scroll-top').hide();
-  }
-  else {
-    jQuery('#scroll-top').show();
-  }
-
-  sstScrollBehavior();
-});
 
 // A container function for what should be fired
 // to set HTML tag dimensions
@@ -79,10 +18,7 @@ function alignContentDimensions() {
 }
 
 // empty function by default hooked on window.scroll event
-var sstScrollBehavior = function() {
-  return;
-}
-
+var sstScrollBehavior = function() { return; }
 var sstScrollBehaviorSetupIsDone = false; // flag to implement the function one time only
 function sstScrollBehaviorSetup(sst) {
   sstScrollBehaviorSetupIsDone = true;
@@ -248,7 +184,7 @@ function showFatalError(message, exception) {
 // as much space as possible while still being responsive
 // So three col-md-auto would get col-md-4 each.
 // Five col-md-auto would get two with col-md-3 and three with col-md-2
-jQuery(document).ready(function() {
+function bootstrapColumnsExtension() {
   $.each(['xs', 'sm', 'md', 'lg'], function(idx, gridSize) {
     //for each div with class row
     jQuery('.col-' + gridSize + '-auto:first').parent().each(function() {
@@ -268,7 +204,7 @@ jQuery(document).ready(function() {
       }
     });
   });
-});
+}
 
 
 // Put the focus on a given form element
@@ -316,10 +252,6 @@ function humanizeDates() {
     }
   });
 }
-
-jQuery(document).ready(function() {
-  humanizeDates();
-});
 
 /**
  * Setups ACE editor in a textarea element
@@ -388,17 +320,17 @@ function setupTextareaEditor(textarea, mode) {
   });
 }
 
-/**
- * setups every textarea with data-editor attribute
- * set to some language with an ACE editor
- */
-jQuery(function () {
+function setupTextareaACEEditorPlugin() {
+  /**
+   * setups every textarea with data-editor attribute
+   * set to some language with an ACE editor
+   */
   jQuery('textarea[data-editor]').each(function () {
     var textarea = jQuery(this);
     var mode = textarea.data('editor');
     setupTextareaEditor(textarea, mode);
   });
-});
+}
 
 // Disables the enter key from submitting the form
 function disableEnterKey() {
@@ -448,14 +380,13 @@ var spacewalkContentObserver = new MutationObserver(function(mutations) {
         handleSst();
     }
 });
-
-jQuery(document).ready(function() {
+function contentObserverConfig() {
   var target = document.getElementById('spacewalk-content');
   // configuration of the observer:
   var config = { childList: true, characterData: true, subtree: true };
   // pass in the target node, as well as the observer options
   spacewalkContentObserver.observe(target, config);
-});
+}
 
 jQuery(document).on('click', '.toggle-box', function() {
   if (jQuery(this).hasClass('open')) {
@@ -549,6 +480,65 @@ function initIEWarningUse() {
   }
 }
 
-jQuery(document).ready(function() {
+
+jQuery(document).ready(function(){
+
+  bootstrapColumnsExtension();
+
+  /*
+   * System Set Manager: actions to hide the SSM toolbar
+   * when the Clear button is pressed or when
+   * no system is selected
+   */
+  jQuery(document).on('click', '#clear-ssm-btn', function() {
+    hidesystemtool();
+  });
+  function hidesystemtool(){
+    jQuery(".spacewalk-bar").animate({
+      "right": "-=50px",
+      "opacity": "0"},
+      300, function() {
+      /* after animation is complete we hide the element */
+      jQuery(this).hide();
+    });
+  }
+  // See if there is a system already selected as soon as the page loads
+  updateSsmToolbarOpacity();
+
+  // This is a function from spacewalk-checkall.js
+  create_checkall_checkbox();
+
+  // Wrapping the tables in a div which will make them responsive
+  jQuery(".table").wrap("<div class='table-responsive'>");
+
+  // Set up the behavior and the event function
+  // for the spacewalk section toolbar [sst]
+  handleSst();
+
+  setupTextareaACEEditorPlugin();
+  // Show character length for textarea
+  addTextareaLengthNotification();
+
+  contentObserverConfig();
+
   initIEWarningUse();
-})
+
+  humanizeDates();
+});
+
+
+// Adjust layout on window load and resize
+jQuery(window).on("load resize", function () {
+  alignContentDimensions();
+});
+
+// On window scroll
+jQuery(window).on("scroll", function () {
+  if ((document.documentElement.scrollTop || document.body.scrollTop) < 100) {
+    jQuery('#scroll-top').hide();
+  }
+  else {
+    jQuery('#scroll-top').show();
+  }
+  sstScrollBehavior();
+});
