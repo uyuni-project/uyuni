@@ -10,7 +10,7 @@ function saveProxySettings() {
   ProxySettingsRenderer.saveProxySettings({'hostname': hostname, 'username': username, 'password': password},
     makeAjaxHandler(function(settings) {
       console.log("Proxy settings saved!");
-      jQuery('#http-proxy-save').removeAttr('disabled');
+      jQuery('#http-proxy-save').prop('disabled', false);
       // TODO make sure it succeeded
       setProxySettings(settings);
       setProxySettingsEditable(false);
