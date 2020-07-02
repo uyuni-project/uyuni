@@ -58,11 +58,13 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
             {
                 type === "schedule" &&
                 <MaintenanceScheduleDetails
+                    id={props.data.id}
                     name={props.data.name}
                     calendarName={props.data.calendarName}
                     type={props.data.type}
                     maintenanceWindows={props.data.maintenanceWindows}
                     onDelete={props.onDelete}
+                    onMessage={props.onMessage}
                 /> ||
                 type === "calendar" &&
                 <MaintenanceCalendarDetails
