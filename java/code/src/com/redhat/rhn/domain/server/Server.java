@@ -2114,9 +2114,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
+     * Do not use this method, use getMaintenanceScheduleOpt instead.
      * @return the maintenance schedule
      */
-    protected MaintenanceSchedule getMaintenanceSchedule() {
+    public MaintenanceSchedule getMaintenanceSchedule() {
         return maintenanceSchedule;
     }
 
