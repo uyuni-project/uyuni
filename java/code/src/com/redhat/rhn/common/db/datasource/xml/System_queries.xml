@@ -2419,6 +2419,17 @@ ORDER BY UPPER(COALESCE(X.SERVER_NAME, '(none)')), X.ID
   <elaborator name="entitlements" />
 </mode>
 
+<mode name="target_systems_for_maintenance_schedule" class="com.redhat.rhn.frontend.dto.EssentialServerDto">
+    <query params="user_id, schedule_id">
+        SELECT s.id, s.name
+        FROM rhnServer s JOIN rhnUserServerPerms usp on s.id = usp.server_id
+        WHERE usp.user_id = :user_id
+            AND (s.maintenance_schedule_id IS NULL OR
+                s.maintenance_schedule_id != :schedule_id)
+        ORDER BY UPPER(COALESCE(s.name, '(none)')), s.id
+    </query>
+</mode>
+
 <write-mode name="bulk_remove_custom_values">
   <query params="user_id, set_label, key_id">
 DELETE FROM rhnServerCustomDataValue
