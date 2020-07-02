@@ -445,7 +445,8 @@ public class MaintenanceHandler extends BaseHandler {
 
         Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
         try {
-            return mm.assignScheduleToSystems(loggedInUser, schedule, longIds);
+            //TODO: Add flag param to allow cancelling affected actions
+            return mm.assignScheduleToSystems(loggedInUser, schedule, longIds, false);
         }
         catch (PermissionException e) {
             throw new PermissionCheckFailureException(e);
