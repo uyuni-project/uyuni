@@ -171,7 +171,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         saltUtils = new SaltUtils(
                 saltServiceMock, saltServiceMock, clusterManager, formulaManager
         );
-        saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils, clusterManager);
+        saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils, clusterManager, formulaManager);
         metadataDirOfficial = Files.createTempDirectory("meta");
         formulaDataDir = Files.createTempDirectory("data");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());

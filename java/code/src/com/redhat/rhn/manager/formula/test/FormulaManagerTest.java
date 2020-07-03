@@ -104,7 +104,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
 
         Map<String, Object> layout = Json.GSON.fromJson(layoutData, Map.class);
-        FormulaManager manager = FormulaManager.getInstance();
+        FormulaManager manager = new FormulaManager(saltServiceMock);
         manager.validateContents(contents,layout);
 
     }
@@ -122,7 +122,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
         contents.put("test","dummy"); // add a random field
 
-        FormulaManager manager = FormulaManager.getInstance();
+        FormulaManager manager = new FormulaManager(saltServiceMock);
         try {
             manager.validateContents(contents,layout);
             fail( "Exception expected but didn't throw" );
@@ -202,7 +202,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        FormulaManager manager = FormulaManager.getInstance();
+        FormulaManager manager = new FormulaManager(saltServiceMock);
         User testUser = UserTestUtils.createUser("test-user", user.getOrg().getId());
         try {
             manager.saveServerFormulaData(testUser,minion.getId(), formulaName, contents);

@@ -48,8 +48,7 @@ import java.util.stream.Collectors;
  */
 public class FormulaManager {
 
-    private static FormulaManager instance;
-    private SaltApi saltApi;
+    private final SaltApi saltApi;
     private ServerGroupFactory serverGroupFactory = ServerGroupFactory.SINGLETON;
     private static final String DEFAULT_KEY = "$default";
     private static final String TYPE_KEY = "$type";
@@ -61,18 +60,6 @@ public class FormulaManager {
      */
     public FormulaManager(SaltApi saltApiIn) {
         saltApi = saltApiIn;
-    }
-
-    /**
-     * get the singleton instance.
-     *
-     * @return instance
-     */
-    public static synchronized FormulaManager getInstance() {
-        if (instance == null) {
-            instance = new FormulaManager(GlobalInstanceHolder.SALT_API);
-        }
-        return instance;
     }
 
     /**

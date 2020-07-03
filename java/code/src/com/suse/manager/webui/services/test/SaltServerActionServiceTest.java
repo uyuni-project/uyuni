@@ -149,7 +149,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SaltUtils saltUtils = new SaltUtils(
                 systemQuery, saltApi, clusterManager, formulaManager
         );
-        SaltServerActionService service = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
+        SaltServerActionService service = new SaltServerActionService(systemQuery, saltUtils, clusterManager,
+                formulaManager);
         service.setSkipCommandScriptPerms(true);
         return service;
     }

@@ -24,14 +24,14 @@ public class GlobalInstanceHolder {
     public static final SystemQuery SYSTEM_QUERY = SALT_SERVICE;
     public static final SaltApi SALT_API = SALT_SERVICE;
     private static final ServerGroupManager SERVER_GROUP_MANAGER = ServerGroupManager.getInstance();
-    public static final FormulaManager FORMULA_MANAGER = FormulaManager.getInstance();
+    public static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
     public static final ClusterManager CLUSTER_MANAGER = new ClusterManager(
             SALT_API, SYSTEM_QUERY, SERVER_GROUP_MANAGER, FORMULA_MANAGER
     );
     public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API,
             CLUSTER_MANAGER, FORMULA_MANAGER);
     public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
-            SYSTEM_QUERY, SALT_UTILS, CLUSTER_MANAGER);
+            SYSTEM_QUERY, SALT_UTILS, CLUSTER_MANAGER, FORMULA_MANAGER);
     public static final Access ACCESS = new Access(CLUSTER_MANAGER);
     public static final AclFactory ACL_FACTORY = new AclFactory(ACCESS);
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);

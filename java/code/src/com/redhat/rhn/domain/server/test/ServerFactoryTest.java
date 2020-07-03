@@ -128,7 +128,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private SaltServerActionService saltServerActionService = new SaltServerActionService(
             systemQuery,
             saltUtils,
-            clusterManager
+            clusterManager,
+            formulaManager
     );
 
     @Override
