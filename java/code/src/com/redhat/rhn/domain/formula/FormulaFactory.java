@@ -123,7 +123,7 @@ public class FormulaFactory {
      * @param dataDirPath base path to where store files
      */
     public static void setDataDir(String dataDirPath) {
-        FormulaFactory.dataDir = dataDirPath;
+        FormulaFactory.dataDir = dataDirPath.endsWith(File.separator) ? dataDirPath : dataDirPath + File.separator;
     }
 
     /**
@@ -131,7 +131,8 @@ public class FormulaFactory {
      * @param metadataDirPath base path where to read metadata files from
      */
     public static void setMetadataDirOfficial(String metadataDirPath) {
-        FormulaFactory.metadataDirManager = metadataDirPath;
+        FormulaFactory.metadataDirManager =
+                metadataDirPath.endsWith(File.separator) ? metadataDirPath : metadataDirPath + File.separator;
     }
 
     /**
