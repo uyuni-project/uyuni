@@ -117,7 +117,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         String desc = TestUtils.randomString();
         SystemQuery systemQuery = new SaltService();
         RegularMinionBootstrapper regularMinionBootstrapper =  new RegularMinionBootstrapper(systemQuery);
-        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
