@@ -2,7 +2,6 @@
 'use strict';
 
 const React = require("react");
-const ReactDOM = require("react-dom");
 const Messages = require("components/messages").Messages;
 const Network = require("utils/network");
 const {MaintenanceWindowsDetails} = require("./details/maintenance-windows-details");
@@ -14,7 +13,6 @@ const MaintenanceWindowsApi = require("./api/maintenance-windows-api");
 
 const messagesCounterLimit = 1;
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
-
 
 function getHashId() {
     const match = window.location.hash.match(hashUrlRegex);
@@ -31,13 +29,10 @@ class MaintenanceWindows extends React.Component {
     constructor(props) {
         super(props);
 
-        ["delete", "handleForwardAction", "handleDetailsAction", "handleEditAction", "handleResponseError",
-            "update", "refreshCalendar"]
-            .forEach(method => this[method] = this[method].bind(this));
         this.state = {
             type: type,
             messages: [],
-            schedules: [],
+            items: [],
         };
     }
 
@@ -49,7 +44,7 @@ class MaintenanceWindows extends React.Component {
         });
     }
 
-    updateView(action, id) {
+    updateView = (action, id) => {
         if (action === "details" && id) {
             this.getDetails(id, "details");
         } else if (id || !action) {
@@ -63,11 +58,11 @@ class MaintenanceWindows extends React.Component {
     listMaintenanceWindowItems = () => {
         /* Returns a list of maintenance schedules or calendars depending on the type provided */
         return MaintenanceWindowsApi.list(this.state.type)
-            .then(schedules => {
+            .then(items => {
                 this.setState({
                     action: undefined,
                     selected: undefined,
-                    schedules: schedules
+                    items: items
                 });
             }).catch(this.handleResponseError);
     };
@@ -86,7 +81,7 @@ class MaintenanceWindows extends React.Component {
             }).catch(this.handleResponseError);
     };
 
-    getDetails(row, action) {
+    getDetails = (row, action) => {
         /* Returns the details of given schedule or calendar depending on the type provided */
         return MaintenanceWindowsApi.details(row, this.state.type)
             .then(item => {
@@ -99,22 +94,15 @@ class MaintenanceWindows extends React.Component {
             }).catch(this.handleResponseError);
     }
 
-    handleDetailsAction(row) {
+    handleDetailsAction = (row) => {
         this.getDetails(row, "details");
     }
 
-    handleEditAction(row) {
+    handleEditAction = (row) => {
         this.getDetails(row, "edit");
     }
 
-    toggleActive(schedule) {
-        Object.assign(schedule, {
-            active: !(schedule.active)
-        });
-        this.updateSchedule(schedule);
-    }
-
-    update(item) {
+    update = (item) => {
         return Network.post(
             "/rhn/manager/api/maintenance/" + this.state.type + "/save",
             JSON.stringify(item),
@@ -133,7 +121,7 @@ class MaintenanceWindows extends React.Component {
         }).catch(this.handleResponseError);
     }
 
-    delete(item) {
+    delete = (item) => {
         return Network.del("/rhn/manager/api/maintenance/" + this.state.type + "/delete",
             JSON.stringify(item),
             "application/json")
@@ -159,7 +147,7 @@ class MaintenanceWindows extends React.Component {
             });
     }
 
-    refreshCalendar(item) {
+    refreshCalendar = (item) => {
         return Network.post(
             "/rhn/manager/api/maintenance/calendar/refresh",
             JSON.stringify(item),
@@ -191,7 +179,7 @@ class MaintenanceWindows extends React.Component {
         }
     };
 
-    clearMessages() {
+    clearMessages = () => {
         this.setState({
             messages: []
         });
@@ -218,16 +206,15 @@ class MaintenanceWindows extends React.Component {
                     : (this.state.action === 'edit' || this.state.action === 'create') && isAdmin ?
                         <MaintenanceWindowsEdit type={this.state.type}
                                                 calendarNames={this.state.calendarNames}
-                                                schedule={this.state.selected}
+                                                selected={this.state.selected}
                                                 onEdit={this.update}
                                                 onActionChanged={this.handleForwardAction}
                                                 onRefresh={this.refreshCalendar}
                         />
                         :
                         <MaintenanceWindowsList type={this.state.type}
-                                                data={this.state.schedules}
+                                                data={this.state.items}
                                                 onActionChanged={this.handleForwardAction}
-                                                onToggleActive={this.toggleActive}
                                                 onSelect={this.handleDetailsAction}
                                                 onEdit={this.handleEditAction}
                                                 onDelete={this.delete}
