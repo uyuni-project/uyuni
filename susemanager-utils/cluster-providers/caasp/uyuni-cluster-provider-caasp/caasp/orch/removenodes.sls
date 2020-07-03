@@ -5,7 +5,7 @@ include:
   - caasp.temp_ssh_key.cleanup
 {%- endif %}
 
-mgr_remote_nodes:
+mgr_remove_nodes:
   salt.state:
     - tgt: {{ pillar['management_node'] }}
     - sls:

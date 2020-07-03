@@ -60,9 +60,9 @@ actions:
   # create:
   #   state: caasp.orch.create
   join:
-    state: caasp.orch.join
+    state: caasp.orch.joinnodes
   remove:
-    state: caasp.orch.remove
+    state: caasp.orch.removenodes
   upgrade:
     state: caasp.orcch.upgrade
 
