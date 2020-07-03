@@ -1,14 +1,16 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const Messages = require("components/messages").Messages;
-const Network = require("utils/network");
-const {MaintenanceWindowsDetails} = require("./details/maintenance-windows-details");
-const {MaintenanceWindowsList} = require("./list/maintenance-windows-list");
-const {MaintenanceWindowsEdit} =  require("./edit/maintenance-windows-edit");
+import React, {useState, useEffect} from "react";
+import {Messages} from "components/messages";
+
+import {MaintenanceWindowsDetails} from "./details/maintenance-windows-details";
+import {MaintenanceWindowsList} from "./list/maintenance-windows-list";
+import {MaintenanceWindowsEdit} from "./edit/maintenance-windows-edit";
+
 const MessagesUtils = require("components/messages").Utils;
-const SpaRenderer  = require("core/spa/spa-renderer").default;
+const SpaRenderer = require("core/spa/spa-renderer").default;
+const Network = require("utils/network");
 const MaintenanceWindowsApi = require("./api/maintenance-windows-api");
 
 const messagesCounterLimit = 1;
@@ -24,205 +26,179 @@ function getHashAction() {
     return match ? match[1] : undefined;
 }
 
-class MaintenanceWindows extends React.Component {
+const MaintenanceWindows = () => {
+    const [messages, setMessages] = useState([]);
+    const [items, setItems] = useState([]);
+    const [action, setAction] = useState();
+    const [selected, setSelected] = useState();
+    const [calendarNames,setCalendarNames] = useState();
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            type: type,
-            messages: [],
-            items: [],
-        };
-    }
-
-    componentDidMount() {
-        this.updateView(getHashAction(), getHashId());
-        this.state.type === "schedule" && this.getCalendarNames();
+    useEffect(() => {
+        updateView(getHashAction(), getHashId());
+        type === "schedule" && getCalendarNames();
         window.addEventListener("popstate", () => {
-            this.updateView(getHashAction(), getHashId());
+            updateView(getHashAction(), getHashId());
         });
-    }
+    }, []);
 
-    updateView = (action, id) => {
-        if (action === "details" && id) {
-            this.getDetails(id, "details");
-        } else if (id || !action) {
-            this.handleForwardAction();
+    const updateView = (newAction, id) => {
+        if (newAction === "details" && id) {
+            getDetails(id, "details");
+        } else if (id || !newAction) {
+            handleForwardAction();
         } else {
-            this.setState({action: action});
+            setAction(newAction);
         }
-        this.clearMessages();
+        clearMessages();
     }
 
-    listMaintenanceWindowItems = () => {
+    const listMaintenanceWindowItems = () => {
         /* Returns a list of maintenance schedules or calendars depending on the type provided */
-        return MaintenanceWindowsApi.list(this.state.type)
-            .then(items => {
-                this.setState({
-                    action: undefined,
-                    selected: undefined,
-                    items: items
-                });
-            }).catch(this.handleResponseError);
+        return MaintenanceWindowsApi.list(type)
+            .then(newItems => {
+                setAction();
+                setSelected();
+                setItems(newItems);
+            }).catch(handleResponseError);
     };
 
-    getCalendarNames = () => {
+    const getCalendarNames = () => {
         return MaintenanceWindowsApi.calendarNames()
-            .then(calendarNames => {
+            .then(newCalendarNames => {
                 /* Convert list of calendar names into ComboboxItem
                 Add "<None>" as first element to allow unassigning of calendars */
-                const names = Array.from(Array(calendarNames.length + 1).keys()).map(id => (id === 0)
+                const names = Array.from(Array(newCalendarNames.length + 1).keys()).map(id => (id === 0)
                     ? ({id: 0, text: "<None>"})
-                    : ({id: Number(id), text: calendarNames[id - 1]}));
-                this.setState({
-                    calendarNames: names
-                });
-            }).catch(this.handleResponseError);
+                    : ({id: Number(id), text: newCalendarNames[id - 1]}));
+                setCalendarNames(names);
+            }).catch(handleResponseError);
     };
 
-    getDetails = (row, action) => {
+    const getDetails = (row, newAction) => {
         /* Returns the details of given schedule or calendar depending on the type provided */
-        return MaintenanceWindowsApi.details(row, this.state.type)
-            .then(item => {
-                this.setState({
-                    selected: item,
-                    action: action
-                });
-                history.pushState(null, null, "#/" + action + "/" +
-                    (this.state.type === "schedule" ? item.scheduleId : item.calendarId));
-            }).catch(this.handleResponseError);
+        return MaintenanceWindowsApi.details(row, type)
+            .then(newItem => {
+                setSelected(newItem);
+                setAction(newAction);
+                history.pushState(null, null, "#/" + newAction + "/" +
+                    (type === "schedule" ? newItem.scheduleId : newItem.calendarId));
+            }).catch(handleResponseError);
     }
 
-    handleDetailsAction = (row) => {
-        this.getDetails(row, "details");
+    const handleDetailsAction = (row) => {
+        getDetails(row, "details");
     }
 
-    handleEditAction = (row) => {
-        this.getDetails(row, "edit");
+    const handleEditAction = (row) => {
+        getDetails(row, "edit");
     }
 
-    update = (item) => {
+    const update = (itemIn) => {
         return Network.post(
-            "/rhn/manager/api/maintenance/" + this.state.type + "/save",
-            JSON.stringify(item),
+            "/rhn/manager/api/maintenance/" + type + "/save",
+            JSON.stringify(itemIn),
             "application/json"
         ).promise.then((_) => {
             const successMsg = <span>{t(
-                (this.state.type === "schedule" ? "Schedule " : "Calendar ") +
-                "successfully" + (this.state.action === "create" ? " created." : " updated."))}</span>
-            const msgs = this.state.messages.concat(MessagesUtils.info(successMsg));
+                (type === "schedule" ? "Schedule " : "Calendar ") +
+                "successfully" + (action === "create" ? " created." : " updated."))}</span>
+            const msgs = messages.concat(MessagesUtils.info(successMsg));
 
-            this.setState({
-                messages: msgs.slice(0, messagesCounterLimit)
-            });
+            setMessages(msgs.slice(0, messagesCounterLimit));
 
-            this.handleForwardAction();
-        }).catch(this.handleResponseError);
+            handleForwardAction();
+        }).catch(handleResponseError);
     }
 
-    delete = (item) => {
-        return Network.del("/rhn/manager/api/maintenance/" + this.state.type + "/delete",
-            JSON.stringify(item),
+    const deleteItem = (itemIn) => {
+        return Network.del("/rhn/manager/api/maintenance/" + type + "/delete",
+            JSON.stringify(itemIn),
             "application/json")
             .promise.then((_) => {
-                this.setState({
-                    messages: MessagesUtils.info(
-                        (this.state.type === "schedule" ? "Schedule " : "Calendar ") +
-                        "\'" + (this.state.type === "schedule" ? item.scheduleName : item.calendarName) +
+                setMessages(
+                    MessagesUtils.info(
+                        (type === "schedule" ? "Schedule " : "Calendar ") +
+                        "\'" + (type === "schedule" ? itemIn.scheduleName : itemIn.calendarName) +
                         "\' has been deleted."
                     )
-                });
-                this.handleForwardAction();
+                );
+                handleForwardAction();
             })
             .catch(data => {
                 const errorMsg = MessagesUtils.error(
-                    t("Error when deleting the " + this.state.type));
-                let messages = (data && data.status === 400)
+                    t("Error when deleting the " + type));
+                const msgs = (data && data.status === 400)
                     ? errorMsg
                     : Network.responseErrorMessage(jqXHR);
-                this.setState({
-                    messages: messages
-                });
+                setMessages(msgs);
             });
     }
 
-    refreshCalendar = (item) => {
+    const refreshCalendar = (itemIn) => {
         return Network.post(
             "/rhn/manager/api/maintenance/calendar/refresh",
-            JSON.stringify(item),
+            JSON.stringify(itemIn),
             "application/json"
         ).promise.then((_) => {
-            const msgs = this.state.messages.concat(MessagesUtils.info(
+            const msgs = messages.concat(MessagesUtils.info(
                 t("Calendar successfully refreshed"))
             );
-            this.setState({
-                action: undefined,
-                messages: msgs.slice(0, messagesCounterLimit)
-            });
+            setAction();
+            setMessages(msgs.slice(0, messagesCounterLimit));
 
-            this.getDetails(item.calendarId, "edit");
-        }).catch(this.handleResponseError);
+            getDetails(itemIn.calendarId, "edit");
+        }).catch(handleResponseError);
     };
 
-    handleForwardAction = (action) => {
+    const handleForwardAction = (newAction) => {
         const loc = window.location;
-        if (action === undefined || action === "back") {
-            this.listMaintenanceWindowItems().then(data => {
+        if (newAction === undefined || newAction === "back") {
+            listMaintenanceWindowItems().then(data => {
                 history.pushState(null, null, loc.pathname + loc.search);
             });
         } else {
-            this.setState({
-                action: action
-            });
-            history.pushState(null, null, loc.pathname + loc.search + "#/" + action);
+            setAction(newAction);
+            history.pushState(null, null, loc.pathname + loc.search + "#/" + newAction);
         }
     };
 
-    clearMessages = () => {
-        this.setState({
-            messages: []
-        });
+    const clearMessages = () => {
+        setMessages([]);
     }
 
-    handleResponseError = (jqXHR) => {
-        this.setState({
-            messages: Network.responseErrorMessage(jqXHR)
-        });
+    const handleResponseError = (jqXHR) => {
+        setMessages(Network.responseErrorMessage(jqXHR));
     };
 
-    render() {
-        const messages = this.state.messages ? <Messages items={this.state.messages}/> : null;
-        return (
-            <div>
-                {messages}
-                { this.state.action === 'details' ?
-                    <MaintenanceWindowsDetails type={this.state.type}
-                                               data={this.state.selected}
-                                               onCancel={this.handleForwardAction}
-                                               onEdit={this.handleEditAction}
-                                               onDelete={this.delete}
+    return (
+        <div>
+            <Messages items={messages} />
+            { action === 'details' ?
+                <MaintenanceWindowsDetails type={type}
+                                           data={selected}
+                                           onCancel={handleForwardAction}
+                                           onEdit={handleEditAction}
+                                           onDelete={deleteItem}
+                />
+                : (action === 'edit' || action === 'create') && isAdmin ?
+                    <MaintenanceWindowsEdit type={type}
+                                            calendarNames={calendarNames}
+                                            selected={selected}
+                                            onEdit={update}
+                                            onActionChanged={handleForwardAction}
+                                            onRefresh={refreshCalendar}
                     />
-                    : (this.state.action === 'edit' || this.state.action === 'create') && isAdmin ?
-                        <MaintenanceWindowsEdit type={this.state.type}
-                                                calendarNames={this.state.calendarNames}
-                                                selected={this.state.selected}
-                                                onEdit={this.update}
-                                                onActionChanged={this.handleForwardAction}
-                                                onRefresh={this.refreshCalendar}
-                        />
-                        :
-                        <MaintenanceWindowsList type={this.state.type}
-                                                data={this.state.items}
-                                                onActionChanged={this.handleForwardAction}
-                                                onSelect={this.handleDetailsAction}
-                                                onEdit={this.handleEditAction}
-                                                onDelete={this.delete}
-                        />
-                }
-            </div>
-        );
-    }
+                    :
+                    <MaintenanceWindowsList type={type}
+                                            data={items}
+                                            onActionChanged={handleForwardAction}
+                                            onSelect={handleDetailsAction}
+                                            onEdit={handleEditAction}
+                                            onDelete={deleteItem}
+                    />
+            }
+        </div>
+    );
 }
 
 export const renderer = () => SpaRenderer.renderNavigationReact(
