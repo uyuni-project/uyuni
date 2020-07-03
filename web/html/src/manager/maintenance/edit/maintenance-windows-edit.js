@@ -1,70 +1,64 @@
 /* eslint-disable */
 'use strict';
 
-const React = require("react");
-const AsyncButton = require("components/buttons").AsyncButton;
-const Button = require("components/buttons").Button;
-const {InnerPanel} = require("components/panels/InnerPanel");
+import React, {useState, useRef} from "react";
+import {AsyncButton} from "components/buttons";
+import {Button} from "components/buttons";
+import {InnerPanel} from "components/panels/InnerPanel";
 
 import MaintenanceScheduleEdit from "./schedule-edit";
 import MaintenanceCalendarEdit from "./calendar-edit";
 
-class MaintenanceWindowsEdit extends React.Component {
-    constructor(props) {
-        super(props);
+const MaintenanceWindowsEdit = (props) => {
+    const child = useRef();
+    const [type] = useState(props.type);
+    const [icalLoading, setIcalLoading] = useState(false);
 
-        this.child = React.createRef();
-
-        this.state = {
-            type: props.type
-        }
-    }
-
-    isEdit = () => {
-        return this.props.selected ? true : false;
+    const isEdit = () => {
+        return props.selected ? true : false;
     };
 
-    render() {
-        const buttons = [
-            <div className="btn-group pull-right">
-                <AsyncButton id={"editButton"} action={() => this.child.current.onEdit()} defaultType="btn-success"
-                             disabled={this.state.icalLoading === true}
-                             text={(this.isEdit() ? t("Update ") : t("Create ")) +
-                             (this.state.type === "schedule" ? t("Schedule") : t("Calendar"))}
+    const buttons = [
+        <div className="btn-group pull-right">
+            <AsyncButton id={"editButton"} action={() => child.current.onEdit()} defaultType="btn-success"
+                         disabled={icalLoading === true}
+                         text={(isEdit() ? t("Update ") : t("Create ")) +
+                         (type === "schedule" ? t("Schedule") : t("Calendar"))}
+            />
+        </div>
+    ];
+
+    const buttonsLeft = [
+        <div className="btn-group pull-left">
+            <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back")}  handler={() => props.onActionChanged("back")}/>
+        </div>
+    ];
+
+    return (
+        <InnerPanel title={t("Maintenance ") + (type === "schedule" ? t("Schedule") : t("Calendar"))}
+                    icon="spacewalk-icon-schedule" buttonsLeft={buttonsLeft} buttons={buttons} >
+            {
+                type === "schedule" &&
+                <MaintenanceScheduleEdit
+                    ref={child}
+                    isEdit={isEdit()}
+                    schedule={props.selected}
+                    calendarNames={props.calendarNames}
+                    onEdit={props.onEdit}
+                /> ||
+                type === "calendar" &&
+                <MaintenanceCalendarEdit
+                    ref={child}
+                    isEdit={isEdit()}
+                    calendar={props.selected}
+                    onRefresh={props.onRefresh}
+                    onEdit={props.onEdit}
+                    isLoading={i => setIcalLoading(i)}
                 />
-            </div>
-        ];
-        const buttonsLeft = [
-            <div className="btn-group pull-left">
-                <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back")}  handler={() => this.props.onActionChanged("back")}/>
-            </div>
-        ];
-        return (
-            <InnerPanel title={t("Maintenance ") + (this.state.type === "schedule" ? t("Schedule") : t("Calendar"))}
-                        icon="spacewalk-icon-schedule" buttonsLeft={buttonsLeft} buttons={buttons} >
-                {
-                    this.state.type === "schedule" &&
-                    <MaintenanceScheduleEdit
-                        ref={this.child}
-                        isEdit={this.isEdit()}
-                        schedule={this.props.selected}
-                        calendarNames={this.props.calendarNames}
-                        onEdit={this.props.onEdit}
-                    /> ||
-                    this.state.type === "calendar" &&
-                    <MaintenanceCalendarEdit
-                        ref={this.child}
-                        isEdit={this.isEdit()}
-                        calendar={this.props.selected}
-                        onRefresh={this.props.onRefresh}
-                        onEdit={this.props.onEdit}
-                        isLoading={i => this.setState({icalLoading: i})}
-                    />
-                }
-            </InnerPanel>
-        );
-    }
-}
+            }
+        </InnerPanel>
+    );
+};
 
 export {
     MaintenanceWindowsEdit
