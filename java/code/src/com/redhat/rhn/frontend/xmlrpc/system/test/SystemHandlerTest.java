@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -179,7 +180,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
     private SystemHandler handler =
             new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager);
@@ -903,7 +904,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testScheduleVirtProvision() throws Exception {
         Server server = ServerTestUtils.createTestSystem(admin);
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(server);
         server = reload(server);
         KickstartDataTest.setupTestConfiguration(admin);

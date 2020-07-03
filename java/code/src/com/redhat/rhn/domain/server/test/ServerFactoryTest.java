@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -74,7 +75,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -117,7 +117,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
     public static final String HOSTNAME = "foo.bar.com";
 
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     private SaltService saltService = new SaltService();
     private SystemQuery systemQuery = saltService;
     private SaltApi saltApi = saltService;

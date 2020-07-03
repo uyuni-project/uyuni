@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.server.Server;
@@ -23,10 +23,7 @@ import com.redhat.rhn.frontend.action.systems.sdc.SystemDetailsEditAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -45,7 +42,7 @@ import java.util.Set;
 public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
 
     protected Server s;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /**
      * {@inheritDoc}

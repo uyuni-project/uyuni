@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.systems.sdc.test;
 
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -32,8 +33,6 @@ import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -49,7 +48,7 @@ import java.util.Date;
 public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
 
     protected Server s;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /**
      * {@inheritDoc}

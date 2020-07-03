@@ -74,7 +74,6 @@ import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -82,8 +81,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,7 +119,7 @@ public class HandlerFactory {
     public static HandlerFactory getDefaultHandlerFactory() {
         HandlerFactory factory = new HandlerFactory();
         TaskomaticApi taskomaticApi = new TaskomaticApi();
-        SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+        SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;

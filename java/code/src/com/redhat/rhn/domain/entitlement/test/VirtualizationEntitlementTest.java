@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.entitlement.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -53,7 +54,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
         );
         Server host = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(guest, EntitlementManager.MANAGEMENT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(guest, EntitlementManager.MANAGEMENT);
 
         assertTrue(ent.isAllowedOnServer(host));
         assertFalse(ent.isAllowedOnServer(guest));
@@ -62,7 +63,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     @Override
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(minion, EntitlementManager.SALT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.SALT);
 
         Map<String, Object> grains = new HashMap<>();
         grains.put("virtual", "physical");

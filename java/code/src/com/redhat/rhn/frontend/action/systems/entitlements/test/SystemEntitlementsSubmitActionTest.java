@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.entitlements.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
@@ -49,7 +50,7 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     private static final String UNENTITLED =
                                     "system_entitlements.unentitle";
 
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
 
     /**

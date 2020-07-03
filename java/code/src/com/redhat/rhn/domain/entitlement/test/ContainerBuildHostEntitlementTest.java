@@ -15,12 +15,11 @@
 
 package com.redhat.rhn.domain.entitlement.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.entitlement.ContainerBuildHostEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.utils.ValueMap;
@@ -47,8 +46,8 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
         minion.setOs("SLES");
         minion.setRelease("12.2");
 
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(minion, EntitlementManager.SALT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.SALT);
 
         assertTrue(ent.isAllowedOnServer(minion));
         assertFalse(ent.isAllowedOnServer(traditional));
@@ -71,7 +70,7 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
         grains.put("osmajorrelease", "7");
         assertTrue(ent.isAllowedOnServer(minion, new ValueMap(grains)));
 
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(minion, EntitlementManager.MANAGEMENT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.MANAGEMENT);
         assertFalse(ent.isAllowedOnServer(minion, new ValueMap(grains)));
     }
 }

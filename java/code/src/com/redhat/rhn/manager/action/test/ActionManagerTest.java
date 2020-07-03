@@ -19,6 +19,7 @@ import static com.redhat.rhn.testing.ImageTestUtils.createActivationKey;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -125,7 +126,7 @@ import java.util.stream.Collectors;
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());

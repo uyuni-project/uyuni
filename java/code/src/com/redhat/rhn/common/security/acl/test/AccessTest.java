@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.security.acl.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
@@ -237,7 +238,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertTrue(acl.evalAcl(context, "system_has_salt_entitlement()"));
 
         // Change the base entitlement to MANAGEMENT
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         context.put("sid", new String[] {s.getId().toString()});
         context.put("user", user);
         assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));

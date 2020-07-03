@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ClientCapability;
@@ -30,7 +31,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -74,7 +74,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         UserTestUtils.addManagement(s.getCreator().getOrg());
         HibernateFactory.getSession().clear();
         s = ServerFactory.lookupById(s.getId());
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(s);
         s = reload(s);
         assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));

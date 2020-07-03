@@ -21,6 +21,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -4736,7 +4737,7 @@ public class SystemHandler extends BaseHandler {
             String selectedEnt = (String)details.get("base_entitlement");
             Entitlement base = EntitlementManager.getByName(selectedEnt);
             if (base != null) {
-                SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, base);
+                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(server, base);
             }
             else if (selectedEnt.equals("unentitle")) {
                 systemEntitlementManager.removeAllServerEntitlements(server);
@@ -4914,7 +4915,7 @@ public class SystemHandler extends BaseHandler {
         for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
             if (addOnEnts.contains(en.getLabel())) {
                 addOnEnts.remove(en.getLabel());
-                SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, en);
+                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(server, en);
             }
         }
 

@@ -157,7 +157,7 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCRIPT_RUN = "script.run";
     public static final String CAP_SCAP = "scap.xccdf_eval";
 
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     private ServerFactory serverFactory;
     private ServerGroupFactory serverGroupFactory;
 

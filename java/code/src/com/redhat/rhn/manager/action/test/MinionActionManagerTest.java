@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.action.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -89,7 +90,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
 
     @Override

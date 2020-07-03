@@ -4,7 +4,11 @@ import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltUtils;
@@ -13,6 +17,7 @@ import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.menu.MenuTree;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -48,4 +53,9 @@ public class GlobalInstanceHolder {
     public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER =
             new RegularMinionBootstrapper(SYSTEM_QUERY);
     public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER = new SSHMinionBootstrapper(SYSTEM_QUERY);
+    public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager();
+    public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
+            new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER),
+            new SystemEntitler(GlobalInstanceHolder.SYSTEM_QUERY, VIRT_MANAGER, MONITORING_MANAGER)
+    );
 }

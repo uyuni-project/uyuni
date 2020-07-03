@@ -14,11 +14,10 @@
  */
 package com.redhat.rhn.domain.entitlement.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
@@ -45,8 +44,8 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
         Server traditional = ServerTestUtils.createTestSystem(user);
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
 
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);
 
         assertTrue(traditional.getValidAddonEntitlementsForServer().size() > 0);
         assertTrue(foreign.getValidAddonEntitlementsForServer().size() == 0);
@@ -56,8 +55,8 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
         Server traditional = ServerTestUtils.createTestSystem(user);
         Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
 
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);
 
         assertTrue(ent.isAllowedOnServer(traditional, null));
         assertFalse(ent.isAllowedOnServer(foreign, null));

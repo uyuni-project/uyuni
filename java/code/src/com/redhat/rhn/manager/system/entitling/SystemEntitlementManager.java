@@ -14,25 +14,15 @@
  */
 package com.redhat.rhn.manager.system.entitling;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 
-import com.suse.manager.virtualization.VirtManagerSalt;
 
 /**
  * Manager class for adding/removing entitlements to/from servers
  */
 public class SystemEntitlementManager {
-
-    public static final SystemEntitlementManager INSTANCE = new SystemEntitlementManager(
-            new SystemUnentitler(new VirtManagerSalt(GlobalInstanceHolder.SALT_API),
-                    new FormulaMonitoringManager()),
-            new SystemEntitler(GlobalInstanceHolder.SYSTEM_QUERY, new VirtManagerSalt(GlobalInstanceHolder.SALT_API),
-                    new FormulaMonitoringManager())
-    );
 
     private SystemUnentitler systemUnentitler;
     private SystemEntitler systemEntitler;

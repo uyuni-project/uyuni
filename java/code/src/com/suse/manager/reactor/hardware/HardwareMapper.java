@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.hardware;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.CPUArch;
@@ -33,7 +34,6 @@ import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
@@ -458,7 +458,7 @@ public class HardwareMapper {
 
                 ServerFactory.save(zhost);
 
-                SystemEntitlementManager.INSTANCE.setBaseEntitlement(zhost, EntitlementManager
+                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(zhost, EntitlementManager
                         .getByName(EntitlementManager.FOREIGN_ENTITLED));
                 LOG.debug("New host created: " + identifier);
             }

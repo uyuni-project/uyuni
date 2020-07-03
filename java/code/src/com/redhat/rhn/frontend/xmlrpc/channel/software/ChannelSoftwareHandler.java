@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.xmlrpc.channel.software;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -82,7 +83,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.kickstart.crypto.NoSuchCryptoKeyException;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
@@ -2063,7 +2063,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
             }
         }
         SystemHandler sysHandler =
-                new SystemHandler(taskomaticApi, xmlRpcSystemHelper, SystemEntitlementManager.INSTANCE,
+                new SystemHandler(taskomaticApi, xmlRpcSystemHelper, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER,
                         new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON));
         if (base != null) {
 

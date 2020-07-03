@@ -42,16 +42,12 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
@@ -87,12 +83,7 @@ public class RegistrationUtils {
 
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
-    private static SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(new VirtManagerSalt(GlobalInstanceHolder.SALT_API),
-                    new FormulaMonitoringManager()),
-            new SystemEntitler(GlobalInstanceHolder.SYSTEM_QUERY, new VirtManagerSalt(GlobalInstanceHolder.SALT_API),
-                    new FormulaMonitoringManager())
-    );
+    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     private RegistrationUtils() {
     }
