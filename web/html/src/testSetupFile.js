@@ -1,3 +1,5 @@
+import './manager/polyfills.js';
+
 global.t = string => string;
 
 global.Loggerhead = {
