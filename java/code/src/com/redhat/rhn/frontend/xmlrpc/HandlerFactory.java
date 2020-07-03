@@ -124,14 +124,11 @@ public class HandlerFactory {
         TaskomaticApi taskomaticApi = new TaskomaticApi();
         SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
-        SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
-        SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+        FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
+        ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
 
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
+        SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
                 regularMinionBootstrapper,
                 sshMinionBootstrapper

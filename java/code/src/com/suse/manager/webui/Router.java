@@ -94,13 +94,12 @@ public class Router implements SparkApplication {
         TaskomaticApi taskomaticApi = new TaskomaticApi();
         SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
-        KubernetesManager kubernetesManager = new KubernetesManager(systemQuery);
-        VirtManager virtManager = new VirtManagerSalt(saltApi);
+        KubernetesManager kubernetesManager = GlobalInstanceHolder.KUBERNETES_MANAGER;
+        VirtManager virtManager = GlobalInstanceHolder.VIRT_MANAGER;
         RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
         SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+        FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
+        ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
 
         SystemsController systemsController = new SystemsController(systemQuery);
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);

@@ -6,11 +6,16 @@ import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
+import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.menu.MenuTree;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
@@ -38,4 +43,8 @@ public class GlobalInstanceHolder {
     public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
     public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(
             SALT_SERVER_ACTION_SERVICE, SYSTEM_QUERY, SALT_UTILS);
+    public static final KubernetesManager KUBERNETES_MANAGER = new KubernetesManager(SYSTEM_QUERY);
+    public static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
+    public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER = RegularMinionBootstrapper.getInstance(SYSTEM_QUERY);
+    public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER = SSHMinionBootstrapper.getInstance(SYSTEM_QUERY);
 }
