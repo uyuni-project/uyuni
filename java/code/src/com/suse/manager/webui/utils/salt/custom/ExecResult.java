@@ -13,26 +13,44 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.action.cluster;
+package com.suse.manager.webui.utils.salt.custom;
 
-import com.redhat.rhn.domain.action.BaseSaltRunnerAction;
-import com.suse.manager.model.clusters.Cluster;
+import com.google.gson.annotations.SerializedName;
 
-public class BaseClusterAction extends BaseSaltRunnerAction {
+public class ExecResult {
 
-    private Cluster cluster;
+    @SerializedName("retcode")
+    private int returnCode;
+    private String stdout;
+    private String stderr;
+
+    private Boolean success;
 
     /**
-     * @return cluster to get
+     * @return command return code
      */
-    public Cluster getCluster() {
-        return cluster;
+    public int getReturnCode() {
+        return returnCode;
     }
 
     /**
-     * @param clusterIn to set
+     * @return command stdout
      */
-    public void setCluster(Cluster clusterIn) {
-        this.cluster = clusterIn;
+    public String getStdout() {
+        return stdout;
+    }
+
+    /**
+     * @return command stderr
+     */
+    public String getStderr() {
+        return stderr;
+    }
+
+    /**
+     * @return success to get
+     */
+    public Boolean getSuccess() {
+        return success;
     }
 }

@@ -96,6 +96,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -931,6 +932,14 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void delete(ServerAction serverAction) {
         singleton.removeObject(serverAction);
+    }
+
+
+    public static Optional<ActionSaltRunnerJob> lookupSaltRunnerJobByJid(String jid) {
+         return HibernateFactory.getSession()
+                .createNamedQuery("ActionSaltRunnerJob.findByJid", ActionSaltRunnerJob.class)
+                .setParameter("jid", jid)
+                .list().stream().findFirst();
     }
 
     /**

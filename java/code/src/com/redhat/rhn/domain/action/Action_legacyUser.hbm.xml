@@ -536,6 +536,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <key column="action_id"/>
                 <element column="server_id" type="long"/>
             </set>
+            <set name="runnerJobs" outer-join="false" cascade="all" lazy="true"
+                 inverse="true">
+                <key column="action_id"/>
+                <one-to-many
+                        class="com.redhat.rhn.domain.action.ActionSaltRunnerJob" />
+            </set>
             <join table="rhnActionClusterJoinNode">
                 <key column="action_id"/>
                 <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster" not-null="true" />
@@ -549,6 +555,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <key column="action_id"/>
                 <element column="server_id" type="long"/>
             </set>
+            <set name="runnerJobs" outer-join="false" cascade="all" lazy="true"
+                 inverse="true">
+                <key column="action_id"/>
+                <one-to-many
+                        class="com.redhat.rhn.domain.action.ActionSaltRunnerJob" />
+            </set>
             <join table="rhnActionClusterRemoveNode">
                 <key column="action_id"/>
                 <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster" not-null="true" />
@@ -558,6 +570,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <subclass name="com.redhat.rhn.domain.action.cluster.ClusterUpgradeAction"
                   lazy="true" discriminator-value="518">
+            <set name="runnerJobs" outer-join="false" cascade="all" lazy="true"
+                 inverse="true">
+                <key column="action_id"/>
+                <one-to-many
+                        class="com.redhat.rhn.domain.action.ActionSaltRunnerJob" />
+            </set>
             <join table="rhnActionClusterUpgradeCluster">
                 <key column="action_id"/>
                 <many-to-one name="cluster" column="cluster_id" class="com.suse.manager.model.clusters.Cluster" not-null="true" />
@@ -565,7 +583,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </join>
         </subclass>
 
-    </class>
+     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
     </query>

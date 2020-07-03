@@ -37,6 +37,8 @@ import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAct
 import com.suse.manager.reactor.messaging.MinionStartEventDatabaseMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessage;
 import com.suse.manager.reactor.messaging.MinionStartEventMessageAction;
+import com.suse.manager.reactor.messaging.RunnerReturnEventMessage;
+import com.suse.manager.reactor.messaging.RunnerReturnEventMessageAction;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -62,6 +64,7 @@ import com.suse.salt.netapi.event.BeaconEvent;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.event.EventStream;
 import com.suse.salt.netapi.event.JobReturnEvent;
+import com.suse.salt.netapi.event.RunnerReturnEvent;
 import org.apache.log4j.Logger;
 
 import java.util.Optional;
@@ -128,7 +131,8 @@ public class SaltReactor {
                 LibvirtEngineDomainLifecycleMessage.class);
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);
-
+        MessageQueue.registerAction(new RunnerReturnEventMessageAction(),
+                RunnerReturnEvent.class);
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
         connectToEventStream();
@@ -172,9 +176,14 @@ public class SaltReactor {
                SystemIdGenerateEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                ImageDeployedEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
                EngineEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
-               BeaconEvent.parse(event).map(this::eventToMessages).orElse(
+               BeaconEvent.parse(event).map(this::eventToMessages).orElseGet(() ->
+               RunnerReturnEvent.parse(event).map(this::eventToMessages).orElse(
                empty()
-        )))))));
+        ))))))));
+    }
+
+    private Stream<EventMessage> eventToMessages(RunnerReturnEvent runnerReturnEvent) {
+        return of(new RunnerReturnEventMessage(runnerReturnEvent));
     }
 
     /**

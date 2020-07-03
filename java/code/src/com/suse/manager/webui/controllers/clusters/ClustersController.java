@@ -50,6 +50,8 @@ import com.suse.manager.webui.controllers.clusters.response.ClusterNodeResponse;
 import com.suse.manager.webui.controllers.clusters.response.ClusterProviderResponse;
 import com.suse.manager.webui.controllers.clusters.response.ClusterResponse;
 import com.suse.manager.webui.controllers.clusters.response.ServerResponse;
+import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -59,6 +61,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+import com.suse.salt.netapi.calls.RunnerCall;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -152,6 +155,17 @@ public class ClustersController {
         post("/manager/api/cluster/new/add",
                 withClusterAdmin(ClustersController::addCluster));
 
+        get("/manager/api/cluster-runner",
+                withUser(ClustersController::asyncRunner));
+
+    }
+
+    private static Object asyncRunner(Request request, Response response, User user) {
+        RunnerCall<String> call =
+                new RunnerCall<>("stest.stdout_print", Optional.empty(),
+                        new TypeToken<>() { });
+        String jid = SaltService.INSTANCE_SALT_SERVICE.callAsync(call);
+        return jid;
     }
 
     private static Object getClusterProps(Request request, Response response, User user) {

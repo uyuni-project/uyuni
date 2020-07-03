@@ -46,6 +46,7 @@ import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.AuthModule;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.RunnerAsyncResult;
 import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.WheelCall;
 import com.suse.salt.netapi.calls.WheelResult;
@@ -131,7 +132,7 @@ public class SaltService implements SystemQuery, SaltApi {
     /**
      * Singleton instance of this class
      */
-    private static final SaltService INSTANCE_SALT_SERVICE = new SaltService();
+    public static final SaltService INSTANCE_SALT_SERVICE = new SaltService(); // TODO revert to private
     public static final SystemQuery INSTANCE = INSTANCE_SALT_SERVICE;
     public static final SaltApi INSTANCE_SALT_API = INSTANCE_SALT_SERVICE;
 
@@ -301,6 +302,17 @@ public class SaltService implements SystemQuery, SaltApi {
             return result.fold(p -> errorHandler.apply(p),
                     r -> Optional.of(r)
             );
+        }
+        catch (SaltException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String callAsync(RunnerCall<?> call) {
+        try {
+            RunnerAsyncResult<?> result = adaptException(call.callAsync(SALT_CLIENT, PW_AUTH));
+            return result.getJid();
         }
         catch (SaltException e) {
             throw new RuntimeException(e);

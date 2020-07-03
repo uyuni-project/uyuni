@@ -13,26 +13,40 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.action.cluster;
+package com.redhat.rhn.domain.action;
 
-import com.redhat.rhn.domain.action.BaseSaltRunnerAction;
-import com.suse.manager.model.clusters.Cluster;
+import java.io.Serializable;
 
-public class BaseClusterAction extends BaseSaltRunnerAction {
+public class ActionSaltRunnerJobKey implements Serializable {
 
-    private Cluster cluster;
+    private Action action;
+    private String jid;
 
     /**
-     * @return cluster to get
+     * @return action to get
      */
-    public Cluster getCluster() {
-        return cluster;
+    public Action getAction() {
+        return action;
     }
 
     /**
-     * @param clusterIn to set
+     * @param actionIn to set
      */
-    public void setCluster(Cluster clusterIn) {
-        this.cluster = clusterIn;
+    public void setAction(Action actionIn) {
+        this.action = actionIn;
+    }
+
+    /**
+     * @return jid to get
+     */
+    public String getJid() {
+        return jid;
+    }
+
+    /**
+     * @param jidIn to set
+     */
+    public void setJid(String jidIn) {
+        this.jid = jidIn;
     }
 }

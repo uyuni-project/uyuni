@@ -1,0 +1,461 @@
+{
+  "tag": "salt/run/20200702152745552502/ret",
+  "data": {
+    "fun": "runner.state.orchestrate",
+    "jid": "20200702152745552502",
+    "user": "salt",
+    "fun_args": [
+      "clusters.orch.removenodes",
+      {
+        "pillar": {
+          "actions": {
+            "remove": {
+              "state": "caasp.orch.removenodes"
+            }
+          },
+          "cluster": "demo",
+          "nodes": [
+            "dev-min-caasp-master.lan",
+            "dev-min-caasp-worker-1.lan",
+            "dev-min-caasp-worker-2.lan",
+            "dev-min-caasp-worker-3.lan"
+          ],
+          "management_node": "dev-min-sles15sp1.lan",
+          "params": {
+            "skuba_cluster_path": "/opt/clusters/mycluster",
+            "temp_ssh_key": true,
+            "drain_timeout": "",
+            "nodes": [
+              {
+                "node_name": "dev-min-caasp-worker-3.lan"
+              }
+            ]
+          }
+        },
+        "orchestration_jid": "20200702152745552502"
+      }
+    ],
+    "_stamp": "2020-07-02T15:32:56.815164",
+    "return": {
+      "data": {
+        "dev-sumaheadpg.lan_master": {
+          "salt_|-generate_ssh_key_|-generate_ssh_key_|-state": {
+            "name": "generate_ssh_key",
+            "changes": {
+              "out": "highstate",
+              "ret": {
+                "dev-min-sles15sp1.lan": {
+                  "file_|-remove_temp_ssh_key_|-/root/.ssh/temp_caasp_key_|-absent": {
+                    "name": "/root/.ssh/temp_caasp_key",
+                    "changes": {
+                      "removed": "/root/.ssh/temp_caasp_key"
+                    },
+                    "pchanges": {
+                      "removed": "/root/.ssh/temp_caasp_key"
+                    },
+                    "result": true,
+                    "comment": "Removed file /root/.ssh/temp_caasp_key",
+                    "__sls__": "caasp.temp_ssh_key.remove_mgmt_node_key",
+                    "__run_num__": 0,
+                    "start_time": "17:27:50.698844",
+                    "duration": 46.775,
+                    "__id__": "remove_temp_ssh_key"
+                  },
+                  "file_|-remove_temp_ssh_pub_key_|-/root/.ssh/temp_caasp_key.pub_|-absent": {
+                    "name": "/root/.ssh/temp_caasp_key.pub",
+                    "changes": {
+                      "removed": "/root/.ssh/temp_caasp_key.pub"
+                    },
+                    "pchanges": {
+                      "removed": "/root/.ssh/temp_caasp_key.pub"
+                    },
+                    "result": true,
+                    "comment": "Removed file /root/.ssh/temp_caasp_key.pub",
+                    "__sls__": "caasp.temp_ssh_key.remove_mgmt_node_key",
+                    "__run_num__": 1,
+                    "start_time": "17:27:50.746143",
+                    "duration": 1.484,
+                    "__id__": "remove_temp_ssh_pub_key"
+                  },
+                  "cmd_|-generate_temp_ssh_key_|-ssh-keygen -N '' -C 'temp-caasp-key' -f /root/.ssh/temp_caasp_key -t rsa -q_|-run": {
+                    "name": "ssh-keygen -N '' -C 'temp-caasp-key' -f /root/.ssh/temp_caasp_key -t rsa -q",
+                    "changes": {
+                      "pid": 2856,
+                      "retcode": 0,
+                      "stdout": "",
+                      "stderr": ""
+                    },
+                    "result": true,
+                    "comment": "Command \"ssh-keygen -N '' -C 'temp-caasp-key' -f /root/.ssh/temp_caasp_key -t rsa -q\" run",
+                    "__sls__": "caasp.temp_ssh_key.gen_ssh_key",
+                    "__run_num__": 2,
+                    "start_time": "17:27:50.749018",
+                    "duration": 246.927,
+                    "__id__": "generate_temp_ssh_key"
+                  },
+                  "module_|-push_temp_ssh_key_|-cp.push_|-run": {
+                    "name": "cp.push",
+                    "changes": {
+                      "ret": true
+                    },
+                    "comment": "Module function cp.push executed",
+                    "result": true,
+                    "__sls__": "caasp.temp_ssh_key.gen_ssh_key",
+                    "__run_num__": 3,
+                    "start_time": "17:27:50.998382",
+                    "duration": 20.266,
+                    "__id__": "push_temp_ssh_key"
+                  }
+                }
+              }
+            },
+            "comment": "States ran successfully. Updating dev-min-sles15sp1.lan.",
+            "result": true,
+            "__jid__": "20200702152750155576",
+            "__sls__": "caasp.temp_ssh_key",
+            "__run_num__": 0,
+            "start_time": "17:27:50.106090",
+            "duration": 733.686,
+            "__id__": "generate_ssh_key"
+          },
+          "file_|-cluster_dir_|-/srv/susemanager/salt/cluster/demo_|-directory": {
+            "name": "/srv/susemanager/salt/cluster/demo",
+            "changes": {},
+            "result": true,
+            "comment": "The directory /srv/susemanager/salt/cluster/demo is in the correct state",
+            "__sls__": "caasp.temp_ssh_key",
+            "__run_num__": 1,
+            "start_time": "17:27:50.842617",
+            "duration": 9.753,
+            "__id__": "cluster_dir"
+          },
+          "file_|-copy_temp_ssh_key_|-/srv/susemanager/salt/cluster/demo/temp_caasp_key.pub_|-copy": {
+            "name": "/srv/susemanager/salt/cluster/demo/temp_caasp_key.pub",
+            "changes": {
+              "/srv/susemanager/salt/cluster/demo/temp_caasp_key.pub": "/var/cache/salt/master/minions/dev-min-sles15sp1.lan/files/temp_caasp_key.pub"
+            },
+            "comment": "Copied \"/var/cache/salt/master/minions/dev-min-sles15sp1.lan/files/temp_caasp_key.pub\" to \"/srv/susemanager/salt/cluster/demo/temp_caasp_key.pub\"",
+            "result": true,
+            "__sls__": "caasp.temp_ssh_key",
+            "__run_num__": 2,
+            "start_time": "17:27:50.852812",
+            "duration": 6.1,
+            "__id__": "copy_temp_ssh_key"
+          },
+          "salt_|-deploy_temp_key_|-deploy_temp_key_|-state": {
+            "name": "deploy_temp_key",
+            "changes": {
+              "out": "highstate",
+              "ret": {
+                "dev-min-caasp-worker-3.lan": {
+                  "ssh_auth_|-remove_prev_temp_key_|-remove_prev_temp_key_|-absent": {
+                    "name": "remove_prev_temp_key",
+                    "changes": {},
+                    "result": true,
+                    "comment": "Key not present",
+                    "__sls__": "caasp.temp_ssh_key.deploy_ssh_key",
+                    "__run_num__": 0,
+                    "start_time": "15:27:51.792587",
+                    "duration": 7.61,
+                    "__id__": "remove_prev_temp_key"
+                  },
+                  "ssh_auth_|-caasp_temp_key_present_|-caasp_temp_key_present_|-present": {
+                    "name": "caasp_temp_key_present",
+                    "changes": {
+                      "caasp_temp_key_present": "New"
+                    },
+                    "result": true,
+                    "comment": "The authorized host key caasp_temp_key_present for user root was added",
+                    "__sls__": "caasp.temp_ssh_key.deploy_ssh_key",
+                    "__run_num__": 1,
+                    "start_time": "15:27:51.800557",
+                    "duration": 28.179,
+                    "__id__": "caasp_temp_key_present"
+                  }
+                },
+                "dev-min-caasp-worker-2.lan": {
+                  "ssh_auth_|-remove_prev_temp_key_|-remove_prev_temp_key_|-absent": {
+                    "name": "remove_prev_temp_key",
+                    "changes": {},
+                    "result": true,
+                    "comment": "Key not present",
+                    "__sls__": "caasp.temp_ssh_key.deploy_ssh_key",
+                    "__run_num__": 0,
+                    "start_time": "17:27:51.507651",
+                    "duration": 7.008,
+                    "__id__": "remove_prev_temp_key"
+                  },
+                  "ssh_auth_|-caasp_temp_key_present_|-caasp_temp_key_present_|-present": {
+                    "name": "caasp_temp_key_present",
+                    "changes": {
+                      "caasp_temp_key_present": "New"
+                    },
+                    "result": true,
+                    "comment": "The authorized host key caasp_temp_key_present for user root was added",
+                    "__sls__": "caasp.temp_ssh_key.deploy_ssh_key",
+                    "__run_num__": 1,
+                    "start_time": "17:27:51.515006",
+                    "duration": 38.893,
+                    "__id__": "caasp_temp_key_present"
+                  }
+                },
+                "dev-min-caasp-master.lan": {
+                  "ssh_auth_|-remove_prev_temp_key_|-remove_prev_temp_key_|-absent": {
+                    "name": "remove_prev_temp_key",
+                    "changes": {},
+                    "result": true,
+                    "comment": "Key not present",
+                    "__sls__": "caasp.temp_ssh_key.deploy_ssh_key",
+                    "__run_num__": 0,
+                    "start_time": "17:27:51.537131",
+                    "duration": 7.929,
+                    "__id__": "remove_prev_temp_key"
+                  },
+                  "ssh_auth_|-caasp_temp_key_present_|-caasp_temp_key_present_|-present": {
+                    "name": "caasp_temp_key_present",
+                    "changes": {
+                      "caasp_temp_key_present": "New"
+                    },
+                    "result": true,
+                    "comment": "The authorized host key caasp_temp_key_present for user root was added",
+                    "__sls__": "caasp.temp_ssh_key.deploy_ssh_key",
+                    "__run_num__": 1,
+                    "start_time": "17:27:51.545463",
+                    "duration": 33.475,
+                    "__id__": "caasp_temp_key_present"
+                  }
+                },
+                "dev-min-caasp-worker-1.lan": {
+                  "ssh_auth_|-remove_prev_temp_key_|-remove_prev_temp_key_|-absent": {
+                    "name": "remove_prev_temp_key",
+                    "changes": {},
+                    "result": true,
+                    "comment": "Key not present",
+                    "__sls__": "caasp.temp_ssh_key.deploy_ssh_key",
+                    "__run_num__": 0,
+                    "start_time": "17:27:51.510264",
+                    "duration": 88.763,
+                    "__id__": "remove_prev_temp_key"
+                  },
+                  "ssh_auth_|-caasp_temp_key_present_|-caasp_temp_key_present_|-present": {
+                    "name": "caasp_temp_key_present",
+                    "changes": {
+                      "caasp_temp_key_present": "New"
+                    },
+                    "result": true,
+                    "comment": "The authorized host key caasp_temp_key_present for user root was added",
+                    "__sls__": "caasp.temp_ssh_key.deploy_ssh_key",
+                    "__run_num__": 1,
+                    "start_time": "17:27:51.599426",
+                    "duration": 39.117,
+                    "__id__": "caasp_temp_key_present"
+                  }
+                }
+              }
+            },
+            "comment": "States ran successfully. Updating dev-min-caasp-worker-3.lan, dev-min-caasp-worker-2.lan, dev-min-caasp-master.lan, dev-min-caasp-worker-1.lan.",
+            "result": true,
+            "__jid__": "20200702152750905826",
+            "__sls__": "caasp.temp_ssh_key",
+            "__run_num__": 3,
+            "start_time": "17:27:50.859426",
+            "duration": 510.539,
+            "__id__": "deploy_temp_key"
+          },
+          "salt_|-mgr_remove_nodes_|-mgr_remove_nodes_|-state": {
+            "name": "mgr_remote_nodes",
+            "changes": {
+              "out": "highstate",
+              "ret": {
+                "$management-node": {
+                  "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+                    "name": "saltutil.sync_modules",
+                    "changes": {
+                      "ret": []
+                    },
+                    "comment": "Module function saltutil.sync_modules executed",
+                    "result": true,
+                    "__sls__": "util.syncmodules",
+                    "__run_num__": 0,
+                    "start_time": "17:27:52.062790",
+                    "duration": 205.764,
+                    "__id__": "sync_modules"
+                  },
+                  "module_|-mgr_cluster_remove_node_dev-min-caasp-worker-3.lan_|-mgrclusters.remove_node_|-run": {
+                    "name": "mgrclusters.remove_node",
+                    "changes": {
+                      "ret": {
+                        "stdout": "[remove-node] removing worker node dev-min-caasp-worker-3.lan (drain timeout: 0s)\n[remove-node] failed disarming kubelet: failed waiting for job caasp-kubelet-disarm-a45f8de6a2550bba476bccbc958f59e32fd37eca; node could be down, continuing with node removal...\n[remove-node] node dev-min-caasp-worker-3.lan successfully removed from the cluster\n",
+                        "stderr": "",
+                        "success": true,
+                        "retcode": 0
+                      }
+                    },
+                    "comment": "Module function mgrclusters.remove_node executed",
+                    "result": true,
+                    "__sls__": "clusters.removenode",
+                    "__run_num__": 1,
+                    "start_time": "17:27:52.268971",
+                    "duration": 302804.713,
+                    "__id__": "mgr_cluster_remove_node_dev-min-caasp-worker-3.lan"
+                  }
+                }
+              }
+            },
+            "comment": "States ran successfully. Updating dev-min-sles15sp1.lan.",
+            "result": true,
+            "__jid__": "20200702152751420695",
+            "__sls__": "caasp.orch.removenodes",
+            "__run_num__": 4,
+            "start_time": "17:27:51.370200",
+            "duration": 303540.105,
+            "__id__": "mgr_remote_nodes"
+          },
+          "salt_|-remove_nodes_temp_ssh_key_|-remove_nodes_temp_ssh_key_|-state": {
+            "name": "remove_nodes_temp_ssh_key",
+            "changes": {
+              "out": "highstate",
+              "ret": {
+                "dev-min-caasp-worker-2.lan": {
+                  "ssh_auth_|-remove_prev_temp_ssh_key_|-remove_prev_temp_ssh_key_|-absent": {
+                    "name": "remove_prev_temp_ssh_key",
+                    "changes": {
+                      "remove_prev_temp_ssh_key": "Removed"
+                    },
+                    "result": true,
+                    "comment": "Key removed",
+                    "__sls__": "caasp.temp_ssh_key.remove_nodes_ssh_key",
+                    "__run_num__": 0,
+                    "start_time": "17:32:56.318296",
+                    "duration": 53.221,
+                    "__id__": "remove_prev_temp_ssh_key"
+                  }
+                },
+                "dev-min-caasp-worker-1.lan": {
+                  "ssh_auth_|-remove_prev_temp_ssh_key_|-remove_prev_temp_ssh_key_|-absent": {
+                    "name": "remove_prev_temp_ssh_key",
+                    "changes": {
+                      "remove_prev_temp_ssh_key": "Removed"
+                    },
+                    "result": true,
+                    "comment": "Key removed",
+                    "__sls__": "caasp.temp_ssh_key.remove_nodes_ssh_key",
+                    "__run_num__": 0,
+                    "start_time": "17:32:56.486071",
+                    "duration": 50.19,
+                    "__id__": "remove_prev_temp_ssh_key"
+                  }
+                },
+                "dev-min-caasp-worker-3.lan": {
+                  "ssh_auth_|-remove_prev_temp_ssh_key_|-remove_prev_temp_ssh_key_|-absent": {
+                    "name": "remove_prev_temp_ssh_key",
+                    "changes": {
+                      "remove_prev_temp_ssh_key": "Removed"
+                    },
+                    "result": true,
+                    "comment": "Key removed",
+                    "__sls__": "caasp.temp_ssh_key.remove_nodes_ssh_key",
+                    "__run_num__": 0,
+                    "start_time": "15:32:56.887280",
+                    "duration": 42.71,
+                    "__id__": "remove_prev_temp_ssh_key"
+                  }
+                },
+                "dev-min-caasp-master.lan": {
+                  "ssh_auth_|-remove_prev_temp_ssh_key_|-remove_prev_temp_ssh_key_|-absent": {
+                    "name": "remove_prev_temp_ssh_key",
+                    "changes": {
+                      "remove_prev_temp_ssh_key": "Removed"
+                    },
+                    "result": true,
+                    "comment": "Key removed",
+                    "__sls__": "caasp.temp_ssh_key.remove_nodes_ssh_key",
+                    "__run_num__": 0,
+                    "start_time": "17:32:56.595982",
+                    "duration": 53.007,
+                    "__id__": "remove_prev_temp_ssh_key"
+                  }
+                }
+              }
+            },
+            "comment": "States ran successfully. Updating dev-min-caasp-worker-2.lan, dev-min-caasp-worker-1.lan, dev-min-caasp-worker-3.lan, dev-min-caasp-master.lan.",
+            "result": true,
+            "__jid__": "20200702153254953310",
+            "__sls__": "caasp.temp_ssh_key.cleanup",
+            "__run_num__": 5,
+            "start_time": "17:32:54.911209",
+            "duration": 1458.952,
+            "__id__": "remove_nodes_temp_ssh_key"
+          },
+          "file_|-remove_server_temp_ssh_key_|-/srv/susemanager/salt/cluster/demo/temp_caasp_key.pub_|-absent": {
+            "name": "/srv/susemanager/salt/cluster/demo/temp_caasp_key.pub",
+            "changes": {
+              "removed": "/srv/susemanager/salt/cluster/demo/temp_caasp_key.pub"
+            },
+            "result": true,
+            "comment": "Removed file /srv/susemanager/salt/cluster/demo/temp_caasp_key.pub",
+            "__sls__": "caasp.temp_ssh_key.cleanup",
+            "__run_num__": 6,
+            "start_time": "17:32:56.370520",
+            "duration": 0.904,
+            "__id__": "remove_server_temp_ssh_key"
+          },
+          "salt_|-remove_mgmt_node_temp_ssh_key_|-remove_mgmt_node_temp_ssh_key_|-state": {
+            "name": "remove_mgmt_node_temp_ssh_key",
+            "changes": {
+              "out": "highstate",
+              "ret": {
+                "dev-min-sles15sp1.lan": {
+                  "file_|-remove_temp_ssh_key_|-/root/.ssh/temp_caasp_key_|-absent": {
+                    "name": "/root/.ssh/temp_caasp_key",
+                    "changes": {
+                      "removed": "/root/.ssh/temp_caasp_key"
+                    },
+                    "pchanges": {
+                      "removed": "/root/.ssh/temp_caasp_key"
+                    },
+                    "result": true,
+                    "comment": "Removed file /root/.ssh/temp_caasp_key",
+                    "__sls__": "caasp.temp_ssh_key.remove_mgmt_node_key",
+                    "__run_num__": 0,
+                    "start_time": "17:32:56.966462",
+                    "duration": 7.55,
+                    "__id__": "remove_temp_ssh_key"
+                  },
+                  "file_|-remove_temp_ssh_pub_key_|-/root/.ssh/temp_caasp_key.pub_|-absent": {
+                    "name": "/root/.ssh/temp_caasp_key.pub",
+                    "changes": {
+                      "removed": "/root/.ssh/temp_caasp_key.pub"
+                    },
+                    "pchanges": {
+                      "removed": "/root/.ssh/temp_caasp_key.pub"
+                    },
+                    "result": true,
+                    "comment": "Removed file /root/.ssh/temp_caasp_key.pub",
+                    "__sls__": "caasp.temp_ssh_key.remove_mgmt_node_key",
+                    "__run_num__": 1,
+                    "start_time": "17:32:56.974457",
+                    "duration": 1.345,
+                    "__id__": "remove_temp_ssh_pub_key"
+                  }
+                }
+              }
+            },
+            "comment": "States ran successfully. Updating dev-min-sles15sp1.lan.",
+            "result": true,
+            "__jid__": "20200702153256434291",
+            "__sls__": "caasp.temp_ssh_key.cleanup",
+            "__run_num__": 7,
+            "start_time": "17:32:56.371695",
+            "duration": 430.586,
+            "__id__": "remove_mgmt_node_temp_ssh_key"
+          }
+        }
+      },
+      "outputter": "highstate",
+      "retcode": 0
+    },
+    "success": true
+  }
+}
+

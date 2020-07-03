@@ -24,6 +24,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.Zypper;
@@ -55,6 +56,7 @@ public interface SystemQuery {
 
     /**
      * call salt test.ping
+     *
      * @param minionId id of the target minion
      * @return true
      */
@@ -71,7 +73,7 @@ public interface SystemQuery {
      * For a given minion id check if there is a key in any of the given status. If no status is given as parameter,
      * all the available status are considered.
      *
-     * @param id the id to check for
+     * @param id       the id to check for
      * @param statusIn array of key status to consider
      * @return true if there is a key with the given id, false otherwise
      */
@@ -87,7 +89,7 @@ public interface SystemQuery {
     /**
      * Generate a key pair for the given id and accept the public key.
      *
-     * @param id the id to use
+     * @param id    the id to use
      * @param force set true to overwrite an already existing key
      * @return the generated key pair
      */
@@ -134,15 +136,16 @@ public interface SystemQuery {
      * Run a remote command on a given minion.
      *
      * @param target the target
-     * @param cmd the command
+     * @param cmd    the command
      * @return the output of the command
      */
     Map<String, Result<String>> runRemoteCommand(MinionList target, String cmd);
 
     /**
      * Run a remote command on a given minion asynchronously.
+     *
      * @param target the target
-     * @param cmd the command to execute
+     * @param cmd    the command to execute
      * @param cancel a future used to cancel waiting on return events
      * @return a map holding a {@link CompletionStage}s for each minion
      */
@@ -167,7 +170,8 @@ public interface SystemQuery {
 
     /**
      * Get information about all the nodes available via a cluster.
-     * @param managementNode the management node of the cluster
+     *
+     * @param managementNode            the management node of the cluster
      * @param clusterProviderParameters the parameters for calling the cluster provider manager on the management node
      * @return a list of nodes returned by the cluster provider manager
      */
@@ -176,8 +180,9 @@ public interface SystemQuery {
 
     /**
      * Match the given target expression asynchronously.
+     *
      * @param target the target expression
-     * @param cancel  a future used to cancel waiting on return events
+     * @param cancel a future used to cancel waiting on return events
      * @return a map holding a {@link CompletionStage}s for each minion
      */
     Map<String, CompletionStage<Result<Boolean>>> matchAsync(
@@ -185,6 +190,7 @@ public interface SystemQuery {
 
     /**
      * Executes match.glob in another thread and returns a {@link CompletionStage}.
+     *
      * @param target the target to pass to match.glob
      * @param cancel a future used to cancel waiting
      * @return a future or Optional.empty if there's no ssh-push minion in the db
@@ -194,30 +200,35 @@ public interface SystemQuery {
 
     /**
      * Call 'saltutil.refresh_pillar' to sync the grains to the target minion(s).
+     *
      * @param minionList minion list
      */
     void refreshPillar(MinionList minionList);
 
     /**
      * Call 'saltutil.sync_grains' to sync the grains to the target minion(s).
+     *
      * @param minionList minion list
      */
     void syncGrains(MinionList minionList);
 
     /**
      * Call 'saltutil.sync_modules' to sync the grains to the target minion(s).
+     *
      * @param minionList minion list
      */
     void syncModules(MinionList minionList);
 
     /**
      * Call 'saltutil.sync_all' to sync everything to the target minion(s).
+     *
      * @param minionList minion list
      */
     void syncAll(MinionList minionList);
 
     /**
      * Performs an test.echo on a target set of minions for checkIn purpose.
+     *
      * @param targetIn the target
      * @return the LocalAsyncResult of the test.echo call
      * @throws SaltException if we get a failure from Salt
@@ -226,6 +237,7 @@ public interface SystemQuery {
 
     /**
      * Apply util.systeminfo state on the specified minion list
+     *
      * @param minionTarget minion list
      */
     void updateSystemInfo(MinionList minionTarget);
@@ -241,12 +253,12 @@ public interface SystemQuery {
     /**
      * Bootstrap a system using salt-ssh.
      *
-     * @param parameters - bootstrap parameters
+     * @param parameters    - bootstrap parameters
      * @param bootstrapMods - state modules to be applied during the bootstrap
-     * @param pillarData - pillar data used salt-ssh call
-     * @throws SaltException if something goes wrong during command execution or
-     * during manipulation the salt-ssh roster
+     * @param pillarData    - pillar data used salt-ssh call
      * @return the result of the underlying ssh call for given host
+     * @throws SaltException if something goes wrong during command execution or
+     *                       during manipulation the salt-ssh roster
      */
     Result<SSHResult<Map<String, State.ApplyResult>>> bootstrapMinion(
             BootstrapParameters parameters, List<String> bootstrapMods,
@@ -254,12 +266,12 @@ public interface SystemQuery {
 
     /**
      * Store the files uploaded by a minion to the SCAP storage directory.
-     * @param minion the minion
+     *
+     * @param minion    the minion
      * @param uploadDir the uploadDir
-     * @param actionId the action id
+     * @param actionId  the action id
      * @return a map with one element: @{code true} -> scap store path,
      * {@code false} -> err message
-     *
      */
     Map<Boolean, String> storeMinionScapFiles(MinionServer minion, String uploadDir, Long actionId);
 
@@ -275,23 +287,24 @@ public interface SystemQuery {
      * Chain ssh calls over one or more hops to run a command on the last host in the chain.
      * This calls the mgrutil.chain_ssh_command runner.
      *
-     * @param hosts a list of hosts, where the last one is where
-     *              the command will be executed
-     * @param clientKey the ssh key to use to connect to the first host
-     * @param proxyKey the ssh key path to use for the rest of the hosts
-     * @param user the user
-     * @param options ssh options
-     * @param command the command to execute
+     * @param hosts      a list of hosts, where the last one is where
+     *                   the command will be executed
+     * @param clientKey  the ssh key to use to connect to the first host
+     * @param proxyKey   the ssh key path to use for the rest of the hosts
+     * @param user       the user
+     * @param options    ssh options
+     * @param command    the command to execute
      * @param outputfile the file to which to dump the command stdout
      * @return the execution result
      */
     Optional<MgrUtilRunner.ExecResult> chainSSHCommand(List<String> hosts, String clientKey, String proxyKey,
-            String user, Map<String, String> options, String command, String outputfile);
+                                                       String user, Map<String, String> options, String command, String outputfile);
 
     /**
      * Get information about all containers running in a Kubernetes cluster.
+     *
      * @param kubeconfig path to the kubeconfig file
-     * @param context kubeconfig context to use
+     * @param context    kubeconfig context to use
      * @return a list of containers
      */
     Optional<List<MgrK8sRunner.Container>> getAllContainers(String kubeconfig, String context);
@@ -299,7 +312,7 @@ public interface SystemQuery {
     /**
      * Remove SUSE Manager specific configuration from a Salt minion.
      *
-     * @param minion the minion.
+     * @param minion  the minion.
      * @param timeout operation timeout
      * @return list of error messages or empty if no error
      */
@@ -307,14 +320,16 @@ public interface SystemQuery {
 
     /**
      * Send notification about a system id to be generated.
+     *
      * @param minion target minion.
      * @throws InstantiationException if signature generation fails
-     * @throws SaltException if anything goes wrong.
+     * @throws SaltException          if anything goes wrong.
      */
     void notifySystemIdGenerated(MinionServer minion) throws InstantiationException, SaltException;
 
     /**
      * Get pending resume information.
+     *
      * @param minionIds to target.
      * @return pending resume information.
      * @throws SaltException if anything goes wrong.
@@ -323,6 +338,7 @@ public interface SystemQuery {
 
     /**
      * Return show highstate result.
+     *
      * @param minionId of the target minion.
      * @return show highstate result.
      * @throws SaltException if anything goes wrong.
@@ -331,6 +347,7 @@ public interface SystemQuery {
 
     /**
      * Query product information.
+     *
      * @param minionId of the target minion.
      * @return product information
      */
@@ -339,20 +356,21 @@ public interface SystemQuery {
     /**
      * Execute a LocalCall asynchronously on the default Salt client.
      *
-     * @deprecated this function is too general and should be replaced by more specific functionality.
-     * @param <T> the return type of the call
-     * @param callIn the call to execute
-     * @param target minions targeted by the call
+     * @param <T>        the return type of the call
+     * @param callIn     the call to execute
+     * @param target     minions targeted by the call
      * @param metadataIn the metadata to be passed in the call
      * @return the LocalAsyncResult of the call
      * @throws SaltException in case of an error executing the job with Salt
+     * @deprecated this function is too general and should be replaced by more specific functionality.
      */
     @Deprecated
     <T> Optional<LocalAsyncResult<T>> callAsync(LocalCall<T> callIn, Target<?> target,
-            Optional<ScheduleMetadata> metadataIn) throws SaltException;
+                                                Optional<ScheduleMetadata> metadataIn) throws SaltException;
 
     /**
      * Sync the channels of a list of minions
+     *
      * @param minionIds of the targets.
      * @throws SaltException if anything goes wrong.
      */
@@ -367,11 +385,12 @@ public interface SystemQuery {
      * @return the execution result
      */
     Optional<MgrUtilRunner.ExecResult> collectKiwiImage(MinionServer minion, String filepath,
-            String imageStore);
+                                                        String imageStore);
 
     /**
      * Execute generic salt call.
-     * @param call salt call to execute.
+     *
+     * @param call     salt call to execute.
      * @param minionId of the target minion.
      * @return raw salt call result in json format.
      */
@@ -388,22 +407,23 @@ public interface SystemQuery {
     /**
      * Return the jobcache filtered by metadata and start and end time.
      *
-     * @param metadata search metadata
+     * @param metadata  search metadata
      * @param startTime jobs start time
-     * @param endTime jobs end time
+     * @param endTime   jobs end time
      * @return list of running jobs
      */
     Optional<Map<String, Jobs.ListJobsEntry>> jobsByMetadata(Object metadata, LocalDateTime startTime,
-            LocalDateTime endTime);
+                                                             LocalDateTime endTime);
 
     /**
      * Get the specified grains for a given minion.
-     * @deprecated this function is too general and should be replaced by more specific functionality.
-     * @param minionId id of the target minion
-     * @param type  class type, result should be parsed into
+     *
+     * @param minionId   id of the target minion
+     * @param type       class type, result should be parsed into
      * @param grainNames list of grains names
-     * @param <T> Type result should be parsed into
+     * @param <T>        Type result should be parsed into
      * @return Optional containing the grains parsed into specified type
+     * @deprecated this function is too general and should be replaced by more specific functionality.
      */
     @Deprecated
     <T> Optional<T> getGrains(String minionId, TypeToken<T> type, String... grainNames);
@@ -411,22 +431,23 @@ public interface SystemQuery {
     /**
      * Get the grains for a given minion.
      *
-     * @deprecated this function is too general and should be replaced by more specific functionality.
      * @param minionId id of the target minion
      * @return map containing the grains
+     * @deprecated this function is too general and should be replaced by more specific functionality.
      */
     @Deprecated
     Optional<Map<String, Object>> getGrains(String minionId);
 
     /**
-     * @deprecated this function is too general and should be replaced by more specific functionality.
      * @return saltSSHService to get
+     * @deprecated this function is too general and should be replaced by more specific functionality.
      */
     @Deprecated
     SaltSSHService getSaltSSHService();
 
     /**
      * Get redhat product information
+     *
      * @param minionId id of the target minion
      * @return redhat product information
      */
@@ -436,7 +457,7 @@ public interface SystemQuery {
      * Using a RunnerCall, store given contents to given path and set the mode, so that SSH likes it
      * (read-write for owner, nothing for others).
      *
-     * @param path the path where key will be stored
+     * @param path     the path where key will be stored
      * @param contents the contents of the key (PEM format)
      * @throws IllegalStateException if something goes wrong during the operation, or if given path is not absolute
      */
@@ -446,15 +467,19 @@ public interface SystemQuery {
      * Remove given file using RunnerCall
      *
      * @param path the path of file to be removed
-     * @throws IllegalStateException if the given path is not absolute
      * @return Optional with true if the file deletion succeeded.
+     * @throws IllegalStateException if the given path is not absolute
      */
     Optional<Boolean> removeFile(Path path);
 
     /**
      * Match minions synchronously using a compound matcher.
+     *
      * @param target compound matcher
      * @return list of minion ids
      */
     List<String> matchCompoundSync(String target);
+
+    String callAsync(RunnerCall<?> call);
+
 }

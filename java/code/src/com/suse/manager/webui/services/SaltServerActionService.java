@@ -33,8 +33,10 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionSaltRunnerJob;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.BaseSaltRunnerAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.cluster.BaseClusterModifyNodesAction;
@@ -126,6 +128,7 @@ import com.suse.manager.webui.utils.salt.State;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.calls.RunnerCall;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
@@ -174,6 +177,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -454,6 +458,11 @@ public class SaltServerActionService {
     public void execute(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId) {
 
+        if (actionIn instanceof BaseSaltRunnerAction) {
+            executeRunnerAction((BaseSaltRunnerAction)actionIn);
+            return;
+        }
+
         List<MinionSummary> allMinions = MinionServerFactory.findMinionSummaries(actionIn.getId());
 
         // split minions into regular and salt-ssh
@@ -476,6 +485,63 @@ public class SaltServerActionService {
             executeSSHAction(actionIn, sshMinion);
         }
     }
+
+    private void executeRunnerAction(BaseSaltRunnerAction actionIn) {
+        RunnerCall<?> call = callForRunnerAction(actionIn);
+        String jid = systemQuery.callAsync(call);
+
+        ActionSaltRunnerJob job1 = new ActionSaltRunnerJob();
+        job1.setAction(actionIn);
+        job1.setJid(jid);
+        job1.setStatus(ActionFactory.STATUS_QUEUED);
+        job1.setPickupTime(new Date());
+
+        actionIn.getRunnerJobs().add(job1);
+        ActionFactory.save(actionIn);
+    }
+
+    private RunnerCall<?> callForRunnerAction(Action actionIn) {
+        ActionType actionType = actionIn.getActionType();
+        if (ActionFactory.TYPE_CLUSTER_REMOVE_NODE.equals(actionType)) {
+            BaseClusterModifyNodesAction clusterAction = (BaseClusterModifyNodesAction)actionIn;
+
+            Cluster cluster = clusterAction.getCluster();
+
+            Optional<Map<String, Object>> settingsFormulaData = formulaManager
+                    .getClusterFormulaData(cluster, "settings");
+            if (settingsFormulaData.isEmpty()) {
+                throw new RuntimeException("No settings formula data for cluster " + cluster.getLabel());
+            }
+
+            Optional<Map<String, Object>> actionPillar = Optional.ofNullable(
+                    clusterManager.deserializeJsonParams(clusterAction.getJsonParams()));
+
+            Map<String, Object> params = new HashMap<>();
+            params.putAll(settingsFormulaData.get());
+            actionPillar.ifPresent(ap -> params.putAll(ap));
+
+            Map<String, Object> pillar = new HashMap<>();
+            pillar.put("cluster", clusterAction.getCluster());
+            pillar.put("cluster_type", cluster.getProvider());
+            pillar.put("management_node", clusterAction.getCluster().getManagementNode().getMinionId());
+            pillar.put("params", params);
+
+            String mods = "caasp.orch.removenodes";
+
+            Optional<Map<String, Object>> pillarData = Optional.of(pillar);
+
+            Map<String, Object> kwargs = new LinkedHashMap<>();
+            kwargs.put("mods", mods);
+            pillarData.ifPresent(p -> kwargs.put("pillar", p));
+            RunnerCall<String> call =
+                    new RunnerCall<>("state.orchestrate", Optional.of(kwargs),
+                            new TypeToken<>() { });
+
+            return call;
+        }
+        return null; // TODO
+    }
+
 
     private void executeForRegularMinions(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId, List<MinionSummary> minionSummaries) {

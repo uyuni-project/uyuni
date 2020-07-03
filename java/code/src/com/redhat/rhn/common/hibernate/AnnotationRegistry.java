@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.action.ActionSaltRunnerJob;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -136,7 +137,7 @@ public class AnnotationRegistry {
         ANNOTATION_CLASSES.add(GroupRecurringAction.class);
         ANNOTATION_CLASSES.add(OrgRecurringAction.class);
         ANNOTATION_CLASSES.add(Cluster.class);
-
+        ANNOTATION_CLASSES.add(ActionSaltRunnerJob.class);
     }
 
     /**

@@ -13,26 +13,26 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.action.cluster;
+package com.redhat.rhn.domain.action;
 
-import com.redhat.rhn.domain.action.BaseSaltRunnerAction;
-import com.suse.manager.model.clusters.Cluster;
+import java.util.HashSet;
+import java.util.Set;
 
-public class BaseClusterAction extends BaseSaltRunnerAction {
+public abstract class BaseSaltRunnerAction extends Action {
 
-    private Cluster cluster;
+    private Set<ActionSaltRunnerJob> runnerJobs = new HashSet<>();
 
     /**
-     * @return cluster to get
+     * @return runnerJobs to get
      */
-    public Cluster getCluster() {
-        return cluster;
+    public Set<ActionSaltRunnerJob> getRunnerJobs() {
+        return runnerJobs;
     }
 
     /**
-     * @param clusterIn to set
+     * @param runnerJobsIn to set
      */
-    public void setCluster(Cluster clusterIn) {
-        this.cluster = clusterIn;
+    public void setRunnerJobs(Set<ActionSaltRunnerJob> runnerJobsIn) {
+        this.runnerJobs = runnerJobsIn;
     }
 }
