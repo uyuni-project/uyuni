@@ -54,8 +54,11 @@ mainframe-sysinfo:
   module.run:
     - name: mainframesysinfo.read_values
 {% endif %}
+
+{%- if grains['saltversioninfo'][0] >= 2018 %}
 {% if 'network.fqdns' in salt %}
 fqdns:
   module.run:
     - name: network.fqdns
 {% endif%}
+{%- endif%}
