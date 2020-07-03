@@ -10,7 +10,7 @@ const {MaintenanceWindowsList} = require("./list/maintenance-windows-list");
 const {MaintenanceWindowsEdit} =  require("./edit/maintenance-windows-edit");
 const MessagesUtils = require("components/messages").Utils;
 const SpaRenderer  = require("core/spa/spa-renderer").default;
-const MaintenanceWindowsApi = require("./maintenance-windows-api");
+const MaintenanceWindowsApi = require("./api/maintenance-windows-api");
 
 const messagesCounterLimit = 1;
 const hashUrlRegex = /^#\/([^\/]*)(?:\/(.+))?$/;
