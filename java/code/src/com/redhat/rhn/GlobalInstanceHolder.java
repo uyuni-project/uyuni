@@ -45,6 +45,7 @@ public class GlobalInstanceHolder {
             SALT_SERVER_ACTION_SERVICE, SYSTEM_QUERY, SALT_UTILS);
     public static final KubernetesManager KUBERNETES_MANAGER = new KubernetesManager(SYSTEM_QUERY);
     public static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
-    public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER = RegularMinionBootstrapper.getInstance(SYSTEM_QUERY);
-    public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER = SSHMinionBootstrapper.getInstance(SYSTEM_QUERY);
+    public static final RegularMinionBootstrapper REGULAR_MINION_BOOTSTRAPPER =
+            new RegularMinionBootstrapper(SYSTEM_QUERY);
+    public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER = new SSHMinionBootstrapper(SYSTEM_QUERY);
 }

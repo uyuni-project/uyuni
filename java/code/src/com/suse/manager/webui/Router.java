@@ -96,7 +96,7 @@ public class Router implements SparkApplication {
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         KubernetesManager kubernetesManager = GlobalInstanceHolder.KUBERNETES_MANAGER;
         VirtManager virtManager = GlobalInstanceHolder.VIRT_MANAGER;
-        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
+        RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
