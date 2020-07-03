@@ -129,6 +129,8 @@ mainframe-sysinfo:
       - mgrcompat: sync_states
 {%- endif %}
 {% endif %}
+
+{%- if grains['saltversioninfo'][0] >= 2018 %}
 {% if 'network.fqdns' in salt %}
 fqdns:
   mgrcompat.module_run:
@@ -140,6 +142,7 @@ fqdns:
       - mgrcompat: sync_states
 {%- endif %}
 {% endif%}
+{%- endif%}
 
 include:
   - util.syncstates
