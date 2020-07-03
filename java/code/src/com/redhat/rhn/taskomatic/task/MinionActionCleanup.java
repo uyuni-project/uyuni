@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.taskomatic.core.SchedulerKernel;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ import org.quartz.JobExecutionContext;
  */
 public class MinionActionCleanup extends RhnJavaJob {
 
-    private final MinionActionUtils minionActionUtils = SchedulerKernel.MINION_ACTION_UTILS;
+    private final MinionActionUtils minionActionUtils = GlobalInstanceHolder.MINION_ACTION_UTILS;
 
     /**
      * @param context the job execution context

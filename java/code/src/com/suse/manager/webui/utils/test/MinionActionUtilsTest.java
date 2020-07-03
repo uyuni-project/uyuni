@@ -17,6 +17,7 @@ package com.suse.manager.webui.utils.test;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -31,7 +32,6 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
 /**
@@ -43,13 +43,13 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
      * Verify script is deleted in case all servers are finished (COMPLETED or FAILED).
      */
     public void testCleanupScriptActions() throws Exception {
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
+        SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,
                 saltUtils);
@@ -76,12 +76,12 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
      * Verify script is deleted in case no Action is there at all.
      */
     public void testCleanupScriptWithoutAction() throws Exception {
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
+        SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
                 clusterManager);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,
@@ -101,12 +101,12 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
      * Verify script is not deleted as long as not all servers have finished (e.g. PICKED_UP).
      */
     public void testCleanupScriptActionsPickedUp() throws Exception {
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
+        SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
                 clusterManager);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,

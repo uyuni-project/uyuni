@@ -14,25 +14,14 @@
  */
 package com.redhat.rhn.webapp;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.security.acl.Access;
-import com.redhat.rhn.common.security.acl.AclFactory;
-import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
-import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.satellite.StartupTasksCommand;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
-import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.reactor.SaltReactor;
 
-import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.menu.MenuTree;
-import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -63,29 +52,17 @@ public class RhnServletListener implements ServletContextListener {
     private boolean hibernateStarted = false;
     private boolean loggingStarted = false;
 
-    private static final SystemQuery SYSTEM_QUERY = SaltService.INSTANCE;
-    private static final SaltApi SALT_API = SaltService.INSTANCE_SALT_API;
-    private static final ServerGroupManager SERVER_GROUP_MANAGER = ServerGroupManager.getInstance();
-    private static final FormulaManager FORMULA_MANAGER = FormulaManager.getInstance();
-    public static final ClusterManager CLUSTER_MANAGER = new ClusterManager(
-            SALT_API, SYSTEM_QUERY, SERVER_GROUP_MANAGER, FORMULA_MANAGER
-    );
-    private static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API, CLUSTER_MANAGER);
-    private static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
-            SYSTEM_QUERY, SALT_UTILS, CLUSTER_MANAGER);
-    private static final Access ACCESS = new Access(CLUSTER_MANAGER);
-    public static final AclFactory ACL_FACTORY = new AclFactory(ACCESS);
-    private static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);
-    public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
-
     // Salt event reactor instance
-    private final SaltReactor saltReactor = new SaltReactor(SALT_API, SYSTEM_QUERY, SALT_SERVER_ACTION_SERVICE, SALT_UTILS);
+    private final SaltReactor saltReactor = new SaltReactor(
+            GlobalInstanceHolder.SALT_API, GlobalInstanceHolder.SYSTEM_QUERY,
+            GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,
+            GlobalInstanceHolder.SALT_UTILS);
 
     private void startMessaging() {
         // Start the MessageQueue thread listening for
         // Events
         MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions(SYSTEM_QUERY, SALT_API);
+        MessageQueue.configureDefaultActions(GlobalInstanceHolder.SYSTEM_QUERY, GlobalInstanceHolder.SALT_API);
     }
 
     private void stopMessaging() {
@@ -143,7 +120,7 @@ public class RhnServletListener implements ServletContextListener {
     /** {@inheritDoc} */
     public void contextInitialized(ServletContextEvent sce) {
         //Setting globally available instances needed by jsp pages
-        sce.getServletContext().setAttribute("menuTree", MENU_TREE);
+        sce.getServletContext().setAttribute("menuTree", GlobalInstanceHolder.MENU_TREE);
 
         startMessaging();
         logStart("Messaging");

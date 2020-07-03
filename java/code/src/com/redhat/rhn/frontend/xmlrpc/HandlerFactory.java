@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
@@ -83,7 +84,6 @@ import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -124,8 +124,8 @@ public class HandlerFactory {
         TaskomaticApi taskomaticApi = new TaskomaticApi();
         SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
+        SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();

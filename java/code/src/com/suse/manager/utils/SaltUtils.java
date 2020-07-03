@@ -206,9 +206,10 @@ public class SaltUtils {
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
-    private SystemQuery systemQuery;
-    private SaltApi saltApi;
+    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
     private final ClusterManager clusterManager;
+    private final FormulaManager formulaManager;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -235,12 +236,14 @@ public class SaltUtils {
      * @param systemQueryIn
      * @param saltApiIn
      * @param clusterManagerIn
+     * @param formulaManagerIn
      */
     public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn,
-                     ClusterManager clusterManagerIn) {
+                     ClusterManager clusterManagerIn, FormulaManager formulaManagerIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
         this.clusterManager = clusterManagerIn;
+        this.formulaManager = formulaManagerIn;
     }
 
     /**
@@ -1432,7 +1435,7 @@ public class SaltUtils {
                     "grains.items"
             ));
             try {
-                FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
+                formulaManager.enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 saltApi.refreshPillar(new MinionList(server.getMinionId()));
             }
@@ -1879,22 +1882,6 @@ public class SaltUtils {
             return true;
         }
         return prerequisiteIsCompleted(action.getPrerequisite(), prereqType, systemId);
-    }
-
-    /**
-     * For unit testing only.
-     * @param systemQueryIn the {@link SaltService} to set
-     */
-    public void setSystemQuery(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
-    }
-
-    /**
-     * For unit testing only.
-     * @param saltApiIn the {@link SaltApi} to set
-     */
-    public void setSaltApi(SaltApi saltApiIn) {
-        this.saltApi = saltApiIn;
     }
 
     /**

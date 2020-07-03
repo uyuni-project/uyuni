@@ -19,6 +19,7 @@ import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -143,7 +144,7 @@ import java.util.stream.Collectors;
 public class SystemManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(SystemManager.class);
-    private static SystemQuery saltServiceInstance = SaltService.INSTANCE;
+    private static SystemQuery saltServiceInstance = GlobalInstanceHolder.SYSTEM_QUERY;
 
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";

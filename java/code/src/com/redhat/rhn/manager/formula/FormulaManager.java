@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.formula;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.getGroupFormulaValuesByNameAndGroupId;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -28,7 +29,6 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
@@ -70,7 +70,7 @@ public class FormulaManager {
      */
     public static synchronized FormulaManager getInstance() {
         if (instance == null) {
-            instance = new FormulaManager(SaltService.INSTANCE_SALT_API);
+            instance = new FormulaManager(GlobalInstanceHolder.SALT_API);
         }
         return instance;
     }

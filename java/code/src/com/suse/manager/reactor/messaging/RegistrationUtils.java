@@ -21,6 +21,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toSet;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -55,7 +56,6 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
@@ -88,9 +88,9 @@ public class RegistrationUtils {
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
     private static SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
+            new SystemUnentitler(new VirtManagerSalt(GlobalInstanceHolder.SALT_API),
                     new FormulaMonitoringManager()),
-            new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
+            new SystemEntitler(GlobalInstanceHolder.SYSTEM_QUERY, new VirtManagerSalt(GlobalInstanceHolder.SALT_API),
                     new FormulaMonitoringManager())
     );
 

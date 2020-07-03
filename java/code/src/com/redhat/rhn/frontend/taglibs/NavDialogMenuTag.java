@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.frontend.taglibs;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.frontend.nav.NavTreeIndex;
 import com.redhat.rhn.frontend.nav.RenderGuard;
 import com.redhat.rhn.frontend.nav.Renderable;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
-import com.redhat.rhn.webapp.RhnServletListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +50,7 @@ public class NavDialogMenuTag extends TagSupport {
     /** rendering classname which implements the Renderable interface */
     private String renderer;
 
-    private final RenderUtils renderUtils = RhnServletListener.RENDER_UTILS;
+    private final RenderUtils renderUtils = GlobalInstanceHolder.RENDER_UTILS;
 
     /** {@inheritDoc}
      * @throws JspException*/

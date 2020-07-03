@@ -145,6 +145,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
     protected Path metadataDirOfficial;
+    private ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+    private SaltUtils saltUtils;
+    private SaltServerActionService saltServerActionService;
+    private ClusterManager clusterManager;
     protected Path formulaDataDir;
 
 
@@ -160,6 +164,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
                         new FormulaMonitoringManager())
         );
+        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
+        clusterManager = new ClusterManager(
+                saltServiceMock, saltServiceMock, serverGroupManager, formulaManager
+        );
+        saltUtils = new SaltUtils(
+                saltServiceMock, saltServiceMock, clusterManager, formulaManager
+        );
+        saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils, clusterManager);
         metadataDirOfficial = Files.createTempDirectory("meta");
         formulaDataDir = Files.createTempDirectory("data");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
@@ -189,17 +201,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -327,17 +328,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .parse(getJobReturnEvent("packages.profileupdate.allversions.json", action.getId()))
                 .get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -405,17 +395,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .parse(getJobReturnEvent("packages.profileupdate.json", action.getId()))
                 .get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -490,17 +469,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .parse(getJobReturnEvent("packages.profileupdate.json", action.getId()))
                 .get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -551,17 +519,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.rhel7res.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -627,17 +584,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.ubuntu.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -702,17 +648,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.caasp-node.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = saltServiceMock;
-        SaltApi saltApi = saltServiceMock;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -750,17 +685,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.caasp-node.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = saltServiceMock;
-        SaltApi saltApi = saltServiceMock;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -799,17 +723,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("packages.profileupdate.caasp-management.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = saltServiceMock;
-        SaltApi saltApi = saltServiceMock;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1108,17 +1021,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("hardware.profileupdate.ip_change_ipv4ipv6.x86.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -1165,17 +1067,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("hardware.profileupdate.primary_ips_ipv4ipv6.x86.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -1195,12 +1086,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         Set<NetworkInterface> oldIfs = new HashSet<>();
         oldIfs.addAll(server.getNetworkInterfaces());
-
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
-        ClusterManager clusterManager = new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager,
-                formulaManager);
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager);
 
         saltUtils.updateServerAction(sa, 0L, true, "n/a", element, "state.apply");
 
@@ -1304,17 +1189,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent(jsonFile, action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -1419,17 +1293,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         } });
 
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -1467,17 +1330,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("openscap.xccdf.success.json", action.getId()));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
 
         File scapFile = new File(TestUtils.findTestDataInDir(
@@ -1507,7 +1359,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         }});
 
         saltUtils.setXccdfResumeXsl(resumeXsl);
-        saltUtils.setSystemQuery(saltServiceMock);
         messageAction.execute(message);
 
         assertEquals(ActionFactory.STATUS_COMPLETED, sa.getStatus());
@@ -1717,17 +1568,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         ));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1750,17 +1590,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         Collections.singletonMap("$IMAGE$", imageName)));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1791,17 +1620,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         placeholders
                 ));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1908,17 +1726,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 JobReturnEvent.parse(getJobReturnEvent("image.build.kiwi.json", actionId));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = saltServiceMock;
-        SaltApi saltApi = saltServiceMock;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1955,17 +1762,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 .parse(getJobReturnEvent("image.inspect.kiwi.json", actionId));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
@@ -1998,17 +1794,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 getJobReturnEvent("openscap.xccdf.success.json", 123));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2022,18 +1807,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
-
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("dev-minsles12sp2.test.local");
@@ -2095,17 +1868,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleSubscribeChannels(with(any(User.class)),
                     with(any(SubscribeChannelsAction.class)));
         } });
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setMinionId("dev-minsles12sp2.test.local");
@@ -2178,17 +1940,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         applyStateAction.getServerActions().stream().findFirst().get().setStatus(ActionFactory.STATUS_FAILED);
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
         saltServerActionService.failDependentServerActions(applyStateAction.getId(),
                 minion.getMinionId(), Optional.empty());
 
@@ -2251,17 +2002,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         placeholders));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2319,17 +2059,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         placeholders));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService(), saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2366,17 +2095,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 placeholders));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2397,17 +2115,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         placeholders));
         JobReturnEventMessage message = new JobReturnEventMessage(event.get());
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
@@ -2429,17 +2136,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         Map<String, Object> params = new HashMap<>();
         params.put("skuba_cluster_path", "/opt/mycluster");
         params.put("map", Collections.singletonMap("key", "value"));
@@ -2501,17 +2197,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         Map<String, Object> params = new HashMap<>();
 
         BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
@@ -2590,18 +2275,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
-                clusterManager);
         Map<String, Object> params = new HashMap<>();
         params.put("skuba_cluster_path", "/opt/mycluster");
         params.put("map", Collections.singletonMap("key", "value"));
@@ -2654,18 +2327,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         MinionServer nodeToJoin = MinionServerFactoryTest.createTestMinionServer(user);
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
-                clusterManager);
         Map<String, Object> params = new HashMap<>();
 
         BaseClusterModifyNodesAction action = clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE, cluster, Arrays.asList(nodeToJoin.getId()), params, new Date(), user);
@@ -2717,17 +2378,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
         Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         Map<String, Object> params = new HashMap<>();
         params.put("skuba_cluster_path", "/opt/mycluster");
         params.put("map", Collections.singletonMap("key", "value"));
@@ -2782,17 +2432,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer managementNode = MinionServerFactoryTest.createTestMinionServer(user);
         Cluster cluster = ClusterActionTest.createTestCluster(user, managementNode);
 
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
-        FormulaManager formulaManager = new FormulaManager(saltApi);
-        ClusterManager clusterManager = new ClusterManager(
-                saltApi, systemQuery, serverGroupManager, formulaManager
-        );
-        SaltUtils saltUtils = new SaltUtils(
-                systemQuery, saltApi, clusterManager
-        );
-        SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils, clusterManager);
         Map<String, Object> params = new HashMap<>();
         params.put("skuba_cluster_path", "/opt/mycluster");
         params.put("map", Collections.singletonMap("key", "value"));

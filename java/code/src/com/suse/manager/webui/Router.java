@@ -21,6 +21,7 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 import static spark.Spark.post;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -65,7 +66,6 @@ import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import org.apache.http.HttpStatus;
 
@@ -92,8 +92,8 @@ public class Router implements SparkApplication {
         initNotFoundRoutes(jade);
 
         TaskomaticApi taskomaticApi = new TaskomaticApi();
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
+        SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
+        SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         KubernetesManager kubernetesManager = new KubernetesManager(systemQuery);
         VirtManager virtManager = new VirtManagerSalt(saltApi);
         RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);

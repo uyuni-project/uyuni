@@ -14,11 +14,11 @@
  */
 package com.redhat.rhn.manager.acl;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.webapp.RhnServletListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class AclManager {
 
-    private static AclFactory aclFactory = RhnServletListener.ACL_FACTORY;
+    private static AclFactory aclFactory = GlobalInstanceHolder.ACL_FACTORY;
 
     private AclManager() {
         // hidden constructor

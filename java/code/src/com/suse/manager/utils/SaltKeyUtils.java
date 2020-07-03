@@ -14,11 +14,11 @@
  */
 package com.suse.manager.utils;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.calls.wheel.Key;
 
@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  */
 public class SaltKeyUtils {
 
-    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
+    private static final SystemQuery SALT_SERVICE = GlobalInstanceHolder.SYSTEM_QUERY;
 
     private SaltKeyUtils() { }
 

@@ -124,7 +124,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
     private FormulaManager formulaManager = new FormulaManager(saltApi);
     private ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-    private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager);
+    private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
     private SaltServerActionService saltServerActionService = new SaltServerActionService(
             systemQuery,
             saltUtils,

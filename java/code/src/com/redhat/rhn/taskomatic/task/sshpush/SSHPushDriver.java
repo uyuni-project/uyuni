@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.suse.manager.utils.SaltUtils;
 import org.apache.log4j.Logger;
 
@@ -180,10 +180,10 @@ public class SSHPushDriver implements QueueDriver {
         // Create a Salt worker if the system has a minion id
         if (system.getMinionId() != null) {
             return new SSHPushWorkerSalt(getLogger(), system,
-                    SchedulerKernel.SYSTEM_QUERY,
-                    SchedulerKernel.SYSTEM_QUERY.getSaltSSHService(),
-                    SchedulerKernel.SALT_SERVER_ACTION_SERVICE,
-                    SchedulerKernel.SALT_UTILS);
+                    GlobalInstanceHolder.SYSTEM_QUERY,
+                    GlobalInstanceHolder.SYSTEM_QUERY.getSaltSSHService(),
+                    GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,
+                    GlobalInstanceHolder.SALT_UTILS);
         }
         else {
             return new SSHPushWorker(getLogger(), remotePort, system);

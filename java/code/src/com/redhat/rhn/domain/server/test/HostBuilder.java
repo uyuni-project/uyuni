@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -25,7 +26,6 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.impl.SaltService;
 import org.hibernate.Session;
 
 import java.util.Iterator;
@@ -92,9 +92,9 @@ public class HostBuilder {
      */
     public HostBuilder createVirtHost() throws Exception {
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
+                new SystemUnentitler(new VirtManagerSalt(GlobalInstanceHolder.SALT_API),
                         new FormulaMonitoringManager()),
-                new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
+                new SystemEntitler(GlobalInstanceHolder.SYSTEM_QUERY, new VirtManagerSalt(GlobalInstanceHolder.SALT_API),
                         new FormulaMonitoringManager())
         );
         host = ServerTestUtils.createVirtHostWithGuests(owner, 0, systemEntitlementManager);

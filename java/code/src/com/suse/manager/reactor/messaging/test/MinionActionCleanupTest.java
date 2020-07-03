@@ -124,7 +124,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         ClusterManager clusterManager = new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils, clusterManager);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
                 saltUtils);
@@ -274,7 +274,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         ClusterManager clusterManager =  new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager,
                 formulaManager);
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
                 clusterManager);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,

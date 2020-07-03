@@ -25,6 +25,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -117,7 +118,6 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
@@ -222,7 +222,7 @@ public class SaltServerActionService {
             SaltActionChainGeneratorService.INSTANCE;
 
     private SystemQuery systemQuery;
-    private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
+    private SaltSSHService saltSSHService = GlobalInstanceHolder.SYSTEM_QUERY.getSaltSSHService();
     private SaltUtils saltUtils;
     private FormulaManager formulaManager = FormulaManager.getInstance();
     private final ClusterManager clusterManager;
@@ -2092,7 +2092,7 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = SaltService.INSTANCE
+            List<String> results = GlobalInstanceHolder.SYSTEM_QUERY
                     .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
                     .get().getMinions();
 

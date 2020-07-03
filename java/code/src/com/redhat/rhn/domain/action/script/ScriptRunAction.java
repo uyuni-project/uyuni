@@ -14,12 +14,12 @@
  */
 package com.redhat.rhn.domain.action.script;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.download.DownloadManager;
-import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.suse.manager.utils.SaltUtils;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -31,7 +31,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
  */
 public class ScriptRunAction extends ScriptAction {
 
-    private final SaltUtils saltUtils = SchedulerKernel.SALT_UTILS;
+    private final SaltUtils saltUtils = GlobalInstanceHolder.SALT_UTILS;
 
     /**
      * {@inheritDoc}
