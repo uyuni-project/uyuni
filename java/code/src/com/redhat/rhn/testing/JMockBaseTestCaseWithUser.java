@@ -17,6 +17,7 @@ package com.redhat.rhn.testing;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
 
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionGroupMembershipPillarGenerator;
@@ -58,6 +59,8 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot
                 .toAbsolutePath());
         Files.createDirectory(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
+        ServerGroupManager.getInstance()
+                .setMinionGroupMembershipPillarFileManager(minionGroupMembershipPillarFileManager);
     }
 
     /**

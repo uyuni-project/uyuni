@@ -678,7 +678,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTrue(action.getServerActions().stream()
                 .filter(serverAction -> serverAction.getServer().equals(minion))
                 .findAny().get().getStatus().equals(ActionFactory.STATUS_COMPLETED));
-        assertEquals(List.of("system-lock"), FormulaFactory.getFormulasByMinionId(minion.getMinionId()));
         assertEquals(false, ViewHelper.INSTANCE.formulaValueEquals(minion, "system-lock",
                 "minion_blackout", "false"));
     }
