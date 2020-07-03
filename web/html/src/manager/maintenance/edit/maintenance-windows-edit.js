@@ -21,7 +21,7 @@ class MaintenanceWindowsEdit extends React.Component {
     }
 
     isEdit = () => {
-        return this.props.schedule ? true : false;
+        return this.props.selected ? true : false;
     };
 
     render() {
@@ -47,7 +47,7 @@ class MaintenanceWindowsEdit extends React.Component {
                     <MaintenanceScheduleEdit
                         ref={this.child}
                         isEdit={this.isEdit()}
-                        schedule={this.props.schedule}
+                        schedule={this.props.selected}
                         calendarNames={this.props.calendarNames}
                         onEdit={this.props.onEdit}
                     /> ||
@@ -55,7 +55,7 @@ class MaintenanceWindowsEdit extends React.Component {
                     <MaintenanceCalendarEdit
                         ref={this.child}
                         isEdit={this.isEdit()}
-                        calendar={this.props.schedule}
+                        calendar={this.props.selected}
                         onRefresh={this.props.onRefresh}
                         onEdit={this.props.onEdit}
                         isLoading={i => this.setState({icalLoading: i})}
