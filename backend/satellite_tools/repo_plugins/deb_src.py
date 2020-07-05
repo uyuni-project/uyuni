@@ -256,6 +256,10 @@ class ContentSource(object):
         # No susedata
         return []
 
+    def get_mediaproducts(self):
+        # No mediaproducts data
+        return None
+
     def list_packages(self, filters, latest):
         """ list packages"""
 

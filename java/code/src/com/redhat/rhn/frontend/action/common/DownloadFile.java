@@ -619,7 +619,22 @@ public class DownloadFile extends DownloadAction {
             // my $dp = File::Spec->catfile($kickstart_mount, $tree->base_path, $path);
 
             if (child == null) {
-                diskPath = kickstartMount + "/" + tree.getBasePath() + path;
+                if (path.contains("repodata/") && tree.getKernelOptions().contains("useonlinerepo")) {
+                    String[] split = StringUtils.split(path, '/');
+                    if (split[0].equals("repodata")) {
+                        split[0] = tree.getChannel().getLabel();
+                    }
+                    diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
+                            File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
+                            File.separator + StringUtils.join(split, '/');
+                }
+                else if (path.endsWith("/media.1/products") && tree.getChannel().getMediaProducts() != null) {
+                    diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                        "/" + tree.getChannel().getMediaProducts().getRelativeFilename();
+                }
+                else {
+                    diskPath = kickstartMount + "/" + tree.getBasePath() + path;
+                }
             }
             else if (path.endsWith("/comps.xml")) {
                 diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
@@ -634,9 +649,9 @@ public class DownloadFile extends DownloadAction {
                 if (split[0].equals("repodata")) {
                     split[0] = child.getLabel();
                 }
-                diskPath = "/var/cache/" +
-                    Config.get().getString("repomd_path_prefix", "rhn/repodata/") + "/" +
-                    StringUtils.join(split, '/');
+                diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
+                        File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
+                        File.separator + StringUtils.join(split, File.separator);
             }
 
             if (log.isDebugEnabled()) {
