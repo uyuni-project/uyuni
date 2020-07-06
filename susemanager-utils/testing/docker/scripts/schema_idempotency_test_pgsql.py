@@ -200,9 +200,12 @@ def run_upgrade(upgrade_script, new_version):
 
 def diff_dumps(initial_dump, migrated_dump):
     """ Perform a diff of two database dumps """
-    file_initial = open(initial_dump)
-    file_migrated = open(migrated_dump)
-    return difflib.unified_diff(file_initial.readlines(), file_migrated.readlines())
+    def get_stripped_lines(file):
+        with open(file) as fd:
+            return [line.rstrip() for line in re.sub('\t', '       ', fd.read()).splitlines()]
+    file_initial = get_stripped_lines(initial_dump)
+    file_migrated = get_stripped_lines(migrated_dump)
+    return difflib.unified_diff(file_initial, file_migrated)
 
 
 def argparser():
