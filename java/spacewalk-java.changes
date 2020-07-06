@@ -1,3 +1,4 @@
+- fix issue with disabling self_update for autoyast autoupgrade (bsc#1170654)
 - serve media.1/products when available (bsc#1173204)
 - use repo metadata of the synced base channel when kernel
   option "useonlinerepo" is provided (bsc#1173204)
