@@ -25,11 +25,16 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
 /**
- * This is a "hack" and should only be used by the main entry points of
- * tomcat and taskomatic and those places that don't have a good way yet to
- * get dependencies passed via constructor.
+ * This class only exists to have a single place for initializing objects
+ * and share a single consistent instance in multiple parts of tomcat/taskomatic.
+ * These instances should only be referenced from entry points of the program and
+ * places that cant receive them otherwise though the constructor (i.e because of reflection)
  */
 public class GlobalInstanceHolder {
+
+    private GlobalInstanceHolder() {
+    }
+
     private static final SaltService SALT_SERVICE = new SaltService();
     public static final SystemQuery SYSTEM_QUERY = SALT_SERVICE;
     public static final SaltApi SALT_API = SALT_SERVICE;
