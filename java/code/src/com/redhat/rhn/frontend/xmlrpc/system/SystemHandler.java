@@ -6793,7 +6793,7 @@ public class SystemHandler extends BaseHandler {
             SUSEProductSet targetProducts = null;
             if (StringUtils.isBlank(targetIdent)) {
                 log.info("Target migration id is empty. " +
-                        "Looking for the closes product version having synced channels.");
+                        "Looking for the closest product version having synced channels.");
                 List<SUSEProductSet> syncedTargets = targets.stream()
                         .filter(ps -> {
                             if (log.isDebugEnabled()) {
