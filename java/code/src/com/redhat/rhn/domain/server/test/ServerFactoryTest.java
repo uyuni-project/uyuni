@@ -84,6 +84,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -125,11 +126,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private FormulaManager formulaManager = new FormulaManager(saltApi);
     private ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
     private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+    private SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
     private SaltServerActionService saltServerActionService = new SaltServerActionService(
             systemQuery,
             saltUtils,
             clusterManager,
-            formulaManager
+            formulaManager,
+            saltKeyUtils
     );
 
     @Override

@@ -78,6 +78,7 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.reactor.utils.test.RhelUtilsTest;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -171,7 +172,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         saltUtils = new SaltUtils(
                 saltServiceMock, saltServiceMock, clusterManager, formulaManager
         );
-        saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils, clusterManager, formulaManager);
+        saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils, clusterManager,
+                formulaManager, new SaltKeyUtils(saltServiceMock));
         metadataDirOfficial = Files.createTempDirectory("meta");
         formulaDataDir = Files.createTempDirectory("data");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());

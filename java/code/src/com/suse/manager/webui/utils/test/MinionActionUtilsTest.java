@@ -28,6 +28,7 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -50,8 +51,9 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
-                clusterManager, formulaManager);
+                clusterManager, formulaManager, saltKeyUtils);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,
                 saltUtils);
 
@@ -83,8 +85,9 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
-                clusterManager, formulaManager);
+                clusterManager, formulaManager, saltKeyUtils);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,
                 saltUtils);
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
@@ -108,8 +111,9 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
-                clusterManager, formulaManager);
+                clusterManager, formulaManager, saltKeyUtils);
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, systemQuery,
                 saltUtils);
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));

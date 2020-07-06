@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.clusters.ClustersController;
@@ -98,11 +99,13 @@ public class Router implements SparkApplication {
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
+        SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
 
         SystemsController systemsController = new SystemsController(systemQuery);
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
         NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
-        MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper);
+        MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper,
+                saltKeyUtils);
         StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
         FormulaController formulaController = new FormulaController(systemQuery, saltApi);
         ClustersController clustersController = new ClustersController(clusterManager, formulaManager);

@@ -224,6 +224,7 @@ public class SaltServerActionService {
     private SystemQuery systemQuery;
     private SaltSSHService saltSSHService = GlobalInstanceHolder.SYSTEM_QUERY.getSaltSSHService();
     private SaltUtils saltUtils;
+    private SaltKeyUtils saltKeyUtils;
     private final FormulaManager formulaManager;
     private final ClusterManager clusterManager;
     private boolean skipCommandScriptPerms;
@@ -233,13 +234,16 @@ public class SaltServerActionService {
      * @param saltUtilsIn
      * @param clusterManagerIn
      * @param formulaManagerIn
+     * @param saltKeyUtilsIn
      */
     public SaltServerActionService(SystemQuery systemQueryIn, SaltUtils saltUtilsIn,
-                                   ClusterManager clusterManagerIn, FormulaManager formulaManagerIn) {
+                                   ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
+                                   SaltKeyUtils saltKeyUtilsIn) {
         this.systemQuery = systemQueryIn;
         this.saltUtils = saltUtilsIn;
         this.clusterManager = clusterManagerIn;
         this.formulaManager = formulaManagerIn;
+        this.saltUtils = saltUtilsIn;
     }
 
     private Action unproxy(Action entity) {
@@ -2363,7 +2367,7 @@ public class SaltServerActionService {
                             KickstartAction ksAction = (KickstartAction) action.get();
                             if (!ksAction.getKickstartActionDetails().getUpgrade()) {
                                 // Delete salt key from master
-                                SaltKeyUtils.deleteSaltKey(action.get().getSchedulerUser(), minionId);
+                                saltKeyUtils.deleteSaltKey(action.get().getSchedulerUser(), minionId);
                             }
                         }
                         saltUtils.updateServerAction(sa,

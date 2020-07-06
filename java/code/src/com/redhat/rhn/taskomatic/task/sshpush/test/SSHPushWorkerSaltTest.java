@@ -31,6 +31,7 @@ import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
@@ -313,12 +314,13 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
         return new SSHPushWorkerSalt(
                 logger,
                 sshPushSystemMock,
                 systemQuery,
                 saltSSHServiceMock,
-                new SaltServerActionService(systemQuery, saltUtils, clusterManager, formulaManager),
+                new SaltServerActionService(systemQuery, saltUtils, clusterManager, formulaManager, saltKeyUtils),
                 saltUtils
         );
     }

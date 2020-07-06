@@ -68,6 +68,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
@@ -150,7 +151,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 systemQuery, saltApi, clusterManager, formulaManager
         );
         SaltServerActionService service = new SaltServerActionService(systemQuery, saltUtils, clusterManager,
-                formulaManager);
+                formulaManager, new SaltKeyUtils(systemQuery));
         service.setSkipCommandScriptPerms(true);
         return service;
     }

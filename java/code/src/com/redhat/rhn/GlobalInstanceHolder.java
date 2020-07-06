@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
@@ -59,8 +60,9 @@ public class GlobalInstanceHolder {
     );
     public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API,
             CLUSTER_MANAGER, FORMULA_MANAGER);
+    public static final SaltKeyUtils SALT_KEY_UTILS = new SaltKeyUtils(SYSTEM_QUERY);
     public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
-            SYSTEM_QUERY, SALT_UTILS, CLUSTER_MANAGER, FORMULA_MANAGER);
+            SYSTEM_QUERY, SALT_UTILS, CLUSTER_MANAGER, FORMULA_MANAGER, SALT_KEY_UTILS);
     public static final Access ACCESS = new Access(CLUSTER_MANAGER);
     public static final AclFactory ACL_FACTORY = new AclFactory(ACCESS);
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);

@@ -37,6 +37,7 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -126,7 +127,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
         ClusterManager clusterManager = new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
-                clusterManager, formulaManager);
+                clusterManager, formulaManager, new SaltKeyUtils(saltServiceMock));
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
                 saltUtils);
         minionActionUtils.cleanupMinionActions();
@@ -277,7 +278,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 formulaManager);
         SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
-                clusterManager, formulaManager);
+                clusterManager, formulaManager, new SaltKeyUtils(saltServiceMock));
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
                 saltUtils);
         minionActionUtils.cleanupMinionActionChains();
