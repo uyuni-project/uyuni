@@ -16,7 +16,6 @@ package com.redhat.rhn.manager.formula;
 
 import static com.redhat.rhn.domain.formula.FormulaFactory.getGroupFormulaValuesByNameAndGroupId;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.dto.FormulaData;
 import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.formula.FormulaFactory;

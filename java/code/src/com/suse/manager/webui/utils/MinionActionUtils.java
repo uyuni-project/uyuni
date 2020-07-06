@@ -34,7 +34,6 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
@@ -78,6 +77,13 @@ public class MinionActionUtils {
     private final SystemQuery systemQuery;
     private final SaltUtils saltUtils;
 
+    /**
+     * Utilities for minion actions
+     *
+     * @param saltServerActionServiceIn
+     * @param systemQueryIn
+     * @param saltUtilsIn
+     */
     public MinionActionUtils(SaltServerActionService saltServerActionServiceIn, SystemQuery systemQueryIn,
                              SaltUtils saltUtilsIn) {
         this.saltServerActionService = saltServerActionServiceIn;
