@@ -132,7 +132,8 @@ public class SaltReactor {
         MessageQueue.registerAction(new BatchStartedEventMessageAction(),
                 BatchStartedEventMessage.class);
         MessageQueue.registerAction(new RunnerReturnEventMessageAction(),
-                RunnerReturnEvent.class);
+                RunnerReturnEventMessage.class);
+
         MessageQueue.publish(new RefreshGeneratedSaltFilesEventMessage());
 
         connectToEventStream();

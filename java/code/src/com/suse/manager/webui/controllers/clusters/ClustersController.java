@@ -154,18 +154,6 @@ public class ClustersController {
 
         post("/manager/api/cluster/new/add",
                 withClusterAdmin(ClustersController::addCluster));
-
-        get("/manager/api/cluster-runner",
-                withUser(ClustersController::asyncRunner));
-
-    }
-
-    private static Object asyncRunner(Request request, Response response, User user) {
-        RunnerCall<String> call =
-                new RunnerCall<>("stest.stdout_print", Optional.empty(),
-                        new TypeToken<>() { });
-        String jid = SaltService.INSTANCE_SALT_SERVICE.callAsync(call);
-        return jid;
     }
 
     private static Object getClusterProps(Request request, Response response, User user) {

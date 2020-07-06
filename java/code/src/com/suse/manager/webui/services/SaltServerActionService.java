@@ -424,11 +424,11 @@ public class SaltServerActionService {
                     (ClusterJoinNodeAction)actionIn;
             return clusterJoinNodeAction(clusterAction);
         }
-        else if (ActionFactory.TYPE_CLUSTER_REMOVE_NODE.equals(actionType)) {
-            ClusterRemoveNodeAction clusterAction =
-                    (ClusterRemoveNodeAction)actionIn;
-            return clusterRemoveNodeAction(clusterAction);
-        }
+//        else if (ActionFactory.TYPE_CLUSTER_REMOVE_NODE.equals(actionType)) {
+//            ClusterRemoveNodeAction clusterAction =
+//                    (ClusterRemoveNodeAction)actionIn;
+//            return clusterRemoveNodeAction(clusterAction);
+//        }
         else if (ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER.equals(actionType)) {
             ClusterUpgradeAction clusterAction =
                     (ClusterUpgradeAction)actionIn;
@@ -490,13 +490,13 @@ public class SaltServerActionService {
         RunnerCall<?> call = callForRunnerAction(actionIn);
         String jid = systemQuery.callAsync(call);
 
-        ActionSaltRunnerJob job1 = new ActionSaltRunnerJob();
-        job1.setAction(actionIn);
-        job1.setJid(jid);
-        job1.setStatus(ActionFactory.STATUS_QUEUED);
-        job1.setPickupTime(new Date());
+        ActionSaltRunnerJob runnerJob = new ActionSaltRunnerJob();
+        runnerJob.setAction(actionIn);
+        runnerJob.setJid(jid);
+        runnerJob.setStatus(ActionFactory.STATUS_QUEUED);
+        runnerJob.setPickupTime(new Date());
 
-        actionIn.getRunnerJobs().add(job1);
+        actionIn.getRunnerJobs().add(runnerJob);
         ActionFactory.save(actionIn);
     }
 
@@ -521,7 +521,7 @@ public class SaltServerActionService {
             actionPillar.ifPresent(ap -> params.putAll(ap));
 
             Map<String, Object> pillar = new HashMap<>();
-            pillar.put("cluster", clusterAction.getCluster());
+            pillar.put("cluster", clusterAction.getCluster().getLabel());
             pillar.put("cluster_type", cluster.getProvider());
             pillar.put("management_node", clusterAction.getCluster().getManagementNode().getMinionId());
             pillar.put("params", params);
@@ -539,7 +539,7 @@ public class SaltServerActionService {
 
             return call;
         }
-        return null; // TODO
+        return null; // TODO others cluster calls
     }
 
 
@@ -2029,9 +2029,9 @@ public class SaltServerActionService {
         return clusterModifyAction(clusterAction, "join", "clusters.addnode");
     }
 
-    private Map<LocalCall<?>, List<MinionSummary>> clusterRemoveNodeAction(ClusterRemoveNodeAction clusterAction) {
-        return clusterModifyAction(clusterAction, "remove", "clusters.removenode");
-    }
+//    private Map<LocalCall<?>, List<MinionSummary>> clusterRemoveNodeAction(ClusterRemoveNodeAction clusterAction) {
+//        return clusterModifyAction(clusterAction, "remove", "clusters.removenode");
+//    }
 
     private Map<LocalCall<?>, List<MinionSummary>> clusterUpgradeClusterAction(ClusterUpgradeAction clusterAction) {
         return clusterModifyAction(clusterAction, "upgrade", "clusters.upgradecluster");
