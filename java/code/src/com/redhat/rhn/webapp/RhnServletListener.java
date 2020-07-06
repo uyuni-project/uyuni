@@ -120,7 +120,9 @@ public class RhnServletListener implements ServletContextListener {
     /** {@inheritDoc} */
     public void contextInitialized(ServletContextEvent sce) {
         //Setting globally available instances needed by jsp pages
-        sce.getServletContext().setAttribute("menuTree", GlobalInstanceHolder.MENU_TREE);
+        if (sce != null) {
+            sce.getServletContext().setAttribute("menuTree", GlobalInstanceHolder.MENU_TREE);
+        }
 
         startMessaging();
         logStart("Messaging");
