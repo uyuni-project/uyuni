@@ -285,10 +285,16 @@
     </exec>
     <echo message="Copying CaasP cluster provider files to remote host...${salt.cluster.provider}"/>
     <exec executable="rsync">
-      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/metadata ${deploy.user}@${deploy.host}:${salt.cluster.provider}/metadata/caasp" />
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/metadata/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/metadata/caasp" />
     </exec>
     <exec executable="rsync">
       <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/uyuni-cluster-provider-caasp/caasp/ ${deploy.user}@${deploy.host}:${salt.cluster.provider}/states/caasp" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/formulas/caasp-management-settings-formula/metadata/ ${deploy.user}@${deploy.host}:/usr/share/susemanager/formulas/metadata/caasp-management-settings/" />
+    </exec>
+    <exec executable="rsync">
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${basedir}/../susemanager-utils/cluster-providers/caasp/formulas/caasp-management-settings-formula/caasp-management-settings/ ${deploy.user}@${deploy.host}://usr/share/susemanager/formulas/states/caasp-management-settings/" />
     </exec>
   </target>
 
