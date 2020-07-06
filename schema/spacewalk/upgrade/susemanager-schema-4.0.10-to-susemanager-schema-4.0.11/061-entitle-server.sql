@@ -1,3 +1,6 @@
+-- setup search_path so that these functions are created in appropriate schema.
+update pg_settings set setting = 'rhn_entitlements,' || setting where name = 'search_path';
+
     create or replace function entitle_server (
         server_id_in in numeric,
         type_label_in in varchar
@@ -37,3 +40,6 @@ as $$
       end if;
    end$$
 language plpgsql;
+
+-- restore the original setting
+update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_entitlements')+1) ) where name = 'search_path';
