@@ -54,6 +54,7 @@ import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
+import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.satellite.SatelliteHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
@@ -79,6 +80,7 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 
@@ -123,6 +125,7 @@ public class HandlerFactory {
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
+        SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
 
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
@@ -168,6 +171,7 @@ public class HandlerFactory {
         factory.addHandler("preferences.locale", new PreferencesLocaleHandler());
         factory.addHandler("proxy", proxyHandler);
         factory.addHandler("recurringaction", new RecurringActionHandler());
+        factory.addHandler("saltkey", new SaltKeyHandler(saltKeyUtils));
         factory.addHandler("satellite", new SatelliteHandler(proxyHandler));
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
