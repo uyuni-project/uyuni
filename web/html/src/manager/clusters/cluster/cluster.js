@@ -8,6 +8,7 @@ import {HashRouter, Route, Switch} from 'components/utils/HashRouter';
 import {TabLabel} from 'components/tab-container'
 import ClusterOverview from './cluster-overview';
 import ManagementSettings from './cluster-config';
+import ClusterEvents from './cluster-events';
 import useClustersApi, {withErrorMessages} from '../shared/api/use-clusters-api';
 import useRoles from "core/auth/use-roles";
 import {isClusterAdmin} from "core/auth/auth.utils";
@@ -93,7 +94,32 @@ const Cluster = (props: Props) => {
                             <TabLabel active={match} text={t("Provider Settings")} hash="#/settings" />
                         }
                     </Route>
-                </ul>        
+                    <Route path="events/pending">
+                        {({match, hash}) => match || (!match && hash !== "events/history") ?
+                            <TabLabel active={match} text={t("Events")} hash="#/events/pending" /> : null
+                        }
+                    </Route>
+                    <Route path="events/history">
+                        {({match}) => match ?
+                            <TabLabel active={match} text={t("Events")} hash="#/events/history" /> : null
+                        }
+                    </Route>                    
+                </ul>
+
+                  <Route path="events/pending">
+                    {({match}) => match ? 
+                      <ul className="nav nav-tabs nav-tabs-pf">
+                            <TabLabel active={true} text={t("Pending")} hash="#/events/pending" />
+                            <TabLabel active={false} text={t("History")} hash="#/events/history" />
+                      </ul>  : null }
+                  </Route>
+                  <Route path="events/history">
+                    {({match}) => match ?
+                      <ul className="nav nav-tabs nav-tabs-pf">
+                        <TabLabel active={false} text={t("Pending")} hash="#/events/pending" />
+                        <TabLabel active={true} text={t("History")} hash="#/events/history" />
+                      </ul> : null }
+                  </Route>
               </div>
               <Switch>
                 <Route path="overview">
@@ -104,6 +130,14 @@ const Cluster = (props: Props) => {
                   <ManagementSettings cluster={props.cluster} setMessages={props.setMessages}
                     hasEditingPermissions={hasEditingPermissions} />
                 </Route>
+                <Route path="events/pending">
+                  <ClusterEvents cluster={props.cluster} setMessages={props.setMessages}
+                    eventsType="pending" />
+                </Route>
+                <Route path="events/history">
+                  <ClusterEvents cluster={props.cluster} setMessages={props.setMessages}
+                    eventsType="history" />
+                </Route>                                
               </Switch>
 
             </HashRouter>
