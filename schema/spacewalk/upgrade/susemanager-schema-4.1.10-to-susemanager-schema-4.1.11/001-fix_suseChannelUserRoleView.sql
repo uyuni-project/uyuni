@@ -33,7 +33,7 @@ AS
       WHEN adminUsers.is_admin_user IS NOT NULL
         THEN NULL
       -- otherwise, if channel does not have the "not_globally_subscribable" bit set, user can subscribe it
-      WHEN combination.role = 'subscribe' AND notGlobSubsChannels.is_not_globally_subscribable IS NULL
+      WHEN combination.role = 'subscribe' AND notGloballySubscribableChannels.is_not_globally_subscribable IS NULL
         THEN NULL
       -- otherwise, user might have an explicit permission on this channel
       WHEN explicitPermissions.has_explicit_permission IS NOT NULL
@@ -71,8 +71,8 @@ AS
        (SELECT DISTINCT ocs.channel_id, ocs.org_id, 1 AS is_not_globally_subscribable
         FROM rhnOrgChannelSettings ocs
           JOIN rhnOrgChannelSettingsType ocst ON ocst.id = ocs.setting_id
-        WHERE ocst.label = 'not_globally_subscribable') notGlobSubsChannels
-     ON (notGlobSubsChannels.channel_id = combination.channel_id AND notGlobSubsChannels.org_id = combination.user_org_id)
+        WHERE ocst.label = 'not_globally_subscribable') notGloballySubscribableChannels
+     ON (notGloballySubscribableChannels.channel_id = combination.channel_id AND notGloballySubscribableChannels.org_id = combination.user_org_id)
      LEFT JOIN
        (SELECT cpr.label, cp.channel_id, cp.user_id, 1 AS has_explicit_permission
         FROM rhnChannelPermission cp
