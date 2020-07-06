@@ -4238,3 +4238,122 @@ def do_system_scheduleapplyconfigchannels(self, args):
     return 0
 
 ####################
+
+
+def help_system_listmigrationtargets(self):
+    print('system_listmigrationtargets: List possible migration targets for given systems.')
+    print('usage: system_listmigrationtargets <SYSTEMS>')
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def do_system_listmigrationtargets(self, args):
+    arg_parser = get_argument_parser()
+
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if len(args) != 1:
+        self.help_system_listmigrationtargets()
+        return
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args[0])
+
+    if not systems:
+        print('No systems found')
+        return
+
+    for system in sorted(systems):
+        system_id = self.get_system_id(system)
+        if not system_id:
+            print('WARN: Cannot find system ' + str(system))
+            continue
+
+        print('System ' + str(system))
+        tgts = self.client.system.listMigrationTargets(self.session, system_id)
+
+        if not tgts:
+            print('  No migration targets')
+
+        for num, tgt in enumerate(tgts, start=1):
+            print('  Target #' + str(num) + ":")
+            print('    IDs: ' + tgt['ident'])
+            print('    Friendly names: ' + tgt['friendly'])
+
+####################
+
+
+def help_system_schedulespmigration(self):
+    print('system_schedulespmigration: Schedule a Service Pack migration for systems.')
+    print('usage: system_listmigrationtargets <SYSTEM> <DRY_RUN?> <BASE_CHANNEL_LABEL> [options] \
+\n    options: \
+\n        -s START_TIME \
+\n        -t MIGRATION_TARGET_ID (see system_listmigrationtargets) \
+\n        -c CHILD_CHANNELS (comma-separated child channels labels)')
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+
+def do_system_schedulespmigration(self, args):
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument('-s', '--start-time')
+    arg_parser.add_argument('-t', '--migration-target')
+    arg_parser.add_argument('-c', '--child-channels')
+
+    (args, options) = parse_command_arguments(args, arg_parser)
+
+    if len(args) < 3:
+        self.help_system_schedulespmigration()
+        return
+
+    # POSITIONAL ARGS
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args[0])
+
+    if not systems:
+        print('No systems found')
+        return
+
+    dry_run = string_to_bool(args[1])
+    base_channel_label = args[2]
+
+    # OPTIONAL NAMED ARGS
+    if options.start_time:
+        options.start_time = parse_time_input(options.start_time)
+    else:
+        options.start_time = parse_time_input('now')
+
+    child_channels = []
+    if options.child_channels:
+        child_channels = [cnl.strip() for cnl in options.child_channels.split(',')]
+
+    for system in sorted(systems):
+        system_id = self.get_system_id(system)
+        if not system_id:
+            logging.warning('Cannot find system ' + str(system) + '. Skipping it.')
+            continue
+
+        print('Scheduling Service Pack migration for system ' + str(system))
+        result = None
+        try:
+            if options.migration_target:
+                result = self.client.system.scheduleSPMigration(self.session,
+                        system_id, options.migration_target, base_channel_label,
+                        child_channels, dry_run, options.start_time)
+            else:
+                result = self.client.system.scheduleSPMigration(self.session,
+                        system_id, base_channel_label, child_channels,
+                        dry_run, options.start_time)
+
+            print('Scheduled action ID: '+ str(result))
+        except xmlrpclib.Fault as detail:
+            logging.error('Failed to schedule %s' % detail)
+
+####################
+
