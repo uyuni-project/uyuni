@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-
 /**
  * {@link HibernateFactory} for {@link MaintenanceCalendar}
  */
@@ -109,15 +107,16 @@ public class CalendarFactory extends HibernateFactory {
      * @param user the user
      * @return the tuples representing the assignments of calendar to schedules
      */
-    public List<Tuple> listCalendarToSchedulesAssignments(User user) {
+    public List<CalendarAssignment> listCalendarToSchedulesAssignments(User user) {
         return getSession()
                 .createQuery(
-                        "SELECT calendar.id, calendar.label, schedule.id, schedule.name " +
+                        "SELECT new com.suse.manager.model.maintenance.CalendarAssignment" +
+                                "(calendar.id, calendar.label, schedule.id, schedule.name) " +
                                 "FROM MaintenanceCalendar calendar " +
                                 "LEFT JOIN MaintenanceSchedule schedule " +
                                 "ON schedule.calendar = calendar " +
                                 "WHERE calendar.org = :org",
-                        Tuple.class)
+                        CalendarAssignment.class)
                 .setParameter("org", user.getOrg())
                 .stream()
                 .collect(Collectors.toList());
