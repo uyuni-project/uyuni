@@ -59,7 +59,7 @@ public abstract class BaseVirtualizationGuestAction extends Action {
     public String getWebSocketActionId() {
         String id = "new-" + getId();
         if (uuid != null) {
-            id = uuid;
+            id = "guest-" + uuid;
         }
         return id;
     }
