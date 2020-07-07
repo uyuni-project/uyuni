@@ -9,6 +9,8 @@ import {Button} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";
 import {DangerDialog} from "components/dialog/DangerDialog";
 
+const MessagesUtils = require("components/messages").Utils;
+
 const MaintenanceCalendarEdit = forwardRef((props, ref) => {
     const [calendarName, setCalendarName] = useState("");
     const [calendarData, setCalendarData] = useState();
@@ -74,18 +76,34 @@ const MaintenanceCalendarEdit = forwardRef((props, ref) => {
         });
     };
 
+    const validateUrl = (url) => {
+        if (url.trim() === "") {
+            return true;
+        }
+        try {
+            const URL = new window.URL(url);
+            return URL.protocol === "https:" || URL.protocol === "http:";
+        }
+        catch (_) {
+            return false;
+        }
+    }
+
     useImperativeHandle(ref, () => ({
         onEdit() {
             const params = {
                 calendarName: calendarName,
                 calendarData: calendarData,
-                calendarUrl: calendarDataText
+                calendarUrl:  (!props.isEdit && calendarData) ? "" : calendarDataText
             };
+
             if (props.isEdit) {
                 params.calendarId = props.calendar.calendarId;
                 params.strategy = strategy ? "Cancel" : "Fail";
             }
-            props.onEdit(params);
+            validateUrl(params.calendarUrl)
+                ? props.onEdit(params)
+                : props.messages(MessagesUtils.error(t("Url" + " '" + params.calendarUrl + "' " + t("is invalid"))));
         }
     }));
 
