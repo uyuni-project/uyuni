@@ -1,3 +1,4 @@
+- bump XMLRPC API version number to distinguish from Spacewalk 2.10
 - Cluster UI: return to overview page after scheduling actions
 - fix NPE on auto installation when no kernel options are given (bsc#1173932)
 - fix issue with disabling self_update for autoyast autoupgrade (bsc#1170654)
