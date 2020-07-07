@@ -14,8 +14,10 @@ def setup_environment():
     '''
     if 'salt' not in sys.modules or not isinstance(sys.modules['salt'], MagicMock):
         sys.modules['salt'] = MagicMock()
+        sys.modules['salt.config'] = MagicMock()
         sys.modules['salt.utils'] = MagicMock()
         sys.modules['salt.utils.versions'] = MagicMock()
+        sys.modules['salt.utils.minions'] = MagicMock()
         sys.modules['salt.modules'] = MagicMock()
         sys.modules['salt.modules.cmdmod'] = MagicMock()
         sys.modules['salt.exceptions'] = MagicMock(CommandExecutionError=Exception)
