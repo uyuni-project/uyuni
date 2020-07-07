@@ -49,6 +49,7 @@ const MaintenanceWindowsEdit = (props) => {
                 type === "calendar" &&
                 <MaintenanceCalendarEdit
                     ref={child}
+                    messages={props.messages}
                     isEdit={isEdit()}
                     calendar={props.selected}
                     onRefresh={props.onRefresh}
