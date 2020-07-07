@@ -269,7 +269,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     return (
       <div className="form-group">
         <div className="col-sm-3 control-label">
-          <input type="radio" name="action_chain" value="false" checked={this.state.type == "actionChain"} id="schedule-by-action-chain" onChange={this.onFocusActionChain}/>
+          <input type="radio" name="action_chain" value="false" checked={this.state.type == "actionChain" || this.emptyMaintenanceWindows() || this.state.multiMaintenanceWindows} id="schedule-by-action-chain" onChange={this.onFocusActionChain}/>
           <label htmlFor="schedule-by-action-chain">{t("Add to:")}</label>
         </div>
         <div className="col-sm-3">
