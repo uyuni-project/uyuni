@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import { Column } from 'components/table/Column';
 import { Utils } from 'utils/functions';
+import { AsyncButton } from 'components/buttons';
 import { Utils as ListUtils } from '../../list.utils';
 import { ListTab } from '../../ListTab';
 
@@ -13,6 +14,11 @@ type Props = {
 };
 
 export function NetsList(props: Props) {
+  const modalsData = [
+    {
+      type: 'start', name: t('Start'), icon: 'fa-play', bulkonly: true,
+    },
+  ];
   return (
     <ListTab
       serverId={props.serverId}
@@ -21,6 +27,7 @@ export function NetsList(props: Props) {
       urlType="nets"
       title={t('Virtual Networks')}
       description={t('This is a list of virtual networks which are configured to run on this host.')}
+      modalsData={modalsData}
       idName="name"
       canCreate={false}
     >
@@ -62,7 +69,22 @@ export function NetsList(props: Props) {
               cell={row => row.bridge}
             />,
           ];
-          const actionsProvider = (row) => [];
+          const actionsProvider = (row) => {
+            return (
+              <div className="btn-group">
+              {
+                !row.active && (
+                  <AsyncButton
+                    defaultType="btn-default btn-sm"
+                    title={t('Start')}
+                    icon="fa-play"
+                    action={() => onAction('start', [row.name], {})}
+                  />
+                )
+              }
+              </div>
+            );
+          };
           return {columns, actionsProvider};
         }
       }
