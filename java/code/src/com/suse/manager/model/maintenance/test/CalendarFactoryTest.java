@@ -16,6 +16,7 @@ package com.suse.manager.model.maintenance.test;
 
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
+import com.suse.manager.model.maintenance.CalendarAssignment;
 import com.suse.manager.model.maintenance.CalendarFactory;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
@@ -73,12 +74,16 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
         schedule2.setScheduleType(MaintenanceSchedule.ScheduleType.SINGLE);
         scheduleFactory.save(schedule2);
 
-        List<Tuple> result = calendarFactory.listCalendarToSchedulesAssignments(user);
+        List<CalendarAssignment> result = calendarFactory.listCalendarToSchedulesAssignments(user);
 
         assertEquals(3, result.size());
 
         Set<List<Object>> tuplesAsLists = result.stream()
-                .map(tuple -> createList(tuple.get(0), tuple.get(1), tuple.get(2), tuple.get(3)))
+                .map(tuple -> createList(
+                        tuple.getCalendarId(),
+                        tuple.getCalendarName(),
+                        tuple.getScheduleId(),
+                        tuple.getScheduleName()))
                 .collect(Collectors.toSet());
 
         // we need to create this list explicitly, as List.of does not support adding null elems

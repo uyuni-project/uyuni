@@ -38,6 +38,7 @@ import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.model.maintenance.CalendarAssignment;
 import com.suse.manager.model.maintenance.CalendarFactory;
 import com.suse.manager.model.maintenance.ScheduleFactory;
 import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
@@ -70,8 +71,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.persistence.Tuple;
 
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.component.CalendarComponent;
@@ -142,7 +141,7 @@ public class MaintenanceManager {
      * @param user the user
      * @return the tuples representing the assignments of calendar to schedules
      */
-    public List<Tuple> listCalendarToSchedulesAssigments(User user) {
+    public List<CalendarAssignment> listCalendarToSchedulesAssigments(User user) {
         return calendarFactory.listCalendarToSchedulesAssignments(user);
     }
 
