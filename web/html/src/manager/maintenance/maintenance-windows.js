@@ -104,7 +104,7 @@ const MaintenanceWindows = () => {
                 "successfully" + (action === "create" ? " created." : " updated."))}</span>
             const msgs = messages.concat(MessagesUtils.info(successMsg));
 
-            setMessages(msgs.slice(0, messagesCounterLimit));
+            setMessages(msgs.slice(-messagesCounterLimit));
 
             handleForwardAction();
         }).catch(handleResponseError);
@@ -144,7 +144,7 @@ const MaintenanceWindows = () => {
                 t("Calendar successfully refreshed"))
             );
             setAction();
-            setMessages(msgs.slice(0, messagesCounterLimit));
+            setMessages(msgs.slice(-messagesCounterLimit));
 
             getDetails(itemIn.calendarId, "edit");
         }).catch(handleResponseError);
@@ -182,6 +182,7 @@ const MaintenanceWindows = () => {
                 />
                 : (action === 'edit' || action === 'create') && isAdmin ?
                     <MaintenanceWindowsEdit type={type}
+                                            messages={i => setMessages(i)}
                                             calendarNames={calendarNames}
                                             selected={selected}
                                             onEdit={update}
