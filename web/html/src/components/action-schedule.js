@@ -62,7 +62,6 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
       earliest: props.earliest,
       isMaintenanceModeEnabled: false,
       maintenanceWindow: {},
-      maintenanceWindows: [],
       multiMaintenanceWindows: false,
       systemIds: props.systemIds ? props.systemIds : [],
       actionType: props.actionType ? props.actionType : "",
@@ -191,10 +190,17 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     }
   }
 
-  renderMultiMaintWindowsWarning = () => {
+  renderMultiMaintWindowsInfo = () => {
     return (
       <div className="alert alert-info">
         {t("There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.")}
+    </div>);
+  }
+
+  renderEmptyMaintWindowsInfo = () => {
+    return (
+      <div className="alert alert-info">
+        {t("No upcoming maintenance windows")}
     </div>);
   }
 
@@ -254,6 +260,11 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     );
   }
 
+  // maintenance windows is defined, but empty
+  emptyMaintenanceWindows = () => {
+    return this.state.maintenanceWindows && this.state.maintenanceWindows.length === 0;
+  }
+
   renderActionChainPicker = () => {
     return (
       <div className="form-group">
@@ -277,15 +288,24 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
     if (this.state.loading) {
       return <Loading text={t('Loading the scheduler...')}/>
     }
+
+    let pickers;
+    if (this.state.multiMaintenanceWindows) {
+      pickers = this.renderMultiMaintWindowsInfo();
+    }
+    else if (this.emptyMaintenanceWindows()) {
+      pickers = this.renderEmptyMaintWindowsInfo();
+    }
+    else {
+      pickers = this.renderPickers()
+    }
+
     return (
       <div className="spacewalk-scheduler">
         <div className="form-horizontal">
           <div className="form-group">
             {
-              this.state.multiMaintenanceWindows
-                ? this.renderMultiMaintWindowsWarning()
-                : this.renderPickers()
-
+              pickers
             }
             {
               this.state.actionChains && this.state.actionChain && this.renderActionChainPicker()
