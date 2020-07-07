@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.action.systems.groups;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
@@ -46,6 +47,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListRemoveGroupsAction extends BaseListAction implements Listable {
 
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
@@ -73,15 +76,14 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable {
         RequestContext context = new RequestContext(request);
         User user = context.getCurrentUser();
         Server server = context.lookupAndBindServer();
-        ServerGroupManager manager = ServerGroupManager.getInstance();
         List<Server> servers = new LinkedList<Server>();
         servers.add(server);
         Set<String> set = helper.getSet();
 
         for (String id : set) {
             Long sgid = Long.valueOf(id);
-            ServerGroup group = manager.lookup(sgid, user);
-            manager.removeServers(group, servers, user);
+            ServerGroup group = serverGroupManager.lookup(sgid, user);
+            serverGroupManager.removeServers(group, servers, user);
         }
         helper.destroy();
         getStrutsDelegate().saveMessage(

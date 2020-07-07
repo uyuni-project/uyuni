@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -122,10 +123,10 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             }
         } });
 
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         ClusterManager clusterManager = new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager, serverGroupManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
                 clusterManager, formulaManager, new SaltKeyUtils(saltServiceMock));
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
@@ -272,11 +273,11 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
         ActionChainFactory.delete(actionChain);
 
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         ClusterManager clusterManager =  new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager,
                 formulaManager);
-        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager, serverGroupManager);
         SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
                 clusterManager, formulaManager, new SaltKeyUtils(saltServiceMock));
         MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,

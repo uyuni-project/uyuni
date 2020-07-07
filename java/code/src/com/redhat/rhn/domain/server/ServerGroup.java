@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.config.ConfigChannel;
@@ -21,7 +22,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
 import com.redhat.rhn.manager.configuration.SaltConfigurable;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -129,7 +129,7 @@ public class ServerGroup extends BaseDomainHelper implements Identifiable, SaltC
      * @return a list of Servers which are members of the group.
      */
     public List<Server> getServers() {
-        return ServerGroupManager.getInstance().
+        return GlobalInstanceHolder.SERVER_GROUP_MANAGER.
                                 listServers(this);
     }
 

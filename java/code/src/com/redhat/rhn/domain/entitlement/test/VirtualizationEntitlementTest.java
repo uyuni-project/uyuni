@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -48,9 +49,12 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     @Override
     public void testIsAllowedOnServer() throws Exception {
         SaltService saltService = new SaltService();
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
         Server host = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();

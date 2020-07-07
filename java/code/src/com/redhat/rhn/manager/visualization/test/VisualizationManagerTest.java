@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.visualization.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
@@ -225,7 +226,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, false);
 
-        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
         manager.addServers(sg1, Collections.singleton(server), user);
 
@@ -260,7 +261,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         // information as we rely on errata cache in our query
         ErrataCacheManager.insertNeededErrataCache(server.getId(), e.getId(), p.getId());
 
-        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
         manager.addServers(sg1, Collections.singleton(server), user);
 

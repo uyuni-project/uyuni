@@ -15,10 +15,10 @@
 
 package com.suse.manager.webui.menu.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.manager.formula.FormulaManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.webui.menu.MenuItem;
 import com.suse.manager.webui.menu.MenuTree;
@@ -88,7 +88,7 @@ public class MenuTreeTest extends TestCase {
 
         SaltService saltService = new SaltService();
         MenuTree menuTree = new MenuTree(new AclFactory(new Access(new ClusterManager(
-                saltService, saltService, ServerGroupManager.getInstance(), new FormulaManager(saltService)
+                saltService, saltService, GlobalInstanceHolder.SERVER_GROUP_MANAGER, new FormulaManager(saltService)
         ))));
 
         // the TESTED method

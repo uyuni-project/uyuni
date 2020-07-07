@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -82,8 +83,6 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -146,7 +145,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
     protected Path metadataDirOfficial;
-    private ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+    private ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
     private SaltUtils saltUtils;
     private SaltServerActionService saltServerActionService;
     private ClusterManager clusterManager;
@@ -160,17 +159,19 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager()),
+                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
+                        serverGroupManager),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager())
+                        new FormulaMonitoringManager(), serverGroupManager)
         );
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
         clusterManager = new ClusterManager(
                 saltServiceMock, saltServiceMock, serverGroupManager, formulaManager
         );
         saltUtils = new SaltUtils(
-                saltServiceMock, saltServiceMock, clusterManager, formulaManager
+                saltServiceMock, saltServiceMock, clusterManager, formulaManager, serverGroupManager
         );
         saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils, clusterManager,
                 formulaManager, new SaltKeyUtils(saltServiceMock));

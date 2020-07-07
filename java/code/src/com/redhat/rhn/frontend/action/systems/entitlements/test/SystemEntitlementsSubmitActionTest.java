@@ -29,6 +29,7 @@ import com.redhat.rhn.frontend.action.systems.entitlements.SystemEntitlementsSub
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -160,9 +161,12 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             ServerGroupType groupType
                                             )  throws Exception {
         SaltService saltService = new SaltService();
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
 

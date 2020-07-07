@@ -183,7 +183,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
     private SystemHandler handler =
-            new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager);
+            new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
+                    new ServerGroupManager());
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());
@@ -1291,7 +1292,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Set servers = new HashSet();
         servers.add(server);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         manager.addServers(group, servers, admin);
 
         Set admins = new HashSet();
@@ -1887,10 +1888,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testAddEntitlements() throws Exception {
         SaltService saltService = new SaltService();
-
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
@@ -1918,9 +1921,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testAddEntitlementSystemAlreadyHas() throws Exception {
         SaltService saltService = new SaltService();
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
@@ -2947,7 +2953,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     private SystemHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
         SystemHandler systemHandler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager);
+                systemManager, new ServerGroupManager());
 
         MOCK_CONTEXT.checking(new Expectations() {{
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));

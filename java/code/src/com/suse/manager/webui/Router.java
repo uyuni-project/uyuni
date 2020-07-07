@@ -23,6 +23,7 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
@@ -100,13 +101,14 @@ public class Router implements SparkApplication {
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
         SystemsController systemsController = new SystemsController(systemQuery);
         SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
         NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
         MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper,
                 saltKeyUtils);
-        StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
+        StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(systemQuery, saltApi);
         ClustersController clustersController = new ClustersController(clusterManager, formulaManager);
 

@@ -60,7 +60,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     private final SaltService saltService = new SaltService();
     private final SystemQuery systemQuery = saltService;
     private final SaltApi saltApi = saltService;
-    private final ServerGroupManager serverGroupManager =  ServerGroupManager.getInstance();
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
     private final FormulaManager formulaManager = new FormulaManager(saltApi);
     private final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
 
@@ -336,8 +336,10 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     public void testIsVirtual() throws Exception {
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();

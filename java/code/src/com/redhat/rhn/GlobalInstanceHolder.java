@@ -53,13 +53,13 @@ public class GlobalInstanceHolder {
     private static final SaltService SALT_SERVICE = new SaltService();
     public static final SystemQuery SYSTEM_QUERY = SALT_SERVICE;
     public static final SaltApi SALT_API = SALT_SERVICE;
-    private static final ServerGroupManager SERVER_GROUP_MANAGER = ServerGroupManager.getInstance();
+    public static final ServerGroupManager SERVER_GROUP_MANAGER = new ServerGroupManager();
     public static final FormulaManager FORMULA_MANAGER = new FormulaManager(SALT_API);
     public static final ClusterManager CLUSTER_MANAGER = new ClusterManager(
             SALT_API, SYSTEM_QUERY, SERVER_GROUP_MANAGER, FORMULA_MANAGER
     );
     public static final SaltUtils SALT_UTILS = new SaltUtils(SYSTEM_QUERY, SALT_API,
-            CLUSTER_MANAGER, FORMULA_MANAGER);
+            CLUSTER_MANAGER, FORMULA_MANAGER, SERVER_GROUP_MANAGER);
     public static final SaltKeyUtils SALT_KEY_UTILS = new SaltKeyUtils(SYSTEM_QUERY);
     public static final SaltServerActionService SALT_SERVER_ACTION_SERVICE = new SaltServerActionService(
             SYSTEM_QUERY, SALT_UTILS, CLUSTER_MANAGER, FORMULA_MANAGER, SALT_KEY_UTILS);
@@ -76,7 +76,8 @@ public class GlobalInstanceHolder {
     public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER = new SSHMinionBootstrapper(SYSTEM_QUERY);
     public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager();
     public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
-            new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER),
-            new SystemEntitler(GlobalInstanceHolder.SYSTEM_QUERY, VIRT_MANAGER, MONITORING_MANAGER)
+            new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
+            new SystemEntitler(GlobalInstanceHolder.SYSTEM_QUERY, VIRT_MANAGER, MONITORING_MANAGER,
+                    SERVER_GROUP_MANAGER)
     );
 }

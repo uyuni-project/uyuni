@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.VirtManager;
 
@@ -40,16 +40,20 @@ public class SystemUnentitler {
 
     private static final Logger LOG = Logger.getLogger(SystemUnentitler.class);
 
-    private MonitoringManager monitoringManager;
-    private VirtManager virtManager;
+    private final MonitoringManager monitoringManager;
+    private final VirtManager virtManager;
+    private final ServerGroupManager serverGroupManager;
 
     /**
      * @param virtManagerIn instance for managing virtual machines.
      * @param monitoringManagerIn instance for handling monitoring configuration.
+     * @param serverGroupManagerIn
      */
-    public SystemUnentitler(VirtManager virtManagerIn, MonitoringManager monitoringManagerIn) {
+    public SystemUnentitler(VirtManager virtManagerIn, MonitoringManager monitoringManagerIn,
+                            ServerGroupManager serverGroupManagerIn) {
         this.virtManager = virtManagerIn;
         this.monitoringManager = monitoringManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -83,7 +87,7 @@ public class SystemUnentitler {
         }
 
         server.asMinionServer().ifPresent(s -> {
-            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
+            serverGroupManager.updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
             if (EntitlementManager.MONITORING.equals(ent)) {
                 try {
                     monitoringManager.disableMonitoring(s);

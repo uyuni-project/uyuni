@@ -122,10 +122,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private SaltService saltService = new SaltService();
     private SystemQuery systemQuery = saltService;
     private SaltApi saltApi = saltService;
-    private ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+    private ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
     private FormulaManager formulaManager = new FormulaManager(saltApi);
     private ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-    private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+    private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
     private SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
     private SaltServerActionService saltServerActionService = new SaltServerActionService(
             systemQuery,
@@ -273,7 +273,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Collection servers = new ArrayList();
         servers.add(server);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
         manager.addServers(sg1, servers, user);
@@ -851,7 +851,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Server serverToSearch = ServerFactoryTest.createTestServer(admin, true);
         Set servers = new HashSet();
         servers.add(serverToSearch);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         manager.addServers(group, servers, admin);
         assertTrue(group.getServers().size() > 0);
         //create admins set and add it to the grup

@@ -14,13 +14,13 @@
  */
 package com.redhat.rhn.testing;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 
 
 /**
@@ -52,7 +52,7 @@ public class ServerGroupTestUtils {
      */
     public static ManagedServerGroup createManaged(User user) {
         ServerGroupTest.checkSysGroupAdminRole(user);
-        return ServerGroupManager.getInstance().
+        return GlobalInstanceHolder.SERVER_GROUP_MANAGER.
                                         create(user, NAME + TestUtils.randomString(),
                                                     DESCRIPTION);
     }

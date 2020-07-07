@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.action.systems.groups;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
@@ -48,6 +49,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddGroupsAction extends RhnAction implements Listable {
 
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
@@ -60,13 +63,12 @@ public class AddGroupsAction extends RhnAction implements Listable {
         helper.execute();
 
         if (helper.isDispatched()) {
-            ServerGroupManager manager = ServerGroupManager.getInstance();
             List<Server> servers = new LinkedList<Server>();
             servers.add(server);
 
             for (String id : helper.getSet()) {
-                ServerGroup group = manager.lookup(Long.valueOf(id), user);
-                manager.addServers(group, servers, user);
+                ServerGroup group = serverGroupManager.lookup(Long.valueOf(id), user);
+                serverGroupManager.addServers(group, servers, user);
             }
             helper.destroy();
             getStrutsDelegate().saveMessage(
@@ -87,13 +89,12 @@ public class AddGroupsAction extends RhnAction implements Listable {
     public DataResult<ManagedServerGroup> getResult(RequestContext context) {
 
         Server server = context.lookupAndBindServer();
-        ServerGroupManager manager = ServerGroupManager.getInstance();
         List<ManagedServerGroup> serverGroups = server.getManagedGroups();
         List<ManagedServerGroup> all = context.getCurrentUser().getOrg().
             getManagedServerGroups();
         List<ManagedServerGroup> ret = new LinkedList<ManagedServerGroup>();
         for (ManagedServerGroup group : all) {
-            if (!serverGroups.contains(group) && manager.canAccess(
+            if (!serverGroups.contains(group) && serverGroupManager.canAccess(
                         context.getCurrentUser(), group)) {
                 ret.add(group);
             }

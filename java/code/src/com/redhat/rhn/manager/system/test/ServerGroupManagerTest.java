@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -43,7 +44,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     public void setUp() throws Exception {
         super.setUp();
-        manager = ServerGroupManager.getInstance();
+        manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
     }
 
     public void testCreate() {

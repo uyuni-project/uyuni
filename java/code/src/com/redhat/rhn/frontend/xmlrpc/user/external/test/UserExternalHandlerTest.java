@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
@@ -122,7 +123,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
         );
-        ServerGroupHandler sghandler = new ServerGroupHandler(xmlRpcSystemHelper);
+        ServerGroupHandler sghandler = new ServerGroupHandler(xmlRpcSystemHelper, new ServerGroupManager());
         sghandler.create(admin, systemGroupName, desc);
 
         //admin should be able to call list users, regular should not

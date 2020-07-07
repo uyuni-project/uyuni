@@ -56,7 +56,8 @@ public class ServerTest extends BaseTestCaseWithUser {
     private final SaltService saltService = new SaltService();
     private final SystemUnentitler systemUnentitler = new SystemUnentitler(
             new VirtManagerSalt(saltService),
-            new FormulaMonitoringManager());
+            new FormulaMonitoringManager(),
+            new ServerGroupManager());
 
     public void testIsInactive() throws Exception {
         Server s = ServerFactory.createServer();
@@ -316,7 +317,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     private class VirtEntitledServer extends Server {
         VirtEntitledServer(User user) {
             setOrg(user.getOrg());
-            ServerGroupManager manager = ServerGroupManager.getInstance();
+            ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
             EntitlementServerGroup group = manager.
                         lookupEntitled(EntitlementManager.VIRTUALIZATION, user);
             List servers = new ArrayList();

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task.sshpush.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
@@ -21,7 +22,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -310,10 +310,10 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
     }
 
     private SSHPushWorkerSalt successWorker(SystemQuery systemQuery, SaltApi saltApi) {
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
         return new SSHPushWorkerSalt(
                 logger,

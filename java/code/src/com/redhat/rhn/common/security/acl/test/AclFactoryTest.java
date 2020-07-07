@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.security.acl.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
@@ -35,7 +36,7 @@ public class AclFactoryTest extends RhnBaseTestCase {
         SaltService saltService = new SaltService();
         SystemQuery systemQuery = saltService;
         SaltApi saltApi = saltService;
-        ServerGroupManager serverGroupManager =  ServerGroupManager.getInstance();
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         AclFactory aclFactory = new AclFactory(new Access(clusterManager));

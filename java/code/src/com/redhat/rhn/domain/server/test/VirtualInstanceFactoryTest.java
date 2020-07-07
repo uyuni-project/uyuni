@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -56,9 +57,11 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         builder = new GuestBuilder(user);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager()),
-                new SystemEntitler(new SaltService(), new TestVirtManager(), new FormulaMonitoringManager())
+                new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager(), serverGroupManager),
+                new SystemEntitler(new SaltService(), new TestVirtManager(), new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
     }
 

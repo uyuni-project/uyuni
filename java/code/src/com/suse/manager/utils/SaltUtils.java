@@ -209,6 +209,7 @@ public class SaltUtils {
     private final SaltApi saltApi;
     private final ClusterManager clusterManager;
     private final FormulaManager formulaManager;
+    private final ServerGroupManager serverGroupManager;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -236,13 +237,16 @@ public class SaltUtils {
      * @param saltApiIn
      * @param clusterManagerIn
      * @param formulaManagerIn
+     * @param serverGroupManagerIn
      */
     public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn,
-                     ClusterManager clusterManagerIn, FormulaManager formulaManagerIn) {
+                     ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
+                     ServerGroupManager serverGroupManagerIn) {
         this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
         this.clusterManager = clusterManagerIn;
         this.formulaManager = formulaManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -739,7 +743,7 @@ public class SaltUtils {
         List<Server> nodesToRemove = cluster.getGroup().getServers().stream()
                 .filter(s -> !s.getId().equals(cluster.getManagementNode().getId()))
                 .collect(Collectors.toList());
-        ServerGroupManager.getInstance().removeServers(cluster.getGroup(), nodesToRemove);
+        serverGroupManager.removeServers(cluster.getGroup(), nodesToRemove);
 
         // add new nodes if matching registered systems are found
         List<ClusterNode> clusterNodes = new ArrayList<>();
@@ -753,7 +757,7 @@ public class SaltUtils {
                 .map(n -> n.getServer().get())
                 .collect(Collectors.toList());
 
-        ServerGroupManager.getInstance().addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
+        serverGroupManager.addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
     }
 
     private void handleClusterJoinNode(ServerAction serverAction, JsonElement jsonResult, Action action) {

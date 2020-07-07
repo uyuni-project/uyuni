@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -81,9 +82,12 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
             public void updateLibvirtEngine(MinionServer minion) {
             }
         };
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
-                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager())
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
     }
 

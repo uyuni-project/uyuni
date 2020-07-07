@@ -95,6 +95,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -178,9 +179,12 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             }
         });
         SaltService saltService = new SaltService();
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
         createMetadataFiles();

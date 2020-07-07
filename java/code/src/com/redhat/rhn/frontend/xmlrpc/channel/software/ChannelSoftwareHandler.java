@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.channel.software;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -45,7 +44,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -123,16 +121,20 @@ public class ChannelSoftwareHandler extends BaseHandler {
     private static Logger log = Logger.getLogger(ChannelSoftwareHandler.class);
     private final TaskomaticApi taskomaticApi;
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
+    private final SystemHandler systemHandler;
 
     /**
      * Set the {@link TaskomaticApi} instance to use, only for unit tests.
      *
      * @param taskomaticApiIn the {@link TaskomaticApi}
      * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     * @param systemHandlerIn
      */
-    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+    public ChannelSoftwareHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
+                                  SystemHandler systemHandlerIn) {
         taskomaticApi = taskomaticApiIn;
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+        systemHandler = systemHandlerIn;
     }
 
     /**
@@ -2062,15 +2064,12 @@ public class ChannelSoftwareHandler extends BaseHandler {
                 childChannelIds.add(channel.getId().intValue());
             }
         }
-        SystemHandler sysHandler =
-                new SystemHandler(taskomaticApi, xmlRpcSystemHelper, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER,
-                        new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON));
         if (base != null) {
 
-            sysHandler.setBaseChannel(loggedInUser, sid,
+            systemHandler.setBaseChannel(loggedInUser, sid,
                     base.getId().intValue());
         }
-        sysHandler.setChildChannels(loggedInUser, sid, childChannelIds);
+        systemHandler.setChildChannels(loggedInUser, sid, childChannelIds);
 
         return 1;
     }

@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.action.groups;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -44,6 +45,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddSystemsAction extends BaseListAction {
 
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
     /** {@inheritDoc} */
     @Override
     public ActionForward handleDispatch(ListSessionSetHelper helper,
@@ -60,8 +63,7 @@ public class AddSystemsAction extends BaseListAction {
             servers.add(SystemManager.lookupByIdAndUser(sid, user));
         }
 
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        manager.addServers(sg, servers, user);
+        serverGroupManager.addServers(sg, servers, user);
         getStrutsDelegate().saveMessage(
                     "systemgroup.target-systems.added",
                         new String [] {String.valueOf(set.size()),

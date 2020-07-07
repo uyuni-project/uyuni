@@ -75,6 +75,7 @@ import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -126,6 +127,7 @@ public class HandlerFactory {
         FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
         ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
         SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
@@ -134,9 +136,11 @@ public class HandlerFactory {
                 sshMinionBootstrapper
         );
         ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper);
+        SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager, serverGroupManager);
 
         factory.addHandler("actionchain", new ActionChainHandler());
-        factory.addHandler("activationkey", new ActivationKeyHandler());
+        factory.addHandler("activationkey", new ActivationKeyHandler(serverGroupManager));
         factory.addHandler("admin.monitoring", new AdminMonitoringHandler());
         factory.addHandler("api", new ApiHandler(factory));
         factory.addHandler("audit", new CVEAuditHandler());
@@ -144,7 +148,8 @@ public class HandlerFactory {
         factory.addHandler("channel", new ChannelHandler());
         factory.addHandler("channel.access", new ChannelAccessHandler());
         factory.addHandler("channel.org", new ChannelOrgHandler());
-        factory.addHandler("channel.software", new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper));
+        factory.addHandler("channel.software", new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper,
+            systemHandler));
         factory.addHandler("cluster", new ClusterHandler(clusterManager));
         factory.addHandler("configchannel", new ConfigChannelHandler());
         factory.addHandler("contentmanagement", new ContentManagementHandler());
@@ -178,8 +183,7 @@ public class HandlerFactory {
         factory.addHandler("sync.master", new MasterHandler());
         factory.addHandler("sync.slave", new SlaveHandler());
         factory.addHandler("sync.content", new ContentSyncHandler());
-        factory.addHandler("system", new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager));
+        factory.addHandler("system", systemHandler);
         factory.addHandler("system.config", new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper));
         factory.addHandler("system.crash", new CrashHandler(xmlRpcSystemHelper));
         factory.addHandler("system.custominfo", new CustomInfoHandler());
@@ -187,10 +191,10 @@ public class HandlerFactory {
         factory.addHandler("system.scap", new SystemScapHandler());
         factory.addHandler("system.search", new SystemSearchHandler());
         factory.addHandler("virtualhostmanager", new VirtualHostManagerHandler());
-        factory.addHandler("systemgroup", new ServerGroupHandler(xmlRpcSystemHelper));
+        factory.addHandler("systemgroup", new ServerGroupHandler(xmlRpcSystemHelper, serverGroupManager));
         factory.addHandler("taskomatic", new TaskomaticHandler());
         factory.addHandler("taskomatic.org", new TaskomaticOrgHandler());
-        factory.addHandler("user", new UserHandler());
+        factory.addHandler("user", new UserHandler(serverGroupManager));
         factory.addHandler("user.external", new UserExternalHandler());
         return factory;
     }

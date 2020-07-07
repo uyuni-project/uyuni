@@ -54,6 +54,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -163,10 +164,13 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
                 will(returnValue(Optional.of(mockResult)));
         }});
+
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager sem = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager()),
+                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
+                        serverGroupManager),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager())
+                        new FormulaMonitoringManager(), serverGroupManager)
         );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);

@@ -48,9 +48,9 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
         FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
                 clusterManager, formulaManager, saltKeyUtils);
@@ -82,9 +82,9 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
                 clusterManager, formulaManager, saltKeyUtils);
@@ -108,9 +108,9 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = ServerGroupManager.getInstance();
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
         SaltServerActionService saltServerActionService = new SaltServerActionService(systemQuery, saltUtils,
                 clusterManager, formulaManager, saltKeyUtils);

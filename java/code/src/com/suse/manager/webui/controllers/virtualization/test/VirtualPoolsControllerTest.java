@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -114,9 +115,12 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
                         new TypeToken<PoolCapabilitiesJson>() { });
             }
         };
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
-                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager())
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);

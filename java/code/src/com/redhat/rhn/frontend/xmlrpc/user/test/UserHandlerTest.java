@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.UserNeverLoggedInException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -42,7 +43,7 @@ import java.util.Set;
 
 public class UserHandlerTest extends BaseHandlerTestCase {
 
-    private UserHandler handler = new UserHandler();
+    private UserHandler handler = new UserHandler(new ServerGroupManager());
 
     public void testListUsers() throws Exception {
         //admin should be able to call list users, regular should not
