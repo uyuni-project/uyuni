@@ -93,6 +93,7 @@ class RPCClient:
                 return getattr(self.conn, method)(*((self.token,) + args))
             except Exception as exc:
                 if exc.faultCode != 2950:
+                    log.error("Unable to call RPC function: %s", str(exc))
                     raise exc
                 """
                 Authentication error when using Token, it can have expired.
