@@ -35,9 +35,6 @@ function onDocumentReadyGeneral(){
   scrollTopBehavior();
 }
 
-jQuery(document).ready(onDocumentReadyGeneral);
-
-
 function adaptFluidColLayout() {
   jQuery('.col-class-calc-width').each(function() {
     var totalWidth = jQuery(this).parent().width();
@@ -281,8 +278,6 @@ function onDocumentReadyAutoBootstrapGrid() {
   });
 }
 
-jQuery(document).ready(onDocumentReadyAutoBootstrapGrid);
-
 // Put the focus on a given form element
 function formFocus(form, name) {
   var focusControl = document.forms[form].elements[name];
@@ -328,8 +323,6 @@ function humanizeDates() {
     }
   });
 }
-
-jQuery(document).ready(humanizeDates);
 
 /**
  * Setups ACE editor in a textarea element
@@ -471,10 +464,6 @@ function registerSpacewalkContentObservers() {
   spacewalkContentObserver.observe(target, config);
 }
 
-jQuery(document).ready(function() {
-  registerSpacewalkContentObservers();
-});
-
 jQuery(document).on('click', '.toggle-box', function() {
   if (jQuery(this).hasClass('open')) {
     jQuery(this).removeClass('open');
@@ -568,10 +557,6 @@ function initIEWarningUse() {
   }
 }
 
-jQuery(document).ready(function() {
-  initIEWarningUse();
-})
-
 // Function used to initialize old JS behaviour. (After react load/spa transition)
 // Please, don't add anything else to this file. The idea is to get rid of this file while migrating everything to react.
 function onDocumentReadyInitOldJS() {
@@ -581,3 +566,11 @@ function onDocumentReadyInitOldJS() {
   humanizeDates();
   initIEWarningUse();
 }
+
+jQuery(document).ready(function() {
+  onDocumentReadyGeneral();
+  onDocumentReadyAutoBootstrapGrid();
+  registerSpacewalkContentObservers();
+  humanizeDates();
+  initIEWarningUse();
+});
