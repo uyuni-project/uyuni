@@ -9,7 +9,19 @@ import {Radio} from "components/input/Radio";
 import {Button} from "components/buttons";
 import {Combobox} from "components/combobox";
 
-const MaintenanceScheduleEdit = forwardRef((props, ref) => {
+type ScheduleEditProps = {
+    isEdit: boolean,
+    schedule?: {
+        scheduleId: number,
+        scheduleName: string,
+        scheduleType: 'SINGLE' | 'MULTI',
+        calendarName: string,
+    },
+    calendarNames: Array<Map<number, string>>,
+    onEdit: () => void,
+};
+
+const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
     const [model, setModel] = useState({
         scheduleName: "",
         scheduleType: "SINGLE",

@@ -9,7 +9,17 @@ import {InnerPanel} from "components/panels/InnerPanel";
 import MaintenanceScheduleEdit from "./schedule-edit";
 import MaintenanceCalendarEdit from "./calendar-edit";
 
-const MaintenanceWindowsEdit = (props) => {
+type MaintenanceEditProps = {
+    type: 'schedule' | 'calendar',
+    calendarNames?: Array,
+    selected: Object,
+    messages: () => void,
+    onEdit: () => void,
+    onActionChanged: () => void,
+    onRefresh: () => void
+};
+
+const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
     const child = useRef();
     const [type] = useState(props.type);
     const [icalLoading, setIcalLoading] = useState(false);
