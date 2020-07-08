@@ -14,12 +14,12 @@ do
         for FILE in $OLDDIR/*
         do
             sed -e "s;/var/lib/rhn/kickstarts;;g" \
-                -e "s/kickstart/autoinstall/" \
-                -e "s/ks_meta/autoinstall_meta/" \
+                -e "s/kickstart/autoinstall/g" \
+                -e "s/ks_meta/autoinstall_meta/g" \
                 -e "s;/srv/www/cobbler/ks_mirror;/srv/www/cobbler/distro_mirror;g" \
-                -e "s/ksmeta/autoinstall_meta/" \
-                -e "s/kopts/kernel_options/" \
-                -e "s/kopts_post/kernel_options_post/" \
+                -e "s/ksmeta/autoinstall_meta/g" \
+                -e "s/kopts/kernel_options/g" \
+                -e "s/kopts_post/kernel_options_post/g" \
             $FILE > $NEWDIR/`basename $FILE`
         done
     fi
