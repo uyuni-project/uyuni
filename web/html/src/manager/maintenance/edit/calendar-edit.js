@@ -11,7 +11,21 @@ import {DangerDialog} from "components/dialog/DangerDialog";
 
 const MessagesUtils = require("components/messages").Utils;
 
-const MaintenanceCalendarEdit = forwardRef((props, ref) => {
+type CalendarEditProps = {
+    messages: MessagesUtils,
+    isEdit: boolean,
+    calendar?: {
+        calendarId: number,
+        calendarName: string,
+        calendarUrl?: string,
+        calendarData: string,
+    },
+    onRefresh: () => void,
+    onEdit: () => void,
+    isLoading: () => void,
+};
+
+const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     const [model, setModel] = useState({calendarName: "", strategy: false});
     const [calendarData, setCalendarData] = useState();
     const [calendarDataText, setCalendarDataText] = useState("");

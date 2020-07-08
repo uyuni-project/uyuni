@@ -182,9 +182,9 @@ const MaintenanceWindows = () => {
                 />
                 : (action === 'edit' || action === 'create') && isAdmin ?
                     <MaintenanceWindowsEdit type={type}
-                                            messages={i => setMessages(i)}
                                             calendarNames={calendarNames}
                                             selected={selected}
+                                            messages={i => setMessages(i)}
                                             onEdit={update}
                                             onActionChanged={handleForwardAction}
                                             onRefresh={refreshCalendar}

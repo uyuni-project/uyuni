@@ -9,7 +9,15 @@ import {Check} from "components/input/Check";
 import {Form} from "components/input/Form";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 
-const MaintenanceCalendarDetails = (props) => {
+type CalendarDetailsProps = {
+    calendarName: string,
+    scheduleNames: Array<Map<string, string>>,
+    calendarUrl: string,
+    calendarData: string,
+    onDelete: () => void
+};
+
+const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
     const [strategy, setStrategy] = useState(false);
 
     const setCheck = (model) => {
@@ -47,11 +55,11 @@ const MaintenanceCalendarDetails = (props) => {
 
 type OverviewProps = {
     calendarName: string,
-    schedulesName: Array<string>,
+    scheduleNames: Array<Map<string, string>>,
     calendarUrl: string,
     calendarData: string,
 }
-const MaintenanceCalendarOverview = (props) => {
+const MaintenanceCalendarOverview = (props: OverviewProps) => {
     const tableData = [
         {left: t("Calendar Name") + ":", right: props.calendarName},
         {left: t("Used by Schedule") + ":", right: props.scheduleNames.map(name => name.name).join(", ")},
