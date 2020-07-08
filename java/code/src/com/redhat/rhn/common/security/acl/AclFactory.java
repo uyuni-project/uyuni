@@ -52,7 +52,9 @@ public class AclFactory {
         if (mixinsIn != null) {
             String[] mixin = StringUtils.split(mixinsIn, ",");
             for (int i = 0; i < mixin.length; i++) {
-                aclObj.registerHandler(StringUtils.trim(mixin[i]));
+                if (!mixin[i].equals(Access.class.getName())) {
+                    aclObj.registerHandler(StringUtils.trim(mixin[i]));
+                }
             }
         }
         return aclObj;
