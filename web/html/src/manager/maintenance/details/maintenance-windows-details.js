@@ -9,7 +9,15 @@ import {TopPanel} from "components/panels/TopPanel";
 import MaintenanceScheduleDetails from "./schedule-details";
 import MaintenanceCalendarDetails from "./calendar-details";
 
-const MaintenanceWindowsDetails = (props) => {
+type MaintenanceDetailsProps = {
+    type: 'schedule' | 'calendar',
+    data: Object,
+    onCancel: () => void,
+    onEdit: () => void,
+    onDelete: () => void
+};
+
+const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
     const [type] = useState(props.type);
 
     const buttons = [

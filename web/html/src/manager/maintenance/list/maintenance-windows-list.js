@@ -8,7 +8,16 @@ import {Button} from "components/buttons";
 import MaintenanceScheduleList from "./schedule-list";
 import MaintenanceCalendarList from "./calendar-list";
 
-const MaintenanceWindowsList = (props) => {
+type MaintenanceListProps = {
+    type: 'schedule' | 'calendar',
+    data?: Array<Object>,
+    onActionChanged: () => void,
+    onSelect: () => void,
+    onEdit: () => void,
+    onDelete: () => void
+};
+
+const MaintenanceWindowsList = (props: MaintenanceListProps) => {
     const [type] = useState(props.type);
 
     const createButton = [
