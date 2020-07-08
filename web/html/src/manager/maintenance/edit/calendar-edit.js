@@ -12,31 +12,24 @@ import {DangerDialog} from "components/dialog/DangerDialog";
 const MessagesUtils = require("components/messages").Utils;
 
 const MaintenanceCalendarEdit = forwardRef((props, ref) => {
-    const [calendarName, setCalendarName] = useState("");
+    const [model, setModel] = useState({calendarName: "", strategy: false});
     const [calendarData, setCalendarData] = useState();
     const [calendarDataText, setCalendarDataText] = useState("");
     const [icalLoading, setIcalLoading] = useState(false);
-    const [strategy, setStrategy] = useState(false);
 
     useEffect(() => {
         if (props.isEdit) {
-            setCalendarName(props.calendar.calendarName);
+            setModel({...model, calendarName: props.calendar.calendarName});
             setCalendarData(props.calendar.calendarData);
             setCalendarDataText(props.calendar.calendarUrl || "");
         }
     }, [props.calendar]);
 
-    const model = {
-        calendarName: calendarName,
-        strategy: strategy
-    };
-
-    const onFormChanged = (model) => {
+    const onFormChanged = (newModel) => {
         /* strategy gets initialized as empty string, but we want the initial value to be false.
          * Is equivalent to: if strategy is "" then set it to false */
-        model.strategy === "" && (model.strategy = false);
-        setCalendarName(model.calendarName);
-        setStrategy(model.strategy);
+        newModel.strategy === "" && (newModel.strategy = false);
+        setModel({calendarName: newModel.calendarName, strategy: newModel.strategy});
     };
 
     const onCalendarDataTextChanged = (event) => {
@@ -72,8 +65,8 @@ const MaintenanceCalendarEdit = forwardRef((props, ref) => {
             calendarId: props.calendar.calendarId,
             calendarName: props.calendar.calendarName,
             calendarUrl: props.calendar.calendarUrl,
-            strategy: strategy ? "Cancel" : "Fail"
-        });
+            strategy: model.strategy ? "Cancel" : "Fail"
+        }).then(() => setIcalLoading(false));
     };
 
     const validateUrl = (url) => {
@@ -92,14 +85,14 @@ const MaintenanceCalendarEdit = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
         onEdit() {
             const params = {
-                calendarName: calendarName,
+                calendarName: model.calendarName,
                 calendarData: calendarData,
                 calendarUrl:  (!props.isEdit && calendarData) ? "" : calendarDataText
             };
 
             if (props.isEdit) {
                 params.calendarId = props.calendar.calendarId;
-                params.strategy = strategy ? "Cancel" : "Fail";
+                params.strategy = model.strategy ? "Cancel" : "Fail";
             }
             validateUrl(params.calendarUrl)
                 ? props.onEdit(params)
