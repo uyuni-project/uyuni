@@ -429,13 +429,29 @@ public class MaintenanceManager {
      */
     public int assignScheduleToSystems(User user, MaintenanceSchedule schedule, Set<Long> systemIds,
             boolean cancelAffectedActions) {
+        return assignScheduleToSystems(user, schedule, systemIds,
+                cancelAffectedActions ? Collections.singletonList(new CancelRescheduleStrategy()) :
+                        Collections.emptyList());
+    }
+
+    /**
+     * Assign {@link MaintenanceSchedule} to given set of {@link Server}s.
+     *
+     * @param user the user
+     * @param schedule the {@link MaintenanceSchedule}
+     * @param systemIds the set of {@link Server} IDs
+     * @param strategies a chain of strategies to be used for rescheduling actions
+     * @throws PermissionException if the user does not have access to given servers
+     * @throws IllegalArgumentException if systems have pending maintenance-only actions
+     * @return the number of involved {@link Server}s
+     */
+    public int assignScheduleToSystems(User user, MaintenanceSchedule schedule, Set<Long> systemIds,
+            List<RescheduleStrategy> strategies) {
         ensureOrgAdmin(user);
         ensureSystemsAccessible(user, systemIds);
         ensureScheduleAccessible(user, schedule);
 
-        RescheduleResult result = manageAffectedScheduledActionsForSystems(user, systemIds, schedule,
-                cancelAffectedActions ? Collections.singletonList(new CancelRescheduleStrategy()) :
-                        Collections.emptyList());
+        RescheduleResult result = manageAffectedScheduledActionsForSystems(user, systemIds, schedule, strategies);
 
         if (!result.isSuccess()) {
             throw new IllegalArgumentException("Some systems have pending maintenance-only actions");

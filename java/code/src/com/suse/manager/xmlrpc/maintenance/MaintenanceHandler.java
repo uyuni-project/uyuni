@@ -426,6 +426,7 @@ public class MaintenanceHandler extends BaseHandler {
      * @param loggedInUser the user
      * @param scheduleName the schedule name
      * @param systemIds the system IDs
+     * @param rescheduleStrategy list of strategy module names
      * @return the number of involved systems
      *
      * @xmlrpc.doc Assign schedule with given name to systems with given IDs.
@@ -435,9 +436,17 @@ public class MaintenanceHandler extends BaseHandler {
      * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "scheduleName", "The schedule name")
      * @xmlrpc.param #array_single("int", "system IDs")
+     * @xmlrpc.param #array_begin()
+     *                 #prop_desc("string", "rescheduleStrategy", "Available:")
+     *                   #options()
+     *                     #item_desc("Cancel", "Cancel actions which are outside of the maintenance windows")
+     *                     #item_desc("Fail", "Let assignment fail. No operation will be performed")
+     *                   #options_end()
+     *               #array_end()
      * @xmlrpc.returntype #array_single("int", "number of involved systems")
      */
-    public Integer assignScheduleToSystems(User loggedInUser, String scheduleName, List<Integer> systemIds) {
+    public Integer assignScheduleToSystems(User loggedInUser, String scheduleName, List<Integer> systemIds,
+            List<String> rescheduleStrategy) {
         ensureOrgAdmin(loggedInUser);
         MaintenanceSchedule schedule = mm
                 .lookupScheduleByUserAndName(loggedInUser, scheduleName)
@@ -445,8 +454,8 @@ public class MaintenanceHandler extends BaseHandler {
 
         Set<Long> longIds = systemIds.stream().map(id -> id.longValue()).collect(Collectors.toSet());
         try {
-            //TODO: Add flag param to allow cancelling affected actions
-            return mm.assignScheduleToSystems(loggedInUser, schedule, longIds, false);
+            return mm.assignScheduleToSystems(loggedInUser, schedule, longIds,
+                    createStrategiesFromStrings(rescheduleStrategy));
         }
         catch (PermissionException e) {
             throw new PermissionCheckFailureException(e);
