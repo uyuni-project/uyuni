@@ -35,7 +35,7 @@ function onDocumentReadyGeneral(){
   scrollTopBehavior();
 }
 
-$(document).on("ready", onDocumentReadyGeneral);
+$(document).ready(onDocumentReadyGeneral);
 
 
 function adaptFluidColLayout() {
@@ -50,7 +50,7 @@ function adaptFluidColLayout() {
 
 /* Getting the screen size to create a fixed padding-bottom in the Section tag to make both columns the same size */
 // On window load
-$(window).load(function () {
+$(window).on("load", function () {
   adjustDistanceForFixedHeader();
   columnHeight();
 });
@@ -282,7 +282,7 @@ function onDocumentReadyAutoBootstrapGrid() {
   });
 }
 
-$(document).on("ready", onDocumentReadyAutoBootstrapGrid);
+$(document).ready(onDocumentReadyAutoBootstrapGrid);
 
 // Put the focus on a given form element
 function formFocus(form, name) {
@@ -330,7 +330,7 @@ function humanizeDates() {
   });
 }
 
-$(document).on("ready", humanizeDates);
+$(document).ready(humanizeDates);
 
 /**
  * Setups ACE editor in a textarea element
@@ -569,7 +569,7 @@ function initIEWarningUse() {
   }
 }
 
-$(document).on("ready", function() {
+$(document).ready(function() {
   initIEWarningUse();
 })
 
