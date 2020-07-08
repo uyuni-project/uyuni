@@ -10,18 +10,22 @@ import {Button} from "components/buttons";
 import {Combobox} from "components/combobox";
 
 const MaintenanceScheduleEdit = forwardRef((props, ref) => {
-    const [scheduleName, setScheduleName] = useState("");
-    const [scheduleType, setScheduleType] = useState("SINGLE");
-    const [calendarName, setCalendarName] = useState("");
+    const [model, setModel] = useState({
+        scheduleName: "",
+        scheduleType: "SINGLE",
+        calendarName: "",
+        strategy: false
+    });
     const [calendarAdded, setCalendarAdded] = useState(false);
-    const [strategy, setStrategy] = useState(false);
     const [selectedCalendar, setSelectedCalendar] = useState(0);
 
     useEffect(() => {
         if(props.isEdit) {
-            setScheduleName(props.schedule.scheduleName);
-            setScheduleType(props.schedule.scheduleType);
-            setCalendarName(props.schedule.calendarName);
+            setModel({...model,
+                scheduleName: props.schedule.scheduleName,
+                scheduleType: props.schedule.scheduleType,
+                calendarName: props.schedule.calendarName
+            });
             setCalendarAdded(!!props.schedule.calendarName);
             setSelectedCalendar(
                 (props.calendarNames.length > 1 && props.schedule.calendarName) ?
@@ -30,39 +34,34 @@ const MaintenanceScheduleEdit = forwardRef((props, ref) => {
         }
     }, [props.schedule]);
 
-    const model = {
-        scheduleName: scheduleName,
-        scheduleType: scheduleType,
-        calendarName: calendarName,
-        strategy: strategy,
-    }
-
-    const onFormChanged = (model) => {
+    const onFormChanged = (newModel) => {
         /* strategy gets initialized as empty string, but we want the initial value to be false.
          * Is equivalent to: if strategy is "" then set it to false */
-        model.strategy === "" && (model.strategy = false);
-        setScheduleName(model.scheduleName);
-        setScheduleType(model.scheduleType);
-        setCalendarName(model.calendarName);
-        setStrategy(model.strategy);
+        newModel.strategy === "" && (newModel.strategy = false);
+        setModel({
+            scheduleName: newModel.scheduleName,
+            scheduleType: newModel.scheduleType,
+            calendarName: newModel.calendarName,
+            strategy: newModel.strategy
+        });
     };
 
     const onSelectCalendar = (item) => {
         setSelectedCalendar(item.id);
-        setCalendarName(item.text === "<None>" ? "" : item.text);
+        setModel({...model, calendarName: item.text === "<None>" ? "" : item.text});
     };
 
     useImperativeHandle(ref, () => ({
         onEdit() {
             const params = {
-                scheduleName: scheduleName,
-                scheduleType: scheduleType,
+                scheduleName: model.scheduleName,
+                scheduleType: model.scheduleType,
                 // Ignore selected name if selection dropdown is closed
-                calendarName: calendarAdded ? calendarName : "",
+                calendarName: calendarAdded ? model.calendarName : "",
             };
             if (props.isEdit) {
                 params.scheduleId = props.schedule.scheduleId;
-                params.strategy = strategy ? "Cancel" : "Fail";
+                params.strategy = model.strategy ? "Cancel" : "Fail";
             }
             props.onEdit(params);
         }
