@@ -7,7 +7,15 @@ import {Table} from "components/table/Table";
 import {Column} from "components/table/Column";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 
-const MaintenanceScheduleDetails = (props) => {
+type ScheduleDetailsProps = {
+    scheduleName: string,
+    calendarName: string,
+    scheduleType: 'SINGLE' | 'MULTI',
+    maintenanceWindows?: Array,
+    onDelete: () => void
+};
+
+const MaintenanceScheduleDetails = (props: ScheduleDetailsProps) => {
     return (
         <>
             <DeleteDialog
@@ -33,7 +41,8 @@ type OverviewProps = {
     scheduleType: 'SINGLE' | 'MULTI',
     maintenanceWindows?: Array
 }
-const MaintenanceScheduleOverview = (props) => {
+
+const MaintenanceScheduleOverview = (props: OverviewProps) => {
     const tableData = [
         {left: t("Schedule name") + ":", right: props.scheduleName},
         {left: t("Assigned calendar") + ":", right: props.calendarName},
