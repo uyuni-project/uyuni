@@ -10,7 +10,18 @@ import {Button} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 
-const MaintenanceCalendarList = (props) => {
+type CalendarListProps = {
+    data: {
+        calendarId: number,
+        calendarName: string,
+        scheduleNames: Array<Map<string, string>>,
+    },
+    onSelect: () => void,
+    onEdit: () => void,
+    onDelete: () => void
+};
+
+const MaintenanceCalendarList = (props: CalendarListProps) => {
     const [calendarToDelete, setCalendarToDelete] = useState({});
     const [strategy, setStrategy] = useState(false);
 

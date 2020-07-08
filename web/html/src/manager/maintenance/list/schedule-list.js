@@ -8,7 +8,19 @@ import {Button} from "components/buttons";
 import {ModalButton} from "components/dialog/ModalButton";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 
-const MaintenanceScheduleList = (props) => {
+type ScheduleListProps = {
+    data: {
+        scheduleId: number,
+        scheduleName: string,
+        calendarId?: number,
+        calendarName?: string,
+    },
+    onSelect: () => void,
+    onEdit: () => void,
+    onDelete: () => void
+};
+
+const MaintenanceScheduleList = (props: ScheduleListProps) => {
     const [scheduleToDelete, setScheduleToDelete] = useState({});
 
     return (
