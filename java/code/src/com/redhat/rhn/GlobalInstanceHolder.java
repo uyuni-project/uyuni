@@ -77,7 +77,7 @@ public class GlobalInstanceHolder {
     public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager();
     public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
             new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
-            new SystemEntitler(GlobalInstanceHolder.SYSTEM_QUERY, VIRT_MANAGER, MONITORING_MANAGER,
+            new SystemEntitler(SYSTEM_QUERY, VIRT_MANAGER, MONITORING_MANAGER,
                     SERVER_GROUP_MANAGER)
     );
 }
