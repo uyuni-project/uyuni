@@ -1,21 +1,4 @@
 function onDocumentReadyGeneral(){
-  /*
- * System Set Manager: actions to hide the SSM toolbar
- * when the Clear button is pressed or when
- * no system is selected
- */
-  jQuery(document).on('click', '#clear-ssm-btn', function() {
-    hidesystemtool();
-  });
-  function hidesystemtool(){
-    jQuery(".spacewalk-bar").animate({
-          "right": "-=50px",
-          "opacity": "0"},
-        300, function() {
-          /* after animation is complete we hide the element */
-          jQuery(this).hide();
-        });
-  }
   // See if there is a system already selected as soon as the page loads
   updateSsmToolbarOpacity();
 
