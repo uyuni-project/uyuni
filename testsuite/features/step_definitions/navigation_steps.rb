@@ -395,9 +395,13 @@ Given(/^I am on the active Users page$/) do
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
-  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]"
+  step %(I wait until table row for "#{arg1}" contains "#{arg2}")
+end
+
+Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
+  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
-    raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2)
+    raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2, wait: DEFAULT_TIMEOUT)
   end
 end
 
