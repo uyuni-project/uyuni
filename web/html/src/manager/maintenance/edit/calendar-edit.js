@@ -103,7 +103,7 @@ const MaintenanceCalendarEdit = forwardRef((props, ref) => {
             }
             validateUrl(params.calendarUrl)
                 ? props.onEdit(params)
-                : props.messages(MessagesUtils.error(t("Url" + " '" + params.calendarUrl + "' " + t("is invalid"))));
+                : props.messages(MessagesUtils.error(t("Url '{0}' is invalid", params.calendarUrl)));
         }
     }));
 
@@ -150,7 +150,7 @@ const MaintenanceCalendarEdit = forwardRef((props, ref) => {
                                          disabled={props.calendar.calendarUrl !== calendarDataText}
                             />
                             <DangerDialog id="confirm-modal"
-                                          title="Confirm calendar refresh"
+                                          title={t("Confirm calendar refresh")}
                                           content={
                                               <div>
                                                   <div>{t("Refreshing the calendar will reschedule all affected actions.")}</div>
@@ -159,7 +159,7 @@ const MaintenanceCalendarEdit = forwardRef((props, ref) => {
                                               </div>
                                           }
                                           onConfirm={() => onConfirmRefresh()}
-                                          submitText="Confirm"
+                                          submitText={t("Confirm")}
                                           submitIcon="fa-check"
                             />
                         </div>
