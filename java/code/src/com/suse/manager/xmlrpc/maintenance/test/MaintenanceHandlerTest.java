@@ -40,6 +40,8 @@ import java.util.Map;
 
 import redstone.xmlrpc.XmlRpcSerializer;
 
+import static java.util.Collections.emptyList;
+
 public class MaintenanceHandlerTest extends BaseHandlerTestCase {
 
     private MaintenanceHandler handler = new MaintenanceHandler();
@@ -66,8 +68,8 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
         MaintenanceSchedule sapSchedule = handler.createSchedule(admin, "SAP Maintenance Window", "multi", mcal.getLabel());
         MaintenanceSchedule coreSchedule = handler.createSchedule(admin, "Core Server Window", "multi", mcal.getLabel());
 
-        handler.assignScheduleToSystems(admin, sapSchedule.getName(), Collections.singletonList(sapServer.getId().intValue()));
-        handler.assignScheduleToSystems(admin, coreSchedule.getName(), Collections.singletonList(coreServer.getId().intValue()));
+        handler.assignScheduleToSystems(admin, sapSchedule.getName(), Collections.singletonList(sapServer.getId().intValue()), emptyList());
+        handler.assignScheduleToSystems(admin, coreSchedule.getName(), Collections.singletonList(coreServer.getId().intValue()), emptyList());
 
 
         Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
