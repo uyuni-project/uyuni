@@ -1,4 +1,3 @@
-- Synchronize Salt modules and states during minion registration.
 - Adapt expectations for jobs return events after switching Salt
   states to use 'mgrcompat.module_run' state.
 
