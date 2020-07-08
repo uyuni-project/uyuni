@@ -1,4 +1,4 @@
-$(document).on("ready", function() {
+$(document).ready(function() {
   $("aside").remove();
   var me = $("section");
   var newMe = $("<div class='login-page'>");
