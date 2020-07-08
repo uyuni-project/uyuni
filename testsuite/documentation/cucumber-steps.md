@@ -224,6 +224,7 @@ To check for the initial log in, prefer ```Then I am logged in```.
   Then I should see a "Keys" text in the content area
   Then I should see "sle_minion" hostname
   Then I should not see "sle_minion" hostname
+  Then table row for "test-net1" should contain "running"
 ```
 
 For a test with a regular expression, there is ```I should see a text like "..."```
@@ -235,6 +236,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
   When I wait until I do not see "Loading..." text
   When I wait at most 360 seconds until I see "Product Description" text
   When I wait until the tree item "test-pool0" contains "inactive" text
+  When I wait until table row for "test-net1" contains "running"
 ```
 
 * Same, but re-issue HTTP requests to refresh the page
