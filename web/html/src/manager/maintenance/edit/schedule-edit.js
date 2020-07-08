@@ -85,12 +85,12 @@ const MaintenanceScheduleEdit = forwardRef((props, ref) => {
             <div className="form-group">
                 <div className="col-md-6 col-md-offset-3">
                     {!calendarAdded ?
-                        <Button className="btn-default" text="Add Calendar" icon="fa-chevron-down "
+                        <Button className="btn-default" text={t("Add Calendar")} icon="fa-chevron-down "
                                 handler={() => setCalendarAdded(!calendarAdded)} />
                         :
                         <div className="panel panel-default">
                             <div className="panel-heading no-padding">
-                                <Button text="Add Calendar" icon="fa-chevron-up"
+                                <Button text={t("Add Calendar")} icon="fa-chevron-up"
                                         handler={() => setCalendarAdded(!calendarAdded)} />
                             </div>
                             <div className="panel-body">
