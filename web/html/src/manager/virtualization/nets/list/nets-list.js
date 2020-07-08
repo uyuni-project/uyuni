@@ -18,6 +18,9 @@ export function NetsList(props: Props) {
     {
       type: 'start', name: t('Start'), icon: 'fa-play', bulkonly: true,
     },
+    {
+      type: 'stop', name: t('Stop'), icon: 'fa-stop', bulkonly:false,
+    }
   ];
   return (
     <ListTab
@@ -82,6 +85,7 @@ export function NetsList(props: Props) {
                   />
                 )
               }
+              { row.active && createModalButton('stop', modalsData, row) }
               </div>
             );
           };
