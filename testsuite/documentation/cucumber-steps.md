@@ -734,6 +734,12 @@ When I delete test-pool1 virtual storage pool on "kvm_server"
 When I refresh the "test-pool0" storage pool of this "kvm-server"
 ```
 
+* Managing virtual networks
+
+```cucumber
+When I should not see a "test-net1" virtual network on "kvm-server"
+```
+
 <a name="c" />
 
 ### Writing new steps
