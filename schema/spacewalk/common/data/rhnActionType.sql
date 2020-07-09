@@ -89,6 +89,7 @@ insert into rhnActionType values (515, 'cluster.group_refresh_nodes', 'Refresh c
 insert into rhnActionType values (516, 'cluster.join_node', 'Join node to cluster', 'N', 'N');
 insert into rhnActionType values (517, 'cluster.remove_node', 'Remove node from cluster', 'N', 'N');
 insert into rhnActionType values (518, 'cluster.upgrade_cluster', 'Upgrade cluster', 'N', 'N');
+insert into rhnActionType values (520, 'virt.network_state', 'Change a virtual network state', 'N', 'N');
 --
 --
 -- Revision 1.25  2004/10/29 05:07:52  pjones

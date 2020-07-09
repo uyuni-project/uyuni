@@ -437,6 +437,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
+
         <!-- PackageActions: 1, 3, 4, 8, 13, 14, 33 -->
         <!-- PackageAction is abstract - the subclasses only get instantiated -->
         <subclass
@@ -565,6 +566,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </join>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction"
+                  discriminator-value="519" lazy="true">
+            <join table="rhnActionVirtNetworkStateChange">
+                <key column="action_id"/>
+                <property name="networkName" type="string" column="network_name"/>
+                <property name="state" type="string" column="state"/>
+            </join>
+        </subclass>
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
@@ -630,7 +640,9 @@ select {ra.*}
             NULL as server_id,
             NULL as json_params from dual) ra_20_,
     (select NULL as cluster_id,
-            NULL as json_params from dual) ra_21_
+            NULL as json_params from dual) ra_21_,
+    (select NULL as network_name,
+            NULL as state from dual) ra_22_
    where
     ra.id = (SELECT max(rA.id)
                    FROM rhnAction rA
@@ -767,7 +779,9 @@ select sa.server_id
                              NULL as server_id,
                              NULL as json_params from dual) ra_20_,
                      (select NULL as cluster_id,
-                             NULL as json_params from dual) ra_21_
+                             NULL as json_params from dual) ra_21_,
+                     (select NULL as network_name,
+                             NULL as state from dual) ra_22_
                      where ra.id in (select distinct ac.id
                                    from rhnAction ac
                                       inner join rhnServerAction sa on ac.id = sa.action_id

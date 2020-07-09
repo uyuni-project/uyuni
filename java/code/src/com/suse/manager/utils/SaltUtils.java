@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
@@ -698,7 +699,7 @@ public class SaltUtils {
             String key = result.keySet().iterator().next();
             serverAction.setResultMsg(result.get(key).getAsJsonObject().get("comment").getAsString());
         }
-        else if (action instanceof BaseVirtualizationPoolAction) {
+        else if (action instanceof BaseVirtualizationPoolAction || action instanceof BaseVirtualizationNetworkAction) {
             // Tell VirtNotifications that we got a pool action change, passing action
             VirtNotifications.spreadActionUpdate(action);
             // Intentionally don't get only the comment since the changes value could be interesting
