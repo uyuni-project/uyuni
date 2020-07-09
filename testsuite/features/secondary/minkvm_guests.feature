@@ -333,6 +333,15 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And table row for "test-net1" should contain "running"
 
 @virthost_kvm
+  Scenario: Delete virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    And I click on "Delete" in row "test-net1"
+    And I click on "Delete" in "Delete Network" modal
+    Then I wait until I do not see "test-net1" text
+    And I should not see a "test-net1" virtual network on "kvm_server"
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"
