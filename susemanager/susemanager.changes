@@ -1,3 +1,5 @@
+- migrate all occurrences of kickstart to autoinstall in cobbler database (bsc#1169780)
+
 -------------------------------------------------------------------
 Wed Jun 10 14:22:48 CEST 2020 - jgonzalez@suse.com
 
