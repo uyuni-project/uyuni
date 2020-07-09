@@ -159,4 +159,27 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
         assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
+
+    public void testDelete() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.delete(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/delete",
+                        "{names: [\"net0\"]}",
+                        host.getId()),
+                response, user);
+
+        // Ensure the stop action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationNetworkStateChangeAction virtAction = (VirtualizationNetworkStateChangeAction) action;
+        assertEquals("net0", virtAction.getNetworkName());
+        assertEquals("delete", virtAction.getState());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
+    }
 }
