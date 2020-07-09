@@ -259,18 +259,18 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
 
+        // assign an action not tied to maintenance mode
+        Action allowedAction = MaintenanceTestUtils
+                .createActionForServerAt(user, ActionFactory.TYPE_VIRTUALIZATION_START, sys1, "2020-04-13T08:15:00+02:00");
+        assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId())));
+
         // assign an offending action to one system
         Action disallowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
-        ServerActionTest.createServerAction(sys1, disallowedAction);
+        ServerActionTest.createServerAction(sys2, disallowedAction);
 
         assertExceptionThrown(
                 () -> mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId(), sys2.getId())),
                 IllegalArgumentException.class);
-
-        // assign an action not tied to maintenance mode
-        Action allowedAction = MaintenanceTestUtils
-                .createActionForServerAt(user, ActionFactory.TYPE_VIRTUALIZATION_START, sys2, "2020-04-13T08:15:00+02:00");
-        assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys2.getId())));
     }
 
     /**
