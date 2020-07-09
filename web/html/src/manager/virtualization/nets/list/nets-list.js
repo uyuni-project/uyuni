@@ -20,7 +20,10 @@ export function NetsList(props: Props) {
     },
     {
       type: 'stop', name: t('Stop'), icon: 'fa-stop', bulkonly:false,
-    }
+    },
+    {
+      type: 'delete', name: t('Delete'), icon: 'fa-trash', bulkonly: false,
+    },
   ];
   return (
     <ListTab
@@ -86,6 +89,7 @@ export function NetsList(props: Props) {
                 )
               }
               { row.active && createModalButton('stop', modalsData, row) }
+              { createModalButton('delete', modalsData, row) }
               </div>
             );
           };
