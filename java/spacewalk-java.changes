@@ -1,3 +1,4 @@
+- fix NPE on auto installation when no kernel options are given (bsc#1173932)
 - fix issue with disabling self_update for autoyast autoupgrade (bsc#1170654)
 - Adapt expectations for jobs return events after switching Salt
   states to use 'mgrcompat.module_run' state.
