@@ -11,7 +11,7 @@
     ],
     "jid": "20180314154432175258",
     "return": {
-      "module_|-mgr_scap_|-openscap.xccdf_|-run": {
+      "mgrcompat_|-mgr_scap_|-openscap.xccdf_|-module_run": {
         "comment": "Module function openscap.xccdf executed",
         "name": "openscap.xccdf",
         "start_time": "15:44:31.729974",

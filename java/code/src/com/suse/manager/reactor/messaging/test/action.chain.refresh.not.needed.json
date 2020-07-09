@@ -14,7 +14,7 @@
     },
     "retcode": 0,
     "return": {
-      "module_|-mgr_actionchain_1_action_205_chunk_1_|-state.apply_|-run": {
+      "mgrcompat_|-mgr_actionchain_1_action_205_chunk_1_|-state.apply_|-module_run": {
         "__id__": "mgr_actionchain_1_action_205_chunk_1",
         "__run_num__": 0,
         "__sls__": "actionchains.actionchain_1_4f5f892387596ee901cb9db95c505c09_1",
@@ -74,7 +74,7 @@
         "result": true,
         "start_time": "18:22:01.765462"
       },
-      "module_|-mgr_actionchain_1_action_206_chunk_1_|-state.apply_|-run": {
+      "mgrcompat_|-mgr_actionchain_1_action_206_chunk_1_|-state.apply_|-module_run": {
         "__id__": "mgr_actionchain_1_action_206_chunk_1",
         "__run_num__": 1,
         "__sls__": "actionchains.actionchain_1_4f5f892387596ee901cb9db95c505c09_1",

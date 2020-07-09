@@ -3,7 +3,7 @@ vm_stopped:
     - name: {{ pillar['domain_name'] }}
 
 mgr_virt_destroy:
-  module.run:
+  mgrcompat.module_run:
     - name: virt.purge
     - vm_: {{ pillar['domain_name'] }}
     - require:

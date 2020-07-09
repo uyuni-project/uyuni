@@ -1,5 +1,5 @@
 packages:
-  module.run:
+  mgrcompat.module_run:
     - name: pkg.info_installed
     - kwargs: {
           attr: 'status,arch,epoch,version,release,install_date_time_t',
@@ -12,7 +12,7 @@ packages:
       }
 {% if grains['os_family'] == 'Suse' %}
 products:
-  module.run:
+  mgrcompat.module_run:
     - name: pkg.list_products
 {% elif grains['os_family'] == 'RedHat' %}
 {% include 'packages/redhatproductinfo.sls' %}
@@ -25,26 +25,27 @@ debianrelease:
 
 include:
   - util.syncgrains
+  - util.syncstates
   - util.syncmodules
 
 grains_update:
-  module.run:
+  mgrcompat.module_run:
     - name: grains.items
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_grains
 {%- else %}
-      - module: sync_grains
+      - mgrcompat: sync_grains
 {%- endif %}
 
 {% if not pillar.get('imagename') %}
 kernel_live_version:
-  module.run:
+  mgrcompat.module_run:
     - name: sumautil.get_kernel_live_version
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_modules
 {%- else %}
-      - module: sync_modules
+      - mgrcompat: sync_modules
 {%- endif %}
 {% endif %}

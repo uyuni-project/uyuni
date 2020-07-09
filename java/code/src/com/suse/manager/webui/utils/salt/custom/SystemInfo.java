@@ -29,9 +29,9 @@ import java.util.Optional;
  */
 public class SystemInfo {
 
-    @SerializedName("module_|-status_uptime_|-status.uptime_|-run")
+    @SerializedName("mgrcompat_|-status_uptime_|-status.uptime_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> upTime;
-    @SerializedName("module_|-grains_update_|-grains.item_|-run")
+    @SerializedName("mgrcompat_|-grains_update_|-grains.item_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
 
     /**

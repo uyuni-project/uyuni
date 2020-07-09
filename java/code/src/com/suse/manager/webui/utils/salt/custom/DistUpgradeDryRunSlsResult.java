@@ -23,7 +23,7 @@ import com.suse.salt.netapi.results.StateApplyResult;
  */
 public class DistUpgradeDryRunSlsResult {
 
-   @SerializedName("module_|-spmigration_|-pkg.upgrade_|-run")
+   @SerializedName("mgrcompat_|-spmigration_|-pkg.upgrade_|-module_run")
    private StateApplyResult<RetOpt<String>> spmigration;
 
    /**

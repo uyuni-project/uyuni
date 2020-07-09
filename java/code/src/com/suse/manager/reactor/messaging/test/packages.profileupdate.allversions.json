@@ -10,7 +10,7 @@
     ],
     "jid": "20160407084101455804",
     "return": {
-      "module_|-products_|-pkg.list_products_|-run": {
+      "mgrcompat_|-products_|-pkg.list_products_|-module_run": {
         "comment": "Module function pkg.list_products executed",
         "name": "pkg.list_products",
         "start_time": "10:41:02.671005",
@@ -41,7 +41,7 @@
           ]
         }
       },
-      "module_|-packages_|-pkg.info_installed_|-run": {
+      "mgrcompat_|-packages_|-pkg.info_installed_|-module_run": {
         "comment": "Module function pkg.info_installed executed",
         "name": "pkg.info_installed",
         "start_time": "10:41:02.065145",
@@ -97,7 +97,7 @@
           }
         }
       },
-      "module_|-grains_update_|-grains.items_|-run": {
+      "mgrcompat_|-grains_update_|-grains.items_|-module_run": {
         "__run_num__": 3,
         "changes": {
           "ret": {
@@ -280,7 +280,7 @@
         "result": true,
         "start_time": "11:16:23.084040"
       },
-      "module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run": {
+      "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
         "__run_num__": 5,
         "changes": {
           "ret": {

@@ -32,46 +32,46 @@ import java.util.Optional;
  */
 public class HwProfileUpdateSlsResult {
 
-    @SerializedName("module_|-grains_|-grains.items_|-run")
+    @SerializedName("mgrcompat_|-grains_|-grains.items_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
 
-    @SerializedName("module_|-cpuinfo_|-status.cpuinfo_|-run")
+    @SerializedName("mgrcompat_|-cpuinfo_|-status.cpuinfo_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> cpuInfo;
 
-    @SerializedName(value = "module_|-udev_|-udev.exportdb_|-run",
-            alternate = {"module_|-udevdb_|-udevdb.exportdb_|-run"})
+    @SerializedName(value = "mgrcompat_|-udev_|-udev.exportdb_|-module_run",
+            alternate = {"mgrcompat_|-udevdb_|-udevdb.exportdb_|-module_run"})
     private StateApplyResult<Ret<List<Map<String, Object>>>> udevdb;
 
-    @SerializedName("module_|-network-interfaces_|-network.interfaces_|-run")
+    @SerializedName("mgrcompat_|-network-interfaces_|-network.interfaces_|-module_run")
     private StateApplyResult<Ret<Map<String, Network.Interface>>> networkInterfaces;
 
-    @SerializedName("module_|-network-ips_|-sumautil.primary_ips_|-run")
+    @SerializedName("mgrcompat_|-network-ips_|-sumautil.primary_ips_|-module_run")
     private StateApplyResult<Ret<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>>> networkIPs;
 
-    @SerializedName("module_|-network-modules_|-sumautil.get_net_modules_|-run")
+    @SerializedName("mgrcompat_|-network-modules_|-sumautil.get_net_modules_|-module_run")
     private StateApplyResult<Ret<Map<String, Optional<String>>>> networkModules;
 
-    @SerializedName("module_|-fqdns_|-network.fqdns_|-run")
+    @SerializedName("mgrcompat_|-fqdns_|-network.fqdns_|-module_run")
     private Optional<StateApplyResult<Ret<Map<String, List<String>>>>> fqdnsFromNetworkModule =
             Optional.empty();
 
-    @SerializedName("module_|-smbios-records-bios_|-smbios.records_|-run")
+    @SerializedName("mgrcompat_|-smbios-records-bios_|-smbios.records_|-module_run")
     private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsBios =
             Optional.empty();
 
-    @SerializedName("module_|-smbios-records-system_|-smbios.records_|-run")
+    @SerializedName("mgrcompat_|-smbios-records-system_|-smbios.records_|-module_run")
     private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsSystem =
             Optional.empty();
 
-    @SerializedName("module_|-smbios-records-baseboard_|-smbios.records_|-run")
+    @SerializedName("mgrcompat_|-smbios-records-baseboard_|-smbios.records_|-module_run")
     private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsBaseboard =
             Optional.empty();
 
-    @SerializedName("module_|-smbios-records-chassis_|-smbios.records_|-run")
+    @SerializedName("mgrcompat_|-smbios-records-chassis_|-smbios.records_|-module_run")
     private Optional<StateApplyResult<Ret<List<Smbios.Record>>>> smbiosRecordsChassis =
             Optional.empty();
 
-    @SerializedName("module_|-mainframe-sysinfo_|-mainframesysinfo.read_values_|-run")
+    @SerializedName("mgrcompat_|-mainframe-sysinfo_|-mainframesysinfo.read_values_|-module_run")
     private Optional<StateApplyResult<Ret<String>>> mainframeSysinfo = Optional.empty();
 
     /**

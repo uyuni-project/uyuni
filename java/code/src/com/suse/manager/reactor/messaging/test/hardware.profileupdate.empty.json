@@ -10,7 +10,7 @@
         ],
         "jid": "20160407084101455805",
         "return": {
-            "module_|-network-interfaces_|-network.interfaces_|-run": {
+            "mgrcompat_|-network-interfaces_|-network.interfaces_|-module_run": {
                 "comment": "Module function network.interfaces executed",
                 "name": "network.interfaces",
                 "start_time": "12:58:12.398566",
@@ -21,7 +21,7 @@
                     "ret":
                 }
             },
-            "module_|-network-modules_|-sumautil.get_net_modules_|-run": {
+            "mgrcompat_|-network-modules_|-sumautil.get_net_modules_|-module_run": {
                 "comment": "Module function sumautil.get_net_modules executed",
                 "name": "sumautil.get_net_modules",
                 "start_time": "12:58:12.422343",
@@ -32,7 +32,7 @@
                     "ret":
                 }
             },
-            "module_|-smbios-records-baseboard_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-baseboard_|-smbios.records_|-module_run": {
                 "comment": "Module function smbios.records executed",
                 "name": "smbios.records",
                 "start_time": "12:58:12.435214",
@@ -43,7 +43,7 @@
                     "ret": []
                 }
             },
-            "module_|-smbios-records-chassis_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-chassis_|-smbios.records_|-module_run": {
                 "comment": "Module function smbios.records executed",
                 "name": "smbios.records",
                 "start_time": "12:58:12.439927",
@@ -54,7 +54,7 @@
                     "ret":
                 }
             },
-            "module_|-cpuinfo_|-status.cpuinfo_|-run": {
+            "mgrcompat_|-cpuinfo_|-status.cpuinfo_|-module_run": {
                 "comment": "Module function status.cpuinfo executed",
                 "name": "status.cpuinfo",
                 "start_time": "12:58:12.371860",
@@ -65,7 +65,7 @@
                     "ret":
                 }
             },
-            "module_|-smbios-records-bios_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-bios_|-smbios.records_|-module_run": {
                 "comment": "Module function smbios.records executed",
                 "name": "smbios.records",
                 "start_time": "12:58:12.423499",
@@ -76,7 +76,7 @@
                     "ret":
                 }
             },
-            "module_|-udev_|-udev.exportdb_|-run": {
+            "mgrcompat_|-udev_|-udev.exportdb_|-module_run": {
                 "comment": "Module function udev.exportdb executed",
                 "name": "udev.exportdb",
                 "start_time": "12:58:12.374296",
@@ -88,7 +88,7 @@
                     ]
                 }
             },
-            "module_|-smbios-records-system_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-system_|-smbios.records_|-module_run": {
                 "comment": "Module function smbios.records executed",
                 "name": "smbios.records",
                 "start_time": "12:58:12.430383",
@@ -99,7 +99,7 @@
                     "ret":
                 }
             },
-            "module_|-network-ips_|-sumautil.primary_ips_|-run": {
+            "mgrcompat_|-network-ips_|-sumautil.primary_ips_|-module_run": {
                 "comment": "Module function sumautil.primary_ips executed",
                 "name": "sumautil.primary_ips",
                 "start_time": "12:58:12.413295",
@@ -110,7 +110,7 @@
                     "ret":
                 }
             },
-            "module_|-grains_|-grains.items_|-run": {
+            "mgrcompat_|-grains_|-grains.items_|-module_run": {
                 "comment": "Module function grains.items executed",
                 "name": "grains.items",
                 "start_time": "12:58:12.369619",
