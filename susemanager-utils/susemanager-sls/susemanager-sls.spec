@@ -98,7 +98,7 @@ py.test
 
 # Check that SLS files don't contain any call to "module.run" which has
 # been replaced by "mgrcompat.module_run" calls.
-! grep -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
+! grep --include "*.sls" -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
 
 %post
 # HACK! Create broken link when it will be replaces with the real file
