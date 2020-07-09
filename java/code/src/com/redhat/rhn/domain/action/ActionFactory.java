@@ -50,9 +50,11 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
@@ -66,7 +68,6 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAc
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -461,6 +462,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_VOLUME_DELETE)) {
             retval = new BaseVirtualizationVolumeAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE)) {
+            retval = new VirtualizationNetworkStateChangeAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -954,7 +958,8 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_DELETE) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_START) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP);
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP) ||
+                actionType.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE);
     }
 
     /**
@@ -1363,5 +1368,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_CLUSTER_UPGRADE_CLUSTER =
             lookupActionTypeByLabel("cluster.upgrade_cluster");
+
+    /**
+     * The constant representing "Change a virtual network state" [ID:519]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE =
+            lookupActionTypeByLabel("virt.network_state");
 }
 
