@@ -1,4 +1,4 @@
-- Add virtual network Start action
+- Add virtual network Start, Stop action
 - Add virtual network list page
 - Fix httpcomponents and gson jar symlinks (bsc#1174229)
 - enhance RedHat product detection for CentOS and OracleLinux (bsc#1173584)
