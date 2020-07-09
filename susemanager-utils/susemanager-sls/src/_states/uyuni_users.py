@@ -264,51 +264,6 @@ class UyuniUserChannels:
             return StateResult.state_error(uid, "Error managing Channel management '{}': {}".format(uid, exc))
         return StateResult.prepare_result(uid, True, "Channel management successful managed", changes)
 
-    def delete(self, uid: str, password: str,
-               unmanaged_channels: Optional[List[str]] = [],
-               org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
-        """
-        Delete user management from channels list
-
-        :param uid: user ID
-        :param password: user password
-        :param unmanaged_channels: channels user should not manage
-        :param org_admin_user: organization administrator username
-        :param org_admin_password: organization administrator password
-        :return: dict for Salt communication
-        """
-        try:
-            current_roles = __salt__['uyuni.user_list_roles'](uid, password=password)
-            current_manageable_channels = __salt__['uyuni.channel_list_manageable_channels'](uid, password)
-        except Exception as exc:
-            return StateResult.state_error(uid,
-                                           comment="Error managing user channels '{}': {}".format(uid, exc))
-            pass
-
-        if "org_admin" in current_roles or "channel_admin" in current_roles:
-            return StateResult.state_error(uid, "Channels access cannot be managed, "
-                                                "User can manage all channel in the organization "
-                                                "(\"org_admin\" or \"org channel_admin\" role).")
-
-        current_channels_label = [c.get("label") for c in (current_manageable_channels or [])]
-        changes = {"manageable_channels": {"old": current_channels_label,
-                                           "new": [c for c in current_channels_label if c not in unmanaged_channels]}}
-
-        channel_manageable_revoke = [c for c in unmanaged_channels if c in current_channels_label]
-
-        if not channel_manageable_revoke:
-            return StateResult.prepare_result(uid, True, "{0} is already installed".format(uid))
-        if __opts__['test']:
-            return StateResult.prepare_result(uid, None, "{0} would be installed".format(uid), changes)
-
-        try:
-            for channel in channel_manageable_revoke:
-                __salt__['uyuni.channel_software_set_user_manageable'](channel, uid, False,
-                                                                       org_admin_user, org_admin_password)
-        except Exception as exc:
-            return StateResult.state_error(uid, "Error managing Channel management '{}': {}".format(uid, exc))
-        return StateResult.prepare_result(uid, True, "Channel management successful managed", changes)
-
 
 class UyuniGroups:
 
@@ -620,46 +575,6 @@ class UyuniOrgsTrust:
                                               processed_changes)
         return StateResult.prepare_result(name, True, "Org Trust successful managed", processed_changes)
 
-    def untrust(self, name: str, orgs_untrust: List[str],
-                admin_user: str = None, admin_password: str = None) -> Dict[str, Any]:
-        """
-        Remove trusted organisations from a organization.
-
-        :param name: Organization name
-        :param orgs_untrust: list of organization names to untrust
-        :param admin_user: administrator username
-        :param admin_password: administrator password
-        :return: dict for Salt communication
-        """
-        try:
-            org_trusts = __salt__['uyuni.org_trust_list_trusts'](name,
-                                                                 admin_user=admin_user, admin_password=admin_password)
-            current_org = __salt__['uyuni.org_get_details'](name,
-                                                            admin_user=admin_user, admin_password=admin_password)
-        except Exception as exc:
-            return StateResult.state_error(name, "Error managing org untrust'{}': {}".format(name, exc))
-
-        trusts_to_remove = [org for org in org_trusts
-                            if org.get("orgName") in (orgs_untrust or []) and org.get("trustEnabled")]
-
-        if not trusts_to_remove:
-            return StateResult.prepare_result(name, True, "{0} is already installed".format(name))
-        if __opts__['test']:
-            changes = {}
-            for org_remove in trusts_to_remove:
-                changes[org_remove.get("orgName")] = {'old': True, 'new': None}
-            return StateResult.prepare_result(name, None, "{0} would be installed".format(name), changes)
-
-        processed_changes = {}
-        try:
-            for org_remove in trusts_to_remove:
-                __salt__['uyuni.org_trust_remove_trust'](current_org.get("id"), org_remove.get("orgId"))
-                processed_changes[org_remove.get("orgName")] = {'old': True, 'new': None}
-        except Exception as exc:
-            return StateResult.prepare_result(name, False, "Error managing Org untrust '{}': {}".format(name, exc),
-                                              processed_changes)
-        return StateResult.prepare_result(name, True, "Org untrust successful managed", processed_changes)
-
 
 def __virtual__():
     '''
@@ -690,7 +605,7 @@ def user_present(name, password, email, first_name=None, last_name=None,
                                org_admin_user, org_admin_password)
 
 
-def user_channels_present(name, password, managed_channels=[],
+def user_channels(name, password, managed_channels=[],
                           org_admin_user=None, org_admin_password=None):
     """
     Insure user is present with all his characteristics
@@ -704,23 +619,6 @@ def user_channels_present(name, password, managed_channels=[],
     """
     return UyuniUserChannels().manage(name, password, managed_channels,
                                       org_admin_user, org_admin_password)
-
-
-def user_channels_absent(name, password, unmanaged_channels=[],
-                          org_admin_user=None, org_admin_password=None):
-    """
-    Delete user management from channels list
-
-    :param name: DeleteD
-    :param password: user password
-    :param unmanaged_channels: channels user should not manage
-    :param org_admin_user: organization administrator username
-    :param org_admin_password: organization administrator password
-    :return: dict for Salt communication
-    """
-    return UyuniUserChannels().delete(name, password, unmanaged_channels,
-                                      org_admin_user, org_admin_password)
-
 
 
 def user_absent(name, org_admin_user=None, org_admin_password=None):
@@ -770,29 +668,16 @@ def org_absent(name, admin_user=None, admin_password=None):
     return UyuniOrgs().delete(name, admin_user, admin_password)
 
 
-def org_trust_present(name, trust, admin_user=None, admin_password=None):
+def org_trust(name, trusts, admin_user=None, admin_password=None):
     """
     Add trusted organisations from a organization.
     :param name: Organization name
-    :param trust: list of organization names to trust
+    :param trusts: list of organization names to trust
     :param admin_user: administrator username
     :param admin_password: administrator password
     :return: dict for Salt communication
     """
-    return UyuniOrgsTrust().trust(name, trust, admin_user, admin_password)
-
-
-def org_untrust_present(name, untrust, admin_user=None, admin_password=None):
-    """
-    Remove trusted organisations from a organization.
-
-    :param name: Organization name
-    :param untrust: list of organization names to untrust
-    :param admin_user: administrator username
-    :param admin_password: administrator password
-    :return: dict for Salt communication
-    """
-    return UyuniOrgsTrust().untrust(name, untrust, admin_user, admin_password)
+    return UyuniOrgsTrust().trust(name, trusts, admin_user, admin_password)
 
 
 def group_present(name, description, expression=None, target="glob",
