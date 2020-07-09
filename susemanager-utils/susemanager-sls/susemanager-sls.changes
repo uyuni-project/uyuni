@@ -1,3 +1,4 @@
+- Add virtual network state change state to handle start, stop and delete
 - Add virtual network state change state to handle start and stop
 - Update package version to 4.2.0
 
