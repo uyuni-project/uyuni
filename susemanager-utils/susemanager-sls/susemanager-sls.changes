@@ -1,3 +1,5 @@
+- Add missing certs SLS files for Debian 10 and Ubuntu 20.04 (bsc#1173896)
+
 -------------------------------------------------------------------
 Wed Jun 10 14:25:09 CEST 2020 - jgonzalez@suse.com
 
