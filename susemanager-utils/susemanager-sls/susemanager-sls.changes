@@ -1,3 +1,5 @@
+- Add virtual network state change state to handle start and stop
+
 -------------------------------------------------------------------
 Thu Jul 23 13:41:10 CEST 2020 - jgonzalez@suse.com
 
