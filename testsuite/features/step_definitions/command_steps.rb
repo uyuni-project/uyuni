@@ -1173,6 +1173,15 @@ When(/^I refresh the "([^"]*)" storage pool of this "([^"]*)"$/) do |pool, host|
   node.run("virsh pool-refresh #{pool}")
 end
 
+Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual network on #{host} still exists") do
+    _output, code = node.run("virsh net-info #{vm}", fatal = false)
+    break if code == 1
+    sleep 3
+  end
+end
+
 # WORKAROUND
 # Work around issue https://github.com/SUSE/spacewalk/issues/10360
 # Remove as soon as the issue is fixed
