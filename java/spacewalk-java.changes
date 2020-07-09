@@ -1,4 +1,4 @@
-- Add virtual network Start action
+- Add virtual network Start, Stop action
 - Add virtual network list page
 - update default product tree tag and set Beta tag again
 - Update package version to 4.2.0
