@@ -315,14 +315,22 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I should see a "test-net1" text
 
 @virthost_kvm
+  Scenario: Stop virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    Then table row for "test-net1" should contain "running"
+    When I click on "Stop" in row "test-net1"
+    And I click on "Stop" in "Stop Network" modal
+    Then I wait until table row for "test-net1" contains button "Start"
+    And table row for "test-net1" should contain "stopped"
+
+@virthost_kvm
   Scenario: Start virtual network
     Given I am on the "Virtualization" page of this "kvm_server"
     When I follow "Networks"
-    # This step is temporary: will be replaced by Stop test in a future PR
-    And I run "virsh net-destroy test-net1" on "kvm_server"
-    Then I wait until table row for "test-net1" contains button "Start"
-    When I click on "Start" in row "test-net1"
-    Then I wait until table row for "test-net1" contains "running"
+    And I click on "Start" in row "test-net1"
+    Then I wait until table row for "test-net1" contains button "Stop"
+    And table row for "test-net1" should contain "running"
 
 @virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
