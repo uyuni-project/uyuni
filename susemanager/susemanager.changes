@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 09 17:18:08 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.25-1
 - Use python2-uyuni-common-libs and python3-uyuni-common-libs for
   bootstrap repositories (bsc#1173946)
 
