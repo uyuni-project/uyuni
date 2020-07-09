@@ -87,7 +87,7 @@ bootstrap_repo:
     - require:
       - host: mgr_server_localhost_alias_absent
 {%- if repos_disabled.count > 0 %}
-      - module: disable_repo_*
+      - mgrcompat: disable_repo_*
 {%- endif %}
     - onlyif:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
@@ -106,7 +106,7 @@ bootstrap_repo:
     - require:
       - host: mgr_server_localhost_alias_absent
 {%- if repos_disabled.count > 0 %}
-      - module: disable_repo_*
+      - mgrcompat: disable_repo_*
 {%- endif %}
     - onlyif:
       - ([ {{ bootstrap_repo_exists }} = "True" ])
@@ -151,7 +151,7 @@ install_gnupg_debian:
     - pkgs:
       - gnupg
 trust_suse_manager_tools_deb_gpg_key:
-  module.run:
+  mgrcompat.module_run:
     - name: pkg.add_repo_key
     - path: https://{{ salt['pillar.get']('mgr_server') }}/pub/{{ salt['pillar.get']('gpgkeys:ubuntutools:file') }}
 {%- endif %}
@@ -178,8 +178,7 @@ salt-minion-package:
     - require:
       - pkg: salt-minion-package
 
-include:
-  - bootstrap.remove_traditional_stack
+{% include 'bootstrap/remove_traditional_stack.sls' %}
 
 mgr_update_basic_pkgs:
   pkg.latest:

@@ -6,7 +6,7 @@
   <bookinfo>
     <pubdate><?dbtimestamp?></pubdate>
     <productname>$productName</productname>
-    <productnumber>4.0</productnumber>
+    <productnumber>$apiVersion</productnumber>
 #if ($productName == "Uyuni")
     <bibliosource class="uri">https://www.uyuni-project.org/</bibliosource>
 #else

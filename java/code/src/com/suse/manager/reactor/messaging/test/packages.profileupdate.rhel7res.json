@@ -48,7 +48,7 @@
                     "stdout": "Red Hat Enterprise Linux Server release 7.2 (Maipo)\n# This is a \"SLES Expanded Support platform Server release 7.2\"\n# The above \"Red Hat Enterprise Linux \" string is only used to \n# keep software compatibility."
                 }
             },
-            "module_|-packages_|-pkg.info_installed_|-run": {
+            "mgrcompat_|-packages_|-pkg.info_installed_|-module_run": {
                 "comment": "Module function pkg.info_installed executed",
                 "name": "pkg.info_installed",
                 "start_time": "15:12:26.913420",
@@ -78,7 +78,7 @@
                     }
                 }
             },
-            "module_|-grains_update_|-grains.items_|-run": {
+            "mgrcompat_|-grains_update_|-grains.items_|-module_run": {
                 "comment": "Module function grains.items executed",
                 "name": "grains.items",
                 "start_time": "12:20:03.293695",
@@ -181,7 +181,7 @@
                     }
                 }
             },
-            "module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run": {
+            "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
                 "__run_num__": 5,
                 "changes": {
                     "ret": null

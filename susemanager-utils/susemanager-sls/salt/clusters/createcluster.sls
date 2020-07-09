@@ -6,7 +6,7 @@ mgr_ssh_agent_socket_clusters_createcluster:
 {%- endif %}
 
 mgr_cluster_create_cluster:
-  module.run:
+  mgrcompat.module_run:
     - name: mgrclusters.create_cluster
     - provider_module: {{ pillar['cluster_type'] }}
     - params: {{ pillar['params'] }}
@@ -14,7 +14,7 @@ mgr_cluster_create_cluster:
    {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_modules
    {%- else %}
-      - module: sync_modules
+      - mgrcompat: sync_modules
    {%- endif %}
    {%- if pillar.get('ssh_auth_sock', False) %}
       - environ: mgr_ssh_agent_socket_clusters_createcluster

@@ -29,7 +29,7 @@
                 },
                 "__id__": "mgr_kiwi_cleanup"
             },
-            "module_|-mgr_inspect_kiwi_image_|-kiwi_info.inspect_image_|-run": {
+            "mgrcompat_|-mgr_inspect_kiwi_image_|-kiwi_info.inspect_image_|-module_run": {
                 "comment": "Module function kiwi_info.inspect_image executed",
                 "name": "kiwi_info.inspect_image",
                 "start_time": "17:54:56.721717",

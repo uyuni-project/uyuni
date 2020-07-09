@@ -20,7 +20,7 @@
         "out": "highstate",
         "retcode": 0,
         "return": {
-            "module_|-cpuinfo_|-status.cpuinfo_|-run": {
+            "mgrcompat_|-cpuinfo_|-status.cpuinfo_|-module_run": {
                 "__id__": "cpuinfo",
                 "__run_num__": 4,
                 "changes": {
@@ -124,7 +124,7 @@
                 "result": true,
                 "start_time": "13:58:24.589124"
             },
-            "module_|-grains_|-grains.items_|-run": {
+            "mgrcompat_|-grains_|-grains.items_|-module_run": {
                 "__id__": "grains",
                 "__run_num__": 3,
                 "changes": {
@@ -406,7 +406,7 @@
                 "result": true,
                 "start_time": "13:58:24.587113"
             },
-            "module_|-network-interfaces_|-network.interfaces_|-run": {
+            "mgrcompat_|-network-interfaces_|-network.interfaces_|-module_run": {
                 "__id__": "network-interfaces",
                 "__run_num__": 6,
                 "changes": {
@@ -515,7 +515,7 @@
                 "result": true,
                 "start_time": "13:58:24.753431"
             },
-            "module_|-network-ips_|-sumautil.primary_ips_|-run": {
+            "mgrcompat_|-network-ips_|-sumautil.primary_ips_|-module_run": {
                 "__id__": "network-ips",
                 "__run_num__": 7,
                 "changes": {
@@ -534,7 +534,7 @@
                 "result": true,
                 "start_time": "13:58:24.783305"
             },
-            "module_|-network-modules_|-sumautil.get_net_modules_|-run": {
+            "mgrcompat_|-network-modules_|-sumautil.get_net_modules_|-module_run": {
                 "__id__": "network-modules",
                 "__run_num__": 8,
                 "changes": {
@@ -552,7 +552,7 @@
                 "result": true,
                 "start_time": "13:58:24.800731"
             },
-            "module_|-smbios-records-baseboard_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-baseboard_|-smbios.records_|-module_run": {
                 "__id__": "smbios-records-baseboard",
                 "__run_num__": 11,
                 "changes": {
@@ -585,7 +585,7 @@
                 "result": true,
                 "start_time": "13:58:24.829372"
             },
-            "module_|-smbios-records-bios_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-bios_|-smbios.records_|-module_run": {
                 "__id__": "smbios-records-bios",
                 "__run_num__": 9,
                 "changes": {
@@ -638,7 +638,7 @@
                 "result": true,
                 "start_time": "13:58:24.801459"
             },
-            "module_|-smbios-records-chassis_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-chassis_|-smbios.records_|-module_run": {
                 "__id__": "smbios-records-chassis",
                 "__run_num__": 12,
                 "changes": {
@@ -671,7 +671,7 @@
                 "result": true,
                 "start_time": "13:58:24.843239"
             },
-            "module_|-smbios-records-system_|-smbios.records_|-run": {
+            "mgrcompat_|-smbios-records-system_|-smbios.records_|-module_run": {
                 "__id__": "smbios-records-system",
                 "__run_num__": 10,
                 "changes": {
@@ -698,7 +698,7 @@
                 "result": true,
                 "start_time": "13:58:24.817053"
             },
-            "module_|-fqdns_|-network.fqdns_|-run": {
+            "mgrcompat_|-fqdns_|-network.fqdns_|-module_run": {
                 "__id__": "fqdns",
                 "__run_num__": 13,
                 "__sls__": "hardware.profileupdate",
@@ -715,7 +715,7 @@
                 "result": true,
                 "start_time": "13:58:24.817053"
             },
-            "module_|-sync_beacons_|-saltutil.sync_beacons_|-run": {
+            "mgrcompat_|-sync_beacons_|-saltutil.sync_beacons_|-module_run": {
                 "__id__": "sync_beacons",
                 "__run_num__": 2,
                 "changes": {
@@ -727,7 +727,7 @@
                 "result": true,
                 "start_time": "13:58:24.558680"
             },
-            "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+            "mgrcompat_|-sync_grains_|-saltutil.sync_grains_|-module_run": {
                 "__id__": "sync_grains",
                 "__run_num__": 1,
                 "changes": {
@@ -739,7 +739,7 @@
                 "result": true,
                 "start_time": "13:58:24.536875"
             },
-            "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+            "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
                 "__id__": "sync_modules",
                 "__run_num__": 0,
                 "changes": {
@@ -751,7 +751,7 @@
                 "result": true,
                 "start_time": "13:58:24.376300"
             },
-            "module_|-udev_|-udev.exportdb_|-run": {
+            "mgrcompat_|-udev_|-udev.exportdb_|-module_run": {
                 "__id__": "udev",
                 "__run_num__": 5,
                 "changes": {

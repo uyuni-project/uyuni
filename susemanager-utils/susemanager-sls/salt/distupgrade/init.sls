@@ -1,6 +1,6 @@
 {% if grains['os_family'] == 'Suse' %}
 spmigration:
-  module.run:
+  mgrcompat.module_run:
     - name: pkg.upgrade
     - dist_upgrade: True
     - dryrun: {{ salt['pillar.get']('susemanager:distupgrade:dryrun', False) }}

@@ -255,7 +255,7 @@ public class SaltUtils {
                 () -> false,
                 results -> results.entrySet().stream()
                     .anyMatch(result -> extractFunction(result.getKey())
-                        .map(fn -> fn.equals("module.run") ?
+                        .map(fn -> fn.equals("mgrcompat.module_run") ?
                             PKG_EXECUTION_MODULES.contains(result.getValue().getName()) :
                             PKG_STATE_MODULES.contains(fn)
                         ).orElse(false) &&
@@ -419,7 +419,7 @@ public class SaltUtils {
                 apply.entrySet().stream().flatMap(e -> {
             return extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>
                     map(fn -> {
-                if (fn.equals("module.run")) {
+                if (fn.equals("mgrcompat.module_run")) {
                     StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
                             e.getValue(),
                             new TypeToken<StateApplyResult<JsonElement>>() {
@@ -749,21 +749,21 @@ public class SaltUtils {
     private void handleClusterJoinNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
         ClusterJoinNodeAction clusterAction = (ClusterJoinNodeAction)action;
         handleClusterAction(serverAction, jsonResult,
-                "module_|-mgr_cluster_add_node_*_|-mgrclusters.add_node_|-run", action,
+                "mgrcompat_|-mgr_cluster_add_node_*_|-mgrclusters.add_node_|-module_run", action,
                 clusterAction, true);
     }
 
     private void handleClusterRemoveNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
         ClusterRemoveNodeAction clusterAction = (ClusterRemoveNodeAction)action;
         handleClusterAction(serverAction, jsonResult,
-                "module_|-mgr_cluster_remove_node_*_|-mgrclusters.remove_node_|-run", action,
+                "mgrcompat_|-mgr_cluster_remove_node_*_|-mgrclusters.remove_node_|-module_run", action,
                 clusterAction, true);
     }
 
     private void handleClusterUpgrade(ServerAction serverAction, JsonElement jsonResult, Action action) {
         ClusterUpgradeAction clusterAction = (ClusterUpgradeAction) action;
         handleClusterAction(serverAction, jsonResult,
-                "module_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-run",
+                "mgrcompat_|-mgr_cluster_upgrade_cluster_|-mgrclusters.upgrade_cluster_|-module_run",
                 action, clusterAction, false);
     }
 

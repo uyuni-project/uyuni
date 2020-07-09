@@ -2,6 +2,9 @@
 {% set repos_disabled = {'match_str': 'spacewalk:', 'matching': true} %}
 {%- include 'channels/disablelocalrepos.sls' %}
 
+include:
+  - util.syncstates
+
 disable_spacewalksd:
   service.dead:
     - name: rhnsd
@@ -42,7 +45,7 @@ remove_traditional_stack_all:
 {%- endif %}
 {%- if repos_disabled.count > 0 %}
     - require:
-      - module: disable_repo*
+      - mgrcompat: disable_repo*
 {%- endif %}
 
 remove_traditional_stack:
@@ -56,7 +59,7 @@ remove_traditional_stack:
 {%- endif %}
 {%- if repos_disabled.count > 0 %}
     - require:
-      - module: disable_repo*
+      - mgrcompat: disable_repo*
 {%- endif %}
     - unless: rpm -q spacewalk-proxy-common || rpm -q spacewalk-common
 

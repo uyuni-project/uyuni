@@ -41,17 +41,17 @@ public class PkgProfileUpdateSlsResult {
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
             "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
 
-    @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|" +
-            "-run")
+    @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|" +
+            "-module_run")
     private Optional<StateApplyResult<Ret<KernelLiveVersionInfo>>> kernelLiveVersionInfo = Optional.empty();
 
-    @SerializedName("module_|-grains_update_|-grains.items_|-run")
+    @SerializedName("mgrcompat_|-grains_update_|-grains.items_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
 
-    @SerializedName("module_|-products_|-pkg.list_products_|-run")
+    @SerializedName("mgrcompat_|-products_|-pkg.list_products_|-module_run")
     private StateApplyResult<Ret<List<Zypper.ProductInfo>>> listProducts;
 
-    @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
+    @SerializedName("mgrcompat_|-packages_|-pkg.info_installed_|-module_run")
     private StateApplyResult<Ret<Map<String, Xor<Pkg.Info, List<Pkg.Info>>>>> infoInstalled;
 
     @SerializedName(PKG_PROFILE_REDHAT_RELEASE)

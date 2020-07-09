@@ -1,6 +1,6 @@
 = $productName API Documentation
 $productName
-4.0
+API version: $apiVersion
 #if ($productName == "Uyuni")
 :homepage: https://www.uyuni-project.org/
 #else

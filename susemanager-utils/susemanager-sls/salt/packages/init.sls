@@ -7,7 +7,7 @@ mgr_install_products:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - module: sync_states
+      - mgrcompat: sync_states
 {%- endif %}
 {%- endif %}
 

@@ -91,12 +91,17 @@ cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/ssh_agent.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
+cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
 
 %check
 cd test
 py.test test_pillar_suma_minion.py
 cd ../src/tests
 py.test
+
+# Check that SLS files don't contain any call to "module.run" which has
+# been replaced by "mgrcompat.module_run" calls.
+! grep -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
 
 %post
 # HACK! Create broken link when it will be replaces with the real file

@@ -7,7 +7,7 @@
     "id": "caasp-worker-orion-cluster-1.openstack.local",
     "success": true,
     "return": {
-      "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
+      "mgrcompat_|-sync_grains_|-saltutil.sync_grains_|-module_run": {
         "name": "saltutil.sync_grains",
         "changes": {
           "ret": []
@@ -20,7 +20,7 @@
         "duration": 2198.883,
         "__id__": "sync_grains"
       },
-      "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
+      "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
         "name": "saltutil.sync_modules",
         "changes": {
           "ret": []
@@ -33,7 +33,7 @@
         "duration": 499.437,
         "__id__": "sync_modules"
       },
-      "module_|-packages_|-pkg.info_installed_|-run": {
+      "mgrcompat_|-packages_|-pkg.info_installed_|-module_run": {
         "name": "pkg.info_installed",
         "changes": {
           "ret": {
@@ -3195,7 +3195,7 @@
         "duration": 2319.812,
         "__id__": "packages"
       },
-      "module_|-products_|-pkg.list_products_|-run": {
+      "mgrcompat_|-products_|-pkg.list_products_|-module_run": {
         "name": "pkg.list_products",
         "changes": {
           "ret": [
@@ -3243,7 +3243,7 @@
         "duration": 1401.443,
         "__id__": "products"
       },
-      "module_|-grains_update_|-grains.items_|-run": {
+      "mgrcompat_|-grains_update_|-grains.items_|-module_run": {
         "name": "grains.items",
         "changes": {
           "ret": {
@@ -3501,7 +3501,7 @@
         "duration": 10.042,
         "__id__": "grains_update"
       },
-      "module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run": {
+      "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
         "name": "sumautil.get_kernel_live_version",
         "changes": {
           "ret": null
