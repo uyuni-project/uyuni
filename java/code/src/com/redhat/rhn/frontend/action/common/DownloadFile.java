@@ -619,7 +619,8 @@ public class DownloadFile extends DownloadAction {
             // my $dp = File::Spec->catfile($kickstart_mount, $tree->base_path, $path);
 
             if (child == null) {
-                if (path.contains("repodata/") && tree.getKernelOptions().contains("useonlinerepo")) {
+                if (path.contains("repodata/") && tree.getKernelOptions() != null &&
+                        tree.getKernelOptions().contains("useonlinerepo")) {
                     String[] split = StringUtils.split(path, '/');
                     if (split[0].equals("repodata")) {
                         split[0] = tree.getChannel().getLabel();
