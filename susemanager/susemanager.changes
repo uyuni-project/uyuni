@@ -1,3 +1,4 @@
+- migrate proxy list in cobbler settings (bsc#1169536)
 - migrate all occurrences of kickstart to autoinstall in cobbler database (bsc#1169780)
 
 -------------------------------------------------------------------
