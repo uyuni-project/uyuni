@@ -73,6 +73,8 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                 withUser(this::start));
         post("/manager/api/systems/details/virtualization/nets/:sid/stop",
                 withUser(this::stop));
+        post("/manager/api/systems/details/virtualization/nets/:sid/delete",
+                withUser(this::delete));
     }
 
     /**
@@ -129,6 +131,18 @@ public class VirtualNetsController extends AbstractVirtualizationController {
      */
     public String stop(Request request, Response response, User user) {
         return netStateChangeAction(request, response, user, "stop");
+    }
+
+    /**
+     * Executes the POST query to delete a set of virtual networks
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String delete(Request request, Response response, User user) {
+        return netStateChangeAction(request, response, user, "delete");
     }
 
     private String netStateChangeAction(Request request, Response response, User user, String state) {
