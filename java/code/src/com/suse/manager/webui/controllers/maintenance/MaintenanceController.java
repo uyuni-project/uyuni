@@ -33,7 +33,6 @@ import com.suse.manager.maintenance.rescheduling.RescheduleStrategyType;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.ResultJson;
-
 import org.apache.http.HttpStatus;
 
 import java.time.LocalDateTime;
@@ -46,7 +45,6 @@ import java.util.Set;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
-import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Controller class providing the backend for API calls to work with maintenance windows.
@@ -65,18 +63,11 @@ public class MaintenanceController {
 
     /**
      * Invoked from Router. Initialize routes for MaintenanceWindow Api.
-     *
-     * @param jade the template engine
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
+    public static void initRoutes() {
         // upcoming maintenance windows for systems
         post("/manager/api/maintenance/upcoming-windows",
                 withUser(MaintenanceController::getUpcomingMaintenanceWindows));
-
-        // Init routes for MaintenanceSchedule API
-        MaintenanceScheduleController.initRoutes(jade);
-        // Init routes for MaintenanceCalendar API
-        MaintenanceCalendarController.initRoutes(jade);
     }
 
     /**
