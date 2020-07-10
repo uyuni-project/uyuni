@@ -35,9 +35,7 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
                 icon="fa-edit"
                 title={t("Edit")}
                 className="btn-default"
-                handler={() => props.onEdit(
-                    type === "schedule" ? props.data.scheduleId : props.data.calendarId
-                )}
+                handler={() => props.onEdit(props.data.id)}
             />
             <ModalButton
                 text={t("Delete")}
@@ -52,10 +50,7 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
 
     return (
         <TopPanel
-            title={props.type === "schedule"
-                ? props.data.scheduleName
-                : props.data.calendarName
-            }
+            title={props.data.name}
             icon="spacewalk-icon-schedule"
             helpUrl=""
             button={buttons}
@@ -63,18 +58,18 @@ const MaintenanceWindowsDetails = (props: MaintenanceDetailsProps) => {
             {
                 type === "schedule" &&
                 <MaintenanceScheduleDetails
-                    scheduleName={props.data.scheduleName}
+                    name={props.data.name}
                     calendarName={props.data.calendarName}
-                    scheduleType={props.data.scheduleType}
+                    type={props.data.type}
                     maintenanceWindows={props.data.maintenanceWindows}
                     onDelete={props.onDelete}
                 /> ||
                 type === "calendar" &&
                 <MaintenanceCalendarDetails
-                    calendarName={props.data.calendarName}
+                    name={props.data.name}
                     scheduleNames={props.data.scheduleNames}
-                    calendarUrl={props.data.calendarUrl}
-                    calendarData={props.data.calendarData}
+                    url={props.data.url}
+                    data={props.data.data}
                     onDelete={props.onDelete}
                 />
             }
