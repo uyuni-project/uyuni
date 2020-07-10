@@ -5,6 +5,7 @@
 -->
 <project name="RHN" default="all" basedir=".">
   <property file="${user.home}/.java/java.conf"/>
+  <property file="conf/rhn_java.conf"/>
   <!-- External java.lib.dir property -->
   <condition property="java.lib.dir" value="${JAVA_LIBDIR}" else="/usr/share/java">
     <isset property="JAVA_LIBDIR"/>
@@ -221,7 +222,7 @@
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/" />
     <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="buildjars" sourcepath="code/src"
-        additionalparam="-d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product ${product.name}">
+        additionalparam="-d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product ${product.name} -apiversion '${java.apiversion}'">
       <fileset dir="code" >
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
