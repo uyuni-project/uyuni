@@ -21,7 +21,7 @@ const npmDependencies = [
   { name: "fbjs", license: "MIT",  version: "0.8.17" }, 
   { name: "immer", license: "MIT",  version: "3.1.1" }, 
   { name: "jexl", license: "MIT",  version: "2.2.2" }, 
-  { name: "lodash", license: "MIT",  version: "4.17.15" }, 
+  { name: "lodash", license: "MIT",  version: "4.17.19" }, 
   { name: "memoize-one", license: "MIT",  version: "5.0.5" }, 
   { name: "metal", license: "BSD-3-Clause",  version: "2.16.8" }, 
   { name: "metal-ajax", license: "BSD",  version: "2.1.1" }, 
