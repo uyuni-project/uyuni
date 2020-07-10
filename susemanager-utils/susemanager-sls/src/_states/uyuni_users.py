@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Tuple
 from collections import Counter
 
 log = logging.getLogger(__name__)
@@ -211,15 +211,49 @@ class UyuniUsers:
 
 
 class UyuniUserChannels:
+
+    @staticmethod
+    def process_changes(current_managed_channels: Optional[List[str]],
+                        new_managed_channels: Optional[List[str]],
+                        current_subscribe_channels: List[str],
+                        new_subscribe_channels: List[str],
+                        org_admin_user: str, org_admin_password: str) -> Dict[str, Dict[str, bool]]:
+        managed_changes: Dict[str, bool] = {}
+        managed_changes.update({new_ma: True for new_ma in (new_managed_channels or [])
+                                if new_ma not in current_managed_channels})
+
+        managed_changes.update({old_ma: False for old_ma in (current_managed_channels or [])
+                                if old_ma not in new_managed_channels})
+
+        subscribe_changes: Dict[str, bool] = {}
+        for new_channel in (new_subscribe_channels or []):
+            if new_channel not in (current_subscribe_channels or []) or not managed_changes.get(new_channel, True):
+                subscribe_changes[new_channel] = True
+
+        for curr_channel in (current_subscribe_channels or []):
+            if not (curr_channel in new_subscribe_channels or curr_channel in new_managed_channels):
+                if not __salt__['uyuni.channel_software_is_global_subscribable'](curr_channel,
+                                                                                 org_admin_user,
+                                                                                 org_admin_password):
+                    subscribe_changes[curr_channel] = False
+        changes = {}
+        if managed_changes:
+            changes['manageable_channels'] = managed_changes
+        if subscribe_changes:
+            changes['subscribable_channels'] = subscribe_changes
+        return changes
+
     def manage(self, uid: str, password: str,
-               managed_channels: Optional[List[str]] = [],
+               manageable_channels: Optional[List[str]] = [],
+               subscribable_channels: Optional[List[str]] = [],
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
         User channels management present implementation
 
         :param uid: user ID
         :param password: user password
-        :param managed_channels: channels user can manage
+        :param manageable_channels: channels user can manage
+        :param subscribable_channels: channels user can subscribe
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
         :return: dict for Salt communication
@@ -227,6 +261,7 @@ class UyuniUserChannels:
         try:
             current_roles = __salt__['uyuni.user_list_roles'](uid, password=password)
             current_manageable_channels = __salt__['uyuni.channel_list_manageable_channels'](uid, password)
+            current_subscribe_channels = __salt__['uyuni.channel_list_my_channels'](uid, password)
         except Exception as exc:
             return StateResult.state_error(uid,
                                            comment="Error managing user channels '{}': {}".format(uid, exc))
@@ -237,29 +272,27 @@ class UyuniUserChannels:
                                                 "User can manage all channel in the organization "
                                                 "(\"org_admin\" or \"org channel_admin\" role).")
 
-        channel_manageable_revoke = [c.get("label") for c in (current_manageable_channels or [])]
-        channel_manageable_add = []
+        current_manageable_channels_list = [c.get("label") for c in (current_manageable_channels or [])]
+        current_subscribe_channels_list = [c.get("label") for c in (current_subscribe_channels or [])]
 
-        changes = {"manageable_channels": {"old": channel_manageable_revoke.copy(), "new": managed_channels}}
+        changes = self.process_changes(current_manageable_channels_list,
+                                       manageable_channels,
+                                       current_subscribe_channels_list, subscribable_channels,
+                                       org_admin_user, org_admin_password)
 
-        for c in (managed_channels or []):
-            if c in channel_manageable_revoke:
-                channel_manageable_revoke.remove(c)
-            else:
-                channel_manageable_add.append(c)
-
-        if not (channel_manageable_revoke or channel_manageable_add):
-            return StateResult.prepare_result(uid, True, "{0} is already installed".format(uid))
+        if not changes:
+            return StateResult.prepare_result(uid, True, "{0} channels is already installed".format(uid))
         if __opts__['test']:
-            return StateResult.prepare_result(uid, None, "{0} would be installed".format(uid), changes)
+            return StateResult.prepare_result(uid, None, "{0} channels would be installed".format(uid), changes)
 
         try:
-            for channel in channel_manageable_revoke:
-                __salt__['uyuni.channel_software_set_user_manageable'](channel, uid, False,
+            for channel, action in changes.get('manageable_channels', {}).items():
+                __salt__['uyuni.channel_software_set_user_manageable'](channel, uid, action,
                                                                        org_admin_user, org_admin_password)
-            for channel in channel_manageable_add:
-                __salt__['uyuni.channel_software_set_user_manageable'](channel, uid, True,
-                                                                       org_admin_user, org_admin_password)
+
+            for channel, action in changes.get('subscribable_channels', {}).items():
+                __salt__['uyuni.channel_software_set_user_subscribable'](channel, uid, action,
+                                                                         org_admin_user, org_admin_password)
         except Exception as exc:
             return StateResult.state_error(uid, "Error managing Channel management '{}': {}".format(uid, exc))
         return StateResult.prepare_result(uid, True, "Channel management successful managed", changes)
@@ -605,19 +638,22 @@ def user_present(name, password, email, first_name=None, last_name=None,
                                org_admin_user, org_admin_password)
 
 
-def user_channels(name, password, managed_channels=[],
-                          org_admin_user=None, org_admin_password=None):
+def user_channels(name, password,
+                  manageable_channels=[], subscribable_channels=[],
+                  org_admin_user=None, org_admin_password=None):
     """
     Insure user is present with all his characteristics
 
     :param name: user ID
     :param password: user password
-    :param managed_channels: channels user can manage
+    :param manageable_channels: channels user can manage
+    :param subscribable_channels: channels user can subscribe
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
     :return: dict for Salt communication
     """
-    return UyuniUserChannels().manage(name, password, managed_channels,
+    return UyuniUserChannels().manage(name, password,
+                                      manageable_channels, subscribable_channels,
                                       org_admin_user, org_admin_password)
 
 
