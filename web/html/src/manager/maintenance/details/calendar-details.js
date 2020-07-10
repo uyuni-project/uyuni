@@ -10,10 +10,10 @@ import {Form} from "components/input/Form";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 
 type CalendarDetailsProps = {
-    calendarName: string,
+    name: string,
     scheduleNames: Array<Map<string, string>>,
-    calendarUrl: string,
-    calendarData: string,
+    url: string,
+    data: string,
     onDelete: () => void
 };
 
@@ -39,32 +39,32 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
                               </Form>
                           }
                           onConfirm={() => props.onDelete({
-                              calendarName: props.calendarName,
+                              name: props.name,
                               strategy: strategy ? "Cancel" : "Fail"
                           })}
             />
             <MaintenanceCalendarOverview
-                calendarName={props.calendarName}
+                name={props.name}
                 scheduleNames={props.scheduleNames}
-                calendarUrl={props.calendarUrl}
-                calendarData={props.calendarData}
+                url={props.url}
+                data={props.data}
             />
         </>
     );
 }
 
 type OverviewProps = {
-    calendarName: string,
+    name: string,
     scheduleNames: Array<Map<string, string>>,
-    calendarUrl: string,
-    calendarData: string,
+    url: string,
+    data: string,
 }
 const MaintenanceCalendarOverview = (props: OverviewProps) => {
     const tableData = [
-        {left: t("Calendar Name") + ":", right: props.calendarName},
+        {left: t("Calendar Name") + ":", right: props.name},
         {left: t("Used by Schedule") + ":", right: props.scheduleNames.map(name => name.name).join(", ")},
     ];
-    props.calendarUrl && tableData.push({left: t("Url") + ":", right: props.calendarUrl});
+    props.url && tableData.push({left: t("Url") + ":", right: props.url});
 
     return (
         <div>
@@ -79,16 +79,16 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
                 </Table>
             </BootstrapPanel>
             {
-                props.calendarData &&
+                props.data &&
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <h4>
-                            {props.calendarName}
+                            {props.name}
                         </h4>
                     </div>
                     <div className="panel-body">
                         <pre>
-                            {props.calendarData}
+                            {props.data}
                         </pre>
                     </div>
                 </div>
