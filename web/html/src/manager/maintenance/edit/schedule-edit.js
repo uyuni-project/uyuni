@@ -12,9 +12,9 @@ import {Combobox} from "components/combobox";
 type ScheduleEditProps = {
     isEdit: boolean,
     schedule?: {
-        scheduleId: number,
-        scheduleName: string,
-        scheduleType: 'SINGLE' | 'MULTI',
+        id: number,
+        name: string,
+        type: 'SINGLE' | 'MULTI',
         calendarName: string,
     },
     calendarNames: Array<Map<number, string>>,
@@ -23,8 +23,8 @@ type ScheduleEditProps = {
 
 const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
     const [model, setModel] = useState({
-        scheduleName: "",
-        scheduleType: "SINGLE",
+        name: "",
+        type: "SINGLE",
         calendarName: "",
         strategy: false
     });
@@ -34,8 +34,8 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
     useEffect(() => {
         if(props.isEdit) {
             setModel({...model,
-                scheduleName: props.schedule.scheduleName,
-                scheduleType: props.schedule.scheduleType,
+                name: props.schedule.name,
+                type: props.schedule.type,
                 calendarName: props.schedule.calendarName
             });
             setCalendarAdded(!!props.schedule.calendarName);
@@ -51,8 +51,8 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
          * Is equivalent to: if strategy is "" then set it to false */
         newModel.strategy === "" && (newModel.strategy = false);
         setModel({
-            scheduleName: newModel.scheduleName,
-            scheduleType: newModel.scheduleType,
+            name: newModel.name,
+            type: newModel.type,
             calendarName: newModel.calendarName,
             strategy: newModel.strategy
         });
@@ -66,13 +66,13 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
     useImperativeHandle(ref, () => ({
         onEdit() {
             const params = {
-                scheduleName: model.scheduleName,
-                scheduleType: model.scheduleType,
+                name: model.name,
+                type: model.type,
                 // Ignore selected name if selection dropdown is closed
                 calendarName: calendarAdded ? model.calendarName : "",
             };
             if (props.isEdit) {
-                params.scheduleId = props.schedule.scheduleId;
+                params.id = props.schedule.id;
                 params.strategy = model.strategy ? "Cancel" : "Fail";
             }
             props.onEdit(params);
@@ -81,10 +81,10 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
 
     return (
         <Form onChange={onFormChanged} model={model}>
-            <Text name="scheduleName" required type="text" label={t("Schedule Name")}
+            <Text name="name" required type="text" label={t("Schedule Name")}
                   labelClass="col-sm-3" divClass="col-sm-6"
                   disabled={props.isEdit} />
-            <Radio defaultValue="SINGLE" name="scheduleType" inline={true} label={t('Type')} labelClass="col-md-3" divClass="col-md-6"
+            <Radio defaultValue="SINGLE" name="type" inline={true} label={t('Type')} labelClass="col-md-3" divClass="col-md-6"
                    items={[
                        {label: <b>{t('Single')}</b>, value: 'SINGLE'},
                        {label: <b>{t('Multi')}</b>, value: 'MULTI'},
