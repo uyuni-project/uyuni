@@ -21,7 +21,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -43,7 +42,6 @@ import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.MaintenanceCalendarJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
 
@@ -84,17 +82,17 @@ public class MaintenanceCalendarController {
                 withUserPreferences(withCsrfToken(withUser(MaintenanceCalendarController::maintenanceCalendars))),
                 jade);
         get("/manager/api/maintenance/calendar/list",
-                withUser(MaintenanceCalendarController::listCalendars));
+                withUser(MaintenanceCalendarController::list));
         get("/manager/api/maintenance/calendar/:id/details",
-                withUser(MaintenanceCalendarController::getCalendarDetails));
+                withUser(MaintenanceCalendarController::details));
         get("/manager/api/maintenance/calendar/names",
-                withUser(MaintenanceCalendarController::getCalendarNames));
+                withUser(MaintenanceCalendarController::getNames));
         post("/manager/api/maintenance/calendar/save",
-                withUser(MaintenanceCalendarController::saveCalendar));
+                withUser(MaintenanceCalendarController::save));
         post("/manager/api/maintenance/calendar/refresh",
-                withUser(MaintenanceCalendarController::refreshCalendar));
-        delete("/manager/api/maintenance/calendar/delete",
-                withUser(MaintenanceCalendarController::deleteCalendar));
+                withUser(MaintenanceCalendarController::refresh));
+        Spark.delete("/manager/api/maintenance/calendar/delete",
+                withUser(MaintenanceCalendarController::delete));
     }
 
     /**
@@ -120,7 +118,7 @@ public class MaintenanceCalendarController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static String listCalendars(Request request, Response response, User user) {
+    public static String list(Request request, Response response, User user) {
         Map<Pair<Long, String>, List<CalendarAssignment>> assignmentsByCalendar = MM
                 .listCalendarToSchedulesAssigments(user)
                 .stream()
@@ -155,7 +153,7 @@ public class MaintenanceCalendarController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static String getCalendarDetails(Request request, Response response, User user) {
+    public static String details(Request request, Response response, User user) {
         Long calendarId = Long.parseLong(request.params("id"));
         MaintenanceCalendarJson json = new MaintenanceCalendarJson();
 
@@ -165,10 +163,10 @@ public class MaintenanceCalendarController {
                 ))))
         );
 
-        json.setCalendarId(calendar.getId());
-        json.setCalendarName(calendar.getLabel());
-        json.setCalendarData(calendar.getIcal());
-        calendar.getUrlOpt().ifPresent(json::setCalendarUrl);
+        json.setId(calendar.getId());
+        json.setName(calendar.getLabel());
+        json.setData(calendar.getIcal());
+        calendar.getUrlOpt().ifPresent(json::setUrl);
         json.setScheduleNames(MM.listSchedulesByCalendar(user, calendar).stream().map(
                 schedule -> Map.of(
                         "id", schedule.getId().toString(),
@@ -187,7 +185,7 @@ public class MaintenanceCalendarController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static String getCalendarNames(Request request, Response response, User user) {
+    public static String getNames(Request request, Response response, User user) {
         response.type("application/json");
         return json(response, MM.listCalendarLabelsByUser(user));
     }
@@ -200,36 +198,36 @@ public class MaintenanceCalendarController {
      * @param user the authorized user
      * @return string containing the JSON response
      */
-    public static String saveCalendar(Request request, Response response, User user) {
+    public static String save(Request request, Response response, User user) {
         response.type("application/json");
         MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
-        if (json.getCalendarName().isBlank()) {
+        if (json.getName().isBlank()) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                     "maintenance.calendar.name.empty"
             ))));
         }
-        else if (json.getCalendarUrl().isBlank() && json.getCalendarData() == null) {
+        else if (json.getUrl().isBlank() && json.getData() == null) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                     "maintenance.calendar.data.empty"
             ))));
         }
 
-        MM.lookupCalendarByUserAndLabel(user, json.getCalendarName()).ifPresentOrElse(
+        MM.lookupCalendarByUserAndLabel(user, json.getName()).ifPresentOrElse(
                 /* update existing calendar */
                 calendar -> {
-                    if (json.getCalendarId() == null) {
+                    if (json.getId() == null) {
                         Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
-                                "maintenance.calendar.exists", json.getCalendarName()
+                                "maintenance.calendar.exists", json.getName()
                         ))));
                     }
                     Map<String, String> details = new HashMap<>();
                     details.put("label", calendar.getLabel());
-                    if (!json.getCalendarUrl().isBlank()) {
-                        details.put("url", json.getCalendarUrl());
+                    if (!json.getUrl().isBlank()) {
+                        details.put("url", json.getUrl());
                     }
                     else {
-                        details.put("ical", json.getCalendarData());
+                        details.put("ical", json.getData());
                     }
 
                     try {
@@ -243,27 +241,27 @@ public class MaintenanceCalendarController {
                     }
                     catch (DownloadException e) {
                         Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(LOCAL.getMessage(
-                                "maintenance.calendar.fetch.error", json.getCalendarUrl()
+                                "maintenance.calendar.fetch.error", json.getUrl()
                         ))));
                     }
                 },
                 /* Create new calendar */
                 () -> {
-                    if (json.getCalendarData() == null) {
+                    if (json.getData() == null) {
                         try {
-                            MM.createCalendarWithUrl(user, json.getCalendarName(), json.getCalendarUrl());
+                            MM.createCalendarWithUrl(user, json.getName(), json.getUrl());
                         }
                         catch (DownloadException e) {
                             Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
                                     LOCAL.getMessage(
                                             "maintenance.calendar.fetch.error",
-                                            json.getCalendarUrl()
+                                            json.getUrl()
                                     )
                             )));
                         }
                     }
                     else {
-                        MM.createCalendar(user, json.getCalendarName(), json.getCalendarData());
+                        MM.createCalendar(user, json.getName(), json.getData());
                     }
                 }
         );
@@ -278,7 +276,7 @@ public class MaintenanceCalendarController {
      * @param user the authorized user
      * @return string containing the JSON response
      */
-    public static String refreshCalendar(Request request, Response response, User user) {
+    public static String refresh(Request request, Response response, User user) {
         response.type("application/json");
         MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
@@ -288,19 +286,19 @@ public class MaintenanceCalendarController {
                     .createInstance();
             List<RescheduleResult> results = MM.refreshCalendar(
                     user,
-                    json.getCalendarName(),
+                    json.getName(),
                     List.of(rescheduleStrategy)
             );
             handleRescheduleResult(results, rescheduleStrategy.getType());
         }
         catch (EntityNotExistsException e) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
-                    "maintenance.calendar.not.exists", json.getCalendarName()
+                    "maintenance.calendar.not.exists", json.getName()
             ))));
         }
         catch (DownloadException e) {
             Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(LOCAL.getMessage(
-                    "maintenance.calendar.fetch.error", json.getCalendarUrl()
+                    "maintenance.calendar.fetch.error", json.getUrl()
             ))));
         }
 
@@ -315,11 +313,11 @@ public class MaintenanceCalendarController {
      * @param user the authorzed user
      * @return the result JSON object
      */
-    public static String deleteCalendar(Request request, Response response, User user) {
+    public static String delete(Request request, Response response, User user) {
         response.type("application/json");
         MaintenanceCalendarJson json = GSON.fromJson(request.body(), MaintenanceCalendarJson.class);
 
-        String name = json.getCalendarName();
+        String name = json.getName();
         MM.lookupCalendarByUserAndLabel(user, name).ifPresentOrElse(
                 calendar -> {
                     RescheduleStrategyType type = RescheduleStrategyType.fromLabel(json.getRescheduleStrategy());

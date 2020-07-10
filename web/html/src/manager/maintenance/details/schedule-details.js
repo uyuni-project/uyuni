@@ -8,9 +8,9 @@ import {Column} from "components/table/Column";
 import {DeleteDialog} from "components/dialog/DeleteDialog";
 
 type ScheduleDetailsProps = {
-    scheduleName: string,
+    name: string,
     calendarName: string,
-    scheduleType: 'SINGLE' | 'MULTI',
+    type: 'SINGLE' | 'MULTI',
     maintenanceWindows?: Array,
     onDelete: () => void
 };
@@ -23,12 +23,12 @@ const MaintenanceScheduleDetails = (props: ScheduleDetailsProps) => {
                 title={t("Delete maintenance schedule")}
                 content={t("Are you sure you want to delete the selected item?\n" +
                     "This will remove the current schedule from all the systems assigned to it.")}
-                onConfirm={() => props.onDelete({scheduleName: props.scheduleName})}
+                onConfirm={() => props.onDelete({name: props.name})}
             />
             <MaintenanceScheduleOverview
-                scheduleName={props.scheduleName}
+                name={props.name}
                 calendarName={props.calendarName}
-                scheduleType={props.scheduleType}
+                type={props.type}
                 maintenanceWindows={props.maintenanceWindows}
             />
         </>
@@ -36,17 +36,17 @@ const MaintenanceScheduleDetails = (props: ScheduleDetailsProps) => {
 }
 
 type OverviewProps = {
-    scheduleName: string,
+    name: string,
     calendarName: string,
-    scheduleType: 'SINGLE' | 'MULTI',
+    type: 'SINGLE' | 'MULTI',
     maintenanceWindows?: Array
 }
 
 const MaintenanceScheduleOverview = (props: OverviewProps) => {
     const tableData = [
-        {left: t("Schedule name") + ":", right: props.scheduleName},
+        {left: t("Schedule name") + ":", right: props.name},
         {left: t("Assigned calendar") + ":", right: props.calendarName},
-        {left: t("Schedule type") + ":", right: props.scheduleType === "SINGLE" ? t("Single") : t("Multi")}
+        {left: t("Schedule type") + ":", right: props.type === "SINGLE" ? t("Single") : t("Multi")}
     ];
 
     return (

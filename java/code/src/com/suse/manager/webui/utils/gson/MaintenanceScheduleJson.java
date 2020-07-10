@@ -23,13 +23,13 @@ import java.util.Map;
 public class MaintenanceScheduleJson {
 
     /** schedule ID */
-    private Long scheduleId;
+    private Long id;
 
     /** Name of the schedule */
-    private String scheduleName;
+    private String name;
 
     /** Type of the schedule */
-    private String scheduleType;
+    private String type;
 
     /** calendar ID */
     private Long calendarId;
@@ -46,37 +46,37 @@ public class MaintenanceScheduleJson {
     /**
      * Gets the id of the schedule
      *
-     * @return the scheduleId
+     * @return the id
      */
-    public Long getScheduleId() {
-        return scheduleId;
+    public Long getId() {
+        return id;
     }
 
     /**
      * Sets the id of the schedule
      *
-     * @param scheduleIdIn the scheduleId
+     * @param idIn the id
      */
-    public void setScheduleId(Long scheduleIdIn) {
-        this.scheduleId = scheduleIdIn;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**
      * Gets the name of the schedule
      *
-     * @return the scheduleName
+     * @return the name
      */
-    public String getScheduleName() {
-        return scheduleName;
+    public String getName() {
+        return name;
     }
 
     /**
      * Sets the name of the schedule
      *
-     * @param scheduleNameIn the scheduleName
+     * @param nameIn the name
      */
-    public void setScheduleName(String scheduleNameIn) {
-        this.scheduleName = scheduleNameIn;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     /**
@@ -84,17 +84,17 @@ public class MaintenanceScheduleJson {
      *
      * @return the scheduleType
      */
-    public String getScheduleType() {
-        return scheduleType;
+    public String getType() {
+        return type;
     }
 
     /**
      * Sets the type of the schedule
      *
-     * @param scheduleTypeIn the scheduleType
+     * @param typeIn the scheduleType
      */
-    public void setScheduleType(String scheduleTypeIn) {
-        this.scheduleType = scheduleTypeIn;
+    public void setType(String typeIn) {
+        this.type = typeIn;
     }
 
     /**

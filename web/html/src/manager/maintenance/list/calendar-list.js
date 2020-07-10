@@ -12,8 +12,8 @@ import {DeleteDialog} from "components/dialog/DeleteDialog";
 
 type CalendarListProps = {
     data: {
-        calendarId: number,
-        calendarName: string,
+        id: number,
+        name: string,
         scheduleNames: Array<Map<string, string>>,
     },
     onSelect: () => void,
@@ -42,14 +42,14 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
         <div>
             <Table
                 data={props.data}
-                identifier={row => row.calendarName}
+                identifier={row => row.name}
                 initialItemsPerPage={userPrefPageSize}
                 emptyText={t("No calendars created. Use Create to add a calendar.")}
             >
                 <Column
                     columnKey="calendarName"
                     header={t('Calendar Name')}
-                    cell={(row) => row.calendarName}
+                    cell={(row) => row.name}
                 />
                 <Column
                     columnClass="text-center"
@@ -73,14 +73,14 @@ const MaintenanceCalendarList = (props: CalendarListProps) => {
                                 className="btn-default btn-sm"
                                 title={t("Details")}
                                 icon="fa-list"
-                                handler={() => {props.onSelect(row.calendarId)}}
+                                handler={() => {props.onSelect(row.id)}}
                             />
                             <Button
                                 className="btn-default btn-sm"
                                 disabled={!isAdmin}
                                 title={t("Edit")}
                                 icon="fa-edit"
-                                handler={() => {props.onEdit(row.calendarId)}}
+                                handler={() => {props.onEdit(row.id)}}
                             />
                             <ModalButton
                                 className="btn-default btn-sm"

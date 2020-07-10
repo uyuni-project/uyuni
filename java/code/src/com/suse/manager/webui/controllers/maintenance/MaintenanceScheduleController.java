@@ -20,7 +20,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
-import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -84,13 +83,13 @@ public class MaintenanceScheduleController {
                 withUserPreferences(withCsrfToken(withUser(MaintenanceScheduleController::maintenanceSchedules))),
                 jade);
         get("/manager/api/maintenance/schedule/list",
-                withUser(MaintenanceScheduleController::listSchedules));
+                withUser(MaintenanceScheduleController::list));
         get("/manager/api/maintenance/schedule/:id/details",
-                withUser(MaintenanceScheduleController::getScheduleDetails));
+                withUser(MaintenanceScheduleController::details));
         post("/manager/api/maintenance/schedule/save",
-                withUser(MaintenanceScheduleController::saveSchedule));
-        delete("/manager/api/maintenance/schedule/delete",
-                withUser(MaintenanceScheduleController::deleteSchedule));
+                withUser(MaintenanceScheduleController::save));
+        Spark.delete("/manager/api/maintenance/schedule/delete",
+                withUser(MaintenanceScheduleController::delete));
     }
 
     /**
@@ -116,7 +115,7 @@ public class MaintenanceScheduleController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static String listSchedules(Request request, Response response, User user) {
+    public static String list(Request request, Response response, User user) {
         List<MaintenanceSchedule> schedules = MM.listSchedulesByUser(user);
         return json(response, schedulesToJson(schedules));
     }
@@ -129,7 +128,7 @@ public class MaintenanceScheduleController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public static String getScheduleDetails(Request request, Response response, User user) {
+    public static String details(Request request, Response response, User user) {
         Long scheduleId = Long.parseLong(request.params("id"));
         MaintenanceScheduleJson json = new MaintenanceScheduleJson();
 
@@ -140,9 +139,9 @@ public class MaintenanceScheduleController {
                                 "maintenance.schedule.id.not.exists", scheduleId
                         ))))
                 );
-        json.setScheduleId(schedule.getId());
-        json.setScheduleName(schedule.getName());
-        json.setScheduleType(schedule.getScheduleType().toString());
+        json.setId(schedule.getId());
+        json.setName(schedule.getName());
+        json.setType(schedule.getScheduleType().toString());
 
         icalUtils.calculateUpcomingMaintenanceWindows(schedule).ifPresent(windows -> json.setMaintenanceWindows(
                 windows.stream().map(window -> Map.of(
@@ -165,17 +164,17 @@ public class MaintenanceScheduleController {
      * @param user the authorized user
      * @return string containing the JSON response
      */
-    public static String saveSchedule(Request request, Response response, User user) {
+    public static String save(Request request, Response response, User user) {
         response.type("application/json");
         MaintenanceScheduleJson json = GSON.fromJson(request.body(), MaintenanceScheduleJson.class);
 
-        if (json.getScheduleName().isBlank()) {
+        if (json.getName().isBlank()) {
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                     "maintenance.schedule.name.empty"
             ))));
         }
         try {
-            if (json.getScheduleId() == null) {
+            if (json.getId() == null) {
                 Optional<MaintenanceCalendar> calendar = Optional.empty();
                 if (!json.getCalendarName().isBlank()) {
                     /* Lookup calendar */
@@ -188,8 +187,8 @@ public class MaintenanceScheduleController {
                 /* Create new schedule */
                 MM.createSchedule(
                         user,
-                        json.getScheduleName(),
-                        MaintenanceSchedule.ScheduleType.lookupByLabel(json.getScheduleType().toLowerCase()),
+                        json.getName(),
+                        MaintenanceSchedule.ScheduleType.lookupByLabel(json.getType().toLowerCase()),
                         calendar
                 );
             }
@@ -199,9 +198,9 @@ public class MaintenanceScheduleController {
                         .fromLabel(json.getRescheduleStrategy())
                         .createInstance();
                 Map<String, String> details = new HashMap<>();
-                details.put("type", json.getScheduleType().toLowerCase());
+                details.put("type", json.getType().toLowerCase());
                 details.put("calendar", json.getCalendarName().strip());
-                RescheduleResult result = MM.updateSchedule(user, json.getScheduleName(), details,
+                RescheduleResult result = MM.updateSchedule(user, json.getName(), details,
                         List.of(rescheduleStrategy));
                 handleRescheduleResult(List.of(result), rescheduleStrategy.getType());
             }
@@ -220,11 +219,11 @@ public class MaintenanceScheduleController {
      * @param user the authorzed user
      * @return the result JSON object
      */
-    public static String deleteSchedule(Request request, Response response, User user) {
+    public static String delete(Request request, Response response, User user) {
         response.type("application/json");
         MaintenanceScheduleJson json = GSON.fromJson(request.body(), MaintenanceScheduleJson.class);
 
-        String name = json.getScheduleName();
+        String name = json.getName();
         MM.lookupScheduleByUserAndName(user, name).ifPresentOrElse(
                 schedule -> MM.remove(user, schedule),
                 () -> Spark.halt(HttpStatus.SC_BAD_REQUEST)
@@ -240,8 +239,8 @@ public class MaintenanceScheduleController {
     private static MaintenanceScheduleJson scheduleToJson(MaintenanceSchedule schedule) {
         MaintenanceScheduleJson json = new MaintenanceScheduleJson();
 
-        json.setScheduleId(schedule.getId());
-        json.setScheduleName(schedule.getName());
+        json.setId(schedule.getId());
+        json.setName(schedule.getName());
         schedule.getCalendarOpt().ifPresent(maintenanceCalendar -> {
             json.setCalendarId(maintenanceCalendar.getId());
             json.setCalendarName(maintenanceCalendar.getLabel());
