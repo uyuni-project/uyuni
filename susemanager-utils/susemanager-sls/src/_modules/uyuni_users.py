@@ -8,6 +8,7 @@ import os
 import salt.config
 from salt.utils.minions import CkMinions
 import datetime
+import pdb
 
 log = logging.getLogger(__name__)
 
@@ -353,6 +354,15 @@ class UyuniChannelSoftware(UyuniRemoteObject):
         """
         log.debug("check if user %s can subscribe channel %s", uid, channel_label)
         return bool(self.client("channel.software.isUserSubscribable", channel_label, uid))
+
+    def is_globally_subscribable(self, channel_label: str) -> bool:
+        """
+        Returns whether the channel is globally subscribed on the organization
+        :param channel_label: label of the channel
+        :return: boolean which indicates if channel is globally subscribe
+        """
+        log.debug("check if channel globally Subscribable %s", channel_label)
+        return bool(self.client("channel.software.isGloballySubscribable", channel_label))
 
 
 class UyuniOrg(UyuniRemoteObject):
@@ -865,8 +875,8 @@ def user_remove_assigned_system_groups(uid, server_group_names, set_default=Fals
     """
     return UyuniUser(org_admin_user,
                      org_admin_password).remove_assigned_system_groups(uid=uid,
-                                                                    server_group_names=server_group_names,
-                                                                    set_default=set_default)
+                                                                       server_group_names=server_group_names,
+                                                                       set_default=set_default)
 
 
 ## channel.software
@@ -908,7 +918,7 @@ def channel_software_set_user_manageable(channel_label, uid, access,
 
 
 def channel_software_set_user_subscribable(channel_label, uid, access,
-                                         admin_user=None, admin_password=None):
+                                           admin_user=None, admin_password=None):
     """
     Set the subscribable flag for a given channel and user.
     If value is set to 'true', this method will give the user subscribe permissions to the channel.
@@ -937,17 +947,29 @@ def channel_software_is_user_manageable(channel_label, uid, admin_user=None, adm
     return UyuniChannelSoftware(admin_user, admin_password).is_user_manageable(channel_label, uid)
 
 
-def channel_software_is_user_subscribable(channel_label, uid, admin_user=None, admin_password=None):
+def channel_software_is_user_subscribable(channel_label, uid, org_admin_user=None, org_admin_password=None):
     """
     Returns whether the channel may be managed by the given user.
 
     :param channel_label: label of the channel
     :param uid: user login id
-    :param admin_user: organization admin username
-    :param admin_password: organization admin password
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
     :return: boolean which indicates if user subscribe the channel or not
     """
-    return UyuniChannelSoftware(admin_user, admin_password).is_user_subscribable(channel_label, uid)
+    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_subscribable(channel_label, uid)
+
+
+def channel_software_is_global_subscribable(channel_label, org_admin_user=None, org_admin_password=None):
+    """
+    Returns whether the channel is globally subscribed on the organization
+
+    :param channel_label: label of the channel
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+    :return: boolean which indicates if channel is globally subscribe
+    """
+    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_globally_subscribable(channel_label)
 
 
 def org_list_orgs(admin_user=None, admin_password=None):
