@@ -29,31 +29,28 @@ public class MaintenanceCalendarJson {
 
     /**
      * Constructor
-     * @param calendarIdIn calendar id
-     * @param calendarNameIn calenar name
+     * @param idIn calendar id
+     * @param nameIn calenar name
      * @param scheduleNamesIn schedule names
      */
-    public MaintenanceCalendarJson(Long calendarIdIn, String calendarNameIn,
+    public MaintenanceCalendarJson(Long idIn, String nameIn,
                                    List<Map<String, String>> scheduleNamesIn) {
-        this.calendarId = calendarIdIn;
-        this.calendarName = calendarNameIn;
+        this.id = idIn;
+        this.name = nameIn;
         this.scheduleNames = scheduleNamesIn;
     }
 
-    /** schedule ID */
-    private Long scheduleId;
-
     /** calendar ID */
-    private Long calendarId;
+    private Long id;
 
     /** The name of the calendar */
-    private String calendarName;
+    private String name;
 
     /** The url to the ical file */
-    private String calendarUrl;
+    private String url;
 
     /** The calendars ical data */
-    private String calendarData;
+    private String data;
 
     /** List of schedule names used by a calendar */
     private List<Map<String, String>> scheduleNames;
@@ -62,93 +59,75 @@ public class MaintenanceCalendarJson {
     private String strategy;
 
     /**
-     * Gets the id of the schedule
-     *
-     * @return the scheduleId
-     */
-    public Long getScheduleId() {
-        return scheduleId;
-    }
-
-    /**
-     * Sets the id of the schedule
-     *
-     * @param scheduleIdIn the scheduleId
-     */
-    public void setScheduleId(Long scheduleIdIn) {
-        this.scheduleId = scheduleIdIn;
-    }
-
-    /**
      * Gets the id of the calendar
      *
-     * @return the calendarId
+     * @return the id
      */
-    public Long getCalendarId() {
-        return calendarId;
+    public Long getId() {
+        return id;
     }
 
     /**
      * Sets the id of the calendar
      *
-     * @param calendarIdIn the calendarId
+     * @param idIn the id
      */
-    public void setCalendarId(Long calendarIdIn) {
-        this.calendarId = calendarIdIn;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**
      * Gets the name of the calendar
      *
-     * @return the calendarName
+     * @return the name
      */
-    public String getCalendarName() {
-        return calendarName;
+    public String getName() {
+        return name;
     }
 
     /**
      * Sets the name of the calendar
      *
-     * @param calendarNameIn the calendarName
+     * @param nameIn the name
      */
-    public void setCalendarName(String calendarNameIn) {
-        this.calendarName = calendarNameIn;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     /**
      * Gets the ical data of the calendar
      *
-     * @return the calendarData
+     * @return the calendar data
      */
-    public String getCalendarData() {
-        return calendarData;
+    public String getData() {
+        return data;
     }
 
     /**
      * Sets the ical data of the calendar
      *
-     * @param calendarDataIn the calendarData
+     * @param dataIn the calendar data
      */
-    public void setCalendarData(String calendarDataIn) {
-        this.calendarData = calendarDataIn;
+    public void setData(String dataIn) {
+        this.data = dataIn;
     }
 
     /**
      * Gets the url to the ical file
      *
-     * @return the calendarUrl
+     * @return the calendar Url
      */
-    public String getCalendarUrl() {
-        return calendarUrl;
+    public String getUrl() {
+        return url;
     }
 
     /**
      * Sets the url to the ical file
      *
-     * @param calendarUrlIn the calendarUrl
+     * @param urlIn the calendar Url
      */
-    public void setCalendarUrl(String calendarUrlIn) {
-        this.calendarUrl = calendarUrlIn;
+    public void setUrl(String urlIn) {
+        this.url = urlIn;
     }
 
     /**
