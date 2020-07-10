@@ -10,8 +10,8 @@ import {DeleteDialog} from "components/dialog/DeleteDialog";
 
 type ScheduleListProps = {
     data: {
-        scheduleId: number,
-        scheduleName: string,
+        id: number,
+        name: string,
         calendarId?: number,
         calendarName?: string,
     },
@@ -27,14 +27,14 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
         <div>
             <Table
                 data={props.data}
-                identifier={row => row.scheduleId}
+                identifier={row => row.id}
                 initialItemsPerPage={userPrefPageSize}
                 emptyText={t("No schedules created. Use Create to add a schedule.")}
             >
                 <Column
                     columnKey="scheduleName"
                     header={t('Schedule Name')}
-                    cell={(row) => row.scheduleName}
+                    cell={(row) => row.name}
                 />
                 <Column
                     columnClass="text-center"
@@ -59,14 +59,14 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
                                 className="btn-default btn-sm"
                                 title={t("Details")}
                                 icon="fa-list"
-                                handler={() => {props.onSelect(row.scheduleId)}}
+                                handler={() => {props.onSelect(row.id)}}
                             />
                             <Button
                                 className="btn-default btn-sm"
                                 disabled={!isAdmin}
                                 title={t("Edit")}
                                 icon="fa-edit"
-                                handler={() => {props.onEdit(row.scheduleId)}}
+                                handler={() => {props.onEdit(row.id)}}
                             />
                             <ModalButton
                                 className="btn-default btn-sm"

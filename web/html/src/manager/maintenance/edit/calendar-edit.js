@@ -15,10 +15,10 @@ type CalendarEditProps = {
     messages: MessagesUtils,
     isEdit: boolean,
     calendar?: {
-        calendarId: number,
-        calendarName: string,
-        calendarUrl?: string,
-        calendarData: string,
+        id: number,
+        name: string,
+        url?: string,
+        data: string,
     },
     onRefresh: () => void,
     onEdit: () => void,
@@ -26,16 +26,16 @@ type CalendarEditProps = {
 };
 
 const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
-    const [model, setModel] = useState({calendarName: "", strategy: false});
-    const [calendarData, setCalendarData] = useState();
-    const [calendarDataText, setCalendarDataText] = useState("");
+    const [model, setModel] = useState({name: "", strategy: false});
+    const [data, setData] = useState();
+    const [dataText, setDataText] = useState("");
     const [icalLoading, setIcalLoading] = useState(false);
 
     useEffect(() => {
         if (props.isEdit) {
-            setModel({...model, calendarName: props.calendar.calendarName});
-            setCalendarData(props.calendar.calendarData);
-            setCalendarDataText(props.calendar.calendarUrl || "");
+            setModel({...model, name: props.calendar.name});
+            setData(props.calendar.data);
+            setDataText(props.calendar.url || "");
         }
     }, [props.calendar]);
 
@@ -43,11 +43,11 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
         /* strategy gets initialized as empty string, but we want the initial value to be false.
          * Is equivalent to: if strategy is "" then set it to false */
         newModel.strategy === "" && (newModel.strategy = false);
-        setModel({calendarName: newModel.calendarName, strategy: newModel.strategy});
+        setModel({name: newModel.name, strategy: newModel.strategy});
     };
 
-    const onCalendarDataTextChanged = (event) => {
-        setCalendarDataText(event.target.value);
+    const onDataTextChanged = (event) => {
+        setDataText(event.target.value);
     };
 
     const onIcalFileAttach = (event) => {
@@ -55,13 +55,13 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
         const reader = new FileReader();
         reader.onload = (e) => icalFileLoaded(e.target.result);
         reader.readAsText(event.target.files[0]);
-        !props.isEdit && setCalendarDataText(event.target.files[0].name);
+        !props.isEdit && setDataText(event.target.files[0].name);
     };
 
     const onIcalFileRemove = () => {
         document.getElementById("ical-data-upload").value = "";
-        setCalendarData(undefined);
-        setCalendarDataText("");
+        setData(undefined);
+        setDataText("");
     };
 
     const handleFileAttach = () => {
@@ -69,26 +69,26 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     };
 
     const icalFileLoaded = (fileString) => {
-        setCalendarData(fileString);
+        setData(fileString);
         props.isLoading(false);
     };
 
     const onConfirmRefresh = () => {
         setIcalLoading(true);
         props.onRefresh({
-            calendarId: props.calendar.calendarId,
-            calendarName: props.calendar.calendarName,
-            calendarUrl: props.calendar.calendarUrl,
+            id: props.calendar.id,
+            name: props.calendar.name,
+            url: props.calendar.url,
             strategy: model.strategy ? "Cancel" : "Fail"
         }).then(() => setIcalLoading(false));
     };
 
-    const validateUrl = (url) => {
-        if (url.trim() === "") {
+    const validateUrl = (urlIn) => {
+        if (urlIn.trim() === "") {
             return true;
         }
         try {
-            const URL = new window.URL(url);
+            const URL = new window.URL(urlIn);
             return URL.protocol === "https:" || URL.protocol === "http:";
         }
         catch (_) {
@@ -99,43 +99,43 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     useImperativeHandle(ref, () => ({
         onEdit() {
             const params = {
-                calendarName: model.calendarName,
-                calendarData: calendarData,
-                calendarUrl:  (!props.isEdit && calendarData) ? "" : calendarDataText
+                name: model.name,
+                data: data,
+                url: (!props.isEdit && data) ? "" : dataText
             };
 
             if (props.isEdit) {
-                params.calendarId = props.calendar.calendarId;
+                params.id = props.calendar.id;
                 params.strategy = model.strategy ? "Cancel" : "Fail";
             }
-            validateUrl(params.calendarUrl)
+            validateUrl(params.url)
                 ? props.onEdit(params)
-                : props.messages(MessagesUtils.error(t("Url '{0}' is invalid", params.calendarUrl)));
+                : props.messages(MessagesUtils.error(t("Url '{0}' is invalid", params.url)));
         }
     }));
 
     return (
         <Form onChange={model => onFormChanged(model)} model={model}>
-            <Text name="calendarName" required type="text" label={t("Calendar Name")}
+            <Text name="name" required type="text" label={t("Calendar Name")}
                   labelClass="col-md-3" divClass="col-md-6" disabled={props.isEdit}/>
-            {(props.isEdit && !props.calendar.calendarUrl) &&
+            {(props.isEdit && !props.calendar.url) &&
             <Check name="strategy" label={<b>{t("Cancel affected actions")}</b>} divClass="col-md-6 col-md-offset-3" />
             }
             <div className="form-horizontal">
                 <div className="form-group">
                     <label className="col-md-3 control-label">{t("Calendar data")}:</label>
-                    {(!props.isEdit || props.calendar.calendarUrl) &&
+                    {(!props.isEdit || props.calendar.url) &&
                     <div className={"align-middle col-md-" + (props.isEdit ? "5" : "4")} >
                         <input type="text" className="form-control text-truncate"
                                placeholder={t("Enter Url to ical file")}
-                               value={calendarDataText}
-                               disabled={!props.isEdit && calendarData}
-                               onChange={onCalendarDataTextChanged}/>
-                        {!calendarData && <b className="pl-4">or</b>}
+                               value={dataText}
+                               disabled={!props.isEdit && data}
+                               onChange={onDataTextChanged}/>
+                        {!data && <b className="pl-4">or</b>}
                     </div>
                     }
-                    {!(props.isEdit && props.calendar.calendarUrl) ? (
-                            !calendarData ?
+                    {!(props.isEdit && props.calendar.url) ? (
+                            !data ?
                                 <div className="pl-0 col-md-1">
                                     <Button id="ical-upload-btn" className="btn-default"
                                             text={t("Attach file")}
@@ -154,7 +154,7 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
                                          icon={icalLoading ? "fa fa-circle-o-notch fa-spin" : "fa-refresh"}
                                          target="confirm-modal"
                                          title={t("Refresh data from url")}
-                                         disabled={props.calendar.calendarUrl !== calendarDataText}
+                                         disabled={props.calendar.url !== dataText}
                             />
                             <DangerDialog id="confirm-modal"
                                           title={t("Confirm calendar refresh")}
@@ -174,16 +174,16 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
                 </div>
                 <input className="hidden" type="file" id="ical-data-upload" onChange={onIcalFileAttach}/>
             </div>
-            {(props.isEdit && calendarData) &&
+            {(props.isEdit && data) &&
             <div className="panel panel-default">
                 <div className="panel-heading">
                     <h4>
-                        {props.calendar.calendarName}
+                        {props.calendar.name}
                     </h4>
                 </div>
                 <div className="panel-body">
                         <pre>
-                            {calendarData}
+                            {data}
                         </pre>
                 </div>
             </div>

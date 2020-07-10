@@ -80,8 +80,7 @@ const MaintenanceWindows = () => {
             .then(newItem => {
                 setSelected(newItem);
                 setAction(newAction);
-                history.pushState(null, null, "#/" + newAction + "/" +
-                    (type === "schedule" ? newItem.scheduleId : newItem.calendarId));
+                history.pushState(null, null, "#/" + newAction + "/" + newItem.id);
             }).catch(handleResponseError);
     }
 
@@ -117,9 +116,8 @@ const MaintenanceWindows = () => {
             .promise.then((_) => {
                 setMessages(
                     MessagesUtils.info(
-                        (type === "schedule" ? "Schedule " : "Calendar ") +
-                        "\'" + (type === "schedule" ? itemIn.scheduleName : itemIn.calendarName) +
-                        "\' has been deleted."
+                        (type === "schedule" ? "Schedule " : "Calendar ") + "\'" +
+                        itemIn.name + "\' has been deleted."
                     )
                 );
                 handleForwardAction();
@@ -146,7 +144,7 @@ const MaintenanceWindows = () => {
             setAction();
             setMessages(msgs.slice(-messagesCounterLimit));
 
-            getDetails(itemIn.calendarId, "edit");
+            getDetails(itemIn.id, "edit");
         }).catch(handleResponseError);
     };
 
