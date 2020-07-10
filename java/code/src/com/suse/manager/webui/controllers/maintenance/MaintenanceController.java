@@ -112,7 +112,7 @@ public class MaintenanceController {
         return json(res, ResultJson.success(data));
     }
 
-    protected static void handleRescheduleResult(List<RescheduleResult> results, RescheduleStrategyType strategy) {
+    static void handleRescheduleResult(List<RescheduleResult> results, RescheduleStrategyType strategy) {
         results.forEach(result -> {
             if (!result.isSuccess()) {
                 String affectedSchedule = result.getScheduleName();

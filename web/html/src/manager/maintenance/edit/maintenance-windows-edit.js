@@ -40,7 +40,8 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
 
     const buttonsLeft = [
         <div className="btn-group pull-left">
-            <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back")}  handler={() => props.onActionChanged("back")}/>
+            <Button id="back-btn" className="btn-default" icon="fa-chevron-left" text={t("Back")}
+                    handler={() => props.onActionChanged("back")}/>
         </div>
     ];
 
