@@ -1,7 +1,7 @@
 # Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Debug the serverafter the testsuite has run
+Feature: Debug the server after the testsuite has run
 
   Scenario: Call spacewalk-debug on server
     When I execute spacewalk-debug on the server

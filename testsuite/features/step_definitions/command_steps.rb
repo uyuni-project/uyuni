@@ -278,11 +278,8 @@ end
 
 When(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
-  cmd = "echo | scp -o StrictHostKeyChecking=no root@#{$server.ip}:/tmp/spacewalk-debug.tar.bz2 . 2>&1"
-  command_output = `#{cmd}`
-  unless $CHILD_STATUS.success?
-    raise "Execute command failed: #{$ERROR_INFO}: #{command_output}"
-  end
+  code = file_extract($server, "/tmp/spacewalk-debug.tar.bz2", "spacewalk-debug.tar.bz2")
+  raise "Download debug file failed" unless code.zero?
 end
 
 Then(/^I get logfiles from "([^"]*)"$/) do |target|
