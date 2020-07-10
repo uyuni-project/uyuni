@@ -135,7 +135,7 @@ public class MaintenanceCalendarController {
                     Long calId = entry.getKey().getKey();
                     String calName = entry.getKey().getValue();
                     List<Map<String, String>> schedules = entry.getValue().stream()
-                            .filter(tuple -> tuple.getScheduleId() != null) // schedule id != null
+                            .filter(tuple -> tuple.getScheduleId() != null)
                             .map(tuple -> Map.of(
                                     "id", tuple.getScheduleId().toString(),
                                     "name", tuple.getScheduleName()))
