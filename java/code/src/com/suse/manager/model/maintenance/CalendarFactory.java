@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * {@link HibernateFactory} for {@link MaintenanceCalendar}
@@ -118,8 +117,7 @@ public class CalendarFactory extends HibernateFactory {
                                 "WHERE calendar.org = :org",
                         CalendarAssignment.class)
                 .setParameter("org", user.getOrg())
-                .stream()
-                .collect(Collectors.toList());
+                .list();
     }
 
     @Override
