@@ -1181,6 +1181,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                 // found zypp-plugin-spacewalk - returning
                 return null;
             }
+            if (pli.getName().equals("salt-minion")) {
+                // found salt-minion - returning
+                return null;
+            }
 
             if (pli.getName().equals("up2date")) {
                 log.debug("    found up2date ...");
