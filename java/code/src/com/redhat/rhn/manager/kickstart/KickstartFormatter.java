@@ -585,9 +585,14 @@ public class KickstartFormatter {
           buf.append("@ Network Support" + NEWLINE);
           buf.append("openssh-server" + NEWLINE);
         }
-
-        // packages necessary for RHEL 7 and Fedora
-        if (this.ksdata.isRhel7OrGreater() || this.ksdata.isFedora()) {
+        if (ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
+         // packages necessary for RHEL 6+ and Fedora (salt)
+            buf.append("perl" + NEWLINE);
+            buf.append("wget" + NEWLINE);
+            buf.append("salt-minion" + NEWLINE);
+        }
+        else if (this.ksdata.isRhel7OrGreater() || this.ksdata.isFedora()) {
+            // packages necessary for RHEL 7 and Fedora (traditional)
             buf.append("perl" + NEWLINE);
             buf.append("wget" + NEWLINE);
             buf.append("rhn-setup" + NEWLINE);
