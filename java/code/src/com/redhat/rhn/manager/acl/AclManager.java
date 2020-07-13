@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class AclManager {
 
-    private static AclFactory aclFactory = GlobalInstanceHolder.ACL_FACTORY;
+    private static final AclFactory ACL_FACTORY = GlobalInstanceHolder.ACL_FACTORY;
 
     private AclManager() {
         // hidden constructor
@@ -72,7 +72,7 @@ public class AclManager {
         // Acl everytime we need to use it. We should register
         // the acl handlers at startup and simply call acl.evalAcl()
         // when needed.
-        Acl aclObj = aclFactory.getAcl(mixins);
+        Acl aclObj = ACL_FACTORY.getAcl(mixins);
         if (context == null) {
            context = new HashMap();
         }
