@@ -65,6 +65,7 @@ public class GlobalInstanceHolder {
             SYSTEM_QUERY, SALT_UTILS, CLUSTER_MANAGER, FORMULA_MANAGER, SALT_KEY_UTILS);
     public static final Access ACCESS = new Access(CLUSTER_MANAGER);
     public static final AclFactory ACL_FACTORY = new AclFactory(ACCESS);
+    // Referenced from JSP
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);
     public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
     public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(
