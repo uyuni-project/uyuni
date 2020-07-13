@@ -1,3 +1,4 @@
+- avoid deadlock when syncing channels and registering minions at the same time (bsc#1173566)
 - provide comps.xml and modules.yaml when using onlinerepo for kickstart
 - set CPU and memory info for virtual instances (bsc#1170244)
 - Change system list header text to something better (bsc#1173982)
