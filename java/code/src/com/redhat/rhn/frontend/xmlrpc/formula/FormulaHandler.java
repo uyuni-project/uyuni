@@ -210,9 +210,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype struct with saved formula data
      */
     public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
-        Map<String, Object> savedData = formulaManager
+        return formulaManager
                 .getSystemFormulaData(loggedInUser, formulaName, systemId.longValue());
-        return savedData;
     }
 
     /**
