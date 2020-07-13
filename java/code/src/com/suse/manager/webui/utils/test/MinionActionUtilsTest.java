@@ -48,7 +48,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
         FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
@@ -82,7 +82,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
@@ -108,7 +108,7 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         FormulaManager formulaManager = new FormulaManager(saltApi);
-        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
         SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);

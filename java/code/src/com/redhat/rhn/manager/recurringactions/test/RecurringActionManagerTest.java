@@ -195,7 +195,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testListGroupRecurringActions() {
-        ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        ServerGroupManager manager = new ServerGroupManager();
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
 
         var action = new GroupRecurringAction();

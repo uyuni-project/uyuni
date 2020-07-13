@@ -44,7 +44,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     public void setUp() throws Exception {
         super.setUp();
-        manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        manager = new ServerGroupManager();
     }
 
     public void testCreate() {

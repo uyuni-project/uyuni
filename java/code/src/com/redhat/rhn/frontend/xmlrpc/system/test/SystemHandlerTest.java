@@ -1292,7 +1292,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         Set servers = new HashSet();
         servers.add(server);
-        ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        ServerGroupManager manager = new ServerGroupManager();
         manager.addServers(group, servers, admin);
 
         Set admins = new HashSet();

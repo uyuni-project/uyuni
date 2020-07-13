@@ -145,7 +145,6 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
     protected Path metadataDirOfficial;
-    private ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
     private SaltUtils saltUtils;
     private SaltServerActionService saltServerActionService;
     private ClusterManager clusterManager;

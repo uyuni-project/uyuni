@@ -317,7 +317,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     private class VirtEntitledServer extends Server {
         VirtEntitledServer(User user) {
             setOrg(user.getOrg());
-            ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+            ServerGroupManager manager = new ServerGroupManager();
             EntitlementServerGroup group = manager.
                         lookupEntitled(EntitlementManager.VIRTUALIZATION, user);
             List servers = new ArrayList();

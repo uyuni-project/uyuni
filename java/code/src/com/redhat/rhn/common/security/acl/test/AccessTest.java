@@ -60,7 +60,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     private final SaltService saltService = new SaltService();
     private final SystemQuery systemQuery = saltService;
     private final SaltApi saltApi = saltService;
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
     private final FormulaManager formulaManager = new FormulaManager(saltApi);
     private final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
 

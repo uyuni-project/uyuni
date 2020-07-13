@@ -56,7 +56,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private ServerGroupManager manager = new ServerGroupManager();
     private ServerGroupHandler handler = new ServerGroupHandler(xmlRpcSystemHelper, manager);
     private static final String NAME = "HAHAHA" + TestUtils.randomString();
     private static final String DESCRIPTION =  TestUtils.randomString();
@@ -326,7 +326,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         List  test = new ArrayList();
         test.add(server);
         test.add(server2);
-        GlobalInstanceHolder.SERVER_GROUP_MANAGER.addServers(group, test, admin);
+        manager.addServers(group, test, admin);
 
 
         Calendar cal = Calendar.getInstance();
@@ -353,7 +353,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         cal.add(Calendar.HOUR, -442);
         server2.getServerInfo().setCheckin(cal.getTime());
 
-        GlobalInstanceHolder.SERVER_GROUP_MANAGER.addServers(group, test, admin);
+        manager.addServers(group, test, admin);
 
         TestUtils.saveAndFlush(server);
         TestUtils.saveAndFlush(group);

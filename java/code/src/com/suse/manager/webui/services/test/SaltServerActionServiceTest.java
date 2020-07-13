@@ -145,7 +145,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private SaltServerActionService createSaltServerActionService(SystemQuery systemQuery, SaltApi saltApi) {
-        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
                 saltApi, systemQuery, serverGroupManager, formulaManager
@@ -411,7 +411,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testExecuteActionChain() throws Exception {
         SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
-        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
                 saltApi, systemQuery, serverGroupManager, formulaManager
@@ -850,7 +850,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private void successWorker() throws IOException {
         SaltService saltService = new SaltService();
         FormulaManager formulaManager = new FormulaManager(saltService);
-        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         ClusterManager clusterManager = new ClusterManager(saltService, saltService, serverGroupManager, formulaManager);
         SaltUtils saltUtils = new SaltUtils(saltService, saltService, clusterManager, formulaManager, serverGroupManager) {
             @Override
