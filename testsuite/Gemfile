@@ -11,7 +11,7 @@ gem 'nokogiri', '1.10.8'
 gem 'rake', '12.3.3'
 gem 'selenium-webdriver', '3.14.1'
 #gem 'simplecov', '0.17.0'
-gem 'twopence'
+#gem 'twopence' # This gem doesn't exist, instead you can install the rpm from https://build.opensuse.org/package/show/systemsmanagement:sumaform:tools/twopence
 gem 'xmlrpc', '0.3.0'
 gem 'minitest', ' 5.11.3'
 gem 'websocket', '1.2.8'
