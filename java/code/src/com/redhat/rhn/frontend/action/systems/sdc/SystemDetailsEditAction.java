@@ -146,7 +146,7 @@ public class SystemDetailsEditAction extends RhnAction {
         Entitlement base = EntitlementManager.getByName(selectedEnt);
         log.debug("base: " + base);
         if (base != null) {
-            GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(s, base);
+            systemEntitlementManager.setBaseEntitlement(s, base);
         }
         else if (selectedEnt.equals(UNENTITLE)) {
             systemEntitlementManager.removeAllServerEntitlements(s);
