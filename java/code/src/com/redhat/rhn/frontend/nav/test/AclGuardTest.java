@@ -19,7 +19,11 @@ import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.common.security.acl.AclHandler;
 import com.redhat.rhn.frontend.nav.AclGuard;
 import com.redhat.rhn.frontend.nav.NavNode;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.HashMap;
 
@@ -29,16 +33,22 @@ import java.util.HashMap;
  */
 public class AclGuardTest extends RhnBaseTestCase {
 
+    private final SaltService saltService = new SaltService();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final FormulaManager formulaManager = new FormulaManager(saltService);
+    private final ClusterManager clusterManager = new ClusterManager(
+            saltService, saltService, serverGroupManager, formulaManager);
+
     public void testNoAclDefined() {
         NavNode node = new NavNode();
-        AclFactory aclFactory = new AclFactory(new Access(null));
+        AclFactory aclFactory = new AclFactory(new Access(clusterManager));
         AclGuard aclGuard = new AclGuard(new HashMap(), aclFactory);
         boolean rc = aclGuard.canRender(node, 0);
         assertTrue(rc);
     }
 
     public void testNullNodeDefined() {
-        AclGuard aclGuard = new AclGuard(new HashMap(), new AclFactory(new Access(null)));
+        AclGuard aclGuard = new AclGuard(new HashMap(), new AclFactory(new Access(clusterManager)));
         boolean rc = aclGuard.canRender(null, 0);
         assertTrue(rc);
     }
@@ -47,7 +57,7 @@ public class AclGuardTest extends RhnBaseTestCase {
         NavNode node = new NavNode();
         node.setAcl("false_test()");
         AclGuard aclGuard = new AclGuard(new HashMap(),
-                MockAclHandler.class.getName(), new AclFactory(new Access(null)));
+                MockAclHandler.class.getName(), new AclFactory(new Access(clusterManager)));
         boolean rc = aclGuard.canRender(node, 0);
         assertFalse(rc);
     }
@@ -56,7 +66,7 @@ public class AclGuardTest extends RhnBaseTestCase {
         NavNode node = new NavNode();
         node.setAcl("true_test()");
         AclGuard aclGuard = new AclGuard(new HashMap(),
-                MockAclHandler.class.getName(), new AclFactory(new Access(null)));
+                MockAclHandler.class.getName(), new AclFactory(new Access(clusterManager)));
         boolean rc = aclGuard.canRender(node, 0);
         assertTrue(rc);
     }
