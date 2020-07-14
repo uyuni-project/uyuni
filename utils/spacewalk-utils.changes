@@ -1,3 +1,6 @@
+- Add FQDN resolver for spacewalk-manage-channel-lifecycle (bsc#1153578)
+- Fixes SSL hostname matching (bsc#1141663)
+
 -------------------------------------------------------------------
 Wed Mar 18 10:25:58 CET 2020 - jgonzalez@suse.com
 
