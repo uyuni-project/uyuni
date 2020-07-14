@@ -287,7 +287,8 @@ public class RhelUtils {
         Optional<SUSEProduct> suseProduct = defaultName.equals("RedHatEnterprise") ?
                 Optional.ofNullable(SUSEProductFactory
                         .findSUSEProduct("rhel-base", majorVersion, release, arch, true)) :
-                Optional.empty();
+                Optional.ofNullable(SUSEProductFactory
+                        .findSUSEProduct(name, majorVersion, release, arch, true));
         return new RhelProduct(suseProduct, name, majorVersion, release, arch);
     }
 
