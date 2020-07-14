@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.channel.software.test;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
@@ -56,15 +55,22 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -91,14 +97,22 @@ import java.util.TimeZone;
 public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
-    private SystemQuery systemQuery = new SaltService();
+    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = saltService;
+    private final SaltApi saltApi = saltService;
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
     private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery);
     private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
     private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
                     new ServerGroupManager());

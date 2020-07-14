@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.common.security.acl.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
@@ -41,8 +40,10 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.Date;
@@ -63,6 +64,12 @@ public class AccessTest extends BaseTestCaseWithUser {
     private final ServerGroupManager serverGroupManager = new ServerGroupManager();
     private final FormulaManager formulaManager = new FormulaManager(saltApi);
     private final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
     @Override
     public void setUp() throws Exception {
@@ -238,7 +245,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertTrue(acl.evalAcl(context, "system_has_salt_entitlement()"));
 
         // Change the base entitlement to MANAGEMENT
-        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
+        systemEntitlementManager.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         context.put("sid", new String[] {s.getId().toString()});
         context.put("user", user);
         assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));

@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.action.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -45,16 +44,23 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.action.MinionActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.IsMapContaining;
@@ -84,14 +90,22 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
     private final String SALT_CONTENT_STAGING_WINDOW = "salt_content_staging_window";
     private final String SALT_CONTENT_STAGING_ADVANCE = "salt_content_staging_advance";
 
-    private SystemQuery systemQuery = new SaltService();
+    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = saltService;
+    private final SaltApi saltApi = saltService;
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
     private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery);
     private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
 
     @Override

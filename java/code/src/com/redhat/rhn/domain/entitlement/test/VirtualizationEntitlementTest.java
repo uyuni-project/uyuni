@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.domain.entitlement.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -29,12 +28,27 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
+
+    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = saltService;
+    private final SaltApi saltApi = saltService;
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
     @Override
     protected void createEntitlement() {
@@ -48,17 +62,9 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
 
     @Override
     public void testIsAllowedOnServer() throws Exception {
-        SaltService saltService = new SaltService();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager)
-        );
         Server host = ServerTestUtils.createVirtHostWithGuests(1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
-        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(guest, EntitlementManager.MANAGEMENT);
+        systemEntitlementManager.setBaseEntitlement(guest, EntitlementManager.MANAGEMENT);
 
         assertTrue(ent.isAllowedOnServer(host));
         assertFalse(ent.isAllowedOnServer(guest));
@@ -67,7 +73,7 @@ public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
     @Override
     public void testIsAllowedOnServerWithGrains() throws Exception {
         Server minion = MinionServerFactoryTest.createTestMinionServer(user);
-        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.SALT);
+        systemEntitlementManager.setBaseEntitlement(minion, EntitlementManager.SALT);
 
         Map<String, Object> grains = new HashMap<>();
         grains.put("virtual", "physical");

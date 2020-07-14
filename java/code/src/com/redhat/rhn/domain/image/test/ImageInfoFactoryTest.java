@@ -21,7 +21,6 @@ import static com.redhat.rhn.testing.ImageTestUtils.createImageProfile;
 import static com.redhat.rhn.testing.ImageTestUtils.createImageStore;
 import static com.redhat.rhn.testing.ImageTestUtils.createProfileCustomDataValue;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
@@ -45,7 +44,11 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -53,6 +56,12 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.salt.custom.ImageChecksum;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -77,7 +86,16 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     }};
 
     private static TaskomaticApi taskomaticApi;
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = saltService;
+    private final SaltApi saltApi = saltService;
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
     @Override
     public void setUp() throws Exception {

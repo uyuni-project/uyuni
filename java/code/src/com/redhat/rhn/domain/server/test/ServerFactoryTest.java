@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.server.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -70,11 +69,14 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -86,9 +88,12 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.calls.LocalCall;
 
@@ -118,21 +123,26 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
     public static final String HOSTNAME = "foo.bar.com";
 
-    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
-    private SaltService saltService = new SaltService();
-    private SystemQuery systemQuery = saltService;
-    private SaltApi saltApi = saltService;
-    private ServerGroupManager serverGroupManager = new ServerGroupManager();
-    private FormulaManager formulaManager = new FormulaManager(saltApi);
-    private ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
-    private SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
-    private SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
-    private SaltServerActionService saltServerActionService = new SaltServerActionService(
+    private static final SaltService saltService = new SaltService();
+    private static final SystemQuery systemQuery = saltService;
+    private static final SaltApi saltApi = saltService;
+    private static final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private static final FormulaManager formulaManager = new FormulaManager(saltApi);
+    private static final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+    private static final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
+    private static final SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
+    private static final SaltServerActionService saltServerActionService = new SaltServerActionService(
             systemQuery,
             saltUtils,
             clusterManager,
             formulaManager,
             saltKeyUtils
+    );
+    private static final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private static final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private static final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
     );
 
     @Override

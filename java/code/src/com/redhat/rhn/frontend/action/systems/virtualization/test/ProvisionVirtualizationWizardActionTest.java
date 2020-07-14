@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.systems.virtualization.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -37,10 +36,14 @@ import com.redhat.rhn.frontend.action.kickstart.test.ScheduleKickstartWizardTest
 import com.redhat.rhn.frontend.action.systems.virtualization.ProvisionVirtualizationWizardAction;
 import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -49,6 +52,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.impl.SaltService;
 import junit.framework.AssertionFailedError;
 
 /**
@@ -58,7 +67,16 @@ import junit.framework.AssertionFailedError;
 public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCase {
 
     private Server s;
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = saltService;
+    private final SaltApi saltApi = saltService;
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
     /**
      * {@inheritDoc}

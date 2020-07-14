@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -142,7 +141,10 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -173,14 +175,22 @@ import java.util.stream.Collectors;
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
-    private SystemQuery systemQuery = new SaltService();
+    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = saltService;
+    private final SaltApi saltApi = saltService;
     private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery);
     private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
     private SystemHandler handler =
             new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
@@ -905,7 +915,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     public void testScheduleVirtProvision() throws Exception {
         Server server = ServerTestUtils.createTestSystem(admin);
-        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
+        systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(server);
         server = reload(server);
         KickstartDataTest.setupTestConfiguration(admin);

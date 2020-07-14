@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.systems.entitlements.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
@@ -37,6 +36,10 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.Iterator;
@@ -51,7 +54,16 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     private static final String UNENTITLED =
                                     "system_entitlements.unentitle";
 
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = saltService;
+    private final SaltApi saltApi = saltService;
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
 
     /**
