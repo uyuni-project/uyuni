@@ -731,7 +731,7 @@ def user_list_users(org_admin_user=None, org_admin_password=None):
     return UyuniUser(org_admin_user, org_admin_password).list_users()
 
 
-def user_create(uid, password, email, first_name=None, last_name=None,
+def user_create(uid, password, email, first_name, last_name,
                 org_admin_user=None, org_admin_password=None):
     """
     Create user in Uyuni.

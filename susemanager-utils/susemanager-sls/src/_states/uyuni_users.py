@@ -1,9 +1,11 @@
 import logging
 from typing import Optional, Dict, Any, List, Tuple
 from collections import Counter
-
+import pdb
 log = logging.getLogger(__name__)
 
+__salt__: Dict[str, Any] = {}
+__opts__: Dict[str, Any] = {}
 __virtualname__ = 'uyuni'
 
 
@@ -104,7 +106,7 @@ class UyuniUsers:
                     error = exc
         return changes, error
 
-    def manage(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "",
+    def manage(self, uid: str, password: str, email: str, first_name: str, last_name: str,
                roles: Optional[List[str]] = [], system_groups: Optional[List[str]] = [],
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
@@ -135,6 +137,7 @@ class UyuniUsers:
             current_system_groups_names = [s["name"] for s in (current_system_groups or [])]
         except Exception as exc:
             if exc.faultCode == 2950:
+                log.warning("Error managing user (admin credentials error) '{}': {}".format(uid, exc))
                 return StateResult.state_error(uid,
                                                comment="Error managing user (admin credentials error) '{}': {}".format(
                                                    uid, exc))
@@ -152,6 +155,9 @@ class UyuniUsers:
             return StateResult.state_error(uid, "Error managing user '{}': {}".format(uid, error))
         if not changes:
             return StateResult.prepare_result(uid, True, "{0} is already installed".format(uid))
+        if not current_user:
+            changes['uid'] = {"new": uid}
+            changes['password'] = {"new": "(hidden)"}
         if __opts__['test']:
             return StateResult.prepare_result(uid, None, "{0} would be installed".format(uid), changes)
 
@@ -616,7 +622,7 @@ def __virtual__():
     return __virtualname__
 
 
-def user_present(name, password, email, first_name=None, last_name=None,
+def user_present(name, password, email, first_name, last_name,
                  roles=None, system_groups=None,
                  org_admin_user=None, org_admin_password=None):
     """
