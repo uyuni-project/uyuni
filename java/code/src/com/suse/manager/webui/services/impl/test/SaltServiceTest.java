@@ -1,12 +1,12 @@
 package com.suse.manager.webui.services.impl.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -86,7 +86,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
     public void testGenerateSSHKeyExists() throws IOException {
         Path keyFile = Files.createFile(tempDir.resolve("mgr_ssh_id.pub"));
         String keyPath = keyFile.toFile().getCanonicalPath();
-        Optional<MgrUtilRunner.ExecResult> res = GlobalInstanceHolder.SYSTEM_QUERY
+        SystemQuery systemQuery = new SaltService();
+        Optional<MgrUtilRunner.ExecResult> res = systemQuery
                 .generateSSHKey(keyPath.substring(0, keyPath.length() - 4));
         assertTrue(res.isPresent());
         assertEquals(0, res.get().getReturnCode());

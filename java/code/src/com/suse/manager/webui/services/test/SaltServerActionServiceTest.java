@@ -19,7 +19,6 @@ import static com.redhat.rhn.domain.action.ActionFactory.STATUS_FAILED;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_PICKED_UP;
 import static com.redhat.rhn.domain.action.ActionFactory.STATUS_QUEUED;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -409,8 +408,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testExecuteActionChain() throws Exception {
-        SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
-        SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+        SaltService saltService = new SaltService();
+        SystemQuery systemQuery = saltService;
+        SaltApi saltApi = saltService;
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
