@@ -32,7 +32,9 @@ public class RhelUtils {
     private RhelUtils() { }
 
     private static final Pattern RHEL_RELEASE_MATCHER =
-            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s\\((.+)\\).*", Pattern.DOTALL);
+            Pattern.compile("(.+)\\srelease\\s([\\d.]+)\\s*\\((.+)\\).*", Pattern.DOTALL);
+    private static final Pattern ORACLE_RELEASE_MATCHER =
+            Pattern.compile("(.+)\\srelease\\s([\\d.]+).*", Pattern.DOTALL);
 
     /**
      * Information about RHEL based OSes.
@@ -68,7 +70,7 @@ public class RhelUtils {
         }
 
         /**
-         * @return the name of the OS (RedHatEnterpriseServer or Centos)
+         * @return the name of the OS (RedHatEnterpriseServer or Centos or OracleLinux)
          */
         public String getName() {
             return name;
@@ -91,7 +93,7 @@ public class RhelUtils {
     }
 
     /**
-     * The content of the /etc/redhat|centos-release file.
+     * The content of the /etc/redhat|centos|oracle-release file.
      */
     public static class ReleaseFile {
 
@@ -145,7 +147,7 @@ public class RhelUtils {
     }
 
     /**
-     * Parse the /etc/redhat|centos-release
+     * Parse the /etc/redhat|centos|oracle-release
      * @param releaseFile the content of the release file
      * @return the parsed content of the release file
      */
@@ -159,6 +161,16 @@ public class RhelUtils {
             String release = matcher.group(3);
             return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, release));
         }
+        else {
+            Matcher omatcher = ORACLE_RELEASE_MATCHER.matcher(releaseFile);
+            if (omatcher.matches()) {
+                String name =
+                        omatcher.group(1).replaceAll("(?i)server", "").replaceAll(" ", "");
+                String majorVersion = StringUtils.substringBefore(omatcher.group(2), ".");
+                String minorVersion = StringUtils.substringAfter(omatcher.group(2), ".");
+                return Optional.of(new ReleaseFile(name, majorVersion, minorVersion, ""));
+            }
+        }
         return Optional.empty();
     }
 
@@ -169,18 +181,21 @@ public class RhelUtils {
      *    assigned to a system it is a RES system
      * 2) if a RES release package (sles_es-release) is installed it is a RES.
      * 3) otherwise it is not a RES system
-     * 4) is it a centos system? check if /etc/centos-release file exists
-     * 5) if it is not a centos we can say it is a original RHEL (maybe:-)
+     * 4) if /etc/oracle-release exists, it is OracleLinux
+     * 5) is it a centos system? check if /etc/centos-release file exists
+     * 6) finally we can say it is a original RHEL (maybe:-)
      *
      * @param server the minion
      * @param resReleasePackage the package that provides 'sles_es-release'
      * @param rhelReleaseFile the content of /etc/redhat-release
      * @param centosReleaseFile the content of /etc/centos-release
+     * @param oracleReleaseFile the content of /etc/oracle-release
      * @return the {@link RhelProduct}
      */
     public static Optional<RhelProduct> detectRhelProduct(
             Server server, Optional<String> resReleasePackage,
-            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile) {
+            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
+            Optional<String> oracleReleaseFile) {
         String arch = server.getServerArch().getLabel().replace("-redhat-linux", "");
 
         // check first if it has RES channels assigned or the RES release package installed
@@ -207,6 +222,11 @@ public class RhelUtils {
                     majorVersion, release, arch));
         }
 
+        // next check if OracleLinux
+        if (oracleReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            return oracleReleaseFile.map(v -> detectPlainRHEL(v, arch, "OracleLinux"));
+        }
+
         // next check if Centos
         if (centosReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
             return centosReleaseFile.map(v -> detectPlainRHEL(v, arch, "CentOS"));
@@ -227,18 +247,21 @@ public class RhelUtils {
      *    assigned to a system it is a RES system
      * 2) if a RES release package (sles_es-release) is installed it is a RES.
      * 3) otherwise it is not a RES system
-     * 4) is it a centos system? check if /etc/centos-release file exists
-     * 5) if it is not a centos we can say it is a original RHEL (maybe:-)
+     * 4) if /etc/oracle-release exists it is a OracleLinux
+     * 5) is it a centos system? check if /etc/centos-release file exists
+     * 6) finally we can say it is a original RHEL (maybe:-)
      *
      * @param image the image
      * @param resReleasePackage the package that provides 'sles_es-release'
      * @param rhelReleaseFile the content of /etc/redhat-release
      * @param centosReleaseFile the content of /etc/centos-release
+     * @param oracleReleaseFile the content of /etc/oracle-release
      * @return the {@link RhelProduct}
      */
     public static Optional<RhelProduct> detectRhelProduct(
             ImageInfo image, Optional<String> resReleasePackage,
-            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile) {
+            Optional<String> rhelReleaseFile, Optional<String> centosReleaseFile,
+            Optional<String> oracleReleaseFile) {
         String arch = image.getImageArch().getLabel().replace("-redhat-linux", "");
 
         // check first if it has RES channels assigned or the RES release package installed
@@ -262,6 +285,11 @@ public class RhelUtils {
                     .findSUSEProduct("RES", majorVersion, release, arch, true));
             return Optional.of(new RhelProduct(suseProduct, name,
                     majorVersion, release, arch));
+        }
+
+        // next check if OracleLinux
+        if (oracleReleaseFile.filter(StringUtils::isNotBlank).isPresent()) {
+            return oracleReleaseFile.map(v -> detectPlainRHEL(v, arch, "OracleLinux"));
         }
 
         // next check if Centos

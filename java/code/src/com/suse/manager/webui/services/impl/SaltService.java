@@ -1027,6 +1027,9 @@ public class SaltService implements SystemQuery, SaltApi {
     public Optional<RedhatProductInfo> redhatProductInfo(String minionId) {
         return callSync(State.apply(Arrays.asList("packages.redhatproductinfo"), Optional.empty()), minionId)
                 .map(result -> {
+                    Optional<String> oracleReleaseContent = Optional
+                            .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_ORACLE_RELEASE)
+                            .getChanges(CmdResult.class).getStdout());
                     Optional<String> centosReleaseContent = Optional
                             .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_CENTOS_RELEASE)
                             .getChanges(CmdResult.class).getStdout());
@@ -1037,7 +1040,8 @@ public class SaltService implements SystemQuery, SaltApi {
                             .ofNullable(result.get(PkgProfileUpdateSlsResult.PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
                             .getChanges(CmdResult.class).getStdout());
 
-                    return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent, whatProvidesRes);
+                    return new RedhatProductInfo(centosReleaseContent, rhelReleaseContent,
+                            oracleReleaseContent, whatProvidesRes);
                 });
     }
 

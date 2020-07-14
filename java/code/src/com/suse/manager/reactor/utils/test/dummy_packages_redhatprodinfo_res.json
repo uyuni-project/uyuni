@@ -9,6 +9,16 @@
       "skip_watch": true,
       "start_time": "06:54:14.670755"
     },
+    "cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run": {
+      "comment": "Command \"cat /etc/oracle-release\" run",
+      "name": "cat /etc/oracle-release",
+      "start_time": "14:04:57.667941",
+      "skip_watch": true,
+      "result": true,
+      "duration": 233.474,
+      "__run_num__": 3,
+      "changes": {}
+    },
     "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run": {
       "__run_num__": 2,
       "changes": {
