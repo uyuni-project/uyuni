@@ -187,7 +187,7 @@ class UyuniUsers:
         :return: dict for Salt communication
         """
         try:
-            user = __salt__['uyuni.get_user'](uid, org_admin_user=org_admin_user,
+            user = __salt__['uyuni.user_get_details'](uid, org_admin_user=org_admin_user,
                                               org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode == -213:
@@ -208,7 +208,7 @@ class UyuniUsers:
                 return StateResult.prepare_result(uid, None, "{0} would be removed".format(uid), changes)
 
             try:
-                __salt__['uyuni.delete_user'](uid,
+                __salt__['uyuni.user_delete'](uid,
                                               org_admin_user=org_admin_user,
                                               org_admin_password=org_admin_password)
                 return StateResult.prepare_result(uid, True, "User {} has been deleted".format(uid), changes)
