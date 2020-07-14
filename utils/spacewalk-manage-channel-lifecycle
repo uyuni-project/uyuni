@@ -29,7 +29,28 @@ import time
 import xmlrpclib
 from optparse import Option, OptionParser
 import ConfigParser
-from socket import gethostname
+import socket
+
+
+def get_localhost_fqdn():
+    """
+    Get FQDN of the current machine.
+
+    :return:
+    """
+    fqdn = None
+    try:
+        for family, socktype, proto, canonname, sockaddr in socket.getaddrinfo(
+                socket.gethostname(), 0, 0, 0, 0, socket.AI_CANONNAME):
+            if canonname:
+                fqdn = canonname
+                break
+    except socket.gaierror as exc:
+        pass  # Silence here
+    except Exception as exc:
+        print("Unhandled exception occurred while getting FQDN:", exc)
+
+    return fqdn or socket.getfqdn()  # Fall-back to the /etc/hosts's FQDN
 
 
 class Config(object):
@@ -395,7 +416,7 @@ option_list = [
     Option('-u', '--username', help='Spacewalk username'),
     Option('-p', '--password', help='Spacewalk password'),
     Option('-s', '--server',
-           help='Spacewalk server [default: %default]', default=gethostname()),
+           help='Spacewalk server [default: %default]', default=get_localhost_fqdn()),
     Option('-n', '--dry-run', help="don't perform any operations",
            action='store_true'),
     Option('-t', '--tolerant', help='be tolerant of errors',
