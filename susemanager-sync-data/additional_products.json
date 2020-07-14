@@ -69,7 +69,7 @@
     {
         "id" : -17,
         "name" : "Oracle Linux 8",
-        "identifier" : "oraclelinux-8",
+        "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "8",
         "release_type" : null,
@@ -156,7 +156,7 @@
     {
         "id" : -16,
         "name" : "Oracle Linux 6",
-        "identifier" : "oraclelinux-6",
+        "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "6",
         "release_type" : null,
@@ -233,7 +233,7 @@
     {
         "id" : -15,
         "name" : "Oracle Linux 6",
-        "identifier" : "oraclelinux-6",
+        "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "6",
         "release_type" : null,
@@ -360,7 +360,7 @@
     {
         "id" : -14,
         "name" : "Oracle Linux 7",
-        "identifier" : "oraclelinux-7",
+        "identifier" : "oraclelinux",
         "former_identifier" : "",
         "version" : "7",
         "release_type" : null,
@@ -527,7 +527,7 @@
     {
         "id" : -13,
         "name" : "CentOS 8",
-        "identifier" : "centos-8",
+        "identifier" : "centos",
         "former_identifier" : "",
         "version" : "8",
         "release_type" : null,
@@ -634,7 +634,7 @@
     {
         "id" : -12,
         "name" : "CentOS 7",
-        "identifier" : "centos-7",
+        "identifier" : "centos",
         "former_identifier" : "",
         "version" : "7",
         "release_type" : null,
@@ -751,7 +751,7 @@
     {
         "id" : -11,
         "name" : "CentOS 6",
-        "identifier" : "centos-6",
+        "identifier" : "centos",
         "former_identifier" : "",
         "version" : "6",
         "release_type" : null,
@@ -848,7 +848,7 @@
     {
         "id" : -10,
         "name" : "CentOS 6",
-        "identifier" : "centos-6",
+        "identifier" : "centos",
         "former_identifier" : "",
         "version" : "6",
         "release_type" : null,
