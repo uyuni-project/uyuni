@@ -7,6 +7,10 @@ centosrelease:
   cmd.run:
     - name: cat /etc/centos-release
     - onlyif: test -f /etc/centos-release
+oraclerelease:
+  cmd.run:
+    - name: cat /etc/oracle-release
+    - onlyif: test -f /etc/oracle-release
 respkgquery:
   cmd.run:
     - name: rpm -q --whatprovides 'sles_es-release-server'
