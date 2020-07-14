@@ -363,12 +363,14 @@ public class RegistrationUtils {
                     })).collect(toSet());
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                "centos".equalsIgnoreCase(grains.getValueAsString(OS))) {
+                 "centos".equalsIgnoreCase(grains.getValueAsString(OS)) ||
+                 "oel".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
-                            server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent()));
+                            server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent(),
+                            x.getOracleReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());

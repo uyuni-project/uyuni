@@ -23,6 +23,16 @@
       "stdout": "CentOS Linux release 7.2.1511 (Core)"
     }
   },
+  "cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run": {
+    "comment": "Command \"cat /etc/oracle-release\" run",
+    "name": "cat /etc/oracle-release",
+    "start_time": "14:04:57.667941",
+    "skip_watch": true,
+    "result": true,
+    "duration": 233.474,
+    "__run_num__": 3,
+    "changes": {}
+  },
   "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run": {
     "comment": "Command \"cat /etc/redhat-release\" run",
     "name": "cat /etc/redhat-release",

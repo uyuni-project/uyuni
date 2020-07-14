@@ -56,6 +56,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
             "# keep software compatibility.";
     private static String CENTOS_REDHAT_RELEASE =
             "CentOS Linux release 7.2.1511 (Core)";
+    private static String ORACLE_RELEASE =
+            "Oracle Linux Server release 8.2";
 
     @FunctionalInterface
     private interface SetupMinionConsumer {
@@ -97,6 +99,15 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals("Core", os.get().getRelease());
     }
 
+    public void testParseReleaseFileOracle() {
+        Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile(ORACLE_RELEASE);
+        assertTrue(os.isPresent());
+        assertEquals("OracleLinux", os.get().getName());
+        assertEquals("8", os.get().getMajorVersion());
+        assertEquals("2", os.get().getMinorVersion());
+        assertEquals("", os.get().getRelease());
+    }
+
     public void testParseReleaseFileNonMatching() {
         Optional<RhelUtils.ReleaseFile> os = RhelUtils.parseReleaseFile("GarbageOS 1.0 (Trash can)");
         assertFalse(os.isPresent());
@@ -107,6 +118,9 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         Map<String, State.ApplyResult> map = new JsonParser<>(State.apply(Collections.emptyList()).getReturnType()).parse(
                 TestUtils.readAll(TestUtils.findTestData(json)));
         String centosReleaseContent = map.get("cmd_|-centosrelease_|-cat /etc/centos-release_|-run")
+                .getChanges(CmdResult.class)
+                .getStdout();
+        String oracleReleaseContent = map.get("cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run")
                 .getChanges(CmdResult.class)
                 .getStdout();
         String rhelReleaseContent = map.get("cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run")
@@ -122,7 +136,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
         Optional<RhelUtils.RhelProduct> prod = RhelUtils.detectRhelProduct(minionServer,
                 Optional.ofNullable(whatProvidesRes),
                 Optional.ofNullable(rhelReleaseContent),
-                Optional.ofNullable(centosReleaseContent));
+                Optional.ofNullable(centosReleaseContent),
+                Optional.ofNullable(oracleReleaseContent));
         assertTrue(prod.isPresent());
         response.accept(prod);
 
@@ -163,6 +178,17 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
                     assertEquals("CentOS", prod.get().getName());
                     assertEquals("Core", prod.get().getRelease());
                     assertEquals("7", prod.get().getVersion());
+        });
+    }
+
+    public void testDetectRhelProductOracle() throws Exception {
+        doTestDetectRhelProduct("dummy_packages_redhatprodinfo_oracle.json",
+                null,
+                prod -> {
+                    assertFalse(prod.get().getSuseProduct().isPresent());
+                    assertEquals("OracleLinux", prod.get().getName());
+                    assertEquals("", prod.get().getRelease());
+                    assertEquals("8", prod.get().getVersion());
         });
     }
 

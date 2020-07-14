@@ -38,6 +38,8 @@ public class PkgProfileUpdateSlsResult {
             "cmd_|-rhelrelease_|-cat /etc/redhat-release_|-run";
     public static final String PKG_PROFILE_CENTOS_RELEASE =
             "cmd_|-centosrelease_|-cat /etc/centos-release_|-run";
+    public static final String PKG_PROFILE_ORACLE_RELEASE =
+            "cmd_|-oraclerelease_|-cat /etc/oracle-release_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLES_RELEASE =
             "cmd_|-respkgquery_|-rpm -q --whatprovides 'sles_es-release-server'_|-run";
 
@@ -59,6 +61,9 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName(PKG_PROFILE_CENTOS_RELEASE)
     private StateApplyResult<CmdResult> centosReleaseFile;
+
+    @SerializedName(PKG_PROFILE_ORACLE_RELEASE)
+    private StateApplyResult<CmdResult> oracleReleaseFile;
 
     @SerializedName(PKG_PROFILE_WHATPROVIDES_SLES_RELEASE)
     private StateApplyResult<CmdResult> whatProvidesResReleasePkg;
@@ -107,6 +112,13 @@ public class PkgProfileUpdateSlsResult {
      */
     public StateApplyResult<CmdResult> getCentosReleaseFile() {
         return centosReleaseFile;
+    }
+
+    /**
+     * @return the content of the file /etc/oracle-release
+     */
+    public StateApplyResult<CmdResult> getOracleReleaseFile() {
+        return oracleReleaseFile;
     }
 
     /**
