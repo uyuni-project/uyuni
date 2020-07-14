@@ -89,7 +89,6 @@ class TestManageUser:
             'uyuni.user_create': MagicMock(return_value=True),
             'uyuni.user_add_role': MagicMock(return_value=True),
             'uyuni.user_add_assigned_system_groups': MagicMock(return_value=1)}):
-
             result = uyuni_users.user_present('username', 'password', 'mail@mail.com',
                                               'first_name', 'last_name',
                                               ['role'], ['group'],
@@ -204,3 +203,98 @@ class TestManageUser:
                                                                                                       'group3'],
                                                                                                   org_admin_user='org_admin_user',
                                                                                                   org_admin_password='org_admin_password')
+
+    def test_user_absent_auth_error(self):
+        exc = Exception("Auth error")
+        exc.faultCode = 2950
+
+        with patch.dict(uyuni_users.__salt__, {'uyuni.user_get_details': MagicMock(side_effect=exc)}):
+            result = uyuni_users.user_absent('username',
+                                             'org_admin_user', 'org_admin_password')
+            assert result is not None
+            assert result['name'] == 'username'
+            assert result['result'] is False
+            assert result['comment'] == "Error deleting user (organization credentials error) 'username': Auth error"
+            assert result['changes'] == {}
+
+    def test_user_absent_user_not_exits(self):
+        exc = Exception("User not found")
+        exc.faultCode = -213
+
+        with patch.dict(uyuni_users.__salt__, {'uyuni.user_get_details': MagicMock(side_effect=exc)}):
+            result = uyuni_users.user_absent('username',
+                                             'org_admin_user', 'org_admin_password')
+            assert result is not None
+            assert result['name'] == 'username'
+            assert result['result'] is True
+            assert result['comment'] == "username is already absent"
+            assert result['changes'] == {}
+
+    def test_user_absent_generic_error(self):
+        exc = Exception("generic error")
+        exc.faultCode = 2951
+
+        with patch.dict(uyuni_users.__salt__, {'uyuni.user_get_details': MagicMock(side_effect=exc)}):
+            with pytest.raises(Exception) as e:
+                uyuni_users.user_absent('username',
+                                        'org_admin_user', 'org_admin_password')
+            assert e.value.faultCode == 2951
+            assert e.value.args[0] == 'generic error'
+
+
+    def test_user_absent_exists_test(self):
+        current_user = {'uui': 'username',
+                        'email': 'mail@mail.com',
+                        'first_name': 'first',
+                        'last_name': 'last'}
+
+        with patch.dict(uyuni_users.__salt__, {'uyuni.user_get_details': MagicMock(return_value=current_user)}):
+            with patch.dict(uyuni_users.__opts__, {'test': True}):
+                result = uyuni_users.user_absent('username',
+                                                 'org_admin_user', 'org_admin_password')
+
+                assert result is not None
+                assert result['name'] == 'username'
+                assert result['result'] is None
+                assert result['comment'] == 'username would be removed'
+
+                assert result['changes'] == {
+                    'uid': {'old': 'username'},
+                    'email': {'old': 'mail@mail.com'},
+                    'first_name': {'old': 'first'},
+                    'last_name': {'old': 'last'}}
+
+                uyuni_users.__salt__['uyuni.user_get_details'].assert_called_once_with('username',
+                                                                                       org_admin_user='org_admin_user',
+                                                                                       org_admin_password='org_admin_password')
+
+    def test_user_absent_exist_user(self):
+        current_user = {'uui': 'username',
+                        'email': 'mail@mail.com',
+                        'first_name': 'first',
+                        'last_name': 'last'}
+
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.user_get_details': MagicMock(return_value=current_user),
+            'uyuni.user_delete': MagicMock(return_value=True)}):
+            result = uyuni_users.user_absent('username',
+                                             'org_admin_user', 'org_admin_password')
+
+            assert result is not None
+            assert result['name'] == 'username'
+            assert result['result'] is True
+            assert result['comment'] == 'User username has been deleted'
+
+            assert result['changes'] == {
+                'uid': {'old': 'username'},
+                'email': {'old': 'mail@mail.com'},
+                'first_name': {'old': 'first'},
+                'last_name': {'old': 'last'}}
+
+            uyuni_users.__salt__['uyuni.user_get_details'].assert_called_once_with('username',
+                                                                                   org_admin_user='org_admin_user',
+                                                                                   org_admin_password='org_admin_password')
+            uyuni_users.__salt__['uyuni.user_delete'].assert_called_once_with('username',
+                                                                               org_admin_user='org_admin_user',
+                                                                               org_admin_password='org_admin_password')
+
