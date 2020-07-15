@@ -1,3 +1,5 @@
+- Add SLE 15 LTSS Product ID to SLE15 bootstrap repositories, as
+  it is required to get python3-M2crypto (bsc#1174167)
 - Add bootstrap repository definitions for openSUSE Leap 15.1 and 15.2 aarch64 for Uyuni
 - update server-migrator.sh script for Upgrading Uyuni to version 4.1
 
