@@ -32,8 +32,8 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
         <div className="btn-group pull-right">
             <AsyncButton id={"editButton"} action={() => child.current.onEdit()} defaultType="btn-success"
                          disabled={icalLoading === true}
-                         text={t((isEdit() ? "Update " : "Create ") +
-                             (type === "schedule" ? "Schedule" : "Calendar"))}
+                         text={(isEdit() ? t("Update") : t("Create")) + " " +
+                             (type === "schedule" ? t("Schedule") : t("Calendar"))}
             />
         </div>
     ];
@@ -46,7 +46,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
     ];
 
     return (
-        <InnerPanel title={t("Maintenance " + (type === "schedule" ? "Schedule" : "Calendar"))}
+        <InnerPanel title={t("Maintenance") + " " + (type === "schedule" ? t("Schedule") : t("Calendar"))}
                     icon="spacewalk-icon-schedule" buttonsLeft={buttonsLeft} buttons={buttons} >
             {
                 type === "schedule" &&

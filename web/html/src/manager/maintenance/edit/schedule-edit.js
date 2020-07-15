@@ -38,7 +38,7 @@ const MaintenanceScheduleEdit = forwardRef((props: ScheduleEditProps, ref) => {
                 type: props.schedule.type,
                 calendarName: props.schedule.calendarName
             });
-            setCalendarAdded(!!props.schedule.calendarName);
+            setCalendarAdded(props.schedule.calendarName ? true : false);
             setSelectedCalendar(
                 (props.calendarNames.length > 1 && props.schedule.calendarName) ?
                     props.calendarNames.filter(name => name.text === props.schedule.calendarName)[0].id : 0
