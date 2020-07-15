@@ -16,6 +16,7 @@
 package com.suse.manager.maintenance.test;
 
 import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 import com.redhat.rhn.testing.TestUtils;
 
@@ -26,7 +27,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.File;
 import java.io.FileReader;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,5 +117,56 @@ public class IcalUtilsTest extends TestCase {
         List<Pair<Instant, Instant>> newYorkButFirst = listNewYork.stream().skip(1).collect(Collectors.toList());
         // the Tahitian windows should match the NYC ones minus the first one
         assertEquals(newYorkButFirst, listTahiti);
+    }
+
+    /**
+     * Test rendering maintenance windows in MULTI calendar
+     */
+    public void testMultiScheduleFiltering() {
+        ZonedDateTime datetime = ZonedDateTime.parse("2020-06-12T08:00:00-04:00");
+
+        // let's generate the upcoming events and convert them to the human readable strings, so that the
+        // dates in the tests are readable my human eyes too
+        List<Pair<String, String>> nycEvents = icalUtils.calculateUpcomingPeriods(
+                multiZonesCal, of("Maint. windows - NYC - weekdays"), datetime.toInstant(), 3)
+                .map(pair -> Pair.of(formatNY(pair.getLeft()), formatNY((pair.getRight()))))
+                .collect(Collectors.toList());
+
+        List<Pair<String, String>> sriLankaEvts = icalUtils.calculateUpcomingPeriods(
+                multiZonesCal, of("Maint. windows-Sri Lanka"), datetime.toInstant(), 3)
+                .map(pair -> Pair.of(formatSriLanka(pair.getLeft()), formatSriLanka((pair.getRight()))))
+                .collect(Collectors.toList());
+
+        List<Pair<Instant, Instant>> listNoEvts = icalUtils.calculateUpcomingPeriods(
+                multiZonesCal, of("There is no window, only zuul"), datetime.toInstant(), 5)
+                .collect(Collectors.toList());
+
+        // NY maintenance windows take place every weekday, 8:00 - 10:00 local time
+        assertEquals(
+                List.of(
+                        Pair.of("2020-06-12T08:00:00" ,"2020-06-12T10:00:00"),
+                        Pair.of("2020-06-15T08:00:00" ,"2020-06-15T10:00:00"),
+                        Pair.of("2020-06-16T08:00:00" ,"2020-06-16T10:00:00")
+                ),
+                nycEvents);
+
+        // Sri Lanka maintenance windows take place just on MO, WE & FR, 8:00 - 10:30 local time
+        assertEquals(
+                List.of(
+                        Pair.of("2020-06-15T08:00:00" ,"2020-06-15T10:30:00"),
+                        Pair.of("2020-06-17T08:00:00" ,"2020-06-17T10:30:00"),
+                        Pair.of("2020-06-19T08:00:00" ,"2020-06-19T10:30:00")
+                ),
+                sriLankaEvts);
+
+        assertTrue(listNoEvts.isEmpty());
+    }
+
+    private static String formatNY(Instant instant) {
+        return instant.atZone(ZoneId.of("America/New_York")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+    }
+
+    private static String formatSriLanka(Instant instant) {
+        return instant.atZone(ZoneId.of("Asia/Colombo")).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }
