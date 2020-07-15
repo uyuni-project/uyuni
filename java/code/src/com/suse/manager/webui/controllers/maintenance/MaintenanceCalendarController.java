@@ -81,18 +81,12 @@ public class MaintenanceCalendarController {
         get("/manager/schedule/maintenance/calendars",
                 withUserPreferences(withCsrfToken(withUser(MaintenanceCalendarController::maintenanceCalendars))),
                 jade);
-        get("/manager/api/maintenance/calendar/list",
-                withUser(MaintenanceCalendarController::list));
-        get("/manager/api/maintenance/calendar/:id/details",
-                withUser(MaintenanceCalendarController::details));
-        get("/manager/api/maintenance/calendar/names",
-                withUser(MaintenanceCalendarController::getNames));
-        post("/manager/api/maintenance/calendar/save",
-                withUser(MaintenanceCalendarController::save));
-        post("/manager/api/maintenance/calendar/refresh",
-                withUser(MaintenanceCalendarController::refresh));
-        Spark.delete("/manager/api/maintenance/calendar/delete",
-                withUser(MaintenanceCalendarController::delete));
+        get("/manager/api/maintenance/calendar/list", withUser(MaintenanceCalendarController::list));
+        get("/manager/api/maintenance/calendar/:id/details", withUser(MaintenanceCalendarController::details));
+        get("/manager/api/maintenance/calendar/names", withUser(MaintenanceCalendarController::getNames));
+        post("/manager/api/maintenance/calendar/save", withUser(MaintenanceCalendarController::save));
+        post("/manager/api/maintenance/calendar/refresh", withUser(MaintenanceCalendarController::refresh));
+        Spark.delete("/manager/api/maintenance/calendar/delete", withUser(MaintenanceCalendarController::delete));
     }
 
     /**

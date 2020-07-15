@@ -87,13 +87,8 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
         if (urlIn.trim() === "") {
             return true;
         }
-        try {
-            const URL = new window.URL(urlIn);
-            return URL.protocol === "https:" || URL.protocol === "http:";
-        }
-        catch (_) {
-            return false;
-        }
+        // validator.isURL does not require a protocol to be valid, hence we also check for supported protocols
+        return validator.isURL(urlIn) && (urlIn.startsWith("http://") || urlIn.startsWith("https://"));
     }
 
     useImperativeHandle(ref, () => ({
