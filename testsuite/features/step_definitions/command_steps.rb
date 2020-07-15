@@ -20,6 +20,14 @@ Then(/^"([^"]*)" should communicate with the server$/) do |host|
   $server.run("ping -c1 #{node.full_hostname}")
 end
 
+Then(/^the clock from "([^"]*)" should be exact$/) do |host|
+  node = get_target(host)
+  clock_node, _rc = node.run("date +'%s'")
+  clock_controller = `date +'%s'`
+  difference = clock_node.to_i - clock_controller.to_i
+  raise "clocks differ by #{difference} seconds" unless difference.abs < 2
+end
+
 Then(/^it should be possible to reach the test packages$/) do
   url = 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/x86_64/orion-dummy-1.1-1.1.x86_64.rpm'
   $server.run("curl --insecure --location #{url} --output /dev/null")
