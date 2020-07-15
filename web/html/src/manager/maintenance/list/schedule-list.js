@@ -83,8 +83,12 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
             </Table>
             <DeleteDialog id="delete-modal"
                           title={t("Delete maintenance schedule")}
-                          content={t("Are you sure you want to delete the selected item? \n" +
-                              "This will remove the schedule from all the systems assigned to it.")}
+                          content={
+                              <>
+                                  <div>{t("Are you sure you want to delete the selected item?")}</div>
+                                  <div>{t("This will remove the schedule from all the systems assigned to it.")}</div>
+                              </>
+                          }
                           onConfirm={() => props.onDelete(scheduleToDelete)}
                           onClosePopUp={() => setScheduleToDelete({})}
             />

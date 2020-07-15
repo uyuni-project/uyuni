@@ -82,14 +82,10 @@ public class MaintenanceScheduleController {
         get("/manager/schedule/maintenance/schedules",
                 withUserPreferences(withCsrfToken(withUser(MaintenanceScheduleController::maintenanceSchedules))),
                 jade);
-        get("/manager/api/maintenance/schedule/list",
-                withUser(MaintenanceScheduleController::list));
-        get("/manager/api/maintenance/schedule/:id/details",
-                withUser(MaintenanceScheduleController::details));
-        post("/manager/api/maintenance/schedule/save",
-                withUser(MaintenanceScheduleController::save));
-        Spark.delete("/manager/api/maintenance/schedule/delete",
-                withUser(MaintenanceScheduleController::delete));
+        get("/manager/api/maintenance/schedule/list", withUser(MaintenanceScheduleController::list));
+        get("/manager/api/maintenance/schedule/:id/details", withUser(MaintenanceScheduleController::details));
+        post("/manager/api/maintenance/schedule/save", withUser(MaintenanceScheduleController::save));
+        Spark.delete("/manager/api/maintenance/schedule/delete", withUser(MaintenanceScheduleController::delete));
     }
 
     /**
