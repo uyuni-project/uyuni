@@ -35,7 +35,8 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
 
     return (
         <div>
-            <InnerPanel title={t("Maintenance " +  (type === "schedule" ? "Schedules" : "Calendars"))} icon="spacewalk-icon-schedule" buttons={createButton}>
+            <InnerPanel title={t("Maintenance") + " " + (type === "schedule" ? t("Schedules") : t("Calendars"))}
+                        icon="spacewalk-icon-schedule" buttons={createButton}>
                 <div className="panel panel-default">
                     <div className="panel-heading">
                         <div>
