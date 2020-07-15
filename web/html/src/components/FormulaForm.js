@@ -39,6 +39,7 @@ class FormulaForm extends React.Component {
             formulaValues: {},
             formulaChanged: false,
             messages: [previewMessage],
+            warnings: [],
             errors: []
         };
 
@@ -68,6 +69,11 @@ class FormulaForm extends React.Component {
                     metadata: {}
                 });
             else {
+                if (data.formula_list.filter(formula => formula != "caasp-management-settings" && formula == data.formula_name).length > 1) {
+                    this.state.warnings.push(
+                        t('Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!', capitalize(data.formula_name))
+                    )
+                }
                 const layout = preprocessLayout(data.layout);
                 preprocessData(layout, get(data.system_data, {}));
                 preprocessData(layout, get(data.group_data, {}));
@@ -354,6 +360,9 @@ class FormulaForm extends React.Component {
         messageItems = messageItems.concat(this.state.errors.map((msg) => {
             return { severity: "error", text: msg };
         }));
+        messageItems = messageItems.concat(this.state.warnings.map((msg) => {
+            return { severity: "warning", text: msg };
+        }))
         const messages = <Messages items={messageItems} />;
 
         if (this.state.formulaLayout === undefined || this.state.formulaLayout === null || $.isEmptyObject(this.state.formulaLayout)) {
