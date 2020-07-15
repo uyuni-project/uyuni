@@ -1,3 +1,6 @@
+- Add SLE 15 LTSS Product ID to SLE15 bootstrap repositories, as
+  it is required to get python3-M2crypto (bsc#1174167)
+
 -------------------------------------------------------------------
 Thu Jul 09 17:18:08 CEST 2020 - jgonzalez@suse.com
 
