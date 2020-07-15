@@ -53,6 +53,7 @@ import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.PeriodList;
+import net.fortuna.ical4j.model.Property;
 import net.fortuna.ical4j.model.component.CalendarComponent;
 import net.fortuna.ical4j.model.property.Summary;
 
@@ -122,12 +123,9 @@ public class IcalUtils {
             Instant startDate, int limit) {
         ComponentList<CalendarComponent> allEvents = calendar.getComponents(Component.VEVENT);
 
-        Collection<CalendarComponent> filteredEvents = eventName.map(name -> {
-            Predicate<CalendarComponent> summary = c -> c.getProperty("SUMMARY").equals(name);
-            Predicate<CalendarComponent>[] ps = new Predicate[]{summary};
-            Filter<CalendarComponent> filter = new Filter<>(ps, Filter.MATCH_ALL);
-            return filter.filter(allEvents);
-        }).orElse(allEvents);
+        Collection<CalendarComponent> filteredEvents = eventName
+                .map(summary -> filterEventsBySummary(allEvents, summary))
+                .orElse(allEvents);
 
         // we will look a year and month to the future
         Period period = new Period(new DateTime(startDate.toEpochMilli()), Duration.ofDays(365 + 31));
@@ -145,6 +143,20 @@ public class IcalUtils {
                 .map(p -> Pair.of(p.getStart().toInstant(), p.getRangeEnd().toInstant()));
 
         return sortedLimited;
+    }
+
+    // given collection of events, filter out those with non-matching SUMMARY
+    private Collection<CalendarComponent> filterEventsBySummary(ComponentList<CalendarComponent> events, String name) {
+        Predicate<CalendarComponent> summaryPredicate = c -> {
+            Property summaryProp = c.getProperty("SUMMARY");
+            if (summaryProp instanceof Summary) {
+                return summaryProp.getValue().equals(name);
+            }
+            return false;
+        };
+        Predicate<CalendarComponent>[] ps = new Predicate[]{summaryPredicate};
+        Filter<CalendarComponent> filter = new Filter<>(ps, Filter.MATCH_ALL);
+        return filter.filter(events);
     }
 
     /**
