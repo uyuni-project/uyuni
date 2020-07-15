@@ -59,7 +59,7 @@ PKGLIST11 = [
     "python2-spacewalk-client-setup",
     "spacewalk-client-tools",
     "python2-spacewalk-client-tools",
-    "spacewalk-usix",
+    "python2-uyuni-common-libs",
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
@@ -134,7 +134,7 @@ PKGLIST12 = [
     "python2-spacewalk-client-setup",
     "spacewalk-client-tools",
     "python2-spacewalk-client-tools",
-    "spacewalk-usix",
+    "python2-uyuni-common-libs",
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
@@ -289,7 +289,7 @@ RES6 = [
     "python2-spacewalk-client-setup",
     "spacewalk-client-tools",
     "python2-spacewalk-client-tools",
-    "spacewalk-usix",
+    "python2-uyuni-common-libs",
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
@@ -339,7 +339,7 @@ RES7 = [
     "python2-spacewalk-client-setup",
     "spacewalk-client-tools",
     "python2-spacewalk-client-tools",
-    "spacewalk-usix",
+    "python2-uyuni-common-libs",
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python2-suseRegisterInfo",
@@ -435,7 +435,7 @@ PKGLIST15_TRAD = [
     "python3-spacewalk-check",
     "python3-spacewalk-client-setup",
     "python3-spacewalk-client-tools",
-    "python3-spacewalk-usix",
+    "python3-uyuni-common-libs",
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python3-suseRegisterInfo",
@@ -872,19 +872,19 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-15-aarch64' : {
-        'PDID' : [1589, 1709], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1589, 2053, 1709], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-ppc64le' : {
-        'PDID' : [1588, 1710], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
+        'PDID' : [1588, 2054, 1710], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-s390x' : {
-        'PDID' : [1587, 1711], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
+        'PDID' : [1587, 2055, 1711], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-x86_64' : {
-        'PDID' : [1576, 1712], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1576, 2056, 1712], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-SP1-aarch64' : {
