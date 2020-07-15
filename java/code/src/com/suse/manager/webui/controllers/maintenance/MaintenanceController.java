@@ -90,8 +90,7 @@ public class MaintenanceController {
 
         if (actionType.isMaintenancemodeOnly()) {
             try {
-                MM
-                        .calculateUpcomingMaintenanceWindows(systemIds)
+                MM.calculateUpcomingMaintenanceWindows(systemIds)
                         .ifPresent(windows -> data.put("maintenanceWindows", windows));
             }
             catch (IllegalStateException e) {
