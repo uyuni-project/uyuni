@@ -176,6 +176,7 @@ const MaintenanceWindows = () => {
                                            data={selected}
                                            onCancel={handleForwardAction}
                                            onEdit={handleEditAction}
+                                           onMessage={setMessages}
                                            onDelete={deleteItem}
                 />
                 : (action === 'edit' || action === 'create') && isAdmin ?

@@ -376,6 +376,21 @@
           </tr>
           </rhn:require>
           <tr>
+            <td><bean:message key="sdc.details.overview.schedule"/></td>
+            <c:choose>
+              <c:when test="${maintenanceSchedule == null}">
+                <td><bean:message key="sdc.details.overview.schedule.none"/></td>
+              </c:when>
+              <c:otherwise>
+                <td>
+                  <a href="/rhn/manager/schedule/maintenance/schedules#/details/${maintenanceSchedule.id}" target="_blank">
+                    <c:out value="${maintenanceSchedule.name}"/>
+                  </a>
+                </td>
+              </c:otherwise>
+            </c:choose>
+          </tr>
+          <tr>
             <td><bean:message key="sdc.details.overview.sysname"/></td>
             <td><c:out value="${system.name}"/></td>
           </tr>

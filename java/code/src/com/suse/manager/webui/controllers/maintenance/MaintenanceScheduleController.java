@@ -23,6 +23,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -32,6 +33,7 @@ import com.redhat.rhn.manager.EntityNotExistsException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.maintenance.IcalUtils;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
 import com.suse.manager.maintenance.rescheduling.RescheduleStrategy;
@@ -45,7 +47,9 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -82,8 +86,12 @@ public class MaintenanceScheduleController {
         get("/manager/schedule/maintenance/schedules",
                 withUserPreferences(withCsrfToken(withUser(MaintenanceScheduleController::maintenanceSchedules))),
                 jade);
+        get("/manager/systems/ssm/maintenance", withCsrfToken(withUser(MaintenanceScheduleController::ssmSchedules)),
+                jade);
         get("/manager/api/maintenance/schedule/list", withUser(MaintenanceScheduleController::list));
         get("/manager/api/maintenance/schedule/:id/details", withUser(MaintenanceScheduleController::details));
+        post("/manager/api/maintenance/schedule/:id/assign", withUser(MaintenanceScheduleController::assign));
+        post("/manager/api/maintenance/schedule/unassign", withUser(MaintenanceScheduleController::unassign));
         post("/manager/api/maintenance/schedule/save", withUser(MaintenanceScheduleController::save));
         Spark.delete("/manager/api/maintenance/schedule/delete", withUser(MaintenanceScheduleController::delete));
     }
@@ -101,6 +109,22 @@ public class MaintenanceScheduleController {
         params.put("type", "schedule");
         params.put("isAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
         return new ModelAndView(params, "templates/schedule/maintenance-windows.jade");
+    }
+
+    /**
+     * Handler for the SSM schedule assignment page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the current user
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView ssmSchedules(Request request, Response response, User user) {
+        List<Long> systemIds = SsmManager.listServerIds(user);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("systems", GSON.toJson(systemIds));
+        return new ModelAndView(data, "templates/ssm/schedules.jade");
     }
 
     /**
@@ -225,6 +249,65 @@ public class MaintenanceScheduleController {
                 () -> Spark.halt(HttpStatus.SC_BAD_REQUEST)
         );
 
+        return json(response, ResultJson.success());
+    }
+
+    private class SystemAssignmentRequest {
+        private List<Long> systemIds;
+        private boolean cancelActions;
+    }
+
+    /**
+     * Assign a schedule to systems
+     *
+     * @param request the request object
+     * @param response the response obejct
+     * @param user the authorized user
+     * @return string containing the JSON response
+     */
+    public static String assign(Request request, Response response, User user) {
+        response.type("application/json");
+        SystemAssignmentRequest reqData = GSON.fromJson(request.body(), SystemAssignmentRequest.class);
+        List<Long> systemIds = reqData.systemIds;
+
+        Long scheduleId = Long.parseLong(request.params("id"));
+        MM.lookupScheduleByUserAndId(user, scheduleId).ifPresentOrElse(
+                schedule -> {
+                    try {
+                        MM.assignScheduleToSystems(user, schedule, new HashSet<>(systemIds), reqData.cancelActions);
+                    }
+                    catch (IllegalArgumentException e) {
+                        Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                                "maintenance.action.assign.error.fail"))));
+                    }
+                    catch (LookupException e) {
+                        Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                                "maintenance.action.assign.error.systemnotfound"))));
+                    }
+                },
+                () -> Spark.halt(HttpStatus.SC_NOT_FOUND)
+        );
+        return json(response, ResultJson.success());
+    }
+
+    /**
+     * Unassign a schedule from systems
+     *
+     * @param request the request object
+     * @param response the response obejct
+     * @param user the authorized user
+     * @return string containing the JSON response
+     */
+    public static String unassign(Request request, Response response, User user) {
+        response.type("application/json");
+        List<Long> systemIds = Arrays.asList(GSON.fromJson(request.body(), Long[].class));
+        try {
+            MM.retractScheduleFromSystems(user, new HashSet<>(systemIds));
+        }
+        catch (LookupException e) {
+            Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
+                    "maintenance.action.assign.error.systemnotfound"))));
+        }
         return json(response, ResultJson.success());
     }
 
