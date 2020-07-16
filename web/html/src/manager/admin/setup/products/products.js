@@ -478,7 +478,7 @@ class Products extends React.Component {
     return (
       <div>
         <CustomDataHandler
-          data={this.buildRows(this.filterDataByArch(this.props.data).sort(this.compareProducts))}
+          data={this.buildRows(this.filterDataByArch([...this.props.data]).sort(this.compareProducts))}
           identifier={(raw) => raw.identifier}
           initialItemsPerPage={userPrefPageSize}
           loading={this.props.loading}
