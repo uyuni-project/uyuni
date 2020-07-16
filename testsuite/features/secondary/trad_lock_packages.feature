@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Lock packages on traditional client
- 
+
   Background:
     Given I am on the Systems overview page of this "sle_client"
 

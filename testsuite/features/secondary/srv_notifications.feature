@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Test the notification/notification-messages feature
-  
+
   Scenario: Check the unread notification counter is correct
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > Notification Messages"

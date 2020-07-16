@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if there is no proxy
@@ -147,7 +147,7 @@ Feature: Setup SUSE Manager for Retail branch network
 
 @proxy
 @private_net
-  Scenario: Enable avahi on the branch server
+  Scenario: Let avahi work on the branch server
     When I enable repositories before installing branch server
     And I install package "SuSEfirewall2 expect" on this "proxy"
     And I open avahi port on the proxy

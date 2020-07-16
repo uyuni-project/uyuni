@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC.
+# Copyright (c) 2017-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 Feature: Register a salt-ssh system via XML-RPC
@@ -34,7 +34,6 @@ Feature: Register a salt-ssh system via XML-RPC
   Scenario: Remove sle-manager-tools-release from state after bootstrap via XML-RPC
     Given I am on the Systems overview page of this "ssh_minion"
     When I remove package "sle-manager-tools-release" from highstate
-# end of WORKAROUD
 
 @ssh_minion
   Scenario: Check contact method of this Salt SSH system

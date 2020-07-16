@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -11,7 +11,7 @@
 # which means "beetwen 3 and 1 minutes before package installation or patching"
 
 @sle_minion
-Feature: Install a package on the minion with staging enabled
+Feature: Install a package on the SLES minion with staging enabled
 
   Scenario: Pre-requisite: install virgo-dummy-1.0 package, make sure orion-dummy is not present
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"

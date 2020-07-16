@@ -1,4 +1,4 @@
-# COPYRIGHT (c) 2017-2020 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # TODO: This feature must run before install a patch in the client

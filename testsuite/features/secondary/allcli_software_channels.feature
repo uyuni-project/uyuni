@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Chanel subscription via SSM
@@ -136,7 +136,7 @@ Feature: Chanel subscription via SSM
     And channel "Test Child Channel" should be enabled on "sle_client"
 
 @centos_minion
-  Scenario: System default channel can't be determined
+  Scenario: System default channel can't be determined on the CentOS SSH minion
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
@@ -160,14 +160,14 @@ Feature: Chanel subscription via SSM
     And I follow "Clear"
 
 @centos_minion
-  Scenario: Cleanup: make sure the CentOS minion is still unchanged
+  Scenario: Cleanup: make sure the CentOS SSH minion is still unchanged
     Given I am on the Systems overview page of this "ceos_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test Base Channel" is checked
 
 @ubuntu_minion
-  Scenario: System default channel can't be determined
+  Scenario: System default channel can't be determined on the Ubuntu SSH minion
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
@@ -191,7 +191,7 @@ Feature: Chanel subscription via SSM
     And I follow "Clear"
 
 @ubuntu_minion
-  Scenario: Cleanup: make sure the Ubuntu minion is still unchanged
+  Scenario: Cleanup: make sure the Ubuntu SSH minion is still unchanged
     Given I am on the Systems overview page of this "ubuntu_ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area

@@ -1,4 +1,4 @@
-# COPYRIGHT 2015-2019 SUSE LLC
+# Copyright 2015-2019 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'json'
@@ -354,7 +354,7 @@ end
 Then(/^I delete all action chains$/) do
   begin
     rpc.list_chains.each do |label|
-      puts "Delete Chain: #{label}"
+      puts "Delete chain: #{label}"
       rpc.delete_chain(label)
     end
   rescue XMLRPC::FaultException => e
@@ -479,7 +479,7 @@ Then(/^I cancel all scheduled actions$/) do
   end
 
   actions.each do |action|
-    puts "\t- Try to cancle \"#{action['name']}\" action"
+    puts "\t- Try to cancel \"#{action['name']}\" action"
     begin
       scdrpc.cancel_actions([action['id']])
     rescue XMLRPC::FaultException

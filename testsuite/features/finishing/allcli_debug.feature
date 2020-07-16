@@ -16,11 +16,11 @@ Feature: Debug the clients after the testsuite has run
     When I get logfiles from "sle_minion"
 
 @centos_minion
-  Scenario: Get client logs for CentOS minion
+  Scenario: Get client logs for CentOS SSH minion
     When I get logfiles from "ceos_minion"
 
 @ubuntu_minion
-  Scenario: Get client logs for Ubuntu minion
+  Scenario: Get client logs for Ubuntu SSH minion
     When I get logfiles from "ubuntu_minion"
 
 @ssh_minion
