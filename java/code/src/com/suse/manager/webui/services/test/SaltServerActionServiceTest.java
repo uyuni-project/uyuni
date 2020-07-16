@@ -130,7 +130,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             }
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
-
         saltServerActionService = createSaltServerActionService(saltService, saltService);
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
@@ -408,9 +407,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     public void testExecuteActionChain() throws Exception {
-        SaltService saltService = new SaltService();
-        SystemQuery systemQuery = saltService;
-        SaltApi saltApi = saltService;
+        SystemQuery systemQuery = new TestSystemQuery();
+        SaltApi saltApi = new TestSaltApi();
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         FormulaManager formulaManager = new FormulaManager(saltApi);
         ClusterManager clusterManager = new ClusterManager(
@@ -568,14 +566,14 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private SaltServerActionService countSaltActionCalls(AtomicInteger counter) {
-        SaltService saltService = new SaltService() {
+        SystemQuery systemQuery = new TestSystemQuery() {
             @Override
             public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
                 counter.incrementAndGet();
                 throw new RuntimeException();
             }
         };
-        return createSaltServerActionService(saltService, saltService);
+        return createSaltServerActionService(systemQuery, new TestSaltApi());
     }
 
     /**
@@ -606,14 +604,14 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(Long.valueOf(5L), serverAction.getRemainingTries());
 
         AtomicInteger counter2 = new AtomicInteger();
-        SaltService saltService = new SaltService() {
+        SystemQuery systemQuery = new TestSystemQuery() {
             @Override
             public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
                 counter2.incrementAndGet();
                 return Optional.of(new JsonObject());
             }
         };
-        saltServerActionService = createSaltServerActionService(saltService, saltService);
+        saltServerActionService = createSaltServerActionService(systemQuery, new TestSaltApi());
 
         saltServerActionService.executeSSHAction(prereq, minion);
         assertEquals(STATUS_COMPLETED, prereqServerAction.getStatus());
@@ -730,13 +728,13 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testActionFailedOnEmptyResult() throws Exception {
         // expect salt returning empty result
 
-        SaltService saltService = new SaltService() {
+        SystemQuery systemQuery = new TestSystemQuery() {
             @Override
             public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.empty();
             }
         };
-        SaltServerActionService saltServerActionService = createSaltServerActionService(saltService, saltService);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery, new TestSaltApi());
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
@@ -756,13 +754,13 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testActionFailedOnException() throws Exception {
         // expect salt returning empty result
 
-        SaltService saltService = new SaltService() {
+        SystemQuery systemQuery = new TestSystemQuery() {
             @Override
             public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
                 throw new RuntimeException();
             }
         };
-        SaltServerActionService saltServerActionService = createSaltServerActionService(saltService, saltService);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery, new TestSaltApi());
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
         try {
@@ -784,13 +782,13 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
      */
     public void testRebootActionIsPickedUp() throws Exception {
         successWorker();
-        SaltService saltService = new SaltService() {
+        SystemQuery systemQuery = new TestSystemQuery() {
             @Override
             public Optional<JsonElement> rawJsonCall(LocalCall<?> call, String minionId) {
                 return Optional.of(new JsonObject());
             }
         };
-        SaltServerActionService saltServerActionService = createSaltServerActionService(saltService, saltService);
+        SaltServerActionService saltServerActionService = createSaltServerActionService(systemQuery, new TestSaltApi());
 
         Action action = createRebootAction(new Date(1L));
         ServerAction serverAction = createChildServerAction(action, STATUS_QUEUED, 5L);
@@ -848,11 +846,12 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     private void successWorker() throws IOException {
-        SaltService saltService = new SaltService();
-        FormulaManager formulaManager = new FormulaManager(saltService);
+        SystemQuery systemQuery = new TestSystemQuery();
+        SaltApi saltApi = new TestSaltApi();
+        FormulaManager formulaManager = new FormulaManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager();
-        ClusterManager clusterManager = new ClusterManager(saltService, saltService, serverGroupManager, formulaManager);
-        SaltUtils saltUtils = new SaltUtils(saltService, saltService, clusterManager, formulaManager, serverGroupManager) {
+        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager) {
             @Override
             public boolean shouldRefreshPackageList(String function,
                                                     Optional<JsonElement> callResult) {

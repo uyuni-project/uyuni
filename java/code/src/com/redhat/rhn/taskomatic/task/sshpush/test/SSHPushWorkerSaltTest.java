@@ -35,8 +35,9 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.utils.test.SSHMinionBootstrapperTest;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -109,14 +110,14 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
         ServerAction serverAction = createChildServerAction(action,
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(action);
-        SaltService saltService = new SaltService() {
+        SystemQuery systemQuery = new TestSystemQuery() {
             @Override
             public Optional<Boolean> ping(String minionId) {
                 return Optional.of(true);
             }
         };
 
-        SSHPushWorkerSalt worker = successWorker(saltService, saltService);
+        SSHPushWorkerSalt worker = successWorker(systemQuery, new TestSaltApi());
 
         context().checking(new Expectations() {{
            
@@ -180,13 +181,13 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(upcomingAction);
 
-        SaltService saltService = new SaltService() {
+        SystemQuery systemQuery = new TestSystemQuery() {
             @Override
             public Optional<Boolean> ping(String minionId) {
                 return Optional.of(true);
             }
         };
-        SSHPushWorkerSalt worker = successWorker(saltService, saltService);
+        SSHPushWorkerSalt worker = successWorker(systemQuery, new TestSaltApi());
 
         context().checking(new Expectations() {{
 
@@ -228,7 +229,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
                 ActionFactory.STATUS_PICKED_UP, 5L);
         ActionFactory.save(upcomingAction);
 
-        SaltService saltService = new SaltService() {
+        SystemQuery systemQuery = new TestSystemQuery() {
             @Override
             public Optional<Boolean> ping(String minionId) {
                 return Optional.of(true);
@@ -246,7 +247,7 @@ public class SSHPushWorkerSaltTest extends JMockBaseTestCaseWithUser {
             }
         };
 
-        SSHPushWorkerSalt worker = successWorker(saltService, saltService);
+        SSHPushWorkerSalt worker = successWorker(systemQuery, new TestSaltApi());
 
         context().checking(new Expectations() {{
             oneOf(saltSSHServiceMock).cleanPendingActionChainAsync(with(any(MinionServer.class)));

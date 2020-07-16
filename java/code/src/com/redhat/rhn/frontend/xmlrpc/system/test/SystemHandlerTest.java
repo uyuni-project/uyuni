@@ -141,12 +141,10 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.MonitoringManager;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.*;
 
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -175,9 +173,8 @@ import java.util.stream.Collectors;
 public class SystemHandlerTest extends BaseHandlerTestCase {
 
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
-    private final SaltService saltService = new SaltService();
-    private final SystemQuery systemQuery = saltService;
-    private final SaltApi saltApi = saltService;
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
     private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery);
     private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
@@ -1897,14 +1894,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testAddEntitlements() throws Exception {
-        SaltService saltService = new SaltService();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager)
-        );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
         Integer serverId = server.getId().intValue();
@@ -1930,14 +1919,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testAddEntitlementSystemAlreadyHas() throws Exception {
-        SaltService saltService = new SaltService();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager)
-        );
         Server server = ServerTestUtils.createVirtHostWithGuests(admin, 0, systemEntitlementManager);
 
         Integer serverId = server.getId().intValue();

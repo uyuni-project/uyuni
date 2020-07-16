@@ -30,8 +30,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
 
@@ -106,7 +106,7 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
-                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager(),
+                new SystemEntitler(new TestSystemQuery(), virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
     }

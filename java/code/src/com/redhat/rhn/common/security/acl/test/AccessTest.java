@@ -43,8 +43,9 @@ import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -58,9 +59,8 @@ import java.util.Set;
 public class AccessTest extends BaseTestCaseWithUser {
 
     private Acl acl;
-    private final SaltService saltService = new SaltService();
-    private final SystemQuery systemQuery = saltService;
-    private final SaltApi saltApi = saltService;
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager();
     private final FormulaManager formulaManager = new FormulaManager(saltApi);
     private final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
@@ -342,12 +342,6 @@ public class AccessTest extends BaseTestCaseWithUser {
     }
 
     public void testIsVirtual() throws Exception {
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager)
-        );
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
 

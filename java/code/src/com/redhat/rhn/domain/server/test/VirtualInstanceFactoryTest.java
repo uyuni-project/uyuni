@@ -30,7 +30,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -60,7 +60,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager(), serverGroupManager),
-                new SystemEntitler(new SaltService(), new TestVirtManager(), new FormulaMonitoringManager(),
+                new SystemEntitler(new TestSystemQuery(), new TestVirtManager(), new FormulaMonitoringManager(),
                         serverGroupManager)
         );
     }

@@ -23,7 +23,10 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.suse.manager.clusters.ClusterManager;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.HashMap;
 
@@ -33,11 +36,12 @@ import java.util.HashMap;
  */
 public class AclGuardTest extends RhnBaseTestCase {
 
-    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager();
-    private final FormulaManager formulaManager = new FormulaManager(saltService);
+    private final FormulaManager formulaManager = new FormulaManager(saltApi);
     private final ClusterManager clusterManager = new ClusterManager(
-            saltService, saltService, serverGroupManager, formulaManager);
+            saltApi, systemQuery, serverGroupManager, formulaManager);
 
     public void testNoAclDefined() {
         NavNode node = new NavNode();

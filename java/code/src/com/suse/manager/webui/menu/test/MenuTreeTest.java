@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.menu.test;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.manager.formula.FormulaManager;
@@ -28,7 +27,10 @@ import com.suse.manager.webui.menu.MenuTree.MenuItemList;
 import java.util.List;
 
 
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import junit.framework.TestCase;
 
 public class MenuTreeTest extends TestCase {
@@ -87,9 +89,10 @@ public class MenuTreeTest extends TestCase {
                     .withPrimaryUrl("/rhn/errata/manage/CloneErrata.do")
                     .withDir("/rhn/errata/manage/clone")));
 
-        SaltService saltService = new SaltService();
+        SystemQuery systemQuery = new TestSystemQuery();
+        SaltApi saltApi = new TestSaltApi();
         MenuTree menuTree = new MenuTree(new AclFactory(new Access(new ClusterManager(
-                saltService, saltService, new ServerGroupManager(), new FormulaManager(saltService)
+                saltApi, systemQuery, new ServerGroupManager(), new FormulaManager(saltApi)
         ))));
 
         // the TESTED method

@@ -36,11 +36,9 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.iface.MonitoringManager;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.Iterator;
 
@@ -54,9 +52,8 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     private static final String UNENTITLED =
                                     "system_entitlements.unentitle";
 
-    private final SaltService saltService = new SaltService();
-    private final SystemQuery systemQuery = saltService;
-    private final SaltApi saltApi = saltService;
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager();
     private final VirtManager virtManager = new VirtManagerSalt(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
@@ -172,14 +169,6 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             Entitlement ent,
                                             ServerGroupType groupType
                                             )  throws Exception {
-        SaltService saltService = new SaltService();
-        ServerGroupManager serverGroupManager = new ServerGroupManager();
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
-                        serverGroupManager)
-        );
         Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
 
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);

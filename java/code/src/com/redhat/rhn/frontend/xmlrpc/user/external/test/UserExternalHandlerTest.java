@@ -29,7 +29,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -116,7 +116,7 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         String name = "My External Group Name" + TestUtils.randomString();
         String systemGroupName = "my-system-group-name" + TestUtils.randomString();
         String desc = TestUtils.randomString();
-        SystemQuery systemQuery = new SaltService();
+        SystemQuery systemQuery = new TestSystemQuery();
         RegularMinionBootstrapper regularMinionBootstrapper =  new RegularMinionBootstrapper(systemQuery);
         SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(

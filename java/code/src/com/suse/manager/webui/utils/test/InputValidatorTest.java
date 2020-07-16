@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils.test;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.InputValidator;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
@@ -37,7 +37,7 @@ public class InputValidatorTest extends TestCase {
     private static final String PORT_ERROR_MESSAGE = "Port must be a number within range" +
             " 1-65535.";
 
-    private SystemQuery systemQuery = new SaltService();
+    private SystemQuery systemQuery = new TestSystemQuery();
 
     /**
      * Test the check for required fields.

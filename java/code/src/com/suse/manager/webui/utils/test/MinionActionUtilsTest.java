@@ -32,7 +32,8 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
 /**
@@ -40,9 +41,8 @@ import com.suse.manager.webui.utils.MinionActionUtils;
  */
 public class MinionActionUtilsTest extends BaseTestCaseWithUser {
 
-    private final SaltService saltService = new SaltService();
-    private final SystemQuery systemQuery = saltService;
-    private final SaltApi saltApi = saltService;
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
 
     /**
      * Verify script is deleted in case all servers are finished (COMPLETED or FAILED).

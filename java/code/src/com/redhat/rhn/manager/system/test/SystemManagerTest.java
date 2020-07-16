@@ -111,10 +111,12 @@ import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
+import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
@@ -178,12 +180,13 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleActionExecution(with(any(Action.class)));
             }
         });
-        SaltService saltService = new SaltService();
+        SystemQuery systemQuery = new TestSystemQuery();
+        VirtManager virtManager = new TestVirtManager();
         ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager(),
+                new SystemEntitler(systemQuery, virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);

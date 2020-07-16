@@ -90,11 +90,9 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.ArrayList;
@@ -123,9 +121,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
     public static final String HOSTNAME = "foo.bar.com";
 
-    private static final SaltService saltService = new SaltService();
-    private static final SystemQuery systemQuery = saltService;
-    private static final SaltApi saltApi = saltService;
+    private static final SystemQuery systemQuery = new TestSystemQuery();
+    private static final SaltApi saltApi = new TestSaltApi();
     private static final ServerGroupManager serverGroupManager = new ServerGroupManager();
     private static final FormulaManager formulaManager = new FormulaManager(saltApi);
     private static final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);

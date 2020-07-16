@@ -45,8 +45,8 @@ import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualStoragePoolInfoJson;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -119,7 +119,7 @@ public class VirtualPoolsControllerTest extends BaseControllerTestCase {
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
-                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager(),
+                new SystemEntitler(new TestSystemQuery(), virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
 
