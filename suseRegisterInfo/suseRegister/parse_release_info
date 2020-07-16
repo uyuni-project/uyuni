@@ -30,7 +30,8 @@ my $result = GetOptions ("version|v" => \$version,
                          "release|r" => \$release,
                          "codename|c" => \$codename,
                          "all|a" => \$all,
-                         "short|s" => \$short);
+                         "short|s" => \$short,
+                         "file|f=s" => \$redhat_release);
 
 if ( ! -e $redhat_release )
 {
