@@ -24,7 +24,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
     And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
-  Scenario: Delete SLES minion system profile before script bootstrap test
+  Scenario: Delete SLES minion system profile before mgrcompat test
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -53,7 +53,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 
-  Scenario: Check that installed packages are visible
+  Scenario: Check that installed packages are visible with the new module.run syntax
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "List / Remove"
@@ -77,7 +77,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I cleanup minion "sle_minion"
     Then "sle_minion" should not be registered
 
-  Scenario: Cleanup: bootstrap again the minion
+  Scenario: Cleanup: bootstrap again the minion after mgrcompat tests
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
@@ -90,7 +90,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until I see "Successfully bootstrapped host!" text
     And I wait until onboarding is completed for "sle_minion"
 
-  Scenario: Cleanup: restore channels on the minion
+  Scenario: Cleanup: restore channels on the minion after mgrcompat tests
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     Then I follow "Software Channels" in the content area

@@ -1,4 +1,4 @@
-# Copyright 2011-2018 SUSE LLC.
+# Copyright 2011-2020 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 Given(/^a postgresql database is running$/) do

@@ -1,4 +1,4 @@
-# COPYRIGHT (c) 2019 SUSE LLC
+# Copyright (c) 2019 SUSE LLC
 # Licensed under the terms of the MIT License.
 
 Feature: Deleting channels with children or clones is not allowed

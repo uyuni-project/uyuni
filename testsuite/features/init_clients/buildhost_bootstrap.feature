@@ -86,7 +86,7 @@ Feature: Be able to bootstrap a Salt build host via the GUI
     And I disable repositories after installing Docker
 
 @buildhost
-  Scenario: Check that the build host is now a build host5
+  Scenario: Check that the build host is now a build host
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text

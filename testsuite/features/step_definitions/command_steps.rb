@@ -739,7 +739,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
   node = get_target(host)
   if host == 'sle_minion'
     cmd = "ls /var/cache/zypp/packages/susemanager:test-channel-x86_64/getPackage/*/*/#{pkg_name}*.rpm"
-  elsif host == 'ubuntu_minion'
+  elsif host.include? 'ubuntu'
     cmd = "ls /var/cache/apt/archives/#{pkg_name}*.deb"
   end
   repeat_until_timeout(message: "Package #{pkg_name} was not cached") do
@@ -918,7 +918,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
-           " --network network=test-net0 --graphics vnc "\
+           "--network network=test-net0 --graphics vnc "\
            "--serial pty,log.file=/tmp/#{vm_name}.console.log,log.append=off "\
            "--import --hvm --noautoconsole --noreboot")
 end
@@ -1118,8 +1118,8 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   long_wait_delay = 600
   current_time = Time.now.strftime('%Y%m%d%H%M')
   timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
-  $server.run("spacecmd -u admin -p admin clear_caches")
   node = get_system_name(client)
+  $server.run("spacecmd -u admin -p admin clear_caches")
   cmd = "spacecmd -u admin -p admin schedule_listcompleted #{current_time} #{timeout_time} #{node} | grep 'Package List Refresh scheduled by admin' | head -1"
   repeat_until_timeout(timeout: long_wait_delay, message: "'refresh package list' did not finish") do
     result, code = $server.run(cmd, false)

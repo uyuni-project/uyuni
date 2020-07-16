@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Install a package on the SSH minion via Salt through the UI

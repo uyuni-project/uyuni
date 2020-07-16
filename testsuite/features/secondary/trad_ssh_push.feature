@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 SUSE LLC
+# Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Register a traditional system to be managed via SSH push
