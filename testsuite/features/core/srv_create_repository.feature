@@ -38,7 +38,7 @@ Feature: Add a repository to a channel
   Scenario: Synchronize the repository in the x86_64 channel
     Given I am authorized as "testing" with password "testing"
     When I enable source package syncing
-    When I follow the left menu "Software > Manage > Channels"
+    And I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
     And I follow "Sync"
@@ -83,11 +83,11 @@ Feature: Add a repository to a channel
     And I select "deb" from "contenttype"
     And I enter "http://localhost/pub/TestRepoDebUpdates/" as "url"
     # WORKAROUND
-    # GPG verification of Debian-like repos was added and the TestRepoDebUpdates repo 
+    # GPG verification of Debian-like repos was added and the TestRepoDebUpdates repo
     # is signed by a GPG key that is not in the keyring. This workaround temporarily
     # disables GPG check, before this is properly handled at sumaform/terraform level.
     And I uncheck "metadataSigned"
-    # End of WORKAROUND    
+    # End of WORKAROUND
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
 

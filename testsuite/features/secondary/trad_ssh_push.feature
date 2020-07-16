@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2019 SUSE LLC
+# Copyright (c) 2016-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Register a traditional system to be managed via SSH push
@@ -73,7 +73,7 @@ Feature: Register a traditional system to be managed via SSH push
     And I run "sed -i '/127.0.1.1/d' /etc/hosts" on "sle_client"
     And I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-ssh-push-tunnel.sh" on "server"
     And I remove server hostname from hosts file on "sle_client"
- 
+
   Scenario: Cleanup: register a traditional client after SSH push tests
     When I bootstrap traditional client "sle_client" using bootstrap script with activation key "1-SUSE-DEV-x86_64" from the proxy
     Then I should see "sle_client" via spacecmd

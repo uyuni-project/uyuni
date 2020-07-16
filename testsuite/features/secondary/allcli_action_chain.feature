@@ -45,7 +45,7 @@ Feature: Action chains on several systems at once
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-  Scenario: Pre-requisite: remove all action chains before testing on Salt minion
+  Scenario: Pre-requisite: remove all action chains before testing on several systems
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     When I delete all action chains
     And I cancel all scheduled actions
