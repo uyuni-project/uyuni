@@ -95,7 +95,7 @@ Feature: Adding channels
     And I enter "Test-Channel-Deb-AMD64 for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
     # WORKAROUND
-    # GPG verification of Debian-like repos was added and the TestRepoDebUpdates repo 
+    # GPG verification of Debian-like repos was added and the TestRepoDebUpdates repo
     # is signed by a GPG key that is not in the keyring. This workaround temporarily
     # disables GPG check, before this is properly handled at sumaform/terraform level.
     And I uncheck "gpg_check"

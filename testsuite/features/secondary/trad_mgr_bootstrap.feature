@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Generate a bootstrap script and use it to register a client

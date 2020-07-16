@@ -109,7 +109,7 @@ Feature: Manage a group of systems
     Then I should see a "1 system groups removed." text
 
   # CentOS minion is intentionally not removed from group
- 
+
   Scenario: Cleanup: uninstall formula from the server
     Given I am authorized
     When I manually uninstall the "locale" formula from the server

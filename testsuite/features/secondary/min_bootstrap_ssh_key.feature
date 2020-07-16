@@ -15,7 +15,7 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
   Scenario: Prepare the minion for SSH key authentication
     When I backup the SSH authorized_keys file of host "sle_minion"
     And I add pre-generated SSH public key to authorized_keys of host "sle_minion"
-  
+
   Scenario: Bootstrap a SLES minion using SSH key with wrong passphrase
     Given I am authorized
     When I go to the bootstrapping page
@@ -55,6 +55,6 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
   Scenario: Also check contact method of this minion
     Given I am on the Systems overview page of this "sle_minion"
     Then I should see a "Default" text
-  
+
   Scenario: Cleanup: restore authorized keys
     When I restore the SSH authorized_keys file of host "sle_minion"

@@ -1,10 +1,10 @@
-# Copyright (c) 2015-16 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) check users page
 #  2) create and delete users
 #  3) Change permissions and roles in web UI
- 
+
 Feature: Manage users
 
   Scenario: Display active users page

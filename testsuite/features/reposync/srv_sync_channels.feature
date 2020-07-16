@@ -28,7 +28,7 @@ Feature: Be able to list available channels and enable them
 
 @scc_credentials
 @susemanager
-  Scenario: List all products
+  Scenario: List all products for SUSE Manager
     When I execute mgr-sync "list products --expand"
     Then I should get "[ ] SUSE Linux Enterprise Server 12 x86_64"
     And I should get "[ ] SUSE Manager Proxy 2.1 x86_64"
@@ -37,7 +37,7 @@ Feature: Be able to list available channels and enable them
 
 @scc_credentials
 @uyuni
-  Scenario: List all products
+  Scenario: List all products for Uyuni
     When I execute mgr-sync "list products --expand"
     Then I should get "[ ] SUSE Linux Enterprise Server 12 x86_64"
     And I should get "[ ] SUSE Manager Proxy 2.1 x86_64"

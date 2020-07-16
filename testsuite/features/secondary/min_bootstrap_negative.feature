@@ -3,7 +3,7 @@
 
 @sle_minion
 Feature: Negative tests for bootstrapping normal minions
-  In order to register only valid minions 
+  In order to register only valid minions
   As an authorized user
   I want to avoid registration with invalid input parameters
 

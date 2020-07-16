@@ -1,4 +1,4 @@
-# Copyright (c) 2019 SUSE LLC
+# Copyright (c) 2019-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Enable and disable monitoring of the server
@@ -21,7 +21,7 @@ Feature: Enable and disable monitoring of the server
     And file "/etc/sysconfig/tomcat" should not contain "Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
     And file "/etc/rhn/taskomatic.conf" should not contain "Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
 
-  Scenario: Restart spacewalk services to apply monitoring config changes
+  Scenario: Restart spacewalk services to apply config changes after disabling monitoring
     When I restart the spacewalk service
 
   Scenario: Check that monitoring is disabled using the UI
@@ -54,7 +54,7 @@ Feature: Enable and disable monitoring of the server
     And file "/etc/sysconfig/tomcat" should contain "Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
     And file "/etc/rhn/taskomatic.conf" should contain "Dcom.sun.management.jmxremote.port=3334 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
 
-  Scenario: Restart spacewalk services to apply monitoring config changes
+  Scenario: Restart spacewalk services to apply config changes after enabling monitoring
     When I restart the spacewalk service
 
   Scenario: Check that monitoring is enabled using the UI

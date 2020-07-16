@@ -105,7 +105,7 @@ Feature: Action chain on traditional clients
 
   Scenario: Subscribe system to configuration channel for testing action chain on traditional client
     Given I am on the Systems overview page of this "sle_client"
-    And I follow "Configuration" in the content area
+    When I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
     And I check "Action Chain Channel" in the list
@@ -150,11 +150,11 @@ Feature: Action chain on traditional clients
     Then I should not see a "new action chain" link
 
   Scenario: Delete the action chain for traditional client
-     Given I am authorized as "admin" with password "admin"
-     When I follow the left menu "Schedule > Action Chains"
-     And I follow "new action chain"
-     And I follow "delete action chain" in the content area
-     Then I click on "Delete"
+    Given I am authorized as "admin" with password "admin"
+    When I follow the left menu "Schedule > Action Chains"
+    And I follow "new action chain"
+    And I follow "delete action chain" in the content area
+    And I click on "Delete"
 
   Scenario: Add a remote command to the new action chain on traditional client
     Given I am on the Systems overview page of this "sle_client"
@@ -172,28 +172,28 @@ Feature: Action chain on traditional clients
     Given I am on the Systems overview page of this "sle_client"
     When I follow the left menu "Schedule > Action Chains"
     And I follow "new action chain"
-    And I should see a "1. Run a remote command on 1 system" text
-    Then I click on "Save and Schedule"
-    And I should see a "Action Chain new action chain has been scheduled for execution." text
+    Then I should see a "1. Run a remote command on 1 system" text
+    When I click on "Save and Schedule"
+    Then I should see a "Action Chain new action chain has been scheduled for execution." text
     When I run "rhn_check -vvv" on "sle_client"
 
   Scenario: Create an action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
     When I call XML-RPC createChain with chainLabel "throwaway_chain"
     And I call actionchain.list_chains() if label "throwaway_chain" is there
-    Then I delete the action chain
-    And there should be no action chain with the label "throwaway_chain"
+    And I delete the action chain
+    Then there should be no action chain with the label "throwaway_chain"
     When I call XML-RPC createChain with chainLabel "throwaway_chain"
-    Then I call actionchain.rename_chain() to rename it from "throwaway_chain" to "throwaway_chain_renamed"
-    And there should be a new action chain with the label "throwaway_chain_renamed"
-    And I delete an action chain, labeled "throwaway_chain_renamed"
-    And there should be no action chain with the label "throwaway_chain_renamed"
+    And I call actionchain.rename_chain() to rename it from "throwaway_chain" to "throwaway_chain_renamed"
+    Then there should be a new action chain with the label "throwaway_chain_renamed"
+    When I delete an action chain, labeled "throwaway_chain_renamed"
+    Then there should be no action chain with the label "throwaway_chain_renamed"
     And no action chain with the label "throwaway_chain"
 
   Scenario: Add operations to the action chain via XML-RPC for traditional client
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    And I want to operate on this "sle_client"
-    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    When I want to operate on this "sle_client"
+    And I call XML-RPC createChain with chainLabel "throwaway_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
@@ -207,14 +207,14 @@ Feature: Action chain on traditional clients
 
   Scenario: Run and cancel an action chain via XML-RPC
     Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
-    And I want to operate on this "sle_client"
-    When I call XML-RPC createChain with chainLabel "throwaway_chain"
+    When I want to operate on this "sle_client"
+    And I call XML-RPC createChain with chainLabel "throwaway_chain"
     And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
-    Then I wait until there are no more action chains
-    And I should see scheduled action, called "System reboot scheduled by admin"
-    Then I cancel all scheduled actions
+    And I wait until there are no more action chains
+    Then I should see scheduled action, called "System reboot scheduled by admin"
+    When I cancel all scheduled actions
     And I wait until there are no more scheduled actions
     And I delete the action chain
 

@@ -1,4 +1,4 @@
-# COPYRIGHT (c) 2017 SUSE LLC
+# Copyright (c) 2017 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Pick dates
