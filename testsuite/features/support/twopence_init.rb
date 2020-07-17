@@ -87,16 +87,14 @@ nodes.each do |node|
   next if node.nil?
 
   hostname, _local, _remote, code = node.test_and_store_results_together('hostname', 'root', 500)
-  raise "Cannot connect to get hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero?
-  raise "No hostname for '#{$named_nodes[node.hash]}'. Response code: #{code}" if hostname.empty?
+  raise "Cannot get hostname for node. Response code: #{code}" if code.nonzero? || hostname.empty?
   node.init_hostname(hostname)
 
   fqdn, _local, _remote, code = node.test_and_store_results_together('hostname -f', 'root', 500)
-  raise "Cannot connect to get FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if code.nonzero?
-  raise "No FQDN for '#{$named_nodes[node.hash]}'. Response code: #{code}" if fqdn.empty?
+  raise "No fully qualified domain name for node. Response code: #{code}" if code.nonzero? || fqdn.empty?
   node.init_full_hostname(fqdn)
 
-  puts "Host '#{$named_nodes[node.hash]}' is alive with determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $qam_test
+  puts "Determined hostname #{hostname.strip} and FQDN #{fqdn.strip}" unless $qam_test
 end
 
 # Initialize IP address or domain name
