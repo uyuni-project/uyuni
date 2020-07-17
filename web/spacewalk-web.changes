@@ -1,3 +1,4 @@
+- Fix VM creation page when there is no volume in the default storage pool
 - Refresh virtualization pages only on events
 - Product list in the Wizard doesn't show SLE products first (bsc#1173522)
 - Cluster UI: return to overview page after scheduling actions
