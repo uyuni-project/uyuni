@@ -1,3 +1,4 @@
+- Fix VM creation page when there is no volume in the default storage pool
 - Use volumes for VMs disks
 - Use ReactJS Context in Form components
 - Product list in the Wizard doesn't show SLE products first (bsc#1173522)
