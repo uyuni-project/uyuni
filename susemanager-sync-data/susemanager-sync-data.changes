@@ -1,3 +1,5 @@
+- remove version from centos and oracle linux identifier (bsc#1173584)
+
 -------------------------------------------------------------------
 Wed Jun 10 14:26:36 CEST 2020 - jgonzalez@suse.com
 
