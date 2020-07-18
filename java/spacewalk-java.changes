@@ -1,6 +1,7 @@
 - Add check for maintainence window during executing recurring actions
 - Implement maintenance windows in struts
 - XMLRPC: Assign/retract maintenance schedule to/from systems
+- Implement maintenance windows backend
 - Refresh virtualization pages only on events
 - fix up2date detection on RH8 when salt-minion is used for registration
 - improve performance of the System Groups page with many clients (bsc#1172839)
