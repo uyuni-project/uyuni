@@ -18,22 +18,22 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationGuestPackageInstall;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationHostPackageInstall;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateActionSource;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationResumeGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.suse.manager.virtualization.PoolSourceAuthentication;
@@ -71,15 +71,15 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
     }
 
     public void testDomainLifecycleActions() throws Exception {
-        HashMap<ActionType, Class<? extends BaseVirtualizationAction>> types = new HashMap<>();
-        types.put(ActionFactory.TYPE_VIRTUALIZATION_DELETE, VirtualizationDeleteAction.class);
-        types.put(ActionFactory.TYPE_VIRTUALIZATION_REBOOT, VirtualizationRebootAction.class);
-        types.put(ActionFactory.TYPE_VIRTUALIZATION_RESUME, VirtualizationResumeAction.class);
-        types.put(ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN, VirtualizationShutdownAction.class);
-        types.put(ActionFactory.TYPE_VIRTUALIZATION_START, VirtualizationStartAction.class);
-        types.put(ActionFactory.TYPE_VIRTUALIZATION_SUSPEND, VirtualizationSuspendAction.class);
+        HashMap<ActionType, Class<? extends BaseVirtualizationGuestAction>> types = new HashMap<>();
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_DELETE, VirtualizationDeleteGuestAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_REBOOT, VirtualizationRebootGuestAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_RESUME, VirtualizationResumeGuestAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN, VirtualizationShutdownGuestAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_START, VirtualizationStartGuestAction.class);
+        types.put(ActionFactory.TYPE_VIRTUALIZATION_SUSPEND, VirtualizationSuspendGuestAction.class);
 
-        for (Entry<ActionType, Class<? extends BaseVirtualizationAction>> entry : types.entrySet()) {
+        for (Entry<ActionType, Class<? extends BaseVirtualizationGuestAction>> entry : types.entrySet()) {
             Action a = ActionFactoryTest.createAction(user, entry.getKey());
             flushAndEvict(a);
 
@@ -92,29 +92,29 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
 
     public void testDomainForceoff() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
-        VirtualizationShutdownAction va = (VirtualizationShutdownAction)a;
+        VirtualizationShutdownGuestAction va = (VirtualizationShutdownGuestAction)a;
         va.setForce(true);
         flushAndEvict(va);
 
         Action a1 = ActionFactory.lookupById(a.getId());
         assertNotNull(a1);
 
-        assertTrue(a1 instanceof VirtualizationShutdownAction);
-        VirtualizationShutdownAction rebootAction = (VirtualizationShutdownAction)a1;
+        assertTrue(a1 instanceof VirtualizationShutdownGuestAction);
+        VirtualizationShutdownGuestAction rebootAction = (VirtualizationShutdownGuestAction)a1;
         assertTrue(rebootAction.isForce());
     }
 
     public void testDomainReset() throws Exception {
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
-        VirtualizationRebootAction va = (VirtualizationRebootAction)a;
+        VirtualizationRebootGuestAction va = (VirtualizationRebootGuestAction)a;
         va.setForce(true);
         flushAndEvict(va);
 
         Action a1 = ActionFactory.lookupById(a.getId());
         assertNotNull(a1);
 
-        assertTrue(a1 instanceof VirtualizationRebootAction);
-        VirtualizationRebootAction rebootAction = (VirtualizationRebootAction)a1;
+        assertTrue(a1 instanceof VirtualizationRebootGuestAction);
+        VirtualizationRebootGuestAction rebootAction = (VirtualizationRebootGuestAction)a1;
         assertTrue(rebootAction.isForce());
     }
 
@@ -125,7 +125,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         Action a1 = ActionFactory.lookupById(a.getId());
         assertNotNull(a1);
 
-        VirtualizationSetMemoryAction va = (VirtualizationSetMemoryAction)a1;
+        VirtualizationSetMemoryGuestAction va = (VirtualizationSetMemoryGuestAction)a1;
         assertEquals(Integer.valueOf(1234), va.getMemory());
     }
 
@@ -136,7 +136,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         Action a1 = ActionFactory.lookupById(a.getId());
         assertNotNull(a1);
 
-        VirtualizationSetVcpusAction va = (VirtualizationSetVcpusAction)a1;
+        VirtualizationSetVcpusGuestAction va = (VirtualizationSetVcpusGuestAction)a1;
         assertEquals(Integer.valueOf(12), va.getVcpu());
     }
 
@@ -146,7 +146,7 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public void testCreateLookup() throws Exception {
-        VirtualizationCreateAction a1 = (VirtualizationCreateAction)ActionFactoryTest
+        VirtualizationCreateGuestAction a1 = (VirtualizationCreateGuestAction)ActionFactoryTest
                 .createAction(user, ActionFactory.TYPE_VIRTUALIZATION_CREATE);
         a1.setType("kvm");
         a1.setName("guest0");
@@ -178,8 +178,8 @@ public class VirtualizationActionsTest extends BaseTestCaseWithUser {
         Action a = ActionFactory.lookupById(a1.getId());
 
         assertNotNull(a);
-        assertTrue(a instanceof VirtualizationCreateAction);
-        VirtualizationCreateAction actual = (VirtualizationCreateAction)a;
+        assertTrue(a instanceof VirtualizationCreateGuestAction);
+        VirtualizationCreateGuestAction actual = (VirtualizationCreateGuestAction)a;
         assertEquals("kvm", actual.getType());
         assertEquals("guest0", actual.getName());
         assertEquals("x86_64", actual.getArch());

@@ -27,8 +27,8 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionDiskDetails;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateActionInterfaceDetails;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -340,7 +340,8 @@ public class VirtualGuestsController {
                         else {
                             Map<String, String> context = new HashMap<>();
                             if (data.getForce() != null) {
-                                context.put(BaseVirtualizationAction.FORCE_STRING, Boolean.toString(data.getForce()));
+                                context.put(BaseVirtualizationGuestAction.FORCE_STRING,
+                                        Boolean.toString(data.getForce()));
                             }
                             result = triggerGuestAction(host, guest, type, user, context);
                         }
@@ -529,16 +530,16 @@ public class VirtualGuestsController {
         // and that is only possible for the KVM driver.
         data.setName(guest != null ? guest.getName() : data.getName());
 
-        context.put(VirtualizationCreateAction.TYPE, data.getType());
-        context.put(VirtualizationCreateAction.NAME, data.getName());
-        context.put(VirtualizationCreateAction.OS_TYPE, data.getOsType());
-        context.put(VirtualizationCreateAction.MEMORY, data.getMemory());
-        context.put(VirtualizationCreateAction.VCPUS, data.getVcpu());
-        context.put(VirtualizationCreateAction.ARCH, data.getArch());
-        context.put(VirtualizationCreateAction.GRAPHICS, data.getGraphicsType());
+        context.put(VirtualizationCreateGuestAction.TYPE, data.getType());
+        context.put(VirtualizationCreateGuestAction.NAME, data.getName());
+        context.put(VirtualizationCreateGuestAction.OS_TYPE, data.getOsType());
+        context.put(VirtualizationCreateGuestAction.MEMORY, data.getMemory());
+        context.put(VirtualizationCreateGuestAction.VCPUS, data.getVcpu());
+        context.put(VirtualizationCreateGuestAction.ARCH, data.getArch());
+        context.put(VirtualizationCreateGuestAction.GRAPHICS, data.getGraphicsType());
 
         if (data.getDisks() != null) {
-            context.put(VirtualizationCreateAction.DISKS, data.getDisks().stream().map(disk -> {
+            context.put(VirtualizationCreateGuestAction.DISKS, data.getDisks().stream().map(disk -> {
                 VirtualizationCreateActionDiskDetails details = new VirtualizationCreateActionDiskDetails();
                 details.setDevice(disk.getDevice());
                 details.setTemplate(disk.getTemplate());
@@ -552,7 +553,7 @@ public class VirtualGuestsController {
         }
 
         if (data.getInterfaces() != null) {
-            context.put(VirtualizationCreateAction.INTERFACES, data.getInterfaces().stream().map(nic -> {
+            context.put(VirtualizationCreateGuestAction.INTERFACES, data.getInterfaces().stream().map(nic -> {
                 VirtualizationCreateActionInterfaceDetails details = new VirtualizationCreateActionInterfaceDetails();
                 details.setType(nic.getType());
                 details.setSource(nic.getSource());

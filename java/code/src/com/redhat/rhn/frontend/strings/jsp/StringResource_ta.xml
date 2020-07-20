@@ -5909,21 +5909,21 @@ organization. You may grant or remove the organization administrator role in the
         <target>SSM ல் பயன்படுத்தவும்</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.security">
-        <source>Security Updates Needed</source>
+        <source>Security updates needed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
         <target>பாதுகாப்பு மேம்படுத்தல் தேவைப்படுகிறது</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.updates">
-        <source>Patch Updates Available</source>
+        <source>Updates available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
         <target>பிழைத்திருத்தங்கள் மேம்படுத்தல் உள்ளன</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
-        <source>No Applicable Patches</source>
+        <source>No applicable updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>

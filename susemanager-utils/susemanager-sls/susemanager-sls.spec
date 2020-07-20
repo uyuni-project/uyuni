@@ -33,10 +33,12 @@ Requires:       susemanager-build-keys-web >= 12.0.1
 BuildRequires:  python3-pytest
 BuildRequires:  python3-mock
 BuildRequires:  python3-salt
+Requires:       python3-PyYAML >= 5.1
 %else
 BuildRequires:  python-pytest
 BuildRequires:  python-mock
 BuildRequires:  python-salt
+Requires:       python-PyYAML >= 5.1
 %endif
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
@@ -101,7 +103,7 @@ py.test
 
 # Check that SLS files don't contain any call to "module.run" which has
 # been replaced by "mgrcompat.module_run" calls.
-! grep -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
+! grep --include "*.sls" -r "module\.run" %{buildroot}/usr/share/susemanager/salt || exit 1
 
 %post
 # HACK! Create broken link when it will be replaces with the real file

@@ -19,7 +19,7 @@ Feature: Empty minion profile operations
     And I wait until I see "empty-profile" text, refreshing the page
     And I wait until I see "00:11:22:33:44:55" text
     And I wait until I see "empty-profile-hostname" text
-  
+
   Scenario: Check the empty profiles has the hostname set
     Given I am authorized
     And I navigate to "rhn/systems/BootstrapSystemList.do" page

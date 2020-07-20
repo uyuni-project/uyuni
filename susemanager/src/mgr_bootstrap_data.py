@@ -1039,19 +1039,19 @@ DATA = {
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/5/bootstrap/'
     },
     'SLE-15-aarch64' : {
-        'PDID' : [1589, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1589, 2053, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-ppc64le' : {
-        'PDID' : [1588, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
+        'PDID' : [1588, 2054, 1710], 'BETAPDID' : [1926], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_PPC,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-s390x' : {
-        'PDID' : [1587, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
+        'PDID' : [1587, 2055, 1711], 'BETAPDID' : [1927], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_Z,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-x86_64' : {
-        'PDID' : [1576, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'PDID' : [1576, 2056, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/0/bootstrap/'
     },
     'SLE-15-SP1-aarch64' : {

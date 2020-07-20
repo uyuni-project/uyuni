@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,23 +19,22 @@ import com.google.gson.JsonElement;
 import java.util.Optional;
 
 /**
- *
- * LibvirtEngineDomainLifecycleMessage
+ * Class representing a Salt Pool Lifecycle event
  */
-public class LibvirtEngineDomainLifecycleMessage extends LibvirtEngineDomainMessage {
+public class LibvirtEnginePoolLifecycleMessage extends LibvirtEnginePoolMessage {
 
     private String event;
     private String detail;
 
     /**
-     * @return the domain lifecycle event type (start, destroy, etc)
+     * @return the lifecycle event type (start, destroy, etc)
      */
     public String getEvent() {
         return event;
     }
 
     /**
-     * @return the domain lifecycle event detail, mostly indicating the
+     * @return the lifecycle event detail, mostly indicating the
      *         reason of the event
      */
     public String getDetail() {
@@ -47,11 +46,11 @@ public class LibvirtEngineDomainLifecycleMessage extends LibvirtEngineDomainMess
         return super.toString() + "[" + event + "]";
     }
 
-    protected LibvirtEngineDomainLifecycleMessage(String connection,
-            Optional<String> minionId, String timestamp, JsonElement data) {
+    protected LibvirtEnginePoolLifecycleMessage(String connection, Optional<String> minionId,
+                                                String timestamp, JsonElement data) {
         super(connection, minionId, timestamp, data);
 
-        this.event = data.getAsJsonObject().get("event").getAsString();
-        this.detail = data.getAsJsonObject().get("detail").getAsString();
+        event = data.getAsJsonObject().get("event").getAsString();
+        detail = data.getAsJsonObject().get("detail").getAsString();
     }
 }

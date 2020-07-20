@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Web UI - Main landing page menu, texts and links
@@ -57,7 +57,7 @@ Feature: Web UI - Main landing page menu, texts and links
     And I should see a "CVE Audit" link in the left menu
     And I should see a "Subscription Matching" link in the left menu
     And I should see a "OpenSCAP" link in the left menu
- 
+
   Scenario: The OpenSCAP submenu menu
     When I follow the left menu "Audit > OpenSCAP"
     Then I should see a "OpenSCAP Scans" text

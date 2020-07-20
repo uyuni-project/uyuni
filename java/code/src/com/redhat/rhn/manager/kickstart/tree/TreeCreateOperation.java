@@ -74,7 +74,7 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
             }
             // disable YaST self update for SLE
             if (!kopts.contains("self_update=")) {
-                kOptsJoiner.add("self_update=0").add("pt.options=+self_update");
+                kOptsJoiner.add("self_update=0");
             }
         }
         else if (this.tree.getInstallType().isRhel8OrGreater()) {

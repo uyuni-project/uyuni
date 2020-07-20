@@ -21,7 +21,6 @@ import type {MessageType} from 'components/messages';
 
 type Props = {
   serverId: string,
-  refreshInterval: number,
   pageSize: number,
 };
 
@@ -147,9 +146,16 @@ const DeleteActionConfirm = (props) => {
 export function PoolsList(props: Props) {
   const [selected, setSelected] = React.useState({});
   const [errors, setErrors] = React.useState([]);
+  const [lastRefresh, setLastRefresh] = React.useState(Date.now());
+
+  const refresh = (type: string) => {
+    if (type === "pool") {
+      setLastRefresh(Date.now());
+    }
+  };
 
   const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
-                                                                  props.serverId);
+                                                                  props.serverId, refresh);
 
   const actionCallback = (results: Object) => {
     const newActions = Object.keys(results).reduce((actions, poolName) => {
@@ -191,7 +197,7 @@ export function PoolsList(props: Props) {
         return (
           <VirtualizationPoolsListRefreshApi
             serverId={props.serverId}
-            refreshInterval={props.refreshInterval}
+            lastRefresh={lastRefresh}
           >
           {
             ({

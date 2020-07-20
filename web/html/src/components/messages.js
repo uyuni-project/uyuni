@@ -4,6 +4,12 @@ import * as React from "react";
 
 type Severity = "info" | "success" | "warning" | "error";
 
+export type ServerMessageType = {
+  severity: Severity,
+  text: string,
+  args: Array<string>
+}
+
 export type MessageType = {
   severity: Severity,
   text: string |
@@ -89,6 +95,32 @@ export class Messages extends React.Component<Props> {
         return (<div key={"messages-pop-up"}>{msgs}</div>);
     }
 
+}
+
+export const fromServerMessage = (message: ServerMessageType, messageMap?: {[string]: string | ((any) => string | React.Node)}): ?MessageType => {
+  let messageText = message.text;
+  if (messageMap && (messageText in messageMap)) {
+    messageText = messageMap[message.text];
+    if (typeof messageText === "function") {
+      messageText = messageText(message.args);
+    }
+  }
+  let msg: ?MessageType;
+  switch (message.severity) {
+    case "info":
+      msg = Messages.info(messageText);
+      break;
+    case "success":
+      msg = Messages.success(messageText);
+      break;
+    case "warning":
+      msg = Messages.warning(messageText);
+      break;
+    case "error":
+      msg = Messages.error(messageText);
+      break;
+  }
+  return msg;
 }
 
 function msg(severityIn: Severity, ...textIn: Array<React.Node>) {

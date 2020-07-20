@@ -7,6 +7,8 @@ import http
 import os
 import zlib
 import lzma
+import tempfile
+import subprocess
 from urllib import parse
 import hashlib
 from collections import namedtuple
@@ -70,13 +72,14 @@ class DpkgRepo:
                 key = "/".join(parse.urlparse(self.__repo._url).path.strip("/").split("/")[-2:] + [key])
             return self[key]
 
-    def __init__(self, url: str, proxies: dict = None):
+    def __init__(self, url: str, proxies: dict = None, gpg_verify: bool = True):
         self._url = url
         self._flat_checked: typing.Optional[int] = None
         self._flat: bool = False
         self._pkg_index: typing.Tuple[str, bytes] = ("", b"", )
         self._release = DpkgRepo.EntryDict(self)
         self.proxies = proxies
+        self.gpg_verify = gpg_verify
 
     def append_index_file(self, index_file: str) -> str:
         """
@@ -177,24 +180,87 @@ class DpkgRepo:
 
         return self._release
 
+
+    def _has_valid_gpg_signature(self, response) -> bool:
+        """
+        Validate GPG signature of Release file.
+
+        :return: bool
+        """
+        if response.url.endswith("InRelease"):
+            process = subprocess.Popen(
+                ["gpg", "--verify"],
+                stdin=subprocess.PIPE,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            out = process.communicate(response.content)
+        else:
+            gpg_url = response.url + ".gpg"
+            signature_response = requests.get(gpg_url, proxies=self.proxies)
+            if signature_response.status_code != http.HTTPStatus.OK:
+                return False
+            else:
+                temp_release_file = tempfile.NamedTemporaryFile()
+                temp_release_file.write(response.content)
+                temp_release_file.seek(0)
+                temp_signature_file = tempfile.NamedTemporaryFile()
+                temp_signature_file.write(signature_response.content)
+                temp_signature_file.seek(0)
+                process = subprocess.Popen(
+                    ["gpg", "--verify", temp_signature_file.name, temp_release_file.name],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+        if process.returncode == 0:
+            return True
+        else:
+            return False
+
+
     def get_release_index(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         """
         Find and return contents of Release file.
 
-        :raises GeneralRepoException if the Release file cannot be found.
+        InRelease file take precedence over Release file if both exist.
+        In either case the file must be signed with a GPG key. The signature is
+        verified before the content is parsed.
+
+        :raises GeneralRepoException if the Release file cannot be found or the GPG signature can't be verified.
         :return: string
         """
-        resp = requests.get(self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies)
+
+        # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
+        resp = requests.get(self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies)
+        if resp.status_code != http.HTTPStatus.OK:
+            resp = requests.get(self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies)
+        
         try:
+            if resp.status_code not in [
+                http.HTTPStatus.NOT_FOUND,
+                http.HTTPStatus.OK,
+                http.HTTPStatus.FORBIDDEN,
+            ]:
+                raise GeneralRepoException(
+                    "HTTP error {} occurred while connecting to the URL".format(resp.status_code)
+                )
+
             self._flat = resp.status_code in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.FORBIDDEN]
             self._flat_checked = 1
+
+            if not self.is_flat() and self.gpg_verify and not self._has_valid_gpg_signature(resp):
+                raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
+
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
-            if resp.status_code not in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.OK, http.HTTPStatus.FORBIDDEN]:
-                raise GeneralRepoException("HTTP error {} occurred while connecting to the URL".format(resp.status_code))
 
             if not self._release and self.is_flat():
-                resp = requests.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
+                resp = requests.get(self._get_parent_url(self._url, 0, "InRelease"), proxies=self.proxies)
+                if resp.status_code != http.HTTPStatus.OK:
+                    resp = requests.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
+
                 if resp.status_code == http.HTTPStatus.OK:
+                    if self.gpg_verify and not self._has_valid_gpg_signature(resp):
+                        raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
                     self._release = self._parse_release_index(resp.content.decode("utf-8"))
         finally:
             resp.close()

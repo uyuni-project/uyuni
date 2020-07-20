@@ -11,44 +11,12 @@
                  AND EXISTS ( SELECT 1
                               FROM rhnServerFeaturesView SFV
                               WHERE SFV.server_id = SGM.server_id
-                                    AND SFV.label = 'ftr_system_grouping')) AS  SERVER_COUNT,
-        (SELECT CASE MAX(CASE E.advisory_type
-            WHEN 'Security Advisory' THEN 3
-            WHEN 'Bug Fix Advisory' THEN 2
-            WHEN 'Product Enhancement Advisory' THEN 1 END)
-          WHEN 3 THEN 'Security Advisory'
-          WHEN 2 THEN 'Bug Fix Advisory'
-          WHEN 1 THEN 'Product Enhancement Advisory' END type_value
-                       from rhnErrata E inner join
-                            rhnServerNeededCache SNPC on E.id = SNPC.errata_id inner join
-                            rhnServerGroupMembers SGM on SGM.server_id = SNPC.server_id inner join
-                            rhnServerFeaturesView SFV on SGM.server_id = SFV.server_id
-                       where sgm.server_group_id = G.id
-                         AND SFV.label = 'ftr_system_grouping') as MOST_SEVERE_ERRATA
+                                    AND SFV.label = 'ftr_system_grouping')) AS  SERVER_COUNT
  FROM   rhnServerGroup G, rhnUserManagedServerGroups UMSG
  WHERE   G.ORG_ID = :org_id
    AND   UMSG.user_id = :user_id
    AND   G.id IN (%s)
    AND   G.id = UMSG.server_group_id
-  </query>
-
-  <query name="errata_count">
-           SELECT
-                 sgm.server_group_id AS ID,
-                 ( select count(distinct E.id) from rhnErrata E where E.id = SNEC.errata_id AND E.advisory_type = 'Security Advisory') AS SECURITY_ERRATA,
-                 ( select count(distinct E.id) from rhnErrata E where E.id = SNEC.errata_id AND E.advisory_type = 'Bug Fix Advisory') AS BUG_ERRATA,
-                 ( select count(distinct E.id) from rhnErrata E where E.id = SNEC.errata_id AND E.advisory_type = 'Product Enhancement Advisory') AS ENHANCEMENT_ERRATA
-            FROM
-                 rhnServerNeededErrataCache SNEC,
-                 rhnServerGroupMembers SGM,
-
-
-           WHERE
-
-                  snpc.server_id = sgm.server_id
-                 AND sgm.server_group_id IN (%s)
-
-
   </query>
 
 <query name="visible_to_user_ids" params="user_id">
@@ -79,24 +47,50 @@ ORDER BY UPPER(NAME)
     ) x
     ORDER BY UPPER(NAME)
   </query>
-    <elaborator name="most_severe_errata" />
+  <elaborator name="most_severe_errata" />
 </mode>
 <query name="most_severe_errata" params="">
-    SELECT sgm.server_group_id AS id,
-        CASE MAX(CASE e.advisory_type
-            WHEN 'Security Advisory' THEN 3
-            WHEN 'Bug Fix Advisory' THEN 2
-            WHEN 'Product Enhancement Advisory' THEN 1 END)
-            WHEN 3 THEN 'Security Advisory'
-            WHEN 2 THEN 'Bug Fix Advisory'
-            WHEN 1 THEN 'Product Enhancement Advisory'
-        END AS most_severe_errata
-    FROM rhnErrata e
-        INNER JOIN rhnServerNeededCache snpc ON e.id = snpc.errata_id
-        INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snpc.server_id
-        INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
-    WHERE sgm.server_group_id IN (%s) AND sfv.label = 'ftr_system_grouping'
-    GROUP BY server_group_id
+    WITH groupAdvisoryTypes AS NOT MATERIALIZED (
+        SELECT sgm.server_group_id, e.advisory_type
+          FROM rhnServerNeededCache snpc
+              INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snpc.server_id
+              INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
+              LEFT JOIN rhnErrata e ON e.id = snpc.errata_id
+          WHERE sfv.label = 'ftr_system_grouping'
+    )
+    SELECT rhnServerGroup.id,
+        CASE (
+            SELECT EXISTS (SELECT 1
+                FROM groupAdvisoryTypes gat
+                    WHERE gat.server_group_id = rhnServerGroup.id
+                    AND gat.advisory_type = 'Security Advisory')
+        )
+        WHEN TRUE THEN 'Security Advisory'
+        ELSE CASE (
+            SELECT EXISTS (SELECT 1
+                FROM groupAdvisoryTypes gat
+                    WHERE gat.server_group_id = rhnServerGroup.id
+                    AND gat.advisory_type = 'Bug Fix Advisory')
+        )
+        WHEN TRUE THEN 'Bug Fix Advisory'
+        ELSE CASE (
+            SELECT EXISTS (SELECT 1
+                FROM groupAdvisoryTypes gat
+                    WHERE gat.server_group_id = rhnServerGroup.id
+                    AND gat.advisory_type = 'Product Enhancement Advisory')
+        )
+        WHEN TRUE THEN 'Product Enhancement Advisory'
+        ELSE CASE (
+            SELECT EXISTS (SELECT 1
+                FROM groupAdvisoryTypes gat
+                    WHERE gat.server_group_id = rhnServerGroup.id
+                    AND gat.advisory_type IS NULL)
+        )
+        WHEN TRUE THEN 'Outdated Packages'
+        ELSE NULL
+        END END END END AS most_severe_errata
+    FROM rhnServerGroup
+    WHERE rhnServerGroup.id IN (%s)
 </query>
 <mode name="is_visible">
         <query  params="sgid, user_id">
@@ -113,6 +107,7 @@ ORDER BY UPPER(NAME)
 <mode name="visible_to_user" class="com.redhat.rhn.frontend.dto.SystemGroupOverview">
   <query name="visible_to_user_ids" />
   <elaborator name="visible_to_user_overview_fast" />
+  <elaborator name="most_severe_errata" />
 </mode>
 
 <mode name="managed_system_groups_by_system">
@@ -160,16 +155,19 @@ ORDER BY UPPER(SG.name), SG.id
 
 <mode name="group_errata_counts">
   <query params="sgid">
-     SELECT count(DISTINCT e.id),
+     SELECT count(DISTINCT CASE
+                WHEN snc.errata_id IS NULL THEN snc.package_id
+                ELSE snc.errata_id END), --Count multiple packages in an erratum as one
             CASE e.advisory_type
                 WHEN 'Security Advisory' THEN 'se'
                 WHEN 'Bug Fix Advisory' THEN 'be'
                 WHEN 'Product Enhancement Advisory' THEN 'ee'
+                ELSE 'op' --Outdated packages
             END AS advisory_type
-      FROM rhnErrata e
-        INNER JOIN rhnServerNeededCache snc ON e.id = snc.errata_id
+      FROM rhnServerNeededCache snc
         INNER JOIN rhnServerGroupMembers sgm ON sgm.server_id = snc.server_id
         INNER JOIN rhnServerFeaturesView sfv ON sgm.server_id = sfv.server_id
+        LEFT JOIN rhnErrata e ON e.id = snc.errata_id
       WHERE sgm.server_group_id = :sgid AND sfv.label = 'ftr_system_grouping'
       GROUP BY e.advisory_type
   </query>

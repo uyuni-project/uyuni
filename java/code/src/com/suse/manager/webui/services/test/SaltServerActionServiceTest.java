@@ -32,9 +32,9 @@ import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -336,7 +336,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         for (ActionType type : actionTypes) {
             Action action = ActionFactoryTest.createAction(user, type);
-            BaseVirtualizationAction va = (BaseVirtualizationAction)action;
+            BaseVirtualizationGuestAction va = (BaseVirtualizationGuestAction)action;
             va.setUuid(minionHost.getGuests().iterator().next().getUuid());
             ActionFactory.addServerToAction(minionHost, action);
 
@@ -350,7 +350,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
-        VirtualizationShutdownAction va = (VirtualizationShutdownAction)action;
+        VirtualizationShutdownGuestAction va = (VirtualizationShutdownGuestAction)action;
         va.setUuid(minionHost.getGuests().iterator().next().getUuid());
         va.setForce(true);
         ActionFactory.addServerToAction(minionHost, action);
@@ -365,7 +365,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
 
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
-        VirtualizationRebootAction va = (VirtualizationRebootAction)action;
+        VirtualizationRebootGuestAction va = (VirtualizationRebootGuestAction)action;
         va.setUuid(minionHost.getGuests().iterator().next().getUuid());
         va.setForce(true);
         ActionFactory.addServerToAction(minionHost, action);

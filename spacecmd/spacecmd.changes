@@ -1,3 +1,5 @@
+- fix escaping of package names (bsc#1171281)
+
 -------------------------------------------------------------------
 Wed Jun 10 12:14:16 CEST 2020 - jgonzalez@suse.com
 

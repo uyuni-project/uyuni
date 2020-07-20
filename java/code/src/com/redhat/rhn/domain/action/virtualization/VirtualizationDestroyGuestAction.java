@@ -15,9 +15,8 @@
 package com.redhat.rhn.domain.action.virtualization;
 
 /**
- * VirtualizationDestroyAction - Class representing TYPE_VIRTUALIZATION_DESTROY
- * @version $Rev$
+ * Class representing TYPE_VIRTUALIZATION_DESTROY
  */
-public class VirtualizationDestroyAction extends BaseVirtualizationAction {
+public class VirtualizationDestroyGuestAction extends BaseVirtualizationGuestAction {
 
 }

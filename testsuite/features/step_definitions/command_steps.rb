@@ -21,6 +21,14 @@ Then(/^"([^"]*)" should communicate with the server$/) do |host|
   $server.run("ping -c1 #{node.full_hostname}")
 end
 
+Then(/^the clock from "([^"]*)" should be exact$/) do |host|
+  node = get_target(host)
+  clock_node, _rc = node.run("date +'%s'")
+  clock_controller = `date +'%s'`
+  difference = clock_node.to_i - clock_controller.to_i
+  raise "clocks differ by #{difference} seconds" unless difference.abs < 2
+end
+
 Then(/^it should be possible to reach the test packages$/) do
   url = 'https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/x86_64/orion-dummy-1.1-1.1.x86_64.rpm'
   $server.run("curl --insecure --location #{url} --output /dev/null")
@@ -301,11 +309,8 @@ end
 
 When(/^I execute spacewalk-debug on the server$/) do
   $server.run('spacewalk-debug')
-  cmd = "echo | scp -o StrictHostKeyChecking=no root@#{$server.ip}:/tmp/spacewalk-debug.tar.bz2 . 2>&1"
-  command_output = `#{cmd}`
-  unless $CHILD_STATUS.success?
-    raise "Execute command failed: #{$ERROR_INFO}: #{command_output}"
-  end
+  code = file_extract($server, "/tmp/spacewalk-debug.tar.bz2", "spacewalk-debug.tar.bz2")
+  raise "Download debug file failed" unless code.zero?
 end
 
 Then(/^I get logfiles from "([^"]*)"$/) do |target|
@@ -951,7 +956,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   # Actually define the VM, but don't start it
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
-           " --network network=test-net0 --graphics vnc "\
+           "--network network=test-net0 --graphics vnc "\
            "--serial file,path=/tmp/#{vm_name}.console.log "\
            "--import --hvm --noautoconsole --noreboot")
 end
@@ -1163,7 +1168,7 @@ When(/^I delete all "([^"]*)" volumes from "([^"]*)" pool on "([^"]*)" without e
   output.each_line { |volume| node.run("virsh vol-delete #{volume} #{pool}", false) }
 end
 
-When(/I refresh the "([^"]*)" storage pool of this "([^"]*)"/) do |pool, host|
+When(/^I refresh the "([^"]*)" storage pool of this "([^"]*)"$/) do |pool, host|
   node = get_target(host)
   node.run("virsh pool-refresh #{pool}")
 end

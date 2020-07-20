@@ -454,7 +454,7 @@ end
 Then(/^I am logged in$/) do
   raise 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
   text = 'You have just created your first $PRODUCT user. To finalize your installation please use the Setup Wizard'
-  text.gsub! '$PRODUCT', $product # TODO: Rid of this substitution, using another step
+  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
   raise 'The welcome message is not shown' unless has_content?(text)
 end
 
@@ -526,7 +526,7 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  text.gsub! '$PRODUCT', $product # TODO: Rid of this substitution, using another step
+  text.gsub! '$PRODUCT', $product # TODO: Get rid of this substitution, using another step
   raise "Text #{text} not found" unless has_content?(text)
 end
 

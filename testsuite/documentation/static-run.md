@@ -1,7 +1,7 @@
 ### Static run
 
 #### Warning
- 
+
 If you want to run the testsuite without sumaform, you have to create and configure the machines.
 You may do that manually, or with the help of Salt states.
 

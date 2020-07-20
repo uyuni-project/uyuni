@@ -245,7 +245,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </subclass>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction"
                 discriminator-value="36" lazy="true">
           <join table="rhnActionVirtShutdown">
             <key column="action_id"/>
@@ -254,7 +254,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationStartAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction"
                 discriminator-value="37" lazy="true">
           <join table="rhnActionVirtStart">
             <key column="action_id"/>
@@ -262,7 +262,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction"
                 discriminator-value="38" lazy="true">
           <join table="rhnActionVirtSuspend">
             <key column="action_id"/>
@@ -270,7 +270,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationResumeAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationResumeGuestAction"
                 discriminator-value="39" lazy="true">
           <join table="rhnActionVirtResume">
             <key column="action_id"/>
@@ -278,7 +278,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationRebootAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction"
                 discriminator-value="40" lazy="true">
           <join table="rhnActionVirtReboot">
             <key column="action_id"/>
@@ -287,7 +287,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyGuestAction"
                 discriminator-value="41" lazy="true">
           <join table="rhnActionVirtDestroy">
             <key column="action_id"/>
@@ -295,7 +295,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction"
                 discriminator-value="42" lazy="true">
           <join table="rhnActionVirtSetMemory">
             <key column="action_id"/>
@@ -304,7 +304,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction"
                 discriminator-value="48" lazy="true">
           <join table="rhnActionVirtVcpu">
             <key column="action_id"/>
@@ -340,7 +340,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                   discriminator-value="51" lazy="true">
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction"
                 discriminator-value="507" lazy="true">
           <join table="rhnActionVirtDelete">
             <key column="action_id"/>
@@ -348,7 +348,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
           </join>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction"
+        <subclass name="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction"
                 discriminator-value="508" lazy="true">
           <list name="disks" lazy="true" cascade="save-update">
               <key column="action_id"/>

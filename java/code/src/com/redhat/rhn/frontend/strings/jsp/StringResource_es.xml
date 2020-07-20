@@ -6162,21 +6162,21 @@ administrador de la organización en la sección &quot;Roles&quot; de la pestañ
         <target>Utilizar en SSM</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.security">
-        <source>Security Updates Needed</source>
+        <source>Security updates needed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
         <target>Actualizaciones de seguridad necesarias</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.updates">
-        <source>Patch Updates Available</source>
+        <source>Updates available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
         <target>Erratas de actualización disponibles</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
-        <source>No Applicable Patches</source>
+        <source>No applicable updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>

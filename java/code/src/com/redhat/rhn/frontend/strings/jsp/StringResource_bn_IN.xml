@@ -5779,21 +5779,21 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.security">
-        <source>Security Updates Needed</source>
+        <source>Security updates needed</source>
         <target>নিরাপত্তাজনীত আপডেট প্রয়োজন</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.updates">
-        <source>Patch Updates Available</source>
+        <source>Updates available</source>
         <target>ত্রুটি-বিচ্যুতির আপডেট উপলব্ধ রয়েছে</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
-        <source>No Applicable Patches</source>
+        <source>No applicable updates</source>
         <target>কোনো প্রযোজ্য ত্রুটি-বিচ্যুতির তথ্য উপস্থিত নেই</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>

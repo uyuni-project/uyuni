@@ -17,40 +17,39 @@ package com.redhat.rhn.domain.action.virtualization;
 import java.util.Map;
 
 /**
- * VirtualizationSetVcpusAction - Class representing TYPE_VIRTUALIZATION_SET_VCPUS
- * @version $Rev$
+ * Class representing TYPE_VIRTUALIZATION_SET_MEMORY.
+ * Make sure the 'memory' field is in kilobytes.
  */
-public class VirtualizationSetVcpusAction extends BaseVirtualizationAction {
+public class VirtualizationSetMemoryGuestAction extends BaseVirtualizationGuestAction {
 
-    public static final String SET_CPU_STRING = "setVcpu";
+    public static final String SET_MEMORY_STRING = "setMemory";
 
-    private Integer vcpu;
+    private Integer memory;
 
     /**
-     * Set the vcpus to be appied to the guest.
-     * @param vcpuIn New setting for guest vcpus.
+     * Set the memory to be appied to the guest.  This is KILOBYTES
+     * @param memoryIn New setting for guest memory.
      */
-    public void setVcpu(Integer vcpuIn) {
-        vcpu = vcpuIn;
+    public void setMemory(Integer memoryIn) {
+        memory = memoryIn;
     }
 
     /**
-     * Guest the guest vcpus.
-     * @return The guest vcpu setting.
+     * Guest the guest memory. KILOBYTES
+     * @return The guest memory setting.
      */
-    public Integer getVcpu() {
-        return vcpu;
+    public Integer getMemory() {
+        return memory;
     }
 
     /**
      * {@inheritDoc}
      */
     public void extractParameters(Map context) {
-        if (context.containsKey(VirtualizationSetVcpusAction.SET_CPU_STRING)) {
-            setVcpu(Integer.valueOf((String)context.get(
-                    VirtualizationSetVcpusAction.SET_CPU_STRING)));
+        if (context.containsKey(VirtualizationSetMemoryGuestAction.SET_MEMORY_STRING)) {
+            setMemory(Integer.valueOf((String)context.get(
+                    VirtualizationSetMemoryGuestAction.SET_MEMORY_STRING)));
         }
     }
 
 }
-

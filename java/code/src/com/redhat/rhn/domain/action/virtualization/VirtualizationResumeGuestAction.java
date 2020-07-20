@@ -15,9 +15,8 @@
 package com.redhat.rhn.domain.action.virtualization;
 
 /**
- * VirtualizationResumeAction - Class representing TYPE_VIRTUALIZATION_RESUME
- * @version $Rev$
+ * Class representing TYPE_VIRTUALIZATION_RESUME
  */
-public class VirtualizationResumeAction extends BaseVirtualizationAction {
+public class VirtualizationResumeGuestAction extends BaseVirtualizationGuestAction {
 
 }

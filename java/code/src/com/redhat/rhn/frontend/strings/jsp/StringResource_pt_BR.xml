@@ -6163,21 +6163,21 @@ permanecer sem modificações nesta página. Caso queira modificá-los, visite
         <target>Usar no SSM</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.security">
-        <source>Security Updates Needed</source>
+        <source>Security updates needed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
         <target>Atualizações de Segurança Necessárias</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.updates">
-        <source>Patch Updates Available</source>
+        <source>Updates available</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
         <target>Atualizações de Errata Disponíveis</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
-        <source>No Applicable Patches</source>
+        <source>No applicable updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>

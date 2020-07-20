@@ -18,21 +18,17 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -49,7 +45,6 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.websocket.EndpointConfig;
@@ -77,37 +72,6 @@ public class VirtNotifications {
     private static final Object LOCK = new Object();
     private static Map<Session, Set<Long>> wsSessions = new HashMap<>();
     private static Set<Session> brokenSessions = new HashSet<>();
-
-    // Map each virtualization action types to an id supplier. The id is indeed
-    // different for guests, pools, volumes and networks
-    private static final Map<Class<? extends Action>, Function<Action, String>> IDS_MAPPER = Map.of(
-            BaseVirtualizationAction.class,
-            (action) -> {
-                String id = "new-" + action.getId();
-                BaseVirtualizationAction virtAction = (BaseVirtualizationAction)action;
-                String uuid = virtAction.getUuid();
-                if (uuid != null) {
-                    id = uuid;
-                }
-                return id;
-            },
-            BaseVirtualizationPoolAction.class,
-            (action) -> {
-                String id = "new-" + action.getId();
-                BaseVirtualizationPoolAction virtAction = (BaseVirtualizationPoolAction)action;
-
-                if (action instanceof BaseVirtualizationVolumeAction) {
-                    BaseVirtualizationVolumeAction volumeAction = (BaseVirtualizationVolumeAction)action;
-                    id = String.format("volume-%s/%s", volumeAction.getPoolName(), volumeAction.getVolumeName());
-                }
-                else if (action instanceof VirtualizationPoolCreateAction &&
-                        ((VirtualizationPoolCreateAction)action).getUuid() != null ||
-                        !(action instanceof VirtualizationPoolCreateAction)) {
-                    id = String.format("pool-%s", virtAction.getPoolName());
-                }
-                return id;
-            }
-        );
 
     /**
      * Callback executed when the websocket is opened.
@@ -183,14 +147,7 @@ public class VirtNotifications {
                             .filter(sa -> ActionFactory.isVirtualizationActionType(
                                         sa.getParentAction().getActionType()))
                             .collect(Collectors.toMap(sa -> {
-                                        Action action = (Action)Hibernate.unproxy(sa.getParentAction());
-                                        return IDS_MAPPER.entrySet().stream()
-                                            .filter(entry -> entry.getKey().isInstance(action))
-                                            .findFirst()
-                                            .map(entry -> {
-                                                return entry.getValue().apply(action);
-                                            })
-                                            .orElse(null);
+                                        return sa.getParentAction().getWebSocketActionId();
                                     },
                                     sa -> Arrays.asList(sa),
                                     (sa1, sa2) -> {
@@ -262,29 +219,42 @@ public class VirtNotifications {
      */
     public static void spreadActionUpdate(Action action) {
         synchronized (LOCK) {
-            IDS_MAPPER.keySet().stream()
-                .filter(clazz -> clazz.isInstance(action))
-                .findFirst()
-                .ifPresent(virtClazz -> {
-                    // Notify sessions waiting for this action and stop watching for it
-                    wsSessions.forEach((session, servers) -> {
-                        Optional<ServerAction> serverAction = action.getServerActions().stream()
-                                .filter(sa -> servers.contains(sa.getServerId())).findFirst();
+            // Notify sessions waiting for this action
+            wsSessions.forEach((session, servers) -> {
+                Optional<ServerAction> serverAction = action.getServerActions().stream()
+                        .filter(sa -> servers.contains(sa.getServerId())).findFirst();
 
-                        serverAction.ifPresent(sa -> {
-                            Map<String, Object> actions = new HashMap<>();
-                            actions.put("id", action.getId());
-                            actions.put("status", sa.getStatus().getName());
-                            actions.put("type", sa.getParentAction().getActionType().getLabel());
-                            actions.put("name", sa.getParentAction().getName());
+                serverAction.ifPresent(sa -> {
+                    Map<String, Object> actions = new HashMap<>();
+                    actions.put("id", action.getId());
+                    actions.put("status", sa.getStatus().getName());
+                    actions.put("type", sa.getParentAction().getActionType().getLabel());
+                    actions.put("name", sa.getParentAction().getName());
 
-                            Map<String, Object> msg = new HashMap<>();
-                            msg.put(IDS_MAPPER.get(virtClazz).apply(action), actions);
+                    Map<String, Object> msg = new HashMap<>();
+                    msg.put(action.getWebSocketActionId(), actions);
 
-                            sendMessage(session, GSON.toJson(msg));
-                        });
-                    });
+                    sendMessage(session, GSON.toJson(msg));
                 });
+            });
+        }
+    }
+
+    /**
+     * A static method to notify all {@link Session}s attached to WebSocket that a refresh is needed.
+     * Must be synchronized. Sending messages concurrently from separate threads
+     * will result in IllegalStateException.
+     *
+     * @param kind the kind of object list that needs refresh. One of "guest", "pool"
+     */
+    public static void spreadRefresh(String kind) {
+        synchronized (LOCK) {
+            // Notify sessions waiting for this action
+            wsSessions.forEach((session, servers) -> {
+                Map<String, Object> data = new HashMap<>();
+                data.put("refresh", kind);
+                sendMessage(session, GSON.toJson(data));
+            });
         }
     }
 

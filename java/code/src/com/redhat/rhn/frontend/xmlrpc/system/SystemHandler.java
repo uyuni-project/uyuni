@@ -38,8 +38,8 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -5618,7 +5618,7 @@ public class SystemHandler extends BaseHandler {
 
         Map<String, String> context = new HashMap<String, String>();
         //convert from mega to kilo bytes
-        context.put(VirtualizationSetMemoryAction.SET_MEMORY_STRING,
+        context.put(VirtualizationSetMemoryGuestAction.SET_MEMORY_STRING,
                 Integer.valueOf(memory * 1024).toString());
 
 
@@ -5662,7 +5662,7 @@ public class SystemHandler extends BaseHandler {
                 loggedInUser.getOrg(), sid.longValue());
 
         Map<String, String> context = new HashMap<String, String>();
-        context.put(VirtualizationSetVcpusAction.SET_CPU_STRING, numOfCpus.toString());
+        context.put(VirtualizationSetVcpusGuestAction.SET_CPU_STRING, numOfCpus.toString());
 
         VirtualizationActionCommand cmd = new VirtualizationActionCommand(loggedInUser,
                 new Date(),

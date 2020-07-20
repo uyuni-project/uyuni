@@ -272,7 +272,7 @@ When(/^I attach the file "(.*)" to "(.*)"$/) do |path, field|
   attach_file(field, canonical_path)
 end
 
-When(/I view system with id "([^"]*)"/) do |arg1|
+When(/^I view system with id "([^"]*)"$/) do |arg1|
   visit Capybara.app_host + '/rhn/systems/details/Overview.do?sid=' + arg1
 end
 
@@ -461,7 +461,7 @@ When(/^I select "([^\"]*)" as a product$/) do |product|
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
-When(/I wait until the tree item "([^"]+)" has no sub-list/) do |item|
+When(/^I wait until the tree item "([^"]+)" has no sub-list$/) do |item|
   repeat_until_timeout(message: "could still find a sub list for tree item #{item}") do
     xpath = "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-')]"
     begin

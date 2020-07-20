@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2018 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,29 +14,9 @@
  */
 package com.redhat.rhn.domain.action.virtualization;
 
+/**
+ * Class representing TYPE_VIRTUALIZATION_DELETE
+ */
+public class VirtualizationDeleteGuestAction extends BaseVirtualizationGuestAction {
 
-public class BaseVirtualizationVolumeAction extends BaseVirtualizationPoolAction {
-
-    private String volumeName;
-
-
-    /**
-     * @return Returns the volumeName.
-     */
-    public String getVolumeName() {
-        return volumeName;
-    }
-
-
-    /**
-     * @param volumeNameIn The volumeName to set.
-     */
-    public void setVolumeName(String volumeNameIn) {
-        volumeName = volumeNameIn;
-    }
-
-    @Override
-    public String getWebSocketActionId() {
-        return String.format("volume-%s/%s", getPoolName(), getVolumeName());
-    }
 }

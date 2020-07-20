@@ -261,7 +261,7 @@ Look at this one:
 
 ```ruby
 Then /^I shall not see "([^"]*)" when I call user\.list_roles\(\) with "([^"]*)" uid$/ do |rolename, luser|
-  
+
   roles = rpctest.get_user_roles(luser)
   fail if roles != nil ? roles.length != 0 : false
 end

@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 Feature: CVE audit for content management
-  I want to see images that need to be patched or not 
+  I want to see images that need to be patched or not
 
   Background:
     Given I am authorized as "admin" with password "admin"

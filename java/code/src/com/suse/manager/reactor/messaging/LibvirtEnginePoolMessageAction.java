@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,12 +12,20 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.action.virtualization;
+package com.suse.manager.reactor.messaging;
+
+import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.messaging.MessageAction;
+
+import com.suse.manager.webui.websocket.VirtNotifications;
 
 /**
- * VirtualizationSuspendAction - Class representing TYPE_VIRTUALIZATION_SUSPEND
- * @version $Rev$
+ * Virt Engine Storage Pool Lifecycle Event Action Handler
  */
-public class VirtualizationSuspendAction extends BaseVirtualizationAction {
-
+public class LibvirtEnginePoolMessageAction implements MessageAction {
+    @Override
+    public void execute(EventMessage msg) {
+        // Notify that there was a pool change
+        VirtNotifications.spreadRefresh("pool");
+    }
 }
