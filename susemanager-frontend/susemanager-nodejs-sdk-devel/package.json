@@ -37,6 +37,7 @@
     "flow-bin": "^0.107.0",
     "jest": "^24.7.1",
     "license-checker-webpack-plugin": "^0.0.9",
+    "msw": "^0.19.5",
     "serialize-javascript": "^2.1.2",
     "shelljs": "^0.8.3",
     "style-loader": "^0.23.1",
