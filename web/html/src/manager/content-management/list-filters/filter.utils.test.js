@@ -173,6 +173,11 @@ describe('Testing filters form <> request mappers', () => {
     expect(mapResponseToFilterForm([mapFilterFormToRequest(filterForm)])[0])
       .toEqual(expect.objectContaining(filterForm));
 
+    // Rule should be "allow" in any case
+    filterForm.rule = "deny";
+
+    expect(mapFilterFormToRequest(filterForm).rule).toEqual("allow");
+
     // Stream name can be empty
     filterForm.moduleStream = "";
 

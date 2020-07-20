@@ -50,6 +50,7 @@ export function mapFilterFormToRequest(filterForm: FilterFormType, projectLabel:
   } else if (filterForm.type === clmFilterOptions.STREAM.key) {
     const streamName = !_isEmpty(filterForm.moduleStream) ? `:${filterForm.moduleStream}` : '';
     requestForm.criteriaValue = `${filterForm.moduleName || ""}${streamName}`;
+    requestForm.rule = "allow";
   }
 
   return requestForm;
