@@ -67,7 +67,7 @@ export function GuestProperties(props: Props) : React.Node {
           networks,
           error: netListError,
         }) => (
-          <VirtualizationPoolsListRefreshApi serverId={props.host.id} lastRefresh={Date.now()}>
+          <VirtualizationPoolsListRefreshApi serverId={props.host.id}>
             {
               ({
                 pools,
