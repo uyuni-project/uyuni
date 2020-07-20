@@ -1,3 +1,5 @@
+- Remove unnecessary array wrap in 'list_modules' response object
+
 -------------------------------------------------------------------
 Wed Jun 10 12:13:35 CEST 2020 - jgonzalez@suse.com
 

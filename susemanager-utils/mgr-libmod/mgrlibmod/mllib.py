@@ -427,7 +427,7 @@ class MLLibmodAPI:
         :rtype: List[str]
         """
         modules: Dict = {
-            "modules": []
+            "modules": {}
         }
         self._proc.index_modules()
         mobj: Dict = {}
@@ -440,7 +440,7 @@ class MLLibmodAPI:
                     "streams": d_mod.get_streams_with_default_profiles(),
                 }
 
-        modules["modules"].append(mobj)
+        modules["modules"] = mobj
         return modules
 
     def _function__list_packages(self) -> Dict[str, List[str]]:
