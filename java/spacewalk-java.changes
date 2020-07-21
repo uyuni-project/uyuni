@@ -1,3 +1,4 @@
+- Fix softwarechannel update for vendor channels (bsc#1172709)
 - avoid deadlock when syncing channels and registering minions at the same time (bsc#1173566)
 - Change system list header text to something better (bsc#1173982)
 - set CPU and memory info for virtual instances (bsc#1170244)

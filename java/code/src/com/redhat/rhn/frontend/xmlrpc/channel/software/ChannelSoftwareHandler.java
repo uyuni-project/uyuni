@@ -730,6 +730,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         validKeys.add("gpg_key_id");
         validKeys.add("gpg_key_fp");
         validKeys.add("gpg_check");
+        validKeys.add("vendor_channel");
         validateMap(validKeys, details);
 
         UpdateChannelCommand ucc = new UpdateChannelCommand(loggedInUser, channel);
@@ -804,6 +805,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         if (details.containsKey("gpg_check")) {
             command.setGpgCheck(Boolean.parseBoolean(details.get("gpg_check")));
+        }
+
+        if (details.containsKey("vendor_channel")) {
+            command.setVendorChannel(Boolean.parseBoolean(details.get("vendor_channel")));
         }
 
         if (details.containsKey("maintainer_name")) {
