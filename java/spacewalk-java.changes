@@ -1,3 +1,4 @@
+- Fix httpcomponents and gson jar symlinks (bsc#1174229)
 - enhance RedHat product detection for CentOS and OracleLinux (bsc#1173584)
 - provide comps.xml and modules.yaml when using onlinerepo for kickstart
 - Refresh virtualization pages only on events
