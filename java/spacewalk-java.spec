@@ -670,17 +670,10 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 # SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
 %{jardir}/commons-jexl.jar
 %{jardir}/commons-lang3.jar
-%if 0%{?is_opensuse}
 %{jardir}/google-gson_google-gsongson.jar
 %{jardir}/httpcomponents_httpclient.jar
 %{jardir}/httpcomponents_httpcore.jar
 %{jardir}/httpcomponents_httpcore-nio.jar
-%else
-%{jardir}/google-gson.jar
-%{jardir}/httpclient.jar
-%{jardir}/httpcore.jar
-%{jardir}/httpcore-nio.jar
-%endif
 %{jardir}/httpasyncclient.jar
 %{jardir}/jade4j.jar
 %{jardir}/jose4j.jar
