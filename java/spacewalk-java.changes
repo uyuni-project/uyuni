@@ -1,3 +1,5 @@
+- Data null means the sync never ran yet (bsc#1174357)
+
 -------------------------------------------------------------------
 Wed Aug 12 10:52:05 CEST 2020 - jgonzalez@suse.com
 
