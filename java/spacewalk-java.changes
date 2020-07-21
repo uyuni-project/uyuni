@@ -1,3 +1,5 @@
+- Pass minion ip to the kiwi_collect_image runner as fallback instead
+  of fqdn if not present (bsc#1170737)
 - fix up2date detection on RH8 when salt-minion is used for registration
 - improve performance of the System Groups page with many clients (bsc#1172839)
 - Adapt expectations for jobs return events after switching Salt
