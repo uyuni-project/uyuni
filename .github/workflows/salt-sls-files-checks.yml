@@ -2,7 +2,7 @@ name: Check the content of Salt SLS files
 
 on:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    paths: 'susemanager-utils/susemanager-sls/salt/**/*.sls'
 
 jobs:
   salt_sls_files_checks:
@@ -10,9 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+    - uses: actions/checkout@v2
 
     - uses: mattsb42/not-grep@master
       with:
