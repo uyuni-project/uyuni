@@ -67,6 +67,7 @@ public class CreateChannelCommand {
     protected String gpgKeyFp;
     protected boolean gpgCheck = true;
     protected String checksum;
+    protected boolean vendorChannel = false;
 
 
     protected String maintainerName;
@@ -162,6 +163,13 @@ public class CreateChannelCommand {
      */
     public void setGpgCheck(boolean gpgCheckIn) {
         gpgCheck = gpgCheckIn;
+    }
+
+    /**
+     * @param vendorChannelIn vendorChannel flag
+     */
+    public void setVendorChannel(boolean vendorChannelIn) {
+        vendorChannel = vendorChannelIn;
     }
 
     /**
