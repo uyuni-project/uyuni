@@ -101,49 +101,52 @@ public class UpdateChannelCommand extends CreateChannelCommand {
         // lookup the channel first.
         Channel c = ChannelFactory.lookupById(cid);
 
-        if (ChannelFactory.doesChannelNameExist(name) &&
-                !name.equals(c.getName())) {
-            throw new InvalidChannelNameException(name,
-                    InvalidChannelNameException.Reason.NAME_IN_USE,
-                    "edit.channel.invalidchannelname.nameinuse", name);
-        }
-        if (ContentSyncManager.isChannelNameReserved(name)) {
-            throw new InvalidChannelNameException(name,
-                    InvalidChannelNameException.Reason.NAME_RESERVED,
-                    "edit.channel.invalidchannelname.namereserved", name);
+        if (!vendorChannel) {
+            if (ChannelFactory.doesChannelNameExist(name) &&
+                    !name.equals(c.getName())) {
+                throw new InvalidChannelNameException(name,
+                        InvalidChannelNameException.Reason.NAME_IN_USE,
+                        "edit.channel.invalidchannelname.nameinuse", name);
+            }
+            if (ContentSyncManager.isChannelNameReserved(name)) {
+                throw new InvalidChannelNameException(name,
+                        InvalidChannelNameException.Reason.NAME_RESERVED,
+                        "edit.channel.invalidchannelname.namereserved", name);
+            }
+
+            if (ChannelFactory.findArchByLabel(archLabel) == null) {
+                throw new IllegalArgumentException("Invalid architecture label");
+            }
+
+            ChecksumType ct = ChannelFactory.findChecksumTypeByLabel(checksum);
+            if (ct == null) {
+                throw new InvalidChecksumLabelException();
+            }
+
+            if (checksumChanged(c.getChecksumTypeLabel(), ct) &&
+                    c.getPackageCount() > 0) {
+                // schedule repo re generation if the checksum type changed
+                // and the channel has packages
+                ChannelManager.queueChannelChange(c.getLabel(),
+                        "java::updateChannelCommon", null);
+            }
+
+            c.setName(name);
+            c.setSummary(summary);
+            c.setDescription(description);
+            c.setBaseDir("/dev/null");
+            c.setGPGKeyId(gpgKeyId);
+            c.setGPGKeyUrl(gpgKeyUrl);
+            c.setGPGKeyFp(gpgKeyFp);
+            c.setChecksumType(ct);
+            c.setAccess(access);
+            c.setMaintainerName(maintainerName);
+            c.setMaintainerEmail(maintainerEmail);
+            c.setMaintainerPhone(maintainerPhone);
+            c.setSupportPolicy(supportPolicy);
         }
 
-        if (ChannelFactory.findArchByLabel(archLabel) == null) {
-            throw new IllegalArgumentException("Invalid architecture label");
-        }
-
-        ChecksumType ct = ChannelFactory.findChecksumTypeByLabel(checksum);
-        if (ct == null) {
-            throw new InvalidChecksumLabelException();
-        }
-
-        if (checksumChanged(c.getChecksumTypeLabel(), ct) &&
-                c.getPackageCount() > 0) {
-            // schedule repo re generation if the checksum type changed
-            // and the channel has packages
-            ChannelManager.queueChannelChange(c.getLabel(),
-                    "java::updateChannelCommon", null);
-        }
-
-        c.setName(name);
-        c.setSummary(summary);
-        c.setDescription(description);
-        c.setBaseDir("/dev/null");
-        c.setGPGKeyId(gpgKeyId);
-        c.setGPGKeyUrl(gpgKeyUrl);
-        c.setGPGKeyFp(gpgKeyFp);
         c.setGPGCheck(gpgCheck);
-        c.setChecksumType(ct);
-        c.setAccess(access);
-        c.setMaintainerName(maintainerName);
-        c.setMaintainerEmail(maintainerEmail);
-        c.setMaintainerPhone(maintainerPhone);
-        c.setSupportPolicy(supportPolicy);
 
         // need to save before calling stored proc below
         ChannelFactory.save(c);
