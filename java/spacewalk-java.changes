@@ -1,3 +1,4 @@
+- Data null means the sync never ran yet (bsc#1174357)
 - Don't output virtualization pillar for systems without virtualization entitlement
 - Use volumes for VMs disks
 - Toggle virtpoller when toggling virtualization host entitlement (bsc#1172962)
