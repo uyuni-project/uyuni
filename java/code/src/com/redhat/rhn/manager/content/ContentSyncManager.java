@@ -641,13 +641,15 @@ public class ContentSyncManager {
                 return true;
             }
         }
+
+        Optional<Date> lastRefreshDate = ManagerInfoFactory.getLastMgrSyncRefresh();
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
             log.debug("Syncing from dir");
             long hours24 = 24 * 60 * 60 * 1000;
             Timestamp t = new Timestamp(System.currentTimeMillis() - hours24);
 
             return Opt.fold(
-                    ManagerInfoFactory.getLastMgrSyncRefresh(),
+                    lastRefreshDate,
                     () -> true,
                     modifiedCache -> {
                         log.debug("Last sync more than 24 hours ago: " + modifiedCache.toString() +
@@ -656,7 +658,7 @@ public class ContentSyncManager {
                     }
             );
         }
-        return SCCCachingFactory.refreshNeeded();
+        return SCCCachingFactory.refreshNeeded(lastRefreshDate);
     }
 
     /**
