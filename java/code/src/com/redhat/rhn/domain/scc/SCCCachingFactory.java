@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
-import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -297,9 +296,11 @@ public class SCCCachingFactory extends HibernateFactory {
 
     /**
      * Check if the cache needs a refresh.
+     *
+     * @param lastRefreshDateIn the last refresh cache date, if any
      * @return true if refresh is needed, false otherwise
      */
-    public static boolean refreshNeeded() {
+    public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
         Session session = getSession();
         Criteria c = session.createCriteria(Credentials.class);
         c.add(Restrictions.eq("type", CredentialsFactory
@@ -313,7 +314,7 @@ public class SCCCachingFactory extends HibernateFactory {
 
         // When was the cache last modified?
         return Opt.fold(
-                ManagerInfoFactory.getLastMgrSyncRefresh(),
+                lastRefreshDateIn,
                 () -> {
                     log.debug("REFRESH NEEDED - never refreshed");
                     return true;
