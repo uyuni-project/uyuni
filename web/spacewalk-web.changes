@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 23 13:33:43 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
 - Fix internal server error when creating module filters in CLM (bsc#1174325)
 - Fix VM creation page when there is no volume in the default storage pool
 - Refresh virtualization pages only on events
