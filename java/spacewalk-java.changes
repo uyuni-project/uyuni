@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 23 11:40:59 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.35-1
 - Data null means the sync never ran yet (bsc#1174357)
 - Don't output virtualization pillar for systems without virtualization entitlement
 - Use volumes for VMs disks
