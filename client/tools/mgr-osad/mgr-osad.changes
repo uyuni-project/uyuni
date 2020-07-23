@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 23 17:58:28 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.3-1
 - move uyuni-base-common dependency from mgr-osad to mgr-osa-dispatcher
   (bsc#1174405)
 
