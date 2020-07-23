@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 23 13:26:41 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.16-1
 - Fix httpcomponents and gson jar symlinks (bsc#1174229)
 - enhance RedHat product detection for CentOS and OracleLinux (bsc#1173584)
 - provide comps.xml and modules.yaml when using onlinerepo for kickstart
