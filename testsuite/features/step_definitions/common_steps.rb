@@ -51,12 +51,12 @@ Then(/^I should see the name of the image$/) do
   step %(I should see a "#{compute_image_name}" text)
 end
 
-Then(/^I should see the terminals imported from the configuration file/) do
+Then(/^I should see the terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
   terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
 end
 
-Then(/^I should not see any terminals imported from the configuration file/) do
+Then(/^I should not see any terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
@@ -187,12 +187,12 @@ Then(/^I add "([^"]*)" channel$/) do |channel|
 end
 
 # channel steps
-When(/^I use spacewalk\-channel to add test-channel-x86_64-child-channel/) do
+When(/^I use spacewalk\-channel to add test-channel-x86_64-child-channel$/) do
   child_channel = 'test-channel-x86_64-child-channel'
   step %(I execute spacewalk\-channel and pass "--add -c #{child_channel} -u admin -p admin")
 end
 
-When(/^I use spacewalk\-channel to remove test-channel-x86_64-child-channel/) do
+When(/^I use spacewalk\-channel to remove test-channel-x86_64-child-channel$/) do
   child_channel = 'test-channel-x86_64-child-channel'
   step %(I execute spacewalk\-channel and pass "--remove -c #{child_channel} -u admin -p admin")
 end
@@ -214,7 +214,7 @@ Given(/cobblerd is running/) do
   raise 'cobblerd is not running' unless ct.running?
 end
 
-Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |distro, user, pwd|
+Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
@@ -244,7 +244,7 @@ Given(/distro "([^"]*)" exists/) do |distro|
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
 
-Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
+Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2, arg3|
   ct = CobblerTest.new
   ct.login(arg2, arg3)
   raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
@@ -381,7 +381,7 @@ Then(/^HTTP proxy verification should have succeeded$/) do
   raise 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
 end
 
-When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
+When(/^I enter the address of the HTTP proxy as "([^"]*)"$/) do |hostname|
   step %(I enter "#{$server_http_proxy}" as "#{hostname}")
 end
 
