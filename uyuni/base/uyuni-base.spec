@@ -31,7 +31,7 @@
 %endif
 
 Name:           uyuni-base
-Version:        4.1.1
+Version:        4.2.0
 Release:        1
 Url:            https://github.com/uyuni-project/uyuni
 Summary:        Uyuni Base Package
