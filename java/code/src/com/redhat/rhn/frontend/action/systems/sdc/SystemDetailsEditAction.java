@@ -253,7 +253,9 @@ public class SystemDetailsEditAction extends RhnAction {
             success &= applyAddonEntitlementChanges(request, daForm, s, user);
         }
 
-        getStrutsDelegate().saveMessages(request, errors);
+        if (!success) {
+            getStrutsDelegate().saveMessages(request, errors);
+        }
         return success;
     }
 
