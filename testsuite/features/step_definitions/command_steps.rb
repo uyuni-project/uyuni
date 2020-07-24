@@ -1028,7 +1028,7 @@ Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host
   end
 end
 
-Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus") do
     output, _code = node.run("virsh dumpxml #{vm}")
@@ -1039,7 +1039,7 @@ Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and (
   end
 end
 
-Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{type} graphics device") do
     output, _code = node.run("virsh dumpxml #{vm}")
@@ -1196,7 +1196,7 @@ When(/^I prepare the retail configuration file on server$/) do
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
 
-When(/^I import the retail configuration using retail_yaml command/) do
+When(/^I import the retail configuration using retail_yaml command$/) do
   filepath = '/tmp/massive-import-terminals.yml'
   $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
 end
