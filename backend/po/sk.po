@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-07-26 08:51+0000\n"
+"PO-Revision-Date: 2020-07-28 12:34+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
 "\n"
@@ -506,19 +506,19 @@ msgstr "Nepodarilo získať z databázy systémové dáta."
 
 #: ../common/rhnException.py:69
 msgid "Invalid arguments passed to function."
-msgstr ""
+msgstr "Funkcii boli odovzdané neplatné argumenty."
 
 #: ../common/rhnException.py:70
 msgid "Unable to retrieve requested entry."
-msgstr ""
+msgstr "Požadovanú položku sa nepodarilo získať."
 
 #: ../common/rhnException.py:71
 msgid "Could not update database entry."
-msgstr ""
+msgstr "Nepodarilo sa aktualizovať položku databázy."
 
 #: ../common/rhnException.py:72
 msgid "Unsupported server architecture."
-msgstr ""
+msgstr "Nepodporovaná architektúra servera."
 
 #: ../common/rhnException.py:73
 #, python-format
@@ -533,14 +533,24 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     Funkcia anonymného servera už nie je k dispozícii.\n"
+"\n"
+"     Znova zaregistrujte tento systém spustením mgr_register ako root.\n"
+"     Prosím navštívte https://%(hostname)s/rhn/systems/SystemEntitlements."
+"do\n"
+"     alebo sa prihláste na https://%(hostname)s a z karty \"Prehľad\" "
+"vyberte\n"
+"     \"Správa predplatného\" na aktiváciu služby pre tento systém.\n"
+"     "
 
 #: ../common/rhnException.py:81
 msgid "Record not available in the database."
-msgstr ""
+msgstr "Záznam nie je dostupný v databáze."
 
 #: ../common/rhnException.py:82
 msgid "Invalid value for entry."
-msgstr ""
+msgstr "Neplatná hodnota pre položku."
 
 #: ../common/rhnException.py:83
 #, python-format
@@ -553,46 +563,54 @@ msgid ""
 "system.\n"
 "     "
 msgstr ""
+"\n"
+"     Tento systém nemá platné oprávnenie pre SUSE Manager.\n"
+"     Prosím navštívte https://%(hostname)s/rhn/systems/SystemEntitlements."
+"do\n"
+"     alebo sa prihláste na https://%(hostname)s a z karty \"Prehľad\" "
+"vyberte\n"
+"     \"Správa predplatného\"vna aktiváciu služby pre tento systém.\n"
+"     "
 
 #: ../common/rhnException.py:89
 msgid "Channel error"
-msgstr ""
+msgstr "Chyba kanála"
 
 #: ../common/rhnException.py:90
 msgid "Client session token is invalid."
-msgstr ""
+msgstr "Token klientského sedenia je neplatný."
 
 #: ../common/rhnException.py:91
 msgid "Client session token has expired."
-msgstr ""
+msgstr "Platnosť tokenu klientského sedenia vypršala."
 
 #: ../common/rhnException.py:92
 msgid "You are not authorized to retrieve the requested object."
-msgstr ""
+msgstr "Nemáte oprávnenie získať požadovaný objekt."
 
 #: ../common/rhnException.py:93
 msgid "Invalid action"
-msgstr ""
+msgstr "Neplatná akcia"
 
 #: ../common/rhnException.py:94
 msgid "You are not allowed to perform administrative tasks on this system."
-msgstr ""
+msgstr "Nemáte oprávnenie vykonávať administratívne úlohy v tomto systéme."
 
 #: ../common/rhnException.py:96
 msgid "The system is already subscribed to the specified channel."
-msgstr ""
+msgstr "Systém je už prihlásený k zadanému kanálu."
 
 #: ../common/rhnException.py:97
 msgid "The system is not currently subscribed to the specified channel."
-msgstr ""
+msgstr "Systém nie je momentálne prihlásený k zadanému kanálu."
 
 #: ../common/rhnException.py:98
 msgid "The specified channel does not exist."
-msgstr ""
+msgstr "Zadaný kanál neexistuje."
 
 #: ../common/rhnException.py:99
 msgid "Invalid channel version."
-msgstr ""
+msgstr "Neplatná verzia kanála."
 
 #: ../common/rhnException.py:100
 msgid ""
@@ -607,6 +625,17 @@ msgid ""
 "     to be changed.\n"
 "     "
 msgstr ""
+"\n"
+"     Limity členstva v používateľských skupinách boli prekročené.\n"
+"\n"
+"     Aktuálne nastavenia vášho účtu vám neumožňujú pridať ďalší "
+"používateľský\n"
+"     používateľský účet. Prosím, overte si u administrátora organizácie pre "
+"váš\n"
+"     účet, či sa musí zmeniť maximálny počet používateľov, ktorí sa môžu "
+"prihlásiť k serveru.\n"
+"     k serveru.\n"
+"     "
 
 #: ../common/rhnException.py:108
 msgid ""
@@ -630,6 +659,11 @@ msgid ""
 "     The architecture of the package is not supported by\n"
 "     "
 msgstr ""
+"\n"
+"     Neplatná architektúra.\n"
+"\n"
+"     Architektúru balíka nie je podporovaná\n"
+"     "
 
 #: ../common/rhnException.py:121
 msgid "Invalid RPM header"
