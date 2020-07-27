@@ -438,12 +438,19 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         altpretty =  ', '.join("'%s'" %(e) for e in alt)
         altcount = 0
         for pkgname in alt:
+            optional = False
+            if pkgname[-1] == "*":
+                optional = True
+                pkgname = pkgname[:-1]
             altcount += 1
             h.execute(parentchannel=parentchannel, pkgname=pkgname)
             pkgs = h.fetchall_dict() or []
             log("Package {0} found {1} resulting packages:".format(
                 pkgname, len(pkgs)), 2)
             if len(pkgs) == 0:
+                if optional:
+                    log("Optional package '{0}' not found".format(pkgname))
+                    continue
                 if altcount >= len(alt):
                     if len(alt) > 1:
                         messages.append("ERROR: none of %s found" % altpretty)
