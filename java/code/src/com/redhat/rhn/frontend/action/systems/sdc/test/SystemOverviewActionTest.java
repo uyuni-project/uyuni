@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -27,6 +28,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -37,6 +39,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -146,5 +149,16 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         assertEquals(kernelLiveVersion, request.getAttribute("kernelLiveVersion"));
+    }
+
+    public void testModularRepositoryMessage() throws Exception {
+        actionPerform();
+        verifyNoActionErrors();
+
+        Channel modular = MockModulemdApi.createModularTestChannel(user);
+        s.setChannels(Collections.singleton(modular));
+        actionPerform();
+
+        verifyActionErrors(new String[]{"packagelist.jsp.modulespresent"});
     }
 }
