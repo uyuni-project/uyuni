@@ -774,6 +774,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     server.getCpu().getFlags());
             assertEquals("42", server.getCpu().getVersion());
             assertNotNull(server.getVirtualInstance());
+            assertEquals(Integer.valueOf(1), server.getVirtualInstance().getNumberOfCPUs());
+            assertEquals(Long.valueOf(489), server.getVirtualInstance().getTotalMemory());
             assertNotNull(server.getDmi());
             assertNotNull(server.getDmi().getSystem());
             assertNotNull(server.getDmi().getProduct());
