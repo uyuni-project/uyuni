@@ -201,8 +201,8 @@ export function PoolsList(props: Props) {
           >
           {
             ({
-              data: pools,
-              refreshError,
+              pools,
+              errors: refreshError,
             }) => {
               function renderPool(pool: Object, renderNameColumn: Function): React.Node {
                 return [
