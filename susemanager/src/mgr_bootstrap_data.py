@@ -903,6 +903,10 @@ DATA = {
         'PDID' : [1772, 1712], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
+    'SUMA-40-PROXY-x86_64' : {
+        'PDID' : [1772, 1908], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
+    },
     'SLE-15-SP2-aarch64' : {
         'PDID' : [1943, 1709], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
