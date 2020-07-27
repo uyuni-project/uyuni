@@ -175,31 +175,6 @@ public class SystemDetailsEditAction extends RhnAction {
         s.getLocation().setRoom(daForm.getString(ROOM));
         s.getLocation().setRack(daForm.getString(RACK));
 
-        // Assign maintenance schedule
-        Long scheduleId = (Long) daForm.get(MAINTENANCE_SCHEDULE);
-
-        if (scheduleId != null && scheduleId != 0) {
-            // Assign schedule
-            MaintenanceSchedule schedule = maintenanceManager.lookupScheduleByUserAndId(user, scheduleId).get();
-            boolean cancelAffected = Boolean.TRUE.equals(daForm.get(MAINTENANCE_CANCEL_AFFECTED));
-            try {
-                maintenanceManager.assignScheduleToSystems(user, schedule, Collections.singleton(s.getId()),
-                        cancelAffected);
-                log.debug(String.format("System %s assigned to schedule %s.", s.getId(), schedule.getName()));
-            }
-            catch (IllegalArgumentException e) {
-                log.debug(e);
-                getStrutsDelegate().addError("maintenance.action.assign.error.fail", errors);
-                success = false;
-            }
-        }
-        else if (s.getMaintenanceScheduleOpt().isPresent()) {
-            // Retract schedule
-            String scheduleName = s.getMaintenanceScheduleOpt().get().getName();
-            maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
-            log.debug(String.format("System %s unassigned from schedule %s.", s.getId(), scheduleName));
-        }
-
         /* If the server does not have a Base Entitlement
          * the user should not be updating these values
          * no matter what the form they are submitting looks
@@ -250,6 +225,31 @@ public class SystemDetailsEditAction extends RhnAction {
             }
 
             success &= applyAddonEntitlementChanges(request, daForm, s, user);
+        }
+
+        // Assign maintenance schedule
+        Long scheduleId = (Long) daForm.get(MAINTENANCE_SCHEDULE);
+
+        if (scheduleId != null && scheduleId != 0) {
+            // Assign schedule
+            MaintenanceSchedule schedule = maintenanceManager.lookupScheduleByUserAndId(user, scheduleId).get();
+            boolean cancelAffected = Boolean.TRUE.equals(daForm.get(MAINTENANCE_CANCEL_AFFECTED));
+            try {
+                maintenanceManager.assignScheduleToSystems(user, schedule, Collections.singleton(s.getId()),
+                        cancelAffected);
+                log.debug(String.format("System %s assigned to schedule %s.", s.getId(), schedule.getName()));
+            }
+            catch (IllegalArgumentException e) {
+                log.debug(e);
+                getStrutsDelegate().addError("maintenance.action.assign.error.fail", errors);
+                success = false;
+            }
+        }
+        else if (s.getMaintenanceScheduleOpt().isPresent()) {
+            // Retract schedule
+            String scheduleName = s.getMaintenanceScheduleOpt().get().getName();
+            maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
+            log.debug(String.format("System %s unassigned from schedule %s.", s.getId(), scheduleName));
         }
 
         if (!success) {
