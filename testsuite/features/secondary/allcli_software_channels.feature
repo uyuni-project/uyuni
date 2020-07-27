@@ -136,11 +136,11 @@ Feature: Chanel subscription via SSM
     And channel "Test Child Channel" should be enabled on "sle_client"
 
 @centos_minion
-  Scenario: System default channel can't be determined on the CentOS SSH minion
+  Scenario: System default channel can't be determined on the CentOS minion
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
-    And I check the "ceos_ssh_minion" client
+    And I check the "ceos_minion" client
     Then I should see "1" systems selected for SSM
     When I am on System Set Manager Overview
     And I follow "channel memberships" in the content area
@@ -156,22 +156,22 @@ Feature: Chanel subscription via SSM
     When I click on "Confirm"
     Then I should see a "Channel Changes Actions" text
     And I should see a "Items 1 - 1 of 1" text
-    And a table line should contain system "ceos_ssh_minion", "Could not determine system default channel"
+    And a table line should contain system "ceos_minion", "Could not determine system default channel"
     And I follow "Clear"
 
 @centos_minion
   Scenario: Cleanup: make sure the CentOS SSH minion is still unchanged
-    Given I am on the Systems overview page of this "ceos_ssh_minion"
+    Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test Base Channel" is checked
 
 @ubuntu_minion
-  Scenario: System default channel can't be determined on the Ubuntu SSH minion
+  Scenario: System default channel can't be determined on the Ubuntu minion
     Given I am authorized as "admin" with password "admin"
     When I am on the System Overview page
     And I follow "Clear"
-    And I check the "ubuntu_ssh_minion" client
+    And I check the "ubuntu_minion" client
     Then I should see "1" systems selected for SSM
     When I am on System Set Manager Overview
     And I follow "channel memberships" in the content area
@@ -187,12 +187,12 @@ Feature: Chanel subscription via SSM
     When I click on "Confirm"
     Then I should see a "Channel Changes Actions" text
     And I should see a "Items 1 - 1 of 1" text
-    And a table line should contain system "ubuntu_ssh_minion", "Could not determine system default channel"
+    And a table line should contain system "ubuntu_minion", "Could not determine system default channel"
     And I follow "Clear"
 
 @ubuntu_minion
-  Scenario: Cleanup: make sure the Ubuntu SSH minion is still unchanged
-    Given I am on the Systems overview page of this "ubuntu_ssh_minion"
+  Scenario: Cleanup: make sure the Ubuntu minion is still unchanged
+    Given I am on the Systems overview page of this "ubuntu_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     Then radio button "Test-Channel-Deb-AMD64" is checked

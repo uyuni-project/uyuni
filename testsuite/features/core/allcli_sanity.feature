@@ -40,16 +40,16 @@ Feature: Sanity checks
     And the clock from "proxy" should be exact
 
 @centos_minion
-  Scenario: The CentOS SSH minion is healthy
-    Then "ceos_ssh_minion" should have a FQDN
-    And "ceos_ssh_minion" should communicate with the server
-    And the clock from "ceos_ssh_minion" should be exact
+  Scenario: The CentOS minion is healthy
+    Then "ceos_minion" should have a FQDN
+    And "ceos_minion" should communicate with the server
+    And the clock from "ceos_minion" should be exact
 
 @ubuntu_minion
-  Scenario: The Ubuntu SSH minion is healthy
-    Then "ubuntu_ssh_minion" should have a FQDN
-    And "ubuntu_ssh_minion" should communicate with the server
-    And the clock from "ubuntu_ssh_minion" should be exact
+  Scenario: The Ubuntu minion is healthy
+    Then "ubuntu_minion" should have a FQDN
+    And "ubuntu_minion" should communicate with the server
+    And the clock from "ubuntu_minion" should be exact
 
 @virthost_kvm
   Scenario: The KVM host is healthy
