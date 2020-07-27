@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Class for generating minion pillar data containing general information of minions
@@ -50,21 +51,13 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
         PKGSET_BEACON_PROPS.put("interval", PKGSET_INTERVAL);
     }
 
-    private static final Map<String, Object> VIRTPOLLER_BEACON_PROPS = new HashMap<>();
-
-    static {
-        VIRTPOLLER_BEACON_PROPS.put("cache_file", Config.get().getString(ConfigDefaults.VIRTPOLLER_CACHE_FILE));
-        VIRTPOLLER_BEACON_PROPS.put("expire_time", Config.get().getInt(ConfigDefaults.VIRTPOLLER_CACHE_EXPIRATION));
-        VIRTPOLLER_BEACON_PROPS.put("interval", Config.get().getInt(ConfigDefaults.VIRTPOLLER_INTERVAL));
-    }
-
     /**
      * Generates pillar data containing general information of the passed minion
      * @param minion the minion server
      * @return the SaltPillar containing the pillar data
      */
     @Override
-    public SaltPillar generatePillarData(MinionServer minion) {
+    public Optional<SaltPillar> generatePillarData(MinionServer minion) {
         SaltPillar pillar = new SaltPillar();
         pillar.add("org_id", minion.getOrg().getId());
 
@@ -89,18 +82,10 @@ public class MinionGeneralPillarGenerator implements MinionPillarGenerator {
                 minion.getOsFamily().toLowerCase().equals("redhat")) {
             beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
         }
-        // this add the configuration for the beacon that tell us about
-        // virtual guests running on that minion
-        // The virtpoller is still usefull with the libvirt events: it will help
-        // synchronizing the DB with the actual guest lists in case we had a temporary shutdown.
-        // TODO: find a better way to detect when the beacon should be configured
-        if (minion.isVirtualHost()) {
-            beaconConfig.put("virtpoller", VIRTPOLLER_BEACON_PROPS);
-        }
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);
         }
-        return pillar;
+        return Optional.of(pillar);
     }
 
     /**

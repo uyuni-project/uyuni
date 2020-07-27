@@ -17,9 +17,11 @@ package com.suse.manager.virtualization;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,8 @@ import java.util.stream.Collectors;
  * Class representing the VM disk device XML definition.
  */
 public class GuestDiskDef {
+
+    private static final List<String> NETWORK_CONVERTED_TYPES = Arrays.asList("rbd", "gluster");
 
     private String type;
     private String device;
@@ -123,12 +127,13 @@ public class GuestDiskDef {
      * Parse the &lt;disk&gt; element of a domain XML definition
      *
      * @param node the disk element
+     * @param vmInfo the VM informations to merge with the disk definition
      * @return the created disk object
      *
      * @throws IllegalArgumentException if the input element is badly formatted
      */
     @SuppressWarnings("unchecked")
-    public static GuestDiskDef parse(Element node) throws IllegalArgumentException {
+    public static GuestDiskDef parse(Element node, Optional<VmInfoJson> vmInfo) throws IllegalArgumentException {
         GuestDiskDef disk = new GuestDiskDef();
         disk.setType(node.getAttributeValue("type"));
         disk.setDevice(node.getAttributeValue("device", "disk"));
@@ -187,6 +192,31 @@ public class GuestDiskDef {
                     }
                 });
             }
+
+            // virt.vm_info provides consolidated file using pools when possible, use it
+            Optional<VmInfoDiskJson> diskInfo = vmInfo.map(info -> info.getDisks().get(disk.getTarget()));
+            diskInfo.ifPresent(info -> {
+                if ("network".equals(disk.getType())) {
+                    String protocol = (String)source.get("protocol");
+                    // RBD and gluster volumes are automatically converted to network disks. Take the infos from Salt
+                    if (NETWORK_CONVERTED_TYPES.contains(protocol) &&
+                            !info.getFile().startsWith(protocol + ":")) {
+                        String[] parts = info.getFile().split("/", 2);
+                        if (parts.length == 2) {
+                            disk.setType("volume");
+                            source.clear();
+                            source.put("pool", parts[0]);
+                            source.put("volume", parts[1]);
+                        }
+                    }
+                    // Get the re-assembled URL for network remote cdroms
+                    else if ("cdrom".equals(disk.getDevice())) {
+                        disk.setType("file");
+                        source.clear();
+                        source.put("file", info.getFile());
+                    }
+                }
+            });
             disk.setSource(source);
         }
 

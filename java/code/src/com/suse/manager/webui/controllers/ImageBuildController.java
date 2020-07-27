@@ -64,6 +64,7 @@ import com.suse.manager.webui.controllers.utils.ImagesUtil;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.ViewHelper;
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.ImageInfoJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
@@ -295,31 +296,9 @@ public class ImageBuildController {
     }
 
     /**
-     * Generic Schedule request
-     */
-    public static class ScheduleRequest {
-        private LocalDateTime earliest;
-        private Optional<String> actionChain = Optional.empty();
-
-        /**
-         * @return the earliest
-         */
-        public LocalDateTime getEarliest() {
-            return earliest;
-        }
-
-        /**
-         * @return actionChain to get
-         */
-        public Optional<String> getActionChain() {
-            return actionChain;
-        }
-    }
-
-    /**
      * Build request object
      */
-    public static class BuildRequest extends ScheduleRequest {
+    public static class BuildRequest extends ScheduledRequestJson {
         private long buildHostId;
         private String version;
 
@@ -341,7 +320,7 @@ public class ImageBuildController {
     /**
      * Inspect request object
      */
-    public static class InspectRequest extends ScheduleRequest {
+    public static class InspectRequest extends ScheduledRequestJson {
         private long imageId;
 
         /**
@@ -355,7 +334,7 @@ public class ImageBuildController {
     /**
      * Import request object
      */
-    public static class ImportRequest extends ScheduleRequest {
+    public static class ImportRequest extends ScheduledRequestJson {
         private long buildHostId;
         private String name;
         private String version;

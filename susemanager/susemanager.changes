@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Jul 23 11:43:21 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.27-1
 - migrate proxy list in cobbler settings (bsc#1169536)
 - migrate all occurrences of kickstart to autoinstall in cobbler database (bsc#1169780)
 

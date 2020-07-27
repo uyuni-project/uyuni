@@ -26,7 +26,37 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I check "virtualization_host"
     And I click on "Update Properties"
     Then I should see a "Since you added a Virtualization system type to the system" text
+    And the virtpoller beacon should be enabled on "kvm_server"
     And I restart salt-minion on "kvm_server"
+
+@virthost_kvm
+  Scenario: Enable the virtualization host formula for KVM
+    Given I am on the Systems overview page of this "kvm_server"
+    When I follow "Formulas" in the content area
+    Then I should see a "Choose formulas" text
+    And I should see a "Virtualization" text
+    When I check the "virtualization-host" formula
+    And I click on "Save"
+    Then the "virtualization-host" formula should be checked
+
+@virthost_kvm
+  Scenario: Parametrize the KVM virtualization host
+    Given I am on the Systems overview page of this "kvm_server"
+    When I follow "Formulas" in the content area
+    And I follow first "Virtualization Host" in the content area
+    And I enter "192.168.124.1" in virtual network IPv4 address field
+    And I enter "192.168.124.2" in first IPv4 address for DHCP field
+    And I enter "192.168.124.254" in last IPv4 address for DHCP field
+    And I click on "Save Formula"
+    Then I should see a "Formula saved" text
+
+@virthost_kvm
+  Scenario: Apply the KVM virtualization host formula via the highstate
+    Given I am on the Systems overview page of this "kvm_server"
+    When I follow "States" in the content area
+    And I click on "Apply Highstate"
+    And I wait until event "Apply highstate scheduled by admin" is completed
+    Then service "libvirtd" is enabled on "kvm_server"
 
 @virthost_kvm
   Scenario: Prepare a KVM test virtual machine and list it
@@ -105,7 +135,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    And I click on "add_nic"
+    And I click on "add_network"
     And I select "test-net1" from "network1_source"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -116,7 +146,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Given I am on the "Virtualization" page of this "kvm_server"
     When I click on "Edit" in row "test-vm"
     And I wait until I do not see "Loading..." text
-    And I click on "remove_nic1"
+    And I click on "remove_network1"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
     And "test-vm" virtual machine on "kvm_server" should have 1 NIC using "test-net1" network
@@ -132,7 +162,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I select "ide" from "disk2_bus"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
-    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk-1.qcow2" virtio disk
+    And "test-vm" virtual machine on "kvm_server" should have a "test-vm_disk-1" virtio disk from pool "test-pool0"
     And "test-vm" virtual machine on "kvm_server" should have a ide cdrom
 
 @virthost_kvm
@@ -167,7 +197,7 @@ Feature: Be able to manage KVM virtual machines via the GUI
     And I wait until table row for "test-vm2" contains button "Stop"
     And "test-vm2" virtual machine on "kvm_server" should have 1024MB memory and 1 vcpus
     And "test-vm2" virtual machine on "kvm_server" should have 1 NIC using "test-net0" network
-    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system.qcow2" virtio disk
+    And "test-vm2" virtual machine on "kvm_server" should have a "test-vm2_system" virtio disk from pool "test-pool0"
 
 @virthost_kvm
   Scenario: Show the Spice graphical console for KVM

@@ -13,9 +13,6 @@ domain_define:
     {% if 'device' in disk %}
               device: {{ disk['device'] }}
     {% endif %}
-    {% if 'type' in disk %}
-              type: {{ disk['type'] }}
-    {% endif %}
     {% if 'format' in disk %}
               format: {{ disk['format'] }}
     {% endif %}

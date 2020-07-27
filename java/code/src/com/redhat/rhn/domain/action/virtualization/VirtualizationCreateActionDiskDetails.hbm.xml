@@ -13,13 +13,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </generator>
         </id>
 
-        <property name="type" type="string" column="type"/>
         <property name="device" type="string" column="device"/>
         <property name="template" type="string" column="template"/>
         <property name="size" type="long" column="size"/>
         <property name="bus" type="string" column="bus"/>
         <property name="pool" type="string" column="pool"/>
         <property name="sourceFile" type="string" column="source_file"/>
+        <property name="format" type="string" column="format"/>
 
         <many-to-one name="action" column="action_id"
                 class="com.redhat.rhn.domain.action.virtualization.VirtualizationCreateAction"

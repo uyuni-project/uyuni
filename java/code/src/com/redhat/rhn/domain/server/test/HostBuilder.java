@@ -92,7 +92,8 @@ public class HostBuilder {
      */
     public HostBuilder createVirtHost() throws Exception {
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
+                        new FormulaMonitoringManager()),
                 new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
                         new FormulaMonitoringManager())
         );

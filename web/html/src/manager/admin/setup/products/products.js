@@ -82,7 +82,7 @@ class ProductsPageWrapper extends React.Component {
     refreshNeeded: refreshNeeded_flag_from_backend,
     refreshRunning: refreshRunning_flag_from_backend || scc_refresh_file_locked_status,
     noToolsChannelSubscription: noToolsChannelSubscription_flag_from_backend,
-    serverData: {_DATA_ROOT_ID : []},
+    serverData: [],
     errors: [],
     loading: true,
     selectedItems: [],
@@ -431,6 +431,23 @@ class Products extends React.Component {
     this.props.handleUnSelectedItems(items);
   };
 
+  compareProducts = (prod1, prod2) => {
+    const suseStr = "SUSE";
+    const isProd1Suse = prod1.label.startsWith(suseStr);
+    const isProd2Suse = prod2.label.startsWith(suseStr);
+
+    // if one of the products is SUSE, it's lower in the ordering
+    if (isProd1Suse && !isProd2Suse) {
+      return -1;
+    }
+    if (!isProd1Suse && isProd2Suse) {
+      return 1;
+    }
+
+    // otherwise use the label-based ordering
+    return prod1.label.toLowerCase().localeCompare(prod2.label.toLowerCase());
+  }
+
   buildRows = (message) => {
     return Object.keys(message).map((id) => message[id]);
   };
@@ -459,7 +476,7 @@ class Products extends React.Component {
     return (
       <div>
         <DataHandler
-          data={this.buildRows(this.filterDataByArch(this.props.data))}
+          data={this.buildRows(this.filterDataByArch([...this.props.data]).sort(this.compareProducts))}
           identifier={(raw) => raw.identifier}
           initialItemsPerPage={userPrefPageSize}
           loading={this.props.loading}
@@ -525,7 +542,7 @@ class CheckList extends React.Component {
               : null
           }
           {
-            this.props.data.sort((a, b) => a.label.toLowerCase().localeCompare(b.label.toLowerCase())).map((l, index) =>
+            this.props.data.map((l, index) =>
             {
               return (
                 <CheckListItem

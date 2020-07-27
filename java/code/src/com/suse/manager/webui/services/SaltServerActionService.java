@@ -1559,20 +1559,17 @@ public class SaltServerActionService {
                                 diskName = String.format("disk-%d", i);
                             }
                             diskData.put("name", diskName);
-                            diskData.put("format", "qcow2");
+                            diskData.put("format", disk.getFormat());
                             if (disk.getSourceFile() != null || disk.getDevice().equals("cdrom")) {
                                 diskData.put("source_file", disk.getSourceFile() != null ? disk.getSourceFile() : "");
                             }
-                            else {
-                                diskData.put("pool", disk.getPool());
-                                diskData.put("image", disk.getTemplate());
-                                if (disk.getSize() != 0) {
-                                    diskData.put("size", disk.getSize() * 1024);
-                                }
+                            diskData.put("pool", disk.getPool());
+                            diskData.put("image", disk.getTemplate());
+                            if (disk.getSize() != 0) {
+                                diskData.put("size", disk.getSize() * 1024);
                             }
                             diskData.put("model", disk.getBus());
                             diskData.put("device", disk.getDevice());
-                            diskData.put("type", disk.getType());
 
                             return diskData;
                         }).collect(Collectors.toList()));

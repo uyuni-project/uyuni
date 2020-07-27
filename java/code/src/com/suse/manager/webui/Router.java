@@ -44,10 +44,7 @@ import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
-import com.suse.manager.webui.controllers.VirtualGuestsController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
-import com.suse.manager.webui.controllers.VirtualNetsController;
-import com.suse.manager.webui.controllers.VirtualPoolsController;
 import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
@@ -56,6 +53,9 @@ import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApi
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
+import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
+import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -98,7 +98,7 @@ public class Router implements SparkApplication {
         NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
         MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper);
         StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
-        FormulaController formulaController = new FormulaController(systemQuery);
+        FormulaController formulaController = new FormulaController(systemQuery, saltApi);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 

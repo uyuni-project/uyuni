@@ -325,7 +325,7 @@ public class AccessTest extends BaseTestCaseWithUser {
     public void testIsVirtual() throws Exception {
         SaltService saltService = new SaltService();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);

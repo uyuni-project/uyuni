@@ -12,13 +12,11 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.gson;
+package com.suse.manager.webui.controllers.virtualization.gson;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * VirtualGuestsUpdate represents the JSON data for the virtual guests
@@ -35,8 +33,6 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     private List<DiskData> disks;
     private List<InterfaceData> interfaces;
     private String graphicsType;
-    private LocalDateTime earliest;
-    private Optional<String> actionChain = Optional.empty();
 
     /**
      * @return the domain type (kvm, qemu, linux, xen...)
@@ -165,46 +161,18 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
     }
 
     /**
-     * @return the earliest
-     */
-    public LocalDateTime getEarliest() {
-        return earliest;
-    }
-
-    /**
-     * @return actionChain to get
-     */
-    public Optional<String> getActionChain() {
-        return actionChain;
-    }
-
-    /**
      * Class describing the JSON disk data
      */
     public class DiskData {
-        private String type;
         private String device;
         private String template;
         private long size = 0;
         private String bus;
         private String pool;
+        private String format;
 
         @SerializedName("source_file")
         private String sourceFile;
-
-        /**
-         * @return Returns the type.
-         */
-        public String getType() {
-            return type;
-        }
-
-        /**
-         * @param typeIn The type to set.
-         */
-        public void setType(String typeIn) {
-            type = typeIn;
-        }
 
         /**
          * @return Returns the device.
@@ -288,6 +256,20 @@ public class VirtualGuestsUpdateActionJson extends VirtualGuestsBaseActionJson {
          */
         public void setPool(String poolIn) {
             pool = poolIn;
+        }
+
+        /**
+         * @return the disk format
+         */
+        public String getFormat() {
+            return format;
+        }
+
+        /**
+         * @param formatIn the disk format
+         */
+        public void setFormat(String formatIn) {
+            format = formatIn;
         }
     }
 

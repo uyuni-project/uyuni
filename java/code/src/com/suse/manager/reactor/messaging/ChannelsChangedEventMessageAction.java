@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -52,6 +53,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
 
     // Reference to the SaltService instance
     private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
 
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
@@ -59,9 +61,11 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
      * Constructor taking a {@link SystemQuery} instance.
      *
      * @param systemQueryIn systemQuery instance for gathering data from a system.
+     * @param saltApiIn Salt API instance to use
      */
-    public ChannelsChangedEventMessageAction(SystemQuery systemQueryIn) {
+    public ChannelsChangedEventMessageAction(SystemQuery systemQueryIn, SaltApi saltApiIn) {
         systemQuery = systemQueryIn;
+        saltApi = saltApiIn;
     }
 
     @Override
@@ -95,7 +99,7 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
                     );
 
             // push the changed pillar data to the minion
-            systemQuery.refreshPillar(new MinionList(minion.getMinionId()));
+            saltApi.refreshPillar(new MinionList(minion.getMinionId()));
 
             if (msg.isScheduleApplyChannelsState()) {
                 User user = UserFactory.lookupById(event.getUserId());

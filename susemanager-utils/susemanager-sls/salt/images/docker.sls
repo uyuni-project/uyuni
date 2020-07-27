@@ -30,6 +30,18 @@ mgr_pushimage:
       - mgrcompat: mgr_buildimage
       - mgrcompat: mgr_registries_login
 
+{% if 'docker.logout' in salt %}
+
+mgr_registries_logout:
+  mgrcompat.module_run:
+    - name: docker.logout
+    - registries: {{ pillar.get('docker-registries', {}).keys() | list }}
+    - require:
+      - mgrcompat: mgr_pushimage
+      - mgrcompat: mgr_registries_login
+
+{% endif %}
+
 {% else %}
 
 mgr_registries_login:

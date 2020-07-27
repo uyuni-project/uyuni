@@ -346,6 +346,7 @@ The check box can be identified by name, id or label text.
 
 ```cucumber
   When I wait until table row for "test-vm" contains button "Resume"
+  When I wait at most 300 seconds until table row for "test-vm" contains button "Resume"
 ```
 
 
@@ -608,6 +609,12 @@ The check box can be identified by name, id or label text.
   Then the pillar data for "timezone" should be empty on "ssh_minion"
 ```
 
+* Salt beacons
+
+```cucumber
+  Then the virtpoller beacon should be enabled on "xen_server"
+```
+
 * Apply the Salt highstate
 
 ```cucumber
@@ -681,6 +688,7 @@ Then "test-vm" virtual machine on "virt-server" should have a NIC with 02:34:56:
 Then "test-vm" virtual machine on "virt-server" should have a "disk.qcow2" scsi disk
 Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
 Then "test-vm" virtual machine on "virt-server" should have no cdrom
+Then "test-vm" virtual machine on "virt-server" should have a "myvolume" virtio disk from pool "test-pool"
 ```
 
 * Remove disk images from a storage pool

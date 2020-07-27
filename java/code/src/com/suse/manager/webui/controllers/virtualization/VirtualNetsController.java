@@ -12,20 +12,20 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.google.gson.JsonObject;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.gson.VirtualStoragePoolInfoJson;
 
 import java.util.List;
 import java.util.Map;
@@ -36,32 +36,32 @@ import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
 
 /**
- * Controller class providing backend for Virtual storage pools UI
+ * Controller class providing backend for Virtual networks UI
  */
-public class VirtualPoolsController {
+public class VirtualNetsController {
 
-    private final VirtManager virtManager;
+    private VirtManager virtManager;
 
     /**
-     * Controller class providing backend for Virtual storage pools UI
+     * Controller class providing backend for Virtual networks UI
      * @param virtManagerIn instance to manage virtualization
      */
-    public VirtualPoolsController(VirtManager virtManagerIn) {
+    public VirtualNetsController(VirtManager virtManagerIn) {
         this.virtManager = virtManagerIn;
     }
 
     /**
-     * Initialize request routes for the pages served by VirtualPoolsController
+     * Initialize request routes for the pages served by VirtualNetsController
      *
      * @param jade jade engine
      */
     public void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/api/systems/details/virtualization/pools/:sid/data",
+        get("/manager/api/systems/details/virtualization/nets/:sid/data",
                 withUser(this::data));
     }
 
     /**
-     * Returns JSON data describing the storage pools
+     * Returns JSON data describing the virtual networks
      *
      * @param request the request
      * @param response the response
@@ -80,14 +80,14 @@ public class VirtualPoolsController {
         Server host = SystemManager.lookupByIdAndUser(serverId, user);
         String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
 
-        Map<String, JsonObject> infos = virtManager.getPools(minionId);
-        List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
-            VirtualStoragePoolInfoJson pool = new VirtualStoragePoolInfoJson(entry.getKey(),
+        Map<String, JsonObject> infos = virtManager.getNetworks(minionId);
+        List<VirtualNetworkInfoJson> networks = infos.entrySet().stream().map(entry -> {
+            VirtualNetworkInfoJson net = new VirtualNetworkInfoJson(entry.getKey(),
                     entry.getValue());
 
-            return pool;
+            return net;
         }).collect(Collectors.toList());
 
-        return json(response, pools);
+        return json(response, networks);
     }
 }

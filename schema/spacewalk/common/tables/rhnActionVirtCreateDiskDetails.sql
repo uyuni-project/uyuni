@@ -18,11 +18,11 @@ CREATE TABLE rhnActionVirtCreateDiskDetails
     id                   NUMBER NOT NULL
                              CONSTRAINT rhn_action_virt_create_disk_details_id_pk
                                  PRIMARY KEY,
-    type                 VARCHAR2(15),
     device               VARCHAR2(10),
     template             VARCHAR2(256),
     size                 NUMBER,
     bus                  VARCHAR2(10),
+    format               VARCHAR2(10),
     pool                 VARCHAR2(256),
     source_file          VARCHAR2(1024),
     idx                  NUMBER,

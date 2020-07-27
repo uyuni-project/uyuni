@@ -919,7 +919,7 @@ When(/^I create "([^"]*)" virtual machine on "([^"]*)"$/) do |vm_name, host|
   raise 'not found: virt-install' unless file_exists?(node, '/usr/bin/virt-install')
   node.run("virt-install --name #{vm_name} --memory 512 --vcpus 1 --disk path=#{disk_path} "\
            "--network network=test-net0 --graphics vnc "\
-           "--serial pty,log.file=/tmp/#{vm_name}.console.log,log.append=off "\
+           "--serial file,path=/tmp/#{vm_name}.console.log "\
            "--import --hvm --noautoconsole --noreboot")
 end
 
@@ -1074,6 +1074,19 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]*) di
     tree = Nokogiri::XML(output)
     disks = tree.xpath("//disk").select do |x|
       (x.xpath('source/@file')[0].to_s.include? path) && (x.xpath('target/@bus')[0].to_s == bus)
+    end
+    break if !disks.empty?
+    sleep 3
+  end
+end
+
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have a "([^"]*)" ([^ ]+) disk from pool "([^"]*)"$/) do |vm, host, vol, bus, pool|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got a #{vol} #{bus} disk from pool #{pool}") do
+    output, _code = node.run("virsh dumpxml #{vm}")
+    tree = Nokogiri::XML(output)
+    disks = tree.xpath("//disk").select do |x|
+      (x.xpath('source/@pool')[0].to_s == pool) && (x.xpath('source/@volume')[0].to_s == vol) && (x.xpath('target/@bus')[0].to_s == bus)
     end
     break if !disks.empty?
     sleep 3

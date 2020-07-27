@@ -12,7 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils.gson;
+package com.suse.manager.webui.controllers.virtualization.gson;
+
+import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ import java.util.List;
  * VirtualGuestsBaseAction represents the common properties for all the virtualization guests
  * action requests JSON data.
  */
-public class VirtualGuestsBaseActionJson {
+public class VirtualGuestsBaseActionJson extends ScheduledRequestJson {
 
     private List<String> uuids;
     private Boolean force;

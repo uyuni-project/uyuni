@@ -552,6 +552,8 @@ public class HardwareMapper {
         String virtSubtype = grains.getValueAsString("virtual_subtype");
         String instanceId = grains.getValueAsString("instance_id");
         String virtUuid = (StringUtils.isEmpty(instanceId)) ? grains.getValueAsString("uuid") : instanceId;
+        int vCPUs = grains.getValueAsLong("total_num_cpus").orElse(0L).intValue();
+        long memory = grains.getValueAsLong("mem_total").orElse(0L);
 
         if (virtTypeLowerCase == null) {
             errors.add("Virtualization: Grain 'virtual' has no value");
@@ -655,7 +657,7 @@ public class HardwareMapper {
                     VirtualInstanceManager.addGuestVirtualInstance(
                             virtUuid, server.getName(), type,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            null, server);
+                            null, server, vCPUs, memory);
                 }
                 else {
                     String name = virtualInstance.getName();
@@ -666,7 +668,7 @@ public class HardwareMapper {
                     }
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server);
+                            virtualInstance.getHostSystem(), server, vCPUs, memory);
                 }
             }
             else {
@@ -678,7 +680,7 @@ public class HardwareMapper {
                     }
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server);
+                            virtualInstance.getHostSystem(), server, vCPUs, memory);
                 });
             }
         }

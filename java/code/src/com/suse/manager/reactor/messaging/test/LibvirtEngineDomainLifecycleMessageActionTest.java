@@ -14,7 +14,6 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
-import com.google.gson.JsonElement;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -30,9 +29,8 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.google.gson.reflect.TypeToken;
-import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.reactor.messaging.AbstractLibvirtEngineMessage;
+import com.suse.manager.reactor.messaging.LibvirtEngineDomainLifecycleMessageAction;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.VirtManager;
@@ -40,6 +38,9 @@ import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.EngineEvent;
 import com.suse.salt.netapi.parser.JsonParser;
+
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -92,12 +93,12 @@ public class LibvirtEngineDomainLifecycleMessageActionTest extends JMockBaseTest
             public Optional<GuestDefinition> getGuestDefinition(String minionId, String domainName) {
                 return SaltTestUtils.<String>getSaltResponse(
                         "/com/suse/manager/reactor/messaging/test/virt.guest.definition.xml", Collections.emptyMap(), null)
-                        .map(GuestDefinition::parse);
+                        .map(xml -> GuestDefinition.parse(xml, Optional.empty()));
             }
         };
 
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
                 new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager())
         );
 

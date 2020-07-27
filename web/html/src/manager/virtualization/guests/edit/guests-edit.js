@@ -7,12 +7,11 @@ const { hot } = require('react-hot-loader');
 const React = require('react');
 const _isEqual = require('lodash/isEqual');
 const { TopPanel } = require('components/panels/TopPanel');
-const MessagesUtils = require('components/messages').Utils;
 const { Loading } = require('components/loading/loading');
-const { GuestProperties } = require('../guest-properties');
-const GuestPropertiesUtils = require('../properties/guest-properties-utils');
+const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
+const { GuestProperties } = require('../GuestProperties');
 const GuestNicsPanel = require('../properties/guest-nics-panel');
-const GuestDisksPanel = require('../properties/guest-disks-panel');
+const DiskUtils = require('../properties/disk-utils');
 const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
 const { VirtualizationGuestDefinitionApi } = require('../virtualization-guest-definition-api');
 const Functions = require('utils/functions');
@@ -37,7 +36,7 @@ class GuestsEdit extends React.Component<Props> {
       vmType: definition.type,
     },
     GuestNicsPanel.getModelFromDefinition(definition),
-    GuestDisksPanel.getModelFromDefinition(definition));
+    DiskUtils.getModelFromDefinition(definition));
   }
 
   static getRequestParameterFromModel(model: Object, initialModel: Object) {
@@ -45,8 +44,8 @@ class GuestsEdit extends React.Component<Props> {
     const initialNicProps = Object.entries(initialModel).filter(entry => entry[0].startsWith('network'));
     const newNicProps = Object.entries(model).filter(entry => entry[0].startsWith('network'));
     const nics = !_isEqual(initialNicProps, newNicProps)
-      ? GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'network')
-        .map(nic => GuestNicsPanel.getRequestParams(model, nic))
+      ? getOrderedItemsFromModel(model, 'network')
+        .map(index => GuestNicsPanel.getRequestParams(model, index))
       : [];
 
     const nicsParams = nics.length !== 0 ? { interfaces: nics } : undefined;
@@ -55,8 +54,8 @@ class GuestsEdit extends React.Component<Props> {
     const initialDiskProps = Object.entries(initialModel).filter(entry => entry[0].startsWith('disk'));
     const newDiskProps = Object.entries(model).filter(entry => entry[0].startsWith('disk'));
     const disks = !_isEqual(initialDiskProps, newDiskProps)
-      ? GuestPropertiesUtils.getOrderedDevicesFromModel(model, 'disk')
-        .map(disk => GuestDisksPanel.getRequestParams(model, disk))
+      ? getOrderedItemsFromModel(model, 'disk')
+        .map(index => DiskUtils.getRequestParams(model, index))
       : [];
 
     const disksParams = disks.length !== 0 ? { disks } : undefined;
@@ -102,8 +101,7 @@ class GuestsEdit extends React.Component<Props> {
                   const onSubmit = properties => onAction('update', [this.props.guestUuid],
                     GuestsEdit.getRequestParameterFromModel(properties, initialModel));
                   const messages = [].concat(definitionMessages, actionMessages)
-                    .filter(item => item)
-                    .map(item => MessagesUtils.error(item));
+                    .filter(item => item);
                   const guestName = definition !== null ? definition.name : '';
                   return (
                     <TopPanel title={guestName} icon="fa spacewalk-icon-virtual-guest">

@@ -33,15 +33,17 @@ public class MgrKiwiImageRunner {
     /**
      * Upload built Kiwi image to SUSE Manager
      *
-     * @param minionId the minion ID (hostname)
+     * @param minionId the minion ID
+     * @param minionIP the minion IP address
      * @param filepath      the filepath
      * @param imageStoreDir the image store location
      * @return the execution result
      */
-    public static RunnerCall<MgrUtilRunner.ExecResult> collectImage(String minionId, String filepath,
-            String imageStoreDir) {
+    public static RunnerCall<MgrUtilRunner.ExecResult> collectImage(String minionId, String minionIP,
+            String filepath, String imageStoreDir) {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("minion", minionId);
+        args.put("minion_ip", minionIP);
         args.put("filepath", filepath);
         args.put("image_store_dir", imageStoreDir);
 

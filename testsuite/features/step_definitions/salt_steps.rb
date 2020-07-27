@@ -352,6 +352,9 @@ When(/^I enter "([^"]*)" in (.*) field$/) do |value, field|
                'first reserved hostname'         => 'dhcpd#hosts#0#$key',
                'second reserved hostname'        => 'dhcpd#hosts#1#$key',
                'third reserved hostname'         => 'dhcpd#hosts#2#$key',
+               'virtual network IPv4 address'    => 'default_net#ipv4#gateway',
+               'first IPv4 address for DHCP'     => 'default_net#ipv4#dhcp_start',
+               'last IPv4 address for DHCP'      => 'default_net#ipv4#dhcp_end',
                'first option'                    => 'bind#config#options#0#0',
                'first value'                     => 'bind#config#options#0#1',
                'first configured zone name'      => 'bind#configured_zones#0#$key',
@@ -575,6 +578,13 @@ end
 
 Then(/^the download should get no error$/) do
   assert_nil(@download_error)
+end
+
+Then(/^the ([^ ]+) beacon should be enabled on "([^"]*)"$/) do |beacon, minion|
+  system_name = get_system_name(minion)
+
+  output, _code = $server.run("salt #{system_name} beacons.list")
+  raise "Beacon #{beacon} not enabled" unless output.split("\n").map(&:strip).include?("#{beacon}:")
 end
 
 # Perform actions

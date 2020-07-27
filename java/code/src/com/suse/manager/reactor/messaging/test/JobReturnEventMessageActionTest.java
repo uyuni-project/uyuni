@@ -142,7 +142,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 DigestUtils.sha256Hex(TestUtils.randomString()));
         saltServiceMock = context().mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager()),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
                         new FormulaMonitoringManager())
         );
@@ -609,6 +609,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             oneOf(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
         SaltUtils.INSTANCE.setSystemQuery(saltServiceMock);
+        SaltUtils.INSTANCE.setSaltApi(saltServiceMock);
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_PACKAGES_REFRESH_LIST);
@@ -762,6 +763,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     server.getCpu().getFlags());
             assertEquals("42", server.getCpu().getVersion());
             assertNotNull(server.getVirtualInstance());
+            assertEquals(Integer.valueOf(1), server.getVirtualInstance().getNumberOfCPUs());
+            assertEquals(Long.valueOf(489), server.getVirtualInstance().getTotalMemory());
             assertNotNull(server.getDmi());
             assertNotNull(server.getDmi().getSystem());
             assertNotNull(server.getDmi().getProduct());

@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.manager.webui.utils.SaltPillar;
 
+import java.util.Optional;
+
 /**
  * Common interface for generating specific minion pillar data
  */
@@ -29,7 +31,7 @@ public interface MinionPillarGenerator {
      * @param minion the minion server
      * @return the SaltPillar containing the pillar data
      */
-    SaltPillar generatePillarData(MinionServer minion);
+    Optional<SaltPillar> generatePillarData(MinionServer minion);
 
     /**
      * Generates the filename of the file disk where the pillar data should be save

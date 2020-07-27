@@ -15,6 +15,7 @@
 package com.suse.manager.webui.services.iface;
 
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.event.EventStream;
 
 import java.util.Optional;
@@ -43,4 +44,9 @@ public interface SaltApi {
      */
     <R> Optional<R> callSync(LocalCall<R> call, String minionId);
 
+    /**
+     * Call 'saltutil.refresh_pillar' to sync the grains to the target minion(s).
+     * @param minionList minion list
+     */
+    void refreshPillar(MinionList minionList);
 }

@@ -19,13 +19,12 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-
-import org.apache.log4j.Logger;
-
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import org.apache.log4j.Logger;
 
 /**
  * Get information about us
@@ -48,14 +47,14 @@ public class ManagerInfoFactory extends HibernateFactory {
      * Return the last mgr-sync refresh date
      * @return last mgr-sync refresh date
      */
-    public static Date getLastMgrSyncRefresh() {
+    public static Optional<Date> getLastMgrSyncRefresh() {
         Map<String, Object> params = new HashMap<String, Object>();
         SelectMode m = ModeFactory.getMode("util_queries", "get_last_mgr_sync_refresh");
         DataResult<Map> dr = m.execute(params);
         if (!dr.isEmpty()) {
-            return (Date) dr.get(0).get("last_mgr_sync_refresh");
+            return Optional.of((Date) dr.get(0).get("last_mgr_sync_refresh"));
         }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -74,7 +73,7 @@ public class ManagerInfoFactory extends HibernateFactory {
         params.put("lastrefresh", new Timestamp(milliseconds));
 
         WriteMode m = ModeFactory.getWriteMode("util_queries",
-                getLastMgrSyncRefresh() == null ? "set_last_mgr_sync_refresh" : "update_last_mgr_sync_refresh");
+                getLastMgrSyncRefresh().isEmpty() ? "set_last_mgr_sync_refresh" : "update_last_mgr_sync_refresh");
         m.executeUpdate(params);
     }
 }

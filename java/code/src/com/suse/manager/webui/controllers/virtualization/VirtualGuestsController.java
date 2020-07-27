@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
@@ -48,13 +48,15 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.virtualization.DomainCapabilitiesJson;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.HostCapabilitiesJson;
+import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.MinionController;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestSetterActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseActionJson;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
-import com.suse.manager.webui.utils.gson.VirtualGuestSetterActionJson;
-import com.suse.manager.webui.utils.gson.VirtualGuestsBaseActionJson;
-import com.suse.manager.webui.utils.gson.VirtualGuestsUpdateActionJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -66,7 +68,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -539,13 +540,13 @@ public class VirtualGuestsController {
         if (data.getDisks() != null) {
             context.put(VirtualizationCreateAction.DISKS, data.getDisks().stream().map(disk -> {
                 VirtualizationCreateActionDiskDetails details = new VirtualizationCreateActionDiskDetails();
-                details.setType(disk.getType());
                 details.setDevice(disk.getDevice());
                 details.setTemplate(disk.getTemplate());
                 details.setSize(disk.getSize());
                 details.setBus(disk.getBus());
                 details.setPool(disk.getPool());
                 details.setSourceFile(disk.getSourceFile());
+                details.setFormat(disk.getFormat());
                 return details;
             }).collect(Collectors.toList()));
         }

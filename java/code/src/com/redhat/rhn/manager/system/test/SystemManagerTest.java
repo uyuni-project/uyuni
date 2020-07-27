@@ -179,7 +179,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         });
         SaltService saltService = new SaltService();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(),
+                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
                 new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
