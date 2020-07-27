@@ -435,7 +435,7 @@ PKGLIST15_TRAD = [
     "python3-spacewalk-check",
     "python3-spacewalk-client-setup",
     "python3-spacewalk-client-tools",
-    "python3-uyuni-common-libs",
+    "python3-uyuni-common-libs*",
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python3-suseRegisterInfo",
