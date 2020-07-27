@@ -146,7 +146,7 @@ const SystemPicker = (props: SystemPickerProps) => {
         Network.get(`/rhn/manager/api/systems/targetforschedule/${props.scheduleId}`).promise
             .then(setSystems)
             .catch(xhr => props.onMessage(
-                MessagesUtils.error(Network.errorMessageByStatus(xhr.status))))
+                Network.responseErrorMessage(xhr)))
             .finally(() => setLoading(false));
     }, [props.scheduleId]);
 
@@ -158,7 +158,7 @@ const SystemPicker = (props: SystemPickerProps) => {
                 MessagesUtils.success(t("Maintenance schedule has been assigned to {0} system(s)", selectedSystems.length))))
             .then(props.onAssign)
             .catch(xhr => props.onMessage(
-                MessagesUtils.error(Network.errorMessageByStatus(xhr.status))));
+                Network.responseErrorMessage(xhr)));
     };
 
     return (
