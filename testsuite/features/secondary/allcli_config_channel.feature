@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2019 SUSE LLC
+# Copyright (c) 2018-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Management of configuration of all types of clients in a single channel
@@ -49,7 +49,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @centos_minion
   Scenario: Subscribe a CentOS minion to the configuration channel
-    When I am on the Systems overview page of this "ceos_ssh_minion"
+    When I am on the Systems overview page of this "ceos_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -60,7 +60,7 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @ubuntu_minion
   Scenario: Subscribe a Ubuntu minion to the configuration channel
-    When I am on the Systems overview page of this "ubuntu_ssh_minion"
+    When I am on the Systems overview page of this "ubuntu_minion"
     And I follow "Configuration" in the content area
     And I follow "Manage Configuration Channels" in the content area
     And I follow first "Subscribe to Channels" in the content area
@@ -103,13 +103,13 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @centos_minion
   Scenario: Check that file has been created on CentOS minion
-    When I wait until file "/etc/s-mgr/config" exists on "ceos_ssh_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos_ssh_minion"
+    When I wait until file "/etc/s-mgr/config" exists on "ceos_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos_minion"
 
 @ubuntu_minion
   Scenario: Check that file has been created on Ubuntu minion
-    When I wait until file "/etc/s-mgr/config" exists on "ubuntu_ssh_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu_ssh_minion"
+    When I wait until file "/etc/s-mgr/config" exists on "ubuntu_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu_minion"
 
 @ssh_minion
   Scenario: Check that file has been created on SSH minion
@@ -124,15 +124,15 @@ Feature: Management of configuration of all types of clients in a single channel
 
 @centos_minion
   Scenario: Apply highstate to override changed content on CentOS minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ceos_ssh_minion"
-    And I apply highstate on "ceos_ssh_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos_ssh_minion"
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ceos_minion"
+    And I apply highstate on "ceos_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ceos_minion"
 
 @ubuntu_minion
   Scenario: Apply highstate to override changed content on Ubuntu minion
-    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ubuntu_ssh_minion"
-    And I apply highstate on "ubuntu_ssh_minion"
-    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu_ssh_minion"
+    When I store "COLOR=blue" into file "/etc/s-mgr/config" on "ubuntu_minion"
+    And I apply highstate on "ubuntu_minion"
+    Then file "/etc/s-mgr/config" should contain "COLOR=white" on "ubuntu_minion"
 
 @ssh_minion
   Scenario: Apply highstate to override changed content on SSH minion
@@ -146,10 +146,10 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "ceos_ssh_minion" client
+    And I check the "ceos_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
-    And I destroy "/etc/s-mgr" directory on "ceos_ssh_minion"
+    And I destroy "/etc/s-mgr" directory on "ceos_minion"
 
 @ubuntu_minion
   Scenario: Unsubscribe Ubuntu minion and delete configuration files
@@ -157,10 +157,10 @@ Feature: Management of configuration of all types of clients in a single channel
     When I follow the left menu "Configuration > Configuration Channels"
     And I follow "Mixed Channel"
     And I follow "Systems" in the content area
-    And I check the "ubuntu_ssh_minion" client
+    And I check the "ubuntu_minion" client
     And I click on "Unsubscribe systems"
     Then I should see a "Successfully unsubscribed 1 system(s)." text
-    And I destroy "/etc/s-mgr" directory on "ubuntu_ssh_minion"
+    And I destroy "/etc/s-mgr" directory on "ubuntu_minion"
 
 @ssh_minion
   Scenario: Unsubscribe SSH minion and delete configuration files
