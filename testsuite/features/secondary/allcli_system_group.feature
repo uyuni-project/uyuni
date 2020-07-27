@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Manage a group of systems
@@ -58,7 +58,7 @@ Feature: Manage a group of systems
     When I follow "new-systems-group"
     And I follow "Target Systems"
     Then I should see a "The following are systems that may be added to this group." text
-    When I check the "ceos_ssh_minion" client
+    When I check the "ceos_minion" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group" text
 
