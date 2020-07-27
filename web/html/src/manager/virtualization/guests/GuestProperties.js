@@ -70,8 +70,8 @@ export function GuestProperties(props: Props) : React.Node {
           <VirtualizationPoolsListRefreshApi serverId={props.host.id}>
             {
               ({
-                data: pools,
-                error: poolListError,
+                pools,
+                errors: poolListError,
               }) => (
                 <VirtualizationPoolCapsApi hostId={props.host.id}>
                 {
