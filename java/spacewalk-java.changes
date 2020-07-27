@@ -1,3 +1,4 @@
+- set CPU and memory info for virtual instances (bsc#1170244)
 - Add virtual network Start, Stop and Delete actions
 - Add virtual network list page
 
