@@ -2,6 +2,12 @@
 # DO NOT EDIT !!!
 #
 
+# package list format
+#
+# | alternative. Example: "a|b" when package "a" cannot be found try "b". First match wins.
+#                One must be available.
+# * optional. Example: "a*" if "a" is available add it, otherwise ignore it
+
 PKGLIST10 = [
     "libaugeas0",
     "libnewt0_52",
