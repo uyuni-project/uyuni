@@ -32,8 +32,14 @@ public class FailRescheduleStrategy implements RescheduleStrategy {
     private static final Logger LOG = Logger.getLogger(CancelRescheduleStrategy.class);
 
     @Override
-    public RescheduleResult reschedule(User user, Map<Action, List<Server>> actionServer,
+    public RescheduleResult reschedule(User user, Map<Action, List<Server>> actionsServers,
             MaintenanceSchedule schedule) throws RescheduleException {
+
+        if (actionsServers.isEmpty()) {
+            RescheduleResult result = new RescheduleResult(getType().getLabel(), schedule.getName(), actionsServers);
+            result.setSuccess(true);
+            return  result;
+        }
 
         LOG.info("Rescheduling failed");
         throw new RescheduleException();
