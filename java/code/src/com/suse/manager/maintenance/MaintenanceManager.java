@@ -41,6 +41,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.model.maintenance.CalendarAssignment;
 import com.suse.manager.model.maintenance.CalendarFactory;
 import com.suse.manager.model.maintenance.ScheduleFactory;
+import com.suse.manager.maintenance.rescheduling.FailRescheduleStrategy;
 import com.suse.manager.maintenance.rescheduling.CancelRescheduleStrategy;
 import com.suse.manager.maintenance.rescheduling.RescheduleException;
 import com.suse.manager.maintenance.rescheduling.RescheduleResult;
@@ -588,6 +589,10 @@ public class MaintenanceManager {
         Set<Long> withMaintenanceActions = ServerFactory.filterSystemsWithPendingMaintOnlyActions(serverIds);
         if (withMaintenanceActions.isEmpty()) {
             return new RescheduleResult(schedule.getName(), true);
+        }
+        // If no rescheduleStrategy is given default to 'Fail'
+        if (scheduleStrategy.isEmpty()) {
+            scheduleStrategy = Collections.singletonList(new FailRescheduleStrategy());
         }
         List<Server> servers = ServerFactory.lookupByIdsAndOrg(withMaintenanceActions, user.getOrg());
 
