@@ -51,9 +51,15 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
+  last = Time.now
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?("This action's status is: Completed.")
     raise 'Event failed' if has_content?("This action's status is: Failed.")
+    current = Time.now
+    if current - last > 150
+      STDOUT.puts "#{current} Still waiting for action to complete..."
+      last = current
+    end
     evaluate_script 'window.location.reload()'
   end
 end
