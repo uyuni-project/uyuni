@@ -15,6 +15,8 @@
 package com.suse.manager.maintenance.test;
 
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
+import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleType.SINGLE;
+import static java.util.Optional.of;
 
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
@@ -253,8 +255,12 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     public void testAssignScheduleToSystemWithPendingActions() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
-        MaintenanceSchedule schedule = mm.createSchedule(
-                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+        File ical = new File(TestUtils.findTestData(new File(
+                "/com/suse/manager/maintenance/test/testdata/maintenance-windows-exchange.ics")
+                .getAbsolutePath()).getPath());
+        String calendarString = FileUtils.readStringFromFile(ical.getAbsolutePath());
+        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", calendarString);
+        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-1", SINGLE, of(mc));
 
         Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
         Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -264,9 +270,14 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 .createActionForServerAt(user, ActionFactory.TYPE_VIRTUALIZATION_START, sys1, "2020-04-13T08:15:00+02:00");
         assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
 
+        // assign maintenance window affected action inside a maintenance window
+        Action insideAction = MaintenanceTestUtils
+                .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys1, "2020-07-27T09:00:00+02:00");
+        assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
+
         // assign an offending action to one system
-        Action disallowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
-        ServerActionTest.createServerAction(sys2, disallowedAction);
+        Action disallowedAction = MaintenanceTestUtils
+                .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys2, "2020-07-27T11:00:00+02:00");
 
         assertExceptionThrown(
                 () -> mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId(), sys2.getId()), false),
