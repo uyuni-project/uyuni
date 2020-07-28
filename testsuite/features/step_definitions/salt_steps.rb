@@ -521,7 +521,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar")
+  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar wait=True")
 end
 
 Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
