@@ -104,6 +104,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
                 maintenanceWindows: indexed,
                 isMaintenanceModeEnabled: true
               });
+              this.onMaintenanceWindowChanged(maintenanceWindows[0]);
             }
             else {
               this.setState({
