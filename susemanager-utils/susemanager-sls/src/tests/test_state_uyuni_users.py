@@ -241,7 +241,6 @@ class TestManageUser:
             assert e.value.faultCode == 2951
             assert e.value.args[0] == 'generic error'
 
-
     def test_user_absent_exists_test(self):
         current_user = {'uui': 'username',
                         'email': 'mail@mail.com',
@@ -295,6 +294,155 @@ class TestManageUser:
                                                                                    org_admin_user='org_admin_user',
                                                                                    org_admin_password='org_admin_password')
             uyuni_users.__salt__['uyuni.user_delete'].assert_called_once_with('username',
-                                                                               org_admin_user='org_admin_user',
-                                                                               org_admin_password='org_admin_password')
+                                                                              org_admin_user='org_admin_user',
+                                                                              org_admin_password='org_admin_password')
+
+
+class TestManageUserChannels:
+
+    def test_user_channels_org_admin(self):
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.user_list_roles': MagicMock(return_value=["channel_admin"]),
+            'uyuni.channel_list_manageable_channels': MagicMock(),
+            'uyuni.channel_list_my_channels': MagicMock()}):
+            result = uyuni_users.user_channels('username', 'password',
+                                               org_admin_user='org_admin_user',
+                                               org_admin_password='org_admin_password')
+            assert result is not None
+            assert result['name'] == 'username'
+            assert not result['result']
+            assert result['changes'] == {}
+            assert 'org_admin' in result['comment']
+
+            uyuni_users.__salt__['uyuni.user_list_roles'].assert_called_once_with('username', password='password')
+
+            uyuni_users.__salt__['uyuni.channel_list_manageable_channels'].assert_called_once_with('username',
+                                                                                                   'password')
+
+            uyuni_users.__salt__['uyuni.channel_list_my_channels'].assert_called_once_with('username',
+                                                                                           'password')
+
+    def test_user_channels_channel_admin(self):
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.user_list_roles': MagicMock(return_value=["channel_admin"]),
+            'uyuni.channel_list_manageable_channels': MagicMock(),
+            'uyuni.channel_list_my_channels': MagicMock()}):
+            result = uyuni_users.user_channels('username', 'password',
+                                               org_admin_user='org_admin_user',
+                                               org_admin_password='org_admin_password')
+            assert result is not None
+            assert result['name'] == 'username'
+            assert not result['result']
+            assert result['changes'] == {}
+            assert 'channel_admin' in result['comment']
+
+            uyuni_users.__salt__['uyuni.user_list_roles'].assert_called_once_with('username', password='password')
+
+            uyuni_users.__salt__['uyuni.channel_list_manageable_channels'].assert_called_once_with('username',
+                                                                                                   'password')
+
+            uyuni_users.__salt__['uyuni.channel_list_my_channels'].assert_called_once_with('username',
+                                                                                           'password')
+
+    def test_user_channels_add_all(self):
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.user_list_roles': MagicMock(return_value=[]),
+            'uyuni.channel_list_manageable_channels': MagicMock(return_value=[]),
+            'uyuni.channel_list_my_channels': MagicMock(return_value=[]),
+            'uyuni.channel_software_set_user_manageable': MagicMock(),
+            'uyuni.channel_software_set_user_subscribable': MagicMock()}):
+            result = uyuni_users.user_channels('username', 'password',
+                                               manageable_channels=['manage1'],
+                                               subscribable_channels=['subscribe1'],
+                                               org_admin_user='org_admin_user',
+                                               org_admin_password='org_admin_password')
+            assert result is not None
+            assert result['name'] == 'username'
+            assert result['result']
+            assert result['changes'] == {'manageable_channels': {'manage1': True},
+                                         'subscribable_channels': {'subscribe1': True}}
+
+            uyuni_users.__salt__['uyuni.user_list_roles'].assert_called_once_with('username', password='password')
+
+            uyuni_users.__salt__['uyuni.channel_list_manageable_channels'].assert_called_once_with('username',
+                                                                                                   'password')
+
+            uyuni_users.__salt__['uyuni.channel_list_my_channels'].assert_called_once_with('username',
+                                                                                           'password')
+
+            uyuni_users.__salt__['uyuni.channel_software_set_user_manageable'].assert_called_once_with('manage1',
+                                                                                                       'username',
+                                                                                                       True,
+                                                                                                       'org_admin_user',
+                                                                                                       'org_admin_password')
+
+            uyuni_users.__salt__['uyuni.channel_software_set_user_subscribable'].assert_called_once_with('subscribe1',
+                                                                                                         'username',
+                                                                                                         True,
+                                                                                                         'org_admin_user',
+                                                                                                         'org_admin_password')
+
+    def test_user_channels_no_changes(self):
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.user_list_roles': MagicMock(return_value=[]),
+            'uyuni.channel_list_manageable_channels': MagicMock(return_value=[{"label": "manage1"}]),
+            'uyuni.channel_list_my_channels': MagicMock(return_value=[{"label":"subscribe1"}]),
+            'uyuni.channel_software_set_user_manageable': MagicMock(),
+            'uyuni.channel_software_set_user_subscribable': MagicMock()}):
+            result = uyuni_users.user_channels('username', 'password',
+                                               manageable_channels=['manage1'],
+                                               subscribable_channels=['subscribe1'],
+                                               org_admin_user='org_admin_user',
+                                               org_admin_password='org_admin_password')
+            assert result is not None
+            assert result['name'] == 'username'
+            assert result['result']
+            assert result['changes'] == {}
+
+            uyuni_users.__salt__['uyuni.user_list_roles'].assert_called_once_with('username', password='password')
+
+            uyuni_users.__salt__['uyuni.channel_list_manageable_channels'].assert_called_once_with('username',
+                                                                                                   'password')
+
+            uyuni_users.__salt__['uyuni.channel_list_my_channels'].assert_called_once_with('username',
+                                                                                           'password')
+
+    def test_user_channels_managed_subscribe_change(self):
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.user_list_roles': MagicMock(return_value=[]),
+            'uyuni.channel_list_manageable_channels': MagicMock(return_value=[{"label": "manage1"}]),
+            'uyuni.channel_list_my_channels': MagicMock(return_value=[{"label": "manage1"}]),
+            'uyuni.channel_software_set_user_manageable': MagicMock(),
+            'uyuni.channel_software_set_user_subscribable': MagicMock()}):
+            result = uyuni_users.user_channels('username', 'password',
+                                               manageable_channels=[],
+                                               subscribable_channels=['manage1'],
+                                               org_admin_user='org_admin_user',
+                                               org_admin_password='org_admin_password')
+            print(result)
+            assert result is not None
+            assert result['name'] == 'username'
+            assert result['result']
+            assert result['changes'] == {'manageable_channels': {'manage1': False},
+                                         'subscribable_channels': {'manage1': True}}
+
+            uyuni_users.__salt__['uyuni.user_list_roles'].assert_called_once_with('username', password='password')
+
+            uyuni_users.__salt__['uyuni.channel_list_manageable_channels'].assert_called_once_with('username',
+                                                                                                   'password')
+
+            uyuni_users.__salt__['uyuni.channel_list_my_channels'].assert_called_once_with('username',
+                                                                                           'password')
+
+            uyuni_users.__salt__['uyuni.channel_software_set_user_manageable'].assert_called_once_with('manage1',
+                                                                                                       'username',
+                                                                                                       False,
+                                                                                                       'org_admin_user',
+                                                                                                       'org_admin_password')
+
+            uyuni_users.__salt__['uyuni.channel_software_set_user_subscribable'].assert_called_once_with('manage1',
+                                                                                                         'username',
+                                                                                                         True,
+                                                                                                         'org_admin_user',
+                                                                                                         'org_admin_password')
 
