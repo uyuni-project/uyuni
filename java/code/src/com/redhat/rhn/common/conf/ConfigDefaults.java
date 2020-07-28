@@ -324,6 +324,11 @@ public class ConfigDefaults {
      */
     public static final String AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED = "java.automatic_system_lock_cluster_nodes";
 
+    /**
+     * Allows to publish erratas into the configured vendor channels via the api
+     */
+    public static final String ALLOW_ADDING_PATCHES_VIA_API = "java.allow_adding_patches_via_api";
+
     private ConfigDefaults() {
     }
 
