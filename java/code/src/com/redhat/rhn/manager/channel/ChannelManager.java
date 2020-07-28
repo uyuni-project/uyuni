@@ -2421,16 +2421,25 @@ public class ChannelManager extends BaseManager {
     public static void addPackages(Channel chan, List<Long> packageIds, User user) {
 
         if (!UserManager.verifyChannelAdmin(user, chan)) {
-            StringBuilder msg = new StringBuilder("User: ");
-            msg.append(user.getLogin());
-            msg.append(" does not have channel admin access to channel: ");
-            msg.append(chan.getLabel());
+            List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
+            if (chan.isVendorChannel() && allowedList.contains(chan.getLabel())) {
+                log.warn("User " + user.getId() + " added packages " + packageIds.stream()
+                        .map(Object::toString)
+                        .collect(Collectors.joining(",")) + " to vendor channel " + chan.getLabel()
+                );
+            }
+            else {
+                StringBuilder msg = new StringBuilder("User: ");
+                msg.append(user.getLogin());
+                msg.append(" does not have channel admin access to channel: ");
+                msg.append(chan.getLabel());
 
-            LocalizationService ls = LocalizationService.getInstance();
-            PermissionException pex = new PermissionException(msg.toString());
-            pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
-            pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
-            throw pex;
+                LocalizationService ls = LocalizationService.getInstance();
+                PermissionException pex = new PermissionException(msg.toString());
+                pex.setLocalizedTitle(ls.getMessage("permission.jsp.title.channel"));
+                pex.setLocalizedSummary(ls.getMessage("permission.jsp.summary.channel"));
+                throw pex;
+            }
         }
 
         Map<String, Long> params = new HashMap<String, Long>();
