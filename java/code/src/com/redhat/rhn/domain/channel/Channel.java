@@ -136,10 +136,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
-     * Returns true if this Channel is a Rhel channel.
-     * @return true if this Channel is a Rhel channel.
+     * Returns true if this Channel is a Vendor channel.
+     * @return true if this Channel is a Vendor channel.
      */
-    public boolean isRhelChannel() {
+    public boolean isVendorChannel() {
         return org == null;
     }
 
