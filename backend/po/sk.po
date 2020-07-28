@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-07-28 12:34+0000\n"
+"PO-Revision-Date: 2020-07-28 23:17+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
 "\n"
@@ -630,10 +630,10 @@ msgstr ""
 "\n"
 "     Aktuálne nastavenia vášho účtu vám neumožňujú pridať ďalší "
 "používateľský\n"
-"     používateľský účet. Prosím, overte si u administrátora organizácie pre "
-"váš\n"
-"     účet, či sa musí zmeniť maximálny počet používateľov, ktorí sa môžu "
-"prihlásiť k serveru.\n"
+"     účet. Prosím, overte si u administrátora organizácie pre váš účet, či "
+"sa\n"
+"     musí zmeniť maximálny počet používateľov, ktorí sa môžu prihlásiť k "
+"serveru.\n"
 "     k serveru.\n"
 "     "
 
@@ -650,6 +650,15 @@ msgid ""
 "     subscribed to your account.\n"
 "     "
 msgstr ""
+"\n"
+"     Limity členstva v systémových skupinách boli prekročené.\n"
+"\n"
+"     Aktuálne nastavenia vášho účtu vám neumožňujú pridať ďalší systémový\n"
+"     profil. Prosím, obráťte sa na administrátora organizácie pre váš účet,\n"
+"     ak chcete upraviť maximálny počet systémových profilov, ktoré je môžu "
+"byť\n"
+"     prihlásené k vášmu účtu.\n"
+"     "
 
 #: ../common/rhnException.py:116
 msgid ""
@@ -667,7 +676,7 @@ msgstr ""
 
 #: ../common/rhnException.py:121
 msgid "Invalid RPM header"
-msgstr ""
+msgstr "Neplatná hlavička RPM"
 
 #: ../common/rhnException.py:122
 msgid ""
@@ -678,15 +687,21 @@ msgid ""
 "the traditional tools.\n"
 "    "
 msgstr ""
+"\n"
+"    Tento systém je už zaregistrovaný ako Salt Minion. Ak ho chcete "
+"zaregistrovať ako tradičného klienta,\n"
+"    najskôr ho vymažte cez webové UI alebo API a potom ho zaregistrujte "
+"pomocou tradičných nástrojov.\n"
+"    "
 
 #. For the uploading tools
 #: ../common/rhnException.py:127
 msgid "Invalid information uploaded to the server"
-msgstr ""
+msgstr "Na server boli nahrané neplatné informácie"
 
 #: ../common/rhnException.py:128
 msgid "Error uploading network interfaces configuration."
-msgstr ""
+msgstr "Chyba pri nahrávaní konfigurácie sieťových rozhraní."
 
 #: ../common/rhnException.py:129
 msgid ""
@@ -696,6 +711,11 @@ msgid ""
 "     does not already exists on the server\n"
 "     "
 msgstr ""
+"\n"
+"     Nahranie balíka zlyhalo z dôvodu porušenia obmedzení jedinečnosti.\n"
+"     Uistite sa, že balík nemá duplicitné závislosti alebo už neexistuje\n"
+"     na serveri.\n"
+"     "
 
 #: ../common/rhnException.py:134
 msgid ""
@@ -704,6 +724,10 @@ msgid ""
 "     Please contact your SUSE Manager administrator for more help.\n"
 "     "
 msgstr ""
+"\n"
+"     Na tomto serveri je zakázaná voľba --force rhnpush.\n"
+"     Pre ďalšiu pomoc kontaktujte svojho administrátora SUSE Manager.\n"
+"     "
 
 #. 60-70: token errors
 #: ../common/rhnException.py:140
@@ -713,18 +737,23 @@ msgid ""
 "     Please retry with a valid key.\n"
 "     "
 msgstr ""
+"\n"
+"     Zadaný aktivačný token nebolo možné nájsť na serveri.\n"
+"     Prosím, skúste to znova s platným kľúčom.\n"
+"     "
 
 #: ../common/rhnException.py:144
 msgid "Too many systems registered using this registration token"
 msgstr ""
+"Pomocou tohto registračného tokenu bolo zaregistrovaných príliš veľa systémov"
 
 #: ../common/rhnException.py:145
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr ""
+msgstr "Token obsahuje neplatné, zastarané alebo nedostatočné nastavenia"
 
 #: ../common/rhnException.py:146
 msgid "Conflicting activation tokens"
-msgstr ""
+msgstr "Konfliktné aktivačné tokeny"
 
 #. 70-80: channel subscription errors
 #: ../common/rhnException.py:149
@@ -733,6 +762,9 @@ msgid ""
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
+"\n"
+"     Pre váš systém sa nenašiel žiadny zodpovedajúci základný kanál.\n"
+"     "
 
 #: ../common/rhnException.py:152
 msgid ""
