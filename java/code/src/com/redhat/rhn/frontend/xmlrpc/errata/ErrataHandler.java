@@ -24,6 +24,8 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
@@ -64,9 +66,11 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -75,6 +79,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -86,6 +91,7 @@ import java.util.Set;
 public class ErrataHandler extends BaseHandler {
 
     private static final List<String> RO_METHODS = Arrays.asList("applicableToChannels");
+    private static Logger log = Logger.getLogger(ErrataHandler.class);
 
     /**
      * Returns an OVAL metadata file for a given errata or CVE
@@ -1189,7 +1195,8 @@ public class ErrataHandler extends BaseHandler {
 
         //Don't want them to publish an errata without any channels,
         //so check first before creating anything
-        List<Channel> channels = verifyChannelList(channelLabels, loggedInUser);
+        List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
+        List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, allowedList);
 
         String synopsis = (String) getRequiredAttribute(errataInfo, "synopsis");
         String advisoryName = (String) getRequiredAttribute(errataInfo, "advisory_name");
@@ -1277,6 +1284,11 @@ public class ErrataHandler extends BaseHandler {
         }
 
         ErrataFactory.save(newErrata);
+        List<Channel> vendorChannels = channels.stream().filter(c -> c.isVendorChannel()).collect(toList());
+        if (!vendorChannels.isEmpty()) {
+            log.warn("Errata " + newErrata.getAdvisory() + " added to vendor channels " +
+                    vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
+        }
 
         return publish(newErrata, channels, loggedInUser, false);
     }
@@ -1318,8 +1330,14 @@ public class ErrataHandler extends BaseHandler {
      *          $ErrataSerializer
      */
     public Errata publish(User loggedInUser, String advisory, List<String> channelLabels) {
-        List<Channel> channels = verifyChannelList(channelLabels, loggedInUser);
+        List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
+        List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, allowedList);
+        List<Channel> vendorChannels = channels.stream().filter(c -> c.isVendorChannel()).collect(toList());
         Errata toPublish = lookupAccessibleErratum(advisory, empty(), loggedInUser.getOrg());
+        if (!vendorChannels.isEmpty()) {
+            log.warn("Errata " + toPublish.getAdvisory() + " added to vendor channels " +
+                    vendorChannels.stream().map(Channel::getLabel).collect(Collectors.joining(",")));
+        }
         return publish(toPublish, channels, loggedInUser, false);
     }
 
@@ -1343,7 +1361,7 @@ public class ErrataHandler extends BaseHandler {
      */
     public Errata publishAsOriginal(User loggedInUser, String advisory,
             List<String> channelLabels) throws InvalidChannelRoleException {
-        List<Channel> channels = verifyChannelList(channelLabels, loggedInUser);
+        List<Channel> channels = verifyChannelList(channelLabels, loggedInUser, Collections.emptyList());
         for (Channel c : channels) {
             ClonedChannel cc = null;
             try {
@@ -1381,22 +1399,27 @@ public class ErrataHandler extends BaseHandler {
      *      Channel objects into a List.  This is primarily used before publishing
      *      to verify all channels are valid before starting the errata creation
      * @param channelsLabels the List of channel labels to verify
+     * @param vendorChannelOverride list of vendor channel labels to allow without permission.
      * @return a List of channel objects
      */
-    private List<Channel> verifyChannelList(List<String> channelsLabels, User user) {
+    private List<Channel> verifyChannelList(List<String> channelsLabels, User user,
+                                            List<String> vendorChannelOverride) {
         if (channelsLabels.size() == 0) {
             throw new NoChannelsSelectedException();
         }
 
-        List<Channel> resolvedList = new ArrayList<Channel>();
-        for (Iterator<String> itr = channelsLabels.iterator(); itr.hasNext();) {
-            String channelLabel = itr.next();
+        List<Channel> resolvedList = new ArrayList<>();
+        for (String channelLabel: channelsLabels) {
             Channel channel = ChannelFactory.lookupByLabelAndUser(channelLabel, user);
             if (channel == null) {
                 throw new InvalidChannelLabelException();
             }
             if (!UserManager.verifyChannelAdmin(user, channel)) {
-                throw new PermissionCheckFailureException();
+                boolean allowed = channel.isVendorChannel() &&
+                        vendorChannelOverride.contains(channel.getLabel());
+                if (!allowed) {
+                    throw new PermissionCheckFailureException();
+                }
             }
             resolvedList.add(channel);
         }
