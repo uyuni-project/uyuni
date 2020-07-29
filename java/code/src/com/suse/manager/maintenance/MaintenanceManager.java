@@ -339,8 +339,8 @@ public class MaintenanceManager {
             calendar.setIcal(details.get("ical"));
         }
         else if (details.containsKey("url")) {
-            calendar.setUrl(details.get("url"));
             calendar.setIcal(fetchCalendarData(details.get("url")));
+            calendar.setUrl(details.get("url"));
         }
         calendarFactory.save(calendar);
         List<RescheduleResult> result = new LinkedList<>();
