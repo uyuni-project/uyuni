@@ -446,3 +446,212 @@ class TestManageUserChannels:
                                                                                                          'org_admin_user',
                                                                                                          'org_admin_password')
 
+
+class TestManageGroups:
+
+    def test_group_present_new_group_test_no_systems(self):
+        exc = Exception("Group not found")
+        exc.faultCode = 2201
+
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.systemgroup_get_details': MagicMock(side_effect=exc),
+            'uyuni.master_select_minions': MagicMock(),
+            'uyuni.systems_get_minion_id_map': MagicMock()}):
+            with patch.dict(uyuni_users.__opts__, {'test': True}):
+                result = uyuni_users.group_present('my_group', 'my group description',
+                                                   expression='*http*',
+                                                   org_admin_user='org_admin_user',
+                                                   org_admin_password='org_admin_password')
+                assert result is not None
+                assert result['name'] == 'my_group'
+                assert result['result'] is None
+                assert result['comment'] == 'my_group would be updated'
+
+                assert result['changes'] == {'description': {'new': 'my group description'},
+                                             'name': {'new': 'my_group'}}
+
+                uyuni_users.__salt__['uyuni.systemgroup_get_details'].assert_called_once_with('my_group',
+                                                                                       org_admin_user='org_admin_user',
+                                                                                       org_admin_password='org_admin_password')
+
+                uyuni_users.__salt__['uyuni.master_select_minions'].assert_called_once_with('*http*', 'glob')
+                uyuni_users.__salt__['uyuni.systems_get_minion_id_map'].assert_called_once_with('org_admin_user',
+                                                                                                'org_admin_password')
+    def test_group_present_new_group_test(self):
+        exc = Exception("Group not found")
+        exc.faultCode = 2201
+
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.systemgroup_get_details': MagicMock(side_effect=exc),
+            'uyuni.master_select_minions': MagicMock(return_value={'minions': ['my_minion_1', 'my_minion_2']}),
+            'uyuni.systems_get_minion_id_map': MagicMock(return_value={'my_minion_1': '10001'})}):
+            with patch.dict(uyuni_users.__opts__, {'test': True}):
+                result = uyuni_users.group_present('my_group', 'my group description',
+                                                   expression='*http*',
+                                                   org_admin_user='org_admin_user',
+                                                   org_admin_password='org_admin_password')
+                assert result is not None
+                assert result['name'] == 'my_group'
+                assert result['result'] is None
+                assert result['comment'] == 'my_group would be updated'
+
+                assert result['changes'] == {'description': {'new': 'my group description'},
+                                             'systems': {'new': ['10001']},
+                                             'name': {'new': 'my_group'}}
+
+                uyuni_users.__salt__['uyuni.systemgroup_get_details'].assert_called_once_with('my_group',
+                                                                                       org_admin_user='org_admin_user',
+                                                                                       org_admin_password='org_admin_password')
+
+                uyuni_users.__salt__['uyuni.master_select_minions'].assert_called_once_with('*http*', 'glob')
+                uyuni_users.__salt__['uyuni.systems_get_minion_id_map'].assert_called_once_with('org_admin_user',
+                                                                                                'org_admin_password')
+
+    def test_group_present_new_group(self):
+        exc = Exception("Group not found")
+        exc.faultCode = 2201
+
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.systemgroup_get_details': MagicMock(side_effect=exc),
+            'uyuni.master_select_minions': MagicMock(return_value={'minions': ['my_minion_1', 'my_minion_2']}),
+            'uyuni.systems_get_minion_id_map': MagicMock(return_value={'my_minion_1': '10001'}),
+            'uyuni.systemgroup_create': MagicMock(),
+            'uyuni.systemgroup_add_remove_systems': MagicMock()}):
+            result = uyuni_users.group_present('my_group', 'my group description',
+                                               expression='*http*',
+                                               org_admin_user='org_admin_user',
+                                               org_admin_password='org_admin_password')
+            assert result is not None
+            assert result['name'] == 'my_group'
+            assert result['result'] is True
+            assert result['comment'] == 'my_group successfully managed'
+
+            assert result['changes'] == {'description': {'new': 'my group description'},
+                                         'systems': {'new': ['10001']},
+                                         'name': {'new': 'my_group'}}
+
+            uyuni_users.__salt__['uyuni.systemgroup_get_details'].assert_called_once_with('my_group',
+                                                                                          org_admin_user='org_admin_user',
+                                                                                          org_admin_password='org_admin_password')
+
+            uyuni_users.__salt__['uyuni.master_select_minions'].assert_called_once_with('*http*', 'glob')
+            uyuni_users.__salt__['uyuni.systems_get_minion_id_map'].assert_called_once_with('org_admin_user',
+                                                                                            'org_admin_password')
+
+            uyuni_users.__salt__['uyuni.systemgroup_create'].assert_called_once_with('my_group', 'my group description',
+                                                                                     org_admin_user='org_admin_user',
+                                                                                     org_admin_password='org_admin_password')
+
+            uyuni_users.__salt__['uyuni.systemgroup_add_remove_systems'].assert_called_once_with('my_group', True,
+                                                                                                 ['10001'],
+                                                                                                 org_admin_user='org_admin_user',
+                                                                                                 org_admin_password='org_admin_password')
+
+
+    def test_group_present_update_group(self):
+
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.systemgroup_get_details': MagicMock(return_value={'description': 'old description', 'name': 'my_group'}),
+            'uyuni.systemgroup_list_systems': MagicMock(return_value=[{'id': '10001'}, {'id': '10003'}]),
+            'uyuni.master_select_minions': MagicMock(return_value={'minions': ['my_minion_1', 'my_minion_2', 'my_minion_4']}),
+            'uyuni.systems_get_minion_id_map': MagicMock(return_value={'my_minion_1': '10001', 'my_minion_2': '10002'}),
+            'uyuni.systemgroup_update': MagicMock(),
+            'uyuni.systemgroup_add_remove_systems': MagicMock()}):
+            result = uyuni_users.group_present('my_group', 'my group description',
+                                               expression='*http*',
+                                               org_admin_user='org_admin_user',
+                                               org_admin_password='org_admin_password')
+            assert result is not None
+            assert result['name'] == 'my_group'
+            assert result['result']
+            assert result['comment'] == 'my_group successfully managed'
+
+            assert result['changes'] == {'description': {'new': 'my group description',
+                                                         'old': 'old description'},
+                                         'systems': {'new': ['10001', '10002'],
+                                                     'old': ['10001', '10003']}}
+
+            uyuni_users.__salt__['uyuni.systemgroup_get_details'].assert_called_once_with('my_group',
+                                                                                          org_admin_user='org_admin_user',
+                                                                                          org_admin_password='org_admin_password')
+
+            uyuni_users.__salt__['uyuni.systemgroup_list_systems'].assert_called_once_with('my_group',
+                                                                                          org_admin_user='org_admin_user',
+                                                                                          org_admin_password='org_admin_password')
+
+            uyuni_users.__salt__['uyuni.master_select_minions'].assert_called_once_with('*http*', 'glob')
+            uyuni_users.__salt__['uyuni.systems_get_minion_id_map'].assert_called_once_with('org_admin_user',
+                                                                                            'org_admin_password')
+
+            uyuni_users.__salt__['uyuni.systemgroup_update'].assert_called_once_with('my_group', 'my group description',
+                                                                                     org_admin_user='org_admin_user',
+                                                                                     org_admin_password='org_admin_password')
+
+            uyuni_users.__salt__['uyuni.systemgroup_add_remove_systems'].assert_has_calls([call('my_group', False,
+                                                                                                 ['10003'],
+                                                                                                 org_admin_user='org_admin_user',
+                                                                                                 org_admin_password='org_admin_password'),
+                                                                                           call('my_group', True,
+                                                                                                ['10002'],
+                                                                                                org_admin_user='org_admin_user',
+                                                                                                org_admin_password='org_admin_password')])
+
+    def test_group_absent_success_test(self):
+
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.systemgroup_get_details': MagicMock(return_value={'description': 'description', 'name': 'my_group'})}):
+            with patch.dict(uyuni_users.__opts__, {'test': True}):
+                result = uyuni_users.group_absent('my_group',
+                                                  org_admin_user='org_admin_user',
+                                                  org_admin_password='org_admin_password')
+                assert result is not None
+                assert result['name'] == 'my_group'
+                assert result['result'] is None
+                assert result['comment'] == 'my_group would be removed'
+
+                assert result['changes'] == {}
+                uyuni_users.__salt__['uyuni.systemgroup_get_details'].assert_called_once_with('my_group',
+                                                                                              org_admin_user='org_admin_user',
+                                                                                              org_admin_password='org_admin_password')
+
+    def test_group_absent_success(self):
+
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.systemgroup_get_details': MagicMock(return_value={'description': 'description', 'name': 'my_group'}),
+            'uyuni.systemgroup_delete': MagicMock(return_value=True)}):
+            result = uyuni_users.group_absent('my_group',
+                                               org_admin_user='org_admin_user',
+                                               org_admin_password='org_admin_password')
+            assert result is not None
+            assert result['name'] == 'my_group'
+            assert result['result']
+            assert result['comment'] == 'Group my_group has been deleted'
+
+            assert result['changes'] == {'description': {'old': 'description'},
+                                         'name': {'old': 'my_group'}}
+            uyuni_users.__salt__['uyuni.systemgroup_get_details'].assert_called_once_with('my_group',
+                                                                                          org_admin_user='org_admin_user',
+                                                                                          org_admin_password='org_admin_password')
+
+            uyuni_users.__salt__['uyuni.systemgroup_delete'].assert_called_once_with('my_group',
+                                                                                     org_admin_user='org_admin_user',
+                                                                                     org_admin_password='org_admin_password')
+
+    def test_group_absent_already_removed(self):
+
+        exc = Exception("Group not found")
+        exc.faultCode = 2201
+
+        with patch.dict(uyuni_users.__salt__, {'uyuni.systemgroup_get_details': MagicMock(side_effect=exc)}):
+            result = uyuni_users.group_absent('my_group',
+                                              org_admin_user='org_admin_user',
+                                              org_admin_password='org_admin_password')
+            assert result is not None
+            assert result['name'] == 'my_group'
+            assert result['result']
+            assert result['comment'] == 'my_group is already absent'
+
+            assert result['changes'] == {}
+            uyuni_users.__salt__['uyuni.systemgroup_get_details'].assert_called_once_with('my_group',
+                                                                                          org_admin_user='org_admin_user',
+                                                                                          org_admin_password='org_admin_password')
