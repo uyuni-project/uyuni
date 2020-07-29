@@ -1196,3 +1196,14 @@ When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   target.run("cp #{auth_keys_sav_path} #{auth_keys_path}")
   target.run("rm #{auth_keys_sav_path}")
 end
+
+When(/^I add "([^\"]*)" calendar file as url$/) do |file|
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/srv/www/htdocs/pub/" + file
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  $server.run("chmod 644 #{dest}")
+  url = "http://#{$server.full_hostname}/pub/" + file
+  puts "URL: #{url}"
+  step %(I enter "#{url}" as "calendar-data-text")
+end
