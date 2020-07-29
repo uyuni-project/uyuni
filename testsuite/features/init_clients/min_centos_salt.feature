@@ -40,7 +40,7 @@ Feature: Be able to bootstrap a CentOS minion and do some basic operations on it
     Then I should see "ceos_minion" hostname
 
 @centos_minion
-  Scenario: Re-subscribe the CentOS minion to a base channel
+  Scenario: Subscribe the CentOS minion to a base channel
     Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
