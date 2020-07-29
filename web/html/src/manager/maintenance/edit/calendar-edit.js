@@ -122,6 +122,8 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
                     {(!props.isEdit || props.calendar.url) &&
                     <div className={"align-middle col-md-" + (props.isEdit ? "5" : "4")} >
                         <input type="text" className="form-control text-truncate"
+                               id="calendar-data-text"
+                               name="calendar-data-text"
                                placeholder={t("Enter Url to ical file")}
                                value={dataText}
                                disabled={!props.isEdit && data}
