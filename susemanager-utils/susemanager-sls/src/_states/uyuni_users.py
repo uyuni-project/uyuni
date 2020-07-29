@@ -2,6 +2,7 @@ import logging
 from typing import Optional, Dict, Any, List, Tuple
 from collections import Counter
 import pdb
+
 log = logging.getLogger(__name__)
 
 __salt__: Dict[str, Any] = {}
@@ -188,7 +189,7 @@ class UyuniUsers:
         """
         try:
             user = __salt__['uyuni.user_get_details'](uid, org_admin_user=org_admin_user,
-                                              org_admin_password=org_admin_password)
+                                                      org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode == -213:
                 return StateResult.prepare_result(uid, True, "{0} is already absent".format(uid))
@@ -442,7 +443,7 @@ class UyuniGroups:
                                                      org_admin_password=org_admin_password)
                 return StateResult.prepare_result(name, True, "Group {} has been deleted".format(name),
                                                   {'name': {'old': current_group.get('name')},
-                                                       'description': {'old': current_group.get('description')}})
+                                                   'description': {'old': current_group.get('description')}})
             except Exception as exc:
                 return StateResult.state_error(name, "Error deleting group '{}': {}".format(name, exc))
 
@@ -547,15 +548,11 @@ class UyuniOrgs:
             if __opts__['test']:
                 return StateResult.prepare_result(name, None, "{0} would be removed".format(name))
             try:
-                result = __salt__['uyuni.org_delete'](name,
-                                                      admin_user=admin_user,
-                                                      admin_password=admin_password)
-                if result:
-                    return StateResult.prepare_result(name, True, "Org {} has been deleted".format(name),
-                                                      {'name': {'old': current_org.get('name')}})
-                else:
-                    return StateResult.state_error(name, "Deleting Org {} failed. See logs for more details"
-                                                   .format(name))
+                __salt__['uyuni.org_delete'](name,
+                                             admin_user=admin_user,
+                                             admin_password=admin_password)
+                return StateResult.prepare_result(name, True, "Org {} has been deleted".format(name),
+                                                  {'name': {'old': current_org.get('name')}})
             except Exception as exc:
                 return StateResult.state_error(name, "Error deleting Org '{}': {}".format(name, exc))
 
