@@ -361,7 +361,7 @@ class UyuniGroups:
                 return StateResult.state_error(name, "Error managing group '{}': {}".format(name, exc))
             pass
 
-        current_systems_ids = [sys['id'] for sys in (current_systems or {})]
+        current_systems_ids = [sys['id'] for sys in (current_systems or [])]
         systems_to_group = self._get_systems_for_group(expression, target,
                                                        org_admin_user=org_admin_user,
                                                        org_admin_password=org_admin_password)
@@ -370,15 +370,18 @@ class UyuniGroups:
         if description != (current_group or {}).get('description'):
             changes['description'] = {'new': description}
             if current_group:
-                changes['description']['old']: current_group['description']
+                changes['description']['old'] = current_group["description"]
 
         if Counter(current_systems_ids or []) != Counter(systems_to_group or []):
             changes['systems'] = {'new': systems_to_group}
             if current_group:
-                changes['systems']['old']: current_systems_ids
+                changes['systems']['old'] = current_systems_ids
 
         if not changes:
             return StateResult.prepare_result(name, True, "{0} is already installed".format(name))
+
+        if not current_group:
+            changes["name"] = {"new": name}
 
         if __opts__['test']:
             return StateResult.prepare_result(name, None, "{0} would be updated".format(name), changes)
@@ -395,7 +398,6 @@ class UyuniGroups:
                                      org_admin_user=org_admin_user,
                                      org_admin_password=org_admin_password)
             else:
-                changes["name"] = {"new": name}
                 __salt__['uyuni.systemgroup_create'](name, description,
                                                      org_admin_user=org_admin_user,
                                                      org_admin_password=org_admin_password)
@@ -435,16 +437,12 @@ class UyuniGroups:
             if __opts__['test']:
                 return StateResult.prepare_result(name, None, "{0} would be removed".format(name))
             try:
-                result = __salt__['uyuni.systemgroup_delete'](name,
-                                                              org_admin_user=org_admin_user,
-                                                              org_admin_password=org_admin_password)
-                if result:
-                    return StateResult.prepare_result(name, True, "Group {} has been deleted".format(name),
-                                                      {'name': {'old': current_group.get('name')},
+                __salt__['uyuni.systemgroup_delete'](name,
+                                                     org_admin_user=org_admin_user,
+                                                     org_admin_password=org_admin_password)
+                return StateResult.prepare_result(name, True, "Group {} has been deleted".format(name),
+                                                  {'name': {'old': current_group.get('name')},
                                                        'description': {'old': current_group.get('description')}})
-                else:
-                    return StateResult.state_error(name, "Deleting user {} failed. See logs for more details"
-                                                   .format(name))
             except Exception as exc:
                 return StateResult.state_error(name, "Error deleting group '{}': {}".format(name, exc))
 
