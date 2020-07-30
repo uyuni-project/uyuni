@@ -1,3 +1,5 @@
+- Fix: supply a dnf base when dealing w/repos (bsc#1172504)
+- Fix: autorefresh in repos is zypper-only
 - Add virtual network state change state to handle start, stop and delete
 - Add virtual network state change state to handle start and stop
 - Update package version to 4.2.0
