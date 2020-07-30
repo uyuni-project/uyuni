@@ -850,12 +850,12 @@ class TestManageOrgsTrust:
                               {'orgId': 3, 'orgName': 'new_org_2', 'trustEnabled': False}]),
             'uyuni.org_get_details': MagicMock(return_value={'id': 1, 'name': 'my_org'})}):
             with patch.dict(uyuni_users.__opts__, {'test': True}):
-                result = uyuni_users.org_trust('my_org', ['new_org_1', 'new_org_2'],
+                result = uyuni_users.org_trust('state_name', 'my_org', ['new_org_1', 'new_org_2'],
                                                admin_user='admin_user',
                                                admin_password='admin_password')
 
                 assert result is not None
-                assert result['name'] == 'my_org'
+                assert result['name'] == 'state_name'
                 assert result['result'] is None
                 assert result['comment'] == 'my_org would be installed'
                 assert result['changes'] == {'new_org_2': {'new': True, 'old': None}}
@@ -877,14 +877,14 @@ class TestManageOrgsTrust:
             'uyuni.org_trust_add_trust': MagicMock(return_value=True),
             'uyuni.org_trust_remove_trust': MagicMock(return_value=True)}):
 
-            result = uyuni_users.org_trust('my_org', ['new_org_1', 'new_org_2'],
+            result = uyuni_users.org_trust('state_name', 'my_org', ['new_org_1', 'new_org_2'],
                                            admin_user='admin_user',
                                            admin_password='admin_password')
 
             assert result is not None
-            assert result['name'] == 'my_org'
+            assert result['name'] == 'state_name'
             assert result['result']
-            assert result['comment'] == 'Org Trust successful managed'
+            assert result['comment'] == "Org 'my_org' Trust successful managed"
             assert result['changes'] == {'new_org_2': {'new': True, 'old': None},
                                          'new_org_3': {'new': None, 'old': True}}
 
@@ -910,12 +910,12 @@ class TestManageOrgsTrust:
                               {'orgId': 4, 'orgName': 'new_org_3', 'trustEnabled': False}]),
             'uyuni.org_get_details': MagicMock(return_value={'id': 1, 'name': 'my_org'})}):
 
-            result = uyuni_users.org_trust('my_org', ['new_org_1', 'new_org_2'],
+            result = uyuni_users.org_trust('state_name', 'my_org', ['new_org_1', 'new_org_2'],
                                            admin_user='admin_user',
                                            admin_password='admin_password')
 
             assert result is not None
-            assert result['name'] == 'my_org'
+            assert result['name'] == 'state_name'
             assert result['result']
             assert result['comment'] == 'my_org is already installed'
             assert result['changes'] == {}

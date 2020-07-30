@@ -559,24 +559,25 @@ class UyuniOrgs:
 
 class UyuniOrgsTrust:
 
-    def trust(self, name: str, orgs_trust: List[str],
+    def trust(self, name: str, org_name: str, orgs_trust: List[str],
               admin_user: str = None, admin_password: str = None) -> Dict[str, Any]:
         """
         Add trusted organisations to the a org
 
-        :param name: organization name
+        :param name: state name
+        :param org_name: organization name
         :param orgs_trust: list of organization names to trust
         :param admin_user: administrator username
         :param admin_password: administrator password
         :return: dict for Salt communication
         """
         try:
-            org_trusts = __salt__['uyuni.org_trust_list_trusts'](name,
+            org_trusts = __salt__['uyuni.org_trust_list_trusts'](org_name,
                                                                  admin_user=admin_user, admin_password=admin_password)
-            current_org = __salt__['uyuni.org_get_details'](name,
+            current_org = __salt__['uyuni.org_get_details'](org_name,
                                                             admin_user=admin_user, admin_password=admin_password)
         except Exception as exc:
-            return StateResult.state_error(name, "Error managing org Trust'{}': {}".format(name, exc))
+            return StateResult.state_error(name, "Error managing org Trust'{}': {}".format(org_name, exc))
 
         trusts_to_add = []
         trusts_to_remove = []
@@ -587,14 +588,14 @@ class UyuniOrgsTrust:
                 trusts_to_remove.append(org_trust)
 
         if not trusts_to_add and not trusts_to_remove:
-            return StateResult.prepare_result(name, True, "{0} is already installed".format(name))
+            return StateResult.prepare_result(name, True, "{0} is already installed".format(org_name))
         if __opts__['test']:
             changes = {}
             for org_add in trusts_to_add:
                 changes[org_add.get("orgName")] = {'old': None, 'new': True}
             for org_remove in trusts_to_remove:
                 changes[org_remove.get("orgName")] = {'old': True, 'new': None}
-            return StateResult.prepare_result(name, None, "{0} would be installed".format(name), changes)
+            return StateResult.prepare_result(name, None, "{0} would be installed".format(org_name), changes)
 
         processed_changes = {}
         try:
@@ -607,9 +608,9 @@ class UyuniOrgsTrust:
                                                          admin_user=admin_user, admin_password=admin_password)
                 processed_changes[org_remove.get("orgName")] = {'old': True, 'new': None}
         except Exception as exc:
-            return StateResult.prepare_result(name, False, "Error managing Org Trust '{}': {}".format(name, exc),
+            return StateResult.prepare_result(name, False, "Error managing Org Trust '{}': {}".format(org_name, exc),
                                               processed_changes)
-        return StateResult.prepare_result(name, True, "Org Trust successful managed", processed_changes)
+        return StateResult.prepare_result(name, True, "Org '{}' Trust successful managed".format(org_name), processed_changes)
 
 
 def __virtual__():
@@ -707,16 +708,17 @@ def org_absent(name, admin_user=None, admin_password=None):
     return UyuniOrgs().delete(name, admin_user, admin_password)
 
 
-def org_trust(name, trusts, admin_user=None, admin_password=None):
+def org_trust(name, org_name, trusts, admin_user=None, admin_password=None):
     """
     Add trusted organisations from a organization.
-    :param name: Organization name
+    :param name: state name
+    :param org_name: Organization name
     :param trusts: list of organization names to trust
     :param admin_user: administrator username
     :param admin_password: administrator password
     :return: dict for Salt communication
     """
-    return UyuniOrgsTrust().trust(name, trusts, admin_user, admin_password)
+    return UyuniOrgsTrust().trust(name, org_name, trusts, admin_user, admin_password)
 
 
 def group_present(name, description, expression=None, target="glob",
