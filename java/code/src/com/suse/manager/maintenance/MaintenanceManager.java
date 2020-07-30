@@ -572,14 +572,19 @@ public class MaintenanceManager {
             HttpResponse response = http.sendGetRequest(url);
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() != HttpStatus.SC_OK) {
+                http.cleanup(response);
                 throw new DownloadException(url, status.getReasonPhrase(), status.getStatusCode());
             }
-            return http.getBodyAsString(response, "UTF-8");
+            String ical = http.getBodyAsString(response, "UTF-8");
+            http.cleanup(response);
+            return ical;
         }
         catch (IOException e) {
+            log.error("Download failed.", e);
             throw new DownloadException(url, e.getMessage(), 500);
         }
         catch (ParseException p) {
+            log.error("Download failed.", p);
             throw new DownloadException(url, p.getMessage(), 500);
         }
     }

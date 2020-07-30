@@ -16,6 +16,7 @@ package com.suse.manager.utils;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
@@ -24,6 +25,9 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
+/**
+ * HttpHelper for easy doing HTTP requests
+ */
 public class HttpHelper {
     // Logger instance
     private static Logger log = Logger.getLogger(HttpHelper.class);
@@ -73,6 +77,8 @@ public class HttpHelper {
 
     /**
      * Send a GET request to a given URL.
+     * When HttpResponse object is not needed anymore, cleanup(HttpResponse) should be called
+     * to release the connection.
      *
      * @param url the URL to verify
      * @param username username for authentication (pass null for unauthenticated requests)
@@ -108,6 +114,7 @@ public class HttpHelper {
      */
     private HttpResponse sendHeadRequest(String url, String username, String password, boolean ignoreNoProxy)
             throws IOException {
+        log.debug("HEAD: " + url);
         HttpHead headRequest = new HttpHead(url);
         try {
             return httpClient.executeRequest(headRequest, username, password, ignoreNoProxy);
@@ -119,23 +126,32 @@ public class HttpHelper {
 
     /**
      * Send a GET request to a given URL.
+     * When HttpResponse object is not needed anymore, cleanup(HttpResponse) should be called
+     * to release the connection.
      *
      * @param url the URL to verify
      * @param username username for authentication (pass null for unauthenticated requests)
      * @param password password for authentication (pass null for unauthenticated requests)
      * @param ignoreNoProxy set true to ignore the "no_proxy" setting
-     * @return the response code of the request
+     * @return the HTTP response Object of the request
      * @throws IOException in case of an error
      */
     private HttpResponse sendGetRequest(String url, String username, String password, boolean ignoreNoProxy)
             throws IOException {
         log.debug("GET: " + url);
         HttpGet getRequest = new HttpGet(url);
-        try {
-            return httpClient.executeRequest(getRequest, username, password, ignoreNoProxy);
-        }
-        finally {
-            getRequest.releaseConnection();
+        return httpClient.executeRequest(getRequest, username, password, ignoreNoProxy);
+    }
+
+    /**
+     * Release all resources held by the
+     * @param response
+     */
+    public void cleanup(HttpResponse response) {
+        log.debug("Cleanup");
+        HttpEntity entity = response.getEntity();
+        if (entity != null) {
+            EntityUtils.consumeQuietly(entity);
         }
     }
 }
