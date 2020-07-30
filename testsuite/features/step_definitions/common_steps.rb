@@ -787,10 +787,12 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   if get_client_type(host) == 'traditional'
     get_target(host).run('rhn_check -vvv')
   else
+    # Ubuntu minion clients need more time to finish all onboarding events
+    doubled_timeout = DEFAULT_TIMEOUT * 2
     steps %(
-      And I wait until event "Hardware List Refresh" is completed
-      And I wait until event "Apply states" is completed
-      And I wait until event "Package List Refresh" is completed
+      And I wait at most #{doubled_timeout} seconds until event "Hardware List Refresh" is completed
+      And I wait at most #{doubled_timeout} seconds until event "Apply states" is completed
+      And I wait at most #{doubled_timeout} seconds until event "Package List Refresh" is completed
     )
   end
 end
