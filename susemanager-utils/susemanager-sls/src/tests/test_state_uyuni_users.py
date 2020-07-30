@@ -717,6 +717,7 @@ class TestManageOrgs:
                                                                              admin_user='admin_user',
                                                                              admin_password='admin_password',
                                                                              pam=False)
+
     def test_org_present_update_org(self):
         current_user = {'uui': 'org_admin_user',
                         'email': 'old_mail@mail.com',
@@ -750,19 +751,47 @@ class TestManageOrgs:
                                                                                    org_admin_password='org_admin_password')
 
             uyuni_users.__salt__['uyuni.user_set_details'].assert_called_once_with(uid='org_admin_user',
-                                                                                    password='org_admin_password',
-                                                                                    email='email@email.com',
-                                                                                    first_name='First Name',
-                                                                                    last_name='Last Name',
-                                                                                    org_admin_user='org_admin_user',
-                                                                                    org_admin_password='org_admin_password')
+                                                                                   password='org_admin_password',
+                                                                                   email='email@email.com',
+                                                                                   first_name='First Name',
+                                                                                   last_name='Last Name',
+                                                                                   org_admin_user='org_admin_user',
+                                                                                   org_admin_password='org_admin_password')
+
+    def test_org_present_no_changes(self):
+        current_user = {'uui': 'org_admin_user',
+                        'email': 'email@email.com',
+                        'first_name': 'First Name',
+                        'last_name': 'Last Name'}
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.org_get_details': MagicMock(return_value={'id': 100, 'name': 'my_org'}),
+            'uyuni.user_get_details': MagicMock(return_value=current_user),
+            'uyuni.user_set_details': MagicMock()}):
+            result = uyuni_users.org_present('my_org', 'org_admin_user', 'org_admin_password',
+                                             'First Name', 'Last Name', 'email@email.com',
+                                             admin_user='admin_user',
+                                             admin_password='admin_password')
+
+            assert result is not None
+            assert result['name'] == 'my_org'
+            assert result['result']
+            assert result['comment'] == 'my_org is already installed'
+            assert result['changes'] == {}
+
+            uyuni_users.__salt__['uyuni.org_get_details'].assert_called_once_with('my_org',
+                                                                                  admin_user='admin_user',
+                                                                                  admin_password='admin_password')
+            uyuni_users.__salt__['uyuni.user_get_details'].assert_called_once_with('org_admin_user',
+                                                                                   org_admin_user='org_admin_user',
+                                                                                   org_admin_password='org_admin_password')
 
     def test_org_absent_success_test(self):
-        with patch.dict(uyuni_users.__salt__, {'uyuni.org_get_details': MagicMock(return_value={'id': 100, 'name': 'my_org'})}):
+        with patch.dict(uyuni_users.__salt__,
+                        {'uyuni.org_get_details': MagicMock(return_value={'id': 100, 'name': 'my_org'})}):
             with patch.dict(uyuni_users.__opts__, {'test': True}):
                 result = uyuni_users.org_absent('my_org',
-                                                     admin_user='admin_user',
-                                                     admin_password='admin_password')
+                                                admin_user='admin_user',
+                                                admin_password='admin_password')
 
                 assert result is not None
                 assert result['name'] == 'my_org'
@@ -778,8 +807,8 @@ class TestManageOrgs:
             'uyuni.org_get_details': MagicMock(return_value={'id': 100, 'name': 'my_org'}),
             'uyuni.org_delete': MagicMock()}):
             result = uyuni_users.org_absent('my_org',
-                                                 admin_user='admin_user',
-                                                 admin_password='admin_password')
+                                            admin_user='admin_user',
+                                            admin_password='admin_password')
 
             assert result is not None
             assert result['name'] == 'my_org'
@@ -790,8 +819,8 @@ class TestManageOrgs:
                                                                                   admin_user='admin_user',
                                                                                   admin_password='admin_password')
             uyuni_users.__salt__['uyuni.org_delete'].assert_called_once_with('my_org',
-                                                                              admin_user='admin_user',
-                                                                              admin_password='admin_password')
+                                                                             admin_user='admin_user',
+                                                                             admin_password='admin_password')
 
     def test_org_absent_not_present(self):
         exc = Exception("org not found")
@@ -799,14 +828,101 @@ class TestManageOrgs:
 
         with patch.dict(uyuni_users.__salt__, {'uyuni.org_get_details': MagicMock(side_effect=exc)}):
             result = uyuni_users.org_absent('my_org',
-                                             admin_user='admin_user',
-                                             admin_password='admin_password')
+                                            admin_user='admin_user',
+                                            admin_password='admin_password')
 
             assert result is not None
             assert result['name'] == 'my_org'
             assert result['result']
             assert result['comment'] == 'my_org is already absent'
             assert result['changes'] == {}
+            uyuni_users.__salt__['uyuni.org_get_details'].assert_called_once_with('my_org',
+                                                                                  admin_user='admin_user',
+                                                                                  admin_password='admin_password')
+
+
+class TestManageOrgsTrust:
+
+    def test_org_trust_test(self):
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.org_trust_list_trusts': MagicMock(
+                return_value=[{'orgId': 2, 'orgName': 'new_org_1', 'trustEnabled': True},
+                              {'orgId': 3, 'orgName': 'new_org_2', 'trustEnabled': False}]),
+            'uyuni.org_get_details': MagicMock(return_value={'id': 1, 'name': 'my_org'})}):
+            with patch.dict(uyuni_users.__opts__, {'test': True}):
+                result = uyuni_users.org_trust('my_org', ['new_org_1', 'new_org_2'],
+                                               admin_user='admin_user',
+                                               admin_password='admin_password')
+
+                assert result is not None
+                assert result['name'] == 'my_org'
+                assert result['result'] is None
+                assert result['comment'] == 'my_org would be installed'
+                assert result['changes'] == {'new_org_2': {'new': True, 'old': None}}
+
+                uyuni_users.__salt__['uyuni.org_trust_list_trusts'].assert_called_once_with('my_org',
+                                                                                            admin_user='admin_user',
+                                                                                            admin_password='admin_password')
+                uyuni_users.__salt__['uyuni.org_get_details'].assert_called_once_with('my_org',
+                                                                                            admin_user='admin_user',
+                                                                                            admin_password='admin_password')
+
+    def test_org_trust_update(self):
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.org_trust_list_trusts': MagicMock(
+                return_value=[{'orgId': 2, 'orgName': 'new_org_1', 'trustEnabled': True},
+                              {'orgId': 3, 'orgName': 'new_org_2', 'trustEnabled': False},
+                              {'orgId': 4, 'orgName': 'new_org_3', 'trustEnabled': True}]),
+            'uyuni.org_get_details': MagicMock(return_value={'id': 1, 'name': 'my_org'}),
+            'uyuni.org_trust_add_trust': MagicMock(return_value=True),
+            'uyuni.org_trust_remove_trust': MagicMock(return_value=True)}):
+
+            result = uyuni_users.org_trust('my_org', ['new_org_1', 'new_org_2'],
+                                           admin_user='admin_user',
+                                           admin_password='admin_password')
+
+            assert result is not None
+            assert result['name'] == 'my_org'
+            assert result['result']
+            assert result['comment'] == 'Org Trust successful managed'
+            assert result['changes'] == {'new_org_2': {'new': True, 'old': None},
+                                         'new_org_3': {'new': None, 'old': True}}
+
+            uyuni_users.__salt__['uyuni.org_trust_list_trusts'].assert_called_once_with('my_org',
+                                                                                        admin_user='admin_user',
+                                                                                        admin_password='admin_password')
+            uyuni_users.__salt__['uyuni.org_get_details'].assert_called_once_with('my_org',
+                                                                                  admin_user='admin_user',
+                                                                                  admin_password='admin_password')
+            uyuni_users.__salt__['uyuni.org_trust_add_trust'].assert_called_once_with(1, 3,
+                                                                                  admin_user='admin_user',
+                                                                                  admin_password='admin_password')
+            uyuni_users.__salt__['uyuni.org_trust_remove_trust'].assert_called_once_with(1, 4,
+                                                                                      admin_user='admin_user',
+                                                                                      admin_password='admin_password')
+
+
+    def test_org_trust_no_changes(self):
+        with patch.dict(uyuni_users.__salt__, {
+            'uyuni.org_trust_list_trusts': MagicMock(
+                return_value=[{'orgId': 2, 'orgName': 'new_org_1', 'trustEnabled': True},
+                              {'orgId': 3, 'orgName': 'new_org_2', 'trustEnabled': True},
+                              {'orgId': 4, 'orgName': 'new_org_3', 'trustEnabled': False}]),
+            'uyuni.org_get_details': MagicMock(return_value={'id': 1, 'name': 'my_org'})}):
+
+            result = uyuni_users.org_trust('my_org', ['new_org_1', 'new_org_2'],
+                                           admin_user='admin_user',
+                                           admin_password='admin_password')
+
+            assert result is not None
+            assert result['name'] == 'my_org'
+            assert result['result']
+            assert result['comment'] == 'my_org is already installed'
+            assert result['changes'] == {}
+
+            uyuni_users.__salt__['uyuni.org_trust_list_trusts'].assert_called_once_with('my_org',
+                                                                                        admin_user='admin_user',
+                                                                                        admin_password='admin_password')
             uyuni_users.__salt__['uyuni.org_get_details'].assert_called_once_with('my_org',
                                                                                   admin_user='admin_user',
                                                                                   admin_password='admin_password')

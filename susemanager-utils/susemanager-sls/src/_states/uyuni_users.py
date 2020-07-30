@@ -599,10 +599,12 @@ class UyuniOrgsTrust:
         processed_changes = {}
         try:
             for org_add in trusts_to_add:
-                __salt__['uyuni.org_trust_add_trust'](current_org.get("id"), org_add.get("orgId"))
+                __salt__['uyuni.org_trust_add_trust'](current_org.get("id"), org_add.get("orgId"),
+                                                      admin_user=admin_user, admin_password=admin_password)
                 processed_changes[org_add.get("orgName")] = {'old': None, 'new': True}
             for org_remove in trusts_to_remove:
-                __salt__['uyuni.org_trust_remove_trust'](current_org.get("id"), org_remove.get("orgId"))
+                __salt__['uyuni.org_trust_remove_trust'](current_org.get("id"), org_remove.get("orgId"),
+                                                         admin_user=admin_user, admin_password=admin_password)
                 processed_changes[org_remove.get("orgName")] = {'old': True, 'new': None}
         except Exception as exc:
             return StateResult.prepare_result(name, False, "Error managing Org Trust '{}': {}".format(name, exc),
