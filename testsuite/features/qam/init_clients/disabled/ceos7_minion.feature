@@ -5,9 +5,9 @@
 #  2) subscribe it to a base channel for testing
 
 @ceos7_minion
-Feature: Bootstrap a CentOS 7 minion and do some basic operations on it
+Feature: Bootstrap a CentOS 7 Salt minion
 
-  Scenario: Bootstrap a CentOS 7 minion
+  Scenario: Bootstrap a CentOS 7 Salt minion
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
@@ -20,25 +20,25 @@ Feature: Bootstrap a CentOS 7 minion and do some basic operations on it
     And I wait until onboarding is completed for "ceos7_minion"
 
 @proxy
-  Scenario: Check connection from CentOS 7 minion to proxy
+  Scenario: Check connection from CentOS 7 Salt minion to proxy
     Given I am on the Systems overview page of this "ceos7_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" hostname
 
 @proxy
-  Scenario: Check registration on proxy of CentOS 7 minion
+  Scenario: Check registration on proxy of CentOS 7 Salt minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "ceos7_minion" hostname
 
-  Scenario: Prepare a CentOS 7 minion
+  Scenario: Prepare a CentOS 7 Salt minion
     Given I am authorized
     And  I install package "hwdata m2crypto wget" on this "ceos7_minion"
     And  I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos7_minion"
     And  I install package "spacewalk-oscap scap-security-guide" on this "ceos7_minion"
 
-  Scenario: Check events history for failures on CentOS 7 minion
+  Scenario: Check events history for failures on CentOS 7 Salt minion
     Given I am on the Systems overview page of this "ceos7_minion"
     Then I check for failed events on history event page

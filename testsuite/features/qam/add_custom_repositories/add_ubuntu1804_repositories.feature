@@ -83,3 +83,9 @@ Feature: Adding the Ubuntu 18.04 distribution custom repositories
     And I follow "Sync"
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
+
+  Scenario: The Custom channel for ubuntu-bionic-main has been synced
+    When I wait until the channel "ubuntu-bionic-main" has been synced
+
+  Scenario: The Custom channel for ubuntu-bionic-main-updates has been synced
+    When I wait until the channel "ubuntu-bionic-main-updates" has been synced

@@ -144,11 +144,10 @@ When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio,
   choose(label[:for])
 end
 
-When(/^I include the (mandatory|recommended) child channels$/) do |type|
-  has_no_content?('Loading')
-  checkboxes = all(:xpath, "//span[@class='#{type}-tag-base']/..//input", wait: DEFAULT_TIMEOUT)
-  checkboxes.each do |checkbox|
-    checkbox.set(true)
+When(/^I include the recommended child channels$/) do
+  toggle = "//span[@class='pointer']"
+  if page.has_xpath?(toggle, wait: 60)
+    find(:xpath, toggle).click
   end
 end
 
@@ -483,8 +482,8 @@ When(/^I check test channel$/) do
 end
 
 When(/^I check the child channel "([^"]*)"$/) do |channel|
-  raise 'Timeout: Waiting loading child channels' unless has_no_text?('Loading child channels', wait: 5)
-  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first)
+  raise 'Timeout: Waiting loading child channels' unless find(:xpath, "//i[@class='fa fa-angle-down']", wait: 60)
+  checkbox = find(:xpath, "//label[contains(.,'#{channel}')]/..//input", match: :first, wait: 60)
   checkbox.set(true)
 end
 

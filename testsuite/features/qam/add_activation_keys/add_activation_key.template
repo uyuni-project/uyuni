@@ -15,7 +15,6 @@ Feature: Create an activation key for <client>
     And I enter "<client>_key" as "key"
     And I select the base channel for the "<client>" from "selectedBaseChannel"
     And I include the recommended child channels
-    And I include the mandatory child channels
     And I check the custom channel for "<client>"
     And I select the contact method for the "<client>" from "contact-method"
     And I click on "Create Activation Key"

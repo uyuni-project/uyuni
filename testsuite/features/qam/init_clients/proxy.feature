@@ -25,7 +25,7 @@ Feature: Setup SUSE Manager proxy
     And I wait until onboarding is completed for "proxy"
 
   # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
-  Scenario: Check the new channel is working
+  Scenario: Check the new channel for proxy is working
     When I refresh the metadata for "proxy"
 
   Scenario: Detect latest Salt changes on the proxy

@@ -5,7 +5,7 @@
 #  2) subscribe it to a base channel for testing
 
 @ubuntu1604_minion
-Feature: Bootstrap a Ubuntu 16.04 minion and do some basic operations on it
+Feature: Bootstrap a Ubuntu 16.04 Salt minion
 
   Scenario: Bootstrap a Ubuntu 16.04 minion
     Given I am authorized

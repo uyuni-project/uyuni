@@ -2,26 +2,28 @@
 # Licensed under the terms of the MIT license.
 
 @ceos7_client
-Feature: Be able to register a CentOS 7 traditional client and do some basic operations on it
+Feature: Bootstrap a CentOS 7 traditional client
 
   Scenario: Prepare a CentOS 7 traditional client
-    Given I am authorized
-    And I install package "hwdata m2crypto wget" on this "ceos7_client"
+    When I install package "hwdata m2crypto wget" on this "ceos7_client"
     And I install package "rhn-client-tools rhn-check rhn-setup rhnsd osad rhncfg-actions" on this "ceos7_client"
     And I install package "spacewalk-oscap scap-security-guide" on this "ceos7_client"
     And I register "ceos7_client" as traditional client with activation key "1-ceos7_client_key"
     And I run "mgr-actions-control --enable-all" on "ceos7_client"
+
+  Scenario: The onboarding of CentOS 7 traditional client is completed
+    Given I am authorized
     And I wait until onboarding is completed for "ceos7_client"
 
   @proxy
-  Scenario: Check connection from CentOS 7 traditional to proxy
+  Scenario: Check connection from CentOS 7 traditional client to proxy
     Given I am on the Systems overview page of this "ceos7_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" hostname
 
   @proxy
-  Scenario: Check registration on proxy of traditional CentOS 7
+  Scenario: Check registration on proxy of CentOS 7 traditional client
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area

@@ -61,7 +61,7 @@ Feature: Smoke tests for <client>
     When I click on run
     And I wait until I do not see "pending" text
     And I expand the results for "<client>"
-    Then I should see "/tmp: sticky directory" in the command output for "<client>"
+    Then I should see "/tmp: sticky, directory" in the command output for "<client>"
 
   Scenario: Check that Software package refresh works on a <client>
     And I am on the Systems overview page of this "<client>"
@@ -69,12 +69,12 @@ Feature: Smoke tests for <client>
     And I click on "Update Package List"
     And I wait until event "Package List Refresh scheduled by admin" is completed
 
-  Scenario: Check that Hardware Refresh button works on a <client>
-    Given I am on the Systems overview page of this "<client>"
-    And I follow "Hardware"
-    And I click on "Schedule Hardware Refresh"
-    Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+#  Scenario: Check that Hardware Refresh button works on a <client>
+#    Given I am on the Systems overview page of this "<client>"
+#    And I follow "Hardware"
+#    And I click on "Schedule Hardware Refresh"
+#    Then I should see a "You have successfully scheduled a hardware profile refresh" text
+#    And I wait until event "Hardware List Refresh scheduled by admin" is completed
 
   Scenario: Subscribe a <client> to the configuration channel
     When I am on the Systems overview page of this "<client>"
@@ -103,12 +103,12 @@ Feature: Smoke tests for <client>
   Scenario: Check that file has been created
     Then file "/etc/s-mgr/config" should contain "COLOR=white" on "<client>"
 
-  Scenario: Reboot the <client> and wait until reboot is completed
-    Given I am on the Systems overview page of this "<client>"
-    When I follow first "Schedule System Reboot"
-    Then I should see a "System Reboot Confirmation" text
-    And I should see a "Reboot system" button
-    When I click on "Reboot system"
-    Then I should see a "Reboot scheduled for system" text
-    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
-    Then I should see a "Reboot completed." text
+#  Scenario: Reboot the <client> and wait until reboot is completed
+#    Given I am on the Systems overview page of this "<client>"
+#    When I follow first "Schedule System Reboot"
+#    Then I should see a "System Reboot Confirmation" text
+#    And I should see a "Reboot system" button
+#    When I click on "Reboot system"
+#    Then I should see a "Reboot scheduled for system" text
+#    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+#    Then I should see a "Reboot completed." text
