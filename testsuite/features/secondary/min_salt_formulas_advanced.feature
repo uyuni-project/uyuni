@@ -201,6 +201,7 @@ Feature: Use advanced features of Salt formulas
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
+     Then I refresh the pillar data
      Then the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
