@@ -18,3 +18,28 @@ Don't mind `.cache` and `__pycache__` directories,
 they are ignored in an explicit `.gitignore`.
 
 Have fun. :)
+
+## Run Unit tests 
+
+Use the following command to run unit test 
+`make -f Makefile.python docker_pytest`
+
+## Uyuni users state modules
+
+### Pillar data structure
+
+Pillar data to configure suse manager admin user and password:
+```
+uyuni:
+  xmlrpc:
+    user: admin
+    password: admin
+```
+
+### Available states
+
+Check methods in file `_states/uyuni_users.py` 
+
+### Example files
+
+* Example static hardcode data `examples/uyuni_users_hardcode.sls`
