@@ -1,3 +1,4 @@
+- add java.allow_adding_patches_via_api to allow adding errata to vendor channels
 - fix alignment on icon on entitlement page
 - support installer update channels during autoinstallation
 - filter machines not in maintenance mode for remote commands
