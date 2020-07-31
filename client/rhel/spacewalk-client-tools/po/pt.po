@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-23 14:33+0100\n"
-"PO-Revision-Date: 2020-07-28 15:29+0000\n"
+"PO-Revision-Date: 2020-08-17 13:26+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/pt/>\n"
@@ -180,6 +180,9 @@ msgid ""
 "Copyright (C) 1999--2014 Red Hat, Inc.\n"
 "Licensed under the terms of the GPLv2."
 msgstr ""
+"%%prog (Spacewalk Client Tools) %s\n"
+"Copyright (C) 1999--2014 Red Hat, Inc.\n"
+"Licensa sob os termos de GPLv2."
 
 #: ../src/up2date_client/rhncli.py:226
 msgid "An error has occurred:"
@@ -190,9 +193,8 @@ msgid "See /var/log/up2date for more information"
 msgstr "Ver o /var/log/up2date para obter mais informações"
 
 #: ../src/up2date_client/rhnreg.py:82
-#, fuzzy
 msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "Aviso: não foi possível activar o rhnsd com o chkconfig"
+msgstr "Aviso: não foi possível activar o rhnsd com o systemd"
 
 #: ../src/up2date_client/rhnreg.py:88
 msgid "Warning: unable to enable rhnsd with chkconfig"
@@ -233,7 +235,7 @@ msgstr "Não é possível contactar o servidor selecionado"
 #: ../src/up2date_client/rhnregGui.py:326
 #, python-format
 msgid "We could not contact the Satellite or Proxy at '%s.'"
-msgstr "Não foi possível ligar ao Satélite ou 'Proxy' em '%s'."
+msgstr "Não foi possível ligar ao Servidor ou Proxy em '%s'."
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
@@ -249,9 +251,8 @@ msgid "Make sure the network connection on this system is operational."
 msgstr "Verifique se a ligação de rede neste sistema está operacional."
 
 #: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Ocorreu um erro ao comunicar com a Red Hat Network."
+msgstr "Ocorreu um erro ao comunicar com o Servidor."
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
@@ -263,12 +264,12 @@ msgid "You may be running a client that is incompatible with the server."
 msgstr "Poderá estar a executar um cliente incompatível com o servidor."
 
 #: ../src/up2date_client/rhnregGui.py:377
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Please enter your account information for the <b>%s</b> Spacewalk server:"
 msgstr ""
-"Indique por favor a sua informação de autenticação do Satélite %s:\n"
-"\n"
+"Indique por favor a sua informação de autenticação para acesso ao Servidor "
+"%s:"
 
 #: ../src/up2date_client/rhnregGui.py:416
 msgid "You must enter a login."
@@ -311,7 +312,7 @@ msgstr "Ocorreu um erro ao preencher o perfil."
 
 #: ../src/up2date_client/rhnregGui.py:700
 msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
+msgstr "A registar sistema e enviar informação de perfil. Por favor aguarde."
 
 #: ../src/up2date_client/rhnregGui.py:719
 msgid "Registering System"
