@@ -16,7 +16,7 @@ require 'pp'
 
 # Print all the environment variables
 #WARNING: Comment it when we finish the development of QAM, to don't leak passwords
-pp ENV
+#pp ENV
 
 ## code coverage analysis
 # SimpleCov.start
