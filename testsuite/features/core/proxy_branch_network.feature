@@ -50,7 +50,8 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter "eth1" in NIC field
     And I enter the local IP address of "proxy" in IP field
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -76,7 +77,8 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "minion" in second reserved IP field
     And I enter the MAC address of "sle_minion" in second reserved MAC field
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -121,7 +123,8 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter "example.org" in second for zones field
     # end
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -136,14 +139,16 @@ Feature: Setup SUSE Manager for Retail branch network
     And I enter the local IP address of "pxeboot" in third reserved IP field
     And I enter the MAC address of "pxeboot_minion" in third reserved MAC field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
     # bind:
     When I follow first "Bind" in the content area
     And I press "Add Item" in first A section
     And I enter "pxeboot" in fourth A name field
     And I enter the local IP address of "pxeboot" in fourth A address field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net

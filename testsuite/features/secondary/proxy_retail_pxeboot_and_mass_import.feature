@@ -82,7 +82,8 @@ Feature: PXE boot a Retail terminal
     And I enter the hostname of "proxy" in third NS field
     # end
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -94,7 +95,8 @@ Feature: PXE boot a Retail terminal
     And I enter the local IP address of "proxy" in next server field
     And I enter "boot/pxelinux.0" in filename field
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -106,7 +108,8 @@ Feature: PXE boot a Retail terminal
     And I enter the local IP address of "proxy" in internal network address field for vsftpd
     And I enter "/srv/saltboot" in FTP server directory field
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -118,7 +121,8 @@ Feature: PXE boot a Retail terminal
     And I enter the local IP address of "proxy" in internal network address field
     And I enter "/srv/saltboot" in TFTP base directory field
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -129,7 +133,8 @@ Feature: PXE boot a Retail terminal
     And I follow first "Pxe" in the content area
     And I enter "example" in branch id field
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -224,7 +229,8 @@ Feature: PXE boot a Retail terminal
     And I enter "/" in third mount point field
     And I enter the image name in third OS image field
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -317,7 +323,8 @@ Feature: PXE boot a Retail terminal
     And I press "Remove Item" in second CNAME section
     And I press "Remove Item" in first CNAME section
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -395,7 +402,8 @@ Feature: PXE boot a Retail terminal
     And I press "Add Item" in third NS section
     And I enter the hostname of "proxy" in third NS field
     And I click on "Save Formula"
-    Then I should see a "Formula saved!" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
@@ -514,7 +522,8 @@ Feature: PXE boot a Retail terminal
     And I press minus sign in third configured zone section
     And I press minus sign in third available zone section
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text
+    # WORKAROUND bsc#1174768
+    # Then I should see a "Formula saved" text
 
 @proxy
 @private_net
