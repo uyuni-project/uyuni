@@ -2,18 +2,21 @@
 # Licensed under the terms of the MIT license.
 
 @sle11sp4_client
-Feature: Register a sle11sp4 traditional client
+Feature: Bootstrap a SLES 11 SP4 traditional client
   In order to register a traditional client to the SUSE Manager server
   As the root user
   I want to call rhnreg_ks
 
-  Scenario: Register a sle11sp4 traditional client
+  Scenario: Register a SLES 11 SP4 traditional client
     When I register "sle11sp4_client" as traditional client with activation key "1-sle11sp4_client_key"
     And I run "mgr-actions-control --enable-all" on "sle11sp4_client"
     Then I should see "sle11sp4_client" via spacecmd
-    And I wait until onboarding is completed for "sle11sp4_client"
 
-  Scenario: Check registration values of sle11sp4 traditional
+  Scenario: The onboarding of SLES 11 SP4 traditional client is completed
+    Given I am authorized
+    Then I wait until onboarding is completed for "sle11sp4_client"
+
+  Scenario: Check registration values of SLES 11 SP4 traditional
     Given I update the profile of "sle11sp4_client"
     When I am on the Systems overview page of this "sle11sp4_client"
     And I wait until I see "Software Updates Available" text or "System is up to date" text
@@ -26,14 +29,14 @@ Feature: Register a sle11sp4 traditional client
     And I should see a "OS: sles-release" text
 
 @proxy
-  Scenario: Check connection from sle11sp4 traditional to proxy
+  Scenario: Check connection from SLES 11 SP4 traditional to proxy
     Given I am on the Systems overview page of this "sle11sp4_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" hostname
 
 @proxy
-  Scenario: Check registration on proxy of sle11sp4 traditional
+  Scenario: Check registration on proxy of SLES 11 SP4 traditional
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area

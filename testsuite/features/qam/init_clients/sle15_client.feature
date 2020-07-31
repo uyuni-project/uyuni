@@ -2,18 +2,21 @@
 # Licensed under the terms of the MIT license.
 
 @sle15_client
-Feature: Register a sle15 traditional client
+Feature: Bootstrap a SLES 15 traditional client
   In order to register a traditional client to the SUSE Manager server
   As the root user
   I want to call rhnreg_ks
 
-  Scenario: Register a traditional client
+  Scenario: Register a SLES 15 traditional client
     When I register "sle15_client" as traditional client with activation key "1-sle15_client_key"
     And I run "mgr-actions-control --enable-all" on "sle15_client"
     Then I should see "sle15_client" via spacecmd
-    And I wait until onboarding is completed for "sle15_client"
 
-  Scenario: Check registration values
+  Scenario: The onboarding of SLES 15 traditional client is completed
+    Given I am authorized
+    Then I wait until onboarding is completed for "sle15_client"
+
+  Scenario: Check registration values of SLES 15 traditional client
     Given I update the profile of "sle15_client"
     When I am on the Systems overview page of this "sle15_client"
     And I wait until I see "Software Updates Available" text or "System is up to date" text
@@ -26,20 +29,20 @@ Feature: Register a sle15 traditional client
     And I should see a "OS: sles-release" text
 
 @proxy
-  Scenario: Check connection from traditional to proxy
+  Scenario: Check connection from SLES 15 traditional to proxy
     Given I am on the Systems overview page of this "sle15_client"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" hostname
 
 @proxy
-  Scenario: Check registration on proxy of traditional
+  Scenario: Check registration on proxy of SLES 15 traditional
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
     And I follow "Proxy" in the content area
     Then I should see "sle15_client" hostname
 
-  Scenario: Check tab links "Software" => "Patches"
+  Scenario: Check tab links "Software" => "Patches" of SLES 15 traditional
     Given I am on the Systems overview page of this "sle15_client"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area

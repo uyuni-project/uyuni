@@ -5,7 +5,7 @@
 #  2) subscribe it to a base channel for testing
 
 @ubuntu1804_ssh_minion
-Feature: Bootstrap a SSH-managed Ubuntu 18.04 minion and do some basic operations on it
+Feature: Bootstrap a Ubuntu 18.04 Salt SSH Minion
 
   Scenario: Bootstrap a SSH-managed Ubuntu 18.04 minion
     Given I am authorized

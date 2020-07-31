@@ -83,3 +83,9 @@ Feature: Adding the Ubuntu 16.04 distribution custom repositories
     And I follow "Sync"
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled" text
+
+  Scenario: The Custom channel for ubuntu-xenial-main has been synced
+    When I wait until the channel "ubuntu-xenial-main" has been synced
+
+  Scenario: The Custom channel for ubuntu-xenial-main-updates has been synced
+    When I wait until the channel "ubuntu-xenial-main-updates" has been synced

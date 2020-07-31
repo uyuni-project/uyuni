@@ -237,6 +237,13 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
   $server.run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv | grep #{pkg}")
 end
 
+When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
+  repeat_until_timeout(timeout: 7200, message: 'Channel not fully synced') do
+    break if $server.run("test -f /var/cache/rhn/repodata/#{channel}/repomd.xml")
+    sleep 10
+  end
+end
+
 When(/^I execute mgr\-bootstrap "([^"]*)"$/) do |arg1|
   arch = 'x86_64'
   $command_output = sshcmd("mgr-bootstrap --activation-keys=1-SUSE-PKG-#{arch} #{arg1}")[:stdout]
@@ -483,7 +490,7 @@ end
 Then(/^I wait until mgr-sync refresh is finished$/) do
   # mgr-sync refresh is a slow operation, we don't use the default timeout
   cmd = "spacecmd -u admin -p admin api sync.content.listProducts"
-  repeat_until_timeout(timeout: 900, message: "'mgr-sync refresh' did not finish") do
+  repeat_until_timeout(timeout: 1800, message: "'mgr-sync refresh' did not finish") do
     result, code = $server.run(cmd, false)
     break if result.include? "SLES"
     sleep 5
