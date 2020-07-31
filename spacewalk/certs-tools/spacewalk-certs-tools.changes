@@ -1,3 +1,5 @@
+- strip SSL Certificate Common Name after 63 Characters (bsc#1173535)
+
 -------------------------------------------------------------------
 Thu Apr 23 10:20:20 CEST 2020 - jgonzalez@suse.com
 

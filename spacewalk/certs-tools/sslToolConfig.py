@@ -450,7 +450,7 @@ def gen_req_distinguished_name(d):
     keys = ('C', 'ST', 'L', 'O', 'OU', 'CN', 'emailAddress')
     for key in keys:
         if key in d and d[key].strip():
-            s = s + key + (24-len(key))*' ' + '= %s\n' % d[key].strip()
+            s = s + key + (24-len(key))*' ' + '= %s\n' % d[key].strip()[:63]
         else:
             s = s + '#' + key + (24-len(key))*' ' + '= ""\n'
 
