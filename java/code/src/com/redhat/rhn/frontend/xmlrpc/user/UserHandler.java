@@ -91,6 +91,15 @@ public class UserHandler extends BaseHandler {
         USER_EDITABLE_DETAILS.put("password", "password");
     }
 
+    private final ServerGroupManager serverGroupManager;
+
+    /**
+     * @param serverGroupManagerIn
+     */
+    public UserHandler(ServerGroupManager serverGroupManagerIn) {
+        serverGroupManager = serverGroupManagerIn;
+    }
+
     /**
      * Lists the users in the org.
      * @param loggedInUser The current user
@@ -953,7 +962,6 @@ public class UserHandler extends BaseHandler {
          }
 
         User user = UserManager.lookupUser(loggedInUser, login);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
 
         // Iterate once to lookup the server groups and avoid removing some when
         // an exception will only be thrown later:
@@ -961,7 +969,7 @@ public class UserHandler extends BaseHandler {
         for (String name : systemGroupNames) {
             ManagedServerGroup sg = null;
             try {
-                sg = manager.lookup(name, user);
+                sg = serverGroupManager.lookup(name, user);
             }
             catch (LookupException e) {
                 throw new InvalidServerGroupException();
@@ -1062,10 +1070,9 @@ public class UserHandler extends BaseHandler {
             String serverGroupName =  (String)it.next();
 
             // Make sure the server group exists:
-            ServerGroupManager manager = ServerGroupManager.getInstance();
             ManagedServerGroup group;
             try {
-                group = manager.lookup(serverGroupName, loggedInUser);
+                group = serverGroupManager.lookup(serverGroupName, loggedInUser);
             }
             catch (LookupException e) {
                 throw new InvalidServerGroupException();

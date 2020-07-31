@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.user;
 
 import static java.util.stream.Collectors.toList;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -47,8 +48,8 @@ import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.SatManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import org.apache.log4j.Logger;
 
 import java.util.Arrays;
@@ -76,6 +77,8 @@ public class UserManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(UserManager.class);
     private static final String ORG_ADMIN_LABEL = "org_admin";
+
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     private UserManager() {
     }
@@ -922,7 +925,7 @@ public class UserManager extends BaseManager {
     public static boolean canAdministerSystemGroup(User user, ManagedServerGroup group) {
         return (user != null &&
                 group != null &&
-                ServerGroupManager.getInstance().canAccess(user, group) &&
+                SERVER_GROUP_MANAGER.canAccess(user, group) &&
                 user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN));
     }
 

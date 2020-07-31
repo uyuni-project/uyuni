@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -49,6 +50,8 @@ import javax.servlet.http.HttpServletResponse;
  * @version $Rev$
  */
 public class EditGroupAction extends RhnAction {
+
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -122,8 +125,7 @@ public class EditGroupAction extends RhnAction {
         validate(form, errors, ctx);
 
         if (errors.isEmpty()) {
-            ServerGroupManager manager = ServerGroupManager.getInstance();
-            ManagedServerGroup sg = manager.create(ctx.getCurrentUser(),
+            ManagedServerGroup sg = serverGroupManager.create(ctx.getCurrentUser(),
                     form.getString("name"), form.getString("description"));
 
             if (form.get("is_ssm") != null && (Boolean)form.get("is_ssm")) {
@@ -133,7 +135,7 @@ public class EditGroupAction extends RhnAction {
                 for (SystemOverview system : systems) {
                     hibernateServers.add(ServerFactory.lookupById(system.getId()));
                 }
-                manager.addServers(sg, hibernateServers, ctx.getCurrentUser());
+                serverGroupManager.addServers(sg, hibernateServers, ctx.getCurrentUser());
             }
 
             return sg.getId();

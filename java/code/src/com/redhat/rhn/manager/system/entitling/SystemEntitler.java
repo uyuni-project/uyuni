@@ -63,17 +63,20 @@ public class SystemEntitler {
     private SystemQuery systemQuery;
     private VirtManager virtManager;
     private MonitoringManager monitoringManager;
+    private ServerGroupManager serverGroupManager;
 
     /**
      * @param systemQueryIn instance for gathering data from a system.
      * @param virtManagerIn instance for managing virtual machines.
      * @param monitoringManagerIn instance for handling monitoring configuration.
+     * @param serverGroupManagerIn
      */
     public SystemEntitler(SystemQuery systemQueryIn, VirtManager virtManagerIn,
-            MonitoringManager monitoringManagerIn) {
+            MonitoringManager monitoringManagerIn, ServerGroupManager serverGroupManagerIn) {
         this.systemQuery = systemQueryIn;
         this.virtManager = virtManagerIn;
         this.monitoringManager = monitoringManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -126,7 +129,7 @@ public class SystemEntitler {
         entitleServer(server, ent);
 
         server.asMinionServer().ifPresent(minion -> {
-            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
+            serverGroupManager.updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
 
             if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
                     !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {

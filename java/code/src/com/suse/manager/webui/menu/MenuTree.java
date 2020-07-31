@@ -36,13 +36,23 @@ import javax.servlet.jsp.PageContext;
  * The UI Menu Tree.
  */
 public class MenuTree {
+
+    private final AclFactory aclFactory;
+
+    /**
+     * @param aclFactoryIn
+     */
+    public  MenuTree(AclFactory aclFactoryIn) {
+        this.aclFactory = aclFactoryIn;
+    }
+
     /**
      * Generate a List of {@link MenuItem}.
      *
      * @param pageContext the PageContext object
      * @return the full menu tree as a List of {@link MenuItem}
      */
-    public static List<MenuItem> getMenuTree(PageContext pageContext) {
+    public List<MenuItem> getMenuTree(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         User user = new RequestContext(request).getCurrentUser();
         String url = request.getRequestURI();
@@ -465,10 +475,10 @@ public class MenuTree {
      * @param aclMixin acls to evaluate
      * @return the acl evaluated result
      */
-    public static boolean checkAcl(User user, String aclMixin) {
+    public boolean checkAcl(User user, String aclMixin) {
         Map<String, Object> aclContext = new HashMap<>();
         aclContext.put("user", user);
-        Acl acl = AclFactory.getInstance().getAcl(Access.class.getName());
+        Acl acl = aclFactory.getAcl(Access.class.getName());
         return acl.evalAcl(aclContext, aclMixin);
     }
 
@@ -519,7 +529,7 @@ public class MenuTree {
      * @param url the current URL
      * @return the current active {@link MenuItem}
      */
-    public static List<MenuItem> getBestActiveDirs(List<MenuItem> nodes, String url) {
+    public List<MenuItem> getBestActiveDirs(List<MenuItem> nodes, String url) {
         Integer depthPrecision = 0;
         List<MenuItem> bestActiveItems = new LinkedList<>();
         for (MenuItem item1 : nodes) {
@@ -569,7 +579,7 @@ public class MenuTree {
      * @param pageContext the context of the request
      * @return the page title
      */
-    public static String getTitlePage(PageContext pageContext) {
+    public String getTitlePage(PageContext pageContext) {
         String title = "";
         Optional<MenuItem> activeItem = getMenuTree(pageContext).stream()
                 .filter(node -> node.getActive()).findFirst();
@@ -589,7 +599,7 @@ public class MenuTree {
      * @param pageContext the current PageContext
      * @return the JSON String as for output
      */
-    public static String getJsonMenu(PageContext pageContext) {
+    public String getJsonMenu(PageContext pageContext) {
         return new GsonBuilder().create().toJson(getMenuTree(pageContext));
     }
 

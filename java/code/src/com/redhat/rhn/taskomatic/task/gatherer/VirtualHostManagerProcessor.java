@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.taskomatic.task.gatherer;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -49,7 +50,7 @@ public class VirtualHostManagerProcessor {
     private Set<Server> serversToDelete;
     private Set<VirtualHostManagerNodeInfo> nodesToDelete;
     private Logger log;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /**
      * Instantiates a new virtual host manager processor, will update a virtual

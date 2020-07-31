@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.suse.manager.webui.services.impl.SaltService;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
 import java.io.IOException;
@@ -26,6 +26,8 @@ import org.quartz.JobExecutionContext;
  * Finds and cleans up salt Actions for which we missed the JobReturnEvent.
  */
 public class MinionActionCleanup extends RhnJavaJob {
+
+    private final MinionActionUtils minionActionUtils = GlobalInstanceHolder.MINION_ACTION_UTILS;
 
     /**
      * @param context the job execution context
@@ -39,11 +41,11 @@ public class MinionActionCleanup extends RhnJavaJob {
 
         // Measure time and calculate the total duration
         long start = System.currentTimeMillis();
-        MinionActionUtils.cleanupMinionActions(SaltService.INSTANCE);
+        minionActionUtils.cleanupMinionActions();
 
         // Delete script files for script actions that have completed
         try {
-            MinionActionUtils.cleanupScriptActions();
+            minionActionUtils.cleanupScriptActions();
         }
         catch (IOException e) {
             log.error("Could not cleanup script files: " + e.getMessage(), e);

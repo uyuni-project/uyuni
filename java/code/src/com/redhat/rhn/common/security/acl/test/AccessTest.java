@@ -27,7 +27,9 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -36,8 +38,14 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -51,16 +59,27 @@ import java.util.Set;
 public class AccessTest extends BaseTestCaseWithUser {
 
     private Acl acl;
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final FormulaManager formulaManager = new FormulaManager(saltApi);
+    private final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         acl = new Acl();
-        acl.registerHandler(new Access());
+        acl.registerHandler(new Access(clusterManager));
     }
 
     public void testAccessNotFoundEntry() {
-        Access access = new Access();
+        Access access = new Access(clusterManager);
         String[] foo = {"FOO"};
         boolean rc = access.aclIs(null, foo);
         assertFalse(rc);
@@ -76,7 +95,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         c.setBoolean("test.on", "on");
         c.setBoolean("test.ON", "ON");
 
-        Access access = new Access();
+        Access access = new Access(clusterManager);
         String[] foo = new String[1];
 
         foo[0] = "test.true";
@@ -226,7 +245,7 @@ public class AccessTest extends BaseTestCaseWithUser {
         assertTrue(acl.evalAcl(context, "system_has_salt_entitlement()"));
 
         // Change the base entitlement to MANAGEMENT
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
+        systemEntitlementManager.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         context.put("sid", new String[] {s.getId().toString()});
         context.put("user", user);
         assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));
@@ -323,15 +342,10 @@ public class AccessTest extends BaseTestCaseWithUser {
     }
 
     public void testIsVirtual() throws Exception {
-        SaltService saltService = new SaltService();
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
-        );
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
 
-        Access a = new Access();
+        Access a = new Access(clusterManager);
         Map ctx = new HashMap();
         ctx.put("sid", guest.getId());
         ctx.put("user", user);

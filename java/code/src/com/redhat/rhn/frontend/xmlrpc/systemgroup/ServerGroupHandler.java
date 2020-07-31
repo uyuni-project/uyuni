@@ -49,12 +49,15 @@ import java.util.List;
 public class ServerGroupHandler extends BaseHandler {
 
     private final XmlRpcSystemHelper xmlRpcSystemHelper;
+    private final ServerGroupManager serverGroupManager;
 
     /**
      * @param xmlRpcSystemHelperIn XmlRpcSystemHelper
+     * @param serverGroupManagerIn
      */
-    public ServerGroupHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn) {
+    public ServerGroupHandler(XmlRpcSystemHelper xmlRpcSystemHelperIn, ServerGroupManager serverGroupManagerIn) {
         xmlRpcSystemHelper = xmlRpcSystemHelperIn;
+        serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -75,9 +78,8 @@ public class ServerGroupHandler extends BaseHandler {
      *   #array_end()
      */
     public List listAdministrators(User loggedInUser, String systemGroupName) {
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        ManagedServerGroup sg = manager.lookup(systemGroupName, loggedInUser);
-        return manager.listAdministrators(sg, loggedInUser);
+        ManagedServerGroup sg = serverGroupManager.lookup(systemGroupName, loggedInUser);
+        return serverGroupManager.listAdministrators(sg, loggedInUser);
     }
 
     /**
@@ -125,10 +127,9 @@ public class ServerGroupHandler extends BaseHandler {
         if (admins != null) {
             throw new ServerGroupAccessChangeException(admins);
         }
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
+        ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
 
-        manager.associateOrDissociateAdminsByLoginName(group, loginNames,
+        serverGroupManager.associateOrDissociateAdminsByLoginName(group, loginNames,
                                                             add, loggedInUser);
 
         return 1;
@@ -152,8 +153,7 @@ public class ServerGroupHandler extends BaseHandler {
      *      #array_end()
      */
     public List listSystems(User loggedInUser, String systemGroupName) {
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
+        ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return group.getServers();
     }
 
@@ -175,8 +175,7 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public List<SystemOverview>
             listSystemsMinimal(User loggedInUser, String systemGroupName) {
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
+        ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         return SystemManager.systemsInGroupShort(group.getId());
     }
 
@@ -199,16 +198,15 @@ public class ServerGroupHandler extends BaseHandler {
     public int addOrRemoveSystems(User loggedInUser, String systemGroupName,
             List serverIds, Boolean add) {
 
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
+        ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
 
         List servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
 
         if (add.booleanValue()) {
-            manager.addServers(group, servers, loggedInUser);
+            serverGroupManager.addServers(group, servers, loggedInUser);
         }
         else {
-            manager.removeServers(group, servers, loggedInUser);
+            serverGroupManager.removeServers(group, servers, loggedInUser);
         }
         return 1;
     }
@@ -232,8 +230,7 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public ServerGroup create(User loggedInUser, String name, String description) {
         ensureSystemGroupAdmin(loggedInUser);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        return manager.create(loggedInUser, name, description);
+        return serverGroupManager.create(loggedInUser, name, description);
     }
 
     /**
@@ -249,15 +246,14 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public int delete(User loggedInUser, String systemGroupName) {
         ensureSystemGroupAdmin(loggedInUser);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
+        ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         ClusterFactory.findClusterByGroupId(group.getId()).ifPresent(cluster -> {
             throw new FaultException(1234, "group_owned_by_cluster",
                     String.format("Group can't be deleted because it's owned by cluster '%s'." +
                                     " Delete cluster to delete this group.",
                             cluster.getName()));
         });
-        manager.remove(loggedInUser, group);
+        serverGroupManager.remove(loggedInUser, group);
         return 1;
     }
 
@@ -277,8 +273,7 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public ServerGroup update(User loggedInUser,
                                 String systemGroupName, String description) {
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        ManagedServerGroup group = manager.lookup(systemGroupName, loggedInUser);
+        ManagedServerGroup group = serverGroupManager.lookup(systemGroupName, loggedInUser);
         group.setDescription(description);
         ServerGroupFactory.save(group);
         return group;
@@ -309,8 +304,7 @@ public class ServerGroupHandler extends BaseHandler {
      */
     public List listGroupsWithNoAssociatedAdmins(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        return manager.listNoAdminGroups(loggedInUser);
+        return serverGroupManager.listNoAdminGroups(loggedInUser);
     }
 
 
@@ -331,9 +325,8 @@ public class ServerGroupHandler extends BaseHandler {
         List<ManagedServerGroup> groups = ServerGroupFactory.listManagedGroups(
                 loggedInUser.getOrg());
         List<ManagedServerGroup> toReturn = new ArrayList();
-        ServerGroupManager sm = ServerGroupManager.getInstance();
         for (ManagedServerGroup group : groups) {
-            if (sm.canAccess(loggedInUser, group)) {
+            if (serverGroupManager.canAccess(loggedInUser, group)) {
                 toReturn.add(group);
             }
         }
@@ -382,8 +375,7 @@ public class ServerGroupHandler extends BaseHandler {
     private ServerGroup lookup(String name, User user) {
         ServerGroup sg;
         try {
-            ServerGroupManager sm = ServerGroupManager.getInstance();
-            sg  = sm.lookup(name, user);
+            sg  = serverGroupManager.lookup(name, user);
         }
         catch (LookupException e) {
             throw new LookupServerGroupException(name);
@@ -397,8 +389,7 @@ public class ServerGroupHandler extends BaseHandler {
     private ServerGroup lookup(Integer id, User user) {
         ServerGroup sg;
         try {
-            ServerGroupManager sm = ServerGroupManager.getInstance();
-            sg  = sm.lookup(id.longValue(), user);
+            sg  = serverGroupManager.lookup(id.longValue(), user);
         }
         catch (LookupException e) {
             throw new LookupServerGroupException(id);
@@ -431,7 +422,7 @@ public class ServerGroupHandler extends BaseHandler {
         ServerGroup sg = lookup(systemGroupName, loggedInUser);
         Long threshold = (long) Config.get().getInt(
                 ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD);
-        return ServerGroupManager.getInstance().listActiveServers(sg, threshold);
+        return serverGroupManager.listActiveServers(sg, threshold);
     }
 
     /**
@@ -452,7 +443,7 @@ public class ServerGroupHandler extends BaseHandler {
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
             String systemGroupName, Integer daysInactive) {
         ServerGroup sg = lookup(systemGroupName, loggedInUser);
-        return ServerGroupManager.getInstance().listInactiveServers(sg,
+        return serverGroupManager.listInactiveServers(sg,
                 daysInactive.longValue());
     }
 

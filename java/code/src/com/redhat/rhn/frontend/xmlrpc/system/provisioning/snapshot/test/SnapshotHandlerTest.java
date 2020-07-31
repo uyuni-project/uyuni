@@ -25,13 +25,12 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.SnapshotHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,9 +42,9 @@ import java.util.Set;
  */
 public class SnapshotHandlerTest extends BaseHandlerTestCase {
 
-    private SystemQuery systemQuery = new SaltService();
-    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private SystemQuery systemQuery = new TestSystemQuery();
+    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper

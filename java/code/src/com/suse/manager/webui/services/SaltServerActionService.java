@@ -25,6 +25,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -47,6 +48,7 @@ import com.redhat.rhn.domain.action.config.ConfigRevisionAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.errata.ErrataAction;
+import com.redhat.rhn.domain.action.kickstart.KickstartAction;
 import com.redhat.rhn.domain.action.kickstart.KickstartActionDetails;
 import com.redhat.rhn.domain.action.kickstart.KickstartInitiateAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
@@ -112,11 +114,10 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.DownloadTokenBuilder;
@@ -182,6 +183,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Stack;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -220,17 +222,28 @@ public class SaltServerActionService {
             SaltActionChainGeneratorService.INSTANCE;
 
     private SystemQuery systemQuery;
-    private SaltSSHService saltSSHService = SaltService.INSTANCE.getSaltSSHService();
-    private SaltUtils saltUtils = SaltUtils.INSTANCE;
-    private FormulaManager formulaManager = FormulaManager.getInstance();
-    private ClusterManager clusterManager = ClusterManager.instance();
+    private SaltSSHService saltSSHService = GlobalInstanceHolder.SYSTEM_QUERY.getSaltSSHService();
+    private SaltUtils saltUtils;
+    private SaltKeyUtils saltKeyUtils;
+    private final FormulaManager formulaManager;
+    private final ClusterManager clusterManager;
     private boolean skipCommandScriptPerms;
 
     /**
      * @param systemQueryIn instance for getting information from a system.
+     * @param saltUtilsIn
+     * @param clusterManagerIn
+     * @param formulaManagerIn
+     * @param saltKeyUtilsIn
      */
-    public SaltServerActionService(SystemQuery systemQueryIn) {
+    public SaltServerActionService(SystemQuery systemQueryIn, SaltUtils saltUtilsIn,
+                                   ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
+                                   SaltKeyUtils saltKeyUtilsIn) {
         this.systemQuery = systemQueryIn;
+        this.saltUtils = saltUtilsIn;
+        this.clusterManager = clusterManagerIn;
+        this.formulaManager = formulaManagerIn;
+        this.saltUtils = saltUtilsIn;
     }
 
     private Action unproxy(Action entity) {
@@ -693,7 +706,7 @@ public class SaltServerActionService {
                     failActionChain(minionId, firstChunkActionId, Optional.of("Unexpected response: " + msg));
                     return false;
                 }
-                JobReturnEventMessageAction.handleActionChainResult(minionId, "", 0, true,
+                handleActionChainResult(minionId, "", 0, true,
                         actionChainResult,
                         // skip reboot, needs special handling
                         stateResult -> SYSTEM_REBOOT.equals(stateResult.getName()));
@@ -779,14 +792,14 @@ public class SaltServerActionService {
      * @param failedActionId the failed action id
      * @param message the message to set to the failed action
      */
-    public static void failActionChain(String minionId, Optional<Long> failedActionId, Optional<String> message) {
+    public void failActionChain(String minionId, Optional<Long> failedActionId, Optional<String> message) {
         failActionChain(minionId, Optional.empty(), failedActionId, message);
     }
 
-    private static void failActionChain(String minionId, Optional<Long> actionChainId, Optional<Long> failedActionId,
+    private void failActionChain(String minionId, Optional<Long> actionChainId, Optional<Long> failedActionId,
                                         Optional<String> message) {
         failedActionId.ifPresent(last ->
-                JobReturnEventMessageAction.failDependentServerActions(last, minionId, message));
+                failDependentServerActions(last, minionId, message));
         MinionServerFactory.findByMinionId(minionId).ifPresent(minion -> {
             SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFilesForMinion(minion, actionChainId);
         });
@@ -2087,7 +2100,7 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = SaltService.INSTANCE
+            List<String> results = GlobalInstanceHolder.SYSTEM_QUERY
                     .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
                     .get().getMinions();
 
@@ -2262,6 +2275,195 @@ public class SaltServerActionService {
                                                 state.equals(s.getStatus()))
                                 .findAny())
                 .isPresent();
+    }
+
+    /**
+     * Set the given action to FAILED if not already in that state and also the dependent actions.
+     * @param actionId the action id
+     * @param minionId the minion id
+     * @param message the result message to set in the server action
+     */
+    public void failDependentServerActions(long actionId, String minionId, Optional<String> message) {
+        Optional<MinionServer> minion = MinionServerFactory.findByMinionId(
+                minionId);
+        if (minion.isPresent()) {
+            // set first action to failed if not already in that state
+            Action action = ActionFactory.lookupById(actionId);
+            Optional.ofNullable(action)
+                    .ifPresent(firstAction ->
+                            firstAction.getServerActions().stream()
+                                    .filter(sa -> sa.getServerId().equals(minion.get().getId()))
+                                    .filter(sa -> !ActionFactory.STATUS_FAILED.equals(sa.getStatus()))
+                                    .filter(sa -> !ActionFactory.STATUS_COMPLETED.equals(sa.getStatus()))
+                                    .findFirst()
+                                    .ifPresent(sa -> sa.fail(message.orElse("Prerequisite failed"))));
+
+            // walk dependent server actions recursively and set them to failed
+            Stack<Long> actionIdsDependencies = new Stack<>();
+            actionIdsDependencies.push(actionId);
+            List<ServerAction> serverActions = ActionFactory
+                    .listServerActionsForServer(minion.get(),
+                            Arrays.asList(ActionFactory.STATUS_QUEUED, ActionFactory.STATUS_PICKED_UP,
+                                    ActionFactory.STATUS_FAILED), action.getCreated());
+
+            while (!actionIdsDependencies.empty()) {
+                Long acId = actionIdsDependencies.pop();
+                List<ServerAction> serverActionsWithPrereq = serverActions.stream()
+                        .filter(s -> s.getParentAction().getPrerequisite() != null)
+                        .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
+                        .collect(Collectors.toList());
+                for (ServerAction sa : serverActionsWithPrereq) {
+                    actionIdsDependencies.push(sa.getParentAction().getId());
+                    sa.fail("Prerequisite failed");
+                }
+            }
+        }
+    }
+
+    /**
+     * Update the action properly based on the Job results from Salt.
+     *
+     * @param actionId the ID of the Action to handle
+     * @param minionId the ID of the Minion who performed the action
+     * @param retcode the retcode returned
+     * @param success indicates if the job executed successfully
+     * @param jobId the ID of the Salt job.
+     * @param jsonResult the json results from the Salt job.
+     * @param function the Salt function executed.
+     */
+    public void handleAction(long actionId, String minionId, int retcode, boolean success,
+                                    String jobId, JsonElement jsonResult, String function) {
+        // Lookup the corresponding action
+        Optional<Action> action = Optional.ofNullable(ActionFactory.lookupById(actionId));
+        if (action.isPresent()) {
+
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Matched salt job with action (id=" + actionId + ")");
+            }
+
+            Optional<MinionServer> minionServerOpt = MinionServerFactory.findByMinionId(minionId);
+            minionServerOpt.ifPresent(minionServer -> {
+                Optional<ServerAction> serverAction = action.get()
+                        .getServerActions()
+                        .stream()
+                        .filter(sa -> sa.getServer().equals(minionServer)).findFirst();
+
+
+                serverAction.ifPresent(sa -> {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Updating action for server: " + minionServer.getId());
+                    }
+                    try {
+                        // Reboot has been scheduled so set reboot action to PICKED_UP.
+                        // Wait until next "minion/start/event" to set it to COMPLETED.
+                        if (action.get().getActionType().equals(ActionFactory.TYPE_REBOOT) &&
+                                success && retcode == 0) {
+                            sa.setStatus(ActionFactory.STATUS_PICKED_UP);
+                            sa.setPickupTime(new Date());
+                            return;
+                        }
+                        else if (action.get().getActionType().equals(ActionFactory.TYPE_KICKSTART_INITIATE) &&
+                                success) {
+                            KickstartAction ksAction = (KickstartAction) action.get();
+                            if (!ksAction.getKickstartActionDetails().getUpgrade()) {
+                                // Delete salt key from master
+                                saltKeyUtils.deleteSaltKey(action.get().getSchedulerUser(), minionId);
+                            }
+                        }
+                        saltUtils.updateServerAction(sa,
+                                retcode,
+                                success,
+                                jobId,
+                                jsonResult,
+                                function);
+                        ActionFactory.save(sa);
+                    }
+                    catch (Exception e) {
+                        LOG.error("Error processing Salt job return", e);
+                        // DB exceptions cause the transaction to go into rollback-only
+                        // state. We need to rollback this transaction first.
+                        ActionFactory.rollbackTransaction();
+
+                        sa.fail("An unexpected error has occurred. Please check the server logs.");
+
+                        ActionFactory.save(sa);
+                        // When we throw the exception again, the current transaction
+                        // will be set to rollback-only, so we explicitly commit the
+                        // transaction here
+                        ActionFactory.commitTransaction();
+
+                        // We don't actually want to catch any exceptions
+                        throw e;
+                    }
+                });
+            });
+        }
+        else {
+            LOG.warn("Action referenced from Salt job was not found: " + actionId);
+        }
+    }
+
+    /**
+     * Handle action chain Salt result.
+     *
+     * @param minionId the minion id
+     * @param jobId the job id
+     * @param retCode the ret code
+     * @param success whether result is successful or not
+     * @param actionChainResult job result
+     * @param skipFunction function to check if a result should be skipped from handling
+     */
+    public void handleActionChainResult(
+            String minionId, String jobId, int retCode, boolean success,
+            Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
+            Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
+        int chunk = 1;
+        Long retActionChainId = null;
+        boolean actionChainFailed = false;
+        List<Long> failedActionIds = new ArrayList<>();
+        for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
+            String key = entry.getKey();
+            StateApplyResult<Ret<JsonElement>> actionStateApply = entry.getValue();
+
+            Optional<SaltActionChainGeneratorService.ActionChainStateId> stateId =
+                    SaltActionChainGeneratorService.parseActionChainStateId(key);
+            if (stateId.isPresent()) {
+                retActionChainId = stateId.get().getActionChainId();
+                chunk = stateId.get().getChunk();
+                Long actionId = stateId.get().getActionId();
+                if (skipFunction.apply(actionStateApply)) {
+                    continue; // skip this state from handling
+                }
+
+                if (!actionStateApply.isResult()) {
+                    actionChainFailed = true;
+                    failedActionIds.add(actionId);
+                    // don't stop handling the result entries if there's a failed action
+                    // the result entries are not returned in order
+                }
+                handleAction(actionId,
+                        minionId,
+                        actionStateApply.isResult() ? 0 : -1,
+                        actionStateApply.isResult(),
+                        jobId,
+                        actionStateApply.getChanges().getRet(),
+                        actionStateApply.getName());
+            }
+            else if (!key.contains("schedule_next_chunk")) {
+                LOG.warn("Could not find action id in action chain state key: " + key);
+            }
+        }
+
+        if (retActionChainId != null) {
+            if (actionChainFailed) {
+                long firstFailedActionId = failedActionIds.stream().min(Long::compare).get();
+                // Set rest of actions as FAILED due to failed prerequisite
+                failDependentServerActions(firstFailedActionId, minionId, Optional.empty());
+            }
+            // Removing the generated SLS file
+            SaltActionChainGeneratorService.INSTANCE.removeActionChainSLSFiles(
+                    retActionChainId, minionId, chunk, actionChainFailed);
+        }
     }
 
     /**

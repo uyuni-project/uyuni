@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.action.script;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.Server;
@@ -29,6 +30,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
  * @version $Rev$
  */
 public class ScriptRunAction extends ScriptAction {
+
+    private final SaltUtils saltUtils = GlobalInstanceHolder.SALT_UTILS;
 
     /**
      * {@inheritDoc}
@@ -81,7 +84,7 @@ public class ScriptRunAction extends ScriptAction {
     @Override
     public void onCancelAction() {
         if (allServersFinished()) {
-            FileUtils.deleteFile(SaltUtils.INSTANCE.getScriptPath(getId()));
+            FileUtils.deleteFile(saltUtils.getScriptPath(getId()));
         }
     }
 }

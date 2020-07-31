@@ -103,7 +103,6 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
@@ -201,16 +200,16 @@ public class SaltUtils {
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
-    public static final SaltUtils INSTANCE = new SaltUtils();
-
     public static final String CAASP_PATTERN_IDENTIFIER = "patterns-caasp-Node";
     public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
-    private SystemQuery systemQuery = SaltService.INSTANCE;
-    private SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-    private ClusterManager clusterManager = ClusterManager.instance();
+    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
+    private final ClusterManager clusterManager;
+    private final FormulaManager formulaManager;
+    private final ServerGroupManager serverGroupManager;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -233,8 +232,22 @@ public class SaltUtils {
 
     /**
      * Constructor for testing purposes.
+     *
+     * @param systemQueryIn
+     * @param saltApiIn
+     * @param clusterManagerIn
+     * @param formulaManagerIn
+     * @param serverGroupManagerIn
      */
-    public SaltUtils() { }
+    public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn,
+                     ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
+                     ServerGroupManager serverGroupManagerIn) {
+        this.saltApi = saltApiIn;
+        this.systemQuery = systemQueryIn;
+        this.clusterManager = clusterManagerIn;
+        this.formulaManager = formulaManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
+    }
 
     /**
      * Figure out if the list of packages has changed based on the result of a Salt call
@@ -276,7 +289,7 @@ public class SaltUtils {
      * @param server server to update
      * @return an outcome
      */
-    public static PackageChangeOutcome handlePackageChanges(String function,
+    public PackageChangeOutcome handlePackageChanges(String function,
             JsonElement callResult, Server server) {
         final PackageChangeOutcome outcome;
 
@@ -730,7 +743,7 @@ public class SaltUtils {
         List<Server> nodesToRemove = cluster.getGroup().getServers().stream()
                 .filter(s -> !s.getId().equals(cluster.getManagementNode().getId()))
                 .collect(Collectors.toList());
-        ServerGroupManager.getInstance().removeServers(cluster.getGroup(), nodesToRemove);
+        serverGroupManager.removeServers(cluster.getGroup(), nodesToRemove);
 
         // add new nodes if matching registered systems are found
         List<ClusterNode> clusterNodes = new ArrayList<>();
@@ -744,7 +757,7 @@ public class SaltUtils {
                 .map(n -> n.getServer().get())
                 .collect(Collectors.toList());
 
-        ServerGroupManager.getInstance().addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
+        serverGroupManager.addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
     }
 
     private void handleClusterJoinNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
@@ -1425,7 +1438,7 @@ public class SaltUtils {
                     "grains.items"
             ));
             try {
-                FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
+                formulaManager.enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 saltApi.refreshPillar(new MinionList(server.getMinionId()));
             }
@@ -1872,22 +1885,6 @@ public class SaltUtils {
             return true;
         }
         return prerequisiteIsCompleted(action.getPrerequisite(), prereqType, systemId);
-    }
-
-    /**
-     * For unit testing only.
-     * @param systemQueryIn the {@link SaltService} to set
-     */
-    public void setSystemQuery(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
-    }
-
-    /**
-     * For unit testing only.
-     * @param saltApiIn the {@link SaltApi} to set
-     */
-    public void setSaltApi(SaltApi saltApiIn) {
-        this.saltApi = saltApiIn;
     }
 
     /**

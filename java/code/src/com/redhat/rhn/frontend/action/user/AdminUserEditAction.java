@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
@@ -54,6 +55,8 @@ public class AdminUserEditAction extends UserEditActionHelper {
 
     private static Logger log = Logger.getLogger(AdminUserEditAction.class);
     private static final String ROLE_SETTING_PREFIX = "role_";
+
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -185,14 +188,13 @@ public class AdminUserEditAction extends UserEditActionHelper {
             // will be empty..
             if (targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
                     !targetUser.getAssociatedServerGroups().isEmpty()) {
-                ServerGroupManager manager = ServerGroupManager.getInstance();
                 Set admins = new HashSet();
                 admins.add(targetUser);
                 for (Iterator itr = targetUser.getAssociatedServerGroups().iterator();
                         itr.hasNext();) {
 
                     ManagedServerGroup sg = (ManagedServerGroup) itr.next();
-                    manager.dissociateAdmins(sg, admins, loggedInUser);
+                    serverGroupManager.dissociateAdmins(sg, admins, loggedInUser);
                     itr.remove();
                 }
             }

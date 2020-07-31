@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.testing;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -47,7 +48,7 @@ import java.util.Set;
  */
 public class ImageTestUtils {
 
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     private ImageTestUtils() { }
 

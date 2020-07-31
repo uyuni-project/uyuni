@@ -20,6 +20,7 @@ import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
 import com.google.gson.reflect.TypeToken;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -52,7 +53,6 @@ import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
@@ -389,7 +389,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             giveCapabilities(minion);
 
             // Assign the Salt base entitlement by default
-            SystemEntitlementManager.INSTANCE.setBaseEntitlement(minion, EntitlementManager.SALT);
+            GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(minion, EntitlementManager.SALT);
 
             // apply activation key properties that need to be set after saving the minion
             activationKey.ifPresent(ak -> RegistrationUtils.applyActivationKeyProperties(minion, ak, grains));

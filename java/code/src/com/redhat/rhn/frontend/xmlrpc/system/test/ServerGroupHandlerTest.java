@@ -35,7 +35,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,15 +48,15 @@ import java.util.List;
  * @version $Rev$
  */
 public class ServerGroupHandlerTest extends BaseHandlerTestCase {
-    private SystemQuery systemQuery = new SaltService();
-    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private SystemQuery systemQuery = new TestSystemQuery();
+    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private ServerGroupHandler handler = new ServerGroupHandler(xmlRpcSystemHelper);
-    private ServerGroupManager manager = ServerGroupManager.getInstance();
+    private ServerGroupManager manager = new ServerGroupManager();
+    private ServerGroupHandler handler = new ServerGroupHandler(xmlRpcSystemHelper, manager);
     private static final String NAME = "HAHAHA" + TestUtils.randomString();
     private static final String DESCRIPTION =  TestUtils.randomString();
 
@@ -325,7 +325,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         List  test = new ArrayList();
         test.add(server);
         test.add(server2);
-        ServerGroupManager.getInstance().addServers(group, test, admin);
+        manager.addServers(group, test, admin);
 
 
         Calendar cal = Calendar.getInstance();
@@ -352,7 +352,7 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         cal.add(Calendar.HOUR, -442);
         server2.getServerInfo().setCheckin(cal.getTime());
 
-        ServerGroupManager.getInstance().addServers(group, test, admin);
+        manager.addServers(group, test, admin);
 
         TestUtils.saveAndFlush(server);
         TestUtils.saveAndFlush(group);

@@ -96,66 +96,75 @@ public class ClustersController {
             .serializeNulls()
             .create();
 
-    private static ClusterManager clusterManager = ClusterManager.instance();
+    private final ClusterManager clusterManager;
+    private final FormulaManager formulaManager;
 
-    private ClustersController() { }
+    /**
+     *
+     * @param clusterManagerIn
+     * @param formulaManagerIn
+     */
+    public ClustersController(ClusterManager clusterManagerIn, FormulaManager formulaManagerIn) {
+        this.clusterManager = clusterManagerIn;
+        this.formulaManager = formulaManagerIn;
+    }
 
     /**
      * Called from Router. Initializes Spark routes.
      * @param jade the Jade engine to use to render the pages
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
+    public void initRoutes(JadeTemplateEngine jade) {
         get("/manager/clusters",
-                withCsrfToken(withUserPreferences(withRolesTemplate(ClustersController::showList))), jade);
+                withCsrfToken(withUserPreferences(withRolesTemplate(this::showList))), jade);
         get("/manager/clusters/add",
                 withCsrfToken(withClusterAdmin(
-                        withUserPreferences(withRolesTemplate(ClustersController::showAddCluster)))), jade);
+                        withUserPreferences(withRolesTemplate(this::showAddCluster)))), jade);
         get("/manager/cluster/:id",
-                withCsrfToken(withUserPreferences(withRolesTemplate(ClustersController::showCluster))), jade);
+                withCsrfToken(withUserPreferences(withRolesTemplate(this::showCluster))), jade);
         get("/manager/cluster/:id/join",
                 withCsrfToken(withClusterAdmin(
-                        withUserPreferences(withRolesTemplate(ClustersController::showJoinCluster)))), jade);
+                        withUserPreferences(withRolesTemplate(this::showJoinCluster)))), jade);
         post("/manager/cluster/:id/remove",
                 withCsrfToken(withClusterAdmin(
-                        withUserPreferences(withRolesTemplate(ClustersController::showRemoveNode)))), jade);
+                        withUserPreferences(withRolesTemplate(this::showRemoveNode)))), jade);
         get("/manager/cluster/:id/upgrade",
                 withCsrfToken(withClusterAdmin(
-                        withUserPreferences(withRolesTemplate(ClustersController::showClusterUpgrade)))), jade);
+                        withUserPreferences(withRolesTemplate(this::showClusterUpgrade)))), jade);
 
         get("/manager/api/cluster/:id/nodes",
-                withUser(ClustersController::listNodes));
+                withUser(this::listNodes));
         get("/manager/api/cluster/:id/nodes-to-join",
-                withUser(ClustersController::listNodesToJoin));
+                withUser(this::listNodesToJoin));
         post("/manager/api/cluster/:id/refresh-group-nodes",
-                withClusterAdmin(ClustersController::refreshGroupNodes));
+                withClusterAdmin(this::refreshGroupNodes));
         get("/manager/api/cluster/:id/formula/:formula/data",
-                withUser(ClustersController::getFormulaData));
+                withUser(this::getFormulaData));
         post("/manager/api/cluster/:id/formula/:formula/data",
-                withClusterAdmin(ClustersController::saveFormulaData));
+                withClusterAdmin(this::saveFormulaData));
         post("/manager/api/cluster/:id/join",
-                withClusterAdmin(ClustersController::joinNode));
+                withClusterAdmin(this::joinNode));
         post("/manager/api/cluster/:id/remove-node",
-                withClusterAdmin(ClustersController::removeNode));
+                withClusterAdmin(this::removeNode));
         post("/manager/api/cluster/:id/upgrade",
-                withClusterAdmin(ClustersController::upgradeCluster));
+                withClusterAdmin(this::upgradeCluster));
         get("/manager/api/cluster/:id",
-                withUser(ClustersController::getClusterProps));
+                withUser(this::getClusterProps));
         post("/manager/api/cluster/:id",
-                withClusterAdmin(ClustersController::updateCluster));
+                withClusterAdmin(this::updateCluster));
         delete("/manager/api/cluster/:id",
-                withClusterAdmin(ClustersController::deleteCluster));
+                withClusterAdmin(this::deleteCluster));
 
         post("/manager/api/cluster/provider/:provider/formula/:formula/form",
-                withUser(ClustersController::providerFormulaForm));
+                withUser(this::providerFormulaForm));
         get("/manager/api/cluster/provider/:provider/management-nodes",
-                withUser(ClustersController::providerManagementNodes));
+                withUser(this::providerManagementNodes));
 
         post("/manager/api/cluster/new/add",
-                withClusterAdmin(ClustersController::addCluster));
+                withClusterAdmin(this::addCluster));
 
     }
 
-    private static Object getClusterProps(Request request, Response response, User user) {
+    private Object getClusterProps(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
         return json(response,
                 ResultJson.success(toClusterResponse(cluster,
@@ -181,7 +190,7 @@ public class ClustersController {
         }
     }
 
-    private static Object updateCluster(Request request, Response response, User user) {
+    private Object updateCluster(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
 
         UpdateClusterRequest clusterRequest;
@@ -210,7 +219,7 @@ public class ClustersController {
         return json(response, ResultJson.success());
     }
 
-    private static ModelAndView showRemoveNode(Request request, Response response, User user) {
+    private ModelAndView showRemoveNode(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
         List<String> nodes = Arrays.asList(request.queryParamsValues("nodes"));
 
@@ -237,7 +246,7 @@ public class ClustersController {
 
     }
 
-    private static Object saveFormulaData(Request request, Response response, User user) {
+    private Object saveFormulaData(Request request, Response response, User user) {
         Optional<Map<String, Object>> formulaData = parseJson(request, response);
         if (formulaData.isEmpty()) {
             return json(response, HttpStatus.SC_BAD_REQUEST,
@@ -266,7 +275,7 @@ public class ClustersController {
         return json(response, ResultJson.success());
     }
 
-    private static ModelAndView showJoinCluster(Request request, Response response, User user) {
+    private ModelAndView showJoinCluster(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
         Map<String, Object> data = new HashMap<>();
         data.put("flashMessage", FlashScopeHelper.flash(request));
@@ -276,7 +285,7 @@ public class ClustersController {
         return new ModelAndView(data, "controllers/clusters/templates/join.jade");
     }
 
-    private static ModelAndView showClusterUpgrade(Request request, Response response, User user) {
+    private ModelAndView showClusterUpgrade(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
         Map<String, Object> data = new HashMap<>();
         data.put("flashMessage", FlashScopeHelper.flash(request));
@@ -337,7 +346,7 @@ public class ClustersController {
         }
     }
 
-    private static String addCluster(Request request, Response response, User user) {
+    private String addCluster(Request request, Response response, User user) {
         AddClusterRequest clusterRequest;
         try {
             clusterRequest = GSON.fromJson(request.body(), AddClusterRequest.class);
@@ -401,13 +410,13 @@ public class ClustersController {
         return json(response, ResultJson.success(cluster.getId()));
     }
 
-    private static boolean validProvider(String provider) {
+    private boolean validProvider(String provider) {
         List<String> providers = clusterManager.findClusterProviders()
                 .stream().map(ClusterProvider::getLabel).collect(Collectors.toList());
         return providers.contains(provider);
     }
 
-    private static Object deleteCluster(Request request, Response response, User user) {
+    private Object deleteCluster(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
 
         try {
@@ -444,15 +453,15 @@ public class ClustersController {
 
     }
 
-    private static Object joinNode(Request request, Response response, User user) {
+    private Object joinNode(Request request, Response response, User user) {
         return modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE, request, response, user);
     }
 
-    private static Object removeNode(Request request, Response response, User user) {
+    private Object removeNode(Request request, Response response, User user) {
         return modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE, request, response, user);
     }
 
-    private static Object upgradeCluster(Request request, Response response, User user) {
+    private Object upgradeCluster(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
         ModifyNodesRequest nodesRequest;
         try {
@@ -480,7 +489,7 @@ public class ClustersController {
         return json(response, ResultJson.success(actionId));
     }
 
-    private static Object modifyClusterNodes(ActionType actionType, Request request, Response response, User user) {
+    private Object modifyClusterNodes(ActionType actionType, Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
         ModifyNodesRequest nodesRequest;
         try {
@@ -508,7 +517,7 @@ public class ClustersController {
         return json(response, ResultJson.success(actionId));
     }
 
-    private static Optional<Map<String, Object>> parseJson(Request request, Response response) {
+    private Optional<Map<String, Object>> parseJson(Request request, Response response) {
         Map<String, Object> jsonRequest;
         try {
             jsonRequest = GSON.fromJson(request.body(), new TypeToken<Map<String, Object>>() {
@@ -521,7 +530,7 @@ public class ClustersController {
         return Optional.ofNullable(jsonRequest);
     }
 
-    private static String providerManagementNodes(Request request, Response response, User user) {
+    private String providerManagementNodes(Request request, Response response, User user) {
         String provider = request.params("provider");
         if (!validProvider(provider)) {
             return json(response, HttpStatus.SC_BAD_REQUEST,
@@ -537,7 +546,7 @@ public class ClustersController {
         return json(response, ResultJson.success(data));
     }
 
-    private static ModelAndView showAddCluster(Request request, Response response, User user) {
+    private ModelAndView showAddCluster(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         List<ClusterProviderResponse> providers =
                 clusterManager.findClusterProviders().stream()
@@ -549,7 +558,7 @@ public class ClustersController {
         return new ModelAndView(data, "controllers/clusters/templates/add.jade");
     }
 
-    private static Object listNodes(Request request, Response response, User user) {
+    private Object listNodes(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
         Map<String, Object> data = new HashMap<>();
         Optional<List<String>> fields = clusterManager.getNodesListFields(cluster.getProvider());
@@ -562,7 +571,7 @@ public class ClustersController {
         return json(response, ResultJson.success(data));
     }
 
-    private static Object listNodesToJoin(Request request, Response response, User user) {
+    private Object listNodesToJoin(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
 
         var servers = clusterManager.getNodesAvailableForJoining(cluster, user);
@@ -580,7 +589,7 @@ public class ClustersController {
      * @param user the user
      * @return ModelAndView for page
      */
-    public static ModelAndView showList(Request request, Response response, User user) {
+    public ModelAndView showList(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         List<ClusterResponse> clusters =
                 ClusterFactory.findClustersByOrg(user.getOrg().getId()).stream()
@@ -599,7 +608,7 @@ public class ClustersController {
      * @param user the user
      * @return ModelAndView for page
      */
-    public static ModelAndView showCluster(Request request, Response response, User user) {
+    public ModelAndView showCluster(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
 
         Map<String, Object> data = new HashMap<>();
@@ -616,7 +625,7 @@ public class ClustersController {
      * @param user the user
      * @return the formula form as Json
      */
-    public static String providerFormulaForm(Request request, Response response, User user) {
+    public String providerFormulaForm(Request request, Response response, User user) {
         String provider = request.params("provider");
         String formula = request.params("formula");
 
@@ -651,11 +660,11 @@ public class ClustersController {
      * @param user the user
      * @return the formula form as Json
      */
-    public static String getFormulaData(Request request, Response response, User user) {
+    public String getFormulaData(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
 
         String formula = request.params("formula");
-        Optional<Map<String, Object>> data = FormulaManager.getInstance().getClusterFormulaData(cluster, formula);
+        Optional<Map<String, Object>> data = formulaManager.getClusterFormulaData(cluster, formula);
         return json(response, ResultJson.success(data.orElse(Collections.emptyMap())));
     }
 
@@ -666,7 +675,7 @@ public class ClustersController {
      * @param user the user
      * @return the outcome as Json
      */
-    public static String refreshGroupNodes(Request request, Response response, User user) {
+    public String refreshGroupNodes(Request request, Response response, User user) {
         Cluster cluster = getCluster(request, user);
 
         long actionId;
@@ -682,7 +691,7 @@ public class ClustersController {
         return json(response, ResultJson.success(actionId));
     }
 
-    private static Long getId(Request request) {
+    private Long getId(Request request) {
         String idStr = request.params("id");
         Long id = null;
         try {
@@ -695,7 +704,7 @@ public class ClustersController {
         return id;
     }
 
-    private static Cluster getCluster(Request request, User user) {
+    private Cluster getCluster(Request request, User user) {
         Long id = getId(request);
         Optional<Cluster> cluster = ClusterFactory.findClusterByIdAndOrg(id, user.getOrg());
         if (cluster.isEmpty()) {
@@ -705,7 +714,7 @@ public class ClustersController {
     }
 
 
-    private static ClusterProvider getClusterProvider(String label) {
+    private ClusterProvider getClusterProvider(String label) {
         Optional<ClusterProvider> provider = ClusterManager.findClusterProvider(label);
         if (provider.isEmpty()) {
             halt(HttpStatus.SC_NOT_FOUND, "Provider " + label + " not found");

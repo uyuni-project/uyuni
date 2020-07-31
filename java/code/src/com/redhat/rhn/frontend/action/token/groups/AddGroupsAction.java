@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.action.token.groups;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -47,6 +48,8 @@ import javax.servlet.http.HttpServletResponse;
 public class AddGroupsAction extends BaseListAction {
     private static final String ACCESS_MAP = "accessMap";
 
+    private final ServerGroupManager sgm = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
     /** {@inheritDoc} */
     public ActionForward handleDispatch(ListSessionSetHelper helper,
                                     ActionMapping mapping,
@@ -55,7 +58,6 @@ public class AddGroupsAction extends BaseListAction {
         RequestContext context = new RequestContext(request);
         ActivationKey key = context.lookupAndBindActivationKey();
         User user = context.getCurrentUser();
-        ServerGroupManager sgm = ServerGroupManager.getInstance();
         for (String id : helper.getSet()) {
             Long sgid = Long.valueOf(id);
             key.addServerGroup(sgm.lookup(sgid, user));
@@ -95,7 +97,7 @@ public class AddGroupsAction extends BaseListAction {
      * @param groups list of server groups
      */
     static void setupAccessMap(RequestContext context, List<ManagedServerGroup> groups) {
-        ServerGroupManager sgm = ServerGroupManager.getInstance();
+        ServerGroupManager sgm = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
         Map<Long, Long> accessMap = new HashMap<Long, Long>();
         for (ServerGroup sg : groups) {
             if (sgm.canAccess(context.getCurrentUser(), sg)) {

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.webapp;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.manager.satellite.StartupTasksCommand;
@@ -21,9 +22,6 @@ import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
 import com.suse.manager.reactor.SaltReactor;
 
-import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -53,17 +51,18 @@ public class RhnServletListener implements ServletContextListener {
 
     private boolean hibernateStarted = false;
     private boolean loggingStarted = false;
-    private final SystemQuery systemQuery = SaltService.INSTANCE;
-    private final SaltApi saltApi = SaltService.INSTANCE_SALT_API;
 
     // Salt event reactor instance
-    private final SaltReactor saltReactor = new SaltReactor(saltApi, systemQuery);
+    private final SaltReactor saltReactor = new SaltReactor(
+            GlobalInstanceHolder.SALT_API, GlobalInstanceHolder.SYSTEM_QUERY,
+            GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE,
+            GlobalInstanceHolder.SALT_UTILS);
 
     private void startMessaging() {
         // Start the MessageQueue thread listening for
         // Events
         MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions(systemQuery, saltApi);
+        MessageQueue.configureDefaultActions(GlobalInstanceHolder.SYSTEM_QUERY, GlobalInstanceHolder.SALT_API);
     }
 
     private void stopMessaging() {

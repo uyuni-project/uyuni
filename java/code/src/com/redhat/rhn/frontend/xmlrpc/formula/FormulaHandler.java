@@ -45,7 +45,7 @@ import com.redhat.rhn.manager.formula.InvalidFormulaException;
  */
 public class FormulaHandler extends BaseHandler {
 
-    private FormulaManager formulaManager;
+    private final FormulaManager formulaManager;
 
     /**
      * Instantiates a new formula handler.
@@ -210,9 +210,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype struct with saved formula data
      */
     public Map<String, Object> getSystemFormulaData(User loggedInUser, Integer systemId, String formulaName) {
-        FormulaManager manager = FormulaManager.getInstance();
-        Map<String, Object> savedData = manager.getSystemFormulaData(loggedInUser, formulaName, systemId.longValue());
-        return savedData;
+        return formulaManager
+                .getSystemFormulaData(loggedInUser, formulaName, systemId.longValue());
     }
 
     /**
@@ -254,8 +253,8 @@ public class FormulaHandler extends BaseHandler {
      * @xmlrpc.returntype struct with saved formula data
      */
     public Map<String, Object> getGroupFormulaData(User loggedInUser, Integer groupId, String formulaName) {
-        FormulaManager manager = FormulaManager.getInstance();
-        Map<String, Object> savedData = manager.getGroupFormulaData(loggedInUser, formulaName, groupId.longValue());
+        Map<String, Object> savedData = formulaManager
+                .getGroupFormulaData(loggedInUser, formulaName, groupId.longValue());
         return savedData;
     }
 
@@ -280,11 +279,10 @@ public class FormulaHandler extends BaseHandler {
     public int setSystemFormulaData(User loggedInUser, Integer systemId, String formulaName, Map<String,
                 Object> content) throws IOFaultException, InvalidParameterException {
         try {
-            FormulaManager manager = FormulaManager.getInstance();
-            boolean assigned = manager.hasSystemFormulaAssignedCombined(formulaName, systemId);
+            boolean assigned = formulaManager.hasSystemFormulaAssignedCombined(formulaName, systemId);
             if (assigned) {
-                manager.validateInput(formulaName, content);
-                manager.saveServerFormulaData(loggedInUser, systemId.longValue(), formulaName, content);
+                formulaManager.validateInput(formulaName, content);
+                formulaManager.saveServerFormulaData(loggedInUser, systemId.longValue(), formulaName, content);
             }
             else {
                 throw new InvalidParameterException("One of the system doesn't have formula assigned, please assign" +
@@ -321,11 +319,10 @@ public class FormulaHandler extends BaseHandler {
     public int setGroupFormulaData(User loggedInUser, Integer groupId, String formulaName, Map<String,
             Object> content) throws IOFaultException, InvalidParameterException {
         try {
-            FormulaManager manager = FormulaManager.getInstance();
-            boolean assigned = manager.hasGroupFormulaAssigned(formulaName, groupId.longValue());
+            boolean assigned = formulaManager.hasGroupFormulaAssigned(formulaName, groupId.longValue());
             if (assigned) {
-                manager.validateInput(formulaName, content);
-                manager.saveGroupFormulaData(loggedInUser, groupId.longValue(), formulaName, content);
+                formulaManager.validateInput(formulaName, content);
+                formulaManager.saveGroupFormulaData(loggedInUser, groupId.longValue(), formulaName, content);
             }
             else {
                 throw new InvalidParameterException("Group doesn't have formula assigned, please assign it" +

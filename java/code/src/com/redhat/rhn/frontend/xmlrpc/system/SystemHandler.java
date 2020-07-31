@@ -210,6 +210,7 @@ public class SystemHandler extends BaseHandler {
 
     private SystemEntitlementManager systemEntitlementManager;
     private SystemManager systemManager;
+    private final ServerGroupManager serverGroupManager;
 
     /**
      * Instantiates a new system handler.
@@ -218,14 +219,16 @@ public class SystemHandler extends BaseHandler {
      * @param xmlRpcSystemHelperIn the xml rpc system helper
      * @param systemEntitlementManagerIn the system entitlement manager
      * @param systemManagerIn the system manager
+     * @param serverGroupManagerIn
      */
     public SystemHandler(TaskomaticApi taskomaticApiIn, XmlRpcSystemHelper xmlRpcSystemHelperIn,
             SystemEntitlementManager systemEntitlementManagerIn,
-            SystemManager systemManagerIn) {
+            SystemManager systemManagerIn, ServerGroupManager serverGroupManagerIn) {
         this.taskomaticApi = taskomaticApiIn;
         this.xmlRpcSystemHelper = xmlRpcSystemHelperIn;
         this.systemEntitlementManager = systemEntitlementManagerIn;
         this.systemManager = systemManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -1858,9 +1861,8 @@ public class SystemHandler extends BaseHandler {
         // Get the logged in user and server
         ensureSystemGroupAdmin(loggedInUser);
         Server server = lookupServer(loggedInUser, sid);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
         try {
-            ManagedServerGroup group = manager.lookup(sgid.longValue(),
+            ManagedServerGroup group = serverGroupManager.lookup(sgid.longValue(),
                     loggedInUser);
 
 
@@ -1869,11 +1871,11 @@ public class SystemHandler extends BaseHandler {
 
             if (member) {
                 //add to server group
-                manager.addServers(group, servers, loggedInUser);
+                serverGroupManager.addServers(group, servers, loggedInUser);
             }
             else {
                 //remove from server group
-                manager.removeServers(group, servers, loggedInUser);
+                serverGroupManager.removeServers(group, servers, loggedInUser);
             }
         }
         catch (LookupException le) {
@@ -4736,7 +4738,7 @@ public class SystemHandler extends BaseHandler {
             String selectedEnt = (String)details.get("base_entitlement");
             Entitlement base = EntitlementManager.getByName(selectedEnt);
             if (base != null) {
-                SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, base);
+                systemEntitlementManager.setBaseEntitlement(server, base);
             }
             else if (selectedEnt.equals("unentitle")) {
                 systemEntitlementManager.removeAllServerEntitlements(server);
@@ -4914,7 +4916,7 @@ public class SystemHandler extends BaseHandler {
         for (Entitlement en : EntitlementManager.getBaseEntitlements()) {
             if (addOnEnts.contains(en.getLabel())) {
                 addOnEnts.remove(en.getLabel());
-                SystemEntitlementManager.INSTANCE.setBaseEntitlement(server, en);
+                systemEntitlementManager.setBaseEntitlement(server, en);
             }
         }
 

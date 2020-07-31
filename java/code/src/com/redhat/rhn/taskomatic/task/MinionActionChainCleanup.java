@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.suse.manager.webui.services.impl.SaltService;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import org.quartz.JobExecutionContext;
 
@@ -23,6 +23,8 @@ import org.quartz.JobExecutionContext;
  * Finds and cleans up Salt Action Chains for which we missed the JobReturnEvent.
  */
 public class MinionActionChainCleanup extends RhnJavaJob {
+
+    private final MinionActionUtils minionActionUtils = GlobalInstanceHolder.MINION_ACTION_UTILS;
 
     /**
      * @param context the job execution context
@@ -36,7 +38,7 @@ public class MinionActionChainCleanup extends RhnJavaJob {
 
         // Measure time and calculate the total duration
         long start = System.currentTimeMillis();
-        MinionActionUtils.cleanupMinionActionChains(SaltService.INSTANCE);
+        minionActionUtils.cleanupMinionActionChains();
 
         if (log.isDebugEnabled()) {
             long duration = System.currentTimeMillis() - start;

@@ -4,6 +4,7 @@ import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.GROUP;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.MINION;
 import static com.redhat.rhn.domain.recurringactions.RecurringAction.Type.ORG;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
@@ -194,7 +195,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testListGroupRecurringActions() {
-        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ServerGroupManager manager = new ServerGroupManager();
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
 
         var action = new GroupRecurringAction();
