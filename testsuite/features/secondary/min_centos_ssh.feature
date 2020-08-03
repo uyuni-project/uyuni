@@ -3,8 +3,7 @@
 #
 # 1) delete CentOS minion and register as Centos SSH minion
 # 2) run a remote command
-# 3) try an openscap scan
-# 4) delete CentOS SSH minion client and register as Centos minion
+# 3) delete CentOS SSH minion client and register as Centos minion
 
 Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on it
 
@@ -63,29 +62,9 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I wait until event "Subscribe channels scheduled by admin" is completed
 
 @centos_minion
-  Scenario: Prepare the SSH-managed CentOS minion
-    Given I am authorized
-    When I enable SUSE Manager tools repositories on "ceos_ssh_minion"
-    And  I enable repository "CentOS-Base" on this "ceos_ssh_minion"
-    And  I install package "hwdata m2crypto wget" on this "ceos_ssh_minion"
-    And  I install package "spacewalk-client-tools spacewalk-check spacewalk-client-setup mgr-daemon mgr-osad mgr-cfg-actions" on this "ceos_ssh_minion"
-    And  I install package "spacewalk-oscap scap-security-guide" on this "ceos_ssh_minion"
-
-@centos_minion
   Scenario: Check events history for failures on SSH-managed CentOS minion
     Given I am on the Systems overview page of this "ceos_ssh_minion"
     Then I check for failed events on history event page
-
-@centos_minion
-  Scenario: Schedule an OpenSCAP audit job for the SSH-managed CentOS minion
-    Given I am on the Systems overview page of this "ceos_ssh_minion"
-    When I follow "Audit" in the content area
-    And I follow "Schedule" in the content area
-    And I enter "--profile standard" as "params"
-    And I enter "/usr/share/xml/scap/ssg/content/ssg-centos7-xccdf.xml" as "path"
-    And I click on "Schedule"
-    Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
 
 @centos_minion
   Scenario: Run a remote command on the SSH-managed CentOS minion
@@ -101,17 +80,6 @@ Feature: Bootstrap a SSH-managed CentOS minion and do some basic operations on i
     And I expand the results for "ceos_ssh_minion"
     Then I should see a "rhel fedora" text
     And I should see a "REDHAT_SUPPORT_PRODUCT" text
-
-@centos_minion
-  Scenario: Check the results of the OpenSCAP scan on the SSH-managed CentOS minion
-    Given I am on the Systems overview page of this "ceos_ssh_minion"
-    When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_standard"
-    Then I should see a "Details of XCCDF Scan" text
-    And I should see a "RHEL-7" text
-    And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text
-    And I should see a "rpm_" link
 
 @centos_minion
   Scenario: Check events history for failures on SSH-managed CentOS minion
