@@ -9,7 +9,6 @@ Feature: Maintenance Windows
         And I click on "Create"
         Then I should see a "Maintenance Calendar" text
         When I enter "singlecalendar" as "name"
-        #And I attach the file "maintenance-windows-exchange.ics" to "ical-data-upload"
         And I add "maintenance-windows-exchange.ics" calendar file as url
         And I click on "Create Calendar"
         Then I should see a "Calendar successfully created" text
@@ -20,7 +19,6 @@ Feature: Maintenance Windows
         And I click on "Create"
         Then I should see a "Maintenance Calendar" text
         When I enter "multicalendar" as "name"
-        #And I attach the file "maintenance-windows-multi-exchange-1.ics" to "ical-data-upload"
         And I add "maintenance-windows-multi-exchange-1.ics" calendar file as url
         And I click on "Create Calendar"
         Then I should see a "Calendar successfully created" text
@@ -33,7 +31,7 @@ Feature: Maintenance Windows
         When I enter "singleschedule" as "name"
         And I choose "SINGLE"
         And I click on "Add Calendar"
-        And I select "singlecalendar" from "calendarSelect"
+        And I select "singlecalendar" from the Combobox "calendarSelect"
         And I click on "Create Schedule"
         Then I should see a "Schedule successfully created" text
 
@@ -45,14 +43,14 @@ Feature: Maintenance Windows
         When I enter "SAP Maintenance Window" as "name"
         And I choose "MULTI"
         And I click on "Add Calendar"
-        And I select "multicalendar" from "calendarSelect"
+        And I select "multicalendar" from the Combobox "calendarSelect"
         And I click on "Create Schedule"
         Then I should see a "Schedule successfully created" text
         When I click on "Create"
         And I enter "Core Server Window" as "name"
-        And I choose "Multi"
+        And I choose "MULTI"
         And I click on "Add Calendar"
-        And I select "multicalendar" from "calendarSelect"
+        And I select "multicalendar" from the Combobox "calendarSelect"
         And I click on "Create Schedule"
         Then I should see a "Schedule successfully created" text
 
@@ -63,7 +61,6 @@ Feature: Maintenance Windows
         And I click on "Update Properties"
         Then I should see a "System properties changed" text
 
-@mctest6
     Scenario: Assign systems to a multi Schedule using SSM
         Given I am authorized as "admin" with password "admin"
         When I am on the System Overview page
@@ -74,7 +71,8 @@ Feature: Maintenance Windows
         And I select "SAP Maintenance Window" from "scheduleId"
         And I check "cancelActions"
         And I click on "Assign All"
-        Then I should see a "System changed" text
+        And I click on "Confirm"
+        Then I should see a "Maintenance schedule has been assigned" text
 
     Scenario: Schedule Channel Change Action
         Given I am on the Systems overview page of this "sle_minion"
@@ -87,7 +85,7 @@ Feature: Maintenance Windows
         And I check "Test-Channel-x86_64 Child Channel"
         And I click on "Next"
         Then I should see a "Confirm Software Channel Change" text
-        And I pick "5:30 pm" as time
+        And I pick "17:30" as time
         And I click on "Confirm"
         Then I should see a "Changing the channels has been scheduled." text
 
@@ -112,13 +110,37 @@ Feature: Maintenance Windows
         And I follow "Assign" in the content area
         And I select "None - clear schedule" from "scheduleId"
         And I click on "Clear All"
-        Then I should see a "System changed" text
+        Then I should see a "Maintenance schedule has been cleared" text
 
     Scenario: Cleanup - Cancel all Scheduled Actions
         Given I am logged in via XML-RPC actionchain as user "admin" and password "admin"
         Then I cancel all scheduled actions
 
     Scenario: Delete Maintenance Schedules
+        Given I am authorized as "admin" with password "admin"
+        When I follow the left menu "Schedule > Maintenance Windows > Schedules"
+        When I click the "Core Server Window" recurring action delete button
+        Then I should see a "Delete maintenance schedule" text
+        When I click on the red confirmation button
+        Then I wait until I see "Schedule 'Core Server Window' has been deleted." text
+        When I click the "SAP Maintenance Window" recurring action delete button
+        Then I should see a "Delete maintenance schedule" text
+        When I click on the red confirmation button
+        Then I wait until I see "Schedule 'SAP Maintenance Window' has been deleted." text
+        When I click the "singleschedule" recurring action delete button
+        Then I should see a "Delete maintenance schedule" text
+        When I click on the red confirmation button
+        Then I wait until I see "singleschedule' has been deleted." text
 
     Scenario: Delete Calendars
+        Given I am authorized as "admin" with password "admin"
+        When I follow the left menu "Schedule > Maintenance Windows > Calendars"
+        When I click the "singlecalendar" recurring action delete button
+        Then I should see a "Delete maintenance calendar" text
+        When I click on the red confirmation button
+        Then I wait until I see "Calendar 'singlecalendar' has been deleted." text
+        When I click the "multicalendar" recurring action delete button
+        Then I should see a "Delete maintenance calendar" text
+        When I click on the red confirmation button
+        Then I wait until I see "Calendar 'multicalendar' has been deleted." text
 
