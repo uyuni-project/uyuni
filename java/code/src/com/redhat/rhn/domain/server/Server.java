@@ -150,12 +150,19 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
 
     /**
+     * Retrieves an unmodifiable collection containing the server groups.
      * @return Returns the groups.
      */
-    protected Set<ServerGroup> getGroups() {
-        return groups;
+    public Set<ServerGroup> getUnmodifiableGroups() {
+        return  Collections.unmodifiableSet(new HashSet<>(groups));
     }
 
+    /**
+     * @return Returns the groups.
+     */
+    public Set<ServerGroup> getGroups() {
+        return groups;
+    }
 
     /**
      * @param groupsIn The groups to set.
