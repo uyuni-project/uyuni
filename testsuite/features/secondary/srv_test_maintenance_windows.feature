@@ -119,15 +119,15 @@ Feature: Maintenance Windows
     Scenario: Delete Maintenance Schedules
         Given I am authorized as "admin" with password "admin"
         When I follow the left menu "Schedule > Maintenance Windows > Schedules"
-        When I click the "Core Server Window" recurring action delete button
+        When I click the "Core Server Window" item delete button
         Then I should see a "Delete maintenance schedule" text
         When I click on the red confirmation button
         Then I wait until I see "Schedule 'Core Server Window' has been deleted." text
-        When I click the "SAP Maintenance Window" recurring action delete button
+        When I click the "SAP Maintenance Window" item delete button
         Then I should see a "Delete maintenance schedule" text
         When I click on the red confirmation button
         Then I wait until I see "Schedule 'SAP Maintenance Window' has been deleted." text
-        When I click the "singleschedule" recurring action delete button
+        When I click the "singleschedule" item delete button
         Then I should see a "Delete maintenance schedule" text
         When I click on the red confirmation button
         Then I wait until I see "singleschedule' has been deleted." text
@@ -135,11 +135,11 @@ Feature: Maintenance Windows
     Scenario: Delete Calendars
         Given I am authorized as "admin" with password "admin"
         When I follow the left menu "Schedule > Maintenance Windows > Calendars"
-        When I click the "singlecalendar" recurring action delete button
+        When I click the "singlecalendar" item delete button
         Then I should see a "Delete maintenance calendar" text
         When I click on the red confirmation button
         Then I wait until I see "Calendar 'singlecalendar' has been deleted." text
-        When I click the "multicalendar" recurring action delete button
+        When I click the "multicalendar" item delete button
         Then I should see a "Delete maintenance calendar" text
         When I click on the red confirmation button
         Then I wait until I see "Calendar 'multicalendar' has been deleted." text
