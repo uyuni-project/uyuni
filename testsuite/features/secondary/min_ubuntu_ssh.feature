@@ -3,8 +3,7 @@
 #
 # 1) delete Ubuntu minion and register as Ubuntu SSH minion
 # 2) run a remote command
-# 3) try an openscap scan
-# 4) delete Ubuntu SSH minion and register as Ubuntu minion
+# 3) delete Ubuntu SSH minion and register as Ubuntu minion
 
 Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on it
 
@@ -68,17 +67,6 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     Then I check for failed events on history event page
 
 @ubuntu_minion
-  Scenario: Schedule an OpenSCAP audit job for the SSH-managed Ubuntu minion
-    Given I am on the Systems overview page of this "ubuntu_ssh_minion"
-    When I follow "Audit" in the content area
-    And I follow "Schedule" in the content area
-    And I enter "--profile common" as "params"
-    And I enter "/usr/share/scap-security-guide/ssg-ubuntu1604-xccdf.xml" as "path"
-    And I click on "Schedule"
-    Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
-
-@ubuntu_minion
   Scenario: Run a remote command on the SSH-managed Ubuntu minion
     Given I am authorized
     When I follow the left menu "Salt > Remote Commands"
@@ -91,18 +79,6 @@ Feature: Bootstrap a SSH-managed Ubuntu minion and do some basic operations on i
     When I wait until I see "show response" text
     And I expand the results for "ubuntu_ssh_minion"
     Then I should see a "ID=ubuntu" text
-
-@ubuntu_minion
-  Scenario: Check the results of the OpenSCAP scan on the SSH-managed Ubuntu minion
-    Given I am on the Systems overview page of this "ubuntu_ssh_minion"
-    When I follow "Audit" in the content area
-    And I follow "xccdf_org.open-scap_testresult_common"
-    Then I should see a "Details of XCCDF Scan" text
-    And I should see a "Ubuntu" text
-    And I should see a "XCCDF Rule Results" text
-    And I should see a "pass" text or "notapplicable" text
-    And I should see a "report.html" link
-    And I should see a "results.xml" link
 
 @ubuntu_minion
   Scenario: Check events history for failures on SSH-managed Ubuntu minion
