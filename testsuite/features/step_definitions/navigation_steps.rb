@@ -118,6 +118,13 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
   select(arg1, from: arg2, exact: false)
 end
 
+# Select an item from a react Combobox
+When(/^I select "([^"]*)" from the Combobox "([^"]*)"$/) do |arg1, arg2|
+  xpath = "//div[@id='#{arg2}']"
+  find(:xpath, xpath).click
+  find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
+end
+
 When(/^I select the maximum amount of items per page$/) do
   find(:xpath, "//select[@class='display-number']").find(:xpath, 'option[6]').select_option
 end
@@ -910,4 +917,8 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
                end
   _output, code = node.run("curl -s http://#{system_name}:#{port} | grep -i '#{text}'")
   raise unless code.zero?
+end
+
+When(/^I select the next maintenance window$/) do
+  find(:xpath, "//select[@id='maintenance-window-select']/option", match: :first).select_option
 end
