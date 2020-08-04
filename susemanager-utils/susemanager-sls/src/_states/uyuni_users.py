@@ -72,7 +72,8 @@ class UyuniUsers:
                          roles: List[str],
                          current_roles: List[str],
                          system_groups: List[str],
-                         current_system_groups: List[str]):
+                         current_system_groups: List[str],
+                         use_pam_auth: bool = False):
         changes = {}
         error = None
         # user fields changes
@@ -95,7 +96,7 @@ class UyuniUsers:
                 changes['system_groups']['old'] = current_system_groups
 
         # check if password have changed
-        if current_user:
+        if current_user and not use_pam_auth:
             try:
                 __salt__['uyuni.user_get_details'](user_changes.get('uid'),
                                                    user_changes.get('password'))
@@ -107,7 +108,7 @@ class UyuniUsers:
                     error = exc
         return changes, error
 
-    def manage(self, uid: str, password: str, email: str, first_name: str, last_name: str,
+    def manage(self, uid: str, password: str, email: str, first_name: str, last_name: str, use_pam_auth: bool = False,
                roles: Optional[List[str]] = [], system_groups: Optional[List[str]] = [],
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
@@ -118,6 +119,7 @@ class UyuniUsers:
         :param email: valid email address
         :param first_name: First name
         :param last_name: Second name
+        :param use_pam_auth: if you wish to use PAM authentication for this user
         :param roles: roles to assign to user
         :param system_groups: system groups to assign user to
         :param org_admin_user: organization administrator username
@@ -150,7 +152,8 @@ class UyuniUsers:
 
         changes, error = self._compute_changes(user_paramters, current_user,
                                                roles, current_roles,
-                                               system_groups, current_system_groups_names)
+                                               system_groups, current_system_groups_names,
+                                               use_pam_auth=use_pam_auth)
 
         if error:
             return StateResult.state_error(uid, "Error managing user '{}': {}".format(uid, error))
@@ -166,6 +169,7 @@ class UyuniUsers:
             if current_user:
                 __salt__['uyuni.user_set_details'](**user_paramters)
             else:
+                user_paramters["use_pam_auth"] = use_pam_auth
                 __salt__['uyuni.user_create'](**user_paramters)
 
             self._update_user_roles(uid, current_roles, roles,
@@ -620,7 +624,7 @@ def __virtual__():
     return __virtualname__
 
 
-def user_present(name, password, email, first_name, last_name,
+def user_present(name, password, email, first_name, last_name, use_pam_auth=False,
                  roles=None, system_groups=None,
                  org_admin_user=None, org_admin_password=None):
     """
@@ -631,13 +635,14 @@ def user_present(name, password, email, first_name, last_name,
     :param email: valid email address
     :param first_name: First name
     :param last_name: Second name
+    :param use_pam_auth: if you wish to use PAM authentication for this user
     :param roles: roles to assign to user
     :param system_groups: system_groups to assign to user
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
     :return: dict for Salt communication
     """
-    return UyuniUsers().manage(name, password, email, first_name, last_name,
+    return UyuniUsers().manage(name, password, email, first_name, last_name, use_pam_auth,
                                roles, system_groups,
                                org_admin_user, org_admin_password)
 
