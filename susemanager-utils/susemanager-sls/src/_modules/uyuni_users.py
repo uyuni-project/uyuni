@@ -173,7 +173,8 @@ class UyuniUser(UyuniRemoteObject):
         log.debug("list existing users")
         return self.client("user.listUsers")
 
-    def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
+    def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "",
+               use_pam_auth: bool = False) -> bool:
         """
         Create user in Uyuni.
         User will be created in the same organization as the authenticated user.
@@ -183,11 +184,12 @@ class UyuniUser(UyuniRemoteObject):
         :param email: valid email address
         :param first_name: First name
         :param last_name: Second name
+        :param use_pam_auth: if you wish to use PAM authentication for this user
 
         :return: True on success, raise exception otherwise
         """
         log.debug("Adding user to Uyuni: %s", uid)
-        return bool(self.client("user.create", uid, password, first_name, last_name, email))
+        return bool(self.client("user.create", uid, password, first_name, last_name, email, int(use_pam_auth)))
 
     def set_details(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
         """
@@ -731,7 +733,7 @@ def user_list_users(org_admin_user=None, org_admin_password=None):
     return UyuniUser(org_admin_user, org_admin_password).list_users()
 
 
-def user_create(uid, password, email, first_name, last_name,
+def user_create(uid, password, email, first_name, last_name, use_pam_auth=False,
                 org_admin_user=None, org_admin_password=None):
     """
     Create user in Uyuni.
@@ -742,12 +744,15 @@ def user_create(uid, password, email, first_name, last_name,
     :param email: user email address
     :param first_name: user first name
     :param last_name: user last name
+    :param use_pam_auth: if you wish to use PAM authentication for this user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
+
     :return: boolean indication success in operation
     """
     return UyuniUser(org_admin_user, org_admin_password).create(uid=uid, password=password, email=email,
-                                                                first_name=first_name, last_name=last_name)
+                                                                first_name=first_name, last_name=last_name,
+                                                                use_pam_auth=use_pam_auth)
 
 
 def user_set_details(uid, password, email, first_name=None, last_name=None,

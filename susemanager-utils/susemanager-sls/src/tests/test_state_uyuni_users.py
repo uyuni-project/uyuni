@@ -25,7 +25,7 @@ class TestManageUser:
         with patch.dict(uyuni_users.__salt__, {'uyuni.user_get_details': MagicMock(side_effect=exc)}):
             with patch.dict(uyuni_users.__opts__, {'test': True}):
                 result = uyuni_users.user_present('username', 'password', 'mail@mail.com',
-                                                  'first_name', 'last_name',
+                                                  'first_name', 'last_name', False,
                                                   ['role'], ['group'],
                                                   'org_admin_user', 'org_admin_password')
                 assert result is not None
@@ -75,6 +75,7 @@ class TestManageUser:
             uyuni_users.__salt__['uyuni.user_create'].assert_called_once_with(email='mail@mail.com',
                                                                               first_name='first_name',
                                                                               last_name='last_name',
+                                                                              use_pam_auth=False,
                                                                               org_admin_password=None,
                                                                               org_admin_user=None,
                                                                               password='password',
@@ -90,7 +91,7 @@ class TestManageUser:
             'uyuni.user_add_role': MagicMock(return_value=True),
             'uyuni.user_add_assigned_system_groups': MagicMock(return_value=1)}):
             result = uyuni_users.user_present('username', 'password', 'mail@mail.com',
-                                              'first_name', 'last_name',
+                                              'first_name', 'last_name', False,
                                               ['role'], ['group'],
                                               'org_admin_user', 'org_admin_password')
             assert result is not None
@@ -115,6 +116,7 @@ class TestManageUser:
             uyuni_users.__salt__['uyuni.user_create'].assert_called_once_with(email='mail@mail.com',
                                                                               first_name='first_name',
                                                                               last_name='last_name',
+                                                                              use_pam_auth=False,
                                                                               org_admin_password='org_admin_password',
                                                                               org_admin_user='org_admin_user',
                                                                               password='password',
@@ -149,7 +151,7 @@ class TestManageUser:
             'uyuni.user_remove_assigned_system_groups': MagicMock(return_value=1),
             'uyuni.user_add_assigned_system_groups': MagicMock(return_value=1)}):
             result = uyuni_users.user_present('username', 'new_password', 'new_mail@mail.com',
-                                              'new_first', 'new_last',
+                                              'new_first', 'new_last', False,
                                               ['role1', 'role3'], ['group2', 'group3'],
                                               'org_admin_user', 'org_admin_password')
             assert result is not None
