@@ -1,3 +1,4 @@
+- fix error when rolling back a system to a snapshot (bsc#1173997)
 - avoid deadlock when syncing channels and registering minions at the same time (bsc#1173566)
 - provide comps.xml and modules.yaml when using onlinerepo for kickstart
 - set CPU and memory info for virtual instances (bsc#1170244)
