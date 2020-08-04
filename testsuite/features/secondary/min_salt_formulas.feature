@@ -34,8 +34,7 @@ Feature: Use salt formulas
      And I select "French" in language field
      And I select "French (Canada)" in keyboard layout field
      And I click on "Save Formula"
-     # WORKAROUND bsc#1174768
-     # Then I should see a "Formula saved" text
+     Then I should see a "Formula saved" text
 
   Scenario: Check the pillar data after saving the formula
      When I refresh the pillar data
@@ -75,8 +74,7 @@ Feature: Use salt formulas
      And I follow first "Locale" in the content area
      And I click on "Clear values" and confirm
      And I click on "Save Formula"
-     # WORKAROUND bsc#1174768
-     # Then I should see a "Formula saved" text
+     Then I should see a "Formula saved" text
 
   Scenario: Check the pillar data after resetting the formula
      When I refresh the pillar data
