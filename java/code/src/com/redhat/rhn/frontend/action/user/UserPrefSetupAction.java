@@ -95,6 +95,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         form.set("csvSeparator", user.getCsvSeparator());
 
         setupTasks(form, user);
+        setCurrentLocale(requestContext, user);
         request.setAttribute("pagesizes", getPageSizes());
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
