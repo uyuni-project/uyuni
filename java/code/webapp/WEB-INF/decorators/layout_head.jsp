@@ -62,6 +62,10 @@
         </c:otherwise>
     </c:choose>
 
+    <!-- expose user preferred language to the application -->
+    <c:set var="currentLocale" value="${GlobalInstanceHolder.MENU_TREE.getCurrentLocale(pageContext)}"/>
+    <script>window.preferredLocale='${currentLocale}'</script>
+
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
 
