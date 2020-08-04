@@ -1,3 +1,4 @@
+- Add new states for virtual instances.
 - implement Maintenance Windows
 - add virtual network state change action
 - Update package version to 4.2.0
