@@ -280,7 +280,7 @@ class FormulaForm extends React.Component {
                             </div>
                             <div className="action-button-wrapper">
                                 <div className="btn-group">
-                                    <Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className={"btn btn-success"} handler={() => jQuery('<input type="submit">').hide().appendTo(jQuery("#formula-form")).on("click", ).remove()} />
+                                    <Button id="save-btn" icon="fa-floppy-o" text="Save Formula" className={"btn btn-success"} handler={() => jQuery('<input type="submit">').hide().appendTo(jQuery("#formula-form")).trigger("click").remove()} />
                                     <Button id="reset-btn" icon="fa-eraser" text="Clear values" className="btn btn-default" handler={this.clearValues} />
                                 </div>
                             </div>
