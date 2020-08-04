@@ -58,6 +58,7 @@ html
             | #{request_method}
 
         script(type='text/javascript').
+            window.preferredLocale = "#{preferredLocale}";
             spaImportReactPage('login/login')
                 .then(function (module) {
                     module.renderer(
