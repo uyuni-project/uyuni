@@ -597,6 +597,19 @@ public class MenuTree {
     }
 
     /**
+     * Get the users current locale
+     *
+     * @param pageContext the current PageContext
+     * @return the users locale
+     */
+    public String getCurrentLocale(PageContext pageContext) {
+        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+        User user = new RequestContext(request).getCurrentUser();
+        String currentLocale = user.getPreferredLocale();
+        return currentLocale;
+    }
+
+    /**
      * Special implementation of a LinkedList that adds only visible MenuItems.
      */
     public static class MenuItemList extends LinkedList<MenuItem> {
