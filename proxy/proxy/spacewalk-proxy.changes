@@ -1,3 +1,5 @@
+- Python3 fix for loading pickle file during kickstart
+  procedure (bsc#1174201)
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------
