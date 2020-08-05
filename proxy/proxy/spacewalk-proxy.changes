@@ -1,3 +1,6 @@
+- Python3 fix for loading pickle file during kickstart
+  procedure (bsc#1174201)
+
 -------------------------------------------------------------------
 Mon Nov 25 10:11:34 CET 2019 - jgonzalez@suse.com
 

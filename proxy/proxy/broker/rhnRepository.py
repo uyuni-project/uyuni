@@ -306,9 +306,12 @@ class KickstartRepository(Repository):
         if os.access(filePath, os.R_OK):
             try:
                 # Slurp the file
-                f = open(filePath, "r")
-                mapping = cPickle.loads(f.read())
-                f.close()
+                try:
+                    with open(filePath, "r") as f:
+                        mapping = cPickle.loads(f.read())
+                except (UnicodeDecodeError, TypeError):
+                    with open(filePath, "rb") as f:
+                        mapping = cPickle.loads(f.read())
             except (IOError, cPickle.UnpicklingError): # corrupt cached file
                 mapping = None # ignore it, we'll get and write it again
 
