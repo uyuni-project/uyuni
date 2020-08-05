@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -125,6 +126,10 @@ public class SystemOverviewAction extends RhnAction {
                         e1.getHumanReadableLabel().compareTo(e2.getHumanReadableLabel()) :
                         (e1.isBase() ? -1 : 1))
                 .collect(Collectors.toList());
+
+        if (s.getChannels().stream().anyMatch(Channel::isModular)) {
+            createErrorMessage(request, "packagelist.jsp.modulespresent", null);
+        }
 
         request.setAttribute("rebootRequired", Boolean.valueOf(rebootRequired));
         request.setAttribute("unentitled", Boolean.valueOf(s.getEntitlements().isEmpty()));

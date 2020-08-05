@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.action.systems.entitlements.SystemEntitlementsSub
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -35,7 +36,9 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.Iterator;
 
@@ -49,7 +52,15 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     private static final String UNENTITLED =
                                     "system_entitlements.unentitle";
 
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
 
     /**
@@ -158,11 +169,6 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
                                             Entitlement ent,
                                             ServerGroupType groupType
                                             )  throws Exception {
-        SaltService saltService = new SaltService();
-        SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltService), new FormulaMonitoringManager()),
-                new SystemEntitler(saltService, new VirtManagerSalt(saltService), new FormulaMonitoringManager())
-        );
         Server server = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
 
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);

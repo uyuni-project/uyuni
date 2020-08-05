@@ -19,7 +19,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.Asserts;
 
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Level;
@@ -45,7 +46,6 @@ import junit.framework.TestCase;
  */
 public abstract class RhnBaseTestCase extends TestCase {
 
-    private final SaltService saltService = new SaltService();
     /**
      * Constructs a TestCase with the given name.
      * @param name Name of TestCase.
@@ -59,7 +59,7 @@ public abstract class RhnBaseTestCase extends TestCase {
      */
     public RhnBaseTestCase() {
         super();
-        MessageQueue.configureDefaultActions(saltService, saltService);
+        MessageQueue.configureDefaultActions(new TestSystemQuery(), new TestSaltApi());
     }
 
     /**
@@ -78,7 +78,6 @@ public abstract class RhnBaseTestCase extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         TestCaseHelper.tearDownHelper();
-        saltService.close();
     }
 
     /**

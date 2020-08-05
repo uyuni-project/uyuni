@@ -130,13 +130,6 @@ public class SaltService implements SystemQuery, SaltApi {
 
     private final Batch defaultBatch;
 
-    /**
-     * Singleton instance of this class
-     */
-    private static final SaltService INSTANCE_SALT_SERVICE = new SaltService();
-    public static final SystemQuery INSTANCE = INSTANCE_SALT_SERVICE;
-    public static final SaltApi INSTANCE_SALT_API = INSTANCE_SALT_SERVICE;
-
     // Logger
     private static final Logger LOG = Logger.getLogger(SaltService.class);
 

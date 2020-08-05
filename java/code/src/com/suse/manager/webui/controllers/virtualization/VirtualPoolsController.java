@@ -21,10 +21,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.action.ActionChain;
-import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
@@ -35,20 +32,9 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStartAction
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolStopAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.rhnset.RhnSetDecl;
-import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.VirtualizationActionCommand;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
-import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
-import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualPoolBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualPoolCreateActionJson;
@@ -58,20 +44,14 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualStorageVolu
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualVolumeBaseActionJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.MinionActionUtils;
-import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.gson.JsonObject;
+
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
 
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -87,25 +67,14 @@ import spark.template.jade.JadeTemplateEngine;
 /**
  * Controller class providing backend for Virtual storage pools UI
  */
-public class VirtualPoolsController {
-
-    private final VirtManager virtManager;
-
-    private static final Logger LOG = Logger.getLogger(VirtualPoolsController.class);
-
-    private static final Gson GSON = new GsonBuilder()
-            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
-            .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
-            .serializeNulls()
-            .create();
+public class VirtualPoolsController extends AbstractVirtualizationController {
 
     /**
      * Controller class providing backend for Virtual storage pools UI
      * @param virtManagerIn instance to manage virtualization
      */
     public VirtualPoolsController(VirtManager virtManagerIn) {
-        this.virtManager = virtManagerIn;
+        super(virtManagerIn, "templates/virtualization/pools");
     }
 
     /**
@@ -196,29 +165,18 @@ public class VirtualPoolsController {
      * @return JSON result of the API call
      */
     public String data(Request request, Response response, User user) {
-        Long serverId;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
-        String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
+        Server host = getServer(request, user);
+        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
 
         Map<String, JsonObject> infos = virtManager.getPools(minionId);
         Map<String, Map<String, JsonObject>> volInfos = virtManager.getVolumes(minionId);
         List<VirtualStoragePoolInfoJson> pools = infos.entrySet().stream().map(entry -> {
             Map<String, JsonObject> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
-            List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream().map(volEntry -> {
-                return new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue());
-            }).collect(Collectors.toList());
+            List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream()
+                    .map(volEntry -> new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue()))
+                    .collect(Collectors.toList());
 
-            VirtualStoragePoolInfoJson pool = new VirtualStoragePoolInfoJson(entry.getKey(),
-                    entry.getValue(), volumes);
-
-            return pool;
+            return new VirtualStoragePoolInfoJson(entry.getKey(), entry.getValue(), volumes);
         }).collect(Collectors.toList());
 
         return json(response, pools);
@@ -233,15 +191,7 @@ public class VirtualPoolsController {
      * @return JSON-formatted capabilities
      */
     public String getCapabilities(Request request, Response response, User user) {
-        Long serverId;
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        Server host = getServer(request, user);
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get capabilities of Salt system")).getMinionId();
 
@@ -261,21 +211,13 @@ public class VirtualPoolsController {
      * @return JSON-formatted capabilities
      */
     public String getPool(Request request, Response response, User user) {
-        Long serverId;
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
+        Server host = getServer(request, user);
         String minionId = host.asMinionServer().orElseThrow(() ->
             Spark.halt(HttpStatus.SC_BAD_REQUEST, "Can only get pool definition of Salt system")).getMinionId();
 
         String poolName = request.params("name");
         PoolDefinition definition = virtManager.getPoolDefinition(minionId, poolName)
-                .orElseThrow(() -> new NotFoundException());
+                .orElseThrow(NotFoundException::new);
 
         return json(response, definition);
     }
@@ -433,50 +375,6 @@ public class VirtualPoolsController {
     }
 
 
-    /**
-     * Displays a page server-related virtual page
-     *
-     * @param request the request
-     * @param response the response
-     * @param user the user
-     * @param template the name to the Jade template of the page
-     * @param modelExtender provides additional properties to pass to the Jade template
-     * @return the ModelAndView object to render the page
-     */
-    private ModelAndView renderPage(Request request, Response response, User user,
-                                          String template,
-                                          Supplier<Map<String, Object>> modelExtender) {
-        Map<String, Object> data = new HashMap<>();
-        Long serverId;
-        Server server;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-
-        try {
-            server = SystemManager.lookupByIdAndUser(serverId, user);
-        }
-        catch (LookupException e) {
-            throw new NotFoundException();
-        }
-
-        /* For system-common.jade */
-        data.put("server", server);
-        data.put("inSSM", RhnSetDecl.SYSTEMS.get(user).contains(serverId));
-
-        if (modelExtender != null) {
-            data.putAll(modelExtender.get());
-        }
-
-        /* For the rest of the template */
-
-        return new ModelAndView(data, String.format("templates/virtualization/pools/%s.jade", template));
-    }
-
 
     /**
      * Displays a virtual storage pool-relate page with actionChains in the model.
@@ -538,65 +436,5 @@ public class VirtualPoolsController {
                 (data) -> ((VirtualVolumeBaseActionJson)data).getVolumesPath(),
                 jsonClass
          );
-    }
-
-    private String action(Request request, Response response, User user,
-            BiFunction<ScheduledRequestJson, String, BaseVirtualizationPoolAction> actionCreator,
-            Function<ScheduledRequestJson, List<String>> actionKeysGetter,
-            Class<? extends ScheduledRequestJson> jsonClass) {
-        Long serverId;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
-
-        ScheduledRequestJson data;
-        try {
-            data = GSON.fromJson(request.body(), jsonClass);
-        }
-        catch (JsonParseException e) {
-            throw Spark.halt(HttpStatus.SC_BAD_REQUEST);
-        }
-
-        List<String> actionKeys = actionKeysGetter.apply(data);
-        if (!actionKeys.isEmpty()) {
-            Map<String, String> actionsResults = actionKeys.stream().collect(
-                    Collectors.toMap(Function.identity(),
-                key -> {
-                    return scheduleAction(key, user, host, actionCreator, data);
-                }
-            ));
-            return json(response, actionsResults);
-        }
-
-        String result = scheduleAction(null, user, host, actionCreator, data);
-        return json(response, result);
-    }
-
-    private String scheduleAction(String key, User user, Server host,
-            BiFunction<ScheduledRequestJson, String, BaseVirtualizationPoolAction> actionCreator,
-            ScheduledRequestJson data) {
-        BaseVirtualizationPoolAction action = actionCreator.apply(data, key);
-        action.setOrg(user.getOrg());
-        action.setSchedulerUser(user);
-        action.setEarliestAction(MinionActionUtils.getScheduleDate(data.getEarliest()));
-
-        Optional<ActionChain> actionChain = data.getActionChain()
-                .filter(StringUtils::isNotEmpty)
-                .map(label -> ActionChainFactory.getOrCreateActionChain(label, user));
-
-        String status = "Failed";
-        try {
-            VirtualizationActionCommand.schedule(action, host, actionChain);
-            status = action.getId().toString();
-        }
-        catch (TaskomaticApiException e) {
-            LOG.error("Could not schedule virtualization action:", e);
-        }
-        return status;
     }
 }

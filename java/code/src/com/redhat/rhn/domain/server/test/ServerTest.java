@@ -31,6 +31,7 @@ import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -39,7 +40,9 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -53,10 +56,17 @@ import java.util.Optional;
  */
 public class ServerTest extends BaseTestCaseWithUser {
 
-    private final SaltService saltService = new SaltService();
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private final SystemUnentitler systemUnentitler = new SystemUnentitler(
-            new VirtManagerSalt(saltService),
-            new FormulaMonitoringManager());
+            virtManager, monitoringManager, serverGroupManager);
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            systemUnentitler,
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
     public void testIsInactive() throws Exception {
         Server s = ServerFactory.createServer();
@@ -74,7 +84,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         UserTestUtils.addManagement(s.getCreator().getOrg());
         HibernateFactory.getSession().clear();
         s = ServerFactory.lookupById(s.getId());
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
+        systemEntitlementManager.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(s);
         s = reload(s);
         assertTrue(s.getBaseEntitlement().equals(EntitlementManager.MANAGEMENT));
@@ -316,7 +326,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     private class VirtEntitledServer extends Server {
         VirtEntitledServer(User user) {
             setOrg(user.getOrg());
-            ServerGroupManager manager = ServerGroupManager.getInstance();
+            ServerGroupManager manager = new ServerGroupManager();
             EntitlementServerGroup group = manager.
                         lookupEntitled(EntitlementManager.VIRTUALIZATION, user);
             List servers = new ArrayList();

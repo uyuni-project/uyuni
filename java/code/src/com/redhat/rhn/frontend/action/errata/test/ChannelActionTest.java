@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.errata.test;
 
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
@@ -36,7 +35,6 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.RhnMockHttpSession;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.webui.services.impl.SaltService;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
@@ -47,9 +45,6 @@ import org.apache.struts.action.ActionMapping;
 public class ChannelActionTest extends RhnBaseTestCase {
 
     public void testPublish() throws Exception {
-        SaltService saltService = new SaltService();
-        MessageQueue.configureDefaultActions(saltService, saltService);
-
         ChannelAction action = new ChannelAction();
 
         ActionMapping mapping = new ActionMapping();

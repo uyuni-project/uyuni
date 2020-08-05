@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.calls.wheel.Key;
 
@@ -29,9 +28,14 @@ import java.util.stream.Stream;
  */
 public class SaltKeyUtils {
 
-    private static final SystemQuery SALT_SERVICE = SaltService.INSTANCE;
+    private final SystemQuery systemQuery;
 
-    private SaltKeyUtils() { }
+    /**
+     * @param systemQueryIn
+     */
+    public SaltKeyUtils(SystemQuery systemQueryIn) {
+        this.systemQuery = systemQueryIn;
+    }
 
     /**
      * Delete a salt key
@@ -40,11 +44,11 @@ public class SaltKeyUtils {
      * @return true on success otherwise false
      * @throws PermissionCheckFailureException requires org admin privileges
      */
-    public static boolean deleteSaltKey(User user, String minionId)
+    public boolean deleteSaltKey(User user, String minionId)
             throws PermissionCheckFailureException {
 
         //Note: since salt only allows globs we have to do our own strict matching
-        Key.Names keys = SALT_SERVICE.getKeys();
+        Key.Names keys = systemQuery.getKeys();
         boolean exists = Stream.concat(
                 Stream.concat(
                         keys.getDeniedMinions().stream(),
@@ -57,14 +61,14 @@ public class SaltKeyUtils {
         if (exists) {
             return MinionServerFactory.findByMinionId(minionId).map(minionServer -> {
                 if (minionServer.getOrg().equals(user.getOrg())) {
-                    SALT_SERVICE.deleteKey(minionId);
+                    systemQuery.deleteKey(minionId);
                     return true;
                 }
                 else {
                     return false;
                 }
             }).orElseGet(() -> {
-                SALT_SERVICE.deleteKey(minionId);
+                systemQuery.deleteKey(minionId);
                 return true;
             });
         }

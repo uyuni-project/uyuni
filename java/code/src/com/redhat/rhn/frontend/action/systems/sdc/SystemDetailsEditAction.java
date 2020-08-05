@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
@@ -81,7 +82,7 @@ public class SystemDetailsEditAction extends RhnAction {
     public static final String RACK = "rack";
     public static final String UNENTITLE = "unentitle";
 
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -145,7 +146,7 @@ public class SystemDetailsEditAction extends RhnAction {
         Entitlement base = EntitlementManager.getByName(selectedEnt);
         log.debug("base: " + base);
         if (base != null) {
-            SystemEntitlementManager.INSTANCE.setBaseEntitlement(s, base);
+            systemEntitlementManager.setBaseEntitlement(s, base);
         }
         else if (selectedEnt.equals(UNENTITLE)) {
             systemEntitlementManager.removeAllServerEntitlements(s);

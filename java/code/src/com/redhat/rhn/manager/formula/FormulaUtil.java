@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.formula;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
@@ -29,6 +30,8 @@ import com.redhat.rhn.manager.system.SystemManager;
  */
 public class FormulaUtil {
 
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
     private FormulaUtil() { }
 
     /**
@@ -38,8 +41,8 @@ public class FormulaUtil {
      */
     public static void ensureUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
         try {
-            ServerGroupManager.getInstance().validateAccessCredentials(user, group, group.getName());
-            ServerGroupManager.getInstance().validateAdminCredentials(user);
+            SERVER_GROUP_MANAGER.validateAccessCredentials(user, group, group.getName());
+            SERVER_GROUP_MANAGER.validateAdminCredentials(user);
         }
         catch (NullPointerException | LookupException e) {
             throw new LookupException("Unable to find user or group");

@@ -74,13 +74,17 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionIsChildException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -90,6 +94,10 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
@@ -125,7 +133,15 @@ import java.util.stream.Collectors;
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = Logger.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{
         setThreadingPolicy(new Synchroniser());

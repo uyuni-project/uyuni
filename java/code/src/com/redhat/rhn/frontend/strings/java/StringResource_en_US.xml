@@ -481,6 +481,12 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Networks">
+        <source>Networks</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="digits">
         <source>0 1 2 3 4 5 6 7 8 9</source>
         <context-group name="ctx">
@@ -7104,6 +7110,24 @@ Follow this url to see the full list of inactive systems:
         <source>Virtual storage volume deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.network_start">
+        <source>Virtual network start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.network_stop">
+        <source>Virtual network stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="virt.network_delete">
+        <source>Virtual network deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channels.subscribers.updated">

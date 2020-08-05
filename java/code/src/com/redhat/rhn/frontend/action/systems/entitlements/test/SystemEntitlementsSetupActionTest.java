@@ -30,6 +30,7 @@ import com.redhat.rhn.frontend.action.systems.entitlements.SystemEntitlementsSet
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -68,11 +69,12 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager()),
+                        new FormulaMonitoringManager(), serverGroupManager),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager())
+                        new FormulaMonitoringManager(), serverGroupManager)
         );
         setRequestPathInfo("/systems/SystemEntitlements");
         UserTestUtils.addManagement(user.getOrg());

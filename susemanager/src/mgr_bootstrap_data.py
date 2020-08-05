@@ -2,6 +2,12 @@
 # DO NOT EDIT !!!
 #
 
+# package list format
+#
+# | alternative. Example: "a|b" when package "a" cannot be found try "b". First match wins.
+#                One must be available.
+# * optional. Example: "a*" if "a" is available add it, otherwise ignore it
+
 PKGLIST10 = [
     "libaugeas0",
     "libnewt0_52",
@@ -435,7 +441,7 @@ PKGLIST15_TRAD = [
     "python3-spacewalk-check",
     "python3-spacewalk-client-setup",
     "python3-spacewalk-client-tools",
-    "python3-uyuni-common-libs",
+    "python3-uyuni-common-libs*",
     "mgr-daemon|spacewalksd",
     "suseRegisterInfo",
     "python3-suseRegisterInfo",
@@ -1070,6 +1076,10 @@ DATA = {
         'PDID' : [1772, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
     },
+    'SUMA-40-PROXY-x86_64' : {
+        'PDID' : [1772, 1908], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15SP0SP1_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/1/bootstrap/'
+    },
     'SLE-15-SP2-aarch64' : {
         'PDID' : [1943, 1709], 'BETAPDID' : [1925], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
@@ -1084,6 +1094,10 @@ DATA = {
     },
     'SLE-15-SP2-x86_64' : {
         'PDID' : [1946, 1712], 'BETAPDID' : [1928], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
+    },
+    'SUMA-41-PROXY-x86_64' : {
+        'PDID' : [1946, 2015], 'BETAPDID' : [], 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : '/srv/www/htdocs/pub/repositories/sle/15/2/bootstrap/'
     },
     'openSUSE-Leap-42.3-x86_64' : {

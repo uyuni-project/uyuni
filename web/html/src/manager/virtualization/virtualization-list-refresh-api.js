@@ -6,28 +6,30 @@ import * as Network from 'utils/network';
 type Props = {
   serverId: string,
   lastRefresh: number,
+  type: string,
   children: Function,
 };
 
-export function VirtualizationGuestsListRefreshApi(props: Props) {
-  const [guests, setGuests] = React.useState([]);
+export function VirtualizationListRefreshApi(props: Props) {
+  const [data, setData] = React.useState(undefined);
   const [error, setError] = React.useState(undefined);
 
   React.useEffect(() => refreshServerData(), [props.lastRefresh]);
 
   const refreshServerData = () => {
-    Network.get(`/rhn/manager/api/systems/details/virtualization/guests/${props.serverId}/data`, 'application/json').promise
+    Network.get(`/rhn/manager/api/systems/details/virtualization/${props.type}/${props.serverId}/data`,
+                'application/json').promise
       .then((data) => {
-        setGuests(data);
+        setData(data);
         setError(undefined);
       })
-      .catch((response) => {
-        setError(Network.errorMessageByStatus(response.status))
+      .catch(jqXHR => {
+        setError(Network.responseErrorMessage(jqXHR));
       });
   }
 
   return props.children({
-    guests,
+    data,
     error,
   });
 }

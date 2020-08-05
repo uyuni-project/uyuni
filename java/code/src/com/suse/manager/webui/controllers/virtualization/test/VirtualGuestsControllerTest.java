@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -41,8 +42,8 @@ import com.suse.manager.virtualization.VmInfoJson;
 import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -116,9 +117,12 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
             }
         };
 
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
-                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager())
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(new TestSystemQuery(), virtManager, new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, systemEntitlementManager);
@@ -175,7 +179,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         VirtualInstance guest = host.getGuests().iterator().next();
         Long sid = host.getId();
 
-        String json = virtualGuestsController.action(
+        String json = virtualGuestsController.guestAction(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"]}",
                                               sid, "shutdown"),
@@ -206,7 +210,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         Integer vcpus = 3;
-        String json = virtualGuestsController.action(
+        String json = virtualGuestsController.guestAction(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guest.getUuid() + "\"], value: " + vcpus + "}",
                                               sid, "setVcpu"),
@@ -236,7 +240,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         try {
-            virtualGuestsController.action(
+            virtualGuestsController.guestAction(
                     getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                                   "{uuids: [\"" + guest.getUuid() + "\"]}",
                                                   sid, "setVcpu"),
@@ -261,7 +265,7 @@ public class VirtualGuestsControllerTest extends BaseControllerTestCase {
         Long sid = host.getId();
 
         Integer mem = 2048;
-        String json = virtualGuestsController.action(
+        String json = virtualGuestsController.guestAction(
                 getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/guests/:sid/:action",
                                               "{uuids: [\"" + guests[0].getUuid() + "\", " +
                                                        "\"" + guests[1].getUuid() + "\"], " +

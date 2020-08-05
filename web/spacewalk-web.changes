@@ -1,3 +1,9 @@
+- Warn when a system is in multiple groups that configure the same
+  formula in the system formula's UI (bsc#1173554)
+- Add virtual network start, stop and delete actions
+- Add virtual network list page
+- Update package version to 4.2.0
+
 -------------------------------------------------------------------
 Thu Jul 23 13:33:43 CEST 2020 - jgonzalez@suse.com
 

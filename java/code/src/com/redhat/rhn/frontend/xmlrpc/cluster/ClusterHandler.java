@@ -23,8 +23,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchClusterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
-import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.clusters.ClusterFactory;
 import com.suse.manager.clusters.ClusterManager;
@@ -51,13 +49,14 @@ import java.util.stream.Stream;
 public class ClusterHandler extends BaseHandler {
 
     private static final Logger LOG = Logger.getLogger(ClusterHandler.class);
-    private TaskomaticApi taskomaticApi = null;
-    private XmlRpcSystemHelper xmlRpcSystemHelper = null;
+    private final ClusterManager clusterManager;
 
     /**
-     * Default constructor
+     * @param clusterManagerIn
      */
-    public ClusterHandler() { }
+    public ClusterHandler(ClusterManager clusterManagerIn) {
+        this.clusterManager = clusterManagerIn;
+    }
 
     /**
      * List all clusters for the user's org
@@ -109,7 +108,7 @@ public class ClusterHandler extends BaseHandler {
         ensureClusterAdmin(loggedInUser);
         Cluster ret = null;
         try {
-            ClusterManager.instance().addCluster(name, label, description,
+            clusterManager.addCluster(name, label, description,
                     managementNodeId, provider, managementSettings, loggedInUser);
             return 1;
         }
@@ -139,7 +138,7 @@ public class ClusterHandler extends BaseHandler {
         ensureClusterAdmin(loggedInUser);
         Optional<Cluster> ret = ClusterFactory.findClusterByIdAndOrg(clusterId, loggedInUser.getOrg());
         if (ret.isPresent()) {
-            ClusterManager.instance().deleteCluster(ret.get(), loggedInUser);
+            clusterManager.deleteCluster(ret.get(), loggedInUser);
             return 1;
         }
         else {
@@ -162,7 +161,7 @@ public class ClusterHandler extends BaseHandler {
     public List<String> listClusterNodes(User loggedInUser, Integer clusterId) {
         return ClusterFactory.findClusterByIdAndOrg(clusterId, loggedInUser.getOrg())
                 .map(cluster -> {
-                    return ClusterManager.instance().listClusterNodes(cluster).stream()
+                    return clusterManager.listClusterNodes(cluster).stream()
                             .map(ClusterNode::getHostname).collect(Collectors.toList());
                 }).orElseThrow(() -> new NoSuchClusterException("Cluster not found"));
     }
@@ -197,11 +196,10 @@ public class ClusterHandler extends BaseHandler {
         Optional<Cluster> optCluster = ClusterFactory.findClusterByIdAndOrg(clusterId, loggedInUser.getOrg())
                 .stream().findFirst();
         if (optCluster.isPresent()) {
-            if (ClusterManager.instance().getNodesAvailableForJoining(optCluster.get(),
+            if (clusterManager.getNodesAvailableForJoining(optCluster.get(),
                     loggedInUser).keySet().containsAll(targetNodes)) {
                 try {
-                    ClusterManager.instance()
-                            .modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE,
+                   clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_JOIN_NODE,
                                     optCluster.get(),
                                     targetNodes.stream().map(m -> m.getId())
                                             .collect(Collectors.toList()),
@@ -250,7 +248,7 @@ public class ClusterHandler extends BaseHandler {
         if (optCluster.isPresent()) {
             List<MinionServer> availableToUser = MinionServerFactory.lookupVisibleToUser(loggedInUser)
                     .collect(Collectors.toList());
-            List<MinionServer> clusterNodes = ClusterManager.instance()
+            List<MinionServer> clusterNodes = clusterManager
                     .listClusterNodes(optCluster.get()).stream()
                     .map(clusterNode -> clusterNode.getServer())
                     .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
@@ -263,8 +261,7 @@ public class ClusterHandler extends BaseHandler {
                     .map(server -> server.getId())
                     .collect(Collectors.toList());
             try {
-                ClusterManager.instance()
-                        .modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE,
+                clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_REMOVE_NODE,
                                 optCluster.get(),
                                 targetNodesId, formulaData,
                                 earliestOccurrence,
@@ -305,7 +302,7 @@ public class ClusterHandler extends BaseHandler {
         Optional<Cluster> optCluster = ClusterFactory.findClusterByIdAndOrg(clusterId, loggedInUser.getOrg());
         if (optCluster.isPresent()) {
             try {
-                ClusterManager.instance().modifyClusterNodes(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER,
+                clusterManager.modifyClusterNodes(ActionFactory.TYPE_CLUSTER_UPGRADE_CLUSTER,
                         optCluster.get(), Collections.emptyList(),
                         formulaData, earliestOccurrence, loggedInUser);
                 HibernateFactory.getSession().getTransaction().commit();

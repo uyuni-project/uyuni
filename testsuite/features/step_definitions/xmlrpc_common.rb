@@ -163,7 +163,7 @@ When(/^I associate repo "([^"]*)" with channel "([^"]*)"$/) do |repo_label, chan
   assert(rpctest.associate_repo(channel_label, repo_label))
 end
 
-When(/^I create the following channels:/) do |table|
+When(/^I create the following channels:$/) do |table|
   channels = table.hashes
   channels.each do |ch|
     assert_equal(1,

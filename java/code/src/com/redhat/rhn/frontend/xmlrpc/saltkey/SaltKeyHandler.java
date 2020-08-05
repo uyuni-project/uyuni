@@ -26,6 +26,15 @@ import com.suse.manager.utils.SaltKeyUtils;
  */
 public class SaltKeyHandler extends BaseHandler {
 
+    private final SaltKeyUtils saltKeyUtils;
+
+    /**
+     * @param saltKeyUtilsIn
+     */
+    public SaltKeyHandler(SaltKeyUtils saltKeyUtilsIn) {
+        this.saltKeyUtils = saltKeyUtilsIn;
+    }
+
     /**
      * API endpoint to delete minion keys
      * @param loggedInUser the user
@@ -39,7 +48,7 @@ public class SaltKeyHandler extends BaseHandler {
      */
     public int delete(User loggedInUser, String minionId) {
         ensureOrgAdmin(loggedInUser);
-        if (SaltKeyUtils.deleteSaltKey(loggedInUser, minionId)) {
+        if (saltKeyUtils.deleteSaltKey(loggedInUser, minionId)) {
             return 1;
         }
         return 0;

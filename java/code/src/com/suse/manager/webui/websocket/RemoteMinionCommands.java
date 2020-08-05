@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.websocket;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.google.gson.JsonObject;
 import com.redhat.rhn.common.util.StringUtil;
@@ -26,7 +27,6 @@ import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.suse.manager.webui.services.FutureUtils;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.websocket.json.AsyncJobStartEventDto;
 import com.suse.manager.webui.websocket.json.ExecuteMinionActionDto;
 import com.suse.manager.webui.websocket.json.MinionMatchResultEventDto;
@@ -80,7 +80,7 @@ public class RemoteMinionCommands {
     private CompletableFuture failAfter;
     private List<String> previewedMinions;
     private static ExecutorService eventHistoryExecutor = Executors.newCachedThreadPool();
-    private static SystemQuery systemQuery = SaltService.INSTANCE;
+    private static SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
 
     /**
      * Callback executed when the websocket is opened.

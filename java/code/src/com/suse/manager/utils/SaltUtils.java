@@ -50,6 +50,7 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
@@ -73,6 +74,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -102,7 +104,6 @@ import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.utils.YamlHelper;
 import com.suse.manager.webui.utils.salt.custom.ClusterOperationsSlsResult;
@@ -200,16 +201,16 @@ public class SaltUtils {
     private static final Logger LOG = Logger.getLogger(SaltUtils.class);
     private static final TaskomaticApi TASKOMATIC_API = new TaskomaticApi();
 
-    public static final SaltUtils INSTANCE = new SaltUtils();
-
     public static final String CAASP_PATTERN_IDENTIFIER = "patterns-caasp-Node";
     public static final String SYSTEM_LOCK_FORMULA = "system-lock";
 
     private Path scriptsDir = Paths.get(SUMA_STATE_FILES_ROOT_PATH, SCRIPTS_DIR);
 
-    private SystemQuery systemQuery = SaltService.INSTANCE;
-    private SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-    private ClusterManager clusterManager = ClusterManager.instance();
+    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
+    private final ClusterManager clusterManager;
+    private final FormulaManager formulaManager;
+    private final ServerGroupManager serverGroupManager;
 
     private String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
 
@@ -232,8 +233,22 @@ public class SaltUtils {
 
     /**
      * Constructor for testing purposes.
+     *
+     * @param systemQueryIn
+     * @param saltApiIn
+     * @param clusterManagerIn
+     * @param formulaManagerIn
+     * @param serverGroupManagerIn
      */
-    public SaltUtils() { }
+    public SaltUtils(SystemQuery systemQueryIn, SaltApi saltApiIn,
+                     ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
+                     ServerGroupManager serverGroupManagerIn) {
+        this.saltApi = saltApiIn;
+        this.systemQuery = systemQueryIn;
+        this.clusterManager = clusterManagerIn;
+        this.formulaManager = formulaManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
+    }
 
     /**
      * Figure out if the list of packages has changed based on the result of a Salt call
@@ -275,7 +290,7 @@ public class SaltUtils {
      * @param server server to update
      * @return an outcome
      */
-    public static PackageChangeOutcome handlePackageChanges(String function,
+    public PackageChangeOutcome handlePackageChanges(String function,
             JsonElement callResult, Server server) {
         final PackageChangeOutcome outcome;
 
@@ -394,15 +409,16 @@ public class SaltUtils {
                 }
             });
 
-            newPackages.values().stream().forEach(info -> {
-                server.getPackages().add(
-                    Optional.ofNullable(
-                        currentPackages.get(packageToKey(name, info)))
-                        .orElseGet(
-                                () -> createPackageFromSalt(name, info, server)
-                        )
-                );
-            });
+            List<InstalledPackage> packagesToAdd = newPackages.values().stream()
+                    .map(info -> Optional.ofNullable(currentPackages.get(packageToKey(name, info))))
+                    .filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+
+            Map<String, Tuple2<String, Info>> packagesToCreate = newPackages.values().stream()
+                    .filter(info -> !currentPackages.containsKey(packageToKey(name, info)))
+                    .collect(Collectors.toMap(info -> name, info -> new Tuple2(name, info)));
+
+            packagesToAdd.addAll(createPackagesFromSalt(packagesToCreate, server));
+            server.getPackages().addAll(packagesToAdd);
         });
     }
 
@@ -698,7 +714,7 @@ public class SaltUtils {
             String key = result.keySet().iterator().next();
             serverAction.setResultMsg(result.get(key).getAsJsonObject().get("comment").getAsString());
         }
-        else if (action instanceof BaseVirtualizationPoolAction) {
+        else if (action instanceof BaseVirtualizationPoolAction || action instanceof BaseVirtualizationNetworkAction) {
             // Tell VirtNotifications that we got a pool action change, passing action
             VirtNotifications.spreadActionUpdate(action);
             // Intentionally don't get only the comment since the changes value could be interesting
@@ -729,7 +745,7 @@ public class SaltUtils {
         List<Server> nodesToRemove = cluster.getGroup().getServers().stream()
                 .filter(s -> !s.getId().equals(cluster.getManagementNode().getId()))
                 .collect(Collectors.toList());
-        ServerGroupManager.getInstance().removeServers(cluster.getGroup(), nodesToRemove);
+        serverGroupManager.removeServers(cluster.getGroup(), nodesToRemove);
 
         // add new nodes if matching registered systems are found
         List<ClusterNode> clusterNodes = new ArrayList<>();
@@ -743,7 +759,7 @@ public class SaltUtils {
                 .map(n -> n.getServer().get())
                 .collect(Collectors.toList());
 
-        ServerGroupManager.getInstance().addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
+        serverGroupManager.addServers(cluster.getGroup(), matchedMinions, action.getSchedulerUser());
     }
 
     private void handleClusterJoinNode(ServerAction serverAction, JsonElement jsonResult, Action action) {
@@ -1424,7 +1440,7 @@ public class SaltUtils {
                     "grains.items"
             ));
             try {
-                FormulaManager.getInstance().enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
+                formulaManager.enableFormula(server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 FormulaFactory.saveServerFormulaData(data, server.getMinionId(), SYSTEM_LOCK_FORMULA);
                 saltApi.refreshPillar(new MinionList(server.getMinionId()));
             }
@@ -1471,13 +1487,70 @@ public class SaltUtils {
         ).map(Map.Entry::getValue).collect(Collectors.toList());
         packages.retainAll(unchanged);
 
-        Collection<InstalledPackage> added = newPackageMap.entrySet().stream().filter(
-           e -> !oldPackageMap.containsKey(e.getKey())
-        ).map(
-           e -> createPackageFromSalt(e.getValue().getKey(), e.getValue().getValue(),
-                   server)
-        ).collect(Collectors.toList());
-        packages.addAll(added);
+        Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
+                e -> !oldPackageMap.containsKey(e.getKey())
+        ).collect(Collectors.toMap(Map.Entry::getKey, e -> new Tuple2(e.getValue().getKey(), e.getValue().getValue())));
+
+        packages.addAll(createPackagesFromSalt(packagesToAdd, server));
+    }
+
+    /**
+     * Create a list of {@link InstalledPackage} for a  {@link Server} given the package names and package information.
+     *
+     * @param packageInfoAndNameBySaltPackageKey a map that contains a package name and a package info, by the package
+     * key produced by salt
+     * @param server server this package will be added to
+     * @return a list of {@link InstalledPackage}
+     */
+    private static List<InstalledPackage> createPackagesFromSalt(
+            Map<String, Tuple2<String, Pkg.Info>> packageInfoAndNameBySaltPackageKey, Server server) {
+        List<String> names = new ArrayList<>(packageInfoAndNameBySaltPackageKey.values().stream().map(Tuple2::getA)
+                .collect(Collectors.toSet()));
+        Collections.sort(names);
+
+        Map<String, PackageName> packageNames = names.stream().collect(Collectors.toMap(Function.identity(),
+                PackageFactory::lookupOrCreatePackageByName));
+
+        String serverArchTypeLabel = server.getServerArch().getArchType().getLabel();
+        Map<String, PackageEvr> packageEvrsBySaltPackageKey = packageInfoAndNameBySaltPackageKey.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> {
+                            Pkg.Info pkgInfo = e.getValue().getB();
+                            return parsePackageEvr(pkgInfo.getEpoch(), pkgInfo.getVersion().get(),
+                                    pkgInfo.getRelease(), serverArchTypeLabel);
+                        }));
+
+        return packageInfoAndNameBySaltPackageKey.entrySet().stream().map(e -> createInstalledPackage(
+                packageNames.get(e.getValue().getA()),
+                packageEvrsBySaltPackageKey.get(e.getKey()), e.getValue().getB(), server))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Create a {@link InstalledPackage} object from package name, evr, package info and server and return it.
+     *
+     * @param packageName the package name
+     * @param packageEvr the package evr
+     * @param pkgInfo the package info
+     * @param server server this package will be added to
+     * @return the InstalledPackage object
+     */
+    private static InstalledPackage createInstalledPackage(PackageName packageName,
+                                                           PackageEvr packageEvr,
+                                                           Pkg.Info pkgInfo, Server server) {
+        InstalledPackage pkg = new InstalledPackage();
+        pkg.setEvr(packageEvr);
+        pkg.setInstallTime(new Date(pkgInfo.getInstallDateUnixTime().get() * 1000));
+        pkg.setName(packageName);
+        pkg.setServer(server);
+
+        // Add -deb suffix to architectures for Debian systems
+        String pkgArch = pkgInfo.getArchitecture().get();
+        if ("deb".equals(server.getServerArch().getArchType().getLabel())) {
+            pkgArch += "-deb";
+        }
+        pkg.setArch(PackageFactory.lookupPackageArchByLabel(pkgArch));
+        return pkg;
     }
 
     /**
@@ -1588,34 +1661,6 @@ public class SaltUtils {
             LOG.debug("Hardware profile updated for minion: " + server.getMinionId() +
                     " (" + duration + " seconds)");
         }
-    }
-
-    /**
-     * Create a {@link InstalledPackage} object from package name and info and return it.
-     *
-     * @param name package name from salt
-     * @param info package info from salt
-     * @param server server this package will be added to
-     * @return the InstalledPackage object
-     */
-    private static InstalledPackage createPackageFromSalt(String name, Pkg.Info info, Server server) {
-
-        String serverArchTypeLabel = server.getServerArch().getArchType().getLabel();
-
-        InstalledPackage pkg = new InstalledPackage();
-        pkg.setEvr(parsePackageEvr(info.getEpoch(), info.getVersion().get(), info.getRelease(), serverArchTypeLabel));
-        pkg.setInstallTime(new Date(info.getInstallDateUnixTime().get() * 1000));
-        pkg.setName(PackageFactory.lookupOrCreatePackageByName(name));
-        pkg.setServer(server);
-
-        // Add -deb suffix to architectures for Debian systems
-        String pkgArch = info.getArchitecture().get();
-        if ("deb".equals(serverArchTypeLabel)) {
-            pkgArch += "-deb";
-        }
-        pkg.setArch(PackageFactory.lookupPackageArchByLabel(pkgArch));
-
-        return pkg;
     }
 
     private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
@@ -1871,22 +1916,6 @@ public class SaltUtils {
             return true;
         }
         return prerequisiteIsCompleted(action.getPrerequisite(), prereqType, systemId);
-    }
-
-    /**
-     * For unit testing only.
-     * @param systemQueryIn the {@link SaltService} to set
-     */
-    public void setSystemQuery(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
-    }
-
-    /**
-     * For unit testing only.
-     * @param saltApiIn the {@link SaltApi} to set
-     */
-    public void setSaltApi(SaltApi saltApiIn) {
-        this.saltApi = saltApiIn;
     }
 
     /**

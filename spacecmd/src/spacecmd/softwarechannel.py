@@ -779,57 +779,62 @@ def do_softwarechannel_update(self, args):
 
     (args, options) = parse_command_arguments(args, arg_parser)
 
+    vendor_channel = False
+
     if is_interactive(options):
-       options.label = prompt_user('Channel Label:', noblank=True)
 
-       print('')
-       print('New Name (blank to keep unchanged)')
-       print('------------')
-       print('')
-       options.name = prompt_user('Name:')
+        options.label = prompt_user('Channel Label:', noblank=True)
+        vendor_channel = is_vendor_channel(self, options.label)
 
-       print('')
-       print('New Summary (blank to keep unchanged)')
-       print('------------')
-       print('')
-       options.summary = prompt_user('Summary:')
+        if not vendor_channel:
+            print('')
+            print('New Name (blank to keep unchanged)')
+            print('------------')
+            print('')
+            options.name = prompt_user('Name:')
 
-       print('')
-       print('New Description (blank to keep unchanged)')
-       print('------------')
-       print('')
-       options.description = prompt_user('Description:')
+            print('')
+            print('New Summary (blank to keep unchanged)')
+            print('------------')
+            print('')
+            options.summary = prompt_user('Summary:')
 
-       print('')
-       print('New Checksum type (blank to keep unchanged)')
-       print('------------')
-       print('\n'.join(sorted(self.CHECKSUM)))
-       print('')
-       options.checksum = prompt_user('Select:')
+            print('')
+            print('New Description (blank to keep unchanged)')
+            print('------------')
+            print('')
+            options.description = prompt_user('Description:')
 
-       print('')
-       print('New GPG URL (blank to keep unchanged)')
-       print('------------')
-       print('')
-       options.gpg_url = prompt_user('GPG URL:')
+            print('')
+            print('New Checksum type (blank to keep unchanged)')
+            print('------------')
+            print('\n'.join(sorted(self.CHECKSUM)))
+            print('')
+            options.checksum = prompt_user('Select:')
 
-       print('')
-       print('New GPG ID (blank to keep unchanged)')
-       print('------------')
-       print('')
-       options.gpg_id = prompt_user('GPG ID:')
+            print('')
+            print('New GPG URL (blank to keep unchanged)')
+            print('------------')
+            print('')
+            options.gpg_url = prompt_user('GPG URL:')
 
-       print('')
-       print('New GPG Fingerprint (blank to keep unchanged)')
-       print('------------')
-       print('')
-       options.gpg_fingerprint = prompt_user('GPG Fingerprint:')
+            print('')
+            print('New GPG ID (blank to keep unchanged)')
+            print('------------')
+            print('')
+            options.gpg_id = prompt_user('GPG ID:')
 
-       print('')
-       print('Disable GPG CHECK (blank to keep unchanged)')
-       print('------------')
-       print('')
-       options.disable_gpg_check = prompt_user('Disable GPG Check [yes/no]? ')
+            print('')
+            print('New GPG Fingerprint (blank to keep unchanged)')
+            print('------------')
+            print('')
+            options.gpg_fingerprint = prompt_user('GPG Fingerprint:')
+
+        print('')
+        print('Disable GPG CHECK (blank to keep unchanged)')
+        print('------------')
+        print('')
+        options.disable_gpg_check = prompt_user('Disable GPG Check [yes/no]? ')
 
     if not options.label:
         logging.error('A channel label is required to identify the channel')
@@ -838,6 +843,9 @@ def do_softwarechannel_update(self, args):
         logging.error('Only [yes/no] values are acceptable for --disable_gpg_check')
         return 1
     details = {}
+    if not vendor_channel:
+        vendor_channel = is_vendor_channel(self, options.label)
+
     if options.name:
         details['name'] = options.name
 
@@ -861,6 +869,8 @@ def do_softwarechannel_update(self, args):
 
     if options.disable_gpg_check:
         details['gpg_check'] = str(not options.disable_gpg_check.lower() == "yes")
+
+    details['vendor_channel'] = str(vendor_channel)
 
     self.client.channel.software.setDetails(self.session, options.label, details)
 

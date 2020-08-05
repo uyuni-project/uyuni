@@ -1,3 +1,6 @@
+- Fix softwarechannel update for vendor channels (bsc#1172709)
+- Update package version to 4.2.0
+
 -------------------------------------------------------------------
 Thu Jul 23 13:24:34 CEST 2020 - jgonzalez@suse.com
 

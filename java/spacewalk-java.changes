@@ -1,3 +1,13 @@
+- avoid deadlock when syncing channels and registering minions at the same time (bsc#1173566)
+- Fix softwarechannel update for vendor channels (bsc#1172709)
+- Add modular repository warning message to system overview page (bsc#1173959)
+- Change system list header text to something better (bsc#1173982)
+- set CPU and memory info for virtual instances (bsc#1170244)
+- Add virtual network Start, Stop and Delete actions
+- Add virtual network list page
+- update default product tree tag and set Beta tag again
+- Update package version to 4.2.0
+
 -------------------------------------------------------------------
 Thu Jul 23 13:26:41 CEST 2020 - jgonzalez@suse.com
 

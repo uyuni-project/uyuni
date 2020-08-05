@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc.test;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -27,16 +28,24 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.contentmgmt.test.MockModulemdApi;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -46,7 +55,15 @@ import java.util.Date;
 public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
 
     protected Server s;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+    );
 
     /**
      * {@inheritDoc}
@@ -146,5 +163,16 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         assertEquals(kernelLiveVersion, request.getAttribute("kernelLiveVersion"));
+    }
+
+    public void testModularRepositoryMessage() throws Exception {
+        actionPerform();
+        verifyNoActionErrors();
+
+        Channel modular = MockModulemdApi.createModularTestChannel(user);
+        s.setChannels(Collections.singleton(modular));
+        actionPerform();
+
+        verifyActionErrors(new String[]{"packagelist.jsp.modulespresent"});
     }
 }

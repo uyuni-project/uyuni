@@ -44,7 +44,6 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.utils.Opt;
 
@@ -84,34 +83,26 @@ public class ClusterManager {
             .create();
 
 
-    private static volatile ClusterManager instance;
-    private SaltApi saltApi;
-    private SystemQuery systemQuery;
-    private ServerGroupManager serverGroupManager;
-    private FormulaManager formulaManager;
+    private final SaltApi saltApi;
+    private final SystemQuery systemQuery;
+    private final ServerGroupManager serverGroupManager;
+    private final FormulaManager formulaManager;
 
     /**
-     * @return the instance
+     *
+     * @param saltApiIn
+     * @param systemQueryIn
+     * @param serverGroupManagerIn
+     * @param formulaManagerIn
      */
-    public static ClusterManager instance() {
-        if (instance == null) {
-            synchronized (ClusterManager.class) {
-                if (instance == null) {
-                    instance = new ClusterManager();
-                }
-            }
-        }
-        return instance;
-    }
-
-    /**
-     * No arg constructor.
-     */
-    public ClusterManager() {
-        this.saltApi = SaltService.INSTANCE_SALT_API;
-        this.systemQuery = SaltService.INSTANCE;
-        this.serverGroupManager = ServerGroupManager.getInstance();
-        this.formulaManager = FormulaManager.getInstance();
+    public ClusterManager(SaltApi saltApiIn,
+                          SystemQuery systemQueryIn,
+                          ServerGroupManager serverGroupManagerIn,
+                          FormulaManager formulaManagerIn) {
+        this.saltApi = saltApiIn;
+        this.systemQuery = systemQueryIn;
+        this.formulaManager = formulaManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**

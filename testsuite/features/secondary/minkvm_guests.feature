@@ -308,6 +308,40 @@ Feature: Be able to manage KVM virtual machines via the GUI
     Then I wait until I do not see "test-net0.xml" text
 
 @virthost_kvm
+  Scenario: List virtual networks
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    Then I wait until I see "test-net0" text
+    And I should see a "test-net1" text
+
+@virthost_kvm
+  Scenario: Stop virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    Then table row for "test-net1" should contain "running"
+    When I click on "Stop" in row "test-net1"
+    And I click on "Stop" in "Stop Network" modal
+    Then I wait until table row for "test-net1" contains button "Start"
+    And table row for "test-net1" should contain "stopped"
+
+@virthost_kvm
+  Scenario: Start virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    And I click on "Start" in row "test-net1"
+    Then I wait until table row for "test-net1" contains button "Stop"
+    And table row for "test-net1" should contain "running"
+
+@virthost_kvm
+  Scenario: Delete virtual network
+    Given I am on the "Virtualization" page of this "kvm_server"
+    When I follow "Networks"
+    And I click on "Delete" in row "test-net1"
+    And I click on "Delete" in "Delete Network" modal
+    Then I wait until I do not see "test-net1" text
+    And I should not see a "test-net1" virtual network on "kvm_server"
+
+@virthost_kvm
   Scenario: Cleanup: Unregister the KVM virtualization host
     Given I am on the Systems overview page of this "kvm_server"
     When I follow "Delete System"

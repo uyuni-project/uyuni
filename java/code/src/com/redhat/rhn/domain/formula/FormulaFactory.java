@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.formula;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.org.Org;
@@ -114,7 +115,7 @@ public class FormulaFactory {
             .create();
     private static final Yaml YAML = new Yaml(new SafeConstructor());
 
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     private FormulaFactory() { }
 

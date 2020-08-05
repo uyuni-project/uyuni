@@ -49,7 +49,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit3.JUnit3Mockery;
@@ -71,9 +71,9 @@ import java.util.Set;
  */
 public class ServerConfigHandlerTest extends BaseHandlerTestCase {
     private TaskomaticApi taskomaticApi = new TaskomaticApi();
-    private SystemQuery systemQuery = new SaltService();
-    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private SystemQuery systemQuery = new TestSystemQuery();
+    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
@@ -465,9 +465,9 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
     private ServerConfigHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = MOCK_CONTEXT.mock(TaskomaticApi.class);
-        SystemQuery systemQuery = new SaltService();
-        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        SystemQuery systemQuery = new TestSystemQuery();
+        RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery);
+        SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
                 regularMinionBootstrapper,
                 sshMinionBootstrapper

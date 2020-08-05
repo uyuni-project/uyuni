@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.hardware;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.CPUArch;
@@ -33,7 +34,6 @@ import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.VirtualInstanceManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
@@ -458,7 +458,7 @@ public class HardwareMapper {
 
                 ServerFactory.save(zhost);
 
-                SystemEntitlementManager.INSTANCE.setBaseEntitlement(zhost, EntitlementManager
+                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(zhost, EntitlementManager
                         .getByName(EntitlementManager.FOREIGN_ENTITLED));
                 LOG.debug("New host created: " + identifier);
             }
@@ -552,6 +552,8 @@ public class HardwareMapper {
         String virtSubtype = grains.getValueAsString("virtual_subtype");
         String instanceId = grains.getValueAsString("instance_id");
         String virtUuid = (StringUtils.isEmpty(instanceId)) ? grains.getValueAsString("uuid") : instanceId;
+        int vCPUs = grains.getValueAsLong("total_num_cpus").orElse(0L).intValue();
+        long memory = grains.getValueAsLong("mem_total").orElse(0L);
 
         if (virtTypeLowerCase == null) {
             errors.add("Virtualization: Grain 'virtual' has no value");
@@ -655,7 +657,7 @@ public class HardwareMapper {
                     VirtualInstanceManager.addGuestVirtualInstance(
                             virtUuid, server.getName(), type,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            null, server);
+                            null, server, vCPUs, memory);
                 }
                 else {
                     String name = virtualInstance.getName();
@@ -666,7 +668,7 @@ public class HardwareMapper {
                     }
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server);
+                            virtualInstance.getHostSystem(), server, vCPUs, memory);
                 }
             }
             else {
@@ -678,7 +680,7 @@ public class HardwareMapper {
                     }
                     VirtualInstanceManager.updateGuestVirtualInstance(virtualInstance, name,
                             VirtualInstanceFactory.getInstance().getRunningState(),
-                            virtualInstance.getHostSystem(), server);
+                            virtualInstance.getHostSystem(), server, vCPUs, memory);
                 });
             }
         }

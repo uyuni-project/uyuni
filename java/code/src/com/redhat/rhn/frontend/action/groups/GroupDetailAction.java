@@ -17,13 +17,14 @@ package com.redhat.rhn.frontend.action.groups;
 
 import java.util.Map;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.suse.manager.utils.MinionServerUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -39,6 +40,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class GroupDetailAction extends RhnAction {
 
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -47,7 +50,7 @@ public class GroupDetailAction extends RhnAction {
 
         User user = rctx.getCurrentUser();
         ManagedServerGroup sg = rctx.lookupAndBindServerGroup();
-        Map<String, String> errataCounts = ServerGroupManager.getInstance().errataCounts(user, sg);
+        Map<String, String> errataCounts = serverGroupManager.errataCounts(user, sg);
         errataCounts.putIfAbsent("se", "0");
         errataCounts.putIfAbsent("be", "0");
         errataCounts.putIfAbsent("ee", "0");

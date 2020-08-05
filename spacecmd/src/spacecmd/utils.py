@@ -839,6 +839,11 @@ def string_to_bool(input_string):
 
     return input_string.lower().strip() in ['true', 'yes']
 
+def is_vendor_channel(self, label):
+    """Return true if channel is vendor channel false otherwise"""
+    vendor_channels = self.client.channel.listVendorChannels(self.session)
+    return any(channel["label"] == label for channel in vendor_channels)
+
 
 class DictToDefault:
     """

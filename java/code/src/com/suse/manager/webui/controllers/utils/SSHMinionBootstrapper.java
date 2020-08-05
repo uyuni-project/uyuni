@@ -43,7 +43,6 @@ import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
  */
 public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
-    private static SSHMinionBootstrapper instance;
     private static final Logger LOG = Logger.getLogger(SSHMinionBootstrapper.class);
 
     /**
@@ -53,18 +52,6 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
      */
     public SSHMinionBootstrapper(SystemQuery systemQueryIn) {
         super(systemQueryIn);
-    }
-
-    /**
-     * Get instance of the SSHMinionBootstrapper
-     * @param systemQuery systemQuery to use
-     * @return the instance of the SSHMinionBootstrapper
-     */
-    public static synchronized SSHMinionBootstrapper getInstance(SystemQuery systemQuery) {
-        if (instance == null) {
-            instance = new SSHMinionBootstrapper(systemQuery);
-        }
-        return instance;
     }
 
     @Override

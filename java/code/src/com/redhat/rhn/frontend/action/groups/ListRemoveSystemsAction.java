@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.action.groups;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -44,6 +45,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListRemoveSystemsAction extends BaseListAction {
 
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
     /** {@inheritDoc} */
     @Override
     public ActionForward handleDispatch(ListSessionSetHelper helper,
@@ -59,8 +62,7 @@ public class ListRemoveSystemsAction extends BaseListAction {
             Long sid = Long.valueOf(id);
             servers.add(SystemManager.lookupByIdAndUser(sid, user));
         }
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        manager.removeServers(sg, servers, user);
+        serverGroupManager.removeServers(sg, servers, user);
         getStrutsDelegate().saveMessage(
                     "systemgroup.systems.removed",
                         new String [] {String.valueOf(set.size()),

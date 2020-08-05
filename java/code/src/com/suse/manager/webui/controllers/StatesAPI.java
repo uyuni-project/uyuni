@@ -118,6 +118,7 @@ public class StatesAPI {
     private static final Logger LOG = Logger.getLogger(StatesAPI.class);
     private final TaskomaticApi taskomaticApi;
     private final SystemQuery systemQuery;
+    private final ServerGroupManager serverGroupManager;
 
     private static final Gson GSON = new GsonBuilder().create();
     public static final String SALT_PACKAGE_FILES = "packages";
@@ -133,10 +134,13 @@ public class StatesAPI {
     /**
      * @param systemQueryIn instance to use.
      * @param taskomaticApiIn instance to use.
+     * @param serverGroupManagerIn instance to use.
      */
-    public StatesAPI(SystemQuery systemQueryIn, TaskomaticApi taskomaticApiIn) {
+    public StatesAPI(SystemQuery systemQueryIn, TaskomaticApi taskomaticApiIn,
+                     ServerGroupManager serverGroupManagerIn) {
         this.taskomaticApi = taskomaticApiIn;
         this.systemQuery = systemQueryIn;
+        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -341,9 +345,9 @@ public class StatesAPI {
 
     private void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
         try {
-            ServerGroupManager.getInstance().validateAccessCredentials(user, group,
+            serverGroupManager.validateAccessCredentials(user, group,
                     group.getName());
-            ServerGroupManager.getInstance().validateAdminCredentials(user);
+            serverGroupManager.validateAdminCredentials(user);
         }
         catch (PermissionException | LookupException e) {
             Spark.halt(HttpStatus.SC_FORBIDDEN);
