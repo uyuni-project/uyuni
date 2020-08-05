@@ -1,4 +1,5 @@
-- Add new states for virtual instances.
+- Add new states and types for virtual instances in order
+  to support Nutanix AHV.
 - implement Maintenance Windows
 - add virtual network state change action
 
