@@ -4288,11 +4288,13 @@ def do_system_listmigrationtargets(self, args):
 
 def help_system_schedulespmigration(self):
     print('system_schedulespmigration: Schedule a Service Pack migration for systems.')
-    print('usage: system_listmigrationtargets <SYSTEM> <DRY_RUN?> <BASE_CHANNEL_LABEL> [options] \
-\n    options: \
+    print('usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \
+\n    For MIGRATION_TARGET parameter see system_listmigrationtargets. \
+\n    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \
+\n    Options: \
 \n        -s START_TIME \
-\n        -t MIGRATION_TARGET_ID (see system_listmigrationtargets) \
-\n        -c CHILD_CHANNELS (comma-separated child channels labels)')
+\n        -d pass this flag, if you want to do a dry run \
+\n        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))')
     print('')
     print(self.HELP_SYSTEM_OPTS)
 
@@ -4300,7 +4302,7 @@ def help_system_schedulespmigration(self):
 def do_system_schedulespmigration(self, args):
     arg_parser = get_argument_parser()
     arg_parser.add_argument('-s', '--start-time')
-    arg_parser.add_argument('-t', '--migration-target')
+    arg_parser.add_argument('-d', '--dry-run', action='store_true', default=False)
     arg_parser.add_argument('-c', '--child-channels')
 
     (args, options) = parse_command_arguments(args, arg_parser)
@@ -4320,8 +4322,8 @@ def do_system_schedulespmigration(self, args):
         print('No systems found')
         return
 
-    dry_run = string_to_bool(args[1])
-    base_channel_label = args[2]
+    base_channel_label = args[1]
+    migration_target = args[2]
 
     # OPTIONAL NAMED ARGS
     if options.start_time:
@@ -4340,17 +4342,10 @@ def do_system_schedulespmigration(self, args):
             continue
 
         print('Scheduling Service Pack migration for system ' + str(system))
-        result = None
         try:
-            if options.migration_target:
-                result = self.client.system.scheduleSPMigration(self.session,
-                        system_id, options.migration_target, base_channel_label,
-                        child_channels, dry_run, options.start_time)
-            else:
-                result = self.client.system.scheduleSPMigration(self.session,
-                        system_id, base_channel_label, child_channels,
-                        dry_run, options.start_time)
-
+            result = self.client.system.scheduleSPMigration(self.session,
+                    system_id, migration_target, base_channel_label,
+                    child_channels, options.dry_run, options.start_time)
             print('Scheduled action ID: '+ str(result))
         except xmlrpclib.Fault as detail:
             logging.error('Failed to schedule %s' % detail)
