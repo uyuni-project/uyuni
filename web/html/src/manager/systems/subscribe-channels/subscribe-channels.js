@@ -614,7 +614,9 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
                earliest={this.state.earliest}
                timezone={timezone} localTime={localTime}
                onActionChainChanged={this.onActionChainChanged}
-               onDateTimeChanged={this.onDateTimeChanged}/>
+               onDateTimeChanged={this.onDateTimeChanged}
+               systemIds={[this.props.serverId]}
+               actionType="channels.subscribe" />
         </div>
       </BootstrapPanel>
     );

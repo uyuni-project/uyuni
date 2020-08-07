@@ -105,6 +105,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -136,6 +137,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.Collections.emptyMap;
 
 /**
  * SystemManager
@@ -1236,6 +1239,22 @@ public class SystemManager extends BaseManager {
         params.put("sgid", sgid);
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, null, m, SystemOverview.class);
+    }
+
+    /**
+     * Returns the list of systems that are not assigned to a specific maintenance schedule.
+     * @param user currently logged in user
+     * @param schedule a maintenance schedule
+     * @param pc PageControl
+     * @return list of SystemOverview objects
+     */
+    public static DataResult<EssentialServerDto> systemsNotInSchedule(User user, MaintenanceSchedule schedule,
+            PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "target_systems_for_maintenance_schedule");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        params.put("schedule_id", schedule.getId());
+        return makeDataResult(params, emptyMap(), pc, m, EssentialServerDto.class);
     }
 
     /**

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2009--2017 Red Hat, Inc.
+ * Copyright (c) 2020 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,6 +14,10 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
+
+import com.suse.manager.xmlrpc.serializer.MaintenanceCalendarSerializer;
+import com.suse.manager.xmlrpc.serializer.MaintenanceScheduleSerializer;
+import com.suse.manager.xmlrpc.serializer.RescheduleResultSerializer;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -142,6 +147,9 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ContentProjectFilterSerializer.class);
         SERIALIZER_CLASSES.add(RecurringActionSerializer.class);
         SERIALIZER_CLASSES.add(PackageStateSerializer.class);
+        SERIALIZER_CLASSES.add(MaintenanceScheduleSerializer.class);
+        SERIALIZER_CLASSES.add(MaintenanceCalendarSerializer.class);
+        SERIALIZER_CLASSES.add(RescheduleResultSerializer.class);
     }
 
     /**

@@ -1,0 +1,18 @@
+include /templates/common.jade
+
+#maintenance-windows
+
+script(src='/javascript/validator/validator.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.timezone = "#{h.renderTimezone()}";
+    window.localTime = "#{h.renderLocalTime()}";
+    window.type = "#{type}";
+    window.isAdmin = "#{isAdmin}";
+
++userPreferences
+
+script(type='text/javascript').
+    spaImportReactPage('maintenance/maintenance-windows')
+        .then(function (module) { module.renderer('maintenance-windows') });

@@ -206,6 +206,7 @@ Given(/^I am on the Systems page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Overview"
+    When I wait until I see "System Overview" text
   )
 end
 
@@ -1158,14 +1159,14 @@ When(/^I add the "([^"]*)" channel to sources$/) do |channel|
   end
 end
 
-When(/^I click the "([^\"]*)" recurring action (.*?) button$/) do |action_name, action|
+When(/^I click the "([^\"]*)" item (.*?) button$/) do |name, action|
   button = case action
            when /details/ then "i[contains(@class, 'fa-list')]"
            when /edit/ then "i[contains(@class, 'fa-edit')]"
            when /delete/ then "i[contains(@class, 'fa-trash')]"
            else raise "Unknown element with description '#{action}'"
            end
-  xpath = "//td[contains(text(), '#{action_name}')]/ancestor::tr[contains(@class, 'list-row-even')]/td/div/button/#{button}"
+  xpath = "//td[contains(text(), '#{name}')]/ancestor::tr/td/div/button/#{button}"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
@@ -1197,4 +1198,15 @@ When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   target = get_target(host)
   target.run("cp #{auth_keys_sav_path} #{auth_keys_path}")
   target.run("rm #{auth_keys_sav_path}")
+end
+
+When(/^I add "([^\"]*)" calendar file as url$/) do |file|
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/srv/www/htdocs/pub/" + file
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  $server.run("chmod 644 #{dest}")
+  url = "http://#{$server.full_hostname}/pub/" + file
+  puts "URL: #{url}"
+  step %(I enter "#{url}" as "calendar-data-text")
 end

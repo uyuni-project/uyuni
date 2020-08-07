@@ -58,6 +58,7 @@ const UpgradeCluster = (props: Props) => {
                             schedule={scheduleUpgrade}
                             scheduleButtonLabel={t("Upgrade")}
                             onPrev={back}
+                            actionType="cluster.upgrade_cluster"
                         /> : goTo()
                     }}
                 </Route>

@@ -115,6 +115,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             class="com.redhat.rhn.domain.common.ProvisionState"
             column="provision_state_id" cascade="save-update" lazy="proxy"/>
 
+        <many-to-one name="maintenanceSchedule"
+            class="com.suse.manager.model.maintenance.MaintenanceSchedule"
+            column="maintenance_schedule_id" lazy="proxy"/>
+
         <one-to-one name="serverInfo"
             class="com.redhat.rhn.domain.server.ServerInfo" cascade="all" lazy="proxy"/>
 
@@ -579,4 +583,17 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </sql-query>
     
+    <query name="Server.filterSystemsWithPendingMaintenanceOnlyActions">
+        <![CDATA[SELECT sa.server.id FROM ServerAction sa
+                        WHERE sa.server.id IN (:systemIds)
+                          AND sa.parentAction.actionType.maintenancemodeOnly = true
+                          AND status in ( 0, 1 )]]>
+    </query>
+
+    <query name="Server.setMaintenanceScheduleToSystems">
+        <![CDATA[UPDATE Server s
+                    SET s.maintenanceSchedule = :schedule
+                  WHERE s.id IN (:systemIds)]]>
+    </query>
+
 </hibernate-mapping>
