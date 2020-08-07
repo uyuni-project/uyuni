@@ -44,6 +44,7 @@ import com.suse.manager.webui.utils.gson.MaintenanceCalendarJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -69,6 +70,7 @@ public class MaintenanceCalendarController {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
+    private static Logger log = Logger.getLogger(MaintenanceCalendarController.class);
 
     private MaintenanceCalendarController() { }
 
@@ -234,6 +236,7 @@ public class MaintenanceCalendarController {
                         handleRescheduleResult(results, rescheduleStrategy.getType());
                     }
                     catch (DownloadException e) {
+                        log.info(e);
                         Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                                 "maintenance.calendar.fetch.error", json.getUrl()
                         ))));
@@ -246,6 +249,7 @@ public class MaintenanceCalendarController {
                             MM.createCalendarWithUrl(user, json.getName(), json.getUrl());
                         }
                         catch (DownloadException e) {
+                            log.info(e);
                             Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(
                                     LOCAL.getMessage(
                                             "maintenance.calendar.fetch.error",
@@ -286,11 +290,13 @@ public class MaintenanceCalendarController {
             handleRescheduleResult(results, rescheduleStrategy.getType());
         }
         catch (EntityNotExistsException e) {
+            log.info(e);
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                     "maintenance.calendar.not.exists", json.getName()
             ))));
         }
         catch (DownloadException e) {
+            log.info(e);
             Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                     "maintenance.calendar.fetch.error", json.getUrl()
             ))));
