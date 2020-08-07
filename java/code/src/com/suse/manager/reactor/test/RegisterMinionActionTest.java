@@ -41,6 +41,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
@@ -479,6 +480,52 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
         assertTrue("Activation Key not set as invalid", found);
         assertEquals(otherOrg, minion.getOrg());
+    }
+
+    public void testReRegisterMinionResetProxyPath() throws Exception {
+        ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
+        MinionServer proxy = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion.setMachineId(MACHINE_ID);
+        minion.setMinionId(MINION_ID);
+        minion.setHostname(MINION_ID);
+        minion.setName(MINION_ID);
+
+        Set<ServerPath> paths = ServerFactory.createServerPaths(minion, proxy, "hostname");
+        minion.getServerPaths().addAll(paths);
+
+        ServerFactory.save(minion);
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    MinionStartupGrains.SuseManagerGrain suseManagerGrain = new MinionStartupGrains.SuseManagerGrain(Optional.of(key));
+                    MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                            .machineId(MACHINE_ID).saltbootInitrd(true).susemanagerGrain(suseManagerGrain)
+                            .createMinionStartUpGrains();
+                    allowing(saltServiceMock).getGrains(with(any(String.class)), with(any(TypeToken.class)), with(any(String[].class)));
+                    will(returnValue(Optional.of(minionStartUpGrains)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, null, key)));
+                    allowing(saltServiceMock).getProducts(with(any(String.class)));
+                    will(returnValue(Optional.empty()));
+                }},
+                (contactMethod) -> {
+                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                    // setting a server makes it a re-activation key
+                    key.setServer(minion);
+                    key.setOrg(user.getOrg());
+                    ActivationKeyFactory.save(key);
+                    return key.getKey();
+                },
+                (optMinion, machineId, key) -> assertTrue(optMinion.get().getServerPaths().isEmpty()),
+                null,
+                DEFAULT_CONTACT_METHOD);
     }
 
     @SuppressWarnings("unchecked")
