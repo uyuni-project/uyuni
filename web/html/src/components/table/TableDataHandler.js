@@ -172,26 +172,28 @@ export class TableDataHandler extends React.Component<Props, State> {
   };
 
   render() {
-    const headers = this.props.columns 
-      .map((column, index) => {
-          if (column.props.header) {
-              const sortDirection = column.props.columnKey === this.state.sortColumnKey ?
-                this.state.sortDirection :
-                0;
-              return <Header
-                  key={index}
-                  columnKey={column.props.columnKey}
-                  sortDirection={sortDirection}
-                  onSortChange={this.onSortChange.bind(this)}
-                  width={column.props.width}
-                  comparator={column.props.comparator}
-                  className={column.props.headerClass}>
-                      {column.props.header}
-                  </Header>;
-          } else {
-              return <Header key={index} width={column.props.width} className={column.props.headerClass}/>;
-          }
-      });
+    // Skip rendering the headers if no header was provided
+    const headers = this.props.columns.filter(column => column.props.header).length > 0 &&
+      this.props.columns
+        .map((column, index) => {
+            if (column.props.header) {
+                const sortDirection = column.props.columnKey === this.state.sortColumnKey ?
+                  this.state.sortDirection :
+                  0;
+                return <Header
+                    key={index}
+                    columnKey={column.props.columnKey}
+                    sortDirection={sortDirection}
+                    onSortChange={this.onSortChange.bind(this)}
+                    width={column.props.width}
+                    comparator={column.props.comparator}
+                    className={column.props.headerClass}>
+                        {column.props.header}
+                    </Header>;
+            } else {
+                return <Header key={index} width={column.props.width} className={column.props.headerClass}/>;
+            }
+        });
 
     const filteredData = this.getProcessedData();
 

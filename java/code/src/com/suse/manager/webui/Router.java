@@ -25,6 +25,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+
 import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
@@ -38,6 +39,8 @@ import com.suse.manager.webui.controllers.FrontendLogController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
+import com.suse.manager.webui.controllers.maintenance.MaintenanceCalendarController;
+import com.suse.manager.webui.controllers.maintenance.MaintenanceController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
@@ -58,6 +61,7 @@ import com.suse.manager.webui.controllers.channels.ChannelsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.login.LoginController;
+import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleController;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
@@ -65,8 +69,9 @@ import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
+
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -192,6 +197,10 @@ public class Router implements SparkApplication {
         // Clusters
         clustersController.initRoutes(jade);
 
+        // Maintenance windows
+        MaintenanceController.initRoutes();
+        MaintenanceScheduleController.initRoutes(jade);
+        MaintenanceCalendarController.initRoutes(jade);
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

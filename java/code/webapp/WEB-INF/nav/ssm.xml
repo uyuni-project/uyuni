@@ -115,6 +115,7 @@
                 acl="all_systems_in_set_have_feature(ftr_hardware_refresh)"/>
         <rhn-tab name="ssm.misc.index.tabs.software" url="/rhn/systems/ssm/misc/SoftwareRefresh.do"
                 acl="all_systems_in_set_have_feature(ftr_package_refresh)"/>
+        <rhn-tab name="ssm.misc.index.tabs.maintenanceschedule" url="/rhn/manager/systems/ssm/maintenance"/>
         <rhn-tab name="Remote Command" url="/rhn/systems/ssm/provisioning/RemoteCommand.do"
                 acl="all_systems_in_set_have_feature(ftr_remote_command)"/>
         <rhn-tab name="ssm.misc.index.tabs.custom" url="/rhn/systems/ssm/misc/CustomValue.do"

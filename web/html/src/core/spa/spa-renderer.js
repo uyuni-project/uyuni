@@ -26,7 +26,10 @@ function hasReactApp() {
   return window.pageRenderers.spa.reactAppsName.length > 0;
 }
 
-function renderGlobalReact(element: ReactElement<any>, container: Element) {
+function renderGlobalReact(element: ReactElement<any>, container: ?Element) {
+  if (container == null) {
+    throw new Error('The DOM element is not present.');
+  }
 
   function registerGlobalRender(instance) {
     window.pageRenderers.spa.globalRenderersToUpdate.push(instance);
@@ -35,7 +38,11 @@ function renderGlobalReact(element: ReactElement<any>, container: Element) {
   ReactDOM.render(elementWithRef, container);
 }
 
-function renderNavigationReact(element: ReactElement<any>, container: Element) {
+function renderNavigationReact(element: ReactElement<any>, container: ?Element) {
+  if (container == null) {
+    throw new Error('The DOM element is not present.');
+  }
+
   window.pageRenderers.spa.reactRenderers.push({
     element,
     container,

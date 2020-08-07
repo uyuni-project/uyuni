@@ -12,13 +12,14 @@ import { Dialog } from "./Dialog";
  * This 'item' will be passed to the 'onConfirm' and 'onClosePopUp' handlers.
  */
 export function DangerDialog(props) {
+    const btnClass = props.btnClass || "btn-danger";
     const buttons = <div>
         {props.onConfirmAsync ?
             <AsyncButton
                 text={props.submitText}
                 title={props.submitText}
                 icon={props.submitIcon}
-                defaultType="btn-danger"
+                defaultType={btnClass}
                 action={() => {
                     props.onConfirmAsync(true);
                     $('#' + props.id).modal('hide');
@@ -27,7 +28,7 @@ export function DangerDialog(props) {
         }
         {props.onConfirm ?
             <Button
-                className="btn-danger"
+                className={btnClass}
                 text={props.submitText}
                 title={props.submitText}
                 icon={props.submitIcon}
@@ -72,4 +73,5 @@ DangerDialog.propTypes = {
     onConfirmAsync: PropTypes.func,
     submitText: PropTypes.string,
     submitIcon: PropTypes.string,
+    btnClass: PropTypes.string
 };

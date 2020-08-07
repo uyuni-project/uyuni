@@ -338,7 +338,7 @@
 
         <form-bean name="syncProfilesForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-            <form-property name="use_date"  type="java.lang.Boolean"/>
+            <form-property name="schedule_type"  type="java.lang.String"/>
             <form-property name="date_year"  type="java.lang.Integer"/>
             <form-property name="date_month"  type="java.lang.Integer"/>
             <form-property name="date_day"  type="java.lang.Integer"/>
@@ -803,7 +803,7 @@
         <form-property name="path" type="java.lang.String"/>
         <form-property name="submitted" type="java.lang.Boolean"/>
         <!-- fields needed by datePicker -->
-        <form-property name="use_date" type="java.lang.Boolean"/>
+        <form-property name="schedule_type" type="java.lang.String"/>
         <form-property name="date_year" type="java.lang.Integer"/>
         <form-property name="date_month" type="java.lang.Integer"/>
         <form-property name="date_day" type="java.lang.Integer"/>
@@ -900,6 +900,8 @@
       <form-property name="include_in_daily_summary" type="java.lang.Boolean"/>
       <form-property name="auto_update" type="java.lang.Boolean"/>
       <form-property name="contact_method_id" type="java.lang.Long"/>
+      <form-property name="schedule_id" type="java.lang.Long"/>
+      <form-property name="cancel_affected_actions" type="java.lang.Boolean"/>
       <form-property name="description" type="java.lang.String"/>
       <form-property name="address1" type="java.lang.String"/>
       <form-property name="address2" type="java.lang.String"/>
@@ -948,7 +950,7 @@
 
     <form-bean name="targetSystemsForm"
       type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm" >
-      <form-property name="use_date"  type="java.lang.Boolean"/>
+      <form-property name="schedule_type"  type="java.lang.String"/>
       <form-property name="date_year"  type="java.lang.Integer"/>
       <form-property name="date_month"  type="java.lang.Integer"/>
       <form-property name="date_day"  type="java.lang.Integer"/>
@@ -965,7 +967,7 @@
 
     <form-bean name="datePickerForm"
       type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm" >
-      <form-property name="use_date"  type="java.lang.Boolean"/>
+      <form-property name="schedule_type"  type="java.lang.String"/>
       <form-property name="date_year"  type="java.lang.Integer"/>
       <form-property name="date_month"  type="java.lang.Integer"/>
       <form-property name="date_day"  type="java.lang.Integer"/>
@@ -974,6 +976,7 @@
       <form-property name="date_am_pm"  type="java.lang.Integer"/>
       <form-property name="submitted"   type="java.lang.Boolean" />
       <form-property name="action_chain"   type="java.lang.String" />
+      <form-property name="maintenance_window"   type="java.lang.String" />
     </form-bean>
 
     <form-bean name="deleteSystemGroupForm"
@@ -1078,7 +1081,7 @@
       <form-property name="childChannels" type="java.lang.Long[]" />
       <form-property name="submitted" type="java.lang.Boolean" />
       <!-- Date picker fields -->
-      <form-property name="use_date" type="java.lang.Boolean" />
+      <form-property name="schedule_type" type="java.lang.String" />
       <form-property name="date_year" type="java.lang.Integer" />
       <form-property name="date_month" type="java.lang.Integer" />
       <form-property name="date_day" type="java.lang.Integer" />
@@ -1128,7 +1131,7 @@
         <form-property name="submitted" type="java.lang.Boolean" />
         <form-property name="no_scrub" type="java.lang.String" initial="script_body" />
         <!-- fields needed by datePicker -->
-        <form-property name="use_date" type="java.lang.Boolean"/>
+        <form-property name="schedule_type" type="java.lang.String"/>
         <form-property name="date_year" type="java.lang.Integer"/>
         <form-property name="date_month" type="java.lang.Integer"/>
         <form-property name="date_day" type="java.lang.Integer"/>
@@ -1136,6 +1139,7 @@
         <form-property name="date_minute" type="java.lang.Integer"/>
         <form-property name="date_am_pm" type="java.lang.Integer"/>
         <form-property name="action_chain"   type="java.lang.String" />
+        <form-property name="maintenance_window"   type="java.lang.String" />
     </form-bean>
 
     <form-bean name="ErrataAffectedListForm" type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -1143,7 +1147,7 @@
         <form-property name="queue_label" type="java.lang.String" />
         <form-property name="submitted" type="java.lang.Boolean" />
         <!-- fields needed by datePicker -->
-        <form-property name="use_date" type="java.lang.Boolean"/>
+        <form-property name="schedule_type" type="java.lang.String"/>
         <form-property name="date_year" type="java.lang.Integer"/>
         <form-property name="date_month" type="java.lang.Integer"/>
         <form-property name="date_day" type="java.lang.Integer"/>
@@ -1151,6 +1155,7 @@
         <form-property name="date_minute" type="java.lang.Integer"/>
         <form-property name="date_am_pm" type="java.lang.Integer"/>
         <form-property name="action_chain"   type="java.lang.String" />
+        <form-property name="maintenance_window"   type="java.lang.String" />
     </form-bean>
 
     <form-bean name="forgotCredentialsForm"
@@ -4175,7 +4180,7 @@
         scope="request"
         name="datePickerForm"
         input="/WEB-INF/pages/configuration/sdc/deployfileconfirm.jsp"
-        type="com.redhat.rhn.frontend.action.configuration.sdc.FileListConfirmSetupAction"
+        type="com.redhat.rhn.frontend.action.configuration.sdc.DeployFileConfirmSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="acls"
                       value="system_feature(ftr_config);client_capable(configfiles.deploy)"/>
@@ -4237,7 +4242,7 @@
         scope="request"
         name="datePickerForm"
         input="/WEB-INF/pages/configuration/sdc/difffileconfirm.jsp"
-        type="com.redhat.rhn.frontend.action.configuration.sdc.FileListConfirmSetupAction"
+        type="com.redhat.rhn.frontend.action.configuration.sdc.DiffFileConfirmSetupAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="acls"
                       value="system_feature(ftr_config);client_capable(configfiles.diff)"/>

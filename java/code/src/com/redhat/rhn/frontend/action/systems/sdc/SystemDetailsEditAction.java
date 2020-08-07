@@ -38,6 +38,8 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -47,6 +49,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.util.LabelValueBean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -71,6 +74,9 @@ public class SystemDetailsEditAction extends RhnAction {
     public static final String AUTO_UPDATE = "auto_update";
     public static final String CONTACT_METHODS = "contact_methods";
     public static final String CONTACT_METHOD = "contact_method_id";
+    public static final String MAINTENANCE_SCHEDULES = "schedules";
+    public static final String MAINTENANCE_SCHEDULE = "schedule_id";
+    public static final String MAINTENANCE_CANCEL_AFFECTED = "cancel_affected_actions";
     public static final String DESCRIPTION = "description";
     public static final String ADDRESS_ONE = "address1";
     public static final String ADDRESS_TWO = "address2";
@@ -82,6 +88,7 @@ public class SystemDetailsEditAction extends RhnAction {
     public static final String RACK = "rack";
     public static final String UNENTITLE = "unentitle";
 
+    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
     private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /** {@inheritDoc} */
@@ -135,6 +142,7 @@ public class SystemDetailsEditAction extends RhnAction {
             DynaActionForm daForm, User user, Server s) {
 
         boolean success = true;
+        ActionErrors errors = new ActionErrors();
 
         s.setName(daForm.getString(NAME));
         s.setDescription(daForm.getString(DESCRIPTION));
@@ -188,9 +196,7 @@ public class SystemDetailsEditAction extends RhnAction {
                 catch (TaskomaticApiException e) {
                     log.error("Could not schedule errata update:");
                     log.error(e);
-                    ActionErrors errors = new ActionErrors();
                     getStrutsDelegate().addError("taskscheduler.down", errors);
-                    getStrutsDelegate().saveMessages(request, errors);
                     success = false;
                 }
             }
@@ -219,9 +225,37 @@ public class SystemDetailsEditAction extends RhnAction {
                 log.debug("looping on addon entitlements");
             }
 
-            success = applyAddonEntitlementChanges(request, daForm, s, user);
+            success &= applyAddonEntitlementChanges(request, daForm, s, user);
         }
 
+        // Assign maintenance schedule
+        Long scheduleId = (Long) daForm.get(MAINTENANCE_SCHEDULE);
+
+        if (scheduleId != null && scheduleId != 0) {
+            // Assign schedule
+            MaintenanceSchedule schedule = maintenanceManager.lookupScheduleByUserAndId(user, scheduleId).get();
+            boolean cancelAffected = Boolean.TRUE.equals(daForm.get(MAINTENANCE_CANCEL_AFFECTED));
+            try {
+                maintenanceManager.assignScheduleToSystems(user, schedule, Collections.singleton(s.getId()),
+                        cancelAffected);
+                log.debug(String.format("System %s assigned to schedule %s.", s.getId(), schedule.getName()));
+            }
+            catch (IllegalArgumentException e) {
+                log.debug(e);
+                getStrutsDelegate().addError("maintenance.action.assign.error.fail", errors);
+                success = false;
+            }
+        }
+        else if (s.getMaintenanceScheduleOpt().isPresent()) {
+            // Retract schedule
+            String scheduleName = s.getMaintenanceScheduleOpt().get().getName();
+            maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
+            log.debug(String.format("System %s unassigned from schedule %s.", s.getId(), scheduleName));
+        }
+
+        if (!success) {
+            getStrutsDelegate().saveMessages(request, errors);
+        }
         return success;
     }
 
@@ -352,6 +386,10 @@ public class SystemDetailsEditAction extends RhnAction {
                    s.getAutoUpdate().equals("Y") ? Boolean.TRUE : Boolean.FALSE);
 
         daForm.set(CONTACT_METHOD, s.getContactMethod().getId());
+
+        // Assigned maintenance schedule
+        request.setAttribute(MAINTENANCE_SCHEDULES, maintenanceManager.listSchedulesByUser(user));
+        daForm.set(MAINTENANCE_SCHEDULE, s.getMaintenanceScheduleOpt().map(MaintenanceSchedule::getId).orElse(null));
 
         daForm.set(DESCRIPTION, s.getDescription());
 

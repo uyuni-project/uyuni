@@ -15,6 +15,10 @@
 package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.test.ServerActionTest;
+import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -89,6 +93,9 @@ import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.virtualization.VirtManagerSalt;
+
+import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -105,6 +112,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -1443,5 +1451,44 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, servers.size());
         assertEquals(server.getId(), servers.stream().findFirst().get());
 
+    }
+
+    public void testFilterSystemsWithMaintOnlyActions() throws Exception {
+        Server systemWith = MinionServerFactoryTest.createTestMinionServer(user);
+        Server systemWithout = MinionServerFactoryTest.createTestMinionServer(user);
+
+        // non-offending action
+        Action allowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        // assign it to both systems
+        ServerActionTest.createServerAction(systemWith, allowedAction);
+        ServerActionTest.createServerAction(systemWithout, allowedAction);
+
+        // offending action
+        Action disallowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
+        // assign it to one system only
+        ServerActionTest.createServerAction(systemWith, disallowedAction);
+
+        Set<Long> filtered = ServerFactory
+                .filterSystemsWithPendingMaintOnlyActions(Set.of(systemWith.getId(), systemWithout.getId()));
+        assertEquals(Set.of(systemWith.getId()), filtered);
+    }
+
+    /**
+     * Test assigning maintenance windows to systems
+     *
+     * @throws Exception
+     */
+    public void testSetMaintenanceWindowToSystems() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        MaintenanceSchedule schedule = new MaintenanceManager().createSchedule(
+                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+
+        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ServerFactory.setMaintenanceScheduleToSystems(schedule, Set.of(sys1.getId(), sys2.getId()));
+
+        assertEquals(schedule, HibernateFactory.reload(sys1).getMaintenanceScheduleOpt().get());
+        assertEquals(schedule, HibernateFactory.reload(sys2).getMaintenanceScheduleOpt().get());
     }
 }

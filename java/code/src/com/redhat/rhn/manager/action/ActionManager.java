@@ -86,6 +86,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.utils.Opt;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -136,6 +137,8 @@ public class ActionManager extends BaseManager {
      * but I wanted to retain that comment with regard to this value.
      */
     private static final Long REMAINING_TRIES = 10L;
+
+    private static MaintenanceManager maintenanceManager = new MaintenanceManager();
 
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
 
@@ -734,9 +737,9 @@ public class ActionManager extends BaseManager {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(5L);
-        sa.setServer(server);
+        sa.setServerWithCheck(server);
 
-        sa.setParentAction(action);
+        sa.setParentActionWithCheck(action);
         action.addServerAction(sa);
 
         return action;
@@ -1154,9 +1157,9 @@ public class ActionManager extends BaseManager {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServer(server);
+        sa.setServerWithCheck(server);
         action.addServerAction(sa);
-        sa.setParentAction(action);
+        sa.setParentActionWithCheck(action);
 
         ActionFactory.save(action);
         taskomaticApi.scheduleActionExecution(action);
@@ -1476,10 +1479,15 @@ public class ActionManager extends BaseManager {
     /**
      * Schedules an action for execution on one or more servers (adding rows to
      * rhnServerAction)
+     *
+     * Also checks if the action scheduled date/time fit in systems maintenance schedules, if there are any assigned.
+     *
      * @param action the action
      * @param serverIds server IDs
      */
     public static void scheduleForExecution(Action action, Set<Long> serverIds) {
+        maintenanceManager.canActionBeScheduled(serverIds, action);
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
         params.put("tries", REMAINING_TRIES);
@@ -1523,10 +1531,10 @@ public class ActionManager extends BaseManager {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServer(srvr);
+        sa.setServerWithCheck(srvr);
 
         action.addServerAction(sa);
-        sa.setParentAction(action);
+        sa.setParentActionWithCheck(action);
 
         return action;
     }
@@ -1731,10 +1739,10 @@ public class ActionManager extends BaseManager {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(REMAINING_TRIES);
-        sa.setServer(srvr);
+        sa.setServerWithCheck(srvr);
 
         action.addServerAction(sa);
-        sa.setParentAction(action);
+        sa.setParentActionWithCheck(action);
 
         ActionFactory.save(action);
 

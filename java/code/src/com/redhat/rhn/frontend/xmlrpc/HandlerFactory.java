@@ -84,6 +84,7 @@ import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -168,6 +169,7 @@ public class HandlerFactory {
         factory.addHandler("kickstart.profile.system", new SystemDetailsHandler());
         factory.addHandler("kickstart.snippet", new SnippetHandler());
         factory.addHandler("kickstart.tree", new KickstartTreeHandler());
+        factory.addHandler("maintenance", new MaintenanceHandler());
         factory.addHandler("org", new OrgHandler());
         factory.addHandler("org.trusts", new OrgTrustHandler());
         factory.addHandler("packages", new PackagesHandler());
