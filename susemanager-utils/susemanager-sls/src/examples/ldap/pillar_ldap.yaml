@@ -1,0 +1,31 @@
+ldap-roles:
+  server:    ldap.example.com
+  port:      389
+  anonymous: true
+  mode:      map
+  dn:        ou=permissions,dc=example,dc=com
+  filter:    '(objectclass=groupOfNames)'
+  attrs:
+    - cn
+    - dn
+
+ldap-users:
+  server:    ldap.example.com
+  port:      389
+  anonymous: true
+  mode:      map
+  dn:        ou=people,dc=example,dc=com
+  filter:    '(objectclass=person)'
+  attrs:
+    - givenName
+    - sn
+    - mail
+    - uid
+    - ou
+    - dn
+  lists:
+    - memberOf
+
+search_order:
+  - ldap-roles
+  - ldap-users
