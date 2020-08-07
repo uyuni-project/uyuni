@@ -1,3 +1,4 @@
+- Reset the server path on minion registration (bsc#1174254)
 - Data null means the sync never ran yet (bsc#1174357)
 
 -------------------------------------------------------------------
