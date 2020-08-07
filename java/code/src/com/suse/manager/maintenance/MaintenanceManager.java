@@ -308,8 +308,7 @@ public class MaintenanceManager {
      * @return the created Maintenance Calendar
      * @throws DownloadException when fetching data from url failed
      */
-    public MaintenanceCalendar createCalendarWithUrl(User user, String label, String url)
-            throws DownloadException {
+    public MaintenanceCalendar createCalendarWithUrl(User user, String label, String url) throws DownloadException {
         ensureOrgAdmin(user);
         ensureCalendarNotExists(user, label);
         MaintenanceCalendar mc = new MaintenanceCalendar();
@@ -571,9 +570,11 @@ public class MaintenanceManager {
             HttpHelper http = new HttpHelper();
             HttpResponse response = http.sendGetRequest(url);
             StatusLine status = response.getStatusLine();
-            if (status.getStatusCode() != HttpStatus.SC_OK) {
+            int statusCode = status.getStatusCode();
+            if (statusCode != HttpStatus.SC_OK) {
                 http.cleanup(response);
-                throw new DownloadException(url, status.getReasonPhrase(), status.getStatusCode());
+                log.error("Download failed, HTTP status code: " + statusCode);
+                throw new DownloadException(url, status.getReasonPhrase(), statusCode);
             }
             String ical = http.getBodyAsString(response, "UTF-8");
             http.cleanup(response);

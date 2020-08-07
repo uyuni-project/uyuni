@@ -45,6 +45,7 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.gson.MaintenanceScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -74,6 +75,7 @@ public class MaintenanceScheduleController {
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
+    private static Logger log = Logger.getLogger(MaintenanceScheduleController.class);
 
     private MaintenanceScheduleController() { }
 
@@ -226,6 +228,7 @@ public class MaintenanceScheduleController {
             }
         }
         catch (EntityNotExistsException | EntityExistsException e) {
+            log.info(e);
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(e.getMessage())));
         }
         return json(response, ResultJson.success());
@@ -277,10 +280,12 @@ public class MaintenanceScheduleController {
                         MM.assignScheduleToSystems(user, schedule, new HashSet<>(systemIds), reqData.cancelActions);
                     }
                     catch (IllegalArgumentException e) {
+                        log.info(e);
                         Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                                 "maintenance.action.assign.error.fail"))));
                     }
                     catch (LookupException e) {
+                        log.info(e);
                         Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                                 "maintenance.action.assign.error.systemnotfound"))));
                     }
@@ -305,6 +310,7 @@ public class MaintenanceScheduleController {
             MM.retractScheduleFromSystems(user, new HashSet<>(systemIds));
         }
         catch (LookupException e) {
+            log.info(e);
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(LOCAL.getMessage(
                     "maintenance.action.assign.error.systemnotfound"))));
         }
