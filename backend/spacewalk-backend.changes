@@ -1,3 +1,5 @@
+- Fix issues importing RPM packages with long RPM headers (bsc#1174871)
+
 -------------------------------------------------------------------
 Thu Jul 23 11:38:22 CEST 2020 - jgonzalez@suse.com
 
