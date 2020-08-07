@@ -1,3 +1,4 @@
+- Fix issues importing RPM packages with long RPM headers (bsc#1174965)
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------
