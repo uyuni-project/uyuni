@@ -137,12 +137,12 @@ public class MaintenanceManager {
     /**
      * Returns tuples representing calendar id, calendar label, and name of schedule assigned to the calendar.
      *
-     * @see CalendarFactory.listCalendarToSchedulesAssigments
+     * @see CalendarFactory.listCalendarToSchedulesAssignments
      *
      * @param user the user
      * @return the tuples representing the assignments of calendar to schedules
      */
-    public List<CalendarAssignment> listCalendarToSchedulesAssigments(User user) {
+    public List<CalendarAssignment> listCalendarToSchedulesAssignments(User user) {
         return calendarFactory.listCalendarToSchedulesAssignments(user);
     }
 
