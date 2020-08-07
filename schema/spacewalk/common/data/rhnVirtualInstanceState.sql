@@ -19,4 +19,13 @@ insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('
 insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Stopped', 'stopped');
 insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Crashed', 'crashed');
 insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Paused', 'paused');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Powering On', 'powering_on');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Shutting Down', 'shutting_down');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Powering Off', 'powering_off');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Pausing', 'pausing');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Suspending', 'suspending');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Suspended', 'suspended');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Resuming', 'resuming');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Resetting', 'resetting');
+insert into rhnVirtualInstanceState (id, name, label) values (sequence_nextval('rhn_vis_id_seq'), 'Migrating', 'migrating');
 
