@@ -116,7 +116,7 @@ public class MaintenanceCalendarController {
      */
     public static String list(Request request, Response response, User user) {
         Map<Pair<Long, String>, List<CalendarAssignment>> assignmentsByCalendar = MM
-                .listCalendarToSchedulesAssigments(user)
+                .listCalendarToSchedulesAssignments(user)
                 .stream()
                 .collect(Collectors.groupingBy(
                         assignment -> Pair.of(assignment.getCalendarId(), assignment.getCalendarName()),
