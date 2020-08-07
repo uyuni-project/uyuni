@@ -179,8 +179,8 @@ public class ServerAction extends ActionChild implements Serializable {
      * @param parentActionIn The parentAction to set.
      */
     public void setParentActionWithCheck(Action parentActionIn) {
-        if (server != null) {
-            maintenanceManager.canActionBeScheduled(Set.of(server.getId()), parentActionIn);
+        if (serverId != null) {
+            maintenanceManager.canActionBeScheduled(Set.of(serverId), parentActionIn);
         }
 
         setParentAction(parentActionIn);
