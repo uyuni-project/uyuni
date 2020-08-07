@@ -651,6 +651,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     private void setServerPaths(MinionServer server, String master,
                                 boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
+        server.getServerPaths().clear();
         if (isSaltSSH) {
             saltSSHProxyId
                 .map(proxyId -> ServerFactory.lookupById(proxyId))
