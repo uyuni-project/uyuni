@@ -52,13 +52,14 @@ def test_get_missing_products():
     '''
     test_data = {
         'not_installed': {'product1': True, 'product2': True},
-        'provides-product1': {'this-provides-product1': True}
+        'provides-product1': {'product1': True, 'this-provides-product1': True},
+        'provides-product2': {'product2': True}
     }
 
     pkg_search_mock = MagicMock(side_effect=[
         test_data['not_installed'],
         test_data['provides-product1'],
-        sys.modules['salt.exceptions'].CommandExecutionError])
+        test_data['provides-product2']])
 
     with patch.dict(product.__salt__, {'pkg.search': pkg_search_mock}):
         res = product._get_missing_products(False)
@@ -83,13 +84,14 @@ def test_not_installed_provides():
     '''
     test_data = {
         'not_installed': {'product1': True, 'this-provides-product1': True},
-        'provides-product1': {'this-provides-product1': True}
+        'provides-product1': {'product1': True, 'this-provides-product1': True},
+        'provides-product2': {'this-provides-product1': True}
     }
 
     pkg_search_mock = MagicMock(side_effect=[
         test_data['not_installed'],
         test_data['provides-product1'],
-        sys.modules['salt.exceptions'].CommandExecutionError])
+        test_data['provides-product2']])
 
     with patch.dict(product.__salt__, {'pkg.search': pkg_search_mock}):
         res = product._get_missing_products(False)
