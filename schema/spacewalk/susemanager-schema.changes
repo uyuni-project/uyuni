@@ -1,3 +1,4 @@
+- Prevent a deadlock error involving delete_server and update_needed_cache (bsc#1173073)
 - Add new states and types for virtual instances in order
   to support Nutanix AHV.
 - implement Maintenance Windows
