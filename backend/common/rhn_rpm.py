@@ -88,6 +88,9 @@ class RPM_Header:
             item = sstr(item)
         return item
 
+    def __contains__(self, name):
+        return True if name in self.hdr else False
+
     def __setitem__(self, name, item):
         self.hdr[name] = item
 
