@@ -36,13 +36,13 @@ def _get_missing_products(refresh):
     # Search for not installed products
     products = []
     try:
-        products = __salt__['pkg.search'](
+        products = list(__salt__['pkg.search'](
             'product()',
             refresh=refresh,
             match='exact',
             provides=True,
             not_installed_only=True
-        ).keys()
+        ))
 
         log.debug("The following products are not yet installed: %s", ', '.join(products))
 
@@ -54,13 +54,19 @@ def _get_missing_products(refresh):
     to_install = []
     for pkg in products:
         try:
-            res = __salt__['pkg.search'](
+            res = list(__salt__['pkg.search'](
                 pkg,
                 match='exact',
                 provides=True
-            ).keys()
+            ))
 
-            log.debug("The product '%s' is already provided by '%s'. Skipping.", pkg, ', '.join(res))
+            if pkg in res:
+                res.remove(pkg)
+            if not res:
+                # No other providers than the package itself
+                to_install.append(pkg)
+            else:
+                log.debug("The product '%s' is already provided by '%s'. Skipping.", pkg, ', '.join(res))
 
         except CommandExecutionError:
             # No search results
