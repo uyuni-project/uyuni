@@ -148,14 +148,7 @@ export function PoolsList(props: Props) {
   const [selected, setSelected] = React.useState({});
   const [errors, setErrors] = React.useState([]);
 
-  const refresh = (type: string) => {
-    if (type === "pool") {
-      setLastRefresh(Date.now());
-    }
-  };
-
-  const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors,
-                                                                  props.serverId, refresh);
+  const [actionsResults, setActionsResults] = useVirtNotification(errors, setErrors, props.serverId, () => {});
 
   const actionCallback = (results: Object) => {
     const newActions = Object.keys(results).reduce((actions, poolName) => {

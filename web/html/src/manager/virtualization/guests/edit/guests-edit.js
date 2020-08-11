@@ -7,7 +7,6 @@ const { hot } = require('react-hot-loader');
 const React = require('react');
 const _isEqual = require('lodash/isEqual');
 const { TopPanel } = require('components/panels/TopPanel');
-const MessagesUtils = require('components/messages').Utils;
 const { Loading } = require('components/utils/Loading');
 const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
 const { GuestProperties } = require('../GuestProperties');
