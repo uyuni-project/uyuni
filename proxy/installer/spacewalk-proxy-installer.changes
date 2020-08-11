@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Aug 11 10:50:44 CEST 2020 - jgonzalez@suse.com
+
+- version 2.8.6.8-1
 - do not cache metadata of the bootstrap repositories (bsc#1171169)
 - move vital proxy templates to a safe place outside of docu (bsc#1166284)
 
