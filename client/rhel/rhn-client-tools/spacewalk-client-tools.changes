@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Aug 11 10:49:17 CEST 2020 - jgonzalez@suse.com
+
+- version 2.8.22.8-1
 - Do not crash 'mgr-update-status' because 'long' type is not defined in Python 3
 
 -------------------------------------------------------------------
