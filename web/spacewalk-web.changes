@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Aug 11 10:52:26 CEST 2020 - jgonzalez@suse.com
+
+- version 2.8.7.24-1
 - Fix saving of formulas (bsc#1174768)
 - Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
 
