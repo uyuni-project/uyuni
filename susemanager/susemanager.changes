@@ -1,3 +1,5 @@
+- Use python2-uyuni-common-libs and python3-uyuni-common-libs for
+  bootstrap repositories (bsc#1173946)
 - Add 'python-singledispatch' to SLE12 (all SPs) and RES7 bootstrap repos. (bsc#1174700)
 - Add SLE 15 LTSS Product ID to SLE15 bootstrap repositories, as
   it is required to get python3-M2crypto (bsc#1174167)
