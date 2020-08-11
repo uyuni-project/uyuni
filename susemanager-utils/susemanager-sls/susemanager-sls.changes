@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Aug 11 10:53:29 CEST 2020 - jgonzalez@suse.com
+
+- version 3.2.31-1
 - Avoid traceback error due lazy loading which_bin (bsc#1155794)
 - Using new module path for which_bin to get rid of DeprecationWarning
 
