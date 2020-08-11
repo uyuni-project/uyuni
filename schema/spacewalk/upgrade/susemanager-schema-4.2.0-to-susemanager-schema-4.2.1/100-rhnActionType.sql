@@ -25,4 +25,5 @@ where label in ('packages.update', 'packages.remove', 'errata.update',
        'solarispkgs.patchRemove', 'solarispkgs.patchClusterInstall', 'solarispkgs.patchClusterRemove',
        'script.run', 'solarispkgs.refresh_list', 'clientcert.update_client_cert',
        'distupgrade.upgrade', 'states.apply', 'cluster.group_refresh_nodes', 'cluster.join_node',
-       'cluster.remove_node', 'cluster.upgrade_cluster');
+       'cluster.remove_node', 'cluster.upgrade_cluster')
+and maintenance_mode_only = 'N';
