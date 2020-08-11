@@ -2183,6 +2183,9 @@ public class ContentSyncManager {
                 if (status == HttpURLConnection.HTTP_OK) {
                     return true;
                 }
+                else {
+                    log.warn("accessibleUrl: " + testUri.toString() + " returned status " + status);
+                }
             }
         }
         catch (IOException e) {
