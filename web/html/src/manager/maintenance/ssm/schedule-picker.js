@@ -17,8 +17,8 @@ import type {MessageType} from "components/messages";
 const Network = require("utils/network");
 
 type ScheduleType = {
-  scheduleId: number,
-  scheduleName: string
+  id: number,
+  name: string
 };
 
 type WithMaintenanceSchedulesProps = {

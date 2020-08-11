@@ -220,11 +220,11 @@ export class TableDataHandler extends React.Component<Props, State> {
           this.setSelection(arr);
       };
 
-        const allSelected = currIds.length > 0 && currIds.every(id => this.state.selectedItems.includes(id));
-        const checkbox = <Header key="check"><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
-        headers.unshift(checkbox);
+      const allSelected = currIds.length > 0 && currIds.every(id => this.state.selectedItems.includes(id));
+      const checkbox = <Header key="check"><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
+      headers && headers.unshift(checkbox);
     }
-    
+
     const handleSelect = (id, sel) => {
         let arr = this.state.selectedItems;
         if (sel) {

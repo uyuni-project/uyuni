@@ -1,3 +1,4 @@
+- Fix JS linting errors/warnings
 - Enable Nutanix AHV virtual host gatherer.
 - Web UI: Implement managing maintenance schedules and calendars
 - Warn when a system is in multiple groups that configure the same
