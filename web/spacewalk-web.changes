@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Aug 12 12:40:30 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.15-1
 - Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
 - Fix JS linting errors/warnings
 - Enable Nutanix AHV virtual host gatherer.
