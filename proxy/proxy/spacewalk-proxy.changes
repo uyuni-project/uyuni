@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Aug 12 10:55:15 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.2-1
 - Python3 fix for loading pickle file during kickstart
   procedure (bsc#1174201)
 
