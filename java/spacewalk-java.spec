@@ -64,7 +64,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        4.1.15
+Version:        4.2.0
 Release:        1%{?dist}
 Url:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
@@ -103,6 +103,7 @@ BuildRequires:  hibernate-commons-annotations
 BuildRequires:  hibernate5
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
+BuildRequires:  ical4j
 BuildRequires:  jade4j
 BuildRequires:  jaf
 BuildRequires:  %{apache_commons_discovery}
@@ -176,6 +177,7 @@ Requires:       google-gson >= 2.2.4
 Requires:       hibernate-commons-annotations
 Requires:       hibernate5
 Requires:       httpcomponents-client
+Requires:       ical4j
 Requires:       jade4j
 Requires:       %{apache_commons_digester}
 Requires:       java >= %{java_version}
@@ -519,6 +521,8 @@ install -m 644 conf/rhn_java_sso.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config
 # Adjust product tree tag
 %if 0%{?is_opensuse}
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+%else
+sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 install -m 644 conf/logrotate/gatherer $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/gatherer
@@ -670,18 +674,12 @@ chown tomcat:%{apache_group} /var/log/rhn/gatherer.log
 # SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
 %{jardir}/commons-jexl.jar
 %{jardir}/commons-lang3.jar
-%if 0%{?is_opensuse}
 %{jardir}/google-gson_google-gsongson.jar
 %{jardir}/httpcomponents_httpclient.jar
 %{jardir}/httpcomponents_httpcore.jar
 %{jardir}/httpcomponents_httpcore-nio.jar
-%else
-%{jardir}/google-gson.jar
-%{jardir}/httpclient.jar
-%{jardir}/httpcore.jar
-%{jardir}/httpcore-nio.jar
-%endif
 %{jardir}/httpasyncclient.jar
+%{jardir}/ical4j.jar
 %{jardir}/jade4j.jar
 %{jardir}/jose4j.jar
 %{jardir}/netty*.jar

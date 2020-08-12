@@ -59,9 +59,15 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
+  last = Time.now
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?("This action's status is: Completed.")
     raise 'Event failed' if has_content?("This action's status is: Failed.")
+    current = Time.now
+    if current - last > 150
+      STDOUT.puts "#{current} Still waiting for action to complete..."
+      last = current
+    end
     evaluate_script 'window.location.reload()'
   end
 end
@@ -110,6 +116,13 @@ end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
   select(arg1, from: arg2, exact: false)
+end
+
+# Select an item from a react Combobox
+When(/^I select "([^"]*)" from the Combobox "([^"]*)"$/) do |arg1, arg2|
+  xpath = "//div[@id='#{arg2}']"
+  find(:xpath, xpath).click
+  find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
 end
 
 When(/^I select the maximum amount of items per page$/) do
@@ -395,9 +408,13 @@ Given(/^I am on the active Users page$/) do
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
-  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]"
+  step %(I wait until table row for "#{arg1}" contains "#{arg2}")
+end
+
+Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
+  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
-    raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2)
+    raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2, wait: DEFAULT_TIMEOUT)
   end
 end
 
@@ -901,4 +918,8 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
                end
   _output, code = node.run("curl -s http://#{system_name}:#{port} | grep -i '#{text}'")
   raise unless code.zero?
+end
+
+When(/^I select the next maintenance window$/) do
+  find(:xpath, "//select[@id='maintenance-window-select']/option", match: :first).select_option
 end

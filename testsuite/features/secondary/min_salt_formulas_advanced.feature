@@ -78,6 +78,7 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
+     When I refresh the pillar data
      And the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "text2" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "text3" on "sle_minion"

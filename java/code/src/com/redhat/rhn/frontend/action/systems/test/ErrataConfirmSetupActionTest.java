@@ -32,8 +32,8 @@ public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true);
         addRequestParameter("sid", server.getId().toString());
 
-        //Note: 2 invocations of getParameter("use_date") will be called by DatePicker
-        addRequestParameter(DatePicker.USE_DATE, "true");
+        //Note: 2 invocations of getParameter("schedule_type") will be called by DatePicker
+        addRequestParameter(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.DATE.asString());
         actionPerform();
         assertNotNull(request.getAttribute("system"));
         Server server2 = (Server) request.getAttribute("system");

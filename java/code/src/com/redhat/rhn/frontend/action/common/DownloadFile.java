@@ -621,13 +621,23 @@ public class DownloadFile extends DownloadAction {
             if (child == null) {
                 if (path.contains("repodata/") && tree.getKernelOptions() != null &&
                         tree.getKernelOptions().contains("useonlinerepo")) {
-                    String[] split = StringUtils.split(path, '/');
-                    if (split[0].equals("repodata")) {
-                        split[0] = tree.getChannel().getLabel();
+                    if (path.endsWith("/comps.xml")) {
+                        diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                            "/" + tree.getChannel().getComps().getRelativeFilename();
                     }
-                    diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
-                            File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
-                            File.separator + StringUtils.join(split, '/');
+                    else if (path.endsWith("/modules.yaml")) {
+                        diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
+                            "/" + tree.getChannel().getModules().getRelativeFilename();
+                    }
+                    else {
+                        String[] split = StringUtils.split(path, '/');
+                        if (split[0].equals("repodata")) {
+                            split[0] = tree.getChannel().getLabel();
+                        }
+                        diskPath = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub") +
+                                File.separator + Config.get().getString("repomd_path_prefix", "rhn/repodata/") +
+                                File.separator + StringUtils.join(split, '/');
+                    }
                 }
                 else if (path.endsWith("/media.1/products") && tree.getChannel().getMediaProducts() != null) {
                     diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +

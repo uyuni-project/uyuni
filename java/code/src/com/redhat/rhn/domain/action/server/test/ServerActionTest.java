@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.server.test;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.Server;
@@ -62,25 +63,29 @@ public class ServerActionTest extends RhnBaseTestCase {
         assertTrue(sa.equals(sa2));
 
         Server one = ServerFactory.createServer();
-        sa.setServer(one);
+        one.setId(10001L);
+        sa.setServerWithCheck(one);
         assertFalse(sa.equals(sa2));
         assertFalse(sa2.equals(sa));
 
-        sa2.setServer(ServerFactory.createServer());
+        Server two = ServerFactory.createServer();
+        two.setId(10001L); // same ID
+        sa2.setServerWithCheck(two);
         assertTrue(sa.equals(sa2));
 
         one.setName("foo");
         assertFalse(sa.equals(sa2));
 
-        sa2.setServer(one);
+        sa2.setServerWithCheck(one);
         assertTrue(sa.equals(sa2));
 
-        Action parent = new Action();
+        Action parent = new ApplyStatesAction();
         parent.setId(243L);
-        sa.setParentAction(parent);
+        parent.setActionType(ActionFactory.TYPE_APPLY_STATES);
+        sa.setParentActionWithCheck(parent);
         assertFalse(sa.equals(sa2));
 
-        sa2.setParentAction(parent);
+        sa2.setParentActionWithCheck(parent);
         assertTrue(sa.equals(sa2));
     }
 
@@ -130,8 +135,8 @@ public class ServerActionTest extends RhnBaseTestCase {
         ServerAction sa = new ServerAction();
         sa.setStatus(ActionFactory.STATUS_QUEUED);
         sa.setRemainingTries(10L);
-        sa.setServer(newS);
-        sa.setParentAction(newA);
+        sa.setServerWithCheck(newS);
+        sa.setParentActionWithCheck(newA);
         newA.addServerAction(sa);
         return sa;
     }

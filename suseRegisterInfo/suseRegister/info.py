@@ -26,36 +26,67 @@ def getInstalledProducts():
     try:
         ret = getSUSEInstalledProducts()
     except:
-        ret = getRESInstalledProducts()
+        ret = getRedHatLikeProducts()
     return ret
 
-def getRESInstalledProducts():
-    if not os.path.exists('/etc/redhat-release'):
+def getRedHatLikeProducts():
+    """
+     1) if a RES release package (sles_es-release) is installed it is a RES.
+     2) if /etc/oracle-release exists it is a OracleLinux
+     3) is it a centos system? check if /etc/centos-release file exists
+     4) finally we can say it is a original RHEL (maybe:-)
+    """
+    ret = None
+    if packageExistsWhatprovides("sles_es-release-server"):
+        ret = parseReleaseInfo()
+        if ret:
+            ret['name'] = "RES"
+    elif os.path.exists('/etc/oracle-release'):
+        ret = parseReleaseInfo(release='/etc/oracle-release')
+        if ret:
+            ret['name'] = "OracleLinux"
+    elif os.path.exists('/etc/centos-release'):
+        ret = parseReleaseInfo(release='/etc/centos-release')
+        if ret:
+            ret['name'] = "CentOS"
+    else:
+        ret = parseReleaseInfo()
+        if ret:
+            ret['name'] = "rhel-base"
+    if not ret:
         raise Exception("Getting installed products failed")
+
+    result = []
+    result.append(ret)
+    return result
+
+def packageExistsWhatprovides(pkg):
+    r = Popen(['rpm', '-q', '--whatprovides', pkg])
+    r.communicate()
+    return r.returncode == 0
+
+def parseReleaseInfo(release='/etc/redhat-release'):
+    if not os.path.exists(release):
+        return None
 
     try:
-        name = Popen(['/usr/lib/suseRegister/bin/parse_release_info', '-si'], stdout=PIPE).communicate()[0]
-        version = Popen(['/usr/lib/suseRegister/bin/parse_release_info', '-sr'], stdout=PIPE).communicate()[0]
-        release = Popen(['/usr/lib/suseRegister/bin/parse_release_info', '-sc'], stdout=PIPE).communicate()[0]
+        name = Popen(['/usr/lib/suseRegister/bin/parse_release_info', '-si', '--file', release], stdout=PIPE).communicate()[0]
+        version = Popen(['/usr/lib/suseRegister/bin/parse_release_info', '-sr', '--file', release], stdout=PIPE).communicate()[0]
+        release = Popen(['/usr/lib/suseRegister/bin/parse_release_info', '-sc', '--file', release], stdout=PIPE).communicate()[0]
         arch = Popen(['uname', '-m'], stdout=PIPE).communicate()[0]
     except:
-        raise Exception("Getting installed products failed")
+        return None
 
-    if ('redhat' in name.lower() or
-        'centos' in name.lower() or
-        'slesexpandedsupportplatform' in name.lower()):
-        name = 'RES'
     if '.' in version:
         version = version[:version.find('.')]
-    ret = []
     p = {
         'name' : name,
         'version' : version.strip(),
         'release' : release.strip(),
         'arch' : arch.strip(),
         'baseproduct' : 'Y' }
-    ret.append(p)
-    return ret
+    return p
+
 
 def getSUSEInstalledProducts():
     """Return information about the installed products on a SUSE system

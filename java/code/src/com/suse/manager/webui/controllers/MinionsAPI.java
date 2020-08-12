@@ -68,6 +68,7 @@ public class MinionsAPI {
     private final SystemQuery systemQuery;
     private final SSHMinionBootstrapper sshMinionBootstrapper;
     private final RegularMinionBootstrapper regularMinionBootstrapper;
+    private final SaltKeyUtils saltKeyUtils;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -81,13 +82,15 @@ public class MinionsAPI {
      * @param systemQueryIn instance to use.
      * @param regularMinionBootstrapperIn regular bootstrapper
      * @param sshMinionBootstrapperIn ssh bootstrapper
+     * @param saltKeyUtilsIn
      */
     public MinionsAPI(SystemQuery systemQueryIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
-                      RegularMinionBootstrapper regularMinionBootstrapperIn) {
+                      RegularMinionBootstrapper regularMinionBootstrapperIn,
+                      SaltKeyUtils saltKeyUtilsIn) {
         this.systemQuery = systemQueryIn;
-        sshMinionBootstrapper = sshMinionBootstrapperIn;
-        regularMinionBootstrapper = regularMinionBootstrapperIn;
-
+        this.sshMinionBootstrapper = sshMinionBootstrapperIn;
+        this.regularMinionBootstrapper = regularMinionBootstrapperIn;
+        this.saltKeyUtils = saltKeyUtilsIn;
     }
 
     /**
@@ -175,7 +178,7 @@ public class MinionsAPI {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw new PermissionCheckFailureException(RoleFactory.ORG_ADMIN);
         }
-        return json(response, SaltKeyUtils.deleteSaltKey(user, target));
+        return json(response, saltKeyUtils.deleteSaltKey(user, target));
     }
 
     /**

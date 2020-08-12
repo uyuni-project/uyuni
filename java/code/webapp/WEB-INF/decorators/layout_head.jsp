@@ -2,8 +2,8 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<%@ page import="com.suse.manager.webui.menu.MenuTree" %>
 <%@ page import="com.redhat.rhn.common.conf.ConfigDefaults"%>
+<%@ page import="com.redhat.rhn.GlobalInstanceHolder" %>
 
 <!-- enclosing head tags in layout_c.jsp -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -18,7 +18,7 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
     <title>
       <bean:message key="layout.jsp.productname"/>
-      <%= MenuTree.getTitlePage(pageContext) %>
+      <%= GlobalInstanceHolder.MENU_TREE.getTitlePage(pageContext) %>
     </title>
     <link rel="shortcut icon" href="/img/favicon.ico" />
 

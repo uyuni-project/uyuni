@@ -85,12 +85,12 @@ export function GuestDiskVolumeFields(props: Props) : React.Node {
       >
         <option></option>
         {/* Adding the value is needed in case the pool is shut down and we don't have the volumes */}
-        { (!selected_pool || selected_pool.volumes.length === 0) && volume &&
+        { (!selected_pool || (selected_pool.volumes ||[]).length === 0) && volume &&
           <option key={volume} value={volume}>{volume}</option>
         }
         {
             selected_pool &&
-              selected_pool.volumes.map(vol => <option key={vol.name} value={vol.name}>{vol.name}</option>)
+              (selected_pool.volumes || []).map(vol => <option key={vol.name} value={vol.name}>{vol.name}</option>)
         }
       </Select>
       { Object.keys(formContext.model).includes(`disk${props.index}_editable`) &&

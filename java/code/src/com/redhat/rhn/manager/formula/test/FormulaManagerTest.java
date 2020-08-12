@@ -67,7 +67,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     static final String TEMP_PATH = "formulas/";
     static final String formulaName = "dhcpd";
     private SaltService saltServiceMock;
-    private FormulaManager manager = FormulaManager.getInstance();
+    private FormulaManager manager;
     private Path metadataDir;
 
     public FormulaManagerTest() { }
@@ -78,9 +78,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         setImposteriser(ClassImposteriser.INSTANCE);
         MockConnection.clear();
         saltServiceMock = mock(SaltService.class);
-        manager.setSystemQuery(saltServiceMock);
-        manager.setSaltApi(saltServiceMock);
         metadataDir = Files.createTempDirectory("metadata");
+        manager = new FormulaManager(saltServiceMock);
         FormulaFactory.setDataDir(tmpSaltRoot.toString());
         FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
         createMetadataFiles();
@@ -105,7 +104,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
 
         Map<String, Object> layout = Json.GSON.fromJson(layoutData, Map.class);
-        FormulaManager manager = FormulaManager.getInstance();
+        FormulaManager manager = new FormulaManager(saltServiceMock);
         manager.validateContents(contents,layout);
 
     }
@@ -123,7 +122,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
         contents.put("test","dummy"); // add a random field
 
-        FormulaManager manager = FormulaManager.getInstance();
+        FormulaManager manager = new FormulaManager(saltServiceMock);
         try {
             manager.validateContents(contents,layout);
             fail( "Exception expected but didn't throw" );
@@ -203,7 +202,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         FormulaFactory.setDataDir(tmpSaltRoot.resolve(TEMP_PATH).toString());
-        FormulaManager manager = FormulaManager.getInstance();
+        FormulaManager manager = new FormulaManager(saltServiceMock);
         User testUser = UserTestUtils.createUser("test-user", user.getOrg().getId());
         try {
             manager.saveServerFormulaData(testUser,minion.getId(), formulaName, contents);

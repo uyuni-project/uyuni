@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 
@@ -23,7 +24,6 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.suse.manager.webui.services.SaltServerActionService;
 
 import org.quartz.JobExecutionContext;
@@ -44,7 +44,7 @@ public class MinionActionExecutor extends RhnJavaJob {
     private static final int ACTION_DATABASE_POLL_TIME = 100;
     private static final long MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS = 24; // hours
 
-    private SaltServerActionService saltServerActionService = new SaltServerActionService(SchedulerKernel.SYSTEM_QUERY);
+    private SaltServerActionService saltServerActionService = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
 
     /**
      * @param context the job execution context

@@ -26,7 +26,6 @@ import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -58,19 +57,8 @@ public class SSHPushWorkerSalt implements QueueWorker {
     private SystemQuery systemQuery;
     private SaltSSHService saltSSHService;
     private SaltServerActionService saltServerActionService;
+    private SaltUtils saltUtils;
 
-    /**
-     * Constructor.
-     * @param logger Logger for this instance
-     * @param systemIn the system to work with
-     */
-    public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn) {
-        log = logger;
-        system = systemIn;
-        systemQuery = SaltService.INSTANCE;
-        saltSSHService = SaltService.INSTANCE.getSaltSSHService();
-        saltServerActionService = new SaltServerActionService(systemQuery);
-    }
 
     /**
      * Constructor.
@@ -79,15 +67,17 @@ public class SSHPushWorkerSalt implements QueueWorker {
      * @param saltServiceIn the salt service to work with
      * @param saltSSHServiceIn the {@link SaltSSHService} to work with
      * @param saltServerActionServiceIn the {@link SaltServerActionService} to work with
+     * @param saltUtilsIn
      */
     public SSHPushWorkerSalt(Logger logger, SystemSummary systemIn,
             SystemQuery saltServiceIn, SaltSSHService saltSSHServiceIn,
-            SaltServerActionService saltServerActionServiceIn) {
+            SaltServerActionService saltServerActionServiceIn, SaltUtils saltUtilsIn) {
         log = logger;
         system = systemIn;
         systemQuery = saltServiceIn;
         saltSSHService = saltSSHServiceIn;
         saltServerActionService = saltServerActionServiceIn;
+        saltUtils = saltUtilsIn;
     }
 
     /**
@@ -221,7 +211,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
             log.error("Could not resume pending action chain execution, no next_chunk returned by " +
                     "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
             saltSSHService.cleanPendingActionChainAsync(minion);
-            SaltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
+            saltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
                     Optional.of("Could not resume pending action chain execution, no next_chunk returned by " +
                             "mgractionchains.get_pending_resume"));
             return false;
@@ -231,7 +221,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
             log.error("Could not resume pending action chain execution, no ssh_extra_filerefs returned by " +
                     "mgractionchains.get_pending_resume for ssh minion " + minion.getMinionId());
             saltSSHService.cleanPendingActionChainAsync(minion);
-            SaltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
+            saltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
                     Optional.of("Could not resume pending action chain execution, no ssh_extra_filerefs " +
                             "returned by mgractionchains.get_pending_resume"));
             return false;
@@ -303,7 +293,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
                             }
                     )).orElse("Unknown error");
 
-                    SaltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
+                    saltServerActionService.failActionChain(minion.getMinionId(), nextActionId,
                             Optional.of("Error handling action chain execution: " + errMsg));
                 }
             }
@@ -351,7 +341,7 @@ public class SSHPushWorkerSalt implements QueueWorker {
             Map<String, Result<SystemInfo>> systemInfoMap = saltSSHService.callSyncSSH(systeminfo, minionTarget);
             systemInfoMap.entrySet().stream().forEach(entry-> entry.getValue().result().ifPresent(si-> {
                 Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(entry.getKey());
-                minionServer.ifPresent(minion -> SaltUtils.INSTANCE.updateSystemInfo(si, minion));
+                minionServer.ifPresent(minion -> saltUtils.updateSystemInfo(si, minion));
             }));
         }
         catch (SaltException ex) {

@@ -21,6 +21,7 @@ import java.util.Optional;
  */
 public class RedhatProductInfo {
 
+    private final Optional<String> oracleReleaseContent;
     private final Optional<String> centosReleaseContent;
     private final Optional<String> rhelReleaseContent;
     private final Optional<String> whatProvidesRes;
@@ -28,13 +29,22 @@ public class RedhatProductInfo {
     /**
      * @param centosReleaseContentIn centos release content
      * @param rhelReleaseContentIn rhel release content
+     * @param oracleReleaseContentIn oracle release content
      * @param whatProvidesResIn what provides res result
      */
     public RedhatProductInfo(Optional<String> centosReleaseContentIn, Optional<String> rhelReleaseContentIn,
-                             Optional<String> whatProvidesResIn) {
+            Optional<String> oracleReleaseContentIn, Optional<String> whatProvidesResIn) {
+        this.oracleReleaseContent = oracleReleaseContentIn;
         this.centosReleaseContent = centosReleaseContentIn;
         this.rhelReleaseContent = rhelReleaseContentIn;
         this.whatProvidesRes = whatProvidesResIn;
+    }
+
+    /**
+     * @return oracle release content
+     */
+    public Optional<String> getOracleReleaseContent() {
+        return oracleReleaseContent;
     }
 
     /**

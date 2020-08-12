@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -100,7 +101,6 @@ public class SystemOverviewAction extends RhnAction {
         int nonCriticalErrataCount =
             SystemManager.countNoncriticalErrataForSystem(user, sid);
 
-
         // Upgradable Packages
         int upgradablePackagesCount = PackageManager.countUpgradable(sid);
 
@@ -126,16 +126,21 @@ public class SystemOverviewAction extends RhnAction {
                         (e1.isBase() ? -1 : 1))
                 .collect(Collectors.toList());
 
-        request.setAttribute("rebootRequired", Boolean.valueOf(rebootRequired));
-        request.setAttribute("unentitled", Boolean.valueOf(s.getEntitlements().isEmpty()));
+        if (s.getChannels().stream().anyMatch(Channel::isModular)) {
+            createErrorMessage(request, "packagelist.jsp.modulespresent", null);
+        }
+
+        request.setAttribute("rebootRequired", rebootRequired);
+        request.setAttribute("unentitled", s.getEntitlements().isEmpty());
         request.setAttribute("entitlements", entitlements);
-        request.setAttribute("systemInactive", Boolean.valueOf(s.isInactive()));
+        request.setAttribute("systemInactive", s.isInactive());
         request.setAttribute("criticalErrataCount", criticalErrataCount);
         request.setAttribute("nonCriticalErrataCount", nonCriticalErrataCount);
         request.setAttribute("upgradablePackagesCount", upgradablePackagesCount);
         request.setAttribute("hasUpdates", hasUpdates);
         request.setAttribute("baseChannel", baseChannel);
         request.setAttribute("childChannels", childChannels);
+        request.setAttribute("maintenanceSchedule", s.getMaintenanceScheduleOpt().orElse(null));
         request.setAttribute("description", description);
         request.setAttribute("installedProducts", s.getInstalledProductSet().orElse(null));
         request.setAttribute("prefs", findUserServerPreferences(user, s));

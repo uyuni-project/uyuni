@@ -1,3 +1,12 @@
+- strip SSL Certificate Common Name after 63 Characters (bsc#1173535)
+- Update package version to 4.2.0
+
+-------------------------------------------------------------------
+Thu Jul 23 13:26:12 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.11-1
+- fix centos detection (bsc#1173584)
+
 -------------------------------------------------------------------
 Wed Jul 01 16:11:36 CEST 2020 - jgonzalez@suse.com
 

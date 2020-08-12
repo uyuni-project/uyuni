@@ -30,9 +30,9 @@ import com.redhat.rhn.frontend.context.Context;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
@@ -73,15 +73,29 @@ public class MinionActionUtils {
 
     /** Whether the current database is Postgres. */
     public static final boolean POSTGRES = ConfigDefaults.get().isPostgresql();
+    private final SaltServerActionService saltServerActionService;
+    private final SystemQuery systemQuery;
+    private final SaltUtils saltUtils;
 
-    private MinionActionUtils() {
+    /**
+     * Utilities for minion actions
+     *
+     * @param saltServerActionServiceIn
+     * @param systemQueryIn
+     * @param saltUtilsIn
+     */
+    public MinionActionUtils(SaltServerActionService saltServerActionServiceIn, SystemQuery systemQueryIn,
+                             SaltUtils saltUtilsIn) {
+        this.saltServerActionService = saltServerActionServiceIn;
+        this.systemQuery = systemQueryIn;
+        this.saltUtils = saltUtilsIn;
     }
 
     /**
      * Extracts the action id out of a json object like
      * ScheduleMetadata without parsing the whole object
      */
-    public static final Function<JsonElement, Optional<Long>> EXTRACT_ACTION_ID =
+    private static final Function<JsonElement, Optional<Long>> EXTRACT_ACTION_ID =
             flatMap(Json::asLong)
                     .compose(flatMap(Json::asPrim))
                     .compose(flatMap(Json.getField(ScheduleMetadata.SUMA_ACTION_ID)))
@@ -93,7 +107,7 @@ public class MinionActionUtils {
     * @param jobInfo job info containing the metadata
     * @return true if a package list refresh was requested, otherwise false
     */
-    private static boolean forcePackageListRefresh(Info jobInfo) {
+    private boolean forcePackageListRefresh(Info jobInfo) {
         return jobInfo.getMetadata(ScheduleMetadata.class)
                         .map(ScheduleMetadata::isForcePackageListRefresh)
                         .orElse(false);
@@ -111,7 +125,7 @@ public class MinionActionUtils {
      * @param infoMap map from actionIds to Salt job information objects
      * @return the updated ServerAction
      */
-    public static ServerAction updateMinionActionStatus(SystemQuery salt, ServerAction sa,
+    public ServerAction updateMinionActionStatus(SystemQuery salt, ServerAction sa,
             MinionServer server, List<SaltUtil.RunningInfo> running,
             Map<Long, Optional<Info>> infoMap) {
         long actionId = sa.getParentAction().getId();
@@ -138,9 +152,9 @@ public class MinionActionUtils {
                                 return sa;
                             }
                             else {
-                                SaltUtils.INSTANCE.updateServerAction(sa, 0L,
+                                saltUtils.updateServerAction(sa, 0L,
                                         true, info.getJid(), o, info.getFunction());
-                                SaltUtils.handlePackageChanges(info.getFunction(), o,
+                                saltUtils.handlePackageChanges(info.getFunction(), o,
                                         server);
                                 return sa;
                             }
@@ -168,9 +182,8 @@ public class MinionActionUtils {
     /**
      * Cleanup all minion actions for which we missed the JobReturnEvent
      *
-     * @param salt the salt service to use
      */
-    public static void cleanupMinionActions(SystemQuery salt) {
+    public void cleanupMinionActions() {
         ZonedDateTime now = ZonedDateTime.now();
         // Select only ServerActions that are for minions and where the Action
         // should already be executed or running
@@ -200,12 +213,12 @@ public class MinionActionUtils {
         ).collect(Collectors.toList());
 
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
-                salt.running(new MinionList(minionIds));
+                systemQuery.running(new MinionList(minionIds));
 
         Map<Long, Optional<Jobs.Info>> infoMap = serverActions.stream()
           .map(sa -> sa.getParentAction().getId())
           .distinct()
-          .collect(toMap(identity(), id -> infoForActionId(salt, id)));
+          .collect(toMap(identity(), id -> infoForActionId(systemQuery, id)));
 
         serverActions.forEach(sa ->
                 sa.getServer().asMinionServer().ifPresent(minion -> {
@@ -215,7 +228,7 @@ public class MinionActionUtils {
                         },
                         runningInfos -> {
                             ActionFactory.save(updateMinionActionStatus(
-                                    salt, sa, minion, runningInfos, infoMap));
+                                    systemQuery, sa, minion, runningInfos, infoMap));
                         });
                     });
                 })
@@ -229,7 +242,7 @@ public class MinionActionUtils {
      * @param actionId the actionId
      * @return an optional job information object
      */
-    private static Optional<Info> infoForActionId(SystemQuery salt, long actionId) {
+    private Optional<Info> infoForActionId(SystemQuery salt, long actionId) {
         // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
         // stored persistently via the database (see PGEventStream)
         if (POSTGRES) {
@@ -246,9 +259,8 @@ public class MinionActionUtils {
 
     /**
      * Cleans up Action Chain records.
-     * @param salt a SaltService instance
      */
-    public static void cleanupMinionActionChains(SystemQuery salt) {
+    public void cleanupMinionActionChains() {
         // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
         // stored persistently via the database (see PGEventStream)
         if (POSTGRES) {
@@ -262,11 +274,11 @@ public class MinionActionUtils {
                 .minus(1, ChronoUnit.HOURS);
 
         Optional<Map<String, Jobs.ListJobsEntry>> actionChainsJobs =
-                salt.jobsByMetadata(metadata, startTime, LocalDateTime.now());
+                systemQuery.jobsByMetadata(metadata, startTime, LocalDateTime.now());
 
         actionChainsJobs.ifPresent(jidsMap -> {
             jidsMap.keySet().forEach(jid -> {
-                salt.listJob(jid).ifPresent(jobInfo -> {
+                systemQuery.listJob(jid).ifPresent(jobInfo -> {
                     TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>> typeToken =
                             new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { };
 
@@ -302,7 +314,7 @@ public class MinionActionUtils {
                                         }
 
                                         StateApplyResult<Ret<JsonElement>> stateApplyResult = e.getValue();
-                                        JobReturnEventMessageAction.handleAction(retActionId,
+                                        saltServerActionService.handleAction(retActionId,
                                                 minionId,
                                                 stateApplyResult.isResult() ? 0 : -1,
                                                 stateApplyResult.isResult(),
@@ -329,8 +341,8 @@ public class MinionActionUtils {
      * Delete script files corresponding to script run actions.
      * @throws IOException in case of problems listing the scripts
      */
-    public static void cleanupScriptActions() throws IOException {
-        Path scriptsDir = SaltUtils.INSTANCE.getScriptsDir();
+    public void cleanupScriptActions() throws IOException {
+        Path scriptsDir = saltUtils.getScriptsDir();
         if (Files.isDirectory(scriptsDir)) {
             Pattern p = Pattern.compile("script_(\\d*).sh");
             Files.list(scriptsDir).forEach(file -> {

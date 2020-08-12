@@ -1,3 +1,25 @@
+- fix error when rolling back a system to a snapshot (bsc#1173997)
+- Implement maintenance windows backend
+- Add check for maintainence window during executing recurring actions
+- Implement maintenance windows in struts
+- XMLRPC: Assign/retract maintenance schedule to/from systems
+- avoid deadlock when syncing channels and registering minions at the same time (bsc#1173566)
+- Fix softwarechannel update for vendor channels (bsc#1172709)
+- Add modular repository warning message to system overview page (bsc#1173959)
+- Change system list header text to something better (bsc#1173982)
+- set CPU and memory info for virtual instances (bsc#1170244)
+- Add virtual network Start, Stop and Delete actions
+- Add virtual network list page
+- update default product tree tag and set Beta tag again
+- Update package version to 4.2.0
+
+-------------------------------------------------------------------
+Thu Jul 23 13:26:41 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.16-1
+- Fix httpcomponents and gson jar symlinks (bsc#1174229)
+- enhance RedHat product detection for CentOS and OracleLinux (bsc#1173584)
+- provide comps.xml and modules.yaml when using onlinerepo for kickstart
 - Refresh virtualization pages only on events
 - fix up2date detection on RH8 when salt-minion is used for registration
 - improve performance of the System Groups page with many clients (bsc#1172839)

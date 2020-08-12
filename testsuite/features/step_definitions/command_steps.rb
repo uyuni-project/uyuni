@@ -1066,7 +1066,7 @@ Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host
   end
 end
 
-Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus") do
     output, _code = node.run("virsh dumpxml #{vm}")
@@ -1077,7 +1077,7 @@ Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and (
   end
 end
 
-Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{type} graphics device") do
     output, _code = node.run("virsh dumpxml #{vm}")
@@ -1173,6 +1173,15 @@ When(/^I refresh the "([^"]*)" storage pool of this "([^"]*)"$/) do |pool, host|
   node.run("virsh pool-refresh #{pool}")
 end
 
+Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual network on #{host} still exists") do
+    _output, code = node.run("virsh net-info #{vm}", fatal = false)
+    break if code == 1
+    sleep 3
+  end
+end
+
 # WORKAROUND
 # Work around issue https://github.com/SUSE/spacewalk/issues/10360
 # Remove as soon as the issue is fixed
@@ -1257,7 +1266,7 @@ When(/^I prepare the retail configuration file on server$/) do
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
 
-When(/^I import the retail configuration using retail_yaml command/) do
+When(/^I import the retail configuration using retail_yaml command$/) do
   filepath = '/tmp/massive-import-terminals.yml'
   $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
 end

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
@@ -27,7 +28,10 @@ import java.util.Set;
  * @version $Rev$
  */
 public class ManagedServerGroup extends ServerGroup {
+
     private Set associatedAdmins = new HashSet();
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
     /**
      * returns the set of 'non-org-admin' users that have been
      * subscribed to this ServerGroup
@@ -48,7 +52,7 @@ public class ManagedServerGroup extends ServerGroup {
      * @return a set of users
      */
     public Set getAssociatedAdminsFor(User user) {
-        ServerGroupManager.getInstance().
+        serverGroupManager.
                 validateAdminCredentials(user);
         return getAssociatedAdmins();
     }

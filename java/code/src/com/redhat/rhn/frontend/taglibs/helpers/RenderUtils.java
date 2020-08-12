@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs.helpers;
 
+import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.nav.AclGuard;
@@ -38,20 +39,15 @@ import javax.servlet.jsp.PageContext;
 /**
  * Utility methods for rendering navigation menus that are defined in XML files.
  */
-public enum RenderUtils {
-    /**
-     * Singleton instance
-     */
-    INSTANCE;
+public class RenderUtils {
 
-    RenderUtils() { }
+    private final AclFactory aclFactory;
 
     /**
-     * Singleton implementation
-     * @return an instance of this class
+     * @param aclFactoryIn
      */
-    public static RenderUtils getInstance() {
-        return INSTANCE;
+    public RenderUtils(AclFactory aclFactoryIn) {
+        this.aclFactory = aclFactoryIn;
     }
 
     /**
@@ -116,7 +112,7 @@ public enum RenderUtils {
                 aclContext.put(token, value);
             }
         }
-        AclGuard guard = new AclGuard(aclContext, navTree.getAclMixins());
+        AclGuard guard = new AclGuard(aclContext, navTree.getAclMixins(), aclFactory);
         navTree.setGuard(guard);
 
         // We try to fetch the previously successful navigation match from the Session.

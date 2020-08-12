@@ -1,3 +1,16 @@
+- Prevent a deadlock error involving delete_server and update_needed_cache (bsc#1173073)
+- Add new states and types for virtual instances in order
+  to support Nutanix AHV.
+- implement Maintenance Windows
+- add virtual network state change action
+- Update package version to 4.2.0
+
+-------------------------------------------------------------------
+Thu Jul 23 13:36:46 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.11-1
+- Internal fixes to avoid problems with the idempotency tests
+
 -------------------------------------------------------------------
 Mon Jun 29 10:11:12 CEST 2020 - jgonzalez@suse.com
 

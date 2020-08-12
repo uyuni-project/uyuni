@@ -15,6 +15,7 @@
 
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -27,6 +28,7 @@ import org.apache.commons.lang3.text.WordUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -47,6 +49,9 @@ public enum ViewHelper {
      * Singleton instance
      */
     INSTANCE;
+
+    private static final RenderUtils RENDER_UTILS = GlobalInstanceHolder.RENDER_UTILS;
+    private static final ClusterManager CLUSTER_MANAGER = GlobalInstanceHolder.CLUSTER_MANAGER;
 
     ViewHelper() { }
 
@@ -93,7 +98,7 @@ public enum ViewHelper {
         try {
             Map<String, String> sparkParams = request.params().entrySet().stream().collect(
                     Collectors.toMap(entry -> entry.getKey().substring(1), entry -> entry.getValue()));
-            return RenderUtils.INSTANCE.renderNavigationMenu(
+            return RENDER_UTILS.renderNavigationMenu(
                     request.raw(), menuDefinition, rendererClass, 0, 3, sparkParams, additionalParams);
         }
         catch (Exception e) {
@@ -138,6 +143,15 @@ public enum ViewHelper {
         DateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmXXX", locale);
         isoFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return isoFormat.format(date);
+    }
+
+    /**
+     * Render a given time in the current user's configured timezone
+     * @param instant the instant
+     * @return user's local time
+     */
+    public String renderDate(Instant instant) {
+        return renderDate(new Date(instant.toEpochMilli()));
     }
 
     /**
@@ -186,6 +200,6 @@ public enum ViewHelper {
      * @return true if the group is owned by a cluster
      */
     public boolean isClusterGroup(String groupId) {
-        return ClusterManager.instance().isClusterGroup(Long.parseLong(groupId));
+        return CLUSTER_MANAGER.isClusterGroup(Long.parseLong(groupId));
     }
 }

@@ -47,8 +47,7 @@ public class SsmScheduleXccdfSubmitAction extends BaseSsmScheduleXccdfAction {
 
         String params = (String) form.get(PARAMS);
         String path = (String) form.get(PATH);
-        Date earliest = strutsDelegate.readDatePicker(form, DATE,
-                DatePicker.YEAR_RANGE_POSITIVE);
+        Date earliest = strutsDelegate.readScheduleDate(form, DATE, DatePicker.YEAR_RANGE_POSITIVE);
 
         request.setAttribute(LOCALIZED_DATE,
                 LocalizationService.getInstance().formatDate(earliest));

@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
@@ -318,6 +319,22 @@ public class StrutsDelegate {
     }
 
     /**
+     * Convenience method to read schedule date from the maintenance window selector or from the date picker
+     * (if maint. window is not selected).
+     *
+     * See readMaintenanceWindowDate and readDatePicker.
+     *
+     * @param dynaActionForm the form
+     * @param datePickerName the datepicker name
+     * @param yearDirection the year direction parameter of the datepicker
+     * @return the schedule date from the maintenance window selector or from the date picker
+     */
+    public Date readScheduleDate(DynaActionForm dynaActionForm, String datePickerName, int yearDirection) {
+        return readMaintenanceWindowDate(dynaActionForm)
+                .orElseGet(() -> readDatePicker(dynaActionForm, datePickerName, yearDirection));
+    }
+
+    /**
      * Reads the earliest date from a form populated by a datepicker.
      * Your dyna action picker must either be a struts datePickerForm, or
      * possess all of datePickerForm's fields.
@@ -331,14 +348,34 @@ public class StrutsDelegate {
         //use date is not required for date picker forms.
         //if it is not there, then that means we should always evaluate the
         //date picker.  Otherwise, we evaluate if it tells us to do so.
-        if (!form.getMap().containsKey(DatePicker.USE_DATE) ||
-                form.get(DatePicker.USE_DATE) == null ||
-                ((Boolean)form.get(DatePicker.USE_DATE)).booleanValue()) {
+        if (!form.getMap().containsKey(DatePicker.SCHEDULE_TYPE) ||
+                form.get(DatePicker.SCHEDULE_TYPE) == null ||
+                form.get(DatePicker.SCHEDULE_TYPE).equals(DatePicker.ScheduleType.DATE.asString())) {
             DatePicker p = getDatePicker(name, yearDirection);
             p.readForm(form);
             return p.getDate();
         }
         return new Date();
+    }
+
+    /**
+     * Reads the date from selected maintenance window and returns it,
+     * if scheduling by maintenance window was selected in the form.
+     *
+     * Otherwise return an empty optional.
+     *
+     * @param form the form
+     * @return Optional with selected maintenance window or empty
+     */
+    public Optional<Date> readMaintenanceWindowDate(DynaActionForm form) {
+        String scheduleType = (String) form.getMap().get(DatePicker.SCHEDULE_TYPE);
+        String maintenanceWindow = (String) form.getMap().get("maintenance_window");
+        if (DatePicker.ScheduleType.MAINTENANCE_WINDOW.asString().equals(scheduleType) &&
+                StringUtils.isNotEmpty(maintenanceWindow)) {
+            long maintWindowStart = Long.parseLong(maintenanceWindow);
+            return Optional.of(new Date(maintWindowStart));
+        }
+        return Optional.empty();
     }
 
     /**
@@ -354,10 +391,9 @@ public class StrutsDelegate {
      */
     public void rememberDatePicker(Map requestParams,
             DynaActionForm form, String name, int yearDirection) {
-        //Write the option use_date field if it is there.
-        if (form.get(DatePicker.USE_DATE) != null) {
-            requestParams.put(DatePicker.USE_DATE,
-                    form.get(DatePicker.USE_DATE));
+        //Write the option schedule_type field if it is there.
+        if (form.get(DatePicker.SCHEDULE_TYPE) != null) {
+            requestParams.put(DatePicker.SCHEDULE_TYPE, form.get(DatePicker.SCHEDULE_TYPE));
         }
 
         //The datepicker itself can write the rest.
@@ -389,12 +425,12 @@ public class StrutsDelegate {
 
         //prepopulate the form for this picker
         p.writeToForm(form);
-        if (!StringUtils.isEmpty(request.getParameter(DatePicker.USE_DATE))) {
-            Boolean preset = Boolean.valueOf(request.getParameter(DatePicker.USE_DATE));
-            form.set(DatePicker.USE_DATE, preset);
+        if (!StringUtils.isEmpty(request.getParameter(DatePicker.SCHEDULE_TYPE))) {
+            String preset = request.getParameter(DatePicker.SCHEDULE_TYPE);
+            form.set(DatePicker.SCHEDULE_TYPE, preset);
         }
-        else if (form.getMap().containsKey(DatePicker.USE_DATE)) {
-            form.set(DatePicker.USE_DATE, Boolean.FALSE);
+        else if (form.getMap().containsKey(DatePicker.SCHEDULE_TYPE)) {
+            form.set(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.ACTION_CHAIN.asString());
         }
         request.setAttribute(name, p);
         //give back the date picker

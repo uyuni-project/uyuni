@@ -50,7 +50,7 @@ Name:           mgr-osad
 Summary:        Open Source Architecture Daemon
 License:        GPL-2.0-only
 Group:          System Environment/Daemons
-Version:        4.1.2
+Version:        4.2.0
 Provides:       %{oldname} = %{oldversion}
 Obsoletes:      %{oldname} < %{oldversion}
 Release:        1%{?dist}
@@ -69,8 +69,6 @@ BuildRequires:  perl
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Conflicts:      mgr-osa-dispatcher < %{version}-%{release}
 Conflicts:      mgr-osa-dispatcher > %{version}-%{release}
-BuildRequires:  uyuni-base-common
-Requires(pre):  uyuni-base-common
 %if 0%{?suse_version} >= 1210
 BuildRequires:  systemd
 %{?systemd_requires}
@@ -188,6 +186,8 @@ Summary:        OSA dispatcher
 Group:          System Environment/Daemons
 Obsoletes:      osa-dispatcher < %{oldversion}
 Provides:       osa-dispatcher = %{oldversion}
+BuildRequires:  uyuni-base-common
+Requires(pre):  uyuni-base-common
 Requires:       lsof
 Requires:       %{pythonX}-mgr-osa-dispatcher = %{version}-%{release}
 Requires:       spacewalk-backend-server >= 1.2.32

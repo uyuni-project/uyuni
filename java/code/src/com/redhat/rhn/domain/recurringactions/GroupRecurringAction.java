@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.recurringactions;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -46,6 +47,7 @@ import javax.persistence.Transient;
 public class GroupRecurringAction extends RecurringAction {
 
     private ServerGroup group;
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * Standard constructor
@@ -82,13 +84,12 @@ public class GroupRecurringAction extends RecurringAction {
      */
     @Override
     public boolean canAccess(User user) {
-        ServerGroupManager groupManager = ServerGroupManager.getInstance();
         if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
             return false;
         }
         try {
             /* Check if user has permission to access the group */
-            groupManager.lookup(group.getId(), user);
+            serverGroupManager.lookup(group.getId(), user);
         }
         catch (LookupException e) {
             return false;

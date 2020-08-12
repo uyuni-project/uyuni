@@ -7,13 +7,12 @@ const { hot } = require('react-hot-loader');
 const React = require('react');
 const _isEqual = require('lodash/isEqual');
 const { TopPanel } = require('components/panels/TopPanel');
-const MessagesUtils = require('components/messages').Utils;
 const { Loading } = require('components/utils/Loading');
 const { getOrderedItemsFromModel } = require('components/input/FormMultiInput');
 const { GuestProperties } = require('../GuestProperties');
 const GuestNicsPanel = require('../properties/guest-nics-panel');
 const DiskUtils = require('../properties/disk-utils');
-const { VirtualizationGuestActionApi } = require('../virtualization-guest-action-api');
+const { SimpleActionApi } = require('../../SimpleActionApi');
 const { VirtualizationGuestDefinitionApi } = require('../virtualization-guest-definition-api');
 const Functions = require('utils/functions');
 
@@ -85,7 +84,9 @@ class GuestsEdit extends React.Component<Props> {
             definition,
             messages: definitionMessages,
           }) => (
-            <VirtualizationGuestActionApi
+            <SimpleActionApi
+              urlType="guests"
+              idName="uuids"
               hostid={this.props.host.id}
               bounce={`/rhn/manager/systems/details/virtualization/guests/${this.props.host.id}`}
             >
@@ -120,7 +121,7 @@ class GuestsEdit extends React.Component<Props> {
                   );
                 }
               }
-            </VirtualizationGuestActionApi>)
+            </SimpleActionApi>)
         }
       </VirtualizationGuestDefinitionApi>);
   }

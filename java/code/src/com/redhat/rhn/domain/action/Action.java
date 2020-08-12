@@ -271,7 +271,7 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         if (serverActions == null) {
             serverActions = new HashSet();
         }
-        saIn.setParentAction(this);
+        saIn.setParentActionWithCheck(this);
         serverActions.add(saIn);
     }
 

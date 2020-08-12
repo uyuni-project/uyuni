@@ -21,6 +21,7 @@ import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toSet;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.channel.Channel;
@@ -41,21 +42,16 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.utils.RhelUtils;
 import com.suse.manager.reactor.utils.ValueMap;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.services.iface.RedhatProductInfo;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.utils.Opt;
@@ -87,12 +83,7 @@ public class RegistrationUtils {
 
     private static final Logger LOG = Logger.getLogger(RegistrationUtils.class);
 
-    private static SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
-                    new FormulaMonitoringManager()),
-            new SystemEntitler(SaltService.INSTANCE, new VirtManagerSalt(SaltService.INSTANCE_SALT_API),
-                    new FormulaMonitoringManager())
-    );
+    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     private RegistrationUtils() {
     }
@@ -363,12 +354,14 @@ public class RegistrationUtils {
                     })).collect(toSet());
         }
         else if ("redhat".equalsIgnoreCase(grains.getValueAsString(OS)) ||
-                "centos".equalsIgnoreCase(grains.getValueAsString(OS))) {
+                 "centos".equalsIgnoreCase(grains.getValueAsString(OS)) ||
+                 "oel".equalsIgnoreCase(grains.getValueAsString(OS))) {
             Optional<RedhatProductInfo> redhatProductInfo = systemQuery.redhatProductInfo(server.getMinionId());
 
             Optional<RhelUtils.RhelProduct> rhelProduct =
                     redhatProductInfo.flatMap(x -> RhelUtils.detectRhelProduct(
-                            server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent()));
+                            server, x.getWhatProvidesRes(), x.getRhelReleaseContent(), x.getCentosReleaseContent(),
+                            x.getOracleReleaseContent()));
             return Opt.stream(rhelProduct).flatMap(rhel -> {
                 if (rhel.getSuseProduct().isPresent()) {
                     return Opt.stream(rhel.getSuseProduct());

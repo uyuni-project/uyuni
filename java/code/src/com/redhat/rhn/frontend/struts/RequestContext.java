@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.struts;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.errata.Errata;
@@ -102,6 +103,8 @@ public class RequestContext {
     public static final String NO_SCRIPT = "noscript";
     public static final String MODE = "mode";
     public static final String POST = "POST";
+
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * Names of pagination elements (and their corresponding attributes).
@@ -349,9 +352,8 @@ public class RequestContext {
     public ManagedServerGroup lookupAndBindServerGroup() {
         if (request.getAttribute(SERVER_GROUP) == null) {
             Long id = getRequiredParam(SERVER_GROUP_ID);
-            ServerGroupManager manager = ServerGroupManager.getInstance();
             User user = getCurrentUser();
-            ManagedServerGroup sg = manager.lookup(id, user);
+            ManagedServerGroup sg = serverGroupManager.lookup(id, user);
             if (sg == null) {
                 String msg = "No server group with id = [%s] found.";
                 throw new IllegalArgumentException(String.format(msg, id));

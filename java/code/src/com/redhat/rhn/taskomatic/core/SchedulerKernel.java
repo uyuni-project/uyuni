@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.core;
 
 import static java.util.stream.Collectors.toSet;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.ConfigException;
@@ -31,8 +32,6 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
 
 import com.suse.manager.metrics.PrometheusExporter;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
 
 import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
@@ -63,8 +62,6 @@ public class SchedulerKernel {
     private String dataSourceConfigPath = "org.quartz.jobStore.dataSource";
     private String dataSourcePrefix = "org.quartz.dataSource";
     private String defaultDataSource = "rhnDs";
-    public static final SystemQuery SYSTEM_QUERY = SaltService.INSTANCE;
-
 
     /**
      * Kernel main driver behind Taskomatic
@@ -144,7 +141,7 @@ public class SchedulerKernel {
             throw new TaskomaticException("HibernateFactory failed to initialize");
         }
         MessageQueue.startMessaging();
-        MessageQueue.configureDefaultActions(SYSTEM_QUERY, SaltService.INSTANCE_SALT_API);
+        MessageQueue.configureDefaultActions(GlobalInstanceHolder.SYSTEM_QUERY, GlobalInstanceHolder.SALT_API);
         try {
             SchedulerKernel.scheduler.start();
             initializeAllSatSchedules();

@@ -37,7 +37,6 @@ import java.util.Optional;
  */
 public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
 
-    private static RegularMinionBootstrapper instance;
     private static final Logger LOG = Logger.getLogger(RegularMinionBootstrapper.class);
 
     /**
@@ -47,18 +46,6 @@ public class RegularMinionBootstrapper extends AbstractMinionBootstrapper {
      */
     public RegularMinionBootstrapper(SystemQuery systemQueryIn) {
         super(systemQueryIn);
-    }
-
-    /**
-     * Get instance of the RegularMinionBootstrapper
-     * @param systemQuery instance to get system information.
-     * @return instance of the RegularMinionBootstrapper
-     */
-    public static synchronized RegularMinionBootstrapper getInstance(SystemQuery systemQuery) {
-        if (instance == null) {
-            instance = new RegularMinionBootstrapper(systemQuery);
-        }
-        return instance;
     }
 
     @Override

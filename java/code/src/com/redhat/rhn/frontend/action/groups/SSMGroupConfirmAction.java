@@ -24,6 +24,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -59,6 +60,8 @@ public class SSMGroupConfirmAction extends RhnAction
     private String ADD_LIST = "addList";
     private String RMV_DATA = "removeSet";
     private String RMV_LIST = "removeList";
+
+    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * {@inheritDoc}
@@ -120,18 +123,17 @@ public class SSMGroupConfirmAction extends RhnAction
             for (SystemOverview system : systems) {
                 servers.add(ServerFactory.lookupById(system.getId()));
             }
-            ServerGroupManager manager = ServerGroupManager.getInstance();
             for (SystemGroupOverview group : addList) {
-                ManagedServerGroup msg = manager.lookup(group.getId(), user);
+                ManagedServerGroup msg = serverGroupManager.lookup(group.getId(), user);
                 Set<Server> difference = new HashSet<Server>(servers);
                 difference.removeAll(msg.getServers());
-                manager.addServers(msg, difference, user);
+                serverGroupManager.addServers(msg, difference, user);
             }
             for (SystemGroupOverview group : removeList) {
-                ManagedServerGroup msg = manager.lookup(group.getId(), user);
+                ManagedServerGroup msg = serverGroupManager.lookup(group.getId(), user);
                 Set<Server> intersection = new HashSet<Server>(msg.getServers());
                 intersection.retainAll(servers);
-                manager.removeServers(msg, intersection, user);
+                serverGroupManager.removeServers(msg, intersection, user);
             }
             createSuccessMessage(request, "ssm.groups.changed", null);
             groupSet.clear();

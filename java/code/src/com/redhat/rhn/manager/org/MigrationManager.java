@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.org;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -50,6 +51,8 @@ import java.util.List;
  * @version $Rev$
  */
 public class MigrationManager extends BaseManager {
+
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * Migrate a set of servers to the organization specified
@@ -130,11 +133,10 @@ public class MigrationManager extends BaseManager {
         SystemManager.unsubscribeServerFromChannel(server, server.getBaseChannel());
 
         // Remove from all system groups:
-        ServerGroupManager manager = ServerGroupManager.getInstance();
         for (ManagedServerGroup group : server.getManagedGroups()) {
             List<Server> tempList = new LinkedList<Server>();
             tempList.add(server);
-            manager.removeServers(group, tempList);
+            SERVER_GROUP_MANAGER.removeServers(group, tempList);
         }
 
         // Remove custom data values (aka System->CustomInfo)

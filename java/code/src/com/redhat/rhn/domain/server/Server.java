@@ -36,6 +36,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.utils.Opt;
 import java.net.IDN;
 import java.sql.Timestamp;
@@ -53,6 +54,7 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -126,6 +128,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String machineId;
     private String hostname;
     private boolean payg;
+    private MaintenanceSchedule maintenanceSchedule;
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -147,12 +150,19 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
 
     /**
+     * Retrieves an unmodifiable collection containing the server groups.
      * @return Returns the groups.
      */
-    protected Set<ServerGroup> getGroups() {
-        return groups;
+    public Set<ServerGroup> getUnmodifiableGroups() {
+        return  Collections.unmodifiableSet(new HashSet<>(groups));
     }
 
+    /**
+     * @return Returns the groups.
+     */
+    public Set<ServerGroup> getGroups() {
+        return groups;
+    }
 
     /**
      * @param groupsIn The groups to set.
@@ -2108,6 +2118,29 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setPayg(boolean paygIn) {
         payg = paygIn;
+    }
+
+    /**
+     * Do not use this method, use getMaintenanceScheduleOpt instead.
+     * @return the maintenance schedule
+     */
+    public MaintenanceSchedule getMaintenanceSchedule() {
+        return maintenanceSchedule;
+    }
+
+    /**
+     * @return the maintenance schedule as optional
+     */
+    public Optional<MaintenanceSchedule> getMaintenanceScheduleOpt() {
+        return Optional.ofNullable(maintenanceSchedule);
+    }
+
+    /**
+     * Set the Maintenance Schedule
+     * @param scheduleIn the schedule
+     */
+    public void setMaintenanceSchedule(MaintenanceSchedule scheduleIn) {
+        maintenanceSchedule = scheduleIn;
     }
 
     /**

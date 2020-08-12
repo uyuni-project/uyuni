@@ -18,6 +18,7 @@ import java.text.Collator;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -391,6 +392,15 @@ public class LocalizationService {
     public String formatDate(Date date) {
         Context ctx = Context.getCurrentContext();
         return formatDate(date, ctx.getLocale());
+    }
+
+    /**
+     * Format the instant and let the service determine the locale
+     * @param instant the instant
+     * @return String representation of given date.
+     */
+    public String formatDate(Instant instant) {
+        return formatDate(Date.from(instant));
     }
 
     /**

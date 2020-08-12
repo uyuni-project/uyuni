@@ -43,6 +43,7 @@ import com.redhat.rhn.frontend.xmlrpc.activationkey.NoSuchActivationKeyException
 import com.redhat.rhn.frontend.xmlrpc.serializer.ActivationKeySerializer;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ConfigTestUtils;
@@ -69,7 +70,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
 
 public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
-    private ActivationKeyHandler keyHandler = new ActivationKeyHandler();
+    private ActivationKeyHandler keyHandler = new ActivationKeyHandler(new ServerGroupManager());
     private static final String KEY = "myexplicitkey";
     private static final String KEY_DESCRIPTION = "Test Key";
     private static final Integer KEY_USAGE_LIMIT = 0;

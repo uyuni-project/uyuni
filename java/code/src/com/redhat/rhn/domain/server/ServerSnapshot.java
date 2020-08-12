@@ -367,11 +367,7 @@ public class ServerSnapshot extends BaseDomainHelper {
      */
     public void rollbackGroups() {
         // remove from all groups
-        Long sid = this.server.getId();
-        Set<ServerGroup> grps = this.server.getGroups();
-        for (ServerGroup grp : grps) {
-            ServerFactory.removeServerFromGroup(server, grp);
-        }
+        this.server.getUnmodifiableGroups().stream().forEach(grp ->ServerFactory.removeServerFromGroup(server, grp));
         // add to appropriate groups
         for (ServerGroup grp : getGroups()) {
             ServerFactory.addServerToGroup(this.server, grp);
