@@ -16,7 +16,7 @@ module.exports = {
   "globals": {
     "t": true,
     "module": true,
-    "$": true,
+    "jQuery": true,
   },
 
   rules: {

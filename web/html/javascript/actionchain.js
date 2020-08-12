@@ -1,6 +1,6 @@
 jQuery(function() {
   var actionChainId = jQuery(".action-chain").data("action-chain-id");
-  var maintenanceWindowsPresent = $(".action-chain").data("maintenance-windows-present");
+  var maintenanceWindowsPresent = jQuery(".action-chain").data("maintenance-windows-present");
 
   // handle clik on title label
   jQuery("#label-link").on("click", function(){
