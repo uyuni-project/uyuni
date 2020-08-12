@@ -1,3 +1,5 @@
+- Fix the fallback to RES bootstrap repo for Centos (bsc#1174423)
+
 -------------------------------------------------------------------
 Wed Aug 12 10:51:34 CEST 2020 - jgonzalez@suse.com
 
