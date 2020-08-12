@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Wed Aug 12 10:58:00 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.13-1
 - Fix: supply a dnf base when dealing w/repos (bsc#1172504)
 - Fix: autorefresh in repos is zypper-only
 - Add virtual network state change state to handle start, stop and delete
