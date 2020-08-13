@@ -8,5 +8,6 @@
 ## QAM Init Proxy BEGIN ###
 
 - features/qam/init_clients/proxy.feature
+- features/qam/init_clients/branch.feature
 
 ## QAM Init Proxy END ###
