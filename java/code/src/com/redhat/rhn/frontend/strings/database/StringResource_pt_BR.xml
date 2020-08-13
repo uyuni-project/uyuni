@@ -238,7 +238,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>(GMT+1200) New Zealand (Auckland)</target>
+        <target>(GMT+1200) Nova Zelândia (Auckland)</target>
       </trans-unit>
       <trans-unit id="Pacific/Norfolk">
         <source>(GMT+1130) Norfolk Island</source>
