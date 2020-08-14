@@ -766,3 +766,12 @@ When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
     puts output
   end
 end
+
+When(/^I set "([^"]*)" as NIC, "([^"]*)" as prefix, "([^"]*)" as branch server name and "([^"]*)" as domain$/) do |nic, prefix, server_name, domain|
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  cred = "--api-user admin --api-pass admin"
+  dhcp = "--dedicated-nic #{nic} --branch-ip #{net_prefix}#{ADDRESSES['proxy']} --netmask 255.255.255.0 --dyn-range #{net_prefix}#{ADDRESSES['range begin']} #{net_prefix}#{ADDRESSES['range end']}"
+  names = "--server-name #{server_name} --server-domain #{domain} --branch-prefix #{prefix}"
+  output, return_code = $server.run("retail_branch_init #{$proxy.full_hostname} #{dhcp} #{names} #{cred}")
+  raise "Command failed with following output: #{output}" unless return_code.zero?
+end
