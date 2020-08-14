@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.webui.services.FutureUtils;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -77,6 +78,7 @@ public class RemoteMinionCommands {
 
     private Long sessionId;
 
+    private MaintenanceManager mm = new MaintenanceManager();
     private CompletableFuture failAfter;
     private List<String> previewedMinions;
     private static ExecutorService eventHistoryExecutor = Executors.newCachedThreadPool();
@@ -135,6 +137,7 @@ public class RemoteMinionCommands {
             if (msg.isPreview()) {
                 List<String> allVisibleMinions = MinionServerFactory
                         .lookupVisibleToUser(webSession.getUser())
+                        .filter(m -> mm.isSystemInMaintenanceMode(m))
                         .map(MinionServer::getMinionId)
                         .collect(Collectors.toList());
 
