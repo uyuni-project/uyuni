@@ -18,6 +18,7 @@
     "@storybook/addon-docs": "^5.2.8",
     "@storybook/react": "^5.1.11",
     "@testing-library/react": "^10.4.7",
+    "@testing-library/jest-dom": "^5.11.3",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
     "babel-loader": "^8.0.5",
