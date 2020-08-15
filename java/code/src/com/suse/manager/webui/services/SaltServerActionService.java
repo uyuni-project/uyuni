@@ -243,7 +243,7 @@ public class SaltServerActionService {
         this.saltUtils = saltUtilsIn;
         this.clusterManager = clusterManagerIn;
         this.formulaManager = formulaManagerIn;
-        this.saltUtils = saltUtilsIn;
+        this.saltKeyUtils = saltKeyUtilsIn;
     }
 
     private Action unproxy(Action entity) {
