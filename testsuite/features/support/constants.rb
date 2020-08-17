@@ -94,6 +94,11 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'language'                        => 'keyboard_and_language#language',
               'keyboard layout'                 => 'keyboard_and_language#keyboard_layout' }.freeze
 
+BULLET_STYLE = { 'failing' => 'fa-times text-danger',
+                 'warning' => 'fa-hand-o-right text-danger',
+                 'success' => 'fa-check text-success',
+                 'refreshing' => 'fa-refresh text-warning' }.freeze
+
 PATCH_BY_CLIENT = { 'ceos6_minion' => 'RHSA-2019:1774',
                     'ceos6_ssh_minion' => 'RHSA-2019:1774',
                     'ceos6_client' => 'RHSA-2019:1774',
