@@ -9,52 +9,53 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-23 14:34+0100\n"
-"PO-Revision-Date: 2011-03-04 16:04+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Slovak (http://www.transifex.com/projects/p/fedora/language/"
-"sk/)\n"
+"PO-Revision-Date: 2020-05-11 07:59+0000\n"
+"Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/mgr-daemon/"
+"sk/>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../rhnsd.c:54
 msgid "MINS"
-msgstr ""
+msgstr "MINS"
 
 #: ../rhnsd.c:55
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr ""
+msgstr "Pripojiť sa k Spacewalk každých MINS minút"
 
 #: ../rhnsd.c:57
 msgid "Run in foreground"
-msgstr ""
+msgstr "Spustiť v popredí"
 
 #. Short description of program.
 #: ../rhnsd.c:62
 msgid "Spacewalk Services Daemon"
-msgstr ""
+msgstr "Démon služieb Spacewalk"
 
 #: ../rhnsd.c:115
 #, c-format
 msgid "Only root can run this program\n"
-msgstr ""
+msgstr "Tento program môže spustiť iba správca systému\n"
 
 #: ../rhnsd.c:135
 msgid "wrong number of arguments"
-msgstr ""
+msgstr "nesprávny počet argumentov"
 
 #: ../rhnsd.c:142
 msgid "already running"
-msgstr ""
+msgstr "už je spustené"
 
 #: ../rhnsd.c:249
 #, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
-msgstr ""
+msgstr "Copyright (C) %s Red Hat, Inc.\n"
 
 #: ../rhnsd.c:252
 #, c-format
 msgid "Written by %s.\n"
-msgstr ""
+msgstr "Napísal %s.\n"

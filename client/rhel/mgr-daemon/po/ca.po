@@ -12,24 +12,24 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-23 14:34+0100\n"
-"PO-Revision-Date: 2018-03-16 11:05+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Catalan <fedora@llistes.softcatala.org>\n"
+"PO-Revision-Date: 2020-05-14 22:19+0000\n"
+"Last-Translator: David Medina <medipas@gmail.com>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/mgr-daemon/"
+"ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../rhnsd.c:54
 msgid "MINS"
 msgstr "MINS"
 
 #: ../rhnsd.c:55
-#, fuzzy
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr "Connecta a Red Hat Network cada MINS minuts"
+msgstr "Connecta a Spacewalk cada MINS minuts"
 
 #: ../rhnsd.c:57
 msgid "Run in foreground"
@@ -37,9 +37,8 @@ msgstr "Executa en primer pla"
 
 #. Short description of program.
 #: ../rhnsd.c:62
-#, fuzzy
 msgid "Spacewalk Services Daemon"
-msgstr "Red Hat Network Services Daemon"
+msgstr "Dimoni de servei de Spacewalk"
 
 #: ../rhnsd.c:115
 #, c-format

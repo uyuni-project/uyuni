@@ -39,16 +39,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-11-23 14:33+0100\n"
-"PO-Revision-Date: 2018-03-16 11:00+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Spanish (http://www.transifex.com/projects/p/spacewalk/"
-"language/es/)\n"
+"PO-Revision-Date: 2020-07-28 15:30+0000\n"
+"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -239,7 +239,7 @@ msgstr "Notificación"
 #: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:245
 msgid "Warning"
-msgstr "Advertencia"
+msgstr "Alerta"
 
 #: ../src/up2date_client/rhnregGui.py:272
 msgid "There was an error while applying your choice."
@@ -465,7 +465,7 @@ msgstr "Paquete"
 
 #: ../src/up2date_client/rhnregGui.py:1214
 msgid "Arch"
-msgstr "Archivo"
+msgstr "Arq."
 
 #: ../src/up2date_client/rhnregGui.py:1221
 msgid "Building a list of RPM packages installed on your system.  Please wait."
@@ -1765,11 +1765,11 @@ msgstr "Enviando Información"
 
 #: ../data/progress.glade.h:2
 msgid "progress bar"
-msgstr "Barra de progreso"
+msgstr "barra de progreso"
 
 #: ../data/progress.glade.h:3
 msgid "progress status"
-msgstr "Estatus de progreso"
+msgstr "estado de progreso"
 
 #: ../data/rh_register.glade.h:1
 msgid ""
@@ -1804,7 +1804,7 @@ msgstr "Me gustaría registrar con un RHN Satellite o RHN Proxy"
 
 #: ../data/rh_register.glade.h:8
 msgid "Location:"
-msgstr "Localización:"
+msgstr "Ubicación:"
 
 #: ../data/rh_register.glade.h:9
 msgid "Example: https://satellite.example.com/XMLRPC"
@@ -1824,7 +1824,7 @@ msgstr "Botón de configuración de Proxy"
 
 #: ../data/rh_register.glade.h:14
 msgid "Please enter your Red Hat account information:"
-msgstr "Por favor introduce la información de tu cuenta de Red Hat:"
+msgstr "Proporcione la información de su cuenta de Red Hat:"
 
 #: ../data/rh_register.glade.h:15
 msgid "RHN login field"
@@ -1836,11 +1836,11 @@ msgstr "Campo de contraseña RHN"
 
 #: ../data/rh_register.glade.h:17
 msgid "_Password:"
-msgstr "_Password:"
+msgstr "_Contraseña:"
 
 #: ../data/rh_register.glade.h:18
 msgid "_Login:"
-msgstr "_Login:"
+msgstr "_Identificación:"
 
 #: ../data/rh_register.glade.h:19
 msgid ""
@@ -2111,7 +2111,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:75
 msgid "<b>Downloads &amp; Upgrades:</b>"
-msgstr "Descargas y actualizaciones"
+msgstr "<b>Descargas y actualizaciones:</b>"
 
 #: ../data/rh_register.glade.h:77
 msgid "<b>Support:</b>"
