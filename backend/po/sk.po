@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-08-17 13:26+0000\n"
+"PO-Revision-Date: 2020-08-18 10:23+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
 "\n"
@@ -1787,12 +1787,12 @@ msgstr "CHYBA: server.bod_pripojenia %s neexistuje"
 #: ../satellite_tools/satsync.py:2122
 #, python-format
 msgid "ERROR: path under server.mount_point (%s)  do not exist"
-msgstr ""
+msgstr "CHYBA: cesta pod server.bod_pripojenia (%s)  neexistuje"
 
 #: ../satellite_tools/satsync.py:2199
 #, python-format
 msgid "Commandline: %s"
-msgstr ""
+msgstr "Príkazový riadok: %s"
 
 #: ../satellite_tools/satsync.py:2202
 #, python-format
@@ -1800,39 +1800,46 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "satellite-sync\" for more information."
 msgstr ""
+"IBA LADIŤ: max. veľkosť-dávky pre spracovanie XML/database-import (1..%s). "
+"Viac informácií v \"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
-msgstr ""
+msgstr "alternatívny SSL CA certifikát (úplná cesta k certifikačnému súboru)"
 
 #: ../satellite_tools/satsync.py:2207
 msgid "process data for this channel only"
-msgstr ""
+msgstr "spracovať dáta iba pre tento kanál"
 
 #: ../satellite_tools/satsync.py:2209
 msgid ""
 "disk dump will be considered to be a full export; see \"man satellite-sync\" "
 "for more information."
 msgstr ""
+"výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v \""
+"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
 msgstr ""
+"existujúce vlastné kanály budú tiež synchronizované (pokiaľ sa nepoužije -c)"
 
 #: ../satellite_tools/satsync.py:2214
 #, python-format
 msgid ""
 "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
 msgstr ""
+"prepísať nastavenie úrovne ladenia v /etc/rhn/rhn.conf (ktoré je momentálne "
+"nastavené na %s)."
 
 #: ../satellite_tools/satsync.py:2216
 #, python-format
 msgid "requested version of XML dump (default: %s)"
-msgstr ""
+msgstr "požadovaná verzia výpisu XML (predvolené: %s)"
 
 #: ../satellite_tools/satsync.py:2218
 msgid "e-mail a report of what was synced/imported"
-msgstr ""
+msgstr "poslať e-mailom správu o tom, čo bolo synchronizované/importované"
 
 #: ../satellite_tools/satsync.py:2220
 msgid "forcibly process all (not a diff of) patch metadata"
