@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 14:35+0100\n"
+"POT-Creation-Date: 2020-08-18 10:25+0200\n"
 "PO-Revision-Date: 2020-07-28 15:29+0000\n"
 "Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -20,7 +20,8 @@ msgstr "Carregar conteúdo do diretório de problemas especificado"
 
 #: ../src/bin/spacewalk-abrt:41
 msgid "Update crash count for the specified problem directory"
-msgstr "Atualizar contagem de falhas para o diretório de problemas especificado"
+msgstr ""
+"Atualizar contagem de falhas para o diretório de problemas especificado"
 
 #: ../src/bin/spacewalk-abrt:43
 msgid "Synchronize missing problem directories"

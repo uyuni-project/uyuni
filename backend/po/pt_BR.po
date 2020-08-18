@@ -343,8 +343,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"Sua conta não tem acesso a nenhum canal correspondente (release ='%(release)"
-"s', arch='%(arch)s')%(www_activation)s"
+"Sua conta não tem acesso a nenhum canal correspondente (release "
+"='%(release)s', arch='%(arch)s')%(www_activation)s"
 
 #: ../server/rhnChannel.py:2002
 msgid ""
@@ -354,8 +354,8 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"Se você tiver um número de registro, registre-se primeiro em "
-"http://www.redhat.com/apps/activate/ e tente novamente.\n"
+"Se você tiver um número de registro, registre-se primeiro em http://www."
+"redhat.com/apps/activate/ e tente novamente.\n"
 "\n"
 
 #: ../server/rhnChannel.py:2012
