@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 14:34+0100\n"
+"POT-Creation-Date: 2020-08-18 13:46+0200\n"
 "PO-Revision-Date: 2018-03-16 11:05+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Catalan <fedora@llistes.softcatala.org>\n"
@@ -54,12 +54,12 @@ msgstr "el nombre d'arguments no és correcte"
 msgid "already running"
 msgstr "ja s'està executant"
 
-#: ../rhnsd.c:249
+#: ../rhnsd.c:254
 #, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
 msgstr "Copyright © %s Red Hat, Inc.\n"
 
-#: ../rhnsd.c:252
+#: ../rhnsd.c:257
 #, c-format
 msgid "Written by %s.\n"
 msgstr "Escrit per %s.\n"

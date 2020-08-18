@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
+"POT-Creation-Date: 2020-08-18 13:44+0200\n"
 "PO-Revision-Date: 2018-03-16 12:50+0000\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -25,24 +25,11 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "неповний ключ розпізнавання на проксі: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "у розпізнаванні на проксі-сервері відмовлено"
-
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -100,15 +87,6 @@ msgstr "Неприпустиме значення дії типу %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "Дія %s не належить до сервера %s"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Некоректна пара ідентифікатор системи/ідентифікатор дії."
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Некоректне значення %s (%s)"
-
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr "Не вистачає потрібних даних"
@@ -146,6 +124,15 @@ msgstr "Мало бути вказано словник як аргумент п
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Некоректне значення «%s» для %s (%s)"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Некоректна пара ідентифікатор системи/ідентифікатор дії."
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Некоректне значення %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -190,16 +177,6 @@ msgstr ""
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Службу не увімкнено для профілю системи: «%s»"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Надіслано запит щодо некоректного пакунка RPM %s"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Пакунок не знайдено"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
@@ -252,67 +229,19 @@ msgstr "Невідповідність сеансів kickstart"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Підтримки стосування повторних реєстраційних ключів не передбачено"
 
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "Неприпустима комбінація ім'я/пароль"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
+#: ../server/apacheAuth.py:66
 #, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Ім’я користувача «%s» не було зарезервовано"
+msgid "incomplete proxy authentication token: %s"
+msgstr "неповний ключ розпізнавання на проксі: %s"
 
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "Не вказано адресу електронної пошти"
-
-#: ../server/rhnUser.py:509
+#: ../server/apacheAuth.py:84
 #, python-format
-msgid "username should be at least %d characters"
-msgstr "ім’я користувача має складатися принаймні з %d символів"
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Надісланий ​​підпис проксі %s не збігається з нашим %s."
 
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "довжина імені користувача не повинна перевищувати %d символів"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "ім'я користувача = «%s», неприпустимий символ «%s»"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr ""
-"Будь ласка, вкажіть адресу електронної пошти, що не перевищує %s символів у "
-"довжину"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "пароль має складатися принаймні з %d символів"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Пароль має не перевищувати %d символів у довжину"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "пароль містить символ «%s»"
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "ім’я користувача має складатися принаймні з %d символів"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Не можна реєструвати ім’я користувача, що завершується на %s"
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "у розпізнаванні на проксі-сервері відмовлено"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -449,6 +378,78 @@ msgstr ""
 "сайті:\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Надіслано запит щодо некоректного пакунка RPM %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Пакунок не знайдено"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "Неприпустима комбінація ім'я/пароль"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "Ім’я користувача «%s» не було зарезервовано"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Не вказано адресу електронної пошти"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "ім’я користувача має складатися принаймні з %d символів"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "довжина імені користувача не повинна перевищувати %d символів"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "ім'я користувача = «%s», неприпустимий символ «%s»"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr ""
+"Будь ласка, вкажіть адресу електронної пошти, що не перевищує %s символів у "
+"довжину"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "пароль має складатися принаймні з %d символів"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "Пароль має не перевищувати %d символів у довжину"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "пароль містить символ «%s»"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "ім’я користувача має складатися принаймні з %d символів"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "Не можна реєструвати ім’я користувача, що завершується на %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1343,6 +1344,19 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr ""
+
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -1357,19 +1371,6 @@ msgid ""
 "\"%s\" could not be opened\n"
 "and/or written to:\n"
 "%s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:112
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258
