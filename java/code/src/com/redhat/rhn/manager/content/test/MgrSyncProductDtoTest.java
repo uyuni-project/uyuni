@@ -30,10 +30,10 @@ public class MgrSyncProductDtoTest extends TestCase {
         super.setUp();
 
         baseChannel = new MgrSyncChannelDto("BaseChannel", "basechannel", "This is the base Channel",
-                "This is the base Channel", true, Optional.ofNullable(PackageFactory.lookupPackageArchByLabel("x86_64")),
+                "This is the base Channel", true, false, Optional.ofNullable(PackageFactory.lookupPackageArchByLabel("x86_64")),
                 "", "SLES", "SLES", "15", MgrSyncStatus.INSTALLED, true, "http://path/to/basechannel", "");
         childChannel = new MgrSyncChannelDto("ChildChannel", "childchannel", "This is the child Channel",
-                "This is the child Channel", true, Optional.ofNullable(PackageFactory.lookupPackageArchByLabel("x86_64")),
+                "This is the child Channel", true, false, Optional.ofNullable(PackageFactory.lookupPackageArchByLabel("x86_64")),
                 "", "SLES", "SLES", "15", MgrSyncStatus.AVAILABLE, true, "http://path/to/childchannel", "");
         product = new MgrSyncProductDto("friendlyName", 0L, "version", false, null, new HashSet<>(), new HashSet<>());
     }
@@ -55,7 +55,7 @@ public class MgrSyncProductDtoTest extends TestCase {
         assertEquals(MgrSyncStatus.AVAILABLE, product.getStatus());
 
         childChannel = new MgrSyncChannelDto("ChildChannel", "childchannel", "This is the child Channel",
-                "This is the child Channel", false, Optional.ofNullable(PackageFactory.lookupPackageArchByLabel("x86_64")),
+                "This is the child Channel", false, false, Optional.ofNullable(PackageFactory.lookupPackageArchByLabel("x86_64")),
                 "", "SLES", "SLES", "15", MgrSyncStatus.AVAILABLE, true, "http://path/to/childchannel", "");
         Set<MgrSyncChannelDto> childs = new HashSet<>();
         childs.add(baseChannel);

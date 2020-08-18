@@ -2367,7 +2367,7 @@ public class SaltServerActionService {
                             KickstartAction ksAction = (KickstartAction) action.get();
                             if (!ksAction.getKickstartActionDetails().getUpgrade()) {
                                 // Delete salt key from master
-                                saltKeyUtils.deleteSaltKey(action.get().getSchedulerUser(), minionId);
+                                saltKeyUtils.deleteSaltKey(ksAction.getSchedulerUser(), minionId);
                             }
                         }
                         saltUtils.updateServerAction(sa,

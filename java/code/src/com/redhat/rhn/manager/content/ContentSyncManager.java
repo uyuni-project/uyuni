@@ -426,6 +426,7 @@ public class ContentSyncManager {
                     c.getA().getProduct().getFriendlyName(),
                     c.getA().getRepository().getDescription(),
                     c.getA().isMandatory(),
+                    c.getA().getRepository().isInstallerUpdates(),
                     Optional.ofNullable(c.getA().getProduct().getArch()),
                     c.getA().getParentChannelLabel(),
                     c.getA().getProduct().getChannelFamily().getLabel(),
@@ -443,6 +444,7 @@ public class ContentSyncManager {
                     baseRepo.getA().getProduct().getFriendlyName(),
                     baseRepo.getA().getRepository().getDescription(),
                     baseRepo.getA().isMandatory(),
+                    baseRepo.getA().getRepository().isInstallerUpdates(),
                     Optional.ofNullable(baseRepo.getA().getProduct().getArch()),
                     baseRepo.getA().getParentChannelLabel(),
                     baseRepo.getA().getProduct().getChannelFamily().getLabel(),
@@ -471,6 +473,7 @@ public class ContentSyncManager {
                         c.getA().getProduct().getFriendlyName(),
                         c.getA().getRepository().getDescription(),
                         c.getA().isMandatory(),
+                        c.getA().getRepository().isInstallerUpdates(),
                         Optional.ofNullable(c.getA().getProduct().getArch()),
                         c.getA().getParentChannelLabel(),
                         c.getA().getProduct().getChannelFamily().getLabel(),
@@ -1525,6 +1528,7 @@ public class ContentSyncManager {
                         r.setName(repoJson.getName());
                         r.setDescription(repoJson.getDescription());
                         r.setUrl(repoJson.getUrl());
+                        r.setInstallerUpdates(repoJson.isInstallerUpdates());
                         dbReposById.put(r.getSccId(), r);
                         return r;
                     });
@@ -1908,6 +1912,7 @@ public class ContentSyncManager {
                     dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
                     dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
                     dbChannel.setUpdateTag(productrepo.getUpdateTag());
+                    dbChannel.setInstallerUpdates(productrepo.getRepository().isInstallerUpdates());
                     ChannelFactory.save(dbChannel);
 
                     // update Mandatory Flag
@@ -1971,6 +1976,7 @@ public class ContentSyncManager {
         dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
         dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
         dbChannel.setUpdateTag(productrepo.getUpdateTag());
+        dbChannel.setInstallerUpdates(repository.isInstallerUpdates());
 
         // Create or link the content source
         Optional<SCCRepositoryAuth> auth = repository.getBestAuth();

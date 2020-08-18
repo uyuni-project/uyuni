@@ -44,6 +44,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "status", "Status: available, unavailable or installed")
  *     #prop_desc("string", "summary", "Channel summary")
  *     #prop_desc("string", "update_tag", "Update tag")
+ *     #prop_desc("boolean", "installer_updates", "is an installer update channel")
  *   #struct_end()
  */
 public class MgrSyncChannelDtoSerializer extends RhnXmlRpcCustomSerializer {
@@ -76,6 +77,7 @@ public class MgrSyncChannelDtoSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("status", channel.getStatus().name());
         helper.add("summary", channel.getSummary());
         helper.add("update_tag", channel.getUpdateTag());
+        helper.add("installer_updates", channel.isInstallerUpdates());
         helper.writeTo(writer);
     }
 }
