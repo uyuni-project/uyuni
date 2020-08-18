@@ -1,3 +1,4 @@
+- fix alignment on icon on entitlement page
 - support installer update channels during autoinstallation
 - filter machines not in maintenance mode for remote commands
 - Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
