@@ -721,9 +721,7 @@ When(/^I enable repositories before installing Docker$/) do
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo"
-    puts $build_host.run("zypper mr --enable #{repos}")
-    repos = "desktop_pool_repo desktop_updates_repo"
+    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     puts $build_host.run("zypper mr --enable #{repos}")
   end
 
@@ -751,9 +749,7 @@ When(/^I disable repositories after installing Docker$/) do
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo"
-    puts $build_host.run("zypper mr --disable #{repos}")
-    repos = "desktop_pool_repo desktop_updates_repo"
+    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     puts $build_host.run("zypper mr --disable #{repos}")
   end
 
