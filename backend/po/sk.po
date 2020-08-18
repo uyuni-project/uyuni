@@ -1183,8 +1183,8 @@ msgstr ""
 "CHYBA: Pri komunikácii s ISS Master sa vyskytol problém.\n"
 "       V závislosti od konkrétnych podrobností o chybe skontrolujte svoju "
 "konfiguráciu,\n"
-"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste znova."
-"\n"
+"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste "
+"znova.\n"
 "       Chybová správa: %s\n"
 
 #: ../satellite_tools/messages.py:51
@@ -1816,8 +1816,8 @@ msgid ""
 "disk dump will be considered to be a full export; see \"man satellite-sync\" "
 "for more information."
 msgstr ""
-"výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v \""
-"man satellite-sync\"."
+"výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v "
+"\"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
