@@ -90,6 +90,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private String maintainerPhone;
     private String supportPolicy;
     private String updateTag;
+    private boolean installerUpdates = false;
     private Set<ClonedChannel> clonedChannels = new HashSet<ClonedChannel>();
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
@@ -885,6 +886,23 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public void setUpdateTag(String updateTagIn) {
         updateTag = updateTagIn;
+    }
+
+    /**
+     * @return Returns the installerUpdates.
+     */
+    public boolean isInstallerUpdates() {
+        if (isCloned()) {
+            return getOriginal().isInstallerUpdates();
+        }
+        return installerUpdates;
+    }
+
+    /**
+     * @param installerUpdatesIn The installerUpdates to set.
+     */
+    public void setInstallerUpdates(boolean installerUpdatesIn) {
+        installerUpdates = installerUpdatesIn;
     }
 
     /**

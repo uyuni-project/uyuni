@@ -67,6 +67,7 @@ public class SCCRepository extends BaseDomainHelper {
     private String url;
     private boolean autorefresh;
     private boolean signed = true;
+    private boolean installerUpdates = false;
 
     private Set<SUSEProductSCCRepository> products = new HashSet<>();
     private Set<SCCRepositoryAuth> auth = new HashSet<>();
@@ -95,6 +96,7 @@ public class SCCRepository extends BaseDomainHelper {
         description = j.getDescription();
         url = j.getUrl();
         autorefresh = j.isAutorefresh();
+        installerUpdates = j.isInstallerUpdates();
     }
     /**
      * @return the SCC id
@@ -221,6 +223,22 @@ public class SCCRepository extends BaseDomainHelper {
      */
     public void setSigned(boolean signedIn) {
         this.signed = signedIn;
+    }
+
+    /**
+     * @return Return true if this is for installer updates
+     */
+    @Type(type = "yes_no")
+    @Column(name = "installer_updates")
+    public boolean isInstallerUpdates() {
+        return installerUpdates;
+    }
+
+    /**
+     * @param installerUpdatesIn set installer updates
+     */
+    public void setInstallerUpdates(boolean installerUpdatesIn) {
+        this.installerUpdates = installerUpdatesIn;
     }
 
     /**
