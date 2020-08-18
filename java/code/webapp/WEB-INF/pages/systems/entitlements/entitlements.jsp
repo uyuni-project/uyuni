@@ -32,7 +32,7 @@
          >
         <rhn:set value="${current.id}" disabled="${not current.selectable}"/>
             <rhn:column header="systemlist.jsp.status"
-                        style="text-align: center;">
+                        style="text-align: left;">
                 ${current.statusDisplay}
             </rhn:column>
             <rhn:column header="systemlist.jsp.system"
