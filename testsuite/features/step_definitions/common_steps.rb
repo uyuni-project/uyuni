@@ -683,9 +683,7 @@ When(/^I enable repositories before installing Docker$/) do
   # Development and Desktop Applications (required)
   # (Python 2 is needed at 4.0, but not at 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo python2_pool_repo python2_updates_repo"
-    puts $build_host.run("zypper mr --enable #{repos}")
-    repos = "desktop_pool_repo desktop_updates_repo"
+    repos = "devel_pool_repo devel_updates_repo python2_pool_repo python2_updates_repo desktop_pool_repo desktop_updates_repo"
     puts $build_host.run("zypper mr --enable #{repos}")
   end
 
@@ -712,9 +710,7 @@ When(/^I disable repositories after installing Docker$/) do
   # Development and Desktop Applications (required)
   # (Python 2 is needed at 4.0, but not at 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo python2_pool_repo python2_updates_repo"
-    puts $build_host.run("zypper mr --disable #{repos}")
-    repos = "desktop_pool_repo desktop_updates_repo"
+    repos = "devel_pool_repo devel_updates_repo python2_pool_repo python2_updates_repo desktop_pool_repo desktop_updates_repo"
     puts $build_host.run("zypper mr --disable #{repos}")
   end
 
