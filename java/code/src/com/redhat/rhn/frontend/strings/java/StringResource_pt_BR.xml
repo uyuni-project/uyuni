@@ -2237,7 +2237,7 @@ disponíveis para seu perfil kickstart funcionar corretamente./n&lt;/li&gt;
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream">
         <source>&lt;div style="text-align: left;"&gt; &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; Is the 'appstream' child software channel for this kickstart profile's base channel available to your organization? If it is not, you will need to request entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator. &lt;/li&gt; &lt;li&gt; Make sure that the 'appstream' child channel for this kickstart profile's base channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your satellite administrator and request a cdn-sync for the appstream channel and try again. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</source>
-        <target>&lt;div style="text-align: left;"&gt; &lt;p&gt;Para resolver esse problema, verifique o seguinte:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; O canal de software filho 'appstream' para o canal base deste perfil do kickstart está disponível para sua organização? Caso contrário, você precisará solicitar direitos para o canal de software 'appstream' do seu administrador do @@PRODUCT_NAME@@ &lt;/li&gt; &lt;li&gt;Verifique se o canal filho 'appstream' desse canal base do perfil do kickstart está disponível para o seu @@ PRODUCT_NAME @@. Caso contrário, entre em contato com o administrador do satélite e solicite um cdn-sync para o canal appstream e tente novamente. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
+        <target>&lt;div style="text-align: left;"&gt; &lt;p&gt;Para resolver esse problema, verifique o seguinte:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; O canal de software filho 'appstream' para o canal base deste perfil do kickstart está disponível para sua organização? Caso contrário, você precisará solicitar direitos para o canal de software 'appstream' do seu administrador do @@PRODUCT_NAME@@ &lt;/li&gt; &lt;li&gt;Verifique se o canal filho 'appstream' desse canal base do perfil do kickstart está disponível para o seu @@PRODUCT_NAME@@. Caso contrário, entre em contato com o administrador do satélite e solicite um cdn-sync para o canal appstream e tente novamente. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -9628,7 +9628,7 @@ você não poderá retornar este sistema à este snapshot ou à qualquer outro.<
       </trans-unit>
       <trans-unit id="login.jsp.satbody2">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;.</source>
-        <target>Para detalhes sobre @@ PRODUCT_NAME @@, visite nosso site &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;.</target>
+        <target>Para detalhes sobre @@PRODUCT_NAME@@, visite nosso site &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
         <source></source>
