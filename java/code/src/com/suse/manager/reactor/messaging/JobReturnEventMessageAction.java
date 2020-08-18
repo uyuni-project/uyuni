@@ -397,7 +397,7 @@ public class JobReturnEventMessageAction implements MessageAction {
                             KickstartAction ksAction = (KickstartAction) action.get();
                             if (!ksAction.getKickstartActionDetails().getUpgrade()) {
                                 // Delete salt key from master
-                                SaltKeyUtils.deleteSaltKey(action.get().getSchedulerUser(), minionId);
+                                SaltKeyUtils.deleteSaltKey(ksAction.getSchedulerUser(), minionId);
                             }
                         }
                         SaltUtils.INSTANCE.updateServerAction(sa,
