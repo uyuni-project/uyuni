@@ -95,7 +95,7 @@
       </trans-unit>
       <trans-unit id="Bare Metal Systems">
         <source>Unprovisioned Systems</source>
-        <target>Sistemas Não Provisionados</target>
+        <target>Sistemas Não-provisionados</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -196,7 +196,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Sumário para travamentos com UUID idênticas.</target>
+        <target>Sumário para travamentos com UUID idênticas</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config">
         <source>Configuration</source>
@@ -539,7 +539,7 @@
           <source>View/Modify Files</source> <target>Visualizar/Modificar Arquivos</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_files">
-          <source>View Files</source> <target>Ver arquivos</target></trans-unit>
+          <source>View Files</source> <target>Ver Arquivos</target></trans-unit>
         <trans-unit id="nav.sdc.config.compare_files">
           <source>Compare Files</source> <target>Comparar Arquivos</target>
         </trans-unit>

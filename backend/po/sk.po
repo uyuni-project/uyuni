@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-07-28 23:17+0000\n"
+"PO-Revision-Date: 2020-08-18 10:23+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
 ">\n"
@@ -774,83 +774,88 @@ msgid ""
 "     administrators for further details.\n"
 "     "
 msgstr ""
+"\n"
+"     Nemáte oprávnenie predplatného k určenému kanálu.\n"
+"     Ďalšie podrobnosti nájdete v kanáli svojej organizácie alebo\n"
+"     administrátora organizácie.\n"
+"     "
 
 #: ../common/rhnException.py:157
 msgid "You can not unsubscribe from base channel."
-msgstr ""
+msgstr "Nemôžete sa odhlásiť zo základného kanála."
 
 #: ../common/rhnException.py:158
 msgid "SUSE Manager or Proxy channel can not be subscribed."
-msgstr ""
+msgstr "Nie je možné prihlásiť sa k SUSE Manager alebo Proxy kanálu."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:161
 msgid "There was an error while trying to join the system to its groups"
-msgstr ""
+msgstr "Pri pokuse o pripojenie systému k jeho skupinám sa vyskytla chyba"
 
 #. 90-100: entitlement errors
 #: ../common/rhnException.py:164
 msgid "Unable to entitle system"
-msgstr ""
+msgstr "Nie je možné priradiť oprávnenie systému"
 
 #. 100-109: e-mail and uuid related faults
 #: ../common/rhnException.py:167
 msgid "Maximum e-mail length violation."
-msgstr ""
+msgstr "Nedodržanie maximálnej dĺžky e-mailu."
 
 #: ../common/rhnException.py:168
 msgid "This system has been previously registered."
-msgstr ""
+msgstr "Tento systém bol predtým zaregistrovaný."
 
 #: ../common/rhnException.py:169
 msgid "Invalid username"
-msgstr ""
+msgstr "Neplatné používateľské meno"
 
 #. 140-159 applet errors
 #: ../common/rhnException.py:172
 msgid "Unable to look up server"
-msgstr ""
+msgstr "Server sa nepodarilo vyhľadať"
 
 #. 160-179: OSAD errors
 #: ../common/rhnException.py:175
 msgid "Required argument is missing"
-msgstr ""
+msgstr "Chýba požadovaný argument"
 
 #. 600-699: RHEL5+ EN errors
 #: ../common/rhnException.py:178
 msgid "No entitlement information tied to hardware"
-msgstr ""
+msgstr "S hardvérom nie sú spojené žiadne informácie o oprávneniach"
 
 #: ../common/rhnException.py:179
 msgid "Installation number is not entitling"
-msgstr ""
+msgstr "Inštalačné číslo nie je oprávňujúce"
 
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:182
 msgid "Maximum username length violation"
-msgstr ""
+msgstr "Nedodržanie maximálnej dĺžky používateľského mena"
 
 #: ../common/rhnException.py:183
 msgid "Maximum password length violation"
-msgstr ""
+msgstr "Nedodržanie maximálnej dĺžky hesla"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr ""
+msgstr "Tento používateľ má prístup iba na čítanie API. Akcia zamietnutá."
 
 #: ../common/rhnException.py:186
 msgid "System Name cannot be less than 1 character"
-msgstr ""
+msgstr "Názov systému nesmie mať menej ako 1 znak"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
 msgid "SUSE Manager Proxy error."
-msgstr ""
+msgstr "Chyba SUSE Manager Proxy."
 
 #: ../common/rhnException.py:191
 msgid "SUSE Manager Proxy unable to login."
-msgstr ""
+msgstr "SUSE Manager Proxy sa nemôže prihlásiť."
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
@@ -860,14 +865,18 @@ msgid ""
 "     in the database.\n"
 "     "
 msgstr ""
+"\n"
+"     ID systému SUSE Manager Proxy nezodpovedá Spacewalk Proxy Server\n"
+"     v databáze.\n"
+"     "
 
 #: ../common/rhnException.py:197
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr ""
+msgstr "Token sedenia SUSE Manager Proxy je neplatný."
 
 #: ../common/rhnException.py:198
 msgid "SUSE Manager Proxy session token has expired."
-msgstr ""
+msgstr "Platnosť tokenu sedenia SUSE Manager Proxy vypršala."
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
@@ -877,6 +886,10 @@ msgid ""
 "     please contact your sysadmin to have your account created.\n"
 "     "
 msgstr ""
+"\n"
+"      vytváranie používateľov nie je povolené cez mgr_register;\n"
+"     kontaktujte svojho správcu systémov a požiadajte ho o vytvorenie účtu.\n"
+"     "
 
 #: ../common/rhnException.py:206
 msgid ""
@@ -885,6 +898,10 @@ msgid ""
 "this server\n"
 "     "
 msgstr ""
+"\n"
+"     Tento server SUSE Manager nemá povolenie na tomto serveri používať "
+"Inter Server Sync\n"
+"     "
 
 #: ../common/rhnException.py:209
 msgid ""
@@ -892,167 +909,170 @@ msgid ""
 "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
 "     "
 msgstr ""
+"\n"
+"     Inter Server Sync je zakázaný na tomto SUSE Manager Server.\n"
+"     "
 
 #. 3000-3999: XML dumper errors:
 #: ../common/rhnException.py:214
 msgid "Invalid datatype passed"
-msgstr ""
+msgstr "Odovzdaný neplatný dátový typ"
 
 #: ../common/rhnException.py:215
 msgid "Unable to retrieve channel"
-msgstr ""
+msgstr "Nie je možné získať kanál"
 
 #: ../common/rhnException.py:216
 msgid "Unable to retrieve package"
-msgstr ""
+msgstr "Nie je možné získať balík"
 
 #: ../common/rhnException.py:217
 msgid "Unable to retrieve erratum"
-msgstr ""
+msgstr "Nie je možné získať tlačovú chybu"
 
 #: ../common/rhnException.py:218
 msgid "File is missing"
-msgstr ""
+msgstr "Súbor chýba"
 
 #: ../common/rhnException.py:219
 msgid "Function retrieval error"
-msgstr ""
+msgstr "Chyba načítania funkcie"
 
 #: ../common/rhnException.py:220
 msgid "Function execution error"
-msgstr ""
+msgstr "Chyba vykonávania funkcie"
 
 #: ../common/rhnException.py:221
 msgid "Missing version string"
-msgstr ""
+msgstr "Chýba reťazec verzie"
 
 #: ../common/rhnException.py:222
 msgid "Invalid version string"
-msgstr ""
+msgstr "Neplatný reťazec verzie"
 
 #: ../common/rhnException.py:223
 msgid "Mismatching versions"
-msgstr ""
+msgstr "Nezhodné verzie"
 
 #: ../common/rhnException.py:224
 msgid "Invalid channel version"
-msgstr ""
+msgstr "Neplatná verzia kanála"
 
 #: ../common/rhnException.py:225
 msgid "No comps file for channel"
-msgstr ""
+msgstr "Žiadny súbor comps pre kanál"
 
 #: ../common/rhnException.py:226
 msgid "Unable to retrieve comps file"
-msgstr ""
+msgstr "Nie je možné získať súbor comps"
 
 #. 4000 - 4999: config management errors
 #: ../common/rhnException.py:229
 msgid "Configuration action missing"
-msgstr ""
+msgstr "Chýba konfiguračná akcia"
 
 #: ../common/rhnException.py:230
 msgid "File too large"
-msgstr ""
+msgstr "Súbor je príliš veľký"
 
 #: ../common/rhnException.py:231
 msgid "File contains binary data"
-msgstr ""
+msgstr "Súbor obsahuje binárne dáta"
 
 #: ../common/rhnException.py:232
 msgid "Configuration channel is not empty"
-msgstr ""
+msgstr "Konfiguračný kanál nie je prázdny"
 
 #: ../common/rhnException.py:233
 msgid "Permission error"
-msgstr ""
+msgstr "Chyba oprávnení"
 
 #: ../common/rhnException.py:234
 msgid "Content missing for configuration file"
-msgstr ""
+msgstr "Chýba obsah konfiguračného súboru"
 
 #: ../common/rhnException.py:235
 msgid "Template delimiters not specified"
-msgstr ""
+msgstr "Oddeľovače šablón nie sú uvedené"
 
 #: ../common/rhnException.py:236
 msgid "Configuration channel does not exist"
-msgstr ""
+msgstr "Konfiguračný kanál neexistuje"
 
 #: ../common/rhnException.py:237
 msgid "Configuration channel already exists"
-msgstr ""
+msgstr "Konfiguračný kanál už existuje"
 
 #: ../common/rhnException.py:238
 msgid "File missing from configuration channel"
-msgstr ""
+msgstr "Chýba súbor z konfiguračného kanála"
 
 #: ../common/rhnException.py:239
 msgid "Different revision of this file is uploaded"
-msgstr ""
+msgstr "Nahraná je iná revízia tohto súboru"
 
 #: ../common/rhnException.py:240
 msgid "File already uploaded to configuration channel"
-msgstr ""
+msgstr "Súbor už bol nahraný na konfiguračný kanál"
 
 #: ../common/rhnException.py:241
 msgid "File size exceeds remaining quota space"
-msgstr ""
+msgstr "Veľkosť súboru presahuje zostávajúci priestor kvóty"
 
 #: ../common/rhnException.py:242
 msgid "Full path of file must be specified"
-msgstr ""
+msgstr "Musí byť zadaná úplná cesta k súboru"
 
 #: ../common/rhnException.py:243
 msgid "Invalid revision number"
-msgstr ""
+msgstr "Neplatné číslo revízie"
 
 #: ../common/rhnException.py:244
 msgid "Cannot compare files of different file type"
-msgstr ""
+msgstr "Nie je možné porovnávať súbory rôznych súborových typov"
 
 #. 5000 - 5999: client content uploading errors
 #. 5000 - 5099: crash reporting errors
 #: ../common/rhnException.py:248
 msgid "Crash information is invalid or incomplete"
-msgstr ""
+msgstr "Informácie o zlyhaní sú neplatné alebo neúplné"
 
 #: ../common/rhnException.py:249
 msgid "Crash file information is invalid or incomplete"
-msgstr ""
+msgstr "Informácie o zlyhaní súboru sú neplatné alebo neúplné"
 
 #: ../common/rhnException.py:250
 msgid "Error composing crash directory path"
-msgstr ""
+msgstr "Chyba pri vytváraní cesty adresára zlyhania"
 
 #: ../common/rhnException.py:251
 msgid "Error composing crash file path"
-msgstr ""
+msgstr "Chyba pri vytváraní cesty súboru zlyhania"
 
 #: ../common/rhnException.py:252 ../common/rhnException.py:259
 msgid "Invalid content encoding"
-msgstr ""
+msgstr "Neplatné kódovanie obsahu"
 
 #: ../common/rhnException.py:253
 msgid "Invalid crash name"
-msgstr ""
+msgstr "Neplatný názov zlyhania"
 
 #: ../common/rhnException.py:254
 msgid "Crash reporting is disabled for this organization"
-msgstr ""
+msgstr "Hlásenie zlyhaní je pre túto organizáciu zakázané"
 
 #. 5100 - 5199: scap results reporting error
 #: ../common/rhnException.py:256
 msgid "SCAP results file transfer is invalid or incomplete"
-msgstr ""
+msgstr "Prenos súboru výsledkov SCAP je neplatný alebo neúplný"
 
 #: ../common/rhnException.py:257
 msgid "Error composing directory path for detailed SCAP results"
-msgstr ""
+msgstr "Chyba pri vytváraní cesty adresára pre podrobné výsledky SCAP"
 
 #: ../common/rhnException.py:258
 msgid "Error composing file path for detailed SCAP results"
-msgstr ""
+msgstr "Chyba pri vytváraní cesty súboru pre podrobné výsledky SCAP"
 
 #: ../common/rhnException.py:306
 msgid ""
@@ -1063,6 +1083,12 @@ msgid ""
 "     details of what you were trying to do when this error occurred and\n"
 "     details on how to reproduce this problem.\n"
 msgstr ""
+"\n"
+"     Pri spracovaní vašej požiadavky sa vyskytla chyba. Ak problém\n"
+"     pretrváva, zadajte, prosím, hlásenie o chybe na scc.suse.com.\n"
+"     Ak sa rozhodnete odoslať hlásenie o chybe, nezabudnite uviesť\n"
+"     podrobnosti o tom, čo ste sa pokúsili urobiť, keď sa vyskytla táto\n"
+"     chyba, a podrobnosti o tom, ako tento problém reprodukovať.\n"
 
 #: ../common/rhnException.py:358
 #, python-format
@@ -1070,37 +1096,39 @@ msgid ""
 "Error Message:\n"
 "    %s\n"
 msgstr ""
+"Chybová správa:\n"
+"    %s\n"
 
 #: ../common/rhnException.py:360
 #, python-format
 msgid "Error Class Code: %s\n"
-msgstr ""
+msgstr "Kód triedy chyby: %s\n"
 
 #: ../common/rhnException.py:363
 #, python-format
 msgid "Error Class Info: %s\n"
-msgstr ""
+msgstr "Informácia o triede chýb: %s\n"
 
 #: ../common/rhnException.py:365
 #, python-format
 msgid "Explanation: %s"
-msgstr ""
+msgstr "Vysvetlenie: %s"
 
 #: ../common/rhnTB.py:205
 #, python-format
 msgid "ERROR: %s %s: %s"
-msgstr ""
+msgstr "CHYBA: %s %s: %s"
 
 #: ../common/rhnTB.py:207
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr ""
+msgstr "TRACEBACK: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "formát %s by mal byť aspoň RRRRMMDD.\n"
 
 #: ../satellite_tools/messages.py:26
 #, python-format
@@ -1109,6 +1137,9 @@ msgid ""
 "ERROR: executing step %s. Error is:\n"
 "%s\n"
 msgstr ""
+"\n"
+"CHYBA: vykonanie kroku %s. Chyba je:\n"
+"%s\n"
 
 #: ../satellite_tools/messages.py:31
 #, python-format
@@ -1120,6 +1151,12 @@ msgid ""
 "       that you have them all, and then iteratively remount and repopulate\n"
 "       the temporary repository (%s).\n"
 msgstr ""
+"\n"
+"CHYBA: pri prístupe k údajom kanála z dočasného úložiska sa vyskytol\n"
+"       problém. Migrovali ste všetky dáta z kanálových ISO do tohto\n"
+"       adresára? Ak áno, znovu skontrolujte kanálové ISO, uistite sa,\n"
+"       že ich máte všetky a potom iteratívne znovu pripojte a znovu\n"
+"       naplňte dočasné úložisko (%s).\n"
 
 #: ../satellite_tools/messages.py:39
 #, python-format
@@ -1128,6 +1165,9 @@ msgid ""
 "ERROR: there was a problem synchronizing the information.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"CHYBA: pri synchronizácii informácií sa vyskytol problém.\n"
+"       Chybová správa: %s\n"
 
 #: ../satellite_tools/messages.py:44
 #, python-format
@@ -1139,6 +1179,13 @@ msgid ""
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"CHYBA: Pri komunikácii s ISS Master sa vyskytol problém.\n"
+"       V závislosti od konkrétnych podrobností o chybe skontrolujte svoju "
+"konfiguráciu,\n"
+"       základné sieťové pripojenie a/alebo rozlíšenie názvov a skúste znova."
+"\n"
+"       Chybová správa: %s\n"
 
 #: ../satellite_tools/messages.py:51
 #, python-format
@@ -1153,6 +1200,14 @@ msgid ""
 "and try again.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"CHYBA: Pri komunikácii s ISS Master sa vyskytol problém.\n"
+"       Ak je hlavný satellite starší ako v5.3, nemá schopnosť ISS.\n"
+"       Inak v závislosti od konkrétnych podrobností o chybe skontrolujte "
+"svoju\n"
+"       konfiguráciu, základné sieťové pripojenie a/alebo rozlíšenie názvov a "
+"skúste znova.\n"
+"       Chybová správa: %s\n"
 
 #: ../satellite_tools/messages.py:59
 #, python-format
@@ -1165,6 +1220,13 @@ msgid ""
 "       transaction:\n"
 "       %s\n"
 msgstr ""
+"\n"
+"CHYBA: kanál potomka nie je možné synchronizovať bez synchronizácie jeho\n"
+"       rodiča. Rodič musí byť buď (a) predtým synchronizovaný alebo (b) "
+"synchronizovaný\n"
+"       spolu s požadovaným kanálom potomka. Chýbajúci rodičia pre túto\n"
+"       transakciu:\n"
+"       %s\n"
 
 #: ../satellite_tools/messages.py:67
 #, python-format
@@ -1174,108 +1236,112 @@ msgid ""
 "Please contact your SUSE Manager contact\n"
 "%s"
 msgstr ""
+"\n"
+"CHYBA: nemáte právo synchronizovať kanál v tejto skupine kanálov.\n"
+"Obráťte sa na svoj kontakt pre SUSE Manager\n"
+"%s"
 
 #: ../satellite_tools/messages.py:72
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
+msgstr "  CHYBA: na zariadení nie je dostatok voľného miesta (%s KB)."
 
 #: ../satellite_tools/messages.py:74
 #, python-format
 msgid "    %3d/%s Fetch successful: %s (%s bytes)"
-msgstr ""
+msgstr "    %3d/%s Stiahnutie úspešné: %s (%s bajtov)"
 
 #: ../satellite_tools/messages.py:75
 #, python-format
 msgid "    Extinct package:  %s"
-msgstr ""
+msgstr "    Zaniknutý balík:  %s"
 
 #: ../satellite_tools/messages.py:76
 #, python-format
 msgid "   Total size: %s"
-msgstr ""
+msgstr "   Celková veľkosť: %s"
 
 #: ../satellite_tools/messages.py:77
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
+msgstr "      Stiahnutých %s z %s. Odhadovaný zostávajúci čas: %s"
 
 #: ../satellite_tools/messages.py:78
 #, python-format
 msgid "    Fetch unsuccessful: %s"
-msgstr ""
+msgstr "    Stiahnutie neúspešné: %s"
 
 #: ../satellite_tools/messages.py:79
 #, python-format
 msgid "   RPM fetch summary: %s"
-msgstr ""
+msgstr "   Zhrnutie stiahnutia RPM: %s"
 
 #: ../satellite_tools/messages.py:80
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       úspech: %d"
 
 #: ../satellite_tools/messages.py:81
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       neúspešné:  %d"
 
 #: ../satellite_tools/messages.py:82
 #, python-format
 msgid "       extinct: %d"
-msgstr ""
+msgstr "       zaniknuté: %d"
 
 #: ../satellite_tools/messages.py:84
 #, python-format
 msgid "   Retrieving / parsing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   Získavanie / analyzovanie metadát *relevantných* balíkov: %s (%s)"
 
 #: ../satellite_tools/messages.py:85
 #, python-format
 msgid "   Retrieving / parsing errata data: %s (%s)"
-msgstr ""
+msgstr "   Získavanie / analyzovanie dát tlačových chýb: %s (%s)"
 
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   Retrieving / parsing kickstart data: %s (%s)"
-msgstr ""
+msgstr "   Získavanie / analyzovanie dát kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:87
 #, python-format
 msgid "   Retrieving / parsing kickstart tree files: %s (%s)"
-msgstr ""
+msgstr "   Získavanie / analyzovanie súborov stromov kickstart: %s (%s)"
 
 #: ../satellite_tools/messages.py:88
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   Importovanie metadát *relevantných* balíkov: %s (%s)"
 
 #: ../satellite_tools/messages.py:89
 msgid "   * WARNING: this may be a slow process."
-msgstr ""
+msgstr "   * UPOZORNENIE: toto môže byť pomalý proces."
 
 #: ../satellite_tools/messages.py:90
 msgid "Linking packages to channels"
-msgstr ""
+msgstr "Prepojenie balíkov ku kanálom"
 
 #: ../satellite_tools/messages.py:91
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
+msgstr "   Importovanie *relevantných* tlačových chýb: %s (%s)"
 
 #: ../satellite_tools/messages.py:92
 msgid "   No new kickstartable tree to import"
-msgstr ""
+msgstr "   Žiadny nový strom schopný kickstart na import"
 
 #: ../satellite_tools/messages.py:93
 #, python-format
 msgid "Importing kickstartable trees (%d)"
-msgstr ""
+msgstr "Importovanie stromov schopných kickstart (%d)"
 
 #: ../satellite_tools/messages.py:94
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
+msgstr "Importované stromy schopné kickstart (%d)"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
@@ -1284,6 +1350,9 @@ msgid ""
 "could not be opened and read:\n"
 "%s"
 msgstr ""
+"\"%s\" (uvedené v príkazovom riadku)\n"
+"sa nepodarilo otvoriť a čítať:\n"
+"%s"
 
 #: ../satellite_tools/rhn_satellite_activate.py:205
 #, python-format
@@ -1292,38 +1361,41 @@ msgid ""
 "and/or written to:\n"
 "%s"
 msgstr ""
+"\"%s\" sa nepodarilo otvoriť\n"
+"a/alebo zapísať do:\n"
+"%s"
 
 #: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
 msgid "+++ sending log as an email +++"
-msgstr ""
+msgstr "+++ odosielanie záznamu ako e-mail +++"
 
 #: ../satellite_tools/reposync.py:112
 #, python-format
 msgid "%s sync. report from %s"
-msgstr ""
+msgstr "%s sync. správa od %s"
 
 #: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
 msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
+msgstr "+++ požadovaný e-mail, ale nie je čo +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
 msgid "No handler for step %s"
-msgstr ""
+msgstr "Žiadna obsluha pre krok %s"
 
 #. Try one more time - this time it should be faster since
 #. everything should be cached
 #: ../satellite_tools/satsync.py:270
 msgid "Environment changed, trying again..."
-msgstr ""
+msgstr "Prostredie sa zmenilo, opätovné skúšanie..."
 
 #: ../satellite_tools/satsync.py:277
 msgid "ERROR: Encountered IntegrityError: \n"
-msgstr ""
+msgstr "CHYBA: Vyskytla sa ChybaIntegrity: \n"
 
 #: ../satellite_tools/satsync.py:285
 msgid "Repeated failures"
-msgstr ""
+msgstr "Opakované zlyhania"
 
 #: ../satellite_tools/satsync.py:290
 #, python-format
@@ -1334,47 +1406,54 @@ msgid ""
 "        Elapsed:    %s\n"
 "          "
 msgstr ""
+"    Import je dokončený:\n"
+"        Začiatočný čas: %s\n"
+"        Koncový čas:   %s\n"
+"        Uplynulý:    %s\n"
+"          "
 
 #: ../satellite_tools/satsync.py:311
 msgid "hours"
-msgstr ""
+msgstr "hodiny"
 
 #: ../satellite_tools/satsync.py:311
 msgid "minutes"
-msgstr ""
+msgstr "minúty"
 
 #: ../satellite_tools/satsync.py:311
 msgid "seconds"
-msgstr ""
+msgstr "sekundy"
 
 #: ../satellite_tools/satsync.py:357
 msgid ""
 "ERROR: The dump is missing package data, use --no-rpms to skip this step or "
 "fix the content to include package data."
 msgstr ""
+"CHYBA: Na výpise chýbajú dáta balíkov, použite --no-rpms na preskočenie "
+"tohto kroku alebo opravte obsah tak, aby obsahoval dáta balíkov."
 
 #. the orgs() method doesn't exist; that's fine we just
 #. won't sync the orgs
 #: ../satellite_tools/satsync.py:404
 msgid "The SUSE Manager master does not support syncing orgs data."
-msgstr ""
+msgstr "SUSE Manager master nepodporuje synchronizáciu údajov organizácií."
 
 #: ../satellite_tools/satsync.py:404
 msgid "Skipping..."
-msgstr ""
+msgstr "Preskakovanie..."
 
 #: ../satellite_tools/satsync.py:442
 #, python-format
 msgid "SUSE Manager Inter Server sync. report from %s"
-msgstr ""
+msgstr "Správa synchronizácie pre SUSE Manager Inter Server od %s"
 
 #: ../satellite_tools/satsync.py:521
 msgid " - file-system synchronization"
-msgstr ""
+msgstr " - synchronizácia súborového systému"
 
 #: ../satellite_tools/satsync.py:533 ../satellite_tools/satsync.py:541
 msgid " - live synchronization"
-msgstr ""
+msgstr " - živá synchronizácia"
 
 #: ../satellite_tools/satsync.py:534
 msgid ""
@@ -1384,238 +1463,245 @@ msgid ""
 "from another Satellite via Inter-Satelite-Sync (ISS), or from local content "
 "on disk via Channel Dump ISOs."
 msgstr ""
+"CHYBA: Synchronizácia živého obsahu so serverom RHN Classic Hosted už nie je "
+"podporovaná.\n"
+"Namiesto toho použite príkaz cdn-sync, pokiaľ sa nepokúšate synchronizovať s "
+"ďalším Satellite cez Inter-Satelite-Sync (ISS) alebo s lokálnym obsahom na "
+"disku cez Channel Dump ISO."
 
 #: ../satellite_tools/satsync.py:542
 #, python-format
 msgid "   url: %s"
-msgstr ""
+msgstr "   url: %s"
 
 #: ../satellite_tools/satsync.py:543
 #, python-format
 msgid "   debug/output level: %s"
-msgstr ""
+msgstr "   ladiaca/výstupná úroveň: %s"
 
 #: ../satellite_tools/satsync.py:553
 msgid "ERROR: this server must be registered with SUSE Manager."
-msgstr ""
+msgstr "CHYBA: tento server musí byť zaregistrovaný v SUSE Manager."
 
 #: ../satellite_tools/satsync.py:575
 #, python-format
 msgid "Retrieving / parsing %s data"
-msgstr ""
+msgstr "Získavanie / analyzovanie dát %s"
 
 #: ../satellite_tools/satsync.py:585 ../satellite_tools/satsync.py:600
 msgid "*** SYSTEM INTERRUPT CALLED ***"
-msgstr ""
+msgstr "*** VOLANÉ SYSTÉMOVÉ PRERUŠENIE ***"
 
 #: ../satellite_tools/satsync.py:593
 msgid "ERROR: fatal parser exception occurred "
-msgstr ""
+msgstr "CHYBA: vyskytla sa kritická výnimka analyzátora "
 
 #: ../satellite_tools/satsync.py:594
 #, python-format
 msgid "(line: %s, col: %s msg: %s)"
-msgstr ""
+msgstr "(riadok: %s, stĺpec: %s správa: %s)"
 
 #: ../satellite_tools/satsync.py:598
 #, python-format
 msgid "ERROR: parser exception occurred: %s"
-msgstr ""
+msgstr "CHYBA: vyskytla sa výnimka analyzátora: %s"
 
 #: ../satellite_tools/satsync.py:603
 msgid "ERROR: exception (during parse) occurred: "
-msgstr ""
+msgstr "CHYBA: vyskytla sa výnimka (počas analýzy): "
 
 #: ../satellite_tools/satsync.py:604
 #, python-format
 msgid ""
 "   Encountered some errors with %s data (see logs (%s) for more information)"
 msgstr ""
+"   Vyskytli sa nejaké chyby s dátami %s (ďalšie informácie nájdete v "
+"záznamoch (%s))"
 
 #: ../satellite_tools/satsync.py:606
 #, python-format
 msgid "   Encountered some errors with %s data:"
-msgstr ""
+msgstr "   Vyskytli sa nejaké chyby s dátami %s:"
 
 #: ../satellite_tools/satsync.py:607
 #, python-format
 msgid "   ------- %s PARSE/IMPORT ERROR -------"
-msgstr ""
+msgstr "   ------- CHYBA ANALÝZY / IMPORTU %s -------"
 
 #: ../satellite_tools/satsync.py:609
 msgid "   ---------------------------------------"
-msgstr ""
+msgstr "   ---------------------------------------"
 
 #: ../satellite_tools/satsync.py:612
 #, python-format
 msgid "%s data complete"
-msgstr ""
+msgstr "dáta %s sú kompletné"
 
 #: ../satellite_tools/satsync.py:665
 msgid "Retrieving / parsing channel data"
-msgstr ""
+msgstr "Získavanie / analyzovanie dát kanála"
 
 #: ../satellite_tools/satsync.py:718
 msgid "Channel data complete"
-msgstr ""
+msgstr "Dáta kanála sú kompletné"
 
 #: ../satellite_tools/satsync.py:736
 #, python-format
 msgid "%10s import from %s"
-msgstr ""
+msgstr "%10s import z %s"
 
 #: ../satellite_tools/satsync.py:739
 #, python-format
 msgid "%10s import from %s - %s"
-msgstr ""
+msgstr "%10s import z %s - %s"
 
 #: ../satellite_tools/satsync.py:743
 #, python-format
 msgid "%10s"
-msgstr ""
+msgstr "%10s"
 
 #: ../satellite_tools/satsync.py:750
 msgid "p"
-msgstr ""
+msgstr "p"
 
 #: ../satellite_tools/satsync.py:752
 msgid "."
-msgstr ""
+msgstr "."
 
 #: ../satellite_tools/satsync.py:758
 msgid "   p = previously imported/synced channel"
-msgstr ""
+msgstr "   p = predtým importovaný/synchronizovaný kanál"
 
 #: ../satellite_tools/satsync.py:759
 msgid "   . = channel not yet imported/synced"
-msgstr ""
+msgstr "   . = kanál ešte nebol importovaný/synchronizovaný"
 
 #: ../satellite_tools/satsync.py:765
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr ""
+msgstr "   e = kanál už nie je podporovaný (koniec služby)"
 
 #: ../satellite_tools/satsync.py:767
 msgid "   ? = channel label invalid --- typo?"
-msgstr ""
+msgstr "   ? = štítok kanála je neplatný --- preklep?"
 
 #: ../satellite_tools/satsync.py:771
 #, python-format
 msgid "   %s:"
-msgstr ""
+msgstr "   %s:"
 
 #: ../satellite_tools/satsync.py:772
 #, python-format
 msgid "      %s %-40s %4s %s"
-msgstr ""
+msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:773
 msgid "base-channels"
-msgstr ""
+msgstr "základné-kanály"
 
 #: ../satellite_tools/satsync.py:786 ../satellite_tools/satsync.py:1603
 msgid "NONE RELEVANT"
-msgstr ""
+msgstr "ŽIADNE RELEVANTNÉ"
 
 #: ../satellite_tools/satsync.py:808
 msgid "end-of-service"
-msgstr ""
+msgstr "koniec-služby"
 
 #: ../satellite_tools/satsync.py:809
 msgid "e"
-msgstr ""
+msgstr "e"
 
 #: ../satellite_tools/satsync.py:815
 msgid "   typos:"
-msgstr ""
+msgstr "   preklepy:"
 
 #: ../satellite_tools/satsync.py:816
 msgid "?"
-msgstr ""
+msgstr "?"
 
 #: ../satellite_tools/satsync.py:831
 #, python-format
 msgid "XXX: imported channels: %s"
-msgstr ""
+msgstr "XXX: importované kanály: %s"
 
 #: ../satellite_tools/satsync.py:832
 #, python-format
 msgid "XXX:   cached channels: %s"
-msgstr ""
+msgstr "XXX:   kanály vo vyrovnávacej pamäti: %s"
 
 #: ../satellite_tools/satsync.py:837
 msgid "XXX: list channels called"
-msgstr ""
+msgstr "XXX: zoznam volaných kanálov"
 
 #: ../satellite_tools/satsync.py:855
 msgid "ERROR: these channels either do not exist or are not available:"
-msgstr ""
+msgstr "CHYBA: tieto kanály buď neexistujú, alebo nie sú k dispozícii:"
 
 #: ../satellite_tools/satsync.py:859
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
-msgstr ""
+msgstr "       (pozrieť si zoznam štítkov kanálov: %s --list-channels)"
 
 #: ../satellite_tools/satsync.py:904
 #, python-format
 msgid "   Retrieving / parsing short package metadata: %s (%s)"
-msgstr ""
+msgstr "   Získavanie / analyzovanie metadát krátkych balíkov: %s (%s)"
 
 #: ../satellite_tools/satsync.py:965
 #, python-format
 msgid "Diffing package metadata (what's missing locally?): %s"
-msgstr ""
+msgstr "Porovnávanie metadát balíkov (čo chýba lokálne?): %s"
 
 #: ../satellite_tools/satsync.py:971 ../satellite_tools/satsync.py:1254
 msgid "Diffing:    "
-msgstr ""
+msgstr "Porovnávanie:    "
 
 #: ../satellite_tools/satsync.py:988
 msgid "ERROR: incremental dump skipped"
-msgstr ""
+msgstr "CHYBA: preskočený prírastkový výpis"
 
 #: ../satellite_tools/satsync.py:1079
 msgid "Downloading rpm packages"
-msgstr ""
+msgstr "Sťahovanie rpm balíkov"
 
 #: ../satellite_tools/satsync.py:1084
 #, python-format
 msgid "   Fetching any missing RPMs: %s (%s)"
-msgstr ""
+msgstr "   Sťahovanie všetkých chýbajúcich RPM: %s (%s)"
 
 #: ../satellite_tools/satsync.py:1085 ../satellite_tools/satsync.py:1153
 msgid "NONE MISSING"
-msgstr ""
+msgstr "ŽIADNY NECHÝBA"
 
 #: ../satellite_tools/satsync.py:1094
 msgid "Processing rpm packages complete"
-msgstr ""
+msgstr "Spracovanie rpm balíkov je dokončené"
 
 #: ../satellite_tools/satsync.py:1121
 msgid "Downloading package metadata"
-msgstr ""
+msgstr "Sťahovanie metadát balíkov"
 
 #: ../satellite_tools/satsync.py:1146
 msgid "Downloading srpm packages"
-msgstr ""
+msgstr "Sťahovanie srpm balíkov"
 
 #: ../satellite_tools/satsync.py:1152
 #, python-format
 msgid "   Fetching any missing SRPMs: %s (%s)"
-msgstr ""
+msgstr "   Sťahovanie všetkých chýbajúcich SRPM: %s (%s)"
 
 #: ../satellite_tools/satsync.py:1249
 #, python-format
 msgid "Diffing source package metadata (what's missing locally?): %s"
-msgstr ""
+msgstr "Porovnávanie metadát zdrojových balíkov (čo chýba lokálne?): %s"
 
 #: ../satellite_tools/satsync.py:1260
 msgid "Downloading source package metadata"
-msgstr ""
+msgstr "Sťahovanie metadát zdrojových balíkov"
 
 #: ../satellite_tools/satsync.py:1338 ../satellite_tools/satsync.py:2027
 #, python-format
 msgid "Unable to save file %s: %s"
-msgstr ""
+msgstr "Nepodarilo sa uložiť súbor %s: %s"
 
 #. for
 #. Retried a number of times and it still failed; log the
@@ -1623,52 +1709,52 @@ msgstr ""
 #: ../satellite_tools/satsync.py:1345
 #, python-format
 msgid "Failed to fetch file %s"
-msgstr ""
+msgstr "Zlyhalo stiahnutie súboru %s"
 
 #: ../satellite_tools/satsync.py:1350
 msgid "Downloading kickstartable trees metadata"
-msgstr ""
+msgstr "Sťahovanie metadát stromov schopných kickstart"
 
 #: ../satellite_tools/satsync.py:1365
 msgid "Downloading kickstartable trees files"
-msgstr ""
+msgstr "Sťahovanie súborov stromov schopných kickstart"
 
 #: ../satellite_tools/satsync.py:1504
 #, python-format
 msgid "Grabbing all patches for channel %s"
-msgstr ""
+msgstr "Získanie všetkých opráv pre kanál %s"
 
 #: ../satellite_tools/satsync.py:1554
 msgid "Downloading patch data"
-msgstr ""
+msgstr "Sťahovanie dát opráv"
 
 #: ../satellite_tools/satsync.py:1556
 msgid "Forcing download of all patch data for requested channels."
-msgstr ""
+msgstr "Vynútenie stiahnutia všetkých dát opráv pre požadované kanály."
 
 #: ../satellite_tools/satsync.py:1571
 msgid "Downloading patch data complete"
-msgstr ""
+msgstr "Sťahovanie dát opráv je dokončené"
 
 #: ../satellite_tools/satsync.py:1576 ../satellite_tools/satsync.py:1597
 msgid "Downloading:"
-msgstr ""
+msgstr "Sťahovanie:"
 
 #: ../satellite_tools/satsync.py:1579
 msgid " - complete"
-msgstr ""
+msgstr " - dokončené"
 
 #: ../satellite_tools/satsync.py:1624
 msgid "Importing source package metadata"
-msgstr ""
+msgstr "Importovanie metadát zdrojových balíkov"
 
 #: ../satellite_tools/satsync.py:1627
 msgid "Importing package metadata"
-msgstr ""
+msgstr "Importovanie metadát balíkov"
 
 #: ../satellite_tools/satsync.py:1635
 msgid "Importing:  "
-msgstr ""
+msgstr "Importovanie:  "
 
 #. not in the cache
 #: ../satellite_tools/satsync.py:1703
@@ -1676,35 +1762,37 @@ msgid ""
 "Package Not Found in Cache, Clear the Cache "
 "to                                  Regenerate it."
 msgstr ""
+"Balík sa nenašiel vo vyrovnávacej pamäti, vyčistite vyrovnávaciu pamäť "
+"do                                  Obnovte ju."
 
 #: ../satellite_tools/satsync.py:1709
 msgid "Importing channel patches"
-msgstr ""
+msgstr "Importovanie opráv kanálov"
 
 #: ../satellite_tools/satsync.py:1714
 #, python-format
 msgid "Importing %s patches for channel %s."
-msgstr ""
+msgstr "Importovanie %s opráv pre kanál %s."
 
 #. Incomplete configuration
 #: ../satellite_tools/satsync.py:2113
 msgid "ERROR: server.mount_point not set in the configuration file"
-msgstr ""
+msgstr "CHYBA: server.bod_pripojenia nie je nastavený v konfiguračnom súbore"
 
 #: ../satellite_tools/satsync.py:2117
 #, python-format
 msgid "ERROR: server.mount_point %s do not exist"
-msgstr ""
+msgstr "CHYBA: server.bod_pripojenia %s neexistuje"
 
 #: ../satellite_tools/satsync.py:2122
 #, python-format
 msgid "ERROR: path under server.mount_point (%s)  do not exist"
-msgstr ""
+msgstr "CHYBA: cesta pod server.bod_pripojenia (%s)  neexistuje"
 
 #: ../satellite_tools/satsync.py:2199
 #, python-format
 msgid "Commandline: %s"
-msgstr ""
+msgstr "Príkazový riadok: %s"
 
 #: ../satellite_tools/satsync.py:2202
 #, python-format
@@ -1712,39 +1800,46 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "satellite-sync\" for more information."
 msgstr ""
+"IBA LADIŤ: max. veľkosť-dávky pre spracovanie XML/database-import (1..%s). "
+"Viac informácií v \"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
-msgstr ""
+msgstr "alternatívny SSL CA certifikát (úplná cesta k certifikačnému súboru)"
 
 #: ../satellite_tools/satsync.py:2207
 msgid "process data for this channel only"
-msgstr ""
+msgstr "spracovať dáta iba pre tento kanál"
 
 #: ../satellite_tools/satsync.py:2209
 msgid ""
 "disk dump will be considered to be a full export; see \"man satellite-sync\" "
 "for more information."
 msgstr ""
+"výpis disku sa bude považovať za úplný export; ďalšie informácie nájdete v \""
+"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2212
 msgid "existing custom channels will also be synced (unless -c is used)"
 msgstr ""
+"existujúce vlastné kanály budú tiež synchronizované (pokiaľ sa nepoužije -c)"
 
 #: ../satellite_tools/satsync.py:2214
 #, python-format
 msgid ""
 "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
 msgstr ""
+"prepísať nastavenie úrovne ladenia v /etc/rhn/rhn.conf (ktoré je momentálne "
+"nastavené na %s)."
 
 #: ../satellite_tools/satsync.py:2216
 #, python-format
 msgid "requested version of XML dump (default: %s)"
-msgstr ""
+msgstr "požadovaná verzia výpisu XML (predvolené: %s)"
 
 #: ../satellite_tools/satsync.py:2218
 msgid "e-mail a report of what was synced/imported"
-msgstr ""
+msgstr "poslať e-mailom správu o tom, čo bolo synchronizované/importované"
 
 #: ../satellite_tools/satsync.py:2220
 msgid "forcibly process all (not a diff of) patch metadata"
