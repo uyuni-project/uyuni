@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 14:33+0100\n"
+"POT-Creation-Date: 2020-08-18 10:24+0200\n"
 "PO-Revision-Date: 2018-03-16 11:00+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Galician (http://www.transifex.com/projects/p/spacewalk/"
@@ -36,20 +36,20 @@ msgstr ""
 msgid "%s was not found"
 msgstr "Non se atopou %s"
 
-#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:116
+#: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
 msgid "Getting list of packages installed on the system"
 msgstr "A obter a lista dos paquetes instalados no sistema"
 
 #. self.druid.finish.set_label(_("_Finish"))
-#. Finish Window
 #: ../src/up2date_client/gui.py:273
-#: ../src/up2date_client/rhnreg_constants.py:155
-msgid "Updates Configured"
-msgstr "Configuráronse as actualizacións"
+#, fuzzy
+msgid "Finish setting up software updates"
+msgstr "Configurar as actualizacións de software"
 
 #. self.druid.finish.set_label(_("_Exit"))
 #: ../src/up2date_client/gui.py:276
-msgid "Software Updates Not Set Up"
+#, fuzzy
+msgid "Software updates setup unsuccessful"
 msgstr "As actualizacións de software non están configuradas"
 
 #: ../src/up2date_client/gui.py:283
@@ -61,25 +61,40 @@ msgstr "rhn_register debe ser executado como «root»."
 msgid "There was some sort of I/O error: %s"
 msgstr "Produciuse algún tipo de erro de E/S: %s"
 
-#: ../src/up2date_client/hardware.py:902
+#: ../src/up2date_client/hardware.py:1032
 msgid "Error reading cpu information:"
 msgstr "Produciuse un erro ao ler a información da cpu:"
 
-#: ../src/up2date_client/hardware.py:909
+#: ../src/up2date_client/hardware.py:1039
 msgid "Error reading system memory information:"
 msgstr "Produciuse un erro ao ler a información da memoria do sistema:"
 
-#: ../src/up2date_client/hardware.py:919
+#: ../src/up2date_client/hardware.py:1049
 msgid "Error reading networking information:"
 msgstr "Produciuse un erro ao ler a información da rede:"
 
-#: ../src/up2date_client/hardware.py:940
+#: ../src/up2date_client/hardware.py:1070
 msgid "Error reading install method information:"
 msgstr "Produciuse un erro ao ler a información do método de instalación:"
 
-#: ../src/up2date_client/hardware.py:948
+#: ../src/up2date_client/hardware.py:1078
 msgid "Error reading network interface information:"
 msgstr "Produciuse un erro ao ler a información da interface de rede:"
+
+#: ../src/up2date_client/hardware.py:1086
+#, fuzzy
+msgid "Error reading network FQDNs information:"
+msgstr "Produciuse un erro ao ler a información da rede:"
+
+#: ../src/up2date_client/hardware.py:1093
+#, fuzzy
+msgid "Error reading system info:"
+msgstr "Produciuse un erro ao ler a información da memoria do sistema:"
+
+#: ../src/up2date_client/hardware.py:1100
+#, fuzzy
+msgid "Error reading machine info:"
+msgstr "Produciuse un erro ao ler a información da cpu:"
 
 #: ../src/up2date_client/messageWindow.py:106
 msgid "Error:"
@@ -99,7 +114,7 @@ msgstr ""
 "Este sistema podería non estar actualizado até que se asocie cunha canle."
 
 #: ../src/up2date_client/rhncli.py:68
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr ""
 
 #: ../src/up2date_client/rhncli.py:70
@@ -188,279 +203,6 @@ msgstr "Produciuse un erro:"
 #: ../src/up2date_client/rhncli.py:234
 msgid "See /var/log/up2date for more information"
 msgstr "Vexa /var/log/up2date para máis información"
-
-#: ../src/up2date_client/rhnreg.py:82
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg.py:88
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "Advertencia: foi imposíbel activar rhnsd con chkconfig"
-
-#: ../src/up2date_client/rhnregGui.py:147
-#: ../src/up2date_client/rhnregGui.py:164
-msgid "Notice"
-msgstr "Aviso"
-
-#: ../src/up2date_client/rhnregGui.py:157
-#: ../src/up2date_client/rhnregGui.py:171
-#: ../src/up2date_client/rhnreg_constants.py:245
-msgid "Warning"
-msgstr "Advertencia"
-
-#: ../src/up2date_client/rhnregGui.py:272
-msgid "There was an error while applying your choice."
-msgstr "Produciuse un erro ao aplicar a súa escolla."
-
-#: ../src/up2date_client/rhnregGui.py:291
-msgid "You specified an invalid protocol. Only https and http are allowed."
-msgstr "Indicou un protocolo incorrecto. Só se permiten https e http."
-
-#: ../src/up2date_client/rhnregGui.py:305
-msgid ""
-"You will not be able to successfully register this system without contacting "
-"a Spacewalk server."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:325
-msgid "Cannot contact selected server"
-msgstr "Non é posíbel contactar co servidor escollido"
-
-#: ../src/up2date_client/rhnregGui.py:326
-#, python-format
-msgid "We could not contact the Satellite or Proxy at '%s.'"
-msgstr "Non puidemos contactar co Satélite ou Proxy de «%s»."
-
-#: ../src/up2date_client/rhnregGui.py:328
-#, python-format
-msgid ""
-"Double-check the location - is '%s' correct? If not, you can correct it and "
-"try again."
-msgstr ""
-"Verifique o lugar - é «%s» correcto? Caso de que non, pode corrixilo e "
-"tentar de novo."
-
-#: ../src/up2date_client/rhnregGui.py:331
-msgid "Make sure the network connection on this system is operational."
-msgstr "Asegúrese de que a conexión de rede deste sistema estea a funcionar."
-
-#: ../src/up2date_client/rhnregGui.py:341
-msgid "There was an error communicating with Spacewalk server."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:342
-msgid "The server may be in outage mode. You may have to try connecting later."
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:344
-msgid "You may be running a client that is incompatible with the server."
-msgstr ""
-"Pode que estea a executar un cliente que sexa incompatíbel co servidor."
-
-#: ../src/up2date_client/rhnregGui.py:377
-#, python-format
-msgid ""
-"Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:416
-msgid "You must enter a login."
-msgstr "Debe introducir unha identificación."
-
-#: ../src/up2date_client/rhnregGui.py:422
-msgid "You must enter a password."
-msgstr "Debe introducir un contrasinal."
-
-#: ../src/up2date_client/rhnregGui.py:435
-msgid "There was an error while logging in."
-msgstr "Produciuse un erro durante o rexistro."
-
-#: ../src/up2date_client/rhnregGui.py:462
-msgid ""
-"There was an error communicating with the registration server.  The message "
-"was:\n"
-msgstr ""
-"Produciuse un erro ao comunicar co servidor de rexistro. A mensaxe foi:\n"
-
-#: ../src/up2date_client/rhnregGui.py:603
-msgid "There was an error while assembling information for the profile."
-msgstr "Produciuse un erro ao reunir a información para o perfil."
-
-#: ../src/up2date_client/rhnregGui.py:624
-msgid "Error running hardware profile"
-msgstr "Produciuse un erro ao executar o perfil do hardware"
-
-#: ../src/up2date_client/rhnregGui.py:655
-msgid "There was an error while populating the profile."
-msgstr "Produciuse un erro ao encher o perfil."
-
-#: ../src/up2date_client/rhnregGui.py:675
-msgid "You must choose a name for this profile."
-msgstr "Debe escoller un nome para este perfil."
-
-#: ../src/up2date_client/rhnregGui.py:689
-msgid "There was an error while creating the profile."
-msgstr "Produciuse un erro ao crear o perfil."
-
-#: ../src/up2date_client/rhnregGui.py:700
-msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
-"A rexistrar o sistema e enviar a información do perfil. Agarde un momentiño."
-
-#: ../src/up2date_client/rhnregGui.py:719
-msgid "Registering System"
-msgstr "A rexistrar o sistema"
-
-#: ../src/up2date_client/rhnregGui.py:734
-#: ../src/up2date_client/rhnregGui.py:739
-#: ../src/up2date_client/rhnregGui.py:744
-#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:989
-#: ../src/up2date_client/tui.py:993 ../src/up2date_client/tui.py:997
-#: ../src/up2date_client/tui.py:1001
-msgid "Problem registering system:\n"
-msgstr "Problema co rexistro do sistema:\n"
-
-#: ../src/up2date_client/rhnregGui.py:751
-#, python-format
-msgid ""
-"The installation number [ %s ] provided is not a valid installation number. "
-"Please go back to the previous screen and fix it."
-msgstr ""
-"O número de instalación [ %s ] que forneceu non é un número de instalación "
-"correcto. Retorne á pantalla anterior e arránxeo."
-
-#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1007
-msgid "Problem registering system."
-msgstr "Problema co rexistro do sistema."
-
-#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1012
-msgid "Problem writing out system id to disk."
-msgstr "Problema ao escribir o identificador do sistema no disco."
-
-#: ../src/up2date_client/rhnregGui.py:777
-msgid "There was a problem registering this system."
-msgstr "Produciuse un problema ao rexistrar este sistema."
-
-#: ../src/up2date_client/rhnregGui.py:790
-msgid "Sending hardware information"
-msgstr "A enviar a información do hardware"
-
-#: ../src/up2date_client/rhnregGui.py:795
-msgid "Problem sending hardware information."
-msgstr "Produciuse un problema ao enviar a información do hardware."
-
-#. #            for row in range(self.regPackageArea.n_rows):
-#. #                rowData = self.regPackageArea.get_row_data(row)
-#. #                if rowData[0] == 1:
-#. #                    selection.append(rowData[1])
-#. #            print("gh270")
-#. #            selectedPackages = []
-#. #            for pkg in packageList:
-#. #                if pkg[0] in selection:
-#. #                    selectedPackages.append(pkg)
-#: ../src/up2date_client/rhnregGui.py:819
-msgid "Sending package information"
-msgstr "A enviar a información dos paquetes"
-
-#: ../src/up2date_client/rhnregGui.py:824
-msgid "Problem sending package information."
-msgstr "Produciuse un erro ao enviar a información dos paquetes."
-
-#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1061
-#, python-format
-msgid ""
-"Could not open %s\n"
-"%s is not enabled.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhnregGui.py:910
-msgid "There was an error while installing the certificate."
-msgstr "Produciuse un erro ao instalar o certificado."
-
-#: ../src/up2date_client/rhnregGui.py:936
-msgid "You must select a certificate."
-msgstr "Debe escoller un certificado."
-
-#. TODO Modify rhnlib to raise a unique exception for the not a
-#. cert file case.
-#: ../src/up2date_client/rhnregGui.py:966
-msgid ""
-"There was an SSL error. This could be because the file you picked was not a "
-"certificate file."
-msgstr ""
-"Produciuse un erro de SSL. Poderíase deber ao que o ficheiro escollido non "
-"sexa un ficheiro de certificado."
-
-#. TODO Provide better messages
-#: ../src/up2date_client/rhnregGui.py:974
-msgid "Something went wrong while installing the new certificate:\n"
-msgstr "Algo foi mal ao instalar o novo certificado:\n"
-
-#: ../src/up2date_client/rhnregGui.py:1027
-#: ../src/up2date_client/rhnregGui.py:1028
-#: ../src/up2date_client/rhnregGui.py:1029
-msgid "unknown"
-msgstr "descoñecido"
-
-#: ../src/up2date_client/rhnregGui.py:1133
-msgid "There was an error getting the list of hardware."
-msgstr "Produciuse un erro ao obter a lista de hardware."
-
-#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:788
-#, python-format
-msgid "%d MHz"
-msgstr "%d MHz"
-
-#: ../src/up2date_client/rhnregGui.py:1149
-#, python-format
-msgid "%s MB"
-msgstr "%s MB"
-
-#: ../src/up2date_client/rhnregGui.py:1194
-msgid "There was an error building the list of packages."
-msgstr "Produciuse un erro ao construír a lista de paquetes."
-
-#: ../src/up2date_client/rhnregGui.py:1209
-msgid "Package"
-msgstr "Paquete"
-
-#: ../src/up2date_client/rhnregGui.py:1214
-msgid "Arch"
-msgstr "Arquitectura"
-
-#: ../src/up2date_client/rhnregGui.py:1221
-msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr ""
-"A construír unha lista dos paquetes RPM instalados no sistema. Agarde un "
-"momentiño."
-
-#: ../src/up2date_client/rhnregGui.py:1252
-msgid ""
-"There was an error loading your configuration.  Make sure that\n"
-"you have read access to /etc/sysconfig/rhn."
-msgstr ""
-"Produciuse un erro ao cargar a configuración. Asegúrese de que ten acceso de "
-"lectura a /etc/sysconfig/rhn."
-
-#: ../src/up2date_client/rhnregGui.py:1294
-#, python-format
-msgid ""
-"There was an error saving your configuration. Make sure that\n"
-"you own %s."
-msgstr ""
-"Produciuse un erro ao gardar a configuración. Asegúrese de que\n"
-"é o dono de %s."
-
-#: ../src/up2date_client/rhnregGui.py:1324
-#, python-format
-msgid ""
-"This error shouldn't have happened. If you'd like to help us improve this "
-"program, please file a bug at bugzilla.redhat.com. Including the relevant "
-"parts of '%s' would be very helpful. Thanks!"
-msgstr ""
-"Este erro non se debería ter producido. Se desexa axudarnos a mellorar este "
-"programa, informe deste fallo en bugzilla.redhat.com. Axudaría se incluíse "
-"as partes relevantes de «%s». Grazas!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
@@ -817,6 +559,11 @@ msgstr ""
 msgid "Sending Profile to Red Hat Satellite"
 msgstr ""
 
+#. Finish Window
+#: ../src/up2date_client/rhnreg_constants.py:155
+msgid "Updates Configured"
+msgstr "Configuráronse as actualizacións"
+
 #: ../src/up2date_client/rhnreg_constants.py:156
 #, python-format
 msgid ""
@@ -981,6 +728,12 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "Erro fatal"
 
+#: ../src/up2date_client/rhnreg_constants.py:245
+#: ../src/up2date_client/rhnregGui.py:157
+#: ../src/up2date_client/rhnregGui.py:171
+msgid "Warning"
+msgstr "Advertencia"
+
 #: ../src/up2date_client/rhnreg_constants.py:246
 #, python-format
 msgid ""
@@ -1110,19 +863,286 @@ msgstr "Si, Continuar"
 msgid "Press <space> to deselect the option."
 msgstr "Prema <espazo> para anular a selección da opción."
 
+#: ../src/up2date_client/rhnregGui.py:147
+#: ../src/up2date_client/rhnregGui.py:164
+msgid "Notice"
+msgstr "Aviso"
+
+#: ../src/up2date_client/rhnregGui.py:272
+msgid "There was an error while applying your choice."
+msgstr "Produciuse un erro ao aplicar a súa escolla."
+
+#: ../src/up2date_client/rhnregGui.py:291
+msgid "You specified an invalid protocol. Only https and http are allowed."
+msgstr "Indicou un protocolo incorrecto. Só se permiten https e http."
+
+#: ../src/up2date_client/rhnregGui.py:305
+msgid ""
+"You will not be able to successfully register this system without contacting "
+"a Spacewalk server."
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:325
+msgid "Cannot contact selected server"
+msgstr "Non é posíbel contactar co servidor escollido"
+
+#: ../src/up2date_client/rhnregGui.py:326
+#, python-format
+msgid "We could not contact the Satellite or Proxy at '%s.'"
+msgstr "Non puidemos contactar co Satélite ou Proxy de «%s»."
+
+#: ../src/up2date_client/rhnregGui.py:328
+#, python-format
+msgid ""
+"Double-check the location - is '%s' correct? If not, you can correct it and "
+"try again."
+msgstr ""
+"Verifique o lugar - é «%s» correcto? Caso de que non, pode corrixilo e "
+"tentar de novo."
+
+#: ../src/up2date_client/rhnregGui.py:331
+msgid "Make sure the network connection on this system is operational."
+msgstr "Asegúrese de que a conexión de rede deste sistema estea a funcionar."
+
+#: ../src/up2date_client/rhnregGui.py:341
+msgid "There was an error communicating with Spacewalk server."
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:342
+msgid "The server may be in outage mode. You may have to try connecting later."
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:344
+msgid "You may be running a client that is incompatible with the server."
+msgstr ""
+"Pode que estea a executar un cliente que sexa incompatíbel co servidor."
+
+#: ../src/up2date_client/rhnregGui.py:377
+#, python-format
+msgid ""
+"Please enter your account information for the <b>%s</b> Spacewalk server:"
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:416
+msgid "You must enter a login."
+msgstr "Debe introducir unha identificación."
+
+#: ../src/up2date_client/rhnregGui.py:422
+msgid "You must enter a password."
+msgstr "Debe introducir un contrasinal."
+
+#: ../src/up2date_client/rhnregGui.py:435
+msgid "There was an error while logging in."
+msgstr "Produciuse un erro durante o rexistro."
+
+#: ../src/up2date_client/rhnregGui.py:462
+msgid ""
+"There was an error communicating with the registration server.  The message "
+"was:\n"
+msgstr ""
+"Produciuse un erro ao comunicar co servidor de rexistro. A mensaxe foi:\n"
+
+#: ../src/up2date_client/rhnregGui.py:603
+msgid "There was an error while assembling information for the profile."
+msgstr "Produciuse un erro ao reunir a información para o perfil."
+
+#: ../src/up2date_client/rhnregGui.py:624
+msgid "Error running hardware profile"
+msgstr "Produciuse un erro ao executar o perfil do hardware"
+
+#: ../src/up2date_client/rhnregGui.py:655
+msgid "There was an error while populating the profile."
+msgstr "Produciuse un erro ao encher o perfil."
+
+#: ../src/up2date_client/rhnregGui.py:675
+msgid "You must choose a name for this profile."
+msgstr "Debe escoller un nome para este perfil."
+
+#: ../src/up2date_client/rhnregGui.py:689
+msgid "There was an error while creating the profile."
+msgstr "Produciuse un erro ao crear o perfil."
+
+#: ../src/up2date_client/rhnregGui.py:700
+msgid "Registering system and sending profile information.  Please wait."
+msgstr ""
+"A rexistrar o sistema e enviar a información do perfil. Agarde un momentiño."
+
+#: ../src/up2date_client/rhnregGui.py:719
+msgid "Registering System"
+msgstr "A rexistrar o sistema"
+
+#: ../src/up2date_client/rhnregGui.py:734
+#: ../src/up2date_client/rhnregGui.py:739
+#: ../src/up2date_client/rhnregGui.py:744
+#: ../src/up2date_client/rhnregGui.py:748 ../src/up2date_client/tui.py:985
+#: ../src/up2date_client/tui.py:989 ../src/up2date_client/tui.py:993
+#: ../src/up2date_client/tui.py:997
+msgid "Problem registering system:\n"
+msgstr "Problema co rexistro do sistema:\n"
+
+#: ../src/up2date_client/rhnregGui.py:751
+#, python-format
+msgid ""
+"The installation number [ %s ] provided is not a valid installation number. "
+"Please go back to the previous screen and fix it."
+msgstr ""
+"O número de instalación [ %s ] que forneceu non é un número de instalación "
+"correcto. Retorne á pantalla anterior e arránxeo."
+
+#: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1003
+msgid "Problem registering system."
+msgstr "Problema co rexistro do sistema."
+
+#: ../src/up2date_client/rhnregGui.py:771 ../src/up2date_client/tui.py:1008
+msgid "Problem writing out system id to disk."
+msgstr "Problema ao escribir o identificador do sistema no disco."
+
+#: ../src/up2date_client/rhnregGui.py:777
+msgid "There was a problem registering this system."
+msgstr "Produciuse un problema ao rexistrar este sistema."
+
+#: ../src/up2date_client/rhnregGui.py:790
+msgid "Sending hardware information"
+msgstr "A enviar a información do hardware"
+
+#: ../src/up2date_client/rhnregGui.py:795
+msgid "Problem sending hardware information."
+msgstr "Produciuse un problema ao enviar a información do hardware."
+
+#. #            for row in range(self.regPackageArea.n_rows):
+#. #                rowData = self.regPackageArea.get_row_data(row)
+#. #                if rowData[0] == 1:
+#. #                    selection.append(rowData[1])
+#. #            print("gh270")
+#. #            selectedPackages = []
+#. #            for pkg in packageList:
+#. #                if pkg[0] in selection:
+#. #                    selectedPackages.append(pkg)
+#: ../src/up2date_client/rhnregGui.py:819
+msgid "Sending package information"
+msgstr "A enviar a información dos paquetes"
+
+#: ../src/up2date_client/rhnregGui.py:824
+msgid "Problem sending package information."
+msgstr "Produciuse un erro ao enviar a información dos paquetes."
+
+#: ../src/up2date_client/rhnregGui.py:856 ../src/up2date_client/tui.py:1057
+#, python-format
+msgid ""
+"Could not open %s\n"
+"%s is not enabled.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhnregGui.py:910
+msgid "There was an error while installing the certificate."
+msgstr "Produciuse un erro ao instalar o certificado."
+
+#: ../src/up2date_client/rhnregGui.py:936
+msgid "You must select a certificate."
+msgstr "Debe escoller un certificado."
+
+#. TODO Modify rhnlib to raise a unique exception for the not a
+#. cert file case.
+#: ../src/up2date_client/rhnregGui.py:966
+msgid ""
+"There was an SSL error. This could be because the file you picked was not a "
+"certificate file."
+msgstr ""
+"Produciuse un erro de SSL. Poderíase deber ao que o ficheiro escollido non "
+"sexa un ficheiro de certificado."
+
+#. TODO Provide better messages
+#: ../src/up2date_client/rhnregGui.py:974
+msgid "Something went wrong while installing the new certificate:\n"
+msgstr "Algo foi mal ao instalar o novo certificado:\n"
+
+#: ../src/up2date_client/rhnregGui.py:1027
+#: ../src/up2date_client/rhnregGui.py:1028
+#: ../src/up2date_client/rhnregGui.py:1029
+msgid "unknown"
+msgstr "descoñecido"
+
+#: ../src/up2date_client/rhnregGui.py:1133
+msgid "There was an error getting the list of hardware."
+msgstr "Produciuse un erro ao obter a lista de hardware."
+
+#: ../src/up2date_client/rhnregGui.py:1145 ../src/up2date_client/tui.py:784
+#, python-format
+msgid "%d MHz"
+msgstr "%d MHz"
+
+#: ../src/up2date_client/rhnregGui.py:1149
+#, python-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: ../src/up2date_client/rhnregGui.py:1194
+msgid "There was an error building the list of packages."
+msgstr "Produciuse un erro ao construír a lista de paquetes."
+
+#: ../src/up2date_client/rhnregGui.py:1209
+msgid "Package"
+msgstr "Paquete"
+
+#: ../src/up2date_client/rhnregGui.py:1214
+msgid "Arch"
+msgstr "Arquitectura"
+
+#: ../src/up2date_client/rhnregGui.py:1221
+msgid "Building a list of RPM packages installed on your system.  Please wait."
+msgstr ""
+"A construír unha lista dos paquetes RPM instalados no sistema. Agarde un "
+"momentiño."
+
+#: ../src/up2date_client/rhnregGui.py:1252
+msgid ""
+"There was an error loading your configuration.  Make sure that\n"
+"you have read access to /etc/sysconfig/rhn."
+msgstr ""
+"Produciuse un erro ao cargar a configuración. Asegúrese de que ten acceso de "
+"lectura a /etc/sysconfig/rhn."
+
+#: ../src/up2date_client/rhnregGui.py:1294
+#, python-format
+msgid ""
+"There was an error saving your configuration. Make sure that\n"
+"you own %s."
+msgstr ""
+"Produciuse un erro ao gardar a configuración. Asegúrese de que\n"
+"é o dono de %s."
+
+#: ../src/up2date_client/rhnregGui.py:1324
+#, python-format
+msgid ""
+"This error shouldn't have happened. If you'd like to help us improve this "
+"program, please file a bug at bugzilla.redhat.com. Including the relevant "
+"parts of '%s' would be very helpful. Thanks!"
+msgstr ""
+"Este erro non se debería ter producido. Se desexa axudarnos a mellorar este "
+"programa, informe deste fallo en bugzilla.redhat.com. Axudaría se incluíse "
+"as partes relevantes de «%s». Grazas!"
+
+#: ../src/up2date_client/rhnreg.py:76
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr ""
+
+#: ../src/up2date_client/rhnreg.py:82
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr "Advertencia: foi imposíbel activar rhnsd con chkconfig"
+
 #: ../src/up2date_client/rpcServer.py:56
 msgid "Error: Server Unavailable. Please try later."
 msgstr "Erro: O servidor non está dispoñíbel. Ténteo máis tarde."
 
-#: ../src/up2date_client/rpcServer.py:179
+#: ../src/up2date_client/rpcServer.py:182
 msgid "ERROR: can not find RHNS CA file"
 msgstr "ERRO: non é posíbel atopar o ficheiro de CA RHNS"
 
-#: ../src/up2date_client/rpcServer.py:217
+#: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
 msgstr "O usuario interrompeu a conexión"
 
-#: ../src/up2date_client/rpcServer.py:265
+#: ../src/up2date_client/rpcServer.py:268
 msgid "Server has refused connection due to high load"
 msgstr "O servidor rexeitou a conexión por ter unha carga excesiva"
 
@@ -1142,72 +1162,72 @@ msgstr "O servidor indicou un erro:\n"
 msgid "There was an error communicating with the registration server:\n"
 msgstr "Produciuse un erro ao comunicarse co servidor de rexistro:\n"
 
-#: ../src/up2date_client/tui.py:737
+#: ../src/up2date_client/tui.py:733
 msgid "Profile name:"
 msgstr "Nome do perfil:"
 
-#: ../src/up2date_client/tui.py:759 ../src/up2date_client/tui.py:760
+#: ../src/up2date_client/tui.py:755 ../src/up2date_client/tui.py:756
 msgid "Version: "
 msgstr "Versión: "
 
-#: ../src/up2date_client/tui.py:766
+#: ../src/up2date_client/tui.py:762
 msgid "CPU model: "
 msgstr "Modelo de CPU: "
 
-#: ../src/up2date_client/tui.py:772
+#: ../src/up2date_client/tui.py:768
 msgid "Hostname: "
 msgstr "Servidor: "
 
-#: ../src/up2date_client/tui.py:784
+#: ../src/up2date_client/tui.py:780
 msgid "CPU speed: "
 msgstr "Velocidade da CPU: "
 
-#: ../src/up2date_client/tui.py:790
+#: ../src/up2date_client/tui.py:786
 msgid "IP Address: "
 msgstr "Enderezo IP: "
 
-#: ../src/up2date_client/tui.py:799
+#: ../src/up2date_client/tui.py:795
 msgid "Memory: "
 msgstr "Memoria: "
 
-#: ../src/up2date_client/tui.py:803
+#: ../src/up2date_client/tui.py:799
 #, python-format
 msgid "%s megabytes"
 msgstr "%s megabytes"
 
-#: ../src/up2date_client/tui.py:1028
+#: ../src/up2date_client/tui.py:1024
 msgid "Problem sending hardware profile:\n"
 msgstr "Produciuse un problema ao enviar o perfil do hardware:\n"
 
-#: ../src/up2date_client/tui.py:1032
+#: ../src/up2date_client/tui.py:1028
 msgid "Problem sending hardware profile."
 msgstr "Produciuse un problema ao enviar o perfil do hardware.."
 
-#: ../src/up2date_client/tui.py:1042
+#: ../src/up2date_client/tui.py:1038
 msgid "Problem sending package list:\n"
 msgstr "Produciuse un erro ao enviar a lista dos paquetes:\n"
 
-#: ../src/up2date_client/tui.py:1045
+#: ../src/up2date_client/tui.py:1041
 msgid "Problem sending package list."
 msgstr "Produciuse un erro ao enviar a lista dos paquetes.."
 
-#: ../src/up2date_client/tui.py:1099
+#: ../src/up2date_client/tui.py:1095
 msgid "Finish"
 msgstr "Rematar"
 
-#: ../src/up2date_client/tui.py:1213
+#: ../src/up2date_client/tui.py:1209
 #, fuzzy
 msgid "You specified an invalid protocol.Only https and http are allowed."
 msgstr "Indicou un protocolo incorrecto. Só se permiten https e http."
 
-#: ../src/up2date_client/tui.py:1244
+#: ../src/up2date_client/tui.py:1240
 msgid ""
 "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
 msgstr ""
 " <Tab>/<Alt-Tab> entre elementos   |   <Space> escolle   |  <F12> pantalla "
 "seguinte"
 
-#: ../src/up2date_client/tui.py:1348
+#: ../src/up2date_client/tui.py:1344
 msgid "You must run the RHN registration program as root."
 msgstr ""
 "O programa de rexistro de RHN ten que ser executado como administrador."
@@ -1293,6 +1313,10 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 
+#: ../src/bin/rhn_check.py:428
+msgid "Attempting to run more than one instance of rhn_check. Exiting.\n"
+msgstr ""
+
 #: ../src/bin/rhn-profile-sync.py:37
 msgid ""
 "You need to register this system by running `rhn_register` before using this "
@@ -1313,111 +1337,107 @@ msgstr "A actualizar o perfil do hardware..."
 msgid "Updating virtualization profile..."
 msgstr "A actualizar o perfil da virtualización..."
 
-#: ../src/bin/rhn_check.py:428
-msgid "Attempting to run more than one instance of rhn_check. Exiting.\n"
-msgstr ""
-
 #: ../src/bin/rhn_register.py:38
 msgid "Do not attempt to use X"
 msgstr "Non tentar empregar X"
 
-#: ../src/bin/rhnreg_ks.py:49
+#: ../src/bin/rhnreg_ks.py:50
 msgid "Specify a profilename"
 msgstr "Indique un nome de perfil"
 
-#: ../src/bin/rhnreg_ks.py:51
+#: ../src/bin/rhnreg_ks.py:52
 msgid "Specify a username"
 msgstr "Indique un nome de usuario"
 
-#: ../src/bin/rhnreg_ks.py:53
+#: ../src/bin/rhnreg_ks.py:54
 msgid "Specify a password"
 msgstr "Indique un contrasinal"
 
-#: ../src/bin/rhnreg_ks.py:55
+#: ../src/bin/rhnreg_ks.py:56
 msgid "Specify an organizational id for this system"
 msgstr "Indique un identificador organizativo para este sistema"
 
-#: ../src/bin/rhnreg_ks.py:57
+#: ../src/bin/rhnreg_ks.py:58
 msgid "Specify a url to use as a server"
 msgstr "Indique un URL para empregalo como servidor"
 
-#: ../src/bin/rhnreg_ks.py:59
+#: ../src/bin/rhnreg_ks.py:60
 msgid "Specify a file to use as the ssl CA cert"
 msgstr "Indique un ficheiro para empregar como certificado de CA de ssl"
 
-#: ../src/bin/rhnreg_ks.py:61
+#: ../src/bin/rhnreg_ks.py:62
 msgid "Specify an activation key"
 msgstr "Indique unha chave de activación"
 
-#: ../src/bin/rhnreg_ks.py:63
+#: ../src/bin/rhnreg_ks.py:64
 msgid ""
 "Subscribe this system to the EUS channel tied to the system's redhat-release"
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:65
+#: ../src/bin/rhnreg_ks.py:66
 msgid "[Deprecated] Read contact info from stdin"
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:67
+#: ../src/bin/rhnreg_ks.py:68
 msgid "Do not probe or upload any hardware info"
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:69
+#: ../src/bin/rhnreg_ks.py:70
 msgid "Do not profile or upload any package info"
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:71
+#: ../src/bin/rhnreg_ks.py:72
 msgid "Do not upload any virtualization info"
 msgstr "Non enviar ningunha información de virtualización"
 
-#: ../src/bin/rhnreg_ks.py:73
+#: ../src/bin/rhnreg_ks.py:74
 msgid "Do not start rhnsd after completion"
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:75
+#: ../src/bin/rhnreg_ks.py:76
 msgid "Register the system even if it is already registered"
 msgstr "Rexistrar o sistema mesmo se xa estivese rexistrado"
 
-#: ../src/bin/rhnreg_ks.py:85
+#: ../src/bin/rhnreg_ks.py:86
 msgid "A username and password are required to register a system."
 msgstr ""
 "Requírense un nome de usuario e un contrasinal para rexistrar un sistema."
 
-#: ../src/bin/rhnreg_ks.py:90
+#: ../src/bin/rhnreg_ks.py:91
 msgid "This system is already registered. Use --force to override"
 msgstr "Este sistema xa está rexistrado. Empregue --force para ignorar"
 
-#: ../src/bin/rhnreg_ks.py:124
+#: ../src/bin/rhnreg_ks.py:125
 msgid ""
 "Usage of --use-eus-channel option with --activationkey is not supported. "
 "Please use username and password instead."
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:127
+#: ../src/bin/rhnreg_ks.py:128
 msgid "The server you are registering against does not support EUS."
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:153
+#: ../src/bin/rhnreg_ks.py:154
 msgid ""
 "Warning: --contactinfo option has been deprecated. Please login to the "
 "server web user Interface and update your contactinfo. "
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:174
+#: ../src/bin/rhnreg_ks.py:175
 #, fuzzy, python-format
 msgid "Warning: %s is not present, could not enable it."
 msgstr ""
 "Advertencia: yum-rhn-plugin non está presente; non foi posíbel activalo.\n"
 "As actualizacións automáticas non funcionarán."
 
-#: ../src/bin/rhnreg_ks.py:177
+#: ../src/bin/rhnreg_ks.py:178
 #, python-format
 msgid ""
 "Warning: Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
 
-#: ../src/bin/rhnreg_ks.py:199
+#: ../src/bin/rhnreg_ks.py:206
 msgid ""
 "A profilename was not specified, and hostname and IP address could not be "
 "determined to use as a profilename, please specify one."

@@ -18,8 +18,8 @@ msgstr ""
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
 "PO-Revision-Date: 2020-07-14 12:37+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/>"
-"\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
+">\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1560,7 +1560,8 @@ msgstr "ERROR: estos canales o no existen o no están disponibles:"
 #: ../satellite_tools/satsync.py:859
 #, python-format
 msgid "       (to see a list of channel labels: %s --list-channels)"
-msgstr "       (para ver una lista de etiquetas de canales: %s --list-channels)"
+msgstr ""
+"       (para ver una lista de etiquetas de canales: %s --list-channels)"
 
 #: ../satellite_tools/satsync.py:904
 #, python-format

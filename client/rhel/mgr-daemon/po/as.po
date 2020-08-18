@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 14:34+0100\n"
+"POT-Creation-Date: 2020-08-18 10:23+0200\n"
 "PO-Revision-Date: 2015-03-17 12:21+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Assamese (http://www.transifex.com/projects/p/fedora/language/"
@@ -52,12 +52,12 @@ msgstr "তৰ্কৰ ভুল সংখ্যা"
 msgid "already running"
 msgstr "ইতিমধ্যে চলি আছে"
 
-#: ../rhnsd.c:249
+#: ../rhnsd.c:254
 #, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
 msgstr "প্ৰতিলিপি (C) %s Red Hat, Inc.\n"
 
-#: ../rhnsd.c:252
+#: ../rhnsd.c:257
 #, c-format
 msgid "Written by %s.\n"
 msgstr "%s ৰ দ্বাৰা লিখা হৈছে ।\n"
