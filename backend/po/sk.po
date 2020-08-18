@@ -9,10 +9,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-08-18 10:23+0000\n"
+"PO-Revision-Date: 2020-08-19 08:17+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1843,43 +1843,43 @@ msgstr "poslať e-mailom správu o tom, čo bolo synchronizované/importované"
 
 #: ../satellite_tools/satsync.py:2220
 msgid "forcibly process all (not a diff of) patch metadata"
-msgstr ""
+msgstr "nútene spracovať všetky (nie odlišné) metadáta opráv"
 
 #: ../satellite_tools/satsync.py:2222
 msgid "Do not use an http proxy under any circumstances."
-msgstr ""
+msgstr "Za žiadnych okolností nepoužiť http proxy."
 
 #: ../satellite_tools/satsync.py:2224
 msgid "alternative http proxy (hostname:port)"
-msgstr ""
+msgstr "alternatívne http proxy (názov_hostiteľa:port)"
 
 #: ../satellite_tools/satsync.py:2226
 msgid "alternative http proxy username"
-msgstr ""
+msgstr "používateľské meno alternatívneho http proxy"
 
 #: ../satellite_tools/satsync.py:2228
 msgid "alternative http proxy password"
-msgstr ""
+msgstr "heslo alternatívneho http proxy"
 
 #: ../satellite_tools/satsync.py:2230
 msgid "parent SUSE Manager to import content from"
-msgstr ""
+msgstr "rodičovský SUSE Manager, z ktorého sa má importovať obsah"
 
 #: ../satellite_tools/satsync.py:2232
 msgid "list all available channels and exit"
-msgstr ""
+msgstr "vypísať zoznam všetkých dostupných kanálov a ukončiť"
 
 #: ../satellite_tools/satsync.py:2234
 msgid "help on all error codes mgr-inter-sync returns"
-msgstr ""
+msgstr "pomocník pri všetkých chybových kódoch, ktoré vracia mgr-inter-sync"
 
 #: ../satellite_tools/satsync.py:2236
 msgid "source mount point for import - disk update only"
-msgstr ""
+msgstr "zdrojový bod pripojenia pre import - iba aktualizácia disku"
 
 #: ../satellite_tools/satsync.py:2238
 msgid "do not process patch data"
-msgstr ""
+msgstr "nespracovávať dáta opráv"
 
 #: ../satellite_tools/satsync.py:2240
 msgid "do not process kickstart data (provisioning only)"
