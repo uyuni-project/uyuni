@@ -1,3 +1,4 @@
+- fix alignment on icon on entitlement page
 - support installer update channels during autoinstallation
 - filter machines not in maintenance mode for remote commands
 - Reset the server path on minion registration (bsc#1174254)
