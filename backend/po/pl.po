@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
+"POT-Creation-Date: 2020-08-18 13:44+0200\n"
 "PO-Revision-Date: 2018-03-16 04:50+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
@@ -16,24 +16,11 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2)\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "niepełny token uwierzytelnienia pośrednika: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Wysłany podpis pośrednika %s nie zgadza się z naszym %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "odmówiono uwierzytelnienia pośrednika"
-
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -91,15 +78,6 @@ msgstr "Nieprawidłowy typ wartości działania %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "Działanie %s nie należy do serwera %s"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Nieprawidłowa para system_id/action_id."
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Nieprawidłowa wartość %s (%s)"
-
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr "Brak wymaganych danych"
@@ -137,6 +115,15 @@ msgstr "Oczekiwano słownika jako parametr produktu"
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nieprawidłowa wartość „%s” dla %s (%s)"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Nieprawidłowa para system_id/action_id."
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Nieprawidłowa wartość %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -177,16 +164,6 @@ msgstr "Proszę wykonać polecenie rhn_register jako root na tym kliencie"
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Usługa jest niedostępna dla profilu systemu: „%s”"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Zażądano nieprawidłowego pakietu RPM %s"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Nie odnaleziono pakietu"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
@@ -239,65 +216,19 @@ msgstr "Niepasująca sesja kickstart"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Nakładanie tokenów ponownej rejestracji na stos jest nieobsługiwane"
 
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "Nieprawidłowe połączenie nazwy użytkownika i hasła"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
+#: ../server/apacheAuth.py:66
 #, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "Nazwa użytkownika „%s” nie została zastrzeżona"
+msgid "incomplete proxy authentication token: %s"
+msgstr "niepełny token uwierzytelnienia pośrednika: %s"
 
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "Nie podano adresu e-mail"
-
-#: ../server/rhnUser.py:509
+#: ../server/apacheAuth.py:84
 #, python-format
-msgid "username should be at least %d characters"
-msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Wysłany podpis pośrednika %s nie zgadza się z naszym %s."
 
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "nazwa użytkownika musi mieć mniej niż %d znaków"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "nazwa użytkownika to „%s”, nieprawidłowy znak „%s”"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Proszę ograniczyć adres e-mail do %s znaków"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "hasło musi mieć co najmniej %d znaków"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "Hasło musi być krótsze niż %d znaków"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "hasło zawiera znak „%s”"
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Nie można rejestrować nazw użytkowników kończących się znakiem %s"
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "odmówiono uwierzytelnienia pośrednika"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -434,6 +365,76 @@ msgstr ""
 "na stronie WWW pod adresem:\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Zażądano nieprawidłowego pakietu RPM %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Nie odnaleziono pakietu"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "Nieprawidłowe połączenie nazwy użytkownika i hasła"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "Nazwa użytkownika „%s” nie została zastrzeżona"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Nie podano adresu e-mail"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "nazwa użytkownika musi mieć mniej niż %d znaków"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "nazwa użytkownika to „%s”, nieprawidłowy znak „%s”"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Proszę ograniczyć adres e-mail do %s znaków"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "hasło musi mieć co najmniej %d znaków"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "Hasło musi być krótsze niż %d znaków"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "hasło zawiera znak „%s”"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "Nie można rejestrować nazw użytkowników kończących się znakiem %s"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1309,6 +1310,19 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr ""
+
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -1323,19 +1337,6 @@ msgid ""
 "\"%s\" could not be opened\n"
 "and/or written to:\n"
 "%s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:112
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
+"POT-Creation-Date: 2020-08-18 13:44+0200\n"
 "PO-Revision-Date: 2018-03-16 10:54+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
@@ -26,24 +26,11 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "不完全なプロキシ認証トークンです: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致しません。"
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "プロキシ認証が拒否されました"
-
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -102,16 +89,6 @@ msgstr "無効な動作値タイプ %s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "動作 %s はサーバー %s に属していません"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
-msgid "Invalid system_id/action_id pair."
-msgstr "無効なシステム認証情報です。"
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "無効な値  %s (%s)"
-
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr "必要なデータが足りません"
@@ -151,6 +128,16 @@ msgstr "製品の引数としてディクショナリが期待されています
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "無効な値 '%s' − %s (%s)"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+#, fuzzy
+msgid "Invalid system_id/action_id pair."
+msgstr "無効なシステム認証情報です。"
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "無効な値  %s (%s)"
 
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
@@ -193,16 +180,6 @@ msgstr ""
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "システムプロファイルに対してサービスが有効になっていません: 「%s」"
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "無効な RPM パッケージ %s を要求しています"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "パッケージが見つかりません"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
@@ -255,65 +232,19 @@ msgstr "キックスタートセッションの不一致です"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "再登録トークンの積み重ねには対応していません"
 
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "無効なユーザー名とパスワードの組み合わせです"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
+#: ../server/apacheAuth.py:66
 #, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "ユーザー名 `%s' は予約されていません"
+msgid "incomplete proxy authentication token: %s"
+msgstr "不完全なプロキシ認証トークンです: %s"
 
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "Email アドレスが指定されていません"
-
-#: ../server/rhnUser.py:509
+#: ../server/apacheAuth.py:84
 #, python-format
-msgid "username should be at least %d characters"
-msgstr "ユーザー名は少なくとも %d 文字以上にしてください"
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "送信されたプロキシ署名 %s がこちら側の %s と一致しません。"
 
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "ユーザー名は %d 文字未満にしてください"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "ユーザー名 = `%s'、 無効な文字 `%s'"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Email アドレスは %s 文字以内にしてください"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "パスワードは少なくとも %d 文字に以上にしてください"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "パスワードは %d 文字以内にしてください"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "パスワードに `%s' 文字が含まれています"
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてください"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "%s で終わるユーザー名は登録できません"
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "プロキシ認証が拒否されました"
 
 #: ../server/apacheRequest.py:59
 #, python-format
@@ -454,6 +385,76 @@ msgstr ""
 "さい。\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "無効な RPM パッケージ %s を要求しています"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "パッケージが見つかりません"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "無効なユーザー名とパスワードの組み合わせです"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "ユーザー名 `%s' は予約されていません"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Email アドレスが指定されていません"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "ユーザー名は少なくとも %d 文字以上にしてください"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "ユーザー名は %d 文字未満にしてください"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "ユーザー名 = `%s'、 無効な文字 `%s'"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Email アドレスは %s 文字以内にしてください"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "パスワードは少なくとも %d 文字に以上にしてください"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "パスワードは %d 文字以内にしてください"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "パスワードに `%s' 文字が含まれています"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "ユーザー名は少なくとも %d 文字以上の長さにしてください"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "%s で終わるユーザー名は登録できません"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1331,6 +1332,19 @@ msgstr ""
 msgid "Imported kickstartable trees (%d)"
 msgstr ""
 
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr ""
+
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -1345,19 +1359,6 @@ msgid ""
 "\"%s\" could not be opened\n"
 "and/or written to:\n"
 "%s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:112
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258
