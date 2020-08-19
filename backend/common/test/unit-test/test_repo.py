@@ -213,8 +213,10 @@ class TestCommonRepo:
             gpg_args = mock_popen.call_args[0][0]
             assert gpg_args[0] == "gpg"
             assert gpg_args[1] == "--verify"
-            assert gpg_args[2].beginswith("/tmp/")
-            assert gpg_args[3].beginswith("/tmp/")
+            assert gpg_args[2] == "--homedir"
+            assert gpg_args[3] == "/var/lib/spacewalk/gpgdir"
+            assert gpg_args[4].beginswith("/tmp/")
+            assert gpg_args[5].beginswith("/tmp/")
 
     def test_has_valid_gpg_signature_returns_false_if_gpg_verify_fails(self):
         """
