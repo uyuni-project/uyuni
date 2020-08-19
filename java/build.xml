@@ -959,9 +959,9 @@ delete from rhnChannel where label like 'ChannelLabel%';
     -->
   <target name="make-eclipse-project" depends = "gen-eclipse"
           description="Configures this checkout as an eclipse project.">
+    <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false" />
     <copy toDir="${rhn-home}" overwrite="false">
       <fileset dir="${rhn-home}/conf/eclipse/">
-        <include name=".project" />
         <include name=".settings/*" />
         <!-- include name=".externalToolBuilders/*" /-->
       </fileset>
