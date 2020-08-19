@@ -31,10 +31,14 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -76,22 +80,28 @@ public class MatcherRunner {
         });
 
         Runtime r = Runtime.getRuntime();
+        ExecutorService errorReaderService = null;
+        ExecutorService inputReaderService = null;
         try {
-            Process p = r.exec(args.toArray(new String[0]));
-            PrintWriter stdin = new PrintWriter(p.getOutputStream());
             boolean isISSMaster = IssFactory.getCurrentMaster() == null;
             boolean isSelfMonitoringEnabled = MonitoringService.isMonitoringEnabled();
-            String arch = System.getProperty("os.arch");
             PinnedSubscriptionFactory.getInstance().cleanStalePins();
+            String arch = System.getProperty("os.arch");
             String s = new MatcherJsonIO().generateMatcherInput(isISSMaster, arch, isSelfMonitoringEnabled);
+
+            Process p = r.exec(args.toArray(new String[0]));
+            PrintWriter stdin = new PrintWriter(p.getOutputStream());
             stdin.println(s);
             stdin.flush();
             stdin.close();
 
+            // we need to exhaust the process output not to get stuck
+            errorReaderService = exhaustOutputOnBackground(p.getErrorStream());
+            inputReaderService = exhaustOutputOnBackground(p.getInputStream());
+
             int exitCode = p.waitFor();
             if (exitCode != 0) {
-                logger.error("Error while calling the subscription-matcher, exit code " +
-                        exitCode);
+                logger.error("Error while calling the subscription-matcher, exit code " + exitCode);
                 return;
             }
 
@@ -103,12 +113,34 @@ public class MatcherRunner {
             data.setUnmatchedProductReport(readMatcherFile("unmatched_product_report.csv"));
             MatcherRunDataFactory.updateData(data);
         }
-        catch (IOException ioe) {
-            logger.error("execute(String[])", ioe);
-        }
-        catch (InterruptedException e) {
+        catch (IOException | InterruptedException e) {
             logger.error("execute(String[])", e);
         }
+        finally {
+            if (errorReaderService != null) {
+                errorReaderService.shutdown();
+            }
+            if (inputReaderService != null) {
+                inputReaderService.shutdown();
+            }
+        }
+    }
+
+    // reads the given stream until the end
+    private static ExecutorService exhaustOutputOnBackground(InputStream stream) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            InputStreamReader irr = new InputStreamReader(stream);
+            try {
+                while (irr.read() != -1) {
+                    // no-op
+                }
+            }
+            catch (IOException e) {
+                logger.warn("Error reading from stream", e);
+            }
+        });
+        return executorService;
     }
 
     private static Optional<String> getLogLevel() {
