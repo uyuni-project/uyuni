@@ -15,6 +15,10 @@
 
 package com.suse.manager.matcher;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
@@ -30,6 +34,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -65,6 +70,11 @@ public class MatcherRunner {
         args.add("--delimiter");
         args.add(csvDelimiter);
 
+        getLogLevel().ifPresent(level -> {
+            args.add("--log-level");
+            args.add(level);
+        });
+
         Runtime r = Runtime.getRuntime();
         try {
             Process p = r.exec(args.toArray(new String[0]));
@@ -98,6 +108,24 @@ public class MatcherRunner {
         }
         catch (InterruptedException e) {
             logger.error("execute(String[])", e);
+        }
+    }
+
+    private static Optional<String> getLogLevel() {
+        int debuglevel = Config.get().getInt("debug", 0);
+
+        switch (debuglevel) {
+            case 0:
+            case 1:
+                return empty(); // use matcher default log level
+            case 2:
+                return of("INFO");
+            case 3:
+                return of("DEBUG");
+            case 4:
+                return of("TRACE");
+            default:
+                return of("ALL");
         }
     }
 
