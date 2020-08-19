@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.errata.Severity;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.CVE;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -1416,7 +1417,8 @@ public class ErrataHandler extends BaseHandler {
             }
             if (!UserManager.verifyChannelAdmin(user, channel)) {
                 boolean allowed = channel.isVendorChannel() &&
-                        vendorChannelOverride.contains(channel.getLabel());
+                        vendorChannelOverride.contains(channel.getLabel()) &&
+                        user.hasRole(RoleFactory.SAT_ADMIN);
                 if (!allowed) {
                     throw new PermissionCheckFailureException();
                 }
