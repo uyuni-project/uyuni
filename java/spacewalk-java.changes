@@ -1,3 +1,4 @@
+- pass the log level parameter to matcher
 - Detect client organization from connected proxy (bsc#1175545)
 -------------------------------------------------------------------
 Wed Sep 09 12:10:33 CEST 2020 - jgonzalez@suse.com
