@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-08-19 08:17+0000\n"
+"PO-Revision-Date: 2020-08-20 15:49+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
 "\n"
@@ -1883,27 +1883,29 @@ msgstr "nespracovávať dáta opráv"
 
 #: ../satellite_tools/satsync.py:2240
 msgid "do not process kickstart data (provisioning only)"
-msgstr ""
+msgstr "nespracovávať dáta kickstart (iba poskytovanie)"
 
 #: ../satellite_tools/satsync.py:2242
 msgid "do not process full package metadata"
-msgstr ""
+msgstr "nespracovávať úplné metadáta balíkov"
 
 #: ../satellite_tools/satsync.py:2244
 msgid "do not download, or process any RPMs"
-msgstr ""
+msgstr "nesťahovať ani nespracovávať žiadne RPM"
 
 #: ../satellite_tools/satsync.py:2246
 msgid "turn off SSL (not recommended)"
-msgstr ""
+msgstr "vypnúť SSL (neodporúča sa)"
 
 #: ../satellite_tools/satsync.py:2248
 msgid "org to which the sync imports data. defaults to the admin account"
 msgstr ""
+"organizácia, do ktorej synchronizácia importuje dáta. predvolené nastavenia "
+"pre účet administrátora"
 
 #: ../satellite_tools/satsync.py:2250
 msgid "print the configuration and exit"
-msgstr ""
+msgstr "vytlačiť konfiguráciu a ukončiť"
 
 #: ../satellite_tools/satsync.py:2252
 msgid "alternative server with which to connect (hostname)"
@@ -2116,19 +2118,19 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:2499
 msgid "  24 - no such file"
-msgstr ""
+msgstr "  24 - súbor neexistuje"
 
 #: ../satellite_tools/satsync.py:2500
 msgid "  25 - no such directory"
-msgstr ""
+msgstr "  25 - adresár neexistuje"
 
 #: ../satellite_tools/satsync.py:2501
 msgid "  26 - mount_point does not exist"
-msgstr ""
+msgstr "  26 - bod_pripojenia neexistuje"
 
 #: ../satellite_tools/satsync.py:2502
 msgid "  27 - No such org"
-msgstr ""
+msgstr "  27 - Organizácia neexistuje"
 
 #: ../satellite_tools/satsync.py:2503
 msgid "  28 - error: --master is only valid with --mount-point"
