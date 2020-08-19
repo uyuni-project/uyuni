@@ -2422,7 +2422,8 @@ public class ChannelManager extends BaseManager {
 
         if (!UserManager.verifyChannelAdmin(user, chan)) {
             List<String> allowedList = Config.get().getList(ConfigDefaults.ALLOW_ADDING_PATCHES_VIA_API);
-            if (chan.isVendorChannel() && allowedList.contains(chan.getLabel())) {
+            if (chan.isVendorChannel() && allowedList.contains(chan.getLabel()) &&
+                    user.hasRole(RoleFactory.SAT_ADMIN)) {
                 log.warn("User " + user.getId() + " added packages " + packageIds.stream()
                         .map(Object::toString)
                         .collect(Collectors.joining(",")) + " to vendor channel " + chan.getLabel()
