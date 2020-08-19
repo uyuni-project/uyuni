@@ -1,3 +1,5 @@
+- Use spacewalk keyring for GPG checks on DEB repos (bsc#1175485)
+
 -------------------------------------------------------------------
 Thu Jul 23 13:25:13 CEST 2020 - jgonzalez@suse.com
 
