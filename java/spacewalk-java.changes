@@ -1,3 +1,4 @@
+- Fix: use quiet API method when using spacewalk-common-channels (bsc#1175529)
 - fix alignment on icon on entitlement page
 - Reset the server path on minion registration (bsc#1174254)
 - Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
