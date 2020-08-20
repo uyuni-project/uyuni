@@ -1404,6 +1404,21 @@ public class ChannelSoftwareHandler extends BaseHandler {
     }
 
     /**
+     * Returns whether the channel is existing
+     * @param loggedInUser The current user
+     * @param channelLabel The label for the channel in question
+     * @return whether the channel is existing
+     *
+     * @xmlrpc.doc Returns whether is existing
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @xmlrpc.returntype #param_desc("boolean", "result", "True if the channel exists")
+     */
+    public boolean isExisting(User loggedInUser, String channelLabel) {
+        return ChannelFactory.lookupByLabelAndUser(channelLabel, loggedInUser) == null? false : true;
+    }
+
+    /**
      * Returns whether the channel may be managed by the given user.
      * @param loggedInUser The current user
      * @param channelLabel The label for the channel in question
