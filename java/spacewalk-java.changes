@@ -1,3 +1,4 @@
+- Fix: use quiet API method when using spacewalk-common-channels (bsc#1175529)
 - fix alignment on icon on entitlement page
 - support installer update channels during autoinstallation
 - filter machines not in maintenance mode for remote commands
