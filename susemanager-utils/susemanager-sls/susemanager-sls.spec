@@ -47,6 +47,14 @@ BuildArch:      noarch
 Static Salt state files for SUSE Manager, where generic operations are
 provided for the integration between infrastructure components.
 
+%package -n susemanager-config-modules
+Summary:        Salt modules to configure a Server
+Group:          Applications/Internet
+
+%description -n susemanager-config-modules
+This package contains Salt execution and state modules that can be used
+to configure a SUSE Manager or Uyuni Server.
+
 %prep
 %setup -q
 
@@ -92,8 +100,10 @@ cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/ssh_agent.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/modules/uyuni_users.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
 cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
+cp src/states/uyuni_users.py %{buildroot}/usr/share/susemanager/salt/_states
 
 %check
 cd test
@@ -140,6 +150,14 @@ fi
 /usr/share/susemanager/reactor
 /usr/share/susemanager/scap
 /srv/formula_metadata
+%exclude /usr/share/susemanager/salt/_modules/uyuni_users.py
+%exclude /usr/share/susemanager/salt/_states/uyuni_users.py
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+
+%files -n susemanager-config-modules
+%defattr(-,root,root)
+%dir /usr/share/susemanager
+/usr/share/susemanager/salt/_modules/uyuni_users.py
+/usr/share/susemanager/salt/_states/uyuni_users.py
 
 %changelog
