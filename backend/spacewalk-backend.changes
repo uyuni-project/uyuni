@@ -1,6 +1,12 @@
 - Remove duplicate languages and update translation strings
 
 -------------------------------------------------------------------
+Thu Aug 20 13:40:31 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
+- Take care of SCC auth tokens on DEB repos GPG checks (bsc#1175485)
+
+-------------------------------------------------------------------
 Thu Aug 20 10:51:09 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.13-1
