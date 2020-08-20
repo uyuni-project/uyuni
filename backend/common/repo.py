@@ -190,7 +190,7 @@ class DpkgRepo:
 
         :return: bool
         """
-        if response.url.endswith("InRelease"):
+        if parse.urlparse(response.url).path.endswith("InRelease"):
             process = subprocess.Popen(
                 ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR],
                 stdin=subprocess.PIPE,
@@ -199,8 +199,7 @@ class DpkgRepo:
             )
             out = process.communicate(response.content)
         else:
-            gpg_url = response.url + ".gpg"
-            signature_response = requests.get(gpg_url, proxies=self.proxies)
+            signature_response = requests.get(self._get_parent_url(response.url, 1, "Release.gpg"), proxies=self.proxies)
             if signature_response.status_code != http.HTTPStatus.OK:
                 return False
             else:
