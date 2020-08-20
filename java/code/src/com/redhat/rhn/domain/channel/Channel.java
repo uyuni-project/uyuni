@@ -892,9 +892,6 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return Returns the installerUpdates.
      */
     public boolean isInstallerUpdates() {
-        if (isCloned()) {
-            return getOriginal().isInstallerUpdates();
-        }
         return installerUpdates;
     }
 
