@@ -7,8 +7,7 @@ mockery.setup_environment()
 
 import sys
 
-sys.path.append("../_states")
-import uyuni_users
+from ..states import uyuni_users
 
 # Mock globals
 uyuni_users.log = MagicMock()
