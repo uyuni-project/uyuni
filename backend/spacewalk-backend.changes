@@ -1,3 +1,4 @@
+- Use spacewalk keyring for GPG checks on DEB repos (bsc#1175485)
 - Remove duplicate languages and update translation strings
 - Update package version to 4.2.0
 
