@@ -785,7 +785,7 @@ class ChannelsDumper(exportLib.ChannelsDumper):
         select c.id, c.org_id,
                c.label, ca.label channel_arch, c.basedir, c.name,
                c.summary, c.description, c.gpg_key_url, c.update_tag,
-               ct.label checksum_type,
+               c.installer_updates, ct.label checksum_type,
                TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
                pc.label parent_channel, c.channel_access
           from rhnChannel c left outer join rhnChannel pc on c.parent_channel = pc.id
@@ -821,7 +821,7 @@ class ChannelsDumper(exportLib.ChannelsDumper):
 class ChannelsDumperEx(CachedDumper, exportLib.ChannelsDumper):
     iterator_query = rhnSQL.Statement("""
         select c.id, c.label, ca.label channel_arch, c.basedir, c.name,
-               c.summary, c.description, c.gpg_key_url, c.update_tag, c.org_id,
+               c.summary, c.description, c.gpg_key_url, c.installer_updates, c.update_tag, c.org_id,
                TO_CHAR(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
                c.channel_product_id,
                pc.label parent_channel,

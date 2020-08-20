@@ -503,6 +503,7 @@ class ChannelItem(BaseItem):
         'sharing': 'channel_access',
         'rhn-channel-trusted-orgs': 'trust_list',
         'rhn-channel-update-tag': 'update_tag',
+        'rhn-channel-installer-updates': 'installer_updates',
         'suse-data': 'package_keywords',
     }
 
@@ -889,7 +890,8 @@ class SCCRepositoryItem(BaseItem):
             'distro-target': 'distro_target',
             'description': 'description',
             'url': 'url',
-            'signed': 'signed'
+            'signed': 'signed',
+            'installer_updates': 'installer_updates'
     }
 addItem(SCCRepositoryItem)
 
