@@ -239,7 +239,8 @@ class SCCRepository(Information):
         'distro_target': StringType,
         'description'  : StringType,
         'url'          : StringType,
-        'signed'       : StringType
+        'signed'       : StringType,
+        'installer_updates' : StringType
     }
 
 class SuseSubscription(Information):
@@ -322,6 +323,7 @@ class Channel(Information):
         'modules_last_modified': DateType,
         'gpg_key_url'       : StringType,
         'update_tag'        : StringType,
+        'installer_updates' : StringType,
         'product_name_id'   : IntType,
         'channel_product_id': IntType,
         'receiving_updates': StringType,

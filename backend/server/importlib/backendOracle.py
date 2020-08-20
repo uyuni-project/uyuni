@@ -362,6 +362,7 @@ class OracleBackend(Backend):
                   'checksum_type_id': DBint(),
                   'channel_access': DBstring(10),
                   'update_tag': DBstring(128),
+                  'installer_updates': DBstring(1)
               },
               pk=['label'],
               severityHash={

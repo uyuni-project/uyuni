@@ -1697,8 +1697,8 @@ class Backend:
             DELETE FROM suseSCCRepositoryAuth
         """).execute()
         insert_repo = self.dbmodule.prepare("""
-            INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed)
-            VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed)
+            INSERT INTO suseSCCRepository (id, scc_id, autorefresh, name, distro_target, description, url, signed, installer_updates)
+            VALUES (:rid, :sccid, :autorefresh, :name, :target, :description, :url, :signed, :installer_updates)
             """)
         delete_repo = self.dbmodule.prepare("""
             DELETE FROM suseSCCRepository WHERE scc_id = :sccid
@@ -1710,7 +1710,8 @@ class Backend:
                    distro_target = :target,
                    description = :description,
                    url = :url,
-                   signed = :signed
+                   signed = :signed,
+                   installer_updates = :installer_updates
              WHERE scc_id = :sccid
              """)
         _query_repo = self.dbmodule.prepare("""
@@ -1718,9 +1719,9 @@ class Backend:
             """)
         _query_repo.execute()
         existing_data = ["%s" % (x['scc_id']) for x in _query_repo.fetchall_dict() or []]
-        toinsert = [[], [], [], [], [], [], [], []]
+        toinsert = [[], [], [], [], [], [], [], [], []]
         todelete = [[]]
-        toupdate = [[], [], [], [], [], [], []]
+        toupdate = [[], [], [], [], [], [], [], []]
         for item in batch:
             ident = "%s" % item['sccid']
             if ident in existing_data:
@@ -1731,7 +1732,8 @@ class Backend:
                 toupdate[3].append(item['description'])
                 toupdate[4].append(item['url'])
                 toupdate[5].append(item['signed'])
-                toupdate[6].append(item['sccid'])
+                toupdate[6].append(item['installer_updates'])
+                toupdate[7].append(item['sccid'])
                 continue
             toinsert[0].append(self.sequences['suseSCCRepository'].next())
             toinsert[1].append(item['sccid'])
@@ -1741,6 +1743,7 @@ class Backend:
             toinsert[5].append(item['description'])
             toinsert[6].append(item['url'])
             toinsert[7].append(item['signed'])
+            toinsert[8].append(item['installer_updates'])
         for ident in existing_data:
             todelete[0].append(int(ident))
         if todelete[0]:
@@ -1748,11 +1751,11 @@ class Backend:
         if toinsert[0]:
             insert_repo.executemany(rid=toinsert[0], sccid=toinsert[1], autorefresh=toinsert[2],
                                     name=toinsert[3], target=toinsert[4], description=toinsert[5],
-                                    url=toinsert[6], signed=toinsert[7])
+                                    url=toinsert[6], signed=toinsert[7], installer_updates=toinsert[8])
         if toupdate[0]:
             update_repo.executemany(name=toupdate[0], autorefresh=toupdate[1], target=toupdate[2],
                                     description=toupdate[3], url=toupdate[4], signed=toupdate[5],
-                                    sccid=toupdate[6])
+                                    installer_updates=toupdate[6], sccid=toupdate[7])
 
     def processClonedChannels(self, batch):
         """Check if cloned channel info is already in DB.
