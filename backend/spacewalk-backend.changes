@@ -1,6 +1,12 @@
 - Remove duplicate languages and update translation strings
 
 -------------------------------------------------------------------
+Thu Aug 20 10:51:09 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.13-1
+- Use spacewalk keyring for GPG checks on DEB repos (bsc#1175485)
+
+-------------------------------------------------------------------
 Thu Jul 23 13:25:13 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.12-1
