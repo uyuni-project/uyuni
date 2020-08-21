@@ -11,9 +11,9 @@ type LoginApiStateType = {
 }
 
 const errorsMessage = {
-  'error.invalid_login': 'Either the password or username is incorrect.',
-  'account.disabled': 'Your account has been deactivated.',
-  'error.user_readonly': 'This user has read only API access. WebUI login is denied.',
+  'error.invalid_login': t('Either the password or username is incorrect.'),
+  'account.disabled': t('Your account has been deactivated.'),
+  'error.user_readonly': t('This user has read only API access. WebUI login is denied.'),
 };
 
 const useLoginApi = () => {
