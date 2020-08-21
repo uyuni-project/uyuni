@@ -53,12 +53,28 @@
         </c:when>
         <c:otherwise>
             <rhn:require acl="is(development_environment)">
-                <link rel="stylesheet/less" type="text/css" href="/css/susemanager.less" />
-                <script>less = { env: 'development for SUSE Manager' };</script>
-                <script src="/javascript/less.js"></script>
+                <c:choose>
+                    <c:when test='${ConfigDefaults.get().isDarkTheme()}'>
+                        <link rel="stylesheet/less" type="text/css" href="/css/susemanager-dark.less" />
+                        <script>less = { env: 'development for SUSE Manager Dark' };</script>
+                        <script src="/javascript/less.js"></script>
+                    </c:when>
+                    <c:otherwise>
+                        <link rel="stylesheet/less" type="text/css" href="/css/susemanager.less" />
+                        <script>less = { env: 'development for SUSE Manager' };</script>
+                        <script src="/javascript/less.js"></script>
+                    </c:otherwise>
+                </c:choose>
             </rhn:require>
             <rhn:require acl="not is(development_environment)">
-                <link rel="stylesheet" href="/css/susemanager.css?cb=${cb_version}" />
+                <c:choose>
+                    <c:when test='${ConfigDefaults.get().isDarkTheme()}'>
+                        <link rel="stylesheet" href="/css/susemanager-dark.css?cb=${cb_version}" />
+                    </c:when>
+                    <c:otherwise>
+                        <link rel="stylesheet" href="/css/susemanager.css?cb=${cb_version}" />
+                    </c:otherwise>
+                </c:choose>
             </rhn:require>
         </c:otherwise>
     </c:choose>
