@@ -25,12 +25,21 @@ html
                 link(rel='stylesheet', href='/css/uyuni.css?cb=#{webBuildtimestamp}')
         else
             if isDevMode
-                link(rel='stylesheet/less', href='/css/susemanager.less')
-                script(type='text/javascript').
-                    less = {env: 'development for SUSE Manager'};
-                script(src='/javascript/less.js')
+                if isDarkTheme
+                    link(rel='stylesheet/less', href='/css/susemanager-dark.less')
+                    script(type='text/javascript').
+                        less = {env: 'development for SUSE Manager Dark'};
+                    script(src='/javascript/less.js')
+                else
+                    link(rel='stylesheet/less', href='/css/susemanager.less')
+                    script(type='text/javascript').
+                        less = {env: 'development for SUSE Manager'};
+                    script(src='/javascript/less.js')
             else
-                link(rel='stylesheet', href='/css/susemanager.css?cb=#{webBuildtimestamp}')
+                if isDarkTheme
+                    link(rel='stylesheet', href='/css/susemanager-dark.css?cb=#{webBuildtimestamp}')
+                else
+                    link(rel='stylesheet', href='/css/susemanager.css?cb=#{webBuildtimestamp}')
         script(src='/javascript/loggerhead.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/frontend-log.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
