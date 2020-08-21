@@ -74,5 +74,8 @@ java/buildconf/checkstyle.cache.src
 reports/
 *.mypy*
 
+# VS Code
+java/.vscode
+
 # Python
 venv/
