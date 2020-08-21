@@ -10,8 +10,8 @@ mockery.setup_environment()
 
 import sys
 
-from ..modules import uyuni_users
-from ..modules.uyuni_users import RPCClient, UyuniChannelsException, UyuniUsersException
+from ..modules import uyuni_config
+from ..modules.uyuni_config import RPCClient, UyuniChannelsException, UyuniUsersException
 
 class TestRPCClient:
     """
@@ -19,8 +19,8 @@ class TestRPCClient:
     """
     rpc_client = None
 
-    @patch("src.modules.uyuni_users.ssl", MagicMock())
-    @patch("src.modules.uyuni_users.xmlrpc", MagicMock())
+    @patch("src.modules.uyuni_config.ssl", MagicMock())
+    @patch("src.modules.uyuni_config.xmlrpc", MagicMock())
     def setup_method(self, method):
         """
         Setup state per test.
@@ -40,7 +40,7 @@ class TestRPCClient:
         :return:
         """
         self.rpc_client = None
-        uyuni_users.__pillar__ = {}
+        uyuni_config.__pillar__ = {}
 
     def test_init_called(self):
         """
@@ -66,7 +66,7 @@ class TestRPCClient:
 
         :return:
         """
-        uyuni_users.__pillar__ = {
+        uyuni_config.__pillar__ = {
             "uyuni": {
                 "xmlrpc": {
                     "user": "admin_user",
@@ -94,7 +94,7 @@ class TestRPCClient:
 
         assert my_mock1.call_count == 1
         assert token == "My_Special_Token"
-        assert uyuni_users.__context__.get("uyuni.auth_token_user") == "My_Special_Token"
+        assert uyuni_config.__context__.get("uyuni.auth_token_user") == "My_Special_Token"
 
         self.rpc_client.get_token()
         assert my_mock1.call_count == 1
@@ -108,7 +108,7 @@ class TestRPCClient:
         assert my_mock1.call_count == 1
         assert my_mock2.call_count == 1
         assert token == "My_Special_Token_2"
-        assert uyuni_users.__context__.get("uyuni.auth_token_user") == "My_Special_Token_2"
+        assert uyuni_config.__context__.get("uyuni.auth_token_user") == "My_Special_Token_2"
 
     def test_call_rpc(self):
         """
@@ -141,7 +141,7 @@ class TestRPCClient:
         setattr(self.rpc_client.conn, "uyuni.some_method",
                 MagicMock(side_effect=exc))
 
-        with patch("src.modules.uyuni_users.log") as logger:
+        with patch("src.modules.uyuni_config.log") as logger:
             with pytest.raises(Exception):
                 self.rpc_client("uyuni.some_method")
             mo = getattr(self.rpc_client.conn, "uyuni.some_method")
@@ -163,7 +163,7 @@ class TestRPCClient:
         setattr(self.rpc_client.conn, "uyuni.some_method",
                 MagicMock(side_effect=exc))
 
-        with patch("src.modules.uyuni_users.log") as logger:
+        with patch("src.modules.uyuni_config.log") as logger:
             with pytest.raises(Exception):
                 self.rpc_client("uyuni.some_method")
             mo = getattr(self.rpc_client.conn, "uyuni.some_method")
@@ -189,7 +189,7 @@ class TestRPCClient:
                 MagicMock(side_effect=[exc, "return string"]))
 
         assert self.rpc_client.get_token() == "the_token"
-        with patch("src.modules.uyuni_users.log") as logger:
+        with patch("src.modules.uyuni_config.log") as logger:
             out = self.rpc_client("uyuni.some_method")
             mo = getattr(self.rpc_client.conn, "uyuni.some_method")
             # pdb.set_trace()
