@@ -1408,7 +1408,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype #param_desc("boolean", "result", "True if the channel exists")
      */
     public boolean isExisting(User loggedInUser, String channelLabel) {
-        return ChannelFactory.lookupByLabelAndUser(channelLabel, loggedInUser) == null? false : true;
+        return ChannelFactory.lookupByLabelAndUser(channelLabel, loggedInUser) == null ? false : true;
     }
 
     /**
