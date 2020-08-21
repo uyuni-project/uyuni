@@ -8,7 +8,6 @@ import os
 import salt.config
 from salt.utils.minions import CkMinions
 import datetime
-import pdb
 
 log = logging.getLogger(__name__)
 
@@ -46,7 +45,6 @@ class RPCClient:
         ctx: ssl.SSLContext = ssl.create_default_context()
         ctx.check_hostname = False
         ctx.verify_mode = ssl.CERT_NONE
-
         self.conn = xmlrpc.client.ServerProxy(url, context=ctx, use_datetime=True, use_builtin_types=True)
         if user is None or password is None:
             # if user or password not set, fallback to default user defined on pillar data
@@ -437,7 +435,7 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
     def __init__(self, user: str = None, password: str = None):
         UyuniRemoteObject.__init__(self, user, password)
-        self._org_manager = UyuniOrg()
+        self._org_manager = UyuniOrg(user, password)
 
     def list_orgs(self) -> List[Dict[str, Union[str, int]]]:
         """
