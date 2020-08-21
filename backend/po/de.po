@@ -15,15 +15,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2018-03-16 10:53+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: German <trans-de@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2020-08-24 00:40+0000\n"
+"Last-Translator: Michael Calmer <mc@suse.com>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/>"
+"\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -77,9 +78,9 @@ msgid "Expected a package, not: %s"
 msgstr "Paket erwartet, nicht: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "RHN-Proxy-Dienst nicht für Server-Profil \"%s\" aktiviert"
+msgstr "Spacewalk-Proxy-Dienst nicht für Server-Profil \"%s\" aktiviert"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -100,9 +101,8 @@ msgid "Action %s does not belong to server %s"
 msgstr "Aktion %s gehört nicht zu Server %s"
 
 #: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
 msgid "Invalid system_id/action_id pair."
-msgstr "Ungültige System-Berechtigungsnachweise."
+msgstr "Ungültiges system_id/action_id Paar."
 
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
@@ -129,6 +129,8 @@ msgstr "Ungültige System-Release-Version angefordert"
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Kein gültiges Netzwerk Interface gefunden. Sowohl ipaddr als auch ip6addr "
+"konnten nicht gefunden werden."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
 #, fuzzy
@@ -136,9 +138,8 @@ msgid "Red Hat Satellite Welcome Message"
 msgstr "Red Hat Network Willkommensmitteilung"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-#, fuzzy
 msgid "Red Hat Satellite Privacy Statement"
-msgstr "Red Hat Network Privatsphäre"
+msgstr "SUSE Manager Datenschutzerklärung"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
