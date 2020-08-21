@@ -100,10 +100,10 @@ cp src/modules/kiwi_source.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgrclusters.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/mgr_caasp_manager.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/modules/ssh_agent.py %{buildroot}/usr/share/susemanager/salt/_modules
-cp src/modules/uyuni_users.py %{buildroot}/usr/share/susemanager/salt/_modules
+cp src/modules/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_modules
 cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
 cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
-cp src/states/uyuni_users.py %{buildroot}/usr/share/susemanager/salt/_states
+cp src/states/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_states
 
 %check
 cd test
@@ -150,14 +150,14 @@ fi
 /usr/share/susemanager/reactor
 /usr/share/susemanager/scap
 /srv/formula_metadata
-%exclude /usr/share/susemanager/salt/_modules/uyuni_users.py
-%exclude /usr/share/susemanager/salt/_states/uyuni_users.py
+%exclude /usr/share/susemanager/salt/_modules/uyuni_config.py
+%exclude /usr/share/susemanager/salt/_states/uyuni_config.py
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 
 %files -n susemanager-config-modules
 %defattr(-,root,root)
 %dir /usr/share/susemanager
-/usr/share/susemanager/salt/_modules/uyuni_users.py
-/usr/share/susemanager/salt/_states/uyuni_users.py
+/usr/share/susemanager/salt/_modules/uyuni_config.py
+/usr/share/susemanager/salt/_states/uyuni_config.py
 
 %changelog

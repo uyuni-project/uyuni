@@ -38,7 +38,7 @@ uyuni:
 
 ### Available states 
 
-Check methods in file `_states/uyuni_users.py` 
+Check methods in file `_states/uyuni_config.py` 
 
 ### Examples
 
