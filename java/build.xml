@@ -712,9 +712,9 @@
 
   <target name="make-eclipse-project"
           description="Configures this checkout as an eclipse project.">
+    <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false" />
     <copy toDir="${rhn-home}" overwrite="false">
       <fileset dir="${rhn-home}/conf/eclipse/">
-        <include name=".project" />
         <include name=".checkstyle" />
         <include name=".classpath" />
         <include name=".settings/*" />
