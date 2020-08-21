@@ -7920,7 +7920,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>Repository Information</source>
       </trans-unit>
       <trans-unit id="repos.jsp.update.channel">
-        <source>Update Repositories</source>
+        <source>Save Repositories</source>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.header">
         <source>Repository</source>
