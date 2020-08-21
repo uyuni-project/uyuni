@@ -348,6 +348,14 @@ When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
   raise 'File injection failed' unless return_code.zero?
 end
 
+When(/^I copy "([^"]*)" to "([^"]*)" on "([^"]*)"$/) do |file_local,file_remote, host|
+  node = get_target(host)
+  source = File.dirname(__FILE__) + '/' + file_local
+  p source
+  return_code = file_inject(node, source, file_remote)
+  raise 'File injection failed' unless return_code.zero?
+end
+
 Then(/^the PXE default profile should be enabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT pxe-default-profile" on server)
 end
