@@ -432,8 +432,11 @@ public class KickstartHelper {
         // copy child channel set otherwise you'd modify it as an unwanted side effect
         Set<Channel> channelsToCheck = new HashSet<Channel>(ksdata.getChildChannels());
         channelsToCheck.add(channel);
-
-        for (String pkgName : KickstartFormatter.FRESH_PKG_NAMES_RHEL8) {
+        String[] packagesToLook = KickstartFormatter.FRESH_PKG_NAMES_RHEL8;
+        if (ksdata.isUserSelectedSaltInstallType()) {
+            packagesToLook =  KickstartFormatter.FRESH_PKG_NAMES_RHEL8_FOR_SALT;
+        }
+        for (String pkgName : packagesToLook) {
             boolean found = false;
             Iterator<Channel> i = channelsToCheck.iterator();
             while (i.hasNext()) {
@@ -510,7 +513,12 @@ public class KickstartHelper {
         //First create a list of all the packages needed
         List<String> packages = new ArrayList<String>();
         if (ksdata.isRhel8()) {
-            packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL8));
+            if (ksdata.isUserSelectedSaltInstallType()) {
+                packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL8_FOR_SALT));
+            }
+            else {
+                packages.addAll(Arrays.asList(KickstartFormatter.FRESH_PKG_NAMES_RHEL8));
+            }
         }
         else {
             packages.addAll(Arrays.asList(KickstartFormatter.UPDATE_PKG_NAMES));
