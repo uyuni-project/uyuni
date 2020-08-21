@@ -1,3 +1,6 @@
+- Avoid exceptions on the logs when looking for channels that do
+  not exist (bsc#1175529)
+
 -------------------------------------------------------------------
 Thu Jul 23 13:32:55 CEST 2020 - jgonzalez@suse.com
 
