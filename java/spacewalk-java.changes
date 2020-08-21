@@ -1,3 +1,5 @@
+- use media.1/products from media when not specified different (bsc#1175558)
+
 -------------------------------------------------------------------
 Wed Aug 12 10:52:05 CEST 2020 - jgonzalez@suse.com
 
