@@ -32,7 +32,7 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-x86_64"
     And I follow "Repositories" in the content area
     And I select the "Test-Repository-x86_64" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the x86_64 channel
@@ -61,7 +61,7 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-i586"
     And I follow "Repositories" in the content area
     And I select the "Test-Repository-i586" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "Test-Channel-i586 repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the i586 channel
@@ -92,7 +92,7 @@ Feature: Add a repository to a channel
     And I follow "Test-Channel-Deb-AMD64"
     And I follow "Repositories" in the content area
     And I select the "Test-Repository-Deb" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "Test-Channel-Deb-AMD64 repository information was successfully updated" text
 
 @ubuntu_minion
