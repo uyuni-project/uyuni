@@ -34,7 +34,7 @@ Feature: Adding the CentOS 6 distribution custom repositories
     And I follow "Custom Channel for CentOS 6 DVD"
     And I follow "Repositories" in the content area
     And I select the "centos-6-iso" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the Custom Channel for <label>
