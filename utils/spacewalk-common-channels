@@ -343,8 +343,8 @@ Create everything as well as unlimited activation key for every channel:
                                 base_info['label'], e.faultString))
         else:
             # check whether channel exists
-            base_info = channel_exists(client, base_channel_label)
-            if base_info:
+            if channel_exists(client, base_channel_label):
+                base_info = channel_get_details(client, base_channel_label)
                 sys.stdout.write("Base channel '%s' - exists\n" % base_info['name'])
             else:
                 sys.stderr.write("ERROR: %s could not be found at the server\n" % base_channel_label)
