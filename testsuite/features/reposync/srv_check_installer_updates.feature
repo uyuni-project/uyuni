@@ -1,0 +1,13 @@
+# Copyright (c) 2020 SUSE LLC
+# Licensed under the terms of the MIT license.
+
+Feature: Check Installer Update repositories
+  In order to use installer updates
+  As root user
+  I want to check that Installer-Updates Channels got synced when adding the product
+
+@scc_credentials
+  Scenario: Check installer updates channels got enabled during add product
+    When I execute mgr-sync "list channels" with user "admin" and password "admin"
+    Then I should get "    [I] SLES12-SP2-Installer-Updates for x86_64 SUSE Linux Enterprise Server 12 SP2 x86_64 [sles12-sp2-installer-updates-x86_64]"
+    And I should get "    [I] SLE15-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 x86_64 [sle15-installer-updates-x86_64]"
