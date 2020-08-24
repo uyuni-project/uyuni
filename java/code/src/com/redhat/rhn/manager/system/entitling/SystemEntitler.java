@@ -233,7 +233,7 @@ public class SystemEntitler {
             }
 
             if ((base != null) &&
-                    (!base.isRhelChannel() || base.isReleaseXChannel(5))) {
+                    (!base.isVendorChannel() || base.isReleaseXChannel(5))) {
                 // Do not automatically subscribe to virt channels (bnc#768856)
                 // subscribeToVirtChannel(server, user, result);
             }
