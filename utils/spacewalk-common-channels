@@ -116,11 +116,7 @@ def add_channels(channels, section, arch, client):
             elif channel_exists(client, channel['base_channel']):
                 # If not, if cannel exists on the server, convert it
                 channel_base_server = channel_get_details(client, channel['base_channel'])
-                channels[channel['base_channel']] = {'label': channel_base_server['label'],
-                                                     'name' : channel_base_server['name'],
-                                                     'summary': channel_base_server['summary'],
-                                                     'arch': channel_base_server['arch_name'],
-                                                     'checksum': channel_base_server['checksum_label'],
+                channels[channel['base_channel']] = {'name' : channel_base_server['name'],
                                                      'gpgkey_url': channel_base_server['gpg_key_url'],
                                                      'gpgkey_id': channel_base_server['gpg_key_id'],
                                                      'gpgkey_fingerprint': channel_base_server['gpg_key_fp'],
