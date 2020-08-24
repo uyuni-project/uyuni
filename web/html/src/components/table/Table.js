@@ -66,7 +66,7 @@ export function Table(props: TableProps): React.Node {
             }
 
             const rowClass = props.cssClassFunction ? props.cssClassFunction(datum, index) : "";
-            const evenOddClass = (index % 2) === 0 ? "list-row-even" : "list-row-odd";
+            const evenOddClass = (index % 2) === 0 ? "list-row-odd" : "list-row-even";
             return (
               <tr className={rowClass + " " + evenOddClass}
                 key={props.identifier(datum)}

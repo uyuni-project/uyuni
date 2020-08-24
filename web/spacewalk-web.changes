@@ -1,3 +1,4 @@
+- fix striping on react tables
 - Update translation strings
 - Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
 - Fix JS linting errors/warnings
