@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-23 10:26+0200\n"
-"PO-Revision-Date: 2020-08-24 00:42+0000\n"
+"PO-Revision-Date: 2020-08-24 21:26+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
 "\n"
@@ -2100,37 +2100,39 @@ msgstr "  14 - Chyba SQL počas prepájania balíkov kanálov"
 
 #: ../satellite_tools/satsync.py:2491
 msgid "  15 - SQL error during xml processing"
-msgstr ""
+msgstr "  15 - chyba SQL počas spracovania xml"
 
 #: ../satellite_tools/satsync.py:2492
 msgid "  16 - server.mount_point not set in the configuration file"
-msgstr ""
+msgstr "  16 - server.bod_pripojenia nie je nastavené v konfiguračnom súbore"
 
 #: ../satellite_tools/satsync.py:2493
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
 msgstr ""
+"  17 - chyba SQL počas získavania kanálov už importovaných v databáze SUSE "
+"Manager"
 
 #: ../satellite_tools/satsync.py:2494
 msgid "  18 - Wrong db connection string in rhn.conf"
-msgstr ""
+msgstr "  18 - Nesprávny reťazec pripojenia db v rhn.conf"
 
 #: ../satellite_tools/satsync.py:2495
 msgid "  19 - Bad arguments"
-msgstr ""
+msgstr "  19 - Zlé argumenty"
 
 #: ../satellite_tools/satsync.py:2496
 msgid "  20 - Could not connect to db."
-msgstr ""
+msgstr "  20 - Nepodarilo sa pripojiť k db."
 
 #: ../satellite_tools/satsync.py:2497
 msgid "  21 - Bad debug level"
-msgstr ""
+msgstr "  21 - Zlá úroveň ladenia"
 
 #: ../satellite_tools/satsync.py:2498
 msgid "  22 - Not valid step"
-msgstr ""
+msgstr "  22 - Neplatný krok"
 
 #: ../satellite_tools/satsync.py:2499
 msgid "  24 - no such file"
@@ -2150,9 +2152,9 @@ msgstr "  27 - Organizácia neexistuje"
 
 #: ../satellite_tools/satsync.py:2503
 msgid "  28 - error: --master is only valid with --mount-point"
-msgstr ""
+msgstr "  28 - chyba: --master je platné iba s --mount-point"
 
 #: ../satellite_tools/satsync.py:2510
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
-msgstr ""
+msgstr "CHYBA: neznáma verzia výpisu, vyskúšajte jeden z %s"
