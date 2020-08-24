@@ -87,6 +87,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 
 /**
  * ChannelSoftwareHandlerTest
@@ -273,6 +274,12 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                 admin, c1.getLabel(), user.getLogin(), false);
         assertEquals(0, handler.isUserSubscribable(
                 admin, c1.getLabel(), user.getLogin()));
+    }
+
+    public void testIsExisting() throws Exception {
+        Channel c1 = ChannelFactoryTest.createTestChannel(admin);
+        assertTrue(handler.isExisting(admin, c1.getLabel()));
+        assertFalse(handler.isExisting(admin, c1.getLabel() + UUID.randomUUID()));
     }
 
     public void testSetSystemChannelsBaseChannel() throws Exception {
