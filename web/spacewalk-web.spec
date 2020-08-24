@@ -266,7 +266,6 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/v
 
 %files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)
-%dir %{www_path}/www/htdocs/pub
 %dir %{www_path}/www/htdocs/javascript
 %dir %{www_path}/www/htdocs/javascript/manager
 %{www_path}/www/htdocs/robots.txt
