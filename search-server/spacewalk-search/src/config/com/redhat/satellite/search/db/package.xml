@@ -39,7 +39,7 @@
            and p.name_id = pn.id
            and p.package_arch_id = pa.id
            and p.id &gt; #{id}
-         ORDER by p.id ASC
+         ORDER by p.id ASC LIMIT 10000
    </select>
    <delete id="deleteLastPackage">
                 DELETE FROM rhnIndexerWork where object_type = 'package'
