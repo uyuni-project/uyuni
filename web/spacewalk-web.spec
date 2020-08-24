@@ -197,6 +197,7 @@ sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%
 %install
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 make -C html install PREFIX=$RPM_BUILD_ROOT
+make -C po install PREFIX=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
@@ -218,6 +219,8 @@ cp -r html/src/dist/javascript/manager %{buildroot}/srv/www/htdocs/javascript
 cp html/src/dist/vendors/vendors.bundle.js %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js
 cp html/src/dist/vendors/vendors.bundle.js.map %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js.map
 cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/vendors/vendors.bundle.js.LICENSE
+
+%find_lang spacewalk-web
 
 %files -n susemanager-web-libs
 %defattr(644,root,root,755)
@@ -261,7 +264,7 @@ cp html/src/dist/vendors/vendors.bundle.js.LICENSE %{buildroot}/srv/www/htdocs/v
 %{perl_vendorlib}/Dobby/
 %dir %{_prefix}/share/rhn
 
-%files -n spacewalk-html
+%files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)
 %dir %{www_path}/www/htdocs/pub
 %dir %{www_path}/www/htdocs/javascript
