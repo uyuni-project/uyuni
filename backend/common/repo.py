@@ -14,6 +14,7 @@ import hashlib
 from collections import namedtuple
 
 import requests
+from requests_file import FileAdapter
 
 # pylint:disable=W0612,W0212,C0301
 
@@ -83,6 +84,9 @@ class DpkgRepo:
         self._release = DpkgRepo.EntryDict(self)
         self.proxies = proxies
         self.gpg_verify = gpg_verify
+        
+        self.requests_session = requests.Session()
+        self.requests_session.mount("file://", FileAdapter())
 
     def append_index_file(self, index_file: str) -> str:
         """
@@ -110,7 +114,7 @@ class DpkgRepo:
         if self._pkg_index[0] == "":
             for cnt_fname in [DpkgRepo.PKG_GZ, DpkgRepo.PKG_XZ, DpkgRepo.PKG_RW]:
                 packages_url = self.append_index_file(cnt_fname)
-                resp = requests.get(packages_url, proxies=self.proxies)
+                resp = self.requests_session.get(packages_url, proxies=self.proxies)
                 if resp.status_code == http.HTTPStatus.OK:
                     self._pkg_index = cnt_fname, resp.content
                     break
@@ -197,9 +201,9 @@ class DpkgRepo:
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
-            out = process.communicate(response.content)
+            out = process.communicate(response.content, timeout=90)
         else:
-            signature_response = requests.get(self._get_parent_url(response.url, 1, "Release.gpg"), proxies=self.proxies)
+            signature_response = self.requests_session.get(self._get_parent_url(response.url, 1, "Release.gpg"), proxies=self.proxies)
             if signature_response.status_code != http.HTTPStatus.OK:
                 return False
             else:
@@ -215,6 +219,7 @@ class DpkgRepo:
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )
+            out = process.wait(timeout=90)
         if process.returncode == 0:
             return True
         else:
@@ -234,9 +239,9 @@ class DpkgRepo:
         """
 
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
-        resp = requests.get(self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies)
+        resp = self.requests_session.get(self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies)
         if resp.status_code != http.HTTPStatus.OK:
-            resp = requests.get(self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies)
+            resp = self.requests_session.get(self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies)
         
         try:
             if resp.status_code not in [
@@ -257,9 +262,9 @@ class DpkgRepo:
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
 
             if not self._release and self.is_flat():
-                resp = requests.get(self._get_parent_url(self._url, 0, "InRelease"), proxies=self.proxies)
+                resp = self.requests_session.get(self._get_parent_url(self._url, 0, "InRelease"), proxies=self.proxies)
                 if resp.status_code != http.HTTPStatus.OK:
-                    resp = requests.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
+                    resp = self.requests_session.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
 
                 if resp.status_code == http.HTTPStatus.OK:
                     if self.gpg_verify and not self._has_valid_gpg_signature(resp):
