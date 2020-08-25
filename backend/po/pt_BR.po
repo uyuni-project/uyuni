@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
+"POT-Creation-Date: 2020-08-25 10:29+0200\n"
 "PO-Revision-Date: 2020-07-14 12:37+0000\n"
 "Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -36,6 +36,34 @@ msgstr "A assinatura de proxy enviada %s não corresponde à nossa %s."
 #: ../server/apacheAuth.py:119
 msgid "declined proxy authentication"
 msgstr "autenticação de proxy recusada"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Solicitação inválida recebida (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"SEGUINTE MENSAGEM IMPORTANTE:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Durante a execução de '%s': capturado\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "URI %s inválida"
 
 #: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
@@ -98,15 +126,6 @@ msgstr "Tipo de valor de ação inválido%s (%s)"
 msgid "Action %s does not belong to server %s"
 msgstr "A ação %s não pertence ao servidor %s"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Par system_id / action_id inválido."
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Valor inválido %s (%s)"
-
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
 msgstr "Dados necessários ausentes"
@@ -147,6 +166,15 @@ msgstr "Esperado um dicionário como argumento do produto"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Valor inválido '%s' para %s (%s)"
 
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Par system_id / action_id inválido."
+
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Valor inválido %s (%s)"
+
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
 msgstr "Você não está autorizado a gerenciar pacotes na organização nula"
@@ -178,6 +206,115 @@ msgstr ""
 "               A conta %s foi desativada neste servidor.\n"
 "               Entre em contato com o administrador da organização para "
 "obter mais ajuda."
+
+#: ../server/rhnChannel.py:1992
+#, python-format
+msgid ""
+"Your account does not have access to any channels matching "
+"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr ""
+"Sua conta não tem acesso a nenhum canal correspondente (release "
+"='%(release)s', arch='%(arch)s')%(www_activation)s"
+
+#: ../server/rhnChannel.py:2002
+msgid ""
+"\n"
+"If you have a registration number, please register with it first at http://"
+"www.redhat.com/apps/activate/ and then try again.\n"
+"\n"
+msgstr ""
+"\n"
+"Se você tiver um número de registro, registre-se primeiro em http://www."
+"redhat.com/apps/activate/ e tente novamente.\n"
+"\n"
+
+#: ../server/rhnChannel.py:2012
+#, python-format
+msgid "Insufficient subscription permissions for release (%s, %s"
+msgstr "Permissões de assinatura insuficientes para liberação (%s, %s"
+
+#. Various messages that can be reused
+#.
+#. bretm 02/07/2007 -- when we have better old-client documentation, probably
+#. will be safe to get rid of all this crap
+#: ../server/rhnChannel.py:2276 ../server/rhnChannel.py:2287
+#: ../server/rhnChannel.py:2302
+msgid "System Registered but Inactive"
+msgstr "Sistema Registrado, mas Inativo"
+
+#: ../server/rhnChannel.py:2277
+#, python-format
+msgid ""
+"\n"
+"Invalid Architecture and OS release combination (%s, %s).\n"
+"Your system has been registered, but will not receive updates\n"
+"because it is not subscribed to a channel. If you have not yet\n"
+"activated your product for service, please visit our website at:\n"
+"\n"
+"     http://www.redhat.com/apps/activate/\n"
+"\n"
+"...to activate your product."
+msgstr ""
+"\n"
+"Combinação de liberação de arquitetura e sistema operacional inválida (%s, "
+"%s).\n"
+"Seu sistema foi registrado, mas não receberá atualizações\n"
+"porque não está inscrito em um canal. Se você ainda não\n"
+"ativou seu produto para manutenção, visite nosso site em:\n"
+"\n"
+"       http://www.redhat.com/apps/activate/\n"
+"\n"
+"... para ativar seu produto."
+
+#: ../server/rhnChannel.py:2288
+#, python-format
+msgid ""
+"\n"
+"Invalid Architecture and OS release combination (%s, %s).\n"
+"Your system has been registered, but will not receive updates\n"
+"because it could not be subscribed to a base channel.\n"
+"Please contact your organization administrator for assistance.\n"
+msgstr ""
+"\n"
+"Combinação de liberação de arquitetura e sistema operacional inválida (%s, "
+"%s).\n"
+"Seu sistema foi registrado, mas não receberá atualizações\n"
+"porque não pôde ser inscrito em um canal base.\n"
+"Por favor entre em contato com o administrador da organização para obter "
+"assistência.\n"
+
+#: ../server/rhnChannel.py:2295
+#, python-format
+msgid ""
+"\n"
+"  This system has been successfully registered, but is not yet entitled\n"
+"  to service.  To entitle this system to service, login to the web site at:\n"
+"\n"
+"  %(entitlement_url)s\n"
+msgstr ""
+"\n"
+"  Este sistema foi registrado com sucesso, mas ainda não tem direito\n"
+"  para servir.  Para autorizar esse sistema a fazer serviço, faça login no "
+"site em:\n"
+"\n"
+"  %(entitlement_url)s\n"
+
+#: ../server/rhnChannel.py:2303
+#, python-format
+msgid ""
+"\n"
+"  This system has been successfully registered, but no service entitlements\n"
+"  were available.  To entitle this system to service, login to the web site "
+"at:\n"
+"\n"
+"  %(entitlement_url)s\n"
+msgstr ""
+"\n"
+"  Este sistema foi registrado com sucesso, mas nenhum direito ao serviço\n"
+"  estavam disponíveis.  Para autorizar esse sistema a fazer serviço, faça "
+"login no site em:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
@@ -308,143 +445,6 @@ msgstr "o nome de usuário deve ter pelo menos %d caracteres"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Não é possível registrar nomes de usuário que terminem com %s"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Solicitação inválida recebida (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"SEGUINTE MENSAGEM IMPORTANTE:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Durante a execução de '%s': capturado\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "URI %s inválida"
-
-#: ../server/rhnChannel.py:1992
-#, python-format
-msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-"Sua conta não tem acesso a nenhum canal correspondente (release "
-"='%(release)s', arch='%(arch)s')%(www_activation)s"
-
-#: ../server/rhnChannel.py:2002
-msgid ""
-"\n"
-"If you have a registration number, please register with it first at http://"
-"www.redhat.com/apps/activate/ and then try again.\n"
-"\n"
-msgstr ""
-"\n"
-"Se você tiver um número de registro, registre-se primeiro em http://www."
-"redhat.com/apps/activate/ e tente novamente.\n"
-"\n"
-
-#: ../server/rhnChannel.py:2012
-#, python-format
-msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr "Permissões de assinatura insuficientes para liberação (%s, %s"
-
-#. Various messages that can be reused
-#.
-#. bretm 02/07/2007 -- when we have better old-client documentation, probably
-#. will be safe to get rid of all this crap
-#: ../server/rhnChannel.py:2276 ../server/rhnChannel.py:2287
-#: ../server/rhnChannel.py:2302
-msgid "System Registered but Inactive"
-msgstr "Sistema Registrado, mas Inativo"
-
-#: ../server/rhnChannel.py:2277
-#, python-format
-msgid ""
-"\n"
-"Invalid Architecture and OS release combination (%s, %s).\n"
-"Your system has been registered, but will not receive updates\n"
-"because it is not subscribed to a channel. If you have not yet\n"
-"activated your product for service, please visit our website at:\n"
-"\n"
-"     http://www.redhat.com/apps/activate/\n"
-"\n"
-"...to activate your product."
-msgstr ""
-"\n"
-"Combinação de liberação de arquitetura e sistema operacional inválida (%s, "
-"%s).\n"
-"Seu sistema foi registrado, mas não receberá atualizações\n"
-"porque não está inscrito em um canal. Se você ainda não\n"
-"ativou seu produto para manutenção, visite nosso site em:\n"
-"\n"
-"       http://www.redhat.com/apps/activate/\n"
-"\n"
-"... para ativar seu produto."
-
-#: ../server/rhnChannel.py:2288
-#, python-format
-msgid ""
-"\n"
-"Invalid Architecture and OS release combination (%s, %s).\n"
-"Your system has been registered, but will not receive updates\n"
-"because it could not be subscribed to a base channel.\n"
-"Please contact your organization administrator for assistance.\n"
-msgstr ""
-"\n"
-"Combinação de liberação de arquitetura e sistema operacional inválida (%s, "
-"%s).\n"
-"Seu sistema foi registrado, mas não receberá atualizações\n"
-"porque não pôde ser inscrito em um canal base.\n"
-"Por favor entre em contato com o administrador da organização para obter "
-"assistência.\n"
-
-#: ../server/rhnChannel.py:2295
-#, python-format
-msgid ""
-"\n"
-"  This system has been successfully registered, but is not yet entitled\n"
-"  to service.  To entitle this system to service, login to the web site at:\n"
-"\n"
-"  %(entitlement_url)s\n"
-msgstr ""
-"\n"
-"  Este sistema foi registrado com sucesso, mas ainda não tem direito\n"
-"  para servir.  Para autorizar esse sistema a fazer serviço, faça login no "
-"site em:\n"
-"\n"
-"  %(entitlement_url)s\n"
-
-#: ../server/rhnChannel.py:2303
-#, python-format
-msgid ""
-"\n"
-"  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
-"\n"
-"  %(entitlement_url)s\n"
-msgstr ""
-"\n"
-"  Este sistema foi registrado com sucesso, mas nenhum direito ao serviço\n"
-"  estavam disponíveis.  Para autorizar esse sistema a fazer serviço, faça "
-"login no site em:\n"
-"\n"
-"  %(entitlement_url)s\n"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1357,6 +1357,19 @@ msgstr "Importando árvores kickstartable (%d)"
 msgid "Imported kickstartable trees (%d)"
 msgstr "Árvores kickstartable importadas (%d)"
 
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ enviar log como um email +++"
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s sincronizado. relatório de %s"
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email solicitado, mas não há nada para enviar +++"
+
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
 msgid ""
@@ -1378,19 +1391,6 @@ msgstr ""
 "Não foi possível abrir \"%s\"\n"
 "e/ou escrito para:\n"
 "%s"
-
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ enviar log como um email +++"
-
-#: ../satellite_tools/reposync.py:112
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s sincronizado. relatório de %s"
-
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email solicitado, mas não há nada para enviar +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
