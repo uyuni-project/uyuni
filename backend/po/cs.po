@@ -13,16 +13,15 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-25 10:29+0200\n"
-"PO-Revision-Date: 2018-03-16 10:53+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/fedora/language/"
-"cs/)\n"
+"PO-Revision-Date: 2020-08-26 12:39+0000\n"
+"Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -104,9 +103,9 @@ msgid "Expected a package, not: %s"
 msgstr "Očekávám balík, nikoliv \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr "Profil \"%s\" nemá aktivovánu službu RHN Proxy."
+msgstr "Profil \"%s\" nemá aktivovánu službu Spacewalk Proxy"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -146,16 +145,16 @@ msgstr "Požadována neplatná release verze systému"
 msgid ""
 "Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
+"Nelze najít platné síťové rozhraní, ipaddr (IPv4) a ip6addr (IPv6) nebyly "
+"nalezeny."
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
 msgid "Red Hat Satellite Welcome Message"
-msgstr "Vítejte v Red Hat Network"
+msgstr "Uvítací zpráva Red Hat Satellite"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-#, fuzzy
 msgid "Red Hat Satellite Privacy Statement"
-msgstr "Red Hat Network prohlášení o soukromí"
+msgstr "Red Hat Satellite prohlášení o soukromí"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -167,9 +166,8 @@ msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pro %s (%s)"
 
 #: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
 msgid "Invalid system_id/action_id pair."
-msgstr "Neplatné přihlašovací údaje do systému."
+msgstr "Neplatný pár system_id/action_id."
 
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
@@ -196,15 +194,15 @@ msgid ""
 msgstr "Nemáte právo spravovat kanál %s, případně tento kanál ani neexistuje."
 
 #: ../server/importlib/userAuth.py:204
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   Účet %s byl na tomto serveru deaktivován.\n"
-"                   Pro další pomoc kontaktujte správce své organizace."
+"               Účet %s byl na tomto serveru deaktivován.\n"
+"               Pro další pomoc kontaktujte správce své organizace."
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -242,7 +240,7 @@ msgid "System Registered but Inactive"
 msgstr "Systém je registrován, ale neaktivní"
 
 #: ../server/rhnChannel.py:2277
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Invalid Architecture and OS release combination (%s, %s).\n"
@@ -313,7 +311,7 @@ msgstr ""
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Spusťte prosím rhn_register jako superuživatel (root) tohoto klienta"
 
 #: ../server/rhnHandler.py:75
 #, python-format
@@ -524,7 +522,7 @@ msgid "Unsupported server architecture."
 msgstr "Nepodporovaná architektura serveru."
 
 #: ../common/rhnException.py:73
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "     The anonymous server functionality is no longer available.\n"
@@ -537,15 +535,14 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Anonymní přístup na server již není k dispozici.\n"
+"     Funkce anonymního serveru již není dostupná.\n"
 "\n"
-"     Jako uživatel root se znovu zaregistrujte příkazem rhn_register\n"
-"     (případně použijte up2date --register na Red Hat Enterprise Linux 3).\n"
+"     Znovu se zaregistrujte jako superuživatel root příkazem mgr_register.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a v liště \"Přehled"
-"\" (Overview),\n"
-"     zvolte \"Správu subskripcí\" (Subscription Management), abyste si "
-"aktivovali RHN pro tento systém.\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview),\n"
+"     zvolte \"Správu předplatných\" (Subscription Management)\n"
+"     pro aktivaci služby pro tento systém.\n"
 "     "
 
 #: ../common/rhnException.py:81
@@ -557,7 +554,7 @@ msgid "Invalid value for entry."
 msgstr "Neplatná hodnota záznamu."
 
 #: ../common/rhnException.py:83
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "     This system does not have a valid entitlement for SUSE Manager.\n"
@@ -568,12 +565,12 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Tento systém nemá platné oprávnění k připojení na Red Hat Network.\n"
+"     Tento systém nemá platné oprávnění pro Správce SUSE.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a v liště \"Přehled"
-"\" (Overview)\n"
-"     zvolte \"Správu subskripcí\" (Subscription Management), abyste si "
-"aktivovali RHN pro tento systém.\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview)\n"
+"     zvolte \"Správu předplatných\" (Subscription Management),\n"
+"     abyste si aktivovali službu pro tento systém.\n"
 "     "
 
 #: ../common/rhnException.py:89
