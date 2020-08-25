@@ -128,6 +128,10 @@ msgstr "Jako argument u produktu je očekáván slovník"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pro %s (%s)"
 
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Neplatný pár system_id/action_id."
+
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
@@ -328,7 +332,9 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/apacheAuth.py:66
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Spusťte prosím rhn_register jako superuživatel (root) tohoto klienta"
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr "Neúplný autentifikační token pro proxy: %s"
@@ -540,8 +546,8 @@ msgstr ""
 "\n"
 "     Znovu se zaregistrujte jako superuživatel root příkazem mgr_register.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled"
-"\" (Overview),\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview),\n"
 "     zvolte \"Správu předplatných\" (Subscription Management)\n"
 "     pro aktivaci služby pro tento systém.\n"
 "     "
@@ -568,8 +574,8 @@ msgstr ""
 "\n"
 "     Tento systém nemá platné oprávnění pro Správce SUSE.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled"
-"\" (Overview)\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview)\n"
 "     zvolte \"Správu předplatných\" (Subscription Management),\n"
 "     abyste si aktivovali službu pro tento systém.\n"
 "     "
