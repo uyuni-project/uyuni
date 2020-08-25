@@ -674,7 +674,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>キックスタート</target>
+        <target>自動インストール</target>
       </trans-unit>
       <trans-unit id="Power Management">
         <source>Power Management</source>
@@ -1199,7 +1199,7 @@
         <target>Sr.</target>
       </trans-unit>
       <trans-unit id="user prefix  ">
-        <source></source>
+        <source/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1319,7 +1319,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target>RHN TASKOMATIC 通知</target>
+        <target>SUSE MANAGER TASKOMATIC 通知</target>
       </trans-unit>
       <trans-unit id="Notification Messages">
         <source>Notification Messages</source>
@@ -2248,6 +2248,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream">
         <source>&lt;div style="text-align: left;"&gt; &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; Is the 'appstream' child software channel for this kickstart profile's base channel available to your organization? If it is not, you will need to request entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator. &lt;/li&gt; &lt;li&gt; Make sure that the 'appstream' child channel for this kickstart profile's base channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your satellite administrator and request a cdn-sync for the appstream channel and try again. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</source>
+        <target>&lt;div style="text-align: left;"&gt; &lt;p&gt;この問題を解決するには下記の点を確認してください:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、 'appstream' という子ソフトウェアチャンネルが組織内で提供されていますか？ 提供されていない場合は、 @@PRODUCT_NAME@@ の管理者に問い合わせて、 'appstream' ソフトウェアチャンネルに必要な資格を得る必要があります。 &lt;/li&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、 'appstream' 子チャンネルが @@PRODUCT_NAME@@ 向けに利用可能になっているかどうか。利用可能になっていない場合は、 satellite 管理者に問い合わせて appstream チャンネル向けの cdn-sync をリクエストしてから再度実行してください。 &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2257,45 +2258,46 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>キックスタートの開始</target>
+        <target>自動インストールの開始</target>
       </trans-unit>
       <trans-unit id="kickstart_guest.initiate">
         <source>Initiate an autoinstallation of a guest system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>ゲストシステムのキックスタートを開始</target>
+        <target>ゲストシステムの自動インストールを開始</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule_sync">
         <source>Schedule a package sync for autoinstallations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>キックスタートのパッケージ同期をスケジュール</target>
+        <target>自動インストール向けのパッケージ同期をスケジュール</target>
       </trans-unit>
       <trans-unit id="kickstart.error.invalidlabel">
         <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, -</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>選択したキックスタートラベルは有効ではありません。{0} 文字以上で、次の文字のみが含まれている必要があります: A-Z, a-z, 0-9, _, -</target>
+        <target>選択した自動インストールラベルが正しくありません。 {0} 文字以上で、次の文字のみが含まれている必要があります: A-Z, a-z, 0-9, _, -</target>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>キックスタートラベルはすでに存在しています: '{0}'。固有のキックスタートラベルを選択してください。</target>
+        <target>自動インストールラベルはすでに存在しています: '{0}'。他とは重複しないラベルを入力してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.details.success">
         <source>Autoinstallation details successfully updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>キックスタートの詳細が正しく更新されました。</target>
+        <target>自動インストールの詳細が正しく更新されました。</target>
       </trans-unit>
       <trans-unit id="kickstart.details.duplicatefile">
         <source>Please specify only file contents or a file to upload but not both.</source>
+        <target>ファイルの内容を指定するか、アップロードすべきファイルを指定してください。両方を指定してはなりません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
@@ -2305,14 +2307,14 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>キックスタートプロファイルのラベルが必要です。</target>
+        <target>自動インストールプロファイルのラベルが必要です。</target>
       </trans-unit>
       <trans-unit id="kickstart.delete.success">
         <source>Autoinstallation was deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSubmit</context>
         </context-group>
-        <target>キックスタートは正しく削除されました。</target>
+        <target>自動インストールは正しく削除されました。</target>
       </trans-unit>
       <trans-unit id="kickstart.options.success">
         <source>Kickstart advanced options successfully updated.</source>
@@ -2340,7 +2342,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>IP 範囲がキックスタートプロファイル {0} に正しく追加されました。</target>
+        <target>IP の範囲を自動インストールプロファイル {0} に追加しました</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange_conflict.failure">
         <source>Error: The IP range you entered conflicts with another IP range. Please choose a different IP range.</source>
@@ -2361,35 +2363,35 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>IP 範囲がキックスタートプロファイル {0} から正しく削除されました。</target>
+        <target>IP の範囲を自動インストールプロファイル {0} から削除しました</target>
       </trans-unit>
       <trans-unit id="kickstart.iprange_delete.failure">
         <source>There was an error deleting the IP Range from Autoinstallation Profile {0}. Please try again.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>キックスタートプロファイル {0} から IP 範囲を削除する際にエラーが発生しました。やり直してください。</target>
+        <target>自動インストールプロファイル {0} から IP の範囲を削除する際にエラーが発生しました。やり直してください。</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.update.success">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; updated successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/cobbler/CobblerSnippetCreate</context>
         </context-group>
-        <target>キックスタートスニペット &lt;strong&gt;{0}&lt;/strong&gt; が正しく更新されました。</target>
+        <target>自動インストールスニペット &lt;strong&gt;{0}&lt;/strong&gt; の更新に成功しました。</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.create.success">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; created successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
-        <target>キックスタートスニペット &lt;strong&gt;{0}&lt;/strong&gt; が正しく作成されました。</target>
+        <target>自動インストールスニペット &lt;strong&gt;{0}&lt;/strong&gt; の作成に成功しました。</target>
       </trans-unit>
       <trans-unit id="cobblersnippet.delete.success">
         <source>Autoinstallation snippet &lt;strong&gt;{0}&lt;/strong&gt; deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyDelete</context>
         </context-group>
-        <target>キックスタートスニペット &lt;strong&gt;{0}&lt;/strong&gt; が正しく削除されました。</target>
+        <target>自動インストールスニペット &lt;strong&gt;{0}&lt;/strong&gt; の削除が成功しました。</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.couldnotdelete.message">
         <source>An error occurred when attempting to delete the snippet &lt;strong&gt;{0}&lt;/strong&gt;.</source>
@@ -2414,6 +2416,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message">
         <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or begin with a period(.)</source>
+        <target>要求したスニペットファイル名が正しくありません。キックスタートのスニペットファイル名にはスラッシュ (/) が含まれていてはならず、かつピリオド (.) で始まってもいけません</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2437,7 +2440,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>キックスタートインストール用のカーネルパラメーターに &lt;code&gt;{0}&lt;/code&gt; を追加すると、その IP アドレスに基づいて新しいシステムをキックスタートすることができます。</target>
+        <target>自動インストール用のカーネルパラメータに &lt;code&gt;{0}&lt;/code&gt; を追加すると、その IP アドレスに基づいて新しいシステムを自動インストールすることができます。</target>
       </trans-unit>
       <trans-unit id="kickstart.partition.success">
         <source>Kickstart profile options updated successfully.</source>
@@ -2567,6 +2570,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="errata.schedule">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; に対する &lt;strong&gt;{0}&lt;/strong&gt; パッチ更新が &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;スケジュール済み&lt;/a&gt; です。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
@@ -2574,6 +2578,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; に対する &lt;strong&gt;{0}&lt;/strong&gt; パッチ更新が &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;スケジュール済み&lt;/a&gt; です。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
@@ -2581,6 +2586,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="errataconfirm.schedule">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
+        <target>&lt;strong&gt;{1}&lt;/strong&gt; システムに対するパッチ &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; が &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;スケジュール済み&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
@@ -2588,6 +2594,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
+        <target>&lt;strong&gt;{1}&lt;/strong&gt; システムに対するパッチ &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; が &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;スケジュール済み&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -2630,6 +2637,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="Package List">
         <source>Package List</source>
+        <target>パッケージ一覧</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -2779,17 +2787,18 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>キックスタートを作成</target>
+        <target>自動インストールを作成</target>
       </trans-unit>
       <trans-unit id="toolbar.clone.kickstart">
         <source>Clone Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserList</context>
         </context-group>
-        <target>キックスタートのクローン作成</target>
+        <target>自動インストールの複製</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.CryptoKeyDelete">
         <source>Delete Key</source>
+        <target>キーの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeyEdit</context>
         </context-group>
@@ -2832,60 +2841,70 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="toolbar.delete.user">
         <source>Delete User</source>
+        <target>ユーザーの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">User details pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.erratum">
         <source>Delete Patch</source>
+        <target>パッチの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata details pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.system">
         <source>Delete System</source>
+        <target>システムの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Package list pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.systemgroup">
         <source>Delete Group</source>
+        <target>グループの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.work.with.group">
         <source>Work With Group</source>
+        <target>グループでの作業</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Group pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.errata">
         <source>Delete Patch</source>
+        <target>パッチの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Errata edit page</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.kickstart">
         <source>Delete Autoinstallation</source>
+        <target>自動インストールの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart profile pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.deleteTree">
         <source>Delete Distribution</source>
+        <target>ディストリビューションの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">rhn/Kickstart/TreeEdit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.profile">
         <source>Delete Profile</source>
+        <target>プロファイルの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/CompareProfiles.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.crash">
         <source>Delete Software Crash</source>
+        <target>ソフトウェアクラッシュの削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
@@ -3315,18 +3334,21 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="systemsearch_location_country_code">
         <source>Country Code</source>
+        <target>国コード</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_state">
         <source>State/Province</source>
+        <target>都道府県</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemsearch_location_city">
         <source>City</source>
+        <target>市町村</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
@@ -3847,6 +3869,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="message.bulkremovecustomdata">
         <source>Value removed for &lt;strong&gt;{0}&lt;/strong&gt; from {1} systems.</source>
+        <target>{1} システムから &lt;strong&gt;{0}&lt;/strong&gt; に対する値を削除しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/CustomDataSet.do</context>
           <context context-type="paramnotes">Value removed for &lt;strong&gt;custom-data-key&lt;/strong&gt; from 2 systems.</context>
@@ -3854,6 +3877,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="message.bulksetcustomdata">
         <source>Value set for &lt;strong&gt;{0}&lt;/strong&gt; for selected systems.</source>
+        <target>選択したシステムに対して &lt;strong&gt;{0}&lt;/strong&gt; に対する値を設定しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/CustomDataSet.do</context>
           <context context-type="paramnotes">Value set for &lt;strong&gt;custom-data-key&lt;/strong&gt; for selected systems.</context>
@@ -5541,6 +5565,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="SS">
         <source>South Sudan</source>
+        <target>南スーダン</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All country select list pull-downs</context>
         </context-group>
@@ -6223,9 +6248,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="taskomatic.notavailable">
         <source>Taskomatic is not available.</source>
+        <target>Taskomatic が利用できません。</target>
       </trans-unit>
       <trans-unit id="taskscheduler.down">
         <source>There was an error while scheduling a task. Please make sure that the task scheduler is running.</source>
+        <target>タスクをスケジュールする際にエラーが発生しました。タスクスケジューラが動作していることをご確認ください。</target>
       </trans-unit>
       <trans-unit id="kickstart.software.success">
         <source>Kickstart Operating System selection successfully updated.</source>
@@ -6337,21 +6364,21 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target>キックスタートのオプションが更新されました。</target>
+        <target>自動インストールのオプションを更新しました。</target>
       </trans-unit>
       <trans-unit id="tree.delete.success">
         <source>Autoinstallable Distribution deleted successfully.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
-        <target>キックスタートディストリビューションは正しく削除されました。</target>
+        <target>自動インストール可能なディストリビューションを削除しました。</target>
       </trans-unit>
       <trans-unit id="tree.edit.invalid_tree">
         <source>Autoinstallable distribution is invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>キックスタートディストリビューションは、カーネルまたは initrd イメージの基本パスが間違っているか、またはパスが存在しないために無効です。カスタムディストリビューションを有効にするには、ディストリビューションを選択し、その基本パスを適切に変更してください。</target>
+        <target>自動インストール可能なディストリビューションは、カーネルまたは initrd イメージの基本パスが間違っているか、またはパスが存在しないために無効です。独自のディストリビューションを有効にするには、ディストリビューションを選択したあと、基本パスを適切に変更してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.validation.kernelparams.too_long">
         <source>Extra kernel parameters can be no longer than 128 characters.</source>
@@ -6386,38 +6413,39 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
-        <target>キックスタートのクローンが正しく作成されました。キックスタートのクローンを編集しています。</target>
+        <target>自動インストールの複製を行ないました。複製後の自動インストールの編集を行なっています。</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.success">
         <source>Autoinstallation canceled.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
-        <target>キックスタートが取り消されました。</target>
+        <target>自動インストールが取り消されました。</target>
       </trans-unit>
       <trans-unit id="kickstart.session.user_canceled">
         <source>Autoinstallation canceled by user: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSessionCancel.do</context>
         </context-group>
-        <target>キックスタートが次のユーザーにより取り消されました: {0}</target>
+        <target>自動インストールがユーザーにより取り消されました: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.success">
         <source>System autoinstallation scheduled for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>{0} に対してシステムキックスタートがスケジュールされました</target>
+        <target>{0} に対してシステムの自動インストールがスケジュールされました</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate">
         <source>System record created for {0} in Cobbler. This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>Cobbler の {0} にシステム記録が作成されました。これにより、koan コマンドにて {0} のターミナルより {1} プロファイルを使用してこのシステムをキックスタートすることができます。</target>
+        <target>Cobbler の {0} にシステム記録が作成されました。これにより、koan コマンドにて {0} のターミナルより {1} プロファイルを使用してこのシステムを自動インストールすることができます。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate.bootstrap">
         <source>System record created for {0} in Cobbler. This will start installation as soon as the system is booted.</source>
+        <target>Cobbler 内で {0} に対するシステムレコードを作成しました。これにより、システムを起動するとインストールが始まるようになります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6427,28 +6455,28 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>{0} にシステムキックスタートがスケジュールされました。システムコンソールで状況を確認してください。</target>
+        <target>{0} にシステムの自動インストールがスケジュールされました。システムコンソールで状況を確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noprofiles">
         <source>No profiles found that are compatible with this System. Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>このシステムと互換性のあるプロファイルは見つかりませんでした。キックスタートプロファイルをまったく作成していないか、またはこのシステムにベースチャンネルがないかのいずれかになります。</target>
+        <target>このシステムと互換性のあるプロファイルは見つかりませんでした。自動インストールのプロファイルをまったく作成していないか、またはこのシステムにベースチャンネルがないかのいずれかと思われます。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nobasechannel">
         <source>System {0} cannot be autoinstalled because it does not have a base channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>システム {0}にはベースチャンネルがないため、キックスタートを行なうことができません。</target>
+        <target>システム {0}にはベースチャンネルがないため、自動インストールを行なうことができません。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nosuchdevice">
         <source>System {0} cannot be autoinstalled because it does not have a &lt;strong&gt; {1} &lt;/strong&gt; network device.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>システム {0} は、{1} ネットワークデバイスを持たないため、キックスタートできません。</target>
+        <target>システム {0} には &lt;strong&gt; {1} &lt;/strong&gt; ネットワークデバイスが存在しないため、自動インストールできません。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nopackage">
         <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
@@ -6476,21 +6504,21 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>{1} ({0}) に対するキックスタートはスケジュールされませんでした。パッケージプロファイルに「up2date」パッケージが含まれていなかったためです。このシステムのパッケージプロファイルの更新が必要な可能性があります。</target>
+        <target>パッケージプロファイル内に 'up2date' パッケージが含まれていないため、  &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; に対する自動インストールはスケジュールされませんでした。対象のシステムのパッケージプロファイルを更新する必要があります。</target>
       </trans-unit>
       <trans-unit id="kickstart.session.newsession">
         <source>A new autoinstall session was initiated for this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>このシステムに対して新しいキックスタートセッションが開始されました。</target>
+        <target>このシステムに対して新しい自動インストールセッションが開始されました。</target>
       </trans-unit>
       <trans-unit id="kickstart.session.newtokennote">
         <source>Autoinstallation re-activation key for {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>{0} のキックスタート再アクティベーションキーです。</target>
+        <target>{0} の自動インストール再アクティベーションキーです。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.ppc64lewarning">
         <source>Warning: Kickstart Profile list includes PPC64LE profiles but they will not function properly unless your CPU is POWER8 or better.</source>
@@ -6511,7 +6539,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>キックスタートセッション {0} のプロファイルです。</target>
+        <target>自動インストールセッション {0} のプロファイルです。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2dateinchannel">
         <source>We require version {0} or greater of up2date in order to kickstart a system. &lt;strong&gt;{2}&lt;/strong&gt; has {1} installed but we could not find a version of up2date in this system's channels to upgrade it to the required version or above.</source>
@@ -6532,17 +6560,18 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>キックスタートディストリビューションが更新されました</target>
+        <target>自動インストール可能なディストリビューションを更新しました</target>
       </trans-unit>
       <trans-unit id="tree.create.success">
         <source>Autoinstallable Distribution Created</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>キックスタートディストリビューションが作成されました</target>
+        <target>自動インストール可能なディストリビューションを作成しました</target>
       </trans-unit>
       <trans-unit id="tree.edit.missingcobblerentry">
         <source>The Cobbler entry for this distribution is missing. It will be automatically recreated shortly.</source>
+        <target>このディストリビューションに対する Cobbler の項目がありません。しばらくすると自動的に再作成されます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
@@ -6573,7 +6602,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
-        <target>削除の選択をしたキックスタートディストリビューションは使用中になっています。このディストリビューションを使用しているキックスタートプロファイルに対するディストリビューションを削除または変更してください。</target>
+        <target>削除の選択をした自動インストール可能なディストリビューションは使用中になっています。このディストリビューションを使用している自動インストールプロファイルに対するディストリビューションを削除または変更してください。</target>
       </trans-unit>
       <trans-unit id="basepath">
         <source>External Location</source>
@@ -6601,16 +6630,18 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>システム {0} にはスケジュールされている待機中のキックスタートがあります。</target>
+        <target>システム {0} にはスケジュールされている待機中の自動インストールがあります。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.schedule.on.bootstrap.jsp">
         <source>System &lt;strong&gt;{0}&lt;/strong&gt; is bare-metal, no scheduling is possible.</source>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; システムはベアメタルです。スケジュールできません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.profile.jsp">
         <source>Could not find a matching profile for system &lt;strong&gt;{0}&lt;/strong&gt;.</source>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; システムに該当するプロファイルが見つかりませんでした。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -6670,7 +6701,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; が &lt;strong&gt;{1}&lt;/strong&gt; に変更されていることに注意してください。</target>
         </trans-unit>
         <trans-unit id="activation-key.java.allowed-values">
-          <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source> </trans-unit>
+          <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source> <target>アクティベーションキーを保存できません: キーには数字 [0-9] と英字 [a-z A-Z] のほか、 '-', '_' の記号のみを使用できます</target></trans-unit>
         <trans-unit id="system.sdc.missing.config_deploy1">
           <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source> <target>このシステムには設定配備機能がありません。設定配備には特定のソフトウェアがシステムにインストールされ、有効になっていなければなりません。</target>
         </trans-unit>
@@ -6750,10 +6781,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
         </context-group>
-        <target>{0} リビジョンの削除に失敗しました。</target>
+        <target>{0} 個のリビジョンの削除に失敗しました。</target>
       </trans-unit>
       <trans-unit id="config_revisions.failure.singular">
         <source>{0} revision deletion failed.</source>
+        <target>{0} 個のリビジョンの削除に失敗しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">1 revision deletion failed.</context>
@@ -6765,10 +6797,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">7 revisions were deleted successfully.</context>
         </context-group>
-        <target>{0} リビジョンが正常に削除されました。</target>
+        <target>{0} 個のリビジョンが正常に削除されました。</target>
       </trans-unit>
       <trans-unit id="config_revisions.success.singular">
         <source>{0} revision was deleted successfully.</source>
+        <target>{0} 個のリビジョンの削除に成功しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">1 revision was deleted successfully.</context>
@@ -6776,6 +6809,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="config_files.setFilesToRemove.success">
         <source>{0} configuration file(s) successfully deleted.</source>
+        <target>{0} 個の設定ファイルの削除に成功しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
           <context context-type="paramnotes">7 configuration files were successfully deleted.</context>
@@ -6783,6 +6817,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="config_files.setFilesToRemove.failure">
         <source>{0} file deletion(s) failed.</source>
+        <target>{0} 個のファイルの削除に失敗しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
           <context context-type="paramnotes">7 file deletions failed.</context>
@@ -6790,6 +6825,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="config_files.setFilesToImport.success">
         <source>{0} configuration file(s) successfully imported.</source>
+        <target>{0} 個の設定ファイルのインポートに成功しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
           <context context-type="paramnotes">7 configuration files were successfully imported.</context>
@@ -6797,6 +6833,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="config_files.setFilesToImport.failure">
         <source>{0} file import(s) failed.</source>
+        <target>{0} 個のファイルのインポートに失敗しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
           <context context-type="paramnotes">7 file imports failed.</context>
@@ -6804,6 +6841,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="config_subscribed_systems.unsubscribeSystems.failure">
         <source>Failed to unsubscribe {0} system(s).</source>
+        <target>{0} 個のシステムのサブスクライブ中止に失敗しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -6815,10 +6853,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">Successfully copied file to 7 channels.</context>
         </context-group>
-        <target>{0} システムのサブスクライブを正常に中止しました。</target>
+        <target>{0} 個のシステムのサブスクライブを正常に中止しました。</target>
       </trans-unit>
       <trans-unit id="config_target_systems.subscribeSystems.failure">
         <source>Failed to subscribe {0} system(s).</source>
+        <target>{0} 個のシステムのサブスクライブに失敗しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -6830,7 +6869,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">Successfully copied file to 7 channels.</context>
         </context-group>
-        <target>{0} システムを正常にサブスクライブしました。</target>
+        <target>{0} 個のシステムを正常にサブスクライブしました。</target>
       </trans-unit>
       <trans-unit id="config_channel_name.local">
         <source>local override for {0}</source>
@@ -6864,6 +6903,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="config_channel.state">
         <source>State</source>
+        <target>状態</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareCopy.do</context>
         </context-group>
@@ -7065,6 +7105,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="configdiff.schedule.success">
         <source>&lt;a href="{0}"&gt;Configuration file compare actions&lt;/a&gt; are being scheduled for {1} systems, it may take several minutes for this to complete.</source>
+        <target>{1} 個のシステムに対して &lt;a href="{0}"&gt;設定ファイルの比較処理&lt;/a&gt; をスケジュールしました。完了までにはしばらく時間がかかります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 8 systems.</context>
@@ -7072,6 +7113,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="configdiff.schedule.success.singular">
         <source>&lt;a href="{0}"&gt;Configuration file compare action&lt;/a&gt; is being scheduled successfully for 1 system.</source>
+        <target>1 個のシステムに対して &lt;a href="{0}"&gt;設定ファイルの比較処理&lt;/a&gt; をスケジュールしました。完了までにはしばらく時間がかかります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
           <context context-type="paramnotes">Configuration file compare action scheduled successfully for 1 system.</context>
@@ -7086,6 +7128,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="configdiff.schedule.selection_error">
         <source>No system was selected.</source>
+        <target>システムが選択されていません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CompareDeployed.do</context>
         </context-group>
@@ -7324,71 +7367,71 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url">
-          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source> </trans-unit>
+          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source> <target>ファイルやディレクトリ、シンボリックリンクがありません。  &lt;a href="{0}"&gt; 追加&lt;/a&gt;</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0">
-          <source>No files, directories or symlinks.</source> </trans-unit>
+          <source>No files, directories or symlinks.</source> <target>ファイルやディレクトリ、シンボリックリンクがありません。</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1">
-          <source>{3} symlink</source> </trans-unit>
+          <source>{3} symlink</source> <target>{3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2">
-          <source>{3} symlinks</source> </trans-unit>
+          <source>{3} symlinks</source> <target>{3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0">
-          <source>{2} directory</source> </trans-unit>
+          <source>{2} directory</source> <target>{2} 個のディレクトリ</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1">
-          <source>{2} directory and {3} symlink</source> </trans-unit>
+          <source>{2} directory and {3} symlink</source> <target>{2} 個のディレクトリと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2">
-          <source>{2} directory and {3} symlinks</source> </trans-unit>
+          <source>{2} directory and {3} symlinks</source> <target>{2} 個のディレクトリと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0">
-          <source>{2} directories</source> </trans-unit>
+          <source>{2} directories</source> <target>{2} 個のディレクトリ</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1">
-          <source>{2} directories and {3} symlink</source> </trans-unit>
+          <source>{2} directories and {3} symlink</source> <target>{2} 個のディレクトリと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2">
-          <source>{2} directories and {3} symlinks</source> </trans-unit>
+          <source>{2} directories and {3} symlinks</source> <target>{2} 個のディレクトリと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0">
-          <source>{1} file</source> </trans-unit>
+          <source>{1} file</source> <target>{1} 個のファイル</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1">
-          <source>{1} file and {3} symlink</source> </trans-unit>
+          <source>{1} file and {3} symlink</source> <target>{1} 個のファイルと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2">
-          <source>{1} file and {3} symlinks</source> </trans-unit>
+          <source>{1} file and {3} symlinks</source> <target>{1} 個のファイルと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0">
-          <source>{1} file and {2} directory</source> </trans-unit>
+          <source>{1} file and {2} directory</source> <target>{1} 個のファイルと {2} 個のディレクトリ</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1">
-          <source>{1} file, {2} directory and {3} symlink</source> </trans-unit>
+          <source>{1} file, {2} directory and {3} symlink</source> <target>{1} 個のファイルと {2} 個のディレクトリ、 {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2">
-          <source>{1} file, {2} directory and {3} symlinks</source> </trans-unit>
+          <source>{1} file, {2} directory and {3} symlinks</source> <target>{1} 個のファイルと {2} 個のディレクトリ、 {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0">
-          <source>{1} file and {2} directories</source> </trans-unit>
+          <source>{1} file and {2} directories</source> <target>{1} 個のファイルと {2} 個のディレクトリ</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1">
-          <source>{1} file, {2} directories and {3} symlink</source> </trans-unit>
+          <source>{1} file, {2} directories and {3} symlink</source> <target>{1} 個のファイルと {2} 個のディレクトリ、 {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2">
-          <source>{1} file, {2} directories and {3} symlinks</source> </trans-unit>
+          <source>{1} file, {2} directories and {3} symlinks</source> <target>{1} 個のファイルと {2} 個のディレクトリ、 {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0">
-          <source>{1} files</source> </trans-unit>
+          <source>{1} files</source> <target>{1} 個のファイル</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1">
-          <source>{1} files and {3} symlink</source> </trans-unit>
+          <source>{1} files and {3} symlink</source> <target>{1} 個のファイルと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2">
-          <source>{1} files and {3} symlinks</source> </trans-unit>
+          <source>{1} files and {3} symlinks</source> <target>{1} 個のファイルと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0">
-          <source>{1} files and {2} directory</source> </trans-unit>
+          <source>{1} files and {2} directory</source> <target>{1} 個のファイルと {2} 個のディレクトリ</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1">
-          <source>{1} files, {2} directory and {3} symlink</source> </trans-unit>
+          <source>{1} files, {2} directory and {3} symlink</source> <target>{1} 個のファイルと {2} 個のディレクトリ、 {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2">
-          <source>{1} files, {2} directory and {3} symlinks</source> </trans-unit>
+          <source>{1} files, {2} directory and {3} symlinks</source> <target>{1} 個のファイルと {2} 個のディレクトリ、 {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0">
-          <source>{1} files and {2} directories</source> </trans-unit>
+          <source>{1} files and {2} directories</source> <target>{1} 個のファイルと {2} 個のディレクトリ</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1">
-          <source>{1} files, {2} directories and {3} symlink</source> </trans-unit>
+          <source>{1} files, {2} directories and {3} symlink</source> <target>{1} 個のファイルと {2} 個のディレクトリ、 {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2">
-          <source>{1} files, {2} directories and {3} symlinks</source> </trans-unit>
+          <source>{1} files, {2} directories and {3} symlinks</source> <target>{1} 個のファイルと {2} 個のディレクトリ、 {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2">
-          <source>{0} states, {1} file, {2} directories and {3} symlinks</source> </trans-unit>
+          <source>{0} states, {1} file, {2} directories and {3} symlinks</source> <target>{0} 個の状態と {1} 個のファイル、 {2} 個のディレクトリと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2">
-          <source>{0} states, {1} files, {2} directories and {3} symlinks</source> </trans-unit>
+          <source>{0} states, {1} files, {2} directories and {3} symlinks</source> <target>{0} 個の状態と {1} 個のファイル、 {2} 個のディレクトリと {3} 個のシンボリックリンク</target></trans-unit>
         <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0">
-          <source>{0} state</source> </trans-unit>
+          <source>{0} state</source> <target>{0} 個の状態</target></trans-unit>
         <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0">
-          <source>{0} state and {1} file</source> </trans-unit>
+          <source>{0} state and {1} file</source> <target>{0} 個の状態と {1} 個のファイル</target></trans-unit>
         <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0">
-          <source>{0} state and {1} files</source> </trans-unit>
+          <source>{0} state and {1} files</source> <target>{0} 個の状態と {1} 個のファイル</target></trans-unit>
       </group>
       <group>
         <context-group name="config_channel_counts">
@@ -7420,12 +7463,14 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="file_lists.success">
         <source>{0} File List(s) deleted.</source>
+        <target>{0} 個のファイルリストを削除しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="file_lists.failure">
         <source>{0} File List(s) could not be deleted.</source>
+        <target>{0} 個のファイルリストが削除できませんでした。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
         </context-group>
@@ -7794,6 +7839,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="oneyear">
         <source>within the past year</source>
+        <target>昨年内</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
@@ -7982,72 +8028,84 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="virt.shutdown">
         <source>Shutdown</source>
+        <target>シャットダウン</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.start">
         <source>Start</source>
+        <target>スタート</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.suspend">
         <source>Suspend</source>
+        <target>一時停止</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.resume">
         <source>Resume</source>
+        <target>再開</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.reboot">
         <source>Restart</source>
+        <target>再起動</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.destroy">
         <source>Destroy</source>
+        <target>破棄</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.delete">
         <source>Delete</source>
+        <target>削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.create">
         <source>Create</source>
+        <target>作成</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.update">
         <source>Updates a virtual domain</source>
+        <target>仮想ドメインの更新</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.manager.system.VirtualizationActionCommand</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.setMemory">
         <source>Set Memory ({0} MB)</source>
+        <target>メモリーの設定 ({0} MB)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="virt.setVCPUs">
         <source>Set Virtual CPUs ({0})</source>
+        <target>仮想 CPU の設定 ({0})</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channels.subscribers.updated">
         <source>{0} channel subscriber(s) successfully updated.</source>
+        <target>{0} 個のチャンネルサブスクライバの更新に成功しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Subscribers.do</context>
         </context-group>
@@ -8061,6 +8119,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting">
         <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
+        <target>このシステムに対して動作中のキックスタートセッションが存在しています。アクティベーションキーを変更してしまうと、キックスタートセッションの完了後のシステム再登録に失敗する可能性が高くなります。また、このキーを手作業で使用しようとすると、予期しない副作用を発生させる可能性もあります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
@@ -8088,6 +8147,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="ssm.groups.changed">
         <source>System Group membership changed.</source>
+        <target>システムグループのメンバー設定を変更しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/Manage.do</context>
         </context-group>
@@ -8440,6 +8500,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="api.channel.duplicatechannelname">
         <source>The channel name specified ({0}) already exists.</source>
+        <target>指定したチャンネル名 ({0}) は既に存在しています。</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannelaccess">
         <source>The channel access ({0}) is not allowed for this operation.</source>
@@ -8499,11 +8560,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="api.kickstart.nosuchkickstarttreelabel">
         <source>Unable to locate autoinstallable tree for your organization: {0}</source>
-        <target>ユーザーの組織: {0} 用のキックスタートツリーが見つかりません</target>
+        <target>組織用の自動インストールツリーが見つかりません: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartlabel">
         <source>Invalid autoinstallation label: {0}</source>
-        <target>無効なキックスタートラベルです: {0}</target>
+        <target>自動インストールラベルが正しくありません: {0}</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidUpdateType">
         <source>Invalid update type: {0}</source>
@@ -8623,84 +8684,98 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="dmiBiosVendor">
         <source>DMI Bios Vendor</source>
+        <target>DMI Bios ベンダー</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiBiosVersion">
         <source>DMI Bios Version</source>
+        <target>DMI Bios バージョン</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiBiosRelease">
         <source>DMI Bios Release</source>
+        <target>DMI Bios リリース</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiSystem">
         <source>DMI System</source>
+        <target>DMI システム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dmiAsset">
         <source>DMI Asset Tag</source>
+        <target>DMI アセットタグ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuModel">
         <source>CPU Model</source>
+        <target>CPU モデル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuMHz">
         <source>CPU MHz</source>
+        <target>CPU MHz</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="cpuNumberOfCpus">
         <source>CPU Count</source>
+        <target>CPU 数</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ram">
         <source>RAM KB</source>
+        <target>メモリ KB</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="serverArchName">
         <source>Server Architecture</source>
+        <target>サーバアーキテクチャ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="runningKernel">
         <source>Kernel</source>
+        <target>カーネル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemTypeLabel">
         <source>System Type</source>
+        <target>システムタイプ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemIdForCsv">
         <source>System Id</source>
+        <target>システム ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="hostSystemIdForCsv">
         <source>Host System Id</source>
+        <target>ホストシステム ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
@@ -8855,6 +8930,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.success">
         <source>Successfully added {1} package(s) and {0} patches to channel {2}.</source>
+        <target>{1} 個のパッケージと {0} 個のパッチをチャンネル {2} に追加しました。</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.permsfailure">
         <source>You do not have sufficient permissions to perform this action.</source>
@@ -9026,9 +9102,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="system.customkey.error.toolong">
         <source>A Custom Key label can only be 64 characters long at maximum.</source>
+        <target>カスタムキーラベルには最大で 64 文字までを入力することができます。</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.descr_toolong">
         <source>A Custom Key description can only be 4000 characters long at maximum.</source>
+        <target>カスタムキーの説明には、最大で 4000 文字までを入力することができます。</target>
       </trans-unit>
       <trans-unit id="system.customkey.error.invalid">
         <source>A Custom Key label can only contain letters, numbers, hyphens (-), and underscores (_).</source>
@@ -9036,18 +9114,19 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="system.customkey.addsuccess">
         <source>Successfully added 1 custom key.</source>
-        <target>カスタムキーが 1 つ追加されました。</target>
+        <target>1 個のカスタムキーの追加に成功しました。</target>
       </trans-unit>
       <trans-unit id="system.customkey.deletesuccess">
         <source>Successfully deleted 1 custom key.</source>
+        <target>1 個のカスタムキーの削除に成功しました。</target>
       </trans-unit>
       <trans-unit id="channel.java.package.deletesuccess">
         <source>Successfully deleted {0} packages.</source>
-        <target>{0} パッケージが正しく削除されました。</target>
+        <target>{0} 個のパッケージの削除に成功しました。</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidkickstartinstalltype">
         <source>Invalid autoinstall type: {0}.</source>
-        <target>無効なキックスタートインストールタイプ: {0}　</target>
+        <target>自動インストールタイプが正しくありません: {0}</target>
       </trans-unit>
       <trans-unit id="edit.channel.invalidgpgfp">
         <source>Invalid GPG Fingerprint</source>
@@ -9208,7 +9287,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="api.kickstart.tree.notfound">
         <source>The autoinstallable tree could not be found. You may not have access to the requested tree.</source>
-        <target>キックスタートツリーが見つかりませんでした。指定のツリーへのアクセスが許可されていない可能性があります。</target>
+        <target>自動インストールツリーが見つかりませんでした。指定のツリーへのアクセスが許可されていない可能性があります。</target>
       </trans-unit>
       <trans-unit id="message.channelcreated">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
@@ -9230,7 +9309,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.has-distros">
         <source>There are currently autoinstallable distributions associated to this channel. Please disassociate or delete the autoinstallable distributions before proceeding to delete the channel.</source>
-        <target>現在、このチャンネルに関連付けられたキックスタートディストリビューションが存在します。チャンネルを削除する前にキックスタートディストリビューションの関連付けを解除するか、またはキックスタートディストリビューションを削除します。</target>
+        <target>現在、このチャンネルに関連付けられた自動インストール可能なディストリビューションが存在します。チャンネルを削除する前に、自動インストール可能なディストリビューションの関連付けを解除するか削除してください。</target>
       </trans-unit>
       <trans-unit id="message.channel.cannot-be-deleted.no-taskomatic">
         <source>The scheduling service appears down, channel cannot be deleted at the moment. Please contact your administrator.</source>
@@ -9302,7 +9381,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidvirt">
         <source>Para-Virtualization is unsupported with the selected autoinstallable tree or distribution.</source>
-        <target>指定のキックスタートツリーまたはディストリビューションでは準仮想化はサポートされません。</target>
+        <target>指定の自動インストールツリーまたはディストリビューションでは準仮想化はサポートされません。</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.nodistribution">
         <source>Selected kickstartable tree isn't available at the moment. Please check cobbler functionality.</source>
@@ -9310,7 +9389,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt">
         <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type. Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
-        <target>現在選択されている仮想化タイプに適合しないディストリビューションまたはキックスタートツリーが選択されました。別のディストリビューションを選択するか、またはこのプロファイルの仮想化タイプを変更してからディストリビューションを設定するようにしてください。</target>
+        <target>現在選択されている仮想化タイプに適合しないディストリビューションまたは自動インストールツリーが選択されました。別のディストリビューションを選択するか、またはこのプロファイルの仮想化タイプを変更してからディストリビューションを設定するようにしてください。</target>
       </trans-unit>
       <trans-unit id="snapshots.childchannel">
         <source>Child Channels Updated</source>
@@ -9444,6 +9523,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="kickstart.cobbler.distro.syncfail">
         <source>The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler. These errors must be corrected for the distributions to be available for autoinstalling systems: {0} Please check: /var/log/rhn/rhn_taskomatic_daemon.log and /var/log/rhn/rhn_web_ui.log /var/log/cobbler/cobbler.log for more detailed errors. If you don't resolve the errors the autoinstallable tree will not be usable for autoinstalling.</source>
+        <target>下記は @@PRODUCT_NAME@@ が Cobbler との間で @@PRODUCT_NAME@@ が提供する自動インストール可能なディストリビューションを同期する際に発生したエラーの一覧です。自動インストールを行なうことができるようにするには、これらのエラーを解決しなければなりません: {0} エラーに関する詳細については、 /var/log/rhn/rhn_taskomatic_daemon.log, /var/log/rhn/rhn_web_ui.log, /var/log/cobbler/cobbler.log をそれぞれお読みください。エラーを解決しないと、自動インストールツリーが利用できなくなります。</target>
       </trans-unit>
       <trans-unit id="errata.delete.msg">
         <source>Successfully deleted {0} patches.</source>
@@ -9534,7 +9614,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
-        <source></source>
+        <source/>
       </trans-unit>
       <trans-unit id="lookup.customkey.title">
         <source>We're sorry, but the custom key could not be found.</source>
@@ -9551,6 +9631,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option1.jsp">
         <source>Begin autoinstallation at the next system check in.</source>
+        <target>次回のシステムチェックイン時に自動インストールを開始します。</target>
       </trans-unit>
       <trans-unit id="isodownload.rest.description">
         <source>Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}. Note that only one set of ISO images is necessary to install any particular release of {0}.</source>
@@ -9605,6 +9686,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.provis_tip">
         <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
+        <target>自動インストールや設定ファイルのプロビジョニングなど、さまざまな高度な機能を提供します。</target>
       </trans-unit>
       <trans-unit id="sys_entitlements.description">
         <source>The following is a list of all system entitlements on this @@PRODUCT_NAME@@, across organizations, and their usage. Click on the entitlement's name for more details about it.</source>
