@@ -19,16 +19,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-18 10:24+0200\n"
-"PO-Revision-Date: 2018-03-16 10:59+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/spacewalk/language/"
-"cs/)\n"
+"PO-Revision-Date: 2020-08-26 12:39+0000\n"
+"Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools/cs/>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -50,15 +50,13 @@ msgstr "Získávám seznam balíčků nainstalovaných v systému"
 
 #. self.druid.finish.set_label(_("_Finish"))
 #: ../src/up2date_client/gui.py:273
-#, fuzzy
 msgid "Finish setting up software updates"
-msgstr "Váš systém není nastaven pro aktualizaci software."
+msgstr "Konec nastavování aktualizací softwaru"
 
 #. self.druid.finish.set_label(_("_Exit"))
 #: ../src/up2date_client/gui.py:276
-#, fuzzy
 msgid "Software updates setup unsuccessful"
-msgstr "_Přerušit nastavení aktualizace programů"
+msgstr "Nastavení aktualizace softwaru neuspělo"
 
 #: ../src/up2date_client/gui.py:283
 msgid "You must run rhn_register as root."
@@ -90,19 +88,16 @@ msgid "Error reading network interface information:"
 msgstr "Chyba při čtení informací o síťových rozhraních:"
 
 #: ../src/up2date_client/hardware.py:1086
-#, fuzzy
 msgid "Error reading network FQDNs information:"
-msgstr "Chyba při čtení informací o síti:"
+msgstr "Chyba čtení informací o FQDN sítě:"
 
 #: ../src/up2date_client/hardware.py:1093
-#, fuzzy
 msgid "Error reading system info:"
-msgstr "Chyba při čtení informací o systémové paměti:"
+msgstr "Chyba čtení informací o systému:"
 
 #: ../src/up2date_client/hardware.py:1100
-#, fuzzy
 msgid "Error reading machine info:"
-msgstr "Chyba při čtení informací o cpu:"
+msgstr "Chyba čtení informací o počítači:"
 
 #: ../src/up2date_client/messageWindow.py:106
 msgid "Error:"
@@ -122,9 +117,8 @@ msgstr ""
 "Tento systém nemůže být aktualizován, dokud není asociován s nějakým kanálem."
 
 #: ../src/up2date_client/rhncli.py:68
-#, fuzzy
 msgid "Show additional output. Repeat for more detail."
-msgstr "Vypisovat více informací"
+msgstr "Zobrazit další výstup. Další podrobnosti získáte opakováním."
 
 #: ../src/up2date_client/rhncli.py:70
 msgid "Specify an http proxy to use"
@@ -209,6 +203,9 @@ msgid ""
 "Copyright (C) 1999--2014 Red Hat, Inc.\n"
 "Licensed under the terms of the GPLv2."
 msgstr ""
+"%%prog (Klientské nástroje Spacewalk) %s\n"
+"Copyright (C) 1999--2014 Red Hat, Inc.\n"
+"Licence dle podmínek GPLv2."
 
 #: ../src/up2date_client/rhncli.py:226
 msgid "An error has occurred:"
@@ -225,7 +222,7 @@ msgstr "Copyright © 2006--2014 Red Hat, Inc. Všechna práva vyhrazena."
 #. Satellite URL Window
 #: ../src/up2date_client/rhnreg_constants.py:22
 msgid "Enter your Red Hat Satellite URL."
-msgstr ""
+msgstr "Zadejte svůj URL Red Hat Satellite."
 
 #: ../src/up2date_client/rhnreg_constants.py:23
 msgid ""
@@ -233,31 +230,32 @@ msgid ""
 "certificate. The SSL certificate is only required if you will be connecting "
 "over https (recommended)."
 msgstr ""
+"Zadejte umístění serveru Red Hat Satellite a jeho certifikátu SSL. "
+"Certifikát SSL je vyžadován pouze v případě, že se budete připojovat "
+"protokolem https (doporučeno)."
 
 #: ../src/up2date_client/rhnreg_constants.py:27
 msgid "Satellite URL:"
-msgstr ""
+msgstr "Satellite URL:"
 
 #: ../src/up2date_client/rhnreg_constants.py:28
 msgid "SSL certificate:"
 msgstr "SSL certifikát:"
 
 #: ../src/up2date_client/rhnreg_constants.py:29
-#, fuzzy
 msgid "You must enter a valid Satellite URL."
-msgstr "Musíte zadat platné URL."
+msgstr "Musíte zadat platné URL Satellite."
 
 #: ../src/up2date_client/rhnreg_constants.py:30
 msgid ""
 "If you are using https you must enter the location of a valid SSL "
 "certificate."
-msgstr ""
+msgstr "Používáte-li https, musíte zadat umístění platného certifikátu SSL."
 
 #. Connect Window
 #: ../src/up2date_client/rhnreg_constants.py:34
-#, fuzzy
 msgid "Attempting to contact the Spacewalk server."
-msgstr "Navazuji spojení se Spacewalk serverem."
+msgstr "Pokus kontaktovat server Spacewalk."
 
 #: ../src/up2date_client/rhnreg_constants.py:35
 #, python-format
@@ -286,6 +284,15 @@ msgid ""
 " * The location of a Red Hat Satellite or Proxy\n"
 "\n"
 msgstr ""
+"Tento asistent vás provede připojením vašeho systému k Red Hat Satellite, "
+"abyste mohli přijímat aktualizace softwaru, včetně aktualizací zabezpečení, "
+"aby byl váš systém podporován a na výši. Nyní budete potřebovat následující:"
+"\n"
+"\n"
+"* Síťové připojení\n"
+"* Vaše přihlašovací jméno a heslo pro Red Hat\n"
+"* Umístění Red Hat Satellite nebo Proxy\n"
+"\n"
 
 #. Why Register Window
 #: ../src/up2date_client/rhnreg_constants.py:54 ../data/rh_register.glade.h:5
@@ -301,6 +308,8 @@ msgid ""
 "Connecting your system to Red Hat Satellite allows you to take full "
 "advantage of the benefits of a paid subscription, including:"
 msgstr ""
+"Připojení systému k Red Hat Satellite vám umožní využít plných výhod "
+"placeného předplatného, včetně:"
 
 #: ../src/up2date_client/rhnreg_constants.py:58
 msgid "Security & Updates:"
@@ -346,6 +355,8 @@ msgid ""
 "Stay in compliance with your subscription agreement and manage subscriptions "
 "for systems connected to your account."
 msgstr ""
+"Zůstaňte v souladu s vaší smlouvou o předplatném a spravujte předplatné "
+"systémů připojených k Vašemu účtu."
 
 #: ../src/up2date_client/rhnreg_constants.py:71
 msgid ""
@@ -369,12 +380,16 @@ msgid ""
 "Are you sure you don't want to connect your system to Red Hat Satellite? "
 "You'll miss out on the benefits of a Red Hat Enterprise Linux subscription:\n"
 msgstr ""
+"Opravdu nechcete připojit svůj systém k Red Hat Satellite? Přijdete o výhody "
+"předplatného Red Hat Enterprise Linux:\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:79
 msgid ""
 "You will not be able to take advantage of these subscription privileges "
 "without connecting your system to Red Hat Satellite.\n"
 msgstr ""
+"Tato předplacená oprávnění nebudete moci využít bez připojení systému k Red "
+"Hat Satellite.\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
 msgid "Take me back to the setup process."
@@ -396,6 +411,8 @@ msgid ""
 "Please enter your login information for the %s Red Hat Network Satellite:\n"
 "\n"
 msgstr ""
+"Zadejte své přihlašovací údaje pro %s Red Hat Network Satellite:\n"
+"\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:88
 msgid "Red Hat Login:"
@@ -430,7 +447,7 @@ msgstr "Prosím zadejte a potvrďte heslo."
 #: ../src/up2date_client/rhnreg_constants.py:97 ../data/gui.glade.h:6
 #: ../data/rh_register.glade.h:142
 msgid "Operating System Release Version"
-msgstr ""
+msgstr "Verze vydání operačního systému"
 
 #: ../src/up2date_client/rhnreg_constants.py:98
 msgid "Operating System version:"
@@ -438,11 +455,11 @@ msgstr "Verze operačního systému:"
 
 #: ../src/up2date_client/rhnreg_constants.py:99
 msgid " Minor Release: "
-msgstr ""
+msgstr " Modifikace vydání: "
 
 #: ../src/up2date_client/rhnreg_constants.py:100
 msgid "Limited Updates Only"
-msgstr ""
+msgstr "Jen omezené aktualizace"
 
 #: ../src/up2date_client/rhnreg_constants.py:101
 #: ../data/rh_register.glade.h:151
@@ -451,13 +468,15 @@ msgstr "Všechny dostupné aktualizace"
 
 #: ../src/up2date_client/rhnreg_constants.py:102
 msgid "Confirm operating system release selection"
-msgstr ""
+msgstr "Potvrďte výběr vydání operačního systému"
 
 #: ../src/up2date_client/rhnreg_constants.py:103
 msgid ""
 "Your system will be subscribed to the base software channel to receive all "
 "available updates."
 msgstr ""
+"Váš systém bude přihlášen k odběru základního softwarového kanálu k "
+"přijímání všech dostupných aktualizací."
 
 #. Hardware Window
 #: ../src/up2date_client/rhnreg_constants.py:108
@@ -470,6 +489,9 @@ msgid ""
 "Profile on the Red Hat Satellite web pages. Optionally, include a computer "
 "serial or identification number."
 msgstr ""
+"Název profilu je popisné jméno, kterým se rozhodnete identifikovat tento "
+"systémový profil na webových stránkách Red Hat Satellite. Volitelně připojte "
+"sériové nebo identifikační číslo počítače."
 
 #: ../src/up2date_client/rhnreg_constants.py:113
 msgid ""
@@ -523,7 +545,7 @@ msgstr "Systém je již registrován"
 #: ../src/up2date_client/rhnreg_constants.py:134
 #: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
-msgstr ""
+msgstr "Tento systém zřejmě již byl nastaven na aktualizace softwaru:"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
 #: ../data/rh_register.glade.h:131
@@ -543,11 +565,21 @@ msgid ""
 "technologies please consult this Knowledge Base Article: https://access."
 "redhat.com/kb/docs/DOC-45563"
 msgstr ""
+"Tento systém již byl zaregistrován pomocí služby Red Hat Subscription "
+"Management.\n"
+"\n"
+"Váš systém je znovu registrován pomocí technologie Red Hat Satellite nebo "
+"Red Hat Satellite Proxy. Red Hat doporučuje, aby se zákazníci registrovali "
+"pouze jednou.\n"
+"\n"
+"Další informace o registraci a technologiích RHN Classic a Red Hat Satellite "
+"najdete v tomto článku znalostní báze: https://access.redhat.com/kb/docs/"
+"DOC-45563"
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:144
 msgid "Send Profile Information to Red Hat Satellite"
-msgstr ""
+msgstr "Pošlete informace o profilu do Red Hat Satellite"
 
 #: ../src/up2date_client/rhnreg_constants.py:145
 msgid ""
@@ -557,16 +589,22 @@ msgid ""
 "\"Cancel\" and no information will be sent.  You can run the registration "
 "program later by typing `rhn_register` at the command line."
 msgstr ""
+"Dokončili jsme shromažďování informací pro systémový profil.\n"
+"\n"
+"Stisknutím \"Další\" odešlete tento systémový profil společnosti Red Hat "
+"Satellite.  Kliknete-li na „Storno“, nebudou žádné informace odeslány.  "
+"Registrační program můžete spustit později zadáním `rhn_register` do "
+"příkazového řádku."
 
 #. Sending Window
 #: ../src/up2date_client/rhnreg_constants.py:152
 msgid "Sending Profile to Red Hat Satellite"
-msgstr ""
+msgstr "Odeslání profilu do Red Hat Satellite"
 
 #. Finish Window
 #: ../src/up2date_client/rhnreg_constants.py:155
 msgid "Updates Configured"
-msgstr ""
+msgstr "Aktualizace konfigurovány"
 
 #: ../src/up2date_client/rhnreg_constants.py:156
 #, python-format
@@ -579,6 +617,14 @@ msgid ""
 "are in chapter 6 of the RHN Reference Guide, available from the 'Help' "
 "button in the main Red Hat Network Satellite web interface.)"
 msgstr ""
+"Nyní můžete spustit '%s update' z příkazového řádku tohoto systému a získat "
+"nejnovější aktualizace softwaru od Red Hat Satellite. Chcete-li udržovat "
+"nejnovější aktualizace, bude třeba tento příkaz spouštět pravidelně. "
+"Alternativně můžete tento systém konfigurovat pro automatické aktualizace "
+"softwaru (známé také jako „auto errata update“) webovým rozhraním Red Hat "
+"Satellite. (Pokyny k tomu jsou v kapitole 6 Referenční příručky RHN; jsou "
+"dostupné po stisku tlačítka „Nápověda“ v hlavním webovém rozhraní sítě Red "
+"Hat Network Satellite.)"
 
 #. Review Window
 #: ../src/up2date_client/rhnreg_constants.py:167 ../data/gui.glade.h:8
@@ -587,7 +633,7 @@ msgstr "Popis"
 
 #: ../src/up2date_client/rhnreg_constants.py:168 ../data/rh_register.glade.h:53
 msgid "Please review the subscription details below:"
-msgstr ""
+msgstr "Zkontrolujte prosím podrobnosti o odběru níže:"
 
 #: ../src/up2date_client/rhnreg_constants.py:169
 #, python-format
@@ -595,6 +641,8 @@ msgid ""
 "The installation number %s was activated during this system's initial "
 "connection to Red Hat Satellite."
 msgstr ""
+"Instalační číslo %s bylo aktivováno během počátečního připojení tohoto "
+"systému k Red Hat Satellite."
 
 #: ../src/up2date_client/rhnreg_constants.py:171
 msgid ""
@@ -609,6 +657,7 @@ msgstr "Informace o kanálech"
 #: ../src/up2date_client/rhnreg_constants.py:174
 msgid "This system will receive updates from the following software channels:"
 msgstr ""
+"Tento systém bude dostávat aktualizace z následujících softwarových kanálů:"
 
 #: ../src/up2date_client/rhnreg_constants.py:176
 msgid ""
@@ -618,29 +667,35 @@ msgid ""
 "the appropriate software channels. See Kbase article for more details. "
 "(http://kbase.redhat.com/faq/docs/DOC-11313)"
 msgstr ""
+"Upozornění: Aktualizace a podporu obdrží pouze výše uvedený nainstalovaný "
+"produkt. Pokud si přejete dostávat aktualizace pro další produkty, přihlaste "
+"se prosím do svého satelitního webového rozhraní a přihlaste tento systém k "
+"příslušným softwarovým kanálům. Více informací najdete v článku Kbase. "
+"(http://kbase.redhat.com/faq/docs/DOC-11313)"
 
 #: ../src/up2date_client/rhnreg_constants.py:184
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Warning: %s is not present, could not enable it.\n"
 "Automatic updates will not work."
 msgstr ""
-"Varování: yum-rhn-plugin není nainstalován - nemohu ho povolit.\n"
+"Varování: %s není instalován - nemohu ho povolit.\n"
 "Automatické aktualizace nebudou fungovat."
 
 #: ../src/up2date_client/rhnreg_constants.py:186
-#, fuzzy, python-format
+#, python-format
 msgid "Note: %s has been enabled."
-msgstr "Poznámka: yum-rhn-plugin byl povolen."
+msgstr "Poznámka: %s byl povolen."
 
 #: ../src/up2date_client/rhnreg_constants.py:187
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Warning: An error occurred during enabling %s.\n"
 "%s is not enabled.\n"
 "Automatic updates will not work."
 msgstr ""
-"Varování: yum-rhn-plugin není nainstalován - nemohu ho povolit.\n"
+"Varování: Při povolování %s došlo k chybě.\n"
+"%s není povolen.\n"
 "Automatické aktualizace nebudou fungovat."
 
 #: ../src/up2date_client/rhnreg_constants.py:190
@@ -648,6 +703,8 @@ msgid ""
 "You were unable to be subscribed to the following software channels because "
 "there were insufficient subscriptions available in your account:"
 msgstr ""
+"Nemohl jste se přihlásit se k odběru těchto softwarových kanálů, protože na "
+"vašem účtu bylo nedostatečné předplatné:"
 
 #: ../src/up2date_client/rhnreg_constants.py:194
 msgid ""
@@ -658,10 +715,16 @@ msgid ""
 "to this system's profile in the RHN web interface and subscribe this system "
 "to software channels via the software > software channels tab."
 msgstr ""
+"Tento systém se nemohl přihlásit k odběru žádných softwarových kanálů. Váš "
+"systém neobdrží žádné aktualizace softwaru, nebude zabezpečen ani "
+"podporován. S tímto problémem se obraťte na správce Satellite. Jakmile ve "
+"svém účtu zpřístupníte příslušné aktivní předplatné, budete moci procházet "
+"profil tohoto systému ve webovém rozhraní RHN a přihlásit se k odběru tohoto "
+"softwaru k softwarovým kanálům na kartě software > softwarové kanály."
 
 #: ../src/up2date_client/rhnreg_constants.py:200
 msgid "Service Level:"
-msgstr ""
+msgstr "Úroveň služby:"
 
 #: ../src/up2date_client/rhnreg_constants.py:201
 msgid ""
@@ -669,12 +732,16 @@ msgid ""
 "you'll enjoy different benefits. The following are the Red Hat Satellite "
 "modules associated with this system:"
 msgstr ""
+"Podle toho, jaké moduly Red Hat Satellite jsou přidruženy k systému, budete "
+"mít různé výhody. Zde jsou satelitní moduly Red Hat spojené s tímto systémem:"
 
 #: ../src/up2date_client/rhnreg_constants.py:205
 msgid ""
 "This system was unable to be associated with the following RHN module(s) "
 "because there were insufficient subscriptions available in your account:"
 msgstr ""
+"Tento systém se nepodařilo sdružit s následujícími moduly RHN, protože ve "
+"vašem účtu nebylo k dispozici dostatečné předplatné:"
 
 #: ../src/up2date_client/rhnreg_constants.py:208
 msgid ""
@@ -682,12 +749,18 @@ msgid ""
 "system package profiling, bare-metal provisioning, existing state "
 "provisioning, rollbacks, configuration management"
 msgstr ""
+"Modul správy: automatické aktualizace, seskupení systémů, systémová "
+"oprávnění, profilování systémových balíčků, zajištění hard- a firmware popř. "
+"i BIOSu (bare-metal), zajišťování stávajícího stavu, vrácení změn, správa "
+"konfigurace"
 
 #: ../src/up2date_client/rhnreg_constants.py:213
 msgid ""
 "Virtualization module: software updates for a limited number of virtual "
 "guests on this system."
 msgstr ""
+"Virtualizační modul: aktualizace softwaru pro omezený počet virtuálních "
+"hostů v tomto systému."
 
 #: ../src/up2date_client/rhnreg_constants.py:217
 msgid ""
@@ -698,6 +771,12 @@ msgid ""
 "in RHN's web interface if you do not want virtual guests of this system to "
 "consume additional subscriptions."
 msgstr ""
+"<b>Upozornění:</b> Všechny hostující systémy, které v tomto systému "
+"vytvoříte a zaregistrujete je na RHN, budou využívat předplatná systému Red "
+"Hat Enterprise Linux mimo předplatné tohoto hostitelského systému. Budete "
+"muset: (1) zpřístupnit oprávnění virtualizačního systému a (2) uplatnit toto "
+"systémové oprávnění na tento systém ve webovém rozhraní RHN, nechcete-li, "
+"aby virtuální hosté tohoto systému využívali další předplatné."
 
 #: ../src/up2date_client/rhnreg_constants.py:225
 msgid ""
@@ -708,6 +787,12 @@ msgid ""
 "browse to this system's profile in the RHN web interface, delete the "
 "profile, and re-connect this system to Red Hat Satellite."
 msgstr ""
+"Tento systém se nemohl přidružit k žádným modulům úrovně služeb RHN. Tento "
+"systém neobdrží žádné aktualizace softwaru, nebude zabezpečen a podporován. "
+"S tímto problémem se obraťte na svého správce Satellite. Jakmile v účtu "
+"zpřístupníte příslušné aktivní předplatné, budete moci najít profil tohoto "
+"systému ve webovém rozhraní RHN, odstranit jej a znovu připojit tento systém "
+"k Red Hat Satellite."
 
 #: ../src/up2date_client/rhnreg_constants.py:232
 #, python-format
@@ -722,6 +807,15 @@ msgid ""
 "keys (http://access.redhat.com/knowledge/docs/Red_Hat_Network/)\n"
 "Universal Default activation key: %s"
 msgstr ""
+"Byl zjištěn univerzální výchozí aktivační klíč\n"
+"Ve vašem účtu byl zjištěn univerzální výchozí aktivační klíč. To znamená, že "
+"sada vlastností (předplatné softwarových kanálů, instalace balíčků, členství "
+"ve skupinách systémů atd.) pro připojení vašeho systému k satelitu Red Hat "
+"Satellite nebo Red Hat Satellite Proxy byla určena aktivačním klíčem, nikoli "
+"vaším instalačním číslem. Další informace o aktivačních klíčích najdete v "
+"referenční příručce RHN, oddíl 6.4.6 (http://access.redhat.com/knowledge/"
+"docs/Red_Hat_Network/)\n"
+"Univerzální výchozí aktivační klíč: %s"
 
 #. Error Messages.
 #: ../src/up2date_client/rhnreg_constants.py:244
@@ -747,6 +841,15 @@ msgid ""
 "This system will not be able to successfully receive software updates from "
 "Red Hat without connecting to a Red Hat Satellite server"
 msgstr ""
+"Nemůžeme kontaktovat Red Hat Satellite.\n"
+"\n"
+"Znovu zkontrolujte zadané umístění - je '%s' správné?\n"
+"Pokud ne, můžete to opravit a zkusit to znovu.\n"
+"\n"
+"Zkontrolujte, zda je síťové připojení v tomto systému funkční.\n"
+"\n"
+"Tento systém nebude schopen úspěšně přijímat aktualizace softwaru od "
+"společnosti Red Hat, dokud se nepřipojí k serveru Red Hat Satellite"
 
 #: ../src/up2date_client/rhnreg_constants.py:253
 #, python-format
@@ -773,6 +876,14 @@ msgid ""
 "\n"
 "Please try again with a different certificate file."
 msgstr ""
+"<b> <span size=\"16000\">Nekompatibilní soubor certifikátů</span> </b>\n"
+"\n"
+"Certifikát, který jste zadali, <b>%s</b>, není kompatibilní se serverem Red "
+"Hat Satellite na <b>%s</b>. Znovu zkontrolujte, zda jste zadali platný "
+"soubor certifikátu. Jste si jisti, že jste zadali správný certifikát a že "
+"soubor certifikátu nebyl poškozen?\n"
+"\n"
+"Zkuste to prosím znovu s jiným souborem certifikátu."
 
 #: ../src/up2date_client/rhnreg_constants.py:269
 msgid ""
@@ -781,6 +892,10 @@ msgid ""
 " The certificate is expired. Please ensure you have the correct  certificate "
 "and your system time is correct."
 msgstr ""
+"<b> <span size=\"12000\">Nekompatibilní soubor certifikátů</span> </b>\n"
+"\n"
+"Platnost certifikátu vypršela. Ujistěte se, že máte správný certifikát a že "
+"váš systémový čas je správný."
 
 #: ../src/up2date_client/rhnreg_constants.py:273
 msgid ""
@@ -789,6 +904,10 @@ msgid ""
 "can download the SSL cert from your Satellite, place it in /usr/share/rhn, "
 "and ensure sslCACert points to it."
 msgstr ""
+"Ověřte hodnoty sslCACert a serverURL v /etc/sysconfig/rhn/up2date. Můžete "
+"buď v serverURL použít http místo https, nebo si můžete stáhnout certifikát "
+"SSL ze svého Satellite, umístit jej do /usr/share/rhn a zajistit, aby na něj "
+"sslCACert směřoval na něj."
 
 #: ../src/up2date_client/rhnreg_constants.py:279
 msgid ""
