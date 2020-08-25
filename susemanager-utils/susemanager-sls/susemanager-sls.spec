@@ -105,6 +105,11 @@ cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
 cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
 cp src/states/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_states
 
+# Install examples
+mkdir -p %{buildroot}/usr/share/doc/packages/susemanager-config-modules/examples/ldap
+cp src/examples/ldap/* %{buildroot}/usr/share/doc/packages/susemanager-config-modules/examples/ldap
+cp src/examples/uyuni_config_hardcode.sls %{buildroot}/usr/share/doc/packages/susemanager-config-modules/examples
+
 %check
 cd test
 py.test test_pillar_suma_minion.py
@@ -159,5 +164,9 @@ fi
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt/_modules/uyuni_config.py
 /usr/share/susemanager/salt/_states/uyuni_config.py
+%dir /usr/share/doc/packages/susemanager-config-modules
+%dir /usr/share/doc/packages/susemanager-config-modules/examples
+%doc /usr/share/doc/packages/susemanager-config-modules/examples/*
+%doc /usr/share/doc/packages/susemanager-config-modules/examples/ldap/*
 
 %changelog
