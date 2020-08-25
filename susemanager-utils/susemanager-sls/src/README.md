@@ -38,14 +38,14 @@ uyuni:
 
 ### Available states 
 
-Check methods in file `_states/uyuni_config.py` 
+Check methods in file `states/uyuni_config.py` 
 
 ### Examples
 
 #### Static state file
 
 Example file:
-`examples/uyuni_users_hardcode.sls`
+`examples/uyuni_config_hardcode.sls`
 
 #### Pillar Ldap data integration
 
