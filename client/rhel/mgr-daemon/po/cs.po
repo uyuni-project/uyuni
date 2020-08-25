@@ -11,33 +11,33 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-18 10:23+0200\n"
-"PO-Revision-Date: 2015-03-17 12:21+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/fedora/language/"
-"cs/)\n"
+"PO-Revision-Date: 2020-08-25 08:41+0000\n"
+"Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
+"Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/mgr-daemon/cs/"
+">\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../rhnsd.c:54
 msgid "MINS"
-msgstr ""
+msgstr "MINS"
 
 #: ../rhnsd.c:55
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr ""
+msgstr "Připojit se k Spacewalk každých MINS minut"
 
 #: ../rhnsd.c:57
 msgid "Run in foreground"
-msgstr ""
+msgstr "Běží v popředí"
 
 #. Short description of program.
 #: ../rhnsd.c:62
 msgid "Spacewalk Services Daemon"
-msgstr ""
+msgstr "Démon služeb Spacewalk"
 
 #: ../rhnsd.c:115
 #, c-format
