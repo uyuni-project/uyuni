@@ -348,14 +348,6 @@ When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file, host|
   raise 'File injection failed' unless return_code.zero?
 end
 
-When(/^I copy "([^"]*)" to "([^"]*)" on "([^"]*)"$/) do |file_local,file_remote, host|
-  node = get_target(host)
-  source = File.dirname(__FILE__) + '/' + file_local
-  p source
-  return_code = file_inject(node, source, file_remote)
-  raise 'File injection failed' unless return_code.zero?
-end
-
 Then(/^the PXE default profile should be enabled$/) do
   step %(I wait until file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT pxe-default-profile" on server)
 end
@@ -1316,4 +1308,13 @@ When(/^I (enable|disable) the necessary repositories before installing Prometheu
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
     step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
   end
+end
+
+When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
+  node = get_target(host)
+  source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
+  remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
+  return_code = file_inject(node, source, remote_file)
+  raise 'File injection failed' unless return_code.zero?
+  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
 end
