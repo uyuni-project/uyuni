@@ -46,7 +46,7 @@ DISTFILES = POTFILES.in $(PACKAGE).pot $(POFILES) $(GMOFILES)
 POTFILES = \
 	$(shell find ../html/javascript/ -name spacewalk\*.js | sort) \
 	$(shell find ../html/javascript/ -name susemanager\*.js | sort) \
-	$(shell find ../html/src/ -name \*.js | sort)
+	$(shell find ../html/src/ -type f \( -name \*.js ! -name \*.bundle.js ! -path "*/node_modules/*" \) -name \*.js | sort)
 
 CATALOGS = $(GMOFILES)
 

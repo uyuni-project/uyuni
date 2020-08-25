@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 13:47+0200\n"
+"POT-Creation-Date: 2020-08-25 12:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,10 +19,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../html/javascript/spacewalk-essentials.js:487
+#: ../html/src/dist/javascript/spacewalk-essentials.js:487
 msgid "remaining"
 msgstr ""
 
 #: ../html/javascript/spacewalk-essentials.js:507
+#: ../html/src/dist/javascript/spacewalk-essentials.js:507
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
