@@ -4,7 +4,7 @@
 Feature: Installer update repositories
   In order to use installer updates
   As root user
-  I want to check that Installer-Updates Channels got synced when adding the product
+  I want that Installer-Updates Channels got synced when adding the product
 
 @scc_credentials
   Scenario: Installer updates channels got enabled during add product
