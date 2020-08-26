@@ -537,6 +537,7 @@ Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" o
     raise 'Invalid target'
   end
   output, _code = $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
+  STDOUT.puts "#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd} => #{output}"
   if verb == 'be' && value == ''
     raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
   elsif verb == 'be'
