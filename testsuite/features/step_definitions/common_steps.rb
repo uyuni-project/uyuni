@@ -1211,6 +1211,6 @@ When(/^I add "([^\"]*)" calendar file as url$/) do |file|
   step %(I enter "#{url}" as "calendar-data-text")
 end
 
-Then(/^textfield "([^\"]*)" should contain "([^\"]*)"$/) do |field, text|
+Then(/^text field "([^\"]*)" should contain "([^\"]*)"$/) do |field, text|
   raise "'#{text}' not found in #{field}" unless find_field(field, with: /#{text}/).visible?
 end
