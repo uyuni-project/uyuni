@@ -60,5 +60,3 @@ user_2_channels:
       - test-channel-x86_64
     - subscribable_channels:
       - test_base_channel
-
-
