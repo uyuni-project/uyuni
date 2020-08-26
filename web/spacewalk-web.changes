@@ -1,3 +1,5 @@
+- Redesign maintenance schedule systems table to use paginated data from server
+
 -------------------------------------------------------------------
 Mon Sep 21 12:01:26 CEST 2020 - jgonzalez@suse.com
 

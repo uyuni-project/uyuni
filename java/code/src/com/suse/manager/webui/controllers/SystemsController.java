@@ -37,8 +37,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.suse.manager.maintenance.MaintenanceManager;
-import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -56,7 +54,6 @@ import org.apache.struts.action.ActionMessages;
 
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -111,8 +108,6 @@ public class SystemsController {
         post("/manager/api/systems/:sid/channels", withUser(systemsController::subscribeChannels));
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(systemsController::getAccessibleChannelChildren));
-        get("/manager/api/systems/targetforschedule/:schedule_id",
-                withUser(systemsController::getTargetSystemsForSchedule));
     }
 
     /**
@@ -420,22 +415,5 @@ public class SystemsController {
                         ResultJson.error("invalid_channel_id"));
             }
         });
-    }
-
-    /**
-     * Get a list of assignable systems for a maintenance schedule
-     *
-     * @param request the request
-     * @param response the response
-     * @param user the user
-     * @return the json response
-     */
-    public String getTargetSystemsForSchedule(Request request, Response response, User user) {
-        response.type("application/json");
-        MaintenanceSchedule schedule = new MaintenanceManager()
-                .lookupScheduleByUserAndId(user, Long.parseLong(request.params("schedule_id")))
-                .orElseThrow(() -> Spark.halt(HttpStatus.SC_NOT_FOUND));
-
-        return json(response, SystemManager.systemsNotInSchedule(user, schedule, null));
     }
 }
