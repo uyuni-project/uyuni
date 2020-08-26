@@ -1118,7 +1118,7 @@ And(/^I check for failed events on history event page$/) do
   raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
 
-Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warning|refreshing) bullet$/) do |text, bullet_type|
+Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warning|pending|refreshing) bullet$/) do |text, bullet_type|
   item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, '#{BULLET_STYLE[bullet_type]}')]"
   find(:xpath, item_xpath)
 end
