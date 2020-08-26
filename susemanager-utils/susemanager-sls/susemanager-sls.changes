@@ -1,4 +1,4 @@
-- Add susemanager-config-modules subpackage with Salt modules to configure
+- Add uyuni-config-modules subpackage with Salt modules to configure
   Servers
 - Fix the dnf plugin to add the token to the HTTP header (bsc#1175724)
 - Fix reporting of missing products in product.all_installed (bsc#1165829)

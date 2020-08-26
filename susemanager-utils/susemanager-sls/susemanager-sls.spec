@@ -47,11 +47,11 @@ BuildArch:      noarch
 Static Salt state files for SUSE Manager, where generic operations are
 provided for the integration between infrastructure components.
 
-%package -n susemanager-config-modules
+%package -n uyuni-config-modules
 Summary:        Salt modules to configure a Server
 Group:          Applications/Internet
 
-%description -n susemanager-config-modules
+%description -n uyuni-config-modules
 This package contains Salt execution and state modules that can be used
 to configure a SUSE Manager or Uyuni Server.
 
@@ -106,9 +106,9 @@ cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
 cp src/states/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_states
 
 # Install examples
-mkdir -p %{buildroot}/usr/share/doc/packages/susemanager-config-modules/examples/ldap
-cp src/examples/ldap/* %{buildroot}/usr/share/doc/packages/susemanager-config-modules/examples/ldap
-cp src/examples/uyuni_config_hardcode.sls %{buildroot}/usr/share/doc/packages/susemanager-config-modules/examples
+mkdir -p %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
+cp src/examples/ldap/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
+cp src/examples/uyuni_config_hardcode.sls %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples
 
 %check
 cd test
@@ -159,14 +159,14 @@ fi
 %exclude /usr/share/susemanager/salt/_states/uyuni_config.py
 %ghost /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 
-%files -n susemanager-config-modules
+%files -n uyuni-config-modules
 %defattr(-,root,root)
 %dir /usr/share/susemanager
 /usr/share/susemanager/salt/_modules/uyuni_config.py
 /usr/share/susemanager/salt/_states/uyuni_config.py
-%dir /usr/share/doc/packages/susemanager-config-modules
-%dir /usr/share/doc/packages/susemanager-config-modules/examples
-%doc /usr/share/doc/packages/susemanager-config-modules/examples/*
-%doc /usr/share/doc/packages/susemanager-config-modules/examples/ldap/*
+%dir /usr/share/doc/packages/uyuni-config-modules
+%dir /usr/share/doc/packages/uyuni-config-modules/examples
+%doc /usr/share/doc/packages/uyuni-config-modules/examples/*
+%doc /usr/share/doc/packages/uyuni-config-modules/examples/ldap/*
 
 %changelog
