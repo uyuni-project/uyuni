@@ -639,7 +639,10 @@ public class DownloadFile extends DownloadAction {
                                 File.separator + StringUtils.join(split, '/');
                     }
                 }
-                else if (path.endsWith("/media.1/products") && tree.getChannel().getMediaProducts() != null) {
+                else if (tree.getKernelOptions() != null &&
+                         tree.getKernelOptions().contains("useonlinerepo") &&
+                         path.endsWith("/media.1/products") &&
+                         tree.getChannel().getMediaProducts() != null) {
                     diskPath = Config.get().getString(ConfigDefaults.MOUNT_POINT) +
                         "/" + tree.getChannel().getMediaProducts().getRelativeFilename();
                 }

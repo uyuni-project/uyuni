@@ -1,6 +1,12 @@
 - Fix reporting of missing products in product.all_installed (bsc#1165829)
 
 -------------------------------------------------------------------
+Wed Aug 26 12:31:40 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.14-1
+- Fix the dnf plugin to add the token to the HTTP header (bsc#1175724)
+
+-------------------------------------------------------------------
 Wed Aug 12 10:58:00 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.13-1
