@@ -14,6 +14,13 @@ type ColumnProps = {
   columnKey?: string,
   /** Row comparison function. See sortBy functions in utils/functions.js */
   comparator?: (a: Object, b: Object, columnKey: string, sortDirection: number) => number,
+  /**
+   * If the column should be sortable
+   * If a comparator is specified, this defaults to true.
+   * If set to true without specifying a comparator, alphabetical comparison will be used
+   * by default.
+   * */
+  sortable?: boolean,
   /** class name to use for the header cell */
   headerClass?: string,
   /** class name to use for the cell */
@@ -39,6 +46,7 @@ export function Column(props: ColumnProps) {
 Column.defaultProps = {
   header: undefined,
   comparator: undefined,
+  sortable: false,
   columnClass: undefined,
   data: undefined,
   criteria: undefined,
