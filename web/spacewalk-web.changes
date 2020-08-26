@@ -1,3 +1,4 @@
+- Add translation support for react t() function
 - fix striping on react tables
 - Update translation strings
 
