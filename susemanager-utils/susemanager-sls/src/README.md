@@ -36,10 +36,6 @@ uyuni:
     password: admin
 ```
 
-### Available states 
-
-Check methods in file `states/uyuni_config.py` 
-
 ### Examples
 
 #### Static state file
