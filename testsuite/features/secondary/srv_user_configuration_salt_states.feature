@@ -4,7 +4,8 @@
 Feature: Create organization, user and group using salt states
 
   Scenario: Apply setup configure salt state to server
-    When I apply "setup_users_configuration" local salt state on "server"
+    When I manually install the "uyuni-config" formula on the server
+    And I apply "setup_users_configuration" local salt state on "server"
 
   Scenario: Organization my_org was correctly created
     Given I am authorized as "my_org_user" with password "my_org_user"
@@ -51,9 +52,8 @@ Feature: Create organization, user and group using salt states
     And I should see "role_system_group_admin" as unchecked
 
   Scenario: Apply teardown configure salt state to server
-#    When I copy "../upload_files/salt/teardown_configuration_states.sls" to "/usr/share/susemanager/salt/teardown_configuration_states.sls" on "server"
-#    And I run "salt-call --local --module-dirs=/usr/share/susemanager/salt --log-level=info --retcode-passthrough --force-color state.apply teardown_configuration_states" on "server"
     When I apply "teardown_users_configuration" local salt state on "server"
+    And I manually uninstall the "uyuni-config" formula from the server
 
   Scenario: All organizations were successfully removed
     Given I am on the Organizations page
