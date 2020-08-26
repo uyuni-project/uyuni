@@ -97,6 +97,7 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
 BULLET_STYLE = { 'failing' => 'fa-times text-danger',
                  'warning' => 'fa-hand-o-right text-danger',
                  'success' => 'fa-check text-success',
+                 'pending' => 'fa-hand-o-right text-success',
                  'refreshing' => 'fa-refresh text-warning' }.freeze
 
 PATCH_BY_CLIENT = { 'ceos6_minion' => 'RHSA-2019:1774',

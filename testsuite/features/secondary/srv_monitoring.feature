@@ -46,9 +46,9 @@ Feature: Enable and disable monitoring of the server
     Then I should see a "Monitoring enabled successfully." text
     And I should see a list item with text "System" and a success bullet
     And I should see a list item with text "PostgreSQL database" and a success bullet
-    And I should see a list item with text "Server self monitoring" and a success bullet
-    And I should see a list item with text "Taskomatic (Java JMX)" and a success bullet
-    And I should see a list item with text "Tomcat (Java JMX)" and a success bullet
+    And I should see a list item with text "Server self monitoring" and a pending bullet
+    And I should see a list item with text "Taskomatic (Java JMX)" and a pending bullet
+    And I should see a list item with text "Tomcat (Java JMX)" and a pending bullet
     And I should see a "Restarting Tomcat and Taskomatic is needed for the configuration changes to take effect." text
     And file "/etc/rhn/rhn.conf" should contain "prometheus_monitoring_enabled = 1" on server
     And file "/etc/sysconfig/tomcat" should contain "Dcom.sun.management.jmxremote.port=3333 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=" on server
