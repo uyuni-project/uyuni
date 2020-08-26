@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-25 10:29+0200\n"
+"POT-Creation-Date: 2020-08-26 14:48+0200\n"
 "PO-Revision-Date: 2018-03-16 04:50+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish\n"
@@ -16,52 +16,11 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2)\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "niepełny token uwierzytelnienia pośrednika: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Wysłany podpis pośrednika %s nie zgadza się z naszym %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "odmówiono uwierzytelnienia pośrednika"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Otrzymano nieprawidłowe żądanie (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"WAŻNY KOMUNIKAT:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Podczas wykonywania „%s”: przechwycono\n"
-"%s: %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "Nieprawidłowy adres URI %s"
-
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -86,16 +45,6 @@ msgstr "W tej usłudze Satellite wyłączono ISS."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Nie włączono serwera „%s” dla ISS."
 
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Oczekiwano nazwy pakietu, nie: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Oczekiwano pakietu, nie: %s"
-
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
@@ -108,6 +57,20 @@ msgstr "Nieprawidłowy klucz sesji"
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
 msgstr "Ten identyfikator serwera już nie istnieje"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Nieprawidłowa para system_id/action_id."
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Oczekiwano nazwy pakietu, nie: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "Oczekiwano pakietu, nie: %s"
 
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
@@ -157,10 +120,6 @@ msgstr "Oczekiwano słownika jako parametr produktu"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Nieprawidłowa wartość „%s” dla %s (%s)"
 
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Nieprawidłowa para system_id/action_id."
-
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
 msgid "Invalid value %s (%s)"
@@ -196,6 +155,66 @@ msgstr ""
 "                   Konto %s zostało dezaktywowane na tym serwerze.\n"
 "                   Proszę skontaktować się z administratorem organizacji po "
 "więcej pomocy."
+
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Proszę wykonać polecenie rhn_register jako root na tym kliencie"
+
+#: ../server/rhnHandler.py:75
+#, python-format
+msgid "Service not enabled for system profile: \"%s\""
+msgstr "Usługa jest niedostępna dla profilu systemu: „%s”"
+
+#: ../server/rhnServer/server_class.py:97
+#, python-format
+msgid "Architecture `%s' is not supported"
+msgstr "Architektura „%s” jest nieobsługiwana"
+
+#: ../server/rhnServer/server_token.py:78
+#, python-format
+msgid "Token `%s' has more than one base channel assigned"
+msgstr "Token „%s” ma przydzielony więcej niż jeden kanał podstawowy"
+
+#: ../server/rhnServer/server_token.py:80
+msgid "Conflicting base channels"
+msgstr "Sprzeczne kanały podstawowe"
+
+#: ../server/rhnServer/server_token.py:190
+#, python-format
+msgid "Failed to add server to group %s"
+msgstr "Dodanie serwera do grupy %s się nie powiodło"
+
+#: ../server/rhnServer/server_token.py:503
+#, python-format
+msgid "Maximum usage count of %s reached"
+msgstr "Osiągnięto maksymalne użycie %s"
+
+#: ../server/rhnServer/server_token.py:744
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
+msgstr ""
+"Nakładanie tokenów ponownej rejestracji na stos z różnymi podstawowymi "
+"ważnościami jest nieobsługiwane"
+
+#: ../server/rhnServer/server_token.py:811
+#, python-format
+msgid "Could not find token '%s'"
+msgstr "Nie można odnaleźć tokenu „%s”"
+
+#. Cannot use activation keys from different orgs
+#: ../server/rhnServer/server_token.py:843
+msgid "Tokens from mismatching orgs"
+msgstr "Tokeny z niepasujących organizacji"
+
+#. Two tokens with different kickstart sessions
+#: ../server/rhnServer/server_token.py:853
+msgid "Kickstart session mismatch"
+msgstr "Niepasująca sesja kickstart"
+
+#: ../server/rhnServer/server_token.py:877
+msgid "Stacking of re-registration tokens is not supported"
+msgstr "Nakładanie tokenów ponownej rejestracji na stos jest nieobsługiwane"
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -305,75 +324,19 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/rhnHandler.py:62
-msgid "Please run rhn_register as root on this client"
-msgstr "Proszę wykonać polecenie rhn_register jako root na tym kliencie"
-
-#: ../server/rhnHandler.py:75
+#: ../server/apacheAuth.py:66
 #, python-format
-msgid "Service not enabled for system profile: \"%s\""
-msgstr "Usługa jest niedostępna dla profilu systemu: „%s”"
+msgid "incomplete proxy authentication token: %s"
+msgstr "niepełny token uwierzytelnienia pośrednika: %s"
 
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#: ../server/apacheAuth.py:84
 #, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Zażądano nieprawidłowego pakietu RPM %s"
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "Wysłany podpis pośrednika %s nie zgadza się z naszym %s."
 
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Nie odnaleziono pakietu"
-
-#: ../server/rhnServer/server_class.py:97
-#, python-format
-msgid "Architecture `%s' is not supported"
-msgstr "Architektura „%s” jest nieobsługiwana"
-
-#: ../server/rhnServer/server_token.py:78
-#, python-format
-msgid "Token `%s' has more than one base channel assigned"
-msgstr "Token „%s” ma przydzielony więcej niż jeden kanał podstawowy"
-
-#: ../server/rhnServer/server_token.py:80
-msgid "Conflicting base channels"
-msgstr "Sprzeczne kanały podstawowe"
-
-#: ../server/rhnServer/server_token.py:190
-#, python-format
-msgid "Failed to add server to group %s"
-msgstr "Dodanie serwera do grupy %s się nie powiodło"
-
-#: ../server/rhnServer/server_token.py:503
-#, python-format
-msgid "Maximum usage count of %s reached"
-msgstr "Osiągnięto maksymalne użycie %s"
-
-#: ../server/rhnServer/server_token.py:744
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Nakładanie tokenów ponownej rejestracji na stos z różnymi podstawowymi "
-"ważnościami jest nieobsługiwane"
-
-#: ../server/rhnServer/server_token.py:811
-#, python-format
-msgid "Could not find token '%s'"
-msgstr "Nie można odnaleźć tokenu „%s”"
-
-#. Cannot use activation keys from different orgs
-#: ../server/rhnServer/server_token.py:843
-msgid "Tokens from mismatching orgs"
-msgstr "Tokeny z niepasujących organizacji"
-
-#. Two tokens with different kickstart sessions
-#: ../server/rhnServer/server_token.py:853
-msgid "Kickstart session mismatch"
-msgstr "Niepasująca sesja kickstart"
-
-#: ../server/rhnServer/server_token.py:877
-msgid "Stacking of re-registration tokens is not supported"
-msgstr "Nakładanie tokenów ponownej rejestracji na stos jest nieobsługiwane"
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "odmówiono uwierzytelnienia pośrednika"
 
 #: ../server/rhnUser.py:289 ../server/rhnUser.py:292
 msgid "Invalid username/password combination"
@@ -434,6 +397,44 @@ msgstr "nazwa użytkownika musi mieć co najmniej %d znaków"
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Nie można rejestrować nazw użytkowników kończących się znakiem %s"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Otrzymano nieprawidłowe żądanie (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"WAŻNY KOMUNIKAT:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Podczas wykonywania „%s”: przechwycono\n"
+"%s: %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "Nieprawidłowy adres URI %s"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Zażądano nieprawidłowego pakietu RPM %s"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Nie odnaleziono pakietu"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1133,6 +1134,19 @@ msgstr "WYJĄTEK: %s"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr ""
 
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr ""
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr ""
+
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -1307,35 +1321,6 @@ msgstr ""
 #: ../satellite_tools/messages.py:94
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:114
-#, python-format
-msgid "%s sync. report from %s"
-msgstr ""
-
-#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:258
@@ -2077,4 +2062,20 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2510
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
 msgstr ""
