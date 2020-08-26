@@ -721,12 +721,13 @@ def user_get_details(uid, password=None, org_admin_user=None, org_admin_password
 
 def user_list_users(org_admin_user=None, org_admin_password=None):
     """
-    Get user in Uyuni.
-    If no organization admin credentials are provided, credentials from pillar are used
+    Return all Uyuni users.
+    Uyuni XML-RPC listUsers return all users that are visible for the authenticated user.
+    This could be a sub-set of all existing users.
 
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
-    :return: list of user roles
+    :return: all users visible to the authenticated user
     """
     return UyuniUser(org_admin_user, org_admin_password).list_users()
 
@@ -1178,9 +1179,12 @@ def systemgroup_delete(name, org_admin_user=None, org_admin_password=None):
 
 def systemgroup_list_systems(name, minimal=True, org_admin_user=None, org_admin_password=None):
     """
-    Delete system group.
+    List system on system group
 
     :param name: Name of the system group.
+    :param minimal: default True. Minimal information or more detailed one about systems
+    :param org_admin_user: organization administrator username
+    :param org_admin_password: organization administrator password
 
     :return: List of system information
     """
