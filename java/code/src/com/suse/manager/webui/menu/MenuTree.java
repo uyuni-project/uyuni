@@ -597,7 +597,7 @@ public class MenuTree {
     }
 
     /**
-     * Get the users current locale
+     * Get the users current locale. If no user is available return the config default
      *
      * @param pageContext the current PageContext
      * @return the users locale
@@ -605,8 +605,13 @@ public class MenuTree {
     public String getCurrentLocale(PageContext pageContext) {
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         User user = new RequestContext(request).getCurrentUser();
-        String currentLocale = user.getPreferredLocale();
-        return currentLocale;
+
+        if (checkAcl(user, "user_authenticated()")) {
+            return user.getPreferredLocale();
+        }
+        else {
+            return ConfigDefaults.get().getDefaultLocale();
+        }
     }
 
     /**
