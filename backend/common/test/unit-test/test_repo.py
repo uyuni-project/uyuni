@@ -186,8 +186,8 @@ class TestCommonRepo:
         mock_popen().returncode = 0
 
         with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
-            assert repo._has_valid_gpg_signature(response)
-            mock_communicate.assert_called_once_with(b"dummy content")
+            assert repo._has_valid_gpg_signature(response.url, response)
+            mock_communicate.assert_called_once_with(b"dummy content", timeout=90)
 
     @patch("spacewalk.common.repo.tempfile.NamedTemporaryFile", MagicMock())
     @patch("spacewalk.common.repo.requests.get", MagicMock(
@@ -208,7 +208,7 @@ class TestCommonRepo:
         mock_popen().returncode = 0
 
         with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
-            assert repo._has_valid_gpg_signature(response)
+            assert repo._has_valid_gpg_signature(response.url, response)
             mock_popen.assert_called_once
             gpg_args = mock_popen.call_args[0][0]
             assert gpg_args[0] == "gpg"
@@ -233,7 +233,7 @@ class TestCommonRepo:
         mock_popen().returncode = 1
 
         with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
-            assert not repo._has_valid_gpg_signature(response)
+            assert not repo._has_valid_gpg_signature(response.url, response)
 
 
     def test_parse_release_index(self):
