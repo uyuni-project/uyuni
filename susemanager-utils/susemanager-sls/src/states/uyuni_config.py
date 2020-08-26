@@ -1,7 +1,11 @@
 import logging
 from typing import Optional, Dict, Any, List, Tuple
 from collections import Counter
-import pdb
+
+SERVER_GROUP_NOT_FOUND_ERROR = 2201
+NO_SUCH_USER_ERROR = -213
+ORG_NOT_FOUND_ERROR = 2850
+AUTHENTICATION_ERROR = 2950
 
 log = logging.getLogger(__name__)
 
@@ -76,14 +80,14 @@ class UyuniUsers:
                          use_pam_auth: bool = False):
         changes = {}
         error = None
-        # user fields changes
+        # user field changes
         for field in ["email", "first_name", "last_name"]:
             if (current_user or {}).get(field) != user_changes.get(field):
                 changes[field] = {"new": user_changes[field]}
                 if current_user:
                     changes[field]["old"] = (current_user or {}).get(field)
 
-        # roles changes
+        # role changes
         if Counter(roles or []) != Counter(current_roles or []):
             changes['roles'] = {'new': roles}
             if current_roles:
@@ -102,7 +106,7 @@ class UyuniUsers:
                                                    user_changes.get('password'))
             except Exception as exc:
                 # check if it's an authentication error. If yes, password have changed
-                if exc.faultCode == 2950:
+                if exc.faultCode == AUTHENTICATION_ERROR:
                     changes["password"] = {"new": "(hidden)", "old": "(hidden)"}
                 else:
                     error = exc
@@ -112,7 +116,7 @@ class UyuniUsers:
                roles: Optional[List[str]] = [], system_groups: Optional[List[str]] = [],
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
-        Manage user, insuring it is present with all his characteristics
+        Ensure a user is present with all specified properties
 
         :param uid: user ID
         :param password: desired password for the user
@@ -139,12 +143,11 @@ class UyuniUsers:
                                                                                        org_admin_password=org_admin_password)
             current_system_groups_names = [s["name"] for s in (current_system_groups or [])]
         except Exception as exc:
-            if exc.faultCode == 2950:
+            if exc.faultCode == AUTHENTICATION_ERROR:
                 log.warning("Error managing user (admin credentials error) '{}': {}".format(uid, exc))
                 return StateResult.state_error(uid,
                                                comment="Error managing user (admin credentials error) '{}': {}".format(
                                                    uid, exc))
-            pass
 
         user_paramters = {"uid": uid, "password": password, "email": email,
                           "first_name": first_name, "last_name": last_name,
@@ -195,9 +198,9 @@ class UyuniUsers:
             user = __salt__['uyuni.user_get_details'](uid, org_admin_user=org_admin_user,
                                                       org_admin_password=org_admin_password)
         except Exception as exc:
-            if exc.faultCode == -213:
+            if exc.faultCode == NO_SUCH_USER_ERROR:
                 return StateResult.prepare_result(uid, True, "{0} is already absent".format(uid))
-            if exc.faultCode == 2950:
+            if exc.faultCode == AUTHENTICATION_ERROR:
                 return StateResult.state_error(uid,
                                                "Error deleting user (organization credentials error) '{}': {}".format(
                                                    uid, exc))
@@ -243,9 +246,9 @@ class UyuniUserChannels:
 
         for curr_channel in (current_subscribe_channels or []):
             if not (curr_channel in new_subscribe_channels or curr_channel in new_managed_channels):
-                if not __salt__['uyuni.channel_software_is_global_subscribable'](curr_channel,
-                                                                                 org_admin_user,
-                                                                                 org_admin_password):
+                if not __salt__['uyuni.channel_software_is_globally_subscribable'](curr_channel,
+                                                                                   org_admin_user,
+                                                                                   org_admin_password):
                     subscribe_changes[curr_channel] = False
         changes = {}
         if managed_changes:
@@ -281,7 +284,7 @@ class UyuniUserChannels:
         if "org_admin" in current_roles or "channel_admin" in current_roles:
             return StateResult.state_error(uid, "Channels access cannot be managed, "
                                                 "User can manage all channel in the organization "
-                                                "(\"org_admin\" or \"org channel_admin\" role).")
+                                                "(\"org_admin\" or \"channel_admin\" role).")
 
         current_manageable_channels_list = [c.get("label") for c in (current_manageable_channels or [])]
         current_subscribe_channels_list = [c.get("label") for c in (current_subscribe_channels or [])]
@@ -292,9 +295,9 @@ class UyuniUserChannels:
                                        org_admin_user, org_admin_password)
 
         if not changes:
-            return StateResult.prepare_result(uid, True, "{0} channels is already installed".format(uid))
+            return StateResult.prepare_result(uid, True, "{0} channels are already in the desired state".format(uid))
         if __opts__['test']:
-            return StateResult.prepare_result(uid, None, "{0} channels would be installed".format(uid), changes)
+            return StateResult.prepare_result(uid, None, "{0} channels would be configured".format(uid), changes)
 
         try:
             for channel, action in changes.get('manageable_channels', {}).items():
@@ -305,8 +308,8 @@ class UyuniUserChannels:
                 __salt__['uyuni.channel_software_set_user_subscribable'](channel, uid, action,
                                                                          org_admin_user, org_admin_password)
         except Exception as exc:
-            return StateResult.state_error(uid, "Error managing Channel management '{}': {}".format(uid, exc))
-        return StateResult.prepare_result(uid, True, "Channel management successful managed", changes)
+            return StateResult.state_error(uid, "Error managing channel '{}': {}".format(uid, exc))
+        return StateResult.prepare_result(uid, True, "Channel set to the desired state", changes)
 
 
 class UyuniGroups:
@@ -362,9 +365,8 @@ class UyuniGroups:
                                                                          org_admin_user=org_admin_user,
                                                                          org_admin_password=org_admin_password)
         except Exception as exc:
-            if exc.faultCode != 2201:
+            if exc.faultCode != SERVER_GROUP_NOT_FOUND_ERROR:
                 return StateResult.state_error(name, "Error managing group '{}': {}".format(name, exc))
-            pass
 
         current_systems_ids = [sys['id'] for sys in (current_systems or [])]
         systems_to_group = self._get_systems_for_group(expression, target,
@@ -431,9 +433,9 @@ class UyuniGroups:
                                                                       org_admin_user=org_admin_user,
                                                                       org_admin_password=org_admin_password)
         except Exception as exc:
-            if exc.faultCode == 2201:
+            if exc.faultCode == SERVER_GROUP_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(name, True, "{0} is already absent".format(name))
-            if exc.faultCode == 2950:
+            if exc.faultCode == AUTHENTICATION_ERROR:
                 return StateResult.state_error(name,
                                                "Error deleting group (organization admin credentials error) '{}': {}"
                                                .format(name, exc))
@@ -493,7 +495,7 @@ class UyuniOrgs:
                                                                    org_admin_user=org_admin_user,
                                                                    org_admin_password=org_admin_password)
         except Exception as exc:
-            if exc.faultCode != 2850:
+            if exc.faultCode != ORG_NOT_FOUND_ERROR:
                 return StateResult.state_error(name, "Error managing org '{}': {}".format(name, exc))
 
         user_paramters = {"uid": org_admin_user, "password": org_admin_password, "email": email,
@@ -541,9 +543,9 @@ class UyuniOrgs:
                                                             admin_user=admin_user,
                                                             admin_password=admin_password)
         except Exception as exc:
-            if exc.faultCode == 2850:
+            if exc.faultCode == ORG_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(name, True, "{0} is already absent".format(name))
-            if exc.faultCode == 2950:
+            if exc.faultCode == AUTHENTICATION_ERROR:
                 return StateResult.state_error(name,
                                                "Error deleting organization (admin credentials error) '{}': {}"
                                                .format(name, exc))
@@ -628,7 +630,7 @@ def user_present(name, password, email, first_name, last_name, use_pam_auth=Fals
                  roles=None, system_groups=None,
                  org_admin_user=None, org_admin_password=None):
     """
-    Insure user is present with all his characteristics
+    Ensure a user is present with all specified properties
 
     :param name: user ID
     :param password: desired password for the user
@@ -651,7 +653,7 @@ def user_channels(name, password,
                   manageable_channels=[], subscribable_channels=[],
                   org_admin_user=None, org_admin_password=None):
     """
-    Insure user is present with all his characteristics
+    Ensure a user has access to the specified channels
 
     :param name: user ID
     :param password: user password

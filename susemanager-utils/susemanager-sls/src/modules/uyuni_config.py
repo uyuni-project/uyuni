@@ -9,6 +9,8 @@ import salt.config
 from salt.utils.minions import CkMinions
 import datetime
 
+AUTHENTICATION_ERROR = 2950
+
 log = logging.getLogger(__name__)
 
 __pillar__: Dict[str, Any] = {}
@@ -67,10 +69,10 @@ class RPCClient:
         """
         Authenticate.
         If a authentication token is present on __context__ it will be returned
-        Otherwise get an ew authentication token from xml rpc.
-        If refresh parameter where set to True, it will get a new token from the API
+        Otherwise get a new authentication token from xml rpc.
+        If refresh is True, get a new token from the API regardless of prior status.
 
-        :param refresh: force token to the refreshed, cached values
+        :param refresh: force token refresh, discarding any cached value
         :return: authentication token
         """
         if self.token is None or refresh:
@@ -91,7 +93,7 @@ class RPCClient:
                 log.debug("Calling RPC method %s", method)
                 return getattr(self.conn, method)(*((self.token,) + args))
             except Exception as exc:
-                if exc.faultCode != 2950:
+                if exc.faultCode != AUTHENTICATION_ERROR:
                     log.error("Unable to call RPC function: %s", str(exc))
                     raise exc
                 """
@@ -964,9 +966,9 @@ def channel_software_is_user_subscribable(channel_label, uid, org_admin_user=Non
     return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_subscribable(channel_label, uid)
 
 
-def channel_software_is_global_subscribable(channel_label, org_admin_user=None, org_admin_password=None):
+def channel_software_is_globally_subscribable(channel_label, org_admin_user=None, org_admin_password=None):
     """
-    Returns whether the channel is globally subscribed on the organization
+    Returns whether the channel is globally subscribable on the organization
 
     :param channel_label: label of the channel
     :param org_admin_user: organization admin username
@@ -1179,7 +1181,7 @@ def systemgroup_delete(name, org_admin_user=None, org_admin_password=None):
 
 def systemgroup_list_systems(name, minimal=True, org_admin_user=None, org_admin_password=None):
     """
-    List system on system group
+    Lists systems in a system group.
 
     :param name: Name of the system group.
     :param minimal: default True. Minimal information or more detailed one about systems
