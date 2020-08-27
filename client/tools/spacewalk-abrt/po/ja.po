@@ -6,8 +6,8 @@ msgstr ""
 "POT-Creation-Date: 2020-08-18 10:25+0200\n"
 "PO-Revision-Date: 2020-08-27 13:02+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
-"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/"
-"spacewalk-abrt/ja/>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"abrt/ja/>\n"
 "Language: ja\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -33,16 +33,22 @@ msgstr "エラー: 指定した不具合ディレクトリ [%s] は存在して�
 
 #: ../src/bin/spacewalk-abrt:53
 msgid "No command specified. Use --help for more information on the usage."
-msgstr "コマンドが指定されていません。使用方法の詳細を表示するには、 --help オプションをお使いください。"
+msgstr ""
+"コマンドが指定されていません。使用方法の詳細を表示するには、 --help オプショ"
+"ンをお使いください。"
 
 #: ../src/bin/spacewalk-abrt:62
 msgid ""
 "More than one command specified. Use --help for more information on the "
 "usage."
-msgstr "複数のコマンドが指定されています。使用方法の詳細を表示するには、 --help オプションをお使いください。"
+msgstr ""
+"複数のコマンドが指定されています。使用方法の詳細を表示するには、 --help オプ"
+"ションをお使いください。"
 
 #: ../src/bin/spacewalk-abrt:65
 msgid ""
 "This system does not seem to be registered, use `rhn_register` before using "
 "this command."
-msgstr "このシステムは登録されていないものと思われます。このコマンドを実行する前に、 `rhn_register` コマンドをお使いください。"
+msgstr ""
+"このシステムは登録されていないものと思われます。このコマンドを実行する前に、 "
+"`rhn_register` コマンドをお使いください。"
