@@ -154,7 +154,7 @@ class UyuniUser(UyuniRemoteObject):
 
     def get_details(self, uid: str) -> Dict[str, Any]:
         """
-        Get existing user data from the Uyuni.
+        Retrieve details of an Uyuni user.
 
         :param: uid: user name to lookup
         :return: Dictionary with user details
@@ -164,9 +164,7 @@ class UyuniUser(UyuniRemoteObject):
 
     def list_users(self) -> List[Dict[str, Any]]:
         """
-        Return all Uyuni users.
-        Uyuni XML-RPC listUsers return all users that are visible for the authenticated user.
-        This could be a sub-set of all existing users.
+        Return all Uyuni users visible to the authenticated user.
 
         :return: all users visible to the authenticated user
         """
@@ -176,14 +174,14 @@ class UyuniUser(UyuniRemoteObject):
     def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "",
                use_pam_auth: bool = False) -> bool:
         """
-        Create user in Uyuni.
+        Create an Uyuni user.
         User will be created in the same organization as the authenticated user.
 
         :param uid: desired login name
         :param password: desired password for the user
         :param email: valid email address
         :param first_name: First name
-        :param last_name: Second name
+        :param last_name: Last name
         :param use_pam_auth: if you wish to use PAM authentication for this user
 
         :return: True on success, raise exception otherwise
@@ -193,13 +191,13 @@ class UyuniUser(UyuniRemoteObject):
 
     def set_details(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
         """
-        Update user information on Uyuni.
+        Update an Uyuni user information.
 
         :param uid: login name
         :param password: desired password for the user
         :param email: valid email address
         :param first_name: First name
-        :param last_name: Second name
+        :param last_name: Last name
 
         :return: True on success, raise exception otherwise
         """
@@ -213,7 +211,7 @@ class UyuniUser(UyuniRemoteObject):
 
     def delete(self, uid: str) -> bool:
         """
-        Remove user from the Uyuni.
+        Remove an Uyuni user.
 
         :param uid: UID of the user
         :return: boolean, True if user has been deleted successfully.
@@ -223,7 +221,7 @@ class UyuniUser(UyuniRemoteObject):
 
     def list_roles(self, uid: str) -> List[str]:
         """
-        Get existing user data from the Uyuni.
+        Return the list of roles of a user.
 
         :param: uid: user name to use on lookup
         :return: list of user roles
@@ -233,10 +231,10 @@ class UyuniUser(UyuniRemoteObject):
 
     def add_role(self, uid: str, role: str) -> bool:
         """
-        Add role to user
+        Add a role to a user
 
         :param uid: UID of the user
-        :param role: one of uyuni user roles
+        :param role: a new role
 
         :return: boolean, True if role has been added successfully.
         """
@@ -267,11 +265,11 @@ class UyuniUser(UyuniRemoteObject):
 
     def add_assigned_system_groups(self, uid: str, server_group_names: List[str], set_default: bool = False) -> int:
         """
-        Add system groups to user's list of assigned system groups.
+        Add system groups to a user's list of assigned system groups.
 
         :param uid: user id to look for
-        :param server_group_names: systems groups to add to list of assigned system groups
-        :param set_default: Should system groups also be added to user's list of default system groups.
+        :param server_group_names: system groups to add
+        :param set_default: True if the system groups should also be added to user's default list.
         :return: 1 on success, exception thrown otherwise.
         """
         log.debug("add assigned system groups to user %s: %s", uid, server_group_names)
@@ -283,7 +281,7 @@ class UyuniUser(UyuniRemoteObject):
 
         :param uid: user id to look for
         :param server_group_names: systems groups to remove from list of assigned system groups
-        :param set_default: Should system groups also be added to user's list of default system groups.
+        :param set_default: True if the system groups should also be removed to user's default list.
         :return: 1 on success, exception thrown otherwise.
         """
         log.debug("remove assign groups from user %s: %s", uid, server_group_names)
@@ -315,7 +313,7 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :param channel_label: label of the channel
         :param uid: user login id
-        :param access: Flag which if user should have management access to channel or not
+        :param access: True if the user should have management access to channel
         :return: 1 on success, exception thrown otherwise.
         """
         log.debug("change managing access to %s for user %s in channel %s", access, uid, channel_label)
@@ -329,7 +327,7 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :param channel_label: label of the channel
         :param uid: user login id
-        :param access: Flag which if user should subscribe a channel or not
+        :param access: True if the user should have subscribe permission to the channel
         :return: 1 on success, exception thrown otherwise.
         """
         log.debug("change subscription access to %s for user %s in channel %s", access, uid, channel_label)
@@ -359,9 +357,10 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
     def is_globally_subscribable(self, channel_label: str) -> bool:
         """
-        Returns whether the channel is globally subscribed on the organization
+        Returns whether the channel is globally subscribable on the organization
+
         :param channel_label: label of the channel
-        :return: boolean which indicates if channel is globally subscribe
+        :return: boolean which indicates if channel is globally subscribable
         """
         log.debug("check if channel globally Subscribable %s", channel_label)
         return bool(self.client("channel.software.isGloballySubscribable", channel_label))
@@ -397,25 +396,26 @@ class UyuniOrg(UyuniRemoteObject):
         """
         Create a new Uyuni org.
         Admin user must have SUSE Manager Administrator role to perform this action
-        :param name:
-        :param org_admin_user:
-        :param org_admin_password:
-        :param first_name:
-        :param last_name:
-        :param email:
-        :param admin_prefix:
-        :param pam:
-        :return: tuple of data and error/log message
+
+        :param name: organization name
+        :param org_admin_user: organization admin user
+        :param org_admin_password: organization admin password
+        :param first_name: organization admin first name
+        :param last_name: organization admin last name
+        :param email: organization admin email
+        :param admin_prefix: organization admin prefix
+        :param pam:organization admin pam authentication
+        :return: dictionary with org information
         """
         return self.client("org.create", name, org_admin_user, org_admin_password, admin_prefix,
                            first_name, last_name, email, pam)
 
     def delete(self, name: str) -> int:
         """
-        Delete Uyuni org.
+        Delete an Uyuni org.
         Admin user must have SUSE Manager Administrator role to perform this action
 
-        :param name:
+        :param name: organization name
         :return: 1 on success, exception thrown otherwise.
         """
         org_id = int(self.get_details(name=name).get("id", -1))
@@ -423,7 +423,7 @@ class UyuniOrg(UyuniRemoteObject):
 
     def update_name(self, org_id: int, name: str) -> Dict[str, Union[str, int, bool]]:
         """
-        Update Uyuni org name.
+        Update an Uyuni org name.
         Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_id: organization internal id
@@ -452,18 +452,18 @@ class UyuniOrgTrust(UyuniRemoteObject):
         List all trusts for the organization
         Admin user must have SUSE Manager Administrator role to perform this action
 
-        :return: list with all organization and if is trusted or not
+        :return: list with all organizations and their trust status
         """
         org = self._org_manager.get_details(org_name)
         return self.client("org.trusts.listTrusts", org["id"])
 
     def add_trust_by_name(self, org_name: str, org_trust: str) -> int:
         """
-        Set organisation trusted
+        Set an organisation as trusted by another
         Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_name: organization name
-        :param org_trust: organization to trust
+        :param org_trust: name of organization to trust
         :return: 1 on success, exception thrown otherwise.
         """
         this_org = self._org_manager.get_details(org_name)
@@ -472,7 +472,7 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
     def add_trust(self, org_id: str, org_trust_id: str) -> int:
         """
-        Set organisation trusted.
+        Set an organisation as trusted by another
         Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_id: organization id
@@ -483,7 +483,7 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
     def remove_trust_by_name(self, org_name: str, org_untrust: str) -> int:
         """
-        Remove organisation trusted.
+        Set an organisation as not trusted by another
         Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_name: organization name
@@ -496,7 +496,7 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
     def remove_trust(self, org_id: str, org_untrust_id: str) -> int:
         """
-        Remove organisation trusted.
+        Set an organisation as not trusted by another
         Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_id: organization id
@@ -513,7 +513,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
 
     def get_details(self, name: str) -> Dict[str, Union[int, str]]:
         """
-        Retrieve details of a ServerGroup.
+        Retrieve details of a system group.
 
         :param name: Name of the system group.
         :return: data of the system group.
@@ -555,10 +555,10 @@ class UyuniSystemgroup(UyuniRemoteObject):
 
     def list_systems(self, name: str, minimal: bool = True) -> List[Dict[str, Any]]:
         """
-        Get information from the system in the group.
+        Get information about systems in a group.
 
         :param name: Group name
-        :param minimal: default True. Minimal information or more detailed one about systems
+        :param minimal: default True. Only return minimal information about systems, use False to get more details
         :return: List of system information
         """
         return self._convert_datetime_list(
@@ -566,7 +566,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
 
     def add_remove_systems(self, name: str, add_remove: bool, system_ids: List[int] = []) -> int:
         """
-        Add or remove list of systems from the group
+        Add or remove systems from a system group
 
         :param name: Group name
         :param add_remove: True to add to the group, False to remove
@@ -580,8 +580,8 @@ class UyuniSystems(UyuniRemoteObject):
 
     def get_minion_id_map(self, refresh: bool = False) -> Dict[str, int]:
         """
-        Map between minion ID and system internal ID of all system user have access to.
-        Context cache can be used, to avoid multiple call to the server.
+        Returns a map from minion ID to Uyuni system ID for all systems a user has access to
+        This method caches results, in order to avoid multiple XMLRPC calls.
 
         :param refresh: Get new data from server, ignoring values in local context cache
         :return: Map between minion ID and system ID of all system accessible by authenticated user
@@ -646,9 +646,9 @@ class UyuniChildMasterIntegration:
 
     def list_minions(self, active: bool = False) -> List[str]:
         """
-        Return list of currently registered minions.
+        Returns currently registered minions.
 
-        :param active: Return only active minions.
+        :param active: Return only active minions.  Default False.
         :return: list of minion ids
         """
         return self._minions.connected_ids() if active else self._minions._pki_minions()
@@ -696,7 +696,7 @@ class UyuniChildMasterIntegration:
 
 def __virtual__():
     """
-    Provide Uyuni Users state module.
+    Provide Uyuni configuration state module.
 
     :return:
     """
@@ -706,8 +706,8 @@ def __virtual__():
 
 def user_get_details(uid, password=None, org_admin_user=None, org_admin_password=None):
     """
-    Get user in Uyuni.
-    If user password is provided name and password fields are use to authenticate
+    Get details of an Uyuni user
+    If password is provided as a parameter, then it will be used to authenticate
     If no user credentials are provided, organization administrator credentials will be used
     If no user credentials neither organization admin credentials are provided, credentials from pillar will be used
 
@@ -723,9 +723,7 @@ def user_get_details(uid, password=None, org_admin_user=None, org_admin_password
 
 def user_list_users(org_admin_user=None, org_admin_password=None):
     """
-    Return all Uyuni users.
-    Uyuni XML-RPC listUsers return all users that are visible for the authenticated user.
-    This could be a sub-set of all existing users.
+    Return all Uyuni users visible to the authenticated user.
 
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
@@ -737,7 +735,7 @@ def user_list_users(org_admin_user=None, org_admin_password=None):
 def user_create(uid, password, email, first_name, last_name, use_pam_auth=False,
                 org_admin_user=None, org_admin_password=None):
     """
-    Create user in Uyuni.
+    Create an Uyuni user.
     If no organization admin credentials are provided, credentials from pillar are used
 
     :param uid: user id to look for
@@ -759,7 +757,7 @@ def user_create(uid, password, email, first_name, last_name, use_pam_auth=False,
 def user_set_details(uid, password, email, first_name=None, last_name=None,
                      org_admin_user=None, org_admin_password=None):
     """
-    Update user in Uyuni.
+    Update an Uyuni user.
     If no organization admin credentials are provided, credentials from pillar are used
 
     :param uid: user id to look for
@@ -777,7 +775,7 @@ def user_set_details(uid, password, email, first_name=None, last_name=None,
 
 def user_delete(uid, org_admin_user=None, org_admin_password=None):
     """
-    Create user in Uyuni.
+    Deletes an Uyuni user
     If no organization admin credentials are provided, credentials from pillar are used
 
     :param uid: user id to look for
@@ -790,8 +788,8 @@ def user_delete(uid, org_admin_user=None, org_admin_password=None):
 
 def user_list_roles(uid, password=None, org_admin_user=None, org_admin_password=None):
     """
-    Get user roles in Uyuni.
-    If user password is provided name and password fields are use to authenticate
+    Returns an Uyuni user roles.
+    If password is provided as a parameter, then it will be used to authenticate
     If no user credentials are provided, organization administrator credentials will be used
     If no user credentials neither organization admin credentials are provided, credentials from pillar are used
 
@@ -807,7 +805,7 @@ def user_list_roles(uid, password=None, org_admin_user=None, org_admin_password=
 
 def user_add_role(uid, role, org_admin_user=None, org_admin_password=None):
     """
-    Add role to user in Uyuni.
+    Adds a role to an Uyuni user.
     If no organization admin credentials are provided, credentials from pillar are used
 
     :param uid: user id to look for
@@ -821,7 +819,7 @@ def user_add_role(uid, role, org_admin_user=None, org_admin_password=None):
 
 def user_remove_role(uid, role, org_admin_user=None, org_admin_password=None):
     """
-    Remove role to user in Uyuni.
+    Remove a role from an Uyuni user.
     If no organization admin credentials are provided, credentials from pillar are used
 
     :param uid: user id to look for
@@ -888,7 +886,7 @@ def user_remove_assigned_system_groups(uid, server_group_names, set_default=Fals
 ## channel.software
 def channel_list_manageable_channels(uid, password):
     """
-    List with all of manageable channels for the authenticated user
+    List all of manageable channels for the authenticated user
     :param uid: user login id
     :param password: user password
     :return: list of manageable channels for the user
@@ -898,7 +896,7 @@ def channel_list_manageable_channels(uid, password):
 
 def channel_list_my_channels(uid, password):
     """
-    List with all of subscribed channels for the authenticated user
+    List all of subscribed channels for the authenticated user
     :param uid: user login id
     :param password: user password
     :return: list of subscribed channels for the user
@@ -915,7 +913,7 @@ def channel_software_set_user_manageable(channel_label, uid, access,
 
     :param channel_label: label of the channel
     :param uid: user login id
-    :param access: Flag which if user should have access to channel or not
+    :param access: True if the user should have management access to channel
     :param admin_user: organization admin username
     :param admin_password: organization admin password
     :return: boolean indication success in operation
@@ -932,7 +930,7 @@ def channel_software_set_user_subscribable(channel_label, uid, access,
 
     :param channel_label: label of the channel
     :param uid: user login id
-    :param access: Flag which if user should subscribe a channel or not
+    :param access: True if the user should have subscribe access to channel
     :param admin_user: organization admin username
     :param admin_password: organization admin password
     :return: boolean indication success in operation
@@ -955,7 +953,7 @@ def channel_software_is_user_manageable(channel_label, uid, admin_user=None, adm
 
 def channel_software_is_user_subscribable(channel_label, uid, org_admin_user=None, org_admin_password=None):
     """
-    Returns whether the channel may be managed by the given user.
+    Returns whether the channel may be subscribed by the given user.
 
     :param channel_label: label of the channel
     :param uid: user login id
@@ -980,7 +978,7 @@ def channel_software_is_globally_subscribable(channel_label, org_admin_user=None
 
 def org_list_orgs(admin_user=None, admin_password=None):
     """
-    List all existing org.
+    List all organizations.
     Admin user must have SUSE Manager Administrator role to perform this action
     :return: list of all available orgs.
     """
@@ -989,24 +987,26 @@ def org_list_orgs(admin_user=None, admin_password=None):
 
 def org_get_details(name, admin_user=None, admin_password=None):
     """
-    Get org details
+    Get details of an organization.
     Admin user must have SUSE Manager Administrator role to perform this action
-    :param name:
-    :param admin_user:
-    :param admin_password:
-    :return:
+
+    :param name: organisation name
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return: organization details
     """
     return UyuniOrg(admin_user, admin_password).get_details(name)
 
 
 def org_delete(name, admin_user=None, admin_password=None):
     """
-    Delete org
+    Delete an organization
     Admin user must have SUSE Manager Administrator role to perform this action
-    :param name:
-    :param admin_user:
-    :param admin_password:
-    :return:
+
+    :param name: organization name
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return: 1 on success, exception thrown otherwise.
     """
     return UyuniOrg(admin_user, admin_password).delete(name)
 
@@ -1014,8 +1014,9 @@ def org_delete(name, admin_user=None, admin_password=None):
 def org_create(name, org_admin_user, org_admin_password, first_name, last_name, email,
                admin_prefix="Mr.", pam=False, admin_user=None, admin_password=None):
     """
-    Create org in Uyuni.
+    Create an Uyuni organization
     Admin user must have SUSE Manager Administrator role to perform this action
+
     :param name: organization name
     :param org_admin_user: organization admin user
     :param org_admin_password: organization admin password
@@ -1036,12 +1037,13 @@ def org_create(name, org_admin_user, org_admin_password, first_name, last_name, 
 
 def org_update_name(org_id, name, admin_user=None, admin_password=None):
     """
-    update Uyuni organization name
-    :param org_id:
-    :param name:
-    :param admin_user:
-    :param admin_password:
-    :return:
+    update an Uyuni organization name
+
+    :param org_id: organization internal id
+    :param name: new organization name
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+    :return: organization details
     """
     return UyuniOrg(admin_user, admin_password).update_name(org_id, name)
 
@@ -1060,10 +1062,11 @@ def org_trust_list_trusts(org_name, admin_user=None, admin_password=None):
     """
     List all trusts for one organization
     admin_user needs to have SUSE Manager Administrator role to perform this action
+
     :param org_name: Name of the organization to get the trusts
     :param admin_user: authentication user
     :param admin_password: authentication user password
-    :return: list of all organizations with the trust flag value
+    :return: list with all organizations and their trust status
     """
     return UyuniOrgTrust(admin_user, admin_password).list_trusts(org_name)
 
@@ -1096,7 +1099,7 @@ def org_trust_add_trust(org_id, org_trust_id, admin_user=None, admin_password=No
 
 def org_trust_remove_trust_by_name(org_name, org_untrust, admin_user=None, admin_password=None):
     """
-    Remove an organization to the list of trusted organizations.
+    Remove an organization from the list of trusted organizations.
     admin_user needs to have SUSE Manager Administrator role to perform this action
     :param org_name: organization name
     :param org_untrust: organization name to untrust
@@ -1109,7 +1112,7 @@ def org_trust_remove_trust_by_name(org_name, org_untrust, admin_user=None, admin
 
 def org_trust_remove_trust(org_id, org_untrust_id, admin_user=None, admin_password=None):
     """
-    Remove an organization to the list of trusted organizations.
+    Remove an organization from the list of trusted organizations.
     admin_user needs to have SUSE Manager Administrator role to perform this action
     :param org_id: orgnization id
     :param org_untrust_id: organizaton id to untrust
@@ -1121,54 +1124,54 @@ def org_trust_remove_trust(org_id, org_untrust_id, admin_user=None, admin_passwo
 
 
 """
-Server groups management
+System group management
 """
 
 
 def systemgroup_create(name, descr, org_admin_user=None, org_admin_password=None):
     """
-    Create system group.
+    Create a system group.
 
     :param name: Name of the system group.
     :param descr: Description of the system group.
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
-    :return: server group structure.
+    :return: details of the system group
     """
     return UyuniSystemgroup(org_admin_user, org_admin_password).create(name=name, description=descr)
 
 
 def systemgroup_get_details(name, org_admin_user=None, org_admin_password=None):
     """
-    Get system group details.
+    Return system group details.
 
     :param name: Name of the system group.
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
-    :return: server group structure.
+    :return: details of the system group
     """
     return UyuniSystemgroup(org_admin_user, org_admin_password).get_details(name=name)
 
 
 def systemgroup_update(name, descr, org_admin_user=None, org_admin_password=None):
     """
-    Update system group.
+    Update a system group.
 
     :param name: Name of the system group.
     :param descr: Description of the system group.
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
-    :return: server group structure.
+    :return: details of the system group
     """
     return UyuniSystemgroup(org_admin_user, org_admin_password).update(name=name, description=descr)
 
 
 def systemgroup_delete(name, org_admin_user=None, org_admin_password=None):
     """
-    Delete system group.
+    Delete a system group.
 
     :param name: Name of the system group.
     :param org_admin_user: organization administrator username
@@ -1181,10 +1184,10 @@ def systemgroup_delete(name, org_admin_user=None, org_admin_password=None):
 
 def systemgroup_list_systems(name, minimal=True, org_admin_user=None, org_admin_password=None):
     """
-    Lists systems in a system group.
+    List systems in a system group
 
     :param name: Name of the system group.
-    :param minimal: default True. Minimal information or more detailed one about systems
+    :param minimal: default True. Only return minimal information about systems, use False to get more details
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
@@ -1196,7 +1199,7 @@ def systemgroup_list_systems(name, minimal=True, org_admin_user=None, org_admin_
 def systemgroup_add_remove_systems(name, add_remove, system_ids=[],
                                    org_admin_user=None, org_admin_password=None):
     """
-    Delete system group.
+    Update systems on a system group.
 
     :param name: Name of the system group.
     :param add_remove: True to add to the group, False to remove.
@@ -1243,7 +1246,7 @@ def master_list_minions(active=False):
 
 def systems_get_minion_id_map(username=None, password=None, refresh=False):
     """
-    Map between minion ID and system internal ID of all system user have access to
+    Returns a map from minion ID to Uyuni system ID for all systems a user has access to
 
     :param username: username to authenticate
     :param password: password for user
