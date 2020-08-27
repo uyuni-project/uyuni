@@ -352,12 +352,12 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
 class UyuniOrg(UyuniRemoteObject):
     """
-    CRUD operations on orgs
+    CRUD operations on organizations
     """
 
     def list_orgs(self) -> Dict[str, Union[int, str, bool]]:
         """
-        List all orgs.
+        List all organizations.
         Admin user must have SUSE Manager Administrator role to perform this action
 
         :return: list of all existing organizations
@@ -895,7 +895,7 @@ def org_list_orgs(admin_user=None, admin_password=None):
     """
     List all organizations.
     Admin user must have SUSE Manager Administrator role to perform this action
-    :return: list of all available orgs.
+    :return: list of all available organizations.
     """
     return UyuniOrg(admin_user, admin_password).list_orgs()
 
