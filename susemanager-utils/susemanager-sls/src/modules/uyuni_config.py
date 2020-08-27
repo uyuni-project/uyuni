@@ -599,36 +599,8 @@ class UyuniChildMasterIntegration:
     """
     DEFAULT_MASTER_CONFIG_PATH = "/etc/salt/master"
 
-    class FCkMinions(CkMinions):
-        """
-        Minion data matcher.
-        """
-
-        def _get_key_fingerprint(self, minion_id: str) -> str:
-            """
-            Get minion key fingerprint.
-
-            :param minion_id:
-            :return: fingerprint or an empty string if not found
-            """
-            keypath = os.path.join(self.opts['pki_dir'], self.acc, minion_id)
-            return salt.utils.crypt.pem_finger(path=keypath, sum_type=self.opts["hash_type"])
-
-        def _get_fingerprints(self, minion_ids: List[str]) -> Dict[str, str]:
-            """
-            Resolve all fingerprints.
-
-            :param minion_ids:
-            :return:
-            """
-            minions = {}
-            for mid in minion_ids:
-                minions[mid] = self._get_key_fingerprint(minion_id=mid)
-
-            return minions
-
     def __init__(self):
-        self._minions = UyuniChildMasterIntegration.FCkMinions(salt.config.client_config(self._get_master_config()))
+        self._minions = CkMinions(salt.config.client_config(self._get_master_config()))
 
     @staticmethod
     def _get_master_config() -> str:
@@ -644,54 +616,17 @@ class UyuniChildMasterIntegration:
 
         return cfg_path
 
-    def list_minions(self, active: bool = False) -> List[str]:
+    def select_minions(self, target: str, target_type: str = "glob") -> Dict[str, Union[List[str], bool]]:
         """
-        Returns currently registered minions.
+        Select minion IDs that matches the target expression.
 
-        :param active: Return only active minions.  Default False.
-        :return: list of minion ids
-        """
-        return self._minions.connected_ids() if active else self._minions._pki_minions()
-
-    def list_minions_fp(self, active: bool = False) -> Dict[str, str]:
-        """
-        Return list of currently registered minions, including their key fingerprints.
-
-        :param active: Return only active minions.
-        :return: mapping of minion ids to the fingerprints
-        """
-        return self._minions._get_fingerprints(self.list_minions(active=active))
-
-    def select_minions(self, expr: str, tgt: str = "glob") -> Dict[str, Union[List[str], bool]]:
-        """
-        Select minion IDs that matches the expression.
-
-        :param expr: expression
-        :param tgt: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+        :param target: target expression to be applied
+        :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
                     pillar_exact, compound, compound_pillar_exact. Default: glob.
 
         :return: list of minions
         """
-        return self._minions.check_minions(expr=expr, tgt_type=tgt)
-
-    def select_minions_fp(self, expr: str, tgt: str = "glob") -> Dict[str, Union[str, bool]]:
-        """
-        Select minion IDs that matches the expression.
-
-        :param expr: expression
-        :param tgt: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
-                    pillar_exact, compound, compound_pillar_exact. Default: glob.
-
-        :return: mapping of minion ids to the fingerprints
-        """
-        selected = self.select_minions(expr=expr, tgt=tgt)
-        ret = {
-            "minions": self._minions._get_fingerprints(selected["minions"]),
-            "missing": self._minions._get_fingerprints(selected["missing"]),
-            "ssh_minions": selected.get("ssh_minions", False)
-        }
-
-        return ret
+        return self._minions.check_minions(expr=target, tgt_type=target_type)
 
 
 def __virtual__():
@@ -1213,35 +1148,20 @@ def systemgroup_add_remove_systems(name, add_remove, system_ids=[],
                                                                                    system_ids=system_ids)
 
 
-def master_select_minions(expr=None, tgt="glob", fp=False):
+def master_select_minions(target=None, target_type="glob"):
     """
     Return list minions from the configured Salt Master on the same host
     which match the expression on the defined target
 
-    :param expr: expression to filter minions
-    :param tgt: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+    :param target: target expression to filter minions
+    :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
                 pillar_exact, compound, compound_pillar_exact. Default: glob.
-    :param fp: Include fingerprints
 
     :return: list of minion IDs
     """
     cmi = UyuniChildMasterIntegration()
 
-    return (cmi.select_minions_fp if fp else cmi.select_minions)(expr=expr, tgt=tgt)
-
-
-def master_list_minions(active=False):
-    """
-    Return list of all available minions from the configured
-        Salt Master on the same host.
-
-    :param active: Return only active minions.
-
-    :return: list of minion IDs
-    """
-    cmi = UyuniChildMasterIntegration()
-
-    return cmi.list_minions(active=active)
+    return cmi.select_minions(target=target, target_type=target_type)
 
 
 def systems_get_minion_id_map(username=None, password=None, refresh=False):

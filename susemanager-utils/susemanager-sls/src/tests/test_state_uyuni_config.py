@@ -460,7 +460,7 @@ class TestManageGroups:
             'uyuni.systems_get_minion_id_map': MagicMock()}):
             with patch.dict(uyuni_config.__opts__, {'test': True}):
                 result = uyuni_config.group_present('my_group', 'my group description',
-                                                    expression='*http*',
+                                                    target='*http*',
                                                     org_admin_user='org_admin_user',
                                                     org_admin_password='org_admin_password')
                 assert result is not None
@@ -489,7 +489,7 @@ class TestManageGroups:
             'uyuni.systems_get_minion_id_map': MagicMock(return_value={'my_minion_1': '10001'})}):
             with patch.dict(uyuni_config.__opts__, {'test': True}):
                 result = uyuni_config.group_present('my_group', 'my group description',
-                                                    expression='*http*',
+                                                    target='*http*',
                                                     org_admin_user='org_admin_user',
                                                     org_admin_password='org_admin_password')
                 assert result is not None
@@ -520,7 +520,7 @@ class TestManageGroups:
             'uyuni.systemgroup_create': MagicMock(),
             'uyuni.systemgroup_add_remove_systems': MagicMock()}):
             result = uyuni_config.group_present('my_group', 'my group description',
-                                                expression='*http*',
+                                                target='*http*',
                                                 org_admin_user='org_admin_user',
                                                 org_admin_password='org_admin_password')
             assert result is not None
@@ -560,7 +560,7 @@ class TestManageGroups:
             'uyuni.systemgroup_update': MagicMock(),
             'uyuni.systemgroup_add_remove_systems': MagicMock()}):
             result = uyuni_config.group_present('my_group', 'my group description',
-                                                expression='*http*',
+                                                target='*http*',
                                                 org_admin_user='org_admin_user',
                                                 org_admin_password='org_admin_password')
             assert result is not None

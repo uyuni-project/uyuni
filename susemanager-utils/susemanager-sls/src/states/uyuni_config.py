@@ -122,7 +122,7 @@ class UyuniUsers:
         :param password: desired password for the user
         :param email: valid email address
         :param first_name: First name
-        :param last_name: Second name
+        :param last_name: Last name
         :param use_pam_auth: if you wish to use PAM authentication for this user
         :param roles: roles to assign to user
         :param system_groups: system groups to assign user to
@@ -331,10 +331,10 @@ class UyuniGroups:
                                                              org_admin_password=org_admin_password)
 
     @staticmethod
-    def _get_systems_for_group(matching: str, target: str = "glob",
+    def _get_systems_for_group(target: str, target_type: str = "glob",
                                org_admin_user: str = None, org_admin_password: str = None):
 
-        selected_minions = __salt__['uyuni.master_select_minions'](matching, target)
+        selected_minions = __salt__['uyuni.master_select_minions'](target, target_type)
         available_system_ids = __salt__['uyuni.systems_get_minion_id_map'](org_admin_user, org_admin_password)
 
         return [
@@ -342,14 +342,14 @@ class UyuniGroups:
             if minion_id in available_system_ids
         ]
 
-    def manage(self, name: str, description: str, expression: str, target: str = "glob",
+    def manage(self, name: str, description: str, target: str, target_type: str = "glob",
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
         Create or update group
         :param name: group name
         :param description: group description
-        :param expression: expression used to filter which minions should be part of the group
-        :param target: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+        :param target: target expression used to filter which minions should be part of the group
+        :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
                 pillar_exact, compound, compound_pillar_exact. Default: glob.
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
@@ -369,7 +369,7 @@ class UyuniGroups:
                 return StateResult.state_error(name, "Error managing group '{}': {}".format(name, exc))
 
         current_systems_ids = [sys['id'] for sys in (current_systems or [])]
-        systems_to_group = self._get_systems_for_group(expression, target,
+        systems_to_group = self._get_systems_for_group(target, target_type,
                                                        org_admin_user=org_admin_user,
                                                        org_admin_password=org_admin_password)
 
@@ -728,21 +728,21 @@ def org_trust(name, org_name, trusts, admin_user=None, admin_password=None):
     return UyuniOrgsTrust().trust(name, org_name, trusts, admin_user, admin_password)
 
 
-def group_present(name, description, expression=None, target="glob",
+def group_present(name, description, target=None, target_type="glob",
                   org_admin_user=None, org_admin_password=None):
     """
     Create or update group
 
     :param name: group name
     :param description: group description
-    :param expression: expression used to filter which minions should be part of the group
-    :param target: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
+    :param target: target expression used to filter which minions should be part of the group
+    :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
             pillar_exact, compound, compound_pillar_exact. Default: glob.
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
     :return: dict for Salt communication
     """
-    return UyuniGroups().manage(name, description, expression, target,
+    return UyuniGroups().manage(name, description, target, target_type,
                                 org_admin_user, org_admin_password)
 
 
