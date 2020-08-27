@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-26 14:48+0200\n"
-"PO-Revision-Date: 2020-08-26 12:39+0000\n"
+"PO-Revision-Date: 2020-08-27 13:02+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
 "Language: cs\n"
@@ -127,6 +127,10 @@ msgstr "Jako argument u produktu je očekáván slovník"
 #, python-format
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Neplatná hodnota '%s' pro %s (%s)"
+
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Neplatný pár system_id/action_id."
 
 #: ../server/handlers/xmlrpc/up2date.py:233
 #, python-format
@@ -328,7 +332,9 @@ msgstr ""
 "\n"
 "  %(entitlement_url)s\n"
 
-#: ../server/apacheAuth.py:66
+#: ../server/rhnHandler.py:62
+msgid "Please run rhn_register as root on this client"
+msgstr "Spusťte prosím rhn_register jako superuživatel (root) tohoto klienta"
 #, python-format
 msgid "incomplete proxy authentication token: %s"
 msgstr "Neúplný autentifikační token pro proxy: %s"
@@ -540,8 +546,8 @@ msgstr ""
 "\n"
 "     Znovu se zaregistrujte jako superuživatel root příkazem mgr_register.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled"
-"\" (Overview),\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview),\n"
 "     zvolte \"Správu předplatných\" (Subscription Management)\n"
 "     pro aktivaci služby pro tento systém.\n"
 "     "
@@ -568,8 +574,8 @@ msgstr ""
 "\n"
 "     Tento systém nemá platné oprávnění pro Správce SUSE.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled"
-"\" (Overview)\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview)\n"
 "     zvolte \"Správu předplatných\" (Subscription Management),\n"
 "     abyste si aktivovali službu pro tento systém.\n"
 "     "
@@ -627,6 +633,14 @@ msgid ""
 "     to be changed.\n"
 "     "
 msgstr ""
+"\n"
+"     Překročeny limity členství ve skupině uživatelů.\n"
+"\n"
+"     Aktuální nastavení účtu neumožňuje přidat další uživatelský účet. "
+"Zkontrolujte\n"
+"     prosím u správce vaší organizace účet, zda maximální počet uživatelů,\n"
+"     kteří se mohou přihlásit k odběru serverových potřeb, má být změněn.\n"
+"     "
 
 #: ../common/rhnException.py:108
 msgid ""
@@ -641,9 +655,16 @@ msgid ""
 "     subscribed to your account.\n"
 "     "
 msgstr ""
+"\n"
+"     Překročeny limity členství ve skupině uživatelů.\n"
+"\n"
+"     Aktuální nastavení účtu Vám neumožňuje přidat další uživatelský účet.\n"
+"     Zkontrolujte u správce vaší organizace účet, zda maximální počet "
+"uživatelů,\n"
+"     kteří se mohou přihlásit k odběru serverových potřeb, má být změněn.\n"
+"     "
 
 #: ../common/rhnException.py:116
-#, fuzzy
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -652,9 +673,9 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Neplatný kanál.\n"
+"     Neplatná architektura.\n"
 "\n"
-"     Kanál, který jste zvolili neexistuje.\n"
+"     Architektura balíčku není podporována\n"
 "     "
 
 #: ../common/rhnException.py:121
@@ -670,6 +691,12 @@ msgid ""
 "the traditional tools.\n"
 "    "
 msgstr ""
+"\n"
+"    Tento systém je již zaregistrován jako Salt Minion. Chcete-li se "
+"zaregistrovat jako tradiční klient,\n"
+"    nejprve ho smažte webovým rozhraním UI nebo API a pak ho registrujte "
+"tradičními nástroji.\n"
+"    "
 
 #. For the uploading tools
 #: ../common/rhnException.py:127
@@ -688,9 +715,13 @@ msgid ""
 "     does not already exists on the server\n"
 "     "
 msgstr ""
+"\n"
+"     Nahrávání balíčku se nezdařilo kvůli porušení jedinečnosti.\n"
+"     Ujistěte se, že balíček nemá duplicitní závislosti a je dosud na "
+"serveru\n"
+"     "
 
 #: ../common/rhnException.py:134
-#, fuzzy
 msgid ""
 "\n"
 "     The --force rhnpush option is disabled on this server.\n"
@@ -698,8 +729,9 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"                   Účet %s byl na tomto serveru deaktivován.\n"
-"                   Pro další pomoc kontaktujte správce své organizace."
+"     Možnost --force rhnpush byla na tomto serveru deaktivována.\n"
+"     Pro další pomoc kontaktujte svého správce SUSE Manager.\n"
+"     "
 
 #. 60-70: token errors
 #: ../common/rhnException.py:140
@@ -709,6 +741,10 @@ msgid ""
 "     Please retry with a valid key.\n"
 "     "
 msgstr ""
+"\n"
+"     Zadaný aktivační žeton nebyl na serveru nalezen.\n"
+"     Zkuste to prosím znovu s platným klíčem.\n"
+"     "
 
 #: ../common/rhnException.py:144
 msgid "Too many systems registered using this registration token"
@@ -730,6 +766,9 @@ msgid ""
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
+"\n"
+"     Ve vašem systému nebyl nalezen žádný odpovídající základní kanál.\n"
+"     "
 
 #: ../common/rhnException.py:152
 msgid ""
@@ -739,6 +778,11 @@ msgid ""
 "     administrators for further details.\n"
 "     "
 msgstr ""
+"\n"
+"     Nemáte povolení k odběru určeného kanálu.\n"
+"     Pro další podrobnosti se prosím obraťte na\n"
+"     kanál vaší organizace nebo na její správce.\n"
+"     "
 
 #: ../common/rhnException.py:157
 msgid "You can not unsubscribe from base channel."
@@ -746,7 +790,7 @@ msgstr "Z hlavního kanálu se nelze odhlásit."
 
 #: ../common/rhnException.py:158
 msgid "SUSE Manager or Proxy channel can not be subscribed."
-msgstr ""
+msgstr "Nelze odebírat SUSE Manager nebo Proxy kanál."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:161
@@ -784,11 +828,11 @@ msgstr "Chybý požadovaný argument"
 #. 600-699: RHEL5+ EN errors
 #: ../common/rhnException.py:178
 msgid "No entitlement information tied to hardware"
-msgstr ""
+msgstr "K hardwaru nejsou připojeny žádné informace o oprávnění"
 
 #: ../common/rhnException.py:179
 msgid "Installation number is not entitling"
-msgstr ""
+msgstr "Číslo instalace není oprávnění"
 
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:182
@@ -801,24 +845,21 @@ msgstr "Příliš dlouhé heslo"
 
 #: ../common/rhnException.py:184
 msgid "This user has read only API access. Action denied."
-msgstr ""
+msgstr "Tento uživatel má k API přístup jen pro čtení. Akce je zamítnuta."
 
 #: ../common/rhnException.py:186
-#, fuzzy
 msgid "System Name cannot be less than 1 character"
-msgstr "uživatelské jméno musí být kratší, než %d znaků"
+msgstr "Název systému musí mít alespoň 1 znak"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
-#, fuzzy
 msgid "SUSE Manager Proxy error."
-msgstr "Chyba RHN Proxy."
+msgstr "Chyba SUSE Manager Proxy."
 
 #: ../common/rhnException.py:191
-#, fuzzy
 msgid "SUSE Manager Proxy unable to login."
-msgstr "RHN Proxy se nepodařilo připojit."
+msgstr "SUSE Manager Proxy není schopen se přihlásit."
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
@@ -828,16 +869,18 @@ msgid ""
 "     in the database.\n"
 "     "
 msgstr ""
+"\n"
+"     ID systému SUSE Manager Proxy neodpovídá serveru Spacewalk Proxy\n"
+"     v databázi.\n"
+"     "
 
 #: ../common/rhnException.py:197
-#, fuzzy
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr "Session token klient je neplatný."
+msgstr "Žeton relace SUSE Manager Proxy je neplatný."
 
 #: ../common/rhnException.py:198
-#, fuzzy
 msgid "SUSE Manager Proxy session token has expired."
-msgstr "Session token klienta vypršel."
+msgstr "Žeton relace SUSE Manager Proxy vypršel."
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
@@ -847,6 +890,10 @@ msgid ""
 "     please contact your sysadmin to have your account created.\n"
 "     "
 msgstr ""
+"\n"
+"      vytvoření uživatele není povoleno pomocí mgr_register;\n"
+"     obraťte se na svého sysadmina a požádejte ho o vytvoření účtu.\n"
+"     "
 
 #: ../common/rhnException.py:206
 msgid ""
@@ -855,6 +902,10 @@ msgid ""
 "this server\n"
 "     "
 msgstr ""
+"\n"
+"     Tento server SUSE Manager nemá na tomto serveru povoleno používat Inter "
+"Server Sync\n"
+"     "
 
 #: ../common/rhnException.py:209
 msgid ""
@@ -862,6 +913,9 @@ msgid ""
 "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
 "     "
 msgstr ""
+"\n"
+"     Funkce Inter Server Sync je na tomto serveru SUSE Manager zakázána.\n"
+"     "
 
 #. 3000-3999: XML dumper errors:
 #: ../common/rhnException.py:214
@@ -886,11 +940,11 @@ msgstr "Soubor nenalezen"
 
 #: ../common/rhnException.py:219
 msgid "Function retrieval error"
-msgstr ""
+msgstr "Chyba načítání funkce"
 
 #: ../common/rhnException.py:220
 msgid "Function execution error"
-msgstr ""
+msgstr "Chyba provádění funkce"
 
 #: ../common/rhnException.py:221
 msgid "Missing version string"
@@ -910,16 +964,16 @@ msgstr "Neplatná verze kanálu"
 
 #: ../common/rhnException.py:225
 msgid "No comps file for channel"
-msgstr ""
+msgstr "Pro kanál není k dispozici žádný soubor comps"
 
 #: ../common/rhnException.py:226
 msgid "Unable to retrieve comps file"
-msgstr ""
+msgstr "Nelze načíst soubor comps"
 
 #. 4000 - 4999: config management errors
 #: ../common/rhnException.py:229
 msgid "Configuration action missing"
-msgstr ""
+msgstr "Chybí akce konfigurace"
 
 #: ../common/rhnException.py:230
 msgid "File too large"
@@ -931,100 +985,98 @@ msgstr "Soubor obsahuje binární data"
 
 #: ../common/rhnException.py:232
 msgid "Configuration channel is not empty"
-msgstr ""
+msgstr "Konfigurační kanál není prázdný"
 
 #: ../common/rhnException.py:233
 msgid "Permission error"
-msgstr ""
+msgstr "Chyba oprávnění"
 
 #: ../common/rhnException.py:234
 msgid "Content missing for configuration file"
-msgstr ""
+msgstr "Chybí obsah konfiguračního souboru"
 
 #: ../common/rhnException.py:235
 msgid "Template delimiters not specified"
-msgstr ""
+msgstr "Oddělovače šablon nejsou zadány"
 
 #: ../common/rhnException.py:236
 msgid "Configuration channel does not exist"
-msgstr ""
+msgstr "Konfigurační kanál neexistuje"
 
 #: ../common/rhnException.py:237
 msgid "Configuration channel already exists"
-msgstr ""
+msgstr "Konfigurační kanál již existuje"
 
 #: ../common/rhnException.py:238
 msgid "File missing from configuration channel"
-msgstr ""
+msgstr "Soubor z konfiguračního kanálu chybí"
 
 #: ../common/rhnException.py:239
 msgid "Different revision of this file is uploaded"
-msgstr ""
+msgstr "Je nahrána jiná revize tohoto souboru"
 
 #: ../common/rhnException.py:240
 msgid "File already uploaded to configuration channel"
-msgstr ""
+msgstr "Soubor již byl nahrán na konfigurační kanál"
 
 #: ../common/rhnException.py:241
 msgid "File size exceeds remaining quota space"
-msgstr ""
+msgstr "Velikost souboru překračuje zbývající prostor kvóty"
 
 #: ../common/rhnException.py:242
 msgid "Full path of file must be specified"
-msgstr ""
+msgstr "Musí být zadána úplná cesta k souboru"
 
 #: ../common/rhnException.py:243
 msgid "Invalid revision number"
-msgstr ""
+msgstr "Neplatné číslo revize"
 
 #: ../common/rhnException.py:244
 msgid "Cannot compare files of different file type"
-msgstr ""
+msgstr "Nelze porovnat soubory různých typů"
 
 #. 5000 - 5999: client content uploading errors
 #. 5000 - 5099: crash reporting errors
 #: ../common/rhnException.py:248
 msgid "Crash information is invalid or incomplete"
-msgstr ""
+msgstr "Údaje o havárii jsou neplatné nebo neúplné"
 
 #: ../common/rhnException.py:249
 msgid "Crash file information is invalid or incomplete"
-msgstr ""
+msgstr "Údaje souboru o havárii jsou neplatné nebo neúplné"
 
 #: ../common/rhnException.py:250
 msgid "Error composing crash directory path"
-msgstr ""
+msgstr "Chyba při vytváření cesty k adresáři havárie"
 
 #: ../common/rhnException.py:251
 msgid "Error composing crash file path"
-msgstr ""
+msgstr "Chyba při vytváření cesty k souboru havárie"
 
 #: ../common/rhnException.py:252 ../common/rhnException.py:259
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "Neplatná verze kanálu"
+msgstr "Neplatné kódování obsahu"
 
 #: ../common/rhnException.py:253
-#, fuzzy
 msgid "Invalid crash name"
-msgstr "Neplatné jméno balíčku"
+msgstr "Neplatný název havárie"
 
 #: ../common/rhnException.py:254
 msgid "Crash reporting is disabled for this organization"
-msgstr ""
+msgstr "Hlášení havárií je pro tuto organizaci zakázáno"
 
 #. 5100 - 5199: scap results reporting error
 #: ../common/rhnException.py:256
 msgid "SCAP results file transfer is invalid or incomplete"
-msgstr ""
+msgstr "Přenos souboru výsledků SCAP je neplatný nebo neúplný"
 
 #: ../common/rhnException.py:257
 msgid "Error composing directory path for detailed SCAP results"
-msgstr ""
+msgstr "Chyba při vytváření cesty k adresáři pro podrobné výsledky SCAP"
 
 #: ../common/rhnException.py:258
 msgid "Error composing file path for detailed SCAP results"
-msgstr ""
+msgstr "Chyba při vytváření cesty souboru pro podrobné výsledky SCAP"
 
 #: ../common/rhnException.py:306
 msgid ""
@@ -1035,6 +1087,12 @@ msgid ""
 "     details of what you were trying to do when this error occurred and\n"
 "     details on how to reproduce this problem.\n"
 msgstr ""
+"\n"
+"     Při zpracování vašeho požadavku došlo k chybě. Přetrvává-li tento\n"
+"     problém, ohlaste prosím chybu na scc.suse.com.\n"
+"     Rozhodnete-li se odeslat zprávu o chybě, nezapomeňte připojit\n"
+"     podrobnosti o tom, co jste se pokusili udělat, když došlo k této chybě\n"
+"     a postup, jak tento problém reprodukovat.\n"
 
 #: ../common/rhnException.py:358
 #, python-format

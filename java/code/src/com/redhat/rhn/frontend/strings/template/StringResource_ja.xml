@@ -95,19 +95,7 @@
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ ユーザー様
-
-新しいユーザーがアカウントに追加されました。
-
-{0}
-
-アカウントに関連付けられている有効なユーザーや Red Hat ログインをすべて表示するには、
-以下をご確認ください。
-
-  {1}
-
-@@PRODUCT_NAME@@ をご利用頂きありがとうございます。
-{2}</target>
+        <target>新しいユーザーがアカウントに追加されました。 {0} アカウントに関連付けられている有効なユーザーや @@PRODUCT_NAME@@ ログインをすべて表示するには、 以下をご確認ください: {1} @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。 {2}</target>
       </trans-unit>
       <group>
         <context-group name="ctx">
