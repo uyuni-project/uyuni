@@ -152,14 +152,14 @@ class UyuniUser(UyuniRemoteObject):
     CRUD operation on users.
     """
 
-    def get_details(self, uid: str) -> Dict[str, Any]:
+    def get_details(self, login: str) -> Dict[str, Any]:
         """
         Retrieve details of an Uyuni user.
 
-        :param: uid: user name to lookup
+        :param: login: user name to lookup
         :return: Dictionary with user details
         """
-        return self.client("user.getDetails", uid)
+        return self.client("user.getDetails", login)
 
     def list_users(self) -> List[Dict[str, Any]]:
         """
@@ -169,13 +169,13 @@ class UyuniUser(UyuniRemoteObject):
         """
         return self.client("user.listUsers")
 
-    def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "",
+    def create(self, login: str, password: str, email: str, first_name: str = "", last_name: str = "",
                use_pam_auth: bool = False) -> bool:
         """
         Create an Uyuni user.
         User will be created in the same organization as the authenticated user.
 
-        :param uid: desired login name
+        :param login: desired login name
         :param password: desired password for the user
         :param email: valid email address
         :param first_name: First name
@@ -184,13 +184,13 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: True on success, raise exception otherwise
         """
-        return bool(self.client("user.create", uid, password, first_name, last_name, email, int(use_pam_auth)))
+        return bool(self.client("user.create", login, password, first_name, last_name, email, int(use_pam_auth)))
 
-    def set_details(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
+    def set_details(self, login: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
         """
         Update an Uyuni user information.
 
-        :param uid: login name
+        :param login: login name
         :param password: desired password for the user
         :param email: valid email address
         :param first_name: First name
@@ -198,83 +198,83 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: True on success, raise exception otherwise
         """
-        return bool(self.client("user.setDetails", uid, {
+        return bool(self.client("user.setDetails", login, {
             "password": password,
             "first_name": first_name,
             "last_name": last_name,
             "email": email
         }))
 
-    def delete(self, uid: str) -> bool:
+    def delete(self, login: str) -> bool:
         """
         Remove an Uyuni user.
 
-        :param uid: UID of the user
+        :param login: login of the user
         :return: boolean, True if user has been deleted successfully.
         """
-        return bool(self.client("user.delete", uid))
+        return bool(self.client("user.delete", login))
 
-    def list_roles(self, uid: str) -> List[str]:
+    def list_roles(self, login: str) -> List[str]:
         """
         Return the list of roles of a user.
 
-        :param: uid: user name to use on lookup
+        :param: login: user name to use on lookup
         :return: list of user roles
         """
-        return self.client("user.listRoles", uid)
+        return self.client("user.listRoles", login)
 
-    def add_role(self, uid: str, role: str) -> bool:
+    def add_role(self, login: str, role: str) -> bool:
         """
         Add a role to a user
 
-        :param uid: UID of the user
+        :param login: login of the user
         :param role: a new role
 
         :return: boolean, True if role has been added successfully.
         """
-        return bool(self.client("user.addRole", uid, role))
+        return bool(self.client("user.addRole", login, role))
 
-    def remove_role(self, uid: str, role: str) -> bool:
+    def remove_role(self, login: str, role: str) -> bool:
         """
         Remove user from the Uyuni org.
 
-        :param uid: UID of the user
+        :param login: login of the user
         :param role: one of uyuni user roles
 
         :return: boolean, True if role has been removed successfully.
         """
-        return bool(self.client("user.removeRole", uid, role))
+        return bool(self.client("user.removeRole", login, role))
 
-    def list_assigned_system_groups(self, uid: str) -> List[Dict[str, Union[int, str]]]:
+    def list_assigned_system_groups(self, login: str) -> List[Dict[str, Union[int, str]]]:
         """
         Returns the system groups that a user can administer.
 
-        :param uid: UID of the user
+        :param login: login of the user
         :return: List of system groups that a user can administer
         """
-        return self.client("user.listAssignedSystemGroups", uid)
+        return self.client("user.listAssignedSystemGroups", login)
 
-    def add_assigned_system_groups(self, uid: str, server_group_names: List[str], set_default: bool = False) -> int:
+    def add_assigned_system_groups(self, login: str, server_group_names: List[str], set_default: bool = False) -> int:
         """
         Add system groups to a user's list of assigned system groups.
 
-        :param uid: user id to look for
+        :param login: user id to look for
         :param server_group_names: system groups to add
         :param set_default: True if the system groups should also be added to user's default list.
         :return: 1 on success, exception thrown otherwise.
         """
-        return self.client("user.addAssignedSystemGroups", uid, server_group_names, set_default)
+        return self.client("user.addAssignedSystemGroups", login, server_group_names, set_default)
 
-    def remove_assigned_system_groups(self, uid: str, server_group_names: List[str], set_default: bool = False) -> int:
+    def remove_assigned_system_groups(self, login: str, server_group_names: List[str], set_default: bool = False) -> int:
         """
         Remove system groups from a user's list of assigned system groups
 
-        :param uid: user id to look for
+        :param login: user id to look for
         :param server_group_names: systems groups to remove from list of assigned system groups
         :param set_default: True if the system groups should also be removed to user's default list.
         :return: 1 on success, exception thrown otherwise.
         """
-        return self.client("user.removeAssignedSystemGroups", uid, server_group_names, set_default)
+        return self.client("user.removeAssignedSystemGroups", login, server_group_names, set_default)
 
 
 class UyuniChannel(UyuniRemoteObject):
@@ -294,51 +294,51 @@ class UyuniChannel(UyuniRemoteObject):
 
 
 class UyuniChannelSoftware(UyuniRemoteObject):
-    def set_user_manageable(self, channel_label: str, uid: str, access: bool) -> int:
+    def set_user_manageable(self, channel_label: str, login: str, access: bool) -> int:
         """
         Set the manageable flag for a given channel and user.
         If access is set to 'true', this method will give the user manage permissions to the channel.
         Otherwise, that privilege is revoked.
 
         :param channel_label: label of the channel
-        :param uid: user login id
+        :param login: user login id
         :param access: True if the user should have management access to channel
         :return: 1 on success, exception thrown otherwise.
         """
-        return self.client("channel.software.setUserManageable", channel_label, uid, access)
+        return self.client("channel.software.setUserManageable", channel_label, login, access)
 
-    def set_user_subscribable(self, channel_label: str, uid: str, access: bool) -> int:
+    def set_user_subscribable(self, channel_label: str, login: str, access: bool) -> int:
         """
         Set the subscribable flag for a given channel and user.
         If value is set to 'true', this method will give the user subscribe permissions to the channel.
         Otherwise, that privilege is revoked.
 
         :param channel_label: label of the channel
-        :param uid: user login id
+        :param login: user login id
         :param access: True if the user should have subscribe permission to the channel
         :return: 1 on success, exception thrown otherwise.
         """
-        return self.client("channel.software.setUserSubscribable", channel_label, uid, access)
+        return self.client("channel.software.setUserSubscribable", channel_label, login, access)
 
-    def is_user_manageable(self, channel_label: str, uid: str) -> bool:
+    def is_user_manageable(self, channel_label: str, login: str) -> bool:
         """
         Returns whether the channel may be managed by the given user.
 
         :param channel_label: label of the channel
-        :param uid: user login id
+        :param login: user login id
         :return: boolean which indicates if user can manage channel or not
         """
-        return bool(self.client("channel.software.isUserManageable", channel_label, uid))
+        return bool(self.client("channel.software.isUserManageable", channel_label, login))
 
-    def is_user_subscribable(self, channel_label: str, uid: str) -> bool:
+    def is_user_subscribable(self, channel_label: str, login: str) -> bool:
         """
         Returns whether the channel may be subscribed to by the given user.
 
         :param channel_label: label of the channel
-        :param uid: user login id
+        :param login: user login id
         :return: boolean which indicates if user subscribe the channel or not
         """
-        return bool(self.client("channel.software.isUserSubscribable", channel_label, uid))
+        return bool(self.client("channel.software.isUserSubscribable", channel_label, login))
 
     def is_globally_subscribable(self, channel_label: str) -> bool:
         """
@@ -619,21 +619,21 @@ def __virtual__():
     return __virtualname__
 
 
-def user_get_details(uid, password=None, org_admin_user=None, org_admin_password=None):
+def user_get_details(login, password=None, org_admin_user=None, org_admin_password=None):
     """
     Get details of an Uyuni user
     If password is provided as a parameter, then it will be used to authenticate
     If no user credentials are provided, organization administrator credentials will be used
     If no user credentials neither organization admin credentials are provided, credentials from pillar will be used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param password: password for the user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
     :return: The user information
     """
-    return UyuniUser(org_admin_user if password is None else uid,
-                     org_admin_password if password is None else password).get_details(uid=uid)
+    return UyuniUser(org_admin_user if password is None else login,
+                     org_admin_password if password is None else password).get_details(login)
 
 
 def user_list_users(org_admin_user=None, org_admin_password=None):
@@ -647,13 +647,13 @@ def user_list_users(org_admin_user=None, org_admin_password=None):
     return UyuniUser(org_admin_user, org_admin_password).list_users()
 
 
-def user_create(uid, password, email, first_name, last_name, use_pam_auth=False,
+def user_create(login, password, email, first_name, last_name, use_pam_auth=False,
                 org_admin_user=None, org_admin_password=None):
     """
     Create an Uyuni user.
     If no organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param password: password for the user
     :param email: user email address
     :param first_name: user first name
@@ -664,18 +664,18 @@ def user_create(uid, password, email, first_name, last_name, use_pam_auth=False,
 
     :return: boolean indication success in operation
     """
-    return UyuniUser(org_admin_user, org_admin_password).create(uid=uid, password=password, email=email,
+    return UyuniUser(org_admin_user, org_admin_password).create(login=login, password=password, email=email,
                                                                 first_name=first_name, last_name=last_name,
                                                                 use_pam_auth=use_pam_auth)
 
 
-def user_set_details(uid, password, email, first_name=None, last_name=None,
+def user_set_details(login, password, email, first_name=None, last_name=None,
                      org_admin_user=None, org_admin_password=None):
     """
     Update an Uyuni user.
     If no organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param password: password for the user
     :param email: user email address
     :param first_name: user first name
@@ -684,89 +684,89 @@ def user_set_details(uid, password, email, first_name=None, last_name=None,
     :param org_admin_password: organization admin password
     :return: boolean indication success in operation
     """
-    return UyuniUser(org_admin_user, org_admin_password).set_details(uid=uid, password=password, email=email,
+    return UyuniUser(org_admin_user, org_admin_password).set_details(login=login, password=password, email=email,
                                                                      first_name=first_name, last_name=last_name)
 
 
-def user_delete(uid, org_admin_user=None, org_admin_password=None):
+def user_delete(login, org_admin_user=None, org_admin_password=None):
     """
     Deletes an Uyuni user
     If no organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
     :return: boolean indication success in operation
     """
-    return UyuniUser(org_admin_user, org_admin_password).delete(uid=uid)
+    return UyuniUser(org_admin_user, org_admin_password).delete(login)
 
 
-def user_list_roles(uid, password=None, org_admin_user=None, org_admin_password=None):
+def user_list_roles(login, password=None, org_admin_user=None, org_admin_password=None):
     """
     Returns an Uyuni user roles.
     If password is provided as a parameter, then it will be used to authenticate
     If no user credentials are provided, organization administrator credentials will be used
     If no user credentials neither organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param password: password for the user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
     :return: List of user roles assigned
     """
-    return UyuniUser(org_admin_user if password is None else uid,
-                     org_admin_password if password is None else password).list_roles(uid=uid)
+    return UyuniUser(org_admin_user if password is None else login,
+                     org_admin_password if password is None else password).list_roles(login)
 
 
-def user_add_role(uid, role, org_admin_user=None, org_admin_password=None):
+def user_add_role(login, role, org_admin_user=None, org_admin_password=None):
     """
     Adds a role to an Uyuni user.
     If no organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param role: role to be added to the user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
     :return: boolean indication success in operation
     """
-    return UyuniUser(org_admin_user, org_admin_password).add_role(uid=uid, role=role)
+    return UyuniUser(org_admin_user, org_admin_password).add_role(login=login, role=role)
 
 
-def user_remove_role(uid, role, org_admin_user=None, org_admin_password=None):
+def user_remove_role(login, role, org_admin_user=None, org_admin_password=None):
     """
     Remove a role from an Uyuni user.
     If no organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param role: role to be removed from the user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
     :return: boolean indication success in operation
     """
-    return UyuniUser(org_admin_user, org_admin_password).remove_role(uid=uid, role=role)
+    return UyuniUser(org_admin_user, org_admin_password).remove_role(login=login, role=role)
 
 
-def user_list_assigned_system_groups(uid, org_admin_user=None, org_admin_password=None):
+def user_list_assigned_system_groups(login, org_admin_user=None, org_admin_password=None):
     """
     Returns the system groups that a user can administer.
     If no organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
     :return: List of system groups that a user can administer
     """
     return UyuniUser(org_admin_user,
-                     org_admin_password).list_assigned_system_groups(uid=uid)
+                     org_admin_password).list_assigned_system_groups(login=login)
 
 
-def user_add_assigned_system_groups(uid, server_group_names, set_default=False,
+def user_add_assigned_system_groups(login, server_group_names, set_default=False,
                                     org_admin_user=None, org_admin_password=None):
     """
     Add system groups to user's list of assigned system groups.
     If no organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param server_group_names: systems groups to add to list of assigned system groups
     :param set_default: Should system groups also be added to user's list of default system groups.
     :param org_admin_user: organization admin username
@@ -774,18 +774,18 @@ def user_add_assigned_system_groups(uid, server_group_names, set_default=False,
     :return: boolean indication success in operation
     """
     return UyuniUser(org_admin_user,
-                     org_admin_password).add_assigned_system_groups(uid=uid,
+                     org_admin_password).add_assigned_system_groups(login=login,
                                                                     server_group_names=server_group_names,
                                                                     set_default=set_default)
 
 
-def user_remove_assigned_system_groups(uid, server_group_names, set_default=False,
+def user_remove_assigned_system_groups(login, server_group_names, set_default=False,
                                        org_admin_user=None, org_admin_password=None):
     """
     Remove system groups from a user's list of assigned system groups.
     If no organization admin credentials are provided, credentials from pillar are used
 
-    :param uid: user id to look for
+    :param login: user id to look for
     :param server_group_names: systems groups to remove from list of assigned system groups
     :param set_default: Should system groups also be added to user's list of default system groups.
     :param org_admin_user: organization admin username
@@ -793,33 +793,33 @@ def user_remove_assigned_system_groups(uid, server_group_names, set_default=Fals
     :return: boolean indication success in operation
     """
     return UyuniUser(org_admin_user,
-                     org_admin_password).remove_assigned_system_groups(uid=uid,
+                     org_admin_password).remove_assigned_system_groups(login=login,
                                                                        server_group_names=server_group_names,
                                                                        set_default=set_default)
 
 
 ## channel.software
-def channel_list_manageable_channels(uid, password):
+def channel_list_manageable_channels(login, password):
     """
     List all of manageable channels for the authenticated user
-    :param uid: user login id
+    :param login: user login id
     :param password: user password
     :return: list of manageable channels for the user
     """
-    return UyuniChannel(uid, password).list_manageable_channels()
+    return UyuniChannel(login, password).list_manageable_channels()
 
 
-def channel_list_my_channels(uid, password):
+def channel_list_my_channels(login, password):
     """
     List all of subscribed channels for the authenticated user
-    :param uid: user login id
+    :param login: user login id
     :param password: user password
     :return: list of subscribed channels for the user
     """
-    return UyuniChannel(uid, password).list_my_channels()
+    return UyuniChannel(login, password).list_my_channels()
 
 
-def channel_software_set_user_manageable(channel_label, uid, access,
+def channel_software_set_user_manageable(channel_label, login, access,
                                          admin_user=None, admin_password=None):
     """
     Set the manageable flag for a given channel and user.
@@ -827,16 +827,16 @@ def channel_software_set_user_manageable(channel_label, uid, access,
     Otherwise, that privilege is revoked.
 
     :param channel_label: label of the channel
-    :param uid: user login id
+    :param login: user login id
     :param access: True if the user should have management access to channel
     :param admin_user: organization admin username
     :param admin_password: organization admin password
     :return: boolean indication success in operation
     """
-    return UyuniChannelSoftware(admin_user, admin_password).set_user_manageable(channel_label, uid, access)
+    return UyuniChannelSoftware(admin_user, admin_password).set_user_manageable(channel_label, login, access)
 
 
-def channel_software_set_user_subscribable(channel_label, uid, access,
+def channel_software_set_user_subscribable(channel_label, login, access,
                                            admin_user=None, admin_password=None):
     """
     Set the subscribable flag for a given channel and user.
@@ -844,39 +844,39 @@ def channel_software_set_user_subscribable(channel_label, uid, access,
     Otherwise, that privilege is revoked.
 
     :param channel_label: label of the channel
-    :param uid: user login id
+    :param login: user login id
     :param access: True if the user should have subscribe access to channel
     :param admin_user: organization admin username
     :param admin_password: organization admin password
     :return: boolean indication success in operation
     """
-    return UyuniChannelSoftware(admin_user, admin_password).set_user_subscribable(channel_label, uid, access)
+    return UyuniChannelSoftware(admin_user, admin_password).set_user_subscribable(channel_label, login, access)
 
 
-def channel_software_is_user_manageable(channel_label, uid, admin_user=None, admin_password=None):
+def channel_software_is_user_manageable(channel_label, login, admin_user=None, admin_password=None):
     """
     Returns whether the channel may be managed by the given user.
 
     :param channel_label: label of the channel
-    :param uid: user login id
+    :param login: user login id
     :param admin_user: organization admin username
     :param admin_password: organization admin password
     :return: boolean which indicates if user can manage channel or not
     """
-    return UyuniChannelSoftware(admin_user, admin_password).is_user_manageable(channel_label, uid)
+    return UyuniChannelSoftware(admin_user, admin_password).is_user_manageable(channel_label, login)
 
 
-def channel_software_is_user_subscribable(channel_label, uid, org_admin_user=None, org_admin_password=None):
+def channel_software_is_user_subscribable(channel_label, login, org_admin_user=None, org_admin_password=None):
     """
     Returns whether the channel may be subscribed by the given user.
 
     :param channel_label: label of the channel
-    :param uid: user login id
+    :param login: user login id
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
     :return: boolean which indicates if user subscribe the channel or not
     """
-    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_subscribable(channel_label, uid)
+    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_subscribable(channel_label, login)
 
 
 def channel_software_is_globally_subscribable(channel_label, org_admin_user=None, org_admin_password=None):

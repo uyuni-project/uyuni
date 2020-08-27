@@ -60,13 +60,13 @@ class UyuniUsers:
 
         systems_groups_add = [sys for sys in (system_groups or []) if sys not in (current_system_groups or [])]
         if systems_groups_add:
-            __salt__['uyuni.user_add_assigned_system_groups'](uid=name, server_group_names=systems_groups_add,
+            __salt__['uyuni.user_add_assigned_system_groups'](login=name, server_group_names=systems_groups_add,
                                                               org_admin_user=org_admin_user,
                                                               org_admin_password=org_admin_password)
 
         system_groups_remove = [sys for sys in (current_system_groups or []) if sys not in (system_groups or [])]
         if system_groups_remove:
-            __salt__['uyuni.user_remove_assigned_system_groups'](uid=name, server_group_names=system_groups_remove,
+            __salt__['uyuni.user_remove_assigned_system_groups'](login=name, server_group_names=system_groups_remove,
                                                                  org_admin_user=org_admin_user,
                                                                  org_admin_password=org_admin_password)
 
@@ -102,7 +102,7 @@ class UyuniUsers:
         # check if password have changed
         if current_user and not use_pam_auth:
             try:
-                __salt__['uyuni.user_get_details'](user_changes.get('uid'),
+                __salt__['uyuni.user_get_details'](user_changes.get('login'),
                                                    user_changes.get('password'))
             except Exception as exc:
                 # check if it's an authentication error. If yes, password have changed
@@ -112,13 +112,13 @@ class UyuniUsers:
                     error = exc
         return changes, error
 
-    def manage(self, uid: str, password: str, email: str, first_name: str, last_name: str, use_pam_auth: bool = False,
+    def manage(self, login: str, password: str, email: str, first_name: str, last_name: str, use_pam_auth: bool = False,
                roles: Optional[List[str]] = [], system_groups: Optional[List[str]] = [],
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
         Ensure a user is present with all specified properties
 
-        :param uid: user ID
+        :param login: user login ID
         :param password: desired password for the user
         :param email: valid email address
         :param first_name: First name
@@ -134,22 +134,22 @@ class UyuniUsers:
         current_roles = None
         current_system_groups_names = None
         try:
-            current_user = __salt__['uyuni.user_get_details'](uid, org_admin_user=org_admin_user,
+            current_user = __salt__['uyuni.user_get_details'](login, org_admin_user=org_admin_user,
                                                               org_admin_password=org_admin_password)
-            current_roles = __salt__['uyuni.user_list_roles'](uid, org_admin_user=org_admin_user,
+            current_roles = __salt__['uyuni.user_list_roles'](login, org_admin_user=org_admin_user,
                                                               org_admin_password=org_admin_password)
-            current_system_groups = __salt__['uyuni.user_list_assigned_system_groups'](uid,
+            current_system_groups = __salt__['uyuni.user_list_assigned_system_groups'](login,
                                                                                        org_admin_user=org_admin_user,
                                                                                        org_admin_password=org_admin_password)
             current_system_groups_names = [s["name"] for s in (current_system_groups or [])]
         except Exception as exc:
             if exc.faultCode == AUTHENTICATION_ERROR:
-                log.warning("Error managing user (admin credentials error) '{}': {}".format(uid, exc))
-                return StateResult.state_error(uid,
+                log.warning("Error managing user (admin credentials error) '{}': {}".format(login, exc))
+                return StateResult.state_error(login,
                                                comment="Error managing user (admin credentials error) '{}': {}".format(
-                                                   uid, exc))
+                                                   login, exc))
 
-        user_paramters = {"uid": uid, "password": password, "email": email,
+        user_paramters = {"login": login, "password": password, "email": email,
                           "first_name": first_name, "last_name": last_name,
                           "org_admin_user": org_admin_user, "org_admin_password": org_admin_password}
 
@@ -159,14 +159,14 @@ class UyuniUsers:
                                                use_pam_auth=use_pam_auth)
 
         if error:
-            return StateResult.state_error(uid, "Error managing user '{}': {}".format(uid, error))
+            return StateResult.state_error(login, "Error managing user '{}': {}".format(login, error))
         if not changes:
-            return StateResult.prepare_result(uid, True, "{0} is already installed".format(uid))
+            return StateResult.prepare_result(login, True, "{0} is already installed".format(login))
         if not current_user:
-            changes['uid'] = {"new": uid}
+            changes['login'] = {"new": login}
             changes['password'] = {"new": "(hidden)"}
         if __opts__['test']:
-            return StateResult.prepare_result(uid, None, "{0} would be installed".format(uid), changes)
+            return StateResult.prepare_result(login, None, "{0} would be installed".format(login), changes)
 
         try:
             if current_user:
@@ -175,53 +175,53 @@ class UyuniUsers:
                 user_paramters["use_pam_auth"] = use_pam_auth
                 __salt__['uyuni.user_create'](**user_paramters)
 
-            self._update_user_roles(uid, current_roles, roles,
+            self._update_user_roles(login, current_roles, roles,
                                     org_admin_user, org_admin_password)
-            self._update_user_system_groups(uid, current_system_groups_names, system_groups,
+            self._update_user_system_groups(login, current_system_groups_names, system_groups,
                                             org_admin_user, org_admin_password)
         except Exception as exc:
-            return StateResult.state_error(uid, "Error managing user '{}': {}".format(uid, exc))
+            return StateResult.state_error(login, "Error managing user '{}': {}".format(login, exc))
         else:
-            return StateResult.prepare_result(uid, True, "{0} user successful managed".format(uid), changes)
+            return StateResult.prepare_result(login, True, "{0} user successful managed".format(login), changes)
 
-    def delete(self, uid: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
+    def delete(self, login: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
         Remove user from the Uyuni Server
 
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
-        :param uid: UID of the user
+        :param login: login of the user
 
         :return: dict for Salt communication
         """
         try:
-            user = __salt__['uyuni.user_get_details'](uid, org_admin_user=org_admin_user,
+            user = __salt__['uyuni.user_get_details'](login, org_admin_user=org_admin_user,
                                                       org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode == NO_SUCH_USER_ERROR:
-                return StateResult.prepare_result(uid, True, "{0} is already absent".format(uid))
+                return StateResult.prepare_result(login, True, "{0} is already absent".format(login))
             if exc.faultCode == AUTHENTICATION_ERROR:
-                return StateResult.state_error(uid,
+                return StateResult.state_error(login,
                                                "Error deleting user (organization credentials error) '{}': {}".format(
-                                                   uid, exc))
+                                                   login, exc))
             raise exc
         else:
             changes = {
-                'uid': {'old': uid},
+                'login': {'old': login},
                 'email': {'old': user.get('email')},
                 'first_name': {'old': user.get('first_name')},
                 'last_name': {'old': user.get('last_name')}
             }
             if __opts__['test']:
-                return StateResult.prepare_result(uid, None, "{0} would be removed".format(uid), changes)
+                return StateResult.prepare_result(login, None, "{0} would be removed".format(login), changes)
 
             try:
-                __salt__['uyuni.user_delete'](uid,
+                __salt__['uyuni.user_delete'](login,
                                               org_admin_user=org_admin_user,
                                               org_admin_password=org_admin_password)
-                return StateResult.prepare_result(uid, True, "User {} has been deleted".format(uid), changes)
+                return StateResult.prepare_result(login, True, "User {} has been deleted".format(login), changes)
             except Exception as exc:
-                return StateResult.state_error(uid, "Error deleting user '{}': {}".format(uid, exc))
+                return StateResult.state_error(login, "Error deleting user '{}': {}".format(login, exc))
 
 
 class UyuniUserChannels:
@@ -257,14 +257,14 @@ class UyuniUserChannels:
             changes['subscribable_channels'] = subscribe_changes
         return changes
 
-    def manage(self, uid: str, password: str,
+    def manage(self, login: str, password: str,
                manageable_channels: Optional[List[str]] = [],
                subscribable_channels: Optional[List[str]] = [],
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
         User channels management present implementation
 
-        :param uid: user ID
+        :param login: user login ID
         :param password: user password
         :param manageable_channels: channels user can manage
         :param subscribable_channels: channels user can subscribe
@@ -273,16 +273,16 @@ class UyuniUserChannels:
         :return: dict for Salt communication
         """
         try:
-            current_roles = __salt__['uyuni.user_list_roles'](uid, password=password)
-            current_manageable_channels = __salt__['uyuni.channel_list_manageable_channels'](uid, password)
-            current_subscribe_channels = __salt__['uyuni.channel_list_my_channels'](uid, password)
+            current_roles = __salt__['uyuni.user_list_roles'](login, password=password)
+            current_manageable_channels = __salt__['uyuni.channel_list_manageable_channels'](login, password)
+            current_subscribe_channels = __salt__['uyuni.channel_list_my_channels'](login, password)
         except Exception as exc:
-            return StateResult.state_error(uid,
-                                           comment="Error managing user channels '{}': {}".format(uid, exc))
+            return StateResult.state_error(login,
+                                           comment="Error managing user channels '{}': {}".format(login, exc))
             pass
 
         if "org_admin" in current_roles or "channel_admin" in current_roles:
-            return StateResult.state_error(uid, "Channels access cannot be managed, "
+            return StateResult.state_error(login, "Channels access cannot be managed, "
                                                 "User can manage all channel in the organization "
                                                 "(\"org_admin\" or \"channel_admin\" role).")
 
@@ -295,21 +295,21 @@ class UyuniUserChannels:
                                        org_admin_user, org_admin_password)
 
         if not changes:
-            return StateResult.prepare_result(uid, True, "{0} channels are already in the desired state".format(uid))
+            return StateResult.prepare_result(login, True, "{0} channels are already in the desired state".format(login))
         if __opts__['test']:
-            return StateResult.prepare_result(uid, None, "{0} channels would be configured".format(uid), changes)
+            return StateResult.prepare_result(login, None, "{0} channels would be configured".format(login), changes)
 
         try:
             for channel, action in changes.get('manageable_channels', {}).items():
-                __salt__['uyuni.channel_software_set_user_manageable'](channel, uid, action,
+                __salt__['uyuni.channel_software_set_user_manageable'](channel, login, action,
                                                                        org_admin_user, org_admin_password)
 
             for channel, action in changes.get('subscribable_channels', {}).items():
-                __salt__['uyuni.channel_software_set_user_subscribable'](channel, uid, action,
+                __salt__['uyuni.channel_software_set_user_subscribable'](channel, login, action,
                                                                          org_admin_user, org_admin_password)
         except Exception as exc:
-            return StateResult.state_error(uid, "Error managing channel '{}': {}".format(uid, exc))
-        return StateResult.prepare_result(uid, True, "Channel set to the desired state", changes)
+            return StateResult.state_error(login, "Error managing channel '{}': {}".format(login, exc))
+        return StateResult.prepare_result(login, True, "Channel set to the desired state", changes)
 
 
 class UyuniGroups:
@@ -498,7 +498,7 @@ class UyuniOrgs:
             if exc.faultCode != ORG_NOT_FOUND_ERROR:
                 return StateResult.state_error(name, "Error managing org '{}': {}".format(name, exc))
 
-        user_paramters = {"uid": org_admin_user, "password": org_admin_password, "email": email,
+        user_paramters = {"login": org_admin_user, "password": org_admin_password, "email": email,
                           "first_name": first_name, "last_name": last_name,
                           "org_admin_user": org_admin_user, "org_admin_password": org_admin_password}
 
@@ -632,7 +632,7 @@ def user_present(name, password, email, first_name, last_name, use_pam_auth=Fals
     """
     Ensure a user is present with all specified properties
 
-    :param name: user ID
+    :param name: user login name
     :param password: desired password for the user
     :param email: valid email address
     :param first_name: First name
@@ -655,7 +655,7 @@ def user_channels(name, password,
     """
     Ensure a user has access to the specified channels
 
-    :param name: user ID
+    :param name: user login name
     :param password: user password
     :param manageable_channels: channels user can manage
     :param subscribable_channels: channels user can subscribe
@@ -671,7 +671,7 @@ def user_channels(name, password,
 def user_absent(name, org_admin_user=None, org_admin_password=None):
     """
 
-    :param name: user id
+    :param name: user login name
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
     :return:
