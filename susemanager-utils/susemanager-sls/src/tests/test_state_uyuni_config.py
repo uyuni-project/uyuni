@@ -33,7 +33,7 @@ class TestManageUser:
                 assert result['comment'] == 'username would be installed'
 
                 assert result['changes'] == {
-                    'uid': {'new': 'username'},
+                    'login': {'new': 'username'},
                     'password': {'new': '(hidden)'},
                     'email': {'new': 'mail@mail.com'},
                     'first_name': {'new': 'first_name'},
@@ -60,7 +60,7 @@ class TestManageUser:
             assert result['comment'] == 'username user successful managed'
 
             assert result['changes'] == {
-                'uid': {'new': 'username'},
+                'login': {'new': 'username'},
                 'password': {'new': '(hidden)'},
                 'email': {'new': 'mail@mail.com'},
                 'first_name': {'new': 'first_name'},
@@ -78,7 +78,7 @@ class TestManageUser:
                                                                                org_admin_password=None,
                                                                                org_admin_user=None,
                                                                                password='password',
-                                                                               uid='username')
+                                                                               login='username')
 
     def test_user_present_new_user_complete(self):
         exc = Exception("user not found")
@@ -99,7 +99,7 @@ class TestManageUser:
             assert result['comment'] == 'username user successful managed'
 
             assert result['changes'] == {
-                'uid': {'new': 'username'},
+                'login': {'new': 'username'},
                 'password': {'new': '(hidden)'},
                 'email': {'new': 'mail@mail.com'},
                 'first_name': {'new': 'first_name'},
@@ -119,13 +119,13 @@ class TestManageUser:
                                                                                org_admin_password='org_admin_password',
                                                                                org_admin_user='org_admin_user',
                                                                                password='password',
-                                                                               uid='username')
+                                                                               login='username')
 
             uyuni_config.__salt__['uyuni.user_add_role'].assert_called_once_with('username', role='role',
                                                                                  org_admin_user='org_admin_user',
                                                                                  org_admin_password='org_admin_password')
 
-            uyuni_config.__salt__['uyuni.user_add_assigned_system_groups'].assert_called_once_with(uid='username',
+            uyuni_config.__salt__['uyuni.user_add_assigned_system_groups'].assert_called_once_with(login='username',
                                                                                                    server_group_names=[
                                                                                                       'group'],
                                                                                                    org_admin_user='org_admin_user',
@@ -185,7 +185,7 @@ class TestManageUser:
                                                                                     org_admin_password='org_admin_password',
                                                                                     org_admin_user='org_admin_user',
                                                                                     password='new_password',
-                                                                                    uid='username')
+                                                                                    login='username')
 
             uyuni_config.__salt__['uyuni.user_remove_role'].assert_called_once_with('username', role='role2',
                                                                                     org_admin_user='org_admin_user',
@@ -194,12 +194,12 @@ class TestManageUser:
                                                                                  org_admin_user='org_admin_user',
                                                                                  org_admin_password='org_admin_password')
 
-            uyuni_config.__salt__['uyuni.user_remove_assigned_system_groups'].assert_called_once_with(uid='username',
+            uyuni_config.__salt__['uyuni.user_remove_assigned_system_groups'].assert_called_once_with(login='username',
                                                                                                       server_group_names=[
                                                                                                          'group1'],
                                                                                                       org_admin_user='org_admin_user',
                                                                                                       org_admin_password='org_admin_password')
-            uyuni_config.__salt__['uyuni.user_add_assigned_system_groups'].assert_called_once_with(uid='username',
+            uyuni_config.__salt__['uyuni.user_add_assigned_system_groups'].assert_called_once_with(login='username',
                                                                                                    server_group_names=[
                                                                                                       'group3'],
                                                                                                    org_admin_user='org_admin_user',
@@ -259,7 +259,7 @@ class TestManageUser:
                 assert result['comment'] == 'username would be removed'
 
                 assert result['changes'] == {
-                    'uid': {'old': 'username'},
+                    'login': {'old': 'username'},
                     'email': {'old': 'mail@mail.com'},
                     'first_name': {'old': 'first'},
                     'last_name': {'old': 'last'}}
@@ -286,7 +286,7 @@ class TestManageUser:
             assert result['comment'] == 'User username has been deleted'
 
             assert result['changes'] == {
-                'uid': {'old': 'username'},
+                'login': {'old': 'username'},
                 'email': {'old': 'mail@mail.com'},
                 'first_name': {'old': 'first'},
                 'last_name': {'old': 'last'}}
@@ -751,7 +751,7 @@ class TestManageOrgs:
                                                                                     org_admin_user='org_admin_user',
                                                                                     org_admin_password='org_admin_password')
 
-            uyuni_config.__salt__['uyuni.user_set_details'].assert_called_once_with(uid='org_admin_user',
+            uyuni_config.__salt__['uyuni.user_set_details'].assert_called_once_with(login='org_admin_user',
                                                                                     password='org_admin_password',
                                                                                     email='email@email.com',
                                                                                     first_name='First Name',
