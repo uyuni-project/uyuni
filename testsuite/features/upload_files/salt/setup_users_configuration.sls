@@ -33,7 +33,7 @@ minions_group_present:
   uyuni.group_present:
     - name: minions_group
     - description: httpd_servers
-    - expression: "*min*"
+    - target: "*min*"
     - org_admin_user: admin
     - org_admin_password: admin
 

@@ -19,7 +19,7 @@ system_group_httpd:
   uyuni.group_present:
     - name: httpd_servers
     - description: httpd_servers
-    - expression: "*httpd*"
+    - target: "*httpd*"
     - org_admin_user: my_org_user
     - org_admin_password: my_org_user
 
