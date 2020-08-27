@@ -175,7 +175,8 @@ msgstr ""
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr "このクライアント上で root ユーザーになり、 rhn_register を実行してください"
+msgstr ""
+"このクライアント上で root ユーザーになり、 rhn_register を実行してください"
 
 #: ../server/rhnHandler.py:75
 #, python-format
