@@ -2,6 +2,10 @@
 import xml.etree.ElementTree as ET
 import os
 import logging
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("path", help="Path to look into for translation files!")
+args = parser.parse_args()
 
 logging.basicConfig(level=logging.INFO)
 
@@ -84,8 +88,9 @@ ET.register_namespace('', "urn:oasis:names:tc:xliff:document:1.1")
 ET.register_namespace('xyz', "urn:appInfo:Items")
 ET.register_namespace('xsi', "http://www.w3.org/2001/XMLSchema-instance")
 
-files = os.listdir('.')
-logging.debug(files)
+os.chdir(args.path)
+files = os.listdir(args.path)
+#logging.debug(files)
 
 for translation in files:
     if translation.startswith('StringResource_') and translation.endswith('.xml') \
