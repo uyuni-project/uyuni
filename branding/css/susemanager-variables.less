@@ -22,8 +22,6 @@
 @eos-gray-dark-3:    #141823; // $eos-bc-gray-1000
 
 /* Special colours for SUSE Manager */
-@susemanager-text-menu:       @eos-gray-dark-3;
-@susemanager-text-header:     @eos-gray-light-3;
 @susemanager-link:            @eos-blue-dark;
 
 /* Main tags colours */
@@ -44,21 +42,24 @@
 @violet:                 #841781;
 
 /* Header */
-@header:       @eos-pine;
+@header:          @eos-pine;
+@header-text:     @eos-gray-light-3;
 
 // Colours for the menu in the first column on the left:
 @aside:                        @eos-gray-light-3;
 @aside-border:                 lighten(@aside, 8%);
+@aside-menu-text:              @eos-gray-dark-3;
 @aside-menu-active:            @green;
 @aside-menu-active-text:       @eos-white;
 
 /* aside menu search box */
+@aside-menu-search-border:         @eos-gray-light-2;
 @aside-menu-search-clear:          fade(@eos-gray-light-1, 60%);
 @aside-menu-search-clear-hover:    @eos-gray-dark-1;
 
 /* Icons legend */
 @icon-legend:       @header;
-@icon-legend-text:  @susemanager-text-header;
+@icon-legend-text:  @header-text;
 
 /* Footer colours */
 @footer:            @aside;
