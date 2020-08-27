@@ -18,16 +18,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-18 13:46+0200\n"
-"PO-Revision-Date: 2018-05-13 04:56+0000\n"
-"Last-Translator: Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>\n"
-"Language-Team: Catalan (http://www.transifex.com/projects/p/spacewalk/"
-"language/ca/)\n"
+"PO-Revision-Date: 2020-07-28 15:29+0000\n"
+"Last-Translator: David Medina <medipas@gmail.com>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
+"client-tools/ca/>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -35,13 +35,13 @@ msgid ""
 "This client requires the server to support %s, which the current server does "
 "not support"
 msgstr ""
-"Aquest client requereix que el servidor doni suport %s, però el servidor "
-"actual no en dóna."
+"Aquest client requereix que el servidor admeti %s, però el servidor actual "
+"no ho admet."
 
 #: ../src/up2date_client/config.py:162
 #, python-format
 msgid "%s was not found"
-msgstr "no es va trobar %s"
+msgstr "no s'ha trobat %s"
 
 #: ../src/up2date_client/debUtils.py:62 ../src/up2date_client/rpmUtils.py:121
 msgid "Getting list of packages installed on the system"
@@ -466,7 +466,7 @@ msgstr "Versió del sistema operatiu:"
 
 #: ../src/up2date_client/rhnreg_constants.py:99
 msgid " Minor Release: "
-msgstr "Llançament menor:"
+msgstr " Publicació menor: "
 
 #: ../src/up2date_client/rhnreg_constants.py:100
 msgid "Limited Updates Only"
@@ -631,6 +631,14 @@ msgid ""
 "are in chapter 6 of the RHN Reference Guide, available from the 'Help' "
 "button in the main Red Hat Network Satellite web interface.)"
 msgstr ""
+"Ara podeu executar \"%s update\" des de la línia d'ordres d'aquest sistema "
+"per obtenir les darreres actualitzacions de Red Hat Satellite. Us caldrà "
+"executar-ho periòdicament per obtenir-les. Alternativament, podeu configurar "
+"aquest sistema perquè faci actualitzacions de programari automàticament "
+"(també conegut com a \"auto errata update\") a través de la interfície web "
+"de Red Hat Satellite. (Les instruccions per a això són al capítol 6 de la "
+"Guia de referència d'RHN, disponible des del botó Ajuda de la interfície web "
+"principal de Red Hat Network Satellite.)"
 
 #. Review Window
 #: ../src/up2date_client/rhnreg_constants.py:167 ../data/gui.glade.h:8
@@ -689,11 +697,13 @@ msgid ""
 "Warning: %s is not present, could not enable it.\n"
 "Automatic updates will not work."
 msgstr ""
+"Avís: %s no és present, no s'ha pogut habilitar.\n"
+"Les actualitzacions automàtiques no funcionaran."
 
 #: ../src/up2date_client/rhnreg_constants.py:186
 #, python-format
 msgid "Note: %s has been enabled."
-msgstr ""
+msgstr "Nota: %s s'ha habilitat."
 
 #: ../src/up2date_client/rhnreg_constants.py:187
 #, python-format
@@ -702,6 +712,9 @@ msgid ""
 "%s is not enabled.\n"
 "Automatic updates will not work."
 msgstr ""
+"Avís: hi ha hagut un error durant l'habilitació de %s.\n"
+"%s no s'ha habilitat.\n"
+"Les actualitzacions automàtiques no funcionaran."
 
 #: ../src/up2date_client/rhnreg_constants.py:190
 msgid ""
@@ -756,6 +769,10 @@ msgid ""
 "system package profiling, bare-metal provisioning, existing state "
 "provisioning, rollbacks, configuration management"
 msgstr ""
+"Mòdul de gestió: actualitzacions automàtiques, agrupació de sistemes, "
+"permisos de sistemes, perfilació de paquets de sistemes, subministrament de "
+"metall nu, subministrament d'estat existent, retorns a versions anteriors, "
+"gestió de configuració"
 
 #: ../src/up2date_client/rhnreg_constants.py:213
 msgid ""
@@ -774,6 +791,12 @@ msgid ""
 "in RHN's web interface if you do not want virtual guests of this system to "
 "consume additional subscriptions."
 msgstr ""
+"<b>Avís:</b>Qualsevol sistema convidat que creeu en aquest sistema i "
+"registreu a RHN, consumirà subscripcions de Red Hat Enterprise Linux més "
+"enllà de la subscripció del sistema amfitrió. Haureu de (1) fer disponible "
+"un títol de sistema de virtualització i (2) aplicar-lo a aquest sistema a la "
+"interfície web d'RHN si no voleu que els convidats virtuals d’aquest sistema "
+"consumeixin subscripcions addicionals."
 
 #: ../src/up2date_client/rhnreg_constants.py:225
 msgid ""
@@ -1096,7 +1119,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:603
 msgid "There was an error while assembling information for the profile."
-msgstr "Hi va haver un error mentre s'assemblava la informació per al perfil:"
+msgstr "Hi va haver un error mentre s'assemblava la informació per al perfil."
 
 #: ../src/up2date_client/rhnregGui.py:624
 msgid "Error running hardware profile"
@@ -1184,6 +1207,8 @@ msgid ""
 "Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
+"No s'ha pogut obrir %s\n"
+"%s no està habilitat.\n"
 
 #: ../src/up2date_client/rhnregGui.py:910
 msgid "There was an error while installing the certificate."
@@ -1288,7 +1313,7 @@ msgstr "Error: El servidor no està disponible. Si us plau, proveu-ho més tard.
 
 #: ../src/up2date_client/rpcServer.py:182
 msgid "ERROR: can not find RHNS CA file"
-msgstr "Error: no es pot trobar el fitxer de l'AC del RHNS:"
+msgstr "Error: no es pot trobar el fitxer de l'AC del RHNS"
 
 #: ../src/up2date_client/rpcServer.py:220
 msgid "Connection aborted by the user"
@@ -1320,27 +1345,27 @@ msgstr "Nom del perfil:"
 
 #: ../src/up2date_client/tui.py:755 ../src/up2date_client/tui.py:756
 msgid "Version: "
-msgstr "Versió:"
+msgstr "Versió: "
 
 #: ../src/up2date_client/tui.py:762
 msgid "CPU model: "
-msgstr "Model de CPU:"
+msgstr "Model de CPU: "
 
 #: ../src/up2date_client/tui.py:768
 msgid "Hostname: "
-msgstr "Nom d'amfitrió:"
+msgstr "Nom d'amfitrió: "
 
 #: ../src/up2date_client/tui.py:780
 msgid "CPU speed: "
-msgstr "Velocitat de la CPU:"
+msgstr "Velocitat de la CPU: "
 
 #: ../src/up2date_client/tui.py:786
 msgid "IP Address: "
-msgstr "Adreça IP:"
+msgstr "Adreça IP: "
 
 #: ../src/up2date_client/tui.py:795
 msgid "Memory: "
-msgstr "Memòria:"
+msgstr "Memòria: "
 
 #: ../src/up2date_client/tui.py:799
 #, python-format
@@ -1369,14 +1394,14 @@ msgstr "Finalitza"
 
 #: ../src/up2date_client/tui.py:1209
 msgid "You specified an invalid protocol.Only https and http are allowed."
-msgstr ""
+msgstr "Heu especificat un protocol no vàlid. Només es permeten https i http."
 
 #: ../src/up2date_client/tui.py:1240
 msgid ""
 "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
 msgstr ""
-" <Tab>/<Alt-Tab> entre elements  |  <Espai> selecciona  |  <F12> següent "
-"pantalla"
+"  <Tab>/<Alt-Tab> entre elements  |  <Espai> selecciona  |  <F12> pantalla "
+"següent"
 
 #: ../src/up2date_client/tui.py:1344
 msgid "You must run the RHN registration program as root."
@@ -1446,7 +1471,7 @@ msgstr "Error en analitzar sintàcticament el fitxer oemInfo al camp:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:234
 msgid "Network error: "
-msgstr "Error de xarxa:"
+msgstr "Error de xarxa: "
 
 #: ../src/up2date_client/up2dateErrors.py:302
 msgid ""
@@ -1588,7 +1613,7 @@ msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:91
 msgid "This system is already registered. Use --force to override"
-msgstr "El sistema ja es va registrar. Utilitzeu --force per a substituir-ho"
+msgstr "El sistema ja està registrat. Useu --force per sobreescriure-ho."
 
 #: ../src/bin/rhnreg_ks.py:125
 msgid ""
@@ -1614,7 +1639,7 @@ msgstr ""
 #: ../src/bin/rhnreg_ks.py:175
 #, python-format
 msgid "Warning: %s is not present, could not enable it."
-msgstr ""
+msgstr "Avís: %s no és present. No s'ha pogut habilitar."
 
 #: ../src/bin/rhnreg_ks.py:178
 #, python-format
@@ -1622,6 +1647,8 @@ msgid ""
 "Warning: Could not open %s\n"
 "%s is not enabled.\n"
 msgstr ""
+"Avís: no s'ha pogut obrir %s.\n"
+"%s no s'ha habilitat.\n"
 
 #: ../src/bin/rhnreg_ks.py:206
 msgid ""
@@ -1679,7 +1706,7 @@ msgstr "ERROR: heu d'especificar com a mínim un canal"
 
 #: ../src/bin/spacewalk-channel.py:169
 msgid "ERROR: this action does not require channel"
-msgstr ""
+msgstr "ERROR: aquesta acció no requereix canal."
 
 #: ../src/bin/spacewalk-channel.py:176
 #, python-format
@@ -1723,9 +1750,8 @@ msgid "User interrupted process."
 msgstr "L'usuari va interrompre el procés."
 
 #: ../data/gui.glade.h:1
-#, fuzzy
 msgid "System registration"
-msgstr "Registrament del sistema"
+msgstr "Registre del sistema"
 
 #: ../data/gui.glade.h:2
 msgid "Set Up Software Updates"
@@ -2191,7 +2217,7 @@ msgstr "<b>Servidor intermediari d'HTTP</b>"
 
 #: ../data/rh_register.glade.h:96
 msgid "I would like to connect via an _HTTP proxy."
-msgstr "Vull connectar a través d'un servidor intermediari d'_HTTP"
+msgstr "Vull connectar per un servidor intermediari d'_HTTP."
 
 #: ../data/rh_register.glade.h:97
 msgid "I would like to connect to Spacewalk via an _HTTP proxy."
@@ -2216,7 +2242,7 @@ msgstr "ubicació del servidor intermediari"
 
 #: ../data/rh_register.glade.h:102
 msgid "Use Au_thentication with HTTP Proxy:"
-msgstr "Utilitza l'au_tenticació amb el servidor intermediari d'HTTP"
+msgstr "Usa l'au_tenticació amb el servidor intermediari d'HTTP:"
 
 #: ../data/rh_register.glade.h:103
 msgid "Use Authentication with HTTP Proxy"
@@ -2260,9 +2286,9 @@ msgid ""
 "be able to move this system to an earlier minor release channel if you "
 "continue (you will be able to move to a later release.)"
 msgstr ""
-"El vostre sistema es subscriurà al canal de programari base. Si continueu, "
-"no podreu moure aquest sistema a un llançament menor anterior (podreu "
-"moure'l a un llançament posterior)."
+"El sistema se subscriurà al canal de programari de base. Si continueu, no "
+"podreu moure aquest sistema a un llançament menor anterior (podreu moure'l a "
+"un llançament posterior)."
 
 #: ../data/rh_register.glade.h:115
 msgid ""
