@@ -3145,7 +3145,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target>追加のパッケージ</target>
+        <target>非準拠</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackagessummary">
         <source>The following packages are installed on this system and are not present in any of its channels.</source>
@@ -5295,8 +5295,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Reboot Systems</source> <target>システムの再起動</target>
         </trans-unit>
         <trans-unit id="ssm.misc.index.reboot.summary">
-          <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source> <target>Red Hat Enterprise Linux 3 またはそれ以降のリリースでは、@@PRODUCT_NAME@@ を使用するとシステムを遠隔から起動することができます。</target>
-        </trans-unit>
+          <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source> <target>@@PRODUCT_NAME@@ では、リモートからお使いのシステムを再起動することができます。</target> </trans-unit>
         <trans-unit id="ssm.misc.index.lock.header">
           <source>Lock Systems</source> <target>システムのロック</target>
         </trans-unit>
@@ -9704,7 +9703,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>特殊なケースのキックスタートシナリオについて次のようなオプションを修正する必要が生じる場合があります。このような場合には、これらのすべてのオプションに関して詳細に記載されているドキュメントの Red Hat Enterprise Linux システム管理ガイドを参照されることを推奨します。</target>
+        <target>特殊なキックスタートシナリオの場合、下記のオプションを修正する必要があるかもしれません。これらのオプションの詳細について、詳しくは @@ENTERPRISE_LINUX_NAME@@ のシステム管理者ガイドをお読みになることをお薦めします。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.label">
         <source>Autoinstall Label</source>
@@ -10730,13 +10729,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>以下で、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。キックスタートのプレスクリプトはシステムでキックスタートファイルの構文解析が終了次第、実行されます。
-このセクションのネットワークにアクセスすることができますが、IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていません)。
-キックスタートのプレスクリプトに関する詳細は、&lt;strong&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/strong&gt; を参照してください。
-&lt;br/&gt;&lt;br/&gt;
-以下では、このキックスタートのポストスクリプトも編集することができます。最初に、@@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます (例:　@@PRODUCT_NAME@@ へのシステム登録)。
-次に、非 chrootのポストスクリプトが実行され、最後にポストスクリプトが実行されます。キックスタートのポストスクリプトに関する詳細は、
-&lt;strong&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/strong&gt;を参照してください。</target>
+        <target>以下で、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。キックスタートのプレスクリプトはシステムでキックスタートファイルの構文解析が終了次第、実行されます。 このセクションではネットワークにアクセスすることができますが、IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていないためです)。 キックスタートのプレスクリプトに関する詳細は、&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt; を参照してください。 &lt;br/&gt;&lt;br/&gt; 以下では、このキックスタートのポストスクリプトも編集することができます。最初に、@@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます (例:　@@PRODUCT_NAME@@ へのシステム登録)。 次に、非 chroot のポストスクリプトが実行され、最後にポストスクリプトが実行されます。キックスタートのポストスクリプトに関する詳細は、 &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt;を参照してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.script.langheader">
         <source>Kickstart Script Scripting Language</source>
@@ -11518,7 +11511,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="channels.vendor.jsp.header1">
         <source>The software channels listed below are @@VENDOR_NAME@@ channels or child channels of @@VENDOR_NAME@@ Channels.</source>
-        <target>以下に表示されるソフトウェアチャンネルは、Red Hat チャンネルまたは Red Hat チャンネルの子チャンネルです。</target>
+        <target>以下に表示されるソフトウェアチャンネルは、 @@VENDOR_NAME@@ チャンネルまたは @@VENDOR_NAME@@ チャンネルの子チャンネルです。</target>
       </trans-unit>
       <trans-unit id="channels.shared.jsp.header1">
         <source>The software channels listed below may be shared by your organization.</source>
@@ -11897,8 +11890,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <trans-unit id="activation-key.jsp.allowed-values">
           <source>Activation key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source> </trans-unit>
         <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
-          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; を選択すると、システムがインストールされている Red Hat Enterprise Linux のバージョンに対応する Red Hat 提供のデフォルトチャンネルへ登録できるようになります。ここで、特定の Red Hat 提供のチャンネルまたはカスタムベースチャンネルを選択できますが、このキーを使用しているシステムが選択したチャンネルとの互換性がない場合は Red Hat のデフォルトチャンネルが指定されます。</target>
-        </trans-unit>
+          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; を選択すると、システムがインストールされている SUSE Linux のバージョンに対応する SUSE Manager へ登録できるようになります。ここでは、特定の SUSE 提供のチャンネルまたはカスタムベースチャンネルを選択できますが、このキーを使用しているシステムが選択したチャンネルとの互換性がない場合は SUSE Manager のデフォルトチャンネルが指定されます。</target> </trans-unit>
         <trans-unit id="activation-key.jsp.edit.universal-default-tooltip">
           <source>Only one universal default activation key may be set for this organization. By setting this key as universal default, you will remove universal default status from the current universal default key if it exists. If this key is set as universal default, then newly-registered systems to your organization will inherit the properties of this key.</source> <target>この組織用に単一の汎用デフォルトアクティベーションキーのみを設定できます。このキーを汎用デフォルトキーとして設定することにより、その現行の汎用デフォルトキー (がある場合) の汎用デフォルトのステータスを削除することになります。このキーが汎用デフォルトとして設定されると、ユーザーの組織に新規に登録されるシステムはこのキーのプロパティを継承します。</target>
         </trans-unit>
@@ -13597,7 +13589,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>認識されていない配備タスクです。Red Hat サポートまでご連絡ください。</target>
+        <target>認識されていない配備タスクです。 SUSE サポートまでご連絡ください。</target>
       </trans-unit>
       <trans-unit id="comparetask.error.emptysets">
         <source>Channel has no files, no subscribed systems, or both - compare action canceled.</source>
@@ -20178,14 +20170,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; これらのチャンネルはこのゲストのホスト用の Red Hat Enterprise Linux サブスクリプションの一部ではありません。&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;。これらをサブスクライブすると追加のソフトウェアエンタイトルメントを使用することになります。&lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;ホストシステムに別の仮想システムエンタイトルメントを適用&lt;/a&gt; するとこの印の付いたチャンネルに影響を与えます。</target>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; これらのチャンネルはこのゲストのホスト用の @@ENTERPRISE_LINUX_NAME@@ サブスクリプションの一部ではありません。&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;。これらをサブスクライブすると追加のソフトウェアエンタイトルメントを使用することになります。&lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;ホストシステムに別の仮想システムエンタイトルメントを適用&lt;/a&gt; すると、この印の付いたチャンネルに影響を与えます。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning_nohost">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; これらのチャンネルはこのゲストのホスト用 Red Hat Enterprise Linux サブスクリプションの一部ではありません。これらをサブスクライブすると追加のソフトウェアエンタイトルメントを使用することになります。ホストシステムに別の仮想システムエンタイトルメントを適用するとこの印のあるチャンネルに影響を与えます。</target>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; これらのチャンネルはこのゲストのホスト用 @@ENTERPRISE_LINUX_NAME@@ サブスクリプションの一部ではありません。これらをサブスクライブすると追加のソフトウェアエンタイトルメントを使用することになります。ホストシステムに別の仮想システムエンタイトルメントを適用すると、この印のあるチャンネルに影響を与えます。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.fastrackBetaWarning">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; 'FasTrack' and Beta child software channels are not available with Extended Update Support.</source>
@@ -20579,12 +20571,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           <source>As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. &lt;p/&gt; &lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-          <target>
-チャンネル管理者として、システムがサブスクライブしているベースチャンネルを変更できます。有効なチャンネルは、組織によって作成されたチャンネルか、または使用しているオペレーティングシステムのバージョンとプロセッサタイプのデフォルトの Red Hat ベースチャンネルのいずれかです。システムはすべてのチャンネルからサブスクライブが中止され、新しいベースチャンネルにサブスクライブされます。
-&lt;p/&gt;
-&lt;strong&gt;この操作は、システムで利用可能なパッケージとエラータに重大な影響が与えることがあるため、注意して実行する必要があります。&lt;/strong&gt;
-	</target>
-        </trans-unit>
+          <target>チャンネル管理者として、システムがサブスクライブしているベースチャンネルを変更できます。有効なチャンネルは、組織によって作成されたチャンネルか、または使用しているオペレーティングシステムのバージョンとプロセッサタイプのデフォルトの @@VENDOR_NAME@@ ベースチャンネルのいずれかです。システムはすべてのチャンネルからサブスクライブが中止され、新しいベースチャンネルにサブスクライブされます。 &lt;p/&gt; &lt;strong&gt;この操作は、システムで利用可能なパッケージとエラータに重大な影響が与えることがあるため、注意して実行する必要があります。&lt;/strong&gt;</target> </trans-unit>
         <trans-unit id="basesub.jsp.custom-channels">
           <source>Custom Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -20595,8 +20582,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           <source>@@VENDOR_NAME@@ Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-          <target>Red Hat チャンネル</target>
-        </trans-unit>
+          <target>@@VENDOR_NAME@@ チャンネル</target> </trans-unit>
         <trans-unit id="basesub.jsp.noSystems">
           <source>No systems selected</source> <context-group name="ctx">
             <context context-type="sourcefile">./includes/header.jsp</context>
@@ -20839,11 +20825,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterrata">
         <source>Add @@VENDOR_NAME@@ Patches</source>
-        <target>Red Hatエラータの追加</target>
+        <target>@@VENDOR_NAME@@ エラータの追加</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterratamsg">
         <source>Choose this option if you want to import patches that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
-        <target>Red Hat 提供のチャンネルの Red Hat ベースチャンネル、または子チャンネル内に存在するエラータをインポートしたい場合は、このオプションを選択します。</target>
+        <target>Red Hat 提供のチャンネルの @@VENDOR_NAME@@ ベースチャンネル、または子チャンネル内に存在するエラータをインポートしたい場合は、このオプションを選択します。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.noerrata">
         <source>No patches found applicable to this channel.</source>
