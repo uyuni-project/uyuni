@@ -126,7 +126,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>追加のパッケージ</target>
+        <target>非準拠</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ips">
         <source>Duplicate IP Address</source>
@@ -287,7 +287,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>Red Hat チャンネル</target>
+        <target>@@VENDOR_NAME@@</target>
       </trans-unit>
       <trans-unit id="channel.nav.popular">
         <source>Popular</source>
