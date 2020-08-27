@@ -159,7 +159,6 @@ class UyuniUser(UyuniRemoteObject):
         :param: uid: user name to lookup
         :return: Dictionary with user details
         """
-        log.debug("get user details: %s", uid)
         return self.client("user.getDetails", uid)
 
     def list_users(self) -> List[Dict[str, Any]]:
@@ -168,7 +167,6 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: all users visible to the authenticated user
         """
-        log.debug("list existing users")
         return self.client("user.listUsers")
 
     def create(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "",
@@ -186,7 +184,6 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: True on success, raise exception otherwise
         """
-        log.debug("Adding user to Uyuni: %s", uid)
         return bool(self.client("user.create", uid, password, first_name, last_name, email, int(use_pam_auth)))
 
     def set_details(self, uid: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
@@ -201,7 +198,6 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: True on success, raise exception otherwise
         """
-        log.debug("Updating user to Uyuni: %s", uid)
         return bool(self.client("user.setDetails", uid, {
             "password": password,
             "first_name": first_name,
@@ -216,7 +212,6 @@ class UyuniUser(UyuniRemoteObject):
         :param uid: UID of the user
         :return: boolean, True if user has been deleted successfully.
         """
-        log.debug("delete user: %s", uid)
         return bool(self.client("user.delete", uid))
 
     def list_roles(self, uid: str) -> List[str]:
@@ -226,7 +221,6 @@ class UyuniUser(UyuniRemoteObject):
         :param: uid: user name to use on lookup
         :return: list of user roles
         """
-        log.debug("get user roles: %s", uid)
         return self.client("user.listRoles", uid)
 
     def add_role(self, uid: str, role: str) -> bool:
@@ -238,7 +232,6 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: boolean, True if role has been added successfully.
         """
-        log.debug("add role '%s' to user %s", role, uid)
         return bool(self.client("user.addRole", uid, role))
 
     def remove_role(self, uid: str, role: str) -> bool:
@@ -250,7 +243,6 @@ class UyuniUser(UyuniRemoteObject):
 
         :return: boolean, True if role has been removed successfully.
         """
-        log.debug("remove role '%s' to user %s", role, uid)
         return bool(self.client("user.removeRole", uid, role))
 
     def list_assigned_system_groups(self, uid: str) -> List[Dict[str, Union[int, str]]]:
@@ -260,7 +252,6 @@ class UyuniUser(UyuniRemoteObject):
         :param uid: UID of the user
         :return: List of system groups that a user can administer
         """
-        log.debug("list assigned system groups for user %s", uid)
         return self.client("user.listAssignedSystemGroups", uid)
 
     def add_assigned_system_groups(self, uid: str, server_group_names: List[str], set_default: bool = False) -> int:
@@ -272,7 +263,6 @@ class UyuniUser(UyuniRemoteObject):
         :param set_default: True if the system groups should also be added to user's default list.
         :return: 1 on success, exception thrown otherwise.
         """
-        log.debug("add assigned system groups to user %s: %s", uid, server_group_names)
         return self.client("user.addAssignedSystemGroups", uid, server_group_names, set_default)
 
     def remove_assigned_system_groups(self, uid: str, server_group_names: List[str], set_default: bool = False) -> int:
@@ -284,7 +274,6 @@ class UyuniUser(UyuniRemoteObject):
         :param set_default: True if the system groups should also be removed to user's default list.
         :return: 1 on success, exception thrown otherwise.
         """
-        log.debug("remove assign groups from user %s: %s", uid, server_group_names)
         return self.client("user.removeAssignedSystemGroups", uid, server_group_names, set_default)
 
 
@@ -316,7 +305,6 @@ class UyuniChannelSoftware(UyuniRemoteObject):
         :param access: True if the user should have management access to channel
         :return: 1 on success, exception thrown otherwise.
         """
-        log.debug("change managing access to %s for user %s in channel %s", access, uid, channel_label)
         return self.client("channel.software.setUserManageable", channel_label, uid, access)
 
     def set_user_subscribable(self, channel_label: str, uid: str, access: bool) -> int:
@@ -330,7 +318,6 @@ class UyuniChannelSoftware(UyuniRemoteObject):
         :param access: True if the user should have subscribe permission to the channel
         :return: 1 on success, exception thrown otherwise.
         """
-        log.debug("change subscription access to %s for user %s in channel %s", access, uid, channel_label)
         return self.client("channel.software.setUserSubscribable", channel_label, uid, access)
 
     def is_user_manageable(self, channel_label: str, uid: str) -> bool:
@@ -341,7 +328,6 @@ class UyuniChannelSoftware(UyuniRemoteObject):
         :param uid: user login id
         :return: boolean which indicates if user can manage channel or not
         """
-        log.debug("check if user %s can manage channel %s", uid, channel_label)
         return bool(self.client("channel.software.isUserManageable", channel_label, uid))
 
     def is_user_subscribable(self, channel_label: str, uid: str) -> bool:
@@ -352,7 +338,6 @@ class UyuniChannelSoftware(UyuniRemoteObject):
         :param uid: user login id
         :return: boolean which indicates if user subscribe the channel or not
         """
-        log.debug("check if user %s can subscribe channel %s", uid, channel_label)
         return bool(self.client("channel.software.isUserSubscribable", channel_label, uid))
 
     def is_globally_subscribable(self, channel_label: str) -> bool:
@@ -362,7 +347,6 @@ class UyuniChannelSoftware(UyuniRemoteObject):
         :param channel_label: label of the channel
         :return: boolean which indicates if channel is globally subscribable
         """
-        log.debug("check if channel globally Subscribable %s", channel_label)
         return bool(self.client("channel.software.isGloballySubscribable", channel_label))
 
 
@@ -518,7 +502,6 @@ class UyuniSystemgroup(UyuniRemoteObject):
         :param name: Name of the system group.
         :return: data of the system group.
         """
-        log.debug("Get details for group: %s", name)
         return self.client("systemgroup.getDetails", name)
 
     def create(self, name: str, description: str) -> Dict[str, Union[int, str]]:
@@ -529,7 +512,6 @@ class UyuniSystemgroup(UyuniRemoteObject):
         :param description: Description of the system group.
         :return: data of the system group.
         """
-        log.debug("Create group: %s", name)
         return self.client("systemgroup.create", name, description)
 
     def delete(self, name: str) -> int:
@@ -539,7 +521,6 @@ class UyuniSystemgroup(UyuniRemoteObject):
         :param name: Name of the system group.
         :return: 1 on success, exception thrown otherwise.
         """
-        log.debug("delete group: %s", name)
         return self.client("systemgroup.delete", name)
 
     def update(self, name: str, description: str) -> Dict[str, Union[int, str]]:
@@ -550,7 +531,6 @@ class UyuniSystemgroup(UyuniRemoteObject):
         :param description: Description of the system group.
         :return: data of the system group.
         """
-        log.debug("update group: %s", name)
         return self.client("systemgroup.update", name, description)
 
     def list_systems(self, name: str, minimal: bool = True) -> List[Dict[str, Any]]:
