@@ -1,4 +1,5 @@
 - support installer update channels during autoinstallation
+- Prevent a deadlock error involving delete_server and update_needed_cache (bsc#1173073)
 
 -------------------------------------------------------------------
 Wed Aug 12 10:57:28 CEST 2020 - jgonzalez@suse.com
