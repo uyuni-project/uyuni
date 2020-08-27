@@ -202,7 +202,7 @@ class DpkgRepo:
         uri = uri.replace("file://", "")
         if not response:
             # There is no response, so this is a local path.
-            if os.access(os.path.join(uri, "InRelease")):
+            if os.access(os.path.join(uri, "InRelease"), os.R_OK):
                 release_file = os.path.join(uri, "InRelease")
                 process = subprocess.Popen(
                     ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR, release_file],
@@ -210,10 +210,10 @@ class DpkgRepo:
                     stderr=subprocess.DEVNULL,
                 )
                 out = process.wait(timeout=90)
-            elif os.access(os.path.join(uri, "Release")):
+            elif os.access(os.path.join(uri, "Release"), os.R_OK):
                 release_file = os.path.join(uri, "Release")
                 release_signature_file = os.path.join(uri, "Release.gpg")
-                if os.access(release_gpg_file):
+                if os.access(release_signature_file, os.R_OK):
                     process = subprocess.Popen(
                         ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR,
                         release_signature_file, release_file],
@@ -281,10 +281,10 @@ class DpkgRepo:
         # InRelease files take precedence per uyuni-rfc 00057-deb-repo-sync-gpg-check
         local_path = self._url.replace("file://", "")
         release_file = None
-        if os.access(os.path.join(local_path, "InRelease")):
+        if os.access(os.path.join(local_path, "InRelease"), os.R_OK):
             release_file = os.path.join(local_path, "InRelease")
             self._flat = False
-        elif os.access(os.path.join(local_path, "Release")):
+        elif os.access(os.path.join(local_path, "Release"), os.R_OK):
             release_file = os.path.join(local_path, "Release")
             self._flat = False
         else:
@@ -304,9 +304,9 @@ class DpkgRepo:
         # Repo format is flat
         if self.is_flat():
             local_path = self._get_parent_url(local_path, 0, "InRelease")
-            if os.access(os.path.join(local_path, "InRelease")):
+            if os.access(os.path.join(local_path, "InRelease"), os.R_OK):
                 release_file = os.path.join(local_path, "InRelease")
-            elif os.access(os.path.join(local_path, "Release")):
+            elif os.access(os.path.join(local_path, "Release"), os.R_OK):
                 release_file = os.path.join(local_path, "Release")
             else:
                 raise GeneralRepoException("No release file found in {}".format(local_path))
