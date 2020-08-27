@@ -146,6 +146,10 @@ class UyuniRemoteObject:
             return [UyuniRemoteObject._convert_datetime_str(value) for value in response]
         return None
 
+    @staticmethod
+    def _convert_bool_response(response: int):
+        return response == 1
+
 
 class UyuniUser(UyuniRemoteObject):
     """
@@ -157,6 +161,7 @@ class UyuniUser(UyuniRemoteObject):
         Retrieve details of an Uyuni user.
 
         :param: login: user name to lookup
+
         :return: Dictionary with user details
         """
         return self.client("user.getDetails", login)
@@ -182,9 +187,10 @@ class UyuniUser(UyuniRemoteObject):
         :param last_name: Last name
         :param use_pam_auth: if you wish to use PAM authentication for this user
 
-        :return: True on success, raise exception otherwise
+        :return: boolean, True indicates success
         """
-        return bool(self.client("user.create", login, password, first_name, last_name, email, int(use_pam_auth)))
+        return self._convert_bool_response(self.client("user.create", login, password,
+                                                       first_name, last_name, email, int(use_pam_auth)))
 
     def set_details(self, login: str, password: str, email: str, first_name: str = "", last_name: str = "") -> bool:
         """
@@ -196,9 +202,9 @@ class UyuniUser(UyuniRemoteObject):
         :param first_name: First name
         :param last_name: Last name
 
-        :return: True on success, raise exception otherwise
+        :return: boolean, True indicates success
         """
-        return bool(self.client("user.setDetails", login, {
+        return self._convert_bool_response(self.client("user.setDetails", login, {
             "password": password,
             "first_name": first_name,
             "last_name": last_name,
@@ -210,15 +216,17 @@ class UyuniUser(UyuniRemoteObject):
         Remove an Uyuni user.
 
         :param login: login of the user
-        :return: boolean, True if user has been deleted successfully.
+
+        :return: boolean, True indicates success
         """
-        return bool(self.client("user.delete", login))
+        return self._convert_bool_response(self.client("user.delete", login))
 
     def list_roles(self, login: str) -> List[str]:
         """
         Return the list of roles of a user.
 
         :param: login: user name to use on lookup
+
         :return: list of user roles
         """
         return self.client("user.listRoles", login)
@@ -230,9 +238,9 @@ class UyuniUser(UyuniRemoteObject):
         :param login: login of the user
         :param role: a new role
 
-        :return: boolean, True if role has been added successfully.
+        :return: boolean, True indicates success
         """
-        return bool(self.client("user.addRole", login, role))
+        return self._convert_bool_response(self.client("user.addRole", login, role))
 
     def remove_role(self, login: str, role: str) -> bool:
         """
@@ -241,15 +249,16 @@ class UyuniUser(UyuniRemoteObject):
         :param login: login of the user
         :param role: one of uyuni user roles
 
-        :return: boolean, True if role has been removed successfully.
+        :return: boolean, True indicates success
         """
-        return bool(self.client("user.removeRole", login, role))
+        return self._convert_bool_response(self.client("user.removeRole", login, role))
 
     def list_assigned_system_groups(self, login: str) -> List[Dict[str, Union[int, str]]]:
         """
         Returns the system groups that a user can administer.
 
         :param login: login of the user
+
         :return: List of system groups that a user can administer
         """
         return self.client("user.listAssignedSystemGroups", login)
@@ -261,9 +270,11 @@ class UyuniUser(UyuniRemoteObject):
         :param login: user id to look for
         :param server_group_names: system groups to add
         :param set_default: True if the system groups should also be added to user's default list.
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
-        return self.client("user.addAssignedSystemGroups", login, server_group_names, set_default)
+        return self._convert_bool_response(self.client("user.addAssignedSystemGroups",
+                                                       login, server_group_names, set_default))
 
     def remove_assigned_system_groups(self, login: str, server_group_names: List[str], set_default: bool = False) -> int:
         """
@@ -272,15 +283,18 @@ class UyuniUser(UyuniRemoteObject):
         :param login: user id to look for
         :param server_group_names: systems groups to remove from list of assigned system groups
         :param set_default: True if the system groups should also be removed to user's default list.
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
-        return self.client("user.removeAssignedSystemGroups", login, server_group_names, set_default)
+        return self._convert_bool_response(self.client("user.removeAssignedSystemGroups",
+                                                       login, server_group_names, set_default))
 
 
 class UyuniChannel(UyuniRemoteObject):
     def list_manageable_channels(self) -> List[Dict[str, Union[int, str]]]:
         """
         List all software channels that the user is entitled to manage.
+
         :return: list of manageable channels
         """
         return self.client("channel.listManageableChannels")
@@ -288,6 +302,7 @@ class UyuniChannel(UyuniRemoteObject):
     def list_my_channels(self) -> List[Dict[str, Union[int, str]]]:
         """
         List all software channels that the user is entitled to manage.
+
         :return: list of manageable channels
         """
         return self.client("channel.listMyChannels")
@@ -303,9 +318,11 @@ class UyuniChannelSoftware(UyuniRemoteObject):
         :param channel_label: label of the channel
         :param login: user login id
         :param access: True if the user should have management access to channel
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
-        return self.client("channel.software.setUserManageable", channel_label, login, access)
+        return self._convert_bool_response(self.client("channel.software.setUserManageable",
+                                                       channel_label, login, access))
 
     def set_user_subscribable(self, channel_label: str, login: str, access: bool) -> int:
         """
@@ -316,9 +333,11 @@ class UyuniChannelSoftware(UyuniRemoteObject):
         :param channel_label: label of the channel
         :param login: user login id
         :param access: True if the user should have subscribe permission to the channel
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
-        return self.client("channel.software.setUserSubscribable", channel_label, login, access)
+        return self._convert_bool_response(self.client("channel.software.setUserSubscribable",
+                                                       channel_label, login, access))
 
     def is_user_manageable(self, channel_label: str, login: str) -> bool:
         """
@@ -326,9 +345,10 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :param channel_label: label of the channel
         :param login: user login id
+
         :return: boolean which indicates if user can manage channel or not
         """
-        return bool(self.client("channel.software.isUserManageable", channel_label, login))
+        return self._convert_bool_response(self.client("channel.software.isUserManageable", channel_label, login))
 
     def is_user_subscribable(self, channel_label: str, login: str) -> bool:
         """
@@ -336,18 +356,20 @@ class UyuniChannelSoftware(UyuniRemoteObject):
 
         :param channel_label: label of the channel
         :param login: user login id
+
         :return: boolean which indicates if user subscribe the channel or not
         """
-        return bool(self.client("channel.software.isUserSubscribable", channel_label, login))
+        return self._convert_bool_response(self.client("channel.software.isUserSubscribable", channel_label, login))
 
     def is_globally_subscribable(self, channel_label: str) -> bool:
         """
         Returns whether the channel is globally subscribable on the organization
 
         :param channel_label: label of the channel
+
         :return: boolean which indicates if channel is globally subscribable
         """
-        return bool(self.client("channel.software.isGloballySubscribable", channel_label))
+        return self._convert_bool_response(self.client("channel.software.isGloballySubscribable", channel_label))
 
 
 class UyuniOrg(UyuniRemoteObject):
@@ -370,6 +392,7 @@ class UyuniOrg(UyuniRemoteObject):
         Admin user must have SUSE Manager Administrator role to perform this action
 
         :param name: organisation name
+
         :return: organization details
         """
         return self.client("org.getDetails", name)
@@ -389,6 +412,7 @@ class UyuniOrg(UyuniRemoteObject):
         :param email: organization admin email
         :param admin_prefix: organization admin prefix
         :param pam:organization admin pam authentication
+
         :return: dictionary with org information
         """
         return self.client("org.create", name, org_admin_user, org_admin_password, admin_prefix,
@@ -400,10 +424,11 @@ class UyuniOrg(UyuniRemoteObject):
         Admin user must have SUSE Manager Administrator role to perform this action
 
         :param name: organization name
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
         org_id = int(self.get_details(name=name).get("id", -1))
-        return self.client("org.delete", org_id)
+        return self._convert_bool_response(self.client("org.delete", org_id))
 
     def update_name(self, org_id: int, name: str) -> Dict[str, Union[str, int, bool]]:
         """
@@ -412,6 +437,7 @@ class UyuniOrg(UyuniRemoteObject):
 
         :param org_id: organization internal id
         :param name: new organization name
+
         :return: organization details
         """
         return self.client("org.updateName", org_id, name)
@@ -448,7 +474,8 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
         :param org_name: organization name
         :param org_trust: name of organization to trust
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
         this_org = self._org_manager.get_details(org_name)
         trust_org = self._org_manager.get_details(org_trust)
@@ -461,9 +488,10 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
         :param org_id: organization id
         :param org_trust_id: organization id to trust
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
-        return self.client("org.trusts.addTrust", org_id, org_trust_id)
+        return self._convert_bool_response(self.client("org.trusts.addTrust", org_id, org_trust_id))
 
     def remove_trust_by_name(self, org_name: str, org_untrust: str) -> int:
         """
@@ -472,7 +500,8 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
         :param org_name: organization name
         :param org_untrust: organization name to untrust
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
         this_org = self._org_manager.get_details(org_name)
         trust_org = self._org_manager.get_details(org_untrust)
@@ -485,9 +514,10 @@ class UyuniOrgTrust(UyuniRemoteObject):
 
         :param org_id: organization id
         :param org_untrust_id: organization id to untrust
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
-        return self.client("org.trusts.removeTrust", org_id, org_untrust_id)
+        return self._convert_bool_response(self.client("org.trusts.removeTrust", org_id, org_untrust_id))
 
 
 class UyuniSystemgroup(UyuniRemoteObject):
@@ -519,9 +549,10 @@ class UyuniSystemgroup(UyuniRemoteObject):
         Delete a system group.
 
         :param name: Name of the system group.
-        :return: 1 on success, exception thrown otherwise.
+
+        :return: boolean, True indicates success
         """
-        return self.client("systemgroup.delete", name)
+        return self._convert_bool_response(self.client("systemgroup.delete", name))
 
     def update(self, name: str, description: str) -> Dict[str, Union[int, str]]:
         """
@@ -551,9 +582,9 @@ class UyuniSystemgroup(UyuniRemoteObject):
         :param name: Group name
         :param add_remove: True to add to the group, False to remove
         :param system_ids: List of system ids to add or remove
-        :return: 1 on success, exception thrown otherwise
+        :return: boolean, True indicates success
         """
-        return self.client("systemgroup.addOrRemoveSystems", name, system_ids, add_remove)
+        return self._convert_bool_response(self.client("systemgroup.addOrRemoveSystems", name, system_ids, add_remove))
 
 
 class UyuniSystems(UyuniRemoteObject):
@@ -1092,7 +1123,7 @@ def systemgroup_delete(name, org_admin_user=None, org_admin_password=None):
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
-    :return: 1 on success, exception thrown otherwise.
+    :return: boolean, True indicates success
     """
     return UyuniSystemgroup(org_admin_user, org_admin_password).delete(name=name)
 
@@ -1122,7 +1153,7 @@ def systemgroup_add_remove_systems(name, add_remove, system_ids=[],
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
 
-    :return: 1 on success, exception thrown otherwise.
+    :return: boolean, True indicates success
     """
     return UyuniSystemgroup(org_admin_user, org_admin_password).add_remove_systems(name=name, add_remove=add_remove,
                                                                                    system_ids=system_ids)
