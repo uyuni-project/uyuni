@@ -19,15 +19,24 @@ def delete_trans_units(body_element, trans_units, units_to_remove):
 def add_trans_units(body_element, trans_units, units_to_add):
     to_add = [tr_unit for tr_unit in trans_units if tr_unit.attrib['id'] in units_to_add]
     for item in to_add:
-        item.set('state', 'new')
+        target_element = ET.Element('target', {'state': 'new'})
+        target_element.tail = "\n  "
+        item.append(target_element)
         body_element.append(item)
 
 
 def update_trans_units(body_element, trans_units, id_new_value_dict):
     to_update = [tr_unit for tr_unit in trans_units if tr_unit.attrib['id'] in id_new_value_dict]
     for trans_unit in to_update:
-        trans_unit.set('state', 'needs-adaptation')
         source_element = trans_unit.find('d:source', ns)
+        source_element.text = id_new_value_dict[trans_unit.attrib['id']]
+        target_element = trans_unit.find('d:target', ns)
+        if target_element is None:
+            target_element = ET.Element('target', {'state': 'needs-adaptation'})
+            target_element.tail = "\n      "
+            trans_unit.append(target_element)
+        else:
+            target_element.set('state', 'needs-adaptation')
 
 
 def process(original_file, translation_file):
@@ -101,5 +110,6 @@ for translation in files:
     if translation.startswith('StringResource_') and translation.endswith('.xml') \
             and translation != 'StringResource_en_US.xml':
         original = 'StringResource_en_US.xml'
-        logging.info('processing ' + str(translation))
+        logging.info('\nprocessing ' + str(translation))
+        ET.parse(translation)
         process(original, translation)
