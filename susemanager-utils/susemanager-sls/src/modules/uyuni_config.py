@@ -124,6 +124,7 @@ class UyuniRemoteObject:
         modify any key-value pair where value is a datetime object to a string.
 
         :param response: response dictionary to be processed
+
         :return: new dictionary with datetime objects converted to sting
         """
         if response:
@@ -139,7 +140,9 @@ class UyuniRemoteObject:
     def _convert_datetime_list(response: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
         modify any list of key-value pair where value is a datetime object to a string.
+
         :param response: list of dictionaries to be processed
+
         :return: List of new dictionaries with datetime objects converted to sting
         """
         if response:
@@ -380,7 +383,6 @@ class UyuniOrg(UyuniRemoteObject):
     def list_orgs(self) -> Dict[str, Union[int, str, bool]]:
         """
         List all organizations.
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :return: list of all existing organizations
         """
@@ -389,7 +391,6 @@ class UyuniOrg(UyuniRemoteObject):
     def get_details(self, name: str) -> Dict[str, Union[int, str, bool]]:
         """
         Get org data by name.
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param name: organisation name
 
@@ -402,7 +403,6 @@ class UyuniOrg(UyuniRemoteObject):
                admin_prefix: str = "Mr.", pam: bool = False) -> Dict[str, Union[str, int, bool]]:
         """
         Create a new Uyuni org.
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param name: organization name
         :param org_admin_user: organization admin user
@@ -421,7 +421,6 @@ class UyuniOrg(UyuniRemoteObject):
     def delete(self, name: str) -> int:
         """
         Delete an Uyuni org.
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param name: organization name
 
@@ -433,7 +432,6 @@ class UyuniOrg(UyuniRemoteObject):
     def update_name(self, org_id: int, name: str) -> Dict[str, Union[str, int, bool]]:
         """
         Update an Uyuni org name.
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_id: organization internal id
         :param name: new organization name
@@ -460,7 +458,6 @@ class UyuniOrgTrust(UyuniRemoteObject):
     def list_trusts(self, org_name: str) -> List[Dict[str, Union[str, int, bool]]]:
         """
         List all trusts for the organization
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :return: list with all organizations and their trust status
         """
@@ -470,7 +467,6 @@ class UyuniOrgTrust(UyuniRemoteObject):
     def add_trust_by_name(self, org_name: str, org_trust: str) -> int:
         """
         Set an organisation as trusted by another
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_name: organization name
         :param org_trust: name of organization to trust
@@ -484,7 +480,6 @@ class UyuniOrgTrust(UyuniRemoteObject):
     def add_trust(self, org_id: str, org_trust_id: str) -> int:
         """
         Set an organisation as trusted by another
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_id: organization id
         :param org_trust_id: organization id to trust
@@ -496,7 +491,6 @@ class UyuniOrgTrust(UyuniRemoteObject):
     def remove_trust_by_name(self, org_name: str, org_untrust: str) -> int:
         """
         Set an organisation as not trusted by another
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_name: organization name
         :param org_untrust: organization name to untrust
@@ -510,7 +504,6 @@ class UyuniOrgTrust(UyuniRemoteObject):
     def remove_trust(self, org_id: str, org_untrust_id: str) -> int:
         """
         Set an organisation as not trusted by another
-        Admin user must have SUSE Manager Administrator role to perform this action
 
         :param org_id: organization id
         :param org_untrust_id: organization id to untrust
@@ -540,6 +533,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
 
         :param name: Name of the system group.
         :param description: Description of the system group.
+
         :return: data of the system group.
         """
         return self.client("systemgroup.create", name, description)
@@ -560,6 +554,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
 
         :param name: Name of the system group.
         :param description: Description of the system group.
+
         :return: data of the system group.
         """
         return self.client("systemgroup.update", name, description)
@@ -570,6 +565,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
 
         :param name: Group name
         :param minimal: default True. Only return minimal information about systems, use False to get more details
+
         :return: List of system information
         """
         return self._convert_datetime_list(
@@ -582,6 +578,7 @@ class UyuniSystemgroup(UyuniRemoteObject):
         :param name: Group name
         :param add_remove: True to add to the group, False to remove
         :param system_ids: List of system ids to add or remove
+
         :return: boolean, True indicates success
         """
         return self._convert_bool_response(self.client("systemgroup.addOrRemoveSystems", name, system_ids, add_remove))
@@ -661,6 +658,7 @@ def user_get_details(login, password=None, org_admin_user=None, org_admin_passwo
     :param password: password for the user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
+
     :return: The user information
     """
     return UyuniUser(org_admin_user if password is None else login,
@@ -673,6 +671,7 @@ def user_list_users(org_admin_user=None, org_admin_password=None):
 
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
+
     :return: all users visible to the authenticated user
     """
     return UyuniUser(org_admin_user, org_admin_password).list_users()
@@ -682,7 +681,6 @@ def user_create(login, password, email, first_name, last_name, use_pam_auth=Fals
                 org_admin_user=None, org_admin_password=None):
     """
     Create an Uyuni user.
-    If no organization admin credentials are provided, credentials from pillar are used
 
     :param login: user id to look for
     :param password: password for the user
@@ -693,7 +691,7 @@ def user_create(login, password, email, first_name, last_name, use_pam_auth=Fals
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 
-    :return: boolean indication success in operation
+    :return: boolean, True indicates success
     """
     return UyuniUser(org_admin_user, org_admin_password).create(login=login, password=password, email=email,
                                                                 first_name=first_name, last_name=last_name,
@@ -704,7 +702,6 @@ def user_set_details(login, password, email, first_name=None, last_name=None,
                      org_admin_user=None, org_admin_password=None):
     """
     Update an Uyuni user.
-    If no organization admin credentials are provided, credentials from pillar are used
 
     :param login: user id to look for
     :param password: password for the user
@@ -713,7 +710,8 @@ def user_set_details(login, password, email, first_name=None, last_name=None,
     :param last_name: user last name
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
-    :return: boolean indication success in operation
+
+    :return: boolean, True indicates success
     """
     return UyuniUser(org_admin_user, org_admin_password).set_details(login=login, password=password, email=email,
                                                                      first_name=first_name, last_name=last_name)
@@ -722,12 +720,12 @@ def user_set_details(login, password, email, first_name=None, last_name=None,
 def user_delete(login, org_admin_user=None, org_admin_password=None):
     """
     Deletes an Uyuni user
-    If no organization admin credentials are provided, credentials from pillar are used
 
     :param login: user id to look for
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
-    :return: boolean indication success in operation
+
+    :return: boolean, True indicates success
     """
     return UyuniUser(org_admin_user, org_admin_password).delete(login)
 
@@ -743,6 +741,7 @@ def user_list_roles(login, password=None, org_admin_user=None, org_admin_passwor
     :param password: password for the user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
+
     :return: List of user roles assigned
     """
     return UyuniUser(org_admin_user if password is None else login,
@@ -752,13 +751,13 @@ def user_list_roles(login, password=None, org_admin_user=None, org_admin_passwor
 def user_add_role(login, role, org_admin_user=None, org_admin_password=None):
     """
     Adds a role to an Uyuni user.
-    If no organization admin credentials are provided, credentials from pillar are used
 
     :param login: user id to look for
     :param role: role to be added to the user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
-    :return: boolean indication success in operation
+
+    :return: boolean, True indicates success
     """
     return UyuniUser(org_admin_user, org_admin_password).add_role(login=login, role=role)
 
@@ -766,13 +765,13 @@ def user_add_role(login, role, org_admin_user=None, org_admin_password=None):
 def user_remove_role(login, role, org_admin_user=None, org_admin_password=None):
     """
     Remove a role from an Uyuni user.
-    If no organization admin credentials are provided, credentials from pillar are used
 
     :param login: user id to look for
     :param role: role to be removed from the user
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
-    :return: boolean indication success in operation
+
+    :return: boolean, True indicates success
     """
     return UyuniUser(org_admin_user, org_admin_password).remove_role(login=login, role=role)
 
@@ -780,11 +779,11 @@ def user_remove_role(login, role, org_admin_user=None, org_admin_password=None):
 def user_list_assigned_system_groups(login, org_admin_user=None, org_admin_password=None):
     """
     Returns the system groups that a user can administer.
-    If no organization admin credentials are provided, credentials from pillar are used
 
     :param login: user id to look for
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
+
     :return: List of system groups that a user can administer
     """
     return UyuniUser(org_admin_user,
@@ -795,14 +794,14 @@ def user_add_assigned_system_groups(login, server_group_names, set_default=False
                                     org_admin_user=None, org_admin_password=None):
     """
     Add system groups to user's list of assigned system groups.
-    If no organization admin credentials are provided, credentials from pillar are used
 
     :param login: user id to look for
     :param server_group_names: systems groups to add to list of assigned system groups
     :param set_default: Should system groups also be added to user's list of default system groups.
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
-    :return: boolean indication success in operation
+
+    :return: boolean, True indicates success
     """
     return UyuniUser(org_admin_user,
                      org_admin_password).add_assigned_system_groups(login=login,
@@ -814,14 +813,14 @@ def user_remove_assigned_system_groups(login, server_group_names, set_default=Fa
                                        org_admin_user=None, org_admin_password=None):
     """
     Remove system groups from a user's list of assigned system groups.
-    If no organization admin credentials are provided, credentials from pillar are used
 
     :param login: user id to look for
     :param server_group_names: systems groups to remove from list of assigned system groups
     :param set_default: Should system groups also be added to user's list of default system groups.
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
-    :return: boolean indication success in operation
+
+    :return: boolean, True indicates success
     """
     return UyuniUser(org_admin_user,
                      org_admin_password).remove_assigned_system_groups(login=login,
@@ -833,8 +832,10 @@ def user_remove_assigned_system_groups(login, server_group_names, set_default=Fa
 def channel_list_manageable_channels(login, password):
     """
     List all of manageable channels for the authenticated user
+
     :param login: user login id
     :param password: user password
+
     :return: list of manageable channels for the user
     """
     return UyuniChannel(login, password).list_manageable_channels()
@@ -843,15 +844,17 @@ def channel_list_manageable_channels(login, password):
 def channel_list_my_channels(login, password):
     """
     List all of subscribed channels for the authenticated user
+
     :param login: user login id
     :param password: user password
+
     :return: list of subscribed channels for the user
     """
     return UyuniChannel(login, password).list_my_channels()
 
 
 def channel_software_set_user_manageable(channel_label, login, access,
-                                         admin_user=None, admin_password=None):
+                                         org_admin_user=None, org_admin_password=None):
     """
     Set the manageable flag for a given channel and user.
     If access is set to 'true', this method will give the user manage permissions to the channel.
@@ -860,15 +863,16 @@ def channel_software_set_user_manageable(channel_label, login, access,
     :param channel_label: label of the channel
     :param login: user login id
     :param access: True if the user should have management access to channel
-    :param admin_user: organization admin username
-    :param admin_password: organization admin password
-    :return: boolean indication success in operation
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
     """
-    return UyuniChannelSoftware(admin_user, admin_password).set_user_manageable(channel_label, login, access)
+    return UyuniChannelSoftware(org_admin_user, org_admin_password).set_user_manageable(channel_label, login, access)
 
 
 def channel_software_set_user_subscribable(channel_label, login, access,
-                                           admin_user=None, admin_password=None):
+                                           org_admin_user=None, org_admin_password=None):
     """
     Set the subscribable flag for a given channel and user.
     If value is set to 'true', this method will give the user subscribe permissions to the channel.
@@ -877,24 +881,26 @@ def channel_software_set_user_subscribable(channel_label, login, access,
     :param channel_label: label of the channel
     :param login: user login id
     :param access: True if the user should have subscribe access to channel
-    :param admin_user: organization admin username
-    :param admin_password: organization admin password
-    :return: boolean indication success in operation
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
+    :return: boolean, True indicates success
     """
-    return UyuniChannelSoftware(admin_user, admin_password).set_user_subscribable(channel_label, login, access)
+    return UyuniChannelSoftware(org_admin_user, org_admin_password).set_user_subscribable(channel_label, login, access)
 
 
-def channel_software_is_user_manageable(channel_label, login, admin_user=None, admin_password=None):
+def channel_software_is_user_manageable(channel_label, login, org_admin_user=None, org_admin_password=None):
     """
     Returns whether the channel may be managed by the given user.
 
     :param channel_label: label of the channel
     :param login: user login id
-    :param admin_user: organization admin username
-    :param admin_password: organization admin password
+    :param org_admin_user: organization admin username
+    :param org_admin_password: organization admin password
+
     :return: boolean which indicates if user can manage channel or not
     """
-    return UyuniChannelSoftware(admin_user, admin_password).is_user_manageable(channel_label, login)
+    return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_manageable(channel_label, login)
 
 
 def channel_software_is_user_subscribable(channel_label, login, org_admin_user=None, org_admin_password=None):
@@ -905,6 +911,7 @@ def channel_software_is_user_subscribable(channel_label, login, org_admin_user=N
     :param login: user login id
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
+
     :return: boolean which indicates if user subscribe the channel or not
     """
     return UyuniChannelSoftware(org_admin_user, org_admin_password).is_user_subscribable(channel_label, login)
@@ -917,6 +924,7 @@ def channel_software_is_globally_subscribable(channel_label, org_admin_user=None
     :param channel_label: label of the channel
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
+
     :return: boolean which indicates if channel is globally subscribe
     """
     return UyuniChannelSoftware(org_admin_user, org_admin_password).is_globally_subscribable(channel_label)
@@ -925,7 +933,8 @@ def channel_software_is_globally_subscribable(channel_label, org_admin_user=None
 def org_list_orgs(admin_user=None, admin_password=None):
     """
     List all organizations.
-    Admin user must have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
     :return: list of all available organizations.
     """
     return UyuniOrg(admin_user, admin_password).list_orgs()
@@ -934,11 +943,12 @@ def org_list_orgs(admin_user=None, admin_password=None):
 def org_get_details(name, admin_user=None, admin_password=None):
     """
     Get details of an organization.
-    Admin user must have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
     :param name: organisation name
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
+
     :return: organization details
     """
     return UyuniOrg(admin_user, admin_password).get_details(name)
@@ -947,12 +957,13 @@ def org_get_details(name, admin_user=None, admin_password=None):
 def org_delete(name, admin_user=None, admin_password=None):
     """
     Delete an organization
-    Admin user must have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
     :param name: organization name
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
-    :return: 1 on success, exception thrown otherwise.
+
+    :return: boolean, True indicates success
     """
     return UyuniOrg(admin_user, admin_password).delete(name)
 
@@ -961,7 +972,7 @@ def org_create(name, org_admin_user, org_admin_password, first_name, last_name, 
                admin_prefix="Mr.", pam=False, admin_user=None, admin_password=None):
     """
     Create an Uyuni organization
-    Admin user must have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
     :param name: organization name
     :param org_admin_user: organization admin user
@@ -973,6 +984,7 @@ def org_create(name, org_admin_user, org_admin_password, first_name, last_name, 
     :param pam:organization admin pam authentication
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
+
     :return: dictionary with org information
     """
     return UyuniOrg(admin_user, admin_password).create(name=name, org_admin_user=org_admin_user,
@@ -984,34 +996,39 @@ def org_create(name, org_admin_user, org_admin_password, first_name, last_name, 
 def org_update_name(org_id, name, admin_user=None, admin_password=None):
     """
     update an Uyuni organization name
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
     :param org_id: organization internal id
     :param name: new organization name
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
+
     :return: organization details
     """
     return UyuniOrg(admin_user, admin_password).update_name(org_id, name)
 
 
-def org_trust_list_orgs(admin_user=None, admin_password=None):
+def org_trust_list_orgs(org_admin_user=None, org_admin_password=None):
     """
-    List all organanizations trusted by the authenticated user organization
-    :param admin_user: authentication user
-    :param admin_password: authentication user password
-    :return:
+    List all organizations trusted by the authenticated user organization
+
+    :param org_admin_user: organization admin user
+    :param org_admin_password: organization admin password
+
+    :return: List of organization details
     """
-    return UyuniOrgTrust(admin_user, admin_password).list_orgs()
+    return UyuniOrgTrust(org_admin_user, org_admin_password).list_orgs()
 
 
 def org_trust_list_trusts(org_name, admin_user=None, admin_password=None):
     """
     List all trusts for one organization
-    admin_user needs to have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
     :param org_name: Name of the organization to get the trusts
     :param admin_user: authentication user
     :param admin_password: authentication user password
+
     :return: list with all organizations and their trust status
     """
     return UyuniOrgTrust(admin_user, admin_password).list_trusts(org_name)
@@ -1020,12 +1037,14 @@ def org_trust_list_trusts(org_name, admin_user=None, admin_password=None):
 def org_trust_add_trust_by_name(org_name, org_trust, admin_user=None, admin_password=None):
     """
     Add an organization to the list of trusted organizations.
-    admin_user needs to have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
     :param org_name: organization name
     :param org_trust: Trust organization name
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
-    :return:
+
+    :return: boolean, True indicates success
     """
     return UyuniOrgTrust(admin_user, admin_password).add_trust_by_name(org_name, org_trust)
 
@@ -1033,12 +1052,14 @@ def org_trust_add_trust_by_name(org_name, org_trust, admin_user=None, admin_pass
 def org_trust_add_trust(org_id, org_trust_id, admin_user=None, admin_password=None):
     """
     Add an organization to the list of trusted organizations.
-    admin_user needs to have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
     :param org_id: Organization id
     :param org_trust_id: Trust organization id
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
-    :return:
+
+    :return: boolean, True indicates success
     """
     return UyuniOrgTrust(admin_user, admin_password).add_trust(org_id, org_trust_id)
 
@@ -1046,12 +1067,14 @@ def org_trust_add_trust(org_id, org_trust_id, admin_user=None, admin_password=No
 def org_trust_remove_trust_by_name(org_name, org_untrust, admin_user=None, admin_password=None):
     """
     Remove an organization from the list of trusted organizations.
-    admin_user needs to have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
     :param org_name: organization name
     :param org_untrust: organization name to untrust
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
-    :return:
+
+    :return: boolean, True indicates success
     """
     return UyuniOrgTrust(admin_user, admin_password).remove_trust_by_name(org_name, org_untrust)
 
@@ -1059,12 +1082,14 @@ def org_trust_remove_trust_by_name(org_name, org_untrust, admin_user=None, admin
 def org_trust_remove_trust(org_id, org_untrust_id, admin_user=None, admin_password=None):
     """
     Remove an organization from the list of trusted organizations.
-    admin_user needs to have SUSE Manager Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+
     :param org_id: orgnization id
     :param org_untrust_id: organizaton id to untrust
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
-    :return:
+
+    :return: boolean, True indicates success
     """
     return UyuniOrgTrust(admin_user, admin_password).remove_trust(org_id, org_untrust_id)
 
@@ -1182,6 +1207,7 @@ def systems_get_minion_id_map(username=None, password=None, refresh=False):
     :param username: username to authenticate
     :param password: password for user
     :param refresh: Get new data from server, ignoring values in local context cache
+
     :return: Map between minion ID and system ID of all system accessible by authenticated user
     """
     return UyuniSystems(username, password).get_minion_id_map(refresh)
