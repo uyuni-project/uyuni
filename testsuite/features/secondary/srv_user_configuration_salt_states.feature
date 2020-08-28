@@ -27,7 +27,7 @@ Feature: Create organizations, users and groups using salt states
     Then I should see a "minions_group" text
     And I should see a "System Group Status" text
 
-  Scenario: user was correctly created
+  Scenario: User was correctly created
     Given I am authorized as "user2" with password "user2"
     When I follow the left menu "Systems > System Groups"
     And I follow "minions_group"
@@ -37,7 +37,7 @@ Feature: Create organizations, users and groups using salt states
   Scenario: User channels permissions were assigned
     Given I am authorized as "user2" with password "user2"
     When I follow the left menu "Software > Channel List > All"
-    And  I follow "Test-Channel-x86_64"
+    And I follow "Test-Channel-x86_64"
     And I follow "Managers"
 
   Scenario: User Roles were assigned
@@ -51,15 +51,16 @@ Feature: Create organizations, users and groups using salt states
     And I should see "role_channel_admin" as unchecked
     And I should see "role_system_group_admin" as unchecked
 
-  Scenario: Apply teardown configuration teardown salt state to server
+  Scenario: Cleanup: apply configuration teardown salt state to server
     When I apply "teardown_users_configuration" local salt state on "server"
     And I manually uninstall the "uyuni-config" formula from the server
 
-  Scenario: All organizations were successfully removed
+  Scenario: Cleanup: all organizations were successfully removed
     Given I am on the Organizations page
     Then I should not see a "my_org" text
     And I should not see a "my_org2" text
 
-  Scenario: User was successfully removed
+  Scenario: Cleanup: user was successfully removed
     Given I am on the active Users page
     Then I should not see a "user2" text
+  
