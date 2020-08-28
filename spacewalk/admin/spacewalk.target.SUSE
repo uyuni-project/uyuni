@@ -11,7 +11,7 @@ Requires=rhn-search.service
 Requires=cobblerd.service
 Requires=taskomatic.service
 Requires=spacewalk-wait-for-taskomatic.service
-Requires=mgr-events-config.service
+Requires=salt-secrets-config.service
 Requires=mgr-websockify.service
 
 [Install]
