@@ -113,7 +113,7 @@ class DpkgRepo:
                 if packages_url.startswith("file://"):
                     try:
                         with open(packages_url.replace("file://", ""), "rb") as f:
-                            self._pkg_index = cnt_fname, f.read().decode("utf-8")
+                            self._pkg_index = cnt_fname, f.read()
                             break
                     except:
                         pass
