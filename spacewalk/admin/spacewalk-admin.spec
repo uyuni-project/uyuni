@@ -81,7 +81,7 @@ install -p man/rhn-satellite.8 $RPM_BUILD_ROOT%{_mandir}/man8/
 chmod 0644 $RPM_BUILD_ROOT%{_mandir}/man8/*.8*
 ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 %if 0%{?build_py3}
-sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-events-config.py
+sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/salt-secrets-config.py
 %endif
 
 %files
@@ -95,7 +95,7 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-eve
 %{_bindir}/rhn-generate-pem.pl
 %{_bindir}/rhn-deploy-ca-cert.pl
 %{_bindir}/rhn-install-ssl-cert.pl
-%{_bindir}/mgr-events-config.py
+%{_bindir}/salt-secrets-config.py
 %{_sbindir}/rhn-sat-restart-silent
 %{_sbindir}/mgr-monitoring-ctl
 %{rhnroot}/RHN-GPG-KEY
@@ -114,7 +114,7 @@ sed -i 's|#!/usr/bin/python|#!/usr/bin/python3|' $RPM_BUILD_ROOT/usr/bin/mgr-eve
 %{_unitdir}/spacewalk-wait-for-salt.service
 %{_unitdir}/spacewalk-wait-for-jabberd.service
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
-%{_unitdir}/mgr-events-config.service
+%{_unitdir}/salt-secrets-config.service
 %{_unitdir}/mgr-websockify.service
 %endif
 %if 0%{?suse_version}
