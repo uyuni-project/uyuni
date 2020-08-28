@@ -925,7 +925,7 @@ def channel_software_is_globally_subscribable(channel_label, org_admin_user=None
     :param org_admin_user: organization admin username
     :param org_admin_password: organization admin password
 
-    :return: boolean which indicates if channel is globally subscribe
+    :return: boolean which indicates if channel is globally subscribable
     """
     return UyuniChannelSoftware(org_admin_user, org_admin_password).is_globally_subscribable(channel_label)
 
