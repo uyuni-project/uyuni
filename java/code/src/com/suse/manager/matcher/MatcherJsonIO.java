@@ -236,7 +236,7 @@ public class MatcherJsonIO {
         return ((List<PinnedSubscription>) HibernateFactory.getSession()
                 .createCriteria(PinnedSubscription.class).list()).stream()
                 .map(p -> new MatchJson(
-                    p.getSystemId(), p.getSubscriptionId(), null, null, null))
+                    p.getSystemId(), p.getSubscriptionId(), null, null))
                 .collect(toList());
     }
 
