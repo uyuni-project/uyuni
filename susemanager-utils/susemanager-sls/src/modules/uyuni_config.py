@@ -935,6 +935,9 @@ def org_list_orgs(admin_user=None, admin_password=None):
     List all organizations.
     Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
+    :param admin_user: uyuni admin user
+    :param admin_password: uyuni admin password
+
     :return: list of all available organizations.
     """
     return UyuniOrg(admin_user, admin_password).list_orgs()
