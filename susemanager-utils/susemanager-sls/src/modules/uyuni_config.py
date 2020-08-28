@@ -1186,8 +1186,7 @@ def systemgroup_add_remove_systems(name, add_remove, system_ids=[],
 
 def master_select_minions(target=None, target_type="glob"):
     """
-    Return list minions from the configured Salt Master on the same host
-    which match the expression on the defined target
+    Return list minions from the configured Salt Master on the same host which match the expression on the defined target
 
     :param target: target expression to filter minions
     :param target_type: target type, one of the following: glob, grain, grain_pcre, pillar, pillar_pcre,
