@@ -1,7 +1,7 @@
 # Copyright (c) 2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: Create organizations, users and groups using salt states
+Feature: Create organizations, users and groups using Salt states
 
   Scenario: Apply configuration salt state to server
     When I manually install the "uyuni-config" formula on the server
@@ -63,4 +63,3 @@ Feature: Create organizations, users and groups using salt states
   Scenario: Cleanup: user was successfully removed
     Given I am on the active Users page
     Then I should not see a "user2" text
-  
