@@ -144,7 +144,8 @@ class UyuniUsers:
             current_system_groups_names = [s["name"] for s in (current_system_groups or [])]
         except Exception as exc:
             if exc.faultCode == AUTHENTICATION_ERROR:
-                error_message = "Error while retrieving user information (admin credentials error) '{}': {}".format(login, exc)
+                error_message = "Error while retrieving user information (admin credentials error) '{}': {}".format(
+                    login, exc)
                 log.warning(error_message)
                 return StateResult.state_error(login, comment=error_message)
 
@@ -277,12 +278,13 @@ class UyuniUserChannels:
             current_subscribe_channels = __salt__['uyuni.channel_list_my_channels'](login, password)
         except Exception as exc:
             return StateResult.state_error(login,
-                                           comment="Error retrieving information about user channels '{}': {}".format(login, exc))
+                                           comment="Error retrieving information about user channels '{}': {}".format(
+                                               login, exc))
 
         if "org_admin" in current_roles or "channel_admin" in current_roles:
-            return StateResult.state_error(login, "Channels access cannot be managed, because "
+            return StateResult.state_error(login, "Channels access cannot be changed, because "
                                                   "the target user can manage all channels in the organization "
-                                                "(having an \"org_admin\" or \"channel_admin\" role).")
+                                                  "(having an \"org_admin\" or \"channel_admin\" role).")
 
         current_manageable_channels_list = [c.get("label") for c in (current_manageable_channels or [])]
         current_subscribe_channels_list = [c.get("label") for c in (current_subscribe_channels or [])]
@@ -293,7 +295,8 @@ class UyuniUserChannels:
                                        org_admin_user, org_admin_password)
 
         if not changes:
-            return StateResult.prepare_result(login, True, "{0} channels are already in the desired state".format(login))
+            return StateResult.prepare_result(login, True,
+                                              "{0} channels are already in the desired state".format(login))
         if __opts__['test']:
             return StateResult.prepare_result(login, None, "{0} channels would be configured".format(login), changes)
 
@@ -366,7 +369,9 @@ class UyuniGroups:
                                                                          org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode != SERVER_GROUP_NOT_FOUND_ERROR:
-                return StateResult.state_error(name, "Error retrieving information about system group '{}': {}".format(name, exc))
+                return StateResult.state_error(name,
+                                               "Error retrieving information about system group '{}': {}".format(name,
+                                                                                                                 exc))
 
         current_systems_ids = [sys['id'] for sys in (current_systems or [])]
         systems_to_group = self._get_systems_for_group(target, target_type,
@@ -496,7 +501,9 @@ class UyuniOrgs:
                                                                    org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode != ORG_NOT_FOUND_ERROR:
-                return StateResult.state_error(name, "Error retrieving information about organization '{}': {}".format(name, exc))
+                return StateResult.state_error(name,
+                                               "Error retrieving information about organization '{}': {}".format(name,
+                                                                                                                 exc))
 
         user_paramters = {"login": org_admin_user, "password": org_admin_password, "email": email,
                           "first_name": first_name, "last_name": last_name,
@@ -565,33 +572,36 @@ class UyuniOrgs:
 
 class UyuniOrgsTrust:
 
-    def trust(self, name: str, org_name: str, orgs_trust: List[str],
+    def trust(self, name: str, org_name: str, trusted_orgs: List[str],
               admin_user: str = None, admin_password: str = None) -> Dict[str, Any]:
         """
         Establish trust relationships between organizations
 
         :param name: state name
         :param org_name: organization name
-        :param orgs_trust: list of organization names to trust
+        :param trusted_orgs: list of organization names to trust
         :param admin_user: administrator username
         :param admin_password: administrator password
 
         :return: dict for Salt communication
         """
         try:
-            org_trusts = __salt__['uyuni.org_trust_list_trusts'](org_name,
-                                                                 admin_user=admin_user, admin_password=admin_password)
+            current_org_trusts = __salt__['uyuni.org_trust_list_trusts'](org_name,
+                                                                         admin_user=admin_user,
+                                                                         admin_password=admin_password)
             current_org = __salt__['uyuni.org_get_details'](org_name,
                                                             admin_user=admin_user, admin_password=admin_password)
         except Exception as exc:
-            return StateResult.state_error(name, "Error retrieving information about an organization trust'{}': {}".format(org_name, exc))
+            return StateResult.state_error(name,
+                                           "Error retrieving information about an organization trust'{}': {}".format(
+                                               org_name, exc))
 
         trusts_to_add = []
         trusts_to_remove = []
-        for org_trust in org_trusts:
-            if org_trust.get("orgName") in (orgs_trust or []) and not org_trust.get("trustEnabled"):
+        for org_trust in current_org_trusts:
+            if org_trust.get("orgName") in (trusted_orgs or []) and not org_trust.get("trustEnabled"):
                 trusts_to_add.append(org_trust)
-            elif org_trust.get("orgName") not in (orgs_trust or []) and org_trust.get("trustEnabled"):
+            elif org_trust.get("orgName") not in (trusted_orgs or []) and org_trust.get("trustEnabled"):
                 trusts_to_remove.append(org_trust)
 
         if not trusts_to_add and not trusts_to_remove:
@@ -615,9 +625,11 @@ class UyuniOrgsTrust:
                                                          admin_user=admin_user, admin_password=admin_password)
                 processed_changes[org_remove.get("orgName")] = {'old': True, 'new': None}
         except Exception as exc:
-            return StateResult.prepare_result(name, False, "Error updating organization trusts '{}': {}".format(org_name, exc),
+            return StateResult.prepare_result(name, False,
+                                              "Error updating organization trusts '{}': {}".format(org_name, exc),
                                               processed_changes)
-        return StateResult.prepare_result(name, True, "Org '{}' trusts successfully modified".format(org_name), processed_changes)
+        return StateResult.prepare_result(name, True, "Org '{}' trusts successfully modified".format(org_name),
+                                          processed_changes)
 
 
 def __virtual__():
@@ -640,7 +652,7 @@ def user_present(name, password, email, first_name, last_name, use_pam_auth=Fals
     :param system_groups: system_groups to assign to user
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
-    
+
     :return: dict for Salt communication
     """
     return UyuniUsers().manage(name, password, email, first_name, last_name, use_pam_auth,
