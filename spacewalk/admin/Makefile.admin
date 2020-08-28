@@ -35,7 +35,7 @@ SCRIPTS = rhn-config-satellite.pl \
                rhn-deploy-ca-cert.pl \
                rhn-install-ssl-cert.pl \
                rhn-generate-pem.pl \
-               mgr-events-config.py
+               salt-secrets-config.py
 
 SBIN_SCRIPTS = rhn-sat-restart-silent spacewalk-service spacewalk-startup-helper
 
@@ -44,7 +44,7 @@ CONF_FILES = service-list
 GPGKEY_FILES = RHN-GPG-KEY
 
 SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
-		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service mgr-events-config.service
+		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service salt-secrets-config.service
 
 BIN_INSTALL    = install -m 755
 CONF_INSTALL   = install -m 644
