@@ -144,10 +144,9 @@ class UyuniUsers:
             current_system_groups_names = [s["name"] for s in (current_system_groups or [])]
         except Exception as exc:
             if exc.faultCode == AUTHENTICATION_ERROR:
-                log.warning("Error managing user (admin credentials error) '{}': {}".format(login, exc))
-                return StateResult.state_error(login,
-                                               comment="Error managing user (admin credentials error) '{}': {}".format(
-                                                   login, exc))
+                error_message = "Error while retrieving user information (admin credentials error) '{}': {}".format(login, exc)
+                log.warning(error_message)
+                return StateResult.state_error(login, comment=error_message)
 
         user_paramters = {"login": login, "password": password, "email": email,
                           "first_name": first_name, "last_name": last_name,
@@ -159,14 +158,14 @@ class UyuniUsers:
                                                use_pam_auth=use_pam_auth)
 
         if error:
-            return StateResult.state_error(login, "Error managing user '{}': {}".format(login, error))
+            return StateResult.state_error(login, "Error computing changes for user '{}': {}".format(login, error))
         if not changes:
-            return StateResult.prepare_result(login, True, "{0} is already installed".format(login))
+            return StateResult.prepare_result(login, True, "{0} is already in the desired state".format(login))
         if not current_user:
             changes['login'] = {"new": login}
             changes['password'] = {"new": "(hidden)"}
         if __opts__['test']:
-            return StateResult.prepare_result(login, None, "{0} would be installed".format(login), changes)
+            return StateResult.prepare_result(login, None, "{0} would be modified".format(login), changes)
 
         try:
             if current_user:
@@ -180,13 +179,13 @@ class UyuniUsers:
             self._update_user_system_groups(login, current_system_groups_names, system_groups,
                                             org_admin_user, org_admin_password)
         except Exception as exc:
-            return StateResult.state_error(login, "Error managing user '{}': {}".format(login, exc))
+            return StateResult.state_error(login, "Error modifying user '{}': {}".format(login, exc))
         else:
-            return StateResult.prepare_result(login, True, "{0} user successful managed".format(login), changes)
+            return StateResult.prepare_result(login, True, "{0} user successfully modified".format(login), changes)
 
     def delete(self, login: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
-        Remove user from the Uyuni Server
+        Remove an Uyuni user
 
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
@@ -213,7 +212,7 @@ class UyuniUsers:
                 'last_name': {'old': user.get('last_name')}
             }
             if __opts__['test']:
-                return StateResult.prepare_result(login, None, "{0} would be removed".format(login), changes)
+                return StateResult.prepare_result(login, None, "{0} would be deleted".format(login), changes)
 
             try:
                 __salt__['uyuni.user_delete'](login,
@@ -262,7 +261,7 @@ class UyuniUserChannels:
                subscribable_channels: Optional[List[str]] = [],
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
-        User channels management present implementation
+        Modifies user-channel associations
 
         :param login: user login ID
         :param password: user password
@@ -278,13 +277,12 @@ class UyuniUserChannels:
             current_subscribe_channels = __salt__['uyuni.channel_list_my_channels'](login, password)
         except Exception as exc:
             return StateResult.state_error(login,
-                                           comment="Error managing user channels '{}': {}".format(login, exc))
-            pass
+                                           comment="Error retrieving information about user channels '{}': {}".format(login, exc))
 
         if "org_admin" in current_roles or "channel_admin" in current_roles:
-            return StateResult.state_error(login, "Channels access cannot be managed, "
-                                                "User can manage all channel in the organization "
-                                                "(\"org_admin\" or \"channel_admin\" role).")
+            return StateResult.state_error(login, "Channels access cannot be managed, because "
+                                                  "the target user can manage all channels in the organization "
+                                                "(having an \"org_admin\" or \"channel_admin\" role).")
 
         current_manageable_channels_list = [c.get("label") for c in (current_manageable_channels or [])]
         current_subscribe_channels_list = [c.get("label") for c in (current_subscribe_channels or [])]
@@ -308,7 +306,7 @@ class UyuniUserChannels:
                 __salt__['uyuni.channel_software_set_user_subscribable'](channel, login, action,
                                                                          org_admin_user, org_admin_password)
         except Exception as exc:
-            return StateResult.state_error(login, "Error managing channel '{}': {}".format(login, exc))
+            return StateResult.state_error(login, "Error changing channel assignments '{}': {}".format(login, exc))
         return StateResult.prepare_result(login, True, "Channel set to the desired state", changes)
 
 
@@ -345,7 +343,8 @@ class UyuniGroups:
     def manage(self, name: str, description: str, target: str, target_type: str = "glob",
                org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
-        Create or update group
+        Create or update a system group
+
         :param name: group name
         :param description: group description
         :param target: target expression used to filter which minions should be part of the group
@@ -353,6 +352,7 @@ class UyuniGroups:
                 pillar_exact, compound, compound_pillar_exact. Default: glob.
         :param org_admin_user: organization administrator username
         :param org_admin_password: organization administrator password
+
         :return: dict for Salt communication
         """
         current_group = None
@@ -366,7 +366,7 @@ class UyuniGroups:
                                                                          org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode != SERVER_GROUP_NOT_FOUND_ERROR:
-                return StateResult.state_error(name, "Error managing group '{}': {}".format(name, exc))
+                return StateResult.state_error(name, "Error retrieving information about system group '{}': {}".format(name, exc))
 
         current_systems_ids = [sys['id'] for sys in (current_systems or [])]
         systems_to_group = self._get_systems_for_group(target, target_type,
@@ -385,7 +385,7 @@ class UyuniGroups:
                 changes['systems']['old'] = current_systems_ids
 
         if not changes:
-            return StateResult.prepare_result(name, True, "{0} is already installed".format(name))
+            return StateResult.prepare_result(name, True, "{0} is already in the desired state".format(name))
 
         if not current_group:
             changes["name"] = {"new": name}
@@ -414,13 +414,13 @@ class UyuniGroups:
                                      org_admin_user=org_admin_user,
                                      org_admin_password=org_admin_password)
         except Exception as exc:
-            return StateResult.state_error(name, "Error managing group. '{}': {}".format(name, exc))
+            return StateResult.state_error(name, "Error updating group. '{}': {}".format(name, exc))
         else:
-            return StateResult.prepare_result(name, True, "{0} successfully managed".format(name), changes)
+            return StateResult.prepare_result(name, True, "{0} successfully updated".format(name), changes)
 
     def delete(self, name: str, org_admin_user: str = None, org_admin_password: str = None) -> Dict[str, Any]:
         """
-        Remove group from the Uyuni
+        Remove an Uyuni system group
 
         :param name: Group Name
         :param org_admin_user: organization administrator username
@@ -471,8 +471,8 @@ class UyuniOrgs:
                last_name: str, email: str, pam: bool = False,
                admin_user=None, admin_password=None) -> Dict[str, Any]:
         """
-        Manage organization.
-        Admin user must have SUSE Manager Administrator role to perform this action
+        Create or update an Uyuni organization.
+        Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
         :param name: organization name
         :param org_admin_user: organization admin user
@@ -496,7 +496,7 @@ class UyuniOrgs:
                                                                    org_admin_password=org_admin_password)
         except Exception as exc:
             if exc.faultCode != ORG_NOT_FOUND_ERROR:
-                return StateResult.state_error(name, "Error managing org '{}': {}".format(name, exc))
+                return StateResult.state_error(name, "Error retrieving information about organization '{}': {}".format(name, exc))
 
         user_paramters = {"login": org_admin_user, "password": org_admin_password, "email": email,
                           "first_name": first_name, "last_name": last_name,
@@ -509,9 +509,9 @@ class UyuniOrgs:
             changes["pam"] = {"new": pam}
 
         if not changes:
-            return StateResult.prepare_result(name, True, "{0} is already installed".format(name))
+            return StateResult.prepare_result(name, True, "{0} is already in the desired state".format(name))
         if __opts__['test']:
-            return StateResult.prepare_result(name, None, "{0} would be installed".format(name), changes)
+            return StateResult.prepare_result(name, None, "{0} would be updated".format(name), changes)
 
         try:
             if current_org:
@@ -523,14 +523,14 @@ class UyuniOrgs:
                                              admin_user=admin_user, admin_password=admin_password, pam=pam)
 
         except Exception as exc:
-            return StateResult.state_error(name, "Error managing org '{}': {}".format(name, exc))
+            return StateResult.state_error(name, "Error updating organization '{}': {}".format(name, exc))
         else:
-            return StateResult.prepare_result(name, True, "{0} org successful managed".format(name), changes)
+            return StateResult.prepare_result(name, True, "{0} org successfully modified".format(name), changes)
 
     def delete(self, name: str, admin_user=None, admin_password=None) -> Dict[str, Any]:
         """
-        Remove organization from the Uyuni
-        Admin user must have SUSE Manager Administrator role to perform this action
+        Remove an Uyuni organization
+        Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
         :param name: Organization Name
         :param admin_user: administrator username
@@ -568,13 +568,14 @@ class UyuniOrgsTrust:
     def trust(self, name: str, org_name: str, orgs_trust: List[str],
               admin_user: str = None, admin_password: str = None) -> Dict[str, Any]:
         """
-        Add trusted organisations to the a org
+        Establish trust relationships between organizations
 
         :param name: state name
         :param org_name: organization name
         :param orgs_trust: list of organization names to trust
         :param admin_user: administrator username
         :param admin_password: administrator password
+
         :return: dict for Salt communication
         """
         try:
@@ -583,7 +584,7 @@ class UyuniOrgsTrust:
             current_org = __salt__['uyuni.org_get_details'](org_name,
                                                             admin_user=admin_user, admin_password=admin_password)
         except Exception as exc:
-            return StateResult.state_error(name, "Error managing org Trust'{}': {}".format(org_name, exc))
+            return StateResult.state_error(name, "Error retrieving information about an organization trust'{}': {}".format(org_name, exc))
 
         trusts_to_add = []
         trusts_to_remove = []
@@ -594,14 +595,14 @@ class UyuniOrgsTrust:
                 trusts_to_remove.append(org_trust)
 
         if not trusts_to_add and not trusts_to_remove:
-            return StateResult.prepare_result(name, True, "{0} is already installed".format(org_name))
+            return StateResult.prepare_result(name, True, "{0} is already in the desired state".format(org_name))
         if __opts__['test']:
             changes = {}
             for org_add in trusts_to_add:
                 changes[org_add.get("orgName")] = {'old': None, 'new': True}
             for org_remove in trusts_to_remove:
                 changes[org_remove.get("orgName")] = {'old': True, 'new': None}
-            return StateResult.prepare_result(name, None, "{0} would be installed".format(org_name), changes)
+            return StateResult.prepare_result(name, None, "{0} would be created".format(org_name), changes)
 
         processed_changes = {}
         try:
@@ -614,15 +615,12 @@ class UyuniOrgsTrust:
                                                          admin_user=admin_user, admin_password=admin_password)
                 processed_changes[org_remove.get("orgName")] = {'old': True, 'new': None}
         except Exception as exc:
-            return StateResult.prepare_result(name, False, "Error managing Org Trust '{}': {}".format(org_name, exc),
+            return StateResult.prepare_result(name, False, "Error updating organization trusts '{}': {}".format(org_name, exc),
                                               processed_changes)
-        return StateResult.prepare_result(name, True, "Org '{}' Trust successful managed".format(org_name), processed_changes)
+        return StateResult.prepare_result(name, True, "Org '{}' trusts successfully modified".format(org_name), processed_changes)
 
 
 def __virtual__():
-    '''
-    TODO add a check to Only Runs in Uyuni server
-    '''
     return __virtualname__
 
 
@@ -630,18 +628,19 @@ def user_present(name, password, email, first_name, last_name, use_pam_auth=Fals
                  roles=None, system_groups=None,
                  org_admin_user=None, org_admin_password=None):
     """
-    Ensure a user is present with all specified properties
+    Create or update an Uyuni user
 
     :param name: user login name
     :param password: desired password for the user
     :param email: valid email address
     :param first_name: First name
-    :param last_name: Second name
+    :param last_name: Last name
     :param use_pam_auth: if you wish to use PAM authentication for this user
     :param roles: roles to assign to user
     :param system_groups: system_groups to assign to user
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
+    
     :return: dict for Salt communication
     """
     return UyuniUsers().manage(name, password, email, first_name, last_name, use_pam_auth,
@@ -661,6 +660,7 @@ def user_channels(name, password,
     :param subscribable_channels: channels user can subscribe
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
+
     :return: dict for Salt communication
     """
     return UyuniUserChannels().manage(name, password,
@@ -670,11 +670,13 @@ def user_channels(name, password,
 
 def user_absent(name, org_admin_user=None, org_admin_password=None):
     """
+    Ensure an Uyuni user is not present.
 
     :param name: user login name
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
-    :return:
+
+    :return:  dict for Salt communication
     """
     return UyuniUsers().delete(name, org_admin_user, org_admin_password)
 
@@ -683,8 +685,8 @@ def org_present(name, org_admin_user, org_admin_password,
                 first_name, last_name, email, pam=False,
                 admin_user=None, admin_password=None):
     """
-    Create or update uyuni organization
-    Admin user must have SUSE Manager Administrator role to perform this action
+    Create or update an Uyuni organization
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
     :param name: organization name
     :param org_admin_user: organization admin user
@@ -695,6 +697,7 @@ def org_present(name, org_admin_user, org_admin_password,
     :param pam: organization admin pam authentication
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
+
     :return: dict for Salt communication
     """
     return UyuniOrgs().manage(name, org_admin_user, org_admin_password, first_name,
@@ -704,12 +707,13 @@ def org_present(name, org_admin_user, org_admin_password,
 
 def org_absent(name, admin_user=None, admin_password=None):
     """
-    Delete uyuni organization
-    Admin user must have SUSE Manager Administrator role to perform this action
+    Ensure an Uyuni organization is not present
+    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
 
     :param name: organization name
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
+
     :return: dict for Salt communication
     """
     return UyuniOrgs().delete(name, admin_user, admin_password)
@@ -717,12 +721,14 @@ def org_absent(name, admin_user=None, admin_password=None):
 
 def org_trust(name, org_name, trusts, admin_user=None, admin_password=None):
     """
-    Add trusted organisations from a organization.
+    Establish trust relationships between Uyuni organizations.
+
     :param name: state name
     :param org_name: Organization name
     :param trusts: list of organization names to trust
     :param admin_user: administrator username
     :param admin_password: administrator password
+
     :return: dict for Salt communication
     """
     return UyuniOrgsTrust().trust(name, org_name, trusts, admin_user, admin_password)
@@ -731,7 +737,7 @@ def org_trust(name, org_name, trusts, admin_user=None, admin_password=None):
 def group_present(name, description, target=None, target_type="glob",
                   org_admin_user=None, org_admin_password=None):
     """
-    Create or update group
+    Create or update an Uyuni system group
 
     :param name: group name
     :param description: group description
@@ -740,6 +746,7 @@ def group_present(name, description, target=None, target_type="glob",
             pillar_exact, compound, compound_pillar_exact. Default: glob.
     :param org_admin_user: organization administrator username
     :param org_admin_password: organization administrator password
+
     :return: dict for Salt communication
     """
     return UyuniGroups().manage(name, description, target, target_type,
@@ -748,7 +755,7 @@ def group_present(name, description, target=None, target_type="glob",
 
 def group_absent(name, org_admin_user=None, org_admin_password=None):
     """
-    Remove group from the Uyuni
+    Ensure an Uyuni system group is not present
 
     :param name: Group Name
     :param org_admin_user: organization administrator username
