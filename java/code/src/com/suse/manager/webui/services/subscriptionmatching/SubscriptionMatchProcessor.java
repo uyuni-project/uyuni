@@ -126,7 +126,6 @@ public class SubscriptionMatchProcessor {
         }
 
         boolean satisfied = output.getMatches().stream()
-                .filter(m -> m.getConfirmed())
                 .anyMatch(m -> m.getSystemId().equals(ps.getSystemId()) &&
                     m.getSubscriptionId().equals(ps.getSubscriptionId()));
 
@@ -170,7 +169,6 @@ public class SubscriptionMatchProcessor {
         Map<Long, Integer> matchedCents = new HashMap<>();
         Map<Long, Integer> matchedQuantity = new HashMap<>();
         output.getMatches().stream()
-                .filter(m -> m.getConfirmed())
                 .forEach(m -> matchedCents.merge(m.getSubscriptionId(), m.getCents(),
                         Math::addExact));
 
@@ -187,7 +185,6 @@ public class SubscriptionMatchProcessor {
                 .collect(toSet());
 
         Set<Pair<Long, Long>> confirmedProductSystemPairs = output.getMatches().stream()
-                .filter(MatchJson::getConfirmed)
                 .map(m -> Pair.of(m.getProductId(), m.getSystemId()))
                 .collect(toSet());
 

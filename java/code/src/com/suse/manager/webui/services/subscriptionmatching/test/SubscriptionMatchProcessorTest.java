@@ -141,7 +141,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         input.getSubscriptions().add(sub);
         output.getSubscriptions().add(sub);
 
-        MatchJson match = new MatchJson(20L, 1L, 100L, 200, true);
+        MatchJson match = new MatchJson(20L, 1L, 100L, 200);
         output.getMatches().add(match);
         // subscriptions with null policy will be filtered out
         setSubscriptionPolicy(1L, "my policy");
@@ -236,9 +236,9 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 new SystemJson(3L, "system 3", 1, true, false, Collections.emptySet(),
                         products3));
 
-        output.getMatches().add(new MatchJson(1L, 10L, 100L, 100, true));
-        output.getMatches().add(new MatchJson(2L, 20L, 100L, 100, true));
-        output.getMatches().add(new MatchJson(3L, 20L, 100L, 100, true));
+        output.getMatches().add(new MatchJson(1L, 10L, 100L, 100));
+        output.getMatches().add(new MatchJson(2L, 20L, 100L, 100));
+        output.getMatches().add(new MatchJson(3L, 20L, 100L, 100));
 
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
         Map<String, Product> unmatchedProducts = data.getProducts();
@@ -269,7 +269,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         input.setSystems(Collections.singletonList(
                 new SystemJson(1L, "system name", 1, true, false, Collections.emptySet(),
                         productsIn)));
-        output.getMatches().add(new MatchJson(1L, 10L, 100L, 100, true));
+        output.getMatches().add(new MatchJson(1L, 10L, 100L, 100));
 
         MatcherUiData data = (MatcherUiData) processor
                 .getData(of(input), of(output));
@@ -313,7 +313,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 Collections.singleton(1004L));
         input.setSubscriptions(Arrays.asList(subscription));
         output.setSubscriptions(Arrays.asList(subscription));
-        List<MatchJson> matches = Arrays.asList(new MatchJson(100L, 10L, 1000L, 100, true));
+        List<MatchJson> matches = Arrays.asList(new MatchJson(100L, 10L, 1000L, 100));
         input.setPinnedMatches(matches);
         output.setMatches(matches);
 
@@ -343,7 +343,7 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
                 Collections.singleton(1004L));
         input.setSubscriptions(Arrays.asList(subscription));
         output.setSubscriptions(Arrays.asList(subscription));
-        input.setPinnedMatches(Arrays.asList(new MatchJson(100L, 10L, 1L, 100, null)));
+        input.setPinnedMatches(Arrays.asList(new MatchJson(100L, 10L, 1L, 100)));
 
         // create a corresponding pin
         PinnedSubscription newPinDb = new PinnedSubscription();
@@ -449,14 +449,14 @@ public class SubscriptionMatchProcessorTest extends BaseTestCaseWithUser {
         policies.put(104L, "one_two");
 
         List<MatchJson> confirmedMatches = output.getMatches();
-        confirmedMatches.add(new MatchJson(10L, 100L, 1000L, 100, true));
-        confirmedMatches.add(new MatchJson(20L, 100L, 1000L, 100, true));
-        confirmedMatches.add(new MatchJson(30L, 103L, 1003L, 100, true));
-        confirmedMatches.add(new MatchJson(31L, 103L, 1003L, 0, true));
-        confirmedMatches.add(new MatchJson(32L, 103L, 1003L, 0, true));
-        confirmedMatches.add(new MatchJson(33L, 100L, 1000L, 50, true));
-        confirmedMatches.add(new MatchJson(33L, 103L, 1003L, 0, true));
-        confirmedMatches.add(new MatchJson(34L, 100L, 1000L, 100, true));
+        confirmedMatches.add(new MatchJson(10L, 100L, 1000L, 100));
+        confirmedMatches.add(new MatchJson(20L, 100L, 1000L, 100));
+        confirmedMatches.add(new MatchJson(30L, 103L, 1003L, 100));
+        confirmedMatches.add(new MatchJson(31L, 103L, 1003L, 0));
+        confirmedMatches.add(new MatchJson(32L, 103L, 1003L, 0));
+        confirmedMatches.add(new MatchJson(33L, 100L, 1000L, 50));
+        confirmedMatches.add(new MatchJson(33L, 103L, 1003L, 0));
+        confirmedMatches.add(new MatchJson(34L, 100L, 1000L, 100));
 
         MatcherUiData data = (MatcherUiData) processor.getData(of(input), of(output));
         Map<String, Product> products = data.getProducts();
