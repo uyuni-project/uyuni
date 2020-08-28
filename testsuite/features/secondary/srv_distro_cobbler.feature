@@ -21,18 +21,17 @@ Feature: Cobbler and distribution autoinstallation
     And I should see a "testdistro" text
 
   Scenario: Create SUSE Distibution with installer updates
-    When I install package "tftpboot-installation-SLE-15-SP2-x86_64" on this "server"
-    And I follow the left menu "Systems > Autoinstallation > Distributions"
+    When I follow the left menu "Systems > Autoinstallation > Distributions"
     And I follow "Create Distribution"
-    When I enter "SLE-15-SP2-x86_64" as "label"
-    And I enter "/usr/share/tftpboot-installation/SLE-15-SP2-x86_64/" as "basepath"
+    And I enter "SLE-15-FAKE" as "label"
+    And I enter "/install/SLES11-SP1-x86_64/DVD1/" as "basepath"
     And I select "SLE-Product-SLES15-Pool for x86_64" from "channelid"
     And I select "SUSE Linux Enterprise 15" from "installtype"
     And I click on "Create Autoinstallable Distribution"
     Then I should see a "Autoinstallable Distributions" text
-    And I should see a "SLE-15-SP2-x86_64" link
-    When I follow "SLE-15-SP2-x86_64"
-    Then textfield "kernelopts" should contain "self_update=http://"
+    And I should see a "SLE-15-FAKE" link
+    When I follow "SLE-15-FAKE"
+    Then text field "kernelopts" should contain "self_update=http://"
 
   Scenario: Create a distribution via the UI
     When I follow the left menu "Systems > Autoinstallation > Distributions"
