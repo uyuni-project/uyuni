@@ -12,6 +12,7 @@ ADDRESSES = { 'network'     => '0',
 
 FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'IP'                              => 'branch_network#ip',
+              'virtual network mode'            => 'default_net#mode',
               'domain name server'              => 'dhcpd#domain_name_servers#0',
               'network IP'                      => 'dhcpd#subnets#0#$key',
               'dynamic IP range begin'          => 'dhcpd#subnets#0#range#0',
