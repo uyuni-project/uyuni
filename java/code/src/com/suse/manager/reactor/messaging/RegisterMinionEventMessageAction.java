@@ -651,23 +651,19 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     private void setServerPaths(MinionServer server, String master,
                                 boolean isSaltSSH, Optional<Long> saltSSHProxyId) {
+        Optional<Set<ServerPath>> proxyPaths =
+                isSaltSSH ?
+                        saltSSHProxyId
+                                .map(proxyId -> ServerFactory.lookupById(proxyId))
+                                .map(proxy -> ServerFactory
+                                        .createServerPaths(server, proxy, proxy.getHostname())
+                                ) :
+                        ServerFactory.lookupProxyServer(master).map(proxy ->
+                            ServerFactory
+                                    .createServerPaths(server, proxy, master)
+                        );
         server.getServerPaths().clear();
-        if (isSaltSSH) {
-            saltSSHProxyId
-                .map(proxyId -> ServerFactory.lookupById(proxyId))
-                .ifPresent(proxy -> {
-                    Set<ServerPath> proxyPaths = ServerFactory
-                            .createServerPaths(server, proxy, proxy.getHostname());
-                    server.getServerPaths().addAll(proxyPaths);
-                });
-        }
-        else {
-            ServerFactory.lookupProxyServer(master).ifPresent(proxy -> {
-                Set<ServerPath> proxyPaths = ServerFactory
-                        .createServerPaths(server, proxy, master);
-                server.getServerPaths().addAll(proxyPaths);
-            });
-        }
+        server.getServerPaths().addAll(proxyPaths.orElse(Collections.emptySet()));
     }
 
     private void giveCapabilities(MinionServer server) {

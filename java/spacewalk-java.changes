@@ -1,3 +1,4 @@
+- Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175876)
 - Fix: use quiet API method when using spacewalk-common-channels (bsc#1175529)
 - add java.allow_adding_patches_via_api to allow adding errata to vendor channels
 - fix alignment on icon on entitlement page
