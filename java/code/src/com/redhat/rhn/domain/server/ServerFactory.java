@@ -69,6 +69,7 @@ import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
 /**
@@ -284,28 +285,51 @@ public class ServerFactory extends HibernateFactory {
      * @param server the server
      * @param proxyServer the proxy server to which <code>server</code> connects directly
      * @param proxyHostname the proxy hostname
-     * @return a set of {@link ServerPath} objects where the proxy to which
-     * <code>server</code> connects dirrectly has position 0, the second proxy
+     * @return a set of {@link ServerPath} objects where the proxy to which the
+     * <code>server</code> connects directly has position 0, the second proxy
      * has position 1, etc
      */
     public static Set<ServerPath> createServerPaths(Server server, Server proxyServer,
                                               String proxyHostname) {
         Set<ServerPath> paths = new HashSet<>();
         for (ServerPath parentPath : proxyServer.getServerPaths()) {
-            ServerPath path = new ServerPath();
-            path.setId(new ServerPathId(server, parentPath.getId().getProxyServer()));
-            path.setPosition(parentPath.getPosition() + 1);
-            path.setHostname(parentPath.getHostname());
+            ServerPath path = findServerPath(server, parentPath.getId().getProxyServer()).orElseGet(() -> {
+                ServerPath newPath = new ServerPath();
+                newPath.setId(new ServerPathId(server, parentPath.getId().getProxyServer()));
+                newPath.setPosition(parentPath.getPosition() + 1);
+                newPath.setHostname(parentPath.getHostname());
+                return newPath;
+            });
             paths.add(path);
+
         }
-        ServerPath path = new ServerPath();
-        path.setId(new ServerPathId(server, proxyServer));
-        // the first proxy is the one to which
-        // the server connects directly
-        path.setPosition(0L);
-        path.setHostname(proxyHostname);
+        ServerPath path = findServerPath(server, proxyServer).orElseGet(() -> {
+            ServerPath newPath = new ServerPath();
+            newPath.setId(new ServerPathId(server, proxyServer));
+            // the first proxy is the one to which
+            // the server connects directly
+            newPath.setPosition(0L);
+            newPath.setHostname(proxyHostname);
+            return newPath;
+        });
         paths.add(path);
         return paths;
+    }
+
+    private static Optional<ServerPath> findServerPath(Server server, Server proxyServer) {
+        if (server.getId() == null) {
+            // not yet persisted, return empty to avoid Hibernate error
+            // on query with a transient object
+            return Optional.empty();
+        }
+        CriteriaBuilder builder = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<ServerPath> criteria = builder.createQuery(ServerPath.class);
+        Root<ServerPath> root = criteria.from(ServerPath.class);
+        Path<ServerPathId> id = root.get("id");
+        criteria.where(builder.and(
+                builder.equal(id.get("server"), server),
+                builder.equal(id.get("proxyServer"), proxyServer)));
+        return getSession().createQuery(criteria).uniqueResultOptional();
     }
 
     /**
@@ -979,6 +1003,14 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void deleteSnapshot(ServerSnapshot snap) {
         ServerFactory.getSession().delete(snap);
+    }
+
+    /**
+     * Delete a server path
+     * @param path the server path to delete
+     */
+    public static void deleteServerPath(ServerPath path) {
+        ServerFactory.getSession().delete(path);
     }
 
     /**
