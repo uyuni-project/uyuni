@@ -7,7 +7,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Visión de conjunto</target>
+        <target>Resumen</target>
       </trans-unit>
       <trans-unit id="common.nav.systems">
         <source>Systems</source>
@@ -661,18 +661,21 @@
       </trans-unit>
       <trans-unit id="External Authentication">
         <source>External Authentication</source>
+        <target>Autenticación Externa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Group Role Mapping">
         <source>Group Role Mapping</source>
+        <target>Mapeo de Roles de Grupo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Group Configuration">
         <source>System Group Configuration</source>
+        <target>Configuración de Grupo de Sistemas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -700,12 +703,14 @@
       </trans-unit>
       <trans-unit id="Power Management Configuration">
         <source>Power Management Configuration</source>
+        <target>Configuración de Gestión de Energía</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Operations">
         <source>Power Management Operations</source>
+        <target>Operaciones de Gestión de Energía</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -747,6 +752,7 @@
       </trans-unit>
       <trans-unit id="Patch List">
         <source>Patch List</source>
+        <target>Lista de Parches</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1166,9 +1172,11 @@
       </group>
       <trans-unit id="Deployment">
         <source>Deployment</source>
+        <target>Despliegue</target>
       </trans-unit>
       <trans-unit id="Image List">
         <source>Image List</source>
+        <target>Lista de Imágenes</target>
       </trans-unit>
     </body>
   </file>
