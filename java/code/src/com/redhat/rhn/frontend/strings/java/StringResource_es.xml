@@ -1198,7 +1198,7 @@
         <target>Sr.</target>
       </trans-unit>
       <trans-unit id="user prefix  ">
-        <source></source>
+        <source/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -2247,6 +2247,7 @@ asegurarse de que estén disponibles para que este perfil kickstart funcione apr
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream">
         <source>&lt;div style="text-align: left;"&gt; &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; Is the 'appstream' child software channel for this kickstart profile's base channel available to your organization? If it is not, you will need to request entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator. &lt;/li&gt; &lt;li&gt; Make sure that the 'appstream' child channel for this kickstart profile's base channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your satellite administrator and request a cdn-sync for the appstream channel and try again. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</source>
+        <target>&lt;div style="text-align: left;"&gt; &lt;p&gt;Para resolver este problema, compruebe:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; ¿Está disponible para su organización el canal 'appstream' hijo correspondiente al canal base de este perfil kickstart? Si no lo está, necesitará solicitar acceso al canal 'appstream' al administrador de @@PRODUCT_NAME@@. &lt;/li&gt; &lt;li&gt; Asegúrese de que el canal 'appstream' hijo correspondiente al canal base de este perfil kickstart está disponible en @@PRODUCT_NAME@@. Si no lo está, contacte con su administrador y solicite una sincronización con la CDN del canal appstream, y a continuación inténtelo de nuevo. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2414,6 +2415,7 @@ asegurarse de que estén disponibles para que este perfil kickstart funcione apr
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message">
         <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or begin with a period(.)</source>
+        <target>El nombre de archivo del fragmento solicitado es inválido. Los nombres de archivo de fragmentos de Kickstart no pueden contener barra (/) o comenzar por un punto (.)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2567,6 +2569,7 @@ asegurarse de que estén disponibles para que este perfil kickstart funcione apr
       </trans-unit>
       <trans-unit id="errata.schedule">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; actualización de parche se ha &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;programado&lt;/a&gt; para las &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
@@ -2574,6 +2577,7 @@ asegurarse de que estén disponibles para que este perfil kickstart funcione apr
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; actualización de parches se han &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;programado&lt;/a&gt; para las &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
@@ -2581,6 +2585,7 @@ asegurarse de que estén disponibles para que este perfil kickstart funcione apr
       </trans-unit>
       <trans-unit id="errataconfirm.schedule">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
+        <target>El parche &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; se ha &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;programado&lt;/a&gt; en &lt;strong&gt;{1}&lt;/strong&gt; sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
@@ -2588,6 +2593,7 @@ asegurarse de que estén disponibles para que este perfil kickstart funcione apr
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural">
         <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
+        <target>El parche &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; se ha &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;programado&lt;/a&gt; en &lt;strong&gt;{1}&lt;/strong&gt; sistemas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -2897,6 +2903,7 @@ asegurarse de que estén disponibles para que este perfil kickstart funcione apr
       </trans-unit>
       <trans-unit id="toolbar.delete.crash">
         <source>Delete Software Crash</source>
+        <target>Borrar Cuelgue del Sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SoftwareCrashDetail.do</context>
         </context-group>
@@ -6437,6 +6444,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate.bootstrap">
         <source>System record created for {0} in Cobbler. This will start installation as soon as the system is booted.</source>
+        <target>Registro del sistema {0} creado en Cobbler. Se iniciará la instalación cuando el sistema arranque.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6625,6 +6633,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.schedule.on.bootstrap.jsp">
         <source>System &lt;strong&gt;{0}&lt;/strong&gt; is bare-metal, no scheduling is possible.</source>
+        <target>El sistema &lt;strong&gt;{0}&lt;/strong&gt; es bare-metal, no se puede programar.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -6796,6 +6805,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="config_files.setFilesToRemove.success">
         <source>{0} configuration file(s) successfully deleted.</source>
+        <target>{0} fichero(s) de configuración borrados con éxito.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
           <context context-type="paramnotes">7 configuration files were successfully deleted.</context>
@@ -6803,6 +6813,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="config_files.setFilesToRemove.failure">
         <source>{0} file deletion(s) failed.</source>
+        <target>Falló el borrado de {0} ficheros.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
           <context context-type="paramnotes">7 file deletions failed.</context>
@@ -6810,6 +6821,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="config_files.setFilesToImport.success">
         <source>{0} configuration file(s) successfully imported.</source>
+        <target>Importado(s) correctamente {0} fichero(s) de configuración.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
           <context context-type="paramnotes">7 configuration files were successfully imported.</context>
@@ -6817,6 +6829,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="config_files.setFilesToImport.failure">
         <source>{0} file import(s) failed.</source>
+        <target>{0} importación(es) de fichero(s) han fallado.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
           <context context-type="paramnotes">7 file imports failed.</context>
@@ -6824,6 +6837,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="config_subscribed_systems.unsubscribeSystems.failure">
         <source>Failed to unsubscribe {0} system(s).</source>
+        <target>Fallo al desuscribir {0} sistema(s).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -6839,6 +6853,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="config_target_systems.subscribeSystems.failure">
         <source>Failed to subscribe {0} system(s).</source>
+        <target>Fallo al suscribir {0} sistema(s).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">7 revision deletions failed.</context>
@@ -9560,7 +9575,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
-        <source></source>
+        <source/>
       </trans-unit>
       <trans-unit id="lookup.customkey.title">
         <source>We're sorry, but the custom key could not be found.</source>
