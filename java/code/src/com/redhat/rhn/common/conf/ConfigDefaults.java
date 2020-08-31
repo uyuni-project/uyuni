@@ -328,11 +328,11 @@ public class ConfigDefaults {
      * Allows to publish erratas into the configured vendor channels via the api
      */
     public static final String ALLOW_ADDING_PATCHES_VIA_API = "java.allow_adding_patches_via_api";
-     
+
     /**
-     * Specify if the web interface should be branded with the light or dark theme template
+     * Specify the web interface branded theme template
      */
-    public static final String WEB_UI_DARK_THEME = "web.dark_theme";
+    public static final String WEB_THEME = "web.theme";
 
     /**
      * Specify the default language to use if user preferences are not available such as on the login page
@@ -1029,10 +1029,11 @@ public class ConfigDefaults {
     }
 
     /**
-     * Return true if the theme is the dark one for the webUI
-     * @return true if the theme is the dark one for the webUI
+     * Return the name of the theme for the webUI
+     *
+     * @return the name of the theme for the webUI
      */
-    public boolean isDarkTheme() {
-        return Config.get().getBoolean(WEB_UI_DARK_THEME);
+    public String getWebTheme() {
+        return Config.get().getString(WEB_THEME, "light");
     }
 }

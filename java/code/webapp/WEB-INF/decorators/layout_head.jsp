@@ -25,6 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <c:set var="cb_version" value="${rhn:getConfig('web.buildtimestamp')}" />
+    <c:set var="webTheme" value="${rhn:getConfig('web.theme')}" />
 
 
 <!-- import default fonts/icons styles -->
@@ -52,28 +53,12 @@
         </c:when>
         <c:otherwise>
             <rhn:require acl="is(development_environment)">
-                <c:choose>
-                    <c:when test='${ConfigDefaults.get().isDarkTheme()}'>
-                        <link rel="stylesheet/less" type="text/css" href="/css/susemanager-dark.less" />
-                        <script>less = { env: 'development for SUSE Manager Dark' };</script>
-                        <script src="/javascript/less.js"></script>
-                    </c:when>
-                    <c:otherwise>
-                        <link rel="stylesheet/less" type="text/css" href="/css/susemanager.less" />
-                        <script>less = { env: 'development for SUSE Manager' };</script>
-                        <script src="/javascript/less.js"></script>
-                    </c:otherwise>
-                </c:choose>
+                <link rel="stylesheet/less" type="text/css" href="/css/susemanager-${webTheme}.less" />
+                <script>less = { env: 'development for SUSE Manager' };</script>
+                <script src="/javascript/less.js"></script>
             </rhn:require>
             <rhn:require acl="not is(development_environment)">
-                <c:choose>
-                    <c:when test='${ConfigDefaults.get().isDarkTheme()}'>
-                        <link rel="stylesheet" href="/css/susemanager-dark.css?cb=${cb_version}" />
-                    </c:when>
-                    <c:otherwise>
-                        <link rel="stylesheet" href="/css/susemanager.css?cb=${cb_version}" />
-                    </c:otherwise>
-                </c:choose>
+                <link rel="stylesheet" href="/css/susemanager-${webTheme}.css?cb=${cb_version}" />
             </rhn:require>
         </c:otherwise>
     </c:choose>
