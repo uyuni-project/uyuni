@@ -729,7 +729,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Monitorización</target>
+        <target>Supervisión</target>
       </trans-unit>
       <trans-unit id="name">
         <source>name</source>
@@ -2723,7 +2723,7 @@ asegurarse de que estén disponibles para que este perfil kickstart funcione apr
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>Administrador de monitorización</target>
+        <target>Administrador de supervisión</target>
       </trans-unit>
       <trans-unit id="system_group_admin">
         <source>System Group Administrator</source>
@@ -4079,7 +4079,7 @@ de este usuario antes de intentar desactivar esta cuenta.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target>Configuración actualizada, servicios de monitorización reiniciados.</target>
+        <target>Se actualizó la configuración; se han reiniciado los servicios de supervisión.</target>
       </trans-unit>
       <trans-unit id="monitoring.services.novalueschanged">
         <source>No changes made.</source>
@@ -6072,7 +6072,7 @@ de este usuario antes de intentar desactivar esta cuenta.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>Explorador de monitorización de @@PRODUCT_NAME@@</target>
+        <target>Explorador de supervisión de @@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Panic Destination">
         <source>Panic Destination</source>
@@ -8489,7 +8489,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="Monitoring Administrators">
         <source>Monitoring Administrators</source>
-        <target>Administradores de monitorización</target>
+        <target>Administradores de supervisión</target>
       </trans-unit>
       <trans-unit id="Configuration Administrators">
         <source>Configuration Administrators</source>
@@ -8605,7 +8605,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="monitoringStatus">
         <source>Monitor Status</source>
-        <target>Estado de monitorización</target>
+        <target>Estado de supervisión</target>
       </trans-unit>
       <trans-unit id="userLogin">
         <source>User Login</source>
@@ -9865,6 +9865,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="system.entitle.added.monitoring_entitled">
         <source>Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.</source>
+        <target>Como ha añadido el tipo de sistema Supervisión, hemos asignado automáticamente la fórmula Exportadores de Prometheus al sistema. Aplique &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; para instalar y activar los exportadores de métricas de Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -9877,6 +9878,7 @@ Vaya a esta dirección para ver la lista completa de sistemas inactivos:
       </trans-unit>
       <trans-unit id="system.entitle.formula_error">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
+        <target>Se produjo un problema al asignar la fórmula Exportadores de Prometheus.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
