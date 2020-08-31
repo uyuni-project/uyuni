@@ -51,7 +51,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>Monitorización</target>
+        <target>Supervisión</target>
       </trans-unit>
       <!--  Human Readable version of the entitlement labels -->
       <group>
@@ -2819,14 +2819,12 @@
         <note>Probe command requirements:
           rhn_command_requirements.name -&gt; rhn_command_requirements.description</note>
         <trans-unit id="npunix">
-          <source>RHNMD must be running on the monitored host to perform this check.</source> <target>RHNMD debe estar en ejecución en el host monitorizado para realizar esta revisión.</target>
-        </trans-unit>
+          <source>RHNMD must be running on the monitored host to perform this check.</source> <target>Para efectuar esta comprobación, RHNMD debe estar ejecutándose en el anfitrión supervisado.</target> </trans-unit>
         <trans-unit id="oracle">
           <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source> <target>Las pruebas en Oracle requieren la configuración de la base de datos y las asociaciones públicas hechas al ejecutar $ORACLE_HOME/rdbms/admin/catalog.sql. Además, en cualquier instancia de Oracle, el usuario Oracle configurado en la revisión debe tener los privilegios mínimos CONNECT y SELECT_CATALOG_ROLE.</target>
         </trans-unit>
         <trans-unit id="snmp">
-          <source>SNMP must be running on the monitored host to perform this check.</source> <target>SNMP debe estar siendo ejecutado en el host monitorizado para realizar esta revisión.</target>
-        </trans-unit>
+          <source>SNMP must be running on the monitored host to perform this check.</source> <target>Para efectuar esta comprobación, SNMP debe estar ejecutándose en el anfitrión supervisado.</target> </trans-unit>
         <trans-unit id="bea61_snmp">
           <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source> <target>Esta prueba puede ser configurada contra un servidor administrado BEA si la dirección IP del servidor de administración de dominios es dada. SNMP debe también estar habilitado en el servidor de administración de dominios, lo cual puede ser realizado a través de la consola Weblogic.</target>
         </trans-unit>
