@@ -207,7 +207,7 @@
       </trans-unit>
       <trans-unit id="Pacific/Easter">
         <source>(GMT-0500) Chile (Easter Island)</source>
-        <target>(GMT-0500) Chile (Isla de Pascua)</target>
+        <target>(GMT−0500) Chile (Isla de Pascua)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
