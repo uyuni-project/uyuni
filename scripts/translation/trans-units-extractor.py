@@ -9,6 +9,7 @@ args = parser.parse_args()
 
 logging.basicConfig(level=logging.INFO)
 
+
 def get_groups(xml_tree):
     root_node = xml_tree.getroot()
     file_tag = root_node.find('d:file', ns)
@@ -18,18 +19,23 @@ def get_groups(xml_tree):
     return body_element, groups
 
 
-def extract_trans_units(file):
-    tree = ET.parse(file)
+def extract_trans_units(org_file):
+    tree = ET.parse(org_file)
+    print(org_file)
     body_element, groups = get_groups(tree)
     for group in groups:
+        all_child_elements_of_body = list(body_element)
         context_group = group.find('d:context-group', ns)
         group_trans_units = group.findall('d:trans-unit', ns)
+        index = all_child_elements_of_body.index(group)
+        group_trans_units.reverse()
         for group_trans_unit in group_trans_units:
             if context_group is not None:
                 group_trans_unit.append(context_group)
-            body_element.append(group_trans_unit)
+            body_element.insert(index, group_trans_unit)
         body_element.remove(group)
-    tree.write(file, encoding='utf-8', xml_declaration=True)
+
+    tree.write(org_file, encoding='utf-8', xml_declaration=True)
 
 
 
@@ -38,6 +44,7 @@ ET.register_namespace('xyz', "urn:appInfo:Items")
 ET.register_namespace('xsi', "http://www.w3.org/2001/XMLSchema-instance")
 ns = {'d': 'urn:oasis:names:tc:xliff:document:1.1'}
 
+os.chdir(args.path)
 files = os.listdir(args.path)
 logging.debug(files)
 
@@ -45,5 +52,4 @@ for file in files:
     if file.startswith('StringResource_') and file.endswith('.xml'):
         original = 'StringResource_en_US.xml'
         logging.info('processing ' + str(file))
-        extract_trans_units(original)
-        break
+        extract_trans_units(file)
