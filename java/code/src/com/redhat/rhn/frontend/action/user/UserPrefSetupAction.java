@@ -78,7 +78,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
 
         requestContext.getRequest().setAttribute("targetuser", user);
         requestContext.getRequest().setAttribute("supportedLocales", buildImageMap());
-        requestContext.getRequest().setAttribute("noLocale", buildNoneLocale());
+        requestContext.getRequest().setAttribute("defaultLocale", buildDefaultLocale());
         requestContext.getRequest().setAttribute("timezones", getTimeZones());
         if (user.getTimeZone() != null) {
             form.set("timezone",

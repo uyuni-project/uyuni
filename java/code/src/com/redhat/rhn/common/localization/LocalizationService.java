@@ -67,7 +67,7 @@ public class LocalizationService {
     private static Logger msgLogger = Logger
             .getLogger("com.redhat.rhn.common.localization.messages");
 
-    public static final Locale DEFAULT_LOCALE = new Locale("EN", "US");
+    public static final Locale DEFAULT_LOCALE = getDefaultLocale();
     // private instance of the service.
     private static LocalizationService instance = new LocalizationService();
     // This Map stores the association of the java class names
@@ -685,5 +685,22 @@ public class LocalizationService {
             return Collator.getInstance(context.getLocale());
         }
         return Collator.getInstance();
+    }
+
+    /**
+     * Return the default locale to use in the web UI
+     * @return the default locale
+     */
+    private static Locale getDefaultLocale() {
+        String defaultLocale = ConfigDefaults.get().getDefaultLocale();
+        String[] localeParts = defaultLocale.split("_");
+        switch (localeParts.length) {
+            case 3:
+                return new Locale(localeParts[0], localeParts[1], localeParts[2]);
+            case 2:
+                return new Locale(localeParts[0], localeParts[1]);
+            default:
+                return new Locale(defaultLocale);
+        }
     }
 }

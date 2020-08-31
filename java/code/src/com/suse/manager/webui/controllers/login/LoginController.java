@@ -113,7 +113,7 @@ public class LoginController {
             model.put("legalNote", Config.get().getString("java.legal_note"));
             model.put("loginLength", Config.get().getString("max_user_len"));
             model.put("passwordLength", Config.get().getString("max_passwd_len"));
-            model.put("preferredLocale", ConfigDefaults.get().getPreferredLocale());
+            model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
 
             return new ModelAndView(model, "controllers/login/templates/login.jade");
         }

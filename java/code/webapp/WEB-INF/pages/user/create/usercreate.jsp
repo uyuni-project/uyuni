@@ -157,11 +157,11 @@ function toggleAsterisk() {
         <c:set var="counter" value="0" />
           <div class="form-group">
             <div class="col-sm-6">
-              <input type="radio" name="preferredLocale" value="<c:out value="${noLocale.languageCode}" />"
-              <c:if test="${noLocale.languageCode == currentLocale}">
+              <input type="radio" name="preferredLocale" value="<c:out value="${defaultLocale.languageCode}" />"
+              <c:if test="${defaultLocale.languageCode == currentLocale}">
                 checked="checked"
               </c:if>/>
-              <c:out value="${noLocale.localizedName}" />
+              <c:out value="${defaultLocale.localizedName}" />
               <br />
               <br />
             </div>
