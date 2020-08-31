@@ -617,11 +617,12 @@ public class MenuTree {
         User user = new RequestContext(request).getCurrentUser();
 
         if (checkAcl(user, "user_authenticated()")) {
-            return user.getPreferredLocale();
+            String locale = user.getPreferredLocale();
+            if (locale != null) {
+                return locale;
+            }
         }
-        else {
-            return ConfigDefaults.get().getDefaultLocale();
-        }
+        return ConfigDefaults.get().getDefaultLocale();
     }
 
     /**
