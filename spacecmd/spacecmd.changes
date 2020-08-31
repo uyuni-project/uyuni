@@ -1,3 +1,5 @@
+- Fix softwarechannel_listlatestpackages throwing error on
+  empty channels (bsc#1175889)
 - fix escaping of package names (bsc#1171281)
 
 -------------------------------------------------------------------
