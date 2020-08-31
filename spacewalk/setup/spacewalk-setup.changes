@@ -1,3 +1,4 @@
+- Use the Salt API in authenticated and encrypted form (bsc#1175884, CVE-2020-8028)
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------
