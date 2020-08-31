@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.user;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
@@ -39,12 +40,14 @@ public class BaseUserSetupAction extends RhnAction {
      * Builds LangDisplayBean for none locale
      * @return LangDisplayBean
      */
-    public LangDisplayBean buildNoneLocale() {
+    public LangDisplayBean buildDefaultLocale() {
         LocalizationService ls =
             LocalizationService.getInstance();
         LangDisplayBean ldb = new LangDisplayBean();
-        ldb.setLanguageCode("none");
-        ldb.setLocalizedName(ls.getMessage("preferences.jsp.lang.none"));
+        String locale = ConfigDefaults.get().getDefaultLocale();
+        ldb.setLanguageCode("default");
+        ldb.setLocalizedName(ls.getMessage("preferences.jsp.lang.default",
+                ls.getMessage("preferences.jsp.lang." + locale)));
         return ldb;
     }
 
@@ -61,7 +64,7 @@ public class BaseUserSetupAction extends RhnAction {
             ctx.getRequest().setAttribute("currentLocale", userLocale);
         }
         else {
-            ctx.getRequest().setAttribute("currentLocale", "none");
+            ctx.getRequest().setAttribute("currentLocale", "default");
         }
     }
 
