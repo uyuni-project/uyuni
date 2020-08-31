@@ -1,3 +1,5 @@
+- Use the Salt API in authenticated and encrypted form (bsc#1175884, CVE-2020-8028)
+
 -------------------------------------------------------------------
 Wed Aug 26 12:30:46 CEST 2020 - jgonzalez@suse.com
 
