@@ -340,7 +340,7 @@ class DpkgRepo:
             self._flat = resp.status_code in [http.HTTPStatus.NOT_FOUND, http.HTTPStatus.FORBIDDEN]
             self._flat_checked = 1
 
-            if not self.is_flat() and self.gpg_verify and not self._has_valid_gpg_signature(resp):
+            if not self.is_flat() and self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
                 raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
 
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
@@ -351,7 +351,7 @@ class DpkgRepo:
                     resp = requests.get(self._get_parent_url(self._url, 0, "Release"), proxies=self.proxies)
 
                 if resp.status_code == http.HTTPStatus.OK:
-                    if self.gpg_verify and not self._has_valid_gpg_signature(resp):
+                    if self.gpg_verify and not self._has_valid_gpg_signature(resp.url, resp):
                         raise GeneralRepoException("GPG verfication failed: {}".format(resp.url))
                     self._release = self._parse_release_index(resp.content.decode("utf-8"))
         finally:
