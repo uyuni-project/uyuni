@@ -347,7 +347,7 @@
       </trans-unit>
       <trans-unit id="America/Santiago">
         <source>(GMT-0300) Chile (Continental)</source>
-        <target>(GMT-0300) Chile (Continental)</target>
+        <target>(GMT−0300) Chile (Continental)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -3160,7 +3160,7 @@
         <trans-unit id="error.unsupported_db_max">
           <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source> <target>No se admite el uso de PostgreSQL {0}. La versión máxima permitida es {1}.</target></trans-unit>
         <trans-unit id="error.unsupported_db_migrate">
-          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source> <target>Usar PostgreSQL {0} en {1} no está soportado. Por favor, migre a PostgreSQL {2}.</target></trans-unit>
+          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source> <target>No se admite el uso de PostgreSQL {0} en {1}. Migre a PostgreSQL {2}.</target></trans-unit>
         <trans-unit id="error.unfinished_schema_upgrade">
           <source>Database schema upgrade in progress!</source> <target>Actualización de esquema de base de datos en curso</target></trans-unit>
       </group>
