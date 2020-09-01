@@ -1,3 +1,4 @@
+- Add option --nostricthostkeychecking to spacewalk-ssh-push-init
 - Fix the fallback to RES bootstrap repo for Centos (bsc#1174423)
 
 -------------------------------------------------------------------
