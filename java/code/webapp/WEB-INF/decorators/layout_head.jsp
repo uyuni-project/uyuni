@@ -63,7 +63,7 @@
     </c:choose>
 
     <!-- expose user preferred language to the application -->
-    <c:set var="currentLocale" value="${GlobalInstanceHolder.MENU_TREE.getCurrentLocale(pageContext)}"/>
+    <c:set var="currentLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentLocale(pageContext)}"/>
     <script>window.preferredLocale='${currentLocale}'</script>
 
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
