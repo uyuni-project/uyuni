@@ -1243,10 +1243,12 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
 end
 
 # Enable/disable repository for monitoring exporters
-When(/^I "([^"]*)" Prometheus exporter repository on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  repo_name = 'tools_additional_repo'
-  if $product == 'Uyuni'
-    repo_name = 'tools_pool_repo'
+When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
+  node = get_target(host)
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    node.run("zypper mr --#{action} os_pool_repo os_update_repo")
   end
-  step %(I #{action} repository "#{repo_name}" on this "#{host}"#{error_control})
+  tools_repo_name = $product == 'Uyuni' ? 'tools_pool_repo' : 'tools_additional_repo'
+  step %(I #{action} repository "#{tools_repo_name}" on this "#{host}"#{error_control})
 end
