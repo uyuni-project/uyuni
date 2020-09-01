@@ -62,7 +62,7 @@ class rhnProxyHandler(rhnHandler):
             # we require entitlement for this functionality
             log_error("Server not entitled for Proxy", self.server_id)
             raise rhnFault(1002, _(
-                'Spacewalk Proxy service not enabled for server profile: "%s"')
+                'SUSE Manager Proxy service not enabled for server profile: "%s"')
                 % server.server["name"])
         # we're fine...
         return server
