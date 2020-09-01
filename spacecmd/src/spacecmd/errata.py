@@ -63,9 +63,8 @@ def help_errata_summary(self):
 
 def do_errata_summary(self, args):
     self.generate_errata_cache()
-
-    map(print_errata_summary, sorted(self.all_errata.values(),
-                                     key=itemgetter('advisory_name')))
+    for erratum in sorted(self.all_errata.values(), key=lambda x: (x['advisory_name']), reverse=True):
+         print_errata_summary(erratum=erratum)
 
     return 0
 
@@ -591,6 +590,7 @@ def do_errata_search(self, args, doreturn=False):
             if doreturn:
                 return [erratum['advisory_name'] for erratum in errata]
             else:
-                map(print_errata_summary, sorted(errata, reverse=True))
+                for erratum in sorted(errata, key=lambda x: (x['advisory_name']), reverse=True):
+                    print_errata_summary(erratum=erratum)
         else:
             return []
