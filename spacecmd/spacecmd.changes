@@ -1,3 +1,4 @@
+- Python3 fixes for errata in spacecmd (bsc#1169664)
 - Fix softwarechannel_listlatestpackages throwing error on
   empty channels (bsc#1175889)
 
