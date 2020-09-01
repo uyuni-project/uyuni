@@ -38,6 +38,7 @@ import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
+import com.suse.manager.webui.utils.UserPreferenceUtils;
 
 /**
  * This class only exists to have a single place for initializing objects
@@ -67,6 +68,7 @@ public class GlobalInstanceHolder {
     public static final AclFactory ACL_FACTORY = new AclFactory(ACCESS);
     // Referenced from JSP
     public static final MenuTree MENU_TREE = new MenuTree(ACL_FACTORY);
+    public static final UserPreferenceUtils USER_PREFERENCE_UTILS = new UserPreferenceUtils(ACL_FACTORY);
     public static final RenderUtils RENDER_UTILS = new RenderUtils(ACL_FACTORY);
     public static final MinionActionUtils MINION_ACTION_UTILS = new MinionActionUtils(
             SALT_SERVER_ACTION_SERVICE, SALT_API, SALT_UTILS);
