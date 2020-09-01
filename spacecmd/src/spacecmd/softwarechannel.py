@@ -327,7 +327,7 @@ def filter_latest_packages(pkglist):
                 latest[tuplekey] = p
 
     # Then return the dict items as a list
-    return latest.values()
+    return list(latest.values())
 
 
 def help_softwarechannel_listlatestpackages(self):
