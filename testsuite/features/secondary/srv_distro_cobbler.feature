@@ -31,7 +31,7 @@ Feature: Cobbler and distribution autoinstallation
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "SLE-15-FAKE" link
     When I follow "SLE-15-FAKE"
-    Then text field "kernelopts" should contain "self_update=http://"
+    Then I should see "self_update=http://" in field "kernelopts"
 
   Scenario: Create a distribution via the UI
     When I follow the left menu "Systems > Autoinstallation > Distributions"
