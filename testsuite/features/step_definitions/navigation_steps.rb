@@ -790,20 +790,20 @@ Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
   has_css?("##{arg1}[disabled]")
 end
 
-Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |arg1, arg2|
-  raise "Field #{arg2} with #{arg1} value not found" unless has_field?(arg2, with: arg1)
+Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |text, field|
+  raise "'#{text}' not found in #{field}" unless find_field(field, with: /#{text}/).visible?
 end
 
-Then(/^I should see a "([^"]*)" element in "([^"]*)" form$/) do |arg1, arg2|
-  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise "Field #{arg1} not found" unless find_field(arg1, match: :first).visible?
+Then(/^I should see a "([^"]*)" field in "([^"]*)" form$/) do |field, form|
+  within(:xpath, "//form[@id=\"#{form}\"] | //form[@name=\"#{form}\"]") do
+    raise "Field #{field} not found" unless find_field(field, match: :first).visible?
   end
 end
 
-Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
-  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise "xpath: textarea##{arg1} not found" unless find("textarea##{arg1}", visible: false)
-    raise "css: ##{arg1}-editor not found" unless has_css?("##{arg1}-editor")
+Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |editor, form|
+  within(:xpath, "//form[@id=\"#{form}\"] | //form[@name=\"#{form}\"]") do
+    raise "xpath: textarea##{editor} not found" unless find("textarea##{editor}", visible: false)
+    raise "css: ##{editor}-editor not found" unless has_css?("##{editor}-editor")
   end
 end
 
