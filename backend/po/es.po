@@ -16,10 +16,10 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-26 14:48+0200\n"
-"PO-Revision-Date: 2020-07-14 12:37+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
-"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
-">\n"
+"PO-Revision-Date: 2020-09-02 07:44+0000\n"
+"Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
+"Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/>"
+"\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,8 +39,9 @@ msgid ""
 "                   Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"%s La cuenta ha sido desactivada en este servidor. Por favor contacte con su "
-"administrador de sistema para más ayuda."
+"                   %s La cuenta ha sido desactivada en este servidor. \n"
+"                   Por favor contacte con el administrador de su "
+"organización para más ayuda."
 
 #: ../server/handlers/applet/applet.py:78
 msgid "Your system was not found in the RHN database"
@@ -48,7 +49,7 @@ msgstr "Su sistema no se encuentra en la base de datos RHN"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this satellite."
-msgstr "ISS está deshabilitado en este satélite"
+msgstr "ISS está deshabilitado en este servidor."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
@@ -56,10 +57,11 @@ msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Servidor “%s” no está habilitado para ISS"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
 msgstr ""
-"El servicio RHN Proxy no está habilitado para el perfil del servidor: “%s”"
+"El servicio SUSE Manager Proxy no está habilitado para el perfil del "
+"servidor: “%s”"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -67,12 +69,11 @@ msgstr "Clave de sesión no válida"
 
 #: ../server/handlers/xmlrpc/proxy.py:93
 msgid "This server ID no longer exists"
-msgstr "Esta ID de servidor no existe más"
+msgstr "El identificador de servidor ya no existe"
 
 #: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
 msgid "Invalid system_id/action_id pair."
-msgstr "Credenciales del Sistema no válidas."
+msgstr "Par system_id/action_id inválido."
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -87,20 +88,20 @@ msgstr "Se esperaba un paquete, no: %s"
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
-msgstr "Acción de valor no válido tipo %s (%s)"
+msgstr "El tipo de valor de la acción es inválido %s (%s)"
 
 #: ../server/handlers/xmlrpc/queue.py:464
 #, python-format
 msgid "Action %s does not belong to server %s"
-msgstr "Acción %s no pertenece al servidor %s"
+msgstr "La acción %s no pertenece al servidor %s"
 
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
-msgstr "Dato requerido desaparecido"
+msgstr "Faltan datos requeridos"
 
 #: ../server/handlers/xmlrpc/registration.py:198
 msgid "Required members missing"
-msgstr "Miembros requeridos desaparecidos"
+msgstr "Faltan miembros requeridos"
 
 #: ../server/handlers/xmlrpc/registration.py:207
 msgid "Attempt to register a system to an invalid username"
@@ -108,7 +109,7 @@ msgstr "Intentando registrar un sistema a un nombre de usuario no válido"
 
 #: ../server/handlers/xmlrpc/registration.py:839
 msgid "Invalid system release version requested"
-msgstr "Pedida versión de lanzamiento no válida"
+msgstr "Solicitada versión de sistema no válida"
 
 #: ../server/handlers/xmlrpc/registration.py:1063
 msgid ""
