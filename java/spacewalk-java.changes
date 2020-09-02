@@ -1,3 +1,4 @@
+- Force disable SPA for non-navigation links (bsc#1175512)
 - Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - pass the log level parameter to matcher
 - Add language picker to user preferences and user creation
