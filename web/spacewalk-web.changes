@@ -1,3 +1,5 @@
+- Force disable SPA for non-navigation links (bsc#1175512)
+
 -------------------------------------------------------------------
 Thu Sep 03 10:37:58 CEST 2020 - jgonzalez@suse.com
 
