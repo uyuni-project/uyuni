@@ -28,7 +28,9 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.Arrays;
@@ -116,9 +118,10 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         String name = "My External Group Name" + TestUtils.randomString();
         String systemGroupName = "my-system-group-name" + TestUtils.randomString();
         String desc = TestUtils.randomString();
+        SaltApi saltApi = new TestSaltApi();
         SystemQuery systemQuery = new TestSystemQuery();
-        RegularMinionBootstrapper regularMinionBootstrapper =  new RegularMinionBootstrapper(systemQuery);
-        SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery);
+        RegularMinionBootstrapper regularMinionBootstrapper =  new RegularMinionBootstrapper(systemQuery, saltApi);
+        SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
                 regularMinionBootstrapper,
                 sshMinionBootstrapper

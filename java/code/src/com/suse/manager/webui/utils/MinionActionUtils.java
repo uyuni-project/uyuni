@@ -33,7 +33,7 @@ import com.google.gson.reflect.TypeToken;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.modules.SaltUtil;
 import com.suse.salt.netapi.calls.runner.Jobs;
@@ -74,20 +74,20 @@ public class MinionActionUtils {
     /** Whether the current database is Postgres. */
     public static final boolean POSTGRES = ConfigDefaults.get().isPostgresql();
     private final SaltServerActionService saltServerActionService;
-    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
     private final SaltUtils saltUtils;
 
     /**
      * Utilities for minion actions
      *
      * @param saltServerActionServiceIn
-     * @param systemQueryIn
+     * @param saltApiIn
      * @param saltUtilsIn
      */
-    public MinionActionUtils(SaltServerActionService saltServerActionServiceIn, SystemQuery systemQueryIn,
+    public MinionActionUtils(SaltServerActionService saltServerActionServiceIn, SaltApi saltApiIn,
                              SaltUtils saltUtilsIn) {
         this.saltServerActionService = saltServerActionServiceIn;
-        this.systemQuery = systemQueryIn;
+        this.saltApi = saltApiIn;
         this.saltUtils = saltUtilsIn;
     }
 
@@ -118,14 +118,13 @@ public class MinionActionUtils {
      * at running jobs on the minion and the job cache using the
      * action id we add to the job as metadata.
      *
-     * @param salt the salt service to use
      * @param sa ServerAction to update
      * @param server MinionServer of this ServerAction
      * @param running list of running jobs on the MinionServer
      * @param infoMap map from actionIds to Salt job information objects
      * @return the updated ServerAction
      */
-    public ServerAction updateMinionActionStatus(SystemQuery salt, ServerAction sa,
+    public ServerAction updateMinionActionStatus(ServerAction sa,
             MinionServer server, List<SaltUtil.RunningInfo> running,
             Map<Long, Optional<Info>> infoMap) {
         long actionId = sa.getParentAction().getId();
@@ -213,12 +212,12 @@ public class MinionActionUtils {
         ).collect(Collectors.toList());
 
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
-                systemQuery.running(new MinionList(minionIds));
+                saltApi.running(new MinionList(minionIds));
 
         Map<Long, Optional<Jobs.Info>> infoMap = serverActions.stream()
           .map(sa -> sa.getParentAction().getId())
           .distinct()
-          .collect(toMap(identity(), id -> infoForActionId(systemQuery, id)));
+          .collect(toMap(identity(), id -> infoForActionId(saltApi, id)));
 
         serverActions.forEach(sa ->
                 sa.getServer().asMinionServer().ifPresent(minion -> {
@@ -227,8 +226,7 @@ public class MinionActionUtils {
                             LOG.error(error.toString());
                         },
                         runningInfos -> {
-                            ActionFactory.save(updateMinionActionStatus(
-                                    systemQuery, sa, minion, runningInfos, infoMap));
+                            ActionFactory.save(updateMinionActionStatus(sa, minion, runningInfos, infoMap));
                         });
                     });
                 })
@@ -242,7 +240,7 @@ public class MinionActionUtils {
      * @param actionId the actionId
      * @return an optional job information object
      */
-    private Optional<Info> infoForActionId(SystemQuery salt, long actionId) {
+    private Optional<Info> infoForActionId(SaltApi salt, long actionId) {
         // if we are running on Postgres, there is no need to check Salt's job cache as job return events are already
         // stored persistently via the database (see PGEventStream)
         if (POSTGRES) {
@@ -274,11 +272,11 @@ public class MinionActionUtils {
                 .minus(1, ChronoUnit.HOURS);
 
         Optional<Map<String, Jobs.ListJobsEntry>> actionChainsJobs =
-                systemQuery.jobsByMetadata(metadata, startTime, LocalDateTime.now());
+                saltApi.jobsByMetadata(metadata, startTime, LocalDateTime.now());
 
         actionChainsJobs.ifPresent(jidsMap -> {
             jidsMap.keySet().forEach(jid -> {
-                systemQuery.listJob(jid).ifPresent(jobInfo -> {
+                saltApi.listJob(jid).ifPresent(jobInfo -> {
                     TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>> typeToken =
                             new TypeToken<Map<String, StateApplyResult<Ret<JsonElement>>>>() { };
 

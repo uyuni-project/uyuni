@@ -119,11 +119,11 @@ public class SaltReactor {
         VirtManager virtManager = new VirtManagerSalt(saltApi);
 
         // Configure message queue to handle minion registrations
-        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery),
+        MessageQueue.registerAction(new RegisterMinionEventMessageAction(systemQuery, saltApi),
                 RegisterMinionEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(systemQuery),
+        MessageQueue.registerAction(new MinionStartEventMessageAction(saltApi),
                 MinionStartEventMessage.class);
-        MessageQueue.registerAction(new MinionStartEventMessageAction(systemQuery),
+        MessageQueue.registerAction(new MinionStartEventMessageAction(saltApi),
                 MinionStartEventDatabaseMessage.class);
         MessageQueue.registerAction(new ApplyStatesEventMessageAction(),
                 ApplyStatesEventMessage.class);

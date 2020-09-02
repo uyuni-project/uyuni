@@ -209,7 +209,7 @@ public class ClusterManager {
             return Collections.emptyList();
         }
         String mgmtNodeTarget = value.get();
-        return systemQuery.matchCompoundSync(mgmtNodeTarget);
+        return saltApi.matchCompoundSync(mgmtNodeTarget);
     }
 
 

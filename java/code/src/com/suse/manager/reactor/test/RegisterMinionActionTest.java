@@ -311,7 +311,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             }});
         }
 
-        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock);
+        RegisterMinionEventMessageAction action = new RegisterMinionEventMessageAction(saltServiceMock, saltServiceMock);
         action.execute(new RegisterMinionEventMessage(MINION_ID, startupGrains));
 
         // Verify the resulting system entry
@@ -2017,7 +2017,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         } });
 
         RegisterMinionEventMessageAction action =
-                new RegisterMinionEventMessageAction(saltService);
+                new RegisterMinionEventMessageAction(saltService, saltService);
         action.execute(new RegisterMinionEventMessage(MINION_ID, Optional.empty()));
         return saltService;
     }

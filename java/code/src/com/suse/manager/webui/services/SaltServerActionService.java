@@ -116,7 +116,7 @@ import com.suse.manager.model.clusters.Cluster;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -221,8 +221,8 @@ public class SaltServerActionService {
     private SaltActionChainGeneratorService saltActionChainGeneratorService =
             SaltActionChainGeneratorService.INSTANCE;
 
-    private SystemQuery systemQuery;
-    private SaltSSHService saltSSHService = GlobalInstanceHolder.SYSTEM_QUERY.getSaltSSHService();
+    private SaltApi saltApi;
+    private SaltSSHService saltSSHService = GlobalInstanceHolder.SALT_API.getSaltSSHService();
     private SaltUtils saltUtils;
     private SaltKeyUtils saltKeyUtils;
     private final FormulaManager formulaManager;
@@ -230,16 +230,16 @@ public class SaltServerActionService {
     private boolean skipCommandScriptPerms;
 
     /**
-     * @param systemQueryIn instance for getting information from a system.
+     * @param saltApiIn instance for getting information from a system.
      * @param saltUtilsIn
      * @param clusterManagerIn
      * @param formulaManagerIn
      * @param saltKeyUtilsIn
      */
-    public SaltServerActionService(SystemQuery systemQueryIn, SaltUtils saltUtilsIn,
+    public SaltServerActionService(SaltApi saltApiIn, SaltUtils saltUtilsIn,
                                    ClusterManager clusterManagerIn, FormulaManager formulaManagerIn,
                                    SaltKeyUtils saltKeyUtilsIn) {
-        this.systemQuery = systemQueryIn;
+        this.saltApi = saltApiIn;
         this.saltUtils = saltUtilsIn;
         this.clusterManager = clusterManagerIn;
         this.formulaManager = formulaManagerIn;
@@ -574,7 +574,7 @@ public class SaltServerActionService {
         // start the action chain synchronously
         try {
             // first check if there's an action chain with a reboot already executing
-            Map<String, Result<Map<String, String>>> pendingResumeConf = systemQuery.getPendingResume(
+            Map<String, Result<Map<String, String>>> pendingResumeConf = saltApi.getPendingResume(
                     sshMinions.stream().map(minion -> minion.getMinionId())
                             .collect(Collectors.toList())
             );
@@ -2100,7 +2100,7 @@ public class SaltServerActionService {
 
             ScheduleMetadata metadata = ScheduleMetadata.getMetadataForRegularMinionActions(
                     isStagingJob, forcePackageListRefresh, actionIn.getId());
-            List<String> results = GlobalInstanceHolder.SYSTEM_QUERY
+            List<String> results = GlobalInstanceHolder.SALT_API
                     .callAsync(call, new MinionList(minionIds), Optional.of(metadata))
                     .get().getMinions();
 
@@ -2134,7 +2134,7 @@ public class SaltServerActionService {
         }
 
         try {
-            List<String> results = systemQuery
+            List<String> results = saltApi
                     .callAsync(call, new MinionList(minionIds),
                             Optional.of(ScheduleMetadata.getDefaultMetadata().withActionChain())).get().getMinions();
 
@@ -2193,7 +2193,7 @@ public class SaltServerActionService {
                 Optional<JsonElement> result;
                 // try-catch as we'd like to log the warning in case of exception
                 try {
-                    result = systemQuery.rawJsonCall(call, minion.getMinionId());
+                    result = saltApi.rawJsonCall(call, minion.getMinionId());
                 }
                 catch (RuntimeException e) {
                     LOG.error("Error executing Salt call for action: " + action.getName() +
@@ -2494,10 +2494,10 @@ public class SaltServerActionService {
 
     /**
      * Only used in unit tests.
-     * @param systemQueryIn to set
+     * @param saltApiIn to set
      */
-    public void setSystemQuery(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
+    public void setSaltApi(SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
     }
 
     /**
