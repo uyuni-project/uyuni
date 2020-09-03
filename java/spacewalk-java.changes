@@ -1,3 +1,4 @@
+- Detect client organization from connected proxy (bsc#1175545)
 - Add language picker to user preferences and user creation
 - Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175556)
 - use media.1/products from media when not specified different (bsc#1175558)
