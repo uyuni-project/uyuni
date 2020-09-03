@@ -1,3 +1,4 @@
+- Detect client organization from connected proxy (bsc#1175545)
 -------------------------------------------------------------------
 Thu Sep 03 10:32:29 CEST 2020 - jgonzalez@suse.com
 
