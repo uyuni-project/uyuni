@@ -680,10 +680,10 @@ When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]
   else
     cmd = repos.split(' ').map do |repo|
       if os_family =~ /^centos/
-        "sed -i 's/enabled=.*/enabled=#{action == 'enabled' ? '1' : '0'}/g' /etc/yum.repos.d/#{repo}.repo; "
+        "sed -i 's/enabled=.*/enabled=#{action == 'enable' ? '1' : '0'}/g' /etc/yum.repos.d/#{repo}.repo; "
       elsif os_family =~ /^ubuntu/
-        "sed -i '/^#{action == 'enabled' ? '#\\s*' : ''}deb.*/ s/^#{action == 'enabled' ? '' : '#\\s*'}deb "\
-        "/#{action == 'enabled' ? '' : '#'}deb /' /etc/apt/sources.list.d/#{repo}.list; "
+        "sed -i '/^#{action == 'enable' ? '#\\s*' : ''}deb.*/ s/^#{action == 'enable' ? '' : '#\\s*'}deb "\
+        "/#{action == 'enable' ? '' : '#'}deb /' /etc/apt/sources.list.d/#{repo}.list; "
       end
     end
     cmd = cmd.reduce(:+)
