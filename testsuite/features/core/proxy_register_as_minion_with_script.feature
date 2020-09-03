@@ -50,6 +50,12 @@ Feature: Setup SUSE Manager proxy
     Then I should see a "Proxy" link in the content area
 
 @proxy
+  Scenario: Install expect package on proxy for bootstrapping minion via script via script
+    When I enable repositories before installing branch server
+    And I install package "expect" on this "proxy"
+    And I disable repositories after installing branch server
+
+@proxy
   Scenario: Cleanup: remove proxy bootstrap scripts
     When I run "rm /srv/www/htdocs/pub/bootstrap/bootstrap-proxy.sh" on "server"
     And I run "rm /root/bootstrap-proxy.sh" on "proxy"

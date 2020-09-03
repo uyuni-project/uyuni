@@ -47,6 +47,12 @@ Feature: Setup SUSE Manager proxy
     Then I should see a "Proxy" link in the content area
 
 @proxy
+  Scenario: Install expect package on proxy for bootstrapping minion with GUI via script
+    When I enable repositories before installing branch server
+    And I install package "expect" on this "proxy"
+    And I disable repositories after installing branch server
+
+@proxy
   Scenario: Check events history for failures on the proxy
     Given I am on the Systems overview page of this "proxy"
     Then I check for failed events on history event page
