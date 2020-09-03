@@ -3,11 +3,18 @@ import xml.etree.ElementTree as ET
 import os
 import logging
 import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument("path", help="Path to look into for translation files!")
-args = parser.parse_args()
+argparser = argparse.ArgumentParser()
+argparser.add_argument("path", help="Path to look into for translation files!")
+args = argparser.parse_args()
 
 logging.basicConfig(level=logging.INFO)
+
+
+class CommentedTreeBuilder(ET.TreeBuilder):
+    def comment(self, data):
+        self.start(ET.Comment, {})
+        self.data(data)
+        self.end(ET.Comment)
 
 
 def get_groups(xml_tree):
@@ -20,8 +27,8 @@ def get_groups(xml_tree):
 
 
 def extract_trans_units(org_file):
-    tree = ET.parse(org_file)
-    print(org_file)
+    parser = ET.XMLParser(target=CommentedTreeBuilder())
+    tree = ET.parse(file, parser=parser)
     body_element, groups = get_groups(tree)
     for group in groups:
         all_child_elements_of_body = list(body_element)
