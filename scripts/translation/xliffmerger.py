@@ -3,11 +3,18 @@ import xml.etree.ElementTree as ET
 import os
 import logging
 import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument("path", help="Path to look into for translation files!")
+argparser = argparse.ArgumentParser()
+argparser.add_argument("path", help="Path to look into for translation files!")
 args = parser.parse_args()
 
 logging.basicConfig(level=logging.INFO)
+
+
+class CommentedTreeBuilder(ET.TreeBuilder):
+    def comment(self, data):
+        self.start(ET.Comment, {})
+        self.data(data)
+        self.end(ET.Comment)
 
 
 def delete_trans_units(body_element, trans_units, units_to_remove):
@@ -40,8 +47,9 @@ def update_trans_units(body_element, trans_units, id_new_value_dict):
 
 
 def process(original_file, translation_file):
-    xml_tree_original = ET.parse(original_file)
-    xml_tree_translation = ET.parse(translation_file)
+    parser = ET.XMLParser(target=CommentedTreeBuilder())
+    xml_tree_original = ET.parse(original_file, parser=parser)
+    xml_tree_translation = ET.parse(translation_file, parser=parser)
     original_body_element, orig_trans_units = get_trans_units(xml_tree_original)
     translation_body_element, trans_trans_units = get_trans_units(xml_tree_translation)
     logging.debug(f'{len(orig_trans_units)} trans_units in original file {original_file}')
@@ -111,5 +119,4 @@ for translation in files:
             and translation != 'StringResource_en_US.xml':
         original = 'StringResource_en_US.xml'
         logging.info('\nprocessing ' + str(translation))
-        ET.parse(translation)
         process(original, translation)
