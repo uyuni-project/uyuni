@@ -11,35 +11,35 @@ Feature: Be able to list available channels and enable them
     # Order matters here, refresh first
     When I refresh SCC
     And I execute mgr-sync "list channels -e" with user "admin" and password "admin"
-    Then I should get "[ ] SLES11-SP1-Pool for x86_64 SUSE Linux Enterprise Server 11 SP1 x86_64 [sles11-sp1-pool-x86_64]"
-    And I should get "    [ ] SLE11-SDK-SP1-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 11 SP1 [sle11-sdk-sp1-updates-x86_64]"
+    Then I should get "[ ] SLES11-SP4-Pool for x86_64 SUSE Linux Enterprise Server 11 SP4 x86_64 [sles11-sp4-pool-x86_64]"
+    And I should get "    [ ] SLE11-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 11 SP4 [sle11-sdk-sp4-updates-x86_64]"
 
 @scc_credentials
   Scenario: List available mandatory channels
     When I execute mgr-sync "list channels -e --no-optional"
-    Then I should get "[ ] SLES11-SP1-Pool for x86_64 SUSE Linux Enterprise Server 11 SP1 x86_64 [sles11-sp1-pool-x86_64]"
-    And I should get "    [ ] SLE11-SDK-SP1-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 11 SP1 [sle11-sdk-sp1-updates-x86_64]"
+    Then I should get "[ ] SLES11-SP4-Pool for x86_64 SUSE Linux Enterprise Server 11 SP4 x86_64 [sles11-sp4-pool-x86_64]"
+    And I should get "    [ ] SLE11-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 11 SP4 [sle11-sdk-sp4-updates-x86_64]"
     And I shouldn't get "debuginfo"
     And I shouldn't get "sles11-extras"
 
 @scc_credentials
   Scenario: List products
     When I execute mgr-sync "list products"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 x86_64"
-    And I should get "[ ] SUSE Manager Proxy 2.1 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP5 x86_64"
+    And I should get "[ ] SUSE Manager Proxy 4.0 x86_64"
 
 @scc_credentials
   Scenario: List all products
     When I execute mgr-sync "list products --expand"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 x86_64"
-    And I should get "[ ] SUSE Manager Proxy 2.1 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP5 x86_64"
+    And I should get "[ ] SUSE Manager Proxy 4.0 x86_64"
     And I should get "  [ ] (R) SUSE Linux Enterprise Client Tools RES 7 x86_64"
     And I should get "  [ ] (R) SUSE Manager Tools 15 x86_64"
 
 @scc_credentials
   Scenario: List products with filter
     When I execute mgr-sync "list products --expand --filter x86_64"
-    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP3 x86_64"
+    Then I should get "[ ] SUSE Linux Enterprise Server 12 SP5 x86_64"
     And I shouldn't get "ppc64"
     And I shouldn't get "s390x"
 
