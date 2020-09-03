@@ -87,10 +87,14 @@ def compute_list_to_leave_running
          'sles12-sp5-updates-x86_64', 'sle-manager-tools12-updates-x86_64-sp5', 'sle-module-containers12-updates-x86_64-sp5']
       when '15-SP1'
         ['sle-product-sles15-sp1-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp1', 'sle-module-containers15-sp1-pool-x86_64',
-         'sle-product-sles15-sp1-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp1', 'sle-module-containers15-sp1-updates-x86_64']
+         'sle-module-basesystem15-sp1-pool-x86_64', 'sle-module-server-applications15-sp1-pool-x86_64',
+         'sle-product-sles15-sp1-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp1', 'sle-module-containers15-sp1-updates-x86_64',
+         'sle-module-basesystem15-sp1-updates-x86_64', 'sle-module-server-applications15-sp1-updates-x86_64']
       when '15-SP2'
         ['sle-product-sles15-sp2-pool-x86_64', 'sle-manager-tools15-pool-x86_64-sp2', 'sle-module-containers15-sp2-pool-x86_64',
-         'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2', 'sle-module-containers15-sp2-updates-x86_64']
+         'sle-module-basesystem15-sp2-pool-x86_64', 'sle-module-server-applications15-sp2-pool-x86_64',
+         'sle-product-sles15-sp2-updates-x86_64', 'sle-manager-tools15-updates-x86_64-sp2', 'sle-module-containers15-sp2-updates-x86_64',
+         'sle-module-basesystem15-sp2-updates-x86_64', 'sle-module-server-applications15-sp2-updates-x86_64']
       end
   end
   do_not_kill.uniq
