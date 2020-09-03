@@ -12,6 +12,7 @@ ADDRESSES = { 'network'     => '0',
 
 FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
               'IP'                              => 'branch_network#ip',
+              'virtual network mode'            => 'default_net#mode',
               'domain name server'              => 'dhcpd#domain_name_servers#0',
               'network IP'                      => 'dhcpd#subnets#0#$key',
               'dynamic IP range begin'          => 'dhcpd#subnets#0#range#0',
@@ -97,6 +98,7 @@ FIELD_IDS = { 'NIC'                             => 'branch_network#nic',
 BULLET_STYLE = { 'failing' => 'fa-times text-danger',
                  'warning' => 'fa-hand-o-right text-danger',
                  'success' => 'fa-check text-success',
+                 'pending' => 'fa-hand-o-right text-success',
                  'refreshing' => 'fa-refresh text-warning' }.freeze
 
 PATCH_BY_CLIENT = { 'ceos6_minion' => 'RHSA-2019:1774',

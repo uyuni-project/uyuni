@@ -513,7 +513,7 @@
         </trans-unit>
       </group>
       <trans-unit id="emptyspace.jsp">
-        <source></source>
+        <source/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -1397,7 +1397,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target>キックスタート中</target>
+        <target>自動インストールしています</target>
       </trans-unit>
       <trans-unit id="system-legend.jsp.pending">
         <source>Pending Actions</source>
@@ -2188,7 +2188,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
-        <target>市町村/区</target>
+        <target>市町村</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.state">
         <source>State/Province</source>
@@ -3145,7 +3145,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target>追加のパッケージ</target>
+        <target>非準拠</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackagessummary">
         <source>The following packages are installed on this system and are not present in any of its channels.</source>
@@ -4258,7 +4258,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
-        <target>キックスタートプロファイル</target>
+        <target>自動インストールプロファイル</target>
       </trans-unit>
       <trans-unit id="org.config.channels.jsp">
         <source>Configuration Channels</source>
@@ -4675,7 +4675,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <target>エラータの作成</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions">
-        <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
+        <source>Create new patch here. Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
@@ -5038,8 +5038,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Provisioning</source> <target>プロビジョニング</target>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.kickstart">
-          <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source> <target>システムの &lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;キックスタート&lt;/a&gt; を行います</target>
-        </trans-unit>
+          <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source> <target>システムの &lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;自動インストール&lt;/a&gt; を行ないます</target> </trans-unit>
         <trans-unit id="ssm.overview.provisioning.rollback">
           <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source> </trans-unit>
         <trans-unit id="ssm.overview.provisioning.remotecommands">
@@ -5296,8 +5295,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Reboot Systems</source> <target>システムの再起動</target>
         </trans-unit>
         <trans-unit id="ssm.misc.index.reboot.summary">
-          <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source> <target>Red Hat Enterprise Linux 3 またはそれ以降のリリースでは、@@PRODUCT_NAME@@ を使用するとシステムを遠隔から起動することができます。</target>
-        </trans-unit>
+          <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source> <target>@@PRODUCT_NAME@@ では、リモートからお使いのシステムを再起動することができます。</target> </trans-unit>
         <trans-unit id="ssm.misc.index.lock.header">
           <source>Lock Systems</source> <target>システムのロック</target>
         </trans-unit>
@@ -5540,7 +5538,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>エンタイトルメント</target>
+        <target>システムタイプ</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.crashes">
         <source>Crashes</source>
@@ -5587,7 +5585,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
         </context-group>
-        <target>キックスタートを実行中です</target>
+        <target>自動インストールを行なっています</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.bootstrap">
         <source>Unprovisioned System</source>
@@ -6483,7 +6481,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>エンタイトルメント</target>
+        <target>システムタイプ</target>
       </trans-unit>
       <trans-unit id="systemsearch.jsp.invertdescription">
         <source>Invert search results</source>
@@ -7844,7 +7842,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview.do</context>
         </context-group>
-        <target>キックスタートプロファイル</target>
+        <target>自動インストールプロファイル</target>
       </trans-unit>
       <trans-unit id="filtercreate.jsp.header2">
         <source>Create the notification filter using the form provided.</source>
@@ -7879,14 +7877,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
-        <target>エラータの削除</target>
+        <target>パッチの削除</target>
       </trans-unit>
       <trans-unit id="delete.jsp.header">
         <source>Delete Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
-        <target>エラータの削除</target>
+        <target>パッチの削除</target>
       </trans-unit>
       <trans-unit id="delete.jsp.summary">
         <source>Are you sure you wish to delete this patch?</source>
@@ -8215,15 +8213,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target>組織は、一連のシステム、システムグループ、ソフトウェアチャンネル、
-サブスクリプションおよびエンタイトルメント、キックスタートプロファイル、
-アクティベーションキー、設定チャンネルおよびファイル、ユーザーなどの
-@@PRODUCT_NAME@@ を使用して管理するすべてのもの
-を区切るために使用します。各組織は少なくとも 1 つの組織管理者によって管理され、
-@@PRODUCT_NAME@@ 全体は @@PRODUCT_NAME@@ 管理者によって管理されます。
-複数の組織を持つ 1 つの @@PRODUCT_NAME@@ の組織は、1 つの組織を持つ
-複数の @@PRODUCT_NAME@@ の組織と同じように機能します。
-</target>
+        <target>組織は、一連のシステム、システムグループ、ソフトウェアチャンネル、 サブスクリプションおよびエンタイトルメント、自動インストールプロファイル、 アクティベーションキー、設定チャンネルおよびファイル、ユーザーなどの @@PRODUCT_NAME@@ を使用して管理するすべてのもの を区切るために使用します。各組織は少なくとも 1 つの組織管理者によって管理され、 @@PRODUCT_NAME@@ 全体は @@PRODUCT_NAME@@ 管理者によって管理されます。 複数の組織を持つ 1 つの @@PRODUCT_NAME@@ の組織は、1 つの組織を持つ 複数の @@PRODUCT_NAME@@ の組織と同じように機能します。</target>
       </trans-unit>
       <trans-unit id="general.jsp.org.summary3">
         <source>To get started creating and managing organizations on your @@PRODUCT_NAME@@, refer to the following tabs in the left navigation menu:</source>
@@ -8600,7 +8590,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <trans-unit id="bootstrapsystems.initrd_not_found">
           <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source> </trans-unit>
         <trans-unit id="bootstrapsystemlist.jsp.header">
-          <source>Unprovisioned Systems</source> <context-group name="ctx">
+          <source>Unprovisioned Systems</source> <target>プロビジョンされていないシステム</target><context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
           </context-group>
         </trans-unit>
@@ -8972,29 +8962,21 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
         <trans-unit id="ssm.kickstartable-systems.jsp.title">
-          <source>Autoinstallable Systems</source> <target>キックスタート可能なシステム</target>
-        </trans-unit>
+          <source>Autoinstallable Systems</source> <target>自動インストール可能なシステム</target> </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.summary">
-          <source>Below are the systems in your selected systems list that are autoinstallable using @@PRODUCT_NAME@@.</source> <target>以下は、@@PRODUCT_NAME@@ を使用してキックスタートできるシステムリストで選択したシステムです。</target>
-        </trans-unit>
+          <source>Below are the systems in your selected systems list that are autoinstallable using @@PRODUCT_NAME@@.</source> <target>以下は、@@PRODUCT_NAME@@ を使用して自動インストールできるシステムリストで選択したシステムです。</target> </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.systems">
-          <source>Autoinstall Selected Systems</source> <target>キックスタート選択システム</target>
-        </trans-unit>
+          <source>Autoinstall Selected Systems</source> <target>自動インストール選択システム</target> </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.systems.summary">
-          <source>You may autoinstall the selected systems.</source> <target>選択されたシステムをキックスタートできます。</target>
-        </trans-unit>
+          <source>You may autoinstall the selected systems.</source> <target>選択されたシステムを自動インストールできます。</target> </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.type">
-          <source>Autoinstallable Type</source> <target>キックスタート可能なタイプ</target>
-        </trans-unit>
+          <source>Autoinstallable Type</source> <target>自動インストール可能なタイプ</target> </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.manual-summary">
-          <source>Select autoinstallation profile.</source> <target>キックスタートプロファイルを選択します。</target>
-        </trans-unit>
+          <source>Select autoinstallation profile.</source> <target>自動インストールプロファイルを選択します。</target> </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.ip-summary">
-          <source>Autoinstall by IP Address.</source> <target> IP アドレスによるキックスタート</target>
-        </trans-unit>
+          <source>Autoinstall by IP Address.</source> <target>IP アドレスによる自動インストール。</target> </trans-unit>
         <trans-unit id="ssm.kickstartable-systems.jsp.ip-tooltip">
-          <source>If there is no organization default profile specified for this organization, an autoinstallation will not get scheduled for systems that do not fall under an ip range.</source> <target>この組織に指定されたデフォルトの組織プロファイルがない場合は、IP 範囲に属さないシステムに対してキックスタートがスケジュールされません。</target>
-        </trans-unit>
+          <source>If there is no organization default profile specified for this organization, an autoinstallation will not get scheduled for systems that do not fall under an ip range.</source> <target>この組織に指定されたデフォルトの組織プロファイルがない場合は、IP 範囲に属さないシステムに対して自動インストールがスケジュールされません。</target> </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -9002,22 +8984,17 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/ScheduleByIp.do</context>
         </context-group>
         <trans-unit id="ssm.kickstart.schedule.heading1.text.jsp">
-          <source>Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source> <target>選択されたシステムのキックスタート動作をスケジュールします。これらの動作により、指定されたキックスタートオプションを使用して選択されたシステムが再インストールされます。</target>
-        </trans-unit>
+          <source>Schedule autoinstall actions for the the selected systems. These actions will re-install the selected systems using the autoinstallation options specified.</source> <target>選択されたシステムの自動インストール動作をスケジュールします。これらの動作により、指定された自動インストールオプションを使用して選択されたシステムが再インストールされます。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.heading2.text.jsp">
-          <source>Please select the autoinstallation profile you'd like to use to autoinstall the selected systems.</source> <target>選択されたシステムをキックスタートするために使用するキックスタートプロファイルを選択してください。</target>
-        </trans-unit>
+          <source>Please select the autoinstallation profile you'd like to use to autoinstall the selected systems.</source> <target>選択されたシステムを自動インストールするために使用する自動インストールプロファイルを選択してください。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.ip.heading2.text.jsp">
-          <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration. If no match is found, the organizational default profile will be used if set.</source> <target>キックスタートプロファイルは、ネットワーク設定に基づいて各システムに対して自動的に選択されます。一致する候補が見つかれない場合は、デフォルトの組織プロファイルが使用されます (設定されている場合)。</target>
-        </trans-unit>
+          <source>The autoinstallation profile will be automatically selected for each system based upon its network configuration. If no match is found, the organizational default profile will be used if set.</source> <target>自動インストールプロファイルは、ネットワーク設定に基づいて各システムに対して自動的に選択されます。一致する候補が見つかれない場合は、デフォルトの組織プロファイルが使用されます (設定されている場合)。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.proxy.jsp.summary">
-          <source>You may choose to use a @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed..</source> <target>@@PRODUCT_NAME@@ Proxy を使用してキックスタートに必要なファイルにアクセスすることを選択できます。キックスタートの完了後に、選択されたシステムは @@PRODUCT_NAME@@ Proxy に登録されます。</target>
-        </trans-unit>
+          <source>You may choose to use a @@PRODUCT_NAME@@ Proxy to access the files necessary for autoinstallation. The selected systems will be registered to the @@PRODUCT_NAME@@ Proxy selected below after its autoinstallation has completed..</source> <target>@@PRODUCT_NAME@@ Proxy を使用して自動インストールに必要なファイルにアクセスすることを選択できます。自動インストールの完了後に、選択されたシステムは @@PRODUCT_NAME@@ Proxy に登録されます。</target> </trans-unit>
         <trans-unit id="ssm.kickstart.schedule.create.records.button.jsp">
           <source>Create PXE installation configuration</source> </trans-unit>
         <trans-unit id="ssm.kickstart.distro.cobbler-only.tooltip">
-          <source>Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source> <target>キックスタート後に、@@PRODUCT_NAME@@ によって管理されないプロファイルにより、@@PRODUCT_NAME@@ にシステムが登録されることは保証されません。これらのキックスタートをチェックして (プロファイル名をクリックします)、キックスタート後に選択されたシステムが @@PRODUCT_NAME@@ システム一覧に再び現れるようにするかどうかを確認します。</target>
-        </trans-unit>
+          <source>Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source> <target>自動インストール後に、@@PRODUCT_NAME@@ によって管理されないプロファイルにより、@@PRODUCT_NAME@@ にシステムが登録されることは保証されません。これらの自動インストールをチェックして (プロファイル名をクリックします)、自動インストール後に選択されたシステムが @@PRODUCT_NAME@@ システム一覧に再び現れるようにするかどうかを確認します。</target> </trans-unit>
       </group>
       <!-- SSM Rollback -->
       <group>
@@ -9090,63 +9067,63 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>キックスタートプロファイルアイコン</target>
+        <target>自動インストールプロファイルアイコン</target>
       </trans-unit>
       <trans-unit id="kickstarts.jsp.toolbar">
         <source>Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>キックスタートプロファイル</target>
+        <target>自動インストールプロファイル</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.header">
         <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>キックスタートファイル</target>
+        <target>自動インストールファイル</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.header.error">
         <source>Autoinstallation File Error</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>キックスタートファイルのエラー</target>
+        <target>自動インストールファイルのエラー</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.summary">
         <source>The autoinstallation file generated by this autoinstallation profile is viewable below:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>このキックスタートプロファイルによって生成されるキックスタートファイルは以下で確認することができます。</target>
+        <target>この自動インストールプロファイルによって生成される自動インストールファイルは以下で確認することができます。</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.invalidchannel">
         <source>Due to packages missing from this autoinstallation profile's base channel, the autoinstallation file could not be generated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>このキックスタートプロファイルのベースチャンネルに足りないパッケージがあるため、キックスタートファイルは生成できませんでした。</target>
+        <target>この自動インストールプロファイルのベースチャンネルに足りないパッケージがあるため、自動インストールファイルは生成できませんでした。</target>
       </trans-unit>
       <trans-unit id="kickstartdownload.jsp.download">
         <source>Download Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartFileDownload</context>
         </context-group>
-        <target>キックスタートファイルのダウンロード</target>
+        <target>自動インストールファイルのダウンロード</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.overview">
         <source>Autoinstallation Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>キックスタート概要</target>
+        <target>自動インストール概要</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.header">
         <source>Autoinstallation Variables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>キックスタート変数　</target>
+        <target>自動インストール変数</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.update">
         <source>Update Variables</source>
@@ -9160,8 +9137,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>キックスタート変数を使用すると、キックスタートプロファイルに値を代用できます。変数を定義するには、name=value を下記のボックスに追加します。
-            その後、プロファイル内の $name を使用して値を代用することができます。</target>
+        <target>自動インストール変数を使用すると、自動インストールプロファイルに値を代用できます。変数を定義するには、name=value を下記のボックスに追加します。 その後、プロファイル内の $name を使用して値を代用することができます。</target>
       </trans-unit>
       <trans-unit id="kickstarttree.variable.jsp.summary">
         <source>Any variables specified below will be usable in any profile that uses this distro. They can be overridden in each profile as well.</source>
@@ -9287,14 +9263,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>現在、キックスタート中のシステム</target>
+        <target>現在自動インストール中のシステム</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.scheduled">
         <source>Systems Scheduled to be Autoinstalled</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>キックスタートがスケジュールされたシステム</target>
+        <target>自動インストールがスケジュールされたシステム</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.label">
         <source>Label</source>
@@ -9315,28 +9291,28 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>キックスタート要約</target>
+        <target>自動インストールの概要</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.system">
         <source>Autoinstalling Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>システムをキックスタート中</target>
+        <target>システムを自動インストールしています</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.actions">
         <source>Autoinstallation Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>キックスタートの動作</target>
+        <target>自動インストールの動作</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.viewprofiles">
         <source>View a List of Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>キックスタートプロファイルの一覧を表示</target>
+        <target>自動インストールプロファイルの一覧を表示</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.createksprofile">
         <source>Create a New Kickstart Profile</source>
@@ -9357,7 +9333,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>次のキックスタートプロファイルが企業/組織使用として作成されています。</target>
+        <target>次の自動インストールプロファイルが企業／組織使用として作成されています:</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.inactive">
         <source>Inactive</source>
@@ -9385,21 +9361,21 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>使用できるキックスタートプロファイルがありません</target>
+        <target>使用できる自動インストールプロファイルがありません</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.nocurrentlyks">
         <source>There are no systems currently autoinstalling.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>現在、キックスタート中のシステムはありません</target>
+        <target>現在自動インストール中のシステムはありません。</target>
       </trans-unit>
       <trans-unit id="kickstartoverview.jsp.noscheduledtobeks">
         <source>To schedule an autoinstallation, go to the Systems tab above and select the system you would like to autoinstall. From there, go to the system's Provisioning tab and click on the Schedule subtab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview</context>
         </context-group>
-        <target>キックスタートをスケジュールするには、上部のシステムタブを選択し、キックスタートを行いたいシステムを選択します。同じ画面でシステムのプロビジョニングタブを選択し、スケジュールのサブタブをクリックします。</target>
+        <target>自動インストールをスケジュールするには、上部のシステムタブを選択し、自動インストールを行いたいシステムを選択します。同じ画面でシステムのプロビジョニングタブを選択し、スケジュールのサブタブをクリックします。</target>
       </trans-unit>
       <trans-unit id="kickstartranges.jsp.range">
         <source>Range</source>
@@ -9413,7 +9389,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
-        <target>キックスタートプロファイル</target>
+        <target>自動インストールプロファイル</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.postlog">
         <source>Log custom post scripts:</source>
@@ -9469,14 +9445,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>キックスタート: {0}</target>
+        <target>自動インストール: {0}</target>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.header1">
         <source>Delete Autoinstallation: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
-        <target>キックスタートの削除: {0}</target>
+        <target>自動インストールの削除: {0}</target>
       </trans-unit>
       <trans-unit id="orgdelete.jsp.header1">
         <source>Delete Organization: {0}</source>
@@ -9490,14 +9466,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>キックスタートの詳細</target>
+        <target>自動インストールの詳細</target>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.header2">
         <source>Confirm Autoinstallation Deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
-        <target>キックスタート削除の確認</target>
+        <target>自動インストールの削除確認</target>
       </trans-unit>
       <trans-unit id="orgdelete.jsp.header2">
         <source>Confirm Organization Deletion</source>
@@ -9525,28 +9501,28 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>このキックスタートプロファイルは以下のフォームを使用して編集することができます。アスタリスク (*) が付いたエントリは必須になります。</target>
+        <target>この自動インストールプロファイルは以下のフォームを使用して編集することができます。アスタリスク (*) が付いたエントリは必須になります。</target>
       </trans-unit>
       <trans-unit id="kickstartdelete.jsp.summary1">
         <source>Are you sure you want to delete this Autoinstallation?&lt;strong&gt;&lt;p&gt;WARNING: deleting this autoinstallation will remove its corresponding options and scripts.&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;Please click the button only once; it will take a few moments for the deletion process to complete.&lt;/strong&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
-        <target>本当にこのキックスタートを削除してもよいですか?&lt;strong&gt;&lt;p&gt;警告: このキックスタートを削除すると、それに対応するオプションとオプションを削除することになります。&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;ボタンをクリックするのは 1 回のみにしてください。削除が完了するまでには少し時間がかかります。&lt;/strong&gt;&lt;/p&gt;</target>
+        <target>本当にこの自動インストールを削除してもよいですか?&lt;strong&gt;&lt;p&gt;警告: この自動インストールを削除すると、それに対応するオプションとオプションを削除することになります。&lt;/p&gt;&lt;/strong&gt;&lt;p&gt;&lt;strong&gt;ボタンをクリックするのは 1 回のみにしてください。削除が完了するまでには少し時間がかかります。&lt;/strong&gt;&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.summary2">
         <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files. Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file. The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>&lt;span class="small-text"&gt; 組織のデフォルトのプロファイル設定を手作業で作成したキックスタートファイルやベアメタルのキックスタートファイルで使用することができます。キックスタートファイルの &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; セクションで &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; このリンク&lt;/strong&gt; &lt;/a&gt; の URL を指定している場合に、このオプションを使ってユーザーの組織で使用するプロファイルを選択します。組織のデフォルトが指定されていないとこのリンクは動作しません。&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt; 組織のデフォルトのプロファイル設定を手作業で作成した自動インストールファイルやベアメタルの自動インストールファイルで使用することができます。自動インストールファイルの &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; セクションで &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; このリンク&lt;/strong&gt; &lt;/a&gt; の URL を指定している場合に、このオプションを使ってユーザーの組織で使用するプロファイルを選択します。組織のデフォルトが指定されていないとこのリンクは動作しません。&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.activeDescription">
         <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for unprovisioned autoinstallations.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ に登録されているシステムは、停止中のキックスタートプロファイルを使用してキックスタートすることができません。しかし、停止中のキックスタートプロファイルのキックスタートファイルは手作業でダウンロードすることができ、ベアメタルキックスタートに使用できます。</target>
+        <target>@@PRODUCT_NAME@@ に登録されているシステムは、停止中の自動インストールロファイルを使用して自動インストールすることができません。しかし、停止中の自動インストールプロファイルの自動インストールファイルは手作業でダウンロードすることができ、ベアメタル自動インストールに使用できます。</target>
       </trans-unit>
       <trans-unit id="kickstartscript.jsp.type">
         <source>Script Type</source>
@@ -9609,7 +9585,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Scripts</context>
         </context-group>
-        <target>このキックスタートプロファイルに関連付けられたスクリプトはありません。</target>
+        <target>この自動インストールプロファイルに関連付けられたスクリプトはありません。</target>
       </trans-unit>
       <trans-unit id="kickstartscript.order.header">
         <source>Update kickstart script order</source>
@@ -9651,14 +9627,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>&lt;p&gt;「ベアメタルシステム」をキックスタートするには、ブート CD を使ってキックスタートしているオペレーティングシステムのバージョンと互換性のあるブートイメージを渡す必要があります。&lt;/p&gt; &lt;p&gt;適切なイメージを使ってシステムが起動したら、 キックスタートファイルを渡す必要があります。次の URL をブート CD または PXE 設定で使用して、このキックスタートプロファイルと関連付けられたキックスタートファイルをシステムに渡すことができます。&lt;/p&gt;</target>
+        <target>&lt;p&gt;"未プロビジョンシステム" を自動インストールするには、ブート CD を使って自動インストールしているオペレーティングシステムのバージョンと互換性のあるブートイメージを渡す必要があります。&lt;/p&gt; &lt;p&gt;適切なイメージを使ってシステムが起動したら、 自動インストールファイルを渡す必要があります。次の URL をブート CD または PXE 設定で使用して、この自動インストールプロファイルと関連付けられた自動インストールファイルをシステムに渡すことができます。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal">
         <source>Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>ベアメタルキックスタート</target>
+        <target>未プロビジョン自動インストール</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.resource">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Resource:&lt;/strong&gt; The Reference Guide Kickstart section&lt;/span&gt;</source>
@@ -9671,42 +9647,42 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>&lt;span class="small-text"&gt;&lt;strong&gt;ヒント:&lt;/strong&gt;企業/組織のキックスタートプロファイルに関連付けられた IP 範囲の全一覧を利用できます &lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;ヒント:&lt;/strong&gt;企業/組織の自動インストールプロファイルに関連付けられた IP 範囲の全一覧を利用できます &lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal_summary2">
         <source>Alternatively, you may associate each of your autoinstallation profiles with particular ip ranges. Then, you can provide unprovisioned systems with a single URL that will provide each system the autoinstallation file associated with its IP Address. Below you will find this URL:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>代わりに、キックスタートプロファイルをそれぞれ特定の IP 範囲に関連付けることもできます。その後に、ベアメタルシステムに URL を 1 つ渡し、この URL が IP アドレスと関連付けられたキックスタートファイルを各システム渡すことができます。この URL は以下にあります。</target>
+        <target>代わりに、自動インストールプロファイルをそれぞれ特定の IP 範囲に関連付けることもできます。その後に、ベアメタルシステムに URL を 1 つ渡し、この URL が IP アドレスと関連付けられた自動インストールファイルを各システムに渡すことができます。この URL は以下にあります:</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal2">
         <source>IP Address-Based Unprovisioned Autoinstallation URL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>IP アドレスベースのベアメタルキックスタート URL</target>
+        <target>IP アドレスベースの未プロビジョン自動インストール URL</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.ranges">
         <source>Associated IP Ranges with Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>キックスタートプロファイルと関連付けられた IP 範囲</target>
+        <target>自動インストールプロファイルに関連付けられた IP 範囲</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.ranges_summary">
         <source>You may add or delete IP ranges associated with the autoinstallation profile below:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>以下で、このキックスタートプロファイルに関連付けられた IP 範囲を追加するか、または削除することができます。</target>
+        <target>以下で、この自動インストールプロファイルに関連付けられた IP 範囲を追加するか、または削除することができます:</target>
       </trans-unit>
       <trans-unit id="kickstartranges.jsp.summary">
         <source>The following IP Address ranges are associated with autoinstallation profiles.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
-        <target>次の IP アドレス範囲がキックスタートプロファイルに関連付けられています。</target>
+        <target>次の IP アドレス範囲が自動インストールプロファイルに関連付けられています。</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.addrange">
         <source>Add IP Range</source>
@@ -9727,14 +9703,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>特殊なケースのキックスタートシナリオについて次のようなオプションを修正する必要が生じる場合があります。このような場合には、これらのすべてのオプションに関して詳細に記載されているドキュメントの Red Hat Enterprise Linux システム管理ガイドを参照されることを推奨します。</target>
+        <target>特殊なキックスタートシナリオの場合、下記のオプションを修正する必要があるかもしれません。これらのオプションの詳細について、詳しくは @@ENTERPRISE_LINUX_NAME@@ のシステム管理者ガイドをお読みになることをお薦めします。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.label">
         <source>Autoinstall Label</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>キックスタートラベル</target>
+        <target>自動インストールラベル</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.labelwarning">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; The label field should not be easily guessable, since it could be used to expose information about this kickstart profile to a 3rd party.</source>
@@ -9748,10 +9724,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; 仮想化タイプを変更するとキックスタートプロファイルのブートローダー
-            やパーティションオプションの変更が必要となることがあるため、ユーザーがカスタマイズした内容が上書きされる可能性があります。
-            &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;パーティション&lt;/a&gt; タブを選択して
-            新しい設定を確認してください。</target>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; 仮想化タイプを変更すると自動インストールプロファイルのブートローダーやパーティションオプションの変更が必要となることがあるため、ユーザーがカスタマイズした内容が上書きされる可能性があります。 &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;パーティション&lt;/a&gt; タブを選択して 新しい設定を確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.active">
         <source>Active:</source>
@@ -9835,11 +9808,9 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
         <trans-unit id="kickstart.advanced.jsp.create">
-          <source>Create Autoinstallation Profile</source> <target>キックスタートプロファイルを作成　</target>
-        </trans-unit>
+          <source>Create Autoinstallation Profile</source> <target>自動インストールプロファイルを作成</target> </trans-unit>
         <trans-unit id="kickstart.advanced.jsp.para1">
-          <source>Each autoinstallation file you upload to @@PRODUCT_NAME@@ will need a label so that you can refer to it later - please choose a label for this autoinstallation and enter it below. Entries marked with an asterisk (*) are required.</source> <target>後で参照できるようにするため、Satellite にアップロードするキックスタートファイルにはラベルが必要となります。このキックスタートのラベルを選択し、以下に入力してください。アスタリスク (*) の付いたエントリが必須項目になります。</target>
-        </trans-unit>
+          <source>Each autoinstallation file you upload to @@PRODUCT_NAME@@ will need a label so that you can refer to it later - please choose a label for this autoinstallation and enter it below. Entries marked with an asterisk (*) are required.</source> <target>後で参照できるようにするため、Satellite にアップロードする自動インストールファイルにはラベルが必要となります。この自動インストールのラベルを選択し、以下に入力してください。アスタリスク (*) の付いたエントリが必須項目になります。</target> </trans-unit>
         <trans-unit id="kickstart.advanced.jsp.uploadtab">
           <source>File to Upload</source> <target>アップロードするファイル</target>
         </trans-unit>
@@ -9847,15 +9818,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Alternatively, you can upload a new version in the '{0}' section below and select '{1}'.</source> <target> または、以下の '{0}' より新しいバージョンをアップロードし、'{1}' を選択することもできます。</target>
         </trans-unit>
         <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste">
-          <source>If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser. This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target>既存のキックスタートプロファイルを再び使用したい場合は、ブラウザではなく /var/lib/rhn/kickstarts からテンプレートをコピーアンドペーストします。これにより、テンプレート変数が保持され、キックスタート後に登録プロセスが適切に機能します。</target>
-        </trans-unit>
+          <source>If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser. This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target>既存の自動インストールプロファイルを再び使用したい場合は、ブラウザではなく /var/lib/rhn/kickstarts からテンプレートをコピーアンドペーストします。これにより、テンプレート変数が保持され、自動インストール後に登録プロセスが適切に機能するようになります。</target> </trans-unit>
       </group>
       <trans-unit id="kickstartdatadelete.jsp.confirmdelete">
         <source>Delete Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDeleteSetup</context>
         </context-group>
-        <target>キックスタートの削除</target>
+        <target>自動インストールの削除</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.summary">
         <source>You can associate one or more activation keys with this kickstart profile. Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ system types, subscribe to specified software and configuration channels, and subscribe to specified system groups. Activation keys can also specify packages to be installed on a system. Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
@@ -9973,7 +9943,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRanges</context>
         </context-group>
-        <target>IP によるベアメタルキックスタート</target>
+        <target>IP による未プロビジョン自動インストール</target>
       </trans-unit>
       <trans-unit id="kickstart.systemdetails.jsp.header2">
         <source>Software Preferences</source>
@@ -10759,13 +10729,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>以下で、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。キックスタートのプレスクリプトはシステムでキックスタートファイルの構文解析が終了次第、実行されます。
-このセクションのネットワークにアクセスすることができますが、IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていません)。
-キックスタートのプレスクリプトに関する詳細は、&lt;strong&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/strong&gt; を参照してください。
-&lt;br/&gt;&lt;br/&gt;
-以下では、このキックスタートのポストスクリプトも編集することができます。最初に、@@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます (例:　@@PRODUCT_NAME@@ へのシステム登録)。
-次に、非 chrootのポストスクリプトが実行され、最後にポストスクリプトが実行されます。キックスタートのポストスクリプトに関する詳細は、
-&lt;strong&gt;Red Hat Enterprise Linux システム管理ガイド&lt;/strong&gt;を参照してください。</target>
+        <target>以下で、このキックスタートのプレスクリプトとポストスクリプトを編集することができます。キックスタートのプレスクリプトはシステムでキックスタートファイルの構文解析が終了次第、実行されます。 このセクションではネットワークにアクセスすることができますが、IP アドレスを使用しなければなりません (この時点ではネームサービスは設定されていないためです)。 キックスタートのプレスクリプトに関する詳細は、&lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt; を参照してください。 &lt;br/&gt;&lt;br/&gt; 以下では、このキックスタートのポストスクリプトも編集することができます。最初に、@@PRODUCT_NAME@@ 関連のコマンドが自動的に実行されます (例:　@@PRODUCT_NAME@@ へのシステム登録)。 次に、非 chroot のポストスクリプトが実行され、最後にポストスクリプトが実行されます。キックスタートのポストスクリプトに関する詳細は、 &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ システム管理ガイド&lt;/strong&gt;を参照してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.script.langheader">
         <source>Kickstart Script Scripting Language</source>
@@ -10905,11 +10869,9 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>All Snippets</source> <target>すべてのスニペット</target>
         </trans-unit>
         <trans-unit id="snippets.jsp.toolbar">
-          <source>Autoinstallation Snippets</source> <target>キックスタートスニペット</target>
-        </trans-unit>
+          <source>Autoinstallation Snippets</source> <target>自動インストールスニペット</target> </trans-unit>
         <trans-unit id="snippets.jsp.summary">
-          <source>Use autoinstallation snippets to store common blocks of code that can be shared across multiple autoinstallation profiles in @@PRODUCT_NAME@@. When you create an autoinstallation snippet, all autoinstallation profiles including that snippet will be updated accordingly.</source> <target>キックスタートスニペットを使用して、@@PRODUCT_NAME@@ 内の複数のキックスタートプロファイルが共有できるコードの共通ブロックを保存します。キックスタートスニペットを作成すると、そのスニペットを含むすべてのキックスタートプロファイルが更新されます。</target>
-        </trans-unit>
+          <source>Use autoinstallation snippets to store common blocks of code that can be shared across multiple autoinstallation profiles in @@PRODUCT_NAME@@. When you create an autoinstallation snippet, all autoinstallation profiles including that snippet will be updated accordingly.</source> <target>自動インストールスニペットを使用して、@@PRODUCT_NAME@@ 内の複数の自動インストールプロファイルが共有できるコードの共通ブロックを保存します。自動インストールスニペットを作成すると、そのスニペットを含むすべての自動インストールプロファイルが更新されます。</target> </trans-unit>
         <trans-unit id="snippets.jsp.note.default">
           <source>Default kickstart snippets are not editable.</source> <target>デフォルトのキックスタートスニペットは編集できません。</target>
         </trans-unit>
@@ -10923,8 +10885,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Snippet Macro</source> <target>スニペットマクロ</target>
         </trans-unit>
         <trans-unit id="cobbler.snippet.jsp.nosnippets">
-          <source>No autoinstallation snippets found.</source> <target>キックスタートスニペットが見つかりませんでした。</target>
-        </trans-unit>
+          <source>No autoinstallation snippets found.</source> <target>自動インストールスニペットが見つかりませんでした。</target> </trans-unit>
         <trans-unit id="cobbler.snippet.copy-paste-snippet-tip">
           <source>Copy and paste the snippet macro into your profiles to make the full snippet appear in that profile.</source> <target>スニペットマクロをユーザーのキックスタートプロファイルにコピーアンドペーストし、キックスタートプロファイルにスニペット全体が記載されるようにします。</target>
         </trans-unit>
@@ -11426,7 +11387,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;キックスタート&lt;/strong&gt;の管理</target>
+        <target>&lt;strong&gt;自動インストール&lt;/strong&gt; の管理</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.configuration">
         <source>Manage &lt;strong&gt;Configuration Files&lt;/strong&gt;</source>
@@ -11550,7 +11511,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="channels.vendor.jsp.header1">
         <source>The software channels listed below are @@VENDOR_NAME@@ channels or child channels of @@VENDOR_NAME@@ Channels.</source>
-        <target>以下に表示されるソフトウェアチャンネルは、Red Hat チャンネルまたは Red Hat チャンネルの子チャンネルです。</target>
+        <target>以下に表示されるソフトウェアチャンネルは、 @@VENDOR_NAME@@ チャンネルまたは @@VENDOR_NAME@@ チャンネルの子チャンネルです。</target>
       </trans-unit>
       <trans-unit id="channels.shared.jsp.header1">
         <source>The software channels listed below may be shared by your organization.</source>
@@ -11752,7 +11713,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
-        <target>キックスタート可能なツリー</target>
+        <target>自動インストールツリー</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.create.wizard.kstree.always_new_RH">
         <source>Always use the newest Red Hat Tree for this base channel.</source>
@@ -11929,8 +11890,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <trans-unit id="activation-key.jsp.allowed-values">
           <source>Activation key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source> </trans-unit>
         <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
-          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; を選択すると、システムがインストールされている Red Hat Enterprise Linux のバージョンに対応する Red Hat 提供のデフォルトチャンネルへ登録できるようになります。ここで、特定の Red Hat 提供のチャンネルまたはカスタムベースチャンネルを選択できますが、このキーを使用しているシステムが選択したチャンネルとの互換性がない場合は Red Hat のデフォルトチャンネルが指定されます。</target>
-        </trans-unit>
+          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source> <target>&lt;strong&gt;{0}&lt;/strong&gt; を選択すると、システムがインストールされている SUSE Linux のバージョンに対応する SUSE Manager へ登録できるようになります。ここでは、特定の SUSE 提供のチャンネルまたはカスタムベースチャンネルを選択できますが、このキーを使用しているシステムが選択したチャンネルとの互換性がない場合は SUSE Manager のデフォルトチャンネルが指定されます。</target> </trans-unit>
         <trans-unit id="activation-key.jsp.edit.universal-default-tooltip">
           <source>Only one universal default activation key may be set for this organization. By setting this key as universal default, you will remove universal default status from the current universal default key if it exists. If this key is set as universal default, then newly-registered systems to your organization will inherit the properties of this key.</source> <target>この組織用に単一の汎用デフォルトアクティベーションキーのみを設定できます。このキーを汎用デフォルトキーとして設定することにより、その現行の汎用デフォルトキー (がある場合) の汎用デフォルトのステータスを削除することになります。このキーが汎用デフォルトとして設定されると、ユーザーの組織に新規に登録されるシステムはこのキーのプロパティを継承します。</target>
         </trans-unit>
@@ -12776,11 +12736,9 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>{0} system event(s) canceled.</source> <target>{0} 件のシステムイベントが取り消されました。</target>
         </trans-unit>
         <trans-unit id="system.event.spmigration.notification">
-          <source>&lt;strong&gt;Reload&lt;/strong&gt; the page after the action completed successfully to schedule the full migration.</source>
-        </trans-unit>
+          <source>&lt;strong&gt;Reload&lt;/strong&gt; the page after the action completed successfully to schedule the full migration.</source> </trans-unit>
         <trans-unit id="system.event.spmigration.rescheduleDryRun">
-          <source>Run migration</source>
-        </trans-unit>
+          <source>Run migration</source> </trans-unit>
       </group>
       <!-- System events legend -->
       <group>
@@ -13631,7 +13589,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>認識されていない配備タスクです。Red Hat サポートまでご連絡ください。</target>
+        <target>認識されていない配備タスクです。 SUSE サポートまでご連絡ください。</target>
       </trans-unit>
       <trans-unit id="comparetask.error.emptysets">
         <source>Channel has no files, no subscribed systems, or both - compare action canceled.</source>
@@ -14298,7 +14256,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
         <target>これらのシステムには設定配備機能がまだありません。設定配備では、特定のソフトウェアがシステムにインストールされ、有効にされている必要があります。&lt;a href={0}&gt;{1}&lt;/a&gt; 画面でシステムを選択し、"{2}" をクリックすることにより、これらのシステムで設定配備機能を有効にできます。</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.orgadmin">
-        <source></source>
+        <source/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">
@@ -17109,7 +17067,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ Proxy の使用を選択してキックスタートに必要なファイルにアクセスすることができます。このシステムは、キックスタートが完了した後に以下に選択された @@PRODUCT_NAME@@ Proxy に登録されます。</target>
+        <target>@@PRODUCT_NAME@@ Proxy の使用を選択して自動インストールに必要なファイルにアクセスすることができます。このシステムは、自動インストールが完了した後に以下に選択された @@PRODUCT_NAME@@ Proxy に登録されます。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.default.proxy.jsp">
         <source>Do not use an @@PRODUCT_NAME@@ Proxy</source>
@@ -17137,10 +17095,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>キックスタートのスケジュール</target>
+        <target>自動インストールのスケジュール</target>
       </trans-unit>
       <trans-unit id="kickstart.configure.heading1.jsp">
         <source>Configure Autoinstallation</source>
+        <target>自動インストールの設定</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -17150,10 +17109,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>このシステムをキックスタート動作にスケジュールすることができます。これにより、選択されているキックスタートオプションを使ってこのシステムが再インストールされます。</target>
+        <target>このシステムに対して自動インストールをスケジュールすることができます。これにより、選択されている自動インストールオプションを使ってこのシステムが再インストールされます。</target>
       </trans-unit>
       <trans-unit id="kickstart.configure.heading1.text.jsp">
         <source>You can configure the autoinstallation of this system. This will install this system using the selected autoinstallation options as soon as it boots up.</source>
+        <target>このシステムの自動インストールを設定することができます。これにより、このシステムは起動後に選択した自動インストールを行なうようになります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
@@ -17163,35 +17123,35 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>キックスタートプロファイルの選択</target>
+        <target>自動インストールプロファイルの選択</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading2.text.jsp">
         <source>Please select the autoinstallation profile you'd like to use to autoinstall this system:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>このシステムのキックスタートに使用するキックスタートプロファイルを選択してください。</target>
+        <target>このシステムの自動インストールに使用する自動インストールプロファイルを選択してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.jsp">
         <source>Schedule Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>キックスタートのスケジュール</target>
+        <target>自動インストールのスケジュール</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option2.jsp">
         <source>Schedule autoinstallation no sooner than:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>これ以降にキックスタートをスケジュールする:</target>
+        <target>これ以降に自動インストールをスケジュールする:</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.profiles.jsp">
         <source>No profiles currently available for autoinstallation. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new kickstart profile.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>現在、キックスタートに使用できるプロファイルはありません。&lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;新規のキックスタートプロファイルを作成&lt;/a&gt;してください。</target>
+        <target>現在、自動インストールに使用できるプロファイルはありません。&lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;新規の自動インストールプロファイルを作成&lt;/a&gt;してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.button0.jsp">
         <source>Create PXE installation configuration</source>
@@ -17212,7 +17172,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>キックスタートをスケジュールしてから終了する</target>
+        <target>自動インストールをスケジュールしてから終了する</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.button3.jsp">
         <source>Basic Options</source>
@@ -17455,7 +17415,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ によって管理されないプロファイルは、キックスタートの後にシステムを @@PRODUCT_NAME@@ に登録できるとは限りません。キックスタートを再度チェックして (プロファイル名をクリック)、キックスタートの後にシステムが @@PRODUCT_NAME@@ システム一覧に再表示されるか確認するとよいでしょう。</target>
+        <target>@@PRODUCT_NAME@@ によって管理されないプロファイルは、自動インストールの後にシステムを @@PRODUCT_NAME@@ に登録できるとは限りません。自動インストールを再度チェックして (プロファイル名をクリック)、自動インストール後にシステムが @@PRODUCT_NAME@@ システム一覧に再表示されるか確認するとよいでしょう。</target>
       </trans-unit>
       <trans-unit id="kickstarts.distro.cobbler-only.tooltip">
         <source>Autoinstallation profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler profile edit' command. For more information, consult the @@PRODUCT_NAME@@ Reference Guide.</source>
@@ -17540,49 +17500,49 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
-        <target>キックスタートのクローンを作成</target>
+        <target>自動インストールの複製</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.header2">
         <source>Clone Autoinstallation Profile</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
-        <target>キックスタートプロファイルのクローンを作成</target>
+        <target>自動インストールプロファイルの複製</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.summary">
         <source>Please specify a new label for this Autoinstallation Profile. All options, settings and scripts from the source Autoinstallation Profile will be copied to a new Profile except the IP Range Settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
-        <target>このキックスタートプロファイルの新しいラベルを指定してください。IP 範囲の設定以外は、ソースのキックスタートプロファイルからのオプション、設定、およびスクリプトがすべて新しいプロファイルにコピーされます。</target>
+        <target>この自動インストールプロファイルの新しいラベルを指定してください。IP 範囲の設定以外は、ソースの自動インストールプロファイルからのオプション、設定、およびスクリプトがすべて新しいプロファイルにコピーされます。</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.header1">
         <source>Create a Clone of Autoinstallation: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>キックスタートのクローンを作成する: {0}</target>
+        <target>自動インストールの複製を作成する: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.summary2">
         <source>This is current status of this system's Autoinstallation progress. &lt;strong&gt;NOTE:&lt;/strong&gt; This page refreshes every 15 seconds</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>これは、このシステムのキックスタートの現在の進渉状況です。&lt;strong&gt;注記:&lt;/strong&gt; このページは 15 秒毎にリフレッシュされます。</target>
+        <target>これは、このシステムの自動インストールの現在の進渉状況です。&lt;strong&gt;注記:&lt;/strong&gt; このページは 15 秒毎にリフレッシュされます。</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.progress">
         <source>Autoinstallation Progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>キックスタートの進渉</target>
+        <target>自動インストールの進渉</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.header2">
         <source>Autoinstallation Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>キックスタートの状態</target>
+        <target>自動インストールの状態</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.activation">
         <source>System Activation</source>
@@ -17645,7 +17605,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>キックスタートの初期化</target>
+        <target>自動インストールの準備</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_reboot">
         <source>Reboot System</source>
@@ -17680,14 +17640,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>キックスタートが失敗しました</target>
+        <target>自動インストールが失敗しました</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_complete">
         <source>Autoinstallation complete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>キックスタートが完了しました</target>
+        <target>自動インストールが完了しました</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.none">
         <source>none</source>
@@ -17701,14 +17661,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>キックスタートを取り消しますか?</target>
+        <target>自動インストールを取り消しますか?</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.jsp.header2">
         <source>Autoinstall Session</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
-        <target>キックスタートセッション</target>
+        <target>自動インストールセッション</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.jsp.state">
         <source>State</source>
@@ -17722,14 +17682,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
-        <target>以下の「キックスタートの取り消し」をクリックしてこのキックスタートを取り消します。</target>
+        <target>以下の '自動インストールの取り消し' をクリックしてこの自動インストールを取り消します。</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.jsp.cancel">
         <source>Cancel Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionCancel.do</context>
         </context-group>
-        <target>キックスタートの取り消し</target>
+        <target>自動インストールの取り消し</target>
       </trans-unit>
       <!-- KS Distributions List Page -->
       <group>
@@ -17737,20 +17697,16 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
         <trans-unit id="kickstart.distributions.jsp.nolists">
-          <source>No autoinstallable distributions available.</source> <target>使用できるキックスタート可能なディストリビューションはありません</target>
-        </trans-unit>
+          <source>No autoinstallable distributions available.</source> <target>使用できる自動インストール可能なディストリビューションはありません</target> </trans-unit>
         <trans-unit id="kickstart.kickstartable_distro_create_new.jsp">
           <source>Create Distribution</source> <target>ディストリビューションの作成</target>
         </trans-unit>
         <trans-unit id="kickstart.kickstartable_distributions.jsp">
-          <source>Autoinstallable Distributions</source> <target>キックスタート可能なディストリビューション</target>
-        </trans-unit>
+          <source>Autoinstallable Distributions</source> <target>自動インストール可能なディストリビューション</target> </trans-unit>
         <trans-unit id="kickstart.kickstartable_distributions_text.jsp">
-          <source>The following autoinstallable distributions are available.</source> <target>次のキックスタートディストリビューションが使用可能です。</target>
-        </trans-unit>
+          <source>The following autoinstallable distributions are available.</source> <target>次の自動インストール可能なディストリビューションがあります。</target> </trans-unit>
         <trans-unit id="kickstarts.distro.is-valid.tooltip">
-          <source>Autoinstallable distributions may be invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source> <target>カーネルまたは initrd イメージへの基本パスが間違っているか、または存在しないために、キックスタートディストリビューションが無効である可能性があります。カスタムディストリビューションを有効にするには、ディストリビューションを選択し、その基本パスを適宜変更します。</target>
-        </trans-unit>
+          <source>Autoinstallable distributions may be invalid due to a wrong or non existent base path to the kernel or initrd image. To make your custom distribution valid please select the distribution and modify its base path appropriately.</source> <target>カーネルまたは initrd イメージへの基本パスが間違っているか、または存在しないために、自動インストール可能なディストリビューションが無効である可能性があります。カスタムディストリビューションを有効にするには、ディストリビューションを選択し、その基本パスを適宜変更します。</target> </trans-unit>
         <trans-unit id="kickstart.distro.is-valid.jsp">
           <source>Valid</source> <target>有効</target>
         </trans-unit>
@@ -17919,56 +17875,49 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>キックスタートディストリビューションの編集</target>
+        <target>自動インストール可能なディストリビューションの編集</target>
       </trans-unit>
       <trans-unit id="treeedit.jsp.toolbar">
         <source>Edit Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>キックスタートディストリビューションの編集</target>
+        <target>自動インストール可能なディストリビューションの編集</target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header1">
         <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt; The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt; The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt; &lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire autoinstallable tree for a distribution including kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users. If you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; you would specify that path as your Tree Path value. &lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>キックスタート可能なディストリビューションを定義するには次の詳細が必要です。ツリーパスフィールドは、この @@PRODUCT_NAME@@  サーバーに存在するインストールツリーへの有効なパスである必要があります。キックスタート RPM は、キックスタート配備スクリプトを含む rpm の名前である必要があります。これらの RPM は、@@PRODUCT_NAME@@ によって提供され、@@PRODUCT_NAME@@ ツールの子チャンネルに置かれます。&lt;br/&gt;&lt;br/&gt;
-
-「ディストリビューションラベル」フィールドには文字、数字、ハイフン、ピリオド、およびアンダースコアのみを指定できます。また、このフィールドには少なくとも 4 文字を指定する必要があります。&lt;br/&gt;&lt;br/&gt;
-
-ツリーパス、キックスタート RPM、ベースチャンネル、インストーラー生成は常に一致する必要があります。一般的に、これは各フィールドのバージョンが Red Hat Enterprise Linux の同じバージョンとなることを意味します。&lt;br/&gt;&lt;br/&gt;
-
-&lt;p&gt;ツリーパスは、カーネル、initrd、およびリポジトリ情報を含むが rpm を除く、ディストリビューションのキックスタートツリー全体を含む @@PRODUCT_NAME@@ サーバー上のローカルディスクパスである必要があります。このディレクトリは、apache ユーザーおよび tomcat ユーザーが読み取れる必要があります。指定されたツリーパス内から、カーネルは "./images/pxeboot/vmlinuz" で、initrd イメージは "./images/pxeboot/initrd.img" で利用できる必要があります。たとえば、メディアが @@PRODUCT_NAME@@ サーバーの &lt;i&gt;/var/distro-trees/rhel-5-server/&lt;/i&gt; にある場合は、カーネルと initrd をここでチェックするツリーパス値としてそのパスを指定します: &lt;i&gt;/var/distro-trees/rhel-5-server/images/pxeboot/&lt;/i&gt; &lt;/p&gt;
-</target>
+        <target>自動インストール可能なディストリビューションを定義するには次の詳細が必要です。ツリーパスフィールドは、この @@PRODUCT_NAME@@ サーバーに存在するインストールツリーへの有効なパスである必要があります。&lt;br/&gt;&lt;br/&gt; 「ディストリビューションラベル」フィールドには文字、数字、ハイフン、ピリオド、およびアンダースコアのみを指定できます。また、このフィールドには少なくとも 4 文字を指定する必要があります。 &lt;br/&gt;&lt;br/&gt; ツリーパス、キックスタート RPM、ベースチャンネル、インストーラー生成は常に一致する必要があります。一般的に、これは各フィールドのバージョンが @@ENTERPRISE_LINUX_NAME@@ の同じバージョンとなることを意味します。 &lt;br/&gt;&lt;br/&gt; &lt;p&gt;ツリーパスは、カーネル、initrd、およびリポジトリ情報を含むが rpm を除く、ディストリビューションのキックスタートツリー全体を含む @@PRODUCT_NAME@@ サーバー上のローカルディスクパスである必要があります。このディレクトリは、apache ユーザーおよび tomcat ユーザーが読み取れる必要があります。たとえば @@PRODUCT_NAME@@ のサーバ内の &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; にメディアがある場合は、これをツリーパスとして指定する必要があります。 &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2">
         <source>Create Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>キックスタートディストリビューションの作成</target>
+        <target>自動インストール可能なディストリビューションの作成</target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.toolbar">
         <source>Create Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>キックスタートディストリビューションの作成</target>
+        <target>自動インストール可能なディストリビューションの作成</target>
       </trans-unit>
       <trans-unit id="edittree.jsp.submit">
         <source>Update Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>キックスタートディストリビューションの更新</target>
+        <target>自動インストール可能なディストリビューションの更新</target>
       </trans-unit>
       <trans-unit id="createtree.jsp.submit">
         <source>Create Autoinstallable Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>キックスタートディストリビューションの作成</target>
+        <target>自動インストール可能なディストリビューションの作成</target>
       </trans-unit>
       <trans-unit id="tree-form.jspf.label">
         <source>Distribution Label</source>
@@ -17996,7 +17945,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
-        <target>キックスタート可能なチャンネルは見つかりませんでした。</target>
+        <target>自動インストール可能なチャンネルは見つかりませんでした。</target>
       </trans-unit>
       <trans-unit id="tree-form.jspf.noinstalltypes">
         <source>&lt;strong&gt;No applicable installer generations found for selected base channel.&lt;/strong&gt;</source>
@@ -18335,7 +18284,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; 削除の選択をしたキックスタートのディストリビューションは次のキックスタートプロファイルで使用中です。以下のプロファイルで使用されるディストリビューションの変更を行なってから、このディストリビューションを削除してください。リンク内のラベルをクリックしてプロファイルのディストリビューションを編集します。</target>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; 削除の選択をした自動インストールのディストリビューションは次の自動インストールプロファイルで使用中です。以下のプロファイルで使用されるディストリビューションの変更を行なってから、このディストリビューションを削除してください。リンク内のラベルをクリックしてプロファイルのディストリビューションを編集します。</target>
       </trans-unit>
       <trans-unit id="distro-delete.jsp.cantdelete">
         <source>This distribution cannot be deleted at this time.</source>
@@ -18349,7 +18298,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>キックスタートプロファイルの選択</target>
+        <target>自動インストールプロファイルの選択</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.summary1">
         <source>Please fill out the form below to create a new virtual system to be hosted on &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
@@ -18376,7 +18325,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>デフォルトでは、メモリ、CPU、ストレージ割り当てなどの仮想ゲストの設定はキッススタートプロファイルより継承されます。これらの設定をオーバーライドするには、以下の &lt;strong&gt;{0}&lt;/strong&gt; ボタンをクリックしてください。</target>
+        <target>デフォルトでは、メモリ、CPU、ストレージ割り当てなどの仮想ゲストの設定は自動インストールプロファイルより継承されます。これらの設定を上書きるには、以下の &lt;strong&gt;{0}&lt;/strong&gt; ボタンをクリックしてください。</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.guest_name.header">
         <source>Guest Name:</source>
@@ -18440,7 +18389,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>以下のフィールドは空白にすることができます (この場合、選択されたキックスタートプロファイルで定義されたデフォルト値が使用されます)。各フィールドは個別に設定でき、個別に設定した値はプロファイルのデフォルト値よりも優先されます。</target>
+        <target>以下のフィールドは空白にすることができます (この場合、選択された自動インストールプロファイルで定義されたデフォルト値が使用されます)。各フィールドは個別に設定でき、個別に設定した値はプロファイルのデフォルト値よりも優先されます。</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.storage.local.message">
         <source>Size in gigabytes from the virtual host's disk space.</source>
@@ -18453,7 +18402,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/SystemDetailsEdit.do</context>
         </context-group>
-        <target>キックスタートプロファイルのオプションが正しく更新されました。</target>
+        <target>自動インストールプロファイルのオプションが正しく更新されました。</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.filelist">
         <source>delete file preservation list</source>
@@ -18574,7 +18523,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>現在、キックスタートしているゲストに使用できるプロファイルはありません。 &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;「なし(none)」以外の仮想化タイプを選択して新規のキックスタートプロファイルを作成&lt;/a&gt;してください。</target>
+        <target>現在、自動インストールしているゲストに使用できるプロファイルはありません。 &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;「なし(none)」以外の仮想化タイプを選択して新規の自動インストールプロファイルを作成&lt;/a&gt;してください。</target>
       </trans-unit>
       <trans-unit id="info.alt.img">
         <source>Information Icon</source>
@@ -20221,14 +20170,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; これらのチャンネルはこのゲストのホスト用の Red Hat Enterprise Linux サブスクリプションの一部ではありません。&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;。これらをサブスクライブすると追加のソフトウェアエンタイトルメントを使用することになります。&lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;ホストシステムに別の仮想システムエンタイトルメントを適用&lt;/a&gt; するとこの印の付いたチャンネルに影響を与えます。</target>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; これらのチャンネルはこのゲストのホスト用の @@ENTERPRISE_LINUX_NAME@@ サブスクリプションの一部ではありません。&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;。これらをサブスクライブすると追加のソフトウェアエンタイトルメントを使用することになります。&lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;ホストシステムに別の仮想システムエンタイトルメントを適用&lt;/a&gt; すると、この印の付いたチャンネルに影響を与えます。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning_nohost">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; これらのチャンネルはこのゲストのホスト用 Red Hat Enterprise Linux サブスクリプションの一部ではありません。これらをサブスクライブすると追加のソフトウェアエンタイトルメントを使用することになります。ホストシステムに別の仮想システムエンタイトルメントを適用するとこの印のあるチャンネルに影響を与えます。</target>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; これらのチャンネルはこのゲストのホスト用 @@ENTERPRISE_LINUX_NAME@@ サブスクリプションの一部ではありません。これらをサブスクライブすると追加のソフトウェアエンタイトルメントを使用することになります。ホストシステムに別の仮想システムエンタイトルメントを適用すると、この印のあるチャンネルに影響を与えます。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.fastrackBetaWarning">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; 'FasTrack' and Beta child software channels are not available with Extended Update Support.</source>
@@ -20622,12 +20571,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           <source>As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. &lt;p/&gt; &lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-          <target>
-チャンネル管理者として、システムがサブスクライブしているベースチャンネルを変更できます。有効なチャンネルは、組織によって作成されたチャンネルか、または使用しているオペレーティングシステムのバージョンとプロセッサタイプのデフォルトの Red Hat ベースチャンネルのいずれかです。システムはすべてのチャンネルからサブスクライブが中止され、新しいベースチャンネルにサブスクライブされます。
-&lt;p/&gt;
-&lt;strong&gt;この操作は、システムで利用可能なパッケージとエラータに重大な影響が与えることがあるため、注意して実行する必要があります。&lt;/strong&gt;
-	</target>
-        </trans-unit>
+          <target>チャンネル管理者として、システムがサブスクライブしているベースチャンネルを変更できます。有効なチャンネルは、組織によって作成されたチャンネルか、または使用しているオペレーティングシステムのバージョンとプロセッサタイプのデフォルトの @@VENDOR_NAME@@ ベースチャンネルのいずれかです。システムはすべてのチャンネルからサブスクライブが中止され、新しいベースチャンネルにサブスクライブされます。 &lt;p/&gt; &lt;strong&gt;この操作は、システムで利用可能なパッケージとエラータに重大な影響が与えることがあるため、注意して実行する必要があります。&lt;/strong&gt;</target> </trans-unit>
         <trans-unit id="basesub.jsp.custom-channels">
           <source>Custom Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -20638,8 +20582,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           <source>@@VENDOR_NAME@@ Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-          <target>Red Hat チャンネル</target>
-        </trans-unit>
+          <target>@@VENDOR_NAME@@ チャンネル</target> </trans-unit>
         <trans-unit id="basesub.jsp.noSystems">
           <source>No systems selected</source> <context-group name="ctx">
             <context context-type="sourcefile">./includes/header.jsp</context>
@@ -20870,7 +20813,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptionsnote">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Invalid custom options can cause autoinstallations to fail.</source>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; 無効なカスタムオプションはキックスタートが失敗する原因になります。</target>
+        <target>&lt;strong&gt;注記:&lt;/strong&gt; 無効なカスタムオプションは自動インストールが失敗する原因になります。</target>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptionstip">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; The max size of each line is 2048 characters.</source>
@@ -20882,11 +20825,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterrata">
         <source>Add @@VENDOR_NAME@@ Patches</source>
-        <target>Red Hatエラータの追加</target>
+        <target>@@VENDOR_NAME@@ エラータの追加</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterratamsg">
         <source>Choose this option if you want to import patches that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
-        <target>Red Hat 提供のチャンネルの Red Hat ベースチャンネル、または子チャンネル内に存在するエラータをインポートしたい場合は、このオプションを選択します。</target>
+        <target>Red Hat 提供のチャンネルの @@VENDOR_NAME@@ ベースチャンネル、または子チャンネル内に存在するエラータをインポートしたい場合は、このオプションを選択します。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.noerrata">
         <source>No patches found applicable to this channel.</source>
@@ -21045,7 +20988,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search</context>
         </context-group>
-        <target>これは、ユーザーの組織のデフォルトキックスタートプロファイルです。</target>
+        <target>これは、ユーザーの組織のデフォルト自動インストールプロファイルです。</target>
       </trans-unit>
       <trans-unit id="help.jsp.about.title">
         <source>About @@PRODUCT_NAME@@</source>
@@ -22089,15 +22032,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target>本当にこのチャンネルを削除しますか? チャンネル内のパッケージはチャンネルから
-      削除されますが、サーバーに残ったままになります。チャンネルの削除後に
-      これらのパッケージを削除することを選択できます。チャンネルに関連するエラータ
-      はチャンネルに関連付けられなくなり、孤立状態になることがあります。
-      チャンネルに子チャンネルがある場合は、チャンネルを削除できません。この場合は、最初に
-      子チャンネルを削除する必要があります。チャンネルにキックスタートディストリビューション
-      が関連付けられている場合は、チャンネルを削除できません。この場合は、キックスタートディストリビューションの
-      関連付けをチャンネルから解除するか、キックスタートディストリビューションを最初に削除する必要があります。
-         </target>
+        <target>本当にこのチャンネルを削除しますか? チャンネル内のパッケージはチャンネルから 削除されますが、サーバーに残ったままになります。チャンネルの削除後に これらのパッケージを削除することを選択できます。チャンネルに関連するエラータ はチャンネルに関連付けられなくなり、孤立状態になることがあります。 チャンネルに子チャンネルがある場合は、チャンネルを削除できません。この場合は、最初に 子チャンネルを削除する必要があります。チャンネルに自動インストールディストリビューション が関連付けられている場合は、チャンネルを削除できません。この場合は、自動インストールディストリビューションの 関連付けをチャンネルから解除するか、自動インストールディストリビューションを最初に削除する必要があります。</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.arch">
         <source>Architecture:</source>
@@ -22839,12 +22774,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="unknown.kickstart">
         <source>Autoinstallation Not Found</source>
-        <target>キックスタートが見つかりませんでした</target>
+        <target>自動インストールが見つかりませんでした</target>
       </trans-unit>
       <trans-unit id="unknown.kickstart.message">
         <source>The requested autoinstallation file could not be found. If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
-        <target>要求されたキックスタートファイルは見つかりませんでした。
-         組織のデフォルトのキックスタートを要求する場合は、「組織のデフォルト」としてキックスタートを選択するようにしてください。</target>
+        <target>要求された自動インストールファイルは見つかりませんでした。 組織のデフォルトの自動インストールを要求する場合は、「組織のデフォルト」として自動インストールを選択するようにしてください。</target>
       </trans-unit>
       <trans-unit id="task.status.last.execution">
         <source>Last Execution Times</source>

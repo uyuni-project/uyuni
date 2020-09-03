@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-23 10:26+0200\n"
+"POT-Creation-Date: 2020-08-26 14:48+0200\n"
 "PO-Revision-Date: 2020-07-14 12:37+0000\n"
 "Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
@@ -23,24 +23,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../server/apacheAuth.py:66
-#, python-format
-msgid "incomplete proxy authentication token: %s"
-msgstr "token de autenticação de proxy incompleto: %s"
-
-#: ../server/apacheAuth.py:84
-#, python-format
-msgid "Sent proxy signature %s does not match ours %s."
-msgstr "A assinatura de proxy enviada %s não corresponde à nossa %s."
-
-#: ../server/apacheAuth.py:119
-msgid "declined proxy authentication"
-msgstr "autenticação de proxy recusada"
-
-#: ../server/configFilesHandler.py:129 ../server/handlers/app/packages.py:192
+#: ../server/handlers/app/packages.py:192
 #: ../server/handlers/xmlrpc/registration.py:215
 #: ../server/handlers/xmlrpc/registration.py:1168
 #: ../server/handlers/xmlrpc/registration.py:1307
+#: ../server/configFilesHandler.py:129
 #, python-format
 msgid ""
 "\n"
@@ -65,16 +52,6 @@ msgstr "O ISS está desativado neste satélite."
 msgid "Server \"%s\" is not enabled for ISS."
 msgstr "O servidor \"%s\" não está ativado para o ISS."
 
-#: ../server/handlers/xmlrpc/errata.py:64
-#, python-format
-msgid "Expected a package name, not: %s"
-msgstr "Esperado um nome de pacote, não: %s"
-
-#: ../server/handlers/xmlrpc/errata.py:115
-#, python-format
-msgid "Expected a package, not: %s"
-msgstr "Esperado um pacote, não: %s"
-
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
@@ -88,6 +65,20 @@ msgstr "Chave de sessão inválida"
 msgid "This server ID no longer exists"
 msgstr "Esse ID de servidor não existe mais"
 
+#: ../server/handlers/xmlrpc/scap.py:104
+msgid "Invalid system_id/action_id pair."
+msgstr "Par system_id / action_id inválido."
+
+#: ../server/handlers/xmlrpc/errata.py:64
+#, python-format
+msgid "Expected a package name, not: %s"
+msgstr "Esperado um nome de pacote, não: %s"
+
+#: ../server/handlers/xmlrpc/errata.py:115
+#, python-format
+msgid "Expected a package, not: %s"
+msgstr "Esperado um pacote, não: %s"
+
 #: ../server/handlers/xmlrpc/queue.py:433
 #, python-format
 msgid "Invalid action value type %s (%s)"
@@ -97,15 +88,6 @@ msgstr "Tipo de valor de ação inválido%s (%s)"
 #, python-format
 msgid "Action %s does not belong to server %s"
 msgstr "A ação %s não pertence ao servidor %s"
-
-#: ../server/handlers/xmlrpc/scap.py:104
-msgid "Invalid system_id/action_id pair."
-msgstr "Par system_id / action_id inválido."
-
-#: ../server/handlers/xmlrpc/up2date.py:233
-#, python-format
-msgid "Invalid value %s (%s)"
-msgstr "Valor inválido %s (%s)"
 
 #: ../server/handlers/xmlrpc/registration.py:194
 msgid "Required data missing"
@@ -147,6 +129,11 @@ msgstr "Esperado um dicionário como argumento do produto"
 msgid "Invalid value '%s' for %s (%s)"
 msgstr "Valor inválido '%s' para %s (%s)"
 
+#: ../server/handlers/xmlrpc/up2date.py:233
+#, python-format
+msgid "Invalid value %s (%s)"
+msgstr "Valor inválido %s (%s)"
+
 #: ../server/importlib/userAuth.py:98
 msgid "You are not authorized to manage packages in the null org"
 msgstr "Você não está autorizado a gerenciar pacotes na organização nula"
@@ -187,16 +174,6 @@ msgstr "Execute rhn_register como root neste cliente"
 #, python-format
 msgid "Service not enabled for system profile: \"%s\""
 msgstr "Serviço não ativado para o perfil do sistema: \"%s\""
-
-#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
-#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
-#, python-format
-msgid "Invalid RPM package %s requested"
-msgstr "Pacote RPM inválido %s solicitado"
-
-#: ../server/rhnPackage.py:112
-msgid "Package not found"
-msgstr "Pacote não encontrado"
 
 #: ../server/rhnServer/server_class.py:97
 #, python-format
@@ -248,94 +225,6 @@ msgstr "Incompatibilidade de sessão do Kickstart"
 #: ../server/rhnServer/server_token.py:877
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "O empilhamento de tokens de re-registro não é suportado"
-
-#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
-msgid "Invalid username/password combination"
-msgstr "Combinação de nome de usuário/senha inválido"
-
-#. nope, not reserved either
-#: ../server/rhnUser.py:467
-#, python-format
-msgid "Username `%s' has not been reserved"
-msgstr "O nome de usuário `%s 'não foi reservado"
-
-#. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:473
-msgid "E-mail address not specified"
-msgstr "Endereço de email não especificado"
-
-#: ../server/rhnUser.py:509
-#, python-format
-msgid "username should be at least %d characters"
-msgstr "o nome de usuário deve ter pelo menos %d caracteres"
-
-#: ../server/rhnUser.py:512
-#, python-format
-msgid "username should be less than %d characters"
-msgstr "o nome de usuário deve ter menos de %d caracteres"
-
-#: ../server/rhnUser.py:523
-#, python-format
-msgid "username = `%s', invalid character `%s'"
-msgstr "nome de usuário = `%s', caractere inválido`%s'"
-
-#: ../server/rhnUser.py:542
-#, python-format
-msgid "Please limit your e-mail address to %s chars"
-msgstr "Por favor limite seu endereço de e-mail a %s caracteres"
-
-#: ../server/rhnUser.py:623
-#, python-format
-msgid "password must be at least %d characters"
-msgstr "a senha deve ter pelo menos %d caracteres"
-
-#: ../server/rhnUser.py:626
-#, python-format
-msgid "Password must be shorter than %d characters"
-msgstr "A senha deve ter menos de %d caracteres"
-
-#: ../server/rhnUser.py:644
-#, python-format
-msgid "password contains character `%s'"
-msgstr "a senha contém o caractere `%s '"
-
-#: ../server/rhnUser.py:651
-#, python-format
-msgid "username should be at least %d characters long"
-msgstr "o nome de usuário deve ter pelo menos %d caracteres"
-
-#: ../server/rhnUser.py:662
-#, python-format
-msgid "Cannot register usernames ending with %s"
-msgstr "Não é possível registrar nomes de usuário que terminem com %s"
-
-#: ../server/apacheRequest.py:59
-#, python-format
-msgid "Invalid request received (%s)."
-msgstr "Solicitação inválida recebida (%s)."
-
-#: ../server/apacheRequest.py:120
-#, python-format
-msgid ""
-"IMPORTANT MESSAGE FOLLOWS:\n"
-"%s"
-msgstr ""
-"SEGUINTE MENSAGEM IMPORTANTE:\n"
-"%s"
-
-#: ../server/apacheRequest.py:149
-#, python-format
-msgid ""
-"While running '%s': caught\n"
-"%s : %s\n"
-msgstr ""
-"Durante a execução de '%s': capturado\n"
-"%s : %s\n"
-
-#: ../server/apacheRequest.py:606
-#, python-format
-msgid "Invalid URI %s"
-msgstr "URI %s inválida"
 
 #: ../server/rhnChannel.py:1992
 #, python-format
@@ -445,6 +334,118 @@ msgstr ""
 "login no site em:\n"
 "\n"
 "  %(entitlement_url)s\n"
+
+#: ../server/apacheAuth.py:66
+#, python-format
+msgid "incomplete proxy authentication token: %s"
+msgstr "token de autenticação de proxy incompleto: %s"
+
+#: ../server/apacheAuth.py:84
+#, python-format
+msgid "Sent proxy signature %s does not match ours %s."
+msgstr "A assinatura de proxy enviada %s não corresponde à nossa %s."
+
+#: ../server/apacheAuth.py:119
+msgid "declined proxy authentication"
+msgstr "autenticação de proxy recusada"
+
+#: ../server/rhnUser.py:289 ../server/rhnUser.py:292
+msgid "Invalid username/password combination"
+msgstr "Combinação de nome de usuário/senha inválido"
+
+#. nope, not reserved either
+#: ../server/rhnUser.py:467
+#, python-format
+msgid "Username `%s' has not been reserved"
+msgstr "O nome de usuário `%s 'não foi reservado"
+
+#. New accounts have to specify an e-mail address
+#: ../server/rhnUser.py:473
+msgid "E-mail address not specified"
+msgstr "Endereço de email não especificado"
+
+#: ../server/rhnUser.py:509
+#, python-format
+msgid "username should be at least %d characters"
+msgstr "o nome de usuário deve ter pelo menos %d caracteres"
+
+#: ../server/rhnUser.py:512
+#, python-format
+msgid "username should be less than %d characters"
+msgstr "o nome de usuário deve ter menos de %d caracteres"
+
+#: ../server/rhnUser.py:523
+#, python-format
+msgid "username = `%s', invalid character `%s'"
+msgstr "nome de usuário = `%s', caractere inválido`%s'"
+
+#: ../server/rhnUser.py:542
+#, python-format
+msgid "Please limit your e-mail address to %s chars"
+msgstr "Por favor limite seu endereço de e-mail a %s caracteres"
+
+#: ../server/rhnUser.py:623
+#, python-format
+msgid "password must be at least %d characters"
+msgstr "a senha deve ter pelo menos %d caracteres"
+
+#: ../server/rhnUser.py:626
+#, python-format
+msgid "Password must be shorter than %d characters"
+msgstr "A senha deve ter menos de %d caracteres"
+
+#: ../server/rhnUser.py:644
+#, python-format
+msgid "password contains character `%s'"
+msgstr "a senha contém o caractere `%s '"
+
+#: ../server/rhnUser.py:651
+#, python-format
+msgid "username should be at least %d characters long"
+msgstr "o nome de usuário deve ter pelo menos %d caracteres"
+
+#: ../server/rhnUser.py:662
+#, python-format
+msgid "Cannot register usernames ending with %s"
+msgstr "Não é possível registrar nomes de usuário que terminem com %s"
+
+#: ../server/apacheRequest.py:59
+#, python-format
+msgid "Invalid request received (%s)."
+msgstr "Solicitação inválida recebida (%s)."
+
+#: ../server/apacheRequest.py:120
+#, python-format
+msgid ""
+"IMPORTANT MESSAGE FOLLOWS:\n"
+"%s"
+msgstr ""
+"SEGUINTE MENSAGEM IMPORTANTE:\n"
+"%s"
+
+#: ../server/apacheRequest.py:149
+#, python-format
+msgid ""
+"While running '%s': caught\n"
+"%s : %s\n"
+msgstr ""
+"Durante a execução de '%s': capturado\n"
+"%s : %s\n"
+
+#: ../server/apacheRequest.py:606
+#, python-format
+msgid "Invalid URI %s"
+msgstr "URI %s inválida"
+
+#: ../server/rhnPackage.py:49 ../server/rhnPackage.py:87
+#: ../server/rhnPackage.py:107 ../server/rhnPackage.py:158
+#, python-format
+msgid "Invalid RPM package %s requested"
+msgstr "Pacote RPM inválido %s solicitado"
+
+#: ../server/rhnPackage.py:112
+msgid "Package not found"
+msgstr "Pacote não encontrado"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:53
@@ -1142,6 +1143,19 @@ msgstr "TRACEBACK: %s"
 msgid "format of %s should be at least YYYYMMDD.\n"
 msgstr "formato de %s deve ser pelo menos AAAAMMDD.\n"
 
+#: ../satellite_tools/reposync.py:111 ../satellite_tools/satsync.py:439
+msgid "+++ sending log as an email +++"
+msgstr "+++ enviar log como um email +++"
+
+#: ../satellite_tools/reposync.py:114
+#, python-format
+msgid "%s sync. report from %s"
+msgstr "%s sincronizado. relatório de %s"
+
+#: ../satellite_tools/reposync.py:124 ../satellite_tools/satsync.py:449
+msgid "+++ email requested, but there is nothing to send +++"
+msgstr "+++ email solicitado, mas não há nada para enviar +++"
+
 #: ../satellite_tools/messages.py:26
 #, python-format
 msgid ""
@@ -1356,41 +1370,6 @@ msgstr "Importando árvores kickstartable (%d)"
 #, python-format
 msgid "Imported kickstartable trees (%d)"
 msgstr "Árvores kickstartable importadas (%d)"
-
-#: ../satellite_tools/rhn_satellite_activate.py:198
-#, python-format
-msgid ""
-"\"%s\" (specified in commandline)\n"
-"could not be opened and read:\n"
-"%s"
-msgstr ""
-"\"%s\" (especificado na linha de comando)\n"
-"não pôde ser aberto e lido:\n"
-"%s"
-
-#: ../satellite_tools/rhn_satellite_activate.py:205
-#, python-format
-msgid ""
-"\"%s\" could not be opened\n"
-"and/or written to:\n"
-"%s"
-msgstr ""
-"Não foi possível abrir \"%s\"\n"
-"e/ou escrito para:\n"
-"%s"
-
-#: ../satellite_tools/reposync.py:109 ../satellite_tools/satsync.py:439
-msgid "+++ sending log as an email +++"
-msgstr "+++ enviar log como um email +++"
-
-#: ../satellite_tools/reposync.py:112
-#, python-format
-msgid "%s sync. report from %s"
-msgstr "%s sincronizado. relatório de %s"
-
-#: ../satellite_tools/reposync.py:122 ../satellite_tools/satsync.py:449
-msgid "+++ email requested, but there is nothing to send +++"
-msgstr "+++ email solicitado, mas não há nada para enviar +++"
 
 #: ../satellite_tools/satsync.py:258
 #, python-format
@@ -2179,3 +2158,25 @@ msgstr "  28 - erro: --master é válido apenas com --mount-point"
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
 msgstr "ERRO: versão de despejo desconhecida, tente um dos %s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:198
+#, python-format
+msgid ""
+"\"%s\" (specified in commandline)\n"
+"could not be opened and read:\n"
+"%s"
+msgstr ""
+"\"%s\" (especificado na linha de comando)\n"
+"não pôde ser aberto e lido:\n"
+"%s"
+
+#: ../satellite_tools/rhn_satellite_activate.py:205
+#, python-format
+msgid ""
+"\"%s\" could not be opened\n"
+"and/or written to:\n"
+"%s"
+msgstr ""
+"Não foi possível abrir \"%s\"\n"
+"e/ou escrito para:\n"
+"%s"

@@ -248,8 +248,8 @@ public class ServerTest extends BaseTestCaseWithUser {
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("SLES");
-        s.setRelease("11.4");
-        assertFalse(s.doesOsSupportsContainerization());
+        s.setRelease("10.4");
+        assertFalse(s.doesOsSupportsOSImageBuilding());
     }
 
     /**

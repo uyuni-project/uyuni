@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-18 10:26+0200\n"
-"PO-Revision-Date: 2020-07-28 15:30+0000\n"
+"PO-Revision-Date: 2020-09-01 09:07+0000\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
 "Language: es\n"
@@ -59,9 +59,8 @@ msgid "Add to:"
 msgstr "Añadir a:"
 
 #: ../html/src/components/action-schedule.js:290
-#, fuzzy
 msgid "Loading the scheduler..."
-msgstr "Actualizando el filtro…"
+msgstr "Cargando el programador…"
 
 #: ../html/src/components/config-channels.js:26
 msgid "State Configuration Channel"
@@ -487,9 +486,8 @@ msgstr "Página {0} de {1}"
 #: ../html/src/manager/maintenance/edit/schedule-edit.js:84
 #: ../html/src/manager/maintenance/list/schedule-list.js:36
 #: ../html/src/manager/state/recurring-states-list.js:88
-#, fuzzy
 msgid "Schedule Name"
-msgstr "Nombre del canal"
+msgstr "Nombre de programación"
 
 #: ../html/src/components/picker/recurring-event-picker.js:309
 msgid "Select a Schedule"
@@ -622,30 +620,39 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.js:21
 msgid "Enabling monitoring failed. See the server logs for details."
 msgstr ""
+"No se pudo activar la supervisión. Vea los registros del servidor para "
+"obtener detalles."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:22
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
 msgstr ""
+"No se pudieron activar todos los servicios de supervisión. Algunos todavía "
+"están desactivados. Vea los registros del servidor para obtener detalles."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:23
 msgid "Disabling monitoring failed. See the server logs for details."
 msgstr ""
+"No se pudo desactivar la supervisión. Vea los registros del servidor para "
+"obtener detalles."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:24
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
 msgstr ""
+"No se pudieron desactivar todos los servicios de supervisión. Algunos "
+"todavía están activados. Vea los registros del servidor para obtener "
+"detalles."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:25
 msgid "Monitoring enabled successfully."
-msgstr "Se activó la monitorización correctamente."
+msgstr "Se activó la supervisión correctamente."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:26
 msgid "Monitoring disabled successfully."
-msgstr "Se desactivó la monitorización correctamente."
+msgstr "Se desactivó la supervisión correctamente."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:27
 msgid ""
@@ -677,12 +684,12 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:38
 msgid "Monitoring status hasn't changed."
-msgstr "No ha cambiado el estado de monitorización."
+msgstr "No ha cambiado el estado de supervisión."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:39
 msgid "An error occured. Monitoring status unknown. Refresh the page."
 msgstr ""
-"Se produjo un error. Se desconoce el estado de monitorización. Actualice la "
+"Se produjo un error. Se desconoce el estado de supervisión. Actualice la "
 "página."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:44
@@ -699,7 +706,7 @@ msgstr "Base de datos PostgreSQL"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:47
 msgid "Server self monitoring"
-msgstr "Automonitorización del servidor"
+msgstr "Autosupervisión del servidor"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:56
 #: ../html/src/manager/admin/config/monitoring-admin.js:58
@@ -743,11 +750,11 @@ msgstr "Desactivar"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:218
 msgid "SUSE Manager Configuration - Monitoring"
-msgstr "Configuración de SUSE Manager • Monitorización"
+msgstr "Configuración de SUSE Manager. Supervisión"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:224
 msgid "Setup your SUSE Manager server monitoring."
-msgstr "Configure la monitorización del servidor de SUSE Manager."
+msgstr "Configure la supervisión del servidor de SUSE Manager."
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:229
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:118
@@ -775,13 +782,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:234
 msgid "Bare-metal systems"
-msgstr ""
+msgstr "Sistemas sin sistema operativo"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:235
 #: ../html/src/manager/admin/config/monitoring-admin.js:240
 #: ../html/src/manager/admin/config/monitoring-admin.js:252
 msgid "Monitoring"
-msgstr "Monitorización"
+msgstr "Supervisión"
 
 #: ../html/src/manager/admin/config/monitoring-admin.js:263
 msgid ""
@@ -896,9 +903,8 @@ msgid " channels sync in progress"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.js:717
-#, fuzzy
 msgid " channels synced"
-msgstr "Este canal está recomendado"
+msgstr " canales sincronizados"
 
 #: ../html/src/manager/admin/setup/products/products.js:735
 msgid "To enable this product, the parent product should be selected first"
@@ -1107,13 +1113,14 @@ msgstr "Datos"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:193
 msgid "There are no tasks running on the server at the moment."
-msgstr ""
+msgstr "En este momento no hay ninguna tarea ejecutándose en el servidor."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:211
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:95
 #: ../html/src/manager/notifications/notification-messages.js:466
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
+"La sesión ha caducado. Vuelva a cargar la página para ver datos actualizados."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.js:213
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:97
@@ -1122,7 +1129,7 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.js:506
 #: ../html/src/utils/network.js:61
 msgid "Server error, please check log files."
-msgstr ""
+msgstr "Se produjo un error en el servidor; revise los archivos de registro."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.js:165
 msgid "CVE Audit"
@@ -1177,7 +1184,7 @@ msgstr "Acciones"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:76
 msgid "Edit Virtual Host Managers"
-msgstr ""
+msgstr "Editar gestores de anfitriones virtuales"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:79
 msgid "Subscription Matching"
@@ -1185,7 +1192,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Subscriptions"
-msgstr ""
+msgstr "Suscripciones"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:103
@@ -1198,7 +1205,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.js:143
 msgid "Messages "
-msgstr ""
+msgstr "Mensajes "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.js:47
 msgid "Match data status"
@@ -1257,10 +1264,12 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:32
 msgid "Virtual guest has unknown host, assuming it is a physical system"
 msgstr ""
+"El invitado virtual no tiene ningún anfitrión conocido; se presume que es un "
+"sistema físico"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:36
 msgid "System has an unknown number of sockets, assuming 16"
-msgstr ""
+msgstr "Se desconoce el número de zócalos del sistema; se presume que son 16"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:40
 msgid ""
@@ -1280,19 +1289,19 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:49
 msgid "Subscription IDs"
-msgstr ""
+msgstr "Ids. de suscripción"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:71
 msgid "Please review warning and information messages below."
-msgstr ""
+msgstr "Revise los siguientes mensajes informativos y de alerta."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:81
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:87
 msgid "Additional information"
-msgstr ""
+msgstr "Información adicional"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:97
 msgid "No messages from the last match run."
@@ -1300,7 +1309,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.js:102
 msgid "Messages"
-msgstr ""
+msgstr "Mensajes"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:84
 msgid ""
@@ -1330,7 +1339,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:334
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:83
 msgid "Policy"
-msgstr ""
+msgstr "Directiva"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:149
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:150
@@ -1347,7 +1356,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:223
 msgid "Available Systems"
-msgstr ""
+msgstr "Sistemas disponibles"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:224
 msgid "Step 1/2: select the system to pin from the table below."
@@ -1359,15 +1368,15 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:249
 msgid "Products"
-msgstr ""
+msgstr "Productos"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:259
 msgid "Select"
-msgstr ""
+msgstr "Seleccionar"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:271
 msgid "Available Subscriptions for the Selected System"
-msgstr ""
+msgstr "Suscripciones disponibles para el sistema seleccionado"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:272
 msgid "Step 2/2: pick a subscription for system "
@@ -1375,12 +1384,12 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:280
 msgid "Back to sytem selection"
-msgstr ""
+msgstr "Volver a la selección de sistema"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:324
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:71
 msgid "Part number"
-msgstr ""
+msgstr "Número de parte"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.js:329
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:77
@@ -1411,7 +1420,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:66
 msgid "Filter by description"
-msgstr ""
+msgstr "Filtrar por descripción"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:89
 msgid "Matched/Total"
@@ -1419,19 +1428,19 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:95
 msgid "Start date"
-msgstr ""
+msgstr "Fecha de inicio"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:123
 msgid "No subscriptions found."
-msgstr ""
+msgstr "No se encontró ninguna suscripción."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.js:128
 msgid "Your subscriptions"
-msgstr ""
+msgstr "Sus suscripciones"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:66
 msgid "Product name"
-msgstr ""
+msgstr "Nombre de producto"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:72
 msgid "Unmatched system count"
@@ -1440,7 +1449,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:78
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:79
 msgid "Show system list"
-msgstr ""
+msgstr "Mostrar lista de sistemas"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:98
 msgid "No unmatching products are found."
@@ -1448,7 +1457,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:148
 msgid "System name"
-msgstr ""
+msgstr "Nombre de sistema"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.js:153
 msgid "Unmatched systems"
@@ -1457,33 +1466,32 @@ msgstr ""
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:38
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:43
 msgid "Add Cluster"
-msgstr ""
+msgstr "Añadir agrupación"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:52
 msgid "Select management node"
-msgstr ""
+msgstr "Seleccionar nodo de gestión"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:61
 #: ../html/src/manager/clusters/cluster/cluster.js:103
 msgid "Provider Settings"
-msgstr ""
+msgstr "Configuración de proveedor"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:76
 msgid "Provider:"
-msgstr ""
+msgstr "Proveedor:"
 
 #: ../html/src/manager/clusters/add-cluster/add-cluster.js:80
 msgid "Management Node:"
-msgstr ""
+msgstr "Nodo de gestión:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:45
 msgid "Add cluster"
-msgstr ""
+msgstr "Añadir agrupación"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:69
-#, fuzzy
 msgid "Name:"
-msgstr "Nombre"
+msgstr "Nombre:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:75
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.js:49
@@ -1491,23 +1499,20 @@ msgid "Label:"
 msgstr "Etiqueta:"
 
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:82
-#, fuzzy
 msgid "Description:"
-msgstr "Descripción"
+msgstr "Descripción:"
 
 #: ../html/src/manager/clusters/add-cluster/select-provider.js:20
 msgid "Available cluster providers"
-msgstr ""
+msgstr "Proveedores de agrupaciones disponibles"
 
 #: ../html/src/manager/clusters/cluster/cluster-config.js:59
-#, fuzzy
 msgid "Settings saved successfully"
-msgstr "Se desactivó la monitorización correctamente."
+msgstr "Se guardó la configuración correctamente"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:24
-#, fuzzy
 msgid "Action has been "
-msgstr "Estado de acción"
+msgstr "La acción se ha "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:24
 #: ../html/src/manager/images/image-build.js:178
@@ -1515,7 +1520,7 @@ msgstr "Estado de acción"
 #: ../html/src/manager/minion/packages/use-package-states.api.js:60
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.js:337
 msgid "scheduled"
-msgstr ""
+msgstr "programado"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:25
 #: ../html/src/manager/images/image-build.js:175
@@ -1527,27 +1532,24 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster.js:26
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:21
 msgid "Cluster "
-msgstr ""
+msgstr "Agrupación "
 
 #: ../html/src/manager/clusters/cluster/cluster.js:74
 #: ../html/src/manager/clusters/cluster/cluster.js:85
-#, fuzzy
 msgid "Delete cluster"
-msgstr "Eliminar proyecto"
+msgstr "Eliminar agrupación"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:75
-#, fuzzy
 msgid "Delete Cluster"
-msgstr "Eliminar perfil"
+msgstr "Eliminar agrupación"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:86
-#, fuzzy
 msgid "Are you sure you want to delete cluster?"
-msgstr "¿Confirma que quiere eliminar el proyecto"
+msgstr "¿Confirma que quiere eliminar la agrupación?"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:86
 msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-msgstr ""
+msgstr "Esto no destruirá la agrupación; solo la quitará de Uyuni"
 
 #: ../html/src/manager/clusters/cluster/cluster.js:98
 #: ../html/src/manager/images/image-view.js:669
@@ -1558,7 +1560,7 @@ msgstr "Visión de conjunto"
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:33
 #: ../html/src/manager/virtualization/pools/pool-properties.js:181
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:88
 #, fuzzy
@@ -1566,15 +1568,13 @@ msgid "System group refresh action scheduled successfully"
 msgstr "Se actualizaron las propiedades del proyecto correctamente"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:113
-#, fuzzy
 msgid "Cluster properties updated successfully"
-msgstr "Se actualizaron las propiedades del proyecto correctamente"
+msgstr "Se actualizaron las propiedades de la agrupación correctamente"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:186
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:242
-#, fuzzy
 msgid "Edit cluster details"
-msgstr "Detalles del filtro"
+msgstr "Editar detalles de agrupación"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:199
 msgid "Join node"
@@ -1592,15 +1592,13 @@ msgstr ""
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:229
 msgid "Refresh system group"
-msgstr ""
+msgstr "Actualizar grupo de sistemas"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:236
-#, fuzzy
 msgid "Cluster Properties"
-msgstr "Editar propiedades"
+msgstr "Propiedades de agrupación"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:241
-#, fuzzy
 msgid "Edit properties"
 msgstr "Editar propiedades"
 
@@ -1623,12 +1621,11 @@ msgstr ""
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:265
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:104
 msgid "Management node"
-msgstr ""
+msgstr "Nodo de gestión"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:269
-#, fuzzy
 msgid "System group"
-msgstr "Sistema"
+msgstr "Grupo de sistemas"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:286
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:79
@@ -1640,13 +1637,13 @@ msgstr "Filtrar por cualquier valor"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:304
 msgid "Node Hostname"
-msgstr ""
+msgstr "Nombre de anfitrión del nodo"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:311
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:409
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:112
 msgid "(none)"
-msgstr ""
+msgstr "(ninguno)"
 
 #: ../html/src/manager/clusters/join-cluster/join-cluster.js:37
 msgid "Join "
@@ -3359,7 +3356,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:51
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:333
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.js:44
 msgid "Package states have been saved."
@@ -4251,33 +4248,33 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:172
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.js:66
 msgid "Virtual CPU Count"
-msgstr ""
+msgstr "Recuento de CPU virtuales"
 
 #: ../html/src/manager/virtualization/guests/GuestProperties.js:204
 msgid "Graphics"
-msgstr ""
+msgstr "Gráficas"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:22
 msgid "Start / Resume"
-msgstr ""
+msgstr "Iniciar/reanudar"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 #: ../html/src/manager/virtualization/nets/list/nets-list.js:22
 #: ../html/src/manager/virtualization/pools/list/pools-list.js:257
 msgid "Stop"
-msgstr ""
+msgstr "Detener"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:25
 msgid "Force off"
-msgstr ""
+msgstr "Forzar apagado"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:28
 msgid "Reset"
-msgstr ""
+msgstr "Restablecer"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:31
 msgid "Suspend"
-msgstr ""
+msgstr "Suspender"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:44
 msgid "Hosted Virtual Systems"
@@ -4287,10 +4284,12 @@ msgstr "Sistemas virtuales alojados"
 msgid ""
 "This is a list of virtual guests which are configured to run on this host."
 msgstr ""
+"Esta es la lista de invitados virtuales que se han configurado para su "
+"ejecución en este anfitrión."
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:59
 msgid "Guest"
-msgstr ""
+msgstr "Invitado"
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.js:68
 msgid "Unregistered System"

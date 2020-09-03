@@ -8,7 +8,7 @@ Feature: Monitor SUMA environment with Prometheus on a CentOS minion
   I want to enable Prometheus exporters
 
   Scenario: Pre-requisite: enable Prometheus exporters repository on the CentOS minion
-    When I enable repository "tools_pool_repo" on this "ceos_minion"
+    When I enable the necessary repositories before installing Prometheus exporters on this "ceos_minion"
 
   Scenario: Apply Prometheus exporter formulas on the CentOS minion
     Given I am on the Systems overview page of this "ceos_minion"
@@ -57,4 +57,4 @@ Feature: Monitor SUMA environment with Prometheus on a CentOS minion
     And I wait until event "Apply highstate scheduled by admin" is completed
 
   Scenario: Cleanup: disable Prometheus exporters repository on the CentOS minion
-    And I disable repository "tools_pool_repo" on this "ceos_minion" without error control
+    When I disable the necessary repositories before installing Prometheus exporters on this "ceos_minion" without error control

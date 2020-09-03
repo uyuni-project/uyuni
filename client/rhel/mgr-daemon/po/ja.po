@@ -17,25 +17,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 10:23+0200\n"
-"PO-Revision-Date: 2018-03-16 11:05+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
+"POT-Creation-Date: 2020-08-26 14:49+0200\n"
+"PO-Revision-Date: 2020-08-27 13:02+0000\n"
+"Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
+"Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/mgr-daemon/"
+"ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Zanata 4.6.2\n"
+"X-Generator: Weblate 3.6.1\n"
 
 #: ../rhnsd.c:54
 msgid "MINS"
 msgstr "MINS"
 
 #: ../rhnsd.c:55
-#, fuzzy
 msgid "Connect to Spacewalk every MINS minutes"
-msgstr "MINS 分ごとに Red Hat Network に接続します"
+msgstr "MINS 分ごとに Spacewalk に接続します"
 
 #: ../rhnsd.c:57
 msgid "Run in foreground"
@@ -43,9 +43,8 @@ msgstr "フォアグラウンドで実行します"
 
 #. Short description of program.
 #: ../rhnsd.c:62
-#, fuzzy
 msgid "Spacewalk Services Daemon"
-msgstr "Red Hat Network Services Daemon"
+msgstr "Spacewalk サービスデーモン"
 
 #: ../rhnsd.c:115
 #, c-format

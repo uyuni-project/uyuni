@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2019 SUSE LLC
+# Copyright (c) 2015-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Client display after registration
@@ -116,32 +116,32 @@ Feature: Client display after registration
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Properties" in the content area
     Then I should see a "Edit System Details" text
-    And I should see a "system_name" element in "systemDetailsForm" form
+    And I should see a "system_name" field in "systemDetailsForm" form
     And I should see a "Management" text
-    And I should see a "receive_notifications" element in "systemDetailsForm" form
-    And I should see a "summary" element in "systemDetailsForm" form
-    And I should see a "autoerrataupdate" element in "systemDetailsForm" form
-    And I should see a "description" element in "systemDetailsForm" form
-    And I should see a "address" element in "systemDetailsForm" form
-    And I should see a "city" element in "systemDetailsForm" form
-    And I should see a "state" element in "systemDetailsForm" form
-    And I should see a "country" element in "systemDetailsForm" form
-    And I should see a "building" element in "systemDetailsForm" form
-    And I should see a "room" element in "systemDetailsForm" form
-    And I should see a "rack" element in "systemDetailsForm" form
+    And I should see a "receive_notifications" field in "systemDetailsForm" form
+    And I should see a "summary" field in "systemDetailsForm" form
+    And I should see a "autoerrataupdate" field in "systemDetailsForm" form
+    And I should see a "description" field in "systemDetailsForm" form
+    And I should see a "address" field in "systemDetailsForm" form
+    And I should see a "city" field in "systemDetailsForm" form
+    And I should see a "state" field in "systemDetailsForm" form
+    And I should see a "country" field in "systemDetailsForm" form
+    And I should see a "building" field in "systemDetailsForm" form
+    And I should see a "room" field in "systemDetailsForm" form
+    And I should see a "rack" field in "systemDetailsForm" form
     And I should see a "Update Properties" button
 
   Scenario: Show Details => Remote Command page
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Remote Command" in the content area
     Then I should see a "Remote Command on" text
-    And I should see a "uid" element in "remoteCommandForm" form
-    And I should see a "gid" element in "remoteCommandForm" form
-    And I should see a "timeout" element in "remoteCommandForm" form
-    And I should see a "lbl" element in "remoteCommandForm" form
-    And I should see a "script_body" element in "remoteCommandForm" form
-    And I should see a "date_datepicker_widget_input" element in "remoteCommandForm" form
-    And I should see a "date_timepicker_widget_input" element in "remoteCommandForm" form
+    And I should see a "uid" field in "remoteCommandForm" form
+    And I should see a "gid" field in "remoteCommandForm" form
+    And I should see a "timeout" field in "remoteCommandForm" form
+    And I should see a "lbl" field in "remoteCommandForm" form
+    And I should see a "script_body" field in "remoteCommandForm" form
+    And I should see a "date_datepicker_widget_input" field in "remoteCommandForm" form
+    And I should see a "date_timepicker_widget_input" field in "remoteCommandForm" form
     And I should see a "Schedule" button
 
   Scenario: Show Details => Reactivation page
@@ -202,15 +202,15 @@ Feature: Client display after registration
     And I should see a "Upload File" link in the content area
     And I should see a "Import Files" link in the content area
     And I should see a "Create File" link in the content area
-    And I should see a "cffUpload" element in "configFileForm" form
+    And I should see a "cffUpload" field in "configFileForm" form
     And I should see 2 "binary" fields in "configFileForm" form
-    And I should see a "cffPath" element in "configFileForm" form
-    And I should see a "cffUid" element in "configFileForm" form
-    And I should see a "cffGid" element in "configFileForm" form
-    And I should see a "cffPermissions" element in "configFileForm" form
-    And I should see a "cffSELinuxCtx" element in "configFileForm" form
-    And I should see a "cffMacroStart" element in "configFileForm" form
-    And I should see a "cffMacroEnd" element in "configFileForm" form
+    And I should see a "cffPath" field in "configFileForm" form
+    And I should see a "cffUid" field in "configFileForm" form
+    And I should see a "cffGid" field in "configFileForm" form
+    And I should see a "cffPermissions" field in "configFileForm" form
+    And I should see a "cffSELinuxCtx" field in "configFileForm" form
+    And I should see a "cffMacroStart" field in "configFileForm" form
+    And I should see a "cffMacroEnd" field in "configFileForm" form
     And I should see a "Upload Configuration File" button
 
   Scenario: Show Configuration => Add Files => Import Files page
@@ -219,7 +219,7 @@ Feature: Client display after registration
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
     Then I should see a "Import Configuration Files from" text
-    And I should see a "contents" element in "configFileForm" form
+    And I should see a "contents" field in "configFileForm" form
     And I should see a "Import Configuration Files" button
 
   Scenario: Show Configuration => Add Files => Create File page
@@ -228,17 +228,17 @@ Feature: Client display after registration
     And I follow "Add Files" in the content area
     And I follow "Create File" in the content area
     Then I should see a "Create Local File" text
-    And I should see a "file_radio" element in "configFileForm" form
-    And I should see a "dir_radio" element in "configFileForm" form
-    And I should see a "symlink_radio" element in "configFileForm" form
-    And I should see a "cffPath" element in "configFileForm" form
+    And I should see a "file_radio" field in "configFileForm" form
+    And I should see a "dir_radio" field in "configFileForm" form
+    And I should see a "symlink_radio" field in "configFileForm" form
+    And I should see a "cffPath" field in "configFileForm" form
     And the "targetPath" field should be disabled
-    And I should see a "cffUid" element in "configFileForm" form
-    And I should see a "cffGid" element in "configFileForm" form
-    And I should see a "cffPermissions" element in "configFileForm" form
-    And I should see a "cffSELinuxCtx" element in "configFileForm" form
-    And I should see a "cffMacroStart" element in "configFileForm" form
-    And I should see a "cffMacroEnd" element in "configFileForm" form
+    And I should see a "cffUid" field in "configFileForm" form
+    And I should see a "cffGid" field in "configFileForm" form
+    And I should see a "cffPermissions" field in "configFileForm" form
+    And I should see a "cffSELinuxCtx" field in "configFileForm" form
+    And I should see a "cffMacroStart" field in "configFileForm" form
+    And I should see a "cffMacroEnd" field in "configFileForm" form
     And I should see a "contents" editor in "configFileForm" form
     And I should see a "Create Configuration File" button
 
@@ -276,7 +276,7 @@ Feature: Client display after registration
     And I follow "Manage Configuration Channels" in the content area
     And I follow "View/Modify Rankings" in the content area
     Then I should see a "View/Modify Configuration Channel Ranks" text
-    And I should see a "selectedChannel" element in "channelRanksForm" form
+    And I should see a "selectedChannel" field in "channelRanksForm" form
     And I should see a "up" button in "channelRanksForm" form
     And I should see a "down" button in "channelRanksForm" form
     And I should see a "Update Channel Rankings" button

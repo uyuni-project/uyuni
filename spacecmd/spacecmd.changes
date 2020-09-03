@@ -1,4 +1,6 @@
 - Python3 fix for sorted usage (bsc#1167907)
+- Fix softwarechannel_listlatestpackages throwing error on
+  empty channels (bsc#1175889)
 - Add Service Pack migration operations (bsc#1173557)
 - Fix softwarechannel update for vendor channels (bsc#1172709)
 - Update package version to 4.2.0
