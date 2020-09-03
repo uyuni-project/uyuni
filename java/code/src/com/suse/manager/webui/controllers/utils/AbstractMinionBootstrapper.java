@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService.KeyStatus;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -52,6 +53,7 @@ import static com.suse.manager.webui.services.SaltConstants.SALT_SSH_DIR_PATH;
  */
 public abstract class AbstractMinionBootstrapper {
 
+    protected final SaltApi saltApi;
     protected final SystemQuery systemQuery;
 
     private static final int KEY_LENGTH_LIMIT = 1_000_000;
@@ -61,8 +63,10 @@ public abstract class AbstractMinionBootstrapper {
     /**
      * Constructor
      * @param systemQueryIn salt service
+     * @param saltApiIn salt service
      */
-    protected AbstractMinionBootstrapper(SystemQuery systemQueryIn) {
+    protected AbstractMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
         this.systemQuery = systemQueryIn;
     }
 
@@ -150,7 +154,7 @@ public abstract class AbstractMinionBootstrapper {
 
         try {
             Map<String, Object> pillarData = createPillarData(user, params, contactMethod);
-            return systemQuery.bootstrapMinion(params, bootstrapMods, pillarData)
+            return saltApi.bootstrapMinion(params, bootstrapMods, pillarData)
                     .fold(error -> {
                         String responseMessage = SaltUtils.decodeSaltErr(error);
                         LOG.error("Error during bootstrap: " + responseMessage);
@@ -269,7 +273,7 @@ public abstract class AbstractMinionBootstrapper {
             return Collections.singletonList(activationKeyErrorMessage.get());
         }
 
-        if (systemQuery.keyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
+        if (saltApi.keyExists(params.getHost(), KeyStatus.ACCEPTED, KeyStatus.DENIED, KeyStatus.REJECTED)) {
             return Collections.singletonList("A salt key for this" +
                     " host (" + params.getHost() +
                     ") seems to already exist, please check!");

@@ -140,7 +140,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
     private final Mockery MOCK_CONTEXT = new JUnit3Mockery() {{

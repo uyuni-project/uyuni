@@ -135,9 +135,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private static final FormulaManager formulaManager = new FormulaManager(saltApi);
     private static final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
     private static final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
-    private static final SaltKeyUtils saltKeyUtils = new SaltKeyUtils(systemQuery);
+    private static final SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
     private static final SaltServerActionService saltServerActionService = new SaltServerActionService(
-            systemQuery,
+            saltApi,
             saltUtils,
             clusterManager,
             formulaManager,
@@ -147,7 +147,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     private static final MonitoringManager monitoringManager = new FormulaMonitoringManager();
     private static final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-            new SystemEntitler(systemQuery, virtManager, monitoringManager, serverGroupManager)
+            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
     );
 
     @Override

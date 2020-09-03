@@ -39,7 +39,7 @@ public class TasksRenderer extends BaseFragmentRenderer {
         request.setAttribute(TASKS, Boolean.TRUE);
         request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
         request.setAttribute("amountOfMinions",
-                GlobalInstanceHolder.SYSTEM_QUERY.getKeys().getUnacceptedMinions().size());
+                GlobalInstanceHolder.SALT_API.getKeys().getUnacceptedMinions().size());
         request.setAttribute("requiringReboot", SystemManager.requiringRebootList(user).size());
         RendererHelper.setTableStyle(request, null);
     }

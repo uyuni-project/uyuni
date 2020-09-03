@@ -33,6 +33,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.matcher.json.MatchJson;
@@ -90,7 +91,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
                         serverGroupManager),
-                new SystemEntitler(new TestSystemQuery(), virtManager, new FormulaMonitoringManager(),
+                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),
                         serverGroupManager)
         );
     }

@@ -16,8 +16,8 @@ package com.suse.manager.webui.controllers;
 
 import static spark.Spark.halt;
 
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 import org.apache.commons.io.IOUtils;
@@ -40,13 +40,13 @@ public class SaltSSHController {
     // Logger
     private static final Logger LOG = Logger.getLogger(SaltSSHController.class);
 
-    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
 
     /**
-     * @param systemQueryIn instance for getting information from a system.
+     * @param saltApiIn instance for getting information from a system.
      */
-    public SaltSSHController(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
+    public SaltSSHController(SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
     }
 
     /**
@@ -59,7 +59,7 @@ public class SaltSSHController {
     public synchronized byte[] getPubKey(Request request, Response response) {
         File pubKey = new File(SaltSSHService.SSH_KEY_PATH + ".pub");
 
-        Optional<MgrUtilRunner.ExecResult> res = systemQuery
+        Optional<MgrUtilRunner.ExecResult> res = saltApi
                 .generateSSHKey(SaltSSHService.SSH_KEY_PATH);
 
         if (!res.isPresent()) {
