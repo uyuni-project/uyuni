@@ -43,6 +43,8 @@ def compute_image_filename
     'Kiwi/POS_Image-JeOS6_head'
   when 'sles15sp2', 'sles15sp2o'
     'Kiwi/POS_Image-JeOS7_head'
+  when 'sles15sp1', 'sles15sp1o'
+    raise 'This is not supported image version.'
   else
     'Kiwi/POS_Image-JeOS6_head'
   end
@@ -54,6 +56,8 @@ def compute_image_name
     'POS_Image_JeOS6_head'
   when 'sles15sp2', 'sles15sp2o'
     'POS_Image_JeOS7_head'
+  when 'sles15sp1', 'sles15sp1o'
+    raise 'This is not supported image version.'
   else
     'POS_Image_JeOS6_head'
   end
