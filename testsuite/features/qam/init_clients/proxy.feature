@@ -7,9 +7,9 @@
 
 @proxy
 Feature: Setup SUSE Manager proxy
-  In order to use a proxy with the SUSE manager server
+  In order to use a proxy and retail branch server with the SUSE manager server
   As the system administrator
-  I want to register the proxy to the server
+  I want to register the proxy to the server and configure it also as branch server
 
   Scenario: Bootstrap the proxy as a Salt minion
     Given I am authorized
@@ -44,12 +44,6 @@ Feature: Setup SUSE Manager proxy
   Scenario: Check events history for failures on the proxy
     Given I am on the Systems overview page of this "proxy"
     Then I check for failed events on history event page
-
-
-Feature: Setup SUSE Branch Server
-  In order to use a branch server with the SUSE manager server
-  As the system administrator
-  I want to enable and configure branch server services at proxy
 
   @proxy
   @private_net
@@ -88,7 +82,7 @@ Feature: Setup SUSE Branch Server
     And I enter "empty-zones-enable" in first option field
     And I enter "no" in first value field
     And I click on "Save Formula"
-    Then I should see a "Formula saved" text    
+    Then I should see a "Formula saved" text
 
   @proxy
   @private_net
@@ -108,4 +102,4 @@ Feature: Setup SUSE Branch Server
     And service "named" is active on "proxy"
     And service "firewalld" is enabled on "proxy"
     And service "firewalld" is active on "proxy"
-   
+
