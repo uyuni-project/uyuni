@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Sep 03 10:31:49 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.17-1
 - Add option --nostricthostkeychecking to spacewalk-ssh-push-init
 - strip SSL Certificate Common Name after 63 Characters (bsc#1173535)
 
