@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Thu Sep 03 10:37:58 CEST 2020 - jgonzalez@suse.com
+
+- version 4.0.23-1
 - Fix login page after jQuery upgrade (bsc#1175224)
 - Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
 - Warn when a system is in multiple groups that configure the same
