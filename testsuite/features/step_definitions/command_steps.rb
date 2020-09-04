@@ -656,27 +656,22 @@ When(/^I register this client for SSH push via tunnel$/) do
 end
 
 # Repositories and packages management
-When(/^I enable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
+When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
-        elsif host.include? 'ubuntu'
-    "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
-        else
-    "zypper mr --enable #{repo}"
-        end
-  node.run(cmd, error_control.empty?)
-end
-
-When(/^I disable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
-  node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
-        elsif host.include? 'ubuntu'
-    "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
-        else
-    "zypper mr --disable #{repo}"
-        end
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    cmd = "zypper mr --#{action} #{repos}"
+  else
+    cmd = repos.split(' ').map do |repo|
+      if os_family =~ /^centos/
+        "sed -i 's/enabled=.*/enabled=#{action == 'enable' ? '1' : '0'}/g' /etc/yum.repos.d/#{repo}.repo; "
+      elsif os_family =~ /^ubuntu/
+        "sed -i '/^#{action == 'enable' ? '#\\s*' : ''}deb.*/ s/^#{action == 'enable' ? '' : '#\\s*'}deb "\
+        "/#{action == 'enable' ? '' : '#'}deb /' /etc/apt/sources.list.d/#{repo}.list; "
+      end
+    end
+    cmd = cmd.reduce(:+)
+  end
   node.run(cmd, error_control.empty?)
 end
 
@@ -1242,13 +1237,12 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
   raise if code.zero?
 end
 
-# Enable/disable repository for monitoring exporters
 When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
+  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
+  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
   node = get_target(host)
-  os_version, os_family = get_os_version(node)
+  _os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    node.run("zypper mr --#{action} os_pool_repo os_update_repo")
+    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
   end
-  tools_repo_name = $product == 'Uyuni' ? 'tools_pool_repo' : 'tools_additional_repo'
-  step %(I #{action} repository "#{tools_repo_name}" on this "#{host}"#{error_control})
 end
