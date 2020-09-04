@@ -1,41 +1,15 @@
 // @flow
 
 import {debounce} from 'lodash';
-import {get} from './network';
+import {get} from 'utils/network';
+import PageControl from './page-control';
 
-import type {Cancelable} from "../utils/functions";
-
-declare var userPrefPageSize: number;
-
-type SortType = {
-  direction: number,
-  column: string
-}
-
-export class PageControl {
-  page: number;
-  pageSize: number;
-  query: ?string;
-  sort: ?SortType;
-
-  constructor(page: number = 1, pageSize: number = userPrefPageSize,
-      query: ?string, sortColumn: ?string, sortDirection: number = 1) {
-    this.page = page;
-    this.pageSize = pageSize;
-    this.query = query;
-    if (sortColumn) {
-      this.sort = {
-        direction: sortDirection,
-        column: sortColumn
-      };
-    }
-  }
-}
+import type {Cancelable} from "utils/functions";
 
 /**
  * Provides a data endpoint with pagination, filtering and sorting capabilities
  */
-export class ApiDataEndpoint {
+export default class PagedDataEndpoint {
   uri: URL;
   get: (callback: (promise: Promise<any>) => any, pageControl: PageControl) => void;
   curReq: ?Cancelable;
@@ -52,7 +26,7 @@ export class ApiDataEndpoint {
    * parameter as soon as the call is made.
    *
    * Important: This method is wrapped with a debounced version called 'get'.
-   * To use this method, call 'ApiDataEndpoint#get()' instead.
+   * To use this method, call 'PagedDataEndpoint#get()' instead.
    */
   doGet(callback: (promise: Promise<any>) => any, pageControl: PageControl) {
     this.setPage(pageControl);

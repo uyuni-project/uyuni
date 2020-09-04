@@ -1,35 +1,20 @@
 // Fix for node 8. Can be removed on node 10 or later
 import "@babel/polyfill";
 
-import {ApiDataEndpoint, PageControl} from './data-endpoint';
-import {Utils} from './functions';
-import * as Network from './network';
+import {Utils} from 'utils/functions';
+import * as Network from 'utils/network';
 
-jest.mock('./network');
+import PagedDataEndpoint from './paged-data-endpoint';
+import PageControl from './page-control';
+
+jest.mock('../network');
 
 const PATH = "/my/test/url";
 const ORIGIN = "https://my.domain";
 
-test("Page control initialization", () => {
-  let pageControl = new PageControl(1, 10);
-
-  expect(pageControl).toHaveProperty('page', 1);
-  expect(pageControl).toHaveProperty('pageSize', 10);
-  expect(pageControl.query).toBeUndefined();
-  expect(pageControl.sort).toBeUndefined();
-
-  pageControl = new PageControl(1, 10, "mystring", "mycolumn");
-
-  expect(pageControl).toHaveProperty('query', "mystring");
-  expect(pageControl).toHaveProperty('sort', {direction: 1, column: "mycolumn"});
-
-  pageControl = new PageControl(1, 10, "mystring", "mycolumn", -1);
-  expect(pageControl).toHaveProperty('sort', {direction: -1, column: "mycolumn"});
-});
-
 test("Page query parameters", () => {
   const pageControl = new PageControl(1, 10);
-  const endpoint = new ApiDataEndpoint(new URL(PATH, ORIGIN));
+  const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
   endpoint.setPage(pageControl);
 
   const queryParams = endpoint.uri.searchParams;
@@ -46,7 +31,7 @@ test("Page query parameters", () => {
 
 test("Page query filter parameters", () => {
   const pageControl = new PageControl(1, 10, "mystring", "mycolumn");
-  const endpoint = new ApiDataEndpoint(new URL(PATH, ORIGIN));
+  const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
   endpoint.setPage(pageControl);
 
   const queryParams = endpoint.uri.searchParams;
@@ -57,7 +42,7 @@ test("Page query filter parameters", () => {
 
 test("Page query sort parameters", () => {
   const pageControl = new PageControl(1, 10, "mystring", "mycolumn", -1);
-  const endpoint = new ApiDataEndpoint(new URL(PATH, ORIGIN));
+  const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
   endpoint.setPage(pageControl);
 
   const queryParams = endpoint.uri.searchParams;
@@ -66,7 +51,7 @@ test("Page query sort parameters", () => {
 });
 
 test("'Select all' function parameters", () => {
-  const endpoint = new ApiDataEndpoint(new URL(PATH, ORIGIN));
+  const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
   const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");
 
   // 'setPage' should be ignored by the 'setSelectAll' call
@@ -86,7 +71,7 @@ test("'Select all' function parameters", () => {
 });
 
 test("'Select all' function with filter parameters", () => {
-  const endpoint = new ApiDataEndpoint(new URL(PATH, ORIGIN));
+  const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
   const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");
 
   // 'setPage' should be ignored by the 'setSelectAll' call
@@ -99,7 +84,7 @@ test("'Select all' function with filter parameters", () => {
 });
 
 test("Request call with pagination", (done) => {
-  const endpoint = new ApiDataEndpoint(new URL(PATH, ORIGIN));
+  const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
   const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");
 
   // Mock the 'Network.get' method
@@ -119,7 +104,7 @@ test("Request call with pagination", (done) => {
 });
 
 test("Cancelling obsolete requests", (done) => {
-  const endpoint = new ApiDataEndpoint(new URL(PATH, ORIGIN));
+  const endpoint = new PagedDataEndpoint(new URL(PATH, ORIGIN));
   const pageControl = new PageControl(1, 10, "mypagequery", "mycolumn");
 
   // Mock the 'Network.get' method
