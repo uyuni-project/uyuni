@@ -1515,6 +1515,113 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Test failure in register of retail machine in a specific org when proxy is not present
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailTerminalNonDefaultOrgFailWithoutProxy() throws Exception {
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
+                user.getOrg());
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
+                user.getOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
+                user.getOrg());
+
+        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                .machineId(MACHINE_ID).saltbootInitrd(true)
+                .createMinionStartUpGrains();
+
+        try {
+            executeTest(
+                    (saltServiceMock, key) -> new Expectations() {{
+                        allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                        will(returnValue(Optional.of(MINION_ID)));
+                        allowing(saltServiceMock).getMachineId(MINION_ID);
+                        will(returnValue(Optional.of(MACHINE_ID)));
+                        allowing(saltServiceMock).getGrains(with(any(String.class)), with(any(TypeToken.class)),with(any(String[].class)));
+                        will(returnValue(Optional.of(minionStartUpGrains)));
+                        allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                        allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                        allowing(saltServiceMock).getGrains(MINION_ID);
+                        will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                                .map(map -> {
+                                    map.put("saltboot_initrd", true);
+                                    map.put("manufacturer", "QEMU");
+                                    map.put("productname", "CashDesk01");
+                                    map.put("minion_id_prefix", "Branch001");
+                                    return map;
+                                })));
+                        allowing(saltServiceMock).callSync(
+                                with(any(LocalCall.class)),
+                                with(any(String.class)));
+                    }},
+                    (contactMethod) -> null, // no AK
+                    (optMinion, machineId, key) -> {
+                        assertFalse(optMinion.isPresent());
+                    }, DEFAULT_CONTACT_METHOD);
+        } catch (RegisterMinionEventMessageAction.RegisterMinionException e) {
+            return;
+        }
+        fail("Expected Exception not thrown");
+    }
+
+    /**
+     * Test registering retail machine in a specific org but without creating user (aka autoaccepted key)
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testRegisterRetailTerminalNonDefaultOrgWithoutCreator() throws Exception {
+        ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
+                user.getOrg());
+        ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
+                user.getOrg());
+        ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
+                user.getOrg());
+
+        // create a proxy for minion with correct organization
+        MinionServer proxy = MinionServerFactoryTest.createTestMinionServer(user);
+        // this proxy minion must have correct fqdn set equaling minions master
+        proxy.addFqdn(MINION_ID);
+
+        MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
+                .machineId(MACHINE_ID).saltbootInitrd(true)
+                .createMinionStartUpGrains();
+
+        executeTest(
+                (saltServiceMock, key) -> new Expectations() {{
+                    allowing(saltServiceMock).getMasterHostname(MINION_ID);
+                    will(returnValue(Optional.of(MINION_ID)));
+                    allowing(saltServiceMock).getMachineId(MINION_ID);
+                    will(returnValue(Optional.of(MACHINE_ID)));
+                    allowing(saltServiceMock).getGrains(with(any(String.class)), with(any(TypeToken.class)),with(any(String[].class)));
+                    will(returnValue(Optional.of(minionStartUpGrains)));
+                    allowing(saltServiceMock).syncGrains(with(any(MinionList.class)));
+                    allowing(saltServiceMock).syncModules(with(any(MinionList.class)));
+                    allowing(saltServiceMock).getGrains(MINION_ID);
+                    will(returnValue(getGrains(MINION_ID, null, "non-existent-key")
+                            .map(map -> {
+                                map.put("saltboot_initrd", true);
+                                map.put("manufacturer", "QEMU");
+                                map.put("productname", "CashDesk01");
+                                map.put("minion_id_prefix", "Branch001");
+                                return map;
+                            })));
+                    allowing(saltServiceMock).callSync(
+                            with(any(LocalCall.class)),
+                            with(any(String.class)));
+                }},
+                (contactMethod) -> null, // no AK
+                (optMinion, machineId, key) -> {
+                    assertTrue(optMinion.isPresent());
+                    MinionServer minion = optMinion.get();
+                    assertTrue(minion.getManagedGroups().contains(hwGroup));
+                    assertTrue(minion.getManagedGroups().contains(terminalsGroup));
+                    assertTrue(minion.getManagedGroups().contains(branchGroup));
+                    assertTrue(minion.getOrg().equals(user.getOrg()));
+                }, DEFAULT_CONTACT_METHOD);
+    }
+
+    /**
      * Tests registration of an empty profile
      * @throws Exception if anything goes wrong
      */
