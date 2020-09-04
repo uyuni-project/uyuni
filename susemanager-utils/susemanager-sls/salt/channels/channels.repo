@@ -6,7 +6,11 @@
 {%- set hostname = salt['pillar.get']('pkg_download_point_host', args['host'])%}
 {%- set port = salt['pillar.get']('pkg_download_point_port', args.get('port', 443))%}
 {%- if grains['os_family'] == 'Debian' %}
+{%- if grains['osmajorrelease']|int < 10 %}
 deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} https://{{ args['token'] }}@{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download {{ chan }} main
+{%- else %}
+deb {{ '[trusted=yes]' if not pillar.get('mgr_metadata_signing_enabled', false) else '[signed-by=/usr/share/keyrings/mgr-archive-keyring.gpg]' }} https://{{ args['host'] }}:{{ args.get('port', 443)}}/rhn/manager/download {{ chan }} main
+{%- endif %}
 {%- else %}
 [{{ args['alias'] }}]
 name={{ args['name'] }}
