@@ -1,5 +1,5 @@
 - Add language picker to user preferences and user creation
-- Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175876)
+- Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175556)
 - use media.1/products from media when not specified different (bsc#1175558)
 - Fix: use quiet API method when using spacewalk-common-channels (bsc#1175529)
 - add java.allow_adding_patches_via_api to allow adding errata to vendor channels
