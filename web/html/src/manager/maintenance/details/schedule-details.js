@@ -13,7 +13,6 @@ import {BootstrapPanel} from "components/panels/BootstrapPanel";
 import {InnerPanel} from "components/panels/InnerPanel";
 import {TabLabel} from "components/tab-container";
 import {Table} from "components/table/Table";
-import {AsyncTable} from "components/table/AsyncTable";
 import {Column} from "components/table/Column";
 import {SearchField}  from "components/table/SearchField";
 import {Toggler} from "components/toggler";
@@ -193,14 +192,15 @@ const SystemPicker = (props: SystemPickerProps) => {
                     )
                 ]}
             >
-                <AsyncTable
-                    resource={"/rhn/manager/api/maintenance/schedule/systems"}
+                <Table
+                    data="/rhn/manager/api/maintenance/schedule/systems"
                     identifier={system => system.id}
                     searchField={<SearchField placeholder={t("Search systems")} criteria=""/>}
                     selectable
                     selectedItems={selectedSystems}
                     onSelect={onSelect}
                     initialItemsPerPage={userPrefPageSize}
+                    initialSortColumnKey="name"
                 >
                     <Column
                         columnKey="name"
@@ -222,7 +222,7 @@ const SystemPicker = (props: SystemPickerProps) => {
                           )
                         }
                     />
-                </AsyncTable>
+                </Table>
             </InnerPanel>
             <CancelActionsDialog id="cancel-confirm" onConfirmAsync={onAssign}/>
         </>

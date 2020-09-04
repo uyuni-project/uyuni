@@ -1,11 +1,14 @@
 // @flow
+
 import * as React from 'react';
-import { StatePersistedContext } from '../utils/StatePersistedContext';
-import { ItemsPerPageSelector } from '../pagination';
-import { PaginationBlock } from '../pagination';
-import { SearchPanel } from './SearchPanel';
-import { SearchField } from './SearchField';
-import { Header } from './Header';
+
+import {Header} from './Header';
+import {ItemsPerPageSelector, PaginationBlock} from '../pagination';
+import {SearchPanel} from './SearchPanel';
+import {SearchField} from './SearchField';
+import {PageControl, SimpleDataProvider, AsyncDataProvider} from 'utils/data-providers';
+import {Utils} from "utils/functions";
+import {StatePersistedContext} from '../utils/StatePersistedContext';
 
 type ChildrenArgsProps = {
   currItems: Array<any>,
@@ -18,16 +21,27 @@ type ChildrenArgsProps = {
 
 type Props = {
   columns: Array<React.ElementRef<any>>,
-  /** any type of data in an array, where each element is a row data */
-  data: Array<any>,
+  /**
+   * Either an array of data items of any type where each element is a row data,
+   * or a URI string to a resource endpoint that returns a paged list of data items.
+   *
+   * The data returned from the endpoint must be in paginated form as the following:
+   * ```
+   * {
+   *    items: [..],
+   *    total: TOTAL_ITEMS
+   * }
+   * ```
+   *
+   * See: utils/data-providers/paged-data-endpoint.js for async usage
+   */
+  data: Array<any> | string,
   /** Function extracting the unique key of the row from the data object */
   identifier: Function,
   /** the column key name of the initial sorted column */
   initialSortColumnKey?: string,
   /** 1 for ascending, -1 for descending */
   initialSortDirection?: number,
-  /** a function that return a css class for each row */
-  cssClassFunction?: Function,
   /** the React Object that contains the filter search field */
   searchField?: React.Element<typeof SearchField>,
   /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
@@ -40,8 +54,6 @@ type Props = {
   selectedItems?: Array<any>,
   /** The message which is shown when there are no rows to display */
   emptyText?: string,
-  /** if data is loading */
-  loading?: boolean,
   /** The message which is shown when the data is loading */
   loadingText?: string,
   /** Children node in the table */
@@ -51,13 +63,14 @@ type Props = {
 };
 
 type State = {
+  data: Array<any>,
+  provider: SimpleDataProvider | AsyncDataProvider,
   currentPage: number,
   itemsPerPage: number,
+  totalItems: number,
   criteria?: string,
   sortColumnKey: string | null,
   sortDirection: number,
-  selectedItems: Array<any>,
-  selectable: boolean,
   loading: boolean,
 };
 
@@ -72,25 +85,75 @@ export class TableDataHandler extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      data: [],
+      provider: this.getProvider(),
       currentPage: 1,
       itemsPerPage: this.props.initialItemsPerPage || 15,
+      totalItems: 0,
       criteria: undefined,
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: this.props.initialSortDirection || 1,
-      selectedItems: this.props.selectedItems || [],
-      selectable: this.props.selectable,
-      loading: this.props.loading || false,
+      loading: false
     };
   };
 
-  UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    this.onPageCountChange(nextProps.data, this.state.criteria, this.state.itemsPerPage);
-    this.setState({
-        selectedItems: nextProps.selectedItems || [],
-        selectable: Boolean(nextProps.selectable),
-        loading: Boolean(nextProps.loading) || false,
+  getProvider() {
+    const data = this.props.data;
+    if (Array.isArray(data)) {
+      // Gather comparators from columns
+      const comparators = this.props.columns.reduce((comparators, col) => {
+        if (col.props.columnKey) {
+          comparators[col.props.columnKey] = col.props.comparator;
+        }
+        return comparators;
+      }, {});
+
+      return new SimpleDataProvider(data, this.props.identifier,
+        this.props.searchField && this.props.searchField.props.filter, comparators);
+    }
+    else if (typeof data === "string") {
+      return new AsyncDataProvider(data);
+    }
+    else {
+      throw new Error("Invalid data type.");
+    }
+  }
+
+  getData() {
+    if (!this.state.provider) {
+      return;
+    }
+
+    const currPage = (this.state.currentPage - 1) * this.state.itemsPerPage + 1;
+    const pageControl = new PageControl(currPage, this.state.itemsPerPage,
+      this.state.criteria, this.state.sortColumnKey, this.state.sortDirection);
+
+    this.setState({loading: true}, () => {
+      this.state.provider.get(promise => {
+        promise.then(data => this.updateData(data))
+          .finally(() => this.setState({loading: false}));
+        }, pageControl);
     });
-  };
+  }
+
+  updateData({items, total}: {items: Array<any>, total: number}) {
+    this.setState({data: items, totalItems: total}, () => {
+      const lastPage = this.getLastPage();
+      if (this.state.currentPage > lastPage) {
+        this.setState({currentPage: lastPage});
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.data !== prevProps.data) {
+      this.setState({provider: this.getProvider()}, this.getData());
+    }
+  }
 
   componentWillUnmount() {
     if (this.context && this.context.saveState) {
@@ -101,68 +164,34 @@ export class TableDataHandler extends React.Component<Props, State> {
   UNSAFE_componentWillMount() {
     if (this.context && this.context.loadState) {
       if (this.context.loadState()) {
-        this.setState(this.context.loadState());
+        this.setState(this.context.loadState(), this.getData);
       }
     }
   };
 
-  getLastPage = (data: any, criteria?: string, itemsPerPage: number) : number => {
-    const rowCount = data.filter(this.getFilter(criteria)).length;
-
-    const lastPage = Math.ceil(rowCount / itemsPerPage);
+  getLastPage = (): number => {
+    const rowCount = this.state.totalItems;
+    const lastPage = Math.ceil(rowCount / this.state.itemsPerPage);
     return lastPage > 0 ? lastPage : 1;
   };
 
-  getFilter = (criteria?: string): (datum: any) => boolean => {
-    const searchField = this.props.searchField;
-    if (searchField) {
-      const filter = searchField.props.filter;
-      if (filter) {
-        return ((datum) => filter(datum, criteria));
-      }
-    }
-    return (datum) => true;
-  };
-
-  getProcessedData = (): Array<any> => {
-    const comparators = this.props.columns 
-      .filter((column) => column.props.columnKey === this.state.sortColumnKey)
-      .map((column) => column.props.comparator);
-
-    const comparator = comparators.length > 0 ?
-      comparators[0] : ((a, b, columnKey, sortDirection) => 0);
-
-    return this.props.data
-        .filter(this.getFilter(this.state.criteria))
-        .sort((a, b) => comparator(a, b, this.state.sortColumnKey, this.state.sortDirection));
-  };
-
   onSearch = (criteria?: string): void => {
-    this.setState({criteria: criteria});
-    this.onPageCountChange(this.props.data, criteria, this.state.itemsPerPage);
+    this.setState({currentPage: 1, criteria: criteria}, this.getData);
   };
 
   onItemsPerPageChange = (itemsPerPage: number): void => {
-    this.setState({itemsPerPage: itemsPerPage});
-    this.onPageCountChange(this.props.data, this.state.criteria, itemsPerPage);
-  };
-
-  onPageCountChange = (data: Array<any>, criteria?: string, itemsPerPage: number): void => {
-    const lastPage = this.getLastPage(data, criteria, itemsPerPage);
-    if (this.state.currentPage > lastPage) {
-      this.setState({currentPage: lastPage});
-    }
+    this.setState({itemsPerPage: itemsPerPage}, this.getData);
   };
 
   onPageChange = (page: number): void => {
-    this.setState({currentPage: page});
+    this.setState({currentPage: page}, this.getData);
   };
 
   onSortChange = (sortColumnKey?: string, sortDirection: number): void => {
     this.setState({
       sortColumnKey: sortColumnKey,
       sortDirection: sortDirection
-    });
+    }, this.getData);
   };
 
   setSelection = (selection: any): void => {
@@ -178,15 +207,19 @@ export class TableDataHandler extends React.Component<Props, State> {
         .map((column, index) => {
             if (column.props.header) {
                 const sortDirection = column.props.columnKey === this.state.sortColumnKey ?
-                  this.state.sortDirection :
-                  0;
+                  this.state.sortDirection : 0;
+                let comparator = column.props.comparator;
+                if (!comparator && column.props.sortable) {
+                  comparator = Utils.sortByText;
+                }
+
                 return <Header
                     key={index}
                     columnKey={column.props.columnKey}
                     sortDirection={sortDirection}
                     onSortChange={this.onSortChange.bind(this)}
                     width={column.props.width}
-                    comparator={column.props.comparator}
+                    comparator={comparator}
                     className={column.props.headerClass}>
                         {column.props.header}
                     </Header>;
@@ -195,23 +228,22 @@ export class TableDataHandler extends React.Component<Props, State> {
             }
         });
 
-    const filteredData = this.getProcessedData();
-
     const itemsPerPage = this.state.itemsPerPage;
     const currentPage = this.state.currentPage;
     const firstItemIndex = (currentPage - 1) * itemsPerPage;
 
-    const itemCount = filteredData.length;
+    const currItems = this.state.data;
+    const selectedItems = this.props.selectedItems || [];
+    const itemCount = this.state.totalItems || 0;
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
-    const currItems = filteredData.slice(firstItemIndex, firstItemIndex + itemsPerPage);
     const isEmpty = itemCount === 0;
 
-    if (this.state.selectable) {
+    if (this.props.selectable) {
       const currIds = currItems.map(item => this.props.identifier(item));
 
       const handleSelectAll = (sel) => {
-          let arr = this.state.selectedItems;
+          let arr = selectedItems;
           if (sel) {
               arr = arr.concat(currIds.filter(id => !arr.includes(id)));
           } else {
@@ -220,13 +252,13 @@ export class TableDataHandler extends React.Component<Props, State> {
           this.setSelection(arr);
       };
 
-      const allSelected = currIds.length > 0 && currIds.every(id => this.state.selectedItems.includes(id));
-      const checkbox = <Header key="check"><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
-      headers && headers.unshift(checkbox);
+        const allSelected = currIds.length > 0 && currIds.every(id => selectedItems.includes(id));
+        const checkbox = <Header key="check"><input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)}/></Header>;
+        headers && headers.unshift(checkbox);
     }
 
     const handleSelect = (id, sel) => {
-        let arr = this.state.selectedItems;
+        let arr = selectedItems;
         if (sel) {
             arr = arr.concat([id]);
         } else {
@@ -240,10 +272,14 @@ export class TableDataHandler extends React.Component<Props, State> {
     }
 
     const handleSearchPanelSelectAll = () => {
-        const selected = this.state.selectedItems;
-        this.setSelection(selected.concat(
-            filteredData.map(d => this.props.identifier(d))
-                .filter(id => !selected.includes(id))));
+      this.setState({loading: true}, () => {
+        this.state.provider.getIds(promise => promise
+          .then(data => {
+            const selected = selectedItems;
+            this.setSelection(selected.concat(data.filter(id => !selected.includes(id))));
+          })
+          .finally(() => this.setState({loading: false})), this.state.criteria);
+      });
     }
 
     const emptyText = this.props.emptyText || t('There are no entries to show.');
@@ -255,21 +291,22 @@ export class TableDataHandler extends React.Component<Props, State> {
           { this.props.initialItemsPerPage !== 0 ?
           <div className="panel-heading">
             <div className="spacewalk-list-head-addons">
-            <SearchPanel
-              fromItem={fromItem}
-              toItem={toItem}
-              itemCount={itemCount}
-              criteria={this.state.criteria}
-              onSearch={this.onSearch}
-              onClear={handleSearchPanelClear}
-              onSelectAll={handleSearchPanelSelectAll}
-              selectedCount={this.state.selectedItems.length}
-              selectable={this.state.selectable}
-            >{this.props.searchField}
-              {
-                this.props.additionalFilters && this.props.additionalFilters.map((filter, i) => <span key={'additional-filter-' + i}>{filter}&nbsp;</span>)
-              }
-            </SearchPanel>
+              <SearchPanel
+                fromItem={fromItem}
+                toItem={toItem}
+                itemCount={itemCount}
+                criteria={this.state.criteria}
+                onSearch={this.onSearch}
+                onClear={handleSearchPanelClear}
+                onSelectAll={handleSearchPanelSelectAll}
+                selectedCount={selectedItems.length}
+                selectable={this.props.selectable}
+              >
+                {this.props.searchField}
+                {
+                  this.props.additionalFilters && this.props.additionalFilters.map((filter, i) => <span key={'additional-filter-' + i}>{filter}&nbsp;</span>)
+                }
+              </SearchPanel>
               <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
                 <ItemsPerPageSelector key="itemsPerPageSelector"
                   currentValue={this.state.itemsPerPage}
@@ -296,8 +333,8 @@ export class TableDataHandler extends React.Component<Props, State> {
                     currItems,
                     headers,
                     handleSelect,
-                    selectable: this.state.selectable,
-                    selectedItems: this.state.selectedItems,
+                    selectable: this.props.selectable,
+                    selectedItems: selectedItems,
                     criteria: this.state.criteria,
                   })}
                 </div>
@@ -309,7 +346,7 @@ export class TableDataHandler extends React.Component<Props, State> {
             <div className="spacewalk-list-bottom-addons">
               <PaginationBlock key="paginationBlock"
                 currentPage={this.state.currentPage}
-                lastPage={this.getLastPage(this.props.data, this.state.criteria, this.state.itemsPerPage)}
+                lastPage={this.getLastPage()}
                 onPageChange={this.onPageChange}
               />
             </div>
