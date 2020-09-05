@@ -52,9 +52,9 @@ body.login-page {
     margin-bottom: 1em;
     color: @eos-gray-dark-1;
     -webkit-font-smoothing: antialiased;
-    box-shadow: 0px 1px 0px 0px lighten(@eos-gray-light-3, 8%), 0px 1px 0px 0px darken(@eos-gray-light-1, 3%) inset;
-    -moz-box-shadow: 0px 1px 0px 0px lighten(@eos-gray-light-3, 8%), 0px 1px 0px 0px darken(@eos-gray-light-1, 3%) inset;
-    -webkit-box-shadow: 0px 1px 0px 0px lighten(@eos-gray-light-3, 8%), 0px 1px 0px 0px darken(@eos-gray-light-1, 3%) inset;
+    box-shadow: 0px 1px 0px 0px @eos-gray-light-3, 0px 1px 0px 0px @eos-gray-light-1 inset;
+    -moz-box-shadow: 0px 1px 0px 0px @eos-gray-light-3, 0px 1px 0px 0px @eos-gray-light-1 inset;
+    -webkit-box-shadow: 0px 1px 0px 0px @eos-gray-light-3, 0px 1px 0px 0px @eos-gray-light-1 inset;
   }
   input:focus {
     color: @eos-gray-dark-3;
@@ -67,22 +67,22 @@ body.login-page {
   }
   input[type="submit"] {
     background: @green;
-    color: #fff;
+    color: @white;
     margin-bottom: 1em;
     border: 0;
-    box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
-    -moz-box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
-    -webkit-box-shadow: 0px 1px 0px 0px #1a9590, 0px 0px 0px 0px #004744 inset;
+    box-shadow: 0px 1px 0px 0px @green, 0px 0px 0px 0px @green-dark inset;
+    -moz-box-shadow: 0px 1px 0px 0px @green, 0px 0px 0px 0px @green-dark inset;
+    -webkit-box-shadow: 0px 1px 0px 0px @green, 0px 0px 0px 0px @green-dark inset;
   }
   input[type="submit"]:hover {
-    background: darken(@green, 10%);
+    background: @green-dark;
     -webkit-font-smoothing: antialiased;
   }
   a {
     text-decoration: underline;
   }
   a:hover {
-    color: #00b268
+    color: @green-dark;
   }
   .small-text {
     font-size: .8em;
