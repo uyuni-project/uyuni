@@ -72,7 +72,7 @@ mgrchannels_repo:
 {%- endif %}
 {%- endif %}
 
-{%- if grains['os_family'] == 'Debian' and grains['osmajorrelease']|int >= 10 %}
+{%- if (grains['os'] == 'Debian' and grains['osmajorrelease']|int >= 10) or (grains['os'] == 'Ubuntu' and grains['osmajorrelease']|int >= 18) %}
 aptauth_conf:
   file.managed:
     - name: "/etc/apt/auth.conf.d/susemanager.conf"
