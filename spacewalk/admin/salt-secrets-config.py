@@ -30,6 +30,8 @@ initCFG('server')
 
 secret_hash = hashlib.sha512(CFG.secret_key.encode('ascii')).hexdigest()
 
+os.umask(0o66)
+
 with open("/etc/salt/master.d/susemanager_engine.conf", "w") as f:
     f.write(yaml.safe_dump(mgr_events_config, default_flow_style=False, allow_unicode=True))
     os.fchown(f.fileno(), pwd.getpwnam("salt").pw_uid, grp.getgrnam("salt").gr_gid)
