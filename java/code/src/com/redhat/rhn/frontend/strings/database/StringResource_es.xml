@@ -51,7 +51,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>Supervisión</target>
+        <target>Monitorización</target>
       </trans-unit>
       <!--  Human Readable version of the entitlement labels -->
       <group>
