@@ -5,7 +5,7 @@ import logging
 import argparse
 argparser = argparse.ArgumentParser()
 argparser.add_argument("path", help="Path to look into for translation files!")
-args = parser.parse_args()
+args = argparser.parse_args()
 
 logging.basicConfig(level=logging.INFO)
 
@@ -47,9 +47,10 @@ def update_trans_units(body_element, trans_units, id_new_value_dict):
 
 
 def process(original_file, translation_file):
-    parser = ET.XMLParser(target=CommentedTreeBuilder())
-    xml_tree_original = ET.parse(original_file, parser=parser)
-    xml_tree_translation = ET.parse(translation_file, parser=parser)
+    original_file_parser = ET.XMLParser(target=CommentedTreeBuilder())
+    xml_tree_original = ET.parse(original_file, parser=original_file_parser)
+    translation_file_parser = ET.XMLParser(target=CommentedTreeBuilder())
+    xml_tree_translation = ET.parse(translation_file, parser=translation_file_parser)
     original_body_element, orig_trans_units = get_trans_units(xml_tree_original)
     translation_body_element, trans_trans_units = get_trans_units(xml_tree_translation)
     logging.debug(f'{len(orig_trans_units)} trans_units in original file {original_file}')
@@ -92,15 +93,12 @@ def process(original_file, translation_file):
     else:
         logging.info("Something went wrong, this should not have happend!")
 
-
-    #xml_tree_translation.write(translation, encoding='utf-8', xml_declaration=True)
+    xml_tree_translation.write(translation, encoding='utf-8', xml_declaration=True)
 
 
 def get_trans_units(xml_tree):
     root_node = xml_tree.getroot()
-    # file_tag = root_node[0]
     file_tag = root_node.find('d:file', ns)
-    # body_element = root_node[0][0]
     body_element = file_tag.find('d:body', ns)
     return body_element, list(body_element.findall('d:trans-unit', ns))
 
