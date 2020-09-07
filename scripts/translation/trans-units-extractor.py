@@ -45,7 +45,6 @@ def extract_trans_units(org_file):
     tree.write(org_file, encoding='utf-8', xml_declaration=True)
 
 
-
 ET.register_namespace('', "urn:oasis:names:tc:xliff:document:1.1")
 ET.register_namespace('xyz', "urn:appInfo:Items")
 ET.register_namespace('xsi', "http://www.w3.org/2001/XMLSchema-instance")
@@ -57,6 +56,5 @@ logging.debug(files)
 
 for file in files:
     if file.startswith('StringResource_') and file.endswith('.xml'):
-        original = 'StringResource_en_US.xml'
         logging.info('processing ' + str(file))
         extract_trans_units(file)
