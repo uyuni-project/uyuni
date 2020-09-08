@@ -1020,6 +1020,6 @@ public class ConfigDefaults {
      * @return the preferred locale
      */
     public String getDefaultLocale() {
-        return Config.get().getString(DEFAULT_LOCALE);
+        return Config.get().getString(DEFAULT_LOCALE, "en_US");
     }
 }
