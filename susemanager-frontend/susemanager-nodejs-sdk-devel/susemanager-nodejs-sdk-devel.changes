@@ -1,3 +1,4 @@
+- Upgrade serialize-javascript - CVE-2020-7660
 - Upgrade elliptic - CVE-2020-13822
 
 -------------------------------------------------------------------
