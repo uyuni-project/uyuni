@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 public class GuestDiskDef {
 
     private static final List<String> NETWORK_CONVERTED_TYPES = Arrays.asList("rbd", "gluster");
+    private static final Pattern BLOCK_REGEX = Pattern.compile("([^/]+)/([^/]+)");
 
     private String type;
     private String device;
@@ -214,6 +217,15 @@ public class GuestDiskDef {
                         disk.setType("file");
                         source.clear();
                         source.put("file", info.getFile());
+                    }
+                }
+                else if (Arrays.asList("block", "file").contains(disk.getType())) {
+                    Matcher matcher = BLOCK_REGEX.matcher(info.getFile());
+                    if (matcher.matches()) {
+                        disk.setType("volume");
+                        source.clear();
+                        source.put("pool", matcher.group(1));
+                        source.put("volume", matcher.group(2));
                     }
                 }
             });
