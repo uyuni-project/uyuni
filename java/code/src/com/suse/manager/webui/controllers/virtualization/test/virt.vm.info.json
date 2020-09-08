@@ -15,6 +15,16 @@
         "file": "ses-pool/test-vol",
         "type": "disk",
         "file format": "raw"
+      },
+      "vdc": {
+        "file": "iscsi-pool/unit:0:0:1",
+        "type": "disk",
+        "file format": "raw"
+      },
+      "vdd": {
+        "file": "/dev/disk/by-path/pci-0000:00:0b.0-scsi-0:0:0:0",
+        "type": "disk",
+        "file format": "raw"
       }
     },
     "graphics": {
