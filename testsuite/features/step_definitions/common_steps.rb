@@ -73,9 +73,7 @@ end
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
-  steps %(
-    When I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed
-  )
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed)
 end
 
 When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
@@ -236,7 +234,7 @@ When(/^I trigger cobbler system record$/) do
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
       And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks=" on server
-      )
+    )
   end
 end
 
@@ -373,7 +371,7 @@ Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
     And I follow "#{channel}"
     And I follow "Packages"
     Then I should see package "#{pkg}"
-    )
+  )
 end
 
 # setup wizard
