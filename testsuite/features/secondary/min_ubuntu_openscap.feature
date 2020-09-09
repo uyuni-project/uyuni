@@ -15,7 +15,7 @@ Feature: openSCAP audit of Ubuntu Salt minion
     And I enter "/usr/share/scap-security-guide/ssg-ubuntu1604-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
+    And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
 @ubuntu_minion
   Scenario: Run a remote command on the Ubuntu minion
