@@ -130,8 +130,7 @@ public class MatcherRunner {
     private static ExecutorService exhaustOutputOnBackground(InputStream stream) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
-            InputStreamReader irr = new InputStreamReader(stream);
-            try {
+            try (InputStreamReader irr = new InputStreamReader(stream)) {
                 while (irr.read() != -1) {
                     // no-op
                 }
