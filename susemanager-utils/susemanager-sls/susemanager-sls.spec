@@ -105,10 +105,11 @@ cp src/states/product.py %{buildroot}/usr/share/susemanager/salt/_states
 cp src/states/mgrcompat.py %{buildroot}/usr/share/susemanager/salt/_states
 cp src/states/uyuni_config.py %{buildroot}/usr/share/susemanager/salt/_states
 
-# Install examples
+# Install doc, examples
 mkdir -p %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
-cp src/examples/ldap/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
+cp src/doc/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/
 cp src/examples/uyuni_config_hardcode.sls %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples
+cp src/examples/ldap/* %{buildroot}/usr/share/doc/packages/uyuni-config-modules/examples/ldap
 
 %check
 cd test
@@ -165,7 +166,7 @@ fi
 /usr/share/susemanager/salt/_modules/uyuni_config.py
 /usr/share/susemanager/salt/_states/uyuni_config.py
 %dir /usr/share/doc/packages/uyuni-config-modules
-%dir /usr/share/doc/packages/uyuni-config-modules/examples
+%doc /usr/share/doc/packages/uyuni-config-modules/*
 %doc /usr/share/doc/packages/uyuni-config-modules/examples/*
 %doc /usr/share/doc/packages/uyuni-config-modules/examples/ldap/*
 
