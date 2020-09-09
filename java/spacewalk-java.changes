@@ -10,6 +10,12 @@
 - Data null means the sync never ran yet (bsc#1174357)
 
 -------------------------------------------------------------------
+Wed Sep 09 12:17:46 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.19-1
+- Use the Salt API in authenticated and encrypted form (bsc#1175884, CVE-2020-8028)
+
+-------------------------------------------------------------------
 Wed Aug 26 12:30:46 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.18-1

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Sep 09 12:18:16 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.6-1
+- Use the Salt API in authenticated and encrypted form (bsc#1175884, CVE-2020-8028)
+
+-------------------------------------------------------------------
 Wed Jun 10 12:20:44 CEST 2020 - jgonzalez@suse.com
 
 - version 4.1.5-1
