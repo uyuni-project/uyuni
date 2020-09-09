@@ -70,7 +70,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I click on "Schedule"
     And I run "rhn_check -vvv" on "ceos_client"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
+    And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
 @centos_minion
   Scenario: Check the results of the OpenSCAP scan on the CentOS traditional client
