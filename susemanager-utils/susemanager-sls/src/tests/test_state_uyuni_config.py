@@ -30,7 +30,7 @@ class TestManageUser:
                 assert result is not None
                 assert result['name'] == 'username'
                 assert result['result'] is None
-                assert result['comment'] == 'username would be installed'
+                assert result['comment'] == 'username would be modified'
 
                 assert result['changes'] == {
                     'login': {'new': 'username'},
@@ -57,7 +57,7 @@ class TestManageUser:
             assert result is not None
             assert result['name'] == 'username'
             assert result['result'] is True
-            assert result['comment'] == 'username user successful managed'
+            assert result['comment'] == 'username user successfully modified'
 
             assert result['changes'] == {
                 'login': {'new': 'username'},
@@ -96,7 +96,7 @@ class TestManageUser:
             assert result is not None
             assert result['name'] == 'username'
             assert result['result'] is True
-            assert result['comment'] == 'username user successful managed'
+            assert result['comment'] == 'username user successfully modified'
 
             assert result['changes'] == {
                 'login': {'new': 'username'},
@@ -156,7 +156,7 @@ class TestManageUser:
             assert result is not None
             assert result['name'] == 'username'
             assert result['result'] is True
-            assert result['comment'] == 'username user successful managed'
+            assert result['comment'] == 'username user successfully modified'
             assert result['changes'] == {
                 'password': {'new': '(hidden)', 'old': '(hidden)'},
                 'email': {'new': 'new_mail@mail.com', 'old': 'mail@mail.com'},
@@ -256,7 +256,7 @@ class TestManageUser:
                 assert result is not None
                 assert result['name'] == 'username'
                 assert result['result'] is None
-                assert result['comment'] == 'username would be removed'
+                assert result['comment'] == 'username would be deleted'
 
                 assert result['changes'] == {
                     'login': {'old': 'username'},
@@ -526,7 +526,7 @@ class TestManageGroups:
             assert result is not None
             assert result['name'] == 'my_group'
             assert result['result'] is True
-            assert result['comment'] == 'my_group successfully managed'
+            assert result['comment'] == 'my_group successfully updated'
 
             assert result['changes'] == {'description': {'new': 'my group description'},
                                          'systems': {'new': ['10001']},
@@ -566,7 +566,7 @@ class TestManageGroups:
             assert result is not None
             assert result['name'] == 'my_group'
             assert result['result']
-            assert result['comment'] == 'my_group successfully managed'
+            assert result['comment'] == 'my_group successfully updated'
 
             assert result['changes'] == {'description': {'new': 'my group description',
                                                          'old': 'old description'},
@@ -673,7 +673,7 @@ class TestManageOrgs:
                 assert result is not None
                 assert result['name'] == 'my_org'
                 assert result['result'] is None
-                assert result['comment'] == 'my_org would be installed'
+                assert result['comment'] == 'my_org would be updated'
                 assert result['changes'] == {'email': {'new': 'email@email.com'},
                                              'first_name': {'new': 'First Name'},
                                              'last_name': {'new': 'Last Name'},
@@ -699,7 +699,7 @@ class TestManageOrgs:
             assert result is not None
             assert result['name'] == 'my_org'
             assert result['result']
-            assert result['comment'] == 'my_org org successful managed'
+            assert result['comment'] == 'my_org org successfully modified'
             assert result['changes'] == {'email': {'new': 'email@email.com'},
                                          'first_name': {'new': 'First Name'},
                                          'last_name': {'new': 'Last Name'},
@@ -736,7 +736,7 @@ class TestManageOrgs:
             assert result is not None
             assert result['name'] == 'my_org'
             assert result['result']
-            assert result['comment'] == 'my_org org successful managed'
+            assert result['comment'] == 'my_org org successfully modified'
             assert result['changes'] == {'email': {'new': 'email@email.com',
                                                    'old': 'old_mail@mail.com'},
                                          'first_name': {'new': 'First Name',
@@ -776,7 +776,7 @@ class TestManageOrgs:
             assert result is not None
             assert result['name'] == 'my_org'
             assert result['result']
-            assert result['comment'] == 'my_org is already installed'
+            assert result['comment'] == 'my_org is already in the desired state'
             assert result['changes'] == {}
 
             uyuni_config.__salt__['uyuni.org_get_details'].assert_called_once_with('my_org',
@@ -858,7 +858,7 @@ class TestManageOrgsTrust:
                 assert result is not None
                 assert result['name'] == 'state_name'
                 assert result['result'] is None
-                assert result['comment'] == 'my_org would be installed'
+                assert result['comment'] == 'my_org would be created'
                 assert result['changes'] == {'new_org_2': {'new': True, 'old': None}}
 
                 uyuni_config.__salt__['uyuni.org_trust_list_trusts'].assert_called_once_with('my_org',
@@ -885,7 +885,7 @@ class TestManageOrgsTrust:
             assert result is not None
             assert result['name'] == 'state_name'
             assert result['result']
-            assert result['comment'] == "Org 'my_org' Trust successful managed"
+            assert result['comment'] == "Org 'my_org' trusts successfully modified"
             assert result['changes'] == {'new_org_2': {'new': True, 'old': None},
                                          'new_org_3': {'new': None, 'old': True}}
 
@@ -918,7 +918,7 @@ class TestManageOrgsTrust:
             assert result is not None
             assert result['name'] == 'state_name'
             assert result['result']
-            assert result['comment'] == 'my_org is already installed'
+            assert result['comment'] == 'my_org is already in the desired state'
             assert result['changes'] == {}
 
             uyuni_config.__salt__['uyuni.org_trust_list_trusts'].assert_called_once_with('my_org',
