@@ -327,16 +327,17 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   end
 end
 
-When(/^I am on the Organizations page$/) do
+Given(/^I am on the Organizations page$/) do
   steps %(
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Organizations"
-    )
+  )
 end
 
-Given(/^I am on the SUSE Products page$/) do
+Given(/^I am on the Products page$/) do
   steps %(
-    When I navigate to "rhn/manager/admin/setup/products" page
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
   )
 end
@@ -396,14 +397,14 @@ Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
     When I follow the left menu "Systems > System Groups"
-    )
+  )
 end
 
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Users > User List > Active"
-    )
+  )
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
@@ -529,7 +530,7 @@ Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
     And I should see a "About" text
-    )
+  )
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
