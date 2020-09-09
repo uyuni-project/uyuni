@@ -497,7 +497,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>エラータのクローン作成</target>
+        <target>パッチの複製</target>
       </trans-unit>
       <trans-unit id="Completed Actions">
         <source>Completed Actions</source>
@@ -583,7 +583,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>エラータ</target>
+        <target>パッチ</target>
       </trans-unit>
       <trans-unit id="exception">
         <source>Exception</source>
@@ -695,7 +695,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>エラータの管理</target>
+        <target>パッチの管理</target>
       </trans-unit>
       <trans-unit id="Management">
         <source>Management</source>
@@ -2062,7 +2062,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target>エラータ更新</target>
+        <target>パッチ更新</target>
       </trans-unit>
       <trans-unit id="scap.xccdf_eval">
         <source>OpenSCAP xccdf scanning</source>
@@ -2558,7 +2558,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: RHSA-2004:577 - Security Advisory</context>
         </context-group>
-        <target>エラータ更新: {0} - {1}</target>
+        <target>パッチ更新: {0} - {1}</target>
       </trans-unit>
       <trans-unit id="errata.swstack">
         <source>Patch Update: Combined update for the software update stack ({0} patches)</source>
@@ -2566,11 +2566,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata Update: combined software stack update (4 errata)</context>
         </context-group>
-        <target>エラータ更新: ソフトウェア更新スタックの更新の組み合わせ ({0} エラータ)</target>
+        <target>パッチ更新: ソフトウェア更新スタックに対する組み合わせ更新 ({0} 個のパッチ)</target>
       </trans-unit>
       <trans-unit id="errata.schedule">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; に対する &lt;strong&gt;{0}&lt;/strong&gt; パッチ更新が &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;スケジュール済み&lt;/a&gt; です。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; に対する &lt;strong&gt;{0}&lt;/strong&gt; パッチが &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;スケジュール済み&lt;/a&gt; です。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
@@ -2578,7 +2578,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; に対する &lt;strong&gt;{0}&lt;/strong&gt; パッチ更新が &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;スケジュール済み&lt;/a&gt; です。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt; に対する &lt;strong&gt;{0}&lt;/strong&gt; パッチが &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;スケジュール済み&lt;/a&gt; です。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
@@ -2816,7 +2816,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">/rhn/errata/UnpublishedErrata</context>
           <context context-type="sourcefile">/rhn/errata/PublishedErrata</context>
         </context-group>
-        <target>エラータの作成</target>
+        <target>パッチの作成</target>
       </trans-unit>
       <trans-unit id="toolbar.create.group">
         <source>Create Group</source>
@@ -3495,7 +3495,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target>エラータが選択されていません。</target>
+        <target>パッチが選択されていません。</target>
       </trans-unit>
       <trans-unit id="systems.none">
         <source>No systems selected.</source>
@@ -3951,7 +3951,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Delete</context>
         </context-group>
-        <target>エラータ &lt;strong&gt;{0}&lt;/strong&gt; が削除されました。</target>
+        <target>パッチ &lt;strong&gt;{0}&lt;/strong&gt; が削除されました。</target>
       </trans-unit>
       <trans-unit id="Active Filters">
         <source>Active Filters</source>
@@ -6243,7 +6243,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
-        <target>エラータの概要:</target>
+        <target>パッチの概要:</target>
       </trans-unit>
       <trans-unit id="taskomatic.notavailable">
         <source>Taskomatic is not available.</source>
@@ -7235,7 +7235,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; のシステムプロパティーが変更されました。&lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; は自動エラータ更新の設定により &lt;strong&gt;最新の状態に更新されます&lt;/strong&gt;。</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; のシステムプロパティーが変更されました。&lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; は自動パッチ更新の設定により &lt;strong&gt;最新の状態に更新されます&lt;/strong&gt;。</target>
       </trans-unit>
       <group>
         <context-group name="sdc_action_deploy_counts">
@@ -8385,7 +8385,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid patch: {0}</source>
-        <target>無効なエラータです: {0}</target>
+        <target>パッチが正しくありません: {0}</target>
       </trans-unit>
       <trans-unit id="api.externalgroup.invalidrole">
         <source>Invalid role: {0}</source>
@@ -8409,7 +8409,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="api.errata.duplicateerrata">
         <source>Patch already exists with advisory {0}</source>
-        <target>エラータはアドバイザリー {0} にすでにあります</target>
+        <target>パッチはアドバイザリー {0} として既に存在しています</target>
       </trans-unit>
       <trans-unit id="api.system.invalidsnapshot">
         <source>Invalid snapshot specified: {0}</source>
@@ -8449,7 +8449,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target>無効なエラータタイプです "{0}"。"セキュリティーアドバイザリー"、"プロダクト機能強化アドバイザリー"、"バグ修正アドバイザリー" のいずれかを使用してください。</target>
+        <target>無効なパッチタイプ "{0}" です。"セキュリティーアドバイザリー", "プロダクト機能強化アドバイザリー", "バグ修正アドバイザリー" のいずれかを使用してください。</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
@@ -8457,7 +8457,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
-        <target>エラータを発行しようしていていますが発行先のチャンネルを選択していません。エラータは少なくとも 1 チャンネルに発行する必要があります。</target>
+        <target>パッチを発行しようしていていますが発行先のチャンネルを選択していません。パッチは少なくとも 1 つのチャンネルに対して発行しなければなりません。</target>
       </trans-unit>
       <trans-unit id="api.package.download.toolarge">
         <source>The requested file is too large to download over XMLRPC.</source>
@@ -8581,7 +8581,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="api.errata.missingerrataaction">
         <source>A required patch attribute ({0}) was missing.</source>
-        <target>要求されたエラータ属性 ({0}) がありませんでした。</target>
+        <target>要求されたパッチ属性 ({0}) がありませんでした。</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster">
         <source>A record for Master satellite {0} already exists</source>
@@ -8593,15 +8593,15 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="securityErrata">
         <source>Security Patches</source>
-        <target>セキュリティーエラータ</target>
+        <target>セキュリティーパッチ</target>
       </trans-unit>
       <trans-unit id="bugErrata">
         <source>Bug Patches</source>
-        <target>バグエラータ</target>
+        <target>バグパッチ</target>
       </trans-unit>
       <trans-unit id="enhancementErrata">
         <source>Enhancement Patches</source>
-        <target>拡張エラータ</target>
+        <target>拡張パッチ</target>
       </trans-unit>
       <trans-unit id="outdatedPackages">
         <source>Outdated Packages</source>
@@ -8919,7 +8919,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.viewErrata">
         <source>View Associated Patches</source>
-        <target>関連エラータの表示</target>
+        <target>関連づけられたパッチの表示</target>
       </trans-unit>
       <trans-unit id="frontend.actions.channels.manager.add.submit">
         <source>Confirm</source>
@@ -9296,11 +9296,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="message.channelcloned">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target>チャンネル &lt;strong&gt;{1}&lt;/strong&gt; から複製されたチャンネル &lt;strong&gt;{0}&lt;/strong&gt; 。</target>
+        <target>チャンネル &lt;strong&gt;{1}&lt;/strong&gt; からチャンネル &lt;strong&gt;{0}&lt;/strong&gt; を複製しました。</target>
       </trans-unit>
       <trans-unit id="message.cloneselect">
         <source>You may now wish to clone the patches associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; に関連づけられたパッチを複製することができます。</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; に関連づけられたパッチを複製できるようになっています。</target>
       </trans-unit>
       <trans-unit id="message.channeldeleted">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
@@ -9492,7 +9492,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="ssm.misc.changeprefs.updatesscheduled">
         <source>Selected systems will be fully updated in accordance with new Auto Errata Update setting.</source>
-        <target>選択したシステムは、新しい自動エラッタ更新設定に従って完全に更新されます。</target>
+        <target>選択したシステムは、新しい自動パッチ更新設定に従って完全に更新されます。</target>
       </trans-unit>
       <trans-unit id="channel.manage.merge.finished">
         <source>{0} Package(s) have been added and {1} Package(s) have been removed from the channel.</source>
@@ -9540,7 +9540,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="errata.delete.msg">
         <source>Successfully deleted {0} patches.</source>
-        <target>{0} エラータが正しく削除されました。</target>
+        <target>{0} 個のパッチの削除に成功しました。</target>
       </trans-unit>
       <trans-unit id="message.syncschedule.disabled">
         <source>Schedule has been disabled</source>
@@ -9649,7 +9649,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="errata.multi">
         <source>Combined Patch Update: {0} - {1} (and {2} more patches)</source>
-        <target>組み合わせエラッタ更新: {0} - {1} (さらに {2} 個のエラッタ)</target>
+        <target>組み合わせパッチ: {0} - {1} (さらに {2} 個のパッチ)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Combined Patch Update: RHSA-2004:577 - Security Advisory (and 4 more patches)</context>
@@ -9737,7 +9737,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="help.jsp.detailed">
         <source>Detailed instructions for using @@PRODUCT_NAME@@.</source>
-        <target>@@PRODUCT_NAME@@ を使用するための詳細な手順です。</target>
+        <target>@@PRODUCT_NAME@@ を使用するための詳細な手順書です。</target>
       </trans-unit>
       <trans-unit id="help.jsp.gettingstarted.title">
         <source>@@PRODUCT_NAME@@ Getting Started Guide</source>
@@ -10172,7 +10172,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="Advanced Topics Guide">
         <source>Advanced Topics Guide</source>
-        <target>アドバンスドトピックガイド</target>
+        <target>高度なトピックガイド</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -10195,7 +10195,7 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
       </trans-unit>
       <trans-unit id="recurring_action.no_permissions">
         <source>User has no permissions to do the action</source>
-        <target>この処理を実行するための許可がありません</target>
+        <target>このユーザにはこの処理を実行するための許可がありません</target>
       </trans-unit>
       <trans-unit id="recurring_action.empty_name">
         <source>Recurring Action name must be provided</source>
