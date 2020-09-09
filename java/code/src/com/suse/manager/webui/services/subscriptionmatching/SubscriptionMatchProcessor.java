@@ -26,7 +26,6 @@ import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import com.suse.matcher.json.InputJson;
-import com.suse.matcher.json.MatchJson;
 import com.suse.matcher.json.MessageJson;
 import com.suse.matcher.json.OutputJson;
 
