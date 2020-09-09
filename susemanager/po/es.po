@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-21 13:15+0200\n"
+"POT-Creation-Date: 2020-09-09 16:18+0200\n"
 "PO-Revision-Date: 2020-09-02 07:44+0000\n"
 "Last-Translator: Pau Garcia Quiles <pau.garcia@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/susemanager/"
@@ -131,7 +131,8 @@ msgstr "Contraseña base de da&tos"
 #: ../yast/susemanager_db.rb:115
 msgid ""
 "<p>By default SUSE Manager is using an internal postgresql database named '"
-msgstr "<p>Por defecto, SUSE Manager usa una base de datos PostgreSQL llamada '"
+msgstr ""
+"<p>Por defecto, SUSE Manager usa una base de datos PostgreSQL llamada '"
 
 #: ../yast/susemanager_db.rb:125
 msgid "Database Settings"
