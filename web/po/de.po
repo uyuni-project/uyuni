@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-18 10:26+0200\n"
+"POT-Creation-Date: 2020-09-09 16:18+0200\n"
 "PO-Revision-Date: 2020-08-24 21:26+0000\n"
 "Last-Translator: Michael Calmer <mc@suse.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
@@ -2983,12 +2983,30 @@ msgstr ""
 msgid "Signing in ..."
 msgstr ""
 
+#: ../html/src/manager/login/login.js:108
+msgid ""
+"Discover a new way of managing your servers, packages, patches and more via "
+"one interface."
+msgstr ""
+
 #: ../html/src/manager/login/login.js:130
 msgid "Login"
 msgstr ""
 
 #: ../html/src/manager/login/login.js:150
 msgid "Sign In"
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:14
+msgid "Either the password or username is incorrect."
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:15
+msgid "Your account has been deactivated."
+msgstr ""
+
+#: ../html/src/manager/login/use-login-api.js:16
+msgid "This user has read only API access. WebUI login is denied."
 msgstr ""
 
 #: ../html/src/manager/login/use-login-api.js:28
@@ -3191,10 +3209,6 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:32
 msgid "No schedules created. Use Create to add a schedule."
-msgstr ""
-
-#: ../html/src/manager/maintenance/list/schedule-list.js:47
-msgid "/rhn/manager/schedule/maintenance/calendars#/details/"
 msgstr ""
 
 #: ../html/src/manager/maintenance/list/schedule-list.js:89
