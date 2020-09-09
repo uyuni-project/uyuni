@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-26 14:48+0200\n"
-"PO-Revision-Date: 2020-08-27 13:02+0000\n"
+"PO-Revision-Date: 2020-09-09 14:02+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
 ">\n"
@@ -45,7 +45,7 @@ msgstr ""
 
 #: ../server/handlers/applet/applet.py:78
 msgid "Your system was not found in the RHN database"
-msgstr "システムが RHN データベース内には見つかりませんでした。"
+msgstr "システムが RHN データベース内には見つかりませんでした"
 
 #: ../server/handlers/sat/auth.py:45
 msgid "ISS is disabled on this satellite."
@@ -57,10 +57,9 @@ msgid "Server \"%s\" is not enabled for ISS."
 msgstr "サーバー「%s」は ISS に有効になっていません。"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "Spacewalk Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"RHN Proxy サービスがサーバープロファイルに対して有効になっていません: 「%s」"
+msgstr "Spacewalk Proxy サービスがサーバプロファイルに対して有効になっていません: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -71,9 +70,8 @@ msgid "This server ID no longer exists"
 msgstr "このサーバー ID は既になくなりました"
 
 #: ../server/handlers/xmlrpc/scap.py:104
-#, fuzzy
 msgid "Invalid system_id/action_id pair."
-msgstr "無効なシステム認証情報です。"
+msgstr "system_id/action_id の対が正しくありません。"
 
 #: ../server/handlers/xmlrpc/errata.py:64
 #, python-format
@@ -117,14 +115,12 @@ msgid ""
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1115
-#, fuzzy
 msgid "Red Hat Satellite Welcome Message"
-msgstr "Red Hat Network のようこそメッセージ"
+msgstr "Red Hat Satellite のようこそメッセージ"
 
 #: ../server/handlers/xmlrpc/registration.py:1125
-#, fuzzy
 msgid "Red Hat Satellite Privacy Statement"
-msgstr "Red Hat Network プライバシーステートメント"
+msgstr "Red Hat Satellite プライバシーステートメント"
 
 #: ../server/handlers/xmlrpc/registration.py:1146
 msgid "Expected a dictionary as a product argument"
@@ -162,16 +158,15 @@ msgstr ""
 "せん"
 
 #: ../server/importlib/userAuth.py:204
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   %s アカウントは本サーバー上では非アクティブになっていま"
-"す。\n"
-"                   組織の管理者にお問い合わせください。"
+"               %s アカウントは本サーバー上では無効化されています。\n"
+"                   詳しくは組織の管理者にお問い合わせください。"
 
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
@@ -240,9 +235,8 @@ msgid ""
 "Your account does not have access to any channels matching "
 "(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
-"ご使用のアカウントには (release='%(release)s', "
-"arch='%(arch)s')%(www_activation)s に一致するチャンネルのいずれにもアクセスが"
-"ありません。"
+"ご使用のアカウントには (release='%(release)s', arch='%(arch)s')%(www_activation)s "
+"に一致するチャンネルのいずれにもアクセスがありません"
 
 #: ../server/rhnChannel.py:2002
 msgid ""
@@ -259,7 +253,7 @@ msgstr ""
 #: ../server/rhnChannel.py:2012
 #, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr "リリース (%s, %s にはサブスクリプションパーミッションが足りません。"
+msgstr "リリース (%s, %s にはサブスクリプション許可が不足しています"
 
 #. Various messages that can be reused
 #.
@@ -271,7 +265,7 @@ msgid "System Registered but Inactive"
 msgstr "システムは登録されていますが非アクティブになっています"
 
 #: ../server/rhnChannel.py:2277
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Invalid Architecture and OS release combination (%s, %s).\n"
@@ -285,14 +279,12 @@ msgid ""
 msgstr ""
 "\n"
 "アーキテクチャとオペレーティングシステムのリリースの組み合わせ (%s、 %s)\n"
-"が無効です。 システムは登録されていますが、 チャンネルにサブスクライブされ"
-"て\n"
-"いないため更新は行われません。 製品のアクティベートをまだ行っていない場合は\n"
-"次の Web サイトに行き製品のアクティベートを行ってください。\n"
+"が正しくありません。システムは登録されていますが、チャンネルのサブスクリプション\n"
+"が行なわれていないため更新は行われません。 製品のアクティベーションが\n"
+"未実施の場合は、下記の Web サイトにアクセスしてアクティベーションを\n"
+"行なってください:\n"
 "  \n"
-"     http://www.redhat.com/apps/activate/\n"
-"\n"
-"  "
+"     http://www.redhat.com/apps/activate/"
 
 #: ../server/rhnChannel.py:2288
 #, python-format
@@ -542,7 +534,7 @@ msgid "Unsupported server architecture."
 msgstr "未対応のサーバーアーキテクチャです。"
 
 #: ../common/rhnException.py:73
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "     The anonymous server functionality is no longer available.\n"
@@ -557,13 +549,12 @@ msgstr ""
 "\n"
 "     匿名サーバー機能は利用できなくなっています。\n"
 "\n"
-"     root になり rhn_register (Red Hat Enterprise Linux 3+ の場合は\n"
-"     up2date --register) を実行してこのシステムの再登録を行ってください。\n"
-"     このシステムに対して RHN サービスを有効にする場合は、 \n"
-"     https://%(hostname)s/rhn/systems/SystemEntitlements.do に行くか\n"
-"     https://%(hostname)s でログインしてから「概要」タブで「サブスクリプショ"
-"ン管理」\n"
-"     を選択します。"
+"     root になり mgr_register を実行してこのシステムの再登録を行ってください。\n"
+"     このシステムに対してサービスを有効にする場合は、 \n"
+"     https://%(hostname)s/rhn/systems/SystemEntitlements.do にアクセスするか、\n"
+"     https://%(hostname)s でログインしてから \"概要\" タブ内の \"サブスクリプション管理\"\n"
+"     を選択してください。\n"
+"     "
 
 #: ../common/rhnException.py:81
 msgid "Record not available in the database."
@@ -574,7 +565,7 @@ msgid "Invalid value for entry."
 msgstr "エントリには無効な値です。"
 
 #: ../common/rhnException.py:83
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "     This system does not have a valid entitlement for SUSE Manager.\n"
@@ -585,12 +576,11 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Red Hat Network 用の有効なエンタイトルメントがこのシステムにはありませ"
-"ん。\n"
-"     https://%(hostname)s/rhn/systems/SystemEntitlements.do に行くか、\n"
-"     https://%(hostname)s でログインしてから「概要」タブで「サブスクリプショ"
-"ン管理」\n"
-"     を選択してシステムに RHN サービスを有効にします。\n"
+"     このシステムには SUSE Manager 用の有効なエンタイトルメントがありません。\n"
+"     このシステムに対してサービスを有効にする場合は、\n"
+"     https://%(hostname)s/rhn/systems/SystemEntitlements.do にアクセスするか、\n"
+"     https://%(hostname)s でログインしてから \"概要\" タブ内にある \"サブスクリプション管理\"\n"
+"     を選択してください。\n"
 "     "
 
 #: ../common/rhnException.py:89
@@ -634,7 +624,6 @@ msgid "Invalid channel version."
 msgstr "無効なチャンネルバージョンです。"
 
 #: ../common/rhnException.py:100
-#, fuzzy
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -650,16 +639,12 @@ msgstr ""
 "\n"
 "     ユーザーグループのメンバーシップの上限を超えています。\n"
 "\n"
-"     ご使用のアカウントの現在の設定では別のユーザーアカウントの追加は行えませ"
-"ん。\n"
-"     RHN にサブスクライブさせることができる最小ユーザー数を変更する必要がある"
-"場合は\n"
+"     お使いのアカウントの現在の設定では、これ以上のユーザーアカウントの追加はできません。\n"
+"     サーバに対してサブスクリプションを設定できる最大ユーザ数を変更する必要がある場合は、\n"
 "     組織の管理者にご確認ください。\n"
-"     \n"
 "     "
 
 #: ../common/rhnException.py:108
-#, fuzzy
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -675,16 +660,12 @@ msgstr ""
 "\n"
 "     システムグループのメンバーシップの上限を超えています。\n"
 "\n"
-"     ご使用のアカウントの現在の設定では別のシステムプロファイルの追加は行えま"
-"せん。\n"
-"     RHN アカウントにサブスクライブさせることができる最小システムプロファイル"
-"数を\n"
-"     変更する必要がある場合は組織の管理者にご確認ください。\n"
-"     \n"
+"     お使いのアカウントの現在の設定では、これ以上のシステムプロファイルの追加はできません。\n"
+"     お使いのアカウントでサブスクリプションを設定できるシステムプロファイル数の最大値を\n"
+"     変更する必要がある場合は、組織の管理者にご確認ください。\n"
 "     "
 
 #: ../common/rhnException.py:116
-#, fuzzy
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -693,10 +674,9 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     無効なアーキテクチャです。\n"
+"     アーキテクチャが正しくありません。\n"
 "\n"
-"     このパッケージのこのアーキテクチャは Red Hat Network では対応していませ"
-"ん。\n"
+"     このパッケージのアーキテクチャは対応していません。\n"
 "     "
 
 #: ../common/rhnException.py:121
@@ -738,7 +718,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:134
-#, fuzzy
 msgid ""
 "\n"
 "     The --force rhnpush option is disabled on this server.\n"
@@ -746,8 +725,8 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     このサーバー上では --force rhnpush のオプションは無効になっています。\n"
-"     詳細については担当の Satellite 管理者にお問い合わせください。\n"
+"     このサーバーでは --force rhnpush のオプションは無効になっています。\n"
+"     詳細については SUSE Manager の管理者にお問い合わせください。\n"
 "     "
 
 #. 60-70: token errors
@@ -863,21 +842,18 @@ msgid "This user has read only API access. Action denied."
 msgstr ""
 
 #: ../common/rhnException.py:186
-#, fuzzy
 msgid "System Name cannot be less than 1 character"
-msgstr "ユーザー名は %d 文字未満にしてください"
+msgstr "システム名を 1 文字未満にすることはできません"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:190
-#, fuzzy
 msgid "SUSE Manager Proxy error."
-msgstr "RHN Proxy のエラーです。"
+msgstr "SUSE Manager Proxy のエラーです。"
 
 #: ../common/rhnException.py:191
-#, fuzzy
 msgid "SUSE Manager Proxy unable to login."
-msgstr "RHN Proxy によるログインができません。"
+msgstr "SUSE Manager Proxy によるログインができません。"
 
 #. issued by a SUSE Manager Server/Satellite to the proxy
 #: ../common/rhnException.py:193
@@ -889,18 +865,15 @@ msgid ""
 msgstr ""
 
 #: ../common/rhnException.py:197
-#, fuzzy
 msgid "SUSE Manager Proxy session token is invalid."
-msgstr "RHN Proxy セッショントークンが無効です。"
+msgstr "SUSE Manager Proxy セッショントークンが正しくありません。"
 
 #: ../common/rhnException.py:198
-#, fuzzy
 msgid "SUSE Manager Proxy session token has expired."
-msgstr "RHN Proxy セッショントークンの期限が切れています。"
+msgstr "SUSE Manager Proxy セッショントークンの期限が切れています。"
 
 #. 2000-2999: Red Hat Satellite specific errors:
 #: ../common/rhnException.py:202
-#, fuzzy
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -908,14 +881,11 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     RHN Satellite ユーザーの作成に rhn_register (Red Hat Enterprise Linux "
-"3\n"
-"     またはそれ以降の場合は up2date --register) の使用は許可されていません;\n"
+"      mgr_register 経由でのユーザ作成は許可されていません;\n"
 "     システム管理者にアカウントの作成を依頼してください。\n"
 "     "
 
 #: ../common/rhnException.py:206
-#, fuzzy
 msgid ""
 "\n"
 "     This SUSE Manager server is not allowed to use Inter Server Sync on "
@@ -923,19 +893,17 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     本 Satellite サーバーは本 Satellite での Inter Satellite Sync の使用は許"
-"可されていません。\n"
+"     この SUSE Manager サーバーでは、このサーバでの Inter Server Sync の使用が許可されていません\n"
 "     "
 
 #: ../common/rhnException.py:209
-#, fuzzy
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
 "     "
 msgstr ""
 "\n"
-"     Inter Satellite Sync は本 Satellite では無効になっています。\n"
+"     Inter Server Sync は、この SUSE Manager サーバでは無効化されています。\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -1075,14 +1043,12 @@ msgid "Error composing crash file path"
 msgstr ""
 
 #: ../common/rhnException.py:252 ../common/rhnException.py:259
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "無効なアイテムコード"
+msgstr "コンテンツエンコーディングが正しくありません"
 
 #: ../common/rhnException.py:253
-#, fuzzy
 msgid "Invalid crash name"
-msgstr "無効なパッケージ名です"
+msgstr "クラッシュ名が正しくありません"
 
 #: ../common/rhnException.py:254
 msgid "Crash reporting is disabled for this organization"
@@ -1102,7 +1068,6 @@ msgid "Error composing file path for detailed SCAP results"
 msgstr ""
 
 #: ../common/rhnException.py:306
-#, fuzzy
 msgid ""
 "\n"
 "     An error has occurred while processing your request. If this problem\n"
@@ -1113,8 +1078,8 @@ msgid ""
 msgstr ""
 "\n"
 "     要求の処理中にエラーが発生しました。 問題が解決しない場合は、\n"
-"     bugzilla.redhat.com にてバグ報告を提出してください。\n"
-"     バグ報告を行う場合は、 エラーが起きたときに何を行おうとしていたのか、\n"
+"     scc.suse.com にてバグ報告を提出してください。\n"
+"     バグ報告を行なう場合は、 エラーが起きたときに何を行なおうとしていたのか、\n"
 "     また問題を再現する場合の手順などを詳しく記入していただけるよう\n"
 "     お願いします。\n"
 
@@ -1255,9 +1220,9 @@ msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr ""
 
 #: ../satellite_tools/messages.py:75
-#, fuzzy, python-format
+#, python-format
 msgid "    Extinct package:  %s"
-msgstr "パッケージが期待されています、 次ではありません: %s"
+msgstr "    廃止されたパッケージ:  %s"
 
 #: ../satellite_tools/messages.py:76
 #, python-format
@@ -1324,9 +1289,8 @@ msgid "   * WARNING: this may be a slow process."
 msgstr ""
 
 #: ../satellite_tools/messages.py:90
-#, fuzzy
 msgid "Linking packages to channels"
-msgstr "競合しているベースチャンネル"
+msgstr "チャンネルに対してパッケージのリンクを作成しています"
 
 #: ../satellite_tools/messages.py:91
 #, python-format
@@ -1550,9 +1514,8 @@ msgid "      %s %-40s %4s %s"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:773
-#, fuzzy
 msgid "base-channels"
-msgstr "競合しているベースチャンネル"
+msgstr "ベースチャンネル"
 
 #: ../satellite_tools/satsync.py:786 ../satellite_tools/satsync.py:1603
 msgid "NONE RELEVANT"
@@ -1655,9 +1618,9 @@ msgid "Downloading source package metadata"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:1338 ../satellite_tools/satsync.py:2027
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to save file %s: %s"
-msgstr "システムにエンタイトルメントを付与できません"
+msgstr "ファイル %s を保存できません: %s"
 
 #. for
 #. Retried a number of times and it still failed; log the
@@ -1849,9 +1812,8 @@ msgid "org to which the sync imports data. defaults to the admin account"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2250
-#, fuzzy
 msgid "print the configuration and exit"
-msgstr "設定チャンネルが存在していません"
+msgstr "設定を印刷して終了"
 
 #: ../satellite_tools/satsync.py:2252
 msgid "alternative server with which to connect (hostname)"
@@ -1928,9 +1890,9 @@ msgid "ERROR: The --master option is only valid with the --mount-point option"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2351
-#, fuzzy, python-format
+#, python-format
 msgid "ERROR: Unable to lookup Org Id %s"
-msgstr "サーバーを検出できません"
+msgstr "エラー: 組織 ID %s を参照できません"
 
 #: ../satellite_tools/satsync.py:2360
 msgid ""
@@ -2017,9 +1979,8 @@ msgid "  11 - Error parsing XML stream"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2488
-#, fuzzy
 msgid "  12 - Channel do not exist"
-msgstr "指定されたチャンネルが存在していません。"
+msgstr "  12 - チャンネルが存在していません"
 
 #: ../satellite_tools/satsync.py:2489
 msgid "  13 - SQL error during importing package metadata"

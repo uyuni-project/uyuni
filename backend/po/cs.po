@@ -1776,8 +1776,8 @@ msgid ""
 "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
 "satellite-sync\" for more information."
 msgstr ""
-"POUZE DEBUG: max. velikost dávky pro zpracování importu XML/databáze (1 ..%s)"
-". Další informace: \"man satellite-sync\"."
+"POUZE DEBUG: max. velikost dávky pro zpracování importu XML/databáze (1 .."
+"%s). Další informace: \"man satellite-sync\"."
 
 #: ../satellite_tools/satsync.py:2205
 msgid "alternative SSL CA Cert (fullpath to cert file)"
@@ -1916,8 +1916,8 @@ msgid ""
 "the fully qualified domain name of the master Satellite. Valid with --mount-"
 "point only. Required if you want to import org data and channel permissions."
 msgstr ""
-"plně kvalifikovaný doménový název serveru Master Satellite. Platí pouze s "
-"--mount-point. Vyžadován, chcete-li importovat data organizace a oprávnění "
+"plně kvalifikovaný doménový název serveru Master Satellite. Platí pouze s --"
+"mount-point. Vyžadován, chcete-li importovat data organizace a oprávnění "
 "kanálu."
 
 #: ../satellite_tools/satsync.py:2274
@@ -1990,8 +1990,8 @@ msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
-"CHYBA: Momentálně nejsou importovány žádné kanály; zkuste mgr-inter-sync "
-"--list-kanály; pak mgr-inter-sync -c chn0 -c chn1 ..."
+"CHYBA: Momentálně nejsou importovány žádné kanály; zkuste mgr-inter-sync --"
+"list-kanály; pak mgr-inter-sync -c chn0 -c chn1 ..."
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
