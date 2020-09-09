@@ -107,16 +107,16 @@ To check for the initial log in, prefer ```Then I am logged in```.
   When I follow the left menu "Systems > System List > System Currency"
 ```
 
-* Go to Admin => Setup Wizard
+* Go to Admin => Setup Wizard => Products
 
 ```cucumber
-  When I am on the Admin page
+  Given I am on the Products page
 ```
 
 * Go to Admin => Organizations
 
 ```cucumber
-  When I am on the Organizations page
+  Given I am on the Organizations page
 ```
 
 * Go to Patches => Patches => Relevant

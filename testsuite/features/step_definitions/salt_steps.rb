@@ -615,30 +615,22 @@ When(/^I accept "([^"]*)" key$/) do |host|
 end
 
 When(/^I go to the minion onboarding page$/) do
-  steps %(
-    When I follow the left menu "Salt > Keys"
-    )
+  step %(I follow the left menu "Salt > Keys")
 end
 
 When(/^I go to the bootstrapping page$/) do
-  steps %(
-    When I follow the left menu "Systems > Bootstrapping"
-    )
+  step %(I follow the left menu "Systems > Bootstrapping")
 end
 
 When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
-    steps %(
-     And I wait until I see the name of "#{minion}", refreshing the page
-      )
+    step %(I wait until I see the name of "#{minion}", refreshing the page)
   end
 end
 
 When(/^I refresh page until I do not see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
-    steps %(
-     And I wait until I do not see the name of "#{minion}", refreshing the page
-      )
+    step %(I wait until I do not see the name of "#{minion}", refreshing the page)
   end
 end
 

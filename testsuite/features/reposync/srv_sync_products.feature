@@ -16,18 +16,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: Use the products filter
-    Given I am on the Admin page
-    When I follow "SUSE Products" in the content area
-    And I wait until I see "Product Description" text
-    And I enter "RHEL7" as the filtered product description
+    Given I am on the Products page
+    When I enter "RHEL7" as the filtered product description
     Then I should see a "RHEL7 Base x86_64" text
 
 @scc_credentials
   Scenario: View the channels list in the products page
-    Given I am on the Admin page
-    When I follow "SUSE Products" in the content area
-    And I wait until I see "Product Description" text
-    And I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
+    Given I am on the Products page
+    When I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64"
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
@@ -35,10 +31,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: Add a product and one of its modules
-    Given I am on the Admin page
-    When I follow "SUSE Products" in the content area
-    And I wait until I see "Product Description" text
-    And I enter "SUSE Linux Enterprise Server 12 SP2" as the filtered product description
+    Given I am on the Products page
+    When I enter "SUSE Linux Enterprise Server 12 SP2" as the filtered product description
     And I select "x86_64" in the dropdown list of the architecture filter
     And I select "SUSE Linux Enterprise Server 12 SP2 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 12 SP2 x86_64" selected
@@ -53,10 +47,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
   Scenario: Add a product with recommended enabled
-    Given I am on the Admin page
-    When I follow "SUSE Products" in the content area
-    And I wait until I see "Product Description" text
-    And I enter "SUSE Linux Enterprise Server 15" as the filtered product description
+    Given I am on the Products page
+    When I enter "SUSE Linux Enterprise Server 15" as the filtered product description
     And I select "x86_64" in the dropdown list of the architecture filter
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15 x86_64"
     Then I should see a "Basesystem Module 15 x86_64" text
