@@ -1,6 +1,7 @@
 - support installer update channels during autoinstallation
 - migrate all occurrences of kickstart to autoinstall in cobbler database (bsc#1169780)
 - define bootstrap repo data for SUSE Manager Proxies (bsc#1174470)
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------

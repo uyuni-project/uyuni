@@ -24,6 +24,7 @@
 - Add virtual network Start, Stop and Delete actions
 - Add virtual network list page
 - update default product tree tag and set Beta tag again
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - Update package version to 4.2.0
 
 -------------------------------------------------------------------
