@@ -70,12 +70,12 @@
           <target>理由</target>
         </trans-unit>
         <trans-unit id="column.tagged-systems">
-          <source>Tagged Systems</source> <context-group name="ctx">
+          <source>Tagged Systems</source> <target>タグ付きのシステム</target><context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
         </trans-unit>
         <trans-unit id="column.tag-created">
-          <source>Tag Created</source> <context-group name="ctx">
+          <source>Tag Created</source> <target>タグ作成日時</target><context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/Rollback.do</context>
           </context-group>
         </trans-unit>
@@ -194,11 +194,12 @@
         <context-group name="ctx">
           <context context-type="sourcefile">schedule-options.jspf</context>
         </context-group>
-        <target>新規アクションチェーン</target>
+        <target>新規動作チェーン</target>
       </trans-unit>
       <!--# Struts Validator Error Messages-->
       <trans-unit id="errors.invalid.value">
         <source>Only valid values for {0} are ({1})</source>
+        <target>{0} に対して設定可能な値は ({1}) のみです</target>
       </trans-unit>
       <trans-unit id="errors.suffix">
         <source>&lt;/li&gt;</source>
@@ -238,6 +239,7 @@
       </trans-unit>
       <trans-unit id="errors.config_channel_label">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
+        <target>{0} には使用できない文字が含まれています。ここには英数字のほか、 '-', '_' を使用することができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with configuration channel label field</context>
         </context-group>
@@ -308,6 +310,7 @@
       </trans-unit>
       <trans-unit id="errors.integer.minmax">
         <source>{0} must be a whole number between {1} and {2}.</source>
+        <target>{0} は {1} から {2} までの範囲の整数でなければなりません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a whole number.</context>
@@ -323,6 +326,7 @@
       </trans-unit>
       <trans-unit id="errors.float.minmax">
         <source>{0} must be a decimal number between {1} and {2}.</source>
+        <target>{0} は {1} から {2} までの範囲の 10 進数でなければなりません。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that has required format fields</context>
           <context context-type="paramnotes">Count must be a decimal number.</context>
@@ -330,6 +334,7 @@
       </trans-unit>
       <trans-unit id="errors.unexpected">
         <source>An unexpected error has occurred during the request.</source>
+        <target>要求の処理中に予期しないエラーが発生しました。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page where an unexpected error occurred.</context>
         </context-group>
@@ -346,7 +351,7 @@
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
         <trans-unit id="lookup.jsp.title.actionchain">
-          <source>We're sorry, but the Action Chain could not be found.</source> </trans-unit>
+          <source>We're sorry, but the Action Chain could not be found.</source> <target>申し訳ありません。動作チェーンが見つかりませんでした。</target></trans-unit>
         <trans-unit id="lookup.jsp.title.user">
           <source>We're sorry, but the user could not be found.</source> <target>残念ながら、このユーザーは見つかりませんでした。</target>
         </trans-unit>
@@ -360,8 +365,7 @@
           <source>We're sorry, but the action could not be found.</source> <target>残念ながら、この動作は見つかりませんでした。</target>
         </trans-unit>
         <trans-unit id="lookup.jsp.title.errata">
-          <source>We're sorry, but the patch could not be found.</source> <target>残念ながら、このエラータは見つかりませんでした。</target>
-        </trans-unit>
+          <source>We're sorry, but the patch could not be found.</source> <target>残念ながら、このパッチは見つかりませんでした。</target> </trans-unit>
         <trans-unit id="lookup.jsp.title.system">
           <source>We're sorry, but the system could not be found.</source> <target>残念ながら、このシステムは見つかりませんでした。</target>
         </trans-unit>
@@ -405,7 +409,7 @@
           <source>This error may have occurred in one of three ways:</source> <target>このエラーは次の 3 通りの状況のいずれかで発生した可能性があります。</target>
         </trans-unit>
         <trans-unit id="lookup.jsp.actionchain.reason1">
-          <source>The Action Chain requested does not exist. This is most likely if the Action Chain has been already scheduled and deleted.</source> </trans-unit>
+          <source>The Action Chain requested does not exist. This is most likely if the Action Chain has been already scheduled and deleted.</source> <target>要求された動作チェーンは存在しません。動作チェーンが既にスケジュールされているか、削除されている可能性があります。</target></trans-unit>
         <trans-unit id="lookup.jsp.reason1.user">
           <source>The user requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたユーザーが存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
@@ -422,8 +426,7 @@
           <source>The channel requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたチャンネルは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason1.errata">
-          <source>The patch requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたエラータは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
-        </trans-unit>
+          <source>The patch requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求されたパッチは存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target> </trans-unit>
         <trans-unit id="lookup.jsp.reason1.action">
           <source>The action requested does not exist. This is most likely if you arrived at this page through bookmarks or some other non-hyperlink.</source> <target>要求された動作は存在していません。これは、主にハイパーリンクではない手段またはブックマークを使ってこのページにたどり着いた場合に起こります。</target>
         </trans-unit>
@@ -461,8 +464,7 @@
           <source>You do not have permission to view this channel.</source> <target>このチャンネルを表示するパーミッションがありません。</target>
         </trans-unit>
         <trans-unit id="lookup.jsp.reason2.errata">
-          <source>You do not have permission to view this patch.</source> <target>このエラータを表示するパーミッションがありません。</target>
-        </trans-unit>
+          <source>You do not have permission to view this patch.</source> <target>このパッチを表示するパーミッションがありません。</target> </trans-unit>
         <trans-unit id="lookup.jsp.reason2.action">
           <source>You do not have permission to view this action.</source> <target>この動作を表示するパーミッションがありません。</target>
         </trans-unit>
@@ -684,6 +686,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="404.jsp.reason2">
         <source>If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.</source>
+        <target>リンクをたどった場合、リンクが誤っていたり古かったりすることがあります。このような場合はブラウザの戻るボタンを押して戻って別のリンクを試すか、もしくは上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページを検索してください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -694,6 +697,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="404.jsp.reason3">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark.</source>
+        <target>ブックマークを使用している場合、ブックマークを作成した後に異なる場所にページが移動していることがあります。このような場合は、上部 (もしくは左) のナビゲーションバーをお使いのうえ、必要なページを検索してブックマークを更新してください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -739,6 +743,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="common.jsp.noscript">
         <source>Some features require JavaScript in order to work properly. Make sure you enable JavaScript in your browser.</source>
+        <target>機能によっては、正しく動作させるのに JavaScript が必要となることがあります。ブラウザで JavaScript が有効化されていることをご確認ください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">All pages</context>
         </context-group>
@@ -965,7 +970,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ では、ご使用のシステムに該当するエラータがリリースされた時に電子メールで通知を行います。また、ご使用のシステムのイベントの要約もメールで毎日送信します。</target>
+        <target>@@PRODUCT_NAME@@ では、ご使用のシステムに該当するパッチがリリースされた時に電子メールで通知を行ないます。また、ご使用のシステムのイベントの要約もメールで毎日送信します。</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivenote">
         <source>Receive email notifications</source>
@@ -976,6 +981,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="preferences.jsp.receivetaskonote">
         <source>Receive taskomatic notifications</source>
+        <target>taskomatic 通知の受信</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -1274,7 +1280,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/header.jsp</context>
         </context-group>
-        <target>エラータ</target>
+        <target>パッチ</target>
       </trans-unit>
       <trans-unit id="header.jsp.singleSystemSelected">
         <source>system selected</source>
@@ -1296,6 +1302,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
         <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
+        <target>&lt;a href="/rhn/help/Copyright.do"&gt;著作権情報&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
@@ -1330,7 +1337,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/errata-legend.jsp</context>
         </context-group>
-        <target>エラータ記号</target>
+        <target>パッチ記号</target>
       </trans-unit>
       <trans-unit id="errata-legend.jsp.security">
         <source>Security</source>
@@ -1478,42 +1485,49 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.title">
         <source>Visualization Hierarchy</source>
+        <target>視覚化階層</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.notcheckin">
         <source>System not checking in</source>
+        <target>チェックインしていないシステム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.notpatched">
         <source>Not patched system</source>
+        <target>パッチ未適用のシステム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.root">
         <source>SUSE Manager</source>
+        <target>SUSE Manager</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.vhm">
         <source>Virtual Host Manager</source>
+        <target>仮想ホストマネージャ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.group">
         <source>Group</source>
+        <target>グループ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.system">
         <source>System</source>
+        <target>システム</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
@@ -2494,6 +2508,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="actions.jsp.totalnote">
         <source>Note: For multi-system scheduled actions, the ability to cancel individual systems means that the number of clients mentioned in the Action column may not match the number in Total.</source>
+        <target>注意: 複数のシステムのスケジュール処理の場合、個別のシステムに対するキャンセルを実行すると、アクション列内に書かれたクライアント数と合計数が一致しない場合があります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
@@ -2621,6 +2636,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="actionchains.jsp.summarydetail">
         <source>You can create a new Action Chain by scheduling any supported operation, such as &lt;a href="/rhn/ssm/PackageInstall.do"&gt;installing&lt;/a&gt; or &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;upgrading&lt;/a&gt; a package, running a &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote command&lt;/a&gt; or &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;deploying a configuration file&lt;/a&gt;. Both System Set Manager and single system actions are supported.</source>
+        <target>任意の対応する操作をスケジュールすることで、新しい動作チェーンを作成することができます。これにはたとえばパッケージの &lt;a href="/rhn/ssm/PackageInstall.do"&gt;インストール&lt;/a&gt; や &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;アップグレード&lt;/a&gt; のほか、 &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;リモートコマンド&lt;/a&gt; や &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;設定ファイルの配置&lt;/a&gt; などの処理があります。また、システムセットマネージャと単一システムの処理の両方に対応しています。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
@@ -2677,6 +2693,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="actionchain.jsp.summarydetail">
         <source>You add Actions to this Action Chain by scheduling any supported operation, such as installing or upgrading a package, running a remote command or deploying a configuration file. Both System Set Manager and single system actions are supported.</source>
+        <target>任意の対応する操作をスケジュールすることで、新しい動作チェーンを作成することができます。これにはたとえばパッケージのインストールやアップグレードのほか、リモートコマンドや設定ファイルの配置などの処理があります。また、システムセットマネージャと単一システムの処理の両方に対応しています。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -2749,7 +2766,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
-        <target>エラータ {0} の適用先</target>
+        <target>パッチ {0} の適用先</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.script.run">
         <source>Run a remote command on</source>
@@ -2774,6 +2791,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="actionchain.jsp.configfiles.diff">
         <source>Compare {0} on</source>
+        <target>{0} の比較対象</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -2794,6 +2812,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="actionchain.jsp.states.apply">
         <source>Apply Highstate</source>
+        <target>highstate の適用</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -2835,6 +2854,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="actionchain.jsp.labeltoolong">
         <source>Could not save the Action Chain, chain label is too long (&gt;= 256 chars).</source>
+        <target>動作チェーンの保存ができませんでした。チェーンのラベルが長すぎます (&gt;= 256 文字) 。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -2883,12 +2903,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="actionchain.jsp.channels.subscribe">
         <source>Change channels subscription on</source>
+        <target>チャンネルのサブスクリプションの変更先</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.virt.create">
         <source>Create or update a virtual machine on</source>
+        <target>仮想マシンの作成または更新先</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -3191,7 +3213,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target>関連エラータ</target>
+        <target>関連するパッチ</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.upgrade">
         <source>Upgrade Packages</source>
@@ -3293,7 +3315,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
-        <target>すべてのエラータ</target>
+        <target>すべての種類</target>
       </trans-unit>
       <!-- == AUDIT == -->
       <trans-unit id="audit.overview.jsp.header">
@@ -3331,7 +3353,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target>エラータはありません</target>
+        <target>パッチはありません</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.advisory">
         <source>Advisory</source>
@@ -3355,14 +3377,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
-        <target>ご使用のシステムに該当するエラータ</target>
+        <target>ご使用のシステムに該当するパッチ</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.norelevanterrata">
         <source>No Patches Relevant to Your Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
         </context-group>
-        <target>ご使用のシステムに該当するエラータはありません</target>
+        <target>ご使用のシステムに該当するパッチはありません</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.type">
         <source>Type</source>
@@ -3425,14 +3447,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target>該当エラータ</target>
+        <target>該当パッチ</target>
       </trans-unit>
       <trans-unit id="errata.jsp.summary">
         <source>The following patches may currently be applied to this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target>現時点で、次のエラータをこのシステムに適用することができます。</target>
+        <target>現時点では、下記のパッチをこのシステムに適用することができます。</target>
       </trans-unit>
       <trans-unit id="errata.jsp.status">
         <source>Status</source>
@@ -3446,7 +3468,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
-        <target>エラータの適用</target>
+        <target>パッチの適用</target>
       </trans-unit>
       <trans-unit id="errata.jsp.scheduled">
         <source>Update Scheduled</source>
@@ -3467,7 +3489,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
-        <target>エラータ更新の確認</target>
+        <target>パッチ更新の確認</target>
       </trans-unit>
       <trans-unit id="errataconfirm.jsp.confirm">
         <source>Confirm</source>
@@ -3481,14 +3503,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>エラータ {0}-{1} が作成されました。</target>
+        <target>パッチ {0}-{1} が作成されました。</target>
       </trans-unit>
       <trans-unit id="errata.edit.toolbar">
         <source>Patch:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>エラータ:</target>
+        <target>パッチ:</target>
       </trans-unit>
       <trans-unit id="errata.edit.editerrata">
         <source>Edit Patch</source>
@@ -3496,21 +3518,21 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
-        <target>エラータの編集</target>
+        <target>パッチの編集</target>
       </trans-unit>
       <trans-unit id="errata.edit.instructions">
         <source>Edit patch here. Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>ここでエラータを編集します。必須項目には &lt;span class="required-form-field"&gt;*&lt;/span&gt; が付いています。</target>
+        <target>ここではパッチを編集することができます。必須の項目には &lt;span class="required-form-field"&gt;*&lt;/span&gt; 印が付いています。</target>
       </trans-unit>
       <trans-unit id="errata.edit.updateerrata">
         <source>Update Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>エラータの更新</target>
+        <target>パッチの更新</target>
       </trans-unit>
       <trans-unit id="errata.edit.submit">
         <source>Submit</source>
@@ -3531,14 +3553,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>これでこのエラータを発行できるようになりました。</target>
+        <target>これでこのパッチを発行できるようになりました。</target>
       </trans-unit>
       <trans-unit id="errata.edit.publisherrata">
         <source>Publish Patch</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>エラータの発行</target>
+        <target>パッチの発行</target>
       </trans-unit>
       <trans-unit id="errata.edit.sendnotification">
         <source>Send Notification</source>
@@ -3553,21 +3575,21 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>このエラータに関する Email 通知を送信することができます。</target>
+        <target>このパッチに関する電子メール通知を送信することができます。</target>
       </trans-unit>
       <trans-unit id="errata.edit.senderratamail">
         <source>Send Patch Mail</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>エラータメールの送信</target>
+        <target>パッチメールの送信</target>
       </trans-unit>
       <trans-unit id="errata.edit.updated">
         <source>Patches updated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>エラータは更新されました。</target>
+        <target>パッチを更新しました。</target>
       </trans-unit>
       <trans-unit id="errata.edit.deletebug">
         <source>Delete Bug</source>
@@ -3581,7 +3603,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>バグ &lt;strong&gt;{0}&lt;/strong&gt; はエラータ &lt;strong&gt;{1}&lt;/strong&gt; から削除されました。</target>
+        <target>バグ &lt;strong&gt;{0}&lt;/strong&gt; はパッチ &lt;strong&gt;{1}&lt;/strong&gt; から削除されました。</target>
       </trans-unit>
       <trans-unit id="errata.edit.commadelimited">
         <source>(Comma delimited)</source>
@@ -3595,14 +3617,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>このアドバイザリ名が付くエラータはすでに存在しています。</target>
+        <target>このアドバイザリ名が付くパッチはすでに存在しています。</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.rhAdvisoryName">
         <source>A Patch Advisory cannot begin with the letters 'RH'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>エラータのアドバイザリは 'RH' で始めることはできません。</target>
+        <target>パッチのアドバイザリは 'RH' で始めることはできません。</target>
       </trans-unit>
       <trans-unit id="errata.edit.error.id">
         <source>Bug ID is required</source>
@@ -3658,7 +3680,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
-        <target>以下でこのエラータに関連付ける必要があるチャンネルを選択します。このエラータにより参照されるパッケージ数がチャンネル名の後に表示されます。このエラータを特定のチャンネルに適用したくない場合は、以下で選択を外します。</target>
+        <target>以下ではこのパッチに関連付ける必要があるチャンネルを選択します。このパッチにより参照されるパッケージ数がチャンネル名の後に表示されます。このパッチを特定のチャンネルに適用したくない場合は、以下で選択を外してください。</target>
       </trans-unit>
       <trans-unit id="errata.channels.updated.singular">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
@@ -3667,7 +3689,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="paramnotes">Errata foobar has been
                 successfully assigned to 1 channel.</context>
         </context-group>
-        <target>エラータ &lt;strong&gt;{0}&lt;/strong&gt; は &lt;strong&gt;{1}&lt;/strong&gt; チャンネルに正常に割り当てられました。</target>
+        <target>パッチ &lt;strong&gt;{0}&lt;/strong&gt; は &lt;strong&gt;{1}&lt;/strong&gt; チャンネルに正常に割り当てられました。</target>
       </trans-unit>
       <trans-unit id="errata.channels.updated.plural">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
@@ -3676,7 +3698,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="paramnotes">Errata foobar has been
                 successfully assigned to 3 channels.</context>
         </context-group>
-        <target>エラータ &lt;strong&gt;{0}&lt;/strong&gt; は &lt;strong&gt;{1}&lt;/strong&gt; チャンネルに正常に割り当てられました。</target>
+        <target>パッチ &lt;strong&gt;{0}&lt;/strong&gt; は &lt;strong&gt;{1}&lt;/strong&gt; チャンネルに正常に割り当てられました。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirmpackageaddition">
         <source>Confirm Package Addition</source>
@@ -3694,7 +3716,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target>以下は、このエラータに追加を選択しているパッケージの一覧です。</target>
+        <target>下記は、このパッチに追加するよう選択しているパッケージの一覧です。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirmpackageremoval">
         <source>Confirm Package Removal</source>
@@ -3712,7 +3734,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target>以下は、このエラータから削除の選択をしているパッケージの一覧です。「確認」をクリックしてこれらのパッケージを削除します。</target>
+        <target>以下は、このパッチから削除の選択をしているパッケージの一覧です。 '確認' を押すとこれらのパッケージを削除します。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirm">
         <source>Confirm</source>
@@ -3730,7 +3752,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/ListPackages.do
             </context>
         </context-group>
-        <target>エラータのパッケージ</target>
+        <target>パッチのパッケージ</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.removepackages">
         <source>Remove Packages</source>
@@ -3748,7 +3770,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/ListPackages.do
             </context>
         </context-group>
-        <target>次のパッケージはこのエラータに関連付けられています。このエラータからパッケージを削除するには、パッケージを選択して下記の「パッケージの削除」をクリックします。このエラータにパッケージを追加するには、上記の「追加」をクリックします。</target>
+        <target>次のパッケージはこのパッチに関連付けられています。このパッチからパッケージを削除するには、パッケージを選択して下記の 'パッケージの削除' を押してください。このパッチにパッケージを追加するには、上記の '追加' を押してください。</target>
       </trans-unit>
       <trans-unit id="errata.publish.toolbar">
         <source>Publish Patch:</source>
@@ -3757,7 +3779,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>エラータの発行: </target>
+        <target>パッチの発行:</target>
       </trans-unit>
       <trans-unit id="errata.publish.instructions">
         <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
@@ -3766,7 +3788,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>このエラータの発行を確認してください。このエラータを発行すると、以下に選択されたチャンネルすべてに対して利用可能になります。</target>
+        <target>このパッチの発行を確認してください。このパッチを発行すると、以下に選択されたチャンネルすべてに対して利用可能になります。</target>
       </trans-unit>
       <trans-unit id="errata.publish.channelname">
         <source>Channel Name</source>
@@ -3793,7 +3815,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>エラータの発行</target>
+        <target>パッチの発行</target>
       </trans-unit>
       <trans-unit id="errata.publish.nochannels">
         <source>There are no channels available.</source>
@@ -3811,7 +3833,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
-        <target>発行されるエラータは少なくとも 1 チャンネルに属していなければなりません。</target>
+        <target>少なくとも 1 つのチャンネルを選択しなければなりません。</target>
       </trans-unit>
       <trans-unit id="errata.notify.senderratanotification">
         <source>Send Patch Notification</source>
@@ -3820,7 +3842,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target>エラータ通知を送信</target>
+        <target>パッチ通知を送信</target>
       </trans-unit>
       <trans-unit id="errata.notify.instructions">
         <source>You can send email to the administrators of systems to which this patch applies.</source>
@@ -3829,7 +3851,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target>このエラータを適用するシステムの管理者に電子メールを送信することができます。</target>
+        <target>このパッチを適用するシステムの管理者に電子メールを送信することができます。</target>
       </trans-unit>
       <trans-unit id="errata.notify.success">
         <source>A patch mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
@@ -3838,7 +3860,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target>エラータメール更新が &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt; に対してスケジュールされています。</target>
+        <target>パッチメール更新が &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt; に対してスケジュールされています。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.erratapackages">
         <source>Patches Packages</source>
@@ -3847,7 +3869,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/Packages.do
             </context>
         </context-group>
-        <target>エラータのパッケージ</target>
+        <target>パッチのパッケージ</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.addpackages">
         <source>Add Packages</source>
@@ -3865,7 +3887,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
-        <target>このエラータに追加できるパッケージの一覧です。「表示」選択ボックスで使用できるパッケージセットを制限することができます。このエラータにパッケージを追加するには、以下でパッケージを選択して「パッケージの追加」をクリックします。</target>
+        <target>これは利用可能なパッチの一覧です。このパッチに対してパッケージを追加するには、それらを選択して 'パッケージの追加' を押してください。 &lt;br/&gt; 下記のドロップダウンリストを使用すると、チャンネルで利用可能なパッケージの表示を制限することもできます。</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel">
         <source>View:</source>
@@ -3928,7 +3950,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; パッケージがエラータ &lt;strong&gt;{1}&lt;/strong&gt; に追加されました</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 個のパッケージがパッチ &lt;strong&gt;{1}&lt;/strong&gt; に追加されました</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.singular">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -3937,7 +3959,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; パッケージがエラータ &lt;strong&gt;{1}&lt;/strong&gt; に追加されました</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 個のパッケージがパッチ &lt;strong&gt;{1}&lt;/strong&gt; に追加されました</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.plural">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -3946,7 +3968,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; パッケージがエラータ &lt;strong&gt;{1}&lt;/strong&gt; から削除されました</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 個のパッケージがパッチ &lt;strong&gt;{1}&lt;/strong&gt; から削除されました</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.singular">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -3955,35 +3977,35 @@ Satellite の 組織管理者でないとユーザーを削除できません。
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; パッケージがエラータ &lt;strong&gt;{1}&lt;/strong&gt; から削除されました</target>
+        <target>&lt;strong&gt;{0}&lt;/strong&gt; 個のパッケージがパッチ &lt;strong&gt;{1}&lt;/strong&gt; から削除されました</target>
       </trans-unit>
       <trans-unit id="errata.overview.jsp.summary">
         <source>The following patches apply to at least one system to which you have administrative access.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
-        <target>次のエラータは、管理アクセスを有する1 つ以上のシステムに適用されます。</target>
+        <target>次のパッチは、管理アクセスを有する1 つ以上のシステムに適用されます。</target>
       </trans-unit>
       <trans-unit id="errata.all.jsp.summary">
         <source>The following patch list represents all patches accessible by your organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
-        <target>次のエラータ一覧はお客様の企業/組織がアクセスできるすべてのエラータを表しています。</target>
+        <target>次のパッチ一覧はお客様の企業／組織がアクセスできるすべてのパッチを表しています。</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary">
         <source>Below is a list of systems affected by this patch.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>以下は、このエラータの影響を受けるシステムの一覧です。</target>
+        <target>以下は、このパッチの影響を受けるシステムの一覧です。</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl">
         <source>You can select one or more systems and apply this patch to them. Only systems with Management system type can be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>1 つ以上のシステムを選択してこのエラータを適用することができます。選択できるのは Management サービスのエンタイトルメントを有するシステムのみになります。</target>
+        <target>1 つ以上のシステムを選択してこのパッチを適用することができます。選択できるのは Management サービスのエンタイトルメントを有するシステムのみになります。</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.header">
         <source>Affected Systems</source>
@@ -3997,7 +4019,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
-        <target>エラータの適用</target>
+        <target>パッチの適用</target>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.status">
         <source>Status</source>
@@ -4039,7 +4061,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
-        <target>エラータ更新の確認:</target>
+        <target>パッチ更新の確認:</target>
       </trans-unit>
       <trans-unit id="confirm.jsp.summary">
         <source>The following systems will have &lt;strong&gt;{0}&lt;/strong&gt; applied to them:</source>
@@ -4414,14 +4436,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
-        <target>エラータの検索</target>
+        <target>高度な検索</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.summary">
         <source>Advanced Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>エラータ検索は @@PRODUCT_NAME@@ によってリリースされた全エラータセットからの検索結果を返します。</target>
+        <target>高度な検索は @@PRODUCT_NAME@@ によってリリースされた全てのパッチセットからの検索結果を返します。</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.instructions">
         <source>Specify your search criteria below.</source>
@@ -4449,7 +4471,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>エラータアドバイザリ</target>
+        <target>パッチアドバイザリ</target>
       </trans-unit>
       <trans-unit id="simple_errata_search">
         <source>Synopsis</source>
@@ -4463,7 +4485,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>エラータアドバイザリ (例: RHBA-2007:0113)</target>
+        <target>パッチアドバイザリ (例: slessp1-glibc)</target>
       </trans-unit>
       <trans-unit id="errata_search_by_package_name">
         <source>Package Name (ex: kernel)</source>
@@ -4512,7 +4534,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>エラータはありません。</target>
+        <target>パッチがありません。</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch.tip">
         <source>Use 'all fields' to search synopsis, description, topic, or solution.</source>
@@ -4526,7 +4548,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>検索するエラータの種類:　</target>
+        <target>検索するパッチの種類:</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.issueDate">
         <source>Issue Date</source>
@@ -4537,35 +4559,35 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary">
         <source>&lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
-        <target> &lt;p&gt;次のエラータ一覧はお客様の企業/組織が所有するエラータになります。&lt;/p&gt; &lt;p&gt;エラータの詳細やそのエラータが適用されるパッケージの一覧を編集するには、エラータのアドバイザリをクリックします。&lt;/p&gt;</target>
+        <target>&lt;p&gt;次のパッチ一覧はお客様の企業／組織が所有するパッチになります。&lt;/p&gt; &lt;p&gt;詳細や適用先パッケージの一覧を編集するには、パッチのアドバイザリの部分を押してください。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.unpublishederrata">
         <source>Unpublished Patches</source>
-        <target>未発行のエラータ</target>
+        <target>未発行のパッチ</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt">
         <source>Patches Management</source>
-        <target>エラータ管理</target>
+        <target>パッチ管理</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nounpublishederrata">
         <source>No Unpublished Patches</source>
-        <target>未発行のエラータはありません</target>
+        <target>未発行のパッチはありません</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.nopublishederrata">
         <source>No Published Patches</source>
-        <target>発行されたエラータはありません</target>
+        <target>発行されたパッチはありません</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.publishederrata">
         <source>Published Patches</source>
-        <target>発行済みエラータ</target>
+        <target>発行済みパッチ</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata">
         <source>Delete Patches</source>
-        <target>エラータの削除</target>
+        <target>パッチの削除</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.cloneerrata">
         <source>Clone Patches</source>
-        <target>エラータのクローン作成</target>
+        <target>パッチの複製</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirm">
         <source>Confirm</source>
@@ -4573,7 +4595,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.pagesummary">
         <source>Are you sure you wish to delete these patches?</source>
-        <target>本当にこれらのエラータを削除しますか?</target>
+        <target>本当にこれらのパッチを削除しますか?</target>
       </trans-unit>
       <trans-unit id="details.jsp.topic">
         <source>Topic</source>
@@ -4672,14 +4694,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>エラータの作成</target>
+        <target>パッチの作成</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions">
         <source>Create new patch here. Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>エラータはここで作成します。必須項目には &lt;span class="required-form-field"&gt;*&lt;/span&gt; 印が付いています。</target>
+        <target>ここではパッチを作成することができます。必須の項目には &lt;span class="required-form-field"&gt;*&lt;/span&gt; 印が付いています。なお、下記で選択した 1 つもしくは複数のチャンネルに対して、パッチを直接追加することもできます。</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.synopsis">
         <source>Synopsis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
@@ -5000,8 +5022,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;List the systems&lt;/a&gt; you have selected to work with</source> <target>作業用に選択している &lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;システムの一覧&lt;/a&gt; を表示します</target>
         </trans-unit>
         <trans-unit id="ssm.overview.errata">
-          <source>Patches</source> <target>エラータ</target>
-        </trans-unit>
+          <source>Patches</source> <target>パッチ</target> </trans-unit>
         <trans-unit id="ssm.overview.errata.schedule">
           <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source> </trans-unit>
         <trans-unit id="ssm.overview.packages">
@@ -5126,8 +5147,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source> <target>OpenSCAP でシステムの &lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;監査&lt;/a&gt; を行います</target>
         </trans-unit>
         <trans-unit id="ssm.errata.message.scheduled">
-          <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source> <target>エラータの更新が {0} で &lt;a href="/rhn/schedule/PendingActions.do"&gt;スケジュール&lt;/a&gt; されました。</target>
-        </trans-unit>
+          <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source> <target>パッチの更新が {0} で &lt;a href="/rhn/schedule/PendingActions.do"&gt;スケジュール&lt;/a&gt; されました。</target> </trans-unit>
         <trans-unit id="ssm.errata.message.queued">
           <source>Patch updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source> <target>エラーの更新が動作チェーン &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt; に追加されました。</target>
         </trans-unit>
@@ -5330,14 +5350,12 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>You may edit the preferences for all your selected systems here.</source> <target>ここでは、選択したシステムの設定を編集することができます。</target>
         </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.notify">
-          <source>Receive Notifications of Updates/Patches</source> <target>更新/エラータの通知を受信</target>
-        </trans-unit>
+          <source>Receive Notifications of Updates/Patches</source> <target>更新／パッチの通知を受信</target> </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.dailysummary">
           <source>Include system in Daily Summary</source> <target>システムをデイリー要約レポートに組み込む</target>
         </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.update">
-          <source>Automatic application of relevant patches</source> <target>関連エラータの自動適用</target>
-        </trans-unit>
+          <source>Automatic application of relevant patches</source> <target>関連パッチの自動適用</target> </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.changepreferences">
           <source>Change Preferences</source> <target>設定の変更</target>
         </trans-unit>
@@ -5494,7 +5512,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>エラータ</target>
+        <target>パッチ</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.configfiles">
         <source>Configs</source>
@@ -5911,7 +5929,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
-        <target>エラータ更新があります</target>
+        <target>更新があります</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
         <source>No applicable updates</source>
@@ -5919,7 +5937,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>
         </context-group>
-        <target>適用できるエラータはありません</target>
+        <target>適用できる更新はありません</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.intersection">
         <source>Work With Intersection</source>
@@ -6117,17 +6135,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Admin list for system group &lt;strong&gt;{0}&lt;/strong&gt; updated.</source> <target>システムグループ &lt;strong&gt;{0}&lt;/strong&gt; の管理者一覧が更新されました。</target>
         </trans-unit>
         <trans-unit id="systemgroup.erratalist.title">
-          <source>Relevant Patches</source> <target>該当エラータ</target>
-        </trans-unit>
+          <source>Relevant Patches</source> <target>該当パッチ</target> </trans-unit>
         <trans-unit id="systemgroup.erratalist.summary">
-          <source>The following patches apply to one or more of the systems in this group.</source> <target>次のエラータがこのグループ内の 1 システムまたは複数のシステムに適用されます。</target>
-        </trans-unit>
+          <source>The following patches apply to one or more of the systems in this group.</source> <target>以下のパッチがこのグループ内の 1 つもしくは複数のシステムに適用されます。</target> </trans-unit>
         <trans-unit id="systemgroup.errata-systems-affected.title">
           <source>Systems Affected By {0} - {1}</source> <target>{0} - {1} に影響を受けるシステム</target>
         </trans-unit>
         <trans-unit id="systemgroup.errata-systems-affected.summary">
-          <source>Below is a list of the systems in the {0} group which are affected by this patch.</source> <target>{0} グループ内でこのエラータが適用できるシステムの一覧です。</target>
-        </trans-unit>
+          <source>Below is a list of the systems in the {0} group which are affected by this patch.</source> <target>下記は、このパッチによって影響を受ける {0} グループ内のシステムの一覧です。</target> </trans-unit>
         <trans-unit id="systemgroup.target-systems.summary">
           <source>The following are systems that may be added to this group.</source> <target>このグループに追加できるシステムは次の通りです。　</target>
         </trans-unit>
@@ -6158,8 +6173,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <trans-unit id="systemgroup.details.someupdates">
           <source>Software Updates Available</source> </trans-unit>
         <trans-unit id="systemgroup.details.noupdates">
-          <source>No applicable patches</source> <target>適用できるエラータはありません</target>
-        </trans-unit>
+          <source>No applicable patches</source> <target>適用できるパッチはありません</target> </trans-unit>
         <trans-unit id="systemgroup.details.updates.critical">
           <source>&lt;strong&gt;&lt;a href="{0}"&gt;Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source> </trans-unit>
         <trans-unit id="systemgroup.details.updates.noncritical">
@@ -7891,14 +7905,14 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
-        <target>本当にこのエラータを削除しますか?</target>
+        <target>本当にこのパッチを削除しますか?</target>
       </trans-unit>
       <trans-unit id="delete.jsp.erratum">
         <source>Patch:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Delete.do</context>
         </context-group>
-        <target>エラータ:</target>
+        <target>パッチ:</target>
       </trans-unit>
       <trans-unit id="delete.jsp.description">
         <source>Description:</source>
@@ -7912,35 +7926,35 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target>エラータ管理</target>
+        <target>パッチ管理</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.cloneerrata">
         <source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target>エラータのクローン作成</target>
+        <target>パッチの複製</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.pagesummary">
         <source>The following patch list represents patches which may be cloned by your organization. &lt;p&gt; Only patches which are potentially applicable to one of your channels can be cloned. A patch is potentially applicable to a channel if that channel was cloned from a channel to which the patch applies. &lt;/p&gt;&lt;p&gt; Select the patches you wish to clone, and click 'Clone Patches' to continue. &lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target>次のエラータ一覧は企業/組織によりクローン作成された可能性のあるエラータを表しています。&lt;p&gt;クローン作成できるのはご使用のチャンネルのいずれかに適用できる可能性があるエラータだけです。エラータが適用されるチャンネルからクローン作成したチャンネルであれば、そのエラータを適用できる可能性があります。&lt;/p&gt;&lt;p&gt;クローン作成するエラータを選択してから「エラータのクローン作成」をクリックして続行します。&lt;/p&gt;</target>
+        <target>以下のパッチ一覧は企業／組織により複製された可能性のあるパッチを表しています。&lt;p&gt;複製できるのは、ご利用のチャンネルのいずれかに適用できる可能性があるパッチだけです。パッチが適用されるチャンネルから複製したチャンネルであれば、そのパッチを適用できる可能性があります。&lt;/p&gt;&lt;p&gt;複製するパッチを選択してから 'パッチの複製' を押してください。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.viewapplicableerrata">
         <source>View patches potentially applicable to</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target>適用できる可能性のあるエラータを表示</target>
+        <target>潜在的に適用できる可能性のあるパッチを表示</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.showclonederrata">
         <source>Show patches which have already been cloned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target>すでにクローン作成されているエラータを表示</target>
+        <target>すでに複製されているパッチを表示</target>
       </trans-unit>
       <trans-unit id="cloneerrata.jsp.view">
         <source>View</source>
@@ -8005,21 +8019,21 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-        <target>エラータはありません</target>
+        <target>パッチはありません</target>
       </trans-unit>
       <trans-unit id="cloneconfirm.jsp.pagesummary">
         <source>The patches listed here will be cloned and added in the channels selected below. Once they are cloned, they will appear in each channel's patch list.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneConfirm.do</context>
         </context-group>
-        <target>以下に表示されるエラータのクローンが作成されます。 クローンが作成されると、&lt;a href="{0}"&gt;未発行のエラータ一覧&lt;/a&gt; にそのクローンが表示されるようになります。 ここから、各エラータの関連パッケージとテキストを検証します。準備が整ったら、組織内のユーザーに対して利用できるようこのエラータを発行することができます。</target>
+        <target>以下には、複製されて選択したチャンネル内に追加されるパッチの一覧が示されています。これらが複製されると、チャンネル内のパッチリストに表示されるようになります。</target>
       </trans-unit>
       <trans-unit id="applyerrata.disclaimer">
         <source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may apply the patches as soon as possible, or no earlier than a specified time:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
         </context-group>
-        <target>&lt;strong&gt;本当に&lt;/strong&gt;これを行う場合は、以下のエラータがスケジュールできます。</target>
+        <target>&lt;strong&gt;本当に&lt;/strong&gt; これを行ないたい場合は、パッチをできる限り速やかに適用することをお勧めします。なお、指定した日時よりも前に適用してください:</target>
       </trans-unit>
       <trans-unit id="systemgroups.admins.updated">
         <source>Admin list for system group {0} updated.</source>
@@ -11013,21 +11027,21 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>セキュリティに関するエラータ</target>
+        <target>セキュリティーパッチ</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.criticalsystems.bugfixerrata">
         <source>Bugfix Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>バグ修正のエラータ</target>
+        <target>バグ修正パッチ</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.criticalsystems.enhancementerrata">
         <source>Enhancement Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>機能強化に関するエラータ</target>
+        <target>拡張パッチ</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.toolbar">
         <source>Overview</source>
@@ -11263,7 +11277,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>該当するセキュリティエラータ</target>
+        <target>該当するセキュリティパッチ</target>
       </trans-unit>
       <trans-unit id="errata.sev.label.unspecified">
         <source>Unspecified</source>
@@ -11304,28 +11318,28 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>エラータをすべて表示</target>
+        <target>全てのパッチを表示</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.allrelevanterrata">
         <source>View All Relevant Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>該当するエラータをすべて表示</target>
+        <target>全ての該当パッチを表示</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.relevanterrata.description">
         <source>relevant patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>該当するエラータ</target>
+        <target>該当するパッチ</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noerrata">
         <source>&lt;strong&gt;No relevant security patches.&lt;/strong&gt;&lt;p&gt;There are no security patches that apply to your systems. You can view a list of &lt;strong&gt;all&lt;/strong&gt; patches for the software your organization has entitlements to at &lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;Patches &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;関連のあるセキュリティエラータはありません。&lt;/strong&gt;&lt;p&gt;システムに適用するセキュリティエラータはありません。企業/組織がエンタイトルメントを有するソフトウェアに対する全エラータの一覧は、&lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;エラータ &gt; すべて&lt;/a&gt;&lt;/strong&gt;で確認できます。&lt;/p&gt;</target>
+        <target>&lt;strong&gt;関連のあるセキュリティパッチはありません。&lt;/strong&gt;&lt;p&gt;システムに適用するセキュリティパッチはありません。企業／組織がエンタイトルメントを有するソフトウェアに対する全パッチの一覧は、&lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;パッチ &gt; すべて&lt;/a&gt;&lt;/strong&gt;で確認できます。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.task.title">
         <source>Tasks</source>
@@ -11451,7 +11465,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/RelevantChannels.do</context>
         </context-group>
-        <target>エラータ</target>
+        <target>パッチ</target>
       </trans-unit>
       <trans-unit id="channels.overview.systems">
         <source>Systems</source>
@@ -12697,8 +12711,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Filtered Output:</source> <target>フィルター済みの出力:</target>
         </trans-unit>
         <trans-unit id="system.event.affectedErrata">
-          <source>Patches Affected:</source> <target>影響を受けたエラータ:</target>
-        </trans-unit>
+          <source>Patches Affected:</source> <target>影響を受けるパッチ:</target> </trans-unit>
         <trans-unit id="system.event.scapPath">
           <source>&lt;strong&gt;Path to XCCDF document: &lt;/strong&gt;</source> <target>&lt;strong&gt;XCCDF ドキュメントへのパス: &lt;/strong&gt; </target>
         </trans-unit>
@@ -12752,8 +12765,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Package Event</source> <target>パッケージ関連のイベント</target>
         </trans-unit>
         <trans-unit id="system-history-legend.jsp.type.errata">
-          <source>Errata Event</source> <target>エラータ関連のイベント</target>
-        </trans-unit>
+          <source>Errata Event</source> <target>エラータイベント</target> </trans-unit>
         <trans-unit id="system-history-legend.jsp.type.preferences">
           <source>Preferences Event</source> <target>設定関連のイベント</target>
         </trans-unit>
@@ -16745,23 +16757,18 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           <source>Script does not seem to be doing anything.</source> </trans-unit>
         <!-- Errata -->
         <trans-unit id="ssm.patches.list.header">
-          <source>Relevant Patches List</source> <target>該当するエラータ一覧</target>
-        </trans-unit>
+          <source>Relevant Patches List</source> <target>該当するパッチの一覧</target> </trans-unit>
         <trans-unit id="ssm.patches.list.summary">
-          <source>The patches below apply to one or more of your selected systems.</source> <target>以下のエラータが選択している一つまたは複数のシステムに適用されます。</target>
-        </trans-unit>
+          <source>The patches below apply to one or more of your selected systems.</source> <target>以下のパッチが選択している一つまたは複数のシステムに適用されます。</target> </trans-unit>
         <trans-unit id="ssm.errata-relevant-systems.title">
           <source>Systems in System Set Manager Affected By {0} - {1}</source> <target>システム設定マネージャー内で {0} - {1} に影響を受けるシステム</target>
         </trans-unit>
         <trans-unit id="ssm.errata-relevant-systems.summary">
-          <source>Below is a list of the systems in the system set manager which are affected by this patch.</source> <target>システム設定マネージャー内でこのエラータが適用可能なシステムの一覧です。</target>
-        </trans-unit>
+          <source>Below is a list of the systems in the system set manager which are affected by this patch.</source> <target>システム設定マネージャー内でこのパッチが適用可能なシステムの一覧です。</target> </trans-unit>
         <trans-unit id="ssm.errata-apply-confirm.title">
-          <source>Relevant Patches Confirm</source> <target>該当するエラータの確認</target>
-        </trans-unit>
+          <source>Relevant Patches Confirm</source> <target>該当するパッチの確認</target> </trans-unit>
         <trans-unit id="ssm.errata-apply-confirm.summary">
-          <source>The patches below will be applied to listed systems.</source> <target>以下のエラータが表示されているシステムに適用されます。</target>
-        </trans-unit>
+          <source>The patches below will be applied to listed systems.</source> <target>表示されているシステムに以下のパッチが適用されます。</target> </trans-unit>
       </group>
       <trans-unit id="ssm.operations.actionchaindetails.schedulesuccess">
         <source>Action chain "{0}" has been successfully scheduled at "{1}".</source>
@@ -18905,7 +18912,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>自動エラータ更新:</target>
+        <target>自動パッチ更新:</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysname">
         <source>System Name:</source>
@@ -18947,7 +18954,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>エラータ Email</target>
+        <target>更新／パッチメール</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.location.none">
         <source>(none)</source>
@@ -19460,7 +19467,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target>自動エラータ更新:</target>
+        <target>自動パッチ更新:</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.description">
         <source>Description:</source>
@@ -19530,7 +19537,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target>更新/エラータの通知を受信します。</target>
+        <target>更新／パッチの通知を受信します。</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.summary">
         <source>Include system in daily summary report calculations.</source>
@@ -19551,14 +19558,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target>関連エラータの自動適用</target>
+        <target>関連パッチの自動適用</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.autoupdate.unentitled">
         <source>Auto Patch Update not available for this system.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-        <target>このシステムに自動エラータ更新は使用できません。</target>
+        <target>このシステムに自動パッチ更新は使用できません。</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.update">
         <source>Update Properties</source>
@@ -20571,7 +20578,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           <source>As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default @@VENDOR_NAME@@ base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. &lt;p/&gt; &lt;strong&gt;This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution.&lt;/strong&gt;</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
           </context-group>
-          <target>チャンネル管理者として、システムがサブスクライブしているベースチャンネルを変更できます。有効なチャンネルは、組織によって作成されたチャンネルか、または使用しているオペレーティングシステムのバージョンとプロセッサタイプのデフォルトの @@VENDOR_NAME@@ ベースチャンネルのいずれかです。システムはすべてのチャンネルからサブスクライブが中止され、新しいベースチャンネルにサブスクライブされます。 &lt;p/&gt; &lt;strong&gt;この操作は、システムで利用可能なパッケージとエラータに重大な影響が与えることがあるため、注意して実行する必要があります。&lt;/strong&gt;</target> </trans-unit>
+          <target>チャンネル管理者として、システムがサブスクライブしているベースチャンネルを変更できます。有効なチャンネルは、組織によって作成されたチャンネルか、または使用しているオペレーティングシステムのバージョンとプロセッサタイプのデフォルトの @@VENDOR_NAME@@ ベースチャンネルのいずれかです。システムはすべてのチャンネルからサブスクライブが中止され、新しいベースチャンネルにサブスクライブされます。 &lt;p/&gt; &lt;strong&gt;この操作は、システムで利用可能なパッケージとパッチに重大な影響が与えることがあるため、注意して実行する必要があります。&lt;/strong&gt;</target> </trans-unit>
         <trans-unit id="basesub.jsp.custom-channels">
           <source>Custom Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
@@ -20825,47 +20832,47 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterrata">
         <source>Add @@VENDOR_NAME@@ Patches</source>
-        <target>@@VENDOR_NAME@@ エラータの追加</target>
+        <target>@@VENDOR_NAME@@ パッチの追加</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addredhaterratamsg">
         <source>Choose this option if you want to import patches that exist in @@VENDOR_NAME@@ base channels, or child channels of @@VENDOR_NAME@@ provided channels.</source>
-        <target>Red Hat 提供のチャンネルの @@VENDOR_NAME@@ ベースチャンネル、または子チャンネル内に存在するエラータをインポートしたい場合は、このオプションを選択します。</target>
+        <target>Red Hat 提供のチャンネルの @@VENDOR_NAME@@ ベースチャンネル、または子チャンネル内に存在するパッチをインポートしたい場合は、このオプションを選択します。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.noerrata">
         <source>No patches found applicable to this channel.</source>
-        <target>このチャンネルに適用できるエラータはありません。</target>
+        <target>このチャンネルに適用できるパッチはありません。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerrata">
         <source>Add Custom Patches</source>
-        <target>カスタムエラータの追加</target>
+        <target>独自のパッチの追加</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.addcustomerratamsg">
         <source>Choose this option if you want to import custom patches or patches from custom channels.</source>
-        <target>カスタムチャンネルからカスタムエラータまたはエラータをインポートしたい場合は、このオプションを選択します。</target>
+        <target>独自のチャンネルから独自のパッチを取り込みたい場合は、このオプションを選択します。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerrata">
         <source>Create Custom Patch</source>
-        <target>カスタムエラータの作成</target>
+        <target>独自パッチの作成</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerratamsg">
         <source>Choose this option to create a patch from scratch. You may import a new patch into this channel at publication time.</source>
-        <target>ゼロからエラータを作成するにはこのオプションを選択します。発行時点でこのチャンネルに新しいエラータをインポートすることができます。</target>
+        <target>ゼロからパッチを作成するには、このオプションを選択します。発行した時点でこのチャンネルに新しいパッチを取り込むことができます。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.confirmmsg">
         <source>Below is a summary of the patches you have selected to clone. Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
-        <target>クローンを作成するために選択したエラータの要約を以下に示します。それぞれの CSV ダウンロード内に含まれているのは、チャンネルにプッシュされるそれぞれのエラータとパッケージの一覧です。</target>
+        <target>下記は複製するよう選択したパッチの概要です。それぞれの CSV ダウンロード内に含まれているものは、チャンネルに対してプッシュされる予定のパッチやパッケージの一覧です。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.custommsg">
         <source>Below is a list of patches that can pushed to the current channel. Use the channel selection drop down filter to narrow down patches to choose from.</source>
-        <target>現在のチャンネルにプッシュされる可能性のあるエラータの一覧を以下に示します。チャンネル選択ドロップダウンフィルターを使用して選択するエラータを限定します。</target>
+        <target>下記は、現在のチャンネルに対してプッシュできるパッチの一覧です。チャンネル選択のドロップダウンボックスを利用することで、パッチを絞り込むことができます。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.redhatmsg">
         <source>Below is a list of patches that can pushed to the current channel. Use the drop down filters to narrow down which patches you may choose from.</source>
-        <target>現在のチャンネルにプッシュされる可能性のあるエラータの一覧を以下に示します。ドロップダウンフィルターを使用して、選択するエラータの範囲を限定します。</target>
+        <target>下記は、現在のチャンネルに対してプッシュできるパッチの一覧です。ドロップダウンボックスを利用することで、パッチを絞り込むことができます。</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.packageassocmsg">
         <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown. Also, package architecture will match what is currently in the channel.</source>
-        <target>（推奨）これが選択されていると、このチャンネルに適用されるパッケージを含むエラータのみが表示されます。また、パッケージアーキテクチャーは現在チャンネル内にあるものに一致します。</target>
+        <target>&lt;em&gt;(推奨)&lt;/em&gt; これを選択すると、このチャンネルに適用されるパッケージを含むパッチのみが表示されます。なお、パッケージのアーキテクチャがチャンネル内のものと一致するものが表示されます。</target>
       </trans-unit>
       <trans-unit id="toolbar.ssm.add">
         <source>Add to SSM</source>
@@ -21118,8 +21125,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.jsp.package.remove">
         <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.</source>
-        <target>このチャンネルから削除するよう選択したパッケージの一覧を以下に示します。このチャンネルからパッケージを削除しても、サブスクライブしているシステムまたは適用可能なエラータには影響が出ません。
-		</target>
+        <target>以下は、このチャンネルから削除するよう選択したパッケージの一覧です。このチャンネルからパッケージを削除しても、サブスクライブしているシステムまたは適用可能なパッチには影響がありません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.details.title">
         <source>Details</source>
@@ -21201,8 +21207,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.jsp.package.add.confirm.msg">
         <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.</source>
-        <target>以下に、このチャンネルを追加するよう選択したパッケージの一覧を示します。このチャンネルにパッケージを追加しても、サブスクライブされたシステムまたは適用できるエラータは影響を受けません。
-		</target>
+        <target>以下は、このチャンネルに追加するよう選択したパッケージの一覧です。このチャンネルにパッケージを追加しても、サブスクライブされたシステムまたは適用できるパッチは影響を受けません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addtitle">
         <source>Add Packages</source>
@@ -21296,10 +21301,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.jsp.errata.emptylist">
         <source>This channel contains no patches.</source>
-        <target>このチャンネルにはエラータが含まれません。</target>
+        <target>このチャンネルにはパッチが含まれていません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.title">
         <source>Clone Patches</source>
+        <target>パッチの複製</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.summary">
         <source>Below is the list of the patches which apply to the original channel, but have not yet been cloned into your channel.</source>
@@ -21324,6 +21330,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.button">
         <source>Clone Patches</source>
+        <target>パッチの複製</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.list">
         <source>Channel Packages</source>
@@ -21597,11 +21604,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="package.jsp.errata">
         <source>Patch</source>
-        <target>エラータ</target>
+        <target>パッチ</target>
       </trans-unit>
       <trans-unit id="package.jsp.errataunavailable">
         <source>This package is not linked to any patch</source>
-        <target>このパッケージはいずれのエラータにもリンクされていません</target>
+        <target>このパッケージはいずれのパッチにもリンクされていません</target>
       </trans-unit>
       <trans-unit id="package.jsp.sunosrelease">
         <source>SunOs Release</source>
@@ -22032,7 +22039,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
-        <target>本当にこのチャンネルを削除しますか? チャンネル内のパッケージはチャンネルから 削除されますが、サーバーに残ったままになります。チャンネルの削除後に これらのパッケージを削除することを選択できます。チャンネルに関連するエラータ はチャンネルに関連付けられなくなり、孤立状態になることがあります。 チャンネルに子チャンネルがある場合は、チャンネルを削除できません。この場合は、最初に 子チャンネルを削除する必要があります。チャンネルに自動インストールディストリビューション が関連付けられている場合は、チャンネルを削除できません。この場合は、自動インストールディストリビューションの 関連付けをチャンネルから解除するか、自動インストールディストリビューションを最初に削除する必要があります。</target>
+        <target>本当にこのチャンネルを削除しますか? チャンネル内のパッケージはチャンネルから 削除されますが、サーバーに残ったままになります。チャンネルの削除後に これらのパッケージを削除することを選択できます。チャンネルに関連するパッチはチャンネルに関連付けられなくなり、孤立状態になることがあります。 チャンネルに子チャンネルがある場合は、チャンネルを削除できません。この場合は、最初に 子チャンネルを削除する必要があります。チャンネルに自動インストールディストリビューション が関連付けられている場合は、チャンネルを削除できません。この場合は、自動インストールディストリビューションの 関連付けをチャンネルから解除するか、自動インストールディストリビューションを最初に削除する必要があります。</target>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.arch">
         <source>Architecture:</source>
@@ -22667,35 +22674,35 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
-        <target>エラータの追加</target>
+        <target>パッチの追加</target>
       </trans-unit>
       <trans-unit id="list.jsp.errata.listremove">
         <source>List/Remove Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
-        <target>エラータの一覧表示／削除</target>
+        <target>パッチの一覧表示／削除</target>
       </trans-unit>
       <trans-unit id="list.jsp.errata.add">
         <source>Add Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
-        <target>エラータの追加</target>
+        <target>パッチの追加</target>
       </trans-unit>
       <trans-unit id="list.jsp.errata.clone">
         <source>Clone Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/Errata.do</context>
         </context-group>
-        <target>エラータのクローン作成</target>
+        <target>パッチの複製</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.listempty">
         <source>There are no patches associated with this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>このチャンネルに関連したエラータはありません。</target>
+        <target>このチャンネルに関連したパッチはありません。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.confirmremove">
         <source>Confirm Removal</source>
@@ -22709,28 +22716,28 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>エラータを削除</target>
+        <target>パッチを削除</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.message">
         <source>Below is the list of patches associated with this channel. To remove a patch from this channel, select it here, and click 'Remove' below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>このチャンネルに関連するエラータの一覧は以下の通りです。このチャンネルからエラータを削除するには、ここでそのエラータを選択し、下にある「削除」をクリックしてください。</target>
+        <target>このチャンネルに関連するパッチの一覧は以下の通りです。このチャンネルからパッチを削除するには、削除するパッチを選択して '削除' を押してください。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.confirmmessage">
         <source>Click 'Confirm' below to remove these patches from your channel. Related packages will also be removed from the channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>下に表示されている「確認」をクリックし、チャンネルよりエラータを削除します。関連するパッケージもこのチャンネルより削除されます。</target>
+        <target>下に表示されている '確認' を押すと、チャンネルからパッチを削除することができます。関連するパッケージについてもチャンネルから削除されます。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove.finalmessage">
         <source>Successfully removed {0} patch(es) from this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
-        <target>このチャンネルより {0} エラータが正しく削除されました。</target>
+        <target>このチャンネルから {0} 個のパッチが正しく削除されました。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.managers.message">
         <source>Selected users may manage this channel. Users with Admin Access (org admins or channel admins) may manage any channel.</source>
@@ -22883,12 +22890,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync">
         <source>Sync Patches</source>
-        <target>同期エラータ</target>
+        <target>パッチの同期</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.message">
         <source>The following patches were cloned from patches that have since been updated. This page will allow you to synchronize your cloned patches to that of its original.</source>
-        <target>次のエラータのクローンは、更新されたエラータから作成されました。
-		   このページでは、クローンが作成されたエラータを元の状態に同期できます。</target>
+        <target>下記のパッチは、更新以降にパッチから複製されたものの一覧です。このページでは、元のパッチと複製されたパッチの同期を行なうことができます。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.note">
         <source>Packages that were omitted as part of the original cloning process will be included here.</source>
@@ -22896,7 +22902,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.listempty">
         <source>No out of date patches were found.</source>
-        <target>古いエラータが見つかりませんでした。</target>
+        <target>古いパッチが見つかりませんでした。</target>
       </trans-unit>
       <trans-unit id="header.jsp.errata.sync.packagepush">
         <source>Packages to Push</source>
@@ -22904,11 +22910,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.packages.message">
         <source>The following packages will be pushed to this channel as part of the patches sync process. Please review this list and unselect any unwanted packages.</source>
-        <target>以下のパッケージがこのチャンネルにエラータ同期プロセスの一部としてプッシュされます。このリストを確認し、不必要なパッケージを選択解除します。</target>
+        <target>パッチの同期処理の際、このチャンネルに対して下記のパッケージがプッシュされます。不要なパッケージが存在する場合は、この一覧で選択を外してください。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.complete">
         <source>Successfully synchronized {0} patches and pushed {1} packages to channel {2}.</source>
-        <target>チャンネル {2} に対して {0} エラータが正常に同期され、{1} パッケージが正常にプッシュされました。</target>
+        <target>チャンネル {2} に対して {0} 個のパッチが正常に同期され、 {1} 個のパッチが正常にプッシュされました。</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata">
         <source>Repo Cache Status</source>
@@ -23510,12 +23516,15 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="ssm.overview.states.apply">
         <source>&lt;a href="/rhn/manager/systems/ssm/highstate"&gt;Apply&lt;/a&gt; system states</source>
+        <target>システム状態の &lt;a href="/rhn/manager/systems/ssm/highstate"&gt;適用&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.ssm.deploy.warning">
         <source>Changes to channel assignments on salt managed systems will take effect at next highstate application</source>
+        <target>Salt で管理されたシステムに対してチャンネルの割り当てを変更した場合、次回の highstate 適用で変更が反映されます</target>
       </trans-unit>
       <trans-unit id="sdc.channels.info.change">
         <source>When subscribing to a channel that contains a product, the product package will automatically be installed on traditionally registered systems. On salt managed systems please apply a highstate as soon as possible.</source>
+        <target>製品を含むチャンネルのサブスクリプションを設定した場合、既に登録されているシステムに対して製品パッケージが自動インストールされます。 Salt で管理されているシステムの場合は、 highstate をできる限り速やかに適用してください。</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.tasks.modifyCreate.state">
         <source>Create configuration file</source>
@@ -23720,6 +23729,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="activation-key.jsp.config-auto-deploy-highstate-tooltip">
         <source>If the system is registered via Salt, the highstate will be executed on registration if this checkbox is selected.</source>
+        <target>システムを Salt 経由で登録している場合、チェックボックスを選択することで highstate が登録に対して実行されるようになります。</target>
       </trans-unit>
       <trans-unit id="help.jsp.about.learnmore">
         <source>&lt;a href="http://www.suse.com/products/suse-manager" target="_blank"&gt;Click here&lt;/a&gt; to learn more about @@PRODUCT_NAME@@</source>
@@ -23840,6 +23850,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <trans-unit id="Highstate">
         <source>Highstate</source>
+        <target>Highstate</target>
       </trans-unit>
       <trans-unit id="Recurring States">
         <source>Recurring States</source>
