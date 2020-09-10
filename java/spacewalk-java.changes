@@ -1,3 +1,4 @@
+- Fix SP migration after dry run for cloned channels (bsc#1176307)
 - filter not available optional channels out
 - Fix: handle version comparison corner cases in Ubuntu packages
 
