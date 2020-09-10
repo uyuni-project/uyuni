@@ -61,7 +61,7 @@
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <trans-unit id="bootstrap_entitled">
-          <source>Bootstrap</source> <target>Bootstrap</target></trans-unit>
+          <source>Bootstrap</source> <target>Arranque do zero</target></trans-unit>
         <trans-unit id="enterprise_entitled">
           <source>Management</source> <target>Gerenciamento</target>
         </trans-unit>
@@ -263,7 +263,7 @@
       </trans-unit>
       <trans-unit id="Australia/Adelaide">
         <source>Australia Adelaide</source>
-        <target>Australia Adelaide</target>
+        <target>(GMT+0930) Austrália (Adelaide)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -3161,9 +3161,9 @@
         <trans-unit id="error.unsupported_db_min">
           <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source> <target>A execução do postgresql {0} não é suportada. A versão mínima exigida é {1}.</target></trans-unit>
         <trans-unit id="error.unsupported_db_max">
-          <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source> <target>A execução do postgresql {0} não é suportada. A versão máxima permitida é {1}.</target></trans-unit>
+          <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source> <target>A execução do PostgreSQL {0} não é suportada. A versão máxima permitida é {1}.</target></trans-unit>
         <trans-unit id="error.unsupported_db_migrate">
-          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source> <target>A execução do postgresql {0} em {1} não é suportada. Por favor, migre para o postgresql {2}.</target></trans-unit>
+          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source> <target>A execução do PostgreSQL {0} em {1} não é suportada. Por favor, migre para o PostgreSQL {2}.</target></trans-unit>
         <trans-unit id="error.unfinished_schema_upgrade">
           <source>Database schema upgrade in progress!</source> <target>Atualização do esquema do banco de dados em andamento!</target></trans-unit>
       </group>
