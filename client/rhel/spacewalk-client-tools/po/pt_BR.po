@@ -34,8 +34,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-27 15:11+0200\n"
-"PO-Revision-Date: 2020-07-28 15:29+0000\n"
-"Last-Translator: Leonardo Teodoro <leonardosilvateodoro@hotmail.com>\n"
+"PO-Revision-Date: 2020-09-10 13:47+0000\n"
+"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -65,15 +65,13 @@ msgstr "Obtendo a lista de pacotes instalados no sistema"
 
 #. self.druid.finish.set_label(_("_Finish"))
 #: ../src/up2date_client/gui.py:273
-#, fuzzy
 msgid "Finish setting up software updates"
-msgstr "Configurar Atualizações"
+msgstr "Conclua a configuração das atualizações de software"
 
 #. self.druid.finish.set_label(_("_Exit"))
 #: ../src/up2date_client/gui.py:276
-#, fuzzy
 msgid "Software updates setup unsuccessful"
-msgstr "Atualizações de Software Não Configuradas"
+msgstr "Falha na configuração das atualizações de software"
 
 #: ../src/up2date_client/gui.py:283
 msgid "You must run rhn_register as root."
@@ -105,19 +103,16 @@ msgid "Error reading network interface information:"
 msgstr "Erro ao ler as informações da interface de rede:"
 
 #: ../src/up2date_client/hardware.py:1086
-#, fuzzy
 msgid "Error reading network FQDNs information:"
-msgstr "Erro ao ler as informações de rede:"
+msgstr "Erro ao ler informações de FQDNs de rede:"
 
 #: ../src/up2date_client/hardware.py:1093
-#, fuzzy
 msgid "Error reading system info:"
-msgstr "Erro ao ler as informações de memória do sistema:"
+msgstr "Erro ao ler as informações do sistema:"
 
 #: ../src/up2date_client/hardware.py:1100
-#, fuzzy
 msgid "Error reading machine info:"
-msgstr "Erro ao ler as informações da cpu:"
+msgstr "Erro ao ler as informações da máquina:"
 
 #: ../src/up2date_client/messageWindow.py:106
 msgid "Error:"
@@ -137,9 +132,8 @@ msgstr ""
 "Este sistema não poderá ser atualizado até que seja associado a um canal."
 
 #: ../src/up2date_client/rhncli.py:68
-#, fuzzy
 msgid "Show additional output. Repeat for more detail."
-msgstr "Exibir saídas adicionais"
+msgstr "Mostrar saída adicional. Repita para mais detalhes."
 
 #: ../src/up2date_client/rhncli.py:70
 msgid "Specify an http proxy to use"
@@ -257,7 +251,7 @@ msgstr "URL Satelite:"
 
 #: ../src/up2date_client/rhnreg_constants.py:28
 msgid "SSL certificate:"
-msgstr "Certificado SSL"
+msgstr "Certificado SSL:"
 
 #: ../src/up2date_client/rhnreg_constants.py:29
 msgid "You must enter a valid Satellite URL."
@@ -479,7 +473,7 @@ msgstr "Versão do Sistema Operacional:"
 
 #: ../src/up2date_client/rhnreg_constants.py:99
 msgid " Minor Release: "
-msgstr " Versão Menor:"
+msgstr " Versão Menor: "
 
 #: ../src/up2date_client/rhnreg_constants.py:100
 msgid "Limited Updates Only"
@@ -673,11 +667,11 @@ msgid ""
 "Subscriptions have been activated for the following Red Hat products/"
 "services:"
 msgstr ""
-"Subscrições foram ativadas para os seguintes produtos/serviços da Red Hat: "
+"Subscrições foram ativadas para os seguintes produtos/serviços da Red Hat:"
 
 #: ../src/up2date_client/rhnreg_constants.py:173
 msgid "Software Channel Subscriptions:"
-msgstr "Subscrições de Canal de Software"
+msgstr "Subscrições de Canal de Software:"
 
 #: ../src/up2date_client/rhnreg_constants.py:174
 msgid "This system will receive updates from the following software channels:"
@@ -912,7 +906,7 @@ msgstr ""
 "forneceu o certificado correto, e que o arquivo do certificado não foi "
 "corrompido?\n"
 "\n"
-"Por favor tente novamente com um arquivo de certificado diferente. "
+"Por favor tente novamente com um arquivo de certificado diferente."
 
 #: ../src/up2date_client/rhnreg_constants.py:269
 msgid ""
@@ -953,12 +947,11 @@ msgstr ""
 "\n"
 "Uma chave de ativação de âmbito global padrão limita o número de sistemas "
 "que podem conectar à organização do RHN associada com o seu login. Para "
-"permitir que o sistema conecte, por favor contate o seu "
-"administrador da organização do RHN para aumentar o número de sistemas "
-"permitidos a conectar ou para desabilitar esta "
-"chave de ativação de âmbito global padrão. Mais detalhes podem ser "
-"encontrados no Artigo #7924 da Red Hat Knowledgebase em http://kbase.redhat."
-"com/faq/FAQ_61_7924.shtm"
+"permitir que o sistema conecte, por favor contate o seu administrador da "
+"organização do RHN para aumentar o número de sistemas permitidos a conectar "
+"ou para desabilitar esta chave de ativação de âmbito global padrão. Mais "
+"detalhes podem ser encontrados no Artigo #7924 da Red Hat Knowledgebase em "
+"http://kbase.redhat.com/faq/FAQ_61_7924.shtm "
 
 #: ../src/up2date_client/rhnreg_constants.py:292
 msgid ""
@@ -1328,7 +1321,7 @@ msgstr "Localização do Spacewalk:"
 
 #: ../src/up2date_client/tui.py:139
 msgid "System ID:"
-msgstr "ID do Sistema: "
+msgstr "ID do Sistema:"
 
 #: ../src/up2date_client/tui.py:540
 msgid "The server indicated an error:\n"
@@ -1459,7 +1452,8 @@ msgstr ""
 "\n"
 "subscription-manager register --auto-attach\n"
 "\n"
-"Para mais informações acesse access.redhat.com/knowledge"
+"Para mais informações acesse access.redhat.com/knowledge\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:204
 msgid "The installation number is invalid"
@@ -1627,7 +1621,7 @@ msgid ""
 "server web user Interface and update your contactinfo. "
 msgstr ""
 "Aviso: a opção --contactinfo está depreciada. Por favor faça login na "
-"interface de usuário do servidor web e atualize sua contactinfo."
+"interface de usuário do servidor web e atualize sua contactinfo. "
 
 #: ../src/bin/rhnreg_ks.py:175
 #, python-format
@@ -1767,7 +1761,7 @@ msgstr "Enviando informação"
 
 #: ../data/progress.glade.h:2
 msgid "progress bar"
-msgstr "Diálogo de Progresso "
+msgstr "Diálogo de Progresso"
 
 #: ../data/progress.glade.h:3
 msgid "progress status"
@@ -2234,7 +2228,7 @@ msgstr "Utilize au_tenticação com Proxy HTTP:"
 
 #: ../data/rh_register.glade.h:103
 msgid "Use Authentication with HTTP Proxy"
-msgstr "Usar Autenticação com o HTTP Proxy:"
+msgstr "Usar Autenticação com o HTTP Proxy"
 
 #: ../data/rh_register.glade.h:104
 msgid "Proxy _Username:"
