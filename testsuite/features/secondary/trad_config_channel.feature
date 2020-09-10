@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Configuration management of traditional clients
@@ -145,12 +145,12 @@ Feature: Configuration management of traditional clients
     And I follow "Local Sandbox" in the content area
     Then I should see a table line with "/etc/mgr-test-file.cnf", "Revision 1"
 
-  Scenario: Import the changed cron configuration file
+  Scenario: Import an existing language configuration file
     When I am on the Systems overview page of this "sle_client"
     And I follow "Configuration" in the content area
     And I follow "Add Files" in the content area
     And I follow "Import Files" in the content area
-    And I enter "/etc/sysconfig/cron" as "contents"
+    And I enter "/etc/sysconfig/language" as "contents"
     And I click on "Import Configuration Files"
     And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
@@ -158,7 +158,7 @@ Feature: Configuration management of traditional clients
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
-    Then I should see a table line with "/etc/sysconfig/cron", "Revision 1"
+    Then I should see a table line with "/etc/sysconfig/language", "Revision 1"
 
   Scenario: Copy sandbox file to centrally managed
     When I am on the Systems overview page of this "sle_client"
@@ -172,12 +172,12 @@ Feature: Configuration management of traditional clients
     Then I should see a "1 file copied into 1 central configuration channel" text
     And I should see a table line with "/etc/mgr-test-file.cnf", "Revision 2"
     When I follow "Local Sandbox" in the content area
-    And I check "/etc/sysconfig/cron" in the list
+    And I check "/etc/sysconfig/language" in the list
     And I click on "Copy Latest to Centrally-Managed Files"
     And I check "New Test Channel" in the list
     And I click on "Copy To Central Channels"
     Then I should see a "1 file copied into 1 central configuration channel" text
-    And I should see a table line with "/etc/sysconfig/cron", "Revision 1"
+    And I should see a table line with "/etc/sysconfig/language", "Revision 1"
 
   Scenario: Add another configure file to new test channel
     Given I am authorized as "admin" with password "admin"
@@ -198,7 +198,7 @@ Feature: Configuration management of traditional clients
     And I store "MGR_PROXY=yes" into file "/etc/mgr-test-file.cnf" on "sle_client"
     And I follow "Compare Files" in the content area
     And I check "/etc/mgr-test-file.cnf" in the list
-    And I check "/etc/sysconfig/cron" in the list
+    And I check "/etc/sysconfig/language" in the list
     And I check "/tmp/mycache.txt" in the list
     And I click on "Compare Files"
     And I click on "Schedule Compare"
@@ -207,7 +207,7 @@ Feature: Configuration management of traditional clients
     And I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
     Then I should see a "Differences exist" link
     And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist" text
-    And I should see a "/etc/sysconfig/cron (rev. 1)" text
+    And I should see a "/etc/sysconfig/language (rev. 1)" text
     And I should see a "/tmp/mycache.txt (rev. 1) Missing file" text
     When I follow "Differences exist"
     Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
