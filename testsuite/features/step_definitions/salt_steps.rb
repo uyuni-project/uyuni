@@ -513,7 +513,7 @@ end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   node = get_target(minion)
-  output, _code = node.run('cat /etc/vconsole.conf')
+  output, _code = node.run("grep 'KEYMAP=' /etc/vconsole.conf")
   raise "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
 end
 
