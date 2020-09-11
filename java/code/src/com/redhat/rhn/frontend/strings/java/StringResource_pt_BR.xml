@@ -357,7 +357,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>FAQs</target>
+        <target>Perguntas Frequentes</target>
       </trans-unit>
       <trans-unit id="Sample Scripts">
         <source>Sample Scripts</source>
