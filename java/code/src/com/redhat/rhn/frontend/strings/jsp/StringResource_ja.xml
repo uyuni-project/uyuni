@@ -1302,7 +1302,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
         <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/help/Copyright.do"&gt;著作権情報&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/help/Copyright.do"&gt;著作権告知&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
@@ -5029,8 +5029,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>Packages</source> <target>パッケージ</target>
         </trans-unit>
         <trans-unit id="ssm.overview.packages.upgrade">
-          <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source> <target>パッケージの &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;アップグレード&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageInstall.do"&gt;インストール&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageRemove.do"&gt;削除&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageVerify.do"&gt;検証&lt;/a&gt; を行います</target>
-        </trans-unit>
+          <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source> <target>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;アップグレード&lt;/a&gt;</target> </trans-unit>
         <trans-unit id="ssm.overview.packages.install">
           <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source> </trans-unit>
         <trans-unit id="ssm.overview.packages.remove">
@@ -5070,8 +5069,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
             <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
           </context-group>
-          <target>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"&gt;電力管理の設定&lt;/a&gt; を行います</target>
-        </trans-unit>
+          <target>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"&gt;電力管理の設定&lt;/a&gt;</target> </trans-unit>
         <trans-unit id="ssm.overview.provisioning.powermanagement.operations">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
@@ -6015,8 +6013,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <source>The systems below are potential duplicates of one another. You may select a combination of &lt;strong&gt;{0} systems at once&lt;/strong&gt; for detailed comparison</source> <target>以下のシステムは相互に重複している可能性があります。&lt;strong&gt;{0} システムの組み合わせを一度に&lt;/strong&gt;選択して詳細比較を行うことができます。</target>
         </trans-unit>
         <trans-unit id="duplicate.compares.max_limit.message">
-          <source>You have selected more than {0} system profiles for comparison. Please select a combination of &lt;strong&gt;{0} systems or less&lt;/strong&gt; to compare and select &lt;strong&gt;{1}&lt;/strong&gt;</source> <target>比較のために {0} を超えるシステムプロファイルを選択しました。比較する &lt;strong&gt;{0} システム以下&lt;/strong&gt;の組み合わせを選択し、&lt;strong&gt;{1}&lt;/strong&gt; を選択してください。</target>
-        </trans-unit>
+          <source>You have selected more than {0} system profiles for comparison. Please select a combination of &lt;strong&gt;{0} systems or less&lt;/strong&gt; to compare and select &lt;strong&gt;{1}&lt;/strong&gt;</source> <target>比較に対して {0} 個以上のシステムプロファイルを選択しています。比較を行なうには &lt;strong&gt;{0} 個もしくはそれ未満の個数のシステム&lt;/strong&gt; の組み合わせを選択して &lt;strong&gt;{1}&lt;/strong&gt; を選んでください</target> </trans-unit>
         <trans-unit id="Delete System Profile">
           <source>Delete System Profile</source> <target>システムプロファイルの削除</target>
         </trans-unit>
@@ -6632,7 +6629,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッケージの削除が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュール&lt;/a&gt; されています。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッケージの削除が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュール&lt;/a&gt; されています。</target>
       </trans-unit>
       <trans-unit id="message.packageremovals">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6640,7 +6637,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッケージの削除が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッケージの削除が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.packageupgrade">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6648,7 +6645,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッケージのアップグレードが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッケージのアップグレードが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.packageupgrades">
         <source>{0} package upgrades have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6656,7 +6653,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッケージのアップグレードが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッケージのアップグレードが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.packageinstall">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6664,7 +6661,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッケージのインストールが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッケージのインストールが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.packageinstalls">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6672,7 +6669,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッケージのインストールが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッケージのインストールが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.systeminstalls">
         <source>Package install has been scheduled for {0} system(s).</source>
@@ -6686,7 +6683,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッケージの検証が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッケージの検証が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.packageverifys">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6694,35 +6691,35 @@ Satellite の 組織管理者でないとユーザーを削除できません。
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッケージの検証が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッケージの検証が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.patchremoval">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッチの削除が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッチの削除が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.patchremovals">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッチの削除が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッチの削除が &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.patchinstall">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッチのインストールが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッチのインストールが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.patchinstalls">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} パッチのインストールが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; に対して {0} 個のパッチのインストールが &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;スケジュールされています&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.xccdfeval">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
