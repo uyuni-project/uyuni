@@ -147,7 +147,7 @@ function toggleAsterisk() {
       </div>
     </div>
   </div>
-  <div class="panel panel-default" id="new-user-language">
+  <div class="panel panel-default" id="user-language">
     <div class="panel-heading">
       <h4><bean:message key="preferences.jsp.lang" /></h4>
     </div>
