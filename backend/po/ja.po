@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-26 14:48+0200\n"
-"PO-Revision-Date: 2020-09-11 04:48+0000\n"
+"PO-Revision-Date: 2020-09-11 07:47+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
 ">\n"
@@ -1966,73 +1966,75 @@ msgid ""
 "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
 "then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
+"エラー: 現時点では何もチャンネルを取り込んでいません。 mgr-inter-sync --list-channels を実行したあと mgr-"
+"inter-sync -c chn0 -c chn1... のように実行してください。"
 
 #. int(None) --> TypeError
 #. int('a')  --> ValueError
 #: ../satellite_tools/satsync.py:2457 ../satellite_tools/satsync.py:2461
 msgid "ERROR: --batch-size must have a value within the range: 1..50"
-msgstr ""
+msgstr "エラー: --batch-size の値は 1..50 までの値でなければなりません"
 
 #: ../satellite_tools/satsync.py:2469
 #, python-format
 msgid "ERROR: no such directory %s"
-msgstr ""
+msgstr "エラー: そのようなディレクトリはありません %s"
 
 #: ../satellite_tools/satsync.py:2474
 msgid "Error Codes: Returned codes means:"
-msgstr ""
+msgstr "エラーコード: 返された値の意味は下記のとおりです:"
 
 #: ../satellite_tools/satsync.py:2475
 msgid " -1  - Could not lock file or KeyboardInterrupt or SystemExit"
-msgstr ""
+msgstr " -1  - ファイルをロックできなかったか、キーボード割り込みやシステムの終了が発生しています"
 
 #: ../satellite_tools/satsync.py:2476
 msgid "  0  - User interrupted or intentional exit"
-msgstr ""
+msgstr "  0  - ユーザ側での割り込みか終了指示が行なわれました"
 
 #: ../satellite_tools/satsync.py:2477
 msgid "  1  - attempting to run more than one instance of mgr-inter-sync."
-msgstr ""
+msgstr "  1  - mgr-inter-sync のインスタンスを複数個実行しようとしています。"
 
 #: ../satellite_tools/satsync.py:2478
 msgid "  2  - Unable to find synchronization tools."
-msgstr ""
+msgstr "  2  - 同期ツールが見つかりませんでした。"
 
 #: ../satellite_tools/satsync.py:2479
 msgid "  3  - a general socket exception occurred"
-msgstr ""
+msgstr "  3  - 一般的なソケット例外が発生しました"
 
 #: ../satellite_tools/satsync.py:2480
 msgid "  4  - an SSL error occurred. Recheck your SSL settings."
-msgstr ""
+msgstr "  4  - SSL エラーが発生しました。 SSL の設定を再確認してください。"
 
 #: ../satellite_tools/satsync.py:2481
 msgid "  5  - ISS error"
-msgstr ""
+msgstr "  5  - ISS エラー"
 
 #: ../satellite_tools/satsync.py:2482
 msgid "  6  - unhandled exception occurred"
-msgstr ""
+msgstr "  6  - ハンドルされていない例外が発生しました"
 
 #: ../satellite_tools/satsync.py:2483
 msgid "  7  - unknown sync error"
-msgstr ""
+msgstr "  7  - 未知の同期エラーです"
 
 #: ../satellite_tools/satsync.py:2484
 msgid "  8  - ERROR: must be root to execute"
-msgstr ""
+msgstr "  8  - エラー: 実行するには root でなければなりません"
 
 #: ../satellite_tools/satsync.py:2485
 msgid "  9  - rpclib fault during synchronization init"
-msgstr ""
+msgstr "  9  - 同期の準備時に rpclib の例外が発生しました"
 
 #: ../satellite_tools/satsync.py:2486
 msgid "  10 - synchronization init error"
-msgstr ""
+msgstr "  10 - 同期の準備時にエラーが発生しました"
 
 #: ../satellite_tools/satsync.py:2487
 msgid "  11 - Error parsing XML stream"
-msgstr ""
+msgstr "  11 - XML ストリームの処理時にエラーが発生しました"
 
 #: ../satellite_tools/satsync.py:2488
 msgid "  12 - Channel do not exist"
@@ -2040,70 +2042,70 @@ msgstr "  12 - チャンネルが存在していません"
 
 #: ../satellite_tools/satsync.py:2489
 msgid "  13 - SQL error during importing package metadata"
-msgstr ""
+msgstr "  13 - パッケージのメタデータを処理する際に SQL エラーが発生しました"
 
 #: ../satellite_tools/satsync.py:2490
 msgid "  14 - SQL error during linking channel packages"
-msgstr ""
+msgstr "  14 - チャンネルパッケージのリンク時に SQL エラーが発生しました"
 
 #: ../satellite_tools/satsync.py:2491
 msgid "  15 - SQL error during xml processing"
-msgstr ""
+msgstr "  15 - XML 処理時に SQL エラーが発生しました"
 
 #: ../satellite_tools/satsync.py:2492
 msgid "  16 - server.mount_point not set in the configuration file"
-msgstr ""
+msgstr "  16 - 設定ファイル内で server.mount_point が設定されていません"
 
 #: ../satellite_tools/satsync.py:2493
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Manager database"
-msgstr ""
+msgstr "  17 - SUSE Manager データベース内に既に取り込まれているチャンネルを取得する際に、 SQL エラーが発生しました"
 
 #: ../satellite_tools/satsync.py:2494
 msgid "  18 - Wrong db connection string in rhn.conf"
-msgstr ""
+msgstr "  18 - rhn.conf 内の DB 接続文字列が正しくありません"
 
 #: ../satellite_tools/satsync.py:2495
 msgid "  19 - Bad arguments"
-msgstr ""
+msgstr "  19 - パラメータが正しくありません"
 
 #: ../satellite_tools/satsync.py:2496
 msgid "  20 - Could not connect to db."
-msgstr ""
+msgstr "  20 - DB に接続できませんでした。"
 
 #: ../satellite_tools/satsync.py:2497
 msgid "  21 - Bad debug level"
-msgstr ""
+msgstr "  21 - デバッグレベルが正しくありません"
 
 #: ../satellite_tools/satsync.py:2498
 msgid "  22 - Not valid step"
-msgstr ""
+msgstr "  22 - ステップが正しくありません"
 
 #: ../satellite_tools/satsync.py:2499
 msgid "  24 - no such file"
-msgstr ""
+msgstr "  24 - そのようなファイルはありません"
 
 #: ../satellite_tools/satsync.py:2500
 msgid "  25 - no such directory"
-msgstr ""
+msgstr "  25 - そのようなディレクトリはありません"
 
 #: ../satellite_tools/satsync.py:2501
 msgid "  26 - mount_point does not exist"
-msgstr ""
+msgstr "  26 - mount_point が存在しません"
 
 #: ../satellite_tools/satsync.py:2502
 msgid "  27 - No such org"
-msgstr ""
+msgstr "  27 - そのような組織はありません"
 
 #: ../satellite_tools/satsync.py:2503
 msgid "  28 - error: --master is only valid with --mount-point"
-msgstr ""
+msgstr "  28 - エラー: --master は --mount-point とともに指定した場合にのみ有効です"
 
 #: ../satellite_tools/satsync.py:2510
 #, python-format
 msgid "ERROR: unknown dump version, try one of %s"
-msgstr ""
+msgstr "エラー: 未知のダンプバージョンです。 %s のいずれかをお試しください"
 
 #: ../satellite_tools/rhn_satellite_activate.py:198
 #, python-format
@@ -2112,6 +2114,9 @@ msgid ""
 "could not be opened and read:\n"
 "%s"
 msgstr ""
+"\"%s\" (コマンドライン内で指定されています)\n"
+"を開いて読み込むことができません:\n"
+"%s"
 
 #: ../satellite_tools/rhn_satellite_activate.py:205
 #, python-format
@@ -2120,3 +2125,6 @@ msgid ""
 "and/or written to:\n"
 "%s"
 msgstr ""
+"\"%s\" を開いたり書き込んだりする\n"
+"ことができません:\n"
+"%s"
