@@ -357,7 +357,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>FAQs</target>
+        <target>Perguntas Frequentes</target>
       </trans-unit>
       <trans-unit id="Sample Scripts">
         <source>Sample Scripts</source>
@@ -1199,7 +1199,7 @@
         <target>Ilma.</target>
       </trans-unit>
       <trans-unit id="user prefix  ">
-        <source></source>
+        <source/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -3130,7 +3130,7 @@ disponíveis para seu perfil kickstart funcionar corretamente./n&lt;/li&gt;
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/Search</context>
         </context-group>
-        <target>Quantidade de dias antes do último checkin:</target>
+        <target>Quantidade de dias antes do último checkin</target>
       </trans-unit>
       <trans-unit id="systemsearch_registered">
         <source>Days Since First Registered</source>
@@ -5933,7 +5933,7 @@ disponíveis para seu perfil kickstart funcionar corretamente./n&lt;/li&gt;
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Você criou seu primeiro usuário para o serviço Satellite do @@PRODUCT_NAME@@.  A configuração adicional dever ser finalizada pelo &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;clicando aqui&lt;/strong&gt;&lt;/a&gt;</target>
+        <target>Você criou seu primeiro usuário para o serviço Satellite do @@PRODUCT_NAME@@. A configuração adicional dever ser finalizada pelo &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;clicando aqui&lt;/strong&gt;&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -7216,7 +7216,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Edit.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target>Propriedades de sistemas modificados para &lt;strong&gt;{0}&lt;/strong&gt;</target>
+        <target>Propriedades de sistemas modificados para &lt;strong&gt;{0}&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.propertieschangedupdate">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; will be &lt;strong&gt;fully updated&lt;/strong&gt; in accordance with Auto Patch Update preference.</source>
@@ -9631,7 +9631,7 @@ você não poderá retornar este sistema à este snapshot ou à qualquer outro.<
         <target>Para detalhes sobre @@PRODUCT_NAME@@, visite nosso site &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
-        <source></source>
+        <source/>
       </trans-unit>
       <trans-unit id="lookup.customkey.title">
         <source>We're sorry, but the custom key could not be found.</source>
@@ -10225,6 +10225,7 @@ você não poderá retornar este sistema à este snapshot ou à qualquer outro.<
       </trans-unit>
       <trans-unit id="cluster.join_precondition_package_name">
         <source>Package {0} not found in subscribed channels</source>
+        <target>Pacote {0} não encontrado nos canais inscritos</target>
       </trans-unit>
     </body>
   </file>
