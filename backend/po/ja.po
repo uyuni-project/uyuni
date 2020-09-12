@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-12 14:25+0200\n"
-"PO-Revision-Date: 2020-09-11 07:47+0000\n"
+"PO-Revision-Date: 2020-09-13 01:48+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/backend/ja/"
 ">\n"
@@ -89,9 +89,8 @@ msgid "Your system was not found in the RHN database"
 msgstr "システムが RHN データベース内には見つかりませんでした"
 
 #: ../server/handlers/sat/auth.py:45
-#, fuzzy
 msgid "ISS is disabled on this server."
-msgstr "ISS がこの Satellite では無効になっています。"
+msgstr "このサーバでは ISS が無効化されています。"
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
@@ -168,11 +167,9 @@ msgid "Invalid value %s (%s)"
 msgstr "無効な値  %s (%s)"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"Spacewalk Proxy サービスがサーバプロファイルに対して有効になっていません: "
-"\"%s\""
+msgstr "サーバプロファイルに対して SUSE Manager Proxy サービスが有効化されていません: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
