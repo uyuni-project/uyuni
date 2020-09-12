@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-12 14:25+0200\n"
-"PO-Revision-Date: 2020-09-01 09:07+0000\n"
+"PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
 "Language: cs\n"
@@ -84,9 +84,8 @@ msgid "Your system was not found in the RHN database"
 msgstr "Váš systém nebyl v databázi RHN nalezen"
 
 #: ../server/handlers/sat/auth.py:45
-#, fuzzy
 msgid "ISS is disabled on this server."
-msgstr "ISS je na tomto satelitu deaktivována."
+msgstr "ISS je na tomto serveru deaktivováno."
 
 #: ../server/handlers/sat/auth.py:50
 #, python-format
@@ -163,9 +162,9 @@ msgid "Invalid value %s (%s)"
 msgstr "Neplatná hodnota %s (%s)"
 
 #: ../server/handlers/xmlrpc/proxy.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "Profil \"%s\" nemá aktivovánu službu Spacewalk Proxy"
+msgstr "Serverový profil \"%s\" nemá aktivovánu službu SUSE Manager Proxy"
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"
@@ -1120,7 +1119,7 @@ msgstr "CHYBA: %s %s: %s"
 #: ../common/rhnTB.py:207
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr "TRACEBACK: %s"
+msgstr "TRACE-BACK: %s"
 
 #: ../satellite_tools/disk_dumper/iss.py:1294
 #: ../satellite_tools/disk_dumper/iss.py:1298
