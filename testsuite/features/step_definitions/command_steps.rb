@@ -672,35 +672,27 @@ When(/^I register this client for SSH push via tunnel$/) do
 end
 
 # Repositories and packages management
-When(/^I enable (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |_optional, repos, host, error_control|
+When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
   os_version, os_family = get_os_version(node)
   if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    cmd = "zypper mr --enable #{repos}"
+    cmd = "zypper mr --#{action} #{repos}"
   else
-    cmd = repos.split(' ').map do |repo|
-      if os_family =~ /^centos/
-        "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
-      elsif os_family =~ /^ubuntu/
-        "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
+    if action == 'enable'
+      cmd = repos.split(' ').map do |repo|
+        if os_family =~ /^centos/
+          "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
+        elsif os_family =~ /^ubuntu/
+          "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
+        end
       end
-    end
-    cmd = cmd.reduce(:+)
-  end
-  node.run(cmd, error_control.empty?)
-end
-
-When(/^I disable (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |_optional, repos, host, error_control|
-  node = get_target(host)
-  os_version, os_family = get_os_version(node)
-  if os_family =~ /^opensuse/ || os_family =~ /^sles/
-    cmd = "zypper mr --disable #{repos}"
-  else
-    cmd = repos.split(' ').map do |repo|
-      if os_family =~ /^centos/
-        "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
-      elsif os_family =~ /^ubuntu/
-        "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
+    else
+      cmd = repos.split(' ').map do |repo|
+        if os_family =~ /^centos/
+          "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
+        elsif os_family =~ /^ubuntu/
+          "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
+        end
       end
     end
     cmd = cmd.reduce(:+)
