@@ -14,11 +14,6 @@
  */
 package com.redhat.rhn.manager.system;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
-import static java.util.Collections.singleton;
-import static java.util.Optional.ofNullable;
-
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -105,7 +100,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.controllers.StatesAPI;
@@ -113,8 +107,8 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.utils.Opt;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -139,7 +133,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
+import static java.util.Collections.emptySet;
+import static java.util.Collections.singleton;
+import static java.util.Optional.ofNullable;
 
 /**
  * SystemManager
@@ -720,6 +718,11 @@ public class SystemManager extends BaseManager {
         });
 
 
+        // clean known_hosts
+        if (server.asMinionServer().isPresent()) {
+            removeSaltSSHKnownHosts(server);
+        }
+
         // remove server itself
         ServerFactory.delete(server);
 
@@ -727,6 +730,16 @@ public class SystemManager extends BaseManager {
             saltServiceInstance.deleteKey(minion.getMinionId());
             SaltStateGeneratorService.INSTANCE.removeServer(minion);
         });
+    }
+
+    private static void removeSaltSSHKnownHosts(Server server) {
+        Optional<MgrUtilRunner.RemoveKnowHostResult> result =
+                saltServiceInstance.removeSaltSSHKnownHost(server.getHostname());
+        boolean removed = result.map(r -> "removed".equals(r.getStatus())).orElse(false);
+        if (!removed) {
+            log.warn("Hostname " + server.getHostname() + " could not be removed from " +
+                    "/var/lib/salt/.ssh/known_hosts: " + result.map(r -> r.getComment()).orElse(""));
+        }
     }
 
     /**

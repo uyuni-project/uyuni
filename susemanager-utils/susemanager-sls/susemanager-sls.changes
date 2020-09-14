@@ -1,3 +1,5 @@
+- Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)
+
 -------------------------------------------------------------------
 Tue Sep 15 10:54:03 CEST 2020 - jgonzalez@suse.com
 

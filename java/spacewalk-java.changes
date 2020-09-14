@@ -1,3 +1,4 @@
+- Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)
 - Log exception trace on fatal Taskomatic startup error
 - fix max password length check at user creation (bsc#1176765)
 - Notify about missing libvirt or hypervisor on virtual host
