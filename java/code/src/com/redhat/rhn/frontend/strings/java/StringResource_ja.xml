@@ -1550,7 +1550,7 @@
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
           <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
-        <target>パスワードが一致しません。</target>
+        <target>パスワードが合致しません。</target>
       </trans-unit>
       <trans-unit id="error.user_invalid_prefix">
         <source>Invalid prefix [{0}]. Must be one of {1}.</source>
