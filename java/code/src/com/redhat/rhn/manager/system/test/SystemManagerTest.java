@@ -116,6 +116,7 @@ import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.impl.SaltService;
 
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.apache.commons.io.FileUtils;
@@ -293,6 +294,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).deleteKey(minionId);
+            allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
+            will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         SystemManager.deleteServer(user, minion.getId());
 
@@ -314,6 +317,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).deleteKey(minionId);
+            allowing(saltServiceMock).removeSaltSSHKnownHost(minion.getHostname());
+            will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
         SystemManager.deleteServer(user, minion.getId());
 

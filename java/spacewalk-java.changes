@@ -1,3 +1,4 @@
+- Remove hostname from /var/lib/salt/.ssh/known_hosts when deleting system (bsc#1176159)
 - show only kernel options in advanced autoinstallation page when working with
   a salt minion (bsc#1177767)
 - add new allowVendorChange flag for dist upgrades

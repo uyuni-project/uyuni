@@ -20,6 +20,7 @@ import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.Zypper;
 import com.suse.salt.netapi.exception.SaltException;
+import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,13 @@ public interface SystemQuery {
      */
     Optional<Map<String, Map<String, Object>>> listClusterNodes(MinionServer managementNode,
                                                                 ClusterProviderParameters clusterProviderParameters);
+    /**
+     * Removes a hostname from the Salt ~/.ssh/known_hosts file.
+     * @param hostname the hostname to remote
+     * @return the result of the runner call
+     */
+    Optional<MgrUtilRunner.RemoveKnowHostResult> removeSaltSSHKnownHost(String hostname);
+
 
     /**
      * Send notification about a system id to be generated.
