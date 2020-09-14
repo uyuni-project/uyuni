@@ -4301,7 +4301,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
-        <target>企業/組織</target>
+        <target>組織</target>
       </trans-unit>
       <trans-unit id="orgdetails.jsp.submit">
         <source>Update Organization</source>
@@ -4356,7 +4356,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organization</context>
         </context-group>
-        <target>企業/組織</target>
+        <target>組織</target>
       </trans-unit>
       <trans-unit id="org.nopunc.sharedchannels">
         <source>Channels Shared</source>
@@ -7755,7 +7755,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/FilterCreate.do</context>
         </context-group>
-        <target>企業/組織</target>
+        <target>組織</target>
       </trans-unit>
       <trans-unit id="filter-form.jspf.scout">
         <source>Scouts</source>
@@ -7769,7 +7769,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/FilterCreate.do</context>
         </context-group>
-        <target>企業/組織</target>
+        <target>組織</target>
       </trans-unit>
       <trans-unit id="filter-form.jspf.scouts">
         <source>Scouts</source>
@@ -20394,7 +20394,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
-        <target>企業/組織</target>
+        <target>組織</target>
       </trans-unit>
       <trans-unit id="org.trust.trusts">
         <source>Trusts</source>
