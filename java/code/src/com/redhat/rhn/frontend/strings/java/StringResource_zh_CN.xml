@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="zh_CN">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="zh_CN">
     <body>
       <trans-unit id="0">
         <source>0</source>
@@ -1101,7 +1101,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
-        <target>&lt;p&gt;您对&lt;strong&gt; &lt;a href=&quot;http://www.redhat.com&quot;&gt;{0} 系统&lt;/a&gt;&lt;/strong&gt;没有足够的权利。&lt;/p&gt;</target>
+        <target>&lt;p&gt;您对&lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} 系统&lt;/a&gt;&lt;/strong&gt;没有足够的权利。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="traceback message header">
         <source>The following exception occurred while executing this request:</source>
@@ -1251,18 +1251,18 @@
         <target>您可能不能删除您自己。</target>
       </trans-unit>
       <trans-unit id="user.satadmin.remove">
-        <source>Removed SUSE Manager Administrator role from {0}</source>
+        <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>删除 {0} 的 Satellite 管理员角色</target>
+        <target state="needs-adaptation">删除 {0} 的 Satellite 管理员角色</target>
       </trans-unit>
       <trans-unit id="user.satadmin.add">
-        <source>Added SUSE Manager Administrator role to {0}</source>
+        <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>在 {0} 中添加 Satellite 管理员角色</target>
+        <target state="needs-adaptation">在 {0} 中添加 Satellite 管理员角色</target>
       </trans-unit>
       <trans-unit id="user.deleteadmin">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
@@ -1272,11 +1272,11 @@
         <target>您不能删除 另一个 机构管理员。在删除他们的帐户前请把他们从 '机构管理员' 角色中删除</target>
       </trans-unit>
       <trans-unit id="user.cannot.delete.last.sat.admin">
-        <source>Cannot delete the last remaining SUSE Manager administrator.</source>
+        <source>Cannot delete the last remaining @@PRODUCT_NAME@@ administrator.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target>不能够删除最后一个 Satellite 管理员。</target>
+        <target state="needs-adaptation">不能够删除最后一个 Satellite 管理员。</target>
       </trans-unit>
       <trans-unit id="Users">
         <source>Users</source>
@@ -1315,11 +1315,11 @@
         <target>WEB TRACEBACK from </target>
       </trans-unit>
       <trans-unit id="taskomatic notif subject">
-        <source>SUSE MANAGER TASKOMATIC NOTIFICATION</source>
+        <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target>RHN TASKOMATIC 通知</target>
+        <target state="needs-adaptation">RHN TASKOMATIC 通知</target>
       </trans-unit>
       <trans-unit id="Notification Messages">
         <source>Notification Messages</source>
@@ -2002,21 +2002,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>不能解释 ACL 声明：&quot;{0}&quot;</target>
+        <target>不能解释 ACL 声明："{0}"</target>
       </trans-unit>
       <trans-unit id="bad-handler">
         <source>Could not find ACL handler {0} in statement: "{1}". Available ACL handlers: {2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>不能在声明 &quot;{1}&quot;中找到 ACL handler {0}。可用的 ACL handlers：{2}</target>
+        <target>不能在声明 "{1}"中找到 ACL handler {0}。可用的 ACL handlers：{2}</target>
       </trans-unit>
       <trans-unit id="invocation-target-exception">
         <source>IllegalInvocationException calling {0} ("{1}"): {2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>IllegalInvocationException calling {0} (&quot;{1}&quot;): {2}</target>
+        <target>IllegalInvocationException calling {0} ("{1}"): {2}</target>
       </trans-unit>
       <trans-unit id="no notes">
         <source>(none)</source>
@@ -2135,7 +2135,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
-        <target>{0} 文件 &lt;a href=&quot;{1}&quot;&gt;scheduled&lt;/a&gt; 上载。</target>
+        <target>{0} 文件 &lt;a href="{1}"&gt;scheduled&lt;/a&gt; 上载。</target>
       </trans-unit>
       <trans-unit id="configfiles.upload">
         <source>Import config file data from system</source>
@@ -2177,7 +2177,7 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Revision 5 of /etc/foo from My Config Channel</context>
         </context-group>
-        <target>&lt;a href=&quot;{0}&quot;&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href=&quot;{3}&quot;&gt;{4}&lt;/a&gt;</target>
+        <target>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; of {2} from &lt;a href="{3}"&gt;{4}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="config.upload.onechannel">
         <source>Destination Configuration Channel: {0}</source>
@@ -2220,7 +2220,7 @@ entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ adm
 &lt;li&gt;
 Make sure that the 'rhn-tools' child channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-SUSE Manager administrator and request a satellite-sync for the rhn-tools channel
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the rhn-tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
@@ -2238,7 +2238,7 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target>&lt;div style=&quot;text-align: left;&quot;&gt;
+        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;要解决这个问题，请检查下列事项：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2277,7 +2277,7 @@ entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ adm
 &lt;li&gt;
 Make sure that the 'appstream' child channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-satellite administrator and request a cdn-sync for the appstream channel
+@@PRODUCT_NAME@@ administrator and request a cdn-sync for the appstream channel
 and try again.
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2286,6 +2286,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.initiate">
         <source>Initiate an autoinstallation</source>
@@ -2452,7 +2453,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target>请求的 Kickstart snippet 文件名无效。Kickstart snippet 文件名不能包含斜线 (/)，引号 (&quot;)，符号 (&amp;)，或以点号 (.) 开头</target>
+        <target>请求的 Kickstart snippet 文件名无效。Kickstart snippet 文件名不能包含斜线 (/)，引号 (")，符号 (&amp;)，或以点号 (.) 开头</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.details">
         <source>Delete or rename the offending snippet from {0}</source>
@@ -2553,7 +2554,7 @@ and try again.
             1 system failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/FailedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} system&lt;/strong&gt;&lt;/a&gt;无法完成这个动作。&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/strong&gt;&lt;/a&gt;无法完成这个动作。&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.failedlink.plural">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2563,7 +2564,7 @@ and try again.
             2 systems failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/FailedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} system&lt;/strong&gt;&lt;/a&gt;无法完成这个动作。&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/strong&gt;&lt;/a&gt;无法完成这个动作。&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2573,7 +2574,7 @@ and try again.
             1 system successfully completed this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} system&lt;/strong&gt;&lt;/a&gt; 成功地完成了这个动作。&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/strong&gt;&lt;/a&gt; 成功地完成了这个动作。&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink.plural">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2583,7 +2584,7 @@ and try again.
             2 systems successfully completed this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} system&lt;/strong&gt;&lt;/a&gt; 成功地完成了这个动作。&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/strong&gt;&lt;/a&gt; 成功地完成了这个动作。&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.name">
         <source>Patch Update: {0} - {1}</source>
@@ -2602,28 +2603,28 @@ and try again.
         <target>勘误更新：软件更新栈的合并更新（{0} 勘误）</target>
       </trans-unit>
       <trans-unit id="errata.schedule">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule">
-        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural">
-        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -3892,7 +3893,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="paramnotes">You have successfully scheduled a package profile refresh
                                              for workstation3.</context>
         </context-group>
-        <target>您已经成功地为 &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={1}&quot;&gt;{2}&lt;/a&gt;调度了一个 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={0}&quot;&gt;软件包配置刷新&lt;/a&gt;。</target>
+        <target>您已经成功地为 &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;调度了一个 &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;软件包配置刷新&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.bulkremovecustomdata">
         <source>Value removed for &lt;strong&gt;{0}&lt;/strong&gt; from {1} systems.</source>
@@ -4000,7 +4001,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>已成功 &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}&quot;&gt;预订&lt;/a&gt;&lt;/strong&gt;  &lt;strong&gt;{2}&lt;/strong&gt; 使用 &lt;strong&gt;{3}&lt;/strong&gt; 进行软件包配置同步。</target>
+        <target>已成功 &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;预订&lt;/a&gt;&lt;/strong&gt;  &lt;strong&gt;{2}&lt;/strong&gt; 使用 &lt;strong&gt;{3}&lt;/strong&gt; 进行软件包配置同步。</target>
       </trans-unit>
       <trans-unit id="message.hardwarerefresh">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
@@ -4008,7 +4009,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>&lt;strong&gt;注：&lt;/strong&gt;@@PRODUCT_NAME@@ 已经为 &lt;strong&gt;{2}&lt;/strong&gt; &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}&quot;&gt;预订&lt;/a&gt;&lt;/strong&gt;了一个硬件刷新来在同步软件包配置前运行。这需要检查系统有比较软件包的能力。</target>
+        <target>&lt;strong&gt;注：&lt;/strong&gt;@@PRODUCT_NAME@@ 已经为 &lt;strong&gt;{2}&lt;/strong&gt; &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;预订&lt;/a&gt;&lt;/strong&gt;了一个硬件刷新来在同步软件包配置前运行。这需要检查系统有比较软件包的能力。</target>
       </trans-unit>
       <trans-unit id="filterCreate.success">
         <source>The filter {0} was successfully created</source>
@@ -4097,11 +4098,11 @@ user before attempting to deactivate their account.</source>
                 </note>
         <trans-unit id="daterangepicker.error.invalid">
           <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-          <target>日期 &quot;{0}&quot; 无效，它被重新设置为默认的值。请检查所选择的月份有正确的天数。</target>
+          <target>日期 "{0}" 无效，它被重新设置为默认的值。请检查所选择的月份有正确的天数。</target>
         </trans-unit>
         <trans-unit id="daterangepicker.error.start.before.end">
           <source>The start date "{0}" must be before the end date "{1}"</source>
-          <target>开始的日期 &quot;{0}&quot; 必须要早于结束的日期 &quot;{1}&quot;</target>
+          <target>开始的日期 "{0}" 必须要早于结束的日期 "{1}"</target>
         </trans-unit>
       </group>
       <trans-unit id="monitoring.services.restarted">
@@ -5974,14 +5975,14 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>您已经为 @@PRODUCT_NAME@@ 服务创建了第一个用户。其它的配置应该&lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;点这里&lt;/strong&gt;&lt;/a&gt;</target>
+        <target>您已经为 @@PRODUCT_NAME@@ 服务创建了第一个用户。其它的配置应该&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;点这里&lt;/strong&gt;&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>已作为外部认证的 &lt;strong&gt;{0}&lt;/strong&gt; 用户记录。要使用这个帐户的登录和密码登录，请在 &lt;a href=&quot;/rhn/account/UserDetails.do&quot;&gt;&lt;strong&gt;{0} 用户页面&lt;/strong&gt;&lt;/a&gt; 设置密码。</target>
+        <target>已作为外部认证的 &lt;strong&gt;{0}&lt;/strong&gt; 用户记录。要使用这个帐户的登录和密码登录，请在 &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} 用户页面&lt;/strong&gt;&lt;/a&gt; 设置密码。</target>
       </trans-unit>
       <trans-unit id="hostname">
         <source>@@PRODUCT_NAME@@ server hostname</source>
@@ -6059,7 +6060,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>Bootstrap 脚本被成功生成。您可以通过 &lt;a href=&quot;{0}/pub/bootstrap/&quot;&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它。</target>
+        <target>Bootstrap 脚本被成功生成。您可以通过 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它。</target>
       </trans-unit>
       <trans-unit id="restart.config.error">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -6080,7 +6081,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>重启 @@PRODUCT_NAME@@。如果本页在 5 分钟内没有刷新，请点击&lt;a href=&quot;/rhn/YourRhn.do&quot;&gt;这里&lt;/a&gt;来尝试手动重启。</target>
+        <target>重启 @@PRODUCT_NAME@@。如果本页在 5 分钟内没有刷新，请点击&lt;a href="/rhn/YourRhn.do"&gt;这里&lt;/a&gt;来尝试手动重启。</target>
       </trans-unit>
       <trans-unit id="restart.config.norestart">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
@@ -6535,7 +6536,7 @@ Follow this url to see the full list of inactive systems:
         <target>您在此系统的当前基本频道中没有可用于频道 {0} 的剩余的订阅。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date">
-        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
+        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6748,7 +6749,7 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="system.sdc.missing.config_deploy2">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-          <target>您要确定在这个系统中启用了配置部署功能，在 &lt;a href=&quot;{0}&quot;&gt;&quot;{1}&quot;&lt;/a&gt; 中选择这个系统，然后点击 &quot;{2}&quot; 就可达到此目的。</target>
+          <target>您要确定在这个系统中启用了配置部署功能，在 &lt;a href="{0}"&gt;"{1}"&lt;/a&gt; 中选择这个系统，然后点击 "{2}" 就可达到此目的。</target>
         </trans-unit>
         <trans-unit id="system.sdc.addtossm">
           <source>System added to the System Set Manager.</source>
@@ -7247,7 +7248,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target>&lt;a href=&quot;{0}&quot;&gt;预定了&lt;/a&gt; RHN Applet @@PRODUCT_NAME@@ 的激活</target>
+        <target>&lt;a href="{0}"&gt;预定了&lt;/a&gt; RHN Applet @@PRODUCT_NAME@@ 的激活</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.none">
         <source>None</source>
@@ -7289,11 +7290,11 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="sdc.config.deploy.failure">
           <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>所有的文件和/或目录 ({0}) 都部署失败。 [&lt;a href=&quot;{1}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>所有的文件和/或目录 ({0}) 都部署失败。 [&lt;a href="{1}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.deploy.success">
           <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>所有的文件和/或目录 ({0}) 都部署成功。 [&lt;a href=&quot;{1}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>所有的文件和/或目录 ({0}) 都部署成功。 [&lt;a href="{1}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
       </group>
       <group>
@@ -7306,111 +7307,111 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0">
           <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>没有文件、目录或 symlink 被用于比较。[&lt;a href=&quot;{6}&quot;&gt;查看细节&lt;/a&gt;]</target>
+          <target>没有文件、目录或 symlink 被用于比较。[&lt;a href="{6}"&gt;查看细节&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1">
           <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{4} 系统里的 1 symlink 的{4} 成功地和 @@PRODUCT_NAME@@-Managed 文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>{4} 系统里的 1 symlink 的{4} 成功地和 @@PRODUCT_NAME@@-Managed 文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2">
           <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {5} 个 symlink 中的 {4} 个成功和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {5} 个 symlink 中的 {4} 个成功和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0">
           <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个目录中的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个目录中的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1">
           <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个目录中的 {2} 个以及 1 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个目录中的 {2} 个以及 1 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2">
           <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个目录中的 {2} 个以及 {5} 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个目录中的 {2} 个以及 {5} 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0">
           <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里{3} 个目录中的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里{3} 个目录中的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1">
           <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里{3} 个目录中的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里{3} 个目录中的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2">
           <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里{3} 个目录中的 {2} 个以及 {5} 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里{3} 个目录中的 {2} 个以及 {5} 个symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0">
           <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件的 {0} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件的 {0} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1">
           <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件中的 {0} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件中的 {0} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2">
           <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件中的 {0} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件中的 {0} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0">
           <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1">
           <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2">
           <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件中的 {0} 个、1 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0">
           <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件中的 {0} 个以及 {3} 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件中的 {0} 个以及 {3} 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1">
           <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2">
           <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 1 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 1 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0">
           <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1">
           <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2">
           <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0">
           <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1">
           <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2">
           <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个、1 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0">
           <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个以及 {3} 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个以及 {3} 个目录里的 {2} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1">
           <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 1 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2">
           <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>系统里 {1} 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href=&quot;{6}&quot;&gt;查看详情&lt;/a&gt;]</target>
+          <target>系统里 {1} 个文件中的 {0} 个、{3} 个目录里的 {2} 个以及 {5} 个 symlink 中的 {4} 个成功地和 @@PRODUCT_NAME@@ 管理的文件进行了比较。[&lt;a href="{6}"&gt;查看详情&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.differing.files_0">
           <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
@@ -7435,7 +7436,7 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="sdc.config.time.message_url">
           <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
-          <target>{0} by &lt;a href=&quot;{1}&quot;&gt;{2}&lt;/a&gt;</target>
+          <target>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</target>
         </trans-unit>
       </group>
       <group>
@@ -7618,7 +7619,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-        <target>只能在安装了 &quot;fence 代理&quot; 的 @@PRODUCT_NAME@@ 服务器中使用这个功能，根据您使用的操作系统以及所需电源管理架构，所需软件包可能为 &quot;fence-agents&quot;、&quot;fence-agents-all&quot; 或者 &quot;fence-agents-ipmilan&quot;。请安装这个 fence 代理 。如果您的操作系统无法使用 fence 代理，那么就不会支持电源管理功能。</target>
+        <target>只能在安装了 "fence 代理" 的 @@PRODUCT_NAME@@ 服务器中使用这个功能，根据您使用的操作系统以及所需电源管理架构，所需软件包可能为 "fence-agents"、"fence-agents-all" 或者 "fence-agents-ipmilan"。请安装这个 fence 代理 。如果您的操作系统无法使用 fence 代理，那么就不会支持电源管理功能。</target>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.alom">
         <source>Advanced Lights Out Manager</source>
@@ -8257,7 +8258,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">SELinuxMode</context>
         </context-group>
-        <target>指定了无效 SE Linux 模式 &quot;{0}&quot;。有效值为 {1}。</target>
+        <target>指定了无效 SE Linux 模式 "{0}"。有效值为 {1}。</target>
       </trans-unit>
       <trans-unit id="softwareEntitlementSubs.successMessage">
         <source>Updated entitlement count for '{0}'</source>
@@ -8331,7 +8332,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/UploadFile</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>名为 &quot;{0}&quot; 的文件已经存在于此频道里。</target>
+        <target>名为 "{0}" 的文件已经存在于此频道里。</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel">
         <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
@@ -8380,7 +8381,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>因为您在该系统中添加了虚拟化权利，我们也可执行某些额外的步骤来确保您的系统能够更好地管理虚拟化客体。更多信息请参考&lt;a href=&quot;{0}&quot;&gt;这里&lt;/a&gt;。</target>
+        <target>因为您在该系统中添加了虚拟化权利，我们也可执行某些额外的步骤来确保您的系统能够更好地管理虚拟化客体。更多信息请参考&lt;a href="{0}"&gt;这里&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="system.entitle.addedvirtualization.nodoc">
         <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
@@ -8483,8 +8484,8 @@ Follow this url to see the full list of inactive systems:
         <target>不允许机构 {0} 中的用户搜索或者修改机构 {2} 中的 {1} 属性。</target>
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg">
-        <source>Cannot perform this operation on the satellite organization. (Org ID 1)</source>
-        <target>无法在 satellite 机构中执行这个操作。（Org ID 1）</target>
+        <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
+        <target state="needs-adaptation">无法在 satellite 机构中执行这个操作。（Org ID 1）</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid patch: {0}</source>
@@ -8520,11 +8521,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.systemgroup.lookupServerGroup">
         <source>Unable to locate or access server group: "{0}"</source>
-        <target>无法定位或者访问服务器组群：&quot;{0}&quot;</target>
+        <target>无法定位或者访问服务器组群："{0}"</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied">
-        <source>Changing administrator access is not allowed for Satellite and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
-        <target>在 Satellite 和修改管理员权限是不允许的。这些用户是缺省的，因此，下面的用户应该从输入里删除：{0}</target>
+        <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
+        <target state="needs-adaptation">在 Satellite 和修改管理员权限是不允许的。这些用户是缺省的，因此，下面的用户应该从输入里删除：{0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel">
         <source>Invalid profile label specified: {0}</source>
@@ -8552,11 +8553,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target>无效勘误类型 &quot;{0}&quot;。请使用以下类型之一：&quot;Security Advisory&quot;、&quot;Product Enhancement Advisory&quot; 或者 &quot;Bug Fix Advisory&quot;。</target>
+        <target>无效勘误类型 "{0}"。请使用以下类型之一："Security Advisory"、"Product Enhancement Advisory" 或者 "Bug Fix Advisory"。</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
-        <target>无效公告发布 &quot;{0}&quot;。最大值为 {1}。</target>
+        <target>无效公告发布 "{0}"。最大值为 {1}。</target>
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
@@ -8576,11 +8577,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.channel.access.invalidaccessvalue">
         <source>Access value, "{0}". Please use one of the following: "public", "private", or "protected".</source>
-        <target>访问值 &quot;{0}&quot;。请使用以下值之一：&quot;public&quot;、&quot;private&quot; 或者 &quot;protected&quot;。</target>
+        <target>访问值 "{0}"。请使用以下值之一："public"、"private" 或者 "protected"。</target>
       </trans-unit>
       <trans-unit id="api.channel.software.channelsubscription">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target>无法将此系统订阅到要求的频道：&quot;{0}&quot;</target>
+        <target>无法将此系统订阅到要求的频道："{0}"</target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
@@ -8686,12 +8687,12 @@ Follow this url to see the full list of inactive systems:
         <target>丢失需要的勘误属性（{0}）。</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster">
-        <source>A record for Master satellite {0} already exists</source>
-        <target>已有一条主 satellite {0} 记录</target>
+        <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
+        <target state="needs-adaptation">已有一条主 satellite {0} 记录</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave">
-        <source>A record for Slave satellite {0} already exists</source>
-        <target>已有一条辅 satellite {0} 记录</target>
+        <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
+        <target state="needs-adaptation">已有一条辅 satellite {0} 记录</target>
       </trans-unit>
       <trans-unit id="securityErrata">
         <source>Security Patches</source>
@@ -8947,7 +8948,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="filter.clearfilter">
         <source>The list below is filtered.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Clear filter to see all items.&lt;/strong&gt; &lt;/a&gt;</source>
-        <target>过滤以下列表。&lt;a href=&quot;{0}&quot;&gt; &lt;strong&gt;清除过滤器以便查看所有项。&lt;/strong&gt; &lt;/a&gt;</target>
+        <target>过滤以下列表。&lt;a href="{0}"&gt; &lt;strong&gt;清除过滤器以便查看所有项。&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="listtag.clearfilter">
         <source>Clear filter </source>
@@ -9125,7 +9126,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscripttype">
         <source>Only script types of "pre" and "post" are allowed for kickstarts.</source>
-        <target>kickstart 中只允许脚本类型 &quot;pre&quot; 和 &quot;post&quot;。</target>
+        <target>kickstart 中只允许脚本类型 "pre" 和 "post"。</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscriptname">
         <source>Script Name must be larger than 0 and fewer than 40 characters.</source>
@@ -9656,11 +9657,11 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="images.message.error.nocreds">
         <source>It looks like you did not enter valid credentials for talking to SUSE Studio, please check &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt;.</source>
-        <target>您并没有为访问 SUSE Studio 输入有效凭据，请检查 &lt;a href=&quot;/rhn/account/Credentials.do&quot;&gt;这里&lt;/a&gt;。</target>
+        <target>您并没有为访问 SUSE Studio 输入有效凭据，请检查 &lt;a href="/rhn/account/Credentials.do"&gt;这里&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="images.message.error.connection">
         <source>There was a problem connecting to SUSE Studio, you might want to review your configuration &lt;a href="/rhn/account/Credentials.do"&gt;here&lt;/a&gt; or try again later.</source>
-        <target>连接到 SUSE Studio 存在一个问题，您可能想重新检查&lt;a href=&quot;/rhn/account/Credentials.do&quot;&gt;配置&lt;/a&gt;或稍后重试。</target>
+        <target>连接到 SUSE Studio 存在一个问题，您可能想重新检查&lt;a href="/rhn/account/Credentials.do"&gt;配置&lt;/a&gt;或稍后重试。</target>
       </trans-unit>
       <trans-unit id="images.message.success.scheduled">
         <source>Image deployment scheduled: {0}</source>
@@ -9733,7 +9734,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Select first character</source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody2">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href=&quot;http://www.suse.com/products/suse-manager/&quot; target=&quot;_new&quot;&gt;&lt;i class=&quot;fa fa-globe&quot;&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
         <source> </source>
@@ -9838,16 +9839,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>@@PRODUCT_NAME@@ Advanced Topics Guide</source>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single base type is required for all systems registered to SUSE Manager</source>
+        <source>A single base type is required for all systems registered to @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether SUSE Manager certificate has not expired</source>
+        <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="image_admin">
         <source>Image Administrator</source>
@@ -9859,13 +9862,16 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted">
-        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="satellite.graceperiod">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="restricted.forbidden">
-        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.entitlements.system.defaultorg">
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
@@ -9877,7 +9883,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run">
-        <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+        <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="task.status.mgr-register">
         <source>Run mgr-register</source>
@@ -9910,10 +9917,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cleanup channel tokens</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
-        <source>Registers SUSE Manager clients</source>
+        <source>Registers @@PRODUCT_NAME@@ clients</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch">
-        <source>Synchronizes SUSE Manager repositories</source>
+        <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch">
         <source>Manages clients via SSH Server Push</source>
@@ -9997,25 +10006,25 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Removed &lt;strong&gt;{1}&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host.nodoc">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host.nodoc">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10153,7 +10162,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices">
-        <source>This document describes SUSE recommended best practices for @@PRODUCT_NAME@@</source>
+        <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
@@ -10215,6 +10225,192 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="cluster.join_precondition_package_name">
         <source>Package {0} not found in subscribed channels</source>
       </trans-unit>
+    <trans-unit id="Networks">
+        <source>Networks</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_refresh">
+        <source>Virtual storage pool refresh</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_start">
+        <source>Virtual storage pool start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_stop">
+        <source>Virtual storage pool stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_delete">
+        <source>Virtual storage pool delete</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_create">
+        <source>Virtual storage pool creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_update">
+        <source>Virtual storage pool update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.volume_delete">
+        <source>Virtual storage volume deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_start">
+        <source>Virtual network start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_stop">
+        <source>Virtual network stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_delete">
+        <source>Virtual network deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="cluster_admin">
+        <source>Cluster Administrator</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.title">
+        <source>Clusters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.overview">
+        <source>Overview</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.add">
+        <source>Add</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.modulenotfound">
+        <source>Module '{0}' not found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.moduleconflict">
+        <source>Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.dependencyerror.formodule">
+        <source>Some of the modular dependencies cannot be resolved for module '{0}'.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.dependencyerror">
+        <source>Some of the modular dependencies cannot be resolved.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodulefilters">
+        <source>No module filters attached. Module metadata will be cloned to target.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodularsources">
+        <source>No modular source attached. Module filters will be ignored.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.name.empty">
+        <source>Calendar name required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.schedule.name.empty">
+        <source>Schedule name required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.data.empty">
+        <source>Calendar data required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.exists">
+        <source>Calendar '{0}' already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.fetch.error">
+        <source>Error fetching calendar data from '{0}'</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.not.exists">
+        <source>Calendar '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.schedule.id.not.exists">
+        <source>Schedule with id '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.id.not.exists">
+        <source>Calendar with id '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.reschedule.error.cancel">
+        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.reschedule.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.systemnotfound">
+        <source>Some of the specified servers cannot be found</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>
