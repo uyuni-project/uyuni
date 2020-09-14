@@ -59,7 +59,7 @@ window.pageRenderers.spaengine.init = function init() {
 
       let urlParser = document.createElement('a');
       urlParser.href = navigation.path;
-      if(isLoginPage(urlParser.pathname) || navigation.event.target.classList.contains('no-spa')) {
+      if(isLoginPage(urlParser.pathname) || (navigation.event && navigation.event.target.classList.contains('no-spa'))) {
         window.location = navigation.path;
       }
     })
