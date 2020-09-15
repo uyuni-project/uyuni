@@ -1,3 +1,4 @@
+- Fix JavaScript error caused by SPA navigation event with empty event field (bsc#1176503)
 - Force disable SPA for non-navigation links (bsc#1175512)
 - Add translation support for react t() function
 - fix striping on react tables
