@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Sep 15 10:54:03 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.15-1
 - Add uyuni-config-modules subpackage with Salt modules to configure
   Servers
 - Fix reporting of missing products in product.all_installed (bsc#1165829)
