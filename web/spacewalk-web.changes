@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Sep 15 12:16:13 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.17-1
 - Fix JavaScript error caused by SPA navigation event with empty event field (bsc#1176503)
 
 -------------------------------------------------------------------
