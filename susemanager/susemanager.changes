@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Sep 15 10:47:45 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.19-1
 - Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - support installer update channels during autoinstallation
 
