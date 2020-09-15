@@ -1,3 +1,5 @@
+- Fix the jQuery selector in SP Migration page (bsc#1176500)
+
 -------------------------------------------------------------------
 Tue Sep 15 12:16:13 CEST 2020 - jgonzalez@suse.com
 
