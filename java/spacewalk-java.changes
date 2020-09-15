@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Tue Sep 15 10:44:37 CEST 2020 - jgonzalez@suse.com
+
+- version 4.1.20-1
 - Force disable SPA for non-navigation links (bsc#1175512)
 - Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
 - pass the log level parameter to matcher
