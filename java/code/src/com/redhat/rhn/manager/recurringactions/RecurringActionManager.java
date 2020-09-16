@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.recurringactions;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
@@ -51,6 +52,7 @@ import java.util.List;
 public class RecurringActionManager {
 
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * Set the {@link TaskomaticApi} instance to use. Only needed for unit tests.
@@ -157,13 +159,12 @@ public class RecurringActionManager {
      * @return list of group recurring actions
      */
     public static List<GroupRecurringAction> listGroupRecurringActions(long groupId, User user) {
-        ServerGroupManager groupManager = ServerGroupManager.getInstance();
         if (!user.hasRole(RoleFactory.SYSTEM_GROUP_ADMIN)) {
             throw new PermissionException(String.format("User does not have access to group id %d", groupId));
         }
         try {
             /* Check if user has permission to access the group */
-            groupManager.lookup(groupId, user);
+            SERVER_GROUP_MANAGER.lookup(groupId, user);
             return RecurringActionFactory.listGroupRecurringActions(groupId);
         }
         catch (LookupException e) {

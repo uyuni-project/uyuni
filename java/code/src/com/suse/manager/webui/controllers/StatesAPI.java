@@ -61,7 +61,7 @@ import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.SaltInclude;
 import com.suse.manager.webui.utils.SaltPkgInstalled;
 import com.suse.manager.webui.utils.SaltPkgLatest;
@@ -117,7 +117,8 @@ public class StatesAPI {
     /** Logger */
     private static final Logger LOG = Logger.getLogger(StatesAPI.class);
     private final TaskomaticApi taskomaticApi;
-    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
+    private final ServerGroupManager serverGroupManager;
 
     private static final Gson GSON = new GsonBuilder().create();
     public static final String SALT_PACKAGE_FILES = "packages";
@@ -131,12 +132,15 @@ public class StatesAPI {
             = "/etc/yum.repos.d/susemanager:channels.repo";
 
     /**
-     * @param systemQueryIn instance to use.
+     * @param saltApiIn instance to use.
      * @param taskomaticApiIn instance to use.
+     * @param serverGroupManagerIn instance to use.
      */
-    public StatesAPI(SystemQuery systemQueryIn, TaskomaticApi taskomaticApiIn) {
+    public StatesAPI(SaltApi saltApiIn, TaskomaticApi taskomaticApiIn,
+                     ServerGroupManager serverGroupManagerIn) {
         this.taskomaticApi = taskomaticApiIn;
-        this.systemQuery = systemQueryIn;
+        this.saltApi = saltApiIn;
+        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -341,9 +345,9 @@ public class StatesAPI {
 
     private void checkUserHasPermissionsOnServerGroup(User user, ServerGroup group) {
         try {
-            ServerGroupManager.getInstance().validateAccessCredentials(user, group,
+            serverGroupManager.validateAccessCredentials(user, group,
                     group.getName());
-            ServerGroupManager.getInstance().validateAdminCredentials(user);
+            serverGroupManager.validateAdminCredentials(user);
         }
         catch (PermissionException | LookupException e) {
             Spark.halt(HttpStatus.SC_FORBIDDEN);
@@ -696,9 +700,9 @@ public class StatesAPI {
                     try {
                         MinionList minions = new MinionList(minionId);
                         // sync to minion before showing highstate
-                        systemQuery.syncAll(minions);
+                        saltApi.syncAll(minions);
 
-                        Map<String, Result<Object>> result = systemQuery.showHighstate(minionId);
+                        Map<String, Result<Object>> result = saltApi.showHighstate(minionId);
 
                         return Optional.ofNullable(result.get(minionId))
                                 .map(r -> r.fold(

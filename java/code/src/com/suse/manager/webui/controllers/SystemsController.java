@@ -37,9 +37,11 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -54,6 +56,7 @@ import org.apache.struts.action.ActionMessages;
 
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -78,13 +81,13 @@ import static spark.Spark.post;
  */
 public class SystemsController {
 
-    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
 
     /**
-     * @param systemQueryIn instance for getting information from a system.
+     * @param saltApiIn instance for getting information from a system.
      */
-    public SystemsController(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
+    public SystemsController(SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
     }
 
     // Logger for this class
@@ -108,6 +111,8 @@ public class SystemsController {
         post("/manager/api/systems/:sid/channels", withUser(systemsController::subscribeChannels));
         get("/manager/api/systems/:sid/channels/:channelId/accessible-children",
                 withUser(systemsController::getAccessibleChannelChildren));
+        get("/manager/api/systems/targetforschedule/:schedule_id",
+                withUser(systemsController::getTargetSystemsForSchedule));
     }
 
     /**
@@ -133,7 +138,7 @@ public class SystemsController {
         if (server.asMinionServer().isPresent()) {
             if (!Boolean.parseBoolean(noclean) && !isEmptyProfile) {
                 Optional<List<String>> cleanupErr =
-                        systemQuery.cleanupMinion(server.asMinionServer().get(), 300);
+                        saltApi.cleanupMinion(server.asMinionServer().get(), 300);
                 if (cleanupErr.isPresent()) {
                     return json(response, ResultJson.error(cleanupErr.get()));
                 }
@@ -417,4 +422,20 @@ public class SystemsController {
         });
     }
 
+    /**
+     * Get a list of assignable systems for a maintenance schedule
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the json response
+     */
+    public String getTargetSystemsForSchedule(Request request, Response response, User user) {
+        response.type("application/json");
+        MaintenanceSchedule schedule = new MaintenanceManager()
+                .lookupScheduleByUserAndId(user, Long.parseLong(request.params("schedule_id")))
+                .orElseThrow(() -> Spark.halt(HttpStatus.SC_NOT_FOUND));
+
+        return json(response, SystemManager.systemsNotInSchedule(user, schedule, null));
+    }
 }

@@ -34,13 +34,13 @@
     }
 
     function moveNext() {
-      var form = $("form[name='kickstartCreateWizardForm']");
+      var form = jQuery("form[name='kickstartCreateWizardForm']");
       swapValues("wizard-nextstep", "wizard-curstep");
       form.submit();
     }
 
     function movePrevious() {
-      var form = $("form[name='kickstartCreateWizardForm']");
+      var form = jQuery("form[name='kickstartCreateWizardForm']");
       swapValues("wizard-prevstep", "wizard-curstep");
       form.submit();
     }

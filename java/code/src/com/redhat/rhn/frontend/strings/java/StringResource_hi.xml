@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="hi">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="hi">
     <body>
       <trans-unit id="0">
         <source>0</source>
@@ -1222,18 +1222,18 @@
         <target>आप स्वयं को मिटा नहीं सकते.</target>
       </trans-unit>
       <trans-unit id="user.satadmin.remove">
-        <source>Removed SUSE Manager Administrator role from {0}</source>
+        <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>सैटेलाइट प्रशासक भूमिका {0} से हटाया</target>
+        <target state="needs-adaptation">सैटेलाइट प्रशासक भूमिका {0} से हटाया</target>
       </trans-unit>
       <trans-unit id="user.satadmin.add">
-        <source>Added SUSE Manager Administrator role to {0}</source>
+        <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>{0} में सैटेलाइट प्रशासक जोड़ा</target>
+        <target state="needs-adaptation">{0} में सैटेलाइट प्रशासक जोड़ा</target>
       </trans-unit>
       <trans-unit id="user.deleteadmin">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
@@ -1243,10 +1243,11 @@
         <target>आप दूसरे संगठन प्रशासक को मिटा नहीं सकते हैं. कृपया 'संगठन प्रशासक' भूमिका को इस उपयोक्ता से उनके खाता के मिटाने के प्रयास पहले हटायें.</target>
       </trans-unit>
       <trans-unit id="user.cannot.delete.last.sat.admin">
-        <source>Cannot delete the last remaining SUSE Manager administrator.</source>
+        <source>Cannot delete the last remaining @@PRODUCT_NAME@@ administrator.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="Users">
         <source>Users</source>
@@ -1285,10 +1286,11 @@
         <target>इससे वेब ट्रेसबैक</target>
       </trans-unit>
       <trans-unit id="taskomatic notif subject">
-        <source>SUSE MANAGER TASKOMATIC NOTIFICATION</source>
+        <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="Notification Messages">
         <source>Notification Messages</source>
@@ -1951,21 +1953,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>ACL कथन का विश्लेषण नहीं करें: &quot;{0}&quot;</target>
+        <target>ACL कथन का विश्लेषण नहीं करें: "{0}"</target>
       </trans-unit>
       <trans-unit id="bad-handler">
         <source>Could not find ACL handler {0} in statement: "{1}". Available ACL handlers: {2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>ACL नियंत्रक {0} को इस कथन में नहीं पा सका: &quot;{1}&quot;. उपलब्ध ACL नियंत्रक: {2}</target>
+        <target>ACL नियंत्रक {0} को इस कथन में नहीं पा सका: "{1}". उपलब्ध ACL नियंत्रक: {2}</target>
       </trans-unit>
       <trans-unit id="invocation-target-exception">
         <source>IllegalInvocationException calling {0} ("{1}"): {2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>IllegalInvocationException {0} (&quot;{1}&quot;) को कॉल कर रहा है: {2}</target>
+        <target>IllegalInvocationException {0} ("{1}") को कॉल कर रहा है: {2}</target>
       </trans-unit>
       <trans-unit id="no notes">
         <source>(none)</source>
@@ -2082,7 +2084,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
-        <target>{0} फाइल को अपलोड के लिये &lt;a href=&quot;{1}&quot;&gt;नियोजित&lt;/a&gt;.</target>
+        <target>{0} फाइल को अपलोड के लिये &lt;a href="{1}"&gt;नियोजित&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="configfiles.upload">
         <source>Import config file data from system</source>
@@ -2124,7 +2126,7 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Revision 5 of /etc/foo from My Config Channel</context>
         </context-group>
-        <target>&lt;a href=&quot;{0}&quot;&gt;पुनरीक्षण {1}&lt;/a&gt; {2} का &lt;a href=&quot;{3}&quot;&gt;{4}&lt;/a&gt; से</target>
+        <target>&lt;a href="{0}"&gt;पुनरीक्षण {1}&lt;/a&gt; {2} का &lt;a href="{3}"&gt;{4}&lt;/a&gt; से</target>
       </trans-unit>
       <trans-unit id="config.upload.onechannel">
         <source>Destination Configuration Channel: {0}</source>
@@ -2167,7 +2169,7 @@ entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ adm
 &lt;li&gt;
 Make sure that the 'rhn-tools' child channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-SUSE Manager administrator and request a satellite-sync for the rhn-tools channel
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the rhn-tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
@@ -2185,6 +2187,7 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream">
         <source>&lt;div style="text-align: left;"&gt;
@@ -2198,7 +2201,7 @@ entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ adm
 &lt;li&gt;
 Make sure that the 'appstream' child channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-satellite administrator and request a cdn-sync for the appstream channel
+@@PRODUCT_NAME@@ administrator and request a cdn-sync for the appstream channel
 and try again.
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2207,6 +2210,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.initiate">
         <source>Initiate an autoinstallation</source>
@@ -2470,7 +2474,7 @@ and try again.
             1 system failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/FailedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} सिस्टम&lt;/a&gt;&lt;/strong&gt; इस काम को पूरा करने में विफल रहा.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} सिस्टम&lt;/a&gt;&lt;/strong&gt; इस काम को पूरा करने में विफल रहा.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.failedlink.plural">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2480,7 +2484,7 @@ and try again.
             2 systems failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/FailedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} सिस्टम&lt;/a&gt;&lt;/strong&gt; इस काम को पूरा करने में विफल रहा.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} सिस्टम&lt;/a&gt;&lt;/strong&gt; इस काम को पूरा करने में विफल रहा.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2490,7 +2494,7 @@ and try again.
             1 system successfully completed this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} सिस्टम&lt;/a&gt;&lt;/strong&gt; ने सफलतापूर्वक इस क्रिया को समाप्त किया.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} सिस्टम&lt;/a&gt;&lt;/strong&gt; ने सफलतापूर्वक इस क्रिया को समाप्त किया.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink.plural">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2500,7 +2504,7 @@ and try again.
             2 systems successfully completed this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} सिस्टम&lt;/a&gt;&lt;/strong&gt; ने सफलतापूर्वक इस क्रिया को समाप्त किया.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} सिस्टम&lt;/a&gt;&lt;/strong&gt; ने सफलतापूर्वक इस क्रिया को समाप्त किया.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.name">
         <source>Patch Update: {0} - {1}</source>
@@ -2518,28 +2522,28 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="errata.schedule">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule">
-        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural">
-        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -3774,7 +3778,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="paramnotes">You have successfully scheduled a package profile refresh
                                              for workstation3.</context>
         </context-group>
-        <target>आपने सफलतापूर्वक एक &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={0}&quot;&gt;संकुल प्रोफाइल नवीनीकरण&lt;/a&gt; का नियोजन किया है&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={1}&quot;&gt;{2}&lt;/a&gt; के लिये.</target>
+        <target>आपने सफलतापूर्वक एक &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;संकुल प्रोफाइल नवीनीकरण&lt;/a&gt; का नियोजन किया है&lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt; के लिये.</target>
       </trans-unit>
       <trans-unit id="message.bulkremovecustomdata">
         <source>Value removed for &lt;strong&gt;{0}&lt;/strong&gt; from {1} systems.</source>
@@ -3880,7 +3884,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>आपने सफलतापूर्वक &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}&quot;&gt;अनुसूचित किया है&lt;/a&gt;&lt;/strong&gt;संकुल प्रोफाइल तुल्यकालन &lt;strong&gt;{2}&lt;/strong&gt; के लिये &lt;strong&gt;{3}&lt;/strong&gt; से.</target>
+        <target>आपने सफलतापूर्वक &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;अनुसूचित किया है&lt;/a&gt;&lt;/strong&gt;संकुल प्रोफाइल तुल्यकालन &lt;strong&gt;{2}&lt;/strong&gt; के लिये &lt;strong&gt;{3}&lt;/strong&gt; से.</target>
       </trans-unit>
       <trans-unit id="message.hardwarerefresh">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
@@ -3888,7 +3892,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>&lt;strong&gt;नोट:&lt;/strong&gt; @@PRODUCT_NAME@@ ने &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}&quot;&gt;अनुसूचित&lt;/a&gt;&lt;/strong&gt; किया है एक हार्डवेयर ताजाकरण &lt;strong&gt;{2}&lt;/strong&gt; के लिये संकुल प्रोफाइल तुल्यकालन के पहले. यह जांचने के लिये यह जरूरी है कि सिस्टम के पास संकुल तुलना की क्षमता है.</target>
+        <target>&lt;strong&gt;नोट:&lt;/strong&gt; @@PRODUCT_NAME@@ ने &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;अनुसूचित&lt;/a&gt;&lt;/strong&gt; किया है एक हार्डवेयर ताजाकरण &lt;strong&gt;{2}&lt;/strong&gt; के लिये संकुल प्रोफाइल तुल्यकालन के पहले. यह जांचने के लिये यह जरूरी है कि सिस्टम के पास संकुल तुलना की क्षमता है.</target>
       </trans-unit>
       <trans-unit id="filterCreate.success">
         <source>The filter {0} was successfully created</source>
@@ -3974,11 +3978,11 @@ user before attempting to deactivate their account.</source>
                 </note>
         <trans-unit id="daterangepicker.error.invalid">
           <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-          <target>तिथि &quot;{0}&quot; मान्य नहीं है और इसके मूलभूत में फिर सेट किया गया है. यह सुनिश्चित करने के लिये जांचें कि चयनित महीने में उतना दिन है.</target>
+          <target>तिथि "{0}" मान्य नहीं है और इसके मूलभूत में फिर सेट किया गया है. यह सुनिश्चित करने के लिये जांचें कि चयनित महीने में उतना दिन है.</target>
         </trans-unit>
         <trans-unit id="daterangepicker.error.start.before.end">
           <source>The start date "{0}" must be before the end date "{1}"</source>
-          <target>आरंभ तिथि &quot;{0}&quot; अंतिम तिथि &quot;{1}&quot; के पहले होना चाहिए</target>
+          <target>आरंभ तिथि "{0}" अंतिम तिथि "{1}" के पहले होना चाहिए</target>
         </trans-unit>
       </group>
       <trans-unit id="monitoring.services.restarted">
@@ -5843,7 +5847,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>आपने @@PRODUCT_NAME@@ सेवा का पहला उपयोक्ता बनाया है.  अतिरिक्त विन्यास को अंतिम रूप दिया जाना चाहिए &lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;यहां क्लिक करके&lt;/strong&gt;&lt;/a&gt;</target>
+        <target>आपने @@PRODUCT_NAME@@ सेवा का पहला उपयोक्ता बनाया है.  अतिरिक्त विन्यास को अंतिम रूप दिया जाना चाहिए &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;यहां क्लिक करके&lt;/strong&gt;&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -5927,7 +5931,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>बूटस्ट्रैप स्क्रिप्ट सफलतापूर्वक उत्पन्न किया गया.  आप इसका अभिगम कर सकते हैं &lt;a href=&quot;{0}/pub/bootstrap/&quot;&gt;{0}/pub/bootstrap/&lt;/a&gt;</target>
+        <target>बूटस्ट्रैप स्क्रिप्ट सफलतापूर्वक उत्पन्न किया गया.  आप इसका अभिगम कर सकते हैं &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="restart.config.error">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -5948,7 +5952,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ फिर आरंभ कर रहा है. यदि पृष्ठ 5 मिनटों में फिर ताजा नहीं किया जाता है स्वयं करने के लिए  &lt;a href=&quot;/rhn/YourRhn.do&quot;&gt;यहाँ&lt;/a&gt; पर क्लिक करें.</target>
+        <target>@@PRODUCT_NAME@@ फिर आरंभ कर रहा है. यदि पृष्ठ 5 मिनटों में फिर ताजा नहीं किया जाता है स्वयं करने के लिए  &lt;a href="/rhn/YourRhn.do"&gt;यहाँ&lt;/a&gt; पर क्लिक करें.</target>
       </trans-unit>
       <trans-unit id="restart.config.norestart">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
@@ -6394,7 +6398,7 @@ Follow this url to see the full list of inactive systems:
         <target>आपके पास इस {0} चैनल में इस सिस्टम के मौजूदा बेस चैनल के लिए कोई शेष सदस्यता नहीं है.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date">
-        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
+        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6598,7 +6602,7 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="system.sdc.missing.config_deploy2">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-          <target>आप सुनिश्चित करें कि विन्यास तैनाती क्षमता को इस सिस्टम पर सक्रिय किया जाएगा इस सिस्टम को  &lt;a href={0}&gt;{1}&lt;/a&gt; स्क्रीनपर चुनकर और फिर &quot;{2}&quot; क्लिक करके.</target>
+          <target>आप सुनिश्चित करें कि विन्यास तैनाती क्षमता को इस सिस्टम पर सक्रिय किया जाएगा इस सिस्टम को  &lt;a href={0}&gt;{1}&lt;/a&gt; स्क्रीनपर चुनकर और फिर "{2}" क्लिक करके.</target>
         </trans-unit>
         <trans-unit id="system.sdc.addtossm">
           <source>System added to the System Set Manager.</source>
@@ -7083,7 +7087,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target>RHN एप्पलेट @@PRODUCT_NAME@@ सक्रियकरण &lt;a href=&quot;{0}&quot;&gt;नियोजित किया गया&lt;/a&gt;</target>
+        <target>RHN एप्पलेट @@PRODUCT_NAME@@ सक्रियकरण &lt;a href="{0}"&gt;नियोजित किया गया&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.none">
         <source>None</source>
@@ -7125,11 +7129,11 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="sdc.config.deploy.failure">
           <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>सभी फाइल और/अथवा निर्देशिका ({0}) की तैनाती विफल रही. [&lt;a href=&quot;{1}&quot;&gt;विवरण देखें&lt;/a&gt;]</target>
+          <target>सभी फाइल और/अथवा निर्देशिका ({0}) की तैनाती विफल रही. [&lt;a href="{1}"&gt;विवरण देखें&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.deploy.success">
           <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>सभी फाइल और/या निर्देशिका ({0}) को सफलतापूर्वक तैनात किया गया था. [&lt;a href=&quot;{1}&quot;&gt;विवरण देखें&lt;/a&gt;]</target>
+          <target>सभी फाइल और/या निर्देशिका ({0}) को सफलतापूर्वक तैनात किया गया था. [&lt;a href="{1}"&gt;विवरण देखें&lt;/a&gt;]</target>
         </trans-unit>
       </group>
       <group>
@@ -7244,7 +7248,7 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="sdc.config.time.message_url">
           <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
-          <target>{0} &lt;a href=&quot;{1}&quot;&gt;{2}&lt;/a&gt; के द्वारा </target>
+          <target>{0} &lt;a href="{1}"&gt;{2}&lt;/a&gt; के द्वारा </target>
         </trans-unit>
       </group>
       <group>
@@ -8011,7 +8015,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">SELinuxMode</context>
         </context-group>
-        <target>अवैध SE लिनक्स मोड &quot;{0}&quot; निर्दिष्ट. वैध मान हैं {1}.</target>
+        <target>अवैध SE लिनक्स मोड "{0}" निर्दिष्ट. वैध मान हैं {1}.</target>
       </trans-unit>
       <trans-unit id="softwareEntitlementSubs.successMessage">
         <source>Updated entitlement count for '{0}'</source>
@@ -8077,7 +8081,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/UploadFile</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>&quot;{0}&quot; नामक फाइल पहले से चैनल में मौजूद है.</target>
+        <target>"{0}" नामक फाइल पहले से चैनल में मौजूद है.</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel">
         <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
@@ -8123,7 +8127,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>चूंकि आपने सिस्टम में वर्चुअलाइजेशन एंटाइटेलमेंट सिस्टम में दिया है हमने भी कुछ अतिरिक्त चरण किया है यह सुनिश्चित करने के लिये आपका सिस्टम वर्चुअल अतिथि को बेहतर तरीके से प्रबंधित करने में समर्थ होगा. ज्यादा सूचना के लिये &lt;a href=&quot;{0}&quot;&gt;यहाँ&lt;/a&gt; देखें.</target>
+        <target>चूंकि आपने सिस्टम में वर्चुअलाइजेशन एंटाइटेलमेंट सिस्टम में दिया है हमने भी कुछ अतिरिक्त चरण किया है यह सुनिश्चित करने के लिये आपका सिस्टम वर्चुअल अतिथि को बेहतर तरीके से प्रबंधित करने में समर्थ होगा. ज्यादा सूचना के लिये &lt;a href="{0}"&gt;यहाँ&lt;/a&gt; देखें.</target>
       </trans-unit>
       <trans-unit id="system.entitle.addedvirtualization.nodoc">
         <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
@@ -8217,8 +8221,8 @@ Follow this url to see the full list of inactive systems:
         <target>संगठन {0} में उपयोक्ता {1} गुण को संगठन {2} में पुनर्प्राप्त या रूपांतरित करने के लिए अनुमति प्राप्त नहीं है.</target>
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg">
-        <source>Cannot perform this operation on the satellite organization. (Org ID 1)</source>
-        <target>सैटेलाइट संगठन पर इस क्रिया को नहीं कर सकता है. (Org ID 1)</target>
+        <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
+        <target state="needs-adaptation">सैटेलाइट संगठन पर इस क्रिया को नहीं कर सकता है. (Org ID 1)</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid patch: {0}</source>
@@ -8250,10 +8254,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.systemgroup.lookupServerGroup">
         <source>Unable to locate or access server group: "{0}"</source>
-        <target>सर्वर समूह को पता करने या अभिगम में असमर्थ: &quot;{0}&quot;</target>
+        <target>सर्वर समूह को पता करने या अभिगम में असमर्थ: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied">
-        <source>Changing administrator access is not allowed for Satellite and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
+        <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel">
         <source>Invalid profile label specified: {0}</source>
@@ -8277,11 +8282,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target>अवैध इरेटा प्रकार, &quot;{0}&quot;. कृपया इनमें से एक का प्रयोग करें: &quot;सुरक्षा सलाहकारी&quot;, &quot;उत्पाद संवर्द्धन सलाहकारी&quot;, या &quot;बग फिक्स सलाहकारी&quot;.</target>
+        <target>अवैध इरेटा प्रकार, "{0}". कृपया इनमें से एक का प्रयोग करें: "सुरक्षा सलाहकारी", "उत्पाद संवर्द्धन सलाहकारी", या "बग फिक्स सलाहकारी".</target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
-        <target>अवैध सलाहकार रिलीज, &quot;{0}&quot;. अधिकतम मान {1} है.</target>
+        <target>अवैध सलाहकार रिलीज, "{0}". अधिकतम मान {1} है.</target>
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
@@ -8300,11 +8305,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.channel.access.invalidaccessvalue">
         <source>Access value, "{0}". Please use one of the following: "public", "private", or "protected".</source>
-        <target>अभिगम मान, &quot;{0}&quot;. इनमें से एक का प्रयोग करें: &quot;सार्वजनिक&quot;, &quot;निजी&quot;, या &quot;संरक्षित&quot;.</target>
+        <target>अभिगम मान, "{0}". इनमें से एक का प्रयोग करें: "सार्वजनिक", "निजी", या "संरक्षित".</target>
       </trans-unit>
       <trans-unit id="api.channel.software.channelsubscription">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target>आग्रहित चैनल में इस सिस्टम की सदस्यता लेने में असमर्थ: &quot;{0}&quot;</target>
+        <target>आग्रहित चैनल में इस सिस्टम की सदस्यता लेने में असमर्थ: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
@@ -8404,10 +8409,12 @@ Follow this url to see the full list of inactive systems:
         <target>जरूरी इरेटा गुण ({0}) अनुपस्थित है.</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster">
-        <source>A record for Master satellite {0} already exists</source>
+        <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave">
-        <source>A record for Slave satellite {0} already exists</source>
+        <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="securityErrata">
         <source>Security Patches</source>
@@ -8814,7 +8821,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscripttype">
         <source>Only script types of "pre" and "post" are allowed for kickstarts.</source>
-        <target>&quot;pre&quot; और &quot;post&quot; प्रकार का स्क्रिप्ट केवल किकस्टार्ट के लिए अनुमति प्राप्त है.</target>
+        <target>"pre" और "post" प्रकार का स्क्रिप्ट केवल किकस्टार्ट के लिए अनुमति प्राप्त है.</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscriptname">
         <source>Script Name must be larger than 0 and fewer than 40 characters.</source>
@@ -9355,7 +9362,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Select first character</source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody2">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href=&quot;http://www.suse.com/products/suse-manager/&quot; target=&quot;_new&quot;&gt;&lt;i class=&quot;fa fa-globe&quot;&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
         <source> </source>
@@ -9460,16 +9467,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>@@PRODUCT_NAME@@ Advanced Topics Guide</source>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single base type is required for all systems registered to SUSE Manager</source>
+        <source>A single base type is required for all systems registered to @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether SUSE Manager certificate has not expired</source>
+        <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="image_admin">
         <source>Image Administrator</source>
@@ -9481,13 +9490,16 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted">
-        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="satellite.graceperiod">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="restricted.forbidden">
-        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.entitlements.system.defaultorg">
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
@@ -9499,7 +9511,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run">
-        <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+        <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="task.status.mgr-register">
         <source>Run mgr-register</source>
@@ -9532,10 +9545,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cleanup channel tokens</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
-        <source>Registers SUSE Manager clients</source>
+        <source>Registers @@PRODUCT_NAME@@ clients</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch">
-        <source>Synchronizes SUSE Manager repositories</source>
+        <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch">
         <source>Manages clients via SSH Server Push</source>
@@ -9619,25 +9634,25 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Removed &lt;strong&gt;{1}&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host.nodoc">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host.nodoc">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -9775,7 +9790,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices">
-        <source>This document describes SUSE recommended best practices for @@PRODUCT_NAME@@</source>
+        <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
@@ -9837,6 +9853,192 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="cluster.join_precondition_package_name">
         <source>Package {0} not found in subscribed channels</source>
       </trans-unit>
+    <trans-unit id="Networks">
+        <source>Networks</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_refresh">
+        <source>Virtual storage pool refresh</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_start">
+        <source>Virtual storage pool start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_stop">
+        <source>Virtual storage pool stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_delete">
+        <source>Virtual storage pool delete</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_create">
+        <source>Virtual storage pool creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_update">
+        <source>Virtual storage pool update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.volume_delete">
+        <source>Virtual storage volume deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_start">
+        <source>Virtual network start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_stop">
+        <source>Virtual network stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_delete">
+        <source>Virtual network deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="cluster_admin">
+        <source>Cluster Administrator</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.title">
+        <source>Clusters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.overview">
+        <source>Overview</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.add">
+        <source>Add</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.modulenotfound">
+        <source>Module '{0}' not found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.moduleconflict">
+        <source>Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.dependencyerror.formodule">
+        <source>Some of the modular dependencies cannot be resolved for module '{0}'.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.dependencyerror">
+        <source>Some of the modular dependencies cannot be resolved.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodulefilters">
+        <source>No module filters attached. Module metadata will be cloned to target.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodularsources">
+        <source>No modular source attached. Module filters will be ignored.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.name.empty">
+        <source>Calendar name required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.schedule.name.empty">
+        <source>Schedule name required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.data.empty">
+        <source>Calendar data required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.exists">
+        <source>Calendar '{0}' already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.fetch.error">
+        <source>Error fetching calendar data from '{0}'</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.not.exists">
+        <source>Calendar '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.schedule.id.not.exists">
+        <source>Schedule with id '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.id.not.exists">
+        <source>Calendar with id '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.reschedule.error.cancel">
+        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.reschedule.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.systemnotfound">
+        <source>Some of the specified servers cannot be found</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>

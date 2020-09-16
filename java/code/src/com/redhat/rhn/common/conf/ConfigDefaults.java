@@ -324,6 +324,16 @@ public class ConfigDefaults {
      */
     public static final String AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED = "java.automatic_system_lock_cluster_nodes";
 
+    /**
+     * Allows to publish erratas into the configured vendor channels via the api
+     */
+    public static final String ALLOW_ADDING_PATCHES_VIA_API = "java.allow_adding_patches_via_api";
+
+    /**
+     * Specify the default language to use if user preferences are not available such as on the login page
+     */
+    public static final String DEFAULT_LOCALE = "web.locale";
+
     private ConfigDefaults() {
     }
 
@@ -1002,5 +1012,14 @@ public class ConfigDefaults {
      */
     public boolean isAutomaticSystemLockForClusterNodesEnabled() {
         return Config.get().getBoolean(AUTOMATIC_SYSTEM_LOCK_CLUSTER_NODES_ENABLED);
+    }
+
+    /**
+     * Return the default locale. If not supported return en_US as default language.
+     *
+     * @return the preferred locale
+     */
+    public String getDefaultLocale() {
+        return Config.get().getString(DEFAULT_LOCALE, "en_US");
     }
 }

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Errata;
@@ -320,7 +321,7 @@ public class ServerTestUtils {
         Server existingHost = ServerTestUtils.createTestSystem(user);
         existingHost.setName(TestUtils.randomString());
         existingHost.setDigitalServerId(digitalServerId);
-        SystemEntitlementManager.INSTANCE.setBaseEntitlement(existingHost,
+        GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(existingHost,
                 EntitlementManager.getByName("foreign_entitled"));
         ServerFactory.save(existingHost);
         return existingHost;

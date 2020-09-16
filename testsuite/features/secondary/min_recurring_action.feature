@@ -25,7 +25,7 @@ Feature: Recurring Actions
     When I am on the "States" page of this "sle_minion"
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name" text
-    When I click the "schedule_name" recurring action details button
+    When I click the "schedule_name" item details button
     Then I should see a "Every day at 00:00" text
     When I click on "Back"
     Then I should see a "Schedules" text
@@ -35,7 +35,7 @@ Feature: Recurring Actions
     When I am on the "States" page of this "sle_minion"
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name" text
-    When I click the "schedule_name" recurring action edit button
+    When I click the "schedule_name" item edit button
     Then I should see a "Update Schedule" text
     When I enter "schedule_name_minion" as "scheduleName"
     And I check radio button "schedule-weekly"
@@ -80,7 +80,7 @@ Feature: Recurring Actions
     And I follow "States" in the content area
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name" text
-    When I click the "schedule_name" recurring action details button
+    When I click the "schedule_name" item details button
     Then I should see a "Every day at 00:00" text
     When I click on "Back"
     Then I should see a "Schedules" text
@@ -92,7 +92,7 @@ Feature: Recurring Actions
     And I follow "States" in the content area
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name" text
-    When I click the "schedule_name" recurring action edit button
+    When I click the "schedule_name" item edit button
     Then I should see a "Update Schedule" text
     When I enter "schedule_name_group" as "scheduleName"
     And I check radio button "schedule-weekly"
@@ -122,7 +122,7 @@ Feature: Recurring Actions
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > My Organization > Recurring States"
     Then I should see a "schedule_name" text
-    When I click the "schedule_name" recurring action details button
+    When I click the "schedule_name" item details button
     Then I should see a "Every day at 00:00" text
     When I click on "Back"
     Then I should see a "Schedules" text
@@ -131,7 +131,7 @@ Feature: Recurring Actions
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > My Organization > Recurring States"
     Then I should see a "schedule_name" text
-    When I click the "schedule_name" recurring action edit button
+    When I click the "schedule_name" item edit button
     Then I should see a "Update Schedule" text
     When I enter "schedule_name_edit" as "scheduleName"
     And I check radio button "schedule-weekly"
@@ -145,7 +145,7 @@ Feature: Recurring Actions
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Home > My Organization > Recurring States"
     Then I should see a "schedule_name_edit" text
-    When I click the "schedule_name" recurring action delete button
+    When I click the "schedule_name" item delete button
     Then I should see a "Delete Recurring State Schedule" text
     When I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_edit' has been deleted." text
@@ -177,7 +177,7 @@ Feature: Recurring Actions
     And I follow "States" in the content area
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name" text
-    When I click the "schedule_name" recurring action details button
+    When I click the "schedule_name" item details button
     Then I should see a "Every day at 00:00" text
     When I click on "Back"
     Then I should see a "Schedules" text
@@ -189,7 +189,7 @@ Feature: Recurring Actions
     And I follow "States" in the content area
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name" text
-    When I click the "schedule_name" recurring action edit button
+    When I click the "schedule_name" item edit button
     Then I should see a "Update Schedule" text
     When I enter "schedule_name_org" as "scheduleName"
     And I check radio button "schedule-weekly"
@@ -213,7 +213,7 @@ Feature: Recurring Actions
  Scenario: View details in list of all actions
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Schedule > Recurring States"
-    And I click the "schedule_name_minion" recurring action details button
+    And I click the "schedule_name_minion" item details button
     Then I should see a "Every Sunday at 00:00" text
     And I should not see a "Highstate for" text in the content area
     When I click on "Edit"
@@ -225,7 +225,7 @@ Feature: Recurring Actions
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Schedule > Recurring States"
     And I wait until I see "schedule_name_org" text
-    And I click the "schedule_name_org" recurring action edit button
+    And I click the "schedule_name_org" item edit button
     Then I should see a "Update Schedule" text
     And I should not see a "Highstate for" text in the content area
     When I enter "schedule_name_edit" as "scheduleName"
@@ -238,7 +238,7 @@ Feature: Recurring Actions
   Scenario: Delete from list of all actions
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Schedule > Recurring States"
-    When I click the "schedule_name_edit" recurring action delete button
+    When I click the "schedule_name_edit" item delete button
     Then I should see a "Delete Recurring State Schedule" text
     When I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_edit' has been deleted." text
@@ -250,7 +250,7 @@ Feature: Recurring Actions
     When I am on the "States" page of this "sle_minion"
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name_minion" text
-    When I click the "schedule_name_minion" recurring action delete button
+    When I click the "schedule_name_minion" item delete button
     Then I should see a "Delete Recurring State Schedule" text
     When I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_minion' has been deleted." text
@@ -263,7 +263,7 @@ Feature: Recurring Actions
     And I follow "States" in the content area
     And I follow "Recurring States" in the content area
     Then I should see a "schedule_name_group" text
-    When I click the "schedule_name_group" recurring action delete button
+    When I click the "schedule_name_group" item delete button
     Then I should see a "Delete Recurring State Schedule" text
     When I click on the red confirmation button
     Then I wait until I see "Schedule 'schedule_name_group' has been deleted." text

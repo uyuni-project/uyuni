@@ -5,19 +5,19 @@
  */
 function setupDatePicker() {
   // date picker is setup using data attributes
-  $('input[data-provide="date-picker"]').each(function() {
-    var input = $(this);
+  jQuery('input[data-provide="date-picker"]').each(function() {
+    var input = jQuery(this);
     input.datepicker();
     var name = input.data('picker-name');
-    $('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="date"]').click(function() {
+    jQuery('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="date"]').on("click", function() {
       input.datepicker('show');
     });
 
     // backward compatibility
     input.datepicker().on('changeDate', function(e) {
-      $('input#' + name + '_day').val(e.date.getDate());
-      $('input#' + name + '_month').val(e.date.getMonth());
-      $('input#' + name + '_year').val(e.date.getFullYear());
+      jQuery('input#' + name + '_day').val(e.date.getDate());
+      jQuery('input#' + name + '_month').val(e.date.getMonth());
+      jQuery('input#' + name + '_year').val(e.date.getFullYear());
     });
 
     // set initial date if specified
@@ -37,8 +37,8 @@ function setupDatePicker() {
     input.datepicker('setDate', date);
   });
 
-  $('input[data-provide="time-picker"]').each(function() {
-    var input = $(this);
+  jQuery('input[data-provide="time-picker"]').each(function() {
+    var input = jQuery(this);
     var name = input.data('picker-name');
 
     // initialize the time picker
@@ -46,18 +46,18 @@ function setupDatePicker() {
 
     var timeFmt = input.data('time-format');
     if (timeFmt != undefined) {
-      $.extend(timeOpts, {'timeFormat': timeFmt });
+      jQuery.extend(timeOpts, {'timeFormat': timeFmt });
     }
     input.timepicker(timeOpts);
 
-    $('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="time"]').click(function() {
+    jQuery('.input-group-addon[data-picker-name="' + name + '"][data-picker-type="time"]').on("click", function() {
       input.timepicker('show');
     });
 
     var updateVars = () => {
       var pickerTime = input.timepicker('getTime');
-      var am_pm = $('input#' + name + '_am_pm');
-      var hour = $('input#' + name + '_hour');
+      var am_pm = jQuery('input#' + name + '_am_pm');
+      var hour = jQuery('input#' + name + '_hour');
       var isLatin = (am_pm.length != 0);
       if (isLatin) {
         var hVal = pickerTime.getHours() % 12;
@@ -65,7 +65,7 @@ function setupDatePicker() {
       } else {
         hour.val(pickerTime.getHours());
       }
-      $('input#' + name + '_minute').val(pickerTime.getMinutes());
+      jQuery('input#' + name + '_minute').val(pickerTime.getMinutes());
       am_pm.val(pickerTime.getHours() >= 12 ? 1 : 0);
     };
 
@@ -87,6 +87,6 @@ function setupDatePicker() {
   });
 }
 
-$(document).ready(function () {
+jQuery(document).ready(function () {
   setupDatePicker();
 });

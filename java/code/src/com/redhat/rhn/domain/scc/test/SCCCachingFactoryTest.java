@@ -22,9 +22,9 @@ import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
-
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Tests for {@link SCCCachingFactory}.
@@ -72,13 +72,15 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
         HibernateFactory.getSession().save(creds);
 
         ManagerInfoFactory.setLastMgrSyncRefresh();
+        Optional<Date> lastRefreshDate = ManagerInfoFactory.getLastMgrSyncRefresh();
+
         // Repos are newer than credentials -> no refresh
-        assertFalse(SCCCachingFactory.refreshNeeded());
+        assertFalse(SCCCachingFactory.refreshNeeded(lastRefreshDate));
 
         // Newer credentials -> refresh
         creds.setModified(new Date(System.currentTimeMillis()));
         HibernateFactory.getSession().save(creds);
-        assertTrue(SCCCachingFactory.refreshNeeded());
+        assertTrue(SCCCachingFactory.refreshNeeded(lastRefreshDate));
     }
 
     /**

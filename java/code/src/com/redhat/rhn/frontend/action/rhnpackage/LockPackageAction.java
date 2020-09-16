@@ -107,7 +107,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         if (isSubmitted(form)) {
             // if its one of the Dispatch actions handle it..
             helper.updateSet(pkgsToSelect, LIST_NAME);
-            Date scheduleDate = this.getStrutsDelegate().readDatePicker(
+            Date scheduleDate = this.getStrutsDelegate().readScheduleDate(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
             if (!pkgsToSelect.isEmpty()) {
                 try {

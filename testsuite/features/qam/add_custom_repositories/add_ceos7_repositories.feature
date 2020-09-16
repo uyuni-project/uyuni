@@ -34,7 +34,7 @@ Feature: Adding the CentOS 7 distribution custom repositories
     And I follow "Custom Channel for CentOS 7 DVD"
     And I follow "Repositories" in the content area
     And I select the "centos-7-iso" repo
-    And I click on "Update Repositories"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the Custom Channel for <label>

@@ -25,6 +25,8 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntryGroup;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.MaintenanceWindowsAware;
+import com.redhat.rhn.frontend.struts.MaintenanceWindowHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -42,6 +44,8 @@ import org.hibernate.ObjectNotFoundException;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -50,7 +54,7 @@ import javax.servlet.http.HttpServletResponse;
  * Controller for the Action Chain list page.
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
-public class ActionChainEditAction extends RhnAction {
+public class ActionChainEditAction extends RhnAction implements MaintenanceWindowsAware {
 
     /** Query string parameter name. */
     public static final String ACTION_CHAIN_ID_PARAMETER = "id";
@@ -120,8 +124,7 @@ public class ActionChainEditAction extends RhnAction {
      */
     private ActionForward schedule(ActionMapping mapping, HttpServletRequest request,
         DynaActionForm form, ActionChain actionChain) {
-        Date date = getStrutsDelegate().readDatePicker(form, DATE_ATTRIBUTE,
-            DatePicker.YEAR_RANGE_POSITIVE);
+        Date date = getStrutsDelegate().readScheduleDate(form, DATE_ATTRIBUTE, DatePicker.YEAR_RANGE_POSITIVE);
         try {
             ActionChainFactory.schedule(actionChain, date);
             ActionMessages messages = new ActionMessages();
@@ -172,6 +175,21 @@ public class ActionChainEditAction extends RhnAction {
         request.setAttribute(GROUPS_ATTRIBUTE, groups);
         DatePicker datePicker = getStrutsDelegate().prepopulateDatePicker(request, form,
             DATE_ATTRIBUTE, DatePicker.YEAR_RANGE_POSITIVE);
+
+        Set<Long> systemsWithMaintAwareAction = actionChain.getEntries().stream()
+                .filter(e -> e.getAction().getActionType().isMaintenancemodeOnly())
+                .map(e -> e.getServer().getId())
+                .collect(Collectors.toSet());
+
+        if (!systemsWithMaintAwareAction.isEmpty()) {
+            populateMaintenanceWindows(request, systemsWithMaintAwareAction);
+        }
+
         request.setAttribute(DATE_ATTRIBUTE, datePicker);
+    }
+
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        MaintenanceWindowHelper.prepopulateMaintenanceWindows(request, systemIds);
     }
 }

@@ -1,23 +1,23 @@
-# Copyright (c) 2017-2019 SUSE LLC
+# Copyright (c) 2017-2020 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-# 1) delete CentOS SSH minion and register a CentOS traditional client
+# 1) delete CentOS minion and register a CentOS traditional client
 # 2) run an OpenSCAP audit
 # 3) refresh packages
 # 4) run a script
 # 5) reboot
-# 6) delete the traditional client and register as Centos SSH minion
+# 6) delete the traditional client and register as Centos minion
 
 Feature: Be able to register a CentOS 7 traditional client and do some basic operations on it
 
 @centos_minion
-  Scenario: Delete the CentOS SSH minion before traditional client tests
-    When I am on the Systems overview page of this "ceos_ssh_minion"
+  Scenario: Delete the CentOS minion before traditional client tests
+    When I am on the Systems overview page of this "ceos_minion"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
     When I click on "Delete Profile"
     And I wait until I see "has been deleted" text
-    Then "ceos_ssh_minion" should not be registered
+    Then "ceos_minion" should not be registered
 
 @centos_minion
   Scenario: Prepare the CentOS 7 traditional client
@@ -70,7 +70,7 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     And I click on "Schedule"
     And I run "rhn_check -vvv" on "ceos_client"
     Then I should see a "XCCDF scan has been scheduled" text
-    And I wait until event "OpenSCAP xccdf scanning" is completed
+    And I wait at most 500 seconds until event "OpenSCAP xccdf scanning" is completed
 
 @centos_minion
   Scenario: Check the results of the OpenSCAP scan on the CentOS traditional client
@@ -102,23 +102,24 @@ Feature: Be able to register a CentOS 7 traditional client and do some basic ope
     Then "ceos_client" should not be registered
 
 @centos_minion
-  Scenario: Cleanup: bootstrap a SSH-managed CentOS minion after traditional client tests
+  Scenario: Cleanup: bootstrap a CentOS minion after traditional client tests
     Given I am authorized
     When I go to the bootstrapping page
     Then I should see a "Bootstrap Minions" text
-    When I check "manageWithSSH"
-    And I enter the hostname of "ceos_ssh_minion" as "hostname"
+    When I enter the hostname of "ceos_minion" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies"
     And I click on "Bootstrap"
     And I wait until I see "Successfully bootstrapped host!" text
     And I navigate to "rhn/systems/Overview.do" page
-    And I wait until I see the name of "ceos_ssh_minion", refreshing the page
-    And I wait until onboarding is completed for "ceos_ssh_minion"
+    And I wait until I see the name of "ceos_minion", refreshing the page
+    And I wait until onboarding is completed for "ceos_minion"
 
 @centos_minion
-  Scenario: Cleanup: re-subscribe the new SSH-managed CentOS minion to a base channel
-    Given I am on the Systems overview page of this "ceos_ssh_minion"
+  Scenario: Cleanup: re-subscribe the new CentOS minion to a base channel
+    Given I am on the Systems overview page of this "ceos_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text

@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
@@ -53,6 +54,7 @@ import com.redhat.rhn.frontend.xmlrpc.packages.search.PackagesSearchHandler;
 import com.redhat.rhn.frontend.xmlrpc.preferences.locale.PreferencesLocaleHandler;
 import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
+import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.satellite.SatelliteHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
@@ -73,14 +75,16 @@ import com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -119,19 +123,25 @@ public class HandlerFactory {
     public static HandlerFactory getDefaultHandlerFactory() {
         HandlerFactory factory = new HandlerFactory();
         TaskomaticApi taskomaticApi = new TaskomaticApi();
-        SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+        SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
+        ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
+        SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+
+        RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
+        SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
         );
         ProxyHandler proxyHandler = new ProxyHandler(xmlRpcSystemHelper);
+        SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
+                systemManager, serverGroupManager);
 
         factory.addHandler("actionchain", new ActionChainHandler());
-        factory.addHandler("activationkey", new ActivationKeyHandler());
+        factory.addHandler("activationkey", new ActivationKeyHandler(serverGroupManager));
         factory.addHandler("admin.monitoring", new AdminMonitoringHandler());
         factory.addHandler("api", new ApiHandler(factory));
         factory.addHandler("audit", new CVEAuditHandler());
@@ -139,13 +149,14 @@ public class HandlerFactory {
         factory.addHandler("channel", new ChannelHandler());
         factory.addHandler("channel.access", new ChannelAccessHandler());
         factory.addHandler("channel.org", new ChannelOrgHandler());
-        factory.addHandler("channel.software", new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper));
-        factory.addHandler("cluster", new ClusterHandler());
+        factory.addHandler("channel.software", new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper,
+            systemHandler));
+        factory.addHandler("cluster", new ClusterHandler(clusterManager));
         factory.addHandler("configchannel", new ConfigChannelHandler());
         factory.addHandler("contentmanagement", new ContentManagementHandler());
         factory.addHandler("distchannel", new DistChannelHandler());
         factory.addHandler("errata", new ErrataHandler());
-        factory.addHandler("formula", new FormulaHandler(FormulaManager.getInstance()));
+        factory.addHandler("formula", new FormulaHandler(formulaManager));
         factory.addHandler("image.store", new ImageStoreHandler());
         factory.addHandler("image.profile", new ImageProfileHandler());
         factory.addHandler("image", new ImageInfoHandler());
@@ -158,6 +169,7 @@ public class HandlerFactory {
         factory.addHandler("kickstart.profile.system", new SystemDetailsHandler());
         factory.addHandler("kickstart.snippet", new SnippetHandler());
         factory.addHandler("kickstart.tree", new KickstartTreeHandler());
+        factory.addHandler("maintenance", new MaintenanceHandler());
         factory.addHandler("org", new OrgHandler());
         factory.addHandler("org.trusts", new OrgTrustHandler());
         factory.addHandler("packages", new PackagesHandler());
@@ -166,14 +178,14 @@ public class HandlerFactory {
         factory.addHandler("preferences.locale", new PreferencesLocaleHandler());
         factory.addHandler("proxy", proxyHandler);
         factory.addHandler("recurringaction", new RecurringActionHandler());
+        factory.addHandler("saltkey", new SaltKeyHandler(saltKeyUtils));
         factory.addHandler("satellite", new SatelliteHandler(proxyHandler));
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
         factory.addHandler("sync.master", new MasterHandler());
         factory.addHandler("sync.slave", new SlaveHandler());
         factory.addHandler("sync.content", new ContentSyncHandler());
-        factory.addHandler("system", new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager));
+        factory.addHandler("system", systemHandler);
         factory.addHandler("system.config", new ServerConfigHandler(taskomaticApi, xmlRpcSystemHelper));
         factory.addHandler("system.crash", new CrashHandler(xmlRpcSystemHelper));
         factory.addHandler("system.custominfo", new CustomInfoHandler());
@@ -181,10 +193,10 @@ public class HandlerFactory {
         factory.addHandler("system.scap", new SystemScapHandler());
         factory.addHandler("system.search", new SystemSearchHandler());
         factory.addHandler("virtualhostmanager", new VirtualHostManagerHandler());
-        factory.addHandler("systemgroup", new ServerGroupHandler(xmlRpcSystemHelper));
+        factory.addHandler("systemgroup", new ServerGroupHandler(xmlRpcSystemHelper, serverGroupManager));
         factory.addHandler("taskomatic", new TaskomaticHandler());
         factory.addHandler("taskomatic.org", new TaskomaticOrgHandler());
-        factory.addHandler("user", new UserHandler());
+        factory.addHandler("user", new UserHandler(serverGroupManager));
         factory.addHandler("user.external", new UserExternalHandler());
         return factory;
     }

@@ -110,6 +110,7 @@ public class CloneChannelCommand extends CreateChannelCommand {
         // cloned channel stuff
         c.setProductName(original.getProductName());
         c.setUpdateTag(original.getUpdateTag());
+        c.setInstallerUpdates(original.isInstallerUpdates());
         c.setOriginal(original);
 
         // need to save before calling stored procs below

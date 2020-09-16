@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -29,7 +30,8 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.virtualization.test.TestVirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -56,9 +58,11 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
         builder = new GuestBuilder(user);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager()),
-                new SystemEntitler(new SaltService(), new TestVirtManager(), new FormulaMonitoringManager())
+                new SystemUnentitler(new TestVirtManager(), new FormulaMonitoringManager(), serverGroupManager),
+                new SystemEntitler(new TestSaltApi(), new TestVirtManager(), new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
     }
 

@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.CommonConstants;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -550,7 +551,7 @@ public class SaltSSHService {
 
         try {
             tmpKeyFileAbsolutePath.ifPresent(p -> parameters.getPrivateKey().ifPresent(k ->
-                    SaltService.INSTANCE.storeSshKeyFile(p, k)));
+                    GlobalInstanceHolder.SALT_API.storeSshKeyFile(p, k)));
             SaltRoster roster = new SaltRoster();
             roster.addHost(parameters.getHost(),
                     parameters.getUser(),
@@ -585,7 +586,7 @@ public class SaltSSHService {
     }
 
     private void cleanUpTempKeyFile(Path path) {
-        SaltService.INSTANCE
+        GlobalInstanceHolder.SALT_API
                 .removeFile(path)
                 .orElseThrow(() -> new IllegalStateException("Can't remove file " + path));
     }
@@ -782,7 +783,7 @@ public class SaltSSHService {
         Map<String, String> options = new HashMap<>();
         options.put("StrictHostKeyChecking", "no");
         options.put("ConnectTimeout", ConfigDefaults.get().getSaltSSHConnectTimeout() + "");
-        Optional<MgrUtilRunner.ExecResult> ret = SaltService.INSTANCE
+        Optional<MgrUtilRunner.ExecResult> ret = GlobalInstanceHolder.SALT_API
                 .chainSSHCommand(proxyPath,
                         SSH_KEY_PATH,
                         PROXY_SSH_PUSH_KEY,

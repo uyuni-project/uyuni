@@ -227,6 +227,8 @@
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
         <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java" />
+        <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java" />
+        <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java" />
       </fileset>
       <excludepackage name="**/*" />
     </javadoc>
@@ -518,10 +520,6 @@
         <exclude name="**/log4j.properties" />
         <exclude name="**/*.conf" />
         <exclude name="**/*.conf.rpmsave" />
-        <exclude name="**/StringResource*.xml"/>
-      </fileset>
-      <fileset dir="${build.dir}/classes">
-        <include name="**/StringResource_en_US.xml"/>
       </fileset>
       <!-- ugh, we can't flatten this like we would with a <copy> tag
            or use a mapper, alas -->
@@ -710,9 +708,9 @@
 
   <target name="make-eclipse-project"
           description="Configures this checkout as an eclipse project.">
+    <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false" />
     <copy toDir="${rhn-home}" overwrite="false">
       <fileset dir="${rhn-home}/conf/eclipse/">
-        <include name=".project" />
         <include name=".checkstyle" />
         <include name=".classpath" />
         <include name=".settings/*" />

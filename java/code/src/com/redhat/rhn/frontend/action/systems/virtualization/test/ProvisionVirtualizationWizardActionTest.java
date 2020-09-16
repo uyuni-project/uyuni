@@ -36,12 +36,14 @@ import com.redhat.rhn.frontend.action.kickstart.test.ScheduleKickstartWizardTest
 import com.redhat.rhn.frontend.action.systems.virtualization.ProvisionVirtualizationWizardAction;
 import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.profile.test.ProfileManagerTest;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
-import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -50,6 +52,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import junit.framework.AssertionFailedError;
 
 /**
@@ -59,7 +65,14 @@ import junit.framework.AssertionFailedError;
 public class ProvisionVirtualizationWizardActionTest extends RhnMockStrutsTestCase {
 
     private Server s;
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private final SaltApi saltApi = new TestSaltApi();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+    );
 
     /**
      * {@inheritDoc}

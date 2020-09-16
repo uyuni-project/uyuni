@@ -16,6 +16,10 @@ package com.redhat.rhn.frontend.action.configuration.sdc;
 
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * ImportFileConfirmAction, for sdc configuration
@@ -25,5 +29,10 @@ public class ImportFileConfirmAction extends FileListConfirmSetupAction {
 
     protected RhnSetDecl getSetDecl() {
         return RhnSetDecl.CONFIG_IMPORT_FILE_NAMES;
+    }
+
+    @Override
+    public void populateMaintenanceWindows(HttpServletRequest request, Set<Long> systemIds) {
+        // no-op
     }
 }

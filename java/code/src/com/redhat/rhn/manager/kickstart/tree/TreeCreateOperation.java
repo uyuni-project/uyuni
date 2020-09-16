@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.kickstart.tree;
 
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.StringJoiner;
 
 /**
@@ -72,9 +74,20 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
             if (!kopts.contains("install=")) {
                 kOptsJoiner.add("install=http://" + getServerFqdn() + "/ks/dist/" + this.tree.getLabel());
             }
-            // disable YaST self update for SLE
+            // Configure URL for YaST self update or disable it
             if (!kopts.contains("self_update=")) {
-                kOptsJoiner.add("self_update=0");
+                Optional<Channel> installerUpdates = tree.getChannel()
+                        .getAccessibleChildrenFor(getUser())
+                        .stream()
+                        .filter(c -> c.isInstallerUpdates())
+                        .findFirst();
+                if (installerUpdates.isPresent()) {
+                    kOptsJoiner.add("self_update=http://" + getServerFqdn() + "/ks/dist/child/" +
+                            installerUpdates.get().getLabel() + "/" + this.tree.getLabel());
+                }
+                else {
+                    kOptsJoiner.add("self_update=0");
+                }
             }
         }
         else if (this.tree.getInstallType().isRhel8OrGreater()) {

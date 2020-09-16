@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.systems.entitlements;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -58,7 +59,7 @@ public class SystemEntitlementsSubmitAction extends
     public static final String KEY_REMOVE_ENTITLED =
         "systementitlements.jsp.remove_entitlement";
 
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /**
      * {@inheritDoc}

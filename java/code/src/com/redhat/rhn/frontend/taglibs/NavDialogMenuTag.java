@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.taglibs;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.frontend.nav.NavTreeIndex;
 import com.redhat.rhn.frontend.nav.RenderGuard;
 import com.redhat.rhn.frontend.nav.Renderable;
@@ -49,12 +50,14 @@ public class NavDialogMenuTag extends TagSupport {
     /** rendering classname which implements the Renderable interface */
     private String renderer;
 
+    private final RenderUtils renderUtils = GlobalInstanceHolder.RENDER_UTILS;
+
     /** {@inheritDoc}
      * @throws JspException*/
     @Override
     public int doStartTag() throws JspException {
         try {
-            pageContext.getOut().print(RenderUtils.getInstance().renderNavigationMenu(
+            pageContext.getOut().print(renderUtils.renderNavigationMenu(
                     pageContext, definition, renderer, mindepth, maxdepth, new HashMap<String, String>()));
         }
         catch (Exception e) {
@@ -143,7 +146,7 @@ public class NavDialogMenuTag extends TagSupport {
     /** {@inheritDoc} */
     protected String renderNav(NavTreeIndex navTreeIndex, Renderable renderable,
             RenderGuard guard, Map<String, String[]> params) {
-        String body = RenderUtils.getInstance().render(
+        String body = renderUtils.render(
                 navTreeIndex, renderable, guard, params);
         return body;
     }

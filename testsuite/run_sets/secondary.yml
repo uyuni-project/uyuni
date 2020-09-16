@@ -13,9 +13,11 @@
 - features/secondary/allcli_reboot.feature
 - features/secondary/trad_config_channel.feature
 - features/secondary/trad_lock_packages.feature
-- features/secondary/min_centos_salt.feature
+- features/secondary/min_centos_openscap_audit.feature
+- features/secondary/min_centos_ssh.feature
 - features/secondary/trad_centos_client.feature
-- features/secondary/min_ubuntu_salt.feature
+- features/secondary/min_ubuntu_openscap_audit.feature
+- features/secondary/min_ubuntu_ssh.feature
 - features/secondary/minssh_bootstrap_xmlrpc.feature
 - features/secondary/min_bootstrap_ssh_key.feature
 - features/secondary/min_bootstrap_script.feature
@@ -43,5 +45,7 @@
 - features/secondary/min_docker_xmlrpc.feature
 - features/secondary/min_recurring_action.feature
 - features/secondary/min_change_software_channel.feature
+- features/secondary/srv_test_maintenance_windows.feature
+- features/secondary/srv_user_configuration_salt_states.feature
 
 ## Secondary features END ##

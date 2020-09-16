@@ -15,22 +15,32 @@
 package com.suse.manager.webui.controllers.virtualization;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
+import static spark.Spark.post;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.system.SystemManager;
 
-import com.google.gson.JsonObject;
+import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkBaseActionJson;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
@@ -38,16 +48,14 @@ import spark.template.jade.JadeTemplateEngine;
 /**
  * Controller class providing backend for Virtual networks UI
  */
-public class VirtualNetsController {
-
-    private VirtManager virtManager;
+public class VirtualNetsController extends AbstractVirtualizationController {
 
     /**
      * Controller class providing backend for Virtual networks UI
      * @param virtManagerIn instance to manage virtualization
      */
     public VirtualNetsController(VirtManager virtManagerIn) {
-        this.virtManager = virtManagerIn;
+        super(virtManagerIn, "templates/virtualization/nets");
     }
 
     /**
@@ -56,8 +64,29 @@ public class VirtualNetsController {
      * @param jade jade engine
      */
     public void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/systems/details/virtualization/net/:sid",
+                withUserPreferences(withCsrfToken(withUser(this::show))), jade);
+
         get("/manager/api/systems/details/virtualization/nets/:sid/data",
                 withUser(this::data));
+        post("/manager/api/systems/details/virtualization/nets/:sid/start",
+                withUser(this::start));
+        post("/manager/api/systems/details/virtualization/nets/:sid/stop",
+                withUser(this::stop));
+        post("/manager/api/systems/details/virtualization/nets/:sid/delete",
+                withUser(this::delete));
+    }
+
+    /**
+     * Displays the virtual networks page.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
+    public ModelAndView show(Request request, Response response, User user) {
+        return renderPage(request, response, user, "show", null);
     }
 
     /**
@@ -69,25 +98,82 @@ public class VirtualNetsController {
      * @return JSON result of the API call
      */
     public String data(Request request, Response response, User user) {
-        Long serverId;
-
-        try {
-            serverId = Long.parseLong(request.params("sid"));
-        }
-        catch (NumberFormatException e) {
-            throw new NotFoundException();
-        }
-        Server host = SystemManager.lookupByIdAndUser(serverId, user);
-        String minionId = host.asMinionServer().orElseThrow(() -> new NotFoundException()).getMinionId();
+        Server host = getServer(request, user);
+        String minionId = host.asMinionServer().orElseThrow(NotFoundException::new).getMinionId();
 
         Map<String, JsonObject> infos = virtManager.getNetworks(minionId);
-        List<VirtualNetworkInfoJson> networks = infos.entrySet().stream().map(entry -> {
-            VirtualNetworkInfoJson net = new VirtualNetworkInfoJson(entry.getKey(),
-                    entry.getValue());
-
-            return net;
-        }).collect(Collectors.toList());
+        List<VirtualNetworkInfoJson> networks = infos.entrySet().stream()
+                .map(entry -> new VirtualNetworkInfoJson(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
 
         return json(response, networks);
+    }
+
+    /**
+     * Executes the POST query to start a set of virtual networks
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String start(Request request, Response response, User user) {
+        return netStateChangeAction(request, response, user, "start");
+    }
+
+    /**
+     * Executes the POST query to stop a set of virtual networks
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String stop(Request request, Response response, User user) {
+        return netStateChangeAction(request, response, user, "stop");
+    }
+
+    /**
+     * Executes the POST query to delete a set of virtual networks
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return JSON list of created action IDs
+     */
+    public String delete(Request request, Response response, User user) {
+        return netStateChangeAction(request, response, user, "delete");
+    }
+
+    private String netStateChangeAction(Request request, Response response, User user, String state) {
+        return netAction(request, response, user, (data) -> {
+            VirtualizationNetworkStateChangeAction action = (VirtualizationNetworkStateChangeAction)
+                    ActionFactory.createAction(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE);
+            action.setState(state);
+
+            action.setName(LocalizationService.getInstance().getMessage("virt.network_" + state) + ": " +
+                    String.join(",", data.getNames()));
+            return action;
+        });
+    }
+
+    private String netAction(Request request, Response response, User user,
+                              Function<VirtualNetworkBaseActionJson, BaseVirtualizationNetworkAction> actionCreator) {
+        return netAction(request, response, user, actionCreator, VirtualNetworkBaseActionJson.class);
+    }
+
+    private String netAction(Request request, Response response, User user,
+                              Function<VirtualNetworkBaseActionJson, BaseVirtualizationNetworkAction> actionCreator,
+                              Class<? extends VirtualNetworkBaseActionJson> jsonClass) {
+        return action(request, response, user,
+                (data, key) -> {
+                    VirtualNetworkBaseActionJson poolData = (VirtualNetworkBaseActionJson)data;
+                    BaseVirtualizationNetworkAction action = actionCreator.apply(poolData);
+                    action.setNetworkName(key);
+                    return action;
+                },
+                (data) -> ((VirtualNetworkBaseActionJson)data).getNames(),
+                jsonClass
+        );
     }
 }

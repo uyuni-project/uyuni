@@ -129,7 +129,7 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>Here, enter data needed for the creation of an SSL certificate. The certificate is used for a number of purposes like connections to a proxy, HTTPS protocol in browsers, and more.</p>"
+        "<p>Here, enter data needed for the creation of an SSL certificate. The certificate is used for a number of purposes like connections to a SUSE Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
       )
 
       # dialog caption

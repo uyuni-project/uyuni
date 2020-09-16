@@ -24,11 +24,14 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -115,14 +118,15 @@ public class UserExternalHandlerTest extends BaseHandlerTestCase {
         String name = "My External Group Name" + TestUtils.randomString();
         String systemGroupName = "my-system-group-name" + TestUtils.randomString();
         String desc = TestUtils.randomString();
-        SystemQuery systemQuery = new SaltService();
-        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        SaltApi saltApi = new TestSaltApi();
+        SystemQuery systemQuery = new TestSystemQuery();
+        RegularMinionBootstrapper regularMinionBootstrapper =  new RegularMinionBootstrapper(systemQuery, saltApi);
+        SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
         XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
                 regularMinionBootstrapper,
                 sshMinionBootstrapper
         );
-        ServerGroupHandler sghandler = new ServerGroupHandler(xmlRpcSystemHelper);
+        ServerGroupHandler sghandler = new ServerGroupHandler(xmlRpcSystemHelper, new ServerGroupManager());
         sghandler.create(admin, systemGroupName, desc);
 
         //admin should be able to call list users, regular should not

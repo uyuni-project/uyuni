@@ -19,6 +19,7 @@ import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.client.InvalidCertificateException;
 import com.redhat.rhn.common.conf.Config;
@@ -105,11 +106,12 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
-import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.utils.Opt;
 
@@ -137,13 +139,15 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptyMap;
+
 /**
  * SystemManager
  */
 public class SystemManager extends BaseManager {
 
     private static Logger log = Logger.getLogger(SystemManager.class);
-    private static SystemQuery saltServiceInstance = SaltService.INSTANCE;
+    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
     public static final String CAP_CONFIGFILES_UPLOAD = "configfiles.upload";
     public static final String CAP_CONFIGFILES_DIFF = "configfiles.diff";
@@ -156,7 +160,7 @@ public class SystemManager extends BaseManager {
     public static final String CAP_SCRIPT_RUN = "script.run";
     public static final String CAP_SCAP = "scap.xccdf_eval";
 
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private static SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
     private ServerFactory serverFactory;
     private ServerGroupFactory serverGroupFactory;
 
@@ -177,7 +181,7 @@ public class SystemManager extends BaseManager {
      * @param mockedSaltService The mocked SaltService.
      */
     public static void mockSaltService(SaltService mockedSaltService) {
-        saltServiceInstance = mockedSaltService;
+        saltApi = mockedSaltService;
     }
 
     /**
@@ -653,7 +657,7 @@ public class SystemManager extends BaseManager {
         if (!ServerCleanupType.NO_CLEANUP.equals(cleanupType)) {
             Server server = lookupByIdAndUser(sid, user);
             if (server.asMinionServer().isPresent()) {
-                Optional<List<String>> errs = saltServiceInstance
+                Optional<List<String>> errs = saltApi
                         .cleanupMinion(server.asMinionServer().get(), cleanupTimeout);
                 if (errs.isPresent() &&
                         ServerCleanupType.FAIL_ON_CLEANUP_ERR.equals(cleanupType)) {
@@ -720,7 +724,7 @@ public class SystemManager extends BaseManager {
         ServerFactory.delete(server);
 
         server.asMinionServer().ifPresent(minion -> {
-            saltServiceInstance.deleteKey(minion.getMinionId());
+            saltApi.deleteKey(minion.getMinionId());
             SaltStateGeneratorService.INSTANCE.removeServer(minion);
         });
     }
@@ -1236,6 +1240,22 @@ public class SystemManager extends BaseManager {
         params.put("sgid", sgid);
         Map<String, Object> elabParams = new HashMap<String, Object>();
         return makeDataResult(params, elabParams, null, m, SystemOverview.class);
+    }
+
+    /**
+     * Returns the list of systems that are not assigned to a specific maintenance schedule.
+     * @param user currently logged in user
+     * @param schedule a maintenance schedule
+     * @param pc PageControl
+     * @return list of SystemOverview objects
+     */
+    public static DataResult<EssentialServerDto> systemsNotInSchedule(User user, MaintenanceSchedule schedule,
+            PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "target_systems_for_maintenance_schedule");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("user_id", user.getId());
+        params.put("schedule_id", schedule.getId());
+        return makeDataResult(params, emptyMap(), pc, m, EssentialServerDto.class);
     }
 
     /**

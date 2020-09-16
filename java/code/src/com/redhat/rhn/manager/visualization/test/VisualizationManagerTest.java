@@ -225,7 +225,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, false);
 
-        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ServerGroupManager manager = new ServerGroupManager();
         ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
         manager.addServers(sg1, Collections.singleton(server), user);
 
@@ -260,7 +260,7 @@ public class VisualizationManagerTest extends BaseTestCaseWithUser {
         // information as we rely on errata cache in our query
         ErrataCacheManager.insertNeededErrataCache(server.getId(), e.getId(), p.getId());
 
-        ServerGroupManager manager = ServerGroupManager.getInstance();
+        ServerGroupManager manager = new ServerGroupManager();
         ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
         manager.addServers(sg1, Collections.singleton(server), user);
 

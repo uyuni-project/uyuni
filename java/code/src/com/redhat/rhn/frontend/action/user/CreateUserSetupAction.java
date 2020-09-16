@@ -87,7 +87,7 @@ public class CreateUserSetupAction extends BaseUserSetupAction {
             request.setAttribute("default_tz", UserManager
                     .getDefaultTimeZone().getTimeZoneId());
         }
-        request.setAttribute("noLocale", buildNoneLocale());
+        request.setAttribute("defaultLocale", buildDefaultLocale());
         request.setAttribute("supportedLocales", buildImageMap());
         setCurrentLocale(ctx, currentUser);
 

@@ -1,3 +1,11 @@
+- Only regenerate bootstrap repositories when linking new packages (bsc#1174636)
+- support installer_updates flag in ISS
+- Take care of SCC auth tokens on DEB repos GPG checks (bsc#1175485)
+- Use spacewalk keyring for GPG checks on DEB repos (bsc#1175485)
+- Remove duplicate languages and update translation strings
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
+- Update package version to 4.2.0
+
 -------------------------------------------------------------------
 Thu Jul 23 13:25:13 CEST 2020 - jgonzalez@suse.com
 

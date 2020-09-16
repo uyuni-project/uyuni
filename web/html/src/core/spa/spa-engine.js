@@ -32,7 +32,7 @@ window.pageRenderers.spaengine.init = function init() {
           ...{"Content-type": "application/x-www-form-urlencoded"}
         });
         screen.getFormData = function(form, submitedButton) {
-          let body = $(form).serialize();
+          let body = jQuery(form).serialize();
           if (submitedButton && submitedButton.name) {
             body += '&' + encodeURI(submitedButton.name) + '=' + encodeURI(submitedButton.value)
           }
@@ -53,21 +53,21 @@ window.pageRenderers.spaengine.init = function init() {
       // Integration with bootstrap 3. We need to make sure all the existing modals get fully removed
       // but we have to do it after the navigation ends unless all form inputs contained in the modal will be dropped
       // before the form serialization happens and they will not submitted because they will not exist anymore
-      $('.modal').addClass('removeWhenNavigationEnds');
-      $('.modal-backdrop').addClass('removeWhenNavigationEnds');
-      $('body').removeClass( "modal-open" );
+      jQuery('.modal').addClass('removeWhenNavigationEnds');
+      jQuery('.modal-backdrop').addClass('removeWhenNavigationEnds');
+      jQuery('body').removeClass( "modal-open" );
 
       let urlParser = document.createElement('a');
       urlParser.href = navigation.path;
-      if(isLoginPage(urlParser.pathname)) {
+      if(isLoginPage(urlParser.pathname) || (navigation.event && navigation.event.target.classList.contains('no-spa'))) {
         window.location = navigation.path;
       }
     })
 
     appInstance.on('endNavigate', function(navigation) {
       // Drop everything that was marked to be removed
-      $('.modal.removeWhenNavigationEnds').remove();
-      $('.modal-backdrop.removeWhenNavigationEnds').remove();
+      jQuery('.modal.removeWhenNavigationEnds').remove();
+      jQuery('.modal-backdrop.removeWhenNavigationEnds').remove();
 
       // If an error happens we make a full refresh to make sure the original request is shown instead of a SPA replacement
       if (

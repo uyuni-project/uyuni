@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.RegisterMinionEventMessageAction;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -43,28 +44,16 @@ import static com.suse.manager.webui.services.impl.SaltSSHService.getSSHUser;
  */
 public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
-    private static SSHMinionBootstrapper instance;
     private static final Logger LOG = Logger.getLogger(SSHMinionBootstrapper.class);
 
     /**
      * Standard constructor. For testing only - to obtain instance of this class, use
      * getInstance.
      * @param systemQueryIn systemQuery to use
+     * @param saltApiIn saltApi to use
      */
-    public SSHMinionBootstrapper(SystemQuery systemQueryIn) {
-        super(systemQueryIn);
-    }
-
-    /**
-     * Get instance of the SSHMinionBootstrapper
-     * @param systemQuery systemQuery to use
-     * @return the instance of the SSHMinionBootstrapper
-     */
-    public static synchronized SSHMinionBootstrapper getInstance(SystemQuery systemQuery) {
-        if (instance == null) {
-            instance = new SSHMinionBootstrapper(systemQuery);
-        }
-        return instance;
+    public SSHMinionBootstrapper(SystemQuery systemQueryIn, SaltApi saltApiIn) {
+        super(systemQueryIn, saltApiIn);
     }
 
     @Override
@@ -123,7 +112,7 @@ public class SSHMinionBootstrapper extends AbstractMinionBootstrapper {
 
     // we want to override this in tests
     protected RegisterMinionEventMessageAction getRegisterAction() {
-        return new RegisterMinionEventMessageAction(systemQuery);
+        return new RegisterMinionEventMessageAction(systemQuery, saltApi);
     }
 
     /**

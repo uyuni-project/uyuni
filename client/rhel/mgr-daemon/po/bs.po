@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 14:34+0100\n"
+"POT-Creation-Date: 2020-09-16 14:11+0200\n"
 "PO-Revision-Date: 2011-03-04 16:04+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Bosnian (http://www.transifex.net/projects/p/fedora/team/"
@@ -49,12 +49,12 @@ msgstr ""
 msgid "already running"
 msgstr ""
 
-#: ../rhnsd.c:249
+#: ../rhnsd.c:254
 #, c-format
 msgid "Copyright (C) %s Red Hat, Inc.\n"
 msgstr ""
 
-#: ../rhnsd.c:252
+#: ../rhnsd.c:257
 #, c-format
 msgid "Written by %s.\n"
 msgstr ""

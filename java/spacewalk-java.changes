@@ -1,3 +1,33 @@
+- Force disable SPA for non-navigation links (bsc#1175512)
+- pass the log level parameter to matcher
+- Detect client organization from connected proxy (bsc#1175545)
+- Add language picker to user preferences and user creation
+- Fix EntityExistsException on migration from traditional to salt minion via proxy (bsc#1175556)
+- use media.1/products from media when not specified different (bsc#1175558)
+- Fix: use quiet API method when using spacewalk-common-channels (bsc#1175529)
+- add java.allow_adding_patches_via_api to allow adding errata to vendor channels
+- fix alignment on icon on entitlement page
+- support installer update channels during autoinstallation
+- filter machines not in maintenance mode for remote commands
+- Upgrade jQuery and adapt the code - CVE-2020-11022 (bsc#1172831)
+- Data null means the sync never ran yet (bsc#1174357)
+- Reset the server path on minion registration (bsc#1174254)
+- fix error when rolling back a system to a snapshot (bsc#1173997)
+- Implement maintenance windows backend
+- Add check for maintainence window during executing recurring actions
+- Implement maintenance windows in struts
+- XMLRPC: Assign/retract maintenance schedule to/from systems
+- avoid deadlock when syncing channels and registering minions at the same time (bsc#1173566)
+- Fix softwarechannel update for vendor channels (bsc#1172709)
+- Add modular repository warning message to system overview page (bsc#1173959)
+- Change system list header text to something better (bsc#1173982)
+- set CPU and memory info for virtual instances (bsc#1170244)
+- Add virtual network Start, Stop and Delete actions
+- Add virtual network list page
+- update default product tree tag and set Beta tag again
+- Fix strings (mentions of Satellite, replace SUSE Manager with PRODUCT_NAME, etc)
+- Update package version to 4.2.0
+
 -------------------------------------------------------------------
 Wed Sep 16 16:49:35 CEST 2020 - jgonzalez@suse.com
 

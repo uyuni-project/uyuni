@@ -53,6 +53,7 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -62,10 +63,13 @@ import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.webui.services.iface.*;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit3.JUnit3Mockery;
@@ -87,7 +91,14 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     }};
 
     private static TaskomaticApi taskomaticApi;
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
+    private final SaltApi saltApi = new TestSaltApi();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+    );
 
     @Override
     public void setUp() throws Exception {
@@ -162,10 +173,13 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
                 allowing(saltServiceMock).generateSSHKey(with(equal(SaltSSHService.SSH_KEY_PATH)));
                 will(returnValue(Optional.of(mockResult)));
         }});
+
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager sem = new SystemEntitlementManager(
-                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager()),
+                new SystemUnentitler(new VirtManagerSalt(saltServiceMock), new FormulaMonitoringManager(),
+                        serverGroupManager),
                 new SystemEntitler(saltServiceMock, new VirtManagerSalt(saltServiceMock),
-                        new FormulaMonitoringManager())
+                        new FormulaMonitoringManager(), serverGroupManager)
         );
 
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);

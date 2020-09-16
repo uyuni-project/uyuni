@@ -36,7 +36,7 @@
         uncheck_all();
 
         $.each(typeSets[setName], function(index, typeName) {
-            $("#type_" + typeName).prop('checked', 'checked');
+            jQuery("#type_" + typeName).prop('checked', 'checked');
         });
     }
 
@@ -47,30 +47,30 @@
 
     // set all checkboxes to val
     function set_checkboxes(val) {
-        $("input[type=checkbox]").prop('checked', val);
+        jQuery("input[type=checkbox]").prop('checked', val);
     }
 
-    $(document).ready(function() {
+    jQuery(document).ready(function() {
         check_defaults();
 
-        $('#check_all_button').click(check_all);
-        $('#uncheck_all_button').click(uncheck_all);
+        jQuery('#check_all_button').on("click", check_all);
+        jQuery('#uncheck_all_button').on("click", uncheck_all);
 
         // create the 'set selector' dropdown
-        var setChooser = $(document.createElement('select'));
+        var setChooser = jQuery(document.createElement('select'));
         setChooser.append(
-            $(document.createElement('option')).html('Check [set]')
+            jQuery(document.createElement('option')).html('Check [set]')
         );
 
         $.each(typeSets, function(key, typeName) {
             setChooser.append(
-              $(document.createElement('option'))
-              .click(check_set_from_option)
+              jQuery(document.createElement('option'))
+              .on("click", check_set_from_option)
               .html(key)
             );
         });
 
-        $('#checkboxControls').append(setChooser);
+        jQuery('#checkboxControls').append(setChooser);
     });
 
 <c:out escapeXml="false" value="//]]>" />

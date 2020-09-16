@@ -672,27 +672,31 @@ When(/^I register this client for SSH push via tunnel$/) do
 end
 
 # Repositories and packages management
-When(/^I enable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
+When(/^I (enable|disable) (the repositories|repository) "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |action, _optional, repos, host, error_control|
   node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo"
-        elsif host.include? 'ubuntu'
-    "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list"
-        else
-    "zypper mr --enable #{repo}"
+  os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    cmd = "zypper mr --#{action} #{repos}"
+  else
+    if action == 'enable'
+      cmd = repos.split(' ').map do |repo|
+        if os_family =~ /^centos/
+          "sed -i 's/enabled=.*/enabled=1/g' /etc/yum.repos.d/#{repo}.repo; "
+        elsif os_family =~ /^ubuntu/
+          "sed -i '/^#\\s*deb.*/ s/^#\\s*deb /deb /' /etc/apt/sources.list.d/#{repo}.list; "
         end
-  node.run(cmd, error_control.empty?)
-end
-
-When(/^I disable repository "([^"]*)" on this "([^"]*)"((?: without error control)?)$/) do |repo, host, error_control|
-  node = get_target(host)
-  cmd = if host.include? 'ceos'
-    "test -f /etc/yum.repos.d/#{repo}.repo && sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo"
-        elsif host.include? 'ubuntu'
-    "sed -i '/^deb.*/ s/^deb /#deb /' /etc/apt/sources.list.d/#{repo}.list"
-        else
-    "zypper mr --disable #{repo}"
+      end
+    else
+      cmd = repos.split(' ').map do |repo|
+        if os_family =~ /^centos/
+          "sed -i 's/enabled=.*/enabled=0/g' /etc/yum.repos.d/#{repo}.repo; "
+        elsif os_family =~ /^ubuntu/
+          "sed -i '/^deb.*/ s/^deb /# deb /' /etc/apt/sources.list.d/#{repo}.list; "
         end
+      end
+    end
+    cmd = cmd.reduce(:+)
+  end
   node.run(cmd, error_control.empty?)
 end
 
@@ -1066,7 +1070,7 @@ Then(/^I should not see a "([^"]*)" virtual machine on "([^"]*)"$/) do |vm, host
   end
 end
 
-Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and ([0-9]*) vcpus$/) do |vm, host, mem, vcpu|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{mem}MB memory and #{vcpu} vcpus") do
     output, _code = node.run("virsh dumpxml #{vm}")
@@ -1077,7 +1081,7 @@ Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([0-9]*)MB memory and (
   end
 end
 
-Then(/"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
+Then(/^"([^"]*)" virtual machine on "([^"]*)" should have ([a-z]*) graphics device$/) do |vm, host, type|
   node = get_target(host)
   repeat_until_timeout(message: "#{vm} virtual machine on #{host} never got #{type} graphics device") do
     output, _code = node.run("virsh dumpxml #{vm}")
@@ -1173,6 +1177,15 @@ When(/^I refresh the "([^"]*)" storage pool of this "([^"]*)"$/) do |pool, host|
   node.run("virsh pool-refresh #{pool}")
 end
 
+Then(/^I should not see a "([^"]*)" virtual network on "([^"]*)"$/) do |vm, host|
+  node = get_target(host)
+  repeat_until_timeout(message: "#{vm} virtual network on #{host} still exists") do
+    _output, code = node.run("virsh net-info #{vm}", fatal = false)
+    break if code == 1
+    sleep 3
+  end
+end
+
 # WORKAROUND
 # Work around issue https://github.com/SUSE/spacewalk/issues/10360
 # Remove as soon as the issue is fixed
@@ -1257,7 +1270,7 @@ When(/^I prepare the retail configuration file on server$/) do
   $server.run("sed -i '#{sed_values}' #{dest}")
 end
 
-When(/^I import the retail configuration using retail_yaml command/) do
+When(/^I import the retail configuration using retail_yaml command$/) do
   filepath = '/tmp/massive-import-terminals.yml'
   $server.run("retail_yaml --api-user admin --api-pass admin --from-yaml #{filepath}")
 end
@@ -1296,11 +1309,21 @@ Then(/^the "([^"]*)" on "([^"]*)" grains does not exist$/) do |key, client|
   raise if code.zero?
 end
 
-# Enable/disable repository for monitoring exporters
-When(/^I "([^"]*)" Prometheus exporter repository on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  repo_name = 'tools_additional_repo'
-  if $product == 'Uyuni'
-    repo_name = 'tools_pool_repo'
+When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
+  common_repos = 'os_pool_repo os_update_repo tools_pool_repo tools_update_repo'
+  step %(I #{action} the repositories "#{common_repos}" on this "#{host}"#{error_control})
+  node = get_target(host)
+  _os_version, os_family = get_os_version(node)
+  if os_family =~ /^opensuse/ || os_family =~ /^sles/
+    step %(I #{action} repository "tools_additional_repo" on this "#{host}"#{error_control}) unless $product == 'Uyuni'
   end
-  step %(I #{action} repository "#{repo_name}" on this "#{host}"#{error_control})
+end
+
+When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
+  node = get_target(host)
+  source = File.dirname(__FILE__) + '/../upload_files/salt/' + state + '.sls'
+  remote_file = '/usr/share/susemanager/salt/' + state + '.sls'
+  return_code = file_inject(node, source, remote_file)
+  raise 'File injection failed' unless return_code.zero?
+  node.run('salt-call --local --file-root=/usr/share/susemanager/salt --module-dirs=/usr/share/susemanager/salt/ --log-level=info --retcode-passthrough --force-color state.apply ' + state)
 end

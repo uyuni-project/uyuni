@@ -23,8 +23,17 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.utils.MinionActionUtils;
 
 /**
@@ -32,11 +41,25 @@ import com.suse.manager.webui.utils.MinionActionUtils;
  */
 public class MinionActionUtilsTest extends BaseTestCaseWithUser {
 
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
+
     /**
      * Verify script is deleted in case all servers are finished (COMPLETED or FAILED).
      */
     public void testCleanupScriptActions() throws Exception {
-        SaltUtils.INSTANCE.setScriptsDir(Files.createTempDirectory("scripts"));
+
+        FormulaManager formulaManager = new FormulaManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils,
+                clusterManager, formulaManager, saltKeyUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
+                saltUtils);
+
+        saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
         sa.setStatus(ActionFactory.STATUS_COMPLETED);
@@ -44,36 +67,54 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         ServerAction sa2 = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
         sa2.setStatus(ActionFactory.STATUS_FAILED);
         action.addServerAction(sa2);
-        Path scriptFile = Files.createFile(SaltUtils.INSTANCE.getScriptPath(action.getId()));
+        Path scriptFile = Files.createFile(saltUtils.getScriptPath(action.getId()));
 
         // Testing
-        MinionActionUtils.cleanupScriptActions();
+        minionActionUtils.cleanupScriptActions();
         assertFalse(Files.exists(scriptFile));
 
         // Cleanup
-        Files.delete(SaltUtils.INSTANCE.getScriptsDir());
+        Files.delete(saltUtils.getScriptsDir());
     }
 
     /**
      * Verify script is deleted in case no Action is there at all.
      */
     public void testCleanupScriptWithoutAction() throws Exception {
-        SaltUtils.INSTANCE.setScriptsDir(Files.createTempDirectory("scripts"));
-        Path scriptFile = Files.createFile(SaltUtils.INSTANCE.getScriptPath(123456L));
+        FormulaManager formulaManager = new FormulaManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils,
+                clusterManager, formulaManager, saltKeyUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
+                saltUtils);
+        saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
+        Path scriptFile = Files.createFile(saltUtils.getScriptPath(123456L));
 
         // Testing
-        MinionActionUtils.cleanupScriptActions();
+        minionActionUtils.cleanupScriptActions();
         assertFalse(Files.exists(scriptFile));
 
         // Cleanup
-        Files.delete(SaltUtils.INSTANCE.getScriptsDir());
+        Files.delete(saltUtils.getScriptsDir());
     }
 
     /**
      * Verify script is not deleted as long as not all servers have finished (e.g. PICKED_UP).
      */
     public void testCleanupScriptActionsPickedUp() throws Exception {
-        SaltUtils.INSTANCE.setScriptsDir(Files.createTempDirectory("scripts"));
+        FormulaManager formulaManager = new FormulaManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
+        SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltApi, saltUtils,
+                clusterManager, formulaManager, saltKeyUtils);
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltApi,
+                saltUtils);
+        saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
         Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction sa = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
         sa.setStatus(ActionFactory.STATUS_PICKED_UP);
@@ -81,14 +122,14 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
         ServerAction sa2 = ActionFactoryTest.createServerAction(ServerFactoryTest.createTestServer(user), action);
         sa2.setStatus(ActionFactory.STATUS_COMPLETED);
         action.addServerAction(sa2);
-        Path scriptFile = Files.createFile(SaltUtils.INSTANCE.getScriptPath(action.getId()));
+        Path scriptFile = Files.createFile(saltUtils.getScriptPath(action.getId()));
 
         // Testing
-        MinionActionUtils.cleanupScriptActions();
+        minionActionUtils.cleanupScriptActions();
         assertTrue(Files.exists(scriptFile));
 
         // Cleanup
         FileUtils.deleteFile(scriptFile);
-        Files.delete(SaltUtils.INSTANCE.getScriptsDir());
+        Files.delete(saltUtils.getScriptsDir());
     }
 }

@@ -51,12 +51,14 @@ import java.util.Map;
 public class Access extends BaseHandler {
 
     protected static final Logger LOG = Logger.getLogger(Access.class);
+    private final ClusterManager clusterManager;
 
     /**
      * Constructor for Access object
+     * @param clusterManagerIn
      */
-    public Access() {
-        super();
+    public Access(ClusterManager clusterManagerIn) {
+        this.clusterManager = clusterManagerIn;
     }
 
     /**
@@ -546,7 +548,7 @@ public class Access extends BaseHandler {
         Map map = (Map) ctx;
         Long sgid = getAsLong(map.get("sgid"));
         User user = (User) map.get("user");
-        return ClusterManager.instance().isClusterGroup(sgid);
+        return clusterManager.isClusterGroup(sgid);
     }
 
 }

@@ -21,9 +21,14 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 import static spark.Spark.post;
 
+import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.kubernetes.KubernetesManager;
-import com.suse.manager.virtualization.VirtManagerSalt;
+import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.ActivationKeysController;
 import com.suse.manager.webui.controllers.CVEAuditController;
 import com.suse.manager.webui.controllers.clusters.ClustersController;
@@ -34,6 +39,8 @@ import com.suse.manager.webui.controllers.FrontendLogController;
 import com.suse.manager.webui.controllers.ImageBuildController;
 import com.suse.manager.webui.controllers.ImageProfileController;
 import com.suse.manager.webui.controllers.ImageStoreController;
+import com.suse.manager.webui.controllers.maintenance.MaintenanceCalendarController;
+import com.suse.manager.webui.controllers.maintenance.MaintenanceController;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.NotificationMessageController;
@@ -54,6 +61,7 @@ import com.suse.manager.webui.controllers.channels.ChannelsApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementApiController;
 import com.suse.manager.webui.controllers.contentmanagement.ContentManagementViewsController;
 import com.suse.manager.webui.controllers.login.LoginController;
+import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleController;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.virtualization.VirtualGuestsController;
@@ -61,9 +69,9 @@ import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.VirtualPoolsController;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.manager.webui.services.iface.VirtManager;
+
 import org.apache.http.HttpStatus;
 
 import java.util.HashMap;
@@ -89,19 +97,26 @@ public class Router implements SparkApplication {
         initNotFoundRoutes(jade);
 
         TaskomaticApi taskomaticApi = new TaskomaticApi();
-        SystemQuery systemQuery = SaltService.INSTANCE;
-        SaltApi saltApi = SaltService.INSTANCE_SALT_API;
-        KubernetesManager kubernetesManager = new KubernetesManager(systemQuery);
-        VirtManager virtManager = new VirtManagerSalt(saltApi);
-        RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-        SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+        SystemQuery systemQuery = GlobalInstanceHolder.SYSTEM_QUERY;
+        SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+        KubernetesManager kubernetesManager = GlobalInstanceHolder.KUBERNETES_MANAGER;
+        VirtManager virtManager = GlobalInstanceHolder.VIRT_MANAGER;
+        RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
+        SSHMinionBootstrapper sshMinionBootstrapper = GlobalInstanceHolder.SSH_MINION_BOOTSTRAPPER;
+        FormulaManager formulaManager = GlobalInstanceHolder.FORMULA_MANAGER;
+        ClusterManager clusterManager = GlobalInstanceHolder.CLUSTER_MANAGER;
+        SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
+        ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
-        SystemsController systemsController = new SystemsController(systemQuery);
-        SaltSSHController saltSSHController = new SaltSSHController(systemQuery);
-        NotificationMessageController notificationMessageController = new NotificationMessageController(systemQuery);
-        MinionsAPI minionsAPI = new MinionsAPI(systemQuery, sshMinionBootstrapper, regularMinionBootstrapper);
-        StatesAPI statesAPI = new StatesAPI(systemQuery, taskomaticApi);
+        SystemsController systemsController = new SystemsController(saltApi);
+        SaltSSHController saltSSHController = new SaltSSHController(saltApi);
+        NotificationMessageController notificationMessageController =
+                new NotificationMessageController(systemQuery, saltApi);
+        MinionsAPI minionsAPI = new MinionsAPI(saltApi, sshMinionBootstrapper, regularMinionBootstrapper,
+                saltKeyUtils);
+        StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(systemQuery, saltApi);
+        ClustersController clustersController = new ClustersController(clusterManager, formulaManager);
 
         post("/manager/frontend-log", withUser(FrontendLogController::log));
 
@@ -181,8 +196,12 @@ public class Router implements SparkApplication {
         SSOController.initRoutes();
 
         // Clusters
-        ClustersController.initRoutes(jade);
+        clustersController.initRoutes(jade);
 
+        // Maintenance windows
+        MaintenanceController.initRoutes();
+        MaintenanceScheduleController.initRoutes(jade);
+        MaintenanceCalendarController.initRoutes(jade);
     }
 
     private void  initNotFoundRoutes(JadeTemplateEngine jade) {

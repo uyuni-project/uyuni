@@ -191,7 +191,7 @@ function getEditGroupSubtype(element) {
 function deepCopy(e) {
     const type = typeof e;
     if (type === "object") {
-        return $.extend(true, {}, e);
+        return jQuery.extend(true, {}, e);
     }
     return e;
 }

@@ -158,7 +158,8 @@ rhnRegTokenPackages            :: rhnRegToken rhnPackageName
 
 rhnSatelliteInfo               :: rhnServer
 rhnServer                      :: rhnServerArch web_contact web_customer \
-                                  rhnProvisionState suseServerContactMethod
+                                  rhnProvisionState suseServerContactMethod \
+                                  suseMaintenanceSchedule
 rhnServerAction                :: rhnServer rhnAction rhnActionStatus
 rhnServerActionPackageResult   :: rhnActionPackage
 rhnServerActionScriptResult    :: rhnActionScript rhnServer
@@ -254,6 +255,8 @@ suseImageInfoChannel           :: suseImageInfo rhnChannel
 suseImageInfoInstalledProduct  :: suseInstalledProduct suseImageInfo
 suseImageProfile               :: rhnRegTokenChannels web_customer suseImageStore
 suseImageStore                 :: suseCredentials web_customer suseImageStoreType
+suseMaintenanceCalendar        :: web_customer
+suseMaintenanceSchedule        :: web_customer suseMaintenanceCalendar
 suseMinionInfo                 :: rhnServer
 suseInstalledProduct           :: rhnPackageArch
 suseMdData                     :: rhnChannel rhnPackage suseMdKeyword

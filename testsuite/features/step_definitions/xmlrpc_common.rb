@@ -69,7 +69,7 @@ When(/^I unsubscribe "([^"]*)" and "([^"]*)" from configuration channel "([^"]*)
   steps %(
       When I unsubscribe "#{host1}" from configuration channel "#{channel}"
       And I unsubscribe "#{host2}" from configuration channel "#{channel}"
-        )
+  )
 end
 
 When(/^I create a System Record$/) do
@@ -163,7 +163,7 @@ When(/^I associate repo "([^"]*)" with channel "([^"]*)"$/) do |repo_label, chan
   assert(rpctest.associate_repo(channel_label, repo_label))
 end
 
-When(/^I create the following channels:/) do |table|
+When(/^I create the following channels:$/) do |table|
   channels = table.hashes
   channels.each do |ch|
     assert_equal(1,

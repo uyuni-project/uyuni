@@ -342,6 +342,7 @@ class _ChannelDumper(BaseRowDumper):
             ('rhn-channel-gpg-key-url', 'gpg_key_url'),
             ('rhn-channel-checksum-type', 'checksum_type'),
             ('rhn-channel-update-tag', 'update_tag'),
+            ('rhn-channel-installer-updates', 'installer_updates'),
         ]
         for k, v in mappings:
             arr.append(SimpleDumper(self._writer, k, self._row.get(v)))
@@ -925,7 +926,8 @@ class _SCCRepositoryDumper(BaseRowDumper):
             'distro-target': self._row['distro_target'],
             'description': self._row['description'],
             'url': self._row['url'],
-            'signed': self._row['signed']
+            'signed': self._row['signed'],
+            'installer_updates': self._row['installer_updates']
             }
 
 class SCCRepositoryDumper(BaseQueryDumper):
@@ -933,7 +935,7 @@ class SCCRepositoryDumper(BaseQueryDumper):
     iterator_query = """
     SELECT scc_id AS sccid,
            autorefresh, name, distro_target,
-           description, url, signed
+           description, url, signed, installer_updates
       FROM suseSCCRepository
     """
 

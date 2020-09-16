@@ -88,6 +88,15 @@ public class ActivationKeyHandler extends BaseHandler {
     private static final String VALIDATION_XSD =
         "/com/redhat/rhn/frontend/action/token/validation/activationKeyForm.xsd";
 
+    private final ServerGroupManager serverGroupManager;
+
+    /**
+     * @param serverGroupManagerIn
+     */
+    public ActivationKeyHandler(ServerGroupManager serverGroupManagerIn) {
+        this.serverGroupManager = serverGroupManagerIn;
+    }
+
     /**
      * Creates a new activation key.
      * @param loggedInUser The current user
@@ -679,7 +688,7 @@ public class ActivationKeyHandler extends BaseHandler {
 
             ManagedServerGroup group = null;
             try {
-                group = ServerGroupManager.getInstance().lookup(
+                group = serverGroupManager.lookup(
                         serverGroupId.longValue(), loggedInUser);
             }
             catch (LookupException e) {
@@ -716,7 +725,7 @@ public class ActivationKeyHandler extends BaseHandler {
 
             ServerGroup group = null;
             try {
-                group = ServerGroupManager.getInstance().lookup(
+                group = serverGroupManager.lookup(
                         serverGroupId.longValue(), loggedInUser);
             }
             catch (LookupException e) {

@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="pt_BR">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="pt_BR">
     <body>
       <!-- Action Statuses -->
       <trans-unit id="Queued">
@@ -61,27 +61,21 @@
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <trans-unit id="bootstrap_entitled">
-          <source>Bootstrap</source>
-        </trans-unit>
+          <source>Bootstrap</source> <target>Arranque do zero</target></trans-unit>
         <trans-unit id="enterprise_entitled">
-          <source>Management</source>
-          <target>Gerenciamento</target>
+          <source>Management</source> <target>Gerenciamento</target>
         </trans-unit>
         <trans-unit id="unentitled">
-          <source>&lt;em&gt;(none)&lt;/em&gt;</source>
-          <target>&lt;em&gt;(nenhum)&lt;/em&gt;</target>
+          <source>&lt;em&gt;(none)&lt;/em&gt;</source> <target>&lt;em&gt;(nenhum)&lt;/em&gt;</target>
         </trans-unit>
         <trans-unit id="base">
-          <source>Base</source>
-          <target>Base</target>
+          <source>Base</source> <target>Base</target>
         </trans-unit>
         <trans-unit id="add-on">
-          <source>Add-On</source>
-          <target>Adicionais</target>
+          <source>Add-On</source> <target>Adicionais</target>
         </trans-unit>
         <trans-unit id="virtualization_host">
-          <source>Virtualization Host</source>
-          <target>Virtualização</target>
+          <source>Virtualization Host</source> <target>Virtualização</target>
         </trans-unit>
       </group>
       <!-- TimeZones -->
@@ -213,6 +207,7 @@
       </trans-unit>
       <trans-unit id="Pacific/Easter">
         <source>(GMT-0500) Chile (Easter Island)</source>
+        <target>(GMT-0500) Chile (Ilha de Páscoa)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -243,7 +238,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target>(GMT+1200) New Zealand (Auckland)</target>
+        <target>(GMT+1200) Nova Zelândia (Auckland)</target>
       </trans-unit>
       <trans-unit id="Pacific/Norfolk">
         <source>(GMT+1130) Norfolk Island</source>
@@ -268,6 +263,7 @@
       </trans-unit>
       <trans-unit id="Australia/Adelaide">
         <source>Australia Adelaide</source>
+        <target>(GMT+0930) Austrália (Adelaide)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -351,6 +347,7 @@
       </trans-unit>
       <trans-unit id="America/Santiago">
         <source>(GMT-0300) Chile (Continental)</source>
+        <target>(GMT-0300) Chile (Continental)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -2822,28 +2819,22 @@
         <note>Probe command requirements:
           rhn_command_requirements.name -&gt; rhn_command_requirements.description</note>
         <trans-unit id="npunix">
-          <source>RHNMD must be running on the monitored host to perform this check.</source>
-          <target>O RHNMD deve estar rodando na máquina monitorada para efetuar esta verificação.</target>
+          <source>RHNMD must be running on the monitored host to perform this check.</source> <target>O RHNMD deve estar rodando na máquina monitorada para efetuar esta verificação.</target>
         </trans-unit>
         <trans-unit id="oracle">
-          <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-          <target>As verificações Oracle requerem a configuração do banco de dados e de associações públicas executadas rodando $ORACLE_HOME/rdbms/admin/catalog.sql. Além disso, em qualquer instância do Oracle, o usuário Oracle configurado na verificação dever ter os privilégios mínimos de CONNECT e SELECT_CATALOG_ROLE.</target>
+          <source>Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source> <target>As verificações Oracle requerem a configuração do banco de dados e de associações públicas executadas rodando $ORACLE_HOME/rdbms/admin/catalog.sql. Além disso, em qualquer instância do Oracle, o usuário Oracle configurado na verificação dever ter os privilégios mínimos de CONNECT e SELECT_CATALOG_ROLE.</target>
         </trans-unit>
         <trans-unit id="snmp">
-          <source>SNMP must be running on the monitored host to perform this check.</source>
-          <target>O SNMP deve estar rodando na máquina monitorada para efetuar esta verificação.</target>
+          <source>SNMP must be running on the monitored host to perform this check.</source> <target>O SNMP deve estar rodando na máquina monitorada para efetuar esta verificação.</target>
         </trans-unit>
         <trans-unit id="bea61_snmp">
-          <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source>
-          <target>Esta verificação pode ser configurada num Servidor Administrado BEA se o endereço IP do Servidor Administrativo de Domínio for provido. O SNMP também dever ser ativado no Servidor Administrativo de Domínio, o que pode ser feito através do Console Weblogic.</target>
+          <source>This check may be configured against a BEA Managed Server if the IP address of the Domain Admin Server is given. SNMP must also be enabled on the Domain Admin Server which can be done via the Weblogic Console.</source> <target>Esta verificação pode ser configurada num Servidor Administrado BEA se o endereço IP do Servidor Administrativo de Domínio for provido. O SNMP também dever ser ativado no Servidor Administrativo de Domínio, o que pode ser feito através do Console Weblogic.</target>
         </trans-unit>
         <trans-unit id="npunix_oracle">
-          <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source>
-          <target>O RHNMD deve estar rodando na máquina monitorada para efetuar esta verificação. As verificações Oracle requerem a configuração do banco de dados e de associações públicas feitas rodando $ORACLE_HOME/rdbms/admin/catalog.sql. Além disso, em qualquer instância do Oracle, o usuário Oracle configurado na verificação deve ter privilégios mínimos de CONNECT e SELECT_CATALOG_ROLE.</target>
+          <source>RHNMD must be running on the monitored host to perform this check. Oracle checks require the configuration of the database and public associations made by running $ORACLE_HOME/rdbms/admin/catalog.sql. In addition, in any instance of Oracle, the Oracle user configured in the check must have minimum privileges of CONNECT and SELECT_CATALOG_ROLE.</source> <target>O RHNMD deve estar rodando na máquina monitorada para efetuar esta verificação. As verificações Oracle requerem a configuração do banco de dados e de associações públicas feitas rodando $ORACLE_HOME/rdbms/admin/catalog.sql. Além disso, em qualquer instância do Oracle, o usuário Oracle configurado na verificação deve ter privilégios mínimos de CONNECT e SELECT_CATALOG_ROLE.</target>
         </trans-unit>
         <trans-unit id="apache1_3">
-          <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source>
-          <target>A diretiva ExtendedStatus no arquivo httpd.conf deste servidor web deve ser On para esta verificação funcionar apropriadamente.</target>
+          <source>The ExtendedStatus directive in the httpd.conf file of this webserver must be set to On for this check to function properly.</source> <target>A diretiva ExtendedStatus no arquivo httpd.conf deste servidor web deve ser On para esta verificação funcionar apropriadamente.</target>
         </trans-unit>
       </group>
       <group>
@@ -2853,48 +2844,37 @@
         <note>Command group names:
       rhn_command_groups.description -&gt; rhn_command_groups.description</note>
         <trans-unit id="All">
-          <source>All</source>
-          <target>Todos</target>
+          <source>All</source> <target>Todos</target>
         </trans-unit>
         <trans-unit id="Apache">
-          <source>Apache</source>
-          <target>Apache</target>
+          <source>Apache</source> <target>Apache</target>
         </trans-unit>
         <trans-unit id="BEA Weblogic">
-          <source>BEA Weblogic</source>
-          <target>BEA Weblogic</target>
+          <source>BEA Weblogic</source> <target>BEA Weblogic</target>
         </trans-unit>
         <trans-unit id="General">
-          <source>General</source>
-          <target>Geral</target>
+          <source>General</source> <target>Geral</target>
         </trans-unit>
         <trans-unit id="Linux">
-          <source>Linux</source>
-          <target>Linux</target>
+          <source>Linux</source> <target>Linux</target>
         </trans-unit>
         <trans-unit id="Log Agent">
-          <source>Log Agent</source>
-          <target>Agente de Registro</target>
+          <source>Log Agent</source> <target>Agente de Registro</target>
         </trans-unit>
         <trans-unit id="MySQL">
-          <source>MySQL</source>
-          <target>MySQL</target>
+          <source>MySQL</source> <target>MySQL</target>
         </trans-unit>
         <trans-unit id="Network Services">
-          <source>Network Services</source>
-          <target>Serviços de Rede</target>
+          <source>Network Services</source> <target>Serviços de Rede</target>
         </trans-unit>
         <trans-unit id="Oracle">
-          <source>Oracle</source>
-          <target>Oracle</target>
+          <source>Oracle</source> <target>Oracle</target>
         </trans-unit>
         <trans-unit id="Spacewalk">
-          <source>@@PRODUCT_NAME@@</source>
-          <target>@@PRODUCT_NAME@@</target>
+          <source>@@PRODUCT_NAME@@</source> <target>@@PRODUCT_NAME@@</target>
         </trans-unit>
         <trans-unit id="Satellite">
-          <source>@@PRODUCT_NAME@@</source>
-          <target>@@PRODUCT_NAME@@</target>
+          <source>@@PRODUCT_NAME@@</source> <target>@@PRODUCT_NAME@@</target>
         </trans-unit>
       </group>
       <group>
@@ -2904,305 +2884,230 @@
         <note>Command names:
       rhn_command.description -&gt; rhn_command.description</note>
         <trans-unit id="Active Sessions">
-          <source>Active Sessions</source>
-          <target>Sessões Ativas</target>
+          <source>Active Sessions</source> <target>Sessões Ativas</target>
         </trans-unit>
         <trans-unit id="Availability">
-          <source>Availability</source>
-          <target>Disponibilidade</target>
+          <source>Availability</source> <target>Disponibilidade</target>
         </trans-unit>
         <trans-unit id="Blocking Sessions">
-          <source>Blocking Sessions</source>
-          <target>Sessões Bloqueantes</target>
+          <source>Blocking Sessions</source> <target>Sessões Bloqueantes</target>
         </trans-unit>
         <trans-unit id="Buffer Cache">
-          <source>Buffer Cache</source>
-          <target>Cache do Buffer</target>
+          <source>Buffer Cache</source> <target>Cache do Buffer</target>
         </trans-unit>
         <trans-unit id="CPU Usage">
-          <source>CPU Usage</source>
-          <target>Uso da CPU</target>
+          <source>CPU Usage</source> <target>Uso da CPU</target>
         </trans-unit>
         <trans-unit id="Check Nothing">
-          <source>Check Nothing</source>
-          <target>Não Verificar Nada</target>
+          <source>Check Nothing</source> <target>Não Verificar Nada</target>
         </trans-unit>
         <trans-unit id="Client Connectivity">
-          <source>Client Connectivity</source>
-          <target>Conectividade do Cliente</target>
+          <source>Client Connectivity</source> <target>Conectividade do Cliente</target>
         </trans-unit>
         <trans-unit id="DNS Lookup">
-          <source>DNS Lookup</source>
-          <target>Procura DNS</target>
+          <source>DNS Lookup</source> <target>Procura DNS</target>
         </trans-unit>
         <trans-unit id="Data Dictionary Cache">
-          <source>Data Dictionary Cache</source>
-          <target>Cache do Dicionário de Dados</target>
+          <source>Data Dictionary Cache</source> <target>Cache do Dicionário de Dados</target>
         </trans-unit>
         <trans-unit id="Database Accessibility">
-          <source>Database Accessibility</source>
-          <target>Acessibilidade do Banco de Dados</target>
+          <source>Database Accessibility</source> <target>Acessibilidade do Banco de Dados</target>
         </trans-unit>
         <trans-unit id="Disk I/O Throughput">
-          <source>Disk I/O Throughput</source>
-          <target>Produção I/O do Disco</target>
+          <source>Disk I/O Throughput</source> <target>Produção I/O do Disco</target>
         </trans-unit>
         <trans-unit id="Disk Sort Ratio">
-          <source>Disk Sort Ratio</source>
-          <target>Proporção de Classificação do Disco</target>
+          <source>Disk Sort Ratio</source> <target>Proporção de Classificação do Disco</target>
         </trans-unit>
         <trans-unit id="Disk Space">
-          <source>Disk Space</source>
-          <target>Espaço em Disco</target>
+          <source>Disk Space</source> <target>Espaço em Disco</target>
         </trans-unit>
         <trans-unit id="Disk Usage">
-          <source>Disk Usage</source>
-          <target>Uso do Disco</target>
+          <source>Disk Usage</source> <target>Uso do Disco</target>
         </trans-unit>
         <trans-unit id="Execute Queue">
-          <source>Execute Queue</source>
-          <target>Fila de Execução</target>
+          <source>Execute Queue</source> <target>Fila de Execução</target>
         </trans-unit>
         <trans-unit id="Execution Time">
-          <source>Execution Time</source>
-          <target>Tempo de Execução</target>
+          <source>Execution Time</source> <target>Tempo de Execução</target>
         </trans-unit>
         <trans-unit id="FTP">
-          <source>FTP</source>
-          <target>FTP</target>
+          <source>FTP</source> <target>FTP</target>
         </trans-unit>
         <trans-unit id="Heap Free">
-          <source>Heap Free</source>
-          <target>Heap Livre</target>
+          <source>Heap Free</source> <target>Heap Livre</target>
         </trans-unit>
         <trans-unit id="Host Availability">
-          <source>Host Availability</source>
-          <target>Disponibilidade da Máquina</target>
+          <source>Host Availability</source> <target>Disponibilidade da Máquina</target>
         </trans-unit>
         <trans-unit id="ICMP Blocked">
-          <source>ICMP Blocked</source>
-          <target>ICMP Bloqueado</target>
+          <source>ICMP Blocked</source> <target>ICMP Bloqueado</target>
         </trans-unit>
         <trans-unit id="IMAP Mail">
-          <source>IMAP Mail</source>
-          <target>IMAP Mail</target>
+          <source>IMAP Mail</source> <target>IMAP Mail</target>
         </trans-unit>
         <trans-unit id="Idle Sessions">
-          <source>Idle Sessions</source>
-          <target>Sessões Ociosas</target>
+          <source>Idle Sessions</source> <target>Sessões Ociosas</target>
         </trans-unit>
         <trans-unit id="Index Extents">
-          <source>Index Extents</source>
-          <target>Extensões do Índice</target>
+          <source>Index Extents</source> <target>Extensões do Índice</target>
         </trans-unit>
         <trans-unit id="Inodes">
-          <source>Inodes</source>
-          <target>Inodes</target>
+          <source>Inodes</source> <target>Inodes</target>
         </trans-unit>
         <trans-unit id="Interface Traffic">
-          <source>Interface Traffic</source>
-          <target>Tráfego da Interface</target>
+          <source>Interface Traffic</source> <target>Tráfego da Interface</target>
         </trans-unit>
         <trans-unit id="JDBC Connection Pool">
-          <source>JDBC Connection Pool</source>
-          <target>Conjunto de Conexões JDBC</target>
+          <source>JDBC Connection Pool</source> <target>Conjunto de Conexões JDBC</target>
         </trans-unit>
         <trans-unit id="Latency">
-          <source>Latency</source>
-          <target>Latência</target>
+          <source>Latency</source> <target>Latência</target>
         </trans-unit>
         <trans-unit id="Library Cache">
-          <source>Library Cache</source>
-          <target>Cache da Biblioteca</target>
+          <source>Library Cache</source> <target>Cache da Biblioteca</target>
         </trans-unit>
         <trans-unit id="Load">
-          <source>Load</source>
-          <target>Carregar</target>
+          <source>Load</source> <target>Carregar</target>
         </trans-unit>
         <trans-unit id="Locks">
-          <source>Locks</source>
-          <target>Bloqueios</target>
+          <source>Locks</source> <target>Bloqueios</target>
         </trans-unit>
         <trans-unit id="Log Pattern Match">
-          <source>Log Pattern Match</source>
-          <target>Ocorrências do Modelo de Registro</target>
+          <source>Log Pattern Match</source> <target>Ocorrências do Modelo de Registro</target>
         </trans-unit>
         <trans-unit id="Log Size Growth">
-          <source>Log Size Growth</source>
-          <target>Crescimento do Tamanho do Registro</target>
+          <source>Log Size Growth</source> <target>Crescimento do Tamanho do Registro</target>
         </trans-unit>
         <trans-unit id="LongLegs">
-          <source>LongLegs</source>
-          <target>LongLegs</target>
+          <source>LongLegs</source> <target>LongLegs</target>
         </trans-unit>
         <trans-unit id="Mail Transfer (SMTP)">
-          <source>Mail Transfer (SMTP)</source>
-          <target>Transferência de Correio (SMTP)</target>
+          <source>Mail Transfer (SMTP)</source> <target>Transferência de Correio (SMTP)</target>
         </trans-unit>
         <trans-unit id="Memory Usage">
-          <source>Memory Usage</source>
-          <target>Uso da Memória</target>
+          <source>Memory Usage</source> <target>Uso da Memória</target>
         </trans-unit>
         <trans-unit id="Open Tables">
-          <source>Open Tables</source>
-          <target>Abrir Tabelas</target>
+          <source>Open Tables</source> <target>Abrir Tabelas</target>
         </trans-unit>
         <trans-unit id="Opened Tables">
-          <source>Opened Tables</source>
-          <target>Tabelas Abertas</target>
+          <source>Opened Tables</source> <target>Tabelas Abertas</target>
         </trans-unit>
         <trans-unit id="POP Mail">
-          <source>POP Mail</source>
-          <target>Correio POP</target>
+          <source>POP Mail</source> <target>Correio POP</target>
         </trans-unit>
         <trans-unit id="Ping">
-          <source>Ping</source>
-          <target>Ping</target>
+          <source>Ping</source> <target>Ping</target>
         </trans-unit>
         <trans-unit id="Probe Count">
-          <source>Probe Count</source>
-          <target>Contagem de Detecções</target>
+          <source>Probe Count</source> <target>Contagem de Detecções</target>
         </trans-unit>
         <trans-unit id="Process Count Total">
-          <source>Process Count Total</source>
-          <target>Contagem de Processos - Total</target>
+          <source>Process Count Total</source> <target>Contagem de Processos - Total</target>
         </trans-unit>
         <trans-unit id="Process Counts">
-          <source>Process Counts</source>
-          <target>Contagens de Processos</target>
+          <source>Process Counts</source> <target>Contagens de Processos</target>
         </trans-unit>
         <trans-unit id="Process Counts by State">
-          <source>Process Counts by State</source>
-          <target>Contagens de Processos por Estado</target>
+          <source>Process Counts by State</source> <target>Contagens de Processos por Estado</target>
         </trans-unit>
         <trans-unit id="Process Health">
-          <source>Process Health</source>
-          <target>Saúde do Processo</target>
+          <source>Process Health</source> <target>Saúde do Processo</target>
         </trans-unit>
         <trans-unit id="Process Running">
-          <source>Process Running</source>
-          <target>Processo Rodando</target>
+          <source>Process Running</source> <target>Processo Rodando</target>
         </trans-unit>
         <trans-unit id="Processes">
-          <source>Processes</source>
-          <target>Processos</target>
+          <source>Processes</source> <target>Processos</target>
         </trans-unit>
         <trans-unit id="Query Rate">
-          <source>Query Rate</source>
-          <target>Taxa da Query</target>
+          <source>Query Rate</source> <target>Taxa da Query</target>
         </trans-unit>
         <trans-unit id="RPC Service">
-          <source>RPC Service</source>
-          <target>Serviço RPC</target>
+          <source>RPC Service</source> <target>Serviço RPC</target>
         </trans-unit>
         <trans-unit id="Redo Log">
-          <source>Redo Log</source>
-          <target>Refazer Registro</target>
+          <source>Redo Log</source> <target>Refazer Registro</target>
         </trans-unit>
         <trans-unit id="Remote Ping">
-          <source>Remote Ping</source>
-          <target>Ping Remoto</target>
+          <source>Remote Ping</source> <target>Ping Remoto</target>
         </trans-unit>
         <trans-unit id="Remote Program">
-          <source>Remote Program</source>
-          <target>Programa Remoto</target>
+          <source>Remote Program</source> <target>Programa Remoto</target>
         </trans-unit>
         <trans-unit id="Remote Program with Data">
-          <source>Remote Program with Data</source>
-          <target>Programa Remoto com Dados</target>
+          <source>Remote Program with Data</source> <target>Programa Remoto com Dados</target>
         </trans-unit>
         <trans-unit id="Requests">
-          <source>Requests</source>
-          <target>Pedidos</target>
+          <source>Requests</source> <target>Pedidos</target>
         </trans-unit>
         <trans-unit id="SNMP Check">
-          <source>SNMP Check</source>
-          <target>Verificação SNMP</target>
+          <source>SNMP Check</source> <target>Verificação SNMP</target>
         </trans-unit>
         <trans-unit id="SSH">
-          <source>SSH</source>
-          <target>SSH</target>
+          <source>SSH</source> <target>SSH</target>
         </trans-unit>
         <trans-unit id="Secure Web server (HTTPS)">
-          <source>Secure Web server (HTTPS)</source>
-          <target>Servidor Web seguro (HTTPS)</target>
+          <source>Secure Web server (HTTPS)</source> <target>Servidor Web seguro (HTTPS)</target>
         </trans-unit>
         <trans-unit id="Server State">
-          <source>Server State</source>
-          <target>Estado do Servidor</target>
+          <source>Server State</source> <target>Estado do Servidor</target>
         </trans-unit>
         <trans-unit id="Servlet">
-          <source>Servlet</source>
-          <target>Servlet</target>
+          <source>Servlet</source> <target>Servlet</target>
         </trans-unit>
         <trans-unit id="Swap">
-          <source>Swap</source>
-          <target>Swap</target>
+          <source>Swap</source> <target>Swap</target>
         </trans-unit>
         <trans-unit id="Swap Usage">
-          <source>Swap Usage</source>
-          <target>Uso da Swap</target>
+          <source>Swap Usage</source> <target>Uso da Swap</target>
         </trans-unit>
         <trans-unit id="TCP Check">
-          <source>TCP Check</source>
-          <target>Verificação TCP</target>
+          <source>TCP Check</source> <target>Verificação TCP</target>
         </trans-unit>
         <trans-unit id="TCP Connections by State">
-          <source>TCP Connections by State</source>
-          <target>Conexões TCP por Estado</target>
+          <source>TCP Connections by State</source> <target>Conexões TCP por Estado</target>
         </trans-unit>
         <trans-unit id="TNS Ping">
-          <source>TNS Ping</source>
-          <target>Ping TNS</target>
+          <source>TNS Ping</source> <target>Ping TNS</target>
         </trans-unit>
         <trans-unit id="Table Extents">
-          <source>Table Extents</source>
-          <target>Extensões da Tabela</target>
+          <source>Table Extents</source> <target>Extensões da Tabela</target>
         </trans-unit>
         <trans-unit id="Tablespace Usage">
-          <source>Tablespace Usage</source>
-          <target>Uso do Espaço da Tabela</target>
+          <source>Tablespace Usage</source> <target>Uso do Espaço da Tabela</target>
         </trans-unit>
         <trans-unit id="Threads Running">
-          <source>Threads Running</source>
-          <target>Threads Rodando</target>
+          <source>Threads Running</source> <target>Threads Rodando</target>
         </trans-unit>
         <trans-unit id="UDP Check">
-          <source>UDP Check</source>
-          <target>Verificação UDP</target>
+          <source>UDP Check</source> <target>Verificação UDP</target>
         </trans-unit>
         <trans-unit id="Uptime">
-          <source>Uptime</source>
-          <target>Tempo de execução</target>
+          <source>Uptime</source> <target>Tempo de execução</target>
         </trans-unit>
         <trans-unit id="Uptime (SNMP)">
-          <source>Uptime (SNMP)</source>
-          <target>Tempo de execução (SNMP)</target>
+          <source>Uptime (SNMP)</source> <target>Tempo de execução (SNMP)</target>
         </trans-unit>
         <trans-unit id="Users">
-          <source>Users</source>
-          <target>Usuários</target>
+          <source>Users</source> <target>Usuários</target>
         </trans-unit>
         <trans-unit id="Virtual Memory">
-          <source>Virtual Memory</source>
-          <target>Memória Virtual</target>
+          <source>Virtual Memory</source> <target>Memória Virtual</target>
         </trans-unit>
         <trans-unit id="Web server (HTTP)">
-          <source>Web server (HTTP)</source>
-          <target>Servidor Web (HTTP)</target>
+          <source>Web server (HTTP)</source> <target>Servidor Web (HTTP)</target>
         </trans-unit>
         <!-- Kickstart Install Types -->
         <trans-unit id="Red Hat Enterprise Linux 4">
-          <source>Red Hat Enterprise Linux 4</source>
-          <target>Red Hat Enterprise Linux 4</target>
+          <source>Red Hat Enterprise Linux 4</source> <target>Red Hat Enterprise Linux 4</target>
         </trans-unit>
         <trans-unit id="Red Hat Enterprise Linux 3">
-          <source>Red Hat Enterprise Linux 3</source>
-          <target>Red Hat Enterprise Linux 3</target>
+          <source>Red Hat Enterprise Linux 3</source> <target>Red Hat Enterprise Linux 3</target>
         </trans-unit>
         <trans-unit id="Red Hat Enterprise Linux 2.1">
-          <source>Red Hat Enterprise Linux 2.1</source>
-          <target>Red Hat Enterprise Linux 2.1</target>
+          <source>Red Hat Enterprise Linux 2.1</source> <target>Red Hat Enterprise Linux 2.1</target>
         </trans-unit>
       </group>
       <group>
@@ -3210,56 +3115,43 @@
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
         <trans-unit id="kickstart.state.created">
-          <source>Autoinstallation session created but has not yet been used.</source>
-          <target>Sessão de kickstart criada, mas ainda não usada.</target>
+          <source>Autoinstallation session created but has not yet been used.</source> <target>Sessão de kickstart criada, mas ainda não usada.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.deployed">
-          <source>Files required for autoinstallation action have been installed.</source>
-          <target>Arquivos necessários para ação de kickstart foram instalados.</target>
+          <source>Files required for autoinstallation action have been installed.</source> <target>Arquivos necessários para ação de kickstart foram instalados.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.injected">
-          <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source>
-          <target>A configuração do sistema foi modificada para iniciar o kickstart na próxima inicialização.</target>
+          <source>The system configuration has been modified to begin the autoinstallation upon next boot.</source> <target>A configuração do sistema foi modificada para iniciar o kickstart na próxima inicialização.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.restarted">
-          <source>The system has been restarted in order to begin the autoinstallation process.</source>
-          <target>O sistema foi reiniciado a fim de iniciar o processo de kickstart.</target>
+          <source>The system has been restarted in order to begin the autoinstallation process.</source> <target>O sistema foi reiniciado a fim de iniciar o processo de kickstart.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.configuration_accessed">
-          <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source>
-          <target>O sistema baixou o arquivo de configuração do kickstart a partir do @@PRODUCT_NAME@@.</target>
+          <source>The system has downloaded the autoinstallation configuration file from @@PRODUCT_NAME@@.</source> <target>O sistema baixou o arquivo de configuração do kickstart a partir do @@PRODUCT_NAME@@.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.started">
-          <source>The initial files required for autoinstallation have been downloaded.</source>
-          <target>Os arquivos iniciais exigidos pelo anaconda foram baixados.</target>
+          <source>The initial files required for autoinstallation have been downloaded.</source> <target>Os arquivos iniciais exigidos pelo anaconda foram baixados.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.in_progress">
-          <source>The system is downloading the RPMs required to install.</source>
-          <target>O sistema está baixando os RPMs necessários para a instalação.</target>
+          <source>The system is downloading the RPMs required to install.</source> <target>O sistema está baixando os RPMs necessários para a instalação.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.registered">
-          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source>
-          <target>O sistema registrou-se ao RHN com sucesso com @@PRODUCT_NAME@@ após o kickstart.</target>
+          <source>The system has successfully registered with @@PRODUCT_NAME@@ after autoinstalling.</source> <target>O sistema registrou-se ao RHN com sucesso com @@PRODUCT_NAME@@ após o kickstart.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.package_synch">
-          <source>Package synchronization in progress.</source>
-          <target>Sincronização de pacotes em andamento.</target>
+          <source>Package synchronization in progress.</source> <target>Sincronização de pacotes em andamento.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.package_synch_scheduled">
-          <source>Package synchronization scheduled.</source>
-          <target>Sincronização de pacotes agendada.</target>
+          <source>Package synchronization scheduled.</source> <target>Sincronização de pacotes agendada.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.configuration_deploy">
-          <source>Configuration files are being deployed.</source>
-          <target>Arquivos de configuração estão sendo aplicados.</target>
+          <source>Configuration files are being deployed.</source> <target>Arquivos de configuração estão sendo aplicados.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.complete">
-          <source>Autoinstallation complete.</source>
-          <target>Kickstart concluído.</target>
+          <source>Autoinstallation complete.</source> <target>Kickstart concluído.</target>
         </trans-unit>
         <trans-unit id="kickstart.state.failed">
-          <source>Autoinstallation failed.</source>
-          <target>Kickstart falhou.</target>
+          <source>Autoinstallation failed.</source> <target>Kickstart falhou.</target>
         </trans-unit>
       </group>
       <group>
@@ -3267,17 +3159,13 @@
           <context context-type="sourcefile">/rhn/Login.do</context>
         </context-group>
         <trans-unit id="error.unsupported_db_min">
-          <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source>
-        </trans-unit>
+          <source>Running postgresql {0} is not supported. Minimal required version is {1}.</source> <target>A execução do postgresql {0} não é suportada. A versão mínima exigida é {1}.</target></trans-unit>
         <trans-unit id="error.unsupported_db_max">
-          <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source>
-        </trans-unit>
+          <source>Running postgresql {0} is not supported. Maximal allowed version is {1}.</source> <target>A execução do PostgreSQL {0} não é suportada. A versão máxima permitida é {1}.</target></trans-unit>
         <trans-unit id="error.unsupported_db_migrate">
-          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source>
-        </trans-unit>
+          <source>Running postgresql {0} on {1} is not supported. Please migrate to postgresql {2}.</source> <target>A execução do PostgreSQL {0} em {1} não é suportada. Por favor, migre para o PostgreSQL {2}.</target></trans-unit>
         <trans-unit id="error.unfinished_schema_upgrade">
-          <source>Database schema upgrade in progress!</source>
-        </trans-unit>
+          <source>Database schema upgrade in progress!</source> <target>Atualização do esquema do banco de dados em andamento!</target></trans-unit>
       </group>
     </body>
   </file>

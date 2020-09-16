@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.websocket;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.google.gson.JsonObject;
 import com.redhat.rhn.common.util.StringUtil;
@@ -24,9 +25,9 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.frontend.events.TransactionHelper;
 import com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.webui.services.FutureUtils;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.websocket.json.AsyncJobStartEventDto;
 import com.suse.manager.webui.websocket.json.ExecuteMinionActionDto;
 import com.suse.manager.webui.websocket.json.MinionMatchResultEventDto;
@@ -77,10 +78,11 @@ public class RemoteMinionCommands {
 
     private Long sessionId;
 
+    private MaintenanceManager mm = new MaintenanceManager();
     private CompletableFuture failAfter;
     private List<String> previewedMinions;
     private static ExecutorService eventHistoryExecutor = Executors.newCachedThreadPool();
-    private static SystemQuery systemQuery = SaltService.INSTANCE;
+    private static SaltApi saltApi = GlobalInstanceHolder.SALT_API;
 
     /**
      * Callback executed when the websocket is opened.
@@ -135,6 +137,7 @@ public class RemoteMinionCommands {
             if (msg.isPreview()) {
                 List<String> allVisibleMinions = MinionServerFactory
                         .lookupVisibleToUser(webSession.getUser())
+                        .filter(m -> mm.isSystemInMaintenanceMode(m))
                         .map(MinionServer::getMinionId)
                         .collect(Collectors.toList());
 
@@ -143,11 +146,11 @@ public class RemoteMinionCommands {
                 String target = StringUtils.trim(msg.getTarget());
 
                 Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
-                        systemQuery.matchAsyncSSH(target, failAfter);
+                        saltApi.matchAsyncSSH(target, failAfter);
 
                 Map<String, CompletionStage<Result<Boolean>>> res = new HashMap<>();
 
-                res = systemQuery.matchAsync(target, failAfter);
+                res = saltApi.matchAsync(target, failAfter);
                 if (res.isEmpty() && !resSSH.isPresent()) {
                     // just return, no need to wait for salt-ssh results
                     sendMessage(session, new ActionErrorEventDto(null,
@@ -258,7 +261,7 @@ public class RemoteMinionCommands {
                 this.failAfter = FutureUtils.failAfter(timeOut);
                 Map<String, CompletionStage<Result<String>>> res;
                 try {
-                    res = systemQuery
+                    res = saltApi
                             .runRemoteCommandAsync(new MinionList(previewedMinions),
                                     msg.getCommand(), failAfter);
                     LOG.info("User '" + webSession.getUser().getLogin() + "' has sent the command '" +

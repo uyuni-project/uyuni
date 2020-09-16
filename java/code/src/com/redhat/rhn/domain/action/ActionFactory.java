@@ -50,9 +50,11 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationCreateGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDeleteGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationDestroyGuestAction;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolCreateAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolDeleteAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationPoolRefreshAction;
@@ -66,7 +68,6 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAc
 import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationStartGuestAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSuspendGuestAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationVolumeAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -263,8 +264,8 @@ public class ActionFactory extends HibernateFactory {
         sa.setCreated(new Date());
         sa.setModified(new Date());
         sa.setStatus(STATUS_QUEUED);
-        sa.setServer(server);
-        sa.setParentAction(parent);
+        sa.setServerWithCheck(server);
+        sa.setParentActionWithCheck(parent);
         sa.setRemainingTries(5L); //arbitrary number from perl
         parent.addServerAction(sa);
     }
@@ -321,7 +322,7 @@ public class ActionFactory extends HibernateFactory {
     public static boolean doesServerHaveKickstartScheduled(Long serverId) {
         Session session = HibernateFactory.getSession();
         Query query =
-                session.getNamedQuery("ServerAction.findPendingKickstartsForServer");
+                session.getNamedQuery("ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "kickstart.initiate");
         List retval = query.list();
@@ -337,7 +338,7 @@ public class ActionFactory extends HibernateFactory {
     public static Action isMigrationScheduledForServer(Long serverId) {
         Action ret = null;
         Query query = HibernateFactory.getSession().getNamedQuery(
-                "ServerAction.findPendingKickstartsForServer");
+                "ServerAction.findPendingActionsForServer");
         query.setParameter("serverId", serverId);
         query.setParameter("label", "distupgrade.upgrade");
         List<ServerAction> list = query.list();
@@ -461,6 +462,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_VIRTUALIZATION_VOLUME_DELETE)) {
             retval = new BaseVirtualizationVolumeAction();
+        }
+        else if (typeIn.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE)) {
+            retval = new VirtualizationNetworkStateChangeAction();
         }
         else if (typeIn.equals(TYPE_SCAP_XCCDF_EVAL)) {
             retval = new ScapAction();
@@ -758,7 +762,7 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIn you want to limit the list of Actions to
      * @return List of Action objects
      */
-    public static List listActionsForServer(User user, Server serverIn) {
+    public static List<Action> listActionsForServer(User user, Server serverIn) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("orgId", user.getOrg().getId());
         params.put("server", serverIn);
@@ -771,7 +775,8 @@ public class ActionFactory extends HibernateFactory {
      * @param serverIn you want to limit the list of Actions to
      * @return List of ServerAction objects
      */
-    public static List listServerActionsForServer(Server serverIn) {
+    @SuppressWarnings("unchecked")
+    public static List<ServerAction> listServerActionsForServer(Server serverIn) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server", serverIn);
         return singleton.listObjectsByNamedQuery(
@@ -784,7 +789,8 @@ public class ActionFactory extends HibernateFactory {
      * @param statusList to filter the ServerActoins by
      * @return List of ServerAction objects
      */
-    public static List listServerActionsForServer(Server serverIn, List<ActionStatus> statusList) {
+    public static List<ServerAction> listServerActionsForServer(Server serverIn,
+            List<ActionStatus> statusList) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server", serverIn);
         params.put("statusList", statusList);
@@ -954,7 +960,8 @@ public class ActionFactory extends HibernateFactory {
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_DELETE) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_REFRESH) ||
                 actionType.equals(TYPE_VIRTUALIZATION_POOL_START) ||
-                actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP);
+                actionType.equals(TYPE_VIRTUALIZATION_POOL_STOP) ||
+                actionType.equals(TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE);
     }
 
     /**
@@ -1363,5 +1370,11 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_CLUSTER_UPGRADE_CLUSTER =
             lookupActionTypeByLabel("cluster.upgrade_cluster");
+
+    /**
+     * The constant representing "Change a virtual network state" [ID:519]
+     */
+    public static final ActionType TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE =
+            lookupActionTypeByLabel("virt.network_state");
 }
 

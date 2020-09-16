@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging.test;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -26,14 +27,20 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.google.gson.reflect.TypeToken;
+import com.suse.manager.clusters.ClusterManager;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.JobReturnEventMessageAction;
+import com.suse.manager.utils.SaltKeyUtils;
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.YamlHelper;
@@ -116,7 +123,15 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
             }
         } });
 
-        MinionActionUtils.cleanupMinionActions(saltServiceMock);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
+        ClusterManager clusterManager = new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager, formulaManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager, serverGroupManager);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
+                clusterManager, formulaManager, new SaltKeyUtils(saltServiceMock));
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
+                saltUtils);
+        minionActionUtils.cleanupMinionActions();
 
         if (!MinionActionUtils.POSTGRES) {
             action.getServerActions().stream().forEach(sa -> {
@@ -258,7 +273,16 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
         ActionChainFactory.delete(actionChain);
 
-        MinionActionUtils.cleanupMinionActionChains(saltServiceMock);
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
+        FormulaManager formulaManager = new FormulaManager(saltServiceMock);
+        ClusterManager clusterManager =  new ClusterManager(saltServiceMock, saltServiceMock, serverGroupManager,
+                formulaManager);
+        SaltUtils saltUtils = new SaltUtils(saltServiceMock, saltServiceMock, clusterManager, formulaManager, serverGroupManager);
+        SaltServerActionService saltServerActionService = new SaltServerActionService(saltServiceMock, saltUtils,
+                clusterManager, formulaManager, new SaltKeyUtils(saltServiceMock));
+        MinionActionUtils minionActionUtils = new MinionActionUtils(saltServerActionService, saltServiceMock,
+                saltUtils);
+        minionActionUtils.cleanupMinionActionChains();
         
         if (!MinionActionUtils.POSTGRES) {
             assertActionCompleted(action1_1);

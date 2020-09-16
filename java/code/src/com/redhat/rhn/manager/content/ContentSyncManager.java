@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -48,9 +50,6 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.manager.channel.ChannelManager;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
@@ -58,18 +57,14 @@ import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
 import com.suse.scc.client.SCCClientUtils;
 import com.suse.scc.client.SCCWebClient;
-import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCOrderItemJson;
 import com.suse.scc.model.SCCOrderJson;
 import com.suse.scc.model.SCCProductJson;
+import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.UpgradePathJson;
 import com.suse.utils.Opt;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,6 +96,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Content synchronization logic.
@@ -429,6 +426,7 @@ public class ContentSyncManager {
                     c.getA().getProduct().getFriendlyName(),
                     c.getA().getRepository().getDescription(),
                     c.getA().isMandatory(),
+                    c.getA().getRepository().isInstallerUpdates(),
                     Optional.ofNullable(c.getA().getProduct().getArch()),
                     c.getA().getParentChannelLabel(),
                     c.getA().getProduct().getChannelFamily().getLabel(),
@@ -446,6 +444,7 @@ public class ContentSyncManager {
                     baseRepo.getA().getProduct().getFriendlyName(),
                     baseRepo.getA().getRepository().getDescription(),
                     baseRepo.getA().isMandatory(),
+                    baseRepo.getA().getRepository().isInstallerUpdates(),
                     Optional.ofNullable(baseRepo.getA().getProduct().getArch()),
                     baseRepo.getA().getParentChannelLabel(),
                     baseRepo.getA().getProduct().getChannelFamily().getLabel(),
@@ -474,6 +473,7 @@ public class ContentSyncManager {
                         c.getA().getProduct().getFriendlyName(),
                         c.getA().getRepository().getDescription(),
                         c.getA().isMandatory(),
+                        c.getA().getRepository().isInstallerUpdates(),
                         Optional.ofNullable(c.getA().getProduct().getArch()),
                         c.getA().getParentChannelLabel(),
                         c.getA().getProduct().getChannelFamily().getLabel(),
@@ -644,19 +644,24 @@ public class ContentSyncManager {
                 return true;
             }
         }
+
+        Optional<Date> lastRefreshDate = ManagerInfoFactory.getLastMgrSyncRefresh();
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
             log.debug("Syncing from dir");
-            Date modifiedCache = ManagerInfoFactory.getLastMgrSyncRefresh();
             long hours24 = 24 * 60 * 60 * 1000;
             Timestamp t = new Timestamp(System.currentTimeMillis() - hours24);
-            if (t.after(modifiedCache)) {
-                log.debug("Last sync more than 24 hours ago: " + modifiedCache.toString() +
-                        " (" + t.toString() + ")");
-                return true;
-            }
-            return false;
+
+            return Opt.fold(
+                    lastRefreshDate,
+                    () -> true,
+                    modifiedCache -> {
+                        log.debug("Last sync more than 24 hours ago: " + modifiedCache.toString() +
+                                " (" + t.toString() + ")");
+                        return t.after(modifiedCache) ? true : false;
+                    }
+            );
         }
-        return SCCCachingFactory.refreshNeeded();
+        return SCCCachingFactory.refreshNeeded(lastRefreshDate);
     }
 
     /**
@@ -1523,6 +1528,7 @@ public class ContentSyncManager {
                         r.setName(repoJson.getName());
                         r.setDescription(repoJson.getDescription());
                         r.setUrl(repoJson.getUrl());
+                        r.setInstallerUpdates(repoJson.isInstallerUpdates());
                         dbReposById.put(r.getSccId(), r);
                         return r;
                     });
@@ -1906,6 +1912,7 @@ public class ContentSyncManager {
                     dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
                     dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
                     dbChannel.setUpdateTag(productrepo.getUpdateTag());
+                    dbChannel.setInstallerUpdates(productrepo.getRepository().isInstallerUpdates());
                     ChannelFactory.save(dbChannel);
 
                     // update Mandatory Flag
@@ -1969,6 +1976,7 @@ public class ContentSyncManager {
         dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(product));
         dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(product.getName()));
         dbChannel.setUpdateTag(productrepo.getUpdateTag());
+        dbChannel.setInstallerUpdates(repository.isInstallerUpdates());
 
         // Create or link the content source
         Optional<SCCRepositoryAuth> auth = repository.getBestAuth();
@@ -2180,6 +2188,9 @@ public class ContentSyncManager {
                         user, password).getStatusLine().getStatusCode();
                 if (status == HttpURLConnection.HTTP_OK) {
                     return true;
+                }
+                else {
+                    log.warn("accessibleUrl: " + testUri.toString() + " returned status " + status);
                 }
             }
         }

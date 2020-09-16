@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.action.groups;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -45,7 +46,7 @@ public class DeleteGroupAction extends RhnAction {
         RequestContext context = new RequestContext(request);
         ManagedServerGroup serverGroup = context.lookupAndBindServerGroup();
         if (context.isSubmitted()) {
-            ServerGroupManager manager = ServerGroupManager.getInstance();
+            ServerGroupManager manager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
             manager.remove(context.getCurrentUser(), serverGroup);
             String [] params = {StringEscapeUtils.escapeHtml4(serverGroup.getName())};
             getStrutsDelegate().saveMessage(DELETED_MESSAGE_KEY, params, request);

@@ -15,7 +15,10 @@
 package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.test.ServerActionTest;
+import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -69,12 +72,15 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -83,8 +89,17 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+import com.suse.manager.clusters.ClusterManager;
+import com.suse.manager.utils.SaltKeyUtils;
+import com.suse.manager.utils.SaltUtils;
+import com.suse.manager.virtualization.VirtManagerSalt;
+
+import com.suse.manager.maintenance.MaintenanceManager;
+import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import java.util.ArrayList;
@@ -97,6 +112,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -113,8 +129,26 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public static final String RUNNING_KERNEL = "2.6.9-55.EL";
     public static final String HOSTNAME = "foo.bar.com";
 
-    private static SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
-    private SaltServerActionService saltServerActionService = new SaltServerActionService(new SaltService());
+    private static final SystemQuery systemQuery = new TestSystemQuery();
+    private static final SaltApi saltApi = new TestSaltApi();
+    private static final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private static final FormulaManager formulaManager = new FormulaManager(saltApi);
+    private static final ClusterManager clusterManager = new ClusterManager(saltApi, systemQuery, serverGroupManager, formulaManager);
+    private static final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi, clusterManager, formulaManager, serverGroupManager);
+    private static final SaltKeyUtils saltKeyUtils = new SaltKeyUtils(saltApi);
+    private static final SaltServerActionService saltServerActionService = new SaltServerActionService(
+            saltApi,
+            saltUtils,
+            clusterManager,
+            formulaManager,
+            saltKeyUtils
+    );
+    private static final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private static final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private static final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+    );
 
     @Override
     public void setUp() throws Exception {
@@ -254,10 +288,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Collection servers = new ArrayList();
         servers.add(server);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
         user.addPermanentRole(RoleFactory.SYSTEM_GROUP_ADMIN);
-        ManagedServerGroup sg1 = manager.create(user, "FooFooFOO", "Foo Description");
-        manager.addServers(sg1, servers, user);
+        ManagedServerGroup sg1 = serverGroupManager.create(user, "FooFooFOO", "Foo Description");
+        serverGroupManager.addServers(sg1, servers, user);
 
         server = reload(server);
         assertTrue(server.getEntitledGroupTypes().size() == 1);
@@ -832,14 +865,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Server serverToSearch = ServerFactoryTest.createTestServer(admin, true);
         Set servers = new HashSet();
         servers.add(serverToSearch);
-        ServerGroupManager manager = ServerGroupManager.getInstance();
-        manager.addServers(group, servers, admin);
+        serverGroupManager.addServers(group, servers, admin);
         assertTrue(group.getServers().size() > 0);
         //create admins set and add it to the grup
         Set admins = new HashSet();
         admins.add(regular);
-        manager.associateAdmins(group, admins, admin);
-        assertTrue(manager.canAccess(regular, group));
+        serverGroupManager.associateAdmins(group, admins, admin);
+        assertTrue(serverGroupManager.canAccess(regular, group));
         ServerGroupFactory.save(group);
         group = reload(group);
         UserFactory.save(admin);
@@ -1419,5 +1451,44 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, servers.size());
         assertEquals(server.getId(), servers.stream().findFirst().get());
 
+    }
+
+    public void testFilterSystemsWithMaintOnlyActions() throws Exception {
+        Server systemWith = MinionServerFactoryTest.createTestMinionServer(user);
+        Server systemWithout = MinionServerFactoryTest.createTestMinionServer(user);
+
+        // non-offending action
+        Action allowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        // assign it to both systems
+        ServerActionTest.createServerAction(systemWith, allowedAction);
+        ServerActionTest.createServerAction(systemWithout, allowedAction);
+
+        // offending action
+        Action disallowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
+        // assign it to one system only
+        ServerActionTest.createServerAction(systemWith, disallowedAction);
+
+        Set<Long> filtered = ServerFactory
+                .filterSystemsWithPendingMaintOnlyActions(Set.of(systemWith.getId(), systemWithout.getId()));
+        assertEquals(Set.of(systemWith.getId()), filtered);
+    }
+
+    /**
+     * Test assigning maintenance windows to systems
+     *
+     * @throws Exception
+     */
+    public void testSetMaintenanceWindowToSystems() throws Exception {
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        MaintenanceSchedule schedule = new MaintenanceManager().createSchedule(
+                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+
+        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
+
+        ServerFactory.setMaintenanceScheduleToSystems(schedule, Set.of(sys1.getId(), sys2.getId()));
+
+        assertEquals(schedule, HibernateFactory.reload(sys1).getMaintenanceScheduleOpt().get());
+        assertEquals(schedule, HibernateFactory.reload(sys2).getMaintenanceScheduleOpt().get());
     }
 }

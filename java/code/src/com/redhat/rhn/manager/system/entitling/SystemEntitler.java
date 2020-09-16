@@ -39,10 +39,10 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
-import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.apache.log4j.Logger;
 
@@ -60,20 +60,23 @@ public class SystemEntitler {
 
     private static final Logger LOG = Logger.getLogger(SystemEntitler.class);
 
-    private SystemQuery systemQuery;
+    private SaltApi saltApi;
     private VirtManager virtManager;
     private MonitoringManager monitoringManager;
+    private ServerGroupManager serverGroupManager;
 
     /**
-     * @param systemQueryIn instance for gathering data from a system.
+     * @param saltApiIn instance for gathering data from a system.
      * @param virtManagerIn instance for managing virtual machines.
      * @param monitoringManagerIn instance for handling monitoring configuration.
+     * @param serverGroupManagerIn
      */
-    public SystemEntitler(SystemQuery systemQueryIn, VirtManager virtManagerIn,
-            MonitoringManager monitoringManagerIn) {
-        this.systemQuery = systemQueryIn;
+    public SystemEntitler(SaltApi saltApiIn, VirtManager virtManagerIn,
+            MonitoringManager monitoringManagerIn, ServerGroupManager serverGroupManagerIn) {
+        this.saltApi = saltApiIn;
         this.virtManager = virtManagerIn;
         this.monitoringManager = monitoringManagerIn;
+        this.serverGroupManager = serverGroupManagerIn;
     }
 
     /**
@@ -120,13 +123,13 @@ public class SystemEntitler {
             }
         }
         else if (EntitlementManager.OSIMAGE_BUILD_HOST.equals(ent)) {
-            systemQuery.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
+            saltApi.generateSSHKey(SaltSSHService.SSH_KEY_PATH);
         }
 
         entitleServer(server, ent);
 
         server.asMinionServer().ifPresent(minion -> {
-            ServerGroupManager.getInstance().updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
+            serverGroupManager.updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
 
             if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
                     !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
@@ -233,7 +236,7 @@ public class SystemEntitler {
             }
 
             if ((base != null) &&
-                    (!base.isRhelChannel() || base.isReleaseXChannel(5))) {
+                    (!base.isVendorChannel() || base.isReleaseXChannel(5))) {
                 // Do not automatically subscribe to virt channels (bnc#768856)
                 // subscribeToVirtChannel(server, user, result);
             }

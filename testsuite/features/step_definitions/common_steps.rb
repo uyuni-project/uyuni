@@ -51,12 +51,12 @@ Then(/^I should see the name of the image$/) do
   step %(I should see a "#{compute_image_name}" text)
 end
 
-Then(/^I should see the terminals imported from the configuration file/) do
+Then(/^I should see the terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
   terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
 end
 
-Then(/^I should not see any terminals imported from the configuration file/) do
+Then(/^I should not see any terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
@@ -73,9 +73,7 @@ end
 # events
 
 When(/^I wait until event "([^"]*)" is completed$/) do |event|
-  steps %(
-    When I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed
-  )
+  step %(I wait at most #{DEFAULT_TIMEOUT} seconds until event "#{event}" is completed)
 end
 
 When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |final_timeout, event|
@@ -187,12 +185,12 @@ Then(/^I add "([^"]*)" channel$/) do |channel|
 end
 
 # channel steps
-When(/^I use spacewalk\-channel to add test-channel-x86_64-child-channel/) do
+When(/^I use spacewalk\-channel to add test-channel-x86_64-child-channel$/) do
   child_channel = 'test-channel-x86_64-child-channel'
   step %(I execute spacewalk\-channel and pass "--add -c #{child_channel} -u admin -p admin")
 end
 
-When(/^I use spacewalk\-channel to remove test-channel-x86_64-child-channel/) do
+When(/^I use spacewalk\-channel to remove test-channel-x86_64-child-channel$/) do
   child_channel = 'test-channel-x86_64-child-channel'
   step %(I execute spacewalk\-channel and pass "--remove -c #{child_channel} -u admin -p admin")
 end
@@ -206,6 +204,7 @@ Given(/^I am on the Systems page$/) do
   steps %(
     When I am authorized as "admin" with password "admin"
     When I follow the left menu "Systems > Overview"
+    When I wait until I see "System Overview" text
   )
 end
 
@@ -214,7 +213,7 @@ Given(/cobblerd is running/) do
   raise 'cobblerd is not running' unless ct.running?
 end
 
-Then(/create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |distro, user, pwd|
+Then(/^create distro "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |distro, user, pwd|
   ct = CobblerTest.new
   ct.login(user, pwd)
   raise 'distro ' + distro + ' already exists' if ct.distro_exists(distro)
@@ -235,7 +234,7 @@ When(/^I trigger cobbler system record$/) do
       And I click on "Create PXE installation configuration"
       And I click on "Continue"
       And I wait until file "/srv/tftpboot/pxelinux.cfg/01-*" contains "ks=" on server
-      )
+    )
   end
 end
 
@@ -244,7 +243,7 @@ Given(/distro "([^"]*)" exists/) do |distro|
   raise 'distro ' + distro + ' does not exist' unless ct.distro_exists(distro)
 end
 
-Then(/create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"/) do |arg1, arg2, arg3|
+Then(/^create profile "([^"]*)" as user "([^"]*)" with password "([^"]*)"$/) do |arg1, arg2, arg3|
   ct = CobblerTest.new
   ct.login(arg2, arg3)
   raise 'profile ' + arg1 + ' already exists' if ct.profile_exists(arg1)
@@ -372,7 +371,7 @@ Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|
     And I follow "#{channel}"
     And I follow "Packages"
     Then I should see package "#{pkg}"
-    )
+  )
 end
 
 # setup wizard
@@ -381,7 +380,7 @@ Then(/^HTTP proxy verification should have succeeded$/) do
   raise 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
 end
 
-When(/^I enter the address of the HTTP proxy as "([^"]*)"/) do |hostname|
+When(/^I enter the address of the HTTP proxy as "([^"]*)"$/) do |hostname|
   step %(I enter "#{$server_http_proxy}" as "#{hostname}")
 end
 
@@ -716,11 +715,11 @@ When(/^I enable repositories before installing Docker$/) do
   repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
   puts $build_host.run("zypper mr --enable #{repos.gsub(/\s/, ' ')}")
 
-  # Development
+  # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo"
+    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     puts $build_host.run("zypper mr --enable #{repos}")
   end
 
@@ -744,11 +743,11 @@ When(/^I disable repositories after installing Docker$/) do
   repos, _code = $build_host.run('zypper lr | grep "tools" | cut -d"|" -f2')
   puts $build_host.run("zypper mr --disable #{repos.gsub(/\s/, ' ')}")
 
-  # Development
+  # Development and Desktop Applications (required)
   # (we do not install Python 2 repositories in this branch
   #  because they are not needed anymore starting with version 4.1)
   if os_family =~ /^sles/ && os_version =~ /^15/
-    repos = "devel_pool_repo devel_updates_repo"
+    repos = "devel_pool_repo devel_updates_repo desktop_pool_repo desktop_updates_repo"
     puts $build_host.run("zypper mr --disable #{repos}")
   end
 
@@ -827,10 +826,13 @@ When(/^I wait until onboarding is completed for "([^"]*)"$/) do |host|
   if get_client_type(host) == 'traditional'
     get_target(host).run('rhn_check -vvv')
   else
+    # Ubuntu minion clients need more time to finish all onboarding events
+    onboarding_timeout = DEFAULT_TIMEOUT
+    onboarding_timeout = DEFAULT_TIMEOUT * 2 if %w[ubuntu_minion ubuntu_ssh_minion].include?(host)
     steps %(
-      And I wait until event "Hardware List Refresh" is completed
-      And I wait until event "Apply states" is completed
-      And I wait until event "Package List Refresh" is completed
+      And I wait at most #{onboarding_timeout} seconds until event "Hardware List Refresh" is completed
+      And I wait at most #{onboarding_timeout} seconds until event "Apply states" is completed
+      And I wait at most #{onboarding_timeout} seconds until event "Package List Refresh" is completed
     )
   end
 end
@@ -1114,8 +1116,8 @@ And(/^I check for failed events on history event page$/) do
   raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
 
-Then(/^I should see a list item with text "([^"]*)" and bullet with style "([^"]*)"$/) do |text, class_name|
-  item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, '#{class_name}')]"
+Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warning|pending|refreshing) bullet$/) do |text, bullet_type|
+  item_xpath = "//ul/li[text()='#{text}']/i[contains(@class, '#{BULLET_STYLE[bullet_type]}')]"
   find(:xpath, item_xpath)
 end
 
@@ -1155,14 +1157,14 @@ When(/^I add the "([^"]*)" channel to sources$/) do |channel|
   end
 end
 
-When(/^I click the "([^\"]*)" recurring action (.*?) button$/) do |action_name, action|
+When(/^I click the "([^\"]*)" item (.*?) button$/) do |name, action|
   button = case action
            when /details/ then "i[contains(@class, 'fa-list')]"
            when /edit/ then "i[contains(@class, 'fa-edit')]"
            when /delete/ then "i[contains(@class, 'fa-trash')]"
            else raise "Unknown element with description '#{action}'"
            end
-  xpath = "//td[contains(text(), '#{action_name}')]/ancestor::tr[contains(@class, 'list-row-even')]/td/div/button/#{button}"
+  xpath = "//td[contains(text(), '#{name}')]/ancestor::tr/td/div/button/#{button}"
   raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
@@ -1194,4 +1196,15 @@ When(/^I restore the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   target = get_target(host)
   target.run("cp #{auth_keys_sav_path} #{auth_keys_path}")
   target.run("rm #{auth_keys_sav_path}")
+end
+
+When(/^I add "([^\"]*)" calendar file as url$/) do |file|
+  source = File.dirname(__FILE__) + '/../upload_files/' + file
+  dest = "/srv/www/htdocs/pub/" + file
+  return_code = file_inject($server, source, dest)
+  raise 'File injection failed' unless return_code.zero?
+  $server.run("chmod 644 #{dest}")
+  url = "http://#{$server.full_hostname}/pub/" + file
+  puts "URL: #{url}"
+  step %(I enter "#{url}" as "calendar-data-text")
 end

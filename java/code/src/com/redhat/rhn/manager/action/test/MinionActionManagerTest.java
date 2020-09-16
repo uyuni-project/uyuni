@@ -44,16 +44,22 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.action.MinionActionManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
+import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
-import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.services.iface.*;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import org.hamcrest.Matcher;
 import org.hamcrest.collection.IsMapContaining;
 import org.hamcrest.core.AllOf;
@@ -82,14 +88,21 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
     private final String SALT_CONTENT_STAGING_WINDOW = "salt_content_staging_window";
     private final String SALT_CONTENT_STAGING_ADVANCE = "salt_content_staging_advance";
 
-    private SystemQuery systemQuery = new SaltService();
-    private RegularMinionBootstrapper regularMinionBootstrapper = RegularMinionBootstrapper.getInstance(systemQuery);
-    private SSHMinionBootstrapper sshMinionBootstrapper = SSHMinionBootstrapper.getInstance(systemQuery);
+    private final SystemQuery systemQuery = new TestSystemQuery();
+    private final SaltApi saltApi = new TestSaltApi();
+    private final ServerGroupManager serverGroupManager = new ServerGroupManager();
+    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
+    private final MonitoringManager monitoringManager = new FormulaMonitoringManager();
+    private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
+            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+    );
+    private RegularMinionBootstrapper regularMinionBootstrapper = new RegularMinionBootstrapper(systemQuery, saltApi);
+    private SSHMinionBootstrapper sshMinionBootstrapper = new SSHMinionBootstrapper(systemQuery, saltApi);
     private XmlRpcSystemHelper xmlRpcSystemHelper = new XmlRpcSystemHelper(
             regularMinionBootstrapper,
             sshMinionBootstrapper
     );
-    private SystemEntitlementManager systemEntitlementManager = SystemEntitlementManager.INSTANCE;
     private SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON);
 
     @Override
@@ -125,7 +138,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager);
+                systemManager, new ServerGroupManager());
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -175,7 +188,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
 
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager);
+                systemManager, new ServerGroupManager());
 
         context().checking(new Expectations() { {
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
@@ -226,7 +239,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager);
+                systemManager, new ServerGroupManager());
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)
@@ -276,7 +289,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager);
+                systemManager, new ServerGroupManager());
         context().checking(new Expectations() {{
             Matcher<Map<Long, ZonedDateTime>> minionMatcher =
                     AllOf.allOf(IsMapContaining.hasKey(minion1.getId()));
@@ -326,7 +339,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
         MinionActionManager.setTaskomaticApi(taskomaticMock);
 
         SystemHandler handler = new SystemHandler(taskomaticMock, xmlRpcSystemHelper, systemEntitlementManager,
-                systemManager);
+                systemManager, new ServerGroupManager());
 
         context().checking(new Expectations() { {
             exactly(1).of(taskomaticMock)

@@ -59,9 +59,15 @@ When(/^I wait until I see "([^"]*)" text, refreshing the page$/) do |text|
 end
 
 When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
+  last = Time.now
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?("This action's status is: Completed.")
     raise 'Event failed' if has_content?("This action's status is: Failed.")
+    current = Time.now
+    if current - last > 150
+      STDOUT.puts "#{current} Still waiting for action to complete..."
+      last = current
+    end
     evaluate_script 'window.location.reload()'
   end
 end
@@ -110,6 +116,13 @@ end
 
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |arg1, arg2|
   select(arg1, from: arg2, exact: false)
+end
+
+# Select an item from a react Combobox
+When(/^I select "([^"]*)" from the Combobox "([^"]*)"$/) do |arg1, arg2|
+  xpath = "//div[@id='#{arg2}']"
+  find(:xpath, xpath).click
+  find(:xpath, "#{xpath}/div/div/div[normalize-space(text())='#{arg1}']", match: :first).click
 end
 
 When(/^I select the maximum amount of items per page$/) do
@@ -315,16 +328,17 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
   end
 end
 
-When(/^I am on the Organizations page$/) do
+Given(/^I am on the Organizations page$/) do
   steps %(
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Organizations"
-    )
+  )
 end
 
-Given(/^I am on the SUSE Products page$/) do
+Given(/^I am on the Products page$/) do
   steps %(
-    When I navigate to "rhn/manager/admin/setup/products" page
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I see "Product Description" text
   )
 end
@@ -384,20 +398,24 @@ Given(/^I am on the groups page$/) do
   steps %(
     Given I am on the Systems page
     When I follow the left menu "Systems > System Groups"
-    )
+  )
 end
 
 Given(/^I am on the active Users page$/) do
   steps %(
     Given I am authorized as "admin" with password "admin"
     When I follow the left menu "Users > User List > Active"
-    )
+  )
 end
 
 Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
-  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//a[contains(.,'#{arg1}')]]"
+  step %(I wait until table row for "#{arg1}" contains "#{arg2}")
+end
+
+Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
+  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
-    raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2)
+    raise "xpath: #{xpath_query} has no content #{arg2}" unless has_content?(arg2, wait: DEFAULT_TIMEOUT)
   end
 end
 
@@ -513,7 +531,7 @@ Then(/^I should see something$/) do
   steps %(
     Given I should see a "Sign In" text
     And I should see a "About" text
-    )
+  )
 end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
@@ -814,20 +832,20 @@ Then(/^the "([^\"]*)" field should be disabled$/) do |arg1|
   has_css?("##{arg1}[disabled]")
 end
 
-Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |arg1, arg2|
-  raise "Field #{arg2} with #{arg1} value not found" unless has_field?(arg2, with: arg1)
+Then(/^I should see "([^"]*)" in field "([^"]*)"$/) do |text, field|
+  raise "'#{text}' not found in #{field}" unless find_field(field, with: /#{text}/).visible?
 end
 
-Then(/^I should see a "([^"]*)" element in "([^"]*)" form$/) do |arg1, arg2|
-  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise "Field #{arg1} not found" unless find_field(arg1, match: :first).visible?
+Then(/^I should see a "([^"]*)" field in "([^"]*)" form$/) do |field, form|
+  within(:xpath, "//form[@id=\"#{form}\"] | //form[@name=\"#{form}\"]") do
+    raise "Field #{field} not found" unless find_field(field, match: :first).visible?
   end
 end
 
-Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |arg1, arg2|
-  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
-    raise "xpath: textarea##{arg1} not found" unless find("textarea##{arg1}", visible: false)
-    raise "css: ##{arg1}-editor not found" unless has_css?("##{arg1}-editor")
+Then(/^I should see a "([^"]*)" editor in "([^"]*)" form$/) do |editor, form|
+  within(:xpath, "//form[@id=\"#{form}\"] | //form[@name=\"#{form}\"]") do
+    raise "xpath: textarea##{editor} not found" unless find("textarea##{editor}", visible: false)
+    raise "css: ##{editor}-editor not found" unless has_css?("##{editor}-editor")
   end
 end
 
@@ -901,4 +919,8 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
                end
   _output, code = node.run("curl -s http://#{system_name}:#{port} | grep -i '#{text}'")
   raise unless code.zero?
+end
+
+When(/^I select the next maintenance window$/) do
+  find(:xpath, "//select[@id='maintenance-window-select']/option", match: :first).select_option
 end

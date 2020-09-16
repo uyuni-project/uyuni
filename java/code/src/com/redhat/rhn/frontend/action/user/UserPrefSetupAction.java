@@ -78,7 +78,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
 
         requestContext.getRequest().setAttribute("targetuser", user);
         requestContext.getRequest().setAttribute("supportedLocales", buildImageMap());
-        requestContext.getRequest().setAttribute("noLocale", buildNoneLocale());
+        requestContext.getRequest().setAttribute("defaultLocale", buildDefaultLocale());
         requestContext.getRequest().setAttribute("timezones", getTimeZones());
         if (user.getTimeZone() != null) {
             form.set("timezone",
@@ -95,6 +95,7 @@ public class UserPrefSetupAction extends BaseUserSetupAction {
         form.set("csvSeparator", user.getCsvSeparator());
 
         setupTasks(form, user);
+        setCurrentLocale(requestContext, user);
         request.setAttribute("pagesizes", getPageSizes());
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);

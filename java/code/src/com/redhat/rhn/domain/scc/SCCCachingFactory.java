@@ -16,20 +16,12 @@ package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
-import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
-
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
-
-import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-
+import com.suse.utils.Opt;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,11 +32,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -300,9 +296,11 @@ public class SCCCachingFactory extends HibernateFactory {
 
     /**
      * Check if the cache needs a refresh.
+     *
+     * @param lastRefreshDateIn the last refresh cache date, if any
      * @return true if refresh is needed, false otherwise
      */
-    public static boolean refreshNeeded() {
+    public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
         Session session = getSession();
         Criteria c = session.createCriteria(Credentials.class);
         c.add(Restrictions.eq("type", CredentialsFactory
@@ -315,14 +313,18 @@ public class SCCCachingFactory extends HibernateFactory {
         }
 
         // When was the cache last modified?
-        Date modifiedCache = ManagerInfoFactory.getLastMgrSyncRefresh();
-        if (modifiedCache == null) {
-            log.debug("REFRESH NEEDED - never refreshed");
-            return true;
-        }
-        log.debug("COMPARE: " + modifiedCache.toString() + " and " + modifiedCreds.toString() +
-                " : " + modifiedCache.compareTo(modifiedCreds));
-        return modifiedCache.compareTo(modifiedCreds) < 0;
+        return Opt.fold(
+                lastRefreshDateIn,
+                () -> {
+                    log.debug("REFRESH NEEDED - never refreshed");
+                    return true;
+                },
+                modifiedCache -> {
+                    log.debug("COMPARE: " + modifiedCache.toString() + " and " + modifiedCreds.toString() +
+                            " : " + modifiedCache.compareTo(modifiedCreds));
+                    return modifiedCache.compareTo(modifiedCreds) < 0;
+                }
+        );
     }
 
     /**

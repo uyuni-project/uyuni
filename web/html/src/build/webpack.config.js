@@ -12,6 +12,7 @@ module.exports = (env, argv) => {
   let pluginsInUse = [
     new CleanWebpackPlugin(['dist'], {  root: path.resolve(__dirname, "../")}),
     new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../javascript"), to: path.resolve(__dirname, "../dist/javascript") }]),
+    new CopyWebpackPlugin([{ from: path.resolve(__dirname, "../../../po"), to: path.resolve(__dirname, "../dist/po") }]),
   ];
 
   if(isProductionMode) {
@@ -88,6 +89,13 @@ module.exports = (env, argv) => {
           test: /\.css$/,
           include: /node_modules/,
           use: [{loader: 'style-loader'}, {loader: 'css-loader'}]
+        },
+        {
+          test: /\.po$/,
+          type: 'json',
+          use: {
+            loader: path.resolve(__dirname, 'loaders/po-loader.js')
+          }
         }
       ]
     },

@@ -14,7 +14,12 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -54,10 +59,6 @@ import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.scc.model.SCCSubscriptionJson;
 import com.suse.scc.model.UpgradePathJson;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -70,6 +71,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +80,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Tests for {@link ContentSyncManager}.
@@ -1307,6 +1310,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         assertFalse(csm.isRefreshNeeded(null));
         assertTrue(csm.isRefreshNeeded("https://mirror.example.com/"));
+
+        // if mgr-sync never ran, return true
+        WriteMode clear = ModeFactory.getWriteMode("test_queries","delete_last_mgr_sync_refresh");
+        clear.executeUpdate(new HashMap());
+        assertTrue(csm.isRefreshNeeded(null));
     }
 
     /**

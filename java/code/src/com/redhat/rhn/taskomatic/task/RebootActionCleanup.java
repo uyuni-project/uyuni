@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -26,7 +27,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.Server;
 
 import com.suse.manager.utils.MinionServerUtils;
-import com.suse.manager.webui.services.impl.SaltService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -108,7 +108,7 @@ public class RebootActionCleanup extends RhnJavaJob {
             s.asMinionServer()
                     .filter(MinionServerUtils::isSshPushMinion)
                     .ifPresent(minion ->
-                        SaltService.INSTANCE.getSaltSSHService().cleanPendingActionChainAsync(minion));
+                        GlobalInstanceHolder.SALT_API.getSaltSSHService().cleanPendingActionChainAsync(minion));
         }
 
         return aIds;

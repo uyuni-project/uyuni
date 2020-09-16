@@ -25,8 +25,8 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.suse.manager.model.kubernetes.ContainerInfo;
 import com.suse.manager.model.kubernetes.ImageUsage;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.runner.MgrK8sRunner;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -49,15 +49,15 @@ public class KubernetesManager {
     private static final Logger LOG = Logger.getLogger(KubernetesManager.class);
     private static final String DOCKER_PULLABLE = "docker-pullable://";
 
-    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
 
     /**
      * No arg constructor.
      * Configures this with the default {@link SaltService} instance.
-     * @param systemQueryIn instance for getting information from a system.
+     * @param saltApiIn instance for getting information from a system.
      */
-    public KubernetesManager(SystemQuery systemQueryIn) {
-        this.systemQuery = systemQueryIn;
+    public KubernetesManager(SaltApi saltApiIn) {
+        this.saltApi = saltApiIn;
     }
 
     /**
@@ -103,7 +103,7 @@ public class KubernetesManager {
 
                 if (kubeconfig.isPresent() && context.isPresent()) {
                     Optional<List<MgrK8sRunner.Container>> containers =
-                            systemQuery.getAllContainers(kubeconfig.get(), context.get());
+                            saltApi.getAllContainers(kubeconfig.get(), context.get());
 
                     if (!containers.isPresent()) {
                         LOG.error("No container info returned by runner call " +

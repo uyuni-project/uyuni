@@ -1,3 +1,11 @@
+- support installer update channels during autoinstallation
+- Prevent a deadlock error involving delete_server and update_needed_cache (bsc#1173073)
+- Add new states and types for virtual instances in order
+  to support Nutanix AHV.
+- implement Maintenance Windows
+- add virtual network state change action
+- Update package version to 4.2.0
+
 -------------------------------------------------------------------
 Thu Jul 23 13:36:46 CEST 2020 - jgonzalez@suse.com
 

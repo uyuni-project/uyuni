@@ -14,11 +14,17 @@
  */
 package com.suse.manager.webui.controllers.virtualization.test;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.virtualization.VirtualizationNetworkStateChangeAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -31,19 +37,22 @@ import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.test.BaseControllerTestCase;
 import com.suse.manager.webui.controllers.virtualization.VirtualNetsController;
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualNetworkInfoJson;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import org.hamcrest.collection.IsMapContaining;
 import org.jmock.Expectations;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 public class VirtualNetsControllerTest extends BaseControllerTestCase {
 
@@ -81,13 +90,16 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
             }
         };
 
+        ServerGroupManager serverGroupManager = new ServerGroupManager();
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
-                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager())
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager(), serverGroupManager),
+                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(), serverGroupManager)
         );
 
         host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
         host.asMinionServer().get().setMinionId("testminion.local");
+
+        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("Europe/Paris"));
     }
 
     public void testData() throws Exception {
@@ -103,5 +115,74 @@ public class VirtualNetsControllerTest extends BaseControllerTestCase {
         assertFalse(net1.isAutostart());
         assertTrue(net1.isPersistent());
         assertEquals("860e49a3-d227-4105-95ca-d19dc8f0c8b6", net1.getUuid());
+    }
+
+    public void testStart() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.start(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/start",
+                                              "{names: [\"net0\"]}",
+                                              host.getId()),
+                response, user);
+
+        // Ensure the start action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationNetworkStateChangeAction virtAction = (VirtualizationNetworkStateChangeAction) action;
+        assertEquals("net0", virtAction.getNetworkName());
+        assertEquals("start", virtAction.getState());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
+    }
+
+    public void testStop() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.stop(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/stop",
+                        "{names: [\"net0\"]}",
+                        host.getId()),
+                response, user);
+
+        // Ensure the stop action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationNetworkStateChangeAction virtAction = (VirtualizationNetworkStateChangeAction) action;
+        assertEquals("net0", virtAction.getNetworkName());
+        assertEquals("stop", virtAction.getState());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
+    }
+
+    public void testDelete() throws Exception {
+        VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
+        String json = virtualNetsController.delete(
+                getPostRequestWithCsrfAndBody("/manager/api/systems/details/virtualization/nets/:sid/delete",
+                        "{names: [\"net0\"]}",
+                        host.getId()),
+                response, user);
+
+        // Ensure the stop action is queued
+        DataResult<ScheduledAction> actions = ActionManager.pendingActions(user, null);
+        assertEquals(1, actions.size());
+        assertEquals(ActionFactory.TYPE_VIRTUALIZATION_NETWORK_STATE_CHANGE.getName(), actions.get(0).getTypeName());
+
+        Action action = ActionManager.lookupAction(user, actions.get(0).getId());
+        VirtualizationNetworkStateChangeAction virtAction = (VirtualizationNetworkStateChangeAction) action;
+        assertEquals("net0", virtAction.getNetworkName());
+        assertEquals("delete", virtAction.getState());
+
+        // Check the returned message
+        Map<String, Long> model = GSON.fromJson(json, new TypeToken<Map<String, Long>>() {}.getType());
+        assertTrue(IsMapContaining.hasEntry("net0", action.getId()).matches(model));
     }
 }

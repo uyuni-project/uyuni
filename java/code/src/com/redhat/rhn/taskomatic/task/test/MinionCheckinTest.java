@@ -75,7 +75,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         } });
 
         MinionCheckin minionCheckinJob = new MinionCheckin();
-        minionCheckinJob.setSystemQuery(saltServiceMock);
+        minionCheckinJob.setSaltApi(saltServiceMock);
 
         minionCheckinJob.execute(null);
     }
@@ -107,7 +107,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         } });
 
         MinionCheckin minionCheckinJob = new MinionCheckin();
-        minionCheckinJob.setSystemQuery(saltServiceMock);
+        minionCheckinJob.setSaltApi(saltServiceMock);
 
         minionCheckinJob.execute(null);
     }

@@ -163,7 +163,7 @@ public class CreateUserAction extends RhnAction {
         user.setTimeZone(UserManager.getTimeZone(((Integer) form.get("timezone"))
             .intValue()));
         String preferredLocale = form.getString("preferredLocale");
-        if (preferredLocale != null && preferredLocale.equals("none")) {
+        if (preferredLocale != null && preferredLocale.equals("default")) {
             preferredLocale = null;
         }
         user.setPreferredLocale(preferredLocale);

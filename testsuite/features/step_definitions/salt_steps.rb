@@ -513,7 +513,7 @@ end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   node = get_target(minion)
-  output, _code = node.run('cat /etc/vconsole.conf')
+  output, _code = node.run("grep 'KEYMAP=' /etc/vconsole.conf")
   raise "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
 end
 
@@ -527,7 +527,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
 end
 
 When(/^I refresh the pillar data$/) do
-  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar")
+  $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar wait=True")
 end
 
 Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
@@ -543,9 +543,11 @@ Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" o
     raise 'Invalid target'
   end
   output, _code = $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
+  STDOUT.puts "#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd} => #{output}"
   if verb == 'be' && value == ''
     raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
   elsif verb == 'be'
+    raise "Output value not found : #{output}" unless output.split("\n") > 1
     raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
   elsif verb == 'contain'
     raise "Output doesn't contain #{value}: #{output}" unless output.include? value
@@ -620,30 +622,22 @@ When(/^I accept "([^"]*)" key$/) do |host|
 end
 
 When(/^I go to the minion onboarding page$/) do
-  steps %(
-    When I follow the left menu "Salt > Keys"
-    )
+  step %(I follow the left menu "Salt > Keys")
 end
 
 When(/^I go to the bootstrapping page$/) do
-  steps %(
-    When I follow the left menu "Systems > Bootstrapping"
-    )
+  step %(I follow the left menu "Systems > Bootstrapping")
 end
 
 When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
-    steps %(
-     And I wait until I see the name of "#{minion}", refreshing the page
-      )
+    step %(I wait until I see the name of "#{minion}", refreshing the page)
   end
 end
 
 When(/^I refresh page until I do not see "(.*?)" hostname as text$/) do |minion|
   within('#spacewalk-content') do
-    steps %(
-     And I wait until I do not see the name of "#{minion}", refreshing the page
-      )
+    step %(I wait until I do not see the name of "#{minion}", refreshing the page)
   end
 end
 
@@ -765,4 +759,13 @@ When(/^I kill remaining Salt jobs on "([^"]*)"$/) do |minion|
   if output.include?(system_name) && output.include?('Signal 9 sent to job')
     puts output
   end
+end
+
+When(/^I set "([^"]*)" as NIC, "([^"]*)" as prefix, "([^"]*)" as branch server name and "([^"]*)" as domain$/) do |nic, prefix, server_name, domain|
+  net_prefix = $private_net.sub(%r{\.0+/24$}, ".")
+  cred = "--api-user admin --api-pass admin"
+  dhcp = "--dedicated-nic #{nic} --branch-ip #{net_prefix}#{ADDRESSES['proxy']} --netmask 255.255.255.0 --dyn-range #{net_prefix}#{ADDRESSES['range begin']} #{net_prefix}#{ADDRESSES['range end']}"
+  names = "--server-name #{server_name} --server-domain #{domain} --branch-prefix #{prefix}"
+  output, return_code = $server.run("retail_branch_init #{$proxy.full_hostname} #{dhcp} #{names} #{cred}")
+  raise "Command failed with following output: #{output}" unless return_code.zero?
 end

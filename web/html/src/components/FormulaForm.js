@@ -36,6 +36,7 @@ class FormulaForm extends React.Component {
             groupData: {},
             formulaChanged: false,
             messages: [],
+            warnings: [],
             errors: []
         };
 
@@ -73,6 +74,11 @@ class FormulaForm extends React.Component {
                     metadata: {}
                 });
             else {
+                if (data.formula_list.filter(formula => formula != "caasp-management-settings" && formula == data.formula_name).length > 1) {
+                    this.state.warnings.push(
+                        t('Multiple Group formulas detected. Only one formula for "{0}" can be used on each system!', capitalize(data.formula_name))
+                    )
+                }
                 const rawLayout = data.layout;
                 this.setState({
                     formulaName: data.formula_name,
@@ -156,9 +162,12 @@ class FormulaForm extends React.Component {
         messageItems = messageItems.concat(this.state.errors.map((msg) => {
             return { severity: "error", text: msg };
         }));
+        messageItems = messageItems.concat(this.state.warnings.map((msg) => {
+            return { severity: "warning", text: msg };
+        }))
         const messages = <Messages items={messageItems} />;
 
-        if (this.state.formulaRawLayout === undefined || this.state.formulaRawLayout === null || $.isEmptyObject(this.state.formulaRawLayout)) {
+        if (this.state.formulaRawLayout === undefined || this.state.formulaRawLayout === null || jQuery.isEmptyObject(this.state.formulaRawLayout)) {
             if (this.props.addFormulaNavBar !== undefined)
                 this.props.addFormulaNavBar(get(this.state.formulaList, ["Not found"]), this.props.formulaId);
             return (

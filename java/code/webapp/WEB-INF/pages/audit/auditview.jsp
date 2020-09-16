@@ -155,7 +155,7 @@
             for(var idx = 0; idx < resultFilter[autype].length; idx++) {
                 for(var key in resultFilter[autype][idx]) {
                     if (!resultFilter[autype][idx][key]) {
-                        $("div[name=kv_" + autype + "_" + key + "]").each(function(index, node) {
+                        jQuery("div[name=kv_" + autype + "_" + key + "]").each(function(index, node) {
                             node.style.borderBottom = "thin dashed black";
                             node.style.borderRight = "thin dashed black";
                             //node.style.textDecoration = "underline";
@@ -187,9 +187,9 @@
             }
         }
 
-        $("span[name=audit_kv]").each(function(index, node) {
-            var aElem = $( "<a href='javascript:void(0);'>" + showStr + "</a>" );
-            aElem.click(toggleKV);
+        jQuery("span[name=audit_kv]").each(function(index, node) {
+            var aElem = jQuery( "<a href='javascript:void(0);'>" + showStr + "</a>" );
+            aElem.on("click", toggleKV);
             aElem.appendTo(node);
         });
     });

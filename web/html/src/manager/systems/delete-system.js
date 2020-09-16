@@ -76,7 +76,7 @@ class DeleteSystem extends React.Component {
                 title={t("Cancel")}
                 icon="fa-close"
                 handler={() => {
-                    $("#delete-errors-" + this.props.serverId).modal('hide');
+                    jQuery("#delete-errors-" + this.props.serverId).modal('hide');
                 }}
             />
     </span>

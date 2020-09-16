@@ -1,16 +1,16 @@
 // Save and verifiy the proxy settings
 function saveProxySettings() {
   showSpinner('http-proxy-verify');
-  $('#http-proxy-verify').show(100);
-  $('#http-proxy-save').attr('disabled', true);
+  jQuery('#http-proxy-verify').show(100);
+  jQuery('#http-proxy-save').attr('disabled', true);
 
-  hostname = $('#http-proxy-input-hostname').val();
-  username = $('#http-proxy-input-username').val();
-  password = $('#http-proxy-input-password').val();
+  hostname = jQuery('#http-proxy-input-hostname').val();
+  username = jQuery('#http-proxy-input-username').val();
+  password = jQuery('#http-proxy-input-password').val();
   ProxySettingsRenderer.saveProxySettings({'hostname': hostname, 'username': username, 'password': password},
     makeAjaxHandler(function(settings) {
       console.log("Proxy settings saved!");
-      $('#http-proxy-save').removeAttr('disabled');
+      jQuery('#http-proxy-save').prop('disabled', false);
       // TODO make sure it succeeded
       setProxySettings(settings);
       setProxySettingsEditable(false);
@@ -24,9 +24,9 @@ function saveProxySettings() {
 // sets in the UI if the proxy settings were verified
 function setProxySettingsVerified(valid) {
   if (valid) {
-    $('#http-proxy-verify').html('<i class="fa fa-check-square text-success"></i>');
+    jQuery('#http-proxy-verify').html('<i class="fa fa-check-square text-success"></i>');
   } else {
-    $('#http-proxy-verify').html('<i class="fa fa-times-circle-o text-danger"></i>');
+    jQuery('#http-proxy-verify').html('<i class="fa fa-times-circle-o text-danger"></i>');
   }
 }
 
@@ -42,14 +42,14 @@ function verifyProxySettings(forceRefresh) {
 
 // just sets the given settings in the form
 function setProxySettings(settings) {
-  $('#http-proxy-input-hostname').val(settings.hostname);
-  $('p.http-proxy-hostname').html(settings.hostname);
+  jQuery('#http-proxy-input-hostname').val(settings.hostname);
+  jQuery('p.http-proxy-hostname').html(settings.hostname);
 
-  $('#http-proxy-input-username').val(settings.username);
-  $('p.http-proxy-username').html(settings.username);
+  jQuery('#http-proxy-input-username').val(settings.username);
+  jQuery('p.http-proxy-username').html(settings.username);
 
-  $('#http-proxy-input-password').val(settings.password);
-  $('p.http-proxy-password').html(Array(settings.password.length).join('&#9679'));
+  jQuery('#http-proxy-input-password').val(settings.password);
+  jQuery('p.http-proxy-password').html(Array(settings.password.length).join('&#9679'));
 }
 
 // Sets the spinner, retrieves the settings from the server
@@ -74,33 +74,33 @@ function retrieveProxySettings() {
 // Switches the proxy settings into an (non)editable form
 function setProxySettingsEditable(editable) {
   if (editable) {
-    $('#http-proxy form p.form-control-static').hide();
-    $('#http-proxy form input.form-control').show(100);
-    $('#http-proxy-edit').hide(100);
-    $('#http-proxy-verify').hide(100);
-    $('#http-proxy-save').show(100);
+    jQuery('#http-proxy form p.form-control-static').hide();
+    jQuery('#http-proxy form input.form-control').show(100);
+    jQuery('#http-proxy-edit').hide(100);
+    jQuery('#http-proxy-verify').hide(100);
+    jQuery('#http-proxy-save').show(100);
   } else {
-    $('#http-proxy form input.form-control').hide();
-    $('#http-proxy form p.form-control-static').show(100);
-    $('#http-proxy-edit').show(100);
-    $('#http-proxy-verify').show(100);
-    $('#http-proxy-save').hide(100);
+    jQuery('#http-proxy form input.form-control').hide();
+    jQuery('#http-proxy form p.form-control-static').show(100);
+    jQuery('#http-proxy-edit').show(100);
+    jQuery('#http-proxy-verify').show(100);
+    jQuery('#http-proxy-save').hide(100);
   }
 }
 
 // only relevant for the proxy settings
-$(document).ready(function() {
+jQuery(document).ready(function() {
   // set the edit button callback
-  $('#http-proxy-edit').click(function() {
+  jQuery('#http-proxy-edit').on("click", function() {
     setProxySettingsEditable(true);
   });
 
   // set the save button callback
-  $('#http-proxy-save').click(function() {
+  jQuery('#http-proxy-save').on("click", function() {
     saveProxySettings();
   });
 
-  $('#http-proxy-verify').click(function() {
+  jQuery('#http-proxy-verify').on("click", function() {
     verifyProxySettings(true);
   });
 

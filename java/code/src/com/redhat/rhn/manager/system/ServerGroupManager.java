@@ -52,26 +52,11 @@ import java.util.stream.Collectors;
  */
 public class ServerGroupManager {
 
-    private static final ServerGroupManager MANAGER = new ServerGroupManager();
-
     /** Logger */
     private static final Logger LOG = Logger.getLogger(ServerGroupManager.class);
 
     private MinionPillarFileManager minionGroupMembershipPillarFileManager =
             new MinionPillarFileManager(new MinionGroupMembershipPillarGenerator());
-
-    /**
-     * Singleton Instance to get manager object
-     * @return an instance of the manager
-     */
-    public static ServerGroupManager getInstance() {
-        return MANAGER;
-    }
-    /**
-     * Private constructor.
-     */
-    private ServerGroupManager() {
-    }
 
     /**
      * Only used for unit tests.

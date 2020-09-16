@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -29,8 +30,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.suse.manager.virtualization.GuestDefinition;
 import com.suse.manager.virtualization.PoolCapabilitiesJson;
 import com.suse.manager.virtualization.PoolDefinition;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.pillar.MinionPillarFileManager;
 import com.suse.manager.webui.services.pillar.MinionVirtualizationPillarGenerator;
 
@@ -101,9 +103,12 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             }
         };
 
+        ServerGroupManager serverGroupManager =  new ServerGroupManager();
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, new FormulaMonitoringManager()),
-                new SystemEntitler(new SaltService(), virtManager, new FormulaMonitoringManager())
+                new SystemUnentitler(virtManager, new FormulaMonitoringManager(),
+                        serverGroupManager),
+                new SystemEntitler(new TestSaltApi(), virtManager, new FormulaMonitoringManager(),
+                        serverGroupManager)
         );
     }
 

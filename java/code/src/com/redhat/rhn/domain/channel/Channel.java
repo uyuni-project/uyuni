@@ -90,6 +90,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     private String maintainerPhone;
     private String supportPolicy;
     private String updateTag;
+    private boolean installerUpdates = false;
     private Set<ClonedChannel> clonedChannels = new HashSet<ClonedChannel>();
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
@@ -135,10 +136,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
-     * Returns true if this Channel is a Rhel channel.
-     * @return true if this Channel is a Rhel channel.
+     * Returns true if this Channel is a Vendor channel.
+     * @return true if this Channel is a Vendor channel.
      */
-    public boolean isRhelChannel() {
+    public boolean isVendorChannel() {
         return org == null;
     }
 
@@ -885,6 +886,20 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public void setUpdateTag(String updateTagIn) {
         updateTag = updateTagIn;
+    }
+
+    /**
+     * @return Returns the installerUpdates.
+     */
+    public boolean isInstallerUpdates() {
+        return installerUpdates;
+    }
+
+    /**
+     * @param installerUpdatesIn The installerUpdates to set.
+     */
+    public void setInstallerUpdates(boolean installerUpdatesIn) {
+        installerUpdates = installerUpdatesIn;
     }
 
     /**

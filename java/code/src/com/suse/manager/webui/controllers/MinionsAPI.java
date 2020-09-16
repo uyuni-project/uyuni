@@ -32,8 +32,8 @@ import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.controllers.utils.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.utils.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.utils.gson.BootstrapHostsJson;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
@@ -65,9 +65,10 @@ public class MinionsAPI {
 
     public static final String SALT_CMD_RUN_TARGETS = "salt_cmd_run_targets";
 
-    private final SystemQuery systemQuery;
+    private final SaltApi saltApi;
     private final SSHMinionBootstrapper sshMinionBootstrapper;
     private final RegularMinionBootstrapper regularMinionBootstrapper;
+    private final SaltKeyUtils saltKeyUtils;
 
     public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -78,16 +79,18 @@ public class MinionsAPI {
     private static final Logger LOG = Logger.getLogger(MinionsAPI.class);
 
     /**
-     * @param systemQueryIn instance to use.
+     * @param saltApiIn instance to use.
      * @param regularMinionBootstrapperIn regular bootstrapper
      * @param sshMinionBootstrapperIn ssh bootstrapper
+     * @param saltKeyUtilsIn
      */
-    public MinionsAPI(SystemQuery systemQueryIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
-                      RegularMinionBootstrapper regularMinionBootstrapperIn) {
-        this.systemQuery = systemQueryIn;
-        sshMinionBootstrapper = sshMinionBootstrapperIn;
-        regularMinionBootstrapper = regularMinionBootstrapperIn;
-
+    public MinionsAPI(SaltApi saltApiIn, SSHMinionBootstrapper sshMinionBootstrapperIn,
+                      RegularMinionBootstrapper regularMinionBootstrapperIn,
+                      SaltKeyUtils saltKeyUtilsIn) {
+        this.saltApi = saltApiIn;
+        this.sshMinionBootstrapper = sshMinionBootstrapperIn;
+        this.regularMinionBootstrapper = regularMinionBootstrapperIn;
+        this.saltKeyUtils = saltKeyUtilsIn;
     }
 
     /**
@@ -110,7 +113,7 @@ public class MinionsAPI {
      * @return json result of the API call
      */
     public String listKeys(Request request, Response response, User user) {
-        Key.Fingerprints fingerprints = systemQuery.getFingerprints();
+        Key.Fingerprints fingerprints = saltApi.getFingerprints();
 
         Map<String, Object> data = new TreeMap<>();
         data.put("isOrgAdmin", user.hasRole(RoleFactory.ORG_ADMIN));
@@ -152,7 +155,7 @@ public class MinionsAPI {
         MinionPendingRegistrationService.addMinion(
                 user, target, ContactMethodUtil.DEFAULT, Optional.empty());
         try {
-            systemQuery.acceptKey(target);
+            saltApi.acceptKey(target);
         }
         catch (Exception e) {
             MinionPendingRegistrationService.removeMinion(target);
@@ -175,7 +178,7 @@ public class MinionsAPI {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw new PermissionCheckFailureException(RoleFactory.ORG_ADMIN);
         }
-        return json(response, SaltKeyUtils.deleteSaltKey(user, target));
+        return json(response, saltKeyUtils.deleteSaltKey(user, target));
     }
 
     /**
@@ -187,7 +190,7 @@ public class MinionsAPI {
      */
     public String reject(Request request, Response response, User user) {
         String target = request.params("target");
-        systemQuery.rejectKey(target);
+        saltApi.rejectKey(target);
         return json(response, true);
     }
 

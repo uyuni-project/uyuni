@@ -2,8 +2,8 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<%@ page import="com.suse.manager.webui.menu.MenuTree" %>
 <%@ page import="com.redhat.rhn.common.conf.ConfigDefaults"%>
+<%@ page import="com.redhat.rhn.GlobalInstanceHolder" %>
 
 <!-- enclosing head tags in layout_c.jsp -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -18,7 +18,7 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
     <title>
       <bean:message key="layout.jsp.productname"/>
-      <%= MenuTree.getTitlePage(pageContext) %>
+      <%= GlobalInstanceHolder.MENU_TREE.getTitlePage(pageContext) %>
     </title>
     <link rel="shortcut icon" href="/img/favicon.ico" />
 
@@ -62,6 +62,10 @@
         </c:otherwise>
     </c:choose>
 
+    <!-- expose user preferred language to the application -->
+    <c:set var="currentLocale" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentLocale(pageContext)}"/>
+    <script>window.preferredLocale='${currentLocale}'</script>
+
     <script src="/javascript/loggerhead.js?cb=${cb_version}"></script>
     <script src="/javascript/frontend-log.js?cb=${cb_version}"></script>
 
@@ -69,7 +73,6 @@
     <script src="/javascript/bootstrap.js?cb=${cb_version}"></script>
     <script src="/javascript/select2/select2.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
-    <script src="/javascript/susemanager-translate.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
 
     <script src="/rhn/dwr/engine.js?cb=${cb_version}"></script>

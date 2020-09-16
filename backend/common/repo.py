@@ -17,6 +17,9 @@ import requests
 
 # pylint:disable=W0612,W0212,C0301
 
+SPACEWALK_LIB = '/var/lib/spacewalk'
+SPACEWALK_GPG_HOMEDIR = os.path.join(SPACEWALK_LIB, 'gpgdir')
+
 
 class GeneralRepoException(Exception):
     """
@@ -187,17 +190,16 @@ class DpkgRepo:
 
         :return: bool
         """
-        if response.url.endswith("InRelease"):
+        if parse.urlparse(response.url).path.endswith("InRelease"):
             process = subprocess.Popen(
-                ["gpg", "--verify"],
+                ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR],
                 stdin=subprocess.PIPE,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
             out = process.communicate(response.content)
         else:
-            gpg_url = response.url + ".gpg"
-            signature_response = requests.get(gpg_url, proxies=self.proxies)
+            signature_response = requests.get(self._get_parent_url(response.url, 1, "Release.gpg"), proxies=self.proxies)
             if signature_response.status_code != http.HTTPStatus.OK:
                 return False
             else:
@@ -208,7 +210,8 @@ class DpkgRepo:
                 temp_signature_file.write(signature_response.content)
                 temp_signature_file.seek(0)
                 process = subprocess.Popen(
-                    ["gpg", "--verify", temp_signature_file.name, temp_release_file.name],
+                    ["gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR,
+                     temp_signature_file.name, temp_release_file.name],
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL,
                 )

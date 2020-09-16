@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="pt_BR">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="pt_BR">
     <body>
       <trans-unit id="common.nav.overview">
         <source>Overview</source>
@@ -95,6 +95,7 @@
       </trans-unit>
       <trans-unit id="Bare Metal Systems">
         <source>Unprovisioned Systems</source>
+        <target>Sistemas Não-provisionados</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
@@ -195,7 +196,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Sumário para travamentos com UUID idênticas.</target>
+        <target>Sumário para travamentos com UUID idênticas</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config">
         <source>Configuration</source>
@@ -241,6 +242,7 @@
       </trans-unit>
       <trans-unit id="ssm.nav.status">
         <source>Task Log</source>
+        <target>Log de tarefas</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
@@ -519,12 +521,10 @@
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
         <trans-unit id="nav.system.audit.list_scans">
-          <source>List Scans</source>
-          <target>Scanear Lista</target>
+          <source>List Scans</source> <target>Scanear Lista</target>
         </trans-unit>
         <trans-unit id="nav.system.audit.schedule">
-          <source>Schedule</source>
-          <target>Agendar</target>
+          <source>Schedule</source> <target>Agendar</target>
         </trans-unit>
       </group>
       <!-- SDC Config file navigation-->
@@ -533,47 +533,36 @@
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
         <trans-unit id="nav.sdc.config.overview">
-          <source>Overview</source>
-          <target>Visão Geral</target>
+          <source>Overview</source> <target>Visão Geral</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_modify_files">
-          <source>View/Modify Files</source>
-          <target>Visualizar/Modificar Arquivos</target>
+          <source>View/Modify Files</source> <target>Visualizar/Modificar Arquivos</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_files">
-          <source>View Files</source>
-        </trans-unit>
+          <source>View Files</source> <target>Ver Arquivos</target></trans-unit>
         <trans-unit id="nav.sdc.config.compare_files">
-          <source>Compare Files</source>
-          <target>Comparar Arquivos</target>
+          <source>Compare Files</source> <target>Comparar Arquivos</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.manage_channels">
-          <source>Manage Configuration Channels</source>
-          <target>Gerenciar Canais de Configuração</target>
+          <source>Manage Configuration Channels</source> <target>Gerenciar Canais de Configuração</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.list_unsubscribe_channels">
-          <source>List/Unsubscribe from Channels</source>
-          <target>Listar/Cancelar Inscrição a partir de Canais</target>
+          <source>List/Unsubscribe from Channels</source> <target>Listar/Cancelar Inscrição a partir de Canais</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.subscribe_channels">
-          <source>Subscribe to Channels</source>
-          <target>Adicionar Canais</target>
+          <source>Subscribe to Channels</source> <target>Adicionar Canais</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.rank_channels">
-          <source>View/Modify Rankings</source>
-          <target>Visualizar/Modificar Classificações</target>
+          <source>View/Modify Rankings</source> <target>Visualizar/Modificar Classificações</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.centrally_managed_files">
-          <source>Centrally-Managed Files</source>
-          <target>Arquivos Gerenciados Centralmente</target>
+          <source>Centrally-Managed Files</source> <target>Arquivos Gerenciados Centralmente</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.locally_managed_files">
-          <source>Locally-Managed Files</source>
-          <target>Arquivos Gerenciados Localmente</target>
+          <source>Locally-Managed Files</source> <target>Arquivos Gerenciados Localmente</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.sandbox_managed_files">
-          <source>Local Sandbox</source>
-          <target>Área de Quarentena</target>
+          <source>Local Sandbox</source> <target>Área de Quarentena</target>
         </trans-unit>
       </group>
       <!-- END config file nav -->
@@ -582,12 +571,10 @@
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
         <trans-unit id="system.detail.nav.list">
-          <source>List</source>
-          <target>Listar</target>
+          <source>List</source> <target>Listar</target>
         </trans-unit>
         <trans-unit id="system.detail.nav.remove">
-          <source>List / Remove</source>
-          <target>Listar / Remover</target>
+          <source>List / Remove</source> <target>Listar / Remover</target>
         </trans-unit>
       </group>
       <trans-unit id="Add">
@@ -774,6 +761,7 @@
       </trans-unit>
       <trans-unit id="Patch List">
         <source>Patch List</source>
+        <target>Lista de patches</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -1152,22 +1140,19 @@
       <!-- SSM NAV -->
       <group>
         <trans-unit id="Child Channels">
-          <source>Child Channels</source>
-          <context-group name="ctx">
+          <source>Child Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
           <target>Canais Filho</target>
         </trans-unit>
         <trans-unit id="Chat">
-          <source>Chat</source>
-          <context-group name="ctx">
+          <source>Chat</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
           <target>Bate-papo</target>
         </trans-unit>
         <trans-unit id="Base Channels">
-          <source>Base Channels</source>
-          <context-group name="ctx">
+          <source>Base Channels</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
           <target>Canais Base</target>
@@ -1176,8 +1161,7 @@
       <!-- Activation Keys nav -->
       <group>
         <trans-unit id="activation-keys.nav.activated_systems">
-          <source>Activated Systems</source>
-          <context-group name="ctx">
+          <source>Activated Systems</source> <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
           <target>Sistemas Ativados</target>
@@ -1189,19 +1173,19 @@
           <context context-type="sourcefile">Title bar</context>
         </context-group>
         <trans-unit id="manage">
-          <source>Manage</source>
-          <target>Gerenciar</target>
+          <source>Manage</source> <target>Gerenciar</target>
         </trans-unit>
         <trans-unit id="clear">
-          <source>Clear</source>
-          <target>Limpar</target>
+          <source>Clear</source> <target>Limpar</target>
         </trans-unit>
       </group>
       <trans-unit id="Deployment">
         <source>Deployment</source>
+        <target>Implantação</target>
       </trans-unit>
       <trans-unit id="Image List">
         <source>Image List</source>
+        <target>Lista de Imagens</target>
       </trans-unit>
     </body>
   </file>
