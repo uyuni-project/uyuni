@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="ca">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="ca">
     <body>
       <!-- Generic column headings. The intent is that these can be reused across multiple pages.-->
       <group>
@@ -215,10 +215,11 @@
         <target>{0} és obligatori.</target>
       </trans-unit>
       <trans-unit id="errors.ascii">
-        <source>{0} contains invalid characters. Only alphanumeric characters, '-', '_', '.', and '@' are allowed.</source>
+        <source>{0} contains invalid characters.  Only alphanumeric characters, '-', '_', '.', and '@' are allowed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with required ascii fields</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="errors.username">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-', '_', '.', and '@' are allowed. Please try again.</source>
@@ -469,11 +470,12 @@
           <source>No master organization with the ID {0} is identified to this slave.</source> </trans-unit>
       </group>
       <trans-unit id="emptyspace.jsp">
-        <source></source>
+        <source> </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
         <note>NO TRANSLATION NECSSARY</note>
+      <target state="needs-adaptation" />
       </trans-unit>
       <group>
         <context-group name="ctx">
@@ -550,10 +552,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="badparam.jsp.summary">
-        <source>We could not display the requested page because of a missing parameter. This error could have occurred several ways:</source>
+        <source>We could not display the requested page because of a missing parameter.  This error could have occurred several ways:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="badparam.jsp.reason1">
         <source>An incorrect or out-of-date bookmark.</source>
@@ -568,10 +571,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="badparam.jsp.reason3">
-        <source>Your browser encountered an error handling request parameters. Continued use of this browser may yield unexpected results.</source>
+        <source>Your browser encountered an error handling request parameters.  Continued use of this browser may yield unexpected results.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Bad Parameter error page</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="badparam.jsp.reason4">
         <source>You've found an error in our site.</source>
@@ -603,7 +607,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="404.jsp.reason2">
-        <source>If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.</source>
+        <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -611,6 +615,7 @@
               link may be incorrect or outdated.
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="404.jsp.reason3">
         <source>If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark.</source>
@@ -643,10 +648,11 @@
         <target>Error intern del servidor</target>
       </trans-unit>
       <trans-unit id="500.jsp.summary">
-        <source>The server experienced a problem which prevented your request from being filled out. It may not be possible to execute this action at this time.</source>
+        <source>The server experienced a problem which prevented your request from being filled out.  It may not be possible to execute this action at this time.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">500 error page</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="500.jsp.message">
         <source>Please help us correct this problem by contacting us with details of how you received this message.</source>
@@ -881,16 +887,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.jsp.receivenote">
-        <source>Receive email notifications</source>
+        <source> Receive email notifications</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.jsp.receivetaskonote">
-        <source>Receive taskomatic notifications</source>
+        <source> Receive taskomatic notifications</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.jsp.listsize">
         <source>@@PRODUCT_NAME@@ List Page Size</source>
@@ -920,10 +928,11 @@
         <target>Tasques</target>
       </trans-unit>
       <trans-unit id="preferences.tasks.description">
-        <source>A task-oriented menu of quick links to different areas of the @@PRODUCT_NAME@@ user interface.</source>
+        <source> A task-oriented menu of quick links to different areas of the @@PRODUCT_NAME@@ user interface.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.critical-systems.name">
         <source>Most Critical Systems</source>
@@ -932,10 +941,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.critical-systems.description">
-        <source>A listing of the systems with the most critical update and health status.</source>
+        <source> A listing of the systems with the most critical update and health status.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.name">
         <source>System Groups</source>
@@ -945,10 +955,11 @@
         <target>Grups del sistema</target>
       </trans-unit>
       <trans-unit id="preferences.system-groups-widget.description">
-        <source>Preview the overall status of your system groups.</source>
+        <source> Preview the overall status of your system groups.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.latest-errata.name">
         <source>Relevant Security Errata</source>
@@ -957,10 +968,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.latest-errata.description">
-        <source>View the most recent security errata applicable to your systems.</source>
+        <source> View the most recent security errata applicable to your systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.name">
         <source>Inactive Systems</source>
@@ -969,10 +981,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.inactive-systems.description">
-        <source>Lists the registered @@PRODUCT_NAME@@ systems that recently stopped checking in.</source>
+        <source> Lists the registered @@PRODUCT_NAME@@ systems that recently stopped checking in.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.pending-actions.name">
         <source>Recently Scheduled Actions</source>
@@ -981,10 +994,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.pending-actions.description">
-        <source>Lists the scheduled actions of the user.</source>
+        <source> Lists the scheduled actions of the user.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.name">
         <source>Recently Registered Systems</source>
@@ -993,17 +1007,19 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preferences.recently-registered-systems.description">
-        <source>A listing of the most recently registered systems within the past 30 days.</source>
+        <source> A listing of the most recently registered systems within the past 30 days.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!--END of  the Pane entries Section-->
       <trans-unit id="preferences.jsp.entriesperpage">
-        <source>entries per list page</source>
+        <source> entries per list page</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preferences.jsp.tz">
         <source>Time Zone</source>
@@ -1393,16 +1409,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="channelManagementPerms.summary">
-        <source>Below is the list of channels available to your organization. You may grant explicit channel management permission to this user for each of the channels listed.</source>
+        <source> Below is the list of channels available to your organization. You may grant explicit channel management permission to this user for each of the channels listed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channelManagementPerms.granted">
-        <source>Management permission granted through org/channel admin status</source>
+        <source> Management permission granted through org/channel admin status </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="Channel admin status">
         <source>Channel admin status</source>
@@ -1412,16 +1430,18 @@
       </trans-unit>
       <!-- addresses.jsp -->
       <trans-unit id="addresses.summary">
-        <source>Addresses associated with your @@PRODUCT_NAME@@ account are listed below.</source>
+        <source> Addresses associated with your @@PRODUCT_NAME@@ account are listed below. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="address.jsp.associated">
-        <source>The following addresses are associated with this user's account.</source>
+        <source> The following addresses are associated with this user's account. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="address.jsp.addresses">
         <source>Addresses</source>
@@ -1436,16 +1456,20 @@
         </context-group>
       </trans-unit>
       <trans-unit id="disableself.jsp.message">
-        <source>You may deactivate your @@PRODUCT_NAME@@ account below. &lt;b&gt;This will remove your ability to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
+        <source>You may deactivate your @@PRODUCT_NAME@@ account below. &lt;b&gt;This will remove your ability
+to log into @@PRODUCT_NAME@@.&lt;/b&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning">
-        <source>You will be logged out immediately after pressing the 'Deactivate Account' button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
+        <source>You will be logged out immediately after pressing the 'Deactivate Account'
+button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/AccountDeactivation</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="disableselfconfirm.jsp.warning_question">
         <source>Are you sure you want to deactivate your account?</source>
@@ -1460,15 +1484,15 @@
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.account_details">
-        <source>My Account</source>
-        <target>El meu compte</target>
+        <source> My Account </source>
+        <target state="needs-adaptation">El meu compte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.personal_info">
-        <source>Personal Info</source>
-        <target>Informació personal</target>
+        <source> Personal Info </source>
+        <target state="needs-adaptation">Informació personal</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -1482,10 +1506,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="channelperms.jsp.summary">
-        <source>Below is the list of channels available to your organization. You may grant explicit channel subscription permission to this user for each of the channels listed</source>
+        <source>Below is the list of channels available to your organization. You may grant explicit channel subscription permission to this user for each of the channels listed </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ChannelManagementPerms</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channelperms.jsp.permGranted">
         <source>Permission granted through org/channel admin status, or the channel is globally subscribable</source>
@@ -1576,16 +1601,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam">
-        <source>Pluggable Authentication Modules (PAM):</source>
+        <source>Pluggable Authentication Modules (PAM): </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions">
-        <source>Use PAM to authenticate against LDAP, Kerberos, and other network-based authentication systems.</source>
+        <source>Use PAM to authenticate against LDAP, Kerberos, and other network-based authentication systems. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.instructions.note">
         <source>Note: The password fields above are not required when this box is checked; however you may fill in a password that will work only when PAM authentication for this user account is disabled.</source>
@@ -1637,10 +1664,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.summary">
-        <source>This user's information may be edited using the form provided below. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
+        <source> This user's information may be edited using the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles">
         <source>Roles</source>
@@ -1685,16 +1713,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="satadmin.jsp.error.notsatadmin">
-        <source>The user {0} is the not a @@PRODUCT_NAME@@ Administrator. Only users with @@PRODUCT_NAME@@ Administrator role can grant or revoke @@PRODUCT_NAME@@ Administrator roles from other users.</source>
+        <source>The user {0} is the not a @@PRODUCT_NAME@@ Administrator. Only users with @@PRODUCT_NAME@@ Administrator role can grant  or revoke @@PRODUCT_NAME@@ Administrator roles from other users.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="userdetails.usepam">
-        <source>Use PAM:</source>
+        <source>Use PAM: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- userlist.jsp -->
       <trans-unit id="userlist.jsp.useroverview">
@@ -1795,10 +1825,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="userconfirm.jsp.summary">
-        <source>The following users will be reactivated. These users will have access to @@PRODUCT_NAME@@ and retain all permissions, roles, and data that they had prior to being deactivated.</source>
+        <source>The following users will be reactivated.  These users will have access to @@PRODUCT_NAME@@ and retain all permissions, roles, and data that they had prior to being deactivated.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="userconfirm.jsp.confirm">
         <source>Confirm</source>
@@ -1839,10 +1870,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="disableuser.jsp.body">
-        <source>&lt;p&gt;This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated.&lt;/p&gt;</source>
+        <source>&lt;p&gt;This action will deactivate this user.  This user will no longer be able to log in or perform actions unless it is reactivated.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- disableuser.jsp -->
       <trans-unit id="enableuser.jsp.enable">
@@ -1858,10 +1890,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="enableuser.jsp.body">
-        <source>&lt;p&gt;This action will allow this user to access @@PRODUCT_NAME@@. This user will retain all permissions, roles, and data that he or she had before being deactivated.&lt;/p&gt;</source>
+        <source>&lt;p&gt;This action will allow this user to access @@PRODUCT_NAME@@.  This user will retain all permissions, roles, and data that he or she had before being deactivated.&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EnableUser</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- systemsadmin.jsp -->
       <trans-unit id="systemsadmined.jsp.header">
@@ -1931,17 +1964,18 @@
       <!-- subscription_management.jsp" -->
       <!-- edit_address.jsp -->
       <trans-unit id="edit_address.jsp.address">
-        <source>Address</source>
-        <target>Adreça</target>
+        <source> Address</source>
+        <target state="needs-adaptation">Adreça</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
       </trans-unit>
       <trans-unit id="edit_address.jsp.summary">
-        <source>This user's address information may be edited in the form provided below. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
+        <source>This user's address information may be edited in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone">
         <source>Phone</source>
@@ -1993,10 +2027,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="yourdetails.jsp.summary">
-        <source>Please enter your information in the form provided below. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
+        <source> Please enter your information in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname">
         <source>Record:</source>
@@ -2005,10 +2040,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="your_edit_address.jsp.summary">
-        <source>Please enter your information in the form provided below. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
+        <source>Please enter your information in the form provided below.  Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- assignenedgroups.jsp -->
       <trans-unit id="assignedgroups.jsp.header">
@@ -2018,22 +2054,25 @@
         </context-group>
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.summary">
-        <source>A list of system groups follows. Use the check boxes to set this user's access permissions to each system group. Org Admins have permissions to all system groups.</source>
+        <source>A list of system groups follows. Use the check boxes to set this user's access permissions to each system group.  Org Admins have permissions to all system groups. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.asadmin">
-        <source>As a System Group Administrator, this user will be able to modify all aspects of the selected system groups.</source>
+        <source>As a System Group Administrator, this user will be able to modify all aspects of the selected system groups. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.youcanselect">
-        <source>You can select one or more default system groups for this user. When the user registers a system, that system will be assigned to the selected group or groups. This allows the user to have access to the newly-registered system immediately, if he or she has permissions to one or more of the groups the system is assigned to. System Groups to which this user has access to are preceded by a (*).</source>
+        <source>You can select one or more default system groups for this user. When the user registers a system, that system will be assigned to the selected group or groups. This allows the user to have access to the newly-registered system immediately, if he or she has permissions to one or more of the groups the system is assigned to. System Groups to which this user has access to are preceded by a (*). </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="assignedgroups.jsp.defaultsysgroups">
         <source>Default System Groups:</source>
@@ -2228,13 +2267,17 @@
         </context-group>
       </trans-unit>
       <trans-unit id="actions.jsp.totalnote">
-        <source>Note: For multi-system scheduled actions, the ability to cancel individual systems means that the number of clients mentioned in the Action column may not match the number in Total.</source>
+        <source>
+          Note: For multi-system scheduled actions, the ability to cancel individual
+          systems means that the number of clients mentioned in the Action column may not match the number in Total.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
           <context context-type="sourcefile">/rhn/schedule/ArchiveActions</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- pendingactions.jsp -->
       <trans-unit id="pendingactions.jsp.pending_actions">
@@ -2244,10 +2287,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pendingactions.jsp.summary">
-        <source>The following actions have been scheduled, and are awaiting execution by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action.</source>
+        <source> The following actions have been scheduled, and are awaiting execution by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="pendingactions.jsp.nogroups">
         <source>No actions pending.</source>
@@ -2276,10 +2320,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="failedactions.jsp.summary">
-        <source>The following actions have failed to execute properly on one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action.</source>
+        <source> The following actions have failed to execute properly on one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="failedactions.jsp.nogroups">
         <source>No failed actions.</source>
@@ -2295,10 +2340,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="completedactions.jsp.summary">
-        <source>The following actions have been completed by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action.</source>
+        <source> The following actions have been completed by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="completedactions.jsp.nogroups">
         <source>No completed actions.</source>
@@ -2314,10 +2360,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="archivedactions.jsp.summary">
-        <source>The following actions have been archived.</source>
+        <source> The following actions have been archived. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="archivedactions.jsp.nogroups">
         <source>No archived actions.</source>
@@ -2339,10 +2386,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="actionchains.jsp.summarydetail">
-        <source>You can create a new Action Chain by scheduling any supported operation, such as &lt;a href="/rhn/ssm/PackageInstall.do"&gt;installing&lt;/a&gt; or &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;upgrading&lt;/a&gt; a package, running a &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote command&lt;/a&gt; or &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;deploying a configuration file&lt;/a&gt;. Both System Set Manager and single system actions are supported.</source>
+        <source>
+            You can create a new Action Chain by scheduling any supported operation, such as
+            &lt;a href="/rhn/ssm/PackageInstall.do"&gt;installing&lt;/a&gt; or
+            &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;upgrading&lt;/a&gt; a package, running a
+            &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote command&lt;/a&gt; or
+            &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;deploying a configuration file&lt;/a&gt;.
+            Both System Set Manager and single system actions are supported.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="actionchains.jsp.label">
         <source>Label</source>
@@ -2390,10 +2445,15 @@
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.summarydetail">
-        <source>You add Actions to this Action Chain by scheduling any supported operation, such as installing or upgrading a package, running a remote command or deploying a configuration file. Both System Set Manager and single system actions are supported.</source>
+        <source>
+            You add Actions to this Action Chain by scheduling any supported operation, such as
+            installing or upgrading a package, running a remote command or deploying a configuration file.
+            Both System Set Manager and single system actions are supported.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="actionchain.jsp.action">
         <source>Action</source>
@@ -2642,10 +2702,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removepagesummary">
-        <source>The following packages are installed on this system. Packages may be scheduled for removal by selecting them and clicking "Remove Packages" below.</source>
+        <source>The following packages are installed on this system.  Packages may be scheduled for removal by selecting them and clicking "Remove Packages" below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="packagelist.jsp.removablepackages">
         <source>Removable Packages</source>
@@ -3096,10 +3157,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.toolbar">
-        <source>Patch:</source>
+        <source>Patch: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="errata.edit.editerrata">
         <source>Edit Patch</source>
@@ -3109,10 +3171,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.instructions">
-        <source>Edit patch here. Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+        <source>Edit patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="errata.edit.updateerrata">
         <source>Update Patch</source>
@@ -3288,12 +3351,13 @@
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.remove.instructions">
-        <source>Below is the list of packages which you have selected to remove from this patch. Click 'Confirm' to remove them.</source>
+        <source>Below is the list of packages which you have selected to remove from this patch.  Click 'Confirm' to remove them.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirm">
         <source>Confirm</source>
@@ -3328,12 +3392,13 @@
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.toolbar">
-        <source>Publish Patch:</source>
+        <source>Publish Patch: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
             </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="errata.publish.instructions">
         <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
@@ -3432,12 +3497,13 @@
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel">
-        <source>View:</source>
+        <source>View: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewsubmit">
         <source>View</source>
@@ -3530,10 +3596,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl">
-        <source>You can select one or more systems and apply this patch to them. Only systems with Management system type can be selected.</source>
+        <source>You can select one or more systems and apply this patch to them.  Only systems with Management system type can be selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.header">
         <source>Affected Systems</source>
@@ -3871,7 +3938,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="satusers.tip">
-        <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can not be modified on this page. Instead, please visit the "Users" top-level navigational tab above to access the profiles of individual users in your organization. You may grant or remove the organization administrator role in the "Roles" section of the "Details" tab in individual users' profiles.</source>
+        <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can
+not be modified on this page. Instead, please visit the "Users" top-level
+navigational tab above to access the profiles of individual users in your
+organization. You may grant or remove the organization administrator role in the
+"Roles" section of the "Details" tab in individual users' profiles.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="organizations.tip">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; This organization is your @@PRODUCT_NAME@@'s default organization.</source>
@@ -3892,16 +3964,18 @@
         <source>End date:</source>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date">
-        <source>Issue Start Date:</source>
+        <source>Issue Start Date: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="erratasearch.jsp.end_date">
-        <source>Issue End Date:</source>
+        <source>Issue End Date: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.tip">
         <source>'kernel', 'slessp1-glibc'</source>
@@ -3982,10 +4056,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_all_fields">
-        <source>All Fields</source>
+        <source>All Fields </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="search.jsp.package_name">
         <source>Package Name</source>
@@ -4018,7 +4093,8 @@
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary">
-        <source>&lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
+        <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="erratalist.jsp.unpublishederrata">
         <source>Unpublished Patches</source>
@@ -4337,10 +4413,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.pagesummary">
-        <source>Package Search will return packages from the specified set of software channels.</source>
+        <source>Package Search will return packages from the specified set of software channels. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="packagesearch.jsp.instructions">
         <source>Specify your search criteria below.</source>
@@ -4815,10 +4892,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.configfiles">
-        <source>Configs</source>
+        <source>Config Diffs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="systemlist.jsp.packages">
         <source>Packages</source>
@@ -5049,10 +5127,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="registeredlist.jsp.view">
-        <source>View systems registered:</source>
+        <source>View systems registered: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="proxylist.jsp.header">
         <source>Proxy Servers</source>
@@ -5711,10 +5790,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary">
-        <source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted. These actions will be scheduled automatically when you update this page.</source>
+        <source>After updating the configuration options below, monitoring services on this satellite and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config">
         <source>Update Config</source>
@@ -6059,10 +6139,17 @@
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.summary">
-        <source>You can lock packages so they will remain unmodified. However, it is important to keep in mind that requesting a lock might be delayed. If a package has been updated before the lock took action and the package is newer, the lock will be canceled.</source>
+        <source>
+                You can lock packages so they will remain unmodified.
+                However, it is important to keep in mind that requesting a 
+                lock might be delayed. If a package has been updated 
+                before the lock took action and the package is newer, the
+                lock will be canceled.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="pkg.lock.message.locksuccess">
         <source>Packages has been requested for being locked.</source>
@@ -6216,10 +6303,15 @@
         </context-group>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.satadmin.description">
-        <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from your own login? You will need to contact another @@PRODUCT_NAME@@ administrator to regain this role if you choose to remove it now. You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and organization management tools if you choose to remove this role from your login.</source>
+        <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from
+your own login? You will need to contact another @@PRODUCT_NAME@@ administrator to
+regain this role if you choose to remove it now.  You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and
+organization management tools if you choose to remove this role from your login.
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/SatRoleConfirm</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="orgs.trust.channels.plural.jsp.enabled">
         <source>{0} trusted organizations enabled.</source>
@@ -6264,10 +6356,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.orgaccess.summary">
-        <source>The organizations listed below are organizations with which your organization has a trust. The organizations checked below will be granted access to view and consume the content in &lt;strong&gt;{0}&lt;/strong&gt; channel. Organizations that are not checked below will not have access to this software channel. You can modify an organization's access to this channel below.</source>
+        <source>The organizations listed below are organizations with which
+          your organization has a trust. The organizations checked below will be
+          granted access to view and consume the content in
+          &lt;strong&gt;{0}&lt;/strong&gt; channel. Organizations that are not checked below will not have access to this software channel. You can modify an organization's access to this channel below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/OrgList</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.header3">
         <source>System Details</source>
@@ -6300,16 +6396,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="orgtrust.jsp.channelconsume.summary">
-        <source>Below is a list of channels your organization is sharing with &lt;strong&gt;{0}&lt;/strong&gt;. This list also shows how many packages are in each channel and how many systems in that organization are consuming from these shared channels. If you would like to modify how many of these channels are shared, click on the channel's name for more details.</source>
+        <source>Below is a list of channels your organization is sharing with &lt;strong&gt;{0}&lt;/strong&gt;. This list also shows how many packages are in each channel and how many systems in that organization are consuming from these shared channels. If you would like to modify how many of these channels are shared, click on the channel's name for more details. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/Consume</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="orgtrust.jsp.channelprovide.summary">
-        <source>Below is a list of channels that organization &lt;strong&gt;{0}&lt;/strong&gt; has shared with your organization, also showing how many packages are in each channel and how many systems in your organization are consuming from these shared channels.</source>
+        <source>Below is a list of channels that organization &lt;strong&gt;{0}&lt;/strong&gt; has shared with your organization, also showing how many packages are in each channel and how many systems in your organization are consuming from these shared channels. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/multiorg/channels/Provide</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="orgtrustdetails.jsp.sysmigratedto">
         <source>Systems Migrated to Your Organization</source>
@@ -6390,10 +6488,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="missingpkgs.jsp.pagesummary">
-        <source>The following packages are listed in the package profile which you have selected to sync</source>
+        <source> The following packages are listed in the package profile which you have selected to sync</source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="missingpkgs.jsp.removelistedpackagesfromsync">
         <source>Remove listed packages from sync</source>
@@ -6504,10 +6603,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="systemcompare.jsp.pagesummary">
-        <source>Below is a comparison of the package profiles of this system and the system selected for comparison.</source>
+        <source>Below is a comparison of the package profiles of this system and the system selected for comparison. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOTFILLEDOUT</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="message.thissystemonly">
         <source>This system only</source>
@@ -6811,10 +6911,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="filter-form.jsp.ksoverviewprofiles">
-        <source>Autoinstallation Profiles</source>
+        <source> Autoinstallation Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOverview.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="filtercreate.jsp.header2">
         <source>Create the notification filter using the form provided.</source>
@@ -7121,22 +7222,35 @@
         </context-group>
       </trans-unit>
       <trans-unit id="general.jsp.org.summary1">
-        <source>@@PRODUCT_NAME@@ allows for the creation of multiple 'organizations' on a @@PRODUCT_NAME@@.</source>
+        <source>@@PRODUCT_NAME@@ allows for the creation of multiple 'organizations'
+on a @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="general.jsp.org.summary2">
-        <source>Organizations are a way to place boundaries between sets of systems, system groups, software channels, autoinstallation profiles, activation keys, configuration channels and files, users - everything you manage using @@PRODUCT_NAME@@. Each organization is managed by at least one organization administrator, and the entire @@PRODUCT_NAME@@ is managed by a @@PRODUCT_NAME@@ administrator. The organizations on one @@PRODUCT_NAME@@ with multiple organizations function similarly to the organizations on multiple @@PRODUCT_NAME@@s with one organization.</source>
+        <source>Organizations are a way to place boundaries between sets of systems, system
+groups, software channels, autoinstallation profiles,
+activation keys, configuration channels and files, users - everything
+you manage using @@PRODUCT_NAME@@. Each organization is managed by at least one
+organization administrator, and the entire @@PRODUCT_NAME@@ is managed by a @@PRODUCT_NAME@@
+administrator. The organizations on one @@PRODUCT_NAME@@ with multiple organizations
+function similarly to the organizations on multiple @@PRODUCT_NAME@@s with one
+organization.
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="general.jsp.org.summary3">
-        <source>To get started creating and managing organizations on your @@PRODUCT_NAME@@, refer to the following tabs in the left navigation menu:</source>
+        <source>To get started creating and managing organizations on your @@PRODUCT_NAME@@, refer to
+the following tabs in the left navigation menu:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="general.jsp.org.summary4">
         <source>For more details on organizations, please refer to the</source>
@@ -7175,10 +7289,15 @@
         </context-group>
       </trans-unit>
       <trans-unit id="general.jsp.org.tbl.description3">
-        <source>Create and manage organizations on your @@PRODUCT_NAME@@. You can not view all of the users on the @@PRODUCT_NAME@@ here, but you can look up the users with organization administrator privileges in all of the organizations on your @@PRODUCT_NAME@@ and you may also assign or take away an organization administrator's @@PRODUCT_NAME@@ administrator privileges.</source>
+        <source>Create and manage organizations on your @@PRODUCT_NAME@@. You can not view all of the
+users on the @@PRODUCT_NAME@@ here, but you can look up the users with organization
+administrator privileges in all of the organizations on your @@PRODUCT_NAME@@ and you
+may also assign or take away an organization administrator's @@PRODUCT_NAME@@
+administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Orgs.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="general.jsp.org.tbl.link3">
         <source>Go to Users now</source>
@@ -7284,10 +7403,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="monitoring.jsp.monitoringdisabled">
-        <source>Monitoring is disabled. Please go to the &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;General&lt;/strong&gt;&lt;/a&gt; configuration page and select the Enable Monitoring checkbox.</source>
+        <source>Monitoring is disabled.  Please go to the &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;General&lt;/strong&gt;&lt;/a&gt; configuration page and select the Enable Monitoring checkbox.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bootstrap.jsp.toolbar">
         <source>@@PRODUCT_NAME@@ Configuration - Bootstrap</source>
@@ -7296,10 +7416,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.summary">
-        <source>The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from &lt;a href="/pub/bootstrap"&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt; Please note that some manual configuration of these scripts may still be required. The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
+        <source> The following information will be used to generate bootstrap scripts. These bootstrap scripts can be used to configure a client to use this @@PRODUCT_NAME@@ to receive updates. Once the bootstrap scripts have been generated, they will be available from  &lt;a href="/pub/bootstrap"&gt;this server&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;
+Please note that some manual configuration of these scripts may still be required.  The bootstrap script can be found on the @@PRODUCT_NAME@@ Server's filesystem here: &lt;strong&gt;/srv/www/htdocs/pub/bootstrap&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bootstrap.jsp.header2">
         <source>Client Bootstrap Script Configuration</source>
@@ -7374,10 +7496,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="restart.jsp.summary">
-        <source>The configuration changes require a restart of the @@PRODUCT_NAME@@. Please click Restart to restart the @@PRODUCT_NAME@@. This page will auto refresh in 4 minutes. Be aware that this will affect all users logged into this application as well as systems attempting to register or interact with the @@PRODUCT_NAME@@.</source>
+        <source> The configuration changes require a restart of the @@PRODUCT_NAME@@. Please click Restart to restart the @@PRODUCT_NAME@@. This page will auto refresh in 4 minutes.  Be aware that this will affect all users logged into this application as well as systems attempting to register or interact with the @@PRODUCT_NAME@@.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="restart.jsp.header2">
         <source>Restart @@PRODUCT_NAME@@</source>
@@ -7618,8 +7741,8 @@
         <target>Informació quant al dipòsit</target>
       </trans-unit>
       <trans-unit id="repos.jsp.update.channel">
-        <source>Update Repositories</source>
-        <target>Actualitza els dipòsits</target>
+        <source>Save Repositories</source>
+        <target state="needs-adaptation">Actualitza els dipòsits</target>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.header">
         <source>Repository</source>
@@ -7858,16 +7981,26 @@
       </group>
       <!-- Kickstart -->
       <trans-unit id="kickstarts.jsp.diskwarning">
-        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile selected is set to destroy all partitions on all disks, including logical disks on attached SANs. If you do not want to lose data on one or more disks you should remove the disk from the server before kickstarting or edit the "clearpart" option for this Kickstart Profile.</source>
+        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile selected is set to destroy all
+        partitions on all disks, including logical disks on attached SANs.
+        If you do not want to lose data on one or
+        more disks you should remove the disk from the server before
+        kickstarting or edit the "clearpart" option for this Kickstart Profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstarts.jsp.diskwarningssm">
-        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile(s) used may destroy all partitions on all disks of the kickstarted machines, including logical disks on attached SANs. If you do not want to lose data on one or more disks you should remove the disks from the servers before kickstarting or ensure that the Kickstart Profile(s) used will not destroy the partitions by editing the "clearpart" option.</source>
+        <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile(s) used may destroy all
+        partitions on all disks of the kickstarted machines, including logical disks on attached SANs.
+        If you do not want to lose data on one or more disks you should remove the disks from the
+        servers before kickstarting or ensure that the Kickstart Profile(s) used will not destroy the
+        partitions by editing the "clearpart" option.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="partitions">
         <source>partitions</source>
@@ -7938,16 +8071,19 @@
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.variable.jsp.summary">
-        <source>Autoinstallation variables can be used to substitute values into autoinstallation profiles. To define a variable simply add 'name=value' to the box below. You would then use $name within the profile to substitute in the value.</source>
+        <source>Autoinstallation variables can be used to substitute values into autoinstallation profiles.  To define a variable simply add 'name=value' to the box below.
+                    You would then use $name within the profile to substitute in the value.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstarttree.variable.jsp.summary">
-        <source>Any variables specified below will be usable in any profile that uses this distro. They can be overridden in each profile as well.</source>
+        <source>Any variables specified below will be usable in any profile that uses this distro.  They can be overridden in each profile as well.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.mac_address">
         <source>MAC Address</source>
@@ -7969,10 +8105,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.virt_disk_path.tip">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; You may specify a file path (/var/lib/xen/images/disk), a Volume Group (VolGroup00), or a partition (/dev/sda5). You can also specify multiple virtual disks by comma separating the filepaths, volume group, or partition (/dev/sdb1,/devsdc1).</source>
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; You may specify a file path (/var/lib/xen/images/disk), a Volume Group (VolGroup00), or a partition (/dev/sda5).  You can also specify multiple virtual disks by comma separating the filepaths, volume group, or partition (/dev/sdb1,/devsdc1).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.virt_mem_mb">
         <source>Virtual Memory (in MB)</source>
@@ -8015,10 +8152,11 @@
         <target>Variables</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.invalidvariable">
-        <source>You have specified an invalid variable: '{0}'. Variables should be name value pairs, separated by a '=' symbol, with each pair being separated by a new line. For example: 'ip=192.168.0.1'</source>
+        <source>You have specified an invalid variable: '{0}'.  Variables should be name value pairs, separated by a '=' symbol, with each pair being separated by a new line.  For example: 'ip=192.168.0.1'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.jsp.error.template_generation">
         <source>There are errors in your kickstart/autoyast template. Please check the '{0}' tab to determine the problem with the template.</source>
@@ -8278,10 +8416,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.summary2">
-        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files. Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file. The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt; The Organization Default Profile setting can be used with manually-created or bare-metal autoinstallation files.  Select this option to indicate which profile in your Organization is used when the URL from &lt;a href="{0}" target="_new" &gt; &lt;strong&gt; this link &lt;/strong&gt; &lt;/a&gt; is specified in the &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; section of your autoinstallation file.  The link will not work unless an Organization Default is specified.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.activeDescription">
         <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for unprovisioned autoinstallations.</source>
@@ -8468,10 +8607,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.virtTypeChangeWarning">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Changing the Virtualization Type may require changes to the autoinstallation profile's bootloader and partition options, potentially overwriting user customizations. Please visit the &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;Partitioning&lt;/a&gt; tab to verify the new settings.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Changing the Virtualization Type may require changes to the
+            autoinstallation profile's bootloader and partition options, potentially overwriting user customizations.
+            Please visit the &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;Partitioning&lt;/a&gt;
+            tab to verify the new settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.active">
         <source>Active:</source>
@@ -8514,10 +8657,11 @@
         <target>Tipus de virtualització:</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.invalid.jsp.summary">
-        <source>The distribution associated to this kickstart profile is invalid.</source>
+        <source>The distribution associated to this kickstart profile is invalid. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstartdetails.invalid.jsp.summary-option1">
         <source>To enable operations available to this kickstart profile, you may correct the distribution(&lt;strong&gt;{0}&lt;/strong&gt;) by visiting the &lt;a href = "{1}"&gt;Kickstart Distribution Details&lt;/a&gt; page.</source>
@@ -8526,16 +8670,18 @@
         </context-group>
       </trans-unit>
       <trans-unit id="kickstartdetails.invalid.jsp.summary-option2">
-        <source>Alternatively you may associate a different distribution to this kickstart profile by visiting the &lt;a href = "{0}"&gt;Kickstart Operating System Details&lt;/a&gt; page.</source>
+        <source> Alternatively you may associate a different distribution to this kickstart profile by visiting the &lt;a href = "{0}"&gt;Kickstart Operating System Details&lt;/a&gt; page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstartdetails.advanced.invalid.jsp.summary-option2">
-        <source>Alternatively you may associate a different distribution to this kickstart profile by selecting a distribution and choosing '{0}'.</source>
+        <source> Alternatively you may associate a different distribution to this kickstart profile by selecting a distribution and choosing '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.updatekickstart">
         <source>Update Kickstart</source>
@@ -8569,10 +8715,11 @@
         <target>Suprimeix la instal·lació automàtica</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.summary">
-        <source>You can associate one or more activation keys with this kickstart profile. Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ system types, subscribe to specified software and configuration channels, and subscribe to specified system groups. Activation keys can also specify packages to be installed on a system. Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
+        <source>You can associate one or more activation keys with this kickstart profile.  Activation keys will allow systems kickstarted with this profile to automatically register to @@PRODUCT_NAME@@, gain @@PRODUCT_NAME@@ system types, subscribe to specified software and configuration channels, and subscribe to specified system groups.  Activation keys can also specify packages to be installed on a system.  Please consider how this may affect your package selection in this profile's &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;Software&lt;/a&gt; tab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.nokeys">
         <source>No activation keys available</source>
@@ -8630,10 +8777,11 @@
         <target>Actualitza les claus d'activació</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.note">
-        <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt; You'll want to review the Reference Guide section on using multiple activation keys before making use of this feature.</source>
+        <source>&lt;strong&gt;Note: The selection of incompatible activation keys can prevent a system from registering properly after it is kickstarted.&lt;/strong&gt;  You'll want to review the Reference Guide section on using multiple activation keys before making use of this feature.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ActivationKeysEdit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.warning">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Any child channel subscriptions associated with this profile will be overridden if any activation keys are selected above. If you wish to associate activation keys with this profile, please use an activation key to specify child channel subscriptions.</source>
@@ -8642,10 +8790,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.summary">
-        <source>You can associate file preservation lists with this kickstart profile by selecting them below. When a system is kickstarted, any files or directories listed in the file preservation lists associated with this kickstart profile will be saved before the kickstart is performed and restored once it is complete. If you would like to create a new file preservation list, you can do so at the &lt;a href="/rhn/systems/provisioning/preservation/PreservationList.do"&gt;File Preservation&lt;/a&gt; tab.</source>
+        <source>You can associate file preservation lists with this kickstart profile by selecting them below.  When a system is kickstarted, any files or directories listed in the file preservation lists associated with this kickstart profile will be saved before the kickstart is performed and restored once it is complete. If you would like to create a new file preservation list, you can do so at the &lt;a href="/rhn/systems/provisioning/preservation/PreservationList.do"&gt;File Preservation&lt;/a&gt; tab.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.nolists">
         <source>No file preservation lists available</source>
@@ -8975,10 +9124,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="keys.jsp.summary">
-        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart. A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server. For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
+        <source>
+You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.
+A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.
+For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-and-ssl-keys.html" target="_blank" &gt;Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -9046,10 +9199,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="keycreate.jsp.summary">
-        <source>Please enter the information for your key in the form provided below. Entries marked with an (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt; and must be unique. The actual key content can be provided by uploading a file or by filling out the dedicated text area. In case both ways were used, the file selected for upload takes precedence.</source>
+        <source>Please enter the information for your key in the form provided below.  Entries marked with an (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt; and must be unique. The actual key content can be provided by uploading a file or by filling out the dedicated text area. In case both ways were used, the file selected for upload takes precedence.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="keydelete.jsp.summary">
         <source>Are you sure you want to delete this Key permanently?&lt;p&gt;&lt;strong&gt;If so please click the button once.&lt;/strong&gt;&lt;/p&gt;</source>
@@ -9079,11 +9233,11 @@
         <target>Contingut de la clau:</target>
       </trans-unit>
       <trans-unit id="keycreate.jsp.selectfile">
-        <source>Select file to upload:</source>
+        <source>Select file to upload: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target>Selecciona el fitxer a pujar:</target>
+        <target state="needs-adaptation">Selecciona el fitxer a pujar:</target>
       </trans-unit>
       <trans-unit id="keycreate.jsp.submit">
         <source>Create Key</source>
@@ -9120,16 +9274,22 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preservation_list.jsp.summary">
-        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart. You can reference a file preservation list in a kickstart profile. For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;. The following file preservation lists have been created for use by your organization:</source>
+        <source>
+        File preservation lists are lists of files that will be restored to a system during a particular kickstart.
+        You can reference a file preservation list in a kickstart profile.
+        For more information refer to the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.
+        The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary">
-        <source>Are you sure you want to delete the selected File List(s)? &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
+        <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListConfirmDelete.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.header2">
         <source>Confirm File List(s) deletion.</source>
@@ -9144,10 +9304,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preservation_list.jsp.nokeys">
-        <source>There are currently no file preservation lists defined. Click the "Create File Preservation List" link above to create a new list.</source>
+        <source>There are currently no file preservation lists defined.  Click the "Create File Preservation List" link above to create a new list.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="preservation_list_delete.jsp.noneselected">
         <source>There were no files selected for deletion</source>
@@ -9246,10 +9407,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;. For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/docs/reference/systems/autoinst-file-preservation.html" target="_blank" &gt;Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1">
         <source>You can modify the software this kickstart profile will deploy below.</source>
@@ -9350,10 +9512,11 @@
         <target>Neteja el perfil del paquet</target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.summary">
-        <source>Below is a list of the GPG and SSL keys you have &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;created.&lt;/a&gt; Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
+        <source>Below is a list of the GPG and SSL keys you have &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;created.&lt;/a&gt;  Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.note">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; If you want clients to continue to be able to SSH into machines kickstarted with this profile without getting host key errors, it is recommended you setup a file preservation list for this profile containing the files in /etc/ssh&lt;/span&gt;</source>
@@ -9376,10 +9539,11 @@
         <target>Descripció</target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.nokeys">
-        <source>No keys defined. Please go &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;here&lt;/a&gt; to create a new Key to use with this Profile. Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
+        <source>No keys defined.  Please go &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;here&lt;/a&gt; to create a new Key to use with this Profile.  Selected keys will be imported during the %post section of all kickstarts scheduled using this profile.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.script.language">
         <source>Scripting Language</source>
@@ -9409,10 +9573,17 @@
         <target>Detalls de l'script de Kickstart</target>
       </trans-unit>
       <trans-unit id="kickstart.script.summary">
-        <source>You can edit the pre and post scripts for this kickstart below. Kickstart pre-scripts are run immediately after a kickstart file has been parsed on a system. You can access the network in this section, but you must use IP addresses (name service has not been configured at this point). For more details on kickstart pre scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt; &lt;br/&gt;&lt;br/&gt; You can also edit the post script for this kickstart below. First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@). Next, the non-chroot post script will be executed, and finally the post script will be executed. For more details on kickstart post scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;</source>
+        <source>You can edit the pre and post scripts for this kickstart below.  Kickstart pre-scripts are run immediately after a kickstart file has been parsed on a system.
+You can access the network in this section, but you must use IP addresses (name service has not been configured at this point).  For more details on
+kickstart pre scripts, please refer to the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;
+&lt;br/&gt;&lt;br/&gt;
+You can also edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@).
+Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to
+the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.script.langheader">
         <source>Kickstart Script Scripting Language</source>
@@ -9477,22 +9648,27 @@
         </context-group>
       </trans-unit>
       <trans-unit id="post.jsp.summary">
-        <source>You can edit the post script for this kickstart below. First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@). Next, the non-chroot post script will be executed, and finally the post script will be executed. For more details on kickstart post scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
+        <source>You can edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@).  Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPostEdit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.main1">
-        <source>Specify below the packages and package groups you'd like to install on systems during kickstart. Please list packages and groups one per line. For more information please see &lt;em&gt;The Red Hat Enterprise Linux System Administration Guide.&lt;/em&gt; If you would prefer to specify packages to be installed by package profile sync, please visit the &lt;em&gt; Package Profiles &lt;/em&gt; tab to change the kickstart software installation method.</source>
+        <source>Specify below the packages and package groups you'd like to install on systems during kickstart. Please list packages and groups one per line. For more information please see &lt;em&gt;The Red Hat Enterprise Linux System Administration Guide.&lt;/em&gt; If you would prefer to specify packages to be installed by package profile sync, please visit the &lt;em&gt; Package Profiles &lt;/em&gt; tab to change the kickstart software installation method.
+      </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.main2">
-        <source>&lt;b&gt;Note: only packages available in your Enterprise Linux install tree should be specified here.&lt;/b&gt; To install packages available in @@PRODUCT_NAME@@ software channels, please associate an appropriate activation key with this kickstart profile in the &lt;em&gt;Activation Keys&lt;/em&gt; tab.</source>
+        <source>&lt;b&gt;Note: only packages available in your Enterprise Linux install tree should be specified here.&lt;/b&gt; To install packages available in @@PRODUCT_NAME@@ software channels, please associate an appropriate activation key with this kickstart profile in the &lt;em&gt;Activation Keys&lt;/em&gt; tab.
+      </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackagesEdit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.edit.pkgs.jsp.header1">
         <source>Install Packages by Package Name and Group</source>
@@ -9916,10 +10092,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.relevanterrata.description">
-        <source>relevant patches</source>
+        <source>relevant patches </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noerrata">
         <source>&lt;strong&gt;No relevant security patches.&lt;/strong&gt;&lt;p&gt;There are no security patches that apply to your systems. You can view a list of &lt;strong&gt;all&lt;/strong&gt; patches for the software your organization has entitlements to at &lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;Patches &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
@@ -10110,7 +10287,8 @@
         <source>Display channels with at least</source>
       </trans-unit>
       <trans-unit id="channels.popular.jsp.label2">
-        <source>systems subscribed below.</source>
+        <source> systems subscribed below.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channels.retired.jsp.toolbar">
         <source>Retired Software Channel List</source>
@@ -10125,7 +10303,8 @@
         <source>The following software channels are owned by your organization.</source>
       </trans-unit>
       <trans-unit id="channels.manage.jsp.header2">
-        <source>Modify an existing software channel by selecting it from the list below, or create a new software channel.</source>
+        <source>Modify an existing software channel by selecting it from the list below, or create a new software channel. </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="toolbar.create.channel">
         <source>Create Channel</source>
@@ -10176,10 +10355,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.bootloadertip.text">
-        <source>LILO is a text-based bootloader. Choose LILO as your bootloader if you are having video card issues.</source>
+        <source>LILO is a text-based bootloader.  Choose LILO as your bootloader if you are having video card issues.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/Troubleshooting.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.kernelparams">
         <source>Extra Kernel Parameters (for auto-kickstart only)</source>
@@ -11697,11 +11877,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="channelOverview.error.labelexists">
-        <source>Label '{0}' already exists. Please choose a different label for the new channel.</source>
+        <source>Label '{0}' already exists.  Please choose a different label for the new channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelCreate.do</context>
           <context context-type="paramnotes">"Label 'NEWCHANNEL' already exists.  Please choose a different label for the new channel."</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- channelfiles.jsp -->
       <trans-unit id="channelfiles.jsp.header2">
@@ -11711,10 +11892,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.description">
-        <source>This list shows the files that this configuration channel contains. You can remove a file or files, or copy the latest version into a set of local overrides or into other central configuration channels.</source>
+        <source>This list shows the files that this configuration channel contains.  You can remove
+a file or files, or copy the latest version into a set of local overrides or into other central configuration channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channelfiles.jsp.path">
         <source>Filename</source>
@@ -11949,13 +12132,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.descr">
-        <source>The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management (meaning they have the required client software installed) but are not subscribed to {0}.</source>
+        <source>The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management
+(meaning they have the required client software installed)
+but are not subscribed to {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/TargetSystems.do</context>
           <context context-type="paramnotes">The systems listed below are capable of being managed by @@PRODUCT_NAME@@ configuration management
 (meaning they have the required client software installed and have provisioning entitlements)
 but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="targetsystems.jsp.subscribe">
         <source>Subscribe systems</source>
@@ -12066,10 +12252,16 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.note">
-        <source>The files shown below will be deployed to the systems shown below. Choose a scheduled date, or "earliest possible", from the date-chooser below. Click the confirm button to schedule the deployment, or press your browser's back button to make modifications to your file and system selections. Note that if a given system overrides a given file, or has it in that system's local configuration channel, the file will NOT be deployed.</source>
+        <source>The files shown below will be deployed to the systems shown below.
+Choose a scheduled date, or "earliest possible", from the date-chooser below.
+Click the confirm button to schedule the deployment,
+or press your browser's back button to make modifications to your file and system selections.
+
+Note that if a given system overrides a given file, or has it in that system's local configuration channel, the file will NOT be deployed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.systems-header2">
         <source>Systems to Deploy Files To</source>
@@ -12105,14 +12297,14 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.lastmodified-header">
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <group>
@@ -12130,84 +12322,85 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.actions-header">
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.filepath-header">
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.deployallbutton">
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.deployselectedbutton">
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.h2">
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.description">
-        <source>You may select the files you wish to deploy from the list below. You will then be asked to select the systems to deploy them to.</source>
+        <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="deploy.jsp.filepath">
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.deployconfirmbutton">
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.h2">
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.note">
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <trans-unit id="deploysystems.jsp.warning">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <!-- deployrevision.jsp -->
@@ -12228,10 +12421,11 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.tip.global-1">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; If a system has a locally-managed override for this file, you will not be able to deploy it. However, you may click on the 'Modify rank' link to re-rank the overriding channels.</source>
+        <source>&lt;strong&gt;Tip:&lt;/strong&gt; If a system has a locally-managed override for this file, you will not be able to deploy it.  However, you may click on the 'Modify rank' link to re-rank the overriding channels.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.needadmin">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this file to a system not in this list, request a {0} to subscribe the system to the {1} configuration channel, then return to this screen.</source>
@@ -12252,19 +12446,21 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
         </context-group>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.not_deployable">
-        <source>These systems do not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system. You may ensure that configuration deployment capability will be enabled on these systems by selecting them in the &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
+        <source>These systems do not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system. You may ensure that configuration deployment capability will be enabled on these systems by selecting them in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.orgadmin">
-        <source></source>
+        <source> </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">
 You may grant provisioning entitlements _here_.
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- date-picker strings -->
       <trans-unit id="deploy.jsp.widgetsummary">
@@ -12287,11 +12483,14 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
       <trans-unit id="deploylocal.jspf.local">
-        <source>You can deploy the latest revision (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to &lt;a href="{3}"&gt;{2}&lt;/a&gt; - this file is part of that system's locally-managed config channel.</source>
+        <source>
+    You can deploy the latest revision (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to &lt;a href="{3}"&gt;{2}&lt;/a&gt; - this file is part of that system's locally-managed config channel.
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">You can deploy the latest revision (_Revision 7_) of this file to _zanarkand.boston.redhat.com_ - this file is part of that system's locally-managed config channel.</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="deploy.jsp.filedetails">
         <source>File Details</source>
@@ -12344,21 +12543,30 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.sandbox-note1">
-        <source>You can't deploy this file to any systems because this file is part of a config sandbox local to system &lt;a href="{1}"&gt;{0}&lt;/a&gt;.</source>
+        <source>You can't deploy this file to any systems because this file is part of a config sandbox local to system
+&lt;a href="{1}"&gt;{0}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">You can't deploy this file to any systems because this file is part of a config sandbox local to
 system _zanarkand.boston.redhat.com_.</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="deploy.jsp.sandbox-note2">
-        <source>Configuration sandboxes are a place to store configuration files that are under development. If you believe this configuration file is ready for deployment to a system, you can &lt;a href="{0}"&gt;copy it to a locally-managed config channel&lt;/a&gt; or &lt;a href="{1}"&gt;copy it to a globally-managed config channel&lt;/a&gt; via the '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' tab above. From there, you can deploy the file to systems.</source>
+        <source>Configuration sandboxes are a place to store configuration files that are under development.
+If you believe this configuration file is ready for deployment to a system, you can &lt;a href="{0}"&gt;copy it to a locally-managed config channel&lt;/a&gt;
+or &lt;a href="{1}"&gt;copy it to a globally-managed config channel&lt;/a&gt; via the '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' tab above.
+From there, you can deploy the file to systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="deployglobal.jspf.note">
-        <source>You can deploy the latest revision of this file (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to any of the systems subscribed to this file's centrally-managed configuration channel, {2}; below is a list of systems you may deploy this file to.</source>
+        <source>
+You can deploy the latest revision of this file (&lt;a href="{1}"&gt;Revision {0}&lt;/a&gt;) of this file to any of the systems subscribed to this file's
+centrally-managed configuration channel, {2}; below is a list of systems you may deploy this file to.
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">
@@ -12366,6 +12574,7 @@ system _zanarkand.boston.redhat.com_.</context>
         centrally-managed configuration channel, _@@PRODUCT_NAME@@Config_; below is a list of systems you may deploy this file to.
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="globalDeploy.jsp.noSystems">
         <source>There are no systems currently subscribed to this channel.</source>
@@ -12807,17 +13016,24 @@ system _zanarkand.boston.redhat.com_.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-edit">
-        <source>You can't edit this file because it is a binary file. (If you think that this file is incorrectly set as a 'binary' file, you may change this with the 'File Type' property above. After setting it as a plaintext file, you can edit it here.)</source>
+        <source>
+You can't edit this file because it is a binary file.
+(If you think that this file is incorrectly set as a 'binary' file, you may change this with the 'File Type' property above. After setting it as a plaintext file, you can edit it here.)
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">arg0 is a link-target that isn't visible to the user</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-display">
-        <source>This is a binary file, and can not be displayed.</source>
+        <source>
+This is a binary file, and can not be displayed.
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-canupload">
         <source>You &lt;strong&gt;can&lt;/strong&gt; upload a new revision of this binary file below, however.</source>
@@ -12833,7 +13049,10 @@ system _zanarkand.boston.redhat.com_.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.toolarge-edit">
-        <source>You can't edit this file here because it is too large (files must be less than &lt;strong&gt;{0}&lt;/strong&gt; to be editable in this form - this size can be set by @@PRODUCT_NAME@@ administrators via the java.config_file_edit_size option in /etc/rhn/rhn.conf). You can, however, download this file, edit it locally on your computer, and upload your changes here.</source>
+        <source>
+You can't edit this file here because it is too large (files must be less than &lt;strong&gt;{0}&lt;/strong&gt; to be editable in this form - this size can be set by @@PRODUCT_NAME@@ administrators via the java.config_file_edit_size option in /etc/rhn/rhn.conf).
+You can, however, download this file, edit it locally on your computer, and upload your changes here.
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">
@@ -12841,9 +13060,13 @@ You can't edit this file here because it is too large (files must be less than &
 You can, however, download this file, edit it locally on your computer, and upload your changes here.
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.toolarge-display">
-        <source>This file is too large to display here. (files must be less than &lt;strong&gt;{0}&lt;/strong&gt; to be displayed). You can, however, download this file.</source>
+        <source>
+This file is too large to display here. (files must be less than &lt;strong&gt;{0}&lt;/strong&gt; to be displayed).
+You can, however, download this file.
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">
@@ -12851,6 +13074,7 @@ This file is too large to display here. (files must be less than &lt;strong&gt;3
 You can, however, download this file.
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.download-header">
         <source>Download File</source>
@@ -12859,13 +13083,16 @@ You can, however, download this file.
         </context-group>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.download">
-        <source>&lt;a href="{0}"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})</source>
+        <source>
+&lt;a href="{0}"&gt;Download {1}&lt;/a&gt; (Revision {2}, {3})
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">
 _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           </context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <!-- header.jspf -->
       <trans-unit id="filedetails.header.jspf.download">
@@ -12925,10 +13152,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="deletefile.jsp.info">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Deleting the configuration file described below will remove ALL revisions of the file from this channel. It will also remove all currently-pending deployment actions for any of those revisions, as well as all deployment history regarding any of these revisions. Are you sure you want to do this?</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Deleting the configuration file described below
+will remove ALL revisions of the file from this channel.  It will also remove all currently-pending
+deployment actions for any of those revisions, as well as all deployment history regarding
+any of these revisions.  Are you sure you want to do this?</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/DeleteFile.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="deletefile.jsp.submit">
         <source>Confirm File Delete</source>
@@ -14460,16 +14691,27 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.summary">
-        <source>You may sync kickstarting systems to the package profile of a system registered to @@PRODUCT_NAME@@ by choosing a package profile below. &lt;strong&gt;Note&lt;/strong&gt;: This list will only show package profiles that were made against the same Base Channel chosen on the &lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;Operating System&lt;/a&gt; page.</source>
+        <source>You may sync kickstarting systems to the package profile
+of a system registered to @@PRODUCT_NAME@@ by choosing a package profile
+below.  &lt;strong&gt;Note&lt;/strong&gt;: This list will
+only show package profiles that were made against the same
+Base Channel chosen on the
+&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;Operating System&lt;/a&gt; page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEdit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip">
-        <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; Make sure you subscribe systems to the appropriate software channels during kickstart so they have access to the packages in the package profile you sync them to. Visit the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Keys&lt;/a&gt; tab to subscribe systems to software channels during kickstart.&lt;/span&gt;</source>
+        <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt;
+Make sure you subscribe systems to the appropriate software channels during kickstart
+so they have access to the packages in the package profile you sync them to.  Visit
+the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Keys&lt;/a&gt;
+ tab to subscribe systems to software channels during kickstart.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEditSubmit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.schedule.tip.proxy.jsp">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; Date listed is last time proxy contacted @@PRODUCT_NAME@@.</source>
@@ -14794,10 +15036,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.distro.cobbler-only.tooltip">
-        <source>Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
+        <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstarts.distro.cobbler-only.tooltip">
         <source>Autoinstallation profiles that are not managed by @@PRODUCT_NAME@@ can not be edited in the @@PRODUCT_NAME@@ UI. To modify these profiles, please log onto the @@PRODUCT_NAME@@ server and run the 'cobbler profile edit' command. For more information, consult the @@PRODUCT_NAME@@ Reference Guide.</source>
@@ -14878,10 +15121,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.summary">
-        <source>Please specify a new label for this Autoinstallation Profile. All options, settings and scripts from the source Autoinstallation Profile will be copied to a new Profile except the IP Range Settings.</source>
+        <source>Please specify a new label for this Autoinstallation Profile.  All options, settings and scripts from the source Autoinstallation Profile will be copied to a new Profile except the IP Range Settings.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClean</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.clone.jsp.header1">
         <source>Create a Clone of Autoinstallation: {0}</source>
@@ -14890,10 +15134,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.summary2">
-        <source>This is current status of this system's Autoinstallation progress. &lt;strong&gt;NOTE:&lt;/strong&gt; This page refreshes every 15 seconds</source>
+        <source>This is current status of this system's Autoinstallation progress.  &lt;strong&gt;NOTE:&lt;/strong&gt;  This page refreshes every 15 seconds</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.progress">
         <source>Autoinstallation Progress</source>
@@ -14914,10 +15159,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.activation2">
-        <source>using existing profile:</source>
+        <source>using existing profile: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.next_action">
         <source>Next Action:</source>
@@ -15159,12 +15405,6 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="preferences.jsp.lang.none">
-        <source>Use Browser Settings</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="probes.jsp.toolbar">
         <source>Probe Status List</source>
         <context-group name="ctx">
@@ -15202,10 +15442,18 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header1">
-        <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt; The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt; The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt; &lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire autoinstallable tree for a distribution including kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users. If you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; you would specify that path as your Tree Path value. &lt;/p&gt;</source>
+        <source>The following details are needed to define an autoinstallable distribution. The tree path field should be a valid path to an installation tree located on this @@PRODUCT_NAME@@ server.&lt;br/&gt;&lt;br/&gt;
+
+The Distribution Label field should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long.&lt;br/&gt;&lt;br/&gt;
+
+The Tree Path, Base Channel, and Installer Generation should always match. This generally means that the versions for each field should be from the same version of @@ENTERPRISE_LINUX_NAME@@.&lt;br/&gt;&lt;br/&gt;
+
+&lt;p&gt;The Tree Path must be a local disk path on your @@PRODUCT_NAME@@ server containing the entire autoinstallable tree for a distribution including kernel, initrd, and repo information, but excluding any rpms. This directory should be readable by the apache and tomcat users.  If you have media located on the @@PRODUCT_NAME@@ server at: &lt;i&gt;/var/distro-trees/sles-11-server/&lt;/i&gt; you would specify that path as your Tree Path value. &lt;/p&gt;
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2">
         <source>Create Autoinstallable Distribution</source>
@@ -15256,10 +15504,13 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="tree-form.jspf.noinstalltypes">
-        <source>&lt;strong&gt;No applicable installer generations found for selected base channel.&lt;/strong&gt;</source>
+        <source>
+ &lt;strong&gt;No applicable installer generations found for selected base channel.&lt;/strong&gt;
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeCreate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="virtuallist.jsp.toolbar">
         <source>Virtual Systems</source>
@@ -15339,10 +15590,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="virtualguestslist.jsp.summary">
-        <source>This is a list of virtual guests which are configured to run on this host. You can perform actions on these guests with the buttons below.</source>
+        <source>This is a list of virtual guests which are configured to run on this host.  You can perform actions on these guests with the buttons below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="virtualguestslist.jsp.nosystems">
         <source>No virtual systems.</source>
@@ -15493,10 +15745,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="virtualguests_confirm.jsp.summary.delete">
-        <source>Click the Confirm button below to delete the following virtual systems. This will remove all information about the virtual system from the @@PRODUCT_NAME@@. &lt;strong&gt;NOTE:&lt;/strong&gt; This will not remove the actual virtual machine from the host.</source>
+        <source>Click the Confirm button below to delete the following virtual systems.  This will remove all information about the virtual system from the @@PRODUCT_NAME@@. &lt;strong&gt;NOTE:&lt;/strong&gt; This will not remove the actual virtual machine from the host.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="virtualguests_confirm.jsp.nosystems">
         <source>No systems selected.</source>
@@ -15555,10 +15808,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="distro-delete.jsp.profilesusing">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The Autoinstallable Distribution you have chosen to delete is in use by the following Autoinstallation Profiles. You must change the Distribution used in the profiles below before deleting this Distribution. Click the label in the link to edit the profile's Distribution.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The Autoinstallable Distribution you have chosen to delete is in use by the following Autoinstallation Profiles.  You must change the Distribution used in the profiles below before deleting this Distribution.  Click the label in the link to edit the profile's Distribution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="distro-delete.jsp.cantdelete">
         <source>This distribution cannot be deleted at this time.</source>
@@ -15651,10 +15905,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.override.jsp.message">
-        <source>The following fields may be left blank (in which case default values as defined in the selected autoinstallation profile will be used). Each field may be set individually to override the profile's default value.</source>
+        <source>The following fields may be left blank (in which case default values as defined in the selected autoinstallation profile will be used).  Each field may be set individually to override the profile's default value.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.storage.local.message">
         <source>Size in gigabytes from the virtual host's disk space.</source>
@@ -16009,12 +16264,13 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.osa.status.message">
-        <source>{0} as of</source>
+        <source>{0} as of </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - Ping status, will be either online or offline
                                                 This string will be followed by a date in a localized format</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.overview.osa.status.ping">
         <source>Ping System</source>
@@ -16161,10 +16417,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.overview.inactive2">
-        <source>(&lt;a href="{0}"&gt;more info&lt;/a&gt;)</source>
+        <source> (&lt;a href="{0}"&gt;more info&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.overview.unentitled">
         <source>&lt;strong&gt;System not assigned to a system type&lt;/strong&gt; (&lt;a href="{0}"&gt;add it here&lt;/a&gt;)</source>
@@ -16757,10 +17014,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.activation.summary">
-        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility. The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
+        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility.  The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.details.activation.key">
         <source>Key:</source>
@@ -17066,7 +17324,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group/>
+      <group />
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -17113,10 +17371,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.summary">
-        <source>This system is subscribed to the base channel, listed at top, and to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from.</source>
+        <source>This system is subscribed to the base channel, listed at top, and to the checked channels beneath, if any.  Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.channels.edit.summary2">
         <source>You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel.</source>
@@ -17125,10 +17384,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.subwarning">
-        <source>You do not have subscription rights to the current base channel for this system. If you change the base channel, you will not be able to return it to this channel without administrator assistance.</source>
+        <source>You do not have subscription rights to the current base channel for this system.  If you change the base channel, you will not be able to return it to this channel without administrator assistance.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.channels.edit.confirm_update_base">
         <source>Confirm</source>
@@ -17137,10 +17397,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.markedwarning">
-        <source>You do not have subscription rights to the marked channels below. You will not be able to resubscribe this system to such channels without administrator intervention.</source>
+        <source>You do not have subscription rights to the marked channels below.  You will not be able to resubscribe this system to such channels without administrator intervention.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.channels.edit.resubwarning">
         <source>Resubscription Warning</source>
@@ -17155,10 +17416,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.nobasechannel">
-        <source>This system has no Base Software Channel. You can select a Base Channel from the list below.</source>
+        <source>This system has no Base Software Channel.  You can select a Base Channel from the list below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
@@ -17251,10 +17513,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="orgcreate.header2">
-        <source>Your &lt;strong&gt;@@PRODUCT_NAME@@ Administrator&lt;/strong&gt; role will not allow you to login into or modify this new organization, and your @@PRODUCT_NAME@@ login cannot be a member of more than one organization. Consequently, you will need to create a new login for the initial &lt;strong&gt;Organization Administrator&lt;/strong&gt; for this organization:</source>
+        <source>Your &lt;strong&gt;@@PRODUCT_NAME@@ Administrator&lt;/strong&gt; role will not allow you to login into or modify this new organization, and your @@PRODUCT_NAME@@ login cannot be a member of more than one organization.  Consequently, you will need to create a new login for the initial &lt;strong&gt;Organization Administrator&lt;/strong&gt; for this organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgCreate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.channel.subscribed.systems">
         <source>Subscribed Systems</source>
@@ -17320,22 +17583,41 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       </trans-unit>
       <!-- multiorg trustedorg strings  -->
       <trans-unit id="org.trust.summary">
-        <source>The organizations checked off below are trusted organizations of the {0} organization. This means that it is possible to share content and migrate systems between these two organizations. You may add a trust by checking the box next to an organization (or remove a trust by unchecking it) and clicking the 'Modify Trusts' button.</source>
+        <source>
+          The organizations checked off below are trusted organizations of the {0} organization. This means that it is
+          possible to share content and migrate systems between these two organizations. You may add a trust by checking
+          the box next to an organization (or remove a trust by unchecking it) and clicking the 'Modify Trusts' button.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.trust.confirm.summary">
-        <source>Are you sure you want to remove the trust(s) listed below? There are systems in the {0} organization that subscribe to content provided by the organization(s) whose trust(s) you are removing. This may adversely affect those systems. For example, those systems may no longer receive security updates for content provided through the trust. &lt;p/&gt; Please review the changes you are about to make before confirming the trust removal(s).</source>
+        <source>
+            Are you sure you want to remove the trust(s) listed below?  There are systems in the
+            {0} organization that subscribe to content provided by the organization(s) whose trust(s)
+            you are removing.  This may adversely affect those systems.  For example, those systems may
+            no longer receive security updates for content provided through the trust.
+            &lt;p/&gt;
+            Please review the changes you are about to make before confirming the trust removal(s).
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.trust.affectedsystems.summary">
-        <source>The systems listed below will be affected by removing the trust relationship between the &lt;b&gt;{0}&lt;/b&gt; organization and the &lt;b&gt;{1}&lt;/b&gt; organization. Removing this trust may adversely affect these systems. For example, these systems may no longer receive security updates for content provided through this trust.</source>
+        <source>
+            The systems listed below will be affected by removing the trust relationship between
+            the &lt;b&gt;{0}&lt;/b&gt; organization and the &lt;b&gt;{1}&lt;/b&gt; organization.
+            Removing this trust may adversely affect these systems.  For example, these systems may
+            no longer receive security updates for content provided through this trust.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgTrusts</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.trust.org">
         <source>Organization</source>
@@ -17688,7 +17970,8 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>To access the CSV you requested, please re-visit the page you wanted to export data from, and click the 'Export CSV' link again.</source>
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptions">
-        <source>Custom options:</source>
+        <source>Custom  options:</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstartoptions.jsp.customoptionsnote">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; Invalid custom options can cause autoinstallations to fail.</source>
@@ -17718,19 +18001,24 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Create Custom Patch</source>
       </trans-unit>
       <trans-unit id="channel.manage.errata.createerratamsg">
-        <source>Choose this option to create a patch from scratch. You may import a new patch into this channel at publication time.</source>
+        <source>Choose this option to create a patch from scratch.  You may import a new patch into this channel at publication time.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.manage.errata.confirmmsg">
-        <source>Below is a summary of the patches you have selected to clone. Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
+        <source>Below is a summary of the patches you have selected to clone.  Contained in each CSV download is a list of patches and packages respectively that will be pushed to the channel.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.manage.errata.custommsg">
-        <source>Below is a list of patches that can pushed to the current channel. Use the channel selection drop down filter to narrow down patches to choose from.</source>
+        <source>Below is a list of patches that can pushed to the current channel.  Use the channel selection drop down filter to narrow down patches to choose from.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.manage.errata.redhatmsg">
-        <source>Below is a list of patches that can pushed to the current channel. Use the drop down filters to narrow down which patches you may choose from.</source>
+        <source>Below is a list of patches that can pushed to the current channel.  Use the drop down filters to narrow down which patches you may choose from.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.manage.errata.packageassocmsg">
-        <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown. Also, package architecture will match what is currently in the channel.</source>
+        <source>&lt;em&gt;(Recommended)&lt;/em&gt; With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="toolbar.ssm.add">
         <source>Add to SSM</source>
@@ -17745,10 +18033,13 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Packages by Name</source>
       </trans-unit>
       <trans-unit id="packagesbyname.jsp.introparagraph">
-        <source>NOTE: Different architectures of the same package can exist in a single channel, this may cause a package to be listed twice for a given channel.</source>
+        <source>NOTE: Different architectures of the same package can exist in a
+single channel, this may cause a package to be listed twice for a
+given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/packages/NameOverview.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="docsearch.content">
         <source>Content</source>
@@ -17795,10 +18086,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="docsearch.jsp.pagesummary">
-        <source>Document Search will return links to pages matching your search term.</source>
+        <source>Document Search will return links to pages matching your search term. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/Search.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="docsearch.jsp.instructions">
         <source>Specify your search criteria below.</source>
@@ -17856,10 +18148,19 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="help.jsp.about.overviewsummary">
-        <source>All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.) is stored locally on the customer's network. This provides customers with the ability to take their @@PRODUCT_NAME@@ solution off of the public internet if desired, and also allows for greater optimization and control of their systems. By using a @@PRODUCT_NAME@@ Proxy server in conjunction with the @@PRODUCT_NAME@@ server, the customer's individual systems connect to a locally hosted Proxy. The Proxy aggregates data and performs some tasks locally, communicating with the central @@PRODUCT_NAME@@ servers. All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
+        <source>
+        All @@PRODUCT_NAME@@ functionality (system profiles, reporting data, application server, etc.)
+        is stored locally on the customer's network. This provides customers with the ability to take their
+        @@PRODUCT_NAME@@ solution off of the public internet if desired, and also allows for greater
+        optimization and control of their systems.
+        By using a @@PRODUCT_NAME@@ Proxy server in conjunction with the @@PRODUCT_NAME@@ server,
+        the customer's individual systems connect to a locally hosted Proxy.
+        The Proxy aggregates data and performs some tasks locally, communicating with the central @@PRODUCT_NAME@@ servers.
+        All information stored in the @@PRODUCT_NAME@@ database is kept on the @@PRODUCT_NAME@@ servers.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="help.jsp.helpdesk">
         <source>Welcome to the Help Desk</source>
@@ -17868,7 +18169,8 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>(Translations available)</source>
       </trans-unit>
       <trans-unit id="help.jsp.install">
-        <source>Detailed information regarding @@PRODUCT_NAME@@ server and its installation.</source>
+        <source>Detailed information regarding @@PRODUCT_NAME@@ server and its installation. </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="help.jsp.install.title">
         <source>@@PRODUCT_NAME@@ Installation Guide</source>
@@ -17941,13 +18243,19 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Unknown</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.remove">
-        <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.</source>
+        <source>Below is the list of packages which you have selected to remove from this channel. Removing a package from this channel does not affect the systems which are subscribed to it, or the patches which are applicable to it.
+        </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.details.title">
-        <source>Details</source>
+        <source>Details
+        </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.package.removesuccess">
-        <source>{0} package(s) removed from channel {1}</source>
+        <source>{0} package(s) removed from channel {1}
+        </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.package.removebutton">
         <source>Remove</source>
@@ -17983,7 +18291,9 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Source Packages</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addsuccess">
-        <source>{0} package(s) added to channel {1}</source>
+        <source>{0} package(s) added to channel {1}
+        </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.package.addbutton">
         <source>Add Packages</source>
@@ -17995,13 +18305,18 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>No packages found for this criteria.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.addmessage">
-        <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below. Only packages of a compatible arch will be shown</source>
+        <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
+
+            Only packages of a compatible arch will be shown</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.package.add.confirm.title">
         <source>Confirm Package Addition</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.add.confirm.msg">
-        <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.</source>
+        <source>Below is the list of packages which you have selected to add to this channel. Adding a package to this channel does not automatically affect the systems which are subscribed to it, or the patches which are applicable to it.
+        </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.package.addtitle">
         <source>Add Packages</source>
@@ -18046,7 +18361,11 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Select the changes you want to perform on {0}:</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.comparemergemessage2">
-        <source>Please note that all of the packages associated with these channels are listed here, not just the latest versions of each package. Older versions of a given package will not appear in the channel's package list unless the newer version is removed.</source>
+        <source>Please note that all of the packages associated with these
+                channels are listed here, not just the latest versions of each
+                package. Older versions of a given package will not appear in the
+                channel's package list unless the newer version is removed.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.package.actionadd">
         <source>Add</source>
@@ -18210,7 +18529,10 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>None</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.remove.message">
-        <source>Are you certain you want to delete these packages? This process can take several seconds. Be patient and do not click the button below more than once.</source>
+        <source>Are you certain you want to delete these packages?
+
+            This process can take several seconds. Be patient and do not click the button below more than once.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.channel">
         <source>Channel</source>
@@ -18497,10 +18819,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.checksumtip">
-        <source>&lt;strong&gt; Tip:&lt;/strong&gt; sha1 offers the widest compatibility with clients. sha256 offers higher security, but is compatible only with newer clients: Fedora 11 and newer, Red Hat Enterprise Linux 6 and newer or SLES11-SP1 and newer.</source>
+        <source>&lt;strong&gt; Tip:&lt;/strong&gt;
+          sha1 offers the widest compatibility with clients. sha256 offers higher security,
+          but is compatible only with newer clients: Fedora 11 and newer, Red Hat Enterprise Linux 6 and newer or SLES11-SP1 and newer.
+         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.edit.jsp.summary">
         <source>Channel Summary</source>
@@ -18701,10 +19027,19 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.introparagraph">
-        <source>Are you sure you wish to delete this channel? Packages in the channel will be removed from the channel, but will remain on the server. You will be given the option to delete them after the channel has been deleted. Patches related to the channel will no longer be related to the channel, and may be orphaned. If the channel has child channels, it cannot be deleted; the child channels must be deleted first. If the channel has autoinstallable distributions associated to it, it cannot be deleted; the distributions must be dissociated from the channel or deleted first.</source>
+        <source>Are you sure you wish to delete this channel? Packages in the channel will
+           be removed from the channel, but will remain on the server. You will be
+           given the option to delete them after the channel has been deleted. Patches
+           related to the channel will no longer be related to the channel, and may be
+           orphaned. If the channel has child channels, it cannot be deleted; the child
+           channels must be deleted first. If the channel has autoinstallable distributions
+           associated to it, it cannot be deleted; the distributions must be
+           dissociated from the channel or deleted first.
+         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.delete.jsp.arch">
         <source>Architecture:</source>
@@ -18731,16 +19066,21 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsparagraph">
-        <source>Channel deletion will affect any Trusted Organizations that have systems subscribed to the {0} channel.</source>
+        <source>Channel deletion will affect any Trusted Organizations that have systems
+            subscribed to the {0} channel.
+         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.delete.jsp.orgsaffected">
-        <source>Organizations Affected:</source>
+        <source>Organizations Affected:
+         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.delete.jsp.unsubheader">
         <source>Unsubscribe Systems</source>
@@ -18749,10 +19089,13 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.unsubparagraph">
-        <source>Unsubscribe all trusted organization systems that are subscribed to the {0} channel. Subscribed systems will lose access to packages specific to this channel.</source>
+        <source>Unsubscribe all trusted organization systems that are subscribed to the
+            {0} channel. Subscribed systems will lose access to packages specific to this channel.
+         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="generic.jsp.none">
         <source>None</source>
@@ -18761,28 +19104,51 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.introparagraph">
-        <source>Create or edit software channels from this page. &lt;p/&gt; If the parent channel is set to 'none', the channel is a base channel. Otherwise, the channel is a child of the specified channel. &lt;p/&gt; Channel name and label are required.&lt;br&gt; They each must be at least 6 characters in length.&lt;br&gt; Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt; Channel name and label may begin with a letter or digit.&lt;br&gt; They each must not begin with rhn, redhat or red hat.&lt;br&gt; They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt; Channel name may also contain spaces, parentheses () and forward slashes ('/'). &lt;p/&gt; Channel summary is also required and must not exceed 500 characters.</source>
+        <source>Create or edit software channels from this page.
+        &lt;p/&gt;
+        If the parent channel is set to 'none', the channel is a base channel.
+        Otherwise, the channel is a child of the specified channel.
+        &lt;p/&gt;
+        Channel name and label are required.&lt;br&gt;
+        They each must be at least 6 characters in length.&lt;br&gt;
+        Channel name must not be longer than 256 characters and channel label must not be longer than 128 characters.&lt;br&gt;
+        Channel name and label may begin with a letter or digit.&lt;br&gt;
+        They each must not begin with rhn, redhat or red hat.&lt;br&gt;
+        They each must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals.&lt;br&gt;
+        Channel name may also contain spaces, parentheses () and forward slashes ('/').
+        &lt;p/&gt;
+        Channel summary is also required and must not exceed 500 characters.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.edit.jsp.public">
-        <source>This channel is &lt;strong&gt;public&lt;/strong&gt; and may be accessed by any of the &lt;a href="{0}"&gt;trusted organizations&lt;/a&gt; trusted by this organization.</source>
+        <source>This channel is &lt;strong&gt;public&lt;/strong&gt; and may be
+        accessed by any of the &lt;a href="{0}"&gt;trusted
+        organizations&lt;/a&gt; trusted by this organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.edit.jsp.protected">
-        <source>This channel is &lt;strong&gt;protected&lt;/strong&gt; and may only be accessed by specific &lt;a href="{0}"&gt;trusted organizations&lt;/a&gt;.</source>
+        <source>This channel is &lt;strong&gt;protected&lt;/strong&gt; and may
+        only be accessed by specific &lt;a href="{0}"&gt;trusted
+        organizations&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.edit.jsp.private">
-        <source>This channel is &lt;strong&gt;private&lt;/strong&gt; and cannot be accessed by any other organization.</source>
+        <source>This channel is &lt;strong&gt;private&lt;/strong&gt; and cannot
+        be accessed by any other organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.edit.jsp.allusers">
         <source>All users within your organization may subscribe to this channel.</source>
@@ -19160,28 +19526,47 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg">
-        <source>Are you sure you want to set this channel to &lt;strong&gt;private&lt;/strong&gt;, accessible only by systems in your organization? There are system(s) in other organization(s) listed below that subscribe to content provided by this channel. Removing access to this channel may adversely affect those systems. For example, those systems may no longer receive critical security updates to content provided by this channel.</source>
+        <source>Are you sure you want to set this channel to
+        &lt;strong&gt;private&lt;/strong&gt;, accessible only by systems in your
+        organization? There are system(s) in other organization(s) listed below
+        that subscribe to content provided by this channel. Removing access to
+        this channel may adversely affect those systems. For example, those
+        systems may no longer receive critical security updates to content
+        provided by this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="confirmprivate.jsp.confirmmsg.deux">
-        <source>Please review the change you are about to make before confirming this access removal.</source>
+        <source>Please review the change you are about to make before confirming
+        this access removal.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="confirmprotected.jsp.confirmmsg">
-        <source>Are you sure you want to set this channel's access policy to being a &lt;strong&gt;protected&lt;/strong&gt; channel, note that the organizations below have systems that subscribe to this channel. Removing these organizations' access may adversely affect those systems. For example, they may no longer receive critical security updates to content provided by this channel.</source>
+        <source>Are you sure you want to set this channel's access policy to
+        being a &lt;strong&gt;protected&lt;/strong&gt; channel, note that the
+        organizations below have systems that subscribe to this channel.
+        Removing these organizations' access may adversely affect those systems.
+        For example, they may no longer receive critical security updates to
+        content provided by this channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="confirmprotected.jsp.confirmmsg.deux">
-        <source>You may choose to grant the organizations below access to this channel, or you may deny them access. Once the channel is protected, you can modify access to this channel at any time using the 'Organizations' tab.</source>
+        <source>You may choose to grant the organizations below access to this
+        channel, or you may deny them access. Once the channel is protected, you can
+        modify access to this channel at any time using the 'Organizations' tab.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel">
         <source>Delete software channel</source>
@@ -19320,7 +19705,9 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Autoinstallation Not Found</source>
       </trans-unit>
       <trans-unit id="unknown.kickstart.message">
-        <source>The requested autoinstallation file could not be found. If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
+        <source>The requested autoinstallation file could not be found.
+         If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="task.status.last.execution">
         <source>Last Execution Times</source>
@@ -19404,7 +19791,9 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Sync Patches</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.message">
-        <source>The following patches were cloned from patches that have since been updated. This page will allow you to synchronize your cloned patches to that of its original.</source>
+        <source>The following patches were cloned from patches that have since been updated.
+		   This page will allow you to synchronize your cloned patches to that of its original.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.note">
         <source>Packages that were omitted as part of the original cloning process will be included here.</source>
@@ -19416,7 +19805,8 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Packages to Push</source>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.packages.message">
-        <source>The following packages will be pushed to this channel as part of the patches sync process. Please review this list and unselect any unwanted packages.</source>
+        <source>The following packages will be pushed to this channel as part of the patches sync process.  Please review this list and unselect any unwanted packages.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.errata.sync.complete">
         <source>Successfully synchronized {0} patches and pushed {1} packages to channel {2}.</source>
@@ -19425,13 +19815,16 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Repo Cache Status</source>
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.completed">
-        <source>Completed</source>
+        <source> Completed </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.repodata.inProgress">
-        <source>In Progress</source>
+        <source> In Progress </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck">
-        <source>Enable GPG Check</source>
+        <source>Enable GPG Check </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.repolastbuild">
         <source>Last Repo Build</source>
@@ -19500,7 +19893,8 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>DebugSource Package</source>
       </trans-unit>
       <trans-unit id="debuginfo.external">
-        <source>Note: A local debuginfo rpm could not be found. The above links to an external FTP server and may not be valid.</source>
+        <source>Note:  A local debuginfo rpm could not be found.  The above links to an external FTP server and may not be valid.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="debuginfo.unavailable">
         <source>If available, an appropriate debuginfo package can be downloaded from the SUSE Customer Center from the respective debuginfo child channel. Note: Not all packages have published debuginfo packages.</source>
@@ -19512,7 +19906,8 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Change Log</source>
       </trans-unit>
       <trans-unit id="channel.jsp.changelog.error">
-        <source>There was an error reading the selected package changelog. Please check that the package physically exists and has the correct permissions.</source>
+        <source>There was an error reading the selected package changelog.  Please check that the package physically exists and has the correct permissions.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="channel.jsp.dependencies.requires.title">
         <source>Requires</source>
@@ -19934,7 +20329,8 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Please select one target product to migrate</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.target.notSyncedChannels">
-        <source>Target not available, the following channels are not synced:</source>
+        <source>Target not available, the following channels are not synced: </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="spmigration.jsp.setup.title">
         <source>Service Pack Migration - Channels</source>
@@ -20093,7 +20489,15 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni">
-        <source>&lt;p&gt; @@PRODUCT_NAME@@ is an open source (GPLv2) Linux systems management solution. &lt;/p&gt; &lt;p&gt; For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;. &lt;/p&gt;</source>
+        <source>
+&lt;p&gt;
+    @@PRODUCT_NAME@@ is an open source (GPLv2) Linux systems management solution.
+&lt;/p&gt;
+&lt;p&gt;
+    For details on @@PRODUCT_NAME@@, please visit our web-site at &lt;a href="http://www.uyuni-project.org/" target="_blank"&gt; http://www.uyuni-project.org/&lt;/a&gt;.
+&lt;/p&gt;
+        </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="compare.jsp.noprovisioning">
         <source>Syncing the packages to the list above is not available for this system.</source>
@@ -20144,10 +20548,14 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Channel Label</source>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush">
-        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion. This might take a few extra seconds.</source>
+        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+              This might take a few extra seconds.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup">
-        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems. In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
+        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
+            In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -20177,10 +20585,15 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         </context-group>
       </trans-unit>
       <trans-unit id="channel.delete.jsp.state.scheduled.info">
-        <source>Application of the channel state will be scheduled immediately after confirming on any minions that currently have this channel assigned. This will update repository files on those minions to remove the deleted channel.</source>
+        <source>
+           Application of the channel state will be scheduled immediately after confirming on any minions
+           that currently have this channel assigned. This will update repository files on those minions to
+           remove the deleted channel.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="filedetails.jsp.note.macrosalt">
         <source>&lt;strong&gt;Note:&lt;/strong&gt; Macro delimiters will be ignored when deploying to systems managed via Salt.</source>
@@ -20210,7 +20623,30 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <source>Bootstrap</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.body">
-        <source>&lt;p&gt; This software is a modular operating system comprised of numerous components that may be accompanied by separate license terms. The software is a collective work of SUSE; although SUSE does not own the copyright to every component of the software, SUSE owns the collective work copyright for the software. &lt;/p&gt; &lt;p&gt; This SUSE product includes materials licensed to SUSE under the GNU General Public License (GPL). The GPL requires that SUSE makes available certain source code that corresponds to the GPL-licensed material. The source code is available for download at &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;. Also, for up to three years from SUSE's distribution of the SUSE product, upon request SUSE will mail a copy of the source code. Requests should be sent by e-mail to &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt; or as otherwise instructed at &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;. SUSE may charge a fee to recover its reasonable costs of distribution &lt;/p&gt;</source>
+        <source>
+&lt;p&gt;
+    This software is a modular operating system comprised of numerous components
+    that may be accompanied by separate license terms. The software is a
+    collective work of SUSE; although SUSE does not own the copyright to every
+    component of the software, SUSE owns the collective work copyright for the
+    software.
+&lt;/p&gt;
+&lt;p&gt;
+    This SUSE product includes materials licensed to SUSE under the GNU
+    General Public License (GPL). The GPL requires that SUSE makes available
+    certain source code that corresponds to the GPL-licensed material. The source
+    code is available for download at
+    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    Also, for up to three years from SUSE's distribution of the SUSE product, upon
+    request SUSE will mail a copy of the source code. Requests should be sent by
+    e-mail to
+    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
+    or as otherwise instructed at
+    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    SUSE may charge a fee to recover its reasonable costs of distribution
+&lt;/p&gt;
+        </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="Salt">
         <source>Salt</source>
@@ -20233,6 +20669,79 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
       <trans-unit id="Formula">
         <source>Formula</source>
       </trans-unit>
+    <trans-unit id="actionchain.jsp.maintenanceschedule">
+        <source>maintenance schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.maint-window">
+        <source>Maintenance window:</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.multiple_maintenance_schedules">
+        <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.no_maintenance_windows">
+        <source>No upcoming maintenance windows for selected systems.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.lang.default">
+        <source>Use configured default ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.schedule">
+        <source>Maintenance Schedule:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.schedule.none">
+        <source>(none)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule">
+        <source>Maintenance Schedule:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule.none">
+        <source>None</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule.cancelaffected">
+        <source>Cancel affected actions</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Maintenance Windows">
+        <source>Maintenance Windows</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Schedules">
+        <source>Schedules</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Calendars">
+        <source>Calendars</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>
