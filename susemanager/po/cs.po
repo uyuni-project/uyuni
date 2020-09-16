@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-16 15:23+0200\n"
-"PO-Revision-Date: 2020-09-16 16:35+0000\n"
+"PO-Revision-Date: 2020-09-16 18:48+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "cs/>\n"
@@ -340,27 +340,29 @@ msgid ""
 "<p>The script output and possible error output can be watched on the screen."
 "</p>"
 msgstr ""
+"<p> Nyní je spuštěn konfigurační skript a bude to nějakou dobu trvat. </p>\n"
+"<p> Na obrazovce lze sledovat výstup skriptu a případné chybové výstupy. </p>"
 
 #: ../yast/susemanager_write.rb:111
 msgid "Write Settings"
-msgstr ""
+msgstr "Nastavení zápisu"
 
 #: ../yast/susemanager_write.rb:122
 msgid "Now you can either start the setup process directly or exit the\n"
-msgstr ""
+msgstr "Nyní můžete buď přímo spustit proces instalace, nebo ukončit\n"
 
 #: ../yast/susemanager_write.rb:134
 msgid "Setup is running. Please wait..."
-msgstr ""
+msgstr "Nastavení probíhá. Prosím, čekejte..."
 
 #: ../yast/susemanager_write.rb:166
 msgid "Setup is completed."
-msgstr ""
+msgstr "Nastavení je dokončeno."
 
 #: ../yast/susemanager_write.rb:169
 msgid "Setup failed."
-msgstr ""
+msgstr "Nastavení se nezdařilo."
 
 #: ../yast/susemanager_write.rb:185
 msgid "Setup has been aborted."
-msgstr ""
+msgstr "Nastavení bylo zrušeno."
