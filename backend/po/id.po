@@ -1906,8 +1906,9 @@ msgstr "Mengimpor..."
 msgid ""
 "Package Not Found in Cache, Clear the Cache "
 "to                                  Regenerate it."
-msgstr "Paket tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu."
-"Paket tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu."
+msgstr ""
+"Paket tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu.Paket "
+"tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu."
 
 #: ../satellite_tools/satsync.py:1709
 #, fuzzy
@@ -2115,8 +2116,9 @@ msgstr ""
 #: ../satellite_tools/satsync.py:2274
 #, fuzzy, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
-msgstr "GALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): %s"
-"GALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): %s"
+msgstr ""
+"GALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): "
+"%sGALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): %s"
 
 #. An SQL error is fatal... crash and burn
 #: ../satellite_tools/satsync.py:2286
