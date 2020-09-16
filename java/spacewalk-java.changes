@@ -1,3 +1,4 @@
+- Fix: handle version comparison corner cases in Ubuntu packages
 -------------------------------------------------------------------
 Mon Sep 21 12:04:31 CEST 2020 - jgonzalez@suse.com
 
