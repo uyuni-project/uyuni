@@ -169,9 +169,7 @@ msgstr "無効な値  %s (%s)"
 #: ../server/handlers/xmlrpc/proxy.py:65
 #, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"サーバプロファイルに対して SUSE Manager Proxy サービスが有効化されていませ"
-"ん: \"%s\""
+msgstr "サーバプロファイルに対して SUSE Manager Proxy サービスが有効化されていません: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:85
 msgid "Invalid session key"

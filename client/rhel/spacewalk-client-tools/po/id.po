@@ -903,8 +903,8 @@ msgstr ""
 "keanggotaan grup sistem, dll.) untuk koneksi sistem Anda ke Red Hat "
 "Satellite atau Red Hat Satellite Proxytelah ditentukan oleh kunci aktivasi "
 "daripada nomor instalasi Anda.  Anda juga dapat merujuk ke Panduan Referensi "
-"RHN, bagian 6.4.6 untuk rincian lebih lanjut tentang kunci aktivasi (http://"
-"access.redhat.com/knowledge/docs/Red_Hat_Network/)\n"
+"RHN, bagian 6.4.6 untuk rincian lebih lanjut tentang kunci aktivasi "
+"(http://access.redhat.com/knowledge/docs/Red_Hat_Network/)\n"
 "Kunci aktivasi Default Universal: %s"
 
 #. Error Messages.
@@ -1534,8 +1534,8 @@ msgstr ""
 msgid ""
 "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
 msgstr ""
-"<Tab>/<Alt-Tab> antara elemen |  <Space>memilih |  <F12>layar berikutnya</"
-"F12> </Space> </Alt-Tab></Tab>"
+"<Tab>/<Alt-Tab> antara elemen |  <Space>memilih |  <F12>layar "
+"berikutnya</F12> </Space> </Alt-Tab></Tab>"
 
 #: ../src/up2date_client/tui.py:1344
 #, fuzzy
@@ -2369,8 +2369,8 @@ msgid ""
 "this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
 msgstr ""
 "Menerima pembaruan perangkat lunak terbaru, termasuk pembaruan keamanan, "
-"menjaga sistem Linux Red Hat Enterprise ini <b>diperbarui</b> dan <b>aman.</"
-"b>"
+"menjaga sistem Linux Red Hat Enterprise ini <b>diperbarui</b> dan "
+"<b>aman.</b>"
 
 #: ../data/rh_register.glade.h:75
 #, fuzzy
