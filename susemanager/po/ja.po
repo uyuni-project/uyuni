@@ -32,9 +32,8 @@ msgid ""
 "<p>Choose if you are setting up #{@product_name} from scratch or migrating "
 "to #{@product_name} from a #{@product_name} compatible server.</p>"
 msgstr ""
-"<p> 何もない状態から #{@product_name} のセットアップを行なうのか、もしくは "
-"#{@product_name} 互換サーバから #{@product_name} への移行を行なうのかを選択し"
-"てください。 </p>"
+"<p> 何もない状態から #{@product_name} のセットアップを行なうのか、もしくは #{@product_name} 互換サーバから "
+"#{@product_name} への移行を行なうのかを選択してください。 </p>"
 
 #: ../yast/susemanager_ask.rb:65
 msgid "#{@product_name} Setup"
@@ -78,9 +77,8 @@ msgid ""
 "certificate is used for a number of purposes like connections to a SUSE "
 "Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
-"<p>ここでは、 SSL 証明書に作成に関するデータ入力を行ないます。この証明書は "
-"SUSE Manager Proxy サーバへの接続のほか、ブラウザ内での HTTPS プロトコルなど"
-"でも使用します。 </p>"
+"<p>ここでは、 SSL 証明書に作成に関するデータ入力を行ないます。この証明書は SUSE Manager Proxy サーバへの接続のほか、"
+"ブラウザ内での HTTPS プロトコルなどでも使用します。 </p>"
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
@@ -132,9 +130,7 @@ msgstr "データベースのパスワード (&P)"
 #: ../yast/susemanager_db.rb:115
 msgid ""
 "<p>By default SUSE Manager is using an internal postgresql database named '"
-msgstr ""
-"<p>既定では、 SUSE Manager は下記のような名前の内部向け postgresql データベー"
-"スを使用します:'"
+msgstr "<p>既定では、 SUSE Manager は下記のような名前の内部向け postgresql データベースを使用します:'"
 
 #: ../yast/susemanager_db.rb:125
 msgid "Database Settings"
@@ -165,8 +161,7 @@ msgid ""
 "<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
 "by #{@product_name}.</p>"
 msgstr ""
-"<p><b>管理者の電子メールアドレス</b> に入力を行なってください。こちらは "
-"#{@product_name} からの通知に使用されます。 </p>"
+"<p><b>管理者の電子メールアドレス</b> に入力を行なってください。こちらは #{@product_name} からの通知に使用されます。 </p>"
 
 #: ../yast/susemanager_manager.rb:152
 msgid "The Administrator e-mail address is not valid."
@@ -212,9 +207,7 @@ msgstr "既に設定済み"
 msgid ""
 "#{@product_name} is already set up. Do you want to delete the existing setup "
 "and start all over again?"
-msgstr ""
-"#{@product_name} は既に設定済みです。既存の設定を削除して新しい設定を作成しな"
-"おしますか？"
+msgstr "#{@product_name} は既に設定済みです。既存の設定を削除して新しい設定を作成しなおしますか？"
 
 #: ../yast/susemanager_reqs.rb:71
 msgid "Continue"
@@ -237,9 +230,8 @@ msgid ""
 "#{@product_name} requires 8G of memory to be installed and 16G for good "
 "perfomance. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name} ではインストールの際に 8GB のメモリが必要となるだけでなく、"
-"性能を良好に保つために 16GB のメモリが必要です。このまま製品の使用を続行して"
-"も、正しく動作しないものと思われます。"
+"#{@product_name} ではインストールの際に 8GB のメモリが必要となるだけでなく、性能を良好に保つために 16GB "
+"のメモリが必要です。このまま製品の使用を続行しても、正しく動作しないものと思われます。"
 
 #: ../yast/susemanager_reqs.rb:92 ../yast/susemanager_reqs.rb:119
 #: ../yast/susemanager_reqs.rb:146 ../yast/susemanager_reqs.rb:164
@@ -258,18 +250,16 @@ msgid ""
 "#{@product_name} requires 100G of free disk space in /var/spacewalk to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name} をインストールするには、 /var/spacewalk 内に 100GB の空き"
-"ディスク領域が必要です。このまま製品の使用を続行しても、正しく動作しないもの"
-"と思われます。"
+"#{@product_name} をインストールするには、 /var/spacewalk 内に 100GB "
+"の空きディスク領域が必要です。このまま製品の使用を続行しても、正しく動作しないものと思われます。"
 
 #: ../yast/susemanager_reqs.rb:142
 msgid ""
 "#{@product_name} requires 50G of free disk space in /var/lib/pgsql to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name} をインストールするには、 /var/lib/pgsql 内に 50GB の空きディ"
-"スク領域が必要です。このまま製品の使用を続行しても、正しく動作しないものと思"
-"われます。"
+"#{@product_name} をインストールするには、 /var/lib/pgsql 内に 50GB "
+"の空きディスク領域が必要です。このまま製品の使用を続行しても、正しく動作しないものと思われます。"
 
 #: ../yast/susemanager_reqs.rb:158
 msgid "Hostname command failed"
@@ -279,9 +269,7 @@ msgstr "hostname コマンドが失敗しました"
 msgid ""
 "The execution of 'hostname -f' failed. The product will not install "
 "correctly."
-msgstr ""
-"'hostname -f' コマンドの実行に失敗しました。製品を正しくインストールすること"
-"ができないものと思われます。"
+msgstr "'hostname -f' コマンドの実行に失敗しました。製品を正しくインストールすることができないものと思われます。"
 
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
 #: ../yast/susemanager_reqs.rb:238
@@ -292,25 +280,19 @@ msgstr "FQHN が正しくありません"
 msgid ""
 "The FQHN must contain at least 2 dots. The product will not function "
 "correctly."
-msgstr ""
-"FQHN には少なくとも 2 つのドット (.) を含んでいなければなりません。製品が正し"
-"く動作しないものと思われます。"
+msgstr "FQHN には少なくとも 2 つのドット (.) を含んでいなければなりません。製品が正しく動作しないものと思われます。"
 
 #: ../yast/susemanager_reqs.rb:200
 msgid ""
 "The FQHN must not contain the '_' (undersorce) character. The product will "
 "not function correctly."
-msgstr ""
-"FQHN には '_' (アンダースコア) 文字が含まれていてはなりません。製品が正しく動"
-"作しないものと思われます。"
+msgstr "FQHN には '_' (アンダースコア) 文字が含まれていてはなりません。製品が正しく動作しないものと思われます。"
 
 #: ../yast/susemanager_reqs.rb:240
 msgid ""
 "The output of 'hostname -f' does not match the real hostname. The product "
 "will not install correctly."
-msgstr ""
-"'hostname -f' の出力が実際のホスト名と一致していません。製品を正しくインス"
-"トールすることができないものと思われます。"
+msgstr "'hostname -f' の出力が実際のホスト名と一致していません。製品を正しくインストールすることができないものと思われます。"
 
 #: ../yast/susemanager_reqs.rb:254
 msgid "Illegal Hostname"
@@ -320,8 +302,7 @@ msgstr "ホスト名が正しくありません"
 msgid ""
 "Your hostname contains upper case characters. The product will not function "
 "correctly."
-msgstr ""
-"ホスト名に大文字が含まれています。製品が正しく動作しないものと思われます。"
+msgstr "ホスト名に大文字が含まれています。製品が正しく動作しないものと思われます。"
 
 #: ../yast/susemanager_write.rb:54
 msgid "Setup is prepared."
@@ -337,9 +318,7 @@ msgstr "エラー出力"
 
 #: ../yast/susemanager_write.rb:83
 msgid "Now you can start the migration process using the mgr-setup script.\n"
-msgstr ""
-"ここでは、 mgr-setup スクリプトを利用した移行処理の開始を行なうことができま"
-"す。\n"
+msgstr "ここでは、 mgr-setup スクリプトを利用した移行処理の開始を行なうことができます。\n"
 
 #: ../yast/susemanager_write.rb:107
 msgid ""
@@ -349,8 +328,7 @@ msgid ""
 "</p>"
 msgstr ""
 "<p>設定スクリプトを動作させています。しばらくお待ちください。</p>\n"
-"<p>セットアップの出力とエラーの出力は、それぞれ画面内で監視することができま"
-"す。</p>"
+"<p>セットアップの出力とエラーの出力は、それぞれ画面内で監視することができます。</p>"
 
 #: ../yast/susemanager_write.rb:111
 msgid "Write Settings"
@@ -358,9 +336,7 @@ msgstr "設定の書き込み"
 
 #: ../yast/susemanager_write.rb:122
 msgid "Now you can either start the setup process directly or exit the\n"
-msgstr ""
-"ここではセットアップの処理を直接開始するか、終了するのかを選択することができ"
-"ます\n"
+msgstr "ここではセットアップの処理を直接開始するか、終了するのかを選択することができます\n"
 
 #: ../yast/susemanager_write.rb:134
 msgid "Setup is running. Please wait..."
