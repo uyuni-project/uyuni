@@ -16,6 +16,7 @@ import { ActionConfirm } from 'components/dialog/ActionConfirm';
 import { VirtualizationPoolsListRefreshApi } from '../virtualization-pools-list-refresh-api';
 import { VirtualizationPoolsActionApi } from '../virtualization-pools-action-api';
 import { useVirtNotification } from '../../useVirtNotification.js';
+import { HypervisorCheck } from '../../HypervisorCheck';
 
 import type {MessageType} from 'components/messages';
 
@@ -23,6 +24,7 @@ type Props = {
   serverId: string,
   refreshInterval: number,
   pageSize: number,
+  hypervisor: string,
 };
 
 function poolsInfoToTree(pools: Object) {
@@ -341,6 +343,7 @@ export function PoolsList(props: Props) {
 
               return (
                 <>
+                  <HypervisorCheck hypervisor={props.hypervisor} />
                   <div className="pull-right btn-group">
                     <LinkButton
                       text={t('Create Pool')}

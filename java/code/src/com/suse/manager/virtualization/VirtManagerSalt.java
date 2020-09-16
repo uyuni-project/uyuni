@@ -190,4 +190,14 @@ public class VirtManagerSalt implements VirtManager {
         saltApi.refreshPillar(new MinionList(minion.getMinionId()));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Optional<String> getHypervisor(String minionId) {
+        LocalCall<String> call =
+                new LocalCall<>("virt.get_hypervisor", Optional.empty(), Optional.empty(),
+                        new TypeToken<String>() { });
+
+        return saltApi.callSync(call, minionId);
+    }
 }
