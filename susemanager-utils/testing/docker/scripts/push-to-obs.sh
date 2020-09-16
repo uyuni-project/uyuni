@@ -8,20 +8,22 @@ help() {
   echo ""
   echo "Syntax: "
   echo ""
-  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] [-v] [-t]"
+  echo "${SCRIPT} -d <API1|PROJECT1>[,<API2|PROJECT2>...] -c OSC_CFG_FILE [-p PACKAGE1,PACKAGE2,...,PACKAGEN] [-v] [-t]"
   echo ""
   echo "Where: "
   echo "  -d  Comma separated list of destionations in the format API/PROJECT,"
   echo "      for example https://api.opensuse.org|systemsmanagement:Uyuni:Master"
+  echo "  -p  Comma separated list of packages. If absent, all packages are submitted"
   echo "  -c  Path to the OSC credentials (usually ~/.osrc)"
   echo "  -v  Verbose mode"
   echo "  -t  For tito, use current branch HEAD instead of latest package tag"
   echo ""
 }
 
-while getopts ":d:c:vth" opts; do
+while getopts ":d:c:p:vth" opts; do
   case "${opts}" in
     d) DESTINATIONS=${OPTARG};;
+    p) PACKAGES="$(echo ${OPTARG}|tr ',' ' ')";;
     c) export OSCRC=${OPTARG};;
     v) export VERBOSE=1;;
     t) export TEST=1;;
@@ -58,12 +60,12 @@ fi
 
 # Build SRPMS
 echo "*************** BUILDING PACKAGES ***************"
-./build-packages-for-obs.sh
+./build-packages-for-obs.sh ${PACKAGES}
 
 # Submit 
 for DESTINATION in $(echo ${DESTINATIONS}|tr ',' ' '); do
   export OSCAPI=$(echo ${DESTINATION}|cut -d'|' -f1)
   export OBS_PROJ=$(echo ${DESTINATION}|cut -d'|' -f2)
   echo "*************** PUSHING TO ${OBS_PROJ} ***************"
-  ./push-packages-to-obs.sh
+  ./push-packages-to-obs.sh ${PACKAGES}
 done
