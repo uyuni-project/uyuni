@@ -1799,7 +1799,9 @@ public class ContentSyncManager {
 
              if (isAccessible) {
                  return Stream.concat(
-                     entries.stream(),
+                     entries.stream().filter(e ->
+                         e.isMandatory() || repoIdsWithAuth.contains(e.getRepository().getId())
+                     ),
                      SUSEProductFactory.findAllExtensionProductsForRootOf(product, root).stream()
                              .flatMap(nextProduct ->
                                      getAvailableRepositories(root, nextProduct, allEntries, repoIdsWithAuth))
