@@ -99,6 +99,11 @@ public class MinionVirtualizationPillarGeneratorTest extends BaseTestCaseWithUse
             @Override
             public void updateLibvirtEngine(MinionServer minion) {
             }
+
+            @Override
+            public Optional<String> getHypervisor(String minionId) {
+                return Optional.empty();
+            }
         };
 
         systemEntitlementManager = new SystemEntitlementManager(

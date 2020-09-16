@@ -120,7 +120,14 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
      * @return the ModelAndView object to render the page
      */
     public ModelAndView show(Request request, Response response, User user) {
-        return renderPage(request, response, user, "show", null);
+        Server host = getServer(request, user);
+        return renderPage(request, response, user, "show", () -> {
+            Map<String, Object> extra = new HashMap<>();
+            extra.put("hypervisor", host.hasVirtualizationEntitlement() ?
+                    virtManager.getHypervisor(host.getMinionId()).orElse("") :
+                    "");
+            return extra;
+        });
     }
 
 
