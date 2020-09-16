@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="ja">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
       <trans-unit id="0">
         <source>0</source>
@@ -388,11 +388,11 @@
         <target>スペースは有効?</target>
       </trans-unit>
       <trans-unit id="list delimiter">
-        <source>,</source>
+        <source>, </source>
         <context-group name="ctx">
           <context context-type="sourcefile">Anywhere a list of words is delimited</context>
         </context-group>
-        <target>, </target>
+        <target state="needs-adaptation">, </target>
       </trans-unit>
       <trans-unit id="Change Email">
         <source>Change Email</source>
@@ -1199,11 +1199,11 @@
         <target>Sr.</target>
       </trans-unit>
       <trans-unit id="user prefix  ">
-        <source/>
+        <source> </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target> </target>
+        <target state="needs-adaptation"> </target>
       </trans-unit>
       <trans-unit id="user.delete">
         <source>Deleted user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
@@ -1251,18 +1251,18 @@
         <target>自分自身は削除できません。</target>
       </trans-unit>
       <trans-unit id="user.satadmin.remove">
-        <source>Removed SUSE Manager Administrator role from {0}</source>
+        <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>Satellite 管理者ロールを {0} より削除しました　</target>
+        <target state="needs-adaptation">Satellite 管理者ロールを {0} より削除しました　</target>
       </trans-unit>
       <trans-unit id="user.satadmin.add">
-        <source>Added SUSE Manager Administrator role to {0}</source>
+        <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>Satellite 管理者ロールを {0} に追加しました　</target>
+        <target state="needs-adaptation">Satellite 管理者ロールを {0} に追加しました　</target>
       </trans-unit>
       <trans-unit id="user.deleteadmin">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
@@ -1272,11 +1272,11 @@
         <target>別の組織の管理者を削除することはできません。まず、このユーザーから '組織の管理者' のロールを外し、次にアカウントの削除を行なうようにしてください</target>
       </trans-unit>
       <trans-unit id="user.cannot.delete.last.sat.admin">
-        <source>Cannot delete the last remaining SUSE Manager administrator.</source>
+        <source>Cannot delete the last remaining @@PRODUCT_NAME@@ administrator.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target>最後に残っている Satellite 管理者は削除できません。</target>
+        <target state="needs-adaptation">最後に残っている Satellite 管理者は削除できません。</target>
       </trans-unit>
       <trans-unit id="Users">
         <source>Users</source>
@@ -1308,18 +1308,18 @@
         <target>値</target>
       </trans-unit>
       <trans-unit id="web traceback subject">
-        <source>WEB TRACEBACK from</source>
+        <source>WEB TRACEBACK from </source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target>WEB TRACEBACK 元</target>
+        <target state="needs-adaptation">WEB TRACEBACK 元</target>
       </trans-unit>
       <trans-unit id="taskomatic notif subject">
-        <source>SUSE MANAGER TASKOMATIC NOTIFICATION</source>
+        <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target>SUSE MANAGER TASKOMATIC 通知</target>
+        <target state="needs-adaptation">SUSE MANAGER TASKOMATIC 通知</target>
       </trans-unit>
       <trans-unit id="Notification Messages">
         <source>Notification Messages</source>
@@ -1399,11 +1399,11 @@
         <target>システムグループ管理者　</target>
       </trans-unit>
       <trans-unit id="for Org">
-        <source>for Org</source>
+        <source> for Org </source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target> 組織/企業用</target>
+        <target state="needs-adaptation"> 組織/企業用</target>
       </trans-unit>
       <trans-unit id="username">
         <source>Username</source>
@@ -1918,18 +1918,18 @@
         <target>アカウント &lt;strong&gt;{0}&lt;/strong&gt; が作成されました。</target>
       </trans-unit>
       <trans-unit id="message.filterby">
-        <source>Filter by {0}:</source>
+        <source>Filter by {0}: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>{0} でフィルターする: </target>
+        <target state="needs-adaptation">{0} でフィルターする: </target>
       </trans-unit>
       <trans-unit id="message.filterby.multiple">
-        <source>Filter by:</source>
+        <source>Filter by: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">NOT USED</context>
         </context-group>
-        <target>フィルターする: </target>
+        <target state="needs-adaptation">フィルターする: </target>
       </trans-unit>
       <trans-unit id="message.range">
         <source>{0} - {1} of {2}</source>
@@ -1939,11 +1939,12 @@
         <target>{0} - {1} / {2}</target>
       </trans-unit>
       <trans-unit id="message.range.withtypedescription">
-        <source>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt; {3} displayed</source>
+        <source>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; of &lt;span&gt;{2}&lt;/span&gt;
+{3} displayed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">on any listview page with a set.  1 - 5 of 120</context>
         </context-group>
-        <target>&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; / &lt;span&gt;{2}&lt;/span&gt;
+        <target state="needs-adaptation">&lt;span&gt;{0}&lt;/span&gt; - &lt;span&gt;{1}&lt;/span&gt; / &lt;span&gt;{2}&lt;/span&gt;
 {3} 表示されました</target>
       </trans-unit>
       <trans-unit id="message.numselected">
@@ -2215,11 +2216,36 @@
         <target>以下のパッケージはキックスタートプロファイル {0} に関連するチャンネルには存在しません。キックスタート機能をすべて適切に動作させるには、このプロファイルに関連するチャンネルの 1 つ以上に以下のパッケージが存在しなければなりません。</target>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage">
-        <source>&lt;div style="text-align: left;"&gt; &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; Is the 'rhn-tools' child software channel for this kickstart profile's base channel available to your organization? If it is not, you will need to request entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator. &lt;/li&gt; &lt;li&gt; Make sure that the 'rhn-tools' child channel for this kickstart profile's base channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your SUSE Manager administrator and request a satellite-sync for the rhn-tools channel and try again. &lt;/li&gt; &lt;li&gt; Make sure the spacewalk-koan package corresponding to this kickstart are available in the kickstart's base channel's 'rhn-tools' channel. If not, you will need to make them available for this kickstart profile to function properly. &lt;/li&gt; &lt;li&gt; Are the packages listed above available in this kickstart's base channel? If not, you will need to make them available for this kickstart profile to function properly. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</source>
+        <source>&lt;div style="text-align: left;"&gt;
+&lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Is the 'rhn-tools' child software channel for this kickstart profile's base
+channel available to your organization? If it is not, you will need to request
+entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ administrator.
+&lt;/li&gt;
+&lt;li&gt;
+Make sure that the 'rhn-tools' child channel for this kickstart profile's base
+channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the rhn-tools channel
+and try again.
+&lt;/li&gt;
+&lt;li&gt;
+Make sure the spacewalk-koan package corresponding to this kickstart are
+available in the kickstart's base channel's 'rhn-tools' channel. If not, you
+will need to make them available for this kickstart profile to function properly.
+&lt;/li&gt;
+&lt;li&gt;
+Are the packages listed above available in this kickstart's base channel? If not, you will need to make them
+available for this kickstart profile to function properly.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target>&lt;div style="text-align: left;"&gt;
+        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;この問題を解決するために、以下のことを確認してください。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2247,8 +2273,24 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
 </target>
       </trans-unit>
       <trans-unit id="kickstart.invalidchannel.satmessage.appstream">
-        <source>&lt;div style="text-align: left;"&gt; &lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; Is the 'appstream' child software channel for this kickstart profile's base channel available to your organization? If it is not, you will need to request entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator. &lt;/li&gt; &lt;li&gt; Make sure that the 'appstream' child channel for this kickstart profile's base channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your satellite administrator and request a cdn-sync for the appstream channel and try again. &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</source>
-        <target>&lt;div style="text-align: left;"&gt; &lt;p&gt;この問題を解決するには下記の点を確認してください:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、 'appstream' という子ソフトウェアチャンネルが組織内で提供されていますか？ 提供されていない場合は、 @@PRODUCT_NAME@@ の管理者に問い合わせて、 'appstream' ソフトウェアチャンネルに必要な資格を得る必要があります。 &lt;/li&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、 'appstream' 子チャンネルが @@PRODUCT_NAME@@ 向けに利用可能になっているかどうか。利用可能になっていない場合は、 satellite 管理者に問い合わせて appstream チャンネル向けの cdn-sync をリクエストしてから再度実行してください。 &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
+        <source>&lt;div style="text-align: left;"&gt;
+&lt;p&gt;To resolve this issue, please check the following things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Is the 'appstream' child software channel for this kickstart profile's base
+channel available to your organization? If it is not, you will need to request
+entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ administrator.
+&lt;/li&gt;
+&lt;li&gt;
+Make sure that the 'appstream' child channel for this kickstart profile's base
+channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
+@@PRODUCT_NAME@@ administrator and request a cdn-sync for the appstream channel
+and try again.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</source>
+        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt; &lt;p&gt;この問題を解決するには下記の点を確認してください:&lt;/p&gt; &lt;ul&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、 'appstream' という子ソフトウェアチャンネルが組織内で提供されていますか？ 提供されていない場合は、 @@PRODUCT_NAME@@ の管理者に問い合わせて、 'appstream' ソフトウェアチャンネルに必要な資格を得る必要があります。 &lt;/li&gt; &lt;li&gt; このキックスタートプロファイルのベースチャンネルに対して、 'appstream' 子チャンネルが @@PRODUCT_NAME@@ 向けに利用可能になっているかどうか。利用可能になっていない場合は、 satellite 管理者に問い合わせて appstream チャンネル向けの cdn-sync をリクエストしてから再度実行してください。 &lt;/li&gt; &lt;/ul&gt; &lt;/div&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -2275,11 +2317,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>自動インストール向けのパッケージ同期をスケジュール</target>
       </trans-unit>
       <trans-unit id="kickstart.error.invalidlabel">
-        <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, -</source>
+        <source>Your selected autoinstallation label is invalid, it must be at least {0} characters and only contain the following characters : A-Z, a-z, 0-9, _, - </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>選択した自動インストールラベルが正しくありません。 {0} 文字以上で、次の文字のみが含まれている必要があります: A-Z, a-z, 0-9, _, -</target>
+        <target state="needs-adaptation">選択した自動インストールラベルが正しくありません。 {0} 文字以上で、次の文字のみが含まれている必要があります: A-Z, a-z, 0-9, _, -</target>
       </trans-unit>
       <trans-unit id="kickstart.error.labelexists">
         <source>Autoinstallation label already exists: '{0}'. Please choose a unique kickstart label.</source>
@@ -2415,8 +2457,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>&lt;strong&gt;{0}&lt;/strong&gt; という名前のキックスタートスニペットはすでに存在します。</target>
       </trans-unit>
       <trans-unit id="cobbler.snippet.invalidfilename.message">
-        <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or begin with a period(.)</source>
-        <target>要求したスニペットファイル名が正しくありません。キックスタートのスニペットファイル名にはスラッシュ (/) が含まれていてはならず、かつピリオド (.) で始まってもいけません</target>
+        <source>The requested snippet filename is not valid. The kickstart snippet file name cannot contain slash (/) or  begin with a period(.)</source>
+        <target state="needs-adaptation">要求したスニペットファイル名が正しくありません。キックスタートのスニペットファイル名にはスラッシュ (/) が含まれていてはならず、かつピリオド (.) で始まってもいけません</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
@@ -3043,14 +3085,14 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>クエリーを構文解析できませんでした '{0}' 。</target>
       </trans-unit>
       <trans-unit id="packages.search.index_files_missing">
-        <source>Index files missing from search-server. Assuming data exists in database, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
+        <source>Index files missing from search-server.  Assuming data exists in database, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Search</context>
           <context context-type="sourcefile">/rhn/systems/Search</context>
           <context context-type="sourcefile">/rhn/help/Search</context>
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
-        <target>検索サーバーにインデックスファイルがありません。データベースにデータが存在する場合、/usr/sbin/rhn-search cleanindex を実行した後に rhn-search を再起動するとインデックスを再生成できます</target>
+        <target state="needs-adaptation">検索サーバーにインデックスファイルがありません。データベースにデータが存在する場合、/usr/sbin/rhn-search cleanindex を実行した後に rhn-search を再起動するとインデックスを再生成できます</target>
       </trans-unit>
       <trans-unit id="packages.search.index_files_missing_for_docs">
         <source>Index files were missing from search-server for your locale. The search operation was performed using the default locale. Assuming data exists in database for your locale, indexes can be regenerated by running: /usr/sbin/rhn-search cleanindex, then restart rhn-search</source>
@@ -3431,11 +3473,13 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>ベースとなる組織 {0} は削除できません</target>
       </trans-unit>
       <trans-unit id="userdisable.error.orgadmin">
-        <source>You cannot deactivate another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to deactivate their account.</source>
+        <source>You cannot deactivate another organization
+administrator. Please remove the 'Organization Administrator' role from this
+user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DisableUser</context>
         </context-group>
-        <target>別の組織の管理者のユーザーアカウントを停止することはできません。
+        <target state="needs-adaptation">別の組織の管理者のユーザーアカウントを停止することはできません。
 まず、このユーザーから「組織の管理者」のロールを外し、
 次にアカウントの停止を行ってください。</target>
       </trans-unit>
@@ -3976,12 +4020,12 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>&lt;strong&gt;{3}&lt;/strong&gt; からの &lt;strong&gt;{2}&lt;/strong&gt; に対するパッケージプロファイルの同期が正しく &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされました&lt;/a&gt;&lt;/strong&gt;。</target>
       </trans-unit>
       <trans-unit id="message.hardwarerefresh">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync. This is required to verify that the system has the ability to compare packages.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>&lt;strong&gt;注記:&lt;/strong&gt; @@PRODUCT_NAME@@ は &lt;strong&gt;{2}&lt;/strong&gt; のハードウェアリフレッシュがパッケージプロファイルの同期より先に実行されるよう &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt;&lt;/strong&gt;。これは、システムがパッケージの比較を行えるかどうかを検証するために必要です。</target>
+        <target state="needs-adaptation">&lt;strong&gt;注記:&lt;/strong&gt; @@PRODUCT_NAME@@ は &lt;strong&gt;{2}&lt;/strong&gt; のハードウェアリフレッシュがパッケージプロファイルの同期より先に実行されるよう &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt;&lt;/strong&gt;。これは、システムがパッケージの比較を行えるかどうかを検証するために必要です。</target>
       </trans-unit>
       <trans-unit id="filterCreate.success">
         <source>The filter {0} was successfully created</source>
@@ -4005,11 +4049,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>同期するパッケージはありません。</target>
       </trans-unit>
       <trans-unit id="punctuation.colonwithspace">
-        <source>:</source>
+        <source>: </source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.systems.monitoring.BaseProbeAction</context>
         </context-group>
-        <target>: </target>
+        <target state="needs-adaptation">: </target>
       </trans-unit>
       <trans-unit id="error.duplicateprofilename">
         <source>{0} is already in use. Please enter a different profile name.</source>
@@ -5899,11 +5943,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>通知メソッド '{0}' が作成されました。</target>
       </trans-unit>
       <trans-unit id="method.nametaken">
-        <source>Notification Method with name '{0}' is already in use. Please choose a different name.</source>
+        <source>Notification Method with name '{0}' is already in use.  Please choose a different name.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.monitoring.notification.AbstractMethodEditAction</context>
         </context-group>
-        <target>{0} という名前の通知メソッドはすでに使用されています。別の名前を選択してください。</target>
+        <target state="needs-adaptation">{0} という名前の通知メソッドはすでに使用されています。別の名前を選択してください。</target>
       </trans-unit>
       <trans-unit id="Bootstrap Script">
         <source>Bootstrap Script</source>
@@ -6026,18 +6070,18 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>未処理エラー</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.success">
-        <source>Bootstrap script successfully generated. You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
+        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>ブートストラップスクリプトが正しく生成されました。 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; からアクセスできます。</target>
+        <target state="needs-adaptation">ブートストラップスクリプトが正しく生成されました。 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; からアクセスできます。</target>
       </trans-unit>
       <trans-unit id="restart.config.error">
-        <source>There was an error restarting the @@PRODUCT_NAME@@. It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;. Please contact support for more information.</source>
+        <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>Satellite の再起動中にエラーが発生しました。次のコマンドを発行してコンソールから手動で再起動することができます。/usr/sbin/service rhn-satellite restart。詳細についてはサポートにお問い合わせください。</target>
+        <target state="needs-adaptation">Satellite の再起動中にエラーが発生しました。次のコマンドを発行してコンソールから手動で再起動することができます。/usr/sbin/service rhn-satellite restart。詳細についてはサポートにお問い合わせください。</target>
       </trans-unit>
       <trans-unit id="config.storeconfig.error">
         <source>An error occurred and your @@PRODUCT_NAME@@ configuration changes could not be stored. Please contact support for more information</source>
@@ -6047,11 +6091,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>エラーが発生して、ご使用の Satellite 設定に関する変更は保存できませんでした。詳細についてはサポートに連絡してください</target>
       </trans-unit>
       <trans-unit id="restart.config.success">
-        <source>@@PRODUCT_NAME@@ restarting. If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually.</source>
+        <source>@@PRODUCT_NAME@@ restarting.  If this page has not refreshed in 5 minutes please click &lt;a href="/rhn/YourRhn.do"&gt;here&lt;/a&gt; to try manually. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ の再起動中です。このページが 5 分後にリフレッシュされない場合は、&lt;a href="/rhn/YourRhn.do"&gt;ここ&lt;/a&gt; をクリックして、手動でリフレッシュしてください。</target>
+        <target state="needs-adaptation">@@PRODUCT_NAME@@ の再起動中です。このページが 5 分後にリフレッシュされない場合は、&lt;a href="/rhn/YourRhn.do"&gt;ここ&lt;/a&gt; をクリックして、手動でリフレッシュしてください。</target>
       </trans-unit>
       <trans-unit id="restart.config.norestart">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
@@ -6117,11 +6161,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>キーが正しく削除されました。</target>
       </trans-unit>
       <trans-unit id="crypto.key.descinuse">
-        <source>This description is already in use. Please type a new description for this key.</source>
+        <source>This description is already in use.  Please type a new description for this key.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target>この説明はすでに使用されています。このキーに新しい詳細を入力してください。</target>
+        <target state="needs-adaptation">この説明はすでに使用されています。このキーに新しい詳細を入力してください。</target>
       </trans-unit>
       <trans-unit id="label">
         <source>Label</source>
@@ -6159,11 +6203,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>ファイル保持一覧が更新されました。</target>
       </trans-unit>
       <trans-unit id="preservation.key.labelexists">
-        <source>File Preservation label already exists. Please choose a unique File Preservation label.</source>
+        <source>File Preservation label already exists. Please choose a unique File Preservation label. </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListCreate.do</context>
         </context-group>
-        <target>ファイル保持ラベルはすでに存在しています。固有のファイル保持ラベルを選択してください。</target>
+        <target state="needs-adaptation">ファイル保持ラベルはすでに存在しています。固有のファイル保持ラベルを選択してください。</target>
       </trans-unit>
       <trans-unit id="filelists.jsp.selectafilelist">
         <source>No File List(s) selected.</source>
@@ -6201,11 +6245,21 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>{0} ファイル保持一覧が追加されました。</target>
       </trans-unit>
       <trans-unit id="taskomatic.msg.awolservers">
-        <source>Systems Not Checking In: ------------------------- The following systems recently stopped checking in with @@PRODUCT_NAME@@: {0} Please note that inactive systems cannot receive any updates. Follow this url to see the full list of inactive systems: {1}</source>
+        <source>Systems Not Checking In:
+-------------------------
+The following systems recently stopped checking in with @@PRODUCT_NAME@@:
+
+{0}
+
+
+Please note that inactive systems cannot receive any updates.
+
+Follow this url to see the full list of inactive systems:
+{1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
-        <target>チェックインを行なっていないシステム:
+        <target state="needs-adaptation">チェックインを行なっていないシステム:
 ----------------------------------
 以下のシステムは、最近 @@PRODUCT_NAME@@ へのチェックインを停止しました。
 
@@ -6408,11 +6462,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>キックスタートスクリプトが削除されました。</target>
       </trans-unit>
       <trans-unit id="kickstart.clone.success">
-        <source>Autoinstallation cloned successfully. You are now editing the cloned Autoinstallation.</source>
+        <source>Autoinstallation cloned successfully.  You are now editing the cloned Autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartClone.do</context>
         </context-group>
-        <target>自動インストールの複製を行ないました。複製後の自動インストールの編集を行なっています。</target>
+        <target state="needs-adaptation">自動インストールの複製を行ないました。複製後の自動インストールの編集を行なっています。</target>
       </trans-unit>
       <trans-unit id="kickstart.session_cancel.success">
         <source>Autoinstallation canceled.</source>
@@ -6436,11 +6490,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>{0} に対してシステムの自動インストールがスケジュールされました</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate">
-        <source>System record created for {0} in Cobbler. This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
+        <source>System record created for {0} in Cobbler.  This will allow you to autoinstall this system using the {1} profile from {0}'s terminal with the usage of the 'koan' command.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>Cobbler の {0} にシステム記録が作成されました。これにより、koan コマンドにて {0} のターミナルより {1} プロファイルを使用してこのシステムを自動インストールすることができます。</target>
+        <target state="needs-adaptation">Cobbler の {0} にシステム記録が作成されました。これにより、koan コマンドにて {0} のターミナルより {1} プロファイルを使用してこのシステムを自動インストールすることができます。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cobblercreate.bootstrap">
         <source>System record created for {0} in Cobbler. This will start installation as soon as the system is booted.</source>
@@ -6457,11 +6511,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>{0} にシステムの自動インストールがスケジュールされました。システムコンソールで状況を確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noprofiles">
-        <source>No profiles found that are compatible with this System. Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
+        <source>No profiles found that are compatible with this System.  Either you haven't created any Autoinstallation Profiles or this system does not have a Base Channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
-        <target>このシステムと互換性のあるプロファイルは見つかりませんでした。自動インストールのプロファイルをまったく作成していないか、またはこのシステムにベースチャンネルがないかのいずれかと思われます。</target>
+        <target state="needs-adaptation">このシステムと互換性のあるプロファイルは見つかりませんでした。自動インストールのプロファイルをまったく作成していないか、またはこのシステムにベースチャンネルがないかのいずれかと思われます。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.nobasechannel">
         <source>System {0} cannot be autoinstalled because it does not have a base channel.</source>
@@ -6576,11 +6630,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidlabel">
-        <source>The label is not formatted properly. The label should contain only letters, numbers, hyphens, periods, and underscores. It must also be at least 4 characters long</source>
+        <source>The label is not formatted properly.  The label should contain only letters, numbers, hyphens, periods, and underscores.  It must also be at least 4 characters long</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeEdit.do</context>
         </context-group>
-        <target>ラベルが正しく指定されていません。文字、数字、ハイフン、ピリオドおよび下線以外はラベルに使用できません。また、最低でも 4 文字の長さにしてください</target>
+        <target state="needs-adaptation">ラベルが正しく指定されていません。文字、数字、ハイフン、ピリオドおよび下線以外はラベルに使用できません。また、最低でも 4 文字の長さにしてください</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.invalidkernel">
         <source>The kernel could not be found at the specified location: {0}</source>
@@ -6597,11 +6651,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>指定の場所で initrd が見つかりませんでした: {0}</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.inuse">
-        <source>The Autoinstallable Distribution you have chosen to delete is in use. Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
+        <source>The Autoinstallable Distribution you have chosen to delete is in use.  Please delete or change the Distribution for Autoinstallation Profiles using this Distribution.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/TreeDelete.do</context>
         </context-group>
-        <target>削除の選択をした自動インストール可能なディストリビューションは使用中になっています。このディストリビューションを使用している自動インストールプロファイルに対するディストリビューションを削除または変更してください。</target>
+        <target state="needs-adaptation">削除の選択をした自動インストール可能なディストリビューションは使用中になっています。このディストリビューションを使用している自動インストールプロファイルに対するディストリビューションを削除または変更してください。</target>
       </trans-unit>
       <trans-unit id="basepath">
         <source>External Location</source>
@@ -6751,27 +6805,27 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>設定ファイルのリビジョンの作成中にエラーが発生しました。({0}) は '{1}' ですが、'{2}' に変更しようとしています。ファイルタイプを変更する場合は、({0}) を削除し、'{1}' ではなく '{2}' として再び追加する必要があります。</target>
       </trans-unit>
       <trans-unit id="error.config-not-specified">
-        <source>Error creating Configuration File Revision: Upload file not found.</source>
+        <source>Error creating Configuration File Revision:  Upload file not found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
         </context-group>
-        <target>設定ファイルのリビジョンの作成中にエラーが発生: アップロードファイルが見つかりませんでした。</target>
+        <target state="needs-adaptation">設定ファイルのリビジョンの作成中にエラーが発生: アップロードファイルが見つかりませんでした。</target>
       </trans-unit>
       <trans-unit id="error.config-empty">
-        <source>Error creating Configuration File Revision: File {0} is empty.</source>
+        <source>Error creating Configuration File Revision:  File {0} is empty.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File /etc/testfile.txt not found.</context>
         </context-group>
-        <target>設定ファイルのリビジョンの作成中にエラーが発生: ファイル {0} は空です。</target>
+        <target state="needs-adaptation">設定ファイルのリビジョンの作成中にエラーが発生: ファイル {0} は空です。</target>
       </trans-unit>
       <trans-unit id="error.configtoolarge">
-        <source>Error creating Configuration File Revision: File too large. The maximum file size is {0}</source>
+        <source>Error creating Configuration File Revision:  File too large.  The maximum file size is {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File too large.  The maximum file size is 128 KB</context>
         </context-group>
-        <target>設定ファイルのリビジョンの作成中にエラー発生: ファイルが大きすぎます。ファイルの最大サイズは {0} です</target>
+        <target state="needs-adaptation">設定ファイルのリビジョンの作成中にエラー発生: ファイルが大きすぎます。ファイルの最大サイズは {0} です</target>
       </trans-unit>
       <trans-unit id="config_revisions.failure">
         <source>{0} revision deletions failed.</source>
@@ -8115,8 +8169,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>{0} チャンネルマネージャーが正常に更新されました。</target>
       </trans-unit>
       <trans-unit id="sdc.activation.kickstarting">
-        <source>There is a kickstart session in progress for this system. Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete. Using this key manually could cause unintended side-effects.</source>
-        <target>このシステムに対して動作中のキックスタートセッションが存在しています。アクティベーションキーを変更してしまうと、キックスタートセッションの完了後のシステム再登録に失敗する可能性が高くなります。また、このキーを手作業で使用しようとすると、予期しない副作用を発生させる可能性もあります。</target>
+        <source>There is a kickstart session in progress for this system.  Modifying this activation key is likely to cause the system to fail to re-register when the kickstart session is complete.  Using this key manually could cause unintended side-effects.</source>
+        <target state="needs-adaptation">このシステムに対して動作中のキックスタートセッションが存在しています。アクティベーションキーを変更してしまうと、キックスタートセッションの完了後のシステム再登録に失敗する可能性が高くなります。また、このキーを手作業で使用しようとすると、予期しない副作用を発生させる可能性もあります。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
@@ -8136,11 +8190,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>子チャンネルのサブスクリプションが更新されました。</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.failed_channels">
-        <source>Note: Some channel subscriptions could not be updated because there were no available subscriptions.</source>
+        <source>Note:  Some channel subscriptions could not be updated because there were no available subscriptions.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>注記: 更新できるサブスクリプションがないため、更新できなかったチャンネルサブスクリプションがあります。</target>
+        <target state="needs-adaptation">注記: 更新できるサブスクリプションがないため、更新できなかったチャンネルサブスクリプションがあります。</target>
       </trans-unit>
       <trans-unit id="ssm.groups.changed">
         <source>System Group membership changed.</source>
@@ -8231,11 +8285,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>このチャンネルにはファイル名 "{0}" はすでに存在しています。</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel">
-        <source>Could not automatically subscribe the system to the RHN Tools Channel. This channel contains packages required for virtualization. This is most likely caused by a lack of channel entitlements.</source>
+        <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>システムを RHN ツールチャンネルに自動的にサブスクライブできませんでした。このチャンネルには、仮想化に必要なパッケージが含まれます。この原因としてチャンネルエンタイトルメントがないことが考えられます。</target>
+        <target state="needs-adaptation">システムを RHN ツールチャンネルに自動的にサブスクライブできませんでした。このチャンネルには、仮想化に必要なパッケージが含まれます。この原因としてチャンネルエンタイトルメントがないことが考えられます。</target>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
@@ -8252,11 +8306,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>パッケージ {0} を持つ子チャンネルは複数存在します。このシステムを適切な子チャンネルに手動でサブスクライブし、このパッケージのインストールをスケジュールしてください。</target>
       </trans-unit>
       <trans-unit id="system.entitle.novirtchannel">
-        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel. This channel contains packages required for virtualization. This is most likely caused by a lack of channel entitlements.</source>
+        <source>Could not automatically subscribe the system to the RHEL Virtualization Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>このシステムを RHEL Virtualization チャンネルに自動的にサブスクライブできませんでした。このチャンネルには仮想化に必要なパッケージが含まれています。この原因としてチャンネルエンタイトルメントがないことが考えられます。</target>
+        <target state="needs-adaptation">このシステムを RHEL Virtualization チャンネルに自動的にサブスクライブできませんでした。このチャンネルには仮想化に必要なパッケージが含まれています。この原因としてチャンネルエンタイトルメントがないことが考えられます。</target>
       </trans-unit>
       <trans-unit id="system.entitle.novirtpackage">
         <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
@@ -8273,11 +8327,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>システムはすでに {0} エンタイトルメントを持っています。</target>
       </trans-unit>
       <trans-unit id="system.entitle.addedvirtualization">
-        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better. See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
+        <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.  See &lt;a href="{0}"&gt;here&lt;/a&gt; for more info.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。詳細については、&lt;a href="/rhn/help/reference/en/ref.webui.systems.systems.jsp"&gt;ここ&lt;/a&gt;をご覧ください。</target>
+        <target state="needs-adaptation">システムに仮想化エンタイトルメントが追加されたため、ご使用のシステムが仮想ゲストをよりよく管理できるよう一部の手順が追加されました。詳細については、&lt;a href="/rhn/help/reference/en/ref.webui.systems.systems.jsp"&gt;ここ&lt;/a&gt;をご覧ください。</target>
       </trans-unit>
       <trans-unit id="system.entitle.addedvirtualization.nodoc">
         <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
@@ -8360,8 +8414,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>サーバーは PAM 認証をサポートするよう設定されていません。PAM の設定手順についてはリファレンスガイドを参照してください。</target>
       </trans-unit>
       <trans-unit id="api.org.migrationtosameorg">
-        <source>User cannot migrate a system where the origination and destination organizations are the same. Org Id: {0}, System Id: {1}.</source>
-        <target>移行元組織と移行先組織が同じ場合はシステムを移行できません。組織 ID: {0}、システム ID: {1}。</target>
+        <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
+        <target state="needs-adaptation">移行元組織と移行先組織が同じ場合はシステムを移行できません。組織 ID: {0}、システム ID: {1}。</target>
       </trans-unit>
       <trans-unit id="api.org.nosuchorg">
         <source>No such organization: {0}</source>
@@ -8380,8 +8434,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>組織 {0} のユーザーは、組織 {2} の {1} プロパティーを読み出したり、変更することはできません。</target>
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg">
-        <source>Cannot perform this operation on the satellite organization. (Org ID 1)</source>
-        <target>Satellite 組織にこの操作を実行できません。(組織 ID 1)</target>
+        <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
+        <target state="needs-adaptation">Satellite 組織にこの操作を実行できません。(組織 ID 1)</target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid patch: {0}</source>
@@ -8420,8 +8474,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>サーバーグループの発見やアクセスができません: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied">
-        <source>Changing administrator access is not allowed for Satellite and Organization administrators. These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
-        <target>Satellite 管理者および組織管理者に対して管理者アクセスの変更が許可されていません。これらのユーザーにはデフォルトでアクセス権が与えられているため、次のユーザーを入力内容から削除する必要があります: {0}</target>
+        <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
+        <target state="needs-adaptation">Satellite 管理者および組織管理者に対して管理者アクセスの変更が許可されていません。これらのユーザーにはデフォルトでアクセス権が与えられているため、次のユーザーを入力内容から削除する必要があります: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel">
         <source>Invalid profile label specified: {0}</source>
@@ -8480,12 +8534,12 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>このシステムを要求されたチャンネルに対してサブスクライブさせることができません: "{0}"</target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel">
-        <source>Multiple base channels selected for subscription. The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
-        <target>サブスクリプションに対して複数のベースチャンネルが選択されています。{0} と {1} の両方のチャンネルがサブスクリプションに対して選択されましたが、システムは 1 つのベースチャンネルに対してのみサブスクライブできます。</target>
+        <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
+        <target state="needs-adaptation">サブスクリプションに対して複数のベースチャンネルが選択されています。{0} と {1} の両方のチャンネルがサブスクリプションに対して選択されましたが、システムは 1 つのベースチャンネルに対してのみサブスクライブできます。</target>
       </trans-unit>
       <trans-unit id="api.channel.invalidchannellist">
-        <source>The channel list provided is invalid. It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target>提供されたチャンネルリストは有効ではありません。チャンネルリストにはチャンネルラベルまたは ID をリストしますが、両方が混在してはなりません。</target>
+        <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
+        <target state="needs-adaptation">提供されたチャンネルリストは有効ではありません。チャンネルリストにはチャンネルラベルまたは ID をリストしますが、両方が混在してはなりません。</target>
       </trans-unit>
       <trans-unit id="channel.invalidchannelarch">
         <source>The channel arch specified ({0}) is invalid.</source>
@@ -8540,8 +8594,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>指定されたパッケージキー ({0}) は無効です。</target>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidProvider">
-        <source>The package provider specified ({0}) is invalid.</source>
-        <target>指定されたパッケージプロバイダー ({0}) は無効です。</target>
+        <source>The package provider specified ({0}) is  invalid.</source>
+        <target state="needs-adaptation">指定されたパッケージプロバイダー ({0}) は無効です。</target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidvirttype">
         <source>Invalid virtualization type: {0}</source>
@@ -8584,12 +8638,12 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>要求されたパッチ属性 ({0}) がありませんでした。</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster">
-        <source>A record for Master satellite {0} already exists</source>
-        <target>マスター Satellite {0} の記録はすでに存在します</target>
+        <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
+        <target state="needs-adaptation">マスター Satellite {0} の記録はすでに存在します</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave">
-        <source>A record for Slave satellite {0} already exists</source>
-        <target>スレーブ Satellite の記録 {0} はすでに存在します</target>
+        <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
+        <target state="needs-adaptation">スレーブ Satellite の記録 {0} はすでに存在します</target>
       </trans-unit>
       <trans-unit id="securityErrata">
         <source>Security Patches</source>
@@ -8862,12 +8916,12 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>以下のリストがフィルターされています。&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;すべての項目を表示するためにフィルターをクリアにします。&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="listtag.clearfilter">
-        <source>Clear filter</source>
-        <target>フィルターをクリア</target>
+        <source>Clear filter </source>
+        <target state="needs-adaptation">フィルターをクリア</target>
       </trans-unit>
       <trans-unit id="listtag.seeall">
-        <source>to see all {0} items.</source>
-        <target>{0} 個の項目全てを見る。</target>
+        <source>to see all {0} items.  </source>
+        <target state="needs-adaptation">{0} 個の項目全てを見る。</target>
       </trans-unit>
       <trans-unit id="listtag.filteredmessage">
         <source>The list of {0} item(s) below is filtered.</source>
@@ -9052,8 +9106,10 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>ラベル</target>
       </trans-unit>
       <trans-unit id="package.remove.cant.rollback">
-        <source>One or more of the packages you have selected for removal below are not contained in a software channel that this system is subscribed to. If you choose to continue with the removal you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
-        <target>削除のために選択した以下の 1 つまたは複数のパッケージは、このシステムがサブスクライブする
+        <source>One or more of the packages you have selected for removal below are not contained in
+            a software channel that this system is subscribed to.  If you choose to continue with the removal
+            you will not be able to rollback this system to this snapshot or any prior snapshot.</source>
+        <target state="needs-adaptation">削除のために選択した以下の 1 つまたは複数のパッケージは、このシステムがサブスクライブする
 			ソフトウェアチャンネルに含まれないものがあります。削除を実行すると、このシステムをこのスナップショットや以前のスナップショットに
 			ロールバックすることができなくなります。</target>
       </trans-unit>
@@ -9271,24 +9327,24 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>チャンネル &lt;strong&gt;'{0}'&lt;/strong&gt; を削除しました。</target>
       </trans-unit>
       <trans-unit id="distribution.tree.exists">
-        <source>A distribution already exists with the name '{0}'. Please select another name.</source>
-        <target>'{0}' という名前のディストリビューションはすでに存在します。別の名前を選択してください。</target>
+        <source>A distribution already exists with the name '{0}'.  Please select another name.</source>
+        <target state="needs-adaptation">'{0}' という名前のディストリビューションはすでに存在します。別の名前を選択してください。</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.redhat">
         <source>@@VENDOR_NAME@@ Channels cannot be deleted, only custom channels can.</source>
         <target>@@VENDOR_NAME@@ チャンネルは削除できません。カスタムチャンネルのみ削除できます。</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.haschild">
-        <source>This channel has child channels associated with it. You must delete those channels first before deleting the parent.</source>
-        <target>このチャンネルには子チャンネルが関連付けられています。子チャンネルを削除してから親チャンネルを削除しなければなりません。</target>
+        <source>This channel has child channels associated with it.  You must delete those channels first before deleting the parent.</source>
+        <target state="needs-adaptation">このチャンネルには子チャンネルが関連付けられています。子チャンネルを削除してから親チャンネルを削除しなければなりません。</target>
       </trans-unit>
       <trans-unit id="api.channel.delete.hasclones">
         <source>Unable to delete channel. The channel you have tried to delete has been cloned. You must delete the clones before you can delete this channel. Cloned channels include ({0}{1}).</source>
         <target>チャンネルを削除できませんでした。削除しようとしているチャンネルは複製されているため、複製されたものを先に削除しなければなりません。複製されたチャンネルには ({0}{1}) があります。</target>
       </trans-unit>
       <trans-unit id="api.kickstart.tree.notfound">
-        <source>The autoinstallable tree could not be found. You may not have access to the requested tree.</source>
-        <target>自動インストールツリーが見つかりませんでした。指定のツリーへのアクセスが許可されていない可能性があります。</target>
+        <source>The autoinstallable tree could not be found.  You may not have access to the requested tree.</source>
+        <target state="needs-adaptation">自動インストールツリーが見つかりませんでした。指定のツリーへのアクセスが許可されていない可能性があります。</target>
       </trans-unit>
       <trans-unit id="message.channelcreated">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
@@ -9395,8 +9451,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>選択されたキックスタート可能なツリーは現在使用できません。cobbler の機能を確認してください。</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.profile.invalidtreeforvirt">
-        <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type. Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
-        <target>現在選択されている仮想化タイプに適合しないディストリビューションまたは自動インストールツリーが選択されました。別のディストリビューションを選択するか、またはこのプロファイルの仮想化タイプを変更してからディストリビューションを設定するようにしてください。</target>
+        <source>You have selected a distribution or autoinstallable tree that is incompatible with the currently selected virtualization type.  Please either select a different distribution, or change the selected Virtualization Type of this profile before trying to set the distribution.</source>
+        <target state="needs-adaptation">現在選択されている仮想化タイプに適合しないディストリビューションまたは自動インストールツリーが選択されました。別のディストリビューションを選択するか、またはこのプロファイルの仮想化タイプを変更してからディストリビューションを設定するようにしてください。</target>
       </trans-unit>
       <trans-unit id="snapshots.childchannel">
         <source>Child Channels Updated</source>
@@ -9483,8 +9539,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>システムの移行</target>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.orgnone">
-        <source>This organization has no trusted organizations. Systems can only be migrated between organizations with defined trusts.</source>
-        <target>この組織には信頼できる組織がありません。信頼できる組織として定義されている組織間でしかシステムの移行は行えません。</target>
+        <source>This organization has no trusted organizations.  Systems can only be migrated between organizations with defined trusts.</source>
+        <target state="needs-adaptation">この組織には信頼できる組織がありません。信頼できる組織として定義されている組織間でしかシステムの移行は行えません。</target>
       </trans-unit>
       <trans-unit id="ssm.misc.changeprefs.changed">
         <source>Preferences changed for selected systems.</source>
@@ -9535,8 +9591,24 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>ベースチャンネルサブスクリプションの更新</target>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.distro.syncfail">
-        <source>The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler. These errors must be corrected for the distributions to be available for autoinstalling systems: {0} Please check: /var/log/rhn/rhn_taskomatic_daemon.log and /var/log/rhn/rhn_web_ui.log /var/log/cobbler/cobbler.log for more detailed errors. If you don't resolve the errors the autoinstallable tree will not be usable for autoinstalling.</source>
-        <target>下記は @@PRODUCT_NAME@@ が Cobbler との間で @@PRODUCT_NAME@@ が提供する自動インストール可能なディストリビューションを同期する際に発生したエラーの一覧です。自動インストールを行なうことができるようにするには、これらのエラーを解決しなければなりません: {0} エラーに関する詳細については、 /var/log/rhn/rhn_taskomatic_daemon.log, /var/log/rhn/rhn_web_ui.log, /var/log/cobbler/cobbler.log をそれぞれお読みください。エラーを解決しないと、自動インストールツリーが利用できなくなります。</target>
+        <source>
+The following is a list of errors gathered while @@PRODUCT_NAME@@ attempts to
+synchronize autoinstallable distributions from @@PRODUCT_NAME@@ to Cobbler.
+These errors must be corrected for the distributions to be available for
+autoinstalling systems:
+
+{0}
+
+Please check:
+
+/var/log/rhn/rhn_taskomatic_daemon.log and
+/var/log/rhn/rhn_web_ui.log
+/var/log/cobbler/cobbler.log
+
+for more detailed errors.  If you don't resolve the errors the autoinstallable
+tree will not be usable for autoinstalling.
+        </source>
+        <target state="needs-adaptation">下記は @@PRODUCT_NAME@@ が Cobbler との間で @@PRODUCT_NAME@@ が提供する自動インストール可能なディストリビューションを同期する際に発生したエラーの一覧です。自動インストールを行なうことができるようにするには、これらのエラーを解決しなければなりません: {0} エラーに関する詳細については、 /var/log/rhn/rhn_taskomatic_daemon.log, /var/log/rhn/rhn_web_ui.log, /var/log/cobbler/cobbler.log をそれぞれお読みください。エラーを解決しないと、自動インストールツリーが利用できなくなります。</target>
       </trans-unit>
       <trans-unit id="errata.delete.msg">
         <source>Successfully deleted {0} patches.</source>
@@ -9625,23 +9697,36 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         </context-group>
       </trans-unit>
       <trans-unit id="email.satellitecert.spwbodyend">
-        <source>Thank you for using @@PRODUCT_NAME@@. --the @@PRODUCT_NAME@@ Team</source>
-        <target>@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。 -- @@PRODUCT_NAME@@ チームより</target>
+        <source>
+
+
+Thank you for using @@PRODUCT_NAME@@.
+--the @@PRODUCT_NAME@@ Team
+</source>
+        <target state="needs-adaptation">@@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。 -- @@PRODUCT_NAME@@ チームより</target>
       </trans-unit>
       <trans-unit id="email.satellitecert.satbodyend">
-        <source>Please contact your regional @@VENDOR_NAME@@ Customer Service Representative for information on how to renew your @@PRODUCT_NAME@@ Certificate. Thank you for using @@PRODUCT_NAME@@. --the @@PRODUCT_NAME@@ Team</source>
-        <target>お使いの @@PRODUCT_NAME@@ 証明書の更新方法について、詳しくはご利用の地域の @@VENDOR_NAME@@ カスタマーサービスにお問い合わせください。 @@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。 -- @@PRODUCT_NAME@@ チームより</target>
+        <source>
+Please contact your regional @@VENDOR_NAME@@ Customer Service Representative for information
+on how to renew your @@PRODUCT_NAME@@ Certificate.
+
+
+Thank you for using @@PRODUCT_NAME@@.
+--the @@PRODUCT_NAME@@ Team
+</source>
+        <target state="needs-adaptation">お使いの @@PRODUCT_NAME@@ 証明書の更新方法について、詳しくはご利用の地域の @@VENDOR_NAME@@ カスタマーサービスにお問い合わせください。 @@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。 -- @@PRODUCT_NAME@@ チームより</target>
       </trans-unit>
       <trans-unit id="alphabar.label">
         <source>Select first character</source>
         <target>最初の文字を選択してください</target>
       </trans-unit>
       <trans-unit id="login.jsp.satbody2">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;.</source>
-        <target>@@PRODUCT_NAME@@ に関する詳細については、 &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;こちら&lt;/i&gt;&lt;/a&gt; の Web サイトをご覧ください。</target>
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+        <target state="needs-adaptation">@@PRODUCT_NAME@@ に関する詳細については、 &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;こちら&lt;/i&gt;&lt;/a&gt; の Web サイトをご覧ください。</target>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
-        <source/>
+        <source> </source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="lookup.customkey.title">
         <source>We're sorry, but the custom key could not be found.</source>
@@ -9664,8 +9749,11 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>次回のシステムチェックイン時に自動インストールを開始します。</target>
       </trans-unit>
       <trans-unit id="isodownload.rest.description">
-        <source>Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}. Note that only one set of ISO images is necessary to install any particular release of {0}.</source>
-        <target>下記には {0} の &lt;strong&gt;旧バージョン&lt;/strong&gt; の ISO イメージの完全セットがあります。なお、 {0} の特定のリリースをインストールするにあたっては、 ISO イメージのセットのうち 1 種類だけが必要となることに注意してください。</target>
+        <source>
+Below please find complete sets of ISO images for the &lt;strong&gt;older releases&lt;/strong&gt; of {0}.
+Note that only one set of ISO images is necessary to install any particular release of {0}.
+</source>
+        <target state="needs-adaptation">下記には {0} の &lt;strong&gt;旧バージョン&lt;/strong&gt; の ISO イメージの完全セットがあります。なお、 {0} の特定のリリースをインストールするにあたっては、 ISO イメージのセットのうち 1 種類だけが必要となることに注意してください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ListCustomData.do</context>
         </context-group>
@@ -9685,22 +9773,30 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         </context-group>
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr1">
-        <source>Below are all the channel content ISOs available for use with channel {0}. If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.</source>
-        <target>下記にはチャンネル {0} で利用できる全てのチャンネルコンテンツ ISO があります。下記のうち、いずれかのチャンネルコンテンツ ISO が存在しない場合は、  @@PRODUCT_NAME@@ の資格証明書を @@PRODUCT_NAME@@ にアップロードしていて、かつ目的のチャンネルを正しく識別しているかどうかをご確認ください。</target>
+        <source>
+Below are all the channel content ISOs available for use with channel {0}.  If any channel content ISOs appear to be missing below, please ensure that your @@PRODUCT_NAME@@ Entitlement Certificate has been uploaded to @@PRODUCT_NAME@@ and correctly identifies the target channels.
+</source>
+        <target state="needs-adaptation">下記にはチャンネル {0} で利用できる全てのチャンネルコンテンツ ISO があります。下記のうち、いずれかのチャンネルコンテンツ ISO が存在しない場合は、  @@PRODUCT_NAME@@ の資格証明書を @@PRODUCT_NAME@@ にアップロードしていて、かつ目的のチャンネルを正しく識別しているかどうかをご確認ください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr2">
-        <source>There are two types of channel content ISOs: Base Channel Content ISOs and Incremental Channel Content ISOs. You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt; if you need to initially populate a new @@PRODUCT_NAME@@ with channel content. Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.</source>
-        <target>ここには 2 種類のチャンネルコンテンツ ISO が存在しています。それぞれベースチャンネルコンテンツ ISO と、増分チャンネルコンテンツ ISO と呼ばれています。新しい @@PRODUCT_NAME@@ をチャンネルコンテンツ付きで投入する場合は、 &lt;strong&gt;ベースチャンネルコンテンツ ISO&lt;/strong&gt; をダウンロードしてください。既に @@PRODUCT_NAME@@ に対して取り込み済みのチャンネルに対して、それを更新したい場合は、 &lt;strong&gt;増分チャンネルコンテンツ ISO&lt;/strong&gt; をダウンロードしてください。</target>
+        <source>
+There are two types of channel content ISOs: Base Channel Content ISOs and Incremental Channel Content ISOs.
+You will want to download &lt;strong&gt;Base Channel Content ISOs&lt;/strong&gt; if you need to initially populate a new @@PRODUCT_NAME@@ with channel content.
+Alternatively, you will want to download &lt;strong&gt;Incremental Channel Content ISOs&lt;/strong&gt; if you want to update channels that you have already imported into your @@PRODUCT_NAME@@.
+</source>
+        <target state="needs-adaptation">ここには 2 種類のチャンネルコンテンツ ISO が存在しています。それぞれベースチャンネルコンテンツ ISO と、増分チャンネルコンテンツ ISO と呼ばれています。新しい @@PRODUCT_NAME@@ をチャンネルコンテンツ付きで投入する場合は、 &lt;strong&gt;ベースチャンネルコンテンツ ISO&lt;/strong&gt; をダウンロードしてください。既に @@PRODUCT_NAME@@ に対して取り込み済みのチャンネルに対して、それを更新したい場合は、 &lt;strong&gt;増分チャンネルコンテンツ ISO&lt;/strong&gt; をダウンロードしてください。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-note">
-        <source>&lt;strong&gt;Note:&lt;/strong&gt; Additional documentation on using @@PRODUCT_NAME@@ Channel Content ISOs is available in the &lt;em&gt;@@PRODUCT_NAME@@ Installation Guide&lt;/em&gt;, section 6.2.2.</source>
-        <target>&lt;strong&gt;Note:&lt;/strong&gt; @@PRODUCT_NAME@@ のチャンネルコンテンツ ISO を使用する際の追加の説明は、 &lt;em&gt;@@PRODUCT_NAME@@ インストールガイド&lt;/em&gt; の第 6.2.2 章内に書かれています。</target>
+        <source>
+&lt;strong&gt;Note:&lt;/strong&gt; Additional documentation on using @@PRODUCT_NAME@@ Channel Content ISOs is available in the &lt;em&gt;@@PRODUCT_NAME@@ Installation Guide&lt;/em&gt;, section 6.2.2.
+</source>
+        <target state="needs-adaptation">&lt;strong&gt;Note:&lt;/strong&gt; @@PRODUCT_NAME@@ のチャンネルコンテンツ ISO を使用する際の追加の説明は、 &lt;em&gt;@@PRODUCT_NAME@@ インストールガイド&lt;/em&gt; の第 6.2.2 章内に書かれています。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
@@ -9752,15 +9848,15 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>@@PRODUCT_NAME@@ 高度なトピックに関するガイド</target>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single base type is required for all systems registered to SUSE Manager</source>
-        <target>SUSE Manager に登録した全てのシステムに対して、単一のベースタイプが必要です</target>
+        <source>A single base type is required for all systems registered to @@PRODUCT_NAME@@</source>
+        <target state="needs-adaptation">SUSE Manager に登録した全てのシステムに対して、単一のベースタイプが必要です</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether SUSE Manager certificate has not expired</source>
-        <target>SUSE Manager の証明書の有効期限が切れていないかどうかの確認</target>
+        <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
+        <target state="needs-adaptation">SUSE Manager の証明書の有効期限が切れていないかどうかの確認</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
@@ -9773,24 +9869,24 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         </context-group>
       </trans-unit>
       <trans-unit id="satellite.expired">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-        <target>お使いの @@PRODUCT_NAME@@ の証明書の有効期限が切れています。 新しい証明書を取得するため、 @@VENDOR_NAME@@ に連絡を行なってください。</target>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+        <target state="needs-adaptation">お使いの @@PRODUCT_NAME@@ の証明書の有効期限が切れています。 新しい証明書を取得するため、 @@VENDOR_NAME@@ に連絡を行なってください。</target>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted">
-        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
-        <target>お使いの @@PRODUCT_NAME@@ の証明書の有効期限が切れています。 @@PRODUCT_NAME@@ は現在 {1} 日の制限期間のうちの [0} 日で、まもなく機能が停止されてしまいます。新しい証明書を取得するため、 SUSE に連絡を行なってください。</target>
+        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+        <target state="needs-adaptation">お使いの @@PRODUCT_NAME@@ の証明書の有効期限が切れています。 @@PRODUCT_NAME@@ は現在 {1} 日の制限期間のうちの [0} 日で、まもなく機能が停止されてしまいます。新しい証明書を取得するため、 SUSE に連絡を行なってください。</target>
       </trans-unit>
       <trans-unit id="satellite.graceperiod">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate. Your SUSE Manager will become inactive in {0} day(s).</source>
-        <target>お使いの @@PRODUCT_NAME@@ の証明書の有効期限が切れています。新しい証明書を取得するため、 @@VENDOR_NAME@@ に連絡を行なってください。お使いの SUSE Manager は、あと {0} 日で無効化されます。</target>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
+        <target state="needs-adaptation">お使いの @@PRODUCT_NAME@@ の証明書の有効期限が切れています。新しい証明書を取得するため、 @@VENDOR_NAME@@ に連絡を行なってください。お使いの SUSE Manager は、あと {0} 日で無効化されます。</target>
       </trans-unit>
       <trans-unit id="restricted.forbidden">
-        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
-        <target>お使いの @@PRODUCT_NAME@@ の証明書を更新するまで、この処理を行なうことはできません。現在、 @@PRODUCT_NAME@@ は {1} 日の制限期間のうちの {0} 日で、まもなく機能が停止されてしまいます。新しい証明書を取得するため、 SUSE に連絡を行なってください。</target>
+        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+        <target state="needs-adaptation">お使いの @@PRODUCT_NAME@@ の証明書を更新するまで、この処理を行なうことはできません。現在、 @@PRODUCT_NAME@@ は {1} 日の制限期間のうちの {0} 日で、まもなく機能が停止されてしまいます。新しい証明書を取得するため、 SUSE に連絡を行なってください。</target>
       </trans-unit>
       <trans-unit id="org.entitlements.system.defaultorg">
-        <source>You are not allowed to update entitlements in the Default Org. These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
-        <target>既定の組織内では資格情報を更新できません。これらの資格情報は @@PRODUCT_NAME@@ の証明書ファイルで判断されます。</target>
+        <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
+        <target state="needs-adaptation">既定の組織内では資格情報を更新できません。これらの資格情報は @@PRODUCT_NAME@@ の証明書ファイルで判断されます。</target>
       </trans-unit>
       <trans-unit id="distupgrade.upgrade">
         <source>Service Pack Migration</source>
@@ -9801,8 +9897,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>このシステムには &lt;strong&gt;{2}&lt;/strong&gt; への移行が &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt; 。</target>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run">
-        <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
-        <target>このシステムには &lt;strong&gt;{2}&lt;/strong&gt; への移行の予行演習が &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt; 。</target>
+        <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
+        <target state="needs-adaptation">このシステムには &lt;strong&gt;{2}&lt;/strong&gt; への移行の予行演習が &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;スケジュールされています&lt;/a&gt; 。</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-register">
         <source>Run mgr-register</source>
@@ -9845,12 +9941,12 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>チャンネルトークンのクリーンアップ</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
-        <source>Registers SUSE Manager clients</source>
-        <target>SUSE Manager クライアントの登録</target>
+        <source>Registers @@PRODUCT_NAME@@ clients</source>
+        <target state="needs-adaptation">SUSE Manager クライアントの登録</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch">
-        <source>Synchronizes SUSE Manager repositories</source>
-        <target>SUSE Manager リポジトリーの同期</target>
+        <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
+        <target state="needs-adaptation">SUSE Manager リポジトリーの同期</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch">
         <source>Manages clients via SSH Server Push</source>
@@ -10156,8 +10252,8 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <target>@@PRODUCT_NAME@@ サーバの設定を始める</target>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices">
-        <source>This document describes SUSE recommended best practices for @@PRODUCT_NAME@@</source>
-        <target>この文書では、  @@PRODUCT_NAME@@ に対する SUSE の推奨手順を説明しています</target>
+        <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
+        <target state="needs-adaptation">この文書では、  @@PRODUCT_NAME@@ に対する SUSE の推奨手順を説明しています</target>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
@@ -10237,6 +10333,192 @@ rhn-kickstart* パッケージが利用可能であることを確認します�
         <source>Package {0} not found in subscribed channels</source>
         <target>サブスクリプションしているチャンネル内にはパッケージ {0} がありません</target>
       </trans-unit>
+    <trans-unit id="Networks">
+        <source>Networks</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_refresh">
+        <source>Virtual storage pool refresh</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_start">
+        <source>Virtual storage pool start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_stop">
+        <source>Virtual storage pool stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_delete">
+        <source>Virtual storage pool delete</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_create">
+        <source>Virtual storage pool creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_update">
+        <source>Virtual storage pool update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.volume_delete">
+        <source>Virtual storage volume deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_start">
+        <source>Virtual network start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_stop">
+        <source>Virtual network stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_delete">
+        <source>Virtual network deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="cluster_admin">
+        <source>Cluster Administrator</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.title">
+        <source>Clusters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.overview">
+        <source>Overview</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.add">
+        <source>Add</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.modulenotfound">
+        <source>Module '{0}' not found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.moduleconflict">
+        <source>Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.dependencyerror.formodule">
+        <source>Some of the modular dependencies cannot be resolved for module '{0}'.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.dependencyerror">
+        <source>Some of the modular dependencies cannot be resolved.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodulefilters">
+        <source>No module filters attached. Module metadata will be cloned to target.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodularsources">
+        <source>No modular source attached. Module filters will be ignored.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.name.empty">
+        <source>Calendar name required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.schedule.name.empty">
+        <source>Schedule name required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.data.empty">
+        <source>Calendar data required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.exists">
+        <source>Calendar '{0}' already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.fetch.error">
+        <source>Error fetching calendar data from '{0}'</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.not.exists">
+        <source>Calendar '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.schedule.id.not.exists">
+        <source>Schedule with id '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.id.not.exists">
+        <source>Calendar with id '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.reschedule.error.cancel">
+        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.reschedule.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.systemnotfound">
+        <source>Some of the specified servers cannot be found</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>
