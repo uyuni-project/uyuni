@@ -74,6 +74,7 @@ class MergeRdTest(unittest.TestCase):
             self.fail("Command failed for a different reason: {0}".format(errors))
 
     def test_should_fail_when_the_initrd_is_not_a_valid_file(self):
+        (status, stdout, stderr) = my_popen(["touch", "/etc/fstab"])
         (status, stdout, stderr) = my_popen([
             "/bin/sh",
             MERGE_RD_CMD,
