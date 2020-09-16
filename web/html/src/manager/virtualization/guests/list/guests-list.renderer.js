@@ -2,7 +2,7 @@ const SpaRenderer  = require("core/spa/spa-renderer").default;
 const React = require('react');
 const { GuestsList } = require('./guests-list');
 
-export const renderer = (id, { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin }) => {
+export const renderer = (id, { serverId, pageSize, saltEntitled, foreignEntitled, isAdmin, hypervisor }) => {
   SpaRenderer.renderNavigationReact(
     <GuestsList
       serverId={serverId}
@@ -10,6 +10,7 @@ export const renderer = (id, { serverId, pageSize, saltEntitled, foreignEntitled
       saltEntitled={saltEntitled}
       foreignEntitled={foreignEntitled}
       isAdmin={isAdmin}
+      hypervisor={hypervisor}
     />,
     document.getElementById(id),
   );
