@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="ko">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="ko">
     <body>
       <trans-unit id="0">
         <source>0</source>
@@ -1101,7 +1101,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Test Message - ignore</context>
         </context-group>
-        <target>&lt;p&gt; &lt;strong&gt; &lt;a href=&quot;http://www.redhat.com&quot;&gt;{0} 시스템&lt;/a&gt;&lt;/strong&gt;에 필요한 인타이틀먼트가 충분하지 않습니다.&lt;/p&gt; </target>
+        <target>&lt;p&gt; &lt;strong&gt; &lt;a href="http://www.redhat.com"&gt;{0} 시스템&lt;/a&gt;&lt;/strong&gt;에 필요한 인타이틀먼트가 충분하지 않습니다.&lt;/p&gt; </target>
       </trans-unit>
       <trans-unit id="traceback message header">
         <source>The following exception occurred while executing this request:</source>
@@ -1251,18 +1251,18 @@
         <target>자신의 계정을 삭제할 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="user.satadmin.remove">
-        <source>Removed SUSE Manager Administrator role from {0}</source>
+        <source>Removed @@PRODUCT_NAME@@ Administrator role from {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>{0}에서 제거된 Satellite 관리자 역할 </target>
+        <target state="needs-adaptation">{0}에서 제거된 Satellite 관리자 역할 </target>
       </trans-unit>
       <trans-unit id="user.satadmin.add">
-        <source>Added SUSE Manager Administrator role to {0}</source>
+        <source>Added @@PRODUCT_NAME@@ Administrator role to {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users</context>
         </context-group>
-        <target>{0}로 추가된 Satellite 관리자 역할 </target>
+        <target state="needs-adaptation">{0}로 추가된 Satellite 관리자 역할 </target>
       </trans-unit>
       <trans-unit id="user.deleteadmin">
         <source>You cannot delete another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to delete their account</source>
@@ -1272,11 +1272,11 @@
         <target>또 다른 조직 관리자를 삭제하실 수 없습니다. 사용자 계정을 삭제하기 전에 해당 사용자의 '조직 관리자' 역할을 먼저 삭제하셔야 합니다.  </target>
       </trans-unit>
       <trans-unit id="user.cannot.delete.last.sat.admin">
-        <source>Cannot delete the last remaining SUSE Manager administrator.</source>
+        <source>Cannot delete the last remaining @@PRODUCT_NAME@@ administrator.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/DeleteUser</context>
         </context-group>
-        <target>마지막으로 남아있는 satellite 관리자는 삭제할 수 없습니다. </target>
+        <target state="needs-adaptation">마지막으로 남아있는 satellite 관리자는 삭제할 수 없습니다. </target>
       </trans-unit>
       <trans-unit id="Users">
         <source>Users</source>
@@ -1315,11 +1315,11 @@
         <target>WEB TRACEBACK 출처</target>
       </trans-unit>
       <trans-unit id="taskomatic notif subject">
-        <source>SUSE MANAGER TASKOMATIC NOTIFICATION</source>
+        <source>@@PRODUCT_NAME@@ TASKOMATIC NOTIFICATION</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Traceback Email Notifications</context>
         </context-group>
-        <target>RHN TASKOMATIC 통지 </target>
+        <target state="needs-adaptation">RHN TASKOMATIC 통지 </target>
       </trans-unit>
       <trans-unit id="Notification Messages">
         <source>Notification Messages</source>
@@ -2002,21 +2002,21 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>ACL 문을 구문 분석하지 못했습니다:  &quot;{0}&quot;</target>
+        <target>ACL 문을 구문 분석하지 못했습니다:  "{0}"</target>
       </trans-unit>
       <trans-unit id="bad-handler">
         <source>Could not find ACL handler {0} in statement: "{1}". Available ACL handlers: {2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>문장에서 {0} ACL 처리기를 찾을 수 없음: &quot;{1}&quot;. 사용 가능한 ACL 처리기: {2}</target>
+        <target>문장에서 {0} ACL 처리기를 찾을 수 없음: "{1}". 사용 가능한 ACL 처리기: {2}</target>
       </trans-unit>
       <trans-unit id="invocation-target-exception">
         <source>IllegalInvocationException calling {0} ("{1}"): {2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Logfile error message</context>
         </context-group>
-        <target>IllegalInvocationException 호출 {0} (&quot;{1}&quot;): {2}</target>
+        <target>IllegalInvocationException 호출 {0} ("{1}"): {2}</target>
       </trans-unit>
       <trans-unit id="no notes">
         <source>(none)</source>
@@ -2135,7 +2135,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/ImportFileConfirm.do</context>
         </context-group>
-        <target>{0}개의 파일 업로드를 위해 &lt;a href=&quot;{1}&quot;&gt;스케줄됨&lt;/a&gt;.</target>
+        <target>{0}개의 파일 업로드를 위해 &lt;a href="{1}"&gt;스케줄됨&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="configfiles.upload">
         <source>Import config file data from system</source>
@@ -2177,7 +2177,7 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
           <context context-type="paramnotes">Revision 5 of /etc/foo from My Config Channel</context>
         </context-group>
-        <target>&lt;a href=&quot;{3}&quot;&gt;{4}&lt;/a&gt;에서 {2} 중 &lt;a href=&quot;{0}&quot;&gt;개정판 {1}&lt;/a&gt; </target>
+        <target>&lt;a href="{3}"&gt;{4}&lt;/a&gt;에서 {2} 중 &lt;a href="{0}"&gt;개정판 {1}&lt;/a&gt; </target>
       </trans-unit>
       <trans-unit id="config.upload.onechannel">
         <source>Destination Configuration Channel: {0}</source>
@@ -2220,7 +2220,7 @@ entitlements for the 'rhn-tools' software channel from your @@PRODUCT_NAME@@ adm
 &lt;li&gt;
 Make sure that the 'rhn-tools' child channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-SUSE Manager administrator and request a satellite-sync for the rhn-tools channel
+@@PRODUCT_NAME@@ administrator and request a mgr-inter-sync for the rhn-tools channel
 and try again.
 &lt;/li&gt;
 &lt;li&gt;
@@ -2238,7 +2238,7 @@ available for this kickstart profile to function properly.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-        <target>&lt;div style=&quot;text-align: left;&quot;&gt;
+        <target state="needs-adaptation">&lt;div style="text-align: left;"&gt;
 &lt;p&gt;이 문제를 해결하려면 다음 사항을 확인하십시오:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -2277,7 +2277,7 @@ entitlements for the 'appstream' software channel from your @@PRODUCT_NAME@@ adm
 &lt;li&gt;
 Make sure that the 'appstream' child channel for this kickstart profile's base
 channel is available to your @@PRODUCT_NAME@@. If it is not, please contact your
-satellite administrator and request a cdn-sync for the appstream channel
+@@PRODUCT_NAME@@ administrator and request a cdn-sync for the appstream channel
 and try again.
 &lt;/li&gt;
 &lt;/ul&gt;
@@ -2286,6 +2286,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="kickstart.initiate">
         <source>Initiate an autoinstallation</source>
@@ -2550,7 +2551,7 @@ and try again.
             1 system failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/FailedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업 완료하지 못했습니다.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업 완료하지 못했습니다.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.failedlink.plural">
         <source>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; failed to complete this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2560,7 +2561,7 @@ and try again.
             2 systems failed to complete this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/FailedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업 완료하지 못했습니다.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/FailedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업 완료하지 못했습니다.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} system&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2570,7 +2571,7 @@ and try again.
             1 system successfully completed this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업을 성공적으로 마쳤습니다.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업을 성공적으로 마쳤습니다.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.completelink.plural">
         <source>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} systems&lt;/a&gt;&lt;/strong&gt; successfully completed this action.&lt;br/&gt;&lt;br/&gt;</source>
@@ -2580,7 +2581,7 @@ and try again.
             2 systems successfully completed this action.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/schedule/CompletedSystems.do?aid={0}&quot;&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업을 성공적으로 마쳤습니다.&lt;br/&gt;&lt;br/&gt;</target>
+        <target>&lt;a href="/rhn/schedule/CompletedSystems.do?aid={0}"&gt;&lt;strong&gt;{1} 개의 시스템&lt;/a&gt;&lt;/strong&gt;이 이 작업을 성공적으로 마쳤습니다.&lt;br/&gt;&lt;br/&gt;</target>
       </trans-unit>
       <trans-unit id="action.name">
         <source>Patch Update: {0} - {1}</source>
@@ -2599,28 +2600,28 @@ and try again.
         <target>에라타 업데이트: 소프트웨어 업데이트 스택의 통합된 업데이트 ({0} 에라타)</target>
       </trans-unit>
       <trans-unit id="errata.schedule">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch update has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">1 errata update has been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.schedule.plural">
-        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{1}&lt;/a&gt;.</source>
+        <source>&lt;strong&gt;{0}&lt;/strong&gt; patch updates have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{1}&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">43 errata updates have been scheduled for workstation.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule">
-        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; system</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 1 system</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.schedule.plural">
-        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}&quot;&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
+        <source>Patch &lt;a href="/rhn/errata/details/Details.do?eid={2}"&gt;{0}&lt;/a&gt; has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={3}"&gt;scheduled&lt;/a&gt; for &lt;strong&gt;{1}&lt;/strong&gt; systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm.do</context>
           <context context-type="paramnotes">Errata RHSA-2004:597-06 has been scheduled for 3 systems</context>
@@ -3876,7 +3877,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="paramnotes">You have successfully scheduled a package profile refresh
                                              for workstation3.</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={1}&quot;&gt;{2}&lt;/a&gt;을 위한 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={0}&quot;&gt;패키지 프로파일 재생&lt;/a&gt; 작업이 성공적으로 스케줄되었습니다.</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;을 위한 &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;패키지 프로파일 재생&lt;/a&gt; 작업이 성공적으로 스케줄되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.bulkremovecustomdata">
         <source>Value removed for &lt;strong&gt;{0}&lt;/strong&gt; from {1} systems.</source>
@@ -3982,7 +3983,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>&lt;strong&gt;{3}&lt;/strong&gt;의 &lt;strong&gt;{2}&lt;/strong&gt;를 위한 패키지 프로파일 동기화 작업을 성공적으로 &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}&quot;&gt;스케줄하셨습니다&lt;/a&gt;&lt;/strong&gt;.</target>
+        <target>&lt;strong&gt;{3}&lt;/strong&gt;의 &lt;strong&gt;{2}&lt;/strong&gt;를 위한 패키지 프로파일 동기화 작업을 성공적으로 &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;스케줄하셨습니다&lt;/a&gt;&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="message.hardwarerefresh">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The @@PRODUCT_NAME@@ has &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt;&lt;/strong&gt; a hardware refresh for &lt;strong&gt;{2}&lt;/strong&gt; to be run before the package profile sync.  This is required to verify that the system has the ability to compare packages.</source>
@@ -3990,7 +3991,7 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/</context>
           <context context-type="paramnotes">sid, actionid, servername, profilename</context>
         </context-group>
-        <target>&lt;strong&gt;알림:&lt;/strong&gt; @@PRODUCT_NAME@@는 패키지 프로파일 동기화 작업 이전에 &lt;strong&gt;{2}&lt;/strong&gt;에 하드웨어 재생 작업을 실행하도록 &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}&quot;&gt;스케줄하였습니다&lt;/a&gt;&lt;/strong&gt;.  이는 시스템에 패키지 비교 기능이 있는지를 확인하기 위해 필요합니다.  </target>
+        <target>&lt;strong&gt;알림:&lt;/strong&gt; @@PRODUCT_NAME@@는 패키지 프로파일 동기화 작업 이전에 &lt;strong&gt;{2}&lt;/strong&gt;에 하드웨어 재생 작업을 실행하도록 &lt;strong&gt;&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;스케줄하였습니다&lt;/a&gt;&lt;/strong&gt;.  이는 시스템에 패키지 비교 기능이 있는지를 확인하기 위해 필요합니다.  </target>
       </trans-unit>
       <trans-unit id="filterCreate.success">
         <source>The filter {0} was successfully created</source>
@@ -4079,11 +4080,11 @@ user before attempting to deactivate their account.</source>
                 </note>
         <trans-unit id="daterangepicker.error.invalid">
           <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-          <target>&quot;{0}&quot; 날짜는 유효하지 않은 값이므로, 기본값으로 되돌립니다. 선택하신 달에 날짜수를 확인하시기 바랍니다.</target>
+          <target>"{0}" 날짜는 유효하지 않은 값이므로, 기본값으로 되돌립니다. 선택하신 달에 날짜수를 확인하시기 바랍니다.</target>
         </trans-unit>
         <trans-unit id="daterangepicker.error.start.before.end">
           <source>The start date "{0}" must be before the end date "{1}"</source>
-          <target>시작 날짜 &quot;{0}&quot;는 마지막 날짜 &quot;{1}&quot;보다 이전이어야 합니다.</target>
+          <target>시작 날짜 "{0}"는 마지막 날짜 "{1}"보다 이전이어야 합니다.</target>
         </trans-unit>
       </group>
       <trans-unit id="monitoring.services.restarted">
@@ -5956,7 +5957,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 서비스를 사용할 첫번째 사용자를 생성하셨습니다.&lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;이곳을 클릭하여&lt;/strong&gt;&lt;/a&gt; 나머지 추가 설정을 마치시기 바랍니다.  </target>
+        <target>@@PRODUCT_NAME@@ 서비스를 사용할 첫번째 사용자를 생성하셨습니다.&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;이곳을 클릭하여&lt;/strong&gt;&lt;/a&gt; 나머지 추가 설정을 마치시기 바랍니다.  </target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -6040,7 +6041,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>부트스트랩 스크립트가 성공적으로 생성되었습니다. 부트스트랩 스크립트를 &lt;a href=&quot;{0}/pub/bootstrap/&quot;&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 찾으실 수 있습니다</target>
+        <target>부트스트랩 스크립트가 성공적으로 생성되었습니다. 부트스트랩 스크립트를 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;에서 찾으실 수 있습니다</target>
       </trans-unit>
       <trans-unit id="restart.config.error">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -6061,7 +6062,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@를 다시 시작하고 있습니다.  5 분 안에 이 페이지가 새로 고침되지 않을 경우, &lt;a href=&quot;/rhn/YourRhn.do&quot;&gt;여기&lt;/a&gt;를 클릭하여 수동으로 시도해 봅니다.        </target>
+        <target>@@PRODUCT_NAME@@를 다시 시작하고 있습니다.  5 분 안에 이 페이지가 새로 고침되지 않을 경우, &lt;a href="/rhn/YourRhn.do"&gt;여기&lt;/a&gt;를 클릭하여 수동으로 시도해 봅니다.        </target>
       </trans-unit>
       <trans-unit id="restart.config.norestart">
         <source>Please confirm you want to restart the @@PRODUCT_NAME@@ by checking the box in the form below.</source>
@@ -6513,7 +6514,7 @@ Follow this url to see the full list of inactive systems:
         <target>현재 이 시스템의 기본 채널에 대해 {0} 채널에 남아있는 서브스크립션이 없습니다.  </target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.noup2date">
-        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
+        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -6725,7 +6726,7 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="system.sdc.missing.config_deploy2">
           <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-          <target>&lt;a href={0}&gt;{1}&lt;/a&gt; 화면에서 시스템을 선택하고 &quot;{2}&quot;를 클릭하여 이 시스템에서 설정 배치 기능을 사용할 수 있는지를 확인할 수 있습니다  </target>
+          <target>&lt;a href={0}&gt;{1}&lt;/a&gt; 화면에서 시스템을 선택하고 "{2}"를 클릭하여 이 시스템에서 설정 배치 기능을 사용할 수 있는지를 확인할 수 있습니다  </target>
         </trans-unit>
         <trans-unit id="system.sdc.addtossm">
           <source>System added to the System Set Manager.</source>
@@ -7213,7 +7214,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target>RHN Applet @@PRODUCT_NAME@@ 활성이 &lt;a href=&quot;{0}&quot;&gt;스케줄됨&lt;/a&gt; </target>
+        <target>RHN Applet @@PRODUCT_NAME@@ 활성이 &lt;a href="{0}"&gt;스케줄됨&lt;/a&gt; </target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.none">
         <source>None</source>
@@ -7255,11 +7256,11 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="sdc.config.deploy.failure">
           <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>모든 파일 및 디렉토리 ({0})를 디플로이하지 못했습니다. [&lt;a href=&quot;{1}&quot;&gt;자세한 정보 보기&lt;/a&gt;]   </target>
+          <target>모든 파일 및 디렉토리 ({0})를 디플로이하지 못했습니다. [&lt;a href="{1}"&gt;자세한 정보 보기&lt;/a&gt;]   </target>
         </trans-unit>
         <trans-unit id="sdc.config.deploy.success">
           <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>모든 파일 및 디렉토리 ({0})를 성공적으로 디플로이했습니다. [&lt;a href=&quot;{1}&quot;&gt;자세한 정보 보기&lt;/a&gt;]</target>
+          <target>모든 파일 및 디렉토리 ({0})를 성공적으로 디플로이했습니다. [&lt;a href="{1}"&gt;자세한 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
       </group>
       <group>
@@ -7272,111 +7273,111 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0">
           <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>비교를 위해 파일, 디렉토리, 심볼릭 링크가 선택되어 있지 않습니다.  [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>비교를 위해 파일, 디렉토리, 심볼릭 링크가 선택되어 있지 않습니다.  [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1">
           <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2">
           <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5}개의 심볼릭 링크 중 {4}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5}개의 심볼릭 링크 중 {4}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0">
           <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1">
           <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4}개와 1 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4}개와 1 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2">
           <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4}개와 1 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4}개와 1 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0">
           <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {3} 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {3} 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1">
           <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4}개와 {3} 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4}개와 {3} 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2">
           <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4}개와 {3} 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4}개와 {3} 개의 디렉토리 중 {2}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0">
           <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1">
           <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2">
           <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0">
           <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 디렉토리 중 {2} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 디렉토리 중 {2} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1">
           <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2">
           <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0">
           <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {3} 개의 디렉토리 중 {2} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {3} 개의 디렉토리 중 {2} 개와 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1">
           <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2">
           <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 1 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0">
           <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는{1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는{1} 개의 파일 중 {0}개가 @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1">
           <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2">
           <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0">
           <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 디렉토리 중 {2} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 디렉토리 중 {2} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1">
           <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2">
           <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 1 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0">
           <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {3} 개의 디렉토리 중 {2} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {3} 개의 디렉토리 중 {2} 개와 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1">
           <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 1 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2">
           <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href=&quot;{6}&quot;&gt;상세 정보 보기&lt;/a&gt;]</target>
+          <target>시스템에 있는 {5} 개의 심볼릭 링크 중 {4} 개와 {3} 개의 디렉토리 중 {2}개 그리고 {1} 개의 파일 중 {0}개가  @@PRODUCT_NAME@@ 관리 파일과 성공적으로 비교되었습니다. [&lt;a href="{6}"&gt;상세 정보 보기&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.differing.files_0">
           <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
@@ -7401,7 +7402,7 @@ Follow this url to see the full list of inactive systems:
         </trans-unit>
         <trans-unit id="sdc.config.time.message_url">
           <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
-          <target>{0} - &lt;a href=&quot;{1}&quot;&gt;{2}&lt;/a&gt;</target>
+          <target>{0} - &lt;a href="{1}"&gt;{2}&lt;/a&gt;</target>
         </trans-unit>
       </group>
       <group>
@@ -8197,7 +8198,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">SELinuxMode</context>
         </context-group>
-        <target>잘못된 SE Linux 모드 &quot;{0}&quot; 가 지정되었습니다. 유효한 값은 {1}입니다. </target>
+        <target>잘못된 SE Linux 모드 "{0}" 가 지정되었습니다. 유효한 값은 {1}입니다. </target>
       </trans-unit>
       <trans-unit id="softwareEntitlementSubs.successMessage">
         <source>Updated entitlement count for '{0}'</source>
@@ -8264,7 +8265,7 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/details/configuration/addfiles/UploadFile</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>채널에 &quot;{0}&quot;라는 파일이 이미 존재합니다.</target>
+        <target>채널에 "{0}"라는 파일이 이미 존재합니다.</target>
       </trans-unit>
       <trans-unit id="system.entitle.notoolschannel">
         <source>Could not automatically subscribe the system to the RHN Tools Channel.  This channel contains packages required for virtualization.  This is most likely caused by a lack of channel entitlements.</source>
@@ -8313,7 +8314,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target>시스템에 가상화 인타이틀먼트를 추가하신 이후, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는 지를 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다. 보다 자세한 정보는 &lt;a href=&quot;{0}&quot;&gt;여기&lt;/a&gt;를 참조하시기 바랍니다.   </target>
+        <target>시스템에 가상화 인타이틀먼트를 추가하신 이후, 시스템이 가상 게스트를 보다 효과적으로 관리할 수 있는 지를 확인하기 위해 몇 가지 추가적인 단계를 실행하였습니다. 보다 자세한 정보는 &lt;a href="{0}"&gt;여기&lt;/a&gt;를 참조하시기 바랍니다.   </target>
       </trans-unit>
       <trans-unit id="system.entitle.addedvirtualization.nodoc">
         <source>Since you added a Virtualization entitlement to the system we also performed some extra steps to ensure your system will be able to manage virtual guests better.</source>
@@ -8414,8 +8415,8 @@ Follow this url to see the full list of inactive systems:
         <target>{0} 조직에 있는 사용자는 {2} 조직에 있는 {1} 속성을 읽어오거나 수정할 수 없습니다.  </target>
       </trans-unit>
       <trans-unit id="api.org.cannotperformonsatelliteorg">
-        <source>Cannot perform this operation on the satellite organization. (Org ID 1)</source>
-        <target>satellite 조직에서 이 작업을 실행할 수 없습니다. (조직 ID 1) </target>
+        <source>Cannot perform this operation on the @@PRODUCT_NAME@@ organization. (Org ID 1)</source>
+        <target state="needs-adaptation">satellite 조직에서 이 작업을 실행할 수 없습니다. (조직 ID 1) </target>
       </trans-unit>
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid patch: {0}</source>
@@ -8447,11 +8448,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.systemgroup.lookupServerGroup">
         <source>Unable to locate or access server group: "{0}"</source>
-        <target>서버 그룹을 배치 또는 액세스할 수 없음: &quot;{0}&quot; </target>
+        <target>서버 그룹을 배치 또는 액세스할 수 없음: "{0}" </target>
       </trans-unit>
       <trans-unit id="api.systemgroup.accessChangeDenied">
-        <source>Changing administrator access is not allowed for Satellite and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
-        <target>Satellite 및 조직 관리자에 대한 관리자 액세스 변경이 허용되지 않습니다. 이 사용자는 기본값으로 액세스 권한이 주어지기 때문에 다음과 같은 사용자는 입력 내용에서 삭제되어야 합니다: {0}</target>
+        <source>Changing administrator access is not allowed for @@PRODUCT_NAME@@ and Organization administrators.  These users are granted access by default; therefore, the following users should be removed from the input: {0}</source>
+        <target state="needs-adaptation">Satellite 및 조직 관리자에 대한 관리자 액세스 변경이 허용되지 않습니다. 이 사용자는 기본값으로 액세스 권한이 주어지기 때문에 다음과 같은 사용자는 입력 내용에서 삭제되어야 합니다: {0}</target>
       </trans-unit>
       <trans-unit id="api.system.invalidprofilelabel">
         <source>Invalid profile label specified: {0}</source>
@@ -8479,11 +8480,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisorytype">
         <source>Invalid patch type, "{0}". Please use one of the following: "Security Advisory", "Product Enhancement Advisory", or "Bug Fix Advisory".</source>
-        <target>잘못된 에라타 유형, &quot;{0}&quot;. 다음 중 하나를 사용하시기 바랍니다: &quot;보안 권고&quot;, &quot;제품 업데이트 권고&quot;, &quot;버그 수정 권고&quot;.  </target>
+        <target>잘못된 에라타 유형, "{0}". 다음 중 하나를 사용하시기 바랍니다: "보안 권고", "제품 업데이트 권고", "버그 수정 권고".  </target>
       </trans-unit>
       <trans-unit id="api.errata.invalidadvisoryrelease">
         <source>Invalid advisory release, "{0}". Maximum value is {1}.</source>
-        <target>잘못된 권고 릴리즈 &quot;{0}&quot; 입니다. 최대 값은 {1}입니다.   </target>
+        <target>잘못된 권고 릴리즈 "{0}" 입니다. 최대 값은 {1}입니다.   </target>
       </trans-unit>
       <trans-unit id="api.errata.nochannelsselected">
         <source>You are trying to publish a patch but have not selected any channels to publish to. Patches must be published to at least one channel.</source>
@@ -8503,11 +8504,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.channel.access.invalidaccessvalue">
         <source>Access value, "{0}". Please use one of the following: "public", "private", or "protected".</source>
-        <target>액세스 값 &quot;{0}&quot;. &quot;public&quot;, &quot;private&quot;, &quot;protected&quot; 중 하나를 사용하십시오.     </target>
+        <target>액세스 값 "{0}". "public", "private", "protected" 중 하나를 사용하십시오.     </target>
       </trans-unit>
       <trans-unit id="api.channel.software.channelsubscription">
         <source>Unable to subscribe this system to the requested channel: "{0}"</source>
-        <target>시스템을 요청하신 채널에 등록할 수 없습니다: &quot;{0}&quot;   </target>
+        <target>시스템을 요청하신 채널에 등록할 수 없습니다: "{0}"   </target>
       </trans-unit>
       <trans-unit id="api.channel.software.multiplebasechannel">
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
@@ -8612,12 +8613,12 @@ Follow this url to see the full list of inactive systems:
         <target>필요한 에라타 속성 ({0})이 없습니다. </target>
       </trans-unit>
       <trans-unit id="api.iss.duplicatemaster">
-        <source>A record for Master satellite {0} already exists</source>
-        <target>마스터 Satellite {0}의 기록은 이미 존재합니다.</target>
+        <source>A record for Master @@PRODUCT_NAME@@ {0} already exists</source>
+        <target state="needs-adaptation">마스터 Satellite {0}의 기록은 이미 존재합니다.</target>
       </trans-unit>
       <trans-unit id="api.iss.duplicateslave">
-        <source>A record for Slave satellite {0} already exists</source>
-        <target>슬레이브 Satellite {0}의 기록은 이미 존재합니다.</target>
+        <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
+        <target state="needs-adaptation">슬레이브 Satellite {0}의 기록은 이미 존재합니다.</target>
       </trans-unit>
       <trans-unit id="securityErrata">
         <source>Security Patches</source>
@@ -8873,7 +8874,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="filter.clearfilter">
         <source>The list below is filtered.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;Clear filter to see all items.&lt;/strong&gt; &lt;/a&gt;</source>
-        <target>다음 목록은 필터링되어 있습니다.&lt;br/&gt; &lt;a href=&quot;{0}&quot;&gt; &lt;strong&gt;모든 항목을 표시하려면 필터를 삭제합니다.&lt;/strong&gt; &lt;/a&gt;</target>
+        <target>다음 목록은 필터링되어 있습니다.&lt;br/&gt; &lt;a href="{0}"&gt; &lt;strong&gt;모든 항목을 표시하려면 필터를 삭제합니다.&lt;/strong&gt; &lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="listtag.clearfilter">
         <source>Clear filter </source>
@@ -9050,7 +9051,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscripttype">
         <source>Only script types of "pre" and "post" are allowed for kickstarts.</source>
-        <target>&quot;pre&quot; 및 &quot;post&quot; 스크립트 유형만 킥스타트 용으로 사용할 수 있습니다.  </target>
+        <target>"pre" 및 "post" 스크립트 유형만 킥스타트 용으로 사용할 수 있습니다.  </target>
       </trans-unit>
       <trans-unit id="api.kickstart.invalidscriptname">
         <source>Script Name must be larger than 0 and fewer than 40 characters.</source>
@@ -9638,7 +9639,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Select first character</source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody2">
-        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href=&quot;http://www.suse.com/products/suse-manager/&quot; target=&quot;_new&quot;&gt;&lt;i class=&quot;fa fa-globe&quot;&gt;&lt;/i&gt;&lt;/a&gt;. </source>
+        <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href="http://www.suse.com/products/suse-manager/" target="_new"&gt;&lt;i class="fa fa-globe"&gt;&lt;/i&gt;&lt;/a&gt;. </source>
       </trans-unit>
       <trans-unit id="login.jsp.satbody3">
         <source> </source>
@@ -9743,16 +9744,18 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>@@PRODUCT_NAME@@ Advanced Topics Guide</source>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single base type is required for all systems registered to SUSE Manager</source>
+        <source>A single base type is required for all systems registered to @@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether SUSE Manager certificate has not expired</source>
+        <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="image_admin">
         <source>Image Administrator</source>
@@ -9764,13 +9767,16 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted">
-        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="satellite.graceperiod">
-        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
+        <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="restricted.forbidden">
-        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
+        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="org.entitlements.system.defaultorg">
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
@@ -9782,7 +9788,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run">
-        <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
+        <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="task.status.mgr-register">
         <source>Run mgr-register</source>
@@ -9815,10 +9822,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Cleanup channel tokens</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
-        <source>Registers SUSE Manager clients</source>
+        <source>Registers @@PRODUCT_NAME@@ clients</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch">
-        <source>Synchronizes SUSE Manager repositories</source>
+        <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch">
         <source>Manages clients via SSH Server Push</source>
@@ -9902,25 +9911,25 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Removed &lt;strong&gt;{1}&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.container_build_host.nodoc">
-        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;Container Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.entitle.added.osimage_build_host.nodoc">
-        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class=&quot;text-info&quot;&gt;state.highstate&lt;/code&gt; from the command line.</source>
+        <source>&lt;strong&gt;OS Image Build Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -10058,7 +10067,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Get started with setting up a @@PRODUCT_NAME@@ server</source>
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices">
-        <source>This document describes SUSE recommended best practices for @@PRODUCT_NAME@@</source>
+        <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
@@ -10120,6 +10130,192 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="cluster.join_precondition_package_name">
         <source>Package {0} not found in subscribed channels</source>
       </trans-unit>
+    <trans-unit id="Networks">
+        <source>Networks</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_refresh">
+        <source>Virtual storage pool refresh</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_start">
+        <source>Virtual storage pool start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_stop">
+        <source>Virtual storage pool stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_delete">
+        <source>Virtual storage pool delete</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_create">
+        <source>Virtual storage pool creation</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.pool_update">
+        <source>Virtual storage pool update</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.volume_delete">
+        <source>Virtual storage volume deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_start">
+        <source>Virtual network start</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_stop">
+        <source>Virtual network stop</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="virt.network_delete">
+        <source>Virtual network deletion</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="cluster_admin">
+        <source>Cluster Administrator</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/UserDetails</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.title">
+        <source>Clusters</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.overview">
+        <source>Overview</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="clusters.nav.add">
+        <source>Add</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.modulenotfound">
+        <source>Module '{0}' not found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.moduleconflict">
+        <source>Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.dependencyerror.formodule">
+        <source>Some of the modular dependencies cannot be resolved for module '{0}'.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.dependencyerror">
+        <source>Some of the modular dependencies cannot be resolved.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodulefilters">
+        <source>No module filters attached. Module metadata will be cloned to target.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="contentmanagement.validation.nomodularsources">
+        <source>No modular source attached. Module filters will be ignored.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.name.empty">
+        <source>Calendar name required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.schedule.name.empty">
+        <source>Schedule name required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.data.empty">
+        <source>Calendar data required</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.exists">
+        <source>Calendar '{0}' already exists</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.fetch.error">
+        <source>Error fetching calendar data from '{0}'</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.not.exists">
+        <source>Calendar '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.schedule.id.not.exists">
+        <source>Schedule with id '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.calendar.id.not.exists">
+        <source>Calendar with id '{0}' does not exist</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.reschedule.error.cancel">
+        <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.reschedule.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.fail">
+        <source>Operation could not be performed. There are scheduled actions on systems</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="maintenance.action.assign.error.systemnotfound">
+        <source>Some of the specified servers cannot be found</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>

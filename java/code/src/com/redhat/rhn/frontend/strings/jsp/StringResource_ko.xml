@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="ko">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="ko">
     <body>
       <!-- Generic column headings. The intent is that these can be reused across multiple pages.-->
       <group>
@@ -428,7 +428,7 @@
         </trans-unit>
         <trans-unit id="missing_capabilities.jsp.summary">
           <source>The server &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; does not have the &lt;strong&gt;{2}&lt;/strong&gt; client capability. Please enable the capability before proceeding with the operation.</source>
-          <target>서버 &lt;strong&gt;&lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt;&lt;/strong&gt;에는 &lt;strong&gt;{2}&lt;/strong&gt; 클라이언트 기능이 없습니다. 작업을 계속하기 전 이 기능을 활성화하십시오.</target>
+          <target>서버 &lt;strong&gt;&lt;a href="{0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;에는 &lt;strong&gt;{2}&lt;/strong&gt; 클라이언트 기능이 없습니다. 작업을 계속하기 전 이 기능을 활성화하십시오.</target>
         </trans-unit>
         <trans-unit id="lookup.jsp.summary">
           <source>This error may have occurred in one of three ways:</source>
@@ -676,7 +676,7 @@
           <context-group name="ctx">
             <context context-type="paramnotes">Your login session has expired. For security reasons, @@PRODUCT_NAME@@ terminates your login session after 15 minutes of inactivity. To sign in again, click _here_.</context>
           </context-group>
-          <target>로그인 세션이 만료되었습니다. 보안 상의 이유로 @@PRODUCT_NAME@@는 {0}분 후에 로그인 세션을 종료합니다. 다시 로그인 하시려면 &lt;a href=&quot;{1}&quot;&gt;여기&lt;/a&gt;를 클릭합니다. </target>
+          <target>로그인 세션이 만료되었습니다. 보안 상의 이유로 @@PRODUCT_NAME@@는 {0}분 후에 로그인 세션을 종료합니다. 다시 로그인 하시려면 &lt;a href="{1}"&gt;여기&lt;/a&gt;를 클릭합니다. </target>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.acl.reason3">
           <source>You've found an error in our site. Please contact your Support representative with details of how you received this message.</source>
@@ -873,14 +873,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>암호 &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>암호 &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="confirmpass.displayname">
         <source>Confirm Password &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>암호 확인 &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>암호 확인 &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="message.Update">
         <source>Update</source>
@@ -920,14 +920,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>이름 &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>이름 &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="lastName.displayname">
         <source>Last Name &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>성(姓) &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>성(姓) &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="email.displayname">
         <source>Email:</source>
@@ -1238,14 +1238,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>&quot;개요&quot; 시작 페이지 </target>
+        <target>"개요" 시작 페이지 </target>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagedesc">
         <source>Display the following information on my "Overview" page upon login:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>로그인할 때 &quot;개요&quot; 페이지에 다음과 같은 정보를 표시합니다:   </target>
+        <target>로그인할 때 "개요" 페이지에 다음과 같은 정보를 표시합니다:   </target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvtitle">
         <source>CSV Files</source>
@@ -1379,7 +1379,7 @@
       </trans-unit>
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
-        <source>&lt;a href="/rhn/help/Copyright.do">Copyright Notice&lt;/a&gt;</source>
+        <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
@@ -1406,7 +1406,7 @@
             @@PRODUCT_NAME@@ release 3.7.1
           </context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 릴리즈 &lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt; </target>
+        <target>@@PRODUCT_NAME@@ 릴리즈 &lt;a href="{0}"&gt;{1}&lt;/a&gt; </target>
       </trans-unit>
       <!-- legends -->
       <trans-unit id="errata-legend.jsp.title">
@@ -1909,7 +1909,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>아래에 나온 입력란에서 사용자 정보를 수정하실 수 있습니다. 별표(&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;)로 표시된 항목은 필수 입력란입니다.</target>
+        <target>아래에 나온 입력란에서 사용자 정보를 수정하실 수 있습니다. 별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시된 항목은 필수 입력란입니다.</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles">
         <source>Roles</source>
@@ -2172,7 +2172,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
               &lt;a href="/rhn/users/AssignedSystemGroups.do?uid=2266493"&gt;change the groups&lt;/a&gt;
               to which this user is assigned.</context>
         </context-group>
-        <target>사용자의 액세스 레벨을 변경하시려면, 이 사용자가 속한 &lt;a href=&quot;{0}&quot;&gt;그룹으로 변경하십시오&lt;/a&gt;.</target>
+        <target>사용자의 액세스 레벨을 변경하시려면, 이 사용자가 속한 &lt;a href="{0}"&gt;그룹으로 변경하십시오&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.headertwo">
         <source>Systems Administered by this User</source>
@@ -2244,7 +2244,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-        <target>아래에 나온 입력란에서 사용자 정보를 수정하실 수 있습니다. 별표(&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;)로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
+        <target>아래에 나온 입력란에서 사용자 정보를 수정하실 수 있습니다. 별표(&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone">
         <source>Phone</source>
@@ -2307,7 +2307,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target> 아래의 양식에 해당 정보를 입력해 주십시오.  별표 (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;) 로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
+        <target> 아래의 양식에 해당 정보를 입력해 주십시오.  별표 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname">
         <source>Record:</source>
@@ -2321,7 +2321,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
-        <target>아래의 양식에 해당 정보를 입력해주십시오.  별표 (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;) 로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
+        <target>아래의 양식에 해당 정보를 입력해주십시오.  별표 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 로 표시된 항목은 &lt;strong&gt;필수 입력란&lt;/strong&gt;입니다.</target>
       </trans-unit>
       <!-- assignenedgroups.jsp -->
       <trans-unit id="assignedgroups.jsp.header">
@@ -2619,7 +2619,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target>아래의 &quot;확인&quot; 버튼을 클릭하여 작업을 취소합니다.</target>
+        <target>아래의 "확인" 버튼을 클릭하여 작업을 취소합니다.</target>
       </trans-unit>
       <!-- failedactions.jsp -->
       <trans-unit id="failedactions.jsp.failed_actions">
@@ -2899,7 +2899,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.labeltoolong">
-        <source>Could not save the Action Chain, chain label is too long (>= 256 chars).</source>
+        <source>Could not save the Action Chain, chain label is too long (&gt;= 256 chars).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -3025,7 +3025,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target>이 시스템에 다음과 같은 패키지들이 설치되었습니다.  패키지를 삭제하시려면 삭제할 패키지를 선택 후 아래에 위치한 &quot;패키지 삭제&quot;를 클릭하시면 됩니다.</target>
+        <target>이 시스템에 다음과 같은 패키지들이 설치되었습니다.  패키지를 삭제하시려면 삭제할 패키지를 선택 후 아래에 위치한 "패키지 삭제"를 클릭하시면 됩니다.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removablepackages">
         <source>Removable Packages</source>
@@ -3091,7 +3091,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
-        <target>다음과 같은 패치들이 이 시스템에 설치되었습니다. 현재 패치를 취소하고 이전 패치 버전으로 돌아가려면 체크상자를 사용하여 아래에 위치한 &quot;백아웃&quot;을 클릭하시면 됩니다. 패치를 선택할 수 없는 경우에는 이전 버전으로 취소가 불가능합니다.</target>
+        <target>다음과 같은 패치들이 이 시스템에 설치되었습니다. 현재 패치를 취소하고 이전 패치 버전으로 돌아가려면 체크상자를 사용하여 아래에 위치한 "백아웃"을 클릭하시면 됩니다. 패치를 선택할 수 없는 경우에는 이전 버전으로 취소가 불가능합니다.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installablepatchsummary">
         <source>The following patches may be installed on this system.</source>
@@ -3175,28 +3175,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>아래의 &quot;확인&quot; 버튼을 클릭하여 &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={3}&quot;&gt;{0}&lt;/a&gt;에 있는 패치를 제거하면 다음번에 @@PRODUCT_NAME@@을 사용하여 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
+        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 제거하면 다음번에 @@PRODUCT_NAME@@을 사용하여 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
       </trans-unit>
       <trans-unit id="packagelist.confirmpatchsummary">
         <source>Click on the "confirm" button below to back out the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>아래의 &quot;확인&quot; 버튼을 클릭하여 &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={3}&quot;&gt;{0}&lt;/a&gt;에 있는 패치를 제거하면 다음번에 @@PRODUCT_NAME@@을 사용하여 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
+        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 제거하면 다음번에 @@PRODUCT_NAME@@을 사용하여 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary.plural">
         <source>Click on the "confirm" button below to install the listed patches on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in time: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirmInstall</context>
         </context-group>
-        <target>아래의 &quot;확인&quot; 버튼을 클릭하여 &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={3}&quot;&gt;{0}&lt;/a&gt;에 있는 패치를 설치하면 다음번에 @@PRODUCT_NAME@@에 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
+        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 설치하면 다음번에 @@PRODUCT_NAME@@에 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary">
         <source>Click on the "confirm" button below to install the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>아래의 &quot;확인&quot; 버튼을 클릭하여 &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={3}&quot;&gt;{0}&lt;/a&gt;에 있는 패치를 설치하면 다음번에 @@PRODUCT_NAME@@에 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
+        <target>아래의 "확인" 버튼을 클릭하여 &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt;에 있는 패치를 설치하면 다음번에 @@PRODUCT_NAME@@에 접속합니다. (마지막 접속 시간: &lt;b&gt;{1}&lt;/b&gt;; 예상 접속 시간: &lt;b&gt;{2}&lt;/b&gt;.)   </target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackages">
         <source>Non Compliant</source>
@@ -3560,7 +3560,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>여기서 에라타를 수정하세요.  필수 항목은 별표 (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;)로 표시되어 있습니다.</target>
+        <target>여기서 에라타를 수정하세요.  필수 항목은 별표 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;)로 표시되어 있습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.updateerrata">
         <source>Update Patch</source>
@@ -3895,7 +3895,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/errata/manage/Edit.do?eid={0}&quot;&gt;{1}&lt;/a&gt;에 대한 에라타 메일 업데이트가 스케줄되었습니다.</target>
+        <target>&lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;에 대한 에라타 메일 업데이트가 스케줄되었습니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.erratapackages">
         <source>Patches Packages</source>
@@ -3922,7 +3922,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
-        <target>아래는 에라타에 추가 가능한 패키지 목록입니다. &quot;보기&quot; 선택 상자를 이용하여 사용 가능한 패키지 목록을 제한할 수 있습니다. 이 에라타에 패키지를 추가하시려면, 패키지를 선택하신 후 아래에 위치한 '패키지 추가'를 클릭하시기 바랍니다.</target>
+        <target>아래는 에라타에 추가 가능한 패키지 목록입니다. "보기" 선택 상자를 이용하여 사용 가능한 패키지 목록을 제한할 수 있습니다. 이 에라타에 패키지를 추가하시려면, 패키지를 선택하신 후 아래에 위치한 '패키지 추가'를 클릭하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel">
         <source>View: </source>
@@ -4417,9 +4417,9 @@ navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
         <target>&lt;strong&gt;* 힌트:&lt;/strong&gt; 조직 관리자 권한은 이 페이지에서 수정될 수 없습니다.
-상부 네비게이션 탭에 있는 &quot;사용자&quot;로 가셔서 조직에 있는 개별 사용자의
+상부 네비게이션 탭에 있는 "사용자"로 가셔서 조직에 있는 개별 사용자의
 프로파일을 액세스하시기바랍니다. 개별 사용자 프로파일에
-있는 &quot;정보&quot;탭의 &quot;역할&quot; 부분에 있는 조직 관리자 역할을
+있는 "정보"탭의 "역할" 부분에 있는 조직 관리자 역할을
 할당 또는 삭제할 수 있습니다.   </target>
       </trans-unit>
       <trans-unit id="organizations.tip">
@@ -4700,7 +4700,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target>&lt;span class=&quot;no-details&quot;&gt;(없음)&lt;/span&gt;</target>
+        <target>&lt;span class="no-details"&gt;(없음)&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="details.jsp.issued">
         <source>Issued:</source>
@@ -4742,28 +4742,28 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>개요&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>개요&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisory">
         <source>Advisory&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>권고&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>권고&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryrelease">
         <source>Advisory Release&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>권고 릴리즈&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>권고 릴리즈&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisorytype">
         <source>Advisory Type&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>권고 유형&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>권고 유형&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryseverity">
         <source>Advisory Severity:</source>
@@ -4776,7 +4776,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>제품&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>제품&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.from">
         <source>Author:</source>
@@ -4824,21 +4824,21 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>주제&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>주제&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.description">
         <source>Description&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>설명&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>설명&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.solution">
         <source>Solution&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>해결책&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>해결책&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.keywords">
         <source>Keywords:</source>
@@ -5057,7 +5057,7 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.systems.list">
           <source>&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;List the systems&lt;/a&gt; you have selected to work with</source>
-          <target>작업에 선택한 &lt;a href=&quot;/rhn/systems/ssm/ListSystems.do&quot;&gt;시스템 목록&lt;/a&gt; 나열 </target>
+          <target>작업에 선택한 &lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;시스템 목록&lt;/a&gt; 나열 </target>
         </trans-unit>
         <trans-unit id="ssm.overview.errata">
           <source>Patches</source>
@@ -5072,7 +5072,7 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.packages.upgrade">
           <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source>
-          <target>패키지 &lt;a href=&quot;/rhn/ssm/PackageUpgrade.do&quot;&gt;업그레이드&lt;/a&gt; / &lt;a href=&quot;/rhn/ssm/PackageInstall.do&quot;&gt;설치&lt;/a&gt; / &lt;a href=&quot;/rhn/ssm/PackageRemove.do&quot;&gt;삭제&lt;/a&gt; / &lt;a href=&quot;/rhn/ssm/PackageVerify.do&quot;&gt;확인&lt;/a&gt;</target>
+          <target>패키지 &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;업그레이드&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageInstall.do"&gt;설치&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageRemove.do"&gt;삭제&lt;/a&gt; / &lt;a href="/rhn/ssm/PackageVerify.do"&gt;확인&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="ssm.overview.packages.install">
           <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source>
@@ -5089,7 +5089,7 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.groups.create">
           <source>&lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;Create&lt;/a&gt; and &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;manage&lt;/a&gt; groups</source>
-          <target>그룹 &lt;a href=&quot;/rhn/systems/ssm/groups/Create.do&quot;&gt;생성&lt;/a&gt; 및 &lt;a href=&quot;/rhn/systems/ssm/groups/Manage.do&quot;&gt;관리&lt;/a&gt;  </target>
+          <target>그룹 &lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;생성&lt;/a&gt; 및 &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;관리&lt;/a&gt;  </target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels">
           <source>Channels</source>
@@ -5097,15 +5097,15 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.channels.memberships">
           <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
-          <target>시스템의 &lt;a href=&quot;/rhn/channel/ssm/ChildSubscriptions.do&quot;&gt;채널 멤버쉽&lt;/a&gt; 관리 </target>
+          <target>시스템의 &lt;a href="/rhn/channel/ssm/ChildSubscriptions.do"&gt;채널 멤버쉽&lt;/a&gt; 관리 </target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels.subscriptions">
           <source>Manage systems' &lt;a href="/rhn/systems/ssm/config/Subscribe.do"&gt;config channel subscriptions&lt;/a&gt;</source>
-          <target>시스템의 &lt;a href=&quot;/rhn/systems/ssm/config/Subscribe.do&quot;&gt;설정 채널 서브스크립션&lt;/a&gt; 관리 </target>
+          <target>시스템의 &lt;a href="/rhn/systems/ssm/config/Subscribe.do"&gt;설정 채널 서브스크립션&lt;/a&gt; 관리 </target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels.deploy">
           <source>&lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;Deploy&lt;/a&gt; / &lt;a href="/rhn/systems/ssm/config/Diff.do"&gt;Diff&lt;/a&gt; config channels</source>
-          <target>설정 채널 &lt;a href=&quot;/rhn/systems/ssm/config/Deploy.do&quot;&gt;배치&lt;/a&gt; / &lt;a href=&quot;/rhn/systems/ssm/config/Diff.do&quot;&gt;비교&lt;/a&gt; </target>
+          <target>설정 채널 &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;배치&lt;/a&gt; / &lt;a href="/rhn/systems/ssm/config/Diff.do"&gt;비교&lt;/a&gt; </target>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning">
           <source>Provisioning</source>
@@ -5113,14 +5113,14 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.kickstart">
           <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source>
-          <target>시스템 &lt;a href=&quot;/rhn/systems/ssm/kickstart/KickstartableSystems.do&quot;&gt;킥스타트&lt;/a&gt; </target>
+          <target>시스템 &lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;킥스타트&lt;/a&gt; </target>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.rollback">
           <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.remotecommands">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;/rhn/systems/ssm/provisioning/RemoteCommand.do&quot;&gt;원격 명령&lt;/a&gt; 실행</target>
+          <target>&lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;원격 명령&lt;/a&gt; 실행</target>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.powermanagement.configure">
           <source>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"&gt;Configure power management&lt;/a&gt;</source>
@@ -5202,14 +5202,14 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.overview.misc.migrate">
           <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Migrate&lt;/a&gt; systems to another organization</source>
-          <target>시스템을 다른 조직으로 &lt;a href=&quot;/rhn/systems/ssm/MigrateSystems.do&quot;&gt;마이그레이션&lt;/a&gt; </target>
+          <target>시스템을 다른 조직으로 &lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;마이그레이션&lt;/a&gt; </target>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.lock">
           <source>&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Lock/unlock&lt;/a&gt; systems</source>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.scap">
           <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
-          <target>OpenSCAP으로 시스템을 &lt;a href=&quot;/rhn/systems/ssm/audit/ScheduleXccdf.do&quot;&gt;감사&lt;/a&gt;</target>
+          <target>OpenSCAP으로 시스템을 &lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;감사&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="ssm.errata.message.scheduled">
           <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
@@ -5454,7 +5454,7 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="ssm.misc.index.entitle.summary">
           <source>Please use the &lt;a href="/rhn/systems/SystemEntitlements.do"&gt;System Types Page&lt;/a&gt; to manage your system types.</source>
-          <target>&lt;a href=&quot;/rhn/systems/SystemEntitlements.do&quot;&gt;시스템 인타이틀먼트 페이지&lt;/a&gt;에서 시스템을 인타이틀먼트 수준을 관리하십시오.</target>
+          <target>&lt;a href="/rhn/systems/SystemEntitlements.do"&gt;시스템 인타이틀먼트 페이지&lt;/a&gt;에서 시스템을 인타이틀먼트 수준을 관리하십시오.</target>
         </trans-unit>
         <trans-unit id="ssm.misc.index.syspref.header">
           <source>System Preferences</source>
@@ -5645,11 +5645,11 @@ organization. You may grant or remove the organization administrator role in the
         <target>에라타</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.configfiles">
-        <source>Configs</source>
+        <source>Config Diffs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
-        <target>설정 </target>
+        <target state="needs-adaptation">설정 </target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.packages">
         <source>Packages</source>
@@ -6058,12 +6058,12 @@ organization. You may grant or remove the organization administrator role in the
         <target>에라타 업데이트 가능</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
-        <source>No Applicable Patches</source>
+        <source>No applicable updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>
         </context-group>
-        <target>적용 가능한 에라타가 없습니다</target>
+        <target state="needs-adaptation">적용 가능한 에라타가 없습니다</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.intersection">
         <source>Work With Intersection</source>
@@ -6251,11 +6251,11 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="systems.groups.jsp.noGroups">
           <source>No System Groups. To add System Groups this system, please visit the &lt;a href="{0}"&gt;{1}&lt;/a&gt; tab.</source>
-          <target>시스템 그룹이 없습니다. 시스템에 시스템 그룹을 추가하려면, &lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt; 탭을 선택하십시오.  </target>
+          <target>시스템 그룹이 없습니다. 시스템에 시스템 그룹을 추가하려면, &lt;a href="{0}"&gt;{1}&lt;/a&gt; 탭을 선택하십시오.  </target>
         </trans-unit>
         <trans-unit id="systems.groups.add.jsp.noGroups">
           <source>No system groups are available to add. You have already added all the system groups available (&lt;a href="{0}"&gt;View System Groups&lt;/a&gt;) to this system.</source>
-          <target>추가할 수 있는 시스템 그룹이 없습니다. 시스템에서 사용할 수 있는 모든 시스템 그룹은 이미 모두 추가되었습니다 (&lt;a href=&quot;{0}&quot;&gt;시스템 그룹 보기&lt;/a&gt;).     </target>
+          <target>추가할 수 있는 시스템 그룹이 없습니다. 시스템에서 사용할 수 있는 모든 시스템 그룹은 이미 모두 추가되었습니다 (&lt;a href="{0}"&gt;시스템 그룹 보기&lt;/a&gt;).     </target>
         </trans-unit>
         <trans-unit id="systems.groups.jsp.summary.nonadmin">
           <source>Below are all the system groups that have been added to this system.</source>
@@ -6263,11 +6263,11 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="systems.groups.jsp.summary">
           <source>Below are all the system groups that have been added to this system. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>이 시스템에 추가된 시스템 그룹은 다음과 같습니다. 시스템 그룹 멤버쉽을 제거하려면 체크 박스를 선택하고 변경 후 반드시 &quot;{0}&quot; 버튼을 클릭합니다.        </target>
+          <target>이 시스템에 추가된 시스템 그룹은 다음과 같습니다. 시스템 그룹 멤버쉽을 제거하려면 체크 박스를 선택하고 변경 후 반드시 "{0}" 버튼을 클릭합니다.        </target>
         </trans-unit>
         <trans-unit id="systems.groups.add.jsp.summary">
           <source>Below is a list of system groups available to this system. To join a system group, check its checkbox. Make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>이 시스템에서 사용할 수 있는 시스템 그룹 목록은 다음과 같습니다. 시스템 그룹에 가입하려면 체크 박스를 선택합니다. 변경 후 반드시 &quot;{0}&quot; 버튼을 클릭합니다.   </target>
+          <target>이 시스템에서 사용할 수 있는 시스템 그룹 목록은 다음과 같습니다. 시스템 그룹에 가입하려면 체크 박스를 선택합니다. 변경 후 반드시 "{0}" 버튼을 클릭합니다.   </target>
         </trans-unit>
         <trans-unit id="systems.groups.jsp.title">
           <source>System Groups</source>
@@ -6328,7 +6328,7 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="systemgroup.systems.summary">
           <source>Below are all the systems that have been added to this system group. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>이 시스템 그룹에 추가된 시스템은 다음과 같습니다. 시스템 그룹 멤버쉽을 제거하려면 체크 박스를 선택하고 변경 후 반드시 &quot;{0}&quot; 버튼을 클릭합니다.      </target>
+          <target>이 시스템 그룹에 추가된 시스템은 다음과 같습니다. 시스템 그룹 멤버쉽을 제거하려면 체크 박스를 선택하고 변경 후 반드시 "{0}" 버튼을 클릭합니다.      </target>
         </trans-unit>
         <trans-unit id="systemgroup.systems.summary.nonadmin">
           <source>Below are all the systems that have been added to this system group.</source>
@@ -6419,7 +6419,7 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="systemgroup.create.summary">
           <source>Create a system group using the form provided. Note that the group will be empty until systems are joined to it. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-          <target>제공된 양식을 사용하여 시스템 그룹을 생성합니다. 시스템이 해당 그룹에 가입할 때 까지 그룹은 비어 있게 됩니다. 별 (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;) 표시가 있는 항목은 &lt;strong&gt;필수 입력 항목입니다&lt;/strong&gt;.</target>
+          <target>제공된 양식을 사용하여 시스템 그룹을 생성합니다. 시스템이 해당 그룹에 가입할 때 까지 그룹은 비어 있게 됩니다. 별 (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) 표시가 있는 항목은 &lt;strong&gt;필수 입력 항목입니다&lt;/strong&gt;.</target>
         </trans-unit>
         <trans-unit id="systemgroup.create.summaryssm">
           <source>This will create a new system group, and will place the selected systems into the new group. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
@@ -6845,7 +6845,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 삭제 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 삭제 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.packageremovals">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6853,7 +6853,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 삭제 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 삭제 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.packageupgrade">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6861,7 +6861,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 업그레이드가 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 업그레이드가 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.packageupgrades">
         <source>{0} package upgrades have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6869,7 +6869,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 업그레이드 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 업그레이드 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.packageinstall">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6877,7 +6877,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 설치 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 설치 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.packageinstalls">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6885,7 +6885,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 설치 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 설치 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.systeminstalls">
         <source>Package install has been scheduled for {0} system(s).</source>
@@ -6899,7 +6899,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 검증 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 검증 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.packageverifys">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6907,42 +6907,42 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 검증 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패키지 검증 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.patchremoval">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패치 삭제 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패치 삭제 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.patchremovals">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패치 삭제 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패치 삭제 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.patchinstall">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패치 설치 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패치 설치 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.patchinstalls">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt;에 대해 {0} 패치 설치 작업이 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;에 대해 {0} 패치 설치 작업이 &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.xccdfeval">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/systems/details/Overview.do?sid={1}&quot;&gt;{2}&lt;/a&gt;에 대해 XCCDF 검사가 &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={0}&quot;&gt;스케줄되었습니다&lt;/a&gt;</target>
+        <target>&lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;에 대해 XCCDF 검사가 &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;스케줄되었습니다&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="message.xccdfeval.ssm">
         <source>XCCDF scan has been scheduled successfully.</source>
@@ -7384,7 +7384,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/admin/multiorg/SatRoleConfirm</context>
         </context-group>
-        <target>정말로 귀하의 로그인에서 &quot;@@PRODUCT_NAME@@ 관리자&quot; 역할을 삭제하시겠습니까?
+        <target>정말로 귀하의 로그인에서 "@@PRODUCT_NAME@@ 관리자" 역할을 삭제하시겠습니까?
 삭제할 경우 이 역할을 다시 얻으려면 다른 satellite 관리자에게 문의하셔야 합니다.
 로그인에서 이 역할을 제거하면 @@PRODUCT_NAME@@ 설정 도구 및 조직 관리 도구로
 더이상 액세스할 수 없게 됩니다.
@@ -8251,7 +8251,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneConfirm.do</context>
         </context-group>
-        <target>아래의 목록에 있는 에라타가 복제된 후, 이는 &lt;a href=&quot;{0}&quot;&gt;발표되지 않은 에라타 목록&lt;/a&gt;에 나타납니다. 이 목록에서 텍스트 및 각각의 에라타와 관련된 패키지를 확인하실 수 있습니다. 확인하신 후, 에라타를 발표하여 조직내의 사용자에게 사용 가능하게 합니다. </target>
+        <target>아래의 목록에 있는 에라타가 복제된 후, 이는 &lt;a href="{0}"&gt;발표되지 않은 에라타 목록&lt;/a&gt;에 나타납니다. 이 목록에서 텍스트 및 각각의 에라타와 관련된 패키지를 확인하실 수 있습니다. 확인하신 후, 에라타를 발표하여 조직내의 사용자에게 사용 가능하게 합니다. </target>
       </trans-unit>
       <trans-unit id="applyerrata.disclaimer">
         <source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may apply the patches as soon as possible, or no earlier than a specified time:</source>
@@ -8671,7 +8671,7 @@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target>모니터링이 비활성화되었습니다. &lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;일반&lt;/strong&gt;&lt;/a&gt; 설정 페이지로 가셔서 모니터링 활성화 체크박스를 선택하시기 바랍니다.    </target>
+        <target>모니터링이 비활성화되었습니다. &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;일반&lt;/strong&gt;&lt;/a&gt; 설정 페이지로 가셔서 모니터링 활성화 체크박스를 선택하시기 바랍니다.    </target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.toolbar">
         <source>@@PRODUCT_NAME@@ Configuration - Bootstrap</source>
@@ -8686,7 +8686,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
-        <target> 다음 정보는 부트스트랩 스크립트를 생성하는데 사용됩니다. 이 부트스트랩 스크립트를 사용하여 클라이언트가 @@PRODUCT_NAME@@를 통하여 업데이트 받도록 설정하실 수 있습니다. 부트스트랩 스크립트가 생성되면, &lt;a href=&quot;/pub/bootstrap&quot;&gt;이 서버&lt;/a&gt;에서 사용 가능합니다.  &lt;br/&gt;&lt;br/&gt;
+        <target> 다음 정보는 부트스트랩 스크립트를 생성하는데 사용됩니다. 이 부트스트랩 스크립트를 사용하여 클라이언트가 @@PRODUCT_NAME@@를 통하여 업데이트 받도록 설정하실 수 있습니다. 부트스트랩 스크립트가 생성되면, &lt;a href="/pub/bootstrap"&gt;이 서버&lt;/a&gt;에서 사용 가능합니다.  &lt;br/&gt;&lt;br/&gt;
 이 스크립트의 일부는 직접 설정하셔야할 수 도 있습니다. 부트스트랩 스크립트는 @@PRODUCT_NAME@@ 서버의 파일시스템에서 찾을 수 있습니다: &lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt;  </target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.header2">
@@ -9068,8 +9068,8 @@ Please note that some manual configuration of these scripts may still be require
         <target>리포지터리 정보 </target>
       </trans-unit>
       <trans-unit id="repos.jsp.update.channel">
-        <source>Update Repositories</source>
-        <target>리포지터리 업데이트 </target>
+        <source>Save Repositories</source>
+        <target state="needs-adaptation">리포지터리 업데이트 </target>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.header">
         <source>Repository</source>
@@ -9358,7 +9358,7 @@ Please note that some manual configuration of these scripts may still be require
         모든 디스크에 있는 파티션을 삭제하도록 설정되어 있습니다.
         하나 이상의 디스크에서 데이터를 손실하고
         싶지 않으면 킥스타트 전에 서버에서 디스크를 제거하거나
-        킥스타트 프로파일의 &quot;clearpart&quot; 옵션을 편집해야 합니다.</target>
+        킥스타트 프로파일의 "clearpart" 옵션을 편집해야 합니다.</target>
       </trans-unit>
       <trans-unit id="kickstarts.jsp.diskwarningssm">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile(s) used may destroy all
@@ -9372,7 +9372,7 @@ Please note that some manual configuration of these scripts may still be require
         <target>&lt;strong&gt;경고:&lt;/strong&gt; 사용된 킥스타트 프로파일은 연결된 SAN에 있는 논리 디스크를 포함하여
         킥스타트된 시스템의 모든 디스크에 있는 파티션을 삭제할 수 도 있습니다.
         하나 이상의 데이터를 손실하고 싶지 않은 경우 킥스타트 전에 서버에서 디스크를 제거하거나
-        사용된 킥스타트 프로파일이 &quot;clearpart&quot; 옵션을 편집하여 파티션을
+        사용된 킥스타트 프로파일이 "clearpart" 옵션을 편집하여 파티션을
         삭제하지 않도록 해야 합니다.</target>
       </trans-unit>
       <trans-unit id="partitions">
@@ -9836,7 +9836,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt; 조직 기본 프로파일 설정은 직접 생성한 킥스타트 파일이나 베어-메탈 킥스타트 파일과 함께 사용 가능합니다. 이 옵션을 선택하여 &lt;a href=&quot;{0}&quot; target=&quot;_blank&quot; &gt; &lt;strong&gt; 이 링크 &lt;/strong&gt; &lt;/a&gt;의 URL이 킥스타트 파일의 &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; 부분에 지정된 경우 조직의 어느 프로파일을 사용할 것인지 지정하실 수 있습니다. 조직 기본 프로파일이 지정되지 않은 경우 이 링크가 작동하지 않을 것입니다.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt; 조직 기본 프로파일 설정은 직접 생성한 킥스타트 파일이나 베어-메탈 킥스타트 파일과 함께 사용 가능합니다. 이 옵션을 선택하여 &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; 이 링크 &lt;/strong&gt; &lt;/a&gt;의 URL이 킥스타트 파일의 &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; 부분에 지정된 경우 조직의 어느 프로파일을 사용할 것인지 지정하실 수 있습니다. 조직 기본 프로파일이 지정되지 않은 경우 이 링크가 작동하지 않을 것입니다.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.activeDescription">
         <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for unprovisioned autoinstallations.</source>
@@ -9942,7 +9942,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>&lt;p&gt;&quot;베어 메탈 시스템&quot;을 킥스타트하기 위해 킥스타트할 시스템의 운영 체제 버전과 호환 가능한 부트 이미지를 포함한 부트 CD를 이용하여 부팅하셔야 합니다. &lt;/p&gt; &lt;p&gt; 적절한 이미지를 이용하여 시스템이 부팅되면, 킥스타트 파일을 제공하셔야 합니다. 부트 CD 또는 PXE 설정에 다음 URL을 사용하여, 이 킥스타트 프로파일에 연관된 킥스타트 파일을 제공하시면 됩니다:&lt;/p&gt;</target>
+        <target>&lt;p&gt;"베어 메탈 시스템"을 킥스타트하기 위해 킥스타트할 시스템의 운영 체제 버전과 호환 가능한 부트 이미지를 포함한 부트 CD를 이용하여 부팅하셔야 합니다. &lt;/p&gt; &lt;p&gt; 적절한 이미지를 이용하여 시스템이 부팅되면, 킥스타트 파일을 제공하셔야 합니다. 부트 CD 또는 PXE 설정에 다음 URL을 사용하여, 이 킥스타트 프로파일에 연관된 킥스타트 파일을 제공하시면 됩니다:&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal">
         <source>Unprovisioned Autoinstallation</source>
@@ -9962,7 +9962,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 조직의 킥스타트 프로파일에 연계된 IP 범위의 전체 목록을 보실 수 있습니다 &lt;/span&gt;     </target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 조직의 킥스타트 프로파일에 연계된 IP 범위의 전체 목록을 보실 수 있습니다 &lt;/span&gt;     </target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal_summary2">
         <source>Alternatively, you may associate each of your autoinstallation profiles with particular ip ranges. Then, you can provide unprovisioned systems with a single URL that will provide each system the autoinstallation file associated with its IP Address. Below you will find this URL:</source>
@@ -10044,7 +10044,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target>&lt;strong&gt;알림:&lt;/strong&gt; 가상화 유형을 변경하면 킥스타트 프로파일의
  부트로더 및 파티션 옵션을 변경해야 할 수 도 있으므로, 사용자 정의 내용을 덮어쓰기합니다.
-&lt;a href=&quot;/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}&quot;&gt;파티션&lt;/a&gt;
+&lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;파티션&lt;/a&gt;
  탭을 선택하여 새 설정 사항을 확인하십시오.   </target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.active">
@@ -10101,14 +10101,14 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>이 킥스타트 프로파일에서 사용 가능한 작업을 활성화하려면 &lt;a href = &quot;{1}&quot;&gt;킥스타트 배포판 상세 정보&lt;/a&gt; 페이지로 가서 배포판 (&lt;strong&gt;{0}&lt;/strong&gt;)을 수정합니다.</target>
+        <target>이 킥스타트 프로파일에서 사용 가능한 작업을 활성화하려면 &lt;a href = "{1}"&gt;킥스타트 배포판 상세 정보&lt;/a&gt; 페이지로 가서 배포판 (&lt;strong&gt;{0}&lt;/strong&gt;)을 수정합니다.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.invalid.jsp.summary-option2">
         <source> Alternatively you may associate a different distribution to this kickstart profile by visiting the &lt;a href = "{0}"&gt;Kickstart Operating System Details&lt;/a&gt; page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>또는 &lt;a href = &quot;{0}&quot;&gt;킥스타트 운영 체제 상세 정보&lt;/a&gt; 페이지로 가서 킥스타트 프로파일에 다른 배포판을 연결할 수 있습니다.</target>
+        <target>또는 &lt;a href = "{0}"&gt;킥스타트 운영 체제 상세 정보&lt;/a&gt; 페이지로 가서 킥스타트 프로파일에 다른 배포판을 연결할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.advanced.invalid.jsp.summary-option2">
         <source> Alternatively you may associate a different distribution to this kickstart profile by selecting a distribution and choosing '{0}'.</source>
@@ -10161,7 +10161,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>이 킥스타트 프로파일에 한개 이상의 활성키를 연계시킬 수 있습니다. 활성키는 이 프로파일을 이용하여 킥스타트한 시스템이 자동으로 @@PRODUCT_NAME@@에 등록하여, @@PRODUCT_NAME@@ 서비스 레벨 인타이틀먼트를 받고, 특정 소프트웨어, 설정 채널 및 시스템 그룹에 가입할 수 있게 해줍니다. 활성키는 또한 시스템에 설치할 패키지도 지정해줍니다. 이 프로파일의 &lt;a href=&quot;/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}&quot;&gt;소프트웨어&lt;/a&gt; 탭에서 어떤 패키지를 선택할 지 생각해 보시기 바랍니다.  </target>
+        <target>이 킥스타트 프로파일에 한개 이상의 활성키를 연계시킬 수 있습니다. 활성키는 이 프로파일을 이용하여 킥스타트한 시스템이 자동으로 @@PRODUCT_NAME@@에 등록하여, @@PRODUCT_NAME@@ 서비스 레벨 인타이틀먼트를 받고, 특정 소프트웨어, 설정 채널 및 시스템 그룹에 가입할 수 있게 해줍니다. 활성키는 또한 시스템에 설치할 패키지도 지정해줍니다. 이 프로파일의 &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;소프트웨어&lt;/a&gt; 탭에서 어떤 패키지를 선택할 지 생각해 보시기 바랍니다.  </target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.nokeys">
         <source>No activation keys available</source>
@@ -10237,7 +10237,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit.do</context>
         </context-group>
-        <target>이 킥스타트 프로파일에 관련된 파일 보관 목록을 아래에서 선택하실 수 있습니다. 시스템이 킥스타트되면, 이 킥스타트 프로파일과 관련된 파일 보관 목록에 포함된 모든 파일 및 디렉토리는 킥스타트가 시작되기 전에 저장되어 킥스타트가 완료되면 다시 복구됩니다. &lt;a href=&quot;/rhn/systems/provisioning/preservation/PreservationList.do&quot;&gt;파일 보관&lt;/a&gt; 탭에서 새 파일 보관 목록을 생성하실 수 있습니다. </target>
+        <target>이 킥스타트 프로파일에 관련된 파일 보관 목록을 아래에서 선택하실 수 있습니다. 시스템이 킥스타트되면, 이 킥스타트 프로파일과 관련된 파일 보관 목록에 포함된 모든 파일 및 디렉토리는 킥스타트가 시작되기 전에 저장되어 킥스타트가 완료되면 다시 복구됩니다. &lt;a href="/rhn/systems/provisioning/preservation/PreservationList.do"&gt;파일 보관&lt;/a&gt; 탭에서 새 파일 보관 목록을 생성하실 수 있습니다. </target>
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.nolists">
         <source>No file preservation lists available</source>
@@ -10843,14 +10843,14 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;힌트:&lt;/strong&gt; &lt;tt&gt;/dev/hda1&lt;/tt&gt; 및 &lt;tt&gt;/dev/sda1&lt;/tt&gt;와 같은 특수 장치는 지원되지 않습니다.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt; &lt;tt&gt;/dev/hda1&lt;/tt&gt; 및 &lt;tt&gt;/dev/sda1&lt;/tt&gt;와 같은 특수 장치는 지원되지 않습니다.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="preservation-form.jsp.tip2">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; Only file and directory names may be entered. No regular expression wildcards can be included.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 파일과 디렉토리 이름만 입력하실 수 있습니다. 정규 표현식 와일드카드는 입력 불가능합니다.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 파일과 디렉토리 이름만 입력하실 수 있습니다. 정규 표현식 와일드카드는 입력 불가능합니다.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.toolbar">
         <source>Edit Kickstart File Preservation List</source>
@@ -10968,7 +10968,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;경고:&lt;/strong&gt; 활성키가 킥스타트 프로파일(&lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;활성키 탭&lt;/a&gt;아래에 위치)과 연계되었을 경우. 위의 자식 채널 서브스크립션을 덮어쓰게 됩니다. 이러한 경우 활성키를 사용하여 자식 채널 서브스크립션을 지정하시기 바랍니다.&lt;/span&gt; </target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;경고:&lt;/strong&gt; 활성키가 킥스타트 프로파일(&lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;활성키 탭&lt;/a&gt;아래에 위치)과 연계되었을 경우. 위의 자식 채널 서브스크립션을 덮어쓰게 됩니다. 이러한 경우 활성키를 사용하여 자식 채널 서브스크립션을 지정하시기 바랍니다.&lt;/span&gt; </target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.submit">
         <source>Update keys</source>
@@ -10996,14 +10996,14 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target>다음은 &lt;a href=&quot;/rhn/keys/CryptoKeysList.do&quot;&gt;생성하신&lt;/a&gt; GPG와 SSL 키 목록입니다.  이 프로파일을 이용한 킥스타트 작업시 %post 부분에서 선택된 키를 가져오기(import)할 것입니다.</target>
+        <target>다음은 &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;생성하신&lt;/a&gt; GPG와 SSL 키 목록입니다.  이 프로파일을 이용한 킥스타트 작업시 %post 부분에서 선택된 키를 가져오기(import)할 것입니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.note">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; If you want clients to continue to be able to SSH into machines kickstarted with this profile without getting host key errors, it is recommended you setup a file preservation list for this profile containing the files in /etc/ssh&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 이 프로파일로 킥스타트된 컴퓨터에 클라이언트가 호스트 키 오류 없이 SSH 연결할 수 있도록 하시려면, 이 프로파일에 /etc/ssh의 파일을 포함한 파일 보관 목록을 설정하시기 권장합니다.&lt;/span&gt; </target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 이 프로파일로 킥스타트된 컴퓨터에 클라이언트가 호스트 키 오류 없이 SSH 연결할 수 있도록 하시려면, 이 프로파일에 /etc/ssh의 파일을 포함한 파일 보관 목록을 설정하시기 권장합니다.&lt;/span&gt; </target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.key">
         <source>Type</source>
@@ -11024,7 +11024,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target>정의된 키가 없습니다.  &lt;a href=&quot;/rhn/keys/CryptoKeysList.do&quot;&gt;이곳을&lt;/a&gt; 클릭하셔서 이 프로파일에서 사용할 새로운 키를 만드시기 바랍니다.  이 프로파일을 이용한 킥스타트 작업시 %post 부분에서 선택된 키를 가져오기(import)할 것입니다.</target>
+        <target>정의된 키가 없습니다.  &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;이곳을&lt;/a&gt; 클릭하셔서 이 프로파일에서 사용할 새로운 키를 만드시기 바랍니다.  이 프로파일을 이용한 킥스타트 작업시 %post 부분에서 선택된 키를 가져오기(import)할 것입니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.script.language">
         <source>Scripting Language</source>
@@ -11090,14 +11090,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;예시:&lt;/strong&gt; '/usr/bin/python' '/usr/bin/perl'.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;예시:&lt;/strong&gt; '/usr/bin/python' '/usr/bin/perl'.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.script.tip2">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; Leave this field blank to use the install-time shell as language for your post script.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 사후 설치 스크립트를 실행하는 언어로 설치 쉘을 사용하도록 이 항목을 빈칸으로 비워두시기 바랍니다.&lt;/span&gt; </target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 사후 설치 스크립트를 실행하는 언어로 설치 쉘을 사용하도록 이 항목을 빈칸으로 비워두시기 바랍니다.&lt;/span&gt; </target>
       </trans-unit>
       <trans-unit id="kickstart.script.type">
         <source>Script Execution Time</source>
@@ -11139,7 +11139,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 이는 스크립트가 실행되는 시간을 지정합니다 (킥스타트 이전 또는 이후).&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt; 이는 스크립트가 실행되는 시간을 지정합니다 (킥스타트 이전 또는 이후).&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="post.jsp.summary">
         <source>You can edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@).  Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
@@ -11317,7 +11317,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Details</source>
         </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_1">
-          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;&quot;example&quot;&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;&quot;$example&quot;&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source>
+          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source>
         </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_2">
           <source>An additional attention needs to be paid to the similar scenarios:</source>
@@ -11358,7 +11358,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target>&quot;개요&quot; 페이지에서 현재 활성화된 목록이 없습니다. &lt;strong&gt;&lt;a href=&quot;/rhn/account/UserPreferences.do&quot;&gt;개요 &gt; 사용자 환경 설정 &gt; &quot;개요&quot; 시작 페이지&lt;/a&gt;&lt;/strong&gt;로 가셔서 변경하실 수 있습니다. </target>
+        <target>"개요" 페이지에서 현재 활성화된 목록이 없습니다. &lt;strong&gt;&lt;a href="/rhn/account/UserPreferences.do"&gt;개요 &gt; 사용자 환경 설정 &gt; "개요" 시작 페이지&lt;/a&gt;&lt;/strong&gt;로 가셔서 변경하실 수 있습니다. </target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.user">
         <source>User</source>
@@ -11434,14 +11434,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;치명적인 프로브가 없습니다.&lt;/strong&gt; &lt;p&gt;시스템에 할당된 어떤 프로브도 치명적인 상태에 있지 않습니다. &lt;strong&gt;&lt;a href=&quot;/rhn/monitoring/ProbeList.do&quot;&gt;전체 &gt; 프로브&lt;/a&gt;&lt;/strong&gt; 에서 시스템안의 모든 프로브의 목록을 보실 수 있습니다. &lt;/p&gt;</target>
+        <target>&lt;strong&gt;치명적인 프로브가 없습니다.&lt;/strong&gt; &lt;p&gt;시스템에 할당된 어떤 프로브도 치명적인 상태에 있지 않습니다. &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;전체 &gt; 프로브&lt;/a&gt;&lt;/strong&gt; 에서 시스템안의 모든 프로브의 목록을 보실 수 있습니다. &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.nowarningprobes">
         <source>&lt;strong&gt;No warning probes.&lt;/strong&gt;&lt;p&gt;None of the probes assigned to your systems are in a warning state. You can view a list of all the probes in your system at &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;All &gt; Probes&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;경고 프로브가 없습니다.&lt;/strong&gt; &lt;p&gt;시스템에 할당된 어떤 프로브도 경고 상태에 있지 않습니다. &lt;strong&gt;&lt;a href=&quot;/rhn/monitoring/ProbeList.do&quot;&gt; 전체 &gt; 프로브&lt;/a&gt;&lt;/strong&gt; 에서 시스템안의 모든 프로브의 목록을 보실 수 있습니다. &lt;/p&gt;</target>
+        <target>&lt;strong&gt;경고 프로브가 없습니다.&lt;/strong&gt; &lt;p&gt;시스템에 할당된 어떤 프로브도 경고 상태에 있지 않습니다. &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt; 전체 &gt; 프로브&lt;/a&gt;&lt;/strong&gt; 에서 시스템안의 모든 프로브의 목록을 보실 수 있습니다. &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.systems">
         <source>System(s)</source>
@@ -11545,7 +11545,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;최근에 스케줄된 작업이 없습니다.&lt;/strong&gt; &lt;p&gt; 30일 이내로 스케줄된 작업이 없습니다. &lt;strong&gt;&lt;a href=&quot;/rhn/schedule/CompletedActions.do&quot; &gt; 스케줄 &gt; 완료된 작업&lt;/a&gt;&lt;/strong&gt;에서 완료된 작업의 목록과 &lt;strong&gt;&lt;a href=&quot;/rhn/schedule/FailedActions.do&quot; &gt; 스케줄 &gt; 실패한 작업&lt;/a&gt;&lt;/strong&gt;에서 실패한 작업의 목록을 보실 수 있습니다.&lt;/p&gt; </target>
+        <target>&lt;strong&gt;최근에 스케줄된 작업이 없습니다.&lt;/strong&gt; &lt;p&gt; 30일 이내로 스케줄된 작업이 없습니다. &lt;strong&gt;&lt;a href="/rhn/schedule/CompletedActions.do" &gt; 스케줄 &gt; 완료된 작업&lt;/a&gt;&lt;/strong&gt;에서 완료된 작업의 목록과 &lt;strong&gt;&lt;a href="/rhn/schedule/FailedActions.do" &gt; 스케줄 &gt; 실패한 작업&lt;/a&gt;&lt;/strong&gt;에서 실패한 작업의 목록을 보실 수 있습니다.&lt;/p&gt; </target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.allcriticalprobes">
         <source>View All Critical Probes ({0} probe(s) affecting {1} system(s))</source>
@@ -11600,7 +11600,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;최근 등록된 시스템이 없습니다.&lt;/strong&gt; &lt;p&gt; 30일 이내로 등록된 시스템이 없습니다. &lt;a href=&quot;/rhn/systems/Registered.do&quot;&gt;&lt;strong&gt;시스템 &gt; 최근 등록된 시스템&lt;/strong&gt;&lt;/a&gt;에서 등록된 모든 시스템 목록을 보실 수 있습니다.&lt;/p&gt;</target>
+        <target>&lt;strong&gt;최근 등록된 시스템이 없습니다.&lt;/strong&gt; &lt;p&gt; 30일 이내로 등록된 시스템이 없습니다. &lt;a href="/rhn/systems/Registered.do"&gt;&lt;strong&gt;시스템 &gt; 최근 등록된 시스템&lt;/strong&gt;&lt;/a&gt;에서 등록된 모든 시스템 목록을 보실 수 있습니다.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.recentlyregistered.all">
         <source>View All Recently Registered Systems</source>
@@ -11628,7 +11628,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;비활성화 시스템이 없습니다.&lt;/strong&gt; &lt;p&gt; 모든 시스템은 현재 @@PRODUCT_NAME@@로 접속하고 있습니다. &lt;strong&gt;&lt;a href=&quot;/rhn/systems/SystemList.do&quot;&gt;시스템 &gt; 모든 시스템&lt;/a&gt;&lt;/strong&gt;에서 모든 시스템의 목록을 보실 수 있습니다.&lt;/p&gt;     </target>
+        <target>&lt;strong&gt;비활성화 시스템이 없습니다.&lt;/strong&gt; &lt;p&gt; 모든 시스템은 현재 @@PRODUCT_NAME@@로 접속하고 있습니다. &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;시스템 &gt; 모든 시스템&lt;/a&gt;&lt;/strong&gt;에서 모든 시스템의 목록을 보실 수 있습니다.&lt;/p&gt;     </target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.securityerrata">
         <source>Relevant Security Patches</source>
@@ -11697,7 +11697,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;적절한 보안 에라타가 없습니다.&lt;/strong&gt;&lt;p&gt; 시스템에 적용되는 보안 에라타가 없습니다. 조직에 인타이틀먼트가 부여된 소프트웨어에 대한 &lt;strong&gt;모든&lt;/strong&gt; 에라타의 목록을 &lt;strong&gt;&lt;a href=&quot;/rhn/errata/AllErrata.do&quot;&gt;에라타 &gt; 전체 에라타&lt;/a&gt;&lt;/strong&gt;에서 볼 수 있습니다.&lt;/p&gt; </target>
+        <target>&lt;strong&gt;적절한 보안 에라타가 없습니다.&lt;/strong&gt;&lt;p&gt; 시스템에 적용되는 보안 에라타가 없습니다. 조직에 인타이틀먼트가 부여된 소프트웨어에 대한 &lt;strong&gt;모든&lt;/strong&gt; 에라타의 목록을 &lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;에라타 &gt; 전체 에라타&lt;/a&gt;&lt;/strong&gt;에서 볼 수 있습니다.&lt;/p&gt; </target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.task.title">
         <source>Tasks</source>
@@ -12095,7 +12095,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/CreateProfileWizard.do</context>
         </context-group>
-        <target>기본 채널에 항상 최신 크리를 사용합니다. &quot;최신&quot;은 마지막에 수정된 날짜로 결정됩니다.</target>
+        <target>기본 채널에 항상 최신 크리를 사용합니다. "최신"은 마지막에 수정된 날짜로 결정됩니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.jsp.create.wizard.kstree.always_new.label">
         <source>Always newest tree</source>
@@ -12287,7 +12287,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
           <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
-          <target>&quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot;을 선택하여 시스템을 Red Hat Enterprise Linux 설치 버전에 해당하는 디폴트 Red Hat 채널에 등록합니다. 특정 Red Hat 채널 또는 사용자 정의 기본 채널을 선택할 수 도 있지만, 시스템이 이 키를 사용할 경우 선택한 채널과는 호환되지 않고, Red Hat 디폴트 채널로 되돌아 가게 됨에 유의하시기 바랍니다. </target>
+          <target>"&lt;strong&gt;{0}&lt;/strong&gt;"을 선택하여 시스템을 Red Hat Enterprise Linux 설치 버전에 해당하는 디폴트 Red Hat 채널에 등록합니다. 특정 Red Hat 채널 또는 사용자 정의 기본 채널을 선택할 수 도 있지만, 시스템이 이 키를 사용할 경우 선택한 채널과는 호환되지 않고, Red Hat 디폴트 채널로 되돌아 가게 됨에 유의하시기 바랍니다. </target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.edit.universal-default-tooltip">
           <source>Only one universal default activation key may be set for this organization. By setting this key as universal default, you will remove universal default status from the current universal default key if it exists. If this key is set as universal default, then newly-registered systems to your organization will inherit the properties of this key.</source>
@@ -12340,7 +12340,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="activation-key.jsp.delete.para">
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source>
-          <target>정말로 이 키를 삭제하시겠습니까? 활성키가 삭제되면 이를 다시 복구할 수 없게 됩니다. (알림: 키는 &lt;a href=&quot;{0}&quot;&gt;키 목록 페이지&lt;/a&gt;에서 비활성화시켜 사용하지 못하게 하고 나중 사용을 위해 보존할 수 있습니다.)  </target>
+          <target>정말로 이 키를 삭제하시겠습니까? 활성키가 삭제되면 이를 다시 복구할 수 없게 됩니다. (알림: 키는 &lt;a href="{0}"&gt;키 목록 페이지&lt;/a&gt;에서 비활성화시켜 사용하지 못하게 하고 나중 사용을 위해 보존할 수 있습니다.)  </target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.delete.warning">
           <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source>
@@ -12390,11 +12390,11 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <trans-unit id="activation-keys.config.jsp.noChannels">
           <source>No configuration channels. To subscribe this activation key to a configuration channel, please visit the &lt;a href="{0}"&gt;Subscribe to Channels&lt;/a&gt; tab.</source>
-          <target>설정 채널 없음. 이 활성키를 설정 채널에 등록하시려면 &lt;a href=&quot;{0}&quot;&gt;채널에 등록&lt;/a&gt; 탭으로 이동하시기 바랍니다. </target>
+          <target>설정 채널 없음. 이 활성키를 설정 채널에 등록하시려면 &lt;a href="{0}"&gt;채널에 등록&lt;/a&gt; 탭으로 이동하시기 바랍니다. </target>
         </trans-unit>
         <trans-unit id="activation-keys.config.subscriptions.jsp.noChannels">
           <source>No configuration channels are available for subscription. You have already subscribed this activation key to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;).</source>
-          <target>서브스크립션을 위해 사용가능한 설정 채널이 없습니다. 활성키를 사용 가능한 모든 채널에 이미 가입하셨습니다. (&lt;a href=&quot;{0}&quot;&gt;가입한 채널 보기&lt;/a&gt;) </target>
+          <target>서브스크립션을 위해 사용가능한 설정 채널이 없습니다. 활성키를 사용 가능한 모든 채널에 이미 가입하셨습니다. (&lt;a href="{0}"&gt;가입한 채널 보기&lt;/a&gt;) </target>
         </trans-unit>
         <trans-unit id="activation-key.config.jsp.para1">
           <source>Below are all the centrally-managed configuration channels to which this activation key is subscribed. They are in priority order with the highest-ranked channels appearing first in the list.</source>
@@ -12402,7 +12402,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="activation-key.config.subscriptions.jsp.para1">
           <source>Below is a list of configuration channels available to this activation key. To subscribe to a channel, check its checkbox. Make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>아래에는 활성키로 사용 가능한 설정 채널 목록이 있습니다. 채널에 등록하려면 체크 박스에 표시하시기 바랍니다. 변경 사항을 완료하셨으면 &quot;{0}&quot; 버튼을 클릭합니다. </target>
+          <target>아래에는 활성키로 사용 가능한 설정 채널 목록이 있습니다. 채널에 등록하려면 체크 박스에 표시하시기 바랍니다. 변경 사항을 완료하셨으면 "{0}" 버튼을 클릭합니다. </target>
         </trans-unit>
         <trans-unit id="activation-keys.config.rank.jsp.para1">
           <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
@@ -12410,7 +12410,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="activation-keys.config.rank.jsp.para2">
           <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source>
-          <target>등록된 채널의 순위를 수정하려면, 화살키를 사용하여 한번에 한 개의 채널을 선택하셔야 합니다. 순위 작업을 마치신 후, &quot;{0}&quot;를 크릭하여 채널 서브스크립션 및 순서를 확인하셔야 합니다.</target>
+          <target>등록된 채널의 순위를 수정하려면, 화살키를 사용하여 한번에 한 개의 채널을 선택하셔야 합니다. 순위 작업을 마치신 후, "{0}"를 크릭하여 채널 서브스크립션 및 순서를 확인하셔야 합니다.</target>
         </trans-unit>
       </group>
       <group>
@@ -12419,19 +12419,19 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <trans-unit id="activation-keys.groups.jsp.noGroups">
           <source>No System Groups. To add System Groups this activation key, please visit the &lt;a href="{0}"&gt;{1}&lt;/a&gt; tab.</source>
-          <target>시스템 그룹이 없습니다. 활성키에 시스템 그룹을 추가하려면, &lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt; 탭으로 이동하십시오.  </target>
+          <target>시스템 그룹이 없습니다. 활성키에 시스템 그룹을 추가하려면, &lt;a href="{0}"&gt;{1}&lt;/a&gt; 탭으로 이동하십시오.  </target>
         </trans-unit>
         <trans-unit id="activation-keys.groups.add.jsp.noGroups">
           <source>No system groups are available to add. You have already added all the system groups available (&lt;a href="{0}"&gt;View System Groups&lt;/a&gt;) to this activation key.</source>
-          <target>추가할 수 있는 시스템 그룹이 없습니다. 이 활성키에서 사용할 수 있는 (&lt;a href=&quot;{0}&quot;&gt;시스템 그룹 보기&lt;/a&gt;) 모든 시스템 그룹을 이미 추가하셨습니다.  </target>
+          <target>추가할 수 있는 시스템 그룹이 없습니다. 이 활성키에서 사용할 수 있는 (&lt;a href="{0}"&gt;시스템 그룹 보기&lt;/a&gt;) 모든 시스템 그룹을 이미 추가하셨습니다.  </target>
         </trans-unit>
         <trans-unit id="activation-key.groups.jsp.summary">
           <source>Below are all the system groups that have been added to this activation key. Any system registering with this activation key will be added to the selected system groups. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>아래에는 활성키에 추가된 모든 시스템 그룹이 있습니다. 이 활성키로 등록한 모든 시스템은 선택한 시스템 그룹에 추가됩니다. 시스템 그룹 멤버쉽을 제거하려면 체크 박스에 표시합니다. 변경 완료 후 &quot;{0}&quot; 버튼을 클릭합니다.  </target>
+          <target>아래에는 활성키에 추가된 모든 시스템 그룹이 있습니다. 이 활성키로 등록한 모든 시스템은 선택한 시스템 그룹에 추가됩니다. 시스템 그룹 멤버쉽을 제거하려면 체크 박스에 표시합니다. 변경 완료 후 "{0}" 버튼을 클릭합니다.  </target>
         </trans-unit>
         <trans-unit id="activation-key.groups.add.jsp.summary">
           <source>Below is a list of system groups available to this activation key. To join a system group, check its checkbox. Make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>아래에는 활성키로 사용 가능한 시스템 그룹 목록이 있습니다. 시스템 그룹에 가입하려면, 체크 박스에 표시합니다. 변경 완료 후 &quot;{0}&quot; 버튼을 클릭합니다.   </target>
+          <target>아래에는 활성키로 사용 가능한 시스템 그룹 목록이 있습니다. 시스템 그룹에 가입하려면, 체크 박스에 표시합니다. 변경 완료 후 "{0}" 버튼을 클릭합니다.   </target>
         </trans-unit>
         <trans-unit id="activation-key.groups.jsp.title">
           <source>System Groups</source>
@@ -12678,7 +12678,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="system.audit.listscap.jsp.missing">
           <source>This system does not yet have OpenSCAP scan capability. OpenSCAP scanning requires that particular software is installed and enabled on your system. You may ensure that OpenSCAP capability will be enabled on this system by installing "{0}" package.</source>
-          <target>이 시스템에는 아직 OpenSCAP 검사 기능이 없습니다. OpenSCAP 검사를 할 경우 시스템에 특정 소프트웨어를 설치하고 활성화해야 합니다. &quot;{0}&quot; 패키지를 설치하면 반드시 OpenSCAP 기능이 시스템에서 활성화되어 있는지 확인해야 합니다.</target>
+          <target>이 시스템에는 아직 OpenSCAP 검사 기능이 없습니다. OpenSCAP 검사를 할 경우 시스템에 특정 소프트웨어를 설치하고 활성화해야 합니다. "{0}" 패키지를 설치하면 반드시 OpenSCAP 기능이 시스템에서 활성화되어 있는지 확인해야 합니다.</target>
         </trans-unit>
         <trans-unit id="system.audit.listscap.jsp.testresult">
           <source>Xccdf Test Result</source>
@@ -13954,7 +13954,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>성명&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>성명&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.name">
         <source>Name:</source>
@@ -13968,7 +13968,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>레이블&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>레이블&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.label">
         <source>Label:</source>
@@ -13982,7 +13982,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>설명&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>설명&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.sls-edit">
         <source>SLS Contents</source>
@@ -14546,7 +14546,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
           <context context-type="sourcefile">/rhn/configuration/ChannelAddFiles.do</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>채널에 &quot;{0}&quot;라는 파일이 이미 존재합니다.</target>
+        <target>채널에 "{0}"라는 파일이 이미 존재합니다.</target>
       </trans-unit>
       <trans-unit id="addfiles.jsp.upload-link">
         <source>Upload New Configuration File</source>
@@ -14660,7 +14660,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/configuration/channel/DeployConfirm.do</context>
         </context-group>
         <target>다음의 파일은 아래에서 보여지는 시스템으로 배치됩니다.
-날짜 선택 영역에서 스케줄한 날짜 또는 &quot;최대한 빨리&quot;를 선택합니다.
+날짜 선택 영역에서 스케줄한 날짜 또는 "최대한 빨리"를 선택합니다.
 확인 버튼을 클릭하여 배치를 스케줄하거나
 또는 브라우저 상의 뒤로 가기 버튼을 눌러 파일과 시스템 선택을 수정합니다.
 
@@ -14705,7 +14705,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>현재 버전</target>
       </trans-unit>
@@ -14713,7 +14713,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>마지막 수정</target>
       </trans-unit>
@@ -14738,7 +14738,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>이 채널에 등록된 시스템 중 배치할 수 있는 시스템이 없음</target>
       </trans-unit>
@@ -14746,7 +14746,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>작업</target>
       </trans-unit>
@@ -14754,7 +14754,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>파일명</target>
       </trans-unit>
@@ -14762,7 +14762,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>모든 파일을 배치</target>
       </trans-unit>
@@ -14770,7 +14770,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>선택한 파일을 배치</target>
       </trans-unit>
@@ -14778,7 +14778,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>설정 파일 배치 </target>
       </trans-unit>
@@ -14786,7 +14786,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>아래의 목록에서 배치하시고자 하는 파일을 선택하시기 바랍니다. 그 후 선택한 파일을 배치할 시스템을 선택하셔야 합니다.</target>
       </trans-unit>
@@ -14794,7 +14794,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>파일명</target>
       </trans-unit>
@@ -14802,7 +14802,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>확인 &amp; 선택한 시스템 배치 </target>
       </trans-unit>
@@ -14810,7 +14810,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>설정 파일 배치: 배치할 시스템 선택</target>
       </trans-unit>
@@ -14818,7 +14818,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>선택한 파일에 배치하시고자 하는 시스템을 선택해 주십시오.</target>
       </trans-unit>
@@ -14826,7 +14826,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>&lt;strong&gt;경고:&lt;/strong&gt; {0} 설정 채널에서 배치하시려는 파일이 보다 높은 순위의 채널에 있는 같은 이름을 가진 파일에 의해 덮어쓰이거나 순위가 앞서게 되었을 경우, 특정 시스템이 등록되어 {0} 설정 채널에 있는 파일 버전이 아닌 덮어쓰여진/ 가장 높은 순위에 있는 파일 버전이 이 시스템에 배치됩니다.</target>
       </trans-unit>
@@ -14839,7 +14839,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">Tip: You may _schedule a comparison_ between these two file versions to see what changes this deployment will result in.</context>
         </context-group>
-        <target>&lt;strong&gt;힌트:&lt;/strong&gt; 이러한 두개의 파일 버전에서 &lt;a href=&quot;{0}&quot;&gt;비교 작업을 스케줄&lt;/a&gt;하여 배치 작업에 어떤 변경 사항이 나타나는 지를 확인합니다.</target>
+        <target>&lt;strong&gt;힌트:&lt;/strong&gt; 이러한 두개의 파일 버전에서 &lt;a href="{0}"&gt;비교 작업을 스케줄&lt;/a&gt;하여 배치 작업에 어떤 변경 사항이 나타나는 지를 확인합니다.</target>
       </trans-unit>
       <trans-unit id="deploylocal.jspf.tip.local">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this version of the this file to other systems you'll need to &lt;a href="{0}"&gt;copy this file to a centrally-managed config channel&lt;/a&gt;</source>
@@ -14847,7 +14847,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">Tip: If you would like to deploy this version of the this file to other systems you'll need to _copy this file to a centrally-managed config channel_</context>
         </context-group>
-        <target>&lt;strong&gt;힌트:&lt;/strong&gt; 이 파일의 버전을 다른 시스템에 배치하시고자 할 경우 &lt;a href=&quot;{0}&quot;&gt;이 파일을 중앙 관리 설정 채널에 복사&lt;/a&gt;하셔야 합니다.</target>
+        <target>&lt;strong&gt;힌트:&lt;/strong&gt; 이 파일의 버전을 다른 시스템에 배치하시고자 할 경우 &lt;a href="{0}"&gt;이 파일을 중앙 관리 설정 채널에 복사&lt;/a&gt;하셔야 합니다.</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.tip.global-1">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If a system has a locally-managed override for this file, you will not be able to deploy it.  However, you may click on the 'Modify rank' link to re-rank the overriding channels.</source>
@@ -14874,14 +14874,14 @@ Tip: If you would like to deploy this file to a system not in this list, request
 Tip: If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the _Configgy_ configuration channel using the _'Target Systems' tab_ for that channel, then return to this screen.  Also, note that the target system must have provisioning entitlements.
           </context>
         </context-group>
-        <target>&lt;strong&gt;힌트:&lt;/strong&gt; 파일을 이 목록에 없는 시스템에 배치하시고자 할 경우, 먼저 &lt;a href=&quot;{1}&quot;&gt;'대상 시스템' 탭&lt;/a&gt;을 사용하여 시스템을 {0} 설정 채널에 등록하신 후, 다시 이 화면으로 돌아오시기 바랍니다. 대상 시스템은 프로비저닝(provisioning) 인타이틀먼트를 가지고 있어야 함에 유의하십시오.</target>
+        <target>&lt;strong&gt;힌트:&lt;/strong&gt; 파일을 이 목록에 없는 시스템에 배치하시고자 할 경우, 먼저 &lt;a href="{1}"&gt;'대상 시스템' 탭&lt;/a&gt;을 사용하여 시스템을 {0} 설정 채널에 등록하신 후, 다시 이 화면으로 돌아오시기 바랍니다. 대상 시스템은 프로비저닝(provisioning) 인타이틀먼트를 가지고 있어야 함에 유의하십시오.</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.not_deployable">
         <source>These systems do not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system. You may ensure that configuration deployment capability will be enabled on these systems by selecting them in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target>이 시스템에는 설정 배치 기능이 아직 없습니다. 설정 배치는 특정 소프트웨어가 시스템에 설치되어 활성화되어 있어야 합니다. &lt;a href={0}&gt;{1}&lt;/a&gt; 화면에서 시스템을 선택하고 &quot;{2}&quot;를 클릭하면 설정 배치 기능을 사용할 수 있습니다.</target>
+        <target>이 시스템에는 설정 배치 기능이 아직 없습니다. 설정 배치는 특정 소프트웨어가 시스템에 설치되어 활성화되어 있어야 합니다. &lt;a href={0}&gt;{1}&lt;/a&gt; 화면에서 시스템을 선택하고 "{2}"를 클릭하면 설정 배치 기능을 사용할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.tip.orgadmin">
         <source> </source>
@@ -14891,7 +14891,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
 You may grant provisioning entitlements _here_.
           </context>
         </context-group>
-        <target>&lt;a href=&quot;{0}&quot;&gt;여기&lt;/a&gt;에서 프로비저닝(provisioning) 인타이틀먼트를 승인하실 수 있습니다.</target>
+        <target>&lt;a href="{0}"&gt;여기&lt;/a&gt;에서 프로비저닝(provisioning) 인타이틀먼트를 승인하실 수 있습니다.</target>
       </trans-unit>
       <!-- date-picker strings -->
       <trans-unit id="deploy.jsp.widgetsummary">
@@ -14925,7 +14925,7 @@ You may grant provisioning entitlements _here_.
           <context context-type="paramnotes">You can deploy the latest revision (_Revision 7_) of this file to _zanarkand.boston.redhat.com_ - this file is part of that system's locally-managed config channel.</context>
         </context-group>
         <target>
-    이 파일의 최신 버전 (&lt;a href=&quot;{1}&quot;&gt;개정 버전 {0}&lt;/a&gt;)을 &lt;a href=&quot;{3}&quot;&gt;{2}&lt;/a&gt;에 배치할 수 있습니다 - 이 파일은 시스템의 로컬에서 관리되는 설정 채널의 일부입니다.
+    이 파일의 최신 버전 (&lt;a href="{1}"&gt;개정 버전 {0}&lt;/a&gt;)을 &lt;a href="{3}"&gt;{2}&lt;/a&gt;에 배치할 수 있습니다 - 이 파일은 시스템의 로컬에서 관리되는 설정 채널의 일부입니다.
 </target>
       </trans-unit>
       <trans-unit id="deploy.jsp.filedetails">
@@ -14948,7 +14948,7 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">_Revision 7_ from _zanarkand.boston.redhat.com_</context>
         </context-group>
-        <target>&lt;a href=&quot;{3}&quot;&gt;{2}&lt;/a&gt;에서 &lt;a href=&quot;{1}&quot;&gt;버전 {0}&lt;/a&gt;</target>
+        <target>&lt;a href="{3}"&gt;{2}&lt;/a&gt;에서 &lt;a href="{1}"&gt;버전 {0}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.latest-never">
         <source>This revision has never been successfully deployed to this system.</source>
@@ -14970,7 +14970,7 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">_Revision 7_ from _@@PRODUCT_NAME@@ Config_</context>
         </context-group>
-        <target>&lt;a href=&quot;{3}&quot;&gt;{2}&lt;/a&gt;에서 &lt;a href=&quot;{1}&quot;&gt;버전 {0}&lt;/a&gt;</target>
+        <target>&lt;a href="{3}"&gt;{2}&lt;/a&gt;에서 &lt;a href="{1}"&gt;버전 {0}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.deploybutton">
         <source>Schedule File Deployment</source>
@@ -14995,7 +14995,7 @@ You may grant provisioning entitlements _here_.
 system _zanarkand.boston.redhat.com_.</context>
         </context-group>
         <target>파일이 설정 모래상자의 부분이기 때문에 이 파일을 시스템에 배치하실 수 없습니다
-&lt;a href=&quot;{1}&quot;&gt;{0}&lt;/a&gt;.</target>
+&lt;a href="{1}"&gt;{0}&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.sandbox-note2">
         <source>Configuration sandboxes are a place to store configuration files that are under development.
@@ -15006,8 +15006,8 @@ From there, you can deploy the file to systems.</source>
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
         <target>설정 모래 상자는 개발 중에 있는 설정 파일을 저장해 놓은 곳입니다.
- 설정 파일을 시스템에 개발할 준비가 되었다고 생각되시면 이를 &lt;a href=&quot;{0}&quot;&gt;로컬 관리 설정 채널에 복사&lt;/a&gt;
-하시거나 위의 '&lt;a href=&quot;{3}&quot;&gt;{4}&lt;/a&gt;' 탭을 사용하여 &lt;a href=&quot;{1}&quot;&gt; 전역 관리 설정 채널에 복사&lt;/a&gt;하시기 바랍니다.
+ 설정 파일을 시스템에 개발할 준비가 되었다고 생각되시면 이를 &lt;a href="{0}"&gt;로컬 관리 설정 채널에 복사&lt;/a&gt;
+하시거나 위의 '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' 탭을 사용하여 &lt;a href="{1}"&gt; 전역 관리 설정 채널에 복사&lt;/a&gt;하시기 바랍니다.
 여기서 파일을 시스템에 배치하실 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.note">
@@ -15023,7 +15023,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           </context>
         </context-group>
         <target>
-이 파일의 최신 버전 (&lt;a href=&quot;{1}&quot;&gt;개정 버전 {0}&lt;/a&gt;)을 파일의 중앙 관리 설정
+이 파일의 최신 버전 (&lt;a href="{1}"&gt;개정 버전 {0}&lt;/a&gt;)을 파일의 중앙 관리 설정
 채널 {2}에 등록된 시스템에 배치할 수 있습니다. 다음은 이 파일을 배치할 수 있는 시스템 목록입니다.
 </target>
       </trans-unit>
@@ -15061,7 +15061,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">1 central override (_Modify Rank_)</context>
         </context-group>
-        <target>{0} 중앙 오버라이드 (&lt;a href=&quot;{1}&quot;&gt;순위 수정&lt;/a&gt;)</target>
+        <target>{0} 중앙 오버라이드 (&lt;a href="{1}"&gt;순위 수정&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="globaldeploy.jsp.override-number">
         <source>{0} system override (&lt;a href="{1}"&gt;Remove System Override&lt;/a&gt;)</source>
@@ -15069,7 +15069,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">1 system override (_Remove System Override_)</context>
         </context-group>
-        <target>{0} 시스템 오버라이드 (&lt;a href=&quot;{1}&quot;&gt;시스템 오버라이드 삭제&lt;/a&gt;)</target>
+        <target>{0} 시스템 오버라이드 (&lt;a href="{1}"&gt;시스템 오버라이드 삭제&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="globaldeploy.jsp.outranked-numbers">
         <source>{0} central overrides (&lt;a href="{1}"&gt;Modify rank&lt;/a&gt;)</source>
@@ -15077,7 +15077,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">5 central overrides (_Modify rank_)</context>
         </context-group>
-        <target>{0} 중앙 오버라이드 (&lt;a href=&quot;{1}&quot;&gt;순위 수정&lt;/a&gt;)</target>
+        <target>{0} 중앙 오버라이드 (&lt;a href="{1}"&gt;순위 수정&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.header2">
         <source>Confirm file deploy</source>
@@ -15155,7 +15155,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/DeleteRevision.do</context>
           <context context-type="paramnotes">Are you sure you want to delete this revision permanently from Configuration Channel _@@PRODUCT_NAME@@Config_?</context>
         </context-group>
-        <target>설정 채널 &lt;a href=&quot;{1}&quot;&gt;{0}&lt;/a&gt;에서 이 버전을 영구적으로 삭제하시겠습니까?</target>
+        <target>설정 채널 &lt;a href="{1}"&gt;{0}&lt;/a&gt;에서 이 버전을 영구적으로 삭제하시겠습니까?</target>
       </trans-unit>
       <trans-unit id="deleterev.jsp.channelname">
         <source>Config Channel:</source>
@@ -15218,7 +15218,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
             Revision 7 of /etc/sysconfig/rhn/up2date from channel _@@PRODUCT_NAME@@Config_
           </context>
         </context-group>
-        <target>&lt;a href=&quot;{3}&quot;&gt;{2}&lt;/a&gt; 채널에서 {0} 중 버전 {1}</target>
+        <target>&lt;a href="{3}"&gt;{2}&lt;/a&gt; 채널에서 {0} 중 버전 {1}</target>
       </trans-unit>
       <!-- Tips -->
       <trans-unit id="filedetails.jsp.tip.ownership">
@@ -15311,7 +15311,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
               Error "Invalid I/O Operation" attempting to download file /etc/sysconfig/rhn/up2date
           </context>
         </context-group>
-        <target>파일 {1} 다운로드 도중 오류 &quot;{0}&quot;</target>
+        <target>파일 {1} 다운로드 도중 오류 "{0}"</target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.update">
         <source>Update Configuration File</source>
@@ -15461,7 +15461,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">2 days ago by UserX</context>
         </context-group>
-        <target>채널 &lt;a href=&quot;{2}&quot;&gt;{1}&lt;/a&gt;에서 {0}</target>
+        <target>채널 &lt;a href="{2}"&gt;{1}&lt;/a&gt;에서 {0}</target>
       </trans-unit>
       <!-- add_details.jspf -->
       <trans-unit id="filedetails.add_details.jspf.header2">
@@ -15526,7 +15526,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>텍스트와 바이너리 파일의 다른점에 관한 보다 자세한 내용를 보시려면 &lt;a href=&quot;{0}&quot;&gt;여기&lt;/a&gt;를 클릭하시기 바랍니다.</target>
+        <target>텍스트와 바이너리 파일의 다른점에 관한 보다 자세한 내용를 보시려면 &lt;a href="{0}"&gt;여기&lt;/a&gt;를 클릭하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-edit">
         <source>
@@ -15616,7 +15616,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
           </context>
         </context-group>
         <target>
-&lt;a href=&quot;{0}&quot;&gt;{1} 다운로드&lt;/a&gt; (개정 {2}, {3})
+&lt;a href="{0}"&gt;{1} 다운로드&lt;/a&gt; (개정 {2}, {3})
 </target>
       </trans-unit>
       <!-- header.jspf -->
@@ -15887,7 +15887,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
           <context context-type="paramnotes">12 files (3 overrides)</context>
         </context-group>
-        <target>&lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt; ({2})</target>
+        <target>&lt;a href="{0}"&gt;{1}&lt;/a&gt; ({2})</target>
       </trans-unit>
       <trans-unit id="managedsystems.jsp.globalfiles">
         <source>Centrally-Managed Files</source>
@@ -15932,7 +15932,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
           <context context-type="paramnotes">12 files from _4 config channels_</context>
         </context-group>
-        <target>&lt;a href=&quot;{1}&quot;&gt;{2}&lt;/a&gt;에서 {0}</target>
+        <target>&lt;a href="{1}"&gt;{2}&lt;/a&gt;에서 {0}</target>
       </trans-unit>
       <!-- overview.jsp (in configuration) -->
       <group>
@@ -16107,7 +16107,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="manage.jsp.success">
           <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; successfully uploaded.</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;이 성공적으로 업로드되었습니다.</target>
+          <target>&lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;이 성공적으로 업로드되었습니다.</target>
         </trans-unit>
       </group>
       <!-- configuration/files/copycentral.jsp  -->
@@ -16146,7 +16146,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into centrally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target>이 파일의 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;을 &lt;strong&gt;중앙 관리 설정 채널&lt;/strong&gt;에 복사하실 수 있습니다. 이 파일을 다른 채널에 복사하시면 채널에 해당 파일의 가장 최근 버전이 됩니다.</target>
+          <target>이 파일의 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;을 &lt;strong&gt;중앙 관리 설정 채널&lt;/strong&gt;에 복사하실 수 있습니다. 이 파일을 다른 채널에 복사하시면 채널에 해당 파일의 가장 최근 버전이 됩니다.</target>
         </trans-unit>
         <trans-unit id="copycentral.jsp.select">
           <source>Please select destination channels below.</source>
@@ -16198,7 +16198,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into locally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target>파일의 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;을 &lt;strong&gt;로컬 관리 설정 채널&lt;/strong&gt;로 복사하실 수 있습니다. 이 파일을 다른 채널에 복사하시면 해당 채널에서 파일의 최신 버전이 됩니다.</target>
+          <target>파일의 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;을 &lt;strong&gt;로컬 관리 설정 채널&lt;/strong&gt;로 복사하실 수 있습니다. 이 파일을 다른 채널에 복사하시면 해당 채널에서 파일의 최신 버전이 됩니다.</target>
         </trans-unit>
         <trans-unit id="copylocal.jsp.channel">
           <source>Local Config Channel Name</source>
@@ -16219,7 +16219,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 7 of this file into system sandboxes.  When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</context>
           </context-group>
-          <target>파일의 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;을 &lt;strong&gt;시스템 모래 상자&lt;/strong&gt;로 복사하실 수 있습니다. 이 파일을 모래상자로 복사하시면 해당 모래 상자에서 파일의 최신 버전이 됩니다.</target>
+          <target>파일의 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;을 &lt;strong&gt;시스템 모래 상자&lt;/strong&gt;로 복사하실 수 있습니다. 이 파일을 모래상자로 복사하시면 해당 모래 상자에서 파일의 최신 버전이 됩니다.</target>
         </trans-unit>
         <trans-unit id="copysandbox.jsp.channel">
           <source>System Sandbox Name</source>
@@ -16240,7 +16240,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 8 of this file to other revisions of this file in the config channel New Configgy.</context>
           </context-group>
-          <target>이 파일의 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;을 설정 채널 &lt;a href=&quot;{2}&quot;&gt;{3}&lt;/a&gt;에 있는 이 파일의 다른 버전과 비교하실 수 있습니다.</target>
+          <target>이 파일의 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;을 설정 채널 &lt;a href="{2}"&gt;{3}&lt;/a&gt;에 있는 이 파일의 다른 버전과 비교하실 수 있습니다.</target>
         </trans-unit>
         <trans-unit id="comparerevision.jsp.noRevisions">
           <source>No config revisions.</source>
@@ -16284,7 +16284,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 8 of this file to a copy of this file in another config channel. Below is a list of all of the other copies of this file in locally and centrally-managed config channels, as well as in system sandboxes. Please select which copies of the file you would like to perform a comparison on.</context>
           </context-group>
-          <target>이 파일의 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;을 다른 설정 채널에 있는 파일 복사본과 비교하실 수 있습니다. 아래에는 로컬 및 중앙 관리 설정 채널과 시스템 모래 상자에 있는 모든 파일 복사본 목록이 있습니다. 비교 작업하시고자 하는 파일 복사본을 선택하시기 바랍니다.</target>
+          <target>이 파일의 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;을 다른 설정 채널에 있는 파일 복사본과 비교하실 수 있습니다. 아래에는 로컬 및 중앙 관리 설정 채널과 시스템 모래 상자에 있는 모든 파일 복사본 목록이 있습니다. 비교 작업하시고자 하는 파일 복사본을 선택하시기 바랍니다.</target>
         </trans-unit>
         <trans-unit id="comparecopy.jsp.noAlternates">
           <source>No file alternatives.</source>
@@ -16324,7 +16324,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 8 of this file to another file in any config channel. Below is a list of all of your config channels with available files. Please select which config channels contains the file for comparison.</context>
           </context-group>
-          <target>이 파일의 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;을 다른 설정 채널에 있는 다른 파일과 비교하실 수 있습니다. 아래에는 사용 가능한 파일과 설정 채널 목록이 있습니다. 비교 작업을 위해 파일이 들어 있는 설정 채널을 선택하시기 바랍니다.</target>
+          <target>이 파일의 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;을 다른 설정 채널에 있는 다른 파일과 비교하실 수 있습니다. 아래에는 사용 가능한 파일과 설정 채널 목록이 있습니다. 비교 작업을 위해 파일이 들어 있는 설정 채널을 선택하시기 바랍니다.</target>
         </trans-unit>
         <trans-unit id="comparechannel.jsp.noChannels">
           <source>No configuration channels.</source>
@@ -16373,7 +16373,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 7 of this file to another file in the config channel Configgy2. Please select a file for comparison.</context>
           </context-group>
-          <target>이 파일의 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;을 설정 채널 {2}에 있는 다른 파일과 비교하실 수 있습니다. 비교하실 파일을 선택하시기 바랍니다.</target>
+          <target>이 파일의 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;을 설정 채널 {2}에 있는 다른 파일과 비교하실 수 있습니다. 비교하실 파일을 선택하시기 바랍니다.</target>
         </trans-unit>
         <trans-unit id="comparefile.jsp.noFiles">
           <source>No config files.</source>
@@ -16414,7 +16414,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 8 of this file to versions of this file deployed on systems. Please select the systems you would like to compare this file to below (this will schedule an action to take place the next time the systems check in).</context>
           </context-group>
-          <target>이 파일의 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;을 시스템에 배포된 파일의 버전과 비교하실 수 있습니다. 아래에서 파일 비교 작업을 하시고자 하는 시스템을 선택하시기 바랍니다 (이는 다음번에 시스템이 접속하도록 작업을 스케줄합니다). </target>
+          <target>이 파일의 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;을 시스템에 배포된 파일의 버전과 비교하실 수 있습니다. 아래에서 파일 비교 작업을 하시고자 하는 시스템을 선택하시기 바랍니다 (이는 다음번에 시스템이 접속하도록 작업을 스케줄합니다). </target>
         </trans-unit>
         <trans-unit id="comparedeployed.jsp.noSystems">
           <source>No systems.</source>
@@ -16440,7 +16440,7 @@ any of these revisions.  Are you sure you want to do this?</source>
               {4} - channel name
             </context>
           </context-group>
-          <target>&lt;a href=&quot;{2}&quot;&gt;{3} {4}&lt;/a&gt;에서 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;</target>
+          <target>&lt;a href="{2}"&gt;{3} {4}&lt;/a&gt;에서 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="comparedeployed.jsp.never">
           <source>Never</source>
@@ -16642,7 +16642,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">Revision 3 from Configgy Channel</context>
           </context-group>
-          <target>&lt;a href=&quot;{2}&quot;&gt;{3}&lt;/a&gt;에서 &lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;</target>
+          <target>&lt;a href="{2}"&gt;{3}&lt;/a&gt;에서 &lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;</target>
         </trans-unit>
       </group>
       <!-- configuration/ssm/difffiles.jsp  -->
@@ -16659,7 +16659,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">The configuration files listed below are the files you have selected that are relevant to server3.redhat.com.</context>
           </context-group>
-          <target>아래 목록의 설정 파일은 &lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt;에 관련하여 선택하신 파일입니다.</target>
+          <target>아래 목록의 설정 파일은 &lt;a href="{0}"&gt;{1}&lt;/a&gt;에 관련하여 선택하신 파일입니다.</target>
         </trans-unit>
         <trans-unit id="difffiles.jsp.note">
           <source>&lt;strong&gt;Note:&lt;/strong&gt; not all the files you have selected are relevant for this system. Any action scheduled with your current set of selected configuration files for this system will only include the configuration files listed below.</source>
@@ -17029,7 +17029,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">The configuration channels listed below are those selected configuration channels to which system32.devel is subscribed. Deployable Files are configuration files or directories in the channel that are not overridden by a local system configuration channel or a higher priority global channel. Change this system's configuration channel ranking.</context>
           </context-group>
-          <target>아래의 목록에 있는 설정 채널은 {0}가 등록된 설정 채널에 있는 것입니다. 배치 가능한 파일은 로컬 시스템 설정 채널이나 최상위 우선 순위 글로벌 채널에 의해 덮어쓰여지지 않은 채널에 있는 설정 파일이나 디렉토리입니다. &lt;a href=&quot;{1}&quot;&gt;시스템의 설정 채널 순위 변경&lt;/a&gt;.</target>
+          <target>아래의 목록에 있는 설정 채널은 {0}가 등록된 설정 채널에 있는 것입니다. 배치 가능한 파일은 로컬 시스템 설정 채널이나 최상위 우선 순위 글로벌 채널에 의해 덮어쓰여지지 않은 채널에 있는 설정 파일이나 디렉토리입니다. &lt;a href="{1}"&gt;시스템의 설정 채널 순위 변경&lt;/a&gt;.</target>
         </trans-unit>
         <trans-unit id="ssmsystemchannels.jsp.files">
           <source>Deployable Configuration Files</source>
@@ -17094,7 +17094,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="sdc.config.file_list.central_description">
           <source>Below is a list of centrally-managed configuration files associated with {0}. Centrally-managed configuration files are provided by global configuration channels - you can determine which channel provides which file by examining the "Provided By" column below. Some of these centrally-managed files may be overridden by locally-managed files - you can determine whether or not a file is overridden by examining the "Overridden By" column below.</source>
-          <target>아래에는 {0}과 연계된 중앙 관리 설정 파일 목록이 있습니다. 중앙 관리 설정 파일은 글로벌 설정 채널에 의해 제공됩니다. - 아래의 &quot;제공자&quot; 부분을 검색하여 어떤 채널이 어떤 파일을 제공하게 할 지를 결정하실 수 있습니다. 이러한 중앙 관리 파일의 일부분은 로컬 관리 파일에 의해 덮어쓰여질 수 있습니다 - 아래의 &quot;덮어씀&quot; 부분을 검색하여 파일의 덮어쓰기 여부를 결정하실 수 있습니다.</target>
+          <target>아래에는 {0}과 연계된 중앙 관리 설정 파일 목록이 있습니다. 중앙 관리 설정 파일은 글로벌 설정 채널에 의해 제공됩니다. - 아래의 "제공자" 부분을 검색하여 어떤 채널이 어떤 파일을 제공하게 할 지를 결정하실 수 있습니다. 이러한 중앙 관리 파일의 일부분은 로컬 관리 파일에 의해 덮어쓰여질 수 있습니다 - 아래의 "덮어씀" 부분을 검색하여 파일의 덮어쓰기 여부를 결정하실 수 있습니다.</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.local_description">
           <source>Locally-managed configuration files are useful for overriding centrally-managed configuration profiles that cause problems on particular systems. Also, locally-managed configuration files are a method by which system group administrators who don't have configuration administration privileges can manage configuration files on the machines they are able to manage.</source>
@@ -17102,7 +17102,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.sandbox_description">
           <source>This sandbox is a place you can store configuration files that are under development. This sandbox is associated with this system, {0}, but you may promote files from this sandbox to a centrally-managed configuration channel using the "{1}" below. After files in this sandbox have been promoted to a centrally-managed configuration channel, you will be able to deploy them to other systems.</source>
-          <target>이 모래상자는 개발 중에 있는 설정 파일을 저장할 수 있는 곳에 위치합니다. 이는 시스템 {0}과 연계되어 있지만 아래의 &quot;{1}&quot;를 사용하여 파일을 모래 상자에서 중앙 관리 설정 채널로 상향 이동시킬 수 있습니다. 모래 상자에 있는 파일을 중앙 관리 설정 채널로 상향 이동 후, 이를 다른 시스템에 배치 가능합니다.</target>
+          <target>이 모래상자는 개발 중에 있는 설정 파일을 저장할 수 있는 곳에 위치합니다. 이는 시스템 {0}과 연계되어 있지만 아래의 "{1}"를 사용하여 파일을 모래 상자에서 중앙 관리 설정 채널로 상향 이동시킬 수 있습니다. 모래 상자에 있는 파일을 중앙 관리 설정 채널로 상향 이동 후, 이를 다른 시스템에 배치 가능합니다.</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.name">
           <source>File Name</source>
@@ -17114,11 +17114,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.view_or_compare">
           <source>[&lt;a href="{0}"&gt;View&lt;/a&gt;]&amp;nbsp;[&lt;a href="{1}"&gt;Compare&lt;/a&gt;]</source>
-          <target>[&lt;a href=&quot;{0}&quot;&gt;보기&lt;/a&gt;]&amp;nbsp;[&lt;a href=&quot;{1}&quot;&gt;비교&lt;/a&gt;]</target>
+          <target>[&lt;a href="{0}"&gt;보기&lt;/a&gt;]&amp;nbsp;[&lt;a href="{1}"&gt;비교&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.edit_or_compare">
           <source>[&lt;a href="{0}"&gt;Edit&lt;/a&gt;]&amp;nbsp;[&lt;a href="{1}"&gt;Compare&lt;/a&gt;]</source>
-          <target>[&lt;a href=&quot;{0}&quot;&gt;편집&lt;/a&gt;]&amp;nbsp;[&lt;a href=&quot;{1}&quot;&gt;비교&lt;/a&gt;]</target>
+          <target>[&lt;a href="{0}"&gt;편집&lt;/a&gt;]&amp;nbsp;[&lt;a href="{1}"&gt;비교&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.provided_by">
           <source>Provided By</source>
@@ -17133,11 +17133,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.revision">
           <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;버전 {1}&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;버전 {1}&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.overridden_none">
           <source>None [&lt;a href="{0}"&gt;Override this file&lt;/a&gt;]</source>
-          <target>없음 [&lt;a href=&quot;{0}&quot;&gt;이 파일을 덮어씀&lt;/a&gt;]</target>
+          <target>없음 [&lt;a href="{0}"&gt;이 파일을 덮어씀&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.current_revision">
           <source>Current Revision</source>
@@ -17200,7 +17200,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.configlist.jsp.noChannels">
           <source>No configuration channels. To subscribe this system to a configuration channel, please visit the &lt;a href="{0}"&gt;Subscribe to Channels&lt;/a&gt; tab.</source>
-          <target>설정 채널 없음. 이 시스템을 설정 채널에 등록하시려면 &lt;a href=&quot;{0}&quot;&gt;채널에 등록&lt;/a&gt; 탭으로 이동하시기 바랍니다.</target>
+          <target>설정 채널 없음. 이 시스템을 설정 채널에 등록하시려면 &lt;a href="{0}"&gt;채널에 등록&lt;/a&gt; 탭으로 이동하시기 바랍니다.</target>
         </trans-unit>
         <trans-unit id="sdc.configlist.jsp.name">
           <source>Channel Name</source>
@@ -17478,7 +17478,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">7 files scheduled for comparison.</context>
           </context-group>
-          <target>비교 작업을 위해 {0} 파일이 &lt;a href=&quot;{1}&quot;&gt;스케줄됨&lt;/a&gt;.</target>
+          <target>비교 작업을 위해 {0} 파일이 &lt;a href="{1}"&gt;스케줄됨&lt;/a&gt;.</target>
         </trans-unit>
       </group>
       <!-- configuration/sdc/deployfileconfirm.jsp  -->
@@ -17506,7 +17506,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">7 files scheduled for deploy.</context>
           </context-group>
-          <target>배치 작업을 위해 {0} 파일이 &lt;a href=&quot;{1}&quot;&gt;스케줄됨&lt;/a&gt;.</target>
+          <target>배치 작업을 위해 {0} 파일이 &lt;a href="{1}"&gt;스케줄됨&lt;/a&gt;.</target>
         </trans-unit>
       </group>
       <!-- ssm/view-log.jsp, ssm/view-log-details.jsp -->
@@ -18046,7 +18046,7 @@ Base Channel chosen on the
         </context-group>
         <target>아래에서 패키지 프로파일을 선택하여, 킥스타트 중인 시스템을 @@PRODUCT_NAME@@에 등록된
 시스템의 패키지 프로파일에 동기화시킬 수 있습니다.  &lt;strong&gt;알림&lt;/strong&gt;: 이 목록은
-&lt;a href=&quot;/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}&quot;&gt;운영 체제&lt;/a&gt; 페이지에서
+&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;운영 체제&lt;/a&gt; 페이지에서
 선택된 동일한 기본 채널에 대해 생성된 패키지 프로파일만 보여줍니다.  </target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip">
@@ -18058,11 +18058,11 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEditSubmit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;힌트:&lt;/strong&gt;
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;힌트:&lt;/strong&gt;
 킥스타트 과정에서 시스템을 적절한 소프트웨어 채널에 서브스크라이브하셔야,
 동기화하신 패키지 프로파일에 있는 패키지를 이용할 수 있습니다.
 킥스타트 과정에서 소프트웨어 채널에 시스템을 서브스크라이브하시려면
-&lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;활성키&lt;/a&gt;
+&lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;활성키&lt;/a&gt;
 탭으로 가십시오.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.tip.proxy.jsp">
@@ -18105,7 +18105,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>이 게스트 시스템이 더이상 필요하지 않을 경우 게스트를 삭제하실 수 있습니다. 시스템의 호스트에 있는 새로운 게스트를 프로비저닝하려면 &lt;a href=&quot;/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}&quot;&gt; 호스트의 시스템 정보 페이지의 '가상화'탭으로 가시면 됩니다&lt;/a&gt;.  </target>
+        <target>이 게스트 시스템이 더이상 필요하지 않을 경우 게스트를 삭제하실 수 있습니다. 시스템의 호스트에 있는 새로운 게스트를 프로비저닝하려면 &lt;a href="/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}"&gt; 호스트의 시스템 정보 페이지의 '가상화'탭으로 가시면 됩니다&lt;/a&gt;.  </target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading1.jsp">
         <source>Schedule Autoinstallation</source>
@@ -18162,11 +18162,11 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>최대한 빨리 킥스타트 작업을 스케줄:</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.profiles.jsp">
-        <source>No profiles currently available for autoinstallation. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstallation. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new kickstart profile.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>현재 킥스타트 용 프로파일이 없습니다. &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;새 킥스타트 프로파일을 만드시기 바랍니다.&lt;/a&gt;</target>
+        <target>현재 킥스타트 용 프로파일이 없습니다. &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;새 킥스타트 프로파일을 만드시기 바랍니다.&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.button0.jsp">
         <source>Create PXE installation configuration</source>
@@ -18625,7 +18625,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>시스템을 &lt;a href=&quot;/rhn/profiles/Details.do?prid={0}&quot;&gt;패키지 프로파일&lt;/a&gt;에 동기화 </target>
+        <target>시스템을 &lt;a href="/rhn/profiles/Details.do?prid={0}"&gt;패키지 프로파일&lt;/a&gt;에 동기화 </target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_config">
         <source>Deploy configuration files</source>
@@ -18843,13 +18843,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target>중국어 간체</target>
       </trans-unit>
-      <trans-unit id="preferences.jsp.lang.none">
-        <source>Use Browser Settings</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
-        </context-group>
-        <target>브라우저 설정 사용</target>
-      </trans-unit>
       <trans-unit id="probes.jsp.toolbar">
         <source>Probe Status List</source>
         <context-group name="ctx">
@@ -18910,7 +18903,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
 
 트리 경로, 킥스타트 RPM, 기본 채널, 설치 프로그램 생성기는 항상 일치해야 합니다. 일반적으로 이는 각 필드의 버전이 Red Hat Enterprise Linux의 버전과 동일한 버전이 되는 것을 의미합니다. &lt;br/&gt;&lt;br/&gt;
 
-&lt;p&gt;트리 경로는 커널, initrd, 리포지터리 정보가 포함된 (rpm 제외) 배포판의 전체 킥스타트 트리가 들어있는 @@PRODUCT_NAME@@ 서버의 로컬 디스크 경로여야 합니다. 이 디렉토리는 apache및 tomcat 사용자가 읽을 수 있어야 합니다. 지정된 트리 경로 내에서 커널은 &quot;./images/pxeboot/vmlinuz&quot;에서 initrd 이미지는 &quot;./images/pxeboot/initrd.img&quot;에서 사용 가능해야 합니다. 예를 들어, 미디어가 &lt;i&gt;/var/distro-trees/rhel-5-server/&lt;/i&gt;의 @@PRODUCT_NAME@@에 있는 경우 &lt;i&gt;/var/distro-trees/rhel-5-server/images/pxeboot/&lt;/i&gt; 에서 커널 및 initrd을 확인할 수 있는 트리 경로 값으로 경로를 지정합니다.&lt;/p&gt;
+&lt;p&gt;트리 경로는 커널, initrd, 리포지터리 정보가 포함된 (rpm 제외) 배포판의 전체 킥스타트 트리가 들어있는 @@PRODUCT_NAME@@ 서버의 로컬 디스크 경로여야 합니다. 이 디렉토리는 apache및 tomcat 사용자가 읽을 수 있어야 합니다. 지정된 트리 경로 내에서 커널은 "./images/pxeboot/vmlinuz"에서 initrd 이미지는 "./images/pxeboot/initrd.img"에서 사용 가능해야 합니다. 예를 들어, 미디어가 &lt;i&gt;/var/distro-trees/rhel-5-server/&lt;/i&gt;의 @@PRODUCT_NAME@@에 있는 경우 &lt;i&gt;/var/distro-trees/rhel-5-server/images/pxeboot/&lt;/i&gt; 에서 커널 및 initrd을 확인할 수 있는 트리 경로 값으로 경로를 지정합니다.&lt;/p&gt;
 </target>
       </trans-unit>
       <trans-unit id="treecreate.jsp.header2">
@@ -19576,11 +19569,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
       </group>
       <trans-unit id="virtualization.provision.first.jsp.no.profiles">
-        <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstalling guests. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>현재 킥스타트 게스용 프로파일이 없습니다. &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;가상화 유형을 사용하여 새 킥스타트 프로파일을 만드시기 바랍니다.&lt;/a&gt;</target>
+        <target>현재 킥스타트 게스용 프로파일이 없습니다. &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;가상화 유형을 사용하여 새 킥스타트 프로파일을 만드시기 바랍니다.&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="info.alt.img">
         <source>Information Icon</source>
@@ -19671,11 +19664,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.deploy.managed-files">
           <source>&lt;a href="{0}"&gt;Deploy all managed config files&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;관리되는 모든 설정 파일을 배치&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;관리되는 모든 설정 파일을 배치&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.deploy.selected-files">
           <source>&lt;a href="{0}"&gt;Deploy selected config files&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;선택한 설정 파일을 배치&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;선택한 설정 파일을 배치&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.compare.files">
           <source>Compare Files</source>
@@ -19683,11 +19676,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.compare.managed-files">
           <source>&lt;a href="{0}"&gt;Compare all managed files to system&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;시스템에 관리되는 모든 파일을 비교&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;시스템에 관리되는 모든 파일을 비교&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.compare.selected-files">
           <source>&lt;a href="{0}"&gt;Compare selected managed files to system&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;시스템에 선택한 관리 파일을 비교&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;시스템에 선택한 관리 파일을 비교&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.add-create.files">
           <source>Add/Create files</source>
@@ -19695,19 +19688,19 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.add-create.new-files">
           <source>&lt;a href="{0}"&gt;Create a new config file or dir&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;새로운 설정 파일 또는 디렉토리 생성&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;새로운 설정 파일 또는 디렉토리 생성&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.add-create.upload-files">
           <source>&lt;a href="{0}"&gt;Upload config files&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;설정 파일 업로드&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;설정 파일 업로드&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.add-create.import-all-files">
           <source>&lt;a href="{0}"&gt;Import all managed files from system&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;시스템에서 모든 관리 파일을 가져오기&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;시스템에서 모든 관리 파일을 가져오기&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.add-create.import-selected-files">
           <source>&lt;a href="{0}"&gt;Import selected files from system&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;시스템에서 선택한 파일 가져오기&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;시스템에서 선택한 파일 가져오기&lt;/a&gt;</target>
         </trans-unit>
       </group>
       <group>
@@ -19720,7 +19713,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.subscriptions.jsp.para1">
           <source>Below is a list of configuration channels available to this system. To subscribe to a channel, check its checkbox. Make sure you click the "Continue" button when you are finished with your changes.</source>
-          <target>아래에는 시스템에서 사용 가능한 설정 채널 목록이 있습니다. 채널에 등록하려면 체크 박스에 표시하시기 바랍니다. 변경 사항을 완료하셨으면 &quot;계속&quot; 버튼을 클릭합니다.</target>
+          <target>아래에는 시스템에서 사용 가능한 설정 채널 목록이 있습니다. 채널에 등록하려면 체크 박스에 표시하시기 바랍니다. 변경 사항을 완료하셨으면 "계속" 버튼을 클릭합니다.</target>
         </trans-unit>
         <trans-unit id="sdc.config.subscriptions.jsp.channel">
           <source>Channel Name</source>
@@ -19736,7 +19729,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.subscriptions.jsp.noChannels">
           <source> No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source>
-          <target>서브스크립션에 대해 사용가능한 설정 채널이 없습니다. 이미 시스템을 사용 가능한 모든 채널 (&lt;a href=&quot;{0}&quot;&gt;등록된 채널 보기&lt;/a&gt;)에 등록하셨거나 채널에 액세스할 수 있는 권한이 없기 때문입니다.</target>
+          <target>서브스크립션에 대해 사용가능한 설정 채널이 없습니다. 이미 시스템을 사용 가능한 모든 채널 (&lt;a href="{0}"&gt;등록된 채널 보기&lt;/a&gt;)에 등록하셨거나 채널에 액세스할 수 있는 권한이 없기 때문입니다.</target>
         </trans-unit>
         <trans-unit id="common.config.subscription.jsp.error.nojavascript">
           <source>Please enable Javascript before selecting your channel subscriptions.</source>
@@ -19769,7 +19762,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.para2">
           <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source>
-          <target>등록된 채널의 순위를 수정하려면, 화살키를 사용하여 한번에 한 개의 채널을 선택하셔야 합니다. 순위 작업을 마치신 후, &quot;{0}&quot;를 크릭하여 채널 서브스크립션 및 순서를 확인하셔야 합니다.</target>
+          <target>등록된 채널의 순위를 수정하려면, 화살키를 사용하여 한번에 한 개의 채널을 선택하셔야 합니다. 순위 작업을 마치신 후, "{0}"를 크릭하여 채널 서브스크립션 및 순서를 확인하셔야 합니다.</target>
         </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.subscribed_channels">
           <source>Subscribed Channels</source>
@@ -19777,7 +19770,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="common.config.rank.jsp.warning">
           <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below. </source>
-          <target>&lt;strong&gt;경고:&lt;/strong&gt; 시스템을 등록하기 위해 새로운 설정 채널을 선택하셨습니다. 서브스크립션 순위를 결정하여 &quot;{0}&quot;를 클릭하지 않으면 시스템은 설정하신 채널에 등록되지 &lt;strong&gt;않습니다.&lt;/strong&gt;</target>
+          <target>&lt;strong&gt;경고:&lt;/strong&gt; 시스템을 등록하기 위해 새로운 설정 채널을 선택하셨습니다. 서브스크립션 순위를 결정하여 "{0}"를 클릭하지 않으면 시스템은 설정하신 채널에 등록되지 &lt;strong&gt;않습니다.&lt;/strong&gt;</target>
         </trans-unit>
         <trans-unit id="common.config.rank.jsp.error.nojavascript">
           <source>Please enable Javascript before ordering your channel subscriptions.</source>
@@ -19880,7 +19873,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>(&lt;a href=&quot;{0}&quot;&gt;시스템 잠금 해제&lt;/a&gt;)</target>
+        <target>(&lt;a href="{0}"&gt;시스템 잠금 해제&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.locked">
         <source>System has been &lt;strong&gt;locked&lt;/strong&gt; by {0}: {1}</source>
@@ -19894,14 +19887,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>(&lt;a href=&quot;{0}&quot;&gt;시스템 잠금&lt;/a&gt;)</target>
+        <target>(&lt;a href="{0}"&gt;시스템 잠금&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels">
         <source>Subscribed Channels (&lt;a href="{0}"&gt;Alter Channel Subscriptions&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>등록된 채널 (&lt;a href=&quot;{0}&quot;&gt;채널 서브스크립션 변경&lt;/a&gt;)</target>
+        <target>등록된 채널 (&lt;a href="{0}"&gt;채널 서브스크립션 변경&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysevents">
         <source>System Events</source>
@@ -19973,14 +19966,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>(&lt;a href=&quot;{0}&quot;&gt;시스템 재부팅 스케줄&lt;/a&gt;)</target>
+        <target>(&lt;a href="{0}"&gt;시스템 재부팅 스케줄&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties">
         <source>System Properties (&lt;a href="{0}"&gt;Edit These Properties&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>시스템 등록 정보 (&lt;a href=&quot;{0}&quot;&gt;이 등록 정보를 편집&lt;/a&gt;)</target>
+        <target>시스템 등록 정보 (&lt;a href="{0}"&gt;이 등록 정보를 편집&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.entitlement">
         <source>System Types:</source>
@@ -20085,21 +20078,21 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;&lt;a href=&quot;{0}&quot;&gt;중요: &lt;/a&gt;&lt;/strong&gt; {1} </target>
+        <target>&lt;strong&gt;&lt;a href="{0}"&gt;중요: &lt;/a&gt;&lt;/strong&gt; {1} </target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updates.noncritical">
         <source>&lt;strong&gt;&lt;a href="{0}"&gt;Non-Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;&lt;a href=&quot;{0}&quot;&gt;중요하지 않음: &lt;/a&gt;&lt;/strong&gt; {1} </target>
+        <target>&lt;strong&gt;&lt;a href="{0}"&gt;중요하지 않음: &lt;/a&gt;&lt;/strong&gt; {1} </target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updates.packages">
         <source>&lt;strong&gt;&lt;a href="{0}"&gt;Packages: &lt;/a&gt;&lt;/strong&gt; {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;&lt;a href=&quot;{0}&quot;&gt;패키지: &lt;/a&gt;&lt;/strong&gt; {1}  </target>
+        <target>&lt;strong&gt;&lt;a href="{0}"&gt;패키지: &lt;/a&gt;&lt;/strong&gt; {1}  </target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.requires_reboot">
         <source>The system requires a reboot</source>
@@ -20120,14 +20113,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target> (&lt;a href=&quot;{0}&quot;&gt;자세한 정보&lt;/a&gt;)</target>
+        <target> (&lt;a href="{0}"&gt;자세한 정보&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.unentitled">
         <source>&lt;strong&gt;System not assigned to a system type&lt;/strong&gt; (&lt;a href="{0}"&gt;add it here&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;시스템이 인타이틀되지 않음&lt;/strong&gt; (&lt;a href=&quot;{0}&quot;&gt;여기서 인타이틀함&lt;/a&gt;)</target>
+        <target>&lt;strong&gt;시스템이 인타이틀되지 않음&lt;/strong&gt; (&lt;a href="{0}"&gt;여기서 인타이틀함&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updated">
         <source>&lt;strong&gt;System is up to date&lt;/strong&gt;</source>
@@ -20141,14 +20134,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;중요 &lt;/strong&gt; 시스템 상태 (&lt;a href=&quot;{0}&quot;&gt;자세한 정보&lt;/a&gt;)</target>
+        <target>&lt;strong&gt;중요 &lt;/strong&gt; 시스템 상태 (&lt;a href="{0}"&gt;자세한 정보&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.probes.warning">
         <source>System Health &lt;strong&gt;Warning&lt;/strong&gt; (&lt;a href="{0}"&gt;more info&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>시스템 상태 &lt;strong&gt;경고&lt;/strong&gt; (&lt;a href=&quot;{0}&quot;&gt;자세한 정보&lt;/a&gt;)</target>
+        <target>시스템 상태 &lt;strong&gt;경고&lt;/strong&gt; (&lt;a href="{0}"&gt;자세한 정보&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.unknown">
         <source>unknown</source>
@@ -20183,7 +20176,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 사용을 위해 rhn-applet을 활성화.&quot;  </target>
+        <target>@@PRODUCT_NAME@@ 사용을 위해 rhn-applet을 활성화."  </target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.application">
         <source>Application Crashes</source>
@@ -20484,7 +20477,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ListCustomData.do</context>
         </context-group>
-        <target>다음의 &lt;a href=&quot;/rhn/systems/customdata/CustomDataList.do&quot;&gt;사용자 정의 시스템 정보&lt;/a&gt; 키는 이 시스템에 대해 정의되어 있습니다.</target>
+        <target>다음의 &lt;a href="/rhn/systems/customdata/CustomDataList.do"&gt;사용자 정의 시스템 정보&lt;/a&gt; 키는 이 시스템에 대해 정의되어 있습니다.</target>
       </trans-unit>
       <trans-unit id="sdc.details.customdata.nosystems">
         <source>No custom information defined for this system.</source>
@@ -21073,7 +21066,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/DeleteConfirm.do</context>
         </context-group>
-        <target>&lt;p&gt;이는 이 프로파일을 &lt;strong&gt;영구적으로&lt;/strong&gt; 삭제합니다.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;이 작업을 실행해도 되는 것인지 불확실한 경우 시스템의 &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;상세 정보를 확인&lt;/a&gt;하십시오.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;삭제 작업을 계속 진행하려면 다음 버튼을 클릭하여 시스템 프로파일 지금 즉시 삭제를 확인합니다.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;버튼을 한 번만 클릭하십시오. 삭제 프로세스가 완료할 때 까지 시간이 조금 소요될 수 있습니다.&lt;/strong&gt;&lt;/p&gt;</target>
+        <target>&lt;p&gt;이는 이 프로파일을 &lt;strong&gt;영구적으로&lt;/strong&gt; 삭제합니다.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;이 작업을 실행해도 되는 것인지 불확실한 경우 시스템의 &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;상세 정보를 확인&lt;/a&gt;하십시오.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;삭제 작업을 계속 진행하려면 다음 버튼을 클릭하여 시스템 프로파일 지금 즉시 삭제를 확인합니다.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;버튼을 한 번만 클릭하십시오. 삭제 프로세스가 완료할 때 까지 시간이 조금 소요될 수 있습니다.&lt;/strong&gt;&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.button">
         <source>Delete Profile</source>
@@ -21149,7 +21142,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>현재 {0}로 로그인되어 있습니다  </target>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group></group>
+      <group />
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -21261,11 +21254,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>이 시스템에는 기본 소프트웨어 채널이 없습니다. 아래의 목록에서 기본 채널을 선택하실 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href=&quot;/rhn/systems/details/SystemChannels.do?sid={0}&quot;&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>&lt;strong&gt;알림:&lt;/strong&gt; 이 채널은 이곳 게스트의 호스트에 대한 Red Hat Enterprise Linux 서브스크립션의 일부분이 아닙니다, &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;. 등록하시려면 추가 소프트웨어 인타이틀먼트가 있어야 합니다. &lt;a href=&quot;/rhn/systems/details/SystemChannels.do?sid={0}&quot;&gt;호스트 시스템에 다른 가상 시스템 인타이틀먼트를 적용&lt;/a&gt;하면 채널에 이러한 표시가 나타나게 됩니다.</target>
+        <target>&lt;strong&gt;알림:&lt;/strong&gt; 이 채널은 이곳 게스트의 호스트에 대한 Red Hat Enterprise Linux 서브스크립션의 일부분이 아닙니다, &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;. 등록하시려면 추가 소프트웨어 인타이틀먼트가 있어야 합니다. &lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;호스트 시스템에 다른 가상 시스템 인타이틀먼트를 적용&lt;/a&gt;하면 채널에 이러한 표시가 나타나게 됩니다.</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning_nohost">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
@@ -21349,7 +21342,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem.do</context>
         </context-group>
-        <target>{1}에 대해 스케줄된 시스템 &lt;strong&gt;{0}&lt;/strong&gt;을 재부팅합니다. 재부팅을 취소하시려면, &lt;a href=&quot;/rhn/schedule/InProgressSystems.do?aid={2}&quot;&gt;&lt;strong&gt;재부팅할 시스템 목록&lt;/strong&gt;&lt;/a&gt; 에서 &lt;strong&gt;{0}&lt;/strong&gt;을 삭제합니다.</target>
+        <target>{1}에 대해 스케줄된 시스템 &lt;strong&gt;{0}&lt;/strong&gt;을 재부팅합니다. 재부팅을 취소하시려면, &lt;a href="/rhn/schedule/InProgressSystems.do?aid={2}"&gt;&lt;strong&gt;재부팅할 시스템 목록&lt;/strong&gt;&lt;/a&gt; 에서 &lt;strong&gt;{0}&lt;/strong&gt;을 삭제합니다.</target>
       </trans-unit>
       <trans-unit id="org.login.examples">
         <source>&lt;strong&gt;Examples:&lt;/strong&gt; 'sales-admin', 'admin_prodops@example.com', 'sales.admin'</source>
@@ -21454,7 +21447,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>
           아래에서 체크 표시가된 조직은 {0} 조직의 신뢰할 수 있는 조직입니다. 이는 이 두 조직 사이에서
           컨텐트 공유 및 시스템 전환이 가능하다는 것을 의미합니다. 신뢰할 수 있는 조직을 추가하려면
-          조직 옆에 있는 체크 상자에 표시하고 (또는 체크 표시를 해제하여 신뢰하는 조직을 제거) &quot;신뢰 상태 수정&quot; 버튼을 클릭합니다.</target>
+          조직 옆에 있는 체크 상자에 표시하고 (또는 체크 표시를 해제하여 신뢰하는 조직을 제거) "신뢰 상태 수정" 버튼을 클릭합니다.</target>
       </trans-unit>
       <trans-unit id="org.trust.confirm.summary">
         <source>
@@ -22374,7 +22367,7 @@ given channel.</source>
         <source>Below is the list of packages you can add to this channel. The "Channel" select box allows you to restrict the set of available packages. To add a package to this channel, select it here, and click 'Add Packages' below.
 
             Only packages of a compatible arch will be shown</source>
-        <target>아래는 채널에 추가할 수 있는 패키지 목록이 있습니다. &quot;채널&quot; 선택 상자를 통해 사용 가능한 패키지 목록을 제한할 수 있습니다. 이 채널에 패키지를 추가하려면, 패키지를 선택하신 후 아래의 '패키지 추가'를 클릭합니다.
+        <target>아래는 채널에 추가할 수 있는 패키지 목록이 있습니다. "채널" 선택 상자를 통해 사용 가능한 패키지 목록을 제한할 수 있습니다. 이 채널에 패키지를 추가하려면, 패키지를 선택하신 후 아래의 '패키지 추가'를 클릭합니다.
 
           호환 가능한 아키텍처의 패키지만이 나타나게 됩니다  </target>
       </trans-unit>
@@ -22603,7 +22596,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.message">
         <source>You may delete packages owned by your organization. The "view packages in channels" select box allows you to restrict the set of packages you will view. To delete a package, check the box next to it and click 'Confirm Deletion', below.</source>
-        <target>조직에 의해 소유되는 패키지를 삭제할 수 있습니다. &quot;채널에 있는 패키지 표시&quot; 선택 상자를 통해 표시하려는 일련의 패키지 모음을 제한할 수 있습니다. 패키지를 삭제하려면, 패키지 옆의 상자를 선택하고 아래의 '삭제 확인'을 클릭합니다.   </target>
+        <target>조직에 의해 소유되는 패키지를 삭제할 수 있습니다. "채널에 있는 패키지 표시" 선택 상자를 통해 표시하려는 일련의 패키지 모음을 제한할 수 있습니다. 패키지를 삭제하려면, 패키지 옆의 상자를 선택하고 아래의 '삭제 확인'을 클릭합니다.   </target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.subtitle">
         <source>Package List</source>
@@ -23308,7 +23301,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
         <target>채널은 &lt;strong&gt;공개&lt;/strong&gt;되며
-           조직이 신뢰하는 모든 &lt;a href=&quot;{0}&quot;&gt;신뢰되는
+           조직이 신뢰하는 모든 &lt;a href="{0}"&gt;신뢰되는
          조직&lt;/a&gt;이 액세스할 수 있습니다.  </target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.protected">
@@ -23319,7 +23312,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
         <target>이 채널은 &lt;strong&gt;보안&lt;/strong&gt;되므로,
-         특정의 &lt;a href=&quot;{0}&quot;&gt;신뢰되는
+         특정의 &lt;a href="{0}"&gt;신뢰되는
          조직&lt;/a&gt;만이 액세스할 수 있습니다.  </target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.private">
@@ -23963,7 +23956,7 @@ given channel.</source>
         <source>The requested autoinstallation file could not be found.
          If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
         <target>요청하신 킥스타트 파일을 찾을 수 없습니다.
-          조직의 기본값 킥스타트를 요청하신 경우, 킥스타트가 &quot;조직 기본값&quot;으로 선택되었는지를 확인합니다.  </target>
+          조직의 기본값 킥스타트를 요청하신 경우, 킥스타트가 "조직 기본값"으로 선택되었는지를 확인합니다.  </target>
       </trans-unit>
       <trans-unit id="task.status.last.execution">
         <source>Last Execution Times</source>
@@ -24940,7 +24933,7 @@ given channel.</source>
         <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement">
-        <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
+        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni">
         <source>
@@ -25086,13 +25079,13 @@ given channel.</source>
     General Public License (GPL). The GPL requires that SUSE makes available
     certain source code that corresponds to the GPL-licensed material. The source
     code is available for download at
-    &lt;a href=&quot;https://www.suse.com/download-linux/source-code.html&quot;&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    Also, for up to three years from SUSE&#39;s distribution of the SUSE product, upon
+    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    Also, for up to three years from SUSE's distribution of the SUSE product, upon
     request SUSE will mail a copy of the source code. Requests should be sent by
     e-mail to
-    &lt;a href=&quot;mailto:sle_source_request@suse.com&quot;&gt;sle_source_request@suse.com&lt;/a&gt;
+    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
     or as otherwise instructed at
-    &lt;a href=&quot;https://www.suse.com/download-linux/source-code.html/&quot;&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
     SUSE may charge a fee to recover its reasonable costs of distribution
 &lt;/p&gt;
         </source>
@@ -25118,6 +25111,79 @@ given channel.</source>
       <trans-unit id="Formula">
         <source>Formula</source>
       </trans-unit>
+    <trans-unit id="actionchain.jsp.maintenanceschedule">
+        <source>maintenance schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.maint-window">
+        <source>Maintenance window:</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.multiple_maintenance_schedules">
+        <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.no_maintenance_windows">
+        <source>No upcoming maintenance windows for selected systems.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.lang.default">
+        <source>Use configured default ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.schedule">
+        <source>Maintenance Schedule:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.schedule.none">
+        <source>(none)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule">
+        <source>Maintenance Schedule:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule.none">
+        <source>None</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule.cancelaffected">
+        <source>Cancel affected actions</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Maintenance Windows">
+        <source>Maintenance Windows</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Schedules">
+        <source>Schedules</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Calendars">
+        <source>Calendars</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>

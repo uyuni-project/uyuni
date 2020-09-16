@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="gu">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="gu">
     <body>
       <!-- Generic column headings. The intent is that these can be reused across multiple pages.-->
       <group>
@@ -654,7 +654,7 @@
           <context-group name="ctx">
             <context context-type="paramnotes">Your login session has expired. For security reasons, @@PRODUCT_NAME@@ terminates your login session after 15 minutes of inactivity. To sign in again, click _here_.</context>
           </context-group>
-          <target>તમારું પ્રવેશ સત્ર નિવૃત્ત થઈ ગયું છે. સુરક્ષા કારણોસર, @@PRODUCT_NAME@@ તમારો પ્રવેશ સત્ર {0} મિનિટોની અસક્રિયતા પછી બંધ કરે છે. ફરીથી પ્રવેશ કરવા માટે, &lt;a href=&quot;{1}&quot;&gt;અહિં&lt;/a&gt; ક્લિક કરો.</target>
+          <target>તમારું પ્રવેશ સત્ર નિવૃત્ત થઈ ગયું છે. સુરક્ષા કારણોસર, @@PRODUCT_NAME@@ તમારો પ્રવેશ સત્ર {0} મિનિટોની અસક્રિયતા પછી બંધ કરે છે. ફરીથી પ્રવેશ કરવા માટે, &lt;a href="{1}"&gt;અહિં&lt;/a&gt; ક્લિક કરો.</target>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.acl.reason3">
           <source>You've found an error in our site. Please contact your Support representative with details of how you received this message.</source>
@@ -848,14 +848,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>પાસવર્ડ &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>પાસવર્ડ &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="confirmpass.displayname">
         <source>Confirm Password &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>ખાતરી પાસવર્ડ &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>ખાતરી પાસવર્ડ &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="message.Update">
         <source>Update</source>
@@ -895,14 +895,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>પ્રથમ નામ &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>પ્રથમ નામ &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="lastName.displayname">
         <source>Last Name &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>છેલ્લું નામ &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>છેલ્લું નામ &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="email.displayname">
         <source>Email:</source>
@@ -1211,14 +1211,14 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>&quot;ઝાંખી&quot; શરૂઆતનું પાનું</target>
+        <target>"ઝાંખી" શરૂઆતનું પાનું</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.startpagedesc">
         <source>Display the following information on my "Overview" page upon login:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target>પ્રવેશ કરવા પર મારા &quot;સારાંશ&quot; પાનાં પર નીચેની જાણકારી દર્શાવો:</target>
+        <target>પ્રવેશ કરવા પર મારા "સારાંશ" પાનાં પર નીચેની જાણકારી દર્શાવો:</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.csvtitle">
         <source>CSV Files</source>
@@ -1352,7 +1352,7 @@
       </trans-unit>
       <!-- footer.jsp -->
       <trans-unit id="footer.jsp.copyright">
-        <source>&lt;a href="/rhn/help/Copyright.do">Copyright Notice&lt;/a&gt;</source>
+        <source>&lt;a href="/rhn/help/Copyright.do"&gt;Copyright Notice&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/footer.jsp</context>
         </context-group>
@@ -1379,7 +1379,7 @@
             @@PRODUCT_NAME@@ release 3.7.1
           </context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ પ્રકાશન &lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt;</target>
+        <target>@@PRODUCT_NAME@@ પ્રકાશન &lt;a href="{0}"&gt;{1}&lt;/a&gt;</target>
       </trans-unit>
       <!-- legends -->
       <trans-unit id="errata-legend.jsp.title">
@@ -1882,7 +1882,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target> આ વપરાશકર્તાની જાણકારી નીચે પૂરા પાડવામાં આવેલ ફોર્મની મદદથી ફેરફાર કરી શકાય છે. ફૂદડી (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;) થી ચિહ્નિત થયેલ પ્રવેશો &lt;strong&gt;જરૂરી&lt;/strong&gt; છે. </target>
+        <target> આ વપરાશકર્તાની જાણકારી નીચે પૂરા પાડવામાં આવેલ ફોર્મની મદદથી ફેરફાર કરી શકાય છે. ફૂદડી (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) થી ચિહ્નિત થયેલ પ્રવેશો &lt;strong&gt;જરૂરી&lt;/strong&gt; છે. </target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.roles">
         <source>Roles</source>
@@ -2145,7 +2145,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
               &lt;a href="/rhn/users/AssignedSystemGroups.do?uid=2266493"&gt;change the groups&lt;/a&gt;
               to which this user is assigned.</context>
         </context-group>
-        <target>આ વપરાશકર્તાના વપરાશ સ્તરો સુધારવા માટે, &lt;a href=&quot;{0}&quot;&gt;જૂથો બદલો&lt;/a&gt; કે જેના માટે આ વપરાશકર્તાને સોંપણી થયેલ છે.</target>
+        <target>આ વપરાશકર્તાના વપરાશ સ્તરો સુધારવા માટે, &lt;a href="{0}"&gt;જૂથો બદલો&lt;/a&gt; કે જેના માટે આ વપરાશકર્તાને સોંપણી થયેલ છે.</target>
       </trans-unit>
       <trans-unit id="systemsadmined.jsp.headertwo">
         <source>Systems Administered by this User</source>
@@ -2217,7 +2217,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/EditAddress</context>
         </context-group>
-        <target>આ વપરાશકર્તાની જાણકારી નીચે પૂરા પાડવામાં આવેલ ફોર્મની મદદથી ફેરફાર કરી શકાય છે. ફૂદડી (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;) થી ચિહ્નિત થયેલ પ્રવેશો &lt;strong&gt;જરૂરી&lt;/strong&gt; છે.</target>
+        <target>આ વપરાશકર્તાની જાણકારી નીચે પૂરા પાડવામાં આવેલ ફોર્મની મદદથી ફેરફાર કરી શકાય છે. ફૂદડી (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) થી ચિહ્નિત થયેલ પ્રવેશો &lt;strong&gt;જરૂરી&lt;/strong&gt; છે.</target>
       </trans-unit>
       <trans-unit id="edit_address.jsp.phone">
         <source>Phone</source>
@@ -2280,7 +2280,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target> મહેરબાની કરીને નીચે પૂરા પાડવામાં આવેલ ફોર્મમાં જાણકારી દાખલ કરો. ફૂદડી (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;) સાથે ચિહ્નિત થયેલ પ્રવેશો &lt;strong&gt;જરૂરી&lt;/strong&gt; છે.</target>
+        <target> મહેરબાની કરીને નીચે પૂરા પાડવામાં આવેલ ફોર્મમાં જાણકારી દાખલ કરો. ફૂદડી (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) સાથે ચિહ્નિત થયેલ પ્રવેશો &lt;strong&gt;જરૂરી&lt;/strong&gt; છે.</target>
       </trans-unit>
       <trans-unit id="your_edit_address_record.displayname">
         <source>Record:</source>
@@ -2294,7 +2294,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/EditAddress</context>
         </context-group>
-        <target>મહેરબાની કરીને નીચે પૂરા પાડવામાં આવેલ ફોર્મમાં જાણકારી દાખલ કરો. ફૂદડી (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;) સાથે ચિહ્નિત થયેલ પ્રવેશો &lt;strong&gt;જરૂરી&lt;/strong&gt; છે.</target>
+        <target>મહેરબાની કરીને નીચે પૂરા પાડવામાં આવેલ ફોર્મમાં જાણકારી દાખલ કરો. ફૂદડી (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) સાથે ચિહ્નિત થયેલ પ્રવેશો &lt;strong&gt;જરૂરી&lt;/strong&gt; છે.</target>
       </trans-unit>
       <!-- assignenedgroups.jsp -->
       <trans-unit id="assignedgroups.jsp.header">
@@ -2591,7 +2591,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PendingActions</context>
         </context-group>
-        <target>યાદી થયેલ ક્રિયાઓ રદ કરવા માટે નીચે &quot;ખાતરી&quot; બટન ક્લિક કરો.</target>
+        <target>યાદી થયેલ ક્રિયાઓ રદ કરવા માટે નીચે "ખાતરી" બટન ક્લિક કરો.</target>
       </trans-unit>
       <!-- failedactions.jsp -->
       <trans-unit id="failedactions.jsp.failed_actions">
@@ -2871,7 +2871,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.labeltoolong">
-        <source>Could not save the Action Chain, chain label is too long (>= 256 chars).</source>
+        <source>Could not save the Action Chain, chain label is too long (&gt;= 256 chars).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -2996,7 +2996,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
-        <target>નીચેના પેકેજો આ સિસ્ટમ પર સ્થાપિત થયેલ છે.  પેકેજો નીચે તેમને પસંદ કરીને અને &quot;પેકેજો દૂર કરો&quot; ક્લિક કરીને નિરાકરણ માટે સુનિશ્ચિત કરી શકાશે.</target>
+        <target>નીચેના પેકેજો આ સિસ્ટમ પર સ્થાપિત થયેલ છે.  પેકેજો નીચે તેમને પસંદ કરીને અને "પેકેજો દૂર કરો" ક્લિક કરીને નિરાકરણ માટે સુનિશ્ચિત કરી શકાશે.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removablepackages">
         <source>Removable Packages</source>
@@ -3062,7 +3062,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
-        <target>નીચેના પેચો આ સિસ્ટમ પર સ્થાપિત થયેલ છે. તમે પહેલાની પેચ આવૃત્તિઓમાં પેચો બેક આઉટ કરી શકશો ચકાસણીબોક્સો વાપરીને અને નીચેના &quot;બેક આઉટ&quot; બટન પર ક્લિક કરીને. જો પેચ પસંદ કરી શકાય નહિં, તો તે આગળ ક્યારેય બેક આઉટ કરી શકાશે નહિં.</target>
+        <target>નીચેના પેચો આ સિસ્ટમ પર સ્થાપિત થયેલ છે. તમે પહેલાની પેચ આવૃત્તિઓમાં પેચો બેક આઉટ કરી શકશો ચકાસણીબોક્સો વાપરીને અને નીચેના "બેક આઉટ" બટન પર ક્લિક કરીને. જો પેચ પસંદ કરી શકાય નહિં, તો તે આગળ ક્યારેય બેક આઉટ કરી શકાશે નહિં.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installablepatchsummary">
         <source>The following patches may be installed on this system.</source>
@@ -3146,28 +3146,28 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>યાદી થયેલ પેચોને આગળ જ્યારે તે @@PRODUCT_NAME@@ માં &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={3}&quot;&gt;{0}&lt;/a&gt; પર દાખલ કરે ત્યારે બેક આઉટ કરવા માટે નીચેના &quot;ખાતરી&quot; બટન ક્લિક કરો. (છેલ્લો ચકાસણી સમય: &lt;b&gt;{1}&lt;/b&gt;; આગળની ઈચ્છિત ચકાસણી: &lt;b&gt;{2}&lt;/b&gt;.)</target>
+        <target>યાદી થયેલ પેચોને આગળ જ્યારે તે @@PRODUCT_NAME@@ માં &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; પર દાખલ કરે ત્યારે બેક આઉટ કરવા માટે નીચેના "ખાતરી" બટન ક્લિક કરો. (છેલ્લો ચકાસણી સમય: &lt;b&gt;{1}&lt;/b&gt;; આગળની ઈચ્છિત ચકાસણી: &lt;b&gt;{2}&lt;/b&gt;.)</target>
       </trans-unit>
       <trans-unit id="packagelist.confirmpatchsummary">
         <source>Click on the "confirm" button below to back out the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>યાદી થયેલ પેચને આગળ જ્યારે તે @@PRODUCT_NAME@@ સાથે  &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={3}&quot;&gt;{0}&lt;/a&gt; પર દાખલ કરે ત્યારે બેક આઉટ કરવા માટે નીચેના &quot;ખાતરી&quot; બટન ક્લિક કરો. (છેલ્લી ચકાસણી: &lt;b&gt;{1}&lt;/b&gt;; આગળની ઈચ્છિત ચકાસણી: &lt;b&gt;{2}&lt;/b&gt;.)</target>
+        <target>યાદી થયેલ પેચને આગળ જ્યારે તે @@PRODUCT_NAME@@ સાથે  &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; પર દાખલ કરે ત્યારે બેક આઉટ કરવા માટે નીચેના "ખાતરી" બટન ક્લિક કરો. (છેલ્લી ચકાસણી: &lt;b&gt;{1}&lt;/b&gt;; આગળની ઈચ્છિત ચકાસણી: &lt;b&gt;{2}&lt;/b&gt;.)</target>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary.plural">
         <source>Click on the "confirm" button below to install the listed patches on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in time: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirmInstall</context>
         </context-group>
-        <target>યાદી થયેલ પેચોને આગળ જ્યારે તે @@PRODUCT_NAME@@ સાથે &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={3}&quot;&gt;{0}&lt;/a&gt; પર દાખલ કરે ત્યારે સ્થાપિત કરવા માટે નીચેના &quot;ખાતરી&quot; બટન ક્લિક કરો. (છેલ્લો ચકાસણી સમય: &lt;b&gt;{1}&lt;/b&gt;; આગળની ઈચ્છિત ચકાસણી: &lt;b&gt;{2}&lt;/b&gt;.)</target>
+        <target>યાદી થયેલ પેચોને આગળ જ્યારે તે @@PRODUCT_NAME@@ સાથે &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; પર દાખલ કરે ત્યારે સ્થાપિત કરવા માટે નીચેના "ખાતરી" બટન ક્લિક કરો. (છેલ્લો ચકાસણી સમય: &lt;b&gt;{1}&lt;/b&gt;; આગળની ઈચ્છિત ચકાસણી: &lt;b&gt;{2}&lt;/b&gt;.)</target>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary">
         <source>Click on the "confirm" button below to install the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
-        <target>યાદી થયેલ પેચને આગળ જ્યારે તે @@PRODUCT_NAME@@ સાથે &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={3}&quot;&gt;{0}&lt;/a&gt; પર દાખલ કરીને સ્થાપિત કરવા માટે નીચેના &quot;ખાતરી&quot; બટન ક્લિક કરો. (છેલ્લી ચકાસણી: &lt;b&gt;{1}&lt;/b&gt;; આગળની ઈચ્છિત ચકાસણી: &lt;b&gt;{2}&lt;/b&gt;.)</target>
+        <target>યાદી થયેલ પેચને આગળ જ્યારે તે @@PRODUCT_NAME@@ સાથે &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; પર દાખલ કરીને સ્થાપિત કરવા માટે નીચેના "ખાતરી" બટન ક્લિક કરો. (છેલ્લી ચકાસણી: &lt;b&gt;{1}&lt;/b&gt;; આગળની ઈચ્છિત ચકાસણી: &lt;b&gt;{2}&lt;/b&gt;.)</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackages">
         <source>Non Compliant</source>
@@ -3525,7 +3525,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>ત્રુટિસૂચીઓમાં અંહિ ફેરફાર કરો.  જરૂરી વસ્તુઓ (&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;) થી ચિહ્નિત થાય છે.</target>
+        <target>ત્રુટિસૂચીઓમાં અંહિ ફેરફાર કરો.  જરૂરી વસ્તુઓ (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) થી ચિહ્નિત થાય છે.</target>
       </trans-unit>
       <trans-unit id="errata.edit.updateerrata">
         <source>Update Patch</source>
@@ -3860,7 +3860,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/Notify.do
             </context>
         </context-group>
-        <target>&lt;a href=&quot;/rhn/errata/Edit.do?eid={0}&quot;&gt;{1}&lt;/a&gt; માટે ત્રુટિસૂચી મેઈલ સુધારો સુનિશ્ચિત થઈ ગયેલ છે.</target>
+        <target>&lt;a href="/rhn/errata/Edit.do?eid={0}"&gt;{1}&lt;/a&gt; માટે ત્રુટિસૂચી મેઈલ સુધારો સુનિશ્ચિત થઈ ગયેલ છે.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.erratapackages">
         <source>Patches Packages</source>
@@ -3887,7 +3887,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
-        <target>નીચે પેકેજોની યાદી છે કે જેમને તમે આ ત્રુટિસૂચીમાં ઉમેરી શકો છો. &quot;દેખાવ&quot;     પસંદગી બોક્સ તમને ઉપલબ્ધ પેકેજોના સમૂહ પર મર્યાદા લાગુ પાડવા માટે પરવાનગી આપે છે. આ ત્રુટિસૂચીમાં    પેકેજો ઉમેરવા માટે, તેમને પસંદ કરો, અને નીચે 'પેકેજો ઉમેરો'     ક્લિક કરો.</target>
+        <target>નીચે પેકેજોની યાદી છે કે જેમને તમે આ ત્રુટિસૂચીમાં ઉમેરી શકો છો. "દેખાવ"     પસંદગી બોક્સ તમને ઉપલબ્ધ પેકેજોના સમૂહ પર મર્યાદા લાગુ પાડવા માટે પરવાનગી આપે છે. આ ત્રુટિસૂચીમાં    પેકેજો ઉમેરવા માટે, તેમને પસંદ કરો, અને નીચે 'પેકેજો ઉમેરો'     ક્લિક કરો.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel">
         <source>View: </source>
@@ -4370,9 +4370,9 @@ navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
         <target>&lt;strong&gt;*ટિપ્પણી:&lt;/strong&gt; સંસ્થા સંચાલક વિશેષાધિકારો
-આ પાનાં પર સુધારી શકાશે નહિં. તેની જગ્યાએ, મહેરબાની કરીને &quot;વપરાશકર્તાઓ&quot; ટોચ-સ્તર
+આ પાનાં પર સુધારી શકાશે નહિં. તેની જગ્યાએ, મહેરબાની કરીને "વપરાશકર્તાઓ" ટોચ-સ્તર
 સંશોધનીય ટેબની મુલાકાત લો તમારી સંસ્થામાંના વ્યક્તિગત વપરાશકર્તાઓની રૂપરેખાઓના
-વપરાશની ઉપર. તમે વ્યક્તિગત વપરાશકર્તાની રૂપરેખાઓમાં &quot;વિગતો&quot; ટેબના &quot;ભૂમિકાઓ&quot;
+વપરાશની ઉપર. તમે વ્યક્તિગત વપરાશકર્તાની રૂપરેખાઓમાં "વિગતો" ટેબના "ભૂમિકાઓ"
 વિભાગમાં સંસ્થા સંચાક ભૂમિકા મંજૂર અથવા દૂર કરી શકશો.</target>
       </trans-unit>
       <trans-unit id="organizations.tip">
@@ -4652,7 +4652,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
-        <target>&lt;span class=&quot;no-details&quot;&gt;(કંઈ નહિં)&lt;/span&gt;</target>
+        <target>&lt;span class="no-details"&gt;(કંઈ નહિં)&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="details.jsp.issued">
         <source>Issued:</source>
@@ -4694,28 +4694,28 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>લક્ષણો&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>લક્ષણો&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisory">
         <source>Advisory&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>સલાહ&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>સલાહ&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryrelease">
         <source>Advisory Release&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>સલાહ પ્રકાશન&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>સલાહ પ્રકાશન&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisorytype">
         <source>Advisory Type&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>સલાહ પ્રકાર&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>સલાહ પ્રકાર&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryseverity">
         <source>Advisory Severity:</source>
@@ -4728,7 +4728,7 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>ઉત્પાદન&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>ઉત્પાદન&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.from">
         <source>Author:</source>
@@ -4774,21 +4774,21 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>મુદ્દો&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>મુદ્દો&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.description">
         <source>Description&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>વર્ણન&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>વર્ણન&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.solution">
         <source>Solution&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
-        <target>ઉકેલ&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>ઉકેલ&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="errata.create.jsp.keywords">
         <source>Keywords:</source>
@@ -5522,10 +5522,11 @@ organization. You may grant or remove the organization administrator role in the
         <target>ત્રુટિસૂચી</target>
       </trans-unit>
       <trans-unit id="systemlist.jsp.configfiles">
-        <source>Configs</source>
+        <source>Config Diffs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="systemlist.jsp.packages">
         <source>Packages</source>
@@ -5923,12 +5924,12 @@ organization. You may grant or remove the organization administrator role in the
         <target>ત્રુટિસૂચી સુધારાઓ ઉપલબ્ધ છે</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata">
-        <source>No Applicable Patches</source>
+        <source>No applicable updates</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>
         </context-group>
-        <target>કોઈ ત્રુટિસૂચી લાગુ પાડી શકાય નહિં</target>
+        <target state="needs-adaptation">કોઈ ત્રુટિસૂચી લાગુ પાડી શકાય નહિં</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.intersection">
         <source>Work With Intersection</source>
@@ -6098,11 +6099,11 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="systems.groups.jsp.noGroups">
           <source>No System Groups. To add System Groups this system, please visit the &lt;a href="{0}"&gt;{1}&lt;/a&gt; tab.</source>
-          <target>સિસ્ટમ જૂથો નથી. આ સિસ્ટમનાં સિસ્ટમ જૂથોને ઉમેરવા માટે, મહેરબાની કરીને &lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt; ટેબની મુલાકાત લો.</target>
+          <target>સિસ્ટમ જૂથો નથી. આ સિસ્ટમનાં સિસ્ટમ જૂથોને ઉમેરવા માટે, મહેરબાની કરીને &lt;a href="{0}"&gt;{1}&lt;/a&gt; ટેબની મુલાકાત લો.</target>
         </trans-unit>
         <trans-unit id="systems.groups.add.jsp.noGroups">
           <source>No system groups are available to add. You have already added all the system groups available (&lt;a href="{0}"&gt;View System Groups&lt;/a&gt;) to this system.</source>
-          <target>ઉમેરવા માટે સિસ્ટમ જૂથો ઉપલ્બધ નથી. તમે પહેલેથી જ આ સિસ્ટમમાં ઉપલ્બધ (&lt;a href=&quot;{0}&quot;&gt;સિસ્ટમ જૂથો દેખાડો&lt;/a&gt;) બધા સિસ્ટમ જૂથોને ઉમેરાયેલ છે.</target>
+          <target>ઉમેરવા માટે સિસ્ટમ જૂથો ઉપલ્બધ નથી. તમે પહેલેથી જ આ સિસ્ટમમાં ઉપલ્બધ (&lt;a href="{0}"&gt;સિસ્ટમ જૂથો દેખાડો&lt;/a&gt;) બધા સિસ્ટમ જૂથોને ઉમેરાયેલ છે.</target>
         </trans-unit>
         <trans-unit id="systems.groups.jsp.summary.nonadmin">
           <source>Below are all the system groups that have been added to this system.</source>
@@ -6110,11 +6111,11 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="systems.groups.jsp.summary">
           <source>Below are all the system groups that have been added to this system. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>નીચે બધા સિસ્ટમ જૂથો છે કે જે આ સિસ્ટમમાં ઉમેરી દેવામાં આવ્યા છે. સિસ્ટમ જૂથ સભ્યપદને દૂર કરવા માટે, તેનું ચેકબોક્સ ને ચકાસો અને ખાતરી કરો કે તમે &quot;{0}&quot; બટન પર ક્લિક કરો જ્યારે તમે તમારા બદલાવો સાથે સમાપ્ત થઇ ગયા હોય.</target>
+          <target>નીચે બધા સિસ્ટમ જૂથો છે કે જે આ સિસ્ટમમાં ઉમેરી દેવામાં આવ્યા છે. સિસ્ટમ જૂથ સભ્યપદને દૂર કરવા માટે, તેનું ચેકબોક્સ ને ચકાસો અને ખાતરી કરો કે તમે "{0}" બટન પર ક્લિક કરો જ્યારે તમે તમારા બદલાવો સાથે સમાપ્ત થઇ ગયા હોય.</target>
         </trans-unit>
         <trans-unit id="systems.groups.add.jsp.summary">
           <source>Below is a list of system groups available to this system. To join a system group, check its checkbox. Make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>નીચે સિસ્ટમ જૂથોની યાદી છે આ સિસ્ટમમાં ઉપલ્બધ છે. સિસ્ટમ જૂથ સાથે જોડાવા માટે, તેનું ચેકબોક્સ ને ચકાસો અને ખાતરી કરો કે તમે &quot;{0}&quot; બટન પર ક્લિક કરો જ્યારે તમે તમારા બદલાવો સાથે સમાપ્ત થઇ ગયા હોય.</target>
+          <target>નીચે સિસ્ટમ જૂથોની યાદી છે આ સિસ્ટમમાં ઉપલ્બધ છે. સિસ્ટમ જૂથ સાથે જોડાવા માટે, તેનું ચેકબોક્સ ને ચકાસો અને ખાતરી કરો કે તમે "{0}" બટન પર ક્લિક કરો જ્યારે તમે તમારા બદલાવો સાથે સમાપ્ત થઇ ગયા હોય.</target>
         </trans-unit>
         <trans-unit id="systems.groups.jsp.title">
           <source>System Groups</source>
@@ -6175,7 +6176,7 @@ organization. You may grant or remove the organization administrator role in the
         </trans-unit>
         <trans-unit id="systemgroup.systems.summary">
           <source>Below are all the systems that have been added to this system group. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>નીચે બધી સિસ્ટમો છે કે જે આ સિસ્ટમ જૂથમાં ઉમેરી દેવામા આવી છે. સિસ્ટમ જૂથ સભ્યપદને દૂર કરવા માટે, તેનું ચેકબોક્સ ને ચકાસો અને ખાતરી કરો કે તમે &quot;{0}&quot; બટન પર ક્લિક કરો જ્યારે તમે તમારા બદલાવો સાથે સમાપ્ત થઇ ગયા હોય.</target>
+          <target>નીચે બધી સિસ્ટમો છે કે જે આ સિસ્ટમ જૂથમાં ઉમેરી દેવામા આવી છે. સિસ્ટમ જૂથ સભ્યપદને દૂર કરવા માટે, તેનું ચેકબોક્સ ને ચકાસો અને ખાતરી કરો કે તમે "{0}" બટન પર ક્લિક કરો જ્યારે તમે તમારા બદલાવો સાથે સમાપ્ત થઇ ગયા હોય.</target>
         </trans-unit>
         <trans-unit id="systemgroup.systems.summary.nonadmin">
           <source>Below are all the systems that have been added to this system group.</source>
@@ -6678,7 +6679,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>{0} પેકેજ નિરાકરણ &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેકેજ નિરાકરણ &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.packageremovals">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6686,7 +6687,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>{0} પેકેજ નિરાકરણો &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેકેજ નિરાકરણો &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.packageupgrade">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6701,7 +6702,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>{0} પેકેજ સુધારાઓ &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેકેજ સુધારાઓ &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.packageinstall">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6709,7 +6710,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>{0} પેકેજ સ્થાપન &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેકેજ સ્થાપન &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.packageinstalls">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6717,7 +6718,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>{0} પેકેજ સ્થાપનો &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેકેજ સ્થાપનો &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.systeminstalls">
         <source>Package install has been scheduled for {0} system(s).</source>
@@ -6731,7 +6732,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>{0} પેકેજ ચકાસણી &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેકેજ ચકાસણી &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.packageverifys">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -6739,35 +6740,35 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target>{0} પેકેજ ચકાસણીઓ &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેકેજ ચકાસણીઓ &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.patchremoval">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>{0} પેચ નિરાકરણ &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેચ નિરાકરણ &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.patchremovals">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>{0} પેચ નિરાકરણો &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેચ નિરાકરણો &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.patchinstall">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>{0} પેચ સ્થાપન &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેચ સ્થાપન &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.patchinstalls">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>{0} પેચ સ્થાપનો &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={2}&quot;&gt;{3}&lt;/a&gt; માટે &lt;a href=&quot;/rhn/schedule/ActionDetails.do?aid={1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
+        <target>{0} પેચ સ્થાપનો &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; માટે &lt;a href="/rhn/schedule/ActionDetails.do?aid={1}"&gt;સુનિશ્ચિત&lt;/a&gt; થઈ ગયેલ છે</target>
       </trans-unit>
       <trans-unit id="message.xccdfeval">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
@@ -8066,7 +8067,7 @@ organization management tools if you choose to remove this role from your login.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneConfirm.do</context>
         </context-group>
-        <target>નીચે યાદી થયેલ ત્રુટિસૂચી ક્લોન થશે. એકવાર તેઓ ક્લોન થઈ જાય, પછી તેઓ તમારી &lt;a href=&quot;{0}&quot;&gt;અપ્રકાશિત ત્રુટિસૂચી યાદી&lt;/a&gt; માં દેખાશે. ત્યાંથી તમે લખાણની ખાતરી કરી શકશો અને દરેક ત્રુટિસૂચી માટે સંકળાયેલ પેકેજોની ખાતરી કરી શકશો. એકવાર તેઓ તૈયાર થઈ જાય, પછી તમે ત્રુટિસૂચી પ્રકાશિત કરી શકશો કે જેથી તેઓ તમારી સંસ્થામાંના વપરાશકર્તાઓ માટે ઉપલબ્ધ થાય.</target>
+        <target>નીચે યાદી થયેલ ત્રુટિસૂચી ક્લોન થશે. એકવાર તેઓ ક્લોન થઈ જાય, પછી તેઓ તમારી &lt;a href="{0}"&gt;અપ્રકાશિત ત્રુટિસૂચી યાદી&lt;/a&gt; માં દેખાશે. ત્યાંથી તમે લખાણની ખાતરી કરી શકશો અને દરેક ત્રુટિસૂચી માટે સંકળાયેલ પેકેજોની ખાતરી કરી શકશો. એકવાર તેઓ તૈયાર થઈ જાય, પછી તમે ત્રુટિસૂચી પ્રકાશિત કરી શકશો કે જેથી તેઓ તમારી સંસ્થામાંના વપરાશકર્તાઓ માટે ઉપલબ્ધ થાય.</target>
       </trans-unit>
       <trans-unit id="applyerrata.disclaimer">
         <source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may apply the patches as soon as possible, or no earlier than a specified time:</source>
@@ -8480,7 +8481,7 @@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target>મોનીટરીંગ નિષ્ક્રિય કરેલ છે.  મહેરબાની કરીને &lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;સામાન્ય&lt;/strong&gt;&lt;/a&gt; રૂપરેખાંકન પાનાં પર જાઓ અને મોનટરીંગ ચકાસણીબોક્સ સક્રિય કરો પસંદ કરો.</target>
+        <target>મોનીટરીંગ નિષ્ક્રિય કરેલ છે.  મહેરબાની કરીને &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;સામાન્ય&lt;/strong&gt;&lt;/a&gt; રૂપરેખાંકન પાનાં પર જાઓ અને મોનટરીંગ ચકાસણીબોક્સ સક્રિય કરો પસંદ કરો.</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.toolbar">
         <source>@@PRODUCT_NAME@@ Configuration - Bootstrap</source>
@@ -8495,7 +8496,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
-        <target> નીચેની જાણકારી બુટસ્ટ્રેપ સ્ક્રિપ્ટો પેદા કરવા માટે વાપરવામાં આવશે. આ બુટસ્ટ્રેપ સ્ક્રિપ્ટો આ @@PRODUCT_NAME@@ સેટેલાઈટને સુધારાઓ મેળવવા માટે રૂપરેખાંકિત કરવા માટે વાપરી શકાય છે. એકવાર બુટસ્ટ્રેપ સ્ક્રિપ્ટો પેદા થઈ જાય, પછી તેઓ  &lt;a href=&quot;/pub/bootstrap&quot;&gt;આ સર્વર&lt;/a&gt; માંથી ઉપલબ્ધ થઈ જશે.&lt;br/&gt;&lt;br/&gt;
+        <target> નીચેની જાણકારી બુટસ્ટ્રેપ સ્ક્રિપ્ટો પેદા કરવા માટે વાપરવામાં આવશે. આ બુટસ્ટ્રેપ સ્ક્રિપ્ટો આ @@PRODUCT_NAME@@ સેટેલાઈટને સુધારાઓ મેળવવા માટે રૂપરેખાંકિત કરવા માટે વાપરી શકાય છે. એકવાર બુટસ્ટ્રેપ સ્ક્રિપ્ટો પેદા થઈ જાય, પછી તેઓ  &lt;a href="/pub/bootstrap"&gt;આ સર્વર&lt;/a&gt; માંથી ઉપલબ્ધ થઈ જશે.&lt;br/&gt;&lt;br/&gt;
 મહેરબાની કરીને નોંધ કરો કે આ સ્ક્રિપ્ટોનું અમુક માનવીય રૂપરેખાંકન હજુ પણ જરૂરી રહેશે.  બુટસ્ટ્રેપ સ્ક્રિપ્ટ @@PRODUCT_NAME@@ સર્વરની ફાઈલસિસ્ટમ પર અંહિથી શોધી શકાય છે: &lt;strong&gt;/var/www/html/pub/bootstrap&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.header2">
@@ -8854,7 +8855,8 @@ Please note that some manual configuration of these scripts may still be require
         <source>Repository Information</source>
       </trans-unit>
       <trans-unit id="repos.jsp.update.channel">
-        <source>Update Repositories</source>
+        <source>Save Repositories</source>
+      <target state="needs-adaptation" />
       </trans-unit>
       <trans-unit id="repos.jsp.channel.header">
         <source>Repository</source>
@@ -9566,7 +9568,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt; સંસ્થા મૂળભૂત રૂપરેખા સુયોજન જાતે-બનાવેલ અથવા ન્યૂનતમ-ધાતુ કિકસ્ટાર્ટ ફાઈલો સાથે વાપરી શકાય છે.  જ્યારે &lt;a href=&quot;{0}&quot; target=&quot;_blank&quot; &gt; &lt;strong&gt; આ કડી &lt;/strong&gt; &lt;/a&gt; માંથી URL તમારી કિકસ્ટાર્ટ ફાઈલના &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; વિભાગમાંથી વપરાય ત્યારે તમારી સંસ્થાની રૂપરેખા સૂચવવા માટે આ વિકલ્પ પસંદ કરો.  જ્યાં સુધી સંસ્થા મૂળભૂત સ્પષ્ટ થયેલ નહિં હોય ત્યાં સુધી કડી કામ કરશે નહિં.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt; સંસ્થા મૂળભૂત રૂપરેખા સુયોજન જાતે-બનાવેલ અથવા ન્યૂનતમ-ધાતુ કિકસ્ટાર્ટ ફાઈલો સાથે વાપરી શકાય છે.  જ્યારે &lt;a href="{0}" target="_blank" &gt; &lt;strong&gt; આ કડી &lt;/strong&gt; &lt;/a&gt; માંથી URL તમારી કિકસ્ટાર્ટ ફાઈલના &lt;code&gt;ks=&amp;lt;URL&amp;gt;&lt;/code&gt; વિભાગમાંથી વપરાય ત્યારે તમારી સંસ્થાની રૂપરેખા સૂચવવા માટે આ વિકલ્પ પસંદ કરો.  જ્યાં સુધી સંસ્થા મૂળભૂત સ્પષ્ટ થયેલ નહિં હોય ત્યાં સુધી કડી કામ કરશે નહિં.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.activeDescription">
         <source>You cannot autoinstall a system registered to @@PRODUCT_NAME@@ using an inactive autoinstallation profile. However, the autoinstallation files for inactive autoinstallation profiles are still available for manual download and may be used for unprovisioned autoinstallations.</source>
@@ -9671,7 +9673,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>&lt;p&gt; &quot;ન્યૂનતમ ધાતુ સિસ્ટમો&quot; કિકસ્ટાર્ટ કરવા માટે, તમારે તેમને બુટ ઈમેજ સાથે પૂરી પાડવાની જરૂર રહેશે કે જે તમે બુટ CD મારફતે કિકસ્ટાર્ટ કરી રહ્યા છો તેની ઓપરેટિંગ સિસ્ટમની આવૃત્તિ સાથે સુસંગત છે.&lt;/p&gt; &lt;p&gt; એકવાર આ સિસ્ટમો યોગ્ય ઈમેજ સાથે બુટ થઈ જાય, પછી તમારે કિકસ્ટાર્ટ ફાઈલ પૂરી પાડવી જોઈએ. તમે નીચેની URL ને તમારી બુટ CD માં અથવા તમારી PXE રૂપરેખાંકનમાં વાપરી શકો છો આ સિસ્ટમોને કિકસ્ટાર્ટ રૂપરેખા સાથે સંકળાયેલ કિકસ્ટાર્ટ ફાઈલ સાથે સાંકળવા માટે:&lt;/p&gt;</target>
+        <target>&lt;p&gt; "ન્યૂનતમ ધાતુ સિસ્ટમો" કિકસ્ટાર્ટ કરવા માટે, તમારે તેમને બુટ ઈમેજ સાથે પૂરી પાડવાની જરૂર રહેશે કે જે તમે બુટ CD મારફતે કિકસ્ટાર્ટ કરી રહ્યા છો તેની ઓપરેટિંગ સિસ્ટમની આવૃત્તિ સાથે સુસંગત છે.&lt;/p&gt; &lt;p&gt; એકવાર આ સિસ્ટમો યોગ્ય ઈમેજ સાથે બુટ થઈ જાય, પછી તમારે કિકસ્ટાર્ટ ફાઈલ પૂરી પાડવી જોઈએ. તમે નીચેની URL ને તમારી બુટ CD માં અથવા તમારી PXE રૂપરેખાંકનમાં વાપરી શકો છો આ સિસ્ટમોને કિકસ્ટાર્ટ રૂપરેખા સાથે સંકળાયેલ કિકસ્ટાર્ટ ફાઈલ સાથે સાંકળવા માટે:&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal">
         <source>Unprovisioned Autoinstallation</source>
@@ -9691,7 +9693,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;મદદ:&lt;/strong&gt; તમારી સંસ્થાની કિકસ્ટાર્ટ રૂપરેખાઓ સાથે સંકળાયેલ IP વિસ્તારોની પૂર્ણ યાદી ઉપલબ્ધ છે &lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;મદદ:&lt;/strong&gt; તમારી સંસ્થાની કિકસ્ટાર્ટ રૂપરેખાઓ સાથે સંકળાયેલ IP વિસ્તારોની પૂર્ણ યાદી ઉપલબ્ધ છે &lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstartips.jsp.baremetal_summary2">
         <source>Alternatively, you may associate each of your autoinstallation profiles with particular ip ranges. Then, you can provide unprovisioned systems with a single URL that will provide each system the autoinstallation file associated with its IP Address. Below you will find this URL:</source>
@@ -9773,7 +9775,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         <target>&lt;strong&gt;નોંધ:&lt;/strong&gt; વર્ચ્યુઅલાઇઝેશન ને બદલવાનું કિકસ્ટાર્ટ રૂપરેખાનાં બુટલોડર અને
             પાર્ટીશન વિકલ્પોને બદલવાની જરૂર પડી શકે છે, વપરાશકર્તા વિશિષ્ટ રૂપથી નિર્માણ કરવા માટે ઉપર લખી રહ્યા છે.
-            મહેરબાની કરીને ચકાસવા માટે &lt;a href=&quot;/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}&quot;&gt;પાર્ટીશનીંગ&lt;/a&gt;
+            મહેરબાની કરીને ચકાસવા માટે &lt;a href="/rhn/kickstart/KickstartPartitionEdit.do?ksid={0}"&gt;પાર્ટીશનીંગ&lt;/a&gt;
             ટેબની મુલાકાત લો.</target>
       </trans-unit>
       <trans-unit id="kickstartdetails.jsp.active">
@@ -9885,7 +9887,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit</context>
         </context-group>
-        <target>તમે એક અથવા વધુ સક્રિયકરણ કીઓને આ કિકસ્ટાર્ટ રૂપરેખા સાથે સાંકળી શકો છો.  સક્રિયકરણ કીઓ આ રૂપરેખા સાથે કિકસ્ટાર્ટ થયેલ સિસ્ટમોને આપોઆપ @@PRODUCT_NAME@@ સાથે રજીસ્ટર કરે છે, @@PRODUCT_NAME@@ સેવા સ્તર ઉમેદવારીઓ મેળવે છે, ચોક્કસ સોફ્ટવેર અને રૂપરેખાંકન ચેનલો સાથે ઉમેદવારી નોંધાવે છે, અને ચોક્કસ સિસ્ટમ જૂથોમાં ઉમેદવારી નોંધાવે છે.  સક્રિયકરણ કીઓ સિસ્ટમ પર સ્થાપિત થવા માટે પેકેજો પણ સ્પષ્ટ કરી શકે છે.  મહેરબાની કરીને એ પણ ધ્યાનમાં રાખો કે કેવી રીતે આ તમારા પેકેજની પસંદગીને આ રૂપરેખાની &lt;a href=&quot;/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}&quot;&gt;સોફ્ટવેર&lt;/a&gt; ટેબમાં અસર કરશે.</target>
+        <target>તમે એક અથવા વધુ સક્રિયકરણ કીઓને આ કિકસ્ટાર્ટ રૂપરેખા સાથે સાંકળી શકો છો.  સક્રિયકરણ કીઓ આ રૂપરેખા સાથે કિકસ્ટાર્ટ થયેલ સિસ્ટમોને આપોઆપ @@PRODUCT_NAME@@ સાથે રજીસ્ટર કરે છે, @@PRODUCT_NAME@@ સેવા સ્તર ઉમેદવારીઓ મેળવે છે, ચોક્કસ સોફ્ટવેર અને રૂપરેખાંકન ચેનલો સાથે ઉમેદવારી નોંધાવે છે, અને ચોક્કસ સિસ્ટમ જૂથોમાં ઉમેદવારી નોંધાવે છે.  સક્રિયકરણ કીઓ સિસ્ટમ પર સ્થાપિત થવા માટે પેકેજો પણ સ્પષ્ટ કરી શકે છે.  મહેરબાની કરીને એ પણ ધ્યાનમાં રાખો કે કેવી રીતે આ તમારા પેકેજની પસંદગીને આ રૂપરેખાની &lt;a href="/rhn/kickstart/KickstartPackagesEdit.do?ksid={0}"&gt;સોફ્ટવેર&lt;/a&gt; ટેબમાં અસર કરશે.</target>
       </trans-unit>
       <trans-unit id="kickstart.activationkeys.jsp.nokeys">
         <source>No activation keys available</source>
@@ -9961,7 +9963,7 @@ Please note that some manual configuration of these scripts may still be require
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartDetailsEdit.do</context>
         </context-group>
-        <target>તમે ફાઈલ બચાવ યાદીઓને આ કિકસ્ટાર્ટ રૂપરેખા સાથે તેમને નીચે પસંદ કરીને સાંકળી શકો છો.  જ્યારે સિસ્ટમ કિકસ્ટાર્ટ થાય, ત્યારે આ કિકસ્ટાર્ટ રૂપરેખા સાથે સંકળાયેલ ફાઈલ બચાવ યાદીઓમાં યાદી થયેલ કોઈપણ ફાઈલો અથવા ડિરેક્ટરીઓનો સંગ્રહ થશે કિક્સ્ટાર્ટ થાય તે પહેલાં અને તે પૂર્ણ થાય પછી પુનઃસંગ્રહ થાય ત્યારે. જો તમે નવી ફાઈલ બચાવ યાદી બનાવવા માંગો, તો તમે આવું &lt;a href=&quot;/rhn/systems/provisioning/preservation/PreservationList.do&quot;&gt;ફાઈલ બચાવ&lt;/a&gt; ટેબ આગળ કરી શકો છો.</target>
+        <target>તમે ફાઈલ બચાવ યાદીઓને આ કિકસ્ટાર્ટ રૂપરેખા સાથે તેમને નીચે પસંદ કરીને સાંકળી શકો છો.  જ્યારે સિસ્ટમ કિકસ્ટાર્ટ થાય, ત્યારે આ કિકસ્ટાર્ટ રૂપરેખા સાથે સંકળાયેલ ફાઈલ બચાવ યાદીઓમાં યાદી થયેલ કોઈપણ ફાઈલો અથવા ડિરેક્ટરીઓનો સંગ્રહ થશે કિક્સ્ટાર્ટ થાય તે પહેલાં અને તે પૂર્ણ થાય પછી પુનઃસંગ્રહ થાય ત્યારે. જો તમે નવી ફાઈલ બચાવ યાદી બનાવવા માંગો, તો તમે આવું &lt;a href="/rhn/systems/provisioning/preservation/PreservationList.do"&gt;ફાઈલ બચાવ&lt;/a&gt; ટેબ આગળ કરી શકો છો.</target>
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.nolists">
         <source>No file preservation lists available</source>
@@ -10552,14 +10554,14 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;સંકેત:&lt;/strong&gt; વિશિષ્ટ ઉપકરણો જેવા કે &lt;tt&gt;/dev/hda1&lt;/tt&gt; અને &lt;tt&gt;/dev/sda1&lt;/tt&gt; આધારભૂત નથી.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;સંકેત:&lt;/strong&gt; વિશિષ્ટ ઉપકરણો જેવા કે &lt;tt&gt;/dev/hda1&lt;/tt&gt; અને &lt;tt&gt;/dev/sda1&lt;/tt&gt; આધારભૂત નથી.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="preservation-form.jsp.tip2">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; Only file and directory names may be entered. No regular expression wildcards can be included.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;સંકેત:&lt;/strong&gt; માત્ર ફાઈલ અને ડિરેક્ટરી નામો દાખલ કરી શકાશે. કોઈ નિયમિત સમીકરણ વાઈલ્ડકાર્ડો સમાવી શકાશે નહિં.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;સંકેત:&lt;/strong&gt; માત્ર ફાઈલ અને ડિરેક્ટરી નામો દાખલ કરી શકાશે. કોઈ નિયમિત સમીકરણ વાઈલ્ડકાર્ડો સમાવી શકાશે નહિં.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.toolbar">
         <source>Edit Kickstart File Preservation List</source>
@@ -10675,7 +10677,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;ચેતવણી:&lt;/strong&gt; જો આ કિકસ્ટાર્ટ રૂપરેખા સાથે સંકળાયેલ કોઈપણ સક્રિયકરણ કીઓ(&lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;સક્રિયકરણ કીઓ ટેબ&lt;/a&gt; હેઠળ), તો ઉપરની બાળ ચેનલ ઉમેદવારીઓ ફરીથી લખાઈ જશે. આ પરિસ્થિતિમાં મહેરબાની કરીને સક્રિયકરણ કી વાપરો બાળ ચેનલ ઉમેદવારીઓ સ્પષ્ટ કરવા માટે.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;ચેતવણી:&lt;/strong&gt; જો આ કિકસ્ટાર્ટ રૂપરેખા સાથે સંકળાયેલ કોઈપણ સક્રિયકરણ કીઓ(&lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;સક્રિયકરણ કીઓ ટેબ&lt;/a&gt; હેઠળ), તો ઉપરની બાળ ચેનલ ઉમેદવારીઓ ફરીથી લખાઈ જશે. આ પરિસ્થિતિમાં મહેરબાની કરીને સક્રિયકરણ કી વાપરો બાળ ચેનલ ઉમેદવારીઓ સ્પષ્ટ કરવા માટે.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.submit">
         <source>Update keys</source>
@@ -10703,14 +10705,14 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target>નીચે તમે &lt;a href=&quot;/rhn/keys/CryptoKeysList.do&quot;&gt;બનાવેલ&lt;/a&gt; GPG અને SSL કીઓની યાદી છે.  આ રૂપરેખા દ્વારા સુનિશ્ચિત થયેલ બધી કિકસ્ટાર્ટોના %post વિભાગ દરમ્યાન પસંદ થયેલ કીઓની આયાત થશે.</target>
+        <target>નીચે તમે &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;બનાવેલ&lt;/a&gt; GPG અને SSL કીઓની યાદી છે.  આ રૂપરેખા દ્વારા સુનિશ્ચિત થયેલ બધી કિકસ્ટાર્ટોના %post વિભાગ દરમ્યાન પસંદ થયેલ કીઓની આયાત થશે.</target>
       </trans-unit>
       <trans-unit id="kickstart.filelists.jsp.note">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; If you want clients to continue to be able to SSH into machines kickstarted with this profile without getting host key errors, it is recommended you setup a file preservation list for this profile containing the files in /etc/ssh&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;મદદ:&lt;/strong&gt; જો તમે ક્લાઈન્ટોને આ રૂપરેખા સાથે કિકસ્ટાર્ટ થયેલ મશીનોમાં SSH કરીને યજમાન કી ભૂલો મેળવ્યા વિના ચાલુ રાખવા માટે ઈચ્છો, તો એ આગ્રહણીય છે કે તમે આ રૂપરેખા માટે ફાઈલ બચાવ યાદીને /etc/ssh ફાઈલના સમાવિષ્ટોમાં સુયોજિત કરો&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;મદદ:&lt;/strong&gt; જો તમે ક્લાઈન્ટોને આ રૂપરેખા સાથે કિકસ્ટાર્ટ થયેલ મશીનોમાં SSH કરીને યજમાન કી ભૂલો મેળવ્યા વિના ચાલુ રાખવા માટે ઈચ્છો, તો એ આગ્રહણીય છે કે તમે આ રૂપરેખા માટે ફાઈલ બચાવ યાદીને /etc/ssh ફાઈલના સમાવિષ્ટોમાં સુયોજિત કરો&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.cryptokeys.jsp.key">
         <source>Type</source>
@@ -10731,7 +10733,7 @@ For more information, see the &lt;a href="/docs/reference/systems/autoinst-gpg-a
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartCryptoKeysList.do</context>
         </context-group>
-        <target>કોઈ કીઓ વ્યાખ્યાયિત નથી.  આ રૂપરેખા સાથે વાપરવા માટે નવી કી બનાવવા માટે મહેરબાની કરીને &lt;a href=&quot;/rhn/keys/CryptoKeysList.do&quot;&gt;અંહિ&lt;/a&gt; જાવ.  પસંદિત કીઓ આ રૂપરેખાની મદદથી સુનિશ્ચિત થયેલ બધી કિક્સટાર્ટો %post વિભાગ દરમ્યાન આયાત થશે.</target>
+        <target>કોઈ કીઓ વ્યાખ્યાયિત નથી.  આ રૂપરેખા સાથે વાપરવા માટે નવી કી બનાવવા માટે મહેરબાની કરીને &lt;a href="/rhn/keys/CryptoKeysList.do"&gt;અંહિ&lt;/a&gt; જાવ.  પસંદિત કીઓ આ રૂપરેખાની મદદથી સુનિશ્ચિત થયેલ બધી કિક્સટાર્ટો %post વિભાગ દરમ્યાન આયાત થશે.</target>
       </trans-unit>
       <trans-unit id="kickstart.script.language">
         <source>Scripting Language</source>
@@ -10798,14 +10800,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;ઉદાહરણો:&lt;/strong&gt; '/usr/bin/python' '/usr/bin/perl'.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;ઉદાહરણો:&lt;/strong&gt; '/usr/bin/python' '/usr/bin/perl'.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.script.tip2">
         <source>&lt;span class="small-text"&gt;&lt;strong&gt;Tip:&lt;/strong&gt; Leave this field blank to use the install-time shell as language for your post script.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;મદદ:&lt;/strong&gt; તમારી પોસ્ટ સ્ક્રિપ્ટ માટે સ્થાપન-સમય શેલને ભાષા તરીકે વાપરવા માટે આ ક્ષેત્રને ખાલી છોડી મૂકો.&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;મદદ:&lt;/strong&gt; તમારી પોસ્ટ સ્ક્રિપ્ટ માટે સ્થાપન-સમય શેલને ભાષા તરીકે વાપરવા માટે આ ક્ષેત્રને ખાલી છોડી મૂકો.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.script.type">
         <source>Script Execution Time</source>
@@ -10846,7 +10848,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartScriptEdit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;મદદ:&lt;/strong&gt; આ સ્પષ્ટ કરે છે કે ક્યારે સ્ક્રિપ્ટ ચાલી હતી (કિકસ્ટાર્ટ પછી અથવા પહેલાં).&lt;/span&gt;</target>
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;મદદ:&lt;/strong&gt; આ સ્પષ્ટ કરે છે કે ક્યારે સ્ક્રિપ્ટ ચાલી હતી (કિકસ્ટાર્ટ પછી અથવા પહેલાં).&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="post.jsp.summary">
         <source>You can edit the post script for this kickstart below.  First, commands related to @@PRODUCT_NAME@@ will automatically be performed (for example, system registration to @@PRODUCT_NAME@@).  Next, the non-chroot post script will be executed, and finally the post script will be executed.  For more details on kickstart post scripts, please refer to the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/strong&gt;</source>
@@ -11020,7 +11022,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <source>Details</source>
         </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_1">
-          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;&quot;example&quot;&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;&quot;$example&quot;&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source>
+          <source>&lt;p&gt;In case the kickstart scenario contains any shell script using variables like &lt;code&gt;$(example)&lt;/code&gt; its content should be escaped by using the backslash symbol:&lt;/p&gt; &lt;pre&gt;This is an \$(example) content.&lt;/pre&gt;  &lt;p&gt;If variable named &lt;em&gt;"example"&lt;/em&gt; is defined in the kickstart snippet, the templating engine will  evaluate &lt;code&gt;"$example"&lt;/code&gt; with its content. If there is no such variable, the  content  will be left unchanged. Escaping the &lt;code&gt;$&lt;/code&gt; symbol will prevent the templating engine to perform its evaluation as an internal variable.&lt;/p&gt;  &lt;p&gt;Long scripts or strings can be escaped by wrapping them with the &lt;code&gt;#raw&lt;/code&gt; and &lt;code&gt;#end raw&lt;/code&gt; directives. For example:&lt;/p&gt;</source>
         </trans-unit>
         <trans-unit id="snippetcreate.jsp.kickstart_rules_2">
           <source>An additional attention needs to be paid to the similar scenarios:</source>
@@ -11061,7 +11063,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target>&quot;સારાંશ&quot; પાનાં પર કોઈ યાદીઓ વર્તમાનમાં સક્રિય કરેલ નથી. તમે આને &lt;strong&gt;&lt;a href=&quot;/rhn/account/UserPreferences.do&quot;&gt;સારાંશ &gt; તમારી પસંદગીઓ &gt; &quot;સારાંશ&quot; શરૂઆત પાનાં પર બદલી શકો છો&lt;/a&gt;&lt;/strong&gt;.</target>
+        <target>"સારાંશ" પાનાં પર કોઈ યાદીઓ વર્તમાનમાં સક્રિય કરેલ નથી. તમે આને &lt;strong&gt;&lt;a href="/rhn/account/UserPreferences.do"&gt;સારાંશ &gt; તમારી પસંદગીઓ &gt; "સારાંશ" શરૂઆત પાનાં પર બદલી શકો છો&lt;/a&gt;&lt;/strong&gt;.</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.user">
         <source>User</source>
@@ -11137,14 +11139,14 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;કોઈ જટિલ ચકાસણીઓ નથી.&lt;/strong&gt;&lt;p&gt;તમારી સિસ્ટમોને સોંપણી થયેલ ચકાસણીઓમાંની કોઈપણ જટિલ સ્થિતિમાં નથી. તમે તમારી સિસ્ટમમાં &lt;strong&gt;&lt;a href=&quot;/rhn/monitoring/ProbeList.do&quot;&gt;બધી &gt; ચકાસણીઓ&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt; આગળ બધી ચકાસણીઓની યાદી જોઈ શકો છો</target>
+        <target>&lt;strong&gt;કોઈ જટિલ ચકાસણીઓ નથી.&lt;/strong&gt;&lt;p&gt;તમારી સિસ્ટમોને સોંપણી થયેલ ચકાસણીઓમાંની કોઈપણ જટિલ સ્થિતિમાં નથી. તમે તમારી સિસ્ટમમાં &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;બધી &gt; ચકાસણીઓ&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt; આગળ બધી ચકાસણીઓની યાદી જોઈ શકો છો</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.nowarningprobes">
         <source>&lt;strong&gt;No warning probes.&lt;/strong&gt;&lt;p&gt;None of the probes assigned to your systems are in a warning state. You can view a list of all the probes in your system at &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;All &gt; Probes&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;કોઈ ચેતવણી ચકાસણીઓ નથી.&lt;/strong&gt;&lt;p&gt;તમારી સિસ્ટમોને સોંપણી થયેલ ચકાસણીઓમાંની કોઈપણ ચેતવણી સ્થિતિમાં નથી. તમે તમારી સિસ્ટમમાં &lt;strong&gt;&lt;a href=&quot;/rhn/monitoring/ProbeList.do&quot;&gt;બધી &gt; ચકાસણીઓ&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt; આગળ તબધી ચકાસણીઓની યાદી જોઈ શકો છો</target>
+        <target>&lt;strong&gt;કોઈ ચેતવણી ચકાસણીઓ નથી.&lt;/strong&gt;&lt;p&gt;તમારી સિસ્ટમોને સોંપણી થયેલ ચકાસણીઓમાંની કોઈપણ ચેતવણી સ્થિતિમાં નથી. તમે તમારી સિસ્ટમમાં &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;બધી &gt; ચકાસણીઓ&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt; આગળ તબધી ચકાસણીઓની યાદી જોઈ શકો છો</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.systems">
         <source>System(s)</source>
@@ -11248,7 +11250,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;છેલ્લે સુનિશ્ચિત કરેલ કોઈ ક્રિયાઓ નથી.&lt;/strong&gt; &lt;p&gt;છેલ્લા ત્રીસ દિવસોમાં તમે કોઈ ક્રિયાઓ સુનિશ્ચિત કરેલ નથી. તમે છેલ્લી પૂર્ણ થયેલ ક્રિયાઓની યાદી &lt;strong&gt;&lt;a href=&quot;/rhn/schedule/CompletedActions.do&quot;&gt;સુનિશ્ચિત કરો &gt; સમાપ્ત થયેલ ક્રિયાઓ&lt;/a&gt;&lt;/strong&gt; આગળથી અને છેલ્લી નિષ્ફળ થયેલ ક્રિયાઓની યાદી &lt;strong&gt;&lt;a href=&quot;/rhn/schedule/FailedActions.do&quot;&gt;સુનિશ્ચિત કરો &gt; નિષ્ફળ થયેલ ક્રિયાઓ&lt;/a&gt;&lt;/strong&gt; આગળથી જોઈ શકો છો. &lt;/p&gt;</target>
+        <target>&lt;strong&gt;છેલ્લે સુનિશ્ચિત કરેલ કોઈ ક્રિયાઓ નથી.&lt;/strong&gt; &lt;p&gt;છેલ્લા ત્રીસ દિવસોમાં તમે કોઈ ક્રિયાઓ સુનિશ્ચિત કરેલ નથી. તમે છેલ્લી પૂર્ણ થયેલ ક્રિયાઓની યાદી &lt;strong&gt;&lt;a href="/rhn/schedule/CompletedActions.do"&gt;સુનિશ્ચિત કરો &gt; સમાપ્ત થયેલ ક્રિયાઓ&lt;/a&gt;&lt;/strong&gt; આગળથી અને છેલ્લી નિષ્ફળ થયેલ ક્રિયાઓની યાદી &lt;strong&gt;&lt;a href="/rhn/schedule/FailedActions.do"&gt;સુનિશ્ચિત કરો &gt; નિષ્ફળ થયેલ ક્રિયાઓ&lt;/a&gt;&lt;/strong&gt; આગળથી જોઈ શકો છો. &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.allcriticalprobes">
         <source>View All Critical Probes ({0} probe(s) affecting {1} system(s))</source>
@@ -11303,7 +11305,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;કોઈ અસક્રિય સિસ્ટમો નથી.&lt;/strong&gt; &lt;p&gt;તમારી સિસ્ટમોમાંની બધી આ સમયે RHN માં સક્રિયાત્મક રીતે ચકાસી રહી છે. તમે તમારી સિસ્ટમોની બધીની યાદી &lt;strong&gt;&lt;a href=&quot;/rhn/systems/Registered.do&quot;&gt;સિસ્ટમો &gt; બધી&lt;/a&gt;&lt;/strong&gt; આગળ જોઈ શકો છો.&lt;/p&gt;</target>
+        <target>&lt;strong&gt;કોઈ અસક્રિય સિસ્ટમો નથી.&lt;/strong&gt; &lt;p&gt;તમારી સિસ્ટમોમાંની બધી આ સમયે RHN માં સક્રિયાત્મક રીતે ચકાસી રહી છે. તમે તમારી સિસ્ટમોની બધીની યાદી &lt;strong&gt;&lt;a href="/rhn/systems/Registered.do"&gt;સિસ્ટમો &gt; બધી&lt;/a&gt;&lt;/strong&gt; આગળ જોઈ શકો છો.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.recentlyregistered.all">
         <source>View All Recently Registered Systems</source>
@@ -11331,7 +11333,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;કોઈ અસક્રિય સિસ્ટમો નથી.&lt;/strong&gt; &lt;p&gt;તમારી સિસ્ટમોમાંની બધી આ સમયે @@PRODUCT_NAME@@ માં સક્રિયાત્મક રીતે ચકાસી રહી છે. તમે તમારી સિસ્ટમોની બધીની યાદી &lt;strong&gt;&lt;a href=&quot;/rhn/systems/SystemList.do&quot;&gt;સિસ્ટમો &gt; બધી&lt;/a&gt;&lt;/strong&gt; આગળ જોઈ શકો છો.&lt;/p&gt;</target>
+        <target>&lt;strong&gt;કોઈ અસક્રિય સિસ્ટમો નથી.&lt;/strong&gt; &lt;p&gt;તમારી સિસ્ટમોમાંની બધી આ સમયે @@PRODUCT_NAME@@ માં સક્રિયાત્મક રીતે ચકાસી રહી છે. તમે તમારી સિસ્ટમોની બધીની યાદી &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;સિસ્ટમો &gt; બધી&lt;/a&gt;&lt;/strong&gt; આગળ જોઈ શકો છો.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.securityerrata">
         <source>Relevant Security Patches</source>
@@ -11400,7 +11402,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;કોઈ સંબંધિત સુરક્ષા ત્રુટિસૂચી નથી.&lt;/strong&gt;&lt;p&gt;ત્યાં કોઈ સુરક્ષા ત્રુટિસૂચી નથી કે જે તમારી સિસ્ટમોને લાગુ પાડી શકાય. તમે તમારી સોફ્ટવેર સંથા માટે &lt;strong&gt;બધી&lt;/strong&gt; ત્રુટિસૂચીની યાદી જોઈ શકો છો કે જેની ઉમેદવારી &lt;strong&gt;&lt;a href=&quot;/rhn/errata/AllErrata.do&quot;&gt;ત્રુટિસૂચી &gt; બધી&lt;/a&gt;&lt;/strong&gt; આગળ થયેલ છે.&lt;/p&gt;</target>
+        <target>&lt;strong&gt;કોઈ સંબંધિત સુરક્ષા ત્રુટિસૂચી નથી.&lt;/strong&gt;&lt;p&gt;ત્યાં કોઈ સુરક્ષા ત્રુટિસૂચી નથી કે જે તમારી સિસ્ટમોને લાગુ પાડી શકાય. તમે તમારી સોફ્ટવેર સંથા માટે &lt;strong&gt;બધી&lt;/strong&gt; ત્રુટિસૂચીની યાદી જોઈ શકો છો કે જેની ઉમેદવારી &lt;strong&gt;&lt;a href="/rhn/errata/AllErrata.do"&gt;ત્રુટિસૂચી &gt; બધી&lt;/a&gt;&lt;/strong&gt; આગળ થયેલ છે.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.task.title">
         <source>Tasks</source>
@@ -11981,7 +11983,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="activation-key.jsp.edit-basechannel-tooltip">
           <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
-          <target>સિસ્ટમોને મૂળભૂત Red Hat પૂરી પાડવામાં આવેલ ચેનલમાં રજીસ્ટર કરવા માટે પરવાનગી આપવા માટે &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; પસંદ કરો કે જે Red Hat Enterprise Linux ની તેમની સ્થાપિત આવૃત્તિને અનુલક્ષે. તમે ચોક્કસ Red Hat પૂરી પાડેલ ચેનલો અથવા વૈવિધ્યપૂર્ણ આધાર ચેનલોને અંહિ પસંદ કરી શકશો, પરંતુ મહેરબાની કરીને નોંધ કરો કે જો આ કી વાપરી રહેલ સિસ્ટમ એ પસંદિત ચેનલ સાથે સુસંગત નહિં હોય, તો તે તેની Red Hat મૂળભૂત ચેનલમાં પડશે નહિં.</target>
+          <target>સિસ્ટમોને મૂળભૂત Red Hat પૂરી પાડવામાં આવેલ ચેનલમાં રજીસ્ટર કરવા માટે પરવાનગી આપવા માટે "&lt;strong&gt;{0}&lt;/strong&gt;" પસંદ કરો કે જે Red Hat Enterprise Linux ની તેમની સ્થાપિત આવૃત્તિને અનુલક્ષે. તમે ચોક્કસ Red Hat પૂરી પાડેલ ચેનલો અથવા વૈવિધ્યપૂર્ણ આધાર ચેનલોને અંહિ પસંદ કરી શકશો, પરંતુ મહેરબાની કરીને નોંધ કરો કે જો આ કી વાપરી રહેલ સિસ્ટમ એ પસંદિત ચેનલ સાથે સુસંગત નહિં હોય, તો તે તેની Red Hat મૂળભૂત ચેનલમાં પડશે નહિં.</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.edit.universal-default-tooltip">
           <source>Only one universal default activation key may be set for this organization. By setting this key as universal default, you will remove universal default status from the current universal default key if it exists. If this key is set as universal default, then newly-registered systems to your organization will inherit the properties of this key.</source>
@@ -12034,7 +12036,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="activation-key.jsp.delete.para">
           <source>Are you certain you want to delete this key? Activation Keys cannot be recovered once they have been deleted. (Note: A key can be disabled on the &lt;a href="{0}"&gt;key list page&lt;/a&gt;, which prevents it from being used, but preserves it for later use.)</source>
-          <target>શું તમે ખરેખર આ કી કાઢી નાંખવા માંગો છો? સક્રિયકરણ કીઓ પુનઃપ્રાપ્ત કરી શકાતી નથી જ્યાં સુધી તેઓ કાઢી નાંખવામાં નહિં આવે. (નોંધ: કી &lt;a href=&quot;{0}&quot;&gt;કી યાદી પાનાં&lt;/a&gt; પર નિષ્ક્રિય કરવામાં આવે છે, કે જે તેને વાપરવાથી અટકાવી છે, પરંતુ તેને પછીથી વપરાશ માટે સાચવે છે.)</target>
+          <target>શું તમે ખરેખર આ કી કાઢી નાંખવા માંગો છો? સક્રિયકરણ કીઓ પુનઃપ્રાપ્ત કરી શકાતી નથી જ્યાં સુધી તેઓ કાઢી નાંખવામાં નહિં આવે. (નોંધ: કી &lt;a href="{0}"&gt;કી યાદી પાનાં&lt;/a&gt; પર નિષ્ક્રિય કરવામાં આવે છે, કે જે તેને વાપરવાથી અટકાવી છે, પરંતુ તેને પછીથી વપરાશ માટે સાચવે છે.)</target>
         </trans-unit>
         <trans-unit id="activation-key.jsp.delete.warning">
           <source>&lt;STRONG&gt;NOTE&lt;/STRONG&gt;: Only systems and profiles known to Satellite will be updated.  Kickstarting other entities (e.g., system profiles created using the cobbler command-line tools) which use this key will &lt;STRONG&gt;FAIL&lt;/STRONG&gt; if the key is deleted.</source>
@@ -12081,11 +12083,11 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <trans-unit id="activation-keys.config.jsp.noChannels">
           <source>No configuration channels. To subscribe this activation key to a configuration channel, please visit the &lt;a href="{0}"&gt;Subscribe to Channels&lt;/a&gt; tab.</source>
-          <target>કોઈ રૂપરેખાંકન ચેનલો નથી. આ સક્રિયકૃત્ત કીની રૂપરેખાંકન ચેનલમાં ઉમેદવારી નોંધાવવા માટે, મહેરબાની કરીને &lt;a href=&quot;{0}&quot;&gt;ચેનલોમાં ઉમેદવારી નોંધાવો&lt;/a&gt; ટેબની મુલાકાત લો.</target>
+          <target>કોઈ રૂપરેખાંકન ચેનલો નથી. આ સક્રિયકૃત્ત કીની રૂપરેખાંકન ચેનલમાં ઉમેદવારી નોંધાવવા માટે, મહેરબાની કરીને &lt;a href="{0}"&gt;ચેનલોમાં ઉમેદવારી નોંધાવો&lt;/a&gt; ટેબની મુલાકાત લો.</target>
         </trans-unit>
         <trans-unit id="activation-keys.config.subscriptions.jsp.noChannels">
           <source>No configuration channels are available for subscription. You have already subscribed this activation key to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;).</source>
-          <target> ઉમેદવારી માટે કોઈ રૂપરેખાંકન ચેનલો ઉપલબ્ધ નથી. તમે આ સક્રિયકૃત્ત કીમાં પહેલાથી જ ઉમેદવારી નોંધાવેલ છે બધી ઉપલબ્ધ ચેનલોમાં (&lt;a href=&quot;{0}&quot;&gt;ઉમેદવારી થયેલ ચેનલો જુઓ&lt;/a&gt;).</target>
+          <target> ઉમેદવારી માટે કોઈ રૂપરેખાંકન ચેનલો ઉપલબ્ધ નથી. તમે આ સક્રિયકૃત્ત કીમાં પહેલાથી જ ઉમેદવારી નોંધાવેલ છે બધી ઉપલબ્ધ ચેનલોમાં (&lt;a href="{0}"&gt;ઉમેદવારી થયેલ ચેનલો જુઓ&lt;/a&gt;).</target>
         </trans-unit>
         <trans-unit id="activation-key.config.jsp.para1">
           <source>Below are all the centrally-managed configuration channels to which this activation key is subscribed. They are in priority order with the highest-ranked channels appearing first in the list.</source>
@@ -12093,7 +12095,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="activation-key.config.subscriptions.jsp.para1">
           <source>Below is a list of configuration channels available to this activation key. To subscribe to a channel, check its checkbox. Make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>નીચે આ સક્રિયકૃત કી માટે ઉપલબ્ધ રૂપરેખાંકન ચેનલોની યાદી છે. ચેનલમાં ઉમેદવારી નોંધાવવા માટે, તેનું ચકાસણીબોક્સ ચકાસો. ખાતરી કરો કે તમે &quot;{0}&quot; બટન ક્લિક કરો જ્યારે તમે તમારા ફેરફારોથી સમાપ્ત થઈ જાવ.</target>
+          <target>નીચે આ સક્રિયકૃત કી માટે ઉપલબ્ધ રૂપરેખાંકન ચેનલોની યાદી છે. ચેનલમાં ઉમેદવારી નોંધાવવા માટે, તેનું ચકાસણીબોક્સ ચકાસો. ખાતરી કરો કે તમે "{0}" બટન ક્લિક કરો જ્યારે તમે તમારા ફેરફારોથી સમાપ્ત થઈ જાવ.</target>
         </trans-unit>
         <trans-unit id="activation-keys.config.rank.jsp.para1">
           <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it.</source>
@@ -12101,7 +12103,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </trans-unit>
         <trans-unit id="activation-keys.config.rank.jsp.para2">
           <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source>
-          <target>ઉમેદવારી થયેલ ચેનલોના લાગતાવળગતા ક્રમો સુધારવા માટે, તમે એક સમયે એક ચેનલ પસંદ કરી શકશો ઉપર ખસવા માટે કે નીચે તીર બટનોની મદદથી જવા માટે. ક્રમાંકન પ્રક્રિયા તમે સમાપ્ત કર્યા પછી, તમારે ચેનલ ઉમેદવારીઓ અને ક્રમાંકનની ખાતરી કરવા માટે નીચે &quot;{0}&quot; પર ક્લિક કરવાની જરૂર રહેશે.</target>
+          <target>ઉમેદવારી થયેલ ચેનલોના લાગતાવળગતા ક્રમો સુધારવા માટે, તમે એક સમયે એક ચેનલ પસંદ કરી શકશો ઉપર ખસવા માટે કે નીચે તીર બટનોની મદદથી જવા માટે. ક્રમાંકન પ્રક્રિયા તમે સમાપ્ત કર્યા પછી, તમારે ચેનલ ઉમેદવારીઓ અને ક્રમાંકનની ખાતરી કરવા માટે નીચે "{0}" પર ક્લિક કરવાની જરૂર રહેશે.</target>
         </trans-unit>
       </group>
       <group>
@@ -12110,19 +12112,19 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <trans-unit id="activation-keys.groups.jsp.noGroups">
           <source>No System Groups. To add System Groups this activation key, please visit the &lt;a href="{0}"&gt;{1}&lt;/a&gt; tab.</source>
-          <target>સિસ્ટમ જૂથો નથી. આ સક્રિયકૃત કી માટે સિસ્ટમ જૂથોને ઉમેરવા માટે, મહેરબાની કરીને &lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt; ટેબની મુલાકાત લો.</target>
+          <target>સિસ્ટમ જૂથો નથી. આ સક્રિયકૃત કી માટે સિસ્ટમ જૂથોને ઉમેરવા માટે, મહેરબાની કરીને &lt;a href="{0}"&gt;{1}&lt;/a&gt; ટેબની મુલાકાત લો.</target>
         </trans-unit>
         <trans-unit id="activation-keys.groups.add.jsp.noGroups">
           <source>No system groups are available to add. You have already added all the system groups available (&lt;a href="{0}"&gt;View System Groups&lt;/a&gt;) to this activation key.</source>
-          <target>ઉમેરવા માટે સિસ્ટમ જૂથો ઉપલ્બધ નથી. આ સક્રિયકૃત કીમાં ઉપલ્બધ (&lt;a href=&quot;{0}&quot;&gt;સિસ્ટમ જૂથોને દેખાડો&lt;/a&gt;) બધા સિસ્ટમ જૂથોને તમે પહેલેથી જ ઉમેરી દીધા છે.</target>
+          <target>ઉમેરવા માટે સિસ્ટમ જૂથો ઉપલ્બધ નથી. આ સક્રિયકૃત કીમાં ઉપલ્બધ (&lt;a href="{0}"&gt;સિસ્ટમ જૂથોને દેખાડો&lt;/a&gt;) બધા સિસ્ટમ જૂથોને તમે પહેલેથી જ ઉમેરી દીધા છે.</target>
         </trans-unit>
         <trans-unit id="activation-key.groups.jsp.summary">
           <source>Below are all the system groups that have been added to this activation key. Any system registering with this activation key will be added to the selected system groups. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>નીચે બધી સિસ્ટમ જૂથો છે કે જે આ સક્રિયકૃત કી માં ઉમેરી દેવામાં આવી છે. કોઇપણ સિસ્ટમ આ સક્રિયકૃત કી સાથે રજીસ્ટર કરવા પસંદ કરેલ સિસ્ટમ જૂથોમાં ઉમેરાયેલ હશે. સિસ્ટમ જૂથ સભ્યપદને દૂર કરવા માટે, તેનું ચેકબોક્સને ચકાસો અને તમે ખાતરી કરો કે તમે &quot;{0}&quot; બટન પર ક્લિક કરો જ્યારે તમારા ફેરફારોથી સમાપ્ત થયા હોય.</target>
+          <target>નીચે બધી સિસ્ટમ જૂથો છે કે જે આ સક્રિયકૃત કી માં ઉમેરી દેવામાં આવી છે. કોઇપણ સિસ્ટમ આ સક્રિયકૃત કી સાથે રજીસ્ટર કરવા પસંદ કરેલ સિસ્ટમ જૂથોમાં ઉમેરાયેલ હશે. સિસ્ટમ જૂથ સભ્યપદને દૂર કરવા માટે, તેનું ચેકબોક્સને ચકાસો અને તમે ખાતરી કરો કે તમે "{0}" બટન પર ક્લિક કરો જ્યારે તમારા ફેરફારોથી સમાપ્ત થયા હોય.</target>
         </trans-unit>
         <trans-unit id="activation-key.groups.add.jsp.summary">
           <source>Below is a list of system groups available to this activation key. To join a system group, check its checkbox. Make sure you click the "{0}" button when you are finished with your changes.</source>
-          <target>નીચે આ સક્રિયકૃત કી માટે ઉપલબ્ધ રૂપરેખાંકન ચેનલોની યાદી છે. ચેનલમાં ઉમેદવારી નોંધાવવા માટે, તેનું ચકાસણીબોક્સ ચકાસો. ખાતરી કરો કે તમે &quot;{0}&quot; બટન ક્લિક કરો જ્યારે તમે તમારા ફેરફારોથી સમાપ્ત થઈ જાવ.</target>
+          <target>નીચે આ સક્રિયકૃત કી માટે ઉપલબ્ધ રૂપરેખાંકન ચેનલોની યાદી છે. ચેનલમાં ઉમેદવારી નોંધાવવા માટે, તેનું ચકાસણીબોક્સ ચકાસો. ખાતરી કરો કે તમે "{0}" બટન ક્લિક કરો જ્યારે તમે તમારા ફેરફારોથી સમાપ્ત થઈ જાવ.</target>
         </trans-unit>
         <trans-unit id="activation-key.groups.jsp.title">
           <source>System Groups</source>
@@ -13538,7 +13540,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>નામ&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>નામ&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.name">
         <source>Name:</source>
@@ -13552,7 +13554,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>લેબલ&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>લેબલ&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.label">
         <source>Label:</source>
@@ -13566,7 +13568,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>વર્ણન&lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>વર્ણન&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="channelOverview.jsp.sls-edit">
         <source>SLS Contents</source>
@@ -14125,7 +14127,7 @@ but are not subscribed to _@@PRODUCT_NAME@@Config_.</context>
           <context context-type="sourcefile">/rhn/configuration/ChannelAddFiles.do</context>
           <context context-type="paramnotes">A file named "/etc/passwd" already exists in this channel.</context>
         </context-group>
-        <target>&quot;{0}&quot; નામવાળી ફાઈલ આ ચેનલમાં પહેલાથી જ હાજર છે.</target>
+        <target>"{0}" નામવાળી ફાઈલ આ ચેનલમાં પહેલાથી જ હાજર છે.</target>
       </trans-unit>
       <trans-unit id="addfiles.jsp.upload-link">
         <source>Upload New Configuration File</source>
@@ -14277,7 +14279,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Current Version</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>વર્તમાન આવૃત્તિ</target>
       </trans-unit>
@@ -14285,7 +14287,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Last Modified</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>છેલ્લે સુધારેલ</target>
       </trans-unit>
@@ -14310,7 +14312,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>There are no deployable systems subscribed to this channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>આ ચેનલમાં ઉમેદવારી કરવા માટે ત્યાં કોઈ જમાવી શકાય તેવી સિસ્ટમો નથી</target>
       </trans-unit>
@@ -14318,7 +14320,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Actions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>ક્રિયાઓ</target>
       </trans-unit>
@@ -14326,7 +14328,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>ફાઈલનામ</target>
       </trans-unit>
@@ -14334,7 +14336,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy All Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>બધી ફાઈલો જમાવો</target>
       </trans-unit>
@@ -14342,7 +14344,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Selected Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>પસંદ કરેલ ફાઈલો જમાવો</target>
       </trans-unit>
@@ -14350,7 +14352,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>રૂપરેખાંકન ફાઈલોની જમાવટ કરો</target>
       </trans-unit>
@@ -14358,7 +14360,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>You may select the files you wish to deploy from the list below.  You will then be asked to select the systems to deploy them to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>તમે જે ફાઈલો જમાવવા ઈચ્છો છો તેમને નીચેની યાદીમાં પસંદ કરી શકશો.  પછી તમે તેમને જમાવવા માટેની સિસ્ટમો પસંદ કરવા માટે પૂછવામાં આવશો.</target>
       </trans-unit>
@@ -14366,7 +14368,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Filename</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>ફાઈલનામ</target>
       </trans-unit>
@@ -14374,7 +14376,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Confirm &amp; Deploy to Selected Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>ખાતરી કરો અને પસંદ કરેલ સિસ્ટમોમાં જમાવો</target>
       </trans-unit>
@@ -14382,7 +14384,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Deploy Configuration Files: Select Systems for Deployment</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>રૂપરેખાંકન ફાઈલો જમાવો: જમાવટ માટે સિસ્ટમો પસંદ કરો</target>
       </trans-unit>
@@ -14390,7 +14392,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>Please select the systems you'd like to deploy the selected files to.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
         <target>મહેરબાની કરીને સિસ્ટમો પસંદ કરો કે જેમાં તમે પસંદ કરેલ ફાઈલો જમાવવા ઈચ્છો.</target>
       </trans-unit>
@@ -14398,7 +14400,7 @@ Note that if a given system overrides a given file, or has it in that system's l
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; Please note that if any of the files you are attempting to deploy from the {0} configuration channel are overridden or outranked by a file with the same name on a higher-ranked channel any particular system is subscribed to, then the overriding / highest-ranking version of the file will be deployed to that system, rather than the version from the {0} configuration channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/</context>
-          <context context-type="paramnotes"/>
+          <context context-type="paramnotes" />
         </context-group>
       </trans-unit>
       <!-- deployrevision.jsp -->
@@ -14410,7 +14412,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">Tip: You may _schedule a comparison_ between these two file versions to see what changes this deployment will result in.</context>
         </context-group>
-        <target>&lt;strong&gt;ટિપ્પણી:&lt;/strong&gt; તમે કયા ફેરફારો આ જમાવટમાં પરિણમશે તે જોવા માટે આ બે ફાઈલો વચ્ચે &lt;a href=&quot;{0}&quot;&gt;સરખામણી સુનિશ્ચિત&lt;/a&gt; કરી શકશો.</target>
+        <target>&lt;strong&gt;ટિપ્પણી:&lt;/strong&gt; તમે કયા ફેરફારો આ જમાવટમાં પરિણમશે તે જોવા માટે આ બે ફાઈલો વચ્ચે &lt;a href="{0}"&gt;સરખામણી સુનિશ્ચિત&lt;/a&gt; કરી શકશો.</target>
       </trans-unit>
       <trans-unit id="deploylocal.jspf.tip.local">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If you would like to deploy this version of the this file to other systems you'll need to &lt;a href="{0}"&gt;copy this file to a centrally-managed config channel&lt;/a&gt;</source>
@@ -14418,7 +14420,7 @@ Note that if a given system overrides a given file, or has it in that system's l
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">Tip: If you would like to deploy this version of the this file to other systems you'll need to _copy this file to a centrally-managed config channel_</context>
         </context-group>
-        <target>&lt;strong&gt;ટિપ્પણી:&lt;/strong&gt; જો તમે આ ફાઈલની આ આવૃત્તિ અન્ય સિસ્ટમોમાં જમાવવા ઈચ્છો તો તમારે &lt;a href=&quot;{0}&quot;&gt;આ ફાઈલને કેન્દ્રિય રીતે-વ્યવસ્થતાપિત રૂપરેખા ચેનલમાં નકલ કરવાની જરૂર રહેશે&lt;/a&gt;</target>
+        <target>&lt;strong&gt;ટિપ્પણી:&lt;/strong&gt; જો તમે આ ફાઈલની આ આવૃત્તિ અન્ય સિસ્ટમોમાં જમાવવા ઈચ્છો તો તમારે &lt;a href="{0}"&gt;આ ફાઈલને કેન્દ્રિય રીતે-વ્યવસ્થતાપિત રૂપરેખા ચેનલમાં નકલ કરવાની જરૂર રહેશે&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.tip.global-1">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; If a system has a locally-managed override for this file, you will not be able to deploy it.  However, you may click on the 'Modify rank' link to re-rank the overriding channels.</source>
@@ -14445,7 +14447,7 @@ Tip: If you would like to deploy this file to a system not in this list, request
 Tip: If you would like to deploy this file to a system not in this list, you'll need to first subscribe that system to the _Configgy_ configuration channel using the _'Target Systems' tab_ for that channel, then return to this screen.  Also, note that the target system must have provisioning entitlements.
           </context>
         </context-group>
-        <target>&lt;strong&gt;ટિપ્પણી:&lt;/strong&gt; જો તમે આ ફાઈલને સિસ્ટમ પર જમાવવા ઈચ્છો કે જે આ યાદીમાં નહિં હોય, તો તમારે પ્રથમ તે સિસ્ટમને {0} રૂપરેખાંકન ચેનલમાં &lt;a href=&quot;{1}&quot;&gt;'લક્ષ્ય સિસ્ટમો' ટેબ&lt;/a&gt; ની મદદથી તે ચેનલ માટે ઉમેદવારી નોંધાવવા ઈચ્છશો, પછી આ સ્ક્રીન પર પાછા આવો.  અને, એ પણ નોંધ કરો કે લક્ષ્ય સિસ્ટમને બચાવ ઉમેદવારીઓ હોવી જ જોઈએ.</target>
+        <target>&lt;strong&gt;ટિપ્પણી:&lt;/strong&gt; જો તમે આ ફાઈલને સિસ્ટમ પર જમાવવા ઈચ્છો કે જે આ યાદીમાં નહિં હોય, તો તમારે પ્રથમ તે સિસ્ટમને {0} રૂપરેખાંકન ચેનલમાં &lt;a href="{1}"&gt;'લક્ષ્ય સિસ્ટમો' ટેબ&lt;/a&gt; ની મદદથી તે ચેનલ માટે ઉમેદવારી નોંધાવવા ઈચ્છશો, પછી આ સ્ક્રીન પર પાછા આવો.  અને, એ પણ નોંધ કરો કે લક્ષ્ય સિસ્ટમને બચાવ ઉમેદવારીઓ હોવી જ જોઈએ.</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.not_deployable">
         <source>These systems do not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system. You may ensure that configuration deployment capability will be enabled on these systems by selecting them in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
@@ -14461,7 +14463,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
 You may grant provisioning entitlements _here_.
           </context>
         </context-group>
-        <target>તમે &lt;a href=&quot;{0}&quot;&gt;અંહિ&lt;/a&gt; બચાવ ઉમેદવારીઓ મંજૂર કરી શકશો.</target>
+        <target>તમે &lt;a href="{0}"&gt;અંહિ&lt;/a&gt; બચાવ ઉમેદવારીઓ મંજૂર કરી શકશો.</target>
       </trans-unit>
       <!-- date-picker strings -->
       <trans-unit id="deploy.jsp.widgetsummary">
@@ -14515,7 +14517,7 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">_Revision 7_ from _zanarkand.boston.redhat.com_</context>
         </context-group>
-        <target>&lt;a href=&quot;{3}&quot;&gt;{2}&lt;/a&gt; તરફથી &lt;a href=&quot;{1}&quot;&gt;આવૃત્તિ {0}&lt;/a&gt;</target>
+        <target>&lt;a href="{3}"&gt;{2}&lt;/a&gt; તરફથી &lt;a href="{1}"&gt;આવૃત્તિ {0}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.latest-never">
         <source>This revision has never been successfully deployed to this system.</source>
@@ -14537,7 +14539,7 @@ You may grant provisioning entitlements _here_.
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
           <context context-type="paramnotes">_Revision 7_ from _@@PRODUCT_NAME@@ Config_</context>
         </context-group>
-        <target>&lt;a href=&quot;{3}&quot;&gt;{2}&lt;/a&gt; તરફથી &lt;a href=&quot;{1}&quot;&gt;આવૃત્તિ {0}&lt;/a&gt;</target>
+        <target>&lt;a href="{3}"&gt;{2}&lt;/a&gt; તરફથી &lt;a href="{1}"&gt;આવૃત્તિ {0}&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.deploybutton">
         <source>Schedule File Deployment</source>
@@ -14562,7 +14564,7 @@ You may grant provisioning entitlements _here_.
 system _zanarkand.boston.redhat.com_.</context>
         </context-group>
         <target>તમે આ ફાઈલને કોઈપણ સિસ્ટમોમાં જમાવી શકશો નહિં કારણ કે આ ફાઈલ એ સિસ્ટમ માટે સ્થાનીય રૂપરેખા સેન્ડબોક્સનો ભાગ છે
-&lt;a href=&quot;{1}&quot;&gt;{0}&lt;/a&gt;.</target>
+&lt;a href="{1}"&gt;{0}&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.sandbox-note2">
         <source>Configuration sandboxes are a place to store configuration files that are under development.
@@ -14573,8 +14575,8 @@ From there, you can deploy the file to systems.</source>
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
         <target>રૂપરેખાંકન સેન્ડબોક્સ રૂપરેખાંકન ફાઈલો સંગ્રહવા માટેની જગ્યા છે કે જે વિકાસ હેઠળ છે.
-જો તમે એમ માનો કે આ રૂપરેખાંકન ફાઈલ એ સિસ્ટમ પર જમાવટ માટે તૈયાર છે, તો તમે &lt;a href=&quot;{0}&quot;&gt;તેને સ્થાનિક રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલમાં નકલ કરી શકો&lt;/a&gt;
-અથવા &lt;a href=&quot;{1}&quot;&gt;તેને વૈશ્વિક રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલમાં નકલ કરી શકો&lt;/a&gt; ઉપરની '&lt;a href=&quot;{3}&quot;&gt;{4}&lt;/a&gt;' ટેબ મારફતે.
+જો તમે એમ માનો કે આ રૂપરેખાંકન ફાઈલ એ સિસ્ટમ પર જમાવટ માટે તૈયાર છે, તો તમે &lt;a href="{0}"&gt;તેને સ્થાનિક રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલમાં નકલ કરી શકો&lt;/a&gt;
+અથવા &lt;a href="{1}"&gt;તેને વૈશ્વિક રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલમાં નકલ કરી શકો&lt;/a&gt; ઉપરની '&lt;a href="{3}"&gt;{4}&lt;/a&gt;' ટેબ મારફતે.
 ત્યાંથી, તમે ફાઈલને સિસ્ટમોમાં જમાવી શકો.</target>
       </trans-unit>
       <trans-unit id="deployglobal.jspf.note">
@@ -14624,7 +14626,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">1 central override (_Modify Rank_)</context>
         </context-group>
-        <target>{0} કેન્દ્રિય ઓવરરાઈડ (&lt;a href=&quot;{1}&quot;&gt;ક્રમ સુધારો&lt;/a&gt;)</target>
+        <target>{0} કેન્દ્રિય ઓવરરાઈડ (&lt;a href="{1}"&gt;ક્રમ સુધારો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="globaldeploy.jsp.override-number">
         <source>{0} system override (&lt;a href="{1}"&gt;Remove System Override&lt;/a&gt;)</source>
@@ -14632,7 +14634,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">1 system override (_Remove System Override_)</context>
         </context-group>
-        <target>{0} સિસ્ટમ ઓવરરાઈડ (&lt;a href=&quot;{1}&quot;&gt;સિસ્ટમ ઓવરરાઈડ દૂર કરો&lt;/a&gt;)</target>
+        <target>{0} સિસ્ટમ ઓવરરાઈડ (&lt;a href="{1}"&gt;સિસ્ટમ ઓવરરાઈડ દૂર કરો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="globaldeploy.jsp.outranked-numbers">
         <source>{0} central overrides (&lt;a href="{1}"&gt;Modify rank&lt;/a&gt;)</source>
@@ -14640,7 +14642,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeploy.do</context>
           <context context-type="paramnotes">5 central overrides (_Modify rank_)</context>
         </context-group>
-        <target>{0} કેન્દ્રિય ઓવરરાઈડો (&lt;a href=&quot;{1}&quot;&gt;ક્રમ સુધારો&lt;/a&gt;)</target>
+        <target>{0} કેન્દ્રિય ઓવરરાઈડો (&lt;a href="{1}"&gt;ક્રમ સુધારો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="deployconfirm.jsp.header2">
         <source>Confirm file deploy</source>
@@ -14718,7 +14720,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/DeleteRevision.do</context>
           <context context-type="paramnotes">Are you sure you want to delete this revision permanently from Configuration Channel _@@PRODUCT_NAME@@Config_?</context>
         </context-group>
-        <target>શું તમે ખરેખર આ આવૃત્તિ રૂપરેખાંકન ચેનલ &lt;a href=&quot;{1}&quot;&gt;{0}&lt;/a&gt; માંથી કાયમ માટે કાઢી નાંખવા માંગો છો?</target>
+        <target>શું તમે ખરેખર આ આવૃત્તિ રૂપરેખાંકન ચેનલ &lt;a href="{1}"&gt;{0}&lt;/a&gt; માંથી કાયમ માટે કાઢી નાંખવા માંગો છો?</target>
       </trans-unit>
       <trans-unit id="deleterev.jsp.channelname">
         <source>Config Channel:</source>
@@ -14781,7 +14783,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
             Revision 7 of /etc/sysconfig/rhn/up2date from channel _@@PRODUCT_NAME@@Config_
           </context>
         </context-group>
-        <target>ચેનલ &lt;a href=&quot;{3}&quot;&gt;{2}&lt;/a&gt; માંથી {0} ની આવૃત્તિ {1}</target>
+        <target>ચેનલ &lt;a href="{3}"&gt;{2}&lt;/a&gt; માંથી {0} ની આવૃત્તિ {1}</target>
       </trans-unit>
       <!-- Tips -->
       <trans-unit id="filedetails.jsp.tip.ownership">
@@ -14872,7 +14874,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
               Error "Invalid I/O Operation" attempting to download file /etc/sysconfig/rhn/up2date
           </context>
         </context-group>
-        <target>ફાઈલ {1} ડાઉનલોડ કરવામાં ભૂલ &quot;{0}&quot;</target>
+        <target>ફાઈલ {1} ડાઉનલોડ કરવામાં ભૂલ "{0}"</target>
       </trans-unit>
       <trans-unit id="filedetails.jsp.update">
         <source>Update Configuration File</source>
@@ -15021,7 +15023,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">2 days ago by UserX</context>
         </context-group>
-        <target>ચેનલ &lt;a href=&quot;{2}&quot;&gt;{1}&lt;/a&gt; માંથી {0}</target>
+        <target>ચેનલ &lt;a href="{2}"&gt;{1}&lt;/a&gt; માંથી {0}</target>
       </trans-unit>
       <!-- add_details.jspf -->
       <trans-unit id="filedetails.add_details.jspf.header2">
@@ -15086,7 +15088,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>લખાણ અને બાઈનરી ફાઈલો વચ્ચેના તફાવતો પર વધુ જાણકારી માટે &lt;a href=&quot;{0}&quot;&gt;અંહિ&lt;/a&gt; ક્લિક કરો.</target>
+        <target>લખાણ અને બાઈનરી ફાઈલો વચ્ચેના તફાવતો પર વધુ જાણકારી માટે &lt;a href="{0}"&gt;અંહિ&lt;/a&gt; ક્લિક કરો.</target>
       </trans-unit>
       <trans-unit id="filedetails.contents.jspf.binary-edit">
         <source>
@@ -15213,7 +15215,7 @@ _Download /etc/sysconfig/rhn/up2date_ (Revision 7, 96 bytes)
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>વપરાશકર્તા નામ &lt;span class=&quot;required-form-field&quot;&gt;*&lt;/span&gt;:</target>
+        <target>વપરાશકર્તા નામ &lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
       </trans-unit>
       <trans-unit id="filedetails.properties.jspf.gid">
         <source>Group name &lt;span class=required-form-field&gt;*&lt;/span&gt;:</source>
@@ -15433,7 +15435,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
           <context context-type="paramnotes">12 files (3 overrides)</context>
         </context-group>
-        <target>&lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt; ({2})</target>
+        <target>&lt;a href="{0}"&gt;{1}&lt;/a&gt; ({2})</target>
       </trans-unit>
       <trans-unit id="managedsystems.jsp.globalfiles">
         <source>Centrally-Managed Files</source>
@@ -15478,7 +15480,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
           <context context-type="paramnotes">12 files from _4 config channels_</context>
         </context-group>
-        <target>&lt;a href=&quot;{1}&quot;&gt;{2}&lt;/a&gt; તરફથી {0}</target>
+        <target>&lt;a href="{1}"&gt;{2}&lt;/a&gt; તરફથી {0}</target>
       </trans-unit>
       <!-- overview.jsp (in configuration) -->
       <group>
@@ -15653,7 +15655,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="manage.jsp.success">
           <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt; successfully uploaded.</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; સફળતાપૂર્વક અપલોડ થઈ ગઈ.</target>
+          <target>&lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; સફળતાપૂર્વક અપલોડ થઈ ગઈ.</target>
         </trans-unit>
       </group>
       <!-- configuration/files/copycentral.jsp  -->
@@ -15692,7 +15694,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into centrally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target>તમે આ ફાઈલની &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; ને &lt;strong&gt;કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલો&lt;/strong&gt; માં નકલ કરી શકશો.  જ્યારે તમે આ ફાઈલને અન્ય ચેનલમાં નકલ કરો, ત્યારે તે તે ચેનલમાંની ફાઈલ માટે નવી આવૃત્તિ બનશે.</target>
+          <target>તમે આ ફાઈલની &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; ને &lt;strong&gt;કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલો&lt;/strong&gt; માં નકલ કરી શકશો.  જ્યારે તમે આ ફાઈલને અન્ય ચેનલમાં નકલ કરો, ત્યારે તે તે ચેનલમાંની ફાઈલ માટે નવી આવૃત્તિ બનશે.</target>
         </trans-unit>
         <trans-unit id="copycentral.jsp.select">
           <source>Please select destination channels below.</source>
@@ -15744,7 +15746,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 3 of this file into locally-managed config channels.  When you copy this file into another channel, it will become the newest revision for the file in that channel.</context>
           </context-group>
-          <target>તમે આ ફાઈલની &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; ને &lt;strong&gt;સ્થાનિક રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલો&lt;/strong&gt; માં નકલ કરી શકશો.  જ્યારે તમે આ ફાઈલને અન્ય ચેનલમાં નકલ કરો, ત્યારે તે તે ચેનલમાંની ફાઈલ માટે નવી આવૃત્તિ બનશે.</target>
+          <target>તમે આ ફાઈલની &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; ને &lt;strong&gt;સ્થાનિક રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલો&lt;/strong&gt; માં નકલ કરી શકશો.  જ્યારે તમે આ ફાઈલને અન્ય ચેનલમાં નકલ કરો, ત્યારે તે તે ચેનલમાંની ફાઈલ માટે નવી આવૃત્તિ બનશે.</target>
         </trans-unit>
         <trans-unit id="copylocal.jsp.channel">
           <source>Local Config Channel Name</source>
@@ -15765,7 +15767,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You may copy Revision 7 of this file into system sandboxes.  When you copy this file into a sandbox, it will become the newest revision for the file in that sandbox.</context>
           </context-group>
-          <target>તમે આ ફાઈલની &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; ને &lt;strong&gt;સિસ્ટમ સેન્ડબોક્સ&lt;/strong&gt; માં નકલ કરી શકશો.  જ્યારે તમે આ ફાઈલને અન્ય ચેનલમાં નકલ કરો, ત્યારે તે તે ચેનલમાંની ફાઈલ માટે નવી આવૃત્તિ બનશે.</target>
+          <target>તમે આ ફાઈલની &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; ને &lt;strong&gt;સિસ્ટમ સેન્ડબોક્સ&lt;/strong&gt; માં નકલ કરી શકશો.  જ્યારે તમે આ ફાઈલને અન્ય ચેનલમાં નકલ કરો, ત્યારે તે તે ચેનલમાંની ફાઈલ માટે નવી આવૃત્તિ બનશે.</target>
         </trans-unit>
         <trans-unit id="copysandbox.jsp.channel">
           <source>System Sandbox Name</source>
@@ -15786,7 +15788,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 8 of this file to other revisions of this file in the config channel New Configgy.</context>
           </context-group>
-          <target>તમે આ ફાઈલની &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; ને રૂપરેખા ચેનલ &lt;a href=&quot;{2}&quot;&gt;{3}&lt;/a&gt; માં આ ફાઈલની અન્ય આવૃત્તિઓ સાથે સરખાવી શકશો.</target>
+          <target>તમે આ ફાઈલની &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; ને રૂપરેખા ચેનલ &lt;a href="{2}"&gt;{3}&lt;/a&gt; માં આ ફાઈલની અન્ય આવૃત્તિઓ સાથે સરખાવી શકશો.</target>
         </trans-unit>
         <trans-unit id="comparerevision.jsp.noRevisions">
           <source>No config revisions.</source>
@@ -15830,7 +15832,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 8 of this file to a copy of this file in another config channel. Below is a list of all of the other copies of this file in locally and centrally-managed config channels, as well as in system sandboxes. Please select which copies of the file you would like to perform a comparison on.</context>
           </context-group>
-          <target>તમે આ ફાઈલની &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; ને અન્ય રૂપરેખા ચેનલમાં આ ફાઈલની અન્ય આવૃત્તિઓ સાથે સરખાવી શકશો. નીચે આ ફાઈલની બાકીની બધી નકલોની યાદી છે સ્થઆનિક અને કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલોમાં, સાથે સાથે સિસ્ટમ સેન્ડબોક્સ. મહેરબાની કરીને પસંદ કરો કે ફાઈલની કઈ નકલો સાથે તમે સરખામણી કરવા માંગો છો.</target>
+          <target>તમે આ ફાઈલની &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; ને અન્ય રૂપરેખા ચેનલમાં આ ફાઈલની અન્ય આવૃત્તિઓ સાથે સરખાવી શકશો. નીચે આ ફાઈલની બાકીની બધી નકલોની યાદી છે સ્થઆનિક અને કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખા ચેનલોમાં, સાથે સાથે સિસ્ટમ સેન્ડબોક્સ. મહેરબાની કરીને પસંદ કરો કે ફાઈલની કઈ નકલો સાથે તમે સરખામણી કરવા માંગો છો.</target>
         </trans-unit>
         <trans-unit id="comparecopy.jsp.noAlternates">
           <source>No file alternatives.</source>
@@ -15870,7 +15872,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 8 of this file to another file in any config channel. Below is a list of all of your config channels with available files. Please select which config channels contains the file for comparison.</context>
           </context-group>
-          <target>તમે આ ફાઈલની &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; ને કોઈપણ રૂપરેખા ચેનલમાંની અન્ય ફાઈલ સાથે સરખાવી શકો છો. નીચે તમારી બધી રૂપરેખા ચેનલોની ઉપલબ્ધ ફાઈલો સાથેની યાદી છે. મહેરબાની કરીને પસંદ કરો કે કઈ રૂપરેખા ચેનલો સરખામણી માટે ફાઈલો સમાવે છે.</target>
+          <target>તમે આ ફાઈલની &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; ને કોઈપણ રૂપરેખા ચેનલમાંની અન્ય ફાઈલ સાથે સરખાવી શકો છો. નીચે તમારી બધી રૂપરેખા ચેનલોની ઉપલબ્ધ ફાઈલો સાથેની યાદી છે. મહેરબાની કરીને પસંદ કરો કે કઈ રૂપરેખા ચેનલો સરખામણી માટે ફાઈલો સમાવે છે.</target>
         </trans-unit>
         <trans-unit id="comparechannel.jsp.noChannels">
           <source>No configuration channels.</source>
@@ -15919,7 +15921,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 7 of this file to another file in the config channel Configgy2. Please select a file for comparison.</context>
           </context-group>
-          <target>તમે આ ફાઈલની &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; ને રૂપરેખા ચેનલ {2} માંની અન્ય ફાઈલ સાથે સરખાવી શકો છો. મહેરબાની કરીને સરખામણી માટે ફાઈલ પસંદ કરો.</target>
+          <target>તમે આ ફાઈલની &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; ને રૂપરેખા ચેનલ {2} માંની અન્ય ફાઈલ સાથે સરખાવી શકો છો. મહેરબાની કરીને સરખામણી માટે ફાઈલ પસંદ કરો.</target>
         </trans-unit>
         <trans-unit id="comparefile.jsp.noFiles">
           <source>No config files.</source>
@@ -15960,7 +15962,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">You can compare Revision 8 of this file to versions of this file deployed on systems. Please select the systems you would like to compare this file to below (this will schedule an action to take place the next time the systems check in).</context>
           </context-group>
-          <target>તમે આ ફાઈલની &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt; ને સિસ્ટમો પર જમાવેલ આ ફાઈલની આવૃત્તિઓ સાથે સરખાવી શકો છો. મહેરબાની કરીને સિસ્ટમો પસંદ કરો કે જેની સાથે તમે આ ફાઈલને નીચે સરખાવવા ઈચ્છો (આ આગળ જ્યારે સિસ્ટમ ચકાસે ત્યારે કરવાની ક્રિયા સુનિશ્ચિત કરશે).</target>
+          <target>તમે આ ફાઈલની &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt; ને સિસ્ટમો પર જમાવેલ આ ફાઈલની આવૃત્તિઓ સાથે સરખાવી શકો છો. મહેરબાની કરીને સિસ્ટમો પસંદ કરો કે જેની સાથે તમે આ ફાઈલને નીચે સરખાવવા ઈચ્છો (આ આગળ જ્યારે સિસ્ટમ ચકાસે ત્યારે કરવાની ક્રિયા સુનિશ્ચિત કરશે).</target>
         </trans-unit>
         <trans-unit id="comparedeployed.jsp.noSystems">
           <source>No systems.</source>
@@ -15986,7 +15988,7 @@ any of these revisions.  Are you sure you want to do this?</source>
               {4} - channel name
             </context>
           </context-group>
-          <target>&lt;a href=&quot;{2}&quot;&gt;{3} {4}&lt;/a&gt; માંથી &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt;</target>
+          <target>&lt;a href="{2}"&gt;{3} {4}&lt;/a&gt; માંથી &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="comparedeployed.jsp.never">
           <source>Never</source>
@@ -16186,7 +16188,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">Revision 3 from Configgy Channel</context>
           </context-group>
-          <target>&lt;a href=&quot;{2}&quot;&gt;{3}&lt;/a&gt; તરફથી &lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt;</target>
+          <target>&lt;a href="{2}"&gt;{3}&lt;/a&gt; તરફથી &lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt;</target>
         </trans-unit>
       </group>
       <!-- configuration/ssm/difffiles.jsp  -->
@@ -16203,7 +16205,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">The configuration files listed below are the files you have selected that are relevant to server3.redhat.com.</context>
           </context-group>
-          <target>નીચે યાદી થયેલ રૂપરેખાંકન ફાઈલો એ ફાઈલો છે કે જે તમે પસંદ કરેલ છે અને &lt;a href=&quot;{0}&quot;&gt;{1}&lt;/a&gt; ને સંબંધિત છે.</target>
+          <target>નીચે યાદી થયેલ રૂપરેખાંકન ફાઈલો એ ફાઈલો છે કે જે તમે પસંદ કરેલ છે અને &lt;a href="{0}"&gt;{1}&lt;/a&gt; ને સંબંધિત છે.</target>
         </trans-unit>
         <trans-unit id="difffiles.jsp.note">
           <source>&lt;strong&gt;Note:&lt;/strong&gt; not all the files you have selected are relevant for this system. Any action scheduled with your current set of selected configuration files for this system will only include the configuration files listed below.</source>
@@ -16572,7 +16574,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">The configuration channels listed below are those selected configuration channels to which system32.devel is subscribed. Deployable Files are configuration files or directories in the channel that are not overridden by a local system configuration channel or a higher priority global channel. Change this system's configuration channel ranking.</context>
           </context-group>
-          <target>નીચે યાદી થયેલ રૂપરેખાંકન ચેનલો એ પસંદ થયેલ રૂપરેખાંકન ચેનલો છે કે જેમાં {0} ની ઉમેદવારી નોંધાયેલ છે. જમાવી શકાય તેવી ફાઈલો એ ચેનલમાંની રૂપરેખાંકન ફાઈલો કે ડિરેક્ટરીઓ છે કે જેઓ સ્થાનિક સિસ્ટમ રૂપરેખાંકન ચેનલ દ્વારા ફરીથી લખાઈ ગયેલ નથી કે ઊંચી પ્રાધાન્ય વૈશ્વિક ચેનલ છે. &lt;a href=&quot;{1}&quot;&gt;આ સિસ્ટમનું રૂપરેખાંકન ચેનલ ક્રમાંક બદલો&lt;/a&gt;.</target>
+          <target>નીચે યાદી થયેલ રૂપરેખાંકન ચેનલો એ પસંદ થયેલ રૂપરેખાંકન ચેનલો છે કે જેમાં {0} ની ઉમેદવારી નોંધાયેલ છે. જમાવી શકાય તેવી ફાઈલો એ ચેનલમાંની રૂપરેખાંકન ફાઈલો કે ડિરેક્ટરીઓ છે કે જેઓ સ્થાનિક સિસ્ટમ રૂપરેખાંકન ચેનલ દ્વારા ફરીથી લખાઈ ગયેલ નથી કે ઊંચી પ્રાધાન્ય વૈશ્વિક ચેનલ છે. &lt;a href="{1}"&gt;આ સિસ્ટમનું રૂપરેખાંકન ચેનલ ક્રમાંક બદલો&lt;/a&gt;.</target>
         </trans-unit>
         <trans-unit id="ssmsystemchannels.jsp.files">
           <source>Deployable Configuration Files</source>
@@ -16637,7 +16639,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <trans-unit id="sdc.config.file_list.central_description">
           <source>Below is a list of centrally-managed configuration files associated with {0}. Centrally-managed configuration files are provided by global configuration channels - you can determine which channel provides which file by examining the "Provided By" column below. Some of these centrally-managed files may be overridden by locally-managed files - you can determine whether or not a file is overridden by examining the "Overridden By" column below.</source>
-          <target>નીચે {0} સાથે સંકળાયેલ કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખાંકન ફાઈલોની યાદી છે. કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખાંકન ફાઈલો વૈશ્વિક રૂપરેખાંકન ચેનલો દ્વારા પૂરી પાડવામાં આવે છે - તમે નક્કી કરી શકો છો કે કઈ ચેનલ કઈ ફાઈલ પૂરી પાડે છે &quot;દ્વારા પૂરું પડાયેલ&quot; સ્તંભને નીચે પરિક્ષણ કરીને. આ કેન્દ્રિય રીતે-વ્યવસ્થાપિત ફાઈલોમાંની અમુક સ્થાનિક રીતે-વ્યવસ્થાપિત ફાઈલો વડે ફરીથી લખાઈ જશે - તમે  &quot;દ્વારા ઓવરરાઈડ થયેલ&quot; સ્તંભનું નીચે પરિક્ષણ કરીને નક્કી કરી શકો છો કે ફાઈલ ઓવરરાઈડ થયેલ છે કે નહિં.</target>
+          <target>નીચે {0} સાથે સંકળાયેલ કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખાંકન ફાઈલોની યાદી છે. કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખાંકન ફાઈલો વૈશ્વિક રૂપરેખાંકન ચેનલો દ્વારા પૂરી પાડવામાં આવે છે - તમે નક્કી કરી શકો છો કે કઈ ચેનલ કઈ ફાઈલ પૂરી પાડે છે "દ્વારા પૂરું પડાયેલ" સ્તંભને નીચે પરિક્ષણ કરીને. આ કેન્દ્રિય રીતે-વ્યવસ્થાપિત ફાઈલોમાંની અમુક સ્થાનિક રીતે-વ્યવસ્થાપિત ફાઈલો વડે ફરીથી લખાઈ જશે - તમે  "દ્વારા ઓવરરાઈડ થયેલ" સ્તંભનું નીચે પરિક્ષણ કરીને નક્કી કરી શકો છો કે ફાઈલ ઓવરરાઈડ થયેલ છે કે નહિં.</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.local_description">
           <source>Locally-managed configuration files are useful for overriding centrally-managed configuration profiles that cause problems on particular systems. Also, locally-managed configuration files are a method by which system group administrators who don't have configuration administration privileges can manage configuration files on the machines they are able to manage.</source>
@@ -16645,7 +16647,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.sandbox_description">
           <source>This sandbox is a place you can store configuration files that are under development. This sandbox is associated with this system, {0}, but you may promote files from this sandbox to a centrally-managed configuration channel using the "{1}" below. After files in this sandbox have been promoted to a centrally-managed configuration channel, you will be able to deploy them to other systems.</source>
-          <target>સેન્ડબોક્સ એ જગ્યા છે કે જ્યાં તમે રૂપરેખાંકન ફાઈલોને સંગ્રહી શકો કે જેઓ વિકાસ હેઠળ હોય. આ સેન્ડબોક્સ આ સિસ્ટમ સાથે સંકળાયેલ છે, {0}, પરંતુત તમે આ સેન્ડબોક્સમાંથી કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખાંકન ચેનલોમાં પ્રાધાન્ય આપી શકો &quot;{1}&quot; ની મદદથી નીચે. આ સેન્ડબોક્સમાંની ફાઈલો કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખાંકન ચેનલમાં પ્રાધાન્ય આપવામાં આવે પછી, તમે તેમને અન્ય સિસ્ટમોમાં જમાવવામાં સમર્થ હશો.</target>
+          <target>સેન્ડબોક્સ એ જગ્યા છે કે જ્યાં તમે રૂપરેખાંકન ફાઈલોને સંગ્રહી શકો કે જેઓ વિકાસ હેઠળ હોય. આ સેન્ડબોક્સ આ સિસ્ટમ સાથે સંકળાયેલ છે, {0}, પરંતુત તમે આ સેન્ડબોક્સમાંથી કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખાંકન ચેનલોમાં પ્રાધાન્ય આપી શકો "{1}" ની મદદથી નીચે. આ સેન્ડબોક્સમાંની ફાઈલો કેન્દ્રિય રીતે-વ્યવસ્થાપિત રૂપરેખાંકન ચેનલમાં પ્રાધાન્ય આપવામાં આવે પછી, તમે તેમને અન્ય સિસ્ટમોમાં જમાવવામાં સમર્થ હશો.</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.name">
           <source>File Name</source>
@@ -16657,11 +16659,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.view_or_compare">
           <source>[&lt;a href="{0}"&gt;View&lt;/a&gt;]&amp;nbsp;[&lt;a href="{1}"&gt;Compare&lt;/a&gt;]</source>
-          <target>[&lt;a href=&quot;{0}&quot;&gt;જુઓ&lt;/a&gt;]&amp;nbsp;[&lt;a href=&quot;{1}&quot;&gt;સરખાવો&lt;/a&gt;]</target>
+          <target>[&lt;a href="{0}"&gt;જુઓ&lt;/a&gt;]&amp;nbsp;[&lt;a href="{1}"&gt;સરખાવો&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.edit_or_compare">
           <source>[&lt;a href="{0}"&gt;Edit&lt;/a&gt;]&amp;nbsp;[&lt;a href="{1}"&gt;Compare&lt;/a&gt;]</source>
-          <target>[&lt;a href=&quot;{0}&quot;&gt;ફેરફાર&lt;/a&gt;]&amp;nbsp;[&lt;a href=&quot;{1}&quot;&gt;સરખાવો&lt;/a&gt;]</target>
+          <target>[&lt;a href="{0}"&gt;ફેરફાર&lt;/a&gt;]&amp;nbsp;[&lt;a href="{1}"&gt;સરખાવો&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.provided_by">
           <source>Provided By</source>
@@ -16676,11 +16678,11 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.revision">
           <source>&lt;a href="{0}"&gt;Revision {1}&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;આવૃત્તિ {1}&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;આવૃત્તિ {1}&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.overridden_none">
           <source>None [&lt;a href="{0}"&gt;Override this file&lt;/a&gt;]</source>
-          <target>કંઈ નહિં [&lt;a href=&quot;{0}&quot;&gt;આ ફાઈલ ઓવરરાઈડ કરો&lt;/a&gt;]</target>
+          <target>કંઈ નહિં [&lt;a href="{0}"&gt;આ ફાઈલ ઓવરરાઈડ કરો&lt;/a&gt;]</target>
         </trans-unit>
         <trans-unit id="sdc.config.file_list.current_revision">
           <source>Current Revision</source>
@@ -16743,7 +16745,7 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="sdc.configlist.jsp.noChannels">
           <source>No configuration channels. To subscribe this system to a configuration channel, please visit the &lt;a href="{0}"&gt;Subscribe to Channels&lt;/a&gt; tab.</source>
-          <target>કોઈ રૂપરેખાંકન ચેનલો નથી. આ સિસ્ટમની રૂપરેખાંકન ચેનલમાં ઉમેદવારી નોંધાવવા માટે, મહેરબાની કરીને &lt;a href=&quot;{0}&quot;&gt;ચેનલોમાં ઉમેદવારી નોંધાવો&lt;/a&gt; ટેબની મુલાકાત લો.</target>
+          <target>કોઈ રૂપરેખાંકન ચેનલો નથી. આ સિસ્ટમની રૂપરેખાંકન ચેનલમાં ઉમેદવારી નોંધાવવા માટે, મહેરબાની કરીને &lt;a href="{0}"&gt;ચેનલોમાં ઉમેદવારી નોંધાવો&lt;/a&gt; ટેબની મુલાકાત લો.</target>
         </trans-unit>
         <trans-unit id="sdc.configlist.jsp.name">
           <source>Channel Name</source>
@@ -17021,7 +17023,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">7 files scheduled for comparison.</context>
           </context-group>
-          <target>{0} ફાઈલો સરખામણી માટે &lt;a href=&quot;{1}&quot;&gt;સુનિશ્ચિત&lt;/a&gt; થયેલ છે.</target>
+          <target>{0} ફાઈલો સરખામણી માટે &lt;a href="{1}"&gt;સુનિશ્ચિત&lt;/a&gt; થયેલ છે.</target>
         </trans-unit>
       </group>
       <!-- configuration/sdc/deployfileconfirm.jsp  -->
@@ -17049,7 +17051,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           <context-group name="ctx">
             <context context-type="paramnotes">7 files scheduled for deploy.</context>
           </context-group>
-          <target>{0} ફાઈલ(ઓ) જમાવટ માટે &lt;a href=&quot;{1}&quot;&gt;સુનિશ્ચિત થયેલ છે&lt;/a&gt;.</target>
+          <target>{0} ફાઈલ(ઓ) જમાવટ માટે &lt;a href="{1}"&gt;સુનિશ્ચિત થયેલ છે&lt;/a&gt;.</target>
         </trans-unit>
       </group>
       <!-- ssm/view-log.jsp, ssm/view-log-details.jsp -->
@@ -17573,7 +17575,7 @@ Base Channel chosen on the
 કરી શકો છો કે જે નીચે પેકેજ રૂપરેખા પસંદ કરીને @@PRODUCT_NAME@@ માં રજીસ્ટર પણ કરી
 શકાય છે.  &lt;strong&gt;નોંધ&lt;/strong&gt;: આ યાદી માત્ર
 પેકેજ રૂપરેખાઓ બતાવશે કે જેઓ
-&lt;a href=&quot;/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}&quot;&gt;ઓપરેટિંગ સિસ્ટમ&lt;/a&gt; પાનાં
+&lt;a href="/rhn/kickstart/KickstartSoftwareEdit.do?ksid={0}"&gt;ઓપરેટિંગ સિસ્ટમ&lt;/a&gt; પાનાં
 પર પસંદ થયેલ આધાર ચેનલ વિરુદ્ધ જ બનાવવામાં આવેલ હતી.</target>
       </trans-unit>
       <trans-unit id="kickstart.packageprofiles.jsp.tip">
@@ -17585,11 +17587,11 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartPackageProfileEditSubmit.do</context>
         </context-group>
-        <target>&lt;span class=&quot;small-text&quot;&gt;&lt;strong&gt;મદદ:&lt;/strong&gt;
+        <target>&lt;span class="small-text"&gt;&lt;strong&gt;મદદ:&lt;/strong&gt;
 ખાતરી કરો કે તમે સિસ્ટમોની યોગ્ય સોફ્ટવેર ચેનલોમાં ઉમેદવારી નોંધાવો કિકસ્ટાર્ટ દરમ્યાન
 કે જેથી તેઓને પેકેજ રૂપરેખામાં પેકેજોનો વપરાશ હોય કે જેની સાથે તમે સુમેળ કરો.  સિસ્ટમોની
 કિકસ્ટાર્ટ દરમ્યાન સોફ્ટવેર ચેનલોમાં ઉમેદવારી નોંધાવવા માટે
-&lt;a href=&quot;/rhn/kickstart/ActivationKeysList.do?ksid={0}&quot;&gt;સક્રિયકરણ કીઓ&lt;/a&gt; ટેબની મુલાકાત લો.&lt;/span&gt;</target>
+&lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;સક્રિયકરણ કીઓ&lt;/a&gt; ટેબની મુલાકાત લો.&lt;/span&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.tip.proxy.jsp">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; Date listed is last time proxy contacted @@PRODUCT_NAME@@.</source>
@@ -17631,7 +17633,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>જો મહેમાન સિસ્ટમની લાંબા સમય સુધી જરૂર નહિં હોય તો તમે મહેમાન કાઢી શકશો. આ સિસ્ટમના યજમાન પર નવા મહેમાનનો બચાવ કરવા માટે, &lt;a href=&quot;/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}&quot;&gt;મહેરબાની કરીને યજમાનના સિસ્ટમ વિગતો પાનાં પરની 'વર્ચ્યુઅલાઈઝેશન' ટેબની મુલાકાત લો&lt;/a&gt;.</target>
+        <target>જો મહેમાન સિસ્ટમની લાંબા સમય સુધી જરૂર નહિં હોય તો તમે મહેમાન કાઢી શકશો. આ સિસ્ટમના યજમાન પર નવા મહેમાનનો બચાવ કરવા માટે, &lt;a href="/rhn/systems/details/virtualization/VirtualGuestsList.do?sid={0}"&gt;મહેરબાની કરીને યજમાનના સિસ્ટમ વિગતો પાનાં પરની 'વર્ચ્યુઅલાઈઝેશન' ટેબની મુલાકાત લો&lt;/a&gt;.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading1.jsp">
         <source>Schedule Autoinstallation</source>
@@ -17688,11 +17690,11 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <target>આનાં કરતાં જલદી કિકસ્ટાર્ટ સુનિશ્ચિત કરશો નહિં:</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.no.profiles.jsp">
-        <source>No profiles currently available for autoinstallation. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new kickstart profile.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstallation. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new kickstart profile.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
-        <target>કોઈ રૂપરેખાઓ વર્તમાનમાં કિકસ્ટાર્ટ માટે ઉપલબ્ધ નથી. મહેરબાની કરીને &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;નવી કિકસ્ટાર્ટ રૂપરેખા બનાવો.&lt;/a&gt;</target>
+        <target>કોઈ રૂપરેખાઓ વર્તમાનમાં કિકસ્ટાર્ટ માટે ઉપલબ્ધ નથી. મહેરબાની કરીને &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;નવી કિકસ્ટાર્ટ રૂપરેખા બનાવો.&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.button0.jsp">
         <source>Create PXE installation configuration</source>
@@ -18149,7 +18151,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/SessionStatus.do</context>
         </context-group>
-        <target>સિસ્ટમને &lt;a href=&quot;/rhn/profiles/Details.do?prid={0}&quot;&gt;પેકેજ રૂપરેખા&lt;/a&gt; માં સુમેળ કરો</target>
+        <target>સિસ્ટમને &lt;a href="/rhn/profiles/Details.do?prid={0}"&gt;પેકેજ રૂપરેખા&lt;/a&gt; માં સુમેળ કરો</target>
       </trans-unit>
       <trans-unit id="kickstart.session_status.jsp.status_config">
         <source>Deploy configuration files</source>
@@ -18364,13 +18366,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
         <target>સરળ ચીની</target>
-      </trans-unit>
-      <trans-unit id="preferences.jsp.lang.none">
-        <source>Use Browser Settings</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
-        </context-group>
-        <target>બ્રાઉઝર સુયોજનો વાપરો</target>
       </trans-unit>
       <trans-unit id="probes.jsp.toolbar">
         <source>Probe Status List</source>
@@ -19065,11 +19060,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
       </group>
       <trans-unit id="virtualization.provision.first.jsp.no.profiles">
-        <source>No profiles currently available for autoinstalling guests. Please &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
+        <source>No profiles currently available for autoinstalling guests. Please &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;create a new autoinstallation profile with a Virtualization Type other than none.&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>કોઈ રૂપરેખાઓ વર્તમાનમાં કિકસ્ટાર્ટ માટે ઉપલબ્ધ નથી. મહેરબાની કરીને &lt;a href=&quot;/rhn/kickstart/CreateProfileWizard.do&quot;&gt;કંઈપણ સિવાયના વર્ચ્યુઅલાઈઝેશન પ્રકાર સાથે નવી કિકસ્ટાર્ટ રૂપરેખા બનાવો.&lt;/a&gt;</target>
+        <target>કોઈ રૂપરેખાઓ વર્તમાનમાં કિકસ્ટાર્ટ માટે ઉપલબ્ધ નથી. મહેરબાની કરીને &lt;a href="/rhn/kickstart/CreateProfileWizard.do"&gt;કંઈપણ સિવાયના વર્ચ્યુઅલાઈઝેશન પ્રકાર સાથે નવી કિકસ્ટાર્ટ રૂપરેખા બનાવો.&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="info.alt.img">
         <source>Information Icon</source>
@@ -19160,11 +19155,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.deploy.managed-files">
           <source>&lt;a href="{0}"&gt;Deploy all managed config files&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;બધી વ્યવસ્થાપિત રૂપરેખા ફાઈલો જમાવો&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;બધી વ્યવસ્થાપિત રૂપરેખા ફાઈલો જમાવો&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.deploy.selected-files">
           <source>&lt;a href="{0}"&gt;Deploy selected config files&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;પસંદ કરેલ રૂપરેખા ફાઈલો જમાવો&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;પસંદ કરેલ રૂપરેખા ફાઈલો જમાવો&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.compare.files">
           <source>Compare Files</source>
@@ -19172,11 +19167,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.compare.managed-files">
           <source>&lt;a href="{0}"&gt;Compare all managed files to system&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;બધી વ્યવસ્થાપિત ફાઈલોને સિસ્ટમ સાથે સરખાવો&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;બધી વ્યવસ્થાપિત ફાઈલોને સિસ્ટમ સાથે સરખાવો&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.compare.selected-files">
           <source>&lt;a href="{0}"&gt;Compare selected managed files to system&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;પસંદ કરેલ વ્યવસ્થાપિત ફાઈલોને સિસ્ટમ સાથે સરખાવો&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;પસંદ કરેલ વ્યવસ્થાપિત ફાઈલોને સિસ્ટમ સાથે સરખાવો&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.add-create.files">
           <source>Add/Create files</source>
@@ -19184,19 +19179,19 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.add-create.new-files">
           <source>&lt;a href="{0}"&gt;Create a new config file or dir&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;નવી રૂપરેખા ફાઈલ અથવા ડિરેક્ટરી બનાવો&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;નવી રૂપરેખા ફાઈલ અથવા ડિરેક્ટરી બનાવો&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.add-create.upload-files">
           <source>&lt;a href="{0}"&gt;Upload config files&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;રૂપરેખા ફાઈલો અપલોડ કરો&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;રૂપરેખા ફાઈલો અપલોડ કરો&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.add-create.import-all-files">
           <source>&lt;a href="{0}"&gt;Import all managed files from system&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;સિસ્ટમમાંથી બધી વ્યવસ્થાપિત ફાઈલો આયાત કરો&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;સિસ્ટમમાંથી બધી વ્યવસ્થાપિત ફાઈલો આયાત કરો&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="sdc.config.add-create.import-selected-files">
           <source>&lt;a href="{0}"&gt;Import selected files from system&lt;/a&gt;</source>
-          <target>&lt;a href=&quot;{0}&quot;&gt;સિસ્ટમમાંથી પસંદ કરેલ ફાઈલો આયાત કરો&lt;/a&gt;</target>
+          <target>&lt;a href="{0}"&gt;સિસ્ટમમાંથી પસંદ કરેલ ફાઈલો આયાત કરો&lt;/a&gt;</target>
         </trans-unit>
       </group>
       <group>
@@ -19209,7 +19204,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.subscriptions.jsp.para1">
           <source>Below is a list of configuration channels available to this system. To subscribe to a channel, check its checkbox. Make sure you click the "Continue" button when you are finished with your changes.</source>
-          <target>નીચે આ સિસ્ટમ માટે ઉપલબ્ધ રૂપરેખાંકન ચેનલોની યાદી છે. ચેનલમાં ઉમેદવારી નોંધાવવા માટે, તેનું ચકાસણીબોક્સ ચકાસો. ખાતરી કરો કે તમે &quot;ચાલુ રાખો&quot; બટન ક્લિક કરો જ્યારે તમે તમારા ફેરફારોથી સમાપ્ત થઈ જાવ.</target>
+          <target>નીચે આ સિસ્ટમ માટે ઉપલબ્ધ રૂપરેખાંકન ચેનલોની યાદી છે. ચેનલમાં ઉમેદવારી નોંધાવવા માટે, તેનું ચકાસણીબોક્સ ચકાસો. ખાતરી કરો કે તમે "ચાલુ રાખો" બટન ક્લિક કરો જ્યારે તમે તમારા ફેરફારોથી સમાપ્ત થઈ જાવ.</target>
         </trans-unit>
         <trans-unit id="sdc.config.subscriptions.jsp.channel">
           <source>Channel Name</source>
@@ -19225,7 +19220,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.subscriptions.jsp.noChannels">
           <source> No configuration channels are available for subscription. You have either already subscribed this system to all available channels (&lt;a href="{0}"&gt;view subscribed channels&lt;/a&gt;) or you do not have permissions to access any of the available channels.</source>
-          <target> ઉમેદવારી માટે કોઈ રૂપરેખાંકન ચેનલો ઉપલબ્ધ નથી. તમે ક્યાં તો આ સિસ્ટમમાં પહેલાથી જ ઉમેદવારી નોંધાવેલ છે બધી ઉપલબ્ધ ચેનલોમાં (&lt;a href=&quot;{0}&quot;&gt;ઉમેદવારી થયેલ ચેનલો જુઓ&lt;/a&gt;) અથવા તમારી પાસે ઉપલબ્ધ ચેનલોમાંની કોઈપણ વાપરવા માટે પરવાનગીઓ નથી.</target>
+          <target> ઉમેદવારી માટે કોઈ રૂપરેખાંકન ચેનલો ઉપલબ્ધ નથી. તમે ક્યાં તો આ સિસ્ટમમાં પહેલાથી જ ઉમેદવારી નોંધાવેલ છે બધી ઉપલબ્ધ ચેનલોમાં (&lt;a href="{0}"&gt;ઉમેદવારી થયેલ ચેનલો જુઓ&lt;/a&gt;) અથવા તમારી પાસે ઉપલબ્ધ ચેનલોમાંની કોઈપણ વાપરવા માટે પરવાનગીઓ નથી.</target>
         </trans-unit>
         <trans-unit id="common.config.subscription.jsp.error.nojavascript">
           <source>Please enable Javascript before selecting your channel subscriptions.</source>
@@ -19258,7 +19253,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.para2">
           <source>To modify the respective rankings of the subscribed channels, you may select one channel at a time to move up or down using the arrow buttons below. After you have completed the ranking process, you will need to click on "{0}" below to confirm the channel subscriptions and ordering.</source>
-          <target>ઉમેદવારી થયેલ ચેનલોના લાગતાવળગતા ક્રમો સુધારવા માટે, તમે એક સમયે એક ચેનલ પસંદ કરી શકશો ઉપર ખસવા માટે કે નીચે તીર બટનોની મદદથી જવા માટે. ક્રમાંકન પ્રક્રિયા તમે સમાપ્ત કર્યા પછી, તમારે ચેનલ ઉમેદવારીઓ અને ક્રમાંકનની ખાતરી કરવા માટે નીચે &quot;{0}&quot; પર ક્લિક કરવાની જરૂર રહેશે.</target>
+          <target>ઉમેદવારી થયેલ ચેનલોના લાગતાવળગતા ક્રમો સુધારવા માટે, તમે એક સમયે એક ચેનલ પસંદ કરી શકશો ઉપર ખસવા માટે કે નીચે તીર બટનોની મદદથી જવા માટે. ક્રમાંકન પ્રક્રિયા તમે સમાપ્ત કર્યા પછી, તમારે ચેનલ ઉમેદવારીઓ અને ક્રમાંકનની ખાતરી કરવા માટે નીચે "{0}" પર ક્લિક કરવાની જરૂર રહેશે.</target>
         </trans-unit>
         <trans-unit id="sdc.config.rank.jsp.subscribed_channels">
           <source>Subscribed Channels</source>
@@ -19266,7 +19261,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </trans-unit>
         <trans-unit id="common.config.rank.jsp.warning">
           <source>&lt;strong&gt;Warning:&lt;/strong&gt; You have just selected new configuration channel(s) to subscribe this system to. This system will &lt;strong&gt;not&lt;/strong&gt; be subscribed to these channels until you confirm the subscriptions by determining their ranks and clicking on "{0}" below. </source>
-          <target>&lt;strong&gt;ચેતવણી:&lt;/strong&gt; તમે આ સિસ્ટમની ઉમેદવારી કરવા માટે ખાલી નવી રૂપરેખાંકન ચેનલ(ઓ) જ પસંદ કરેલ છે. આ સિસ્ટમની ઉમેદવારી આ ચેનલોમાં &lt;strong&gt;થશે નહિં&lt;/strong&gt; જ્યાં સુધી તમે ઉમેદવારીઓ તેમનો ક્રમ નક્કી કરીને ખાતરી કરો નહિં અને નીચે &quot;{0}&quot; પર ક્લિક કરીને. </target>
+          <target>&lt;strong&gt;ચેતવણી:&lt;/strong&gt; તમે આ સિસ્ટમની ઉમેદવારી કરવા માટે ખાલી નવી રૂપરેખાંકન ચેનલ(ઓ) જ પસંદ કરેલ છે. આ સિસ્ટમની ઉમેદવારી આ ચેનલોમાં &lt;strong&gt;થશે નહિં&lt;/strong&gt; જ્યાં સુધી તમે ઉમેદવારીઓ તેમનો ક્રમ નક્કી કરીને ખાતરી કરો નહિં અને નીચે "{0}" પર ક્લિક કરીને. </target>
         </trans-unit>
         <trans-unit id="common.config.rank.jsp.error.nojavascript">
           <source>Please enable Javascript before ordering your channel subscriptions.</source>
@@ -19367,7 +19362,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>(&lt;a href=&quot;{0}&quot;&gt;સિસ્ટમનું તાળું ખોલો&lt;/a&gt;)</target>
+        <target>(&lt;a href="{0}"&gt;સિસ્ટમનું તાળું ખોલો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.locked">
         <source>System has been &lt;strong&gt;locked&lt;/strong&gt; by {0}: {1}</source>
@@ -19381,14 +19376,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>(&lt;a href=&quot;{0}&quot;&gt;સિસ્ટમને તાળું મારો&lt;/a&gt;)</target>
+        <target>(&lt;a href="{0}"&gt;સિસ્ટમને તાળું મારો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.subscribedchannels">
         <source>Subscribed Channels (&lt;a href="{0}"&gt;Alter Channel Subscriptions&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>ઉમેદવારી કરેલ ચેનલો (&lt;a href=&quot;{0}&quot;&gt;ચેનલ ઉમેદવારીઓ બદલો&lt;/a&gt;)</target>
+        <target>ઉમેદવારી કરેલ ચેનલો (&lt;a href="{0}"&gt;ચેનલ ઉમેદવારીઓ બદલો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysevents">
         <source>System Events</source>
@@ -19460,14 +19455,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>(&lt;a href=&quot;{0}&quot;&gt;સિસ્ટમ રીબુટ સુનિશ્ચિત કરો&lt;/a&gt;)</target>
+        <target>(&lt;a href="{0}"&gt;સિસ્ટમ રીબુટ સુનિશ્ચિત કરો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysproperties">
         <source>System Properties (&lt;a href="{0}"&gt;Edit These Properties&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>સિસ્ટમ ગુણધર્મો (&lt;a href=&quot;{0}&quot;&gt;આ ગુણધર્મોમાં ફેરફાર કરો&lt;/a&gt;)</target>
+        <target>સિસ્ટમ ગુણધર્મો (&lt;a href="{0}"&gt;આ ગુણધર્મોમાં ફેરફાર કરો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.entitlement">
         <source>System Types:</source>
@@ -19572,21 +19567,21 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;&lt;a href=&quot;{0}&quot;&gt;જટિલ: &lt;/a&gt;&lt;/strong&gt; {1}</target>
+        <target>&lt;strong&gt;&lt;a href="{0}"&gt;જટિલ: &lt;/a&gt;&lt;/strong&gt; {1}</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updates.noncritical">
         <source>&lt;strong&gt;&lt;a href="{0}"&gt;Non-Critical: &lt;/a&gt;&lt;/strong&gt; {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;&lt;a href=&quot;{0}&quot;&gt;બિન-જટિલ: &lt;/a&gt;&lt;/strong&gt; {1}</target>
+        <target>&lt;strong&gt;&lt;a href="{0}"&gt;બિન-જટિલ: &lt;/a&gt;&lt;/strong&gt; {1}</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updates.packages">
         <source>&lt;strong&gt;&lt;a href="{0}"&gt;Packages: &lt;/a&gt;&lt;/strong&gt; {1}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;&lt;a href=&quot;{0}&quot;&gt;પેકેજો: &lt;/a&gt;&lt;/strong&gt; {1}</target>
+        <target>&lt;strong&gt;&lt;a href="{0}"&gt;પેકેજો: &lt;/a&gt;&lt;/strong&gt; {1}</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.requires_reboot">
         <source>The system requires a reboot</source>
@@ -19611,7 +19606,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;સિસ્ટમની ઉમેદવારી નોંધાયેલ નથી&lt;/strong&gt; (&lt;a href=&quot;{0}&quot;&gt;તેની ઉમેદવારી અંહિ કરો&lt;/a&gt;)</target>
+        <target>&lt;strong&gt;સિસ્ટમની ઉમેદવારી નોંધાયેલ નથી&lt;/strong&gt; (&lt;a href="{0}"&gt;તેની ઉમેદવારી અંહિ કરો&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.updated">
         <source>&lt;strong&gt;System is up to date&lt;/strong&gt;</source>
@@ -19625,14 +19620,14 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>&lt;strong&gt;જટિલ&lt;/strong&gt; સિસ્ટમ તંદુરસ્તી (&lt;a href=&quot;{0}&quot;&gt;વધુ જાણકારી&lt;/a&gt;)</target>
+        <target>&lt;strong&gt;જટિલ&lt;/strong&gt; સિસ્ટમ તંદુરસ્તી (&lt;a href="{0}"&gt;વધુ જાણકારી&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.probes.warning">
         <source>System Health &lt;strong&gt;Warning&lt;/strong&gt; (&lt;a href="{0}"&gt;more info&lt;/a&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>સિસ્ટમ તંદુરસ્તી &lt;strong&gt;ચેતવણી&lt;/strong&gt; (&lt;a href=&quot;{0}&quot;&gt;વધુ જાણકારી&lt;/a&gt;)</target>
+        <target>સિસ્ટમ તંદુરસ્તી &lt;strong&gt;ચેતવણી&lt;/strong&gt; (&lt;a href="{0}"&gt;વધુ જાણકારી&lt;/a&gt;)</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.unknown">
         <source>unknown</source>
@@ -19667,7 +19662,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ વપરાશ માટે rhn-applet સક્રિય કરો.&quot;</target>
+        <target>@@PRODUCT_NAME@@ વપરાશ માટે rhn-applet સક્રિય કરો."</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.crashes.application">
         <source>Application Crashes</source>
@@ -20540,7 +20535,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>આ તરીકે હાલમાં પ્રવેશ થયેલ છે: {0}</target>
       </trans-unit>
       <!-- outage-policy.jsp -->
-      <group></group>
+      <group />
       <!-- download-ISOs pages -->
       <group>
         <!-- common -->
@@ -20652,11 +20647,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>આ સિસ્ટમને કોઈ આધાર સોફ્ટવેર ચેનલ નથી.  તમે નીચેની યાદીમાંથી આધાર ચેનલ પસંદ કરી શકો છો.</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href=&quot;/rhn/systems/details/SystemChannels.do?sid={0}&quot;&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host, &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;. Subscribing to them will consume additional software entitlements. &lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;Applying a different virtual system entitlement to the host system&lt;/a&gt; will affect which channels have this mark.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/SystemChannels.do</context>
         </context-group>
-        <target>&lt;strong&gt;નોંધ:&lt;/strong&gt; આ ચેનલો આ મહેમાનના યજમાન, &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt; માટે Red Hat Enterprise Linux ઉમેદવારીના ભાગ નથી. તેમાં ઉમેદવારી નોંધાવવાનું વધારાની સોફ્ટવેર ઉમેદવારીઓ ખાઈ જશે. &lt;a href=&quot;/rhn/systems/details/SystemChannels.do?sid={0}&quot;&gt;યજમાન સિસ્ટમ પર અલગ વર્ચ્યુઅલ સિસ્ટમ ઉમેદવારી માટે અરજી કરવાનું&lt;/a&gt; જે ચેનલોને આ ચિહ્ન હોય તેને અસર કરશે.</target>
+        <target>&lt;strong&gt;નોંધ:&lt;/strong&gt; આ ચેનલો આ મહેમાનના યજમાન, &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt; માટે Red Hat Enterprise Linux ઉમેદવારીના ભાગ નથી. તેમાં ઉમેદવારી નોંધાવવાનું વધારાની સોફ્ટવેર ઉમેદવારીઓ ખાઈ જશે. &lt;a href="/rhn/systems/details/SystemChannels.do?sid={0}"&gt;યજમાન સિસ્ટમ પર અલગ વર્ચ્યુઅલ સિસ્ટમ ઉમેદવારી માટે અરજી કરવાનું&lt;/a&gt; જે ચેનલોને આ ચિહ્ન હોય તેને અસર કરશે.</target>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning_nohost">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
@@ -20740,7 +20735,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem.do</context>
         </context-group>
-        <target>{1} માટે સિસ્ટમ &lt;strong&gt;{0}&lt;/strong&gt; માટે રીબુટ સુનિશ્ચિત થયેલ છે.  રીબુટ રદ કરવા માટે, &lt;strong&gt;{0}&lt;/strong&gt; ને &lt;a href=&quot;/rhn/schedule/InProgressSystems.do?aid={2}&quot;&gt;&lt;strong&gt;રીબુટ કરવા માટેની સિસ્ટમોની યાદી&lt;/strong&gt;&lt;/a&gt; માંથી દૂર કરો.</target>
+        <target>{1} માટે સિસ્ટમ &lt;strong&gt;{0}&lt;/strong&gt; માટે રીબુટ સુનિશ્ચિત થયેલ છે.  રીબુટ રદ કરવા માટે, &lt;strong&gt;{0}&lt;/strong&gt; ને &lt;a href="/rhn/schedule/InProgressSystems.do?aid={2}"&gt;&lt;strong&gt;રીબુટ કરવા માટેની સિસ્ટમોની યાદી&lt;/strong&gt;&lt;/a&gt; માંથી દૂર કરો.</target>
       </trans-unit>
       <trans-unit id="org.login.examples">
         <source>&lt;strong&gt;Examples:&lt;/strong&gt; 'sales-admin', 'admin_prodops@example.com', 'sales.admin'</source>
@@ -21938,7 +21933,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.message">
         <source>You may delete packages owned by your organization. The "view packages in channels" select box allows you to restrict the set of packages you will view. To delete a package, check the box next to it and click 'Confirm Deletion', below.</source>
-        <target>તમારી સંસ્થા દ્દારા તમે પોતાનાં થયેલ પેકેજોને કાઢી શકો છો. &quot;ચેનલોમાં પેકેજોને દેખાડો&quot; પેકેજોને સુયોજિત કરવાનું મર્યાદામાં રહેવાનું પરવાનગી આપવા માટે બોક્સને પસંદ કરો જે તને જોશો. પેકેજને કાઢી નાંખવા માટે, તેનાં પછીનાં બોક્સને પસંદ કરો અને 'કાઢી નાંખવાની ખાતરી કરો' પર ક્લિક કરો, નીચે.</target>
+        <target>તમારી સંસ્થા દ્દારા તમે પોતાનાં થયેલ પેકેજોને કાઢી શકો છો. "ચેનલોમાં પેકેજોને દેખાડો" પેકેજોને સુયોજિત કરવાનું મર્યાદામાં રહેવાનું પરવાનગી આપવા માટે બોક્સને પસંદ કરો જે તને જોશો. પેકેજને કાઢી નાંખવા માટે, તેનાં પછીનાં બોક્સને પસંદ કરો અને 'કાઢી નાંખવાની ખાતરી કરો' પર ક્લિક કરો, નીચે.</target>
       </trans-unit>
       <trans-unit id="channel.jsp.manage.package.subtitle">
         <source>Package List</source>
@@ -22624,7 +22619,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
         <target>આ ચેનલ એ &lt;strong&gt;સાર્વજનિક&lt;/strong&gt; છે અને
-        આ સંસ્થા દ્દારા સંચાલિત થયેલ &lt;a href=&quot;{0}&quot;&gt;સંચાલિત થયેલ
+        આ સંસ્થા દ્દારા સંચાલિત થયેલ &lt;a href="{0}"&gt;સંચાલિત થયેલ
         સંસ્થાઓ&lt;/a&gt; નાં કોઇપણ દ્દારા દાખલ થયેલ છે.</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.protected">
@@ -22635,7 +22630,7 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
         <target>આ ચેનલ એ &lt;strong&gt;સુરક્ષિત થયેલ&lt;/strong&gt; છે અને
-        આ ચોક્કસ &lt;a href=&quot;{0}&quot;&gt;સંચાલિત થયેલ
+        આ ચોક્કસ &lt;a href="{0}"&gt;સંચાલિત થયેલ
         સંસ્થાઓ&lt;/a&gt; દ્દારા ફક્ત દાખલ થઇ શકે છે.</target>
       </trans-unit>
       <trans-unit id="channel.edit.jsp.private">
@@ -23234,7 +23229,7 @@ given channel.</source>
         <source>The requested autoinstallation file could not be found.
          If you are requesting an organizational default autoinstallation, ensure that an autoinstallation has been selected as the "Organization Default".</source>
         <target>સુચિત કિકસ્ટાર્ટ ફાઇલને શોધી શક્યા નહિં.
-         જો તમે સંસ્થાકીય મૂળભૂત કિકસ્ટાર્ટને સૂચન કરી રહ્યા હોય તો, ખાતરી કરો કે જે કિકસ્ટાર્ટ એ &quot;મૂળભૂત સંસ્થા&quot; તરીકે પસંદ કરી દેવામાં આવી છે.</target>
+         જો તમે સંસ્થાકીય મૂળભૂત કિકસ્ટાર્ટને સૂચન કરી રહ્યા હોય તો, ખાતરી કરો કે જે કિકસ્ટાર્ટ એ "મૂળભૂત સંસ્થા" તરીકે પસંદ કરી દેવામાં આવી છે.</target>
       </trans-unit>
       <trans-unit id="task.status.last.execution">
         <source>Last Execution Times</source>
@@ -24082,7 +24077,7 @@ given channel.</source>
         <source>Copyright (c) 2011 - 2019 SUSE LLC.</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement">
-        <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
+        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni">
         <source>
@@ -24228,13 +24223,13 @@ given channel.</source>
     General Public License (GPL). The GPL requires that SUSE makes available
     certain source code that corresponds to the GPL-licensed material. The source
     code is available for download at
-    &lt;a href=&quot;https://www.suse.com/download-linux/source-code.html&quot;&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
-    Also, for up to three years from SUSE&#39;s distribution of the SUSE product, upon
+    &lt;a href="https://www.suse.com/download-linux/source-code.html"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    Also, for up to three years from SUSE's distribution of the SUSE product, upon
     request SUSE will mail a copy of the source code. Requests should be sent by
     e-mail to
-    &lt;a href=&quot;mailto:sle_source_request@suse.com&quot;&gt;sle_source_request@suse.com&lt;/a&gt;
+    &lt;a href="mailto:sle_source_request@suse.com"&gt;sle_source_request@suse.com&lt;/a&gt;
     or as otherwise instructed at
-    &lt;a href=&quot;https://www.suse.com/download-linux/source-code.html/&quot;&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    &lt;a href="https://www.suse.com/download-linux/source-code.html/"&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
     SUSE may charge a fee to recover its reasonable costs of distribution
 &lt;/p&gt;
         </source>
@@ -24260,6 +24255,79 @@ given channel.</source>
       <trans-unit id="Formula">
         <source>Formula</source>
       </trans-unit>
+    <trans-unit id="actionchain.jsp.maintenanceschedule">
+        <source>maintenance schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.maint-window">
+        <source>Maintenance window:</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.multiple_maintenance_schedules">
+        <source>There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="schedule.jsp.no_maintenance_windows">
+        <source>No upcoming maintenance windows for selected systems.</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="preferences.jsp.lang.default">
+        <source>Use configured default ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.schedule">
+        <source>Maintenance Schedule:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.overview.schedule.none">
+        <source>(none)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Overview.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule">
+        <source>Maintenance Schedule:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule.none">
+        <source>None</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="sdc.details.edit.schedule.cancelaffected">
+        <source>Cancel affected actions</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Edit.do</context>
+        </context-group>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Maintenance Windows">
+        <source>Maintenance Windows</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Schedules">
+        <source>Schedules</source>
+      <target state="new" />
+  </trans-unit>
+      <trans-unit id="Calendars">
+        <source>Calendars</source>
+      <target state="new" />
+  </trans-unit>
     </body>
   </file>
 </xliff>

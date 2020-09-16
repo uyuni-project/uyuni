@@ -1,6 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xyz="urn:appInfo:Items" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd" version="1.1">
-  <file source-language="en" datatype="plaintext" original="" target-language="pt_BR">
+<?xml version='1.0' encoding='utf-8'?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.1 http://www.oasis-open.org/committees/xliff/documents/xliff-core-1.1.xsd">
+  <file datatype="plaintext" original="" source-language="en" target-language="pt_BR">
     <body>
       <!-- New Account Email -->
       <trans-unit id="email.newaccount.subject">
@@ -16,8 +16,23 @@
         <target>Sua Conta @@PRODUCT_NAME@@ está pronta</target>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body">
-        <source>Hello, A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription, provides you with access to manage systems on @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {2} Password: {3} e-mail: {4} {5} Important: Please change your password upon logging in. Thank you for using @@PRODUCT_NAME@@. {6}</source>
-        <target>Olá, um login do @@PRODUCT_NAME@@ foi criado para você por {0} {1}. Seu login no @@PRODUCT_NAME@@, em combinação com uma assinatura ativa @@VENDOR_NAME@@, fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {2} Senha: {3} e-mail: {4} {5} Importante: Altere sua senha ao fazer login. Obrigado por usar @@PRODUCT_NAME@@. {6}</target>
+        <source>Hello,
+
+A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+provides you with access to manage systems on @@PRODUCT_NAME@@.
+
+  @@PRODUCT_NAME@@ login: {2}
+       Password: {3}
+         e-mail: {4}
+
+  {5}
+
+Important: Please change your password upon logging in.
+
+Thank you for using @@PRODUCT_NAME@@.
+{6}</source>
+        <target state="needs-adaptation">Olá, um login do @@PRODUCT_NAME@@ foi criado para você por {0} {1}. Seu login no @@PRODUCT_NAME@@, em combinação com uma assinatura ativa @@VENDOR_NAME@@, fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {2} Senha: {3} e-mail: {4} {5} Importante: Altere sua senha ao fazer login. Obrigado por usar @@PRODUCT_NAME@@. {6}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -33,8 +48,23 @@
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.body">
-        <source>Hello, A @@PRODUCT_NAME@@ login has been created for you. Your @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription, provides you with access to manage systems on @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {0} Password: {1} e-mail: {2} {3} Important: Please change your password upon logging in. Thank you for using @@PRODUCT_NAME@@. {4}</source>
-        <target>Olá, Um login @@PRODUCT_NAME@@ foi criado para você. Seu login no @@PRODUCT_NAME@@, em combinação com uma assinatura ativa @@VENDOR_NAME@@, fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {0} Senha: {1} e-mail: {2} {3} Importante: Altere sua senha ao fazer login. Obrigado por usar @@PRODUCT_NAME@@. {4}</target>
+        <source>Hello,
+
+A @@PRODUCT_NAME@@ login has been created for you. Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+provides you with access to manage systems on @@PRODUCT_NAME@@.
+
+  @@PRODUCT_NAME@@ login: {0}
+       Password: {1}
+         e-mail: {2}
+
+  {3}
+
+Important: Please change your password upon logging in.
+
+Thank you for using @@PRODUCT_NAME@@.
+{4}</source>
+        <target state="needs-adaptation">Olá, Um login @@PRODUCT_NAME@@ foi criado para você. Seu login no @@PRODUCT_NAME@@, em combinação com uma assinatura ativa @@VENDOR_NAME@@, fornece acesso para gerenciar sistemas em @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {0} Senha: {1} e-mail: {2} {3} Importante: Altere sua senha ao fazer login. Obrigado por usar @@PRODUCT_NAME@@. {4}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -50,7 +80,19 @@
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.pam.body">
-        <source>Hello, A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription, provides you with access to manage systems on @@PRODUCT_NAME@@. @@PRODUCT_NAME@@ login: {2} e-mail: {4} {5} Thank you for using @@PRODUCT_NAME@@. {6}</source>
+        <source>Hello,
+
+A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
+@@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
+provides you with access to manage systems on @@PRODUCT_NAME@@.
+
+  @@PRODUCT_NAME@@ login: {2}
+         e-mail: {4}
+
+  {5}
+
+Thank you for using @@PRODUCT_NAME@@.
+{6}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -64,7 +106,7 @@
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target>Olá,
+        <target state="needs-adaptation">Olá,
 
 Um login da Red Hat foi criado para você por {0} {1}.  Seu
 login da Red Hat, combinado com uma subscrição ativa da Red Hat,
@@ -94,7 +136,19 @@ Obrigado por usar o @@PRODUCT_NAME@@.
         <target>@@PRODUCT_NAME@@ Usuário Criado: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
       <trans-unit id="email.newuser.body">
-        <source>Hello, A new user has been added to your account. {0} To see all the active users and @@PRODUCT_NAME@@ logins associated with your account, please visit: {1} Thank you for using @@PRODUCT_NAME@@. {2}</source>
+        <source>Hello,
+
+A new user has been added to your account.
+
+{0}
+
+To see all the active users and @@PRODUCT_NAME@@ logins associated with your account,
+please visit:
+
+  {1}
+
+Thank you for using @@PRODUCT_NAME@@.
+{2}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -107,7 +161,7 @@ Obrigado por usar o @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target>Olá,
+        <target state="needs-adaptation">Olá,
 
 Um novo usuário foi adicionado à sua conta.
 
@@ -243,7 +297,26 @@ da visualização individual do sistema.
         <target>Relatório @@PRODUCT_NAME@@ de Status Diário para {0}</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body">
-        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}. This email will be sent when any of the following apply: 1. The system fails to check in with @@PRODUCT_NAME@@ within a 24-hour window. 2. The system registers scheduled action activity. {2} {3} Disabling this email: ---------------------- To disable this email for systems, visit the Preferences page at https://{4}/rhn/account/UserPreferences.do Thank you for using @@PRODUCT_NAME@@. {5} {6}</source>
+        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+
+This email will be sent when any of the following apply:
+
+1.  The system fails to check in with @@PRODUCT_NAME@@ within a 24-hour window.
+2.  The system registers scheduled action activity.
+
+{2}
+{3}
+Disabling this email:
+----------------------
+
+To disable this email for systems, visit the Preferences page at
+https://{4}/rhn/account/UserPreferences.do
+
+
+Thank you for using @@PRODUCT_NAME@@.
+{5}
+{6}
+</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">
@@ -256,7 +329,7 @@ da visualização individual do sistema.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target>Este é o Relatório de Status do @@PRODUCT_NAME@@ para sua conta {0}, conforme o {1}.
+        <target state="needs-adaptation">Este é o Relatório de Status do @@PRODUCT_NAME@@ para sua conta {0}, conforme o {1}.
 
 Este e-mail será enviado nas seguintes condições:
 
@@ -279,8 +352,23 @@ Obrigado por usar o @@PRODUCT_NAME@@.
 </target>
       </trans-unit>
       <trans-unit id="email.forgotten.password">
-        <source>[ This is an automated email sent to {0} at your request. ] A request to reset the @@PRODUCT_NAME@@ password for login {2} has been made. To continue the reset process, please proceed to: {1} If you don't want your password reset, you can ignore this email. If you experience any further difficulties with the reset process, please contact your @@PRODUCT_NAME@@ administrator for further assistance. Thank you for using @@PRODUCT_NAME@@.</source>
-        <target>[ Este é um email automático enviado para {0} a seu pedido. ] Foi solicitada uma redefinição da senha @@PRODUCT_NAME@@ para o login {2}. Para continuar o processo de redefinição, prossiga para: {1} Se você não deseja redefinir sua senha, pode ignorar este e-mail. Se você tiver mais dificuldades com o processo de redefinição, entre em contato com o administrador do @@PRODUCT_NAME@@ para obter mais assistência. Obrigado por usar o @@PRODUCT_NAME@@.</target>
+        <source>
+[ This is an automated email sent to {0} at your request. ]
+
+A request to reset the @@PRODUCT_NAME@@ password for login {2} has been made.
+
+To continue the reset process, please proceed to:
+
+{1}
+
+If you don't want your password reset, you can ignore this email.
+
+If you experience any further difficulties with the reset process,
+please contact your @@PRODUCT_NAME@@ administrator for further assistance.
+
+Thank you for using @@PRODUCT_NAME@@.
+        </source>
+        <target state="needs-adaptation">[ Este é um email automático enviado para {0} a seu pedido. ] Foi solicitada uma redefinição da senha @@PRODUCT_NAME@@ para o login {2}. Para continuar o processo de redefinição, prossiga para: {1} Se você não deseja redefinir sua senha, pode ignorar este e-mail. Se você tiver mais dificuldades com o processo de redefinição, entre em contato com o administrador do @@PRODUCT_NAME@@ para obter mais assistência. Obrigado por usar o @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -291,7 +379,25 @@ Obrigado por usar o @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.logins">
-        <source>[ This is an automated email sent to {0} at your request. ] You have requested a list of all @@PRODUCT_NAME@@ logins associated with the email address {0}. Existing login(s): {1} You may reset the passwords for any of the above @@PRODUCT_NAME@@ logins at: https://{2}/rhn/help/ForgotCredentials.do If you continue to have difficulties logging in, please contact your @@PRODUCT_NAME@@ administrator for further assistance. If you did not request this email be sent, please disregard this message. Thank you for using @@PRODUCT_NAME@@.</source>
+        <source>
+[ This is an automated email sent to {0} at your request. ]
+
+You have requested a list of all @@PRODUCT_NAME@@ logins associated
+with the email address {0}.
+
+Existing login(s):
+
+{1}
+You may reset the passwords for any of the above @@PRODUCT_NAME@@ logins at:
+
+  https://{2}/rhn/help/ForgotCredentials.do
+
+If you continue to have difficulties logging in, please contact
+your @@PRODUCT_NAME@@ administrator for further assistance.
+If you did not request this email be sent, please disregard this message.
+
+Thank you for using @@PRODUCT_NAME@@.
+        </source>
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -299,7 +405,7 @@ Obrigado por usar o @@PRODUCT_NAME@@.
             {1} - Existing logins
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
-        <target>
+        <target state="needs-adaptation">
 [ Este é um email automatizado enviado para {0} por sua requisição. ]
 
 Você requisitou uma lista de todos os logins de @@PRODUCT_NAME@@ associados
@@ -320,8 +426,18 @@ Obrigado por usar  @@PRODUCT_NAME@@.
    </target>
       </trans-unit>
       <trans-unit id="email.reset.password">
-        <source>[ This is an automated email sent to {0}. ] The @@PRODUCT_NAME@@ password for login {1} has been reset in response to a reset-request made at {2} If you did not initiate this password reset, please IMMEDIATELY contact the @@PRODUCT_NAME@@ administrator at {2} for further assistance. Thank you for using @@PRODUCT_NAME@@.</source>
-        <target>[Este é um email automático enviado para {0}. ] A senha @@PRODUCT_NAME@@ para login {1} foi redefinida em resposta a uma solicitação de redefinição feita em {2}. Se você não iniciou essa redefinição de senha, entre em contato IMEDIATAMENTE com o administrador @@PRODUCT_NAME@@ em {2} Para obter mais assistência. Obrigado por usar o @@PRODUCT_NAME@@.</target>
+        <source>
+[ This is an automated email sent to {0}. ]
+
+The @@PRODUCT_NAME@@ password for login {1} has been reset in response to a reset-request
+made at {2}
+
+If you did not initiate this password reset, please IMMEDIATELY contact the @@PRODUCT_NAME@@
+administrator at {2} for further assistance.
+
+Thank you for using @@PRODUCT_NAME@@.
+        </source>
+        <target state="needs-adaptation">[Este é um email automático enviado para {0}. ] A senha @@PRODUCT_NAME@@ para login {1} foi redefinida em resposta a uma solicitação de redefinição feita em {2}. Se você não iniciou essa redefinição de senha, entre em contato IMEDIATAMENTE com o administrador @@PRODUCT_NAME@@ em {2} Para obter mais assistência. Obrigado por usar o @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
