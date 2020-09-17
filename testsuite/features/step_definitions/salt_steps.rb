@@ -544,11 +544,13 @@ Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" o
   end
   output, _code = $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
   STDOUT.puts "#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd} => #{output}"
-  if verb == 'be' && value == ''
-    raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
-  elsif verb == 'be'
-    raise "Output value not found : #{output}" unless output.split("\n").length() > 1
-    raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
+  if verb == 'be'
+    if value == ''
+      raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
+    else
+      raise "Output value wasn't found: #{output}" unless output.split("\n").length > 1
+      raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
+    end
   elsif verb == 'contain'
     raise "Output doesn't contain #{value}: #{output}" unless output.include? value
   elsif verb == 'not contain'
