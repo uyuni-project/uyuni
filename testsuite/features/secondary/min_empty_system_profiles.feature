@@ -15,14 +15,14 @@ Feature: Empty minion profile operations
 
   Scenario: Check the created empty minion profiles in Unprovisioned Systems page
     Given I am authorized
-    And I navigate to "rhn/systems/BootstrapSystemList.do" page
+    And I follow the left menu "System > System List > Unprovisioned Systems"
     And I wait until I see "empty-profile" text, refreshing the page
     And I wait until I see "00:11:22:33:44:55" text
     And I wait until I see "empty-profile-hostname" text
 
   Scenario: Check the empty profiles has the hostname set
     Given I am authorized
-    And I navigate to "rhn/systems/BootstrapSystemList.do" page
+    And I follow the left menu "System > System List > Unprovisioned Systems"
     And I follow "empty-profile-hostname"
     Then I wait until I see "min-retail.mgr.suse.de" text, refreshing the page
 
@@ -34,7 +34,7 @@ Feature: Empty minion profile operations
 
   Scenario: Cleanup: Delete first empty minion profile
     Given I am authorized
-    When I navigate to "rhn/systems/SystemList.do" page
+    When I follow the left menu "Systems > System List"
     And I follow "empty-profile"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text
@@ -43,7 +43,7 @@ Feature: Empty minion profile operations
 
   Scenario: Cleanup: Delete second empty minion profiles
     Given I am authorized
-    When I navigate to "rhn/systems/SystemList.do" page
+    When I follow the left menu "Systems > System List"
     And I follow "empty-profile-hostname"
     And I follow "Delete System"
     Then I should see a "Confirm System Profile Deletion" text

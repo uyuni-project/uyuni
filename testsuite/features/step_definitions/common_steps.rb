@@ -47,10 +47,6 @@ Then(/^I can see all system information for "([^"]*)"$/) do |host|
   step %(I should see a "#{os_pretty}" text) if os_pretty.include? 'SUSE Linux'
 end
 
-Then(/^I should see the name of the image$/) do
-  step %(I should see a "#{compute_image_name}" text)
-end
-
 Then(/^I should see the terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
   terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
