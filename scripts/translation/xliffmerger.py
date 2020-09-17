@@ -26,7 +26,7 @@ def delete_trans_units(body_element, trans_units, units_to_remove):
 def add_trans_units(body_element, trans_units, units_to_add):
     to_add = [tr_unit for tr_unit in trans_units if tr_unit.attrib['id'] in units_to_add]
     for item in to_add:
-        target_element = ET.Element('target', {'state': 'new', 'xml:space': 'preserve'})
+        target_element = ET.Element('target', {'state': 'new'})
         target_element.tail = "\n  "
         item.append(target_element)
         body_element.append(item)
@@ -37,15 +37,13 @@ def update_trans_units(body_element, trans_units, id_new_value_dict):
     for trans_unit in to_update:
         source_element = trans_unit.find('d:source', ns)
         source_element.text = id_new_value_dict[trans_unit.attrib['id']]
-        source_element.set('xml:space', 'preserve')
         target_element = trans_unit.find('d:target', ns)
         if target_element is None:
-            target_element = ET.Element('target', {'state': 'needs-adaptation', 'xml:space': 'preserve'})
+            target_element = ET.Element('target', {'state': 'needs-adaptation'})
             target_element.tail = "\n      "
             trans_unit.append(target_element)
         else:
             target_element.set('state', 'needs-adaptation')
-            target_element.set('xml:space', 'preserve')
 
 
 def process(original_file, translation_file):
@@ -95,8 +93,16 @@ def process(original_file, translation_file):
     else:
         logging.info("Something went wrong, this should not have happend!")
 
+    for t in list(translation_body_element.findall('d:trans-unit', ns)):
+        if not t.get('{http://www.w3.org/XML/1998/namespace}space'):
+            t.set('xml:space', 'preserve')
+
     xml_tree_translation.write(translation, encoding='utf-8', xml_declaration=True)
 
+#    for o in list(original_body_element.findall('d:trans-unit', ns)):
+#        if not o.get('{http://www.w3.org/XML/1998/namespace}space'):
+#            o.set('xml:space', 'preserve')
+#    xml_tree_original.write(original_file, encoding='utf-8', xml_declaration=True)
 
 def get_trans_units(xml_tree):
     root_node = xml_tree.getroot()
