@@ -530,7 +530,7 @@ When(/^I refresh the pillar data$/) do
   $server.run("salt '#{$minion.ip}' saltutil.refresh_pillar wait=True")
 end
 
-Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" on "([^"]*)"$/) do |key, verb, value, minion|
+def pillar_get(key, minion)
   system_name = get_system_name(minion)
   if minion == 'sle_minion'
     cmd = 'salt'
@@ -542,26 +542,32 @@ Then(/^the pillar data for "([^"]*)" should (be|contain|not contain) "([^"]*)" o
   else
     raise 'Invalid target'
   end
-  output, _code = $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
-  STDOUT.puts "#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd} => #{output}"
-  if verb == 'be'
-    if value == ''
-      raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
-    else
-      raise "Output value wasn't found: #{output}" unless output.split("\n").length > 1
-      raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
-    end
-  elsif verb == 'contain'
-    raise "Output doesn't contain #{value}: #{output}" unless output.include? value
-  elsif verb == 'not contain'
-    raise "Output contains #{value}: #{output}" if output.include? value
+  $server.run("#{cmd} '#{system_name}' pillar.get '#{key}' #{extra_cmd}")
+end
+
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  output, _code = pillar_get(key, minion)
+  if value == ''
+    raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
   else
-    raise 'Invalid verb'
+    raise "Output value wasn't found: #{output}" unless output.split("\n").length > 1
+    raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
   end
 end
 
+Then(/^the pillar data for "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  output, _code = pillar_get(key, minion)
+  raise "Output doesn't contain #{value}: #{output}" unless output.include? value
+end
+
+Then(/^the pillar data for "([^"]*)" should not contain "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
+  output, _code = pillar_get(key, minion)
+  raise "Output contains #{value}: #{output}" if output.include? value
+end
+
 Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
-  step %(the pillar data for "#{key}" should be "" on "#{minion}")
+  output, _code = pillar_get(key, minion)
+  raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
 end
 
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
