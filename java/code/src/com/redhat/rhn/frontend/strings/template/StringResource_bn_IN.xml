@@ -4,18 +4,18 @@
     <body>
       <!-- New Account Email -->
       <trans-unit id="email.newaccount.subject">
-        <source xml:space="preserve">Your @@PRODUCT_NAME@@ Account is ready</source>
+        <source>Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target xml:space="preserve">আপনার @@PRODUCT_NAME@@ অ্যাকাউন্ট ব্যবহারের জন্য প্রস্তুত</target>
+        <target>আপনার @@PRODUCT_NAME@@ অ্যাকাউন্ট ব্যবহারের জন্য প্রস্তুত</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body">
-        <source xml:space="preserve">Hello,
+        <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -45,7 +45,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.body">
-        <source xml:space="preserve">Hello,
+        <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -75,7 +75,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.pam.body">
-        <source xml:space="preserve">Hello,
+        <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -88,7 +88,7 @@ provides you with access to manage systems on @@PRODUCT_NAME@@.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
-        <target xml:space="preserve">নমস্কার,
+        <target>নমস্কার,
 
 {0} {1} দ্বারা আপনার জন্য একটি Red Hat লগ-ইন নির্মাণ করা হয়েছে।  আপনার
 Red Hat লগ-ইন ও সক্রিয় Red Hat সাবস্ক্রিপশনের সাহায্যে আপনি @@PRODUCT_NAME@@-র
@@ -116,19 +116,19 @@ Red Hat লগ-ইন ও সক্রিয় Red Hat সাবস্ক্রি
       </trans-unit>
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject">
-        <source xml:space="preserve">@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
+        <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
-        <target xml:space="preserve">@@PRODUCT_NAME@@ ব্যবহারকারী নির্মাণ করা হয়েছে: {0} ({1}, {2} &lt;{3}&gt;)</target>
+        <target>@@PRODUCT_NAME@@ ব্যবহারকারী নির্মাণ করা হয়েছে: {0} ({1}, {2} &lt;{3}&gt;)</target>
         <context-group name="ctx">
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
       </trans-unit>
       <trans-unit id="email.newuser.body">
-        <source xml:space="preserve">Hello,
+        <source>Hello,
 
 A new user has been added to your account.
 
@@ -141,7 +141,7 @@ please visit:
 
 Thank you for using @@PRODUCT_NAME@@.
 {2}</source>
-        <target xml:space="preserve">নমস্কার,
+        <target>নমস্কার,
 
 আপনার অ্যাকাউন্টের মধ্যে একজন নতুন ব্যবহারকারী যোগ করা হয়েছে।
 
@@ -169,7 +169,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
         <trans-unit id="email.errata.notification.body.summary">
-          <source xml:space="preserve">
+          <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -199,7 +199,7 @@ Summary:
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader">
-          <source xml:space="preserve">
+          <source>
 ---------------------
 Affected Systems List
 ---------------------
@@ -211,13 +211,13 @@ as root on the system in question to refresh your software profile.
     </source>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
-          <source xml:space="preserve">
+          <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
-          <source xml:space="preserve">
+          <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -228,7 +228,7 @@ which you have explicitly enabled Patch Alerts are shown).
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected">
-          <source xml:space="preserve">
+          <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -250,7 +250,7 @@ You may address the issues outlined in this advisory in two ways:
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences">
-          <source xml:space="preserve">
+          <source>
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -275,18 +275,18 @@ click the "Details" tab.
         </trans-unit>
       </group>
       <trans-unit id="dailysummary.email.subject">
-        <source xml:space="preserve">@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
+        <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
-        <target xml:space="preserve">@@PRODUCT_NAME@@ থেকে প্রাপ্ত {0}-র অবস্থা সম্পর্কিত দৈনিক বিবৃতি</target>
+        <target>@@PRODUCT_NAME@@ থেকে প্রাপ্ত {0}-র অবস্থা সম্পর্কিত দৈনিক বিবৃতি</target>
         <context-group name="ctx">
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dailysummary.email.body">
-        <source xml:space="preserve">This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
 
@@ -320,7 +320,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.password">
-        <source xml:space="preserve">
+        <source>
 [ This is an automated email sent to {0} at your request. ]
 
 A request to reset the @@PRODUCT_NAME@@ password for login {2} has been made.
@@ -346,7 +346,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.logins">
-        <source xml:space="preserve">
+        <source>
 [ This is an automated email sent to {0} at your request. ]
 
 You have requested a list of all @@PRODUCT_NAME@@ logins associated
@@ -374,7 +374,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.reset.password">
-        <source xml:space="preserve">
+        <source>
 [ This is an automated email sent to {0}. ]
 
 The @@PRODUCT_NAME@@ password for login {1} has been reset in response to a reset-request

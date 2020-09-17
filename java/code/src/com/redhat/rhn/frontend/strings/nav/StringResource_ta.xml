@@ -3,510 +3,510 @@
   <file datatype="plaintext" original="" source-language="en" target-language="ta">
     <body>
       <trans-unit id="common.nav.overview">
-        <source xml:space="preserve">Overview</source>
+        <source>Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கண்ணோட்டம்</target>
+        <target>கண்ணோட்டம்</target>
       </trans-unit>
       <trans-unit id="common.nav.systems">
-        <source xml:space="preserve">Systems</source>
+        <source>Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கணினிகள்</target>
+        <target>கணினிகள்</target>
       </trans-unit>
       <trans-unit id="users.nav.all">
-        <source xml:space="preserve">All</source>
+        <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">அனைத்தும்</target>
+        <target>அனைத்தும்</target>
       </trans-unit>
       <trans-unit id="users.nav.active">
-        <source xml:space="preserve">Active</source>
+        <source>Active</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">செயலில்</target>
+        <target>செயலில்</target>
       </trans-unit>
       <trans-unit id="users.nav.disabled">
-        <source xml:space="preserve">Deactivated</source>
+        <source>Deactivated</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">செயலிழக்கப்பட்டது</target>
+        <target>செயலிழக்கப்பட்டது</target>
       </trans-unit>
       <trans-unit id="User">
-        <source xml:space="preserve">User</source>
+        <source>User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பயனர்</target>
+        <target>பயனர்</target>
       </trans-unit>
       <trans-unit id="action.nav.backout">
-        <source xml:space="preserve">Back Out Patches</source>
+        <source>Back Out Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Action Details Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பின்னிணைப்புகளை எடுக்கவும்</target>
+        <target>பின்னிணைப்புகளை எடுக்கவும்</target>
       </trans-unit>
       <trans-unit id="action.nav.install">
-        <source xml:space="preserve">Install Patches</source>
+        <source>Install Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Action Details Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பின்னிணைப்புகளை நிறுவவும்</target>
+        <target>பின்னிணைப்புகளை நிறுவவும்</target>
       </trans-unit>
       <trans-unit id="virtualization.entitlements">
-        <source xml:space="preserve">Virtualization Entitlements</source>
+        <source>Virtualization Entitlements</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Subscription Management Menu</context>
         </context-group>
-        <target xml:space="preserve">மெய்நிகராக்க உரிமங்கள்</target>
+        <target>மெய்நிகராக்க உரிமங்கள்</target>
       </trans-unit>
       <trans-unit id="guest.limited.hosts">
-        <source xml:space="preserve">Virtualization Hosts</source>
+        <source>Virtualization Hosts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
-        <target xml:space="preserve">மெய்நிகராக்க புரவலன்கள்</target>
+        <target>மெய்நிகராக்க புரவலன்கள்</target>
       </trans-unit>
       <trans-unit id="guests.without.hosts">
-        <source xml:space="preserve">Guests Without Hosts</source>
+        <source>Guests Without Hosts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
-        <target xml:space="preserve">புரவலன் இல்லாத விருந்தினர்கள்</target>
+        <target>புரவலன் இல்லாத விருந்தினர்கள்</target>
       </trans-unit>
       <trans-unit id="Virtualization">
-        <source xml:space="preserve">Virtualization</source>
+        <source>Virtualization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">மெய்நிகராக்கம்</target>
+        <target>மெய்நிகராக்கம்</target>
       </trans-unit>
       <trans-unit id="Virtual Systems">
-        <source xml:space="preserve">Virtual Systems</source>
+        <source>Virtual Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">மெய்நிகர் கணினிகள்</target>
+        <target>மெய்நிகர் கணினிகள்</target>
       </trans-unit>
       <trans-unit id="Bare Metal Systems">
-        <source xml:space="preserve">Unprovisioned Systems</source>
+        <source>Unprovisioned Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Physical Systems">
-        <source xml:space="preserve">Physical Systems</source>
+        <source>Physical Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Duplicate Systems">
-        <source xml:space="preserve">Duplicate Systems</source>
+        <source>Duplicate Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Requiring Reboot">
-        <source xml:space="preserve">Requiring Reboot</source>
+        <source>Requiring Reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Extra Packages">
-        <source xml:space="preserve">Non Compliant</source>
+        <source>Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ips">
-        <source xml:space="preserve">Duplicate IP Address</source>
+        <source>Duplicate IP Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ip6s">
-        <source xml:space="preserve">Duplicate IPv6 Address</source>
+        <source>Duplicate IPv6 Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.mac_address">
-        <source xml:space="preserve">Duplicate MAC Address</source>
+        <source>Duplicate MAC Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.hostname">
-        <source xml:space="preserve">Duplicate Hostname</source>
+        <source>Duplicate Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Currency">
-        <source xml:space="preserve">System Currency</source>
+        <source>System Currency</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes">
-        <source xml:space="preserve">Software Crashes</source>
+        <source>Software Crashes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes.overview">
-        <source xml:space="preserve">Software Crashes Overview</source>
+        <source>Software Crashes Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes.overview.summary">
-        <source xml:space="preserve">The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
+        <source>The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes.by.uuid.summary">
-        <source xml:space="preserve">The table below lists systems where a crash with the above UUID occurred.</source>
+        <source>The table below lists systems where a crash with the above UUID occurred.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="software.crashes.uuid.header">
-        <source xml:space="preserve">Summary for crashes with identical UUID</source>
+        <source>Summary for crashes with identical UUID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.config">
-        <source xml:space="preserve">Configuration</source>
+        <source>Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கட்டமைப்பு</target>
+        <target>கட்டமைப்பு</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.deploy">
-        <source xml:space="preserve">Deploy Files</source>
+        <source>Deploy Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கோப்புகளை வரிசைப்படுத்தல்</target>
+        <target>கோப்புகளை வரிசைப்படுத்தல்</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.diff">
-        <source xml:space="preserve">Compare Files</source>
+        <source>Compare Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கோப்புகளை ஒப்பிடுதல்</target>
+        <target>கோப்புகளை ஒப்பிடுதல்</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.subscribe">
-        <source xml:space="preserve">Subscribe to Channels</source>
+        <source>Subscribe to Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">தடங்களுக்கு சந்தாப்படுத்தவும்</target>
+        <target>தடங்களுக்கு சந்தாப்படுத்தவும்</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.unsubscribe">
-        <source xml:space="preserve">Unsubscribe from Channels</source>
+        <source>Unsubscribe from Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">தடங்களிலிருந்து சந்தா நீக்கவும்</target>
+        <target>தடங்களிலிருந்து சந்தா நீக்கவும்</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.enable">
-        <source xml:space="preserve">Enable Configuration</source>
+        <source>Enable Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கட்டமைப்பை செயல்படுத்தல்</target>
+        <target>கட்டமைப்பை செயல்படுத்தல்</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status">
-        <source xml:space="preserve">Task Log</source>
+        <source>Task Log</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.status.inprogress">
-        <source xml:space="preserve">In Progress</source>
+        <source>In Progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பணியில்</target>
+        <target>பணியில்</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.completed">
-        <source xml:space="preserve">Completed</source>
+        <source>Completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">முடிக்கப்பட்டது</target>
+        <target>முடிக்கப்பட்டது</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.all">
-        <source xml:space="preserve">All</source>
+        <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">அனைத்தும்</target>
+        <target>அனைத்தும்</target>
       </trans-unit>
       <trans-unit id="channel.nav.all">
-        <source xml:space="preserve">All</source>
+        <source>All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">அனைத்து சேனல்கள்</target>
+        <target>அனைத்து சேனல்கள்</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared">
-        <source xml:space="preserve">Shared</source>
+        <source>Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பகிரப்பட்ட சேனல்கள்</target>
+        <target>பகிரப்பட்ட சேனல்கள்</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor">
-        <source xml:space="preserve">@@VENDOR_NAME@@</source>
+        <source>@@VENDOR_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.nav.popular">
-        <source xml:space="preserve">Popular</source>
+        <source>Popular</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பிரபல சேனல்கள்</target>
+        <target>பிரபல சேனல்கள்</target>
       </trans-unit>
       <trans-unit id="channel.nav.custom">
-        <source xml:space="preserve">My Channels</source>
+        <source>My Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">என் சேனல்கள்</target>
+        <target>என் சேனல்கள்</target>
       </trans-unit>
       <trans-unit id="channel.nav.retired">
-        <source xml:space="preserve">Retired</source>
+        <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="config.nav.managed">
-        <source xml:space="preserve">Managed</source>
+        <source>Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">மேலாண் செய்யப்பட்ட கணினிகள்</target>
+        <target>மேலாண் செய்யப்பட்ட கணினிகள்</target>
       </trans-unit>
       <trans-unit id="config.nav.target">
-        <source xml:space="preserve">Target</source>
+        <source>Target</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">இலக்கு கணினிகள்</target>
+        <target>இலக்கு கணினிகள்</target>
       </trans-unit>
       <trans-unit id="config.nav.config">
-        <source xml:space="preserve">Configuration</source>
+        <source>Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கட்டமைப்பு</target>
+        <target>கட்டமைப்பு</target>
       </trans-unit>
       <trans-unit id="config.nav.channels">
-        <source xml:space="preserve">Channels</source>
+        <source>Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கட்டமைப்பு தடங்கள்</target>
+        <target>கட்டமைப்பு தடங்கள்</target>
       </trans-unit>
       <trans-unit id="config.nav.files">
-        <source xml:space="preserve">Files</source>
+        <source>Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கட்டமைப்பு கோப்புகள்</target>
+        <target>கட்டமைப்பு கோப்புகள்</target>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles">
-        <source xml:space="preserve">Centrally Managed</source>
+        <source>Centrally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">மையமான மேலாண் செய்யப்பட்ட கோப்புகள்</target>
+        <target>மையமான மேலாண் செய்யப்பட்ட கோப்புகள்</target>
       </trans-unit>
       <trans-unit id="config.nav.localfiles">
-        <source xml:space="preserve">Locally Managed</source>
+        <source>Locally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">உள்ளமைவாக மேலாண் செய்யப்பட்ட கோப்புகள்</target>
+        <target>உள்ளமைவாக மேலாண் செய்யப்பட்ட கோப்புகள்</target>
       </trans-unit>
       <!-- ConfigChannel details navigation -->
       <trans-unit id="configchannel.nav.overview">
-        <source xml:space="preserve">Overview</source>
+        <source>Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">கண்ணோட்டம்</target>
+        <target>கண்ணோட்டம்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.list">
-        <source xml:space="preserve">List/Remove Files</source>
+        <source>List/Remove Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்புகளை பட்டியலிடுதல்/நீக்குதல்</target>
+        <target>கோப்புகளை பட்டியலிடுதல்/நீக்குதல்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add">
-        <source xml:space="preserve">Add Files</source>
+        <source>Add Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்புகளை சேர்த்தல்</target>
+        <target>கோப்புகளை சேர்த்தல்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.upload">
-        <source xml:space="preserve">Upload File</source>
+        <source>Upload File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்பினை ஏற்றுதல்</target>
+        <target>கோப்பினை ஏற்றுதல்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.import">
-        <source xml:space="preserve">Import Files</source>
+        <source>Import Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்புகளை இறக்குதல்</target>
+        <target>கோப்புகளை இறக்குதல்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.create">
-        <source xml:space="preserve">Create File</source>
+        <source>Create File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்பினை உருவாக்குதல்</target>
+        <target>கோப்பினை உருவாக்குதல்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.deploy">
-        <source xml:space="preserve">Deploy Files</source>
+        <source>Deploy Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்புகளை வரிசைப்படுத்தல்</target>
+        <target>கோப்புகளை வரிசைப்படுத்தல்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems">
-        <source xml:space="preserve">Systems</source>
+        <source>Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target xml:space="preserve">கணினிகள்</target>
+        <target>கணினிகள்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems.subscribed">
-        <source xml:space="preserve">Subscribed Systems</source>
+        <source>Subscribed Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target xml:space="preserve">சந்தாப்படுத்தப்பட்ட கணினிகள்</target>
+        <target>சந்தாப்படுத்தப்பட்ட கணினிகள்</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems.target">
-        <source xml:space="preserve">Target Systems</source>
+        <source>Target Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target xml:space="preserve">இலக்கு கணினிகள்</target>
+        <target>இலக்கு கணினிகள்</target>
       </trans-unit>
       <!-- END config channel nav -->
       <!-- config file nav -->
       <trans-unit id="configfile.nav.details">
-        <source xml:space="preserve">Details</source>
+        <source>Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target xml:space="preserve">விவரங்கள்</target>
+        <target>விவரங்கள்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.revisions">
-        <source xml:space="preserve">Manage Revisions</source>
+        <source>Manage Revisions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileRevisions.do</context>
         </context-group>
-        <target xml:space="preserve">மறுபார்வையிடுதலை மேலாண் செய்தல்</target>
+        <target>மறுபார்வையிடுதலை மேலாண் செய்தல்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.deploy">
-        <source xml:space="preserve">Deploy File</source>
+        <source>Deploy File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDeploy.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்பினை வரிசைப்படுத்தல்</target>
+        <target>கோப்பினை வரிசைப்படுத்தல்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy">
-        <source xml:space="preserve">Copy File</source>
+        <source>Copy File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்பினை நகலெடுத்தல்</target>
+        <target>கோப்பினை நகலெடுத்தல்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.central">
-        <source xml:space="preserve">Copy To Centrally-Managed</source>
+        <source>Copy To Centrally-Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target xml:space="preserve">மையமாக மேலாண்மை செய்யப்பட்டதில் நகலெடுத்தல்</target>
+        <target>மையமாக மேலாண்மை செய்யப்பட்டதில் நகலெடுத்தல்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.local">
-        <source xml:space="preserve">Copy To Locally-Managed</source>
+        <source>Copy To Locally-Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target xml:space="preserve">உள்ளமைவாக மேலாண்மை செய்யப்பட்டதில் நகலெடுத்தல்</target>
+        <target>உள்ளமைவாக மேலாண்மை செய்யப்பட்டதில் நகலெடுத்தல்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.sandbox">
-        <source xml:space="preserve">Copy To System Sandbox</source>
+        <source>Copy To System Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target xml:space="preserve">கணினி சான்ட்பாக்ஸிற்கு நகலெடுத்தல்</target>
+        <target>கணினி சான்ட்பாக்ஸிற்கு நகலெடுத்தல்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare">
-        <source xml:space="preserve">Compare File</source>
+        <source>Compare File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">கோப்பினை ஒப்பிடுதல்</target>
+        <target>கோப்பினை ஒப்பிடுதல்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.deployed">
-        <source xml:space="preserve">Deployed Files</source>
+        <source>Deployed Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">வரிசைப்படுத்தப்பட்ட கோப்புகள்</target>
+        <target>வரிசைப்படுத்தப்பட்ட கோப்புகள்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.revision">
-        <source xml:space="preserve">Other Revisions</source>
+        <source>Other Revisions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">வேறு மறுபார்வைகள்</target>
+        <target>வேறு மறுபார்வைகள்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.copy">
-        <source xml:space="preserve">Other Copies</source>
+        <source>Other Copies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">வேறு நகல்கள்</target>
+        <target>வேறு நகல்கள்</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.file">
-        <source xml:space="preserve">Other Files</source>
+        <source>Other Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target xml:space="preserve">வேறு கோப்புகள்</target>
+        <target>வேறு கோப்புகள்</target>
       </trans-unit>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
         <trans-unit id="nav.system.audit.list_scans">
-          <source xml:space="preserve">List Scans</source>
+          <source>List Scans</source>
         </trans-unit>
         <trans-unit id="nav.system.audit.schedule">
-          <source xml:space="preserve">Schedule</source>
+          <source>Schedule</source>
         </trans-unit>
       </group>
       <!-- SDC Config file navigation-->
@@ -515,47 +515,47 @@
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
         <trans-unit id="nav.sdc.config.overview">
-          <source xml:space="preserve">Overview</source>
-          <target xml:space="preserve">கண்ணோட்டம்</target>
+          <source>Overview</source>
+          <target>கண்ணோட்டம்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_modify_files">
-          <source xml:space="preserve">View/Modify Files</source>
-          <target xml:space="preserve">கோப்புகளை பார்வையிடல்/மாற்றுதல்</target>
+          <source>View/Modify Files</source>
+          <target>கோப்புகளை பார்வையிடல்/மாற்றுதல்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_files">
-          <source xml:space="preserve">View Files</source>
+          <source>View Files</source>
         </trans-unit>
         <trans-unit id="nav.sdc.config.compare_files">
-          <source xml:space="preserve">Compare Files</source>
-          <target xml:space="preserve">கோப்புகளை ஒப்பிடுதல்</target>
+          <source>Compare Files</source>
+          <target>கோப்புகளை ஒப்பிடுதல்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.manage_channels">
-          <source xml:space="preserve">Manage Configuration Channels</source>
-          <target xml:space="preserve">கட்டமைப்பு தடங்களை மேலாண்மை செய்தல்</target>
+          <source>Manage Configuration Channels</source>
+          <target>கட்டமைப்பு தடங்களை மேலாண்மை செய்தல்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.list_unsubscribe_channels">
-          <source xml:space="preserve">List/Unsubscribe from Channels</source>
-          <target xml:space="preserve">தடங்களிலிருந்து பட்டியலிடல்/சந்தா நீக்குதல்</target>
+          <source>List/Unsubscribe from Channels</source>
+          <target>தடங்களிலிருந்து பட்டியலிடல்/சந்தா நீக்குதல்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.subscribe_channels">
-          <source xml:space="preserve">Subscribe to Channels</source>
-          <target xml:space="preserve">தடங்களுக்கு சந்தாப்படுத்தவும்</target>
+          <source>Subscribe to Channels</source>
+          <target>தடங்களுக்கு சந்தாப்படுத்தவும்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.rank_channels">
-          <source xml:space="preserve">View/Modify Rankings</source>
-          <target xml:space="preserve">மதிப்பெண்களை பார்வையிடல்/மாற்றுதல்</target>
+          <source>View/Modify Rankings</source>
+          <target>மதிப்பெண்களை பார்வையிடல்/மாற்றுதல்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.centrally_managed_files">
-          <source xml:space="preserve">Centrally-Managed Files</source>
-          <target xml:space="preserve">மையமாக மேலாண் செய்யப்பட்ட கோப்புகள்</target>
+          <source>Centrally-Managed Files</source>
+          <target>மையமாக மேலாண் செய்யப்பட்ட கோப்புகள்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.locally_managed_files">
-          <source xml:space="preserve">Locally-Managed Files</source>
-          <target xml:space="preserve">உள்ளமைவாக மேலாண் செய்யப்பட்ட கோப்புகள்</target>
+          <source>Locally-Managed Files</source>
+          <target>உள்ளமைவாக மேலாண் செய்யப்பட்ட கோப்புகள்</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.sandbox_managed_files">
-          <source xml:space="preserve">Local Sandbox</source>
-          <target xml:space="preserve">உள்ளமை சான்ட்பாக்ஸ்</target>
+          <source>Local Sandbox</source>
+          <target>உள்ளமை சான்ட்பாக்ஸ்</target>
         </trans-unit>
       </group>
       <!-- END config file nav -->
@@ -564,592 +564,592 @@
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
         <trans-unit id="system.detail.nav.list">
-          <source xml:space="preserve">List</source>
-          <target xml:space="preserve">பட்டியல்</target>
+          <source>List</source>
+          <target>பட்டியல்</target>
         </trans-unit>
         <trans-unit id="system.detail.nav.remove">
-          <source xml:space="preserve">List / Remove</source>
-          <target xml:space="preserve">பட்டியலிடுதல் / நீக்குதல்</target>
+          <source>List / Remove</source>
+          <target>பட்டியலிடுதல் / நீக்குதல்</target>
         </trans-unit>
       </group>
       <trans-unit id="Add">
-        <source xml:space="preserve">Add</source>
+        <source>Add</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">சேர்த்தல்</target>
+        <target>சேர்த்தல்</target>
       </trans-unit>
       <trans-unit id="Verify">
-        <source xml:space="preserve">Verify</source>
+        <source>Verify</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">உறுதிபடுத்துதல்</target>
+        <target>உறுதிபடுத்துதல்</target>
       </trans-unit>
       <trans-unit id="Snapshots">
-        <source xml:space="preserve">Snapshots</source>
+        <source>Snapshots</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">நொடிப்புகள்</target>
+        <target>நொடிப்புகள்</target>
       </trans-unit>
       <trans-unit id="Installation Guide">
-        <source xml:space="preserve">Installation Guide</source>
+        <source>Installation Guide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">நிறுவல் கையேடு</target>
+        <target>நிறுவல் கையேடு</target>
       </trans-unit>
       <trans-unit id="Software">
-        <source xml:space="preserve">Software</source>
+        <source>Software</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">மென்பொருள்</target>
+        <target>மென்பொருள்</target>
       </trans-unit>
       <trans-unit id="Provisioning">
-        <source xml:space="preserve">Provisioning</source>
+        <source>Provisioning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-        <target xml:space="preserve">வாய்ப்பளித்தல்</target>
+        <target>வாய்ப்பளித்தல்</target>
       </trans-unit>
       <trans-unit id="Misc">
-        <source xml:space="preserve">Misc</source>
+        <source>Misc</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">இதரவை</target>
+        <target>இதரவை</target>
       </trans-unit>
       <trans-unit id="Snapshot Tags">
-        <source xml:space="preserve">Snapshot Tags</source>
+        <source>Snapshot Tags</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">நொடிப்பு ஒட்டுகள்</target>
+        <target>நொடிப்பு ஒட்டுகள்</target>
       </trans-unit>
       <trans-unit id="Session Status">
-        <source xml:space="preserve">Session Status</source>
+        <source>Session Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">அமர்வு நிலை</target>
+        <target>அமர்வு நிலை</target>
       </trans-unit>
       <trans-unit id="Sandbox">
-        <source xml:space="preserve">Sandbox</source>
+        <source>Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">சான்ட்பாக்ஸ்</target>
+        <target>சான்ட்பாக்ஸ்</target>
       </trans-unit>
       <trans-unit id="Spacewalk">
-        <source xml:space="preserve">@@PRODUCT_NAME@@</source>
+        <source>@@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">@@PRODUCT_NAME@@</target>
+        <target>@@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Spacewalk Configuration">
-        <source xml:space="preserve">Manager Configuration</source>
+        <source>Manager Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">@@PRODUCT_NAME@@ கட்டமைப்பு</target>
+        <target>@@PRODUCT_NAME@@ கட்டமைப்பு</target>
       </trans-unit>
       <trans-unit id="ISS Configuration">
-        <source xml:space="preserve">ISS Configuration</source>
+        <source>ISS Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="External Authentication">
-        <source xml:space="preserve">External Authentication</source>
+        <source>External Authentication</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Group Role Mapping">
-        <source xml:space="preserve">Group Role Mapping</source>
+        <source>Group Role Mapping</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Group Configuration">
-        <source xml:space="preserve">System Group Configuration</source>
+        <source>System Group Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Master Setup">
-        <source xml:space="preserve">Master Setup</source>
+        <source>Master Setup</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Slave Setup">
-        <source xml:space="preserve">Slave Setup</source>
+        <source>Slave Setup</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Remote Command">
-        <source xml:space="preserve">Remote Command</source>
+        <source>Remote Command</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">தொலை கட்டளை</target>
+        <target>தொலை கட்டளை</target>
       </trans-unit>
       <trans-unit id="Power Management Configuration">
-        <source xml:space="preserve">Power Management Configuration</source>
+        <source>Power Management Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Operations">
-        <source xml:space="preserve">Power Management Operations</source>
+        <source>Power Management Operations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Tag Systems">
-        <source xml:space="preserve">Tag Systems</source>
+        <source>Tag Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Reactivation">
-        <source xml:space="preserve">Reactivation</source>
+        <source>Reactivation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">மறுசெயல்படுத்தல்</target>
+        <target>மறுசெயல்படுத்தல்</target>
       </trans-unit>
       <trans-unit id="Properties">
-        <source xml:space="preserve">Properties</source>
+        <source>Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பண்புகள்</target>
+        <target>பண்புகள்</target>
       </trans-unit>
       <trans-unit id="Pending">
-        <source xml:space="preserve">Pending</source>
+        <source>Pending</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">மீதி</target>
+        <target>மீதி</target>
       </trans-unit>
       <trans-unit id="Patches">
-        <source xml:space="preserve">Patches</source>
+        <source>Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பின்னிணைப்பு</target>
+        <target>பின்னிணைப்பு</target>
       </trans-unit>
       <trans-unit id="Patch List">
-        <source xml:space="preserve">Patch List</source>
+        <source>Patch List</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Patch Clusters">
-        <source xml:space="preserve">Patch Clusters</source>
+        <source>Patch Clusters</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பின்னிணைப்பு க்ளஸ்டர்</target>
+        <target>பின்னிணைப்பு க்ளஸ்டர்</target>
       </trans-unit>
       <trans-unit id="Notes">
-        <source xml:space="preserve">Notes</source>
+        <source>Notes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">குறிப்புகள்</target>
+        <target>குறிப்புகள்</target>
       </trans-unit>
       <trans-unit id="Managed Files">
-        <source xml:space="preserve">Managed Files</source>
+        <source>Managed Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">மேலாண் செய்யப்பட்ட கோப்புகள்</target>
+        <target>மேலாண் செய்யப்பட்ட கோப்புகள்</target>
       </trans-unit>
       <trans-unit id="List / Remove">
-        <source xml:space="preserve">List / Remove</source>
+        <source>List / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பட்டியலிடுதல் / நீக்குதல்</target>
+        <target>பட்டியலிடுதல் / நீக்குதல்</target>
       </trans-unit>
       <trans-unit id="Add / Remove">
-        <source xml:space="preserve">Add / Remove</source>
+        <source>Add / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="List / Leave">
-        <source xml:space="preserve">List / Leave</source>
+        <source>List / Leave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பட்டியலிடுதல் / வெளியேறுதல்</target>
+        <target>பட்டியலிடுதல் / வெளியேறுதல்</target>
       </trans-unit>
       <trans-unit id="History">
-        <source xml:space="preserve">History</source>
+        <source>History</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">வரலாறு</target>
+        <target>வரலாறு</target>
       </trans-unit>
       <trans-unit id="Hardware">
-        <source xml:space="preserve">Hardware</source>
+        <source>Hardware</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">வன்பொருள்</target>
+        <target>வன்பொருள்</target>
       </trans-unit>
       <trans-unit id="Diff">
-        <source xml:space="preserve">Diff</source>
+        <source>Diff</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">Diff</target>
+        <target>Diff</target>
       </trans-unit>
       <trans-unit id="Custom Info">
-        <source xml:space="preserve">Custom Info</source>
+        <source>Custom Info</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">தனிபயன் விவரம்</target>
+        <target>தனிபயன் விவரம்</target>
       </trans-unit>
       <trans-unit id="Configuration">
-        <source xml:space="preserve">Configuration</source>
+        <source>Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கட்டமைப்பு</target>
+        <target>கட்டமைப்பு</target>
       </trans-unit>
       <trans-unit id="Config Files">
-        <source xml:space="preserve">Config Files</source>
+        <source>Config Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">கட்டமை கோப்புகள்</target>
+        <target>கட்டமை கோப்புகள்</target>
       </trans-unit>
       <trans-unit id="Join">
-        <source xml:space="preserve">Join</source>
+        <source>Join</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">இணைதல்</target>
+        <target>இணைதல்</target>
       </trans-unit>
       <trans-unit id="Rollback">
-        <source xml:space="preserve">Rollback</source>
+        <source>Rollback</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பின்செல்தல்</target>
+        <target>பின்செல்தல்</target>
       </trans-unit>
       <trans-unit id="Supported">
-        <source xml:space="preserve">Supported</source>
+        <source>Supported</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">சேவையளிக்கப்பட்டது</target>
+        <target>சேவையளிக்கப்பட்டது</target>
       </trans-unit>
       <trans-unit id="Retired">
-        <source xml:space="preserve">Retired</source>
+        <source>Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">ஓய்வு</target>
+        <target>ஓய்வு</target>
       </trans-unit>
       <trans-unit id="Connection">
-        <source xml:space="preserve">Connection</source>
+        <source>Connection</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">இணைப்பு</target>
+        <target>இணைப்பு</target>
       </trans-unit>
       <trans-unit id="Activation">
-        <source xml:space="preserve">Activation</source>
+        <source>Activation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">செயல்படுத்தல்</target>
+        <target>செயல்படுத்தல்</target>
       </trans-unit>
       <trans-unit id="Systems Using Proxy">
-        <source xml:space="preserve">Systems Using Proxy</source>
+        <source>Systems Using Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">பதிலாள் பயன்படுத்தும் கணினிகள்</target>
+        <target>பதிலாள் பயன்படுத்தும் கணினிகள்</target>
       </trans-unit>
       <trans-unit id="Help Desk">
-        <source xml:space="preserve">Help Desk</source>
+        <source>Help Desk</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target xml:space="preserve">உதவி மையம்</target>
+        <target>உதவி மையம்</target>
       </trans-unit>
       <trans-unit id="Kickstart Details">
-        <source xml:space="preserve">Autoinstallation Details</source>
+        <source>Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">கிக்ஸ்டார்ட் விவரங்கள்</target>
+        <target>கிக்ஸ்டார்ட் விவரங்கள்</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.edit.nav">
-        <source xml:space="preserve">Edit</source>
+        <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target xml:space="preserve">திருத்து</target>
+        <target>திருத்து</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.nav">
-        <source xml:space="preserve">Variables</source>
+        <source>Variables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target xml:space="preserve">மாறிகள்</target>
+        <target>மாறிகள்</target>
       </trans-unit>
       <trans-unit id="System Details">
-        <source xml:space="preserve">System Details</source>
+        <source>System Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">கணினி விவரங்கள்</target>
+        <target>கணினி விவரங்கள்</target>
       </trans-unit>
       <trans-unit id="Scripts">
-        <source xml:space="preserve">Scripts</source>
+        <source>Scripts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">உரைகள்</target>
+        <target>உரைகள்</target>
       </trans-unit>
       <trans-unit id="Kickstart File">
-        <source xml:space="preserve">Autoinstallation File</source>
+        <source>Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">கிக்ஸ்டார்ட் கோப்பு</target>
+        <target>கிக்ஸ்டார்ட் கோப்பு</target>
       </trans-unit>
       <trans-unit id="Operating System">
-        <source xml:space="preserve">Operating System</source>
+        <source>Operating System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">இயக்கத்தளம்</target>
+        <target>இயக்கத்தளம்</target>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-        <source xml:space="preserve">Unprovisioned Autoinstallation</source>
+        <source>Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">பார் மெட்டல் கிக்ஸ்டார்ட்</target>
+        <target>பார் மெட்டல் கிக்ஸ்டார்ட்</target>
       </trans-unit>
       <trans-unit id="Bare Metal">
-        <source xml:space="preserve">Unprovisioned</source>
+        <source>Unprovisioned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
-        <target xml:space="preserve">பார் மெட்டல்</target>
+        <target>பார் மெட்டல்</target>
       </trans-unit>
       <trans-unit id="Advanced Options">
-        <source xml:space="preserve">Advanced Options</source>
+        <source>Advanced Options</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target xml:space="preserve">கூடுதல் விருப்பங்கள்</target>
+        <target>கூடுதல் விருப்பங்கள்</target>
       </trans-unit>
       <trans-unit id="Locale">
-        <source xml:space="preserve">Locale</source>
+        <source>Locale</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target xml:space="preserve">மொழி</target>
+        <target>மொழி</target>
       </trans-unit>
       <trans-unit id="Partitioning">
-        <source xml:space="preserve">Partitioning</source>
+        <source>Partitioning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target xml:space="preserve">பகிர்தல்</target>
+        <target>பகிர்தல்</target>
       </trans-unit>
       <trans-unit id="GPG_SSL">
-        <source xml:space="preserve">GPG &amp; SSL</source>
+        <source>GPG &amp; SSL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target xml:space="preserve">GPG &amp; SSL</target>
+        <target>GPG &amp; SSL</target>
       </trans-unit>
       <trans-unit id="Troubleshooting">
-        <source xml:space="preserve">Troubleshooting</source>
+        <source>Troubleshooting</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target xml:space="preserve">பழுது பார்த்தல்</target>
+        <target>பழுது பார்த்தல்</target>
       </trans-unit>
       <trans-unit id="Package Groups">
-        <source xml:space="preserve">Package Groups</source>
+        <source>Package Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
-        <target xml:space="preserve">தொகுப்பு குழுக்கள்</target>
+        <target>தொகுப்பு குழுக்கள்</target>
       </trans-unit>
       <trans-unit id="Package Profiles">
-        <source xml:space="preserve">Package Profiles</source>
+        <source>Package Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
-        <target xml:space="preserve">தொகுப்பு விவரக்குறிப்பு</target>
+        <target>தொகுப்பு விவரக்குறிப்பு</target>
       </trans-unit>
       <trans-unit id="Critical">
-        <source xml:space="preserve">Critical</source>
+        <source>Critical</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
-        <target xml:space="preserve">சிக்கலான</target>
+        <target>சிக்கலான</target>
       </trans-unit>
       <trans-unit id="Unknown">
-        <source xml:space="preserve">Unknown</source>
+        <source>Unknown</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
-        <target xml:space="preserve">தெரியாதது</target>
+        <target>தெரியாதது</target>
       </trans-unit>
       <trans-unit id="Recently Registered">
-        <source xml:space="preserve">Recently Registered</source>
+        <source>Recently Registered</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target xml:space="preserve">சமீபத்தில் பதிவு செய்யப்பட்டது</target>
+        <target>சமீபத்தில் பதிவு செய்யப்பட்டது</target>
       </trans-unit>
       <trans-unit id="Target Systems">
-        <source xml:space="preserve">Target Systems</source>
+        <source>Target Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">இலக்கு கணினிகள்</target>
+        <target>இலக்கு கணினிகள்</target>
       </trans-unit>
       <trans-unit id="Admins">
-        <source xml:space="preserve">Admins</source>
+        <source>Admins</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/*.do</context>
         </context-group>
-        <target xml:space="preserve">நிர்வாகங்கள்</target>
+        <target>நிர்வாகங்கள்</target>
       </trans-unit>
       <trans-unit id="Subscribed Systems">
-        <source xml:space="preserve">Subscribed Systems</source>
+        <source>Subscribed Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">சந்தாப்படுத்தப்பட்ட கணினிகள்</target>
+        <target>சந்தாப்படுத்தப்பட்ட கணினிகள்</target>
       </trans-unit>
       <trans-unit id="Repositories">
-        <source xml:space="preserve">Repositories</source>
+        <source>Repositories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Managers">
-        <source xml:space="preserve">Managers</source>
+        <source>Managers</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">மேலாளர்கள்</target>
+        <target>மேலாளர்கள்</target>
       </trans-unit>
       <trans-unit id="Subscribers">
-        <source xml:space="preserve">Subscribers</source>
+        <source>Subscribers</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">சந்தாதாரர்கள்</target>
+        <target>சந்தாதாரர்கள்</target>
       </trans-unit>
       <trans-unit id="Downloads">
-        <source xml:space="preserve">Downloads</source>
+        <source>Downloads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">பதிவிறக்கங்கள்</target>
+        <target>பதிவிறக்கங்கள்</target>
       </trans-unit>
       <trans-unit id="License">
-        <source xml:space="preserve">License</source>
+        <source>License</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target xml:space="preserve">உரிமம்</target>
+        <target>உரிமம்</target>
       </trans-unit>
       <trans-unit id="Sync">
-        <source xml:space="preserve">Sync</source>
+        <source>Sync</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/SyncErrata.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Organizations">
-        <source xml:space="preserve">Organizations</source>
+        <source>Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target xml:space="preserve">நிறுவனங்கள்</target>
+        <target>நிறுவனங்கள்</target>
       </trans-unit>
       <trans-unit id="Trusts">
-        <source xml:space="preserve">Trusts</source>
+        <source>Trusts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target xml:space="preserve">நம்பகங்கள்</target>
+        <target>நம்பகங்கள்</target>
       </trans-unit>
       <trans-unit id="Channels Consumed">
-        <source xml:space="preserve">Channels Consumed</source>
+        <source>Channels Consumed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target xml:space="preserve">பெறப்பட்ட சேனல்கள்</target>
+        <target>பெறப்பட்ட சேனல்கள்</target>
       </trans-unit>
       <trans-unit id="Channels Provided">
-        <source xml:space="preserve">Channels Provided</source>
+        <source>Channels Provided</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target xml:space="preserve">கொடுக்கப்பட்ட சேனல்கள்</target>
+        <target>கொடுக்கப்பட்ட சேனல்கள்</target>
       </trans-unit>
       <trans-unit id="Subscriptions">
-        <source xml:space="preserve">Subscriptions</source>
+        <source>Subscriptions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Subscriptions.do</context>
         </context-group>
-        <target xml:space="preserve">சந்தாக்கள்</target>
+        <target>சந்தாக்கள்</target>
       </trans-unit>
       <!-- SSM NAV -->
       <group>
         <trans-unit id="Child Channels">
-          <source xml:space="preserve">Child Channels</source>
+          <source>Child Channels</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target xml:space="preserve">சேய் தடங்கள்</target>
+          <target>சேய் தடங்கள்</target>
         </trans-unit>
         <trans-unit id="Chat">
-          <source xml:space="preserve">Chat</source>
+          <source>Chat</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
         </trans-unit>
         <trans-unit id="Base Channels">
-          <source xml:space="preserve">Base Channels</source>
+          <source>Base Channels</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target xml:space="preserve">அடிப்படை தடங்கள்</target>
+          <target>அடிப்படை தடங்கள்</target>
         </trans-unit>
       </group>
       <!-- Activation Keys nav -->
       <group>
         <trans-unit id="activation-keys.nav.activated_systems">
-          <source xml:space="preserve">Activated Systems</source>
+          <source>Activated Systems</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
-          <target xml:space="preserve">செயல்படுத்தப்பட்ட கணினிகள்</target>
+          <target>செயல்படுத்தப்பட்ட கணினிகள்</target>
         </trans-unit>
       </group>
       <!-- Main nav -->
@@ -1158,17 +1158,17 @@
           <context context-type="sourcefile">Title bar</context>
         </context-group>
         <trans-unit id="manage">
-          <source xml:space="preserve">Manage</source>
+          <source>Manage</source>
         </trans-unit>
         <trans-unit id="clear">
-          <source xml:space="preserve">Clear</source>
+          <source>Clear</source>
         </trans-unit>
       </group>
       <trans-unit id="Deployment">
-        <source xml:space="preserve">Deployment</source>
+        <source>Deployment</source>
       </trans-unit>
       <trans-unit id="Image List">
-        <source xml:space="preserve">Image List</source>
+        <source>Image List</source>
       </trans-unit>
     </body>
   </file>
