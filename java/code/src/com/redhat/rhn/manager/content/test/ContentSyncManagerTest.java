@@ -1223,7 +1223,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         List<MgrSyncChannelDto> channels = csm.listChannels();
         boolean foundPool = false;
         boolean foundDebugPool = false;
-        boolean foundInstallerUpdate = false;
         for (MgrSyncChannelDto c : channels) {
             if (c.getLabel().equals("sles12-pool-x86_64")) {
                 assertEquals("https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product/", c.getSourceUrl());
@@ -1236,8 +1235,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 foundDebugPool = true;
             }
             else if (c.getLabel().equals("sles12-installer-updates-x86_64")) {
-                assertEquals("https://updates.suse.com/SUSE/Updates/SLE-SERVER-INSTALLER/12/x86_64/update/", c.getSourceUrl());
-                foundInstallerUpdate = true;
+                assertTrue("Unexpected Installer Update channel found", false);
             }
             else if (c.getLabel().startsWith("suse-enterprise-storage")) {
                 assertTrue("Storage Channels should not be listed", false);
@@ -1245,7 +1243,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
         assertTrue("Pool channel not found", foundPool);
         assertTrue("Debuginfo Pool channel not found", foundDebugPool);
-        assertFalse("Unexpected Installer Update channel found", foundInstallerUpdate);
         Map<MgrSyncStatus, List<MgrSyncChannelDto>> collect = channels.stream().collect(Collectors.groupingBy(c -> c.getStatus()));
         assertEquals(2, collect.get(MgrSyncStatus.INSTALLED).size());
         assertEquals(62, collect.get(MgrSyncStatus.AVAILABLE).size());
