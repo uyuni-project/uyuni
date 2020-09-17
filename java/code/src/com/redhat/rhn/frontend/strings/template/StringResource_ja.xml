@@ -3,7 +3,7 @@
   <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
       <!-- New Account Email -->
-      <trans-unit id="email.newaccount.subject">
+      <trans-unit id="email.newaccount.subject" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -15,7 +15,7 @@
         </context-group>
         <target>@@PRODUCT_NAME@@ アカウントの準備が整いました</target>
       </trans-unit>
-      <trans-unit id="email.newaccountbycreator.body">
+      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
@@ -47,7 +47,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.body">
+      <trans-unit id="email.newaccount.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
@@ -79,7 +79,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.pam.body">
+      <trans-unit id="email.newaccount.pam.body" xml:space="preserve">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
@@ -109,7 +109,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <target state="needs-adaptation">こんにちは。 {0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと組み合わせることで、 @@PRODUCT_NAME@@ のシステム管理にアクセスできる機能を提供します。 @@PRODUCT_NAME@@ ログイン: {2} 電子メール: {4} {5} @@PRODUCT_NAME@@ をお使いいただき、ありがとうございます。 {6}</target>
       </trans-unit>
       <!-- New User Email -->
-      <trans-unit id="email.newuser.subject">
+      <trans-unit id="email.newuser.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -123,7 +123,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
         <target>@@PRODUCT_NAME@@ ユーザーが作成されました: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
-      <trans-unit id="email.newuser.body">
+      <trans-unit id="email.newuser.body" xml:space="preserve">
         <source>Hello,
 
 A new user has been added to your account.
@@ -260,7 +260,7 @@ Thank you for using @@PRODUCT_NAME@@.
     </target>
         </trans-unit>
       </group>
-      <trans-unit id="dailysummary.email.subject">
+      <trans-unit id="dailysummary.email.subject" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
@@ -272,7 +272,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
         <target>{0} の @@PRODUCT_NAME@@ デイリーステータスレポート</target>
       </trans-unit>
-      <trans-unit id="dailysummary.email.body">
+      <trans-unit id="dailysummary.email.body" xml:space="preserve">
         <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
@@ -307,7 +307,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
         <target state="needs-adaptation">これはアカウント {0} ({1}) の @@PRODUCT_NAME@@ ステータスレポートです。 この電子メールは以下のいずれかの状況に該当する場合に送信されます: 1. システムが、24 時間以内に @@PRODUCT_NAME@@ にチェックインするのに失敗した場合。 2. システムが、スケジュールされた動作を登録した場合。 {2} {3} この電子メールの無効化について: ---------------------- システムに対する電子メールを無効化する方法については、以下のページをお読みください: https://{4}/rhn/account/UserPreferences.do @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。 {5} {6}</target>
       </trans-unit>
-      <trans-unit id="email.forgotten.password">
+      <trans-unit id="email.forgotten.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -334,7 +334,7 @@ Thank you for using @@PRODUCT_NAME@@.
             </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.forgotten.logins">
+      <trans-unit id="email.forgotten.logins" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -363,7 +363,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
         <target state="needs-adaptation">[ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。] 電子メールアドレス {0} に関連するすべての @@PRODUCT_NAME@@ ログインの一覧についての要求が行なわれました。 既存のログインは下記のとおりです: {1} 上記の @@PRODUCT_NAME@@ ログインのいずれのパスワードも、以下でリセットできます: https://{2}/rhn/help/ForgotCredentials.do ログインに問題がある場合には、@@PRODUCT_NAME@@ 管理者にお問い合わせください。 この電子メールの送信をリクエストされなかった場合は、このメッセージを無視してください。 @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。</target>
       </trans-unit>
-      <trans-unit id="email.reset.password">
+      <trans-unit id="email.reset.password" xml:space="preserve">
         <source>
 [ This is an automated email sent to {0}. ]
 
