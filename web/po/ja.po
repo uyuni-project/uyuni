@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-09 16:18+0200\n"
-"PO-Revision-Date: 2020-09-15 00:48+0000\n"
+"PO-Revision-Date: 2020-09-17 09:18+0000\n"
 "Last-Translator: Yasuhiko Kamata <belphegor@belbel.or.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -379,22 +379,22 @@ msgstr ""
 #: ../html/src/components/input/FormMultiInput.js:122
 #: ../html/src/manager/clusters/add-cluster/finish-add.js:59
 msgid "Add"
-msgstr ""
+msgstr "追加"
 
 #: ../html/src/components/input/FormMultiInput.js:134
 #: ../html/src/manager/clusters/remove-node/remove-node.js:81
 msgid "Remove"
-msgstr ""
+msgstr "削除"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:26
 msgid "Users"
-msgstr ""
+msgstr "ユーザー"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:52
 #: ../html/src/components/input/form.stories.js:26
 #: ../html/src/components/input/Text.stories.js:26
 msgid "First Name"
-msgstr ""
+msgstr "名"
 
 #: ../html/src/components/input/FormMultiInput.stories.js:54
 #: ../html/src/components/input/FormMultiInput.stories.js:63
@@ -405,14 +405,14 @@ msgstr ""
 
 #: ../html/src/components/input/FormMultiInput.stories.js:61
 msgid "Last Name"
-msgstr ""
+msgstr "姓"
 
 #: ../html/src/components/input/Password.stories.js:26
 #: ../html/src/manager/images/image-store-edit.js:152
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.js:269
 #: ../html/src/manager/virtualization/guests/console/guests-console.js:154
 msgid "Password"
-msgstr ""
+msgstr "パスワード"
 
 #: ../html/src/components/input/Password.stories.js:28
 msgid "Minimum 4 characters"
@@ -1533,12 +1533,12 @@ msgstr ""
 #: ../html/src/manager/images/image-view.js:669
 #: ../html/src/manager/maintenance/details/schedule-details.js:60
 msgid "Overview"
-msgstr ""
+msgstr "概要"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:33
 #: ../html/src/manager/virtualization/pools/pool-properties.js:181
 msgid "Yes"
-msgstr ""
+msgstr "はい"
 
 #: ../html/src/manager/clusters/cluster/cluster-overview.js:88
 msgid "System group refresh action scheduled successfully"
@@ -1672,7 +1672,7 @@ msgstr ""
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:69
 msgid "Clusters"
-msgstr ""
+msgstr "クラスタ"
 
 #: ../html/src/manager/clusters/list-clusters/list-clusters.js:98
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.js:31
@@ -3867,12 +3867,12 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:39
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:193
 msgid "No Change"
-msgstr ""
+msgstr "変更なし"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:40
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:452
 msgid "Subscribe"
-msgstr ""
+msgstr "サブスクライブする"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.js:41
 msgid "Unsubsribe"
@@ -4324,7 +4324,7 @@ msgstr ""
 
 #: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.js:86
 msgid "Networks"
-msgstr ""
+msgstr "ネットワーク"
 
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-form.js:129
 #: ../html/src/manager/virtualization/pools/pool-properties.js:608
