@@ -4,7 +4,7 @@
     <body>
       <!-- New Account Email -->
       <trans-unit id="email.newaccount.subject">
-        <source>Your @@PRODUCT_NAME@@ Account is ready</source>
+        <source xml:space="preserve">Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -13,10 +13,10 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target>您的 @@PRODUCT_NAME@@ 帳號已經準備妥當</target>
+        <target xml:space="preserve">您的 @@PRODUCT_NAME@@ 帳號已經準備妥當</target>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -47,7 +47,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -78,7 +78,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.pam.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -104,7 +104,7 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target>您好。
+        <target xml:space="preserve">您好。
 
 您的 Red Hat 登入帳號已經由 {0} {1} 為您建立完成。您的
 Red Hat 登入帳號結合了啟用中的 Red Hat 訂閱服務，能讓您透過
@@ -120,7 +120,7 @@ Red Hat 登入帳號結合了啟用中的 Red Hat 訂閱服務，能讓您透過
       </trans-unit>
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject">
-        <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
+        <source xml:space="preserve">@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -131,10 +131,10 @@ Red Hat 登入帳號結合了啟用中的 Red Hat 訂閱服務，能讓您透過
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ 用戶已建立：{0} ({1}, {2} &lt;{3}&gt;)</target>
+        <target xml:space="preserve">@@PRODUCT_NAME@@ 用戶已建立：{0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
       <trans-unit id="email.newuser.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A new user has been added to your account.
 
@@ -159,7 +159,7 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target>您好。
+        <target xml:space="preserve">您好。
 
 新使用者已被加入至您的帳號。
 
@@ -178,7 +178,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
         <trans-unit id="email.errata.notification.body.summary">
-          <source>
+          <source xml:space="preserve">
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -206,7 +206,7 @@ Summary:
         {7} - errata refs
       </context>
           </context-group>
-          <target>
+          <target xml:space="preserve">
 @@PRODUCT_NAME@@ ?????????????
 ?????????????
 
@@ -224,7 +224,7 @@ Summary:
     </target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader">
-          <source>
+          <source xml:space="preserve">
 ---------------------
 Affected Systems List
 ---------------------
@@ -234,7 +234,7 @@ package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
-          <target>
+          <target xml:space="preserve">
 ---------------------
 ????????
 ---------------------¶
@@ -245,17 +245,17 @@ as root on the system in question to refresh your software profile.
     </target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
-          <source>
+          <source xml:space="preserve">
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <target>
+          <target xml:space="preserve">
 ?????????????????
 ??????????????????
     </target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
-          <source>
+          <source xml:space="preserve">
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -264,13 +264,13 @@ which you have explicitly enabled Patch Alerts are shown).
         {0} - system count
       </context>
           </context-group>
-          <target>
+          <target xml:space="preserve">
 ?????? {0} ??????????
 ??????????????????
     </target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected">
-          <source>
+          <source xml:space="preserve">
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -290,7 +290,7 @@ You may address the issues outlined in this advisory in two ways:
         {1} - system list URL
       </context>
           </context-group>
-          <target>
+          <target xml:space="preserve">
   ??     ??       ?????
 ---------- ---------- ---------------------------------------------
 {0}
@@ -306,7 +306,7 @@ You may address the issues outlined in this advisory in two ways:
     </target>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences">
-          <source>
+          <source xml:space="preserve">
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -328,7 +328,7 @@ click the "Details" tab.
         {2} - account info
       </context>
           </context-group>
-          <target>
+          <target xml:space="preserve">
 ?????????
 ---------------------------------
 ??? / ????????????????? @@PRODUCT_NAME@@
@@ -346,7 +346,7 @@ click the "Details" tab.
         </trans-unit>
       </group>
       <trans-unit id="dailysummary.email.subject">
-        <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
+        <source xml:space="preserve">@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
@@ -355,10 +355,10 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
-        <target>{0} 的 @@PRODUCT_NAME@@ 每日狀態報告</target>
+        <target xml:space="preserve">{0} 的 @@PRODUCT_NAME@@ 每日狀態報告</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body">
-        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+        <source xml:space="preserve">This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
 
@@ -390,7 +390,7 @@ Thank you for using @@PRODUCT_NAME@@.
              {6} = email account info from template db
           </context>
         </context-group>
-        <target>這是您的帳號 {0} 於 {1} 的 @@PRODUCT_NAME@@ 狀態報告。
+        <target xml:space="preserve">這是您的帳號 {0} 於 {1} 的 @@PRODUCT_NAME@@ 狀態報告。
 
 以下任何事件發生時，會發送此郵件：
 
@@ -412,7 +412,7 @@ https://{4}/rhn/account/UserPreferences.do¶
 </target>
       </trans-unit>
       <trans-unit id="email.forgotten.password">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0} at your request. ]
 
 A request to reset the @@PRODUCT_NAME@@ password for login {2} has been made.
@@ -438,7 +438,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.logins">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0} at your request. ]
 
 You have requested a list of all @@PRODUCT_NAME@@ logins associated
@@ -464,7 +464,7 @@ Thank you for using @@PRODUCT_NAME@@.
             {1} - Existing logins
             {2} - Hostname of the @@PRODUCT_NAME@@</context>
         </context-group>
-        <target>
+        <target xml:space="preserve">
 【這是根據您的要求，自動發給 {0} 的信件。】
 
 您要求的是與電子郵件信箱 {0} 相關連的
@@ -485,7 +485,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </target>
       </trans-unit>
       <trans-unit id="email.reset.password">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0}. ]
 
 The @@PRODUCT_NAME@@ password for login {1} has been reset in response to a reset-request

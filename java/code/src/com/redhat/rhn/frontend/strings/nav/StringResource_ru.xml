@@ -3,528 +3,528 @@
   <file datatype="plaintext" original="" source-language="en" target-language="ru">
     <body>
       <trans-unit id="common.nav.overview">
-        <source>Overview</source>
+        <source xml:space="preserve">Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Обзор</target>
+        <target xml:space="preserve">Обзор</target>
       </trans-unit>
       <trans-unit id="common.nav.systems">
-        <source>Systems</source>
+        <source xml:space="preserve">Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Системы</target>
+        <target xml:space="preserve">Системы</target>
       </trans-unit>
       <trans-unit id="users.nav.all">
-        <source>All</source>
+        <source xml:space="preserve">All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target>Все</target>
+        <target xml:space="preserve">Все</target>
       </trans-unit>
       <trans-unit id="users.nav.active">
-        <source>Active</source>
+        <source xml:space="preserve">Active</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target>Активные</target>
+        <target xml:space="preserve">Активные</target>
       </trans-unit>
       <trans-unit id="users.nav.disabled">
-        <source>Deactivated</source>
+        <source xml:space="preserve">Deactivated</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target>Неактивные</target>
+        <target xml:space="preserve">Неактивные</target>
       </trans-unit>
       <trans-unit id="User">
-        <source>User</source>
+        <source xml:space="preserve">User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Users Navigation Menu</context>
         </context-group>
-        <target>Пользователь</target>
+        <target xml:space="preserve">Пользователь</target>
       </trans-unit>
       <trans-unit id="action.nav.backout">
-        <source>Back Out Patches</source>
+        <source xml:space="preserve">Back Out Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Action Details Navigation Menu</context>
         </context-group>
-        <target>Аннулировать исправления</target>
+        <target xml:space="preserve">Аннулировать исправления</target>
       </trans-unit>
       <trans-unit id="action.nav.install">
-        <source>Install Patches</source>
+        <source xml:space="preserve">Install Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Action Details Navigation Menu</context>
         </context-group>
-        <target>Установить исправления</target>
+        <target xml:space="preserve">Установить исправления</target>
       </trans-unit>
       <trans-unit id="virtualization.entitlements">
-        <source>Virtualization Entitlements</source>
+        <source xml:space="preserve">Virtualization Entitlements</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Subscription Management Menu</context>
         </context-group>
-        <target>Полномочия виртуализации</target>
+        <target xml:space="preserve">Полномочия виртуализации</target>
       </trans-unit>
       <trans-unit id="guest.limited.hosts">
-        <source>Virtualization Hosts</source>
+        <source xml:space="preserve">Virtualization Hosts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
-        <target>Узлы виртуализации</target>
+        <target xml:space="preserve">Узлы виртуализации</target>
       </trans-unit>
       <trans-unit id="guests.without.hosts">
-        <source>Guests Without Hosts</source>
+        <source xml:space="preserve">Guests Without Hosts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Virtualization Entitlements Navigation</context>
         </context-group>
-        <target>Гости без хостов</target>
+        <target xml:space="preserve">Гости без хостов</target>
       </trans-unit>
       <trans-unit id="Virtualization">
-        <source>Virtualization</source>
+        <source xml:space="preserve">Virtualization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Виртуализация</target>
+        <target xml:space="preserve">Виртуализация</target>
       </trans-unit>
       <trans-unit id="Virtual Systems">
-        <source>Virtual Systems</source>
+        <source xml:space="preserve">Virtual Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Виртуальные системы</target>
+        <target xml:space="preserve">Виртуальные системы</target>
       </trans-unit>
       <trans-unit id="Bare Metal Systems">
-        <source>Unprovisioned Systems</source>
+        <source xml:space="preserve">Unprovisioned Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Physical Systems">
-        <source>Physical Systems</source>
+        <source xml:space="preserve">Physical Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Физические системы</target>
+        <target xml:space="preserve">Физические системы</target>
       </trans-unit>
       <trans-unit id="Duplicate Systems">
-        <source>Duplicate Systems</source>
+        <source xml:space="preserve">Duplicate Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Повторяющиеся</target>
+        <target xml:space="preserve">Повторяющиеся</target>
       </trans-unit>
       <trans-unit id="Requiring Reboot">
-        <source>Requiring Reboot</source>
+        <source xml:space="preserve">Requiring Reboot</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Требует перезагрузки</target>
+        <target xml:space="preserve">Требует перезагрузки</target>
       </trans-unit>
       <trans-unit id="Extra Packages">
-        <source>Non Compliant</source>
+        <source xml:space="preserve">Non Compliant</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Дополнительные</target>
+        <target xml:space="preserve">Дополнительные</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ips">
-        <source>Duplicate IP Address</source>
+        <source xml:space="preserve">Duplicate IP Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
-        <target>Повторяющийся IP</target>
+        <target xml:space="preserve">Повторяющийся IP</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.ip6s">
-        <source>Duplicate IPv6 Address</source>
+        <source xml:space="preserve">Duplicate IPv6 Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Duplicate Systems Navigation Menu</context>
         </context-group>
-        <target>Повторяющийся IPv6</target>
+        <target xml:space="preserve">Повторяющийся IPv6</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.mac_address">
-        <source>Duplicate MAC Address</source>
+        <source xml:space="preserve">Duplicate MAC Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Повторяющийся MAC</target>
+        <target xml:space="preserve">Повторяющийся MAC</target>
       </trans-unit>
       <trans-unit id="duplicate.systems.nav.hostname">
-        <source>Duplicate Hostname</source>
+        <source xml:space="preserve">Duplicate Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Повторяющееся имя узла</target>
+        <target xml:space="preserve">Повторяющееся имя узла</target>
       </trans-unit>
       <trans-unit id="System Currency">
-        <source>System Currency</source>
+        <source xml:space="preserve">System Currency</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Рейтинг систем</target>
+        <target xml:space="preserve">Рейтинг систем</target>
       </trans-unit>
       <trans-unit id="software.crashes">
-        <source>Software Crashes</source>
+        <source xml:space="preserve">Software Crashes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Программные сбои</target>
+        <target xml:space="preserve">Программные сбои</target>
       </trans-unit>
       <trans-unit id="software.crashes.overview">
-        <source>Software Crashes Overview</source>
+        <source xml:space="preserve">Software Crashes Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Обзор программных сбоев</target>
+        <target xml:space="preserve">Обзор программных сбоев</target>
       </trans-unit>
       <trans-unit id="software.crashes.overview.summary">
-        <source>The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
+        <source xml:space="preserve">The table below lists software crashes, grouped by UUID, that occurred on your systems. Identical crash UUIDs may potentially indicate similar or identical types of software crash.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Ниже перечислены сбои, сгруппированные по UUID.  </target>
+        <target xml:space="preserve">Ниже перечислены сбои, сгруппированные по UUID.  </target>
       </trans-unit>
       <trans-unit id="software.crashes.by.uuid.summary">
-        <source>The table below lists systems where a crash with the above UUID occurred.</source>
+        <source xml:space="preserve">The table below lists systems where a crash with the above UUID occurred.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Ниже приведен список систем, в которых был зарегистрирован сбой с заданным UUID.</target>
+        <target xml:space="preserve">Ниже приведен список систем, в которых был зарегистрирован сбой с заданным UUID.</target>
       </trans-unit>
       <trans-unit id="software.crashes.uuid.header">
-        <source>Summary for crashes with identical UUID</source>
+        <source xml:space="preserve">Summary for crashes with identical UUID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Systems Navigation Menu</context>
         </context-group>
-        <target>Сводка сбоев с одинаковыми UUID</target>
+        <target xml:space="preserve">Сводка сбоев с одинаковыми UUID</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config">
-        <source>Configuration</source>
+        <source xml:space="preserve">Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>Конфигурация</target>
+        <target xml:space="preserve">Конфигурация</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.deploy">
-        <source>Deploy Files</source>
+        <source xml:space="preserve">Deploy Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>Применить файлы</target>
+        <target xml:space="preserve">Применить файлы</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.diff">
-        <source>Compare Files</source>
+        <source xml:space="preserve">Compare Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>Сравнить файлы</target>
+        <target xml:space="preserve">Сравнить файлы</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.subscribe">
-        <source>Subscribe to Channels</source>
+        <source xml:space="preserve">Subscribe to Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>Подписаться к каналам</target>
+        <target xml:space="preserve">Подписаться к каналам</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.unsubscribe">
-        <source>Unsubscribe from Channels</source>
+        <source xml:space="preserve">Unsubscribe from Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>Отписаться от каналов</target>
+        <target xml:space="preserve">Отписаться от каналов</target>
       </trans-unit>
       <trans-unit id="ssm.nav.config.enable">
-        <source>Enable Configuration</source>
+        <source xml:space="preserve">Enable Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>Активировать конфигурацию</target>
+        <target xml:space="preserve">Активировать конфигурацию</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status">
-        <source>Task Log</source>
+        <source xml:space="preserve">Task Log</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.nav.status.inprogress">
-        <source>In Progress</source>
+        <source xml:space="preserve">In Progress</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>В процессе</target>
+        <target xml:space="preserve">В процессе</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.completed">
-        <source>Completed</source>
+        <source xml:space="preserve">Completed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>Завершено</target>
+        <target xml:space="preserve">Завершено</target>
       </trans-unit>
       <trans-unit id="ssm.nav.status.all">
-        <source>All</source>
+        <source xml:space="preserve">All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Set Manager Navigation Menu</context>
         </context-group>
-        <target>Все</target>
+        <target xml:space="preserve">Все</target>
       </trans-unit>
       <trans-unit id="channel.nav.all">
-        <source>All</source>
+        <source xml:space="preserve">All</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>Все каналы</target>
+        <target xml:space="preserve">Все каналы</target>
       </trans-unit>
       <trans-unit id="channel.nav.shared">
-        <source>Shared</source>
+        <source xml:space="preserve">Shared</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>Общие</target>
+        <target xml:space="preserve">Общие</target>
       </trans-unit>
       <trans-unit id="channel.nav.vendor">
-        <source>@@VENDOR_NAME@@</source>
+        <source xml:space="preserve">@@VENDOR_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>Red Hat</target>
+        <target xml:space="preserve">Red Hat</target>
       </trans-unit>
       <trans-unit id="channel.nav.popular">
-        <source>Popular</source>
+        <source xml:space="preserve">Popular</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>Популярные</target>
+        <target xml:space="preserve">Популярные</target>
       </trans-unit>
       <trans-unit id="channel.nav.custom">
-        <source>My Channels</source>
+        <source xml:space="preserve">My Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>Мои каналы</target>
+        <target xml:space="preserve">Мои каналы</target>
       </trans-unit>
       <trans-unit id="channel.nav.retired">
-        <source>Retired</source>
+        <source xml:space="preserve">Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Channel Navigation Menu</context>
         </context-group>
-        <target>Устаревшие</target>
+        <target xml:space="preserve">Устаревшие</target>
       </trans-unit>
       <trans-unit id="config.nav.managed">
-        <source>Managed</source>
+        <source xml:space="preserve">Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Управляются с Satellite</target>
+        <target xml:space="preserve">Управляются с Satellite</target>
       </trans-unit>
       <trans-unit id="config.nav.target">
-        <source>Target</source>
+        <source xml:space="preserve">Target</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Не управляются с Satellite</target>
+        <target xml:space="preserve">Не управляются с Satellite</target>
       </trans-unit>
       <trans-unit id="config.nav.config">
-        <source>Configuration</source>
+        <source xml:space="preserve">Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Конфигурация</target>
+        <target xml:space="preserve">Конфигурация</target>
       </trans-unit>
       <trans-unit id="config.nav.channels">
-        <source>Channels</source>
+        <source xml:space="preserve">Channels</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Каналы конфигурации</target>
+        <target xml:space="preserve">Каналы конфигурации</target>
       </trans-unit>
       <trans-unit id="config.nav.files">
-        <source>Files</source>
+        <source xml:space="preserve">Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Файлы конфигурации</target>
+        <target xml:space="preserve">Файлы конфигурации</target>
       </trans-unit>
       <trans-unit id="config.nav.globalfiles">
-        <source>Centrally Managed</source>
+        <source xml:space="preserve">Centrally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Центрально управляемые файлы</target>
+        <target xml:space="preserve">Центрально управляемые файлы</target>
       </trans-unit>
       <trans-unit id="config.nav.localfiles">
-        <source>Locally Managed</source>
+        <source xml:space="preserve">Locally Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Configuration Navigation Menu</context>
         </context-group>
-        <target>Локально управляемые файлы</target>
+        <target xml:space="preserve">Локально управляемые файлы</target>
       </trans-unit>
       <!-- ConfigChannel details navigation -->
       <trans-unit id="configchannel.nav.overview">
-        <source>Overview</source>
+        <source xml:space="preserve">Overview</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Обзор</target>
+        <target xml:space="preserve">Обзор</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.list">
-        <source>List/Remove Files</source>
+        <source xml:space="preserve">List/Remove Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
-        <target>Показать/ Удалить файлы</target>
+        <target xml:space="preserve">Показать/ Удалить файлы</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add">
-        <source>Add Files</source>
+        <source xml:space="preserve">Add Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Добавить файлы</target>
+        <target xml:space="preserve">Добавить файлы</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.upload">
-        <source>Upload File</source>
+        <source xml:space="preserve">Upload File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Загрузить файл на сервер</target>
+        <target xml:space="preserve">Загрузить файл на сервер</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.import">
-        <source>Import Files</source>
+        <source xml:space="preserve">Import Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Импорт файлов</target>
+        <target xml:space="preserve">Импорт файлов</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.add.create">
-        <source>Create File</source>
+        <source xml:space="preserve">Create File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Создать файл</target>
+        <target xml:space="preserve">Создать файл</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.deploy">
-        <source>Deploy Files</source>
+        <source xml:space="preserve">Deploy Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
         </context-group>
-        <target>Применить файлы</target>
+        <target xml:space="preserve">Применить файлы</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems">
-        <source>Systems</source>
+        <source xml:space="preserve">Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target>Системы</target>
+        <target xml:space="preserve">Системы</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems.subscribed">
-        <source>Subscribed Systems</source>
+        <source xml:space="preserve">Subscribed Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target>Подписанные системы</target>
+        <target xml:space="preserve">Подписанные системы</target>
       </trans-unit>
       <trans-unit id="configchannel.nav.systems.target">
-        <source>Target Systems</source>
+        <source xml:space="preserve">Target Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/channel/ChannelSystems.do</context>
         </context-group>
-        <target>Целевые системы</target>
+        <target xml:space="preserve">Целевые системы</target>
       </trans-unit>
       <!-- END config channel nav -->
       <!-- config file nav -->
       <trans-unit id="configfile.nav.details">
-        <source>Details</source>
+        <source xml:space="preserve">Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>Свойства</target>
+        <target xml:space="preserve">Свойства</target>
       </trans-unit>
       <trans-unit id="configfile.nav.revisions">
-        <source>Manage Revisions</source>
+        <source xml:space="preserve">Manage Revisions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileRevisions.do</context>
         </context-group>
-        <target>Управление версиями</target>
+        <target xml:space="preserve">Управление версиями</target>
       </trans-unit>
       <trans-unit id="configfile.nav.deploy">
-        <source>Deploy File</source>
+        <source xml:space="preserve">Deploy File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDeploy.do</context>
         </context-group>
-        <target>Применить файл</target>
+        <target xml:space="preserve">Применить файл</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy">
-        <source>Copy File</source>
+        <source xml:space="preserve">Copy File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target>Копировать файл</target>
+        <target xml:space="preserve">Копировать файл</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.central">
-        <source>Copy To Centrally-Managed</source>
+        <source xml:space="preserve">Copy To Centrally-Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target>Копировать в центрально управляемый</target>
+        <target xml:space="preserve">Копировать в центрально управляемый</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.local">
-        <source>Copy To Locally-Managed</source>
+        <source xml:space="preserve">Copy To Locally-Managed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target>Копировать в локально управляемый</target>
+        <target xml:space="preserve">Копировать в локально управляемый</target>
       </trans-unit>
       <trans-unit id="configfile.nav.copy.sandbox">
-        <source>Copy To System Sandbox</source>
+        <source xml:space="preserve">Copy To System Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCopy.do</context>
         </context-group>
-        <target>Копировать в системную «песочницу»</target>
+        <target xml:space="preserve">Копировать в системную «песочницу»</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare">
-        <source>Compare File</source>
+        <source xml:space="preserve">Compare File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target>Сравнить файл</target>
+        <target xml:space="preserve">Сравнить файл</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.deployed">
-        <source>Deployed Files</source>
+        <source xml:space="preserve">Deployed Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target>Примененные файлы</target>
+        <target xml:space="preserve">Примененные файлы</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.revision">
-        <source>Other Revisions</source>
+        <source xml:space="preserve">Other Revisions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target>Другие версии</target>
+        <target xml:space="preserve">Другие версии</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.copy">
-        <source>Other Copies</source>
+        <source xml:space="preserve">Other Copies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target>Другие копии</target>
+        <target xml:space="preserve">Другие копии</target>
       </trans-unit>
       <trans-unit id="configfile.nav.compare.file">
-        <source>Other Files</source>
+        <source xml:space="preserve">Other Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileCompare.do</context>
         </context-group>
-        <target>Другие файлы</target>
+        <target xml:space="preserve">Другие файлы</target>
       </trans-unit>
       <group>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
         <trans-unit id="nav.system.audit.list_scans">
-          <source>List Scans</source>
-          <target>Список проверок</target>
+          <source xml:space="preserve">List Scans</source>
+          <target xml:space="preserve">Список проверок</target>
         </trans-unit>
         <trans-unit id="nav.system.audit.schedule">
-          <source>Schedule</source>
-          <target>План</target>
+          <source xml:space="preserve">Schedule</source>
+          <target xml:space="preserve">План</target>
         </trans-unit>
       </group>
       <!-- SDC Config file navigation-->
@@ -533,47 +533,47 @@
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
         <trans-unit id="nav.sdc.config.overview">
-          <source>Overview</source>
-          <target>Обзор</target>
+          <source xml:space="preserve">Overview</source>
+          <target xml:space="preserve">Обзор</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_modify_files">
-          <source>View/Modify Files</source>
-          <target>Просмотреть/ Изменить файлы</target>
+          <source xml:space="preserve">View/Modify Files</source>
+          <target xml:space="preserve">Просмотреть/ Изменить файлы</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.view_files">
-          <source>View Files</source>
+          <source xml:space="preserve">View Files</source>
         </trans-unit>
         <trans-unit id="nav.sdc.config.compare_files">
-          <source>Compare Files</source>
-          <target>Сравнить файлы</target>
+          <source xml:space="preserve">Compare Files</source>
+          <target xml:space="preserve">Сравнить файлы</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.manage_channels">
-          <source>Manage Configuration Channels</source>
-          <target>Управление каналами конфигурации</target>
+          <source xml:space="preserve">Manage Configuration Channels</source>
+          <target xml:space="preserve">Управление каналами конфигурации</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.list_unsubscribe_channels">
-          <source>List/Unsubscribe from Channels</source>
-          <target>Просмотреть/ Отписаться от каналов</target>
+          <source xml:space="preserve">List/Unsubscribe from Channels</source>
+          <target xml:space="preserve">Просмотреть/ Отписаться от каналов</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.subscribe_channels">
-          <source>Subscribe to Channels</source>
-          <target>Подписаться к каналам</target>
+          <source xml:space="preserve">Subscribe to Channels</source>
+          <target xml:space="preserve">Подписаться к каналам</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.rank_channels">
-          <source>View/Modify Rankings</source>
-          <target>Просмотреть/ Изменить приоритеты</target>
+          <source xml:space="preserve">View/Modify Rankings</source>
+          <target xml:space="preserve">Просмотреть/ Изменить приоритеты</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.centrally_managed_files">
-          <source>Centrally-Managed Files</source>
-          <target>Центрально управляемые файлы</target>
+          <source xml:space="preserve">Centrally-Managed Files</source>
+          <target xml:space="preserve">Центрально управляемые файлы</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.locally_managed_files">
-          <source>Locally-Managed Files</source>
-          <target>Локально управляемые файлы</target>
+          <source xml:space="preserve">Locally-Managed Files</source>
+          <target xml:space="preserve">Локально управляемые файлы</target>
         </trans-unit>
         <trans-unit id="nav.sdc.config.sandbox_managed_files">
-          <source>Local Sandbox</source>
-          <target>Локальная «песочница»</target>
+          <source xml:space="preserve">Local Sandbox</source>
+          <target xml:space="preserve">Локальная «песочница»</target>
         </trans-unit>
       </group>
       <!-- END config file nav -->
@@ -582,600 +582,600 @@
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
         <trans-unit id="system.detail.nav.list">
-          <source>List</source>
-          <target>Список</target>
+          <source xml:space="preserve">List</source>
+          <target xml:space="preserve">Список</target>
         </trans-unit>
         <trans-unit id="system.detail.nav.remove">
-          <source>List / Remove</source>
-          <target>Список / Удалить</target>
+          <source xml:space="preserve">List / Remove</source>
+          <target xml:space="preserve">Список / Удалить</target>
         </trans-unit>
       </group>
       <trans-unit id="Add">
-        <source>Add</source>
+        <source xml:space="preserve">Add</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Добавить</target>
+        <target xml:space="preserve">Добавить</target>
       </trans-unit>
       <trans-unit id="Verify">
-        <source>Verify</source>
+        <source xml:space="preserve">Verify</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Проверить правильность</target>
+        <target xml:space="preserve">Проверить правильность</target>
       </trans-unit>
       <trans-unit id="Snapshots">
-        <source>Snapshots</source>
+        <source xml:space="preserve">Snapshots</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Снимки</target>
+        <target xml:space="preserve">Снимки</target>
       </trans-unit>
       <trans-unit id="Installation Guide">
-        <source>Installation Guide</source>
+        <source xml:space="preserve">Installation Guide</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Руководство по установке</target>
+        <target xml:space="preserve">Руководство по установке</target>
       </trans-unit>
       <trans-unit id="Software">
-        <source>Software</source>
+        <source xml:space="preserve">Software</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Программы</target>
+        <target xml:space="preserve">Программы</target>
       </trans-unit>
       <trans-unit id="Provisioning">
-        <source>Provisioning</source>
+        <source xml:space="preserve">Provisioning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu (system details)</context>
         </context-group>
-        <target>Инициализация</target>
+        <target xml:space="preserve">Инициализация</target>
       </trans-unit>
       <trans-unit id="Misc">
-        <source>Misc</source>
+        <source xml:space="preserve">Misc</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Прочее</target>
+        <target xml:space="preserve">Прочее</target>
       </trans-unit>
       <trans-unit id="Snapshot Tags">
-        <source>Snapshot Tags</source>
+        <source xml:space="preserve">Snapshot Tags</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Теги снимков</target>
+        <target xml:space="preserve">Теги снимков</target>
       </trans-unit>
       <trans-unit id="Session Status">
-        <source>Session Status</source>
+        <source xml:space="preserve">Session Status</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Статус сеанса</target>
+        <target xml:space="preserve">Статус сеанса</target>
       </trans-unit>
       <trans-unit id="Sandbox">
-        <source>Sandbox</source>
+        <source xml:space="preserve">Sandbox</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>«Песочница»</target>
+        <target xml:space="preserve">«Песочница»</target>
       </trans-unit>
       <trans-unit id="Spacewalk">
-        <source>@@PRODUCT_NAME@@</source>
+        <source xml:space="preserve">@@PRODUCT_NAME@@</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@</target>
+        <target xml:space="preserve">@@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="Spacewalk Configuration">
-        <source>Manager Configuration</source>
+        <source xml:space="preserve">Manager Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@</target>
+        <target xml:space="preserve">@@PRODUCT_NAME@@</target>
       </trans-unit>
       <trans-unit id="ISS Configuration">
-        <source>ISS Configuration</source>
+        <source xml:space="preserve">ISS Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Синхронизация</target>
+        <target xml:space="preserve">Синхронизация</target>
       </trans-unit>
       <trans-unit id="External Authentication">
-        <source>External Authentication</source>
+        <source xml:space="preserve">External Authentication</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Group Role Mapping">
-        <source>Group Role Mapping</source>
+        <source xml:space="preserve">Group Role Mapping</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Group Configuration">
-        <source>System Group Configuration</source>
+        <source xml:space="preserve">System Group Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Master Setup">
-        <source>Master Setup</source>
+        <source xml:space="preserve">Master Setup</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Мастер-сервер</target>
+        <target xml:space="preserve">Мастер-сервер</target>
       </trans-unit>
       <trans-unit id="Slave Setup">
-        <source>Slave Setup</source>
+        <source xml:space="preserve">Slave Setup</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Подчиненные</target>
+        <target xml:space="preserve">Подчиненные</target>
       </trans-unit>
       <trans-unit id="Remote Command">
-        <source>Remote Command</source>
+        <source xml:space="preserve">Remote Command</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Удаленная команда</target>
+        <target xml:space="preserve">Удаленная команда</target>
       </trans-unit>
       <trans-unit id="Power Management Configuration">
-        <source>Power Management Configuration</source>
+        <source xml:space="preserve">Power Management Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Power Management Operations">
-        <source>Power Management Operations</source>
+        <source xml:space="preserve">Power Management Operations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Tag Systems">
-        <source>Tag Systems</source>
+        <source xml:space="preserve">Tag Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Отметить системы</target>
+        <target xml:space="preserve">Отметить системы</target>
       </trans-unit>
       <trans-unit id="Reactivation">
-        <source>Reactivation</source>
+        <source xml:space="preserve">Reactivation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Реактивация</target>
+        <target xml:space="preserve">Реактивация</target>
       </trans-unit>
       <trans-unit id="Properties">
-        <source>Properties</source>
+        <source xml:space="preserve">Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Свойства</target>
+        <target xml:space="preserve">Свойства</target>
       </trans-unit>
       <trans-unit id="Pending">
-        <source>Pending</source>
+        <source xml:space="preserve">Pending</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Ожидание</target>
+        <target xml:space="preserve">Ожидание</target>
       </trans-unit>
       <trans-unit id="Patches">
-        <source>Patches</source>
+        <source xml:space="preserve">Patches</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Исправления</target>
+        <target xml:space="preserve">Исправления</target>
       </trans-unit>
       <trans-unit id="Patch List">
-        <source>Patch List</source>
+        <source xml:space="preserve">Patch List</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Patch Clusters">
-        <source>Patch Clusters</source>
+        <source xml:space="preserve">Patch Clusters</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Кластеры исправлений</target>
+        <target xml:space="preserve">Кластеры исправлений</target>
       </trans-unit>
       <trans-unit id="Notes">
-        <source>Notes</source>
+        <source xml:space="preserve">Notes</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Замечания</target>
+        <target xml:space="preserve">Замечания</target>
       </trans-unit>
       <trans-unit id="Managed Files">
-        <source>Managed Files</source>
+        <source xml:space="preserve">Managed Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Управляемые файлы</target>
+        <target xml:space="preserve">Управляемые файлы</target>
       </trans-unit>
       <trans-unit id="List / Remove">
-        <source>List / Remove</source>
+        <source xml:space="preserve">List / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Список / Удалить</target>
+        <target xml:space="preserve">Список / Удалить</target>
       </trans-unit>
       <trans-unit id="Add / Remove">
-        <source>Add / Remove</source>
+        <source xml:space="preserve">Add / Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Добавить/Удалить</target>
+        <target xml:space="preserve">Добавить/Удалить</target>
       </trans-unit>
       <trans-unit id="List / Leave">
-        <source>List / Leave</source>
+        <source xml:space="preserve">List / Leave</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Список / Оставить</target>
+        <target xml:space="preserve">Список / Оставить</target>
       </trans-unit>
       <trans-unit id="History">
-        <source>History</source>
+        <source xml:space="preserve">History</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Журнал</target>
+        <target xml:space="preserve">Журнал</target>
       </trans-unit>
       <trans-unit id="Hardware">
-        <source>Hardware</source>
+        <source xml:space="preserve">Hardware</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Оборудование</target>
+        <target xml:space="preserve">Оборудование</target>
       </trans-unit>
       <trans-unit id="Diff">
-        <source>Diff</source>
+        <source xml:space="preserve">Diff</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Diff</target>
+        <target xml:space="preserve">Diff</target>
       </trans-unit>
       <trans-unit id="Custom Info">
-        <source>Custom Info</source>
+        <source xml:space="preserve">Custom Info</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Дополнительно</target>
+        <target xml:space="preserve">Дополнительно</target>
       </trans-unit>
       <trans-unit id="Configuration">
-        <source>Configuration</source>
+        <source xml:space="preserve">Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Конфигурация</target>
+        <target xml:space="preserve">Конфигурация</target>
       </trans-unit>
       <trans-unit id="Config Files">
-        <source>Config Files</source>
+        <source xml:space="preserve">Config Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Конфиг.файлы</target>
+        <target xml:space="preserve">Конфиг.файлы</target>
       </trans-unit>
       <trans-unit id="Join">
-        <source>Join</source>
+        <source xml:space="preserve">Join</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Присоединиться</target>
+        <target xml:space="preserve">Присоединиться</target>
       </trans-unit>
       <trans-unit id="Rollback">
-        <source>Rollback</source>
+        <source xml:space="preserve">Rollback</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Откат</target>
+        <target xml:space="preserve">Откат</target>
       </trans-unit>
       <trans-unit id="Supported">
-        <source>Supported</source>
+        <source xml:space="preserve">Supported</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Поддерживается</target>
+        <target xml:space="preserve">Поддерживается</target>
       </trans-unit>
       <trans-unit id="Retired">
-        <source>Retired</source>
+        <source xml:space="preserve">Retired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Устаревший</target>
+        <target xml:space="preserve">Устаревший</target>
       </trans-unit>
       <trans-unit id="Connection">
-        <source>Connection</source>
+        <source xml:space="preserve">Connection</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Соединение</target>
+        <target xml:space="preserve">Соединение</target>
       </trans-unit>
       <trans-unit id="Activation">
-        <source>Activation</source>
+        <source xml:space="preserve">Activation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Активация</target>
+        <target xml:space="preserve">Активация</target>
       </trans-unit>
       <trans-unit id="Systems Using Proxy">
-        <source>Systems Using Proxy</source>
+        <source xml:space="preserve">Systems Using Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Системы, использующие Proxy</target>
+        <target xml:space="preserve">Системы, использующие Proxy</target>
       </trans-unit>
       <trans-unit id="Help Desk">
-        <source>Help Desk</source>
+        <source xml:space="preserve">Help Desk</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Служба помощи</target>
+        <target xml:space="preserve">Служба помощи</target>
       </trans-unit>
       <trans-unit id="Kickstart Details">
-        <source>Autoinstallation Details</source>
+        <source xml:space="preserve">Autoinstallation Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>Свойства кикстарта</target>
+        <target xml:space="preserve">Свойства кикстарта</target>
       </trans-unit>
       <trans-unit id="kickstart.tree.edit.nav">
-        <source>Edit</source>
+        <source xml:space="preserve">Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>Изменить</target>
+        <target xml:space="preserve">Изменить</target>
       </trans-unit>
       <trans-unit id="kickstart.variable.nav">
-        <source>Variables</source>
+        <source xml:space="preserve">Variables</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart</context>
         </context-group>
-        <target>Переменные</target>
+        <target xml:space="preserve">Переменные</target>
       </trans-unit>
       <trans-unit id="System Details">
-        <source>System Details</source>
+        <source xml:space="preserve">System Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>Свойства системы</target>
+        <target xml:space="preserve">Свойства системы</target>
       </trans-unit>
       <trans-unit id="Scripts">
-        <source>Scripts</source>
+        <source xml:space="preserve">Scripts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>Сценарии</target>
+        <target xml:space="preserve">Сценарии</target>
       </trans-unit>
       <trans-unit id="Kickstart File">
-        <source>Autoinstallation File</source>
+        <source xml:space="preserve">Autoinstallation File</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>Файл кикстарта</target>
+        <target xml:space="preserve">Файл кикстарта</target>
       </trans-unit>
       <trans-unit id="Operating System">
-        <source>Operating System</source>
+        <source xml:space="preserve">Operating System</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>Операционная система</target>
+        <target xml:space="preserve">Операционная система</target>
       </trans-unit>
       <trans-unit id="Bare Metal Kickstart">
-        <source>Unprovisioned Autoinstallation</source>
+        <source xml:space="preserve">Unprovisioned Autoinstallation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>Кикстарт «с нуля»</target>
+        <target xml:space="preserve">Кикстарт «с нуля»</target>
       </trans-unit>
       <trans-unit id="Bare Metal">
-        <source>Unprovisioned</source>
+        <source xml:space="preserve">Unprovisioned</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Menu</context>
         </context-group>
-        <target>«С нуля»</target>
+        <target xml:space="preserve">«С нуля»</target>
       </trans-unit>
       <trans-unit id="Advanced Options">
-        <source>Advanced Options</source>
+        <source xml:space="preserve">Advanced Options</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Details Menu</context>
         </context-group>
-        <target>Расширенные параметры</target>
+        <target xml:space="preserve">Расширенные параметры</target>
       </trans-unit>
       <trans-unit id="Locale">
-        <source>Locale</source>
+        <source xml:space="preserve">Locale</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target>Язык</target>
+        <target xml:space="preserve">Язык</target>
       </trans-unit>
       <trans-unit id="Partitioning">
-        <source>Partitioning</source>
+        <source xml:space="preserve">Partitioning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target>Разделы</target>
+        <target xml:space="preserve">Разделы</target>
       </trans-unit>
       <trans-unit id="GPG_SSL">
-        <source>GPG &amp; SSL</source>
+        <source xml:space="preserve">GPG &amp; SSL</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target>GPG и SSL</target>
+        <target xml:space="preserve">GPG и SSL</target>
       </trans-unit>
       <trans-unit id="Troubleshooting">
-        <source>Troubleshooting</source>
+        <source xml:space="preserve">Troubleshooting</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart System Details Menu</context>
         </context-group>
-        <target>Диагностика проблем</target>
+        <target xml:space="preserve">Диагностика проблем</target>
       </trans-unit>
       <trans-unit id="Package Groups">
-        <source>Package Groups</source>
+        <source xml:space="preserve">Package Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
-        <target>Группы пакетов</target>
+        <target xml:space="preserve">Группы пакетов</target>
       </trans-unit>
       <trans-unit id="Package Profiles">
-        <source>Package Profiles</source>
+        <source xml:space="preserve">Package Profiles</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Software menu</context>
         </context-group>
-        <target>Профили пакетов</target>
+        <target xml:space="preserve">Профили пакетов</target>
       </trans-unit>
       <trans-unit id="Critical">
-        <source>Critical</source>
+        <source xml:space="preserve">Critical</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
-        <target>Критично</target>
+        <target xml:space="preserve">Критично</target>
       </trans-unit>
       <trans-unit id="Unknown">
-        <source>Unknown</source>
+        <source xml:space="preserve">Unknown</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/ProbeList.do</context>
         </context-group>
-        <target>Неизвестно</target>
+        <target xml:space="preserve">Неизвестно</target>
       </trans-unit>
       <trans-unit id="Recently Registered">
-        <source>Recently Registered</source>
+        <source xml:space="preserve">Recently Registered</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
-        <target>Последние</target>
+        <target xml:space="preserve">Последние</target>
       </trans-unit>
       <trans-unit id="Target Systems">
-        <source>Target Systems</source>
+        <source xml:space="preserve">Target Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target>Целевые системы</target>
+        <target xml:space="preserve">Целевые системы</target>
       </trans-unit>
       <trans-unit id="Admins">
-        <source>Admins</source>
+        <source xml:space="preserve">Admins</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/*.do</context>
         </context-group>
-        <target>Администраторы</target>
+        <target xml:space="preserve">Администраторы</target>
       </trans-unit>
       <trans-unit id="Subscribed Systems">
-        <source>Subscribed Systems</source>
+        <source xml:space="preserve">Subscribed Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target>Подписанные системы</target>
+        <target xml:space="preserve">Подписанные системы</target>
       </trans-unit>
       <trans-unit id="Repositories">
-        <source>Repositories</source>
+        <source xml:space="preserve">Repositories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
-        <target>Репозитории</target>
+        <target xml:space="preserve">Репозитории</target>
       </trans-unit>
       <trans-unit id="Managers">
-        <source>Managers</source>
+        <source xml:space="preserve">Managers</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target>Менеджеры</target>
+        <target xml:space="preserve">Менеджеры</target>
       </trans-unit>
       <trans-unit id="Subscribers">
-        <source>Subscribers</source>
+        <source xml:space="preserve">Subscribers</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target>Подписчики</target>
+        <target xml:space="preserve">Подписчики</target>
       </trans-unit>
       <trans-unit id="Downloads">
-        <source>Downloads</source>
+        <source xml:space="preserve">Downloads</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target>Загрузки</target>
+        <target xml:space="preserve">Загрузки</target>
       </trans-unit>
       <trans-unit id="License">
-        <source>License</source>
+        <source xml:space="preserve">License</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channel/downloads/Download.do</context>
         </context-group>
-        <target>Лицензия</target>
+        <target xml:space="preserve">Лицензия</target>
       </trans-unit>
       <trans-unit id="Sync">
-        <source>Sync</source>
+        <source xml:space="preserve">Sync</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/SyncErrata.do</context>
         </context-group>
-        <target>Синхронизация</target>
+        <target xml:space="preserve">Синхронизация</target>
       </trans-unit>
       <trans-unit id="Organizations">
-        <source>Organizations</source>
+        <source xml:space="preserve">Organizations</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target>Организации</target>
+        <target xml:space="preserve">Организации</target>
       </trans-unit>
       <trans-unit id="Trusts">
-        <source>Trusts</source>
+        <source xml:space="preserve">Trusts</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
-        <target>Доверенные</target>
+        <target xml:space="preserve">Доверенные</target>
       </trans-unit>
       <trans-unit id="Channels Consumed">
-        <source>Channels Consumed</source>
+        <source xml:space="preserve">Channels Consumed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target>Использованные каналы</target>
+        <target xml:space="preserve">Использованные каналы</target>
       </trans-unit>
       <trans-unit id="Channels Provided">
-        <source>Channels Provided</source>
+        <source xml:space="preserve">Channels Provided</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/OrgTrustDetails.do</context>
         </context-group>
-        <target>Предоставленные каналы</target>
+        <target xml:space="preserve">Предоставленные каналы</target>
       </trans-unit>
       <trans-unit id="Subscriptions">
-        <source>Subscriptions</source>
+        <source xml:space="preserve">Subscriptions</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Subscriptions.do</context>
         </context-group>
-        <target>Подписки</target>
+        <target xml:space="preserve">Подписки</target>
       </trans-unit>
       <!-- SSM NAV -->
       <group>
         <trans-unit id="Child Channels">
-          <source>Child Channels</source>
+          <source xml:space="preserve">Child Channels</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>Дочерние каналы</target>
+          <target xml:space="preserve">Дочерние каналы</target>
         </trans-unit>
         <trans-unit id="Chat">
-          <source>Chat</source>
+          <source xml:space="preserve">Chat</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/help/about.do</context>
           </context-group>
-          <target>Чат</target>
+          <target xml:space="preserve">Чат</target>
         </trans-unit>
         <trans-unit id="Base Channels">
-          <source>Base Channels</source>
+          <source xml:space="preserve">Base Channels</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
           </context-group>
-          <target>Базовые каналы</target>
+          <target xml:space="preserve">Базовые каналы</target>
         </trans-unit>
       </group>
       <!-- Activation Keys nav -->
       <group>
         <trans-unit id="activation-keys.nav.activated_systems">
-          <source>Activated Systems</source>
+          <source xml:space="preserve">Activated Systems</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
           </context-group>
-          <target>Активированные системы</target>
+          <target xml:space="preserve">Активированные системы</target>
         </trans-unit>
       </group>
       <!-- Main nav -->
@@ -1184,19 +1184,19 @@
           <context context-type="sourcefile">Title bar</context>
         </context-group>
         <trans-unit id="manage">
-          <source>Manage</source>
-          <target>Управление</target>
+          <source xml:space="preserve">Manage</source>
+          <target xml:space="preserve">Управление</target>
         </trans-unit>
         <trans-unit id="clear">
-          <source>Clear</source>
-          <target>Очистить</target>
+          <source xml:space="preserve">Clear</source>
+          <target xml:space="preserve">Очистить</target>
         </trans-unit>
       </group>
       <trans-unit id="Deployment">
-        <source>Deployment</source>
+        <source xml:space="preserve">Deployment</source>
       </trans-unit>
       <trans-unit id="Image List">
-        <source>Image List</source>
+        <source xml:space="preserve">Image List</source>
       </trans-unit>
     </body>
   </file>
