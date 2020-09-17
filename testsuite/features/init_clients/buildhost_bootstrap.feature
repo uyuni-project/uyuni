@@ -26,7 +26,7 @@ Feature: Be able to bootstrap a Salt build host via the GUI
     Given I am authorized
     When I go to the minion onboarding page
     Then I should see a "accepted" text
-    When I follow the left menu "Systems > Overview"
+    When I am on the System Overview page
     And I wait until I see the name of "build_host", refreshing the page
     And I wait until onboarding is completed for "build_host"
     Then the Salt master can reach "build_host"

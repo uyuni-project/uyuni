@@ -23,7 +23,7 @@ Feature: Be able to bootstrap a Salt minion via the GUI
     Given I am authorized
     When I go to the minion onboarding page
     Then I should see a "accepted" text
-    When I navigate to "rhn/systems/Overview.do" page
+    When I am on the System Overview page
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"

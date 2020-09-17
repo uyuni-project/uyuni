@@ -157,7 +157,7 @@ Feature: Web UI - Main landing page menu, texts and links
     Then I should see a "Software Channel Management" text in the content area
 
   Scenario: Completeness of the side navigation bar and the content frame
-    When I follow the left menu "Systems > Overview"
+    When I am on the Systems page
     Then I should see a "System Overview" text in the content area
     And I should see a "Overview" link in the left menu
     And I should see a "Systems" link in the left menu
