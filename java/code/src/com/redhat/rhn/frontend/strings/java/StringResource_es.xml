@@ -10177,186 +10177,186 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.pool_refresh">
         <source xml:space="preserve">Virtual storage pool refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.pool_start">
         <source xml:space="preserve">Virtual storage pool start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.pool_stop">
         <source xml:space="preserve">Virtual storage pool stop</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.pool_delete">
         <source xml:space="preserve">Virtual storage pool delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.pool_create">
         <source xml:space="preserve">Virtual storage pool creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.pool_update">
         <source xml:space="preserve">Virtual storage pool update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.volume_delete">
         <source xml:space="preserve">Virtual storage volume deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.network_start">
         <source xml:space="preserve">Virtual network start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.network_stop">
         <source xml:space="preserve">Virtual network stop</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="virt.network_delete">
         <source xml:space="preserve">Virtual network deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="cluster_admin">
         <source xml:space="preserve">Cluster Administrator</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="clusters.nav.title">
         <source xml:space="preserve">Clusters</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="clusters.nav.overview">
         <source xml:space="preserve">Overview</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="clusters.nav.add">
         <source xml:space="preserve">Add</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound">
         <source xml:space="preserve">Module '{0}' not found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="contentmanagement.validation.moduleconflict">
         <source xml:space="preserve">Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror.formodule">
         <source xml:space="preserve">Some of the modular dependencies cannot be resolved for module '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror">
         <source xml:space="preserve">Some of the modular dependencies cannot be resolved.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodulefilters">
         <source xml:space="preserve">No module filters attached. Module metadata will be cloned to target.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodularsources">
         <source xml:space="preserve">No modular source attached. Module filters will be ignored.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty">
         <source xml:space="preserve">Calendar name required</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.schedule.name.empty">
         <source xml:space="preserve">Schedule name required</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.calendar.data.empty">
         <source xml:space="preserve">Calendar data required</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.calendar.exists">
         <source xml:space="preserve">Calendar '{0}' already exists</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.calendar.fetch.error">
         <source xml:space="preserve">Error fetching calendar data from '{0}'</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.calendar.not.exists">
         <source xml:space="preserve">Calendar '{0}' does not exist</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.schedule.id.not.exists">
         <source xml:space="preserve">Schedule with id '{0}' does not exist</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.calendar.id.not.exists">
         <source xml:space="preserve">Calendar with id '{0}' does not exist</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel">
         <source xml:space="preserve">An error occured trying to cancel affected actions for schedule '{0}'</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail">
         <source xml:space="preserve">Operation could not be performed. There are scheduled actions on systems</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.action.assign.error.fail">
         <source xml:space="preserve">Operation could not be performed. There are scheduled actions on systems</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       <trans-unit id="maintenance.action.assign.error.systemnotfound">
         <source xml:space="preserve">Some of the specified servers cannot be found</source>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
     </body>
   </file>

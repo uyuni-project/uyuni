@@ -24527,7 +24527,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
-      <target state="new" xml:space="preserve"/>
+      <target state="new" xml:space="preserve" />
   </trans-unit>
       </body>
   </file>
