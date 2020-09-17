@@ -4,7 +4,7 @@
     <body>
       <!-- New Account Email -->
       <trans-unit id="email.newaccount.subject">
-        <source>Your @@PRODUCT_NAME@@ Account is ready</source>
+        <source xml:space="preserve">Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -13,10 +13,10 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target>உங்கள் @@PRODUCT_NAME@@ கணக்கு தயாராக உள்ளது</target>
+        <target xml:space="preserve">உங்கள் @@PRODUCT_NAME@@ கணக்கு தயாராக உள்ளது</target>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -47,7 +47,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -78,7 +78,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.pam.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -104,7 +104,7 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target>வணக்கம்,
+        <target xml:space="preserve">வணக்கம்,
 
 {0} {1}ஆல் உங்களுக்கு Red Hat புகுபதிவு உருவாக்கப்பட்டது. செயலிலுள்ள
 Red Hat சந்தாவுடன் இணைந்த உங்கள் Red Hat புகுபதிவானது,
@@ -120,7 +120,7 @@ Red Hat சந்தாவுடன் இணைந்த உங்கள் Red
       </trans-unit>
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject">
-        <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
+        <source xml:space="preserve">@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -131,10 +131,10 @@ Red Hat சந்தாவுடன் இணைந்த உங்கள் Red
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ பயனர் உருவாக்கப்பட்டது: {0} ({1}, {2} &lt;{3}&gt;)</target>
+        <target xml:space="preserve">@@PRODUCT_NAME@@ பயனர் உருவாக்கப்பட்டது: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
       <trans-unit id="email.newuser.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A new user has been added to your account.
 
@@ -159,7 +159,7 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target>வணக்கம்,
+        <target xml:space="preserve">வணக்கம்,
 
 உங்கள் கணக்கில் ஒரு புதிய பயனர் சேர்க்கப்பட்டார்.
 
@@ -178,7 +178,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
         <trans-unit id="email.errata.notification.body.summary">
-          <source>
+          <source xml:space="preserve">
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -208,7 +208,7 @@ Summary:
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader">
-          <source>
+          <source xml:space="preserve">
 ---------------------
 Affected Systems List
 ---------------------
@@ -220,13 +220,13 @@ as root on the system in question to refresh your software profile.
     </source>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
-          <source>
+          <source xml:space="preserve">
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
-          <source>
+          <source xml:space="preserve">
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
@@ -237,7 +237,7 @@ which you have explicitly enabled Patch Alerts are shown).
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected">
-          <source>
+          <source xml:space="preserve">
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -259,7 +259,7 @@ You may address the issues outlined in this advisory in two ways:
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences">
-          <source>
+          <source xml:space="preserve">
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -284,7 +284,7 @@ click the "Details" tab.
         </trans-unit>
       </group>
       <trans-unit id="dailysummary.email.subject">
-        <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
+        <source xml:space="preserve">@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
@@ -293,10 +293,10 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ {0} க்கு தினசரி அறிக்கை நிலை</target>
+        <target xml:space="preserve">@@PRODUCT_NAME@@ {0} க்கு தினசரி அறிக்கை நிலை</target>
       </trans-unit>
       <trans-unit id="dailysummary.email.body">
-        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+        <source xml:space="preserve">This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
 
@@ -330,7 +330,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.password">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0} at your request. ]
 
 A request to reset the @@PRODUCT_NAME@@ password for login {2} has been made.
@@ -356,7 +356,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.logins">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0} at your request. ]
 
 You have requested a list of all @@PRODUCT_NAME@@ logins associated
@@ -384,7 +384,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.reset.password">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0}. ]
 
 The @@PRODUCT_NAME@@ password for login {1} has been reset in response to a reset-request

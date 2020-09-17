@@ -7792,95 +7792,95 @@ Follow this url to see the full list of inactive systems:
               schema change (see rhnChannelArch.sql) -->
       <trans-unit id="IA-32">
         <source xml:space="preserve">IA-32</source>
-        <target>IA-32</target>
+        <target xml:space="preserve">IA-32</target>
       </trans-unit>
       <trans-unit id="IA-32 Debian">
         <source xml:space="preserve">IA-32 Debian</source>
-        <target>IA-32 Debian</target>
+        <target xml:space="preserve">IA-32 Debian</target>
       </trans-unit>
       <trans-unit id="IA-64">
         <source xml:space="preserve">IA-64</source>
-        <target>IA-64</target>
+        <target xml:space="preserve">IA-64</target>
       </trans-unit>
       <trans-unit id="IA-64 Debian">
         <source xml:space="preserve">IA-64 Debian</source>
-        <target>IA-64 Debian</target>
+        <target xml:space="preserve">IA-64 Debian</target>
       </trans-unit>
       <trans-unit id="Sparc">
         <source xml:space="preserve">Sparc</source>
-        <target>Sparc</target>
+        <target xml:space="preserve">Sparc</target>
       </trans-unit>
       <trans-unit id="Sparc Debian">
         <source xml:space="preserve">Sparc Debian</source>
-        <target>Sparc Debian</target>
+        <target xml:space="preserve">Sparc Debian</target>
       </trans-unit>
       <trans-unit id="Alpha">
         <source xml:space="preserve">Alpha</source>
-        <target>Alpha</target>
+        <target xml:space="preserve">Alpha</target>
       </trans-unit>
       <trans-unit id="Alpha Debian">
         <source xml:space="preserve">Alpha Debian</source>
-        <target>Alpha Debian</target>
+        <target xml:space="preserve">Alpha Debian</target>
       </trans-unit>
       <trans-unit id="s390">
         <source xml:space="preserve">s390</source>
-        <target>s390</target>
+        <target xml:space="preserve">s390</target>
       </trans-unit>
       <trans-unit id="s390 Debian">
         <source xml:space="preserve">s390 Debian</source>
-        <target>s390 Debian</target>
+        <target xml:space="preserve">s390 Debian</target>
       </trans-unit>
       <trans-unit id="s390x">
         <source xml:space="preserve">s390x</source>
-        <target>s390x</target>
+        <target xml:space="preserve">s390x</target>
       </trans-unit>
       <trans-unit id="iSeries">
         <source xml:space="preserve">iSeries</source>
-        <target>iSeries</target>
+        <target xml:space="preserve">iSeries</target>
       </trans-unit>
       <trans-unit id="pSeries">
         <source xml:space="preserve">pSeries</source>
-        <target>pSeries</target>
+        <target xml:space="preserve">pSeries</target>
       </trans-unit>
       <trans-unit id="x86_64">
         <source xml:space="preserve">x86_64</source>
-        <target>x86_64</target>
+        <target xml:space="preserve">x86_64</target>
       </trans-unit>
       <trans-unit id="AMD64 Debian">
         <source xml:space="preserve">AMD64 Debian</source>
-        <target>AMD64 Debian</target>
+        <target xml:space="preserve">AMD64 Debian</target>
       </trans-unit>
       <trans-unit id="PPC">
         <source xml:space="preserve">PPC</source>
-        <target>PPC</target>
+        <target xml:space="preserve">PPC</target>
       </trans-unit>
       <trans-unit id="PowerPC Debian">
         <source xml:space="preserve">PowerPC Debian</source>
-        <target>PowerPC Debian</target>
+        <target xml:space="preserve">PowerPC Debian</target>
       </trans-unit>
       <trans-unit id="ARM soft. FP">
         <source xml:space="preserve">ARM soft. FP</source>
-        <target>ARM soft. FP</target>
+        <target xml:space="preserve">ARM soft. FP</target>
       </trans-unit>
       <trans-unit id="ARM hard. FP">
         <source xml:space="preserve">ARM hard. FP</source>
-        <target>ARM hard. FP</target>
+        <target xml:space="preserve">ARM hard. FP</target>
       </trans-unit>
       <trans-unit id="arm Debian">
         <source xml:space="preserve">arm Debian</source>
-        <target>arm Debian</target>
+        <target xml:space="preserve">arm Debian</target>
       </trans-unit>
       <trans-unit id="mips Debian">
         <source xml:space="preserve">mips Debian</source>
-        <target>mips Debian</target>
+        <target xml:space="preserve">mips Debian</target>
       </trans-unit>
       <trans-unit id="AArch64">
         <source xml:space="preserve">ARM aarch64</source>
-        <target>ARM aarch64</target>
+        <target xml:space="preserve">ARM aarch64</target>
       </trans-unit>
       <trans-unit id="PPC64LE">
         <source xml:space="preserve">PPC64LE</source>
-        <target>PPC64LE</target>
+        <target xml:space="preserve">PPC64LE</target>
       </trans-unit>
       <trans-unit id="probeparam.passnomatch">
         <source xml:space="preserve">The Password and Password Confirm did not match.</source>

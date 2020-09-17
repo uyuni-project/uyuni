@@ -4,15 +4,15 @@
     <body>
       <!-- New Account Email -->
       <trans-unit id="email.newaccount.subject">
-        <source>Your @@PRODUCT_NAME@@ Account is ready</source>
-        <target />
+        <source xml:space="preserve">Your @@PRODUCT_NAME@@ Account is ready</source>
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccountbycreator.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -28,7 +28,7 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
-        <target />
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -44,7 +44,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -60,7 +60,7 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
-        <target />
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -76,7 +76,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newaccount.pam.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
 @@PRODUCT_NAME@@ login, in combination with an active @@VENDOR_NAME@@ subscription,
@@ -89,7 +89,7 @@ provides you with access to manage systems on @@PRODUCT_NAME@@.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
-        <target />
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
           <context context-type="paramnotes">
@@ -106,8 +106,8 @@ Thank you for using @@PRODUCT_NAME@@.
       </trans-unit>
       <!-- New User Email -->
       <trans-unit id="email.newuser.subject">
-        <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
-        <target />
+        <source xml:space="preserve">@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -115,7 +115,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.newuser.body">
-        <source>Hello,
+        <source xml:space="preserve">Hello,
 
 A new user has been added to your account.
 
@@ -128,7 +128,7 @@ please visit:
 
 Thank you for using @@PRODUCT_NAME@@.
 {2}</source>
-        <target />
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
@@ -147,7 +147,7 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
         <trans-unit id="email.errata.notification.body.summary">
-          <source>
+          <source xml:space="preserve">
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -163,7 +163,7 @@ Summary:
 {7}
 ------------------------------------------------------------------------------
     </source>
-          <target /><context-group name="ctx">
+          <target xml:space="preserve" /><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
@@ -177,7 +177,7 @@ Summary:
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affectedheader">
-          <source>
+          <source xml:space="preserve">
 ---------------------
 Affected Systems List
 ---------------------
@@ -187,26 +187,26 @@ package profile for that server is out of date. In that case you should run
 'up2date -p' (RHEL 4 and below) or 'rhn-profile-sync' (SLES, RHEL 5 and above)
 as root on the system in question to refresh your software profile.
     </source>
-        <target /></trans-unit>
+        <target xml:space="preserve" /></trans-unit>
         <trans-unit id="email.errata.notification.body.onesystem">
-          <source>
+          <source xml:space="preserve">
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-        <target /></trans-unit>
+        <target xml:space="preserve" /></trans-unit>
         <trans-unit id="email.errata.notification.body.numsystems">
-          <source>
+          <source xml:space="preserve">
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-          <target /><context-group name="ctx">
+          <target xml:space="preserve" /><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - system count
       </context>
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.affected">
-          <source>
+          <source xml:space="preserve">
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -220,7 +220,7 @@ You may address the issues outlined in this advisory in two ways:
 
      - run the Update Agent on each affected server.
     </source>
-          <target /><context-group name="ctx">
+          <target xml:space="preserve" /><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
@@ -228,7 +228,7 @@ You may address the issues outlined in this advisory in two ways:
           </context-group>
         </trans-unit>
         <trans-unit id="email.errata.notification.body.preferences">
-          <source>
+          <source xml:space="preserve">
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -243,7 +243,7 @@ click the "Details" tab.
 {1}
 {2}
     </source>
-          <target /><context-group name="ctx">
+          <target xml:space="preserve" /><context-group name="ctx">
             <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
@@ -253,15 +253,15 @@ click the "Details" tab.
         </trans-unit>
       </group>
       <trans-unit id="dailysummary.email.subject">
-        <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
-        <target />
+        <source xml:space="preserve">@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
       </trans-unit>
       <trans-unit id="dailysummary.email.body">
-        <source>This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
+        <source xml:space="preserve">This is the @@PRODUCT_NAME@@ Status Report for your account {0}, as of {1}.
 
 This email will be sent when any of the following apply:
 
@@ -281,7 +281,7 @@ Thank you for using @@PRODUCT_NAME@@.
 {5}
 {6}
 </source>
-        <target />
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">
@@ -296,7 +296,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.password">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0} at your request. ]
 
 A request to reset the @@PRODUCT_NAME@@ password for login {2} has been made.
@@ -312,7 +312,7 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target />
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -323,7 +323,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.forgotten.logins">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0} at your request. ]
 
 You have requested a list of all @@PRODUCT_NAME@@ logins associated
@@ -342,7 +342,7 @@ If you did not request this email be sent, please disregard this message.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target />
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">ForgotCredentials</context>
           <context context-type="paramnotes">
@@ -352,7 +352,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit id="email.reset.password">
-        <source>
+        <source xml:space="preserve">
 [ This is an automated email sent to {0}. ]
 
 The @@PRODUCT_NAME@@ password for login {1} has been reset in response to a reset-request
@@ -363,7 +363,7 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target />
+        <target xml:space="preserve" />
         <context-group name="ctx">
           <context context-type="sourcefile">ResetPasswordSubmit</context>
           <context context-type="paramnotes">
