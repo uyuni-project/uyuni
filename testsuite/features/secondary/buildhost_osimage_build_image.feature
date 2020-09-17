@@ -37,9 +37,8 @@ Feature: Build OS images
   Scenario: Check the OS image built as Kiwi image administrator
     Given I am on the Systems overview page of this "build_host"
     Then I should see a "[OS Image Build Host]" text
-    When I wait at most 3300 seconds until event "Image Build suse_os_image scheduled by kiwikiwi" is completed
-    And I wait at most 300 seconds until event "Image Inspect 1//suse_os_image:latest scheduled by kiwikiwi" is completed
-    And I navigate to "os-images/1/" page
+    When I wait until the image build "suse_os_image" is completed
+    And I am on the image page of "suse_os_image"
     Then I should see the name of the image
 
 @proxy

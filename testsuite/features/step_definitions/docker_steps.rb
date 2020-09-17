@@ -22,12 +22,28 @@ def retrieve_build_host_id
   build_host_id
 end
 
+# OS image build
 When(/^I navigate to images webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/images")
 end
 
 When(/^I navigate to images build webpage$/) do
   visit("https://#{$server.full_hostname}/rhn/manager/cm/build")
+end
+
+Then(/^I wait until the image build "([^"]*)" is completed$/) do |image_name|
+  steps %(
+    When I wait at most 3300 seconds until event "Image Build #{image_name} scheduled by kiwikiwi" is completed
+    And I wait at most 300 seconds until event "Image Inspect 1//#{image_name}:latest scheduled by kiwikiwi" is completed
+  )
+end
+
+Then(/^I am on the image page of "([^"]*)"$/) do |image_name|
+  step %(I navigate to "#{compute_image_url(image_name)}" page)
+end
+
+Then(/^I should see the name of the image$/) do
+  step %(I should see a "#{compute_image_name}" text)
 end
 
 When(/^I wait at most (\d+) seconds until container "([^"]*)" is built successfully$/) do |timeout, name|

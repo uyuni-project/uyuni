@@ -63,6 +63,11 @@ def compute_image_name
   end
 end
 
+def compute_image_url(image_name)
+  raise "Unknown image #{image_name}" unless image_name == 'suse_os_image'
+  'os-images/1/'
+end
+
 # compute list of reposyncs to avoid killing because they might be involved in bootstrapping
 # this is a safety net only, the best thing to do is to not start the reposync at all
 def compute_list_to_leave_running

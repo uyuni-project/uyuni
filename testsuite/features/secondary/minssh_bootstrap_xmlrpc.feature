@@ -22,7 +22,7 @@ Feature: Register a salt-ssh system via XML-RPC
 @ssh_minion
   Scenario: Check new XML-RPC bootstrapped salt-ssh system in System Overview page
      Given I am authorized
-     And I navigate to "rhn/systems/Overview.do" page
+     And I am on the System Overview page
      And I wait until I see the name of "ssh_minion", refreshing the page
      And I wait until onboarding is completed for "ssh_minion"
 
